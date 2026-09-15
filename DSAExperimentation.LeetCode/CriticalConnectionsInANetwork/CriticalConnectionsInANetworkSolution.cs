@@ -32,7 +32,8 @@ internal static class CriticalConnectionsInANetworkSolution
         {
             if (!IsConnectedWithoutConnection(serverCount, connections, i))
             {
-                critical.Add(Pair(connections[i][0], connections[i][1]));
+                var connection = Pair(connections[i][0], connections[i][1]);
+                critical.Add(connection);
             }
         }
 
@@ -129,5 +130,7 @@ internal static class CriticalConnectionsInANetworkSolution
     // An undirected connection has no direction to report, so both strategies emit
     // the smaller server first and the two arms stay directly comparable.
     private static int[] Pair(int first, int second) =>
-        first <= second ? [first, second] : [second, first];
+        first <= second ? AscendingPair(first, second) : AscendingPair(second, first);
+
+    private static int[] AscendingPair(int low, int high) => [low, high];
 }

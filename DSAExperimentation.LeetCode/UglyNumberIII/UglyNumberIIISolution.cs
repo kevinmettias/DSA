@@ -26,7 +26,7 @@ internal static class UglyNumberIIISolution
         {
             x++;
 
-            if (x % a == 0 || x % b == 0 || x % c == 0)
+            if (IsMultipleOfAnyFactor(x, a, b, c))
             {
                 count++;
             }
@@ -35,14 +35,17 @@ internal static class UglyNumberIIISolution
         return x;
     }
 
+    // A number is ugly when at least one of the three factors divides it - the union the
+    // original definition names.
+    private static bool IsMultipleOfAnyFactor(int value, int a, int b, int c) =>
+        value % a == 0 || value % b == 0 || value % c == 0;
+
     // The nth ugly number is at most n * min(a, b, c) - n multiples of the smallest
-    // factor alone already reach it - so the search window is bounded before the
-    // first probe, and LowerBound spends O(log(answer)) counting steps inside it.
+    // factor alone already reach it - so UglyCountSequence derives that bound as its
+    // own window, and LowerBound spends O(log(answer)) counting steps inside it.
     public static int NthUglyNumberByBinarySearch(int n, int a, int b, int c)
     {
-        var smallestFactor = Math.Min(a, Math.Min(b, c));
-        var upperBound = checked((int)((long)n * smallestFactor));
-        var sequence = new UglyCountSequence(n, a, b, c, upperBound);
+        var sequence = new UglyCountSequence(n, a, b, c);
 
         return BinarySearch.LowerBound<int, UglyCountSequence>(sequence, 1);
     }

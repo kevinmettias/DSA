@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,19 +11,18 @@ public class MedianOfTwoSortedArraysBenchmarks
 {
     private const int RandomSeed = 11;
     private const int MaxRandomValue = 1_000_000;
-    private const int HalfSplitDivisor = 2;
 
+    private int[] _nums1 = [];
+
+    private int[] _nums2 = [];
     [Params(2_000, 40_000)]
-    public int TotalLength;
-
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    public int TotalLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums1 = Enumerable.Range(0, TotalLength / HalfSplitDivisor).Select(_ => random.Next(-MaxRandomValue, MaxRandomValue)).Order().ToArray();
+        _nums1 = Enumerable.Range(0, TotalLength / AlgorithmConstants.HalvingFactor).Select(_ => random.Next(-MaxRandomValue, MaxRandomValue)).Order().ToArray();
         _nums2 = Enumerable.Range(0, TotalLength - _nums1.Length).Select(_ => random.Next(-MaxRandomValue, MaxRandomValue)).Order().ToArray();
     }
 

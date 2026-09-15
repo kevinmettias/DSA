@@ -45,8 +45,5 @@ public sealed class RangeBoundsTests
         Assert.Throws<ArgumentOutOfRangeException>(() => RangeBounds.ValidateRange(left, right, size, Message));
 
     [Fact]
-    public void ValidateRange_AcceptsASingleElementRange()
-    {
-        RangeBounds.ValidateRange(4, 4, 5, Message);
-    }
+    public void ValidateRange_AcceptsASingleElementRange() => RangeBounds.ValidateRange(4, 4, 5, Message);
 }

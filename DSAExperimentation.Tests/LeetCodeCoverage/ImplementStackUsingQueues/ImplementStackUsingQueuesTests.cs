@@ -59,24 +59,15 @@ public sealed class ImplementStackUsingQueuesTests
 // One call in a MyStack script: which operation to invoke and with what
 // argument. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct StackOp
+public readonly record struct StackOp(StackOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static StackOp Push(int value) => new(OpKind.Push, value);
 
-    private StackOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static StackOp Pop() => new(OpKind.Pop, 0);
 
-    public static StackOp Push(int value) => new(Kind.Push, value);
+    public static StackOp Top() => new(OpKind.Top, 0);
 
-    public static StackOp Pop() => new(Kind.Pop, 0);
-
-    public static StackOp Top() => new(Kind.Top, 0);
-
-    public static StackOp Empty() => new(Kind.Empty, 0);
+    public static StackOp Empty() => new(OpKind.Empty, 0);
 
     // null for push, the int result for pop/top, the bool result for empty -
     // so a script runner can assert against one expected value per operation
@@ -85,21 +76,21 @@ public readonly record struct StackOp
     // RunScript ever calls Apply.
     internal object? Apply(IStackOperations stack)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Push:
-                stack.Push(_value);
+            case OpKind.Push:
+                stack.Push(value);
                 return null;
-            case Kind.Pop:
+            case OpKind.Pop:
                 return stack.Pop();
-            case Kind.Top:
+            case OpKind.Top:
                 return stack.Top();
             default:
                 return stack.Empty();
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Push,
         Pop,

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PrimeArrangementsBenchmarks
 {
     [Params(2_000, 20_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int TrialDivision() => PrimeArrangementsSolution.NumPrimeArrangementsByTrialDivision(N);

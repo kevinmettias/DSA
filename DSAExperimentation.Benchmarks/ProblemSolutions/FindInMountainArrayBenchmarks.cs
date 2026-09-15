@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindInMountainArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,21 +13,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindInMountainArrayBenchmarks
 {
-    private const int MidpointDivisor = 2;
     private const int AscendingStep = 2;
     private const int DescendingStep = 2;
     private const int TargetOffsetFromEnd = 2;
 
-    [Params(1_000, 100_000)]
-    public int Length;
+    private int[] _mountain = [];
 
-    private int[] _mountain = null!;
     private int _target;
+    [Params(1_000, 100_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var peakIndex = Length / MidpointDivisor;
+        var peakIndex = Length / AlgorithmConstants.HalvingFactor;
         _mountain = new int[Length];
 
         for (var i = 0; i <= peakIndex; i++)

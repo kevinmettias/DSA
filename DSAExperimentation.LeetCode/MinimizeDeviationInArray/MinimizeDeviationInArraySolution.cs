@@ -38,8 +38,16 @@ internal static class MinimizeDeviationInArraySolution
             min = Math.Min(min, value);
         }
 
+        return ReduceDeviationByRescan(values, min);
+    }
+
+    // The reduction pass over a plain list: halve the rescan-found largest value,
+    // tracking the smallest max-min seen, until the largest turns odd.
+    private static int ReduceDeviationByRescan(List<int> values, int min)
+    {
         var deviation = int.MaxValue;
 
+        // Terminates when the largest value is odd: it can no longer be halved.
         while (true)
         {
             var maxIndex = IndexOfLargest(values);
@@ -56,11 +64,6 @@ internal static class MinimizeDeviationInArraySolution
             values[maxIndex] = half;
         }
     }
-
-    // An odd value can only ever be doubled once, so this is the single starting
-    // point from which every reachable form of the element is a halving away.
-    private static int EvenForm(int num) =>
-        num % ParityDivisor == 1 ? num * EvenizingMultiplier : num;
 
     private static int IndexOfLargest(List<int> values)
     {
@@ -91,8 +94,16 @@ internal static class MinimizeDeviationInArraySolution
             min = Math.Min(min, value);
         }
 
+        return ReduceDeviationByHeap(heap, min);
+    }
+
+    // The same reduction pass against a max-heap, which yields the current largest
+    // value without a rescan.
+    private static int ReduceDeviationByHeap(Heap<int, MaxHeapOrder<int>> heap, int min)
+    {
         var deviation = int.MaxValue;
 
+        // Terminates when the popped maximum is odd: it can no longer be halved.
         while (true)
         {
             heap.TryPop(out var max);
@@ -108,4 +119,14 @@ internal static class MinimizeDeviationInArraySolution
             heap.Push(half);
         }
     }
+
+    // An odd value can only ever be doubled once, so this is the single starting
+    // point from which every reachable form of the element is a halving away.
+    private static int EvenForm(int num)
+    {
+        var isOdd = num % ParityDivisor == 1;
+        return isOdd ? Doubled(num) : num;
+    }
+
+    private static int Doubled(int num) => num * EvenizingMultiplier;
 }

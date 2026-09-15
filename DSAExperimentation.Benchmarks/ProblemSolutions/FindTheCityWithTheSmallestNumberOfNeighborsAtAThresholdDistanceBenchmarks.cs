@@ -19,10 +19,10 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
     private const int RandomSeed = 1334; // LC problem number
     private const int ExtraRoadsPerCity = 2;
 
-    [Params(30, 120)]
-    public int CityCount;
-
     private CityGraph _graph = null!;
+
+    [Params(30, 120)]
+    public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

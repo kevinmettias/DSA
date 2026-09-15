@@ -13,11 +13,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SubstringMatchingPatternBenchmarks
 {
-    [Params(50, 300)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _p = null!;
+    private string _p = "";
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -28,8 +28,10 @@ public class SubstringMatchingPatternBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() => SubstringMatchingPatternSolution.HasMatchByBruteForce(_s, _p);
+    public bool BruteForce() =>
+        SubstringMatchingPatternSolution.HasMatchByBruteForce(new SubjectText(_s), new WildcardPattern(_p));
 
     [Benchmark]
-    public bool PrefixFunctionSearch() => SubstringMatchingPatternSolution.HasMatchByPrefixFunctionSearch(_s, _p);
+    public bool PrefixFunctionSearch() =>
+        SubstringMatchingPatternSolution.HasMatchByPrefixFunctionSearch(new SubjectText(_s), new WildcardPattern(_p));
 }

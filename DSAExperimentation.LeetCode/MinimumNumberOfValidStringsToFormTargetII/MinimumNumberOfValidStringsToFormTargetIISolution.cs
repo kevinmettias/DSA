@@ -24,7 +24,10 @@ internal static class MinimumNumberOfValidStringsToFormTargetIISolution
     // has to beat, and why it is only benchmarked at a fraction of this problem's
     // own 5*10^4 bound.
     public static int MinValidStringsByBruteForce(string[] words, string target)
-        => MinJumps(ReachByBruteForce(words, target));
+    {
+        var reach = ReachByBruteForce(words, target);
+        return MinJumps(reach);
+    }
 
     private static int[] ReachByBruteForce(string[] words, string target)
     {
@@ -37,14 +40,7 @@ internal static class MinimumNumberOfValidStringsToFormTargetIISolution
 
             foreach (var word in words)
             {
-                var limit = Math.Min(word.Length, n - i);
-                var matched = 0;
-
-                while (matched < limit && word[matched] == target[i + matched])
-                {
-                    matched++;
-                }
-
+                var matched = LongestPrefixMatch(new DictionaryWord(word), new TargetText(target), i);
                 best = Math.Max(best, matched);
             }
 
@@ -52,6 +48,22 @@ internal static class MinimumNumberOfValidStringsToFormTargetIISolution
         }
 
         return reach;
+    }
+
+    // How far this word matches target from `start`: bounded by both the word's own length
+    // and the target characters still ahead of `start`, so neither index can run past its
+    // string.
+    private static int LongestPrefixMatch(DictionaryWord word, TargetText target, int start)
+    {
+        var limit = Math.Min(word.Text.Length, target.Text.Length - start);
+        var matched = 0;
+
+        while (matched < limit && word.Text[matched] == target.Text[start + matched])
+        {
+            matched++;
+        }
+
+        return matched;
     }
 
     // Composed: for each word, DSAExperimentation.Algorithms.StringMatching.ZFunction.Compute
@@ -63,7 +75,10 @@ internal static class MinimumNumberOfValidStringsToFormTargetIISolution
     // every word yields reach[] directly - the strategy this problem's 5*10^4
     // bound actually requires.
     public static int MinValidStringsByZFunctionAcrossWords(string[] words, string target)
-        => MinJumps(ReachByZFunctionAcrossWords(words, target));
+    {
+        var reach = ReachByZFunctionAcrossWords(words, target);
+        return MinJumps(reach);
+    }
 
     private static int[] ReachByZFunctionAcrossWords(string[] words, string target)
     {
@@ -102,30 +117,56 @@ internal static class MinimumNumberOfValidStringsToFormTargetIISolution
 
         for (var i = 0; i < n; i++)
         {
-            if (i > farthest)
+            var step = AdvanceScan((farthest, currentEnd, jumps), reach, i, n);
+
+            if (step.Answer is int answer)
             {
-                return LeetCodeAnswer.None;
+                return answer;
             }
 
-            farthest = Math.Max(farthest, i + reach[i]);
-
-            if (i == currentEnd)
-            {
-                if (farthest == currentEnd)
-                {
-                    return LeetCodeAnswer.None;
-                }
-
-                jumps++;
-                currentEnd = farthest;
-
-                if (currentEnd >= n)
-                {
-                    return jumps;
-                }
-            }
+            (farthest, currentEnd, jumps) = (step.Farthest, step.CurrentEnd, step.Jumps);
         }
 
         return currentEnd >= n ? jumps : LeetCodeAnswer.None;
     }
+
+    // The greedy scan's work at one index. `state` is the running (farthest position one
+    // more jump reaches, end of the range the committed jumps cover, jump count); the
+    // result is that state after this index together with the answer to return now when
+    // the walk ends here -- LeetCodeAnswer.None when the index has outrun every reach or
+    // the range cannot be extended, the committed jump count once the range covers the
+    // whole array, and null while the scan continues.
+    private static (int Farthest, int CurrentEnd, int Jumps, int? Answer) AdvanceScan(
+        (int Farthest, int CurrentEnd, int Jumps) state, int[] reach, int index, int nodeCount)
+    {
+        if (index > state.Farthest)
+        {
+            return (state.Farthest, state.CurrentEnd, state.Jumps, LeetCodeAnswer.None);
+        }
+
+        var farthest = Math.Max(state.Farthest, index + reach[index]);
+
+        if (index != state.CurrentEnd)
+        {
+            return (farthest, state.CurrentEnd, state.Jumps, null);
+        }
+
+        if (farthest == state.CurrentEnd)
+        {
+            return (farthest, state.CurrentEnd, state.Jumps, LeetCodeAnswer.None);
+        }
+
+        return (farthest, farthest, state.Jumps + 1, farthest >= nodeCount ? NextJumpCount(state.Jumps) : (int?)null);
+    }
+
+    // The jump count once this index's jump is committed, which is the answer exactly
+    // when the range that jump opens reaches the end of the array.
+    private static int NextJumpCount(int jumps) => jumps + 1;
+
+    // The two operands of the reach scan, each its own type so the word and the string
+    // being matched against it cannot be handed over the wrong way round: the word is
+    // indexed from ITS zero while the target is indexed from the scan's own `start`.
+    private readonly record struct DictionaryWord(string Text);
+
+    private readonly record struct TargetText(string Text);
 }

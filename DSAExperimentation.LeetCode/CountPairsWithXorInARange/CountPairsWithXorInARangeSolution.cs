@@ -65,22 +65,6 @@ internal static class CountPairsWithXorInARangeSolution
         return pairs;
     }
 
-    private static void Insert(BitTrie trie, HashMap<BitTrieNode, int> subtreeCount, int value)
-    {
-        trie.Insert(value);
-
-        var current = trie.Root;
-        var bits = unchecked((uint)value);
-
-        for (var i = TopBitIndex; i >= 0; i--)
-        {
-            var bit = (bits >> i) & 1u;
-            current = bit == 0 ? current.Zero! : current.One!;
-            subtreeCount.TryGetValue(current, out var existing);
-            subtreeCount.Set(current, existing + 1);
-        }
-    }
-
     // Counts previously-inserted values y with (value ^ y) < limit.
     private static int CountLessThan(BitTrie trie, HashMap<BitTrieNode, int> subtreeCount, int value, int limit)
     {
@@ -103,8 +87,6 @@ internal static class CountPairsWithXorInARangeSolution
         return count;
     }
 
-    private readonly record struct BitScanContext(HashMap<BitTrieNode, int> SubtreeCount, uint ValueBits, uint LimitBits);
-
     private static (BitTrieNode? Next, int Contributed) AdvanceLevel(BitScanContext context, BitTrieNode current, int bitIndex)
     {
         var valueBit = (context.ValueBits >> bitIndex) & 1u;
@@ -126,4 +108,28 @@ internal static class CountPairsWithXorInARangeSolution
 
         return (oppositeChild, contributed);
     }
+
+    private static void Insert(BitTrie trie, HashMap<BitTrieNode, int> subtreeCount, int value)
+    {
+        trie.Insert(value);
+
+        var current = trie.Root;
+        var bits = unchecked((uint)value);
+
+        for (var i = TopBitIndex; i >= 0; i--)
+        {
+            var bit = (bits >> i) & 1u;
+            current = bit == 0 ? ZeroChild(current) : OneChild(current);
+            subtreeCount.TryGetValue(current, out var existing);
+            subtreeCount.Set(current, existing + 1);
+        }
+    }
+
+    // trie.Insert above created every node on the bit path this walk retraces, so
+    // the child the bit names is there to take.
+    private static BitTrieNode ZeroChild(BitTrieNode node) => node.Zero!;
+
+    private static BitTrieNode OneChild(BitTrieNode node) => node.One!;
+
+    private readonly record struct BitScanContext(HashMap<BitTrieNode, int> SubtreeCount, uint ValueBits, uint LimitBits);
 }

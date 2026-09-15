@@ -16,23 +16,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = Build(Enumerable.Range(1, Length).ToArray());
-
-    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
-    // so a public [Benchmark] method cannot name it as a return type (CS0050).
-    [Benchmark(Baseline = true)]
-    public object? ValueRebuild() =>
-        InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByValueRebuild(Clone(_head));
-
-    [Benchmark]
-    public object? NodeSplice() =>
-        InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByNodeSplice(Clone(_head));
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
@@ -47,6 +37,16 @@ public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
 
         return dummy.Next!;
     }
+
+    // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
+    // so a public [Benchmark] method cannot name it as a return type (CS0050).
+    [Benchmark(Baseline = true)]
+    public object? ValueRebuild() =>
+        InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByValueRebuild(Clone(_head));
+
+    [Benchmark]
+    public object? NodeSplice() =>
+        InsertGreatestCommonDivisorsInLinkedListSolution.InsertGreatestCommonDivisorsByNodeSplice(Clone(_head));
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)
     {

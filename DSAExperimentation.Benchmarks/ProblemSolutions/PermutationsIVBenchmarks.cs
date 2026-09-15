@@ -13,7 +13,7 @@ public class PermutationsIVBenchmarks
     private const long K = 1_000_000_000_000L;
 
     [Params(20, 100)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[] BigIntegerRank() => PermutationsIVSolution.KthPermutationByBigIntegerRank(N, K);

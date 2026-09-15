@@ -13,12 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
 {
-    private const int RandomSeed = 1319; // LC problem number
+    private const int RandomSeed = 1319; private int[][] _connections = [];
+
+    // LC problem number
 
     [Params(50, 300)]
-    public int ComputerCount;
-
-    private int[][] _connections = null!;
+    public int ComputerCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -13,12 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NextGreaterNodeInLinkedListBenchmarks
 {
-    private const int RandomSeed = 1019; // LC problem number
+    private const int RandomSeed = 1019; private SinglyLinkedListNode<int> _head = null!;
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private SinglyLinkedListNode<int> _head = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,14 +27,6 @@ public class NextGreaterNodeInLinkedListBenchmarks
         var values = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
         _head = Build(values);
     }
-
-    [Benchmark(Baseline = true)]
-    public int[] BruteForceScan() =>
-        NextGreaterNodeInLinkedListSolution.NextLargerNodesByBruteForceScan(_head);
-
-    [Benchmark]
-    public int[] MonotonicStackSweep() =>
-        NextGreaterNodeInLinkedListSolution.NextLargerNodesByMonotonicStackSweep(_head);
 
     private static SinglyLinkedListNode<int> Build(int[] values)
     {
@@ -49,4 +41,12 @@ public class NextGreaterNodeInLinkedListBenchmarks
 
         return head;
     }
+
+    [Benchmark(Baseline = true)]
+    public int[] BruteForceScan() =>
+        NextGreaterNodeInLinkedListSolution.NextLargerNodesByBruteForceScan(_head);
+
+    [Benchmark]
+    public int[] MonotonicStackSweep() =>
+        NextGreaterNodeInLinkedListSolution.NextLargerNodesByMonotonicStackSweep(_head);
 }

@@ -11,7 +11,7 @@ internal static class RoadAdditionQueryWorkloads
         var random = new Random(seed);
         var queries = new List<(int U, int V)>();
 
-        Carve(0, n - 1, approximateCount, queries, random);
+        Carve((0, n - 1), approximateCount, queries, random);
 
         return [.. queries.Select(query => new[] { query.U, query.V })];
     }
@@ -19,24 +19,25 @@ internal static class RoadAdditionQueryWorkloads
     // Randomly chooses, at each still-splittable range, between carving off two
     // disjoint siblings (breadth) or emitting this whole range as one query and
     // recursing strictly inside it (nesting) - either choice keeps every emitted query
-    // non-crossing with every other one, by construction.
-    private static void Carve(int lo, int hi, int remaining, List<(int, int)> queries, Random random)
+    // non-crossing with every other one, by construction. The two endpoints are one
+    // range, so they are one argument wherever the recursion carries them.
+    private static void Carve((int Lo, int Hi) range, int remaining, List<(int, int)> queries, Random random)
     {
-        if (remaining <= 0 || hi - lo < 2)
+        if (remaining <= 0 || range.Hi - range.Lo < 2)
         {
             return;
         }
 
-        if (hi - lo >= 4 && random.Next(2) == 0)
+        if (range.Hi - range.Lo >= 4 && random.Next(2) == 0)
         {
-            var mid = random.Next(lo + 2, hi - 1);
+            var mid = random.Next(range.Lo + 2, range.Hi - 1);
             var half = remaining / 2;
-            Carve(lo, mid, half, queries, random);
-            Carve(mid, hi, remaining - half, queries, random);
+            Carve((range.Lo, mid), half, queries, random);
+            Carve((mid, range.Hi), remaining - half, queries, random);
             return;
         }
 
-        queries.Add((lo, hi));
-        Carve(lo + 1, hi - 1, remaining - 1, queries, random);
+        queries.Add((range.Lo, range.Hi));
+        Carve((range.Lo + 1, range.Hi - 1), remaining - 1, queries, random);
     }
 }

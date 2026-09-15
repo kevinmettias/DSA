@@ -13,10 +13,10 @@ public class PartitionToKEqualSumSubsetsBenchmarks
     private const int NumbersPerSubset = 6;
     private const int RandomSeed = 2;
 
-    [Params(3, 5)]
-    public int K;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(3, 5)]
+    public int K { get; set; }
 
     [GlobalSetup]
     public void Setup()

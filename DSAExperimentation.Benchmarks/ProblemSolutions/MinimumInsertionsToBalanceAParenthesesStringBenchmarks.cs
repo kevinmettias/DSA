@@ -13,10 +13,10 @@ public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
     private const int RandomSeed = 1541; // LC problem number
     private const int BracketKindCount = 2;
 
-    [Params(1_000, 20_000)]
-    public int Length;
+    private string _brackets = "";
 
-    private string _brackets = null!;
+    [Params(1_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -26,7 +26,8 @@ public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = random.Next(0, BracketKindCount) == 0 ? '(' : ')';
+            var isOpener = random.Next(0, BracketKindCount) == 0;
+            chars[i] = isOpener ? '(' : ')';
         }
 
         _brackets = new string(chars);

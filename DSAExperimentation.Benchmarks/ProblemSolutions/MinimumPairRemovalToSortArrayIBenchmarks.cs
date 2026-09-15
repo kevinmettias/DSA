@@ -15,10 +15,10 @@ public class MinimumPairRemovalToSortArrayIBenchmarks
     private const int MinValueInclusive = -1_000;
     private const int MaxValueExclusive = 1_001;
 
-    [Params(10, 50)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(10, 50)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -17,8 +17,5 @@ public sealed class BinaryTreeTopologyTests
     }
 
     [Fact]
-    public void GetChildren_Leaf_ReturnsNone()
-    {
-        Assert.Equal(0, BinaryTreeTopology<int>.GetChildren(new BinaryTreeNode<int>(1)).Count);
-    }
+    public void GetChildren_Leaf_ReturnsNone() => Assert.Equal(0, BinaryTreeTopology<int>.GetChildren(new BinaryTreeNode<int>(1)).Count);
 }

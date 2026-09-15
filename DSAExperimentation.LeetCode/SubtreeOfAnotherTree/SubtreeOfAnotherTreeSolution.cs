@@ -22,11 +22,6 @@ internal static class SubtreeOfAnotherTreeSolution
             IsSubtreeByRecursiveCompareAtEveryNode(root.Left, subRoot) ||
             IsSubtreeByRecursiveCompareAtEveryNode(root.Right, subRoot));
 
-    private static bool IsSame(BinaryTreeNode<int>? p, BinaryTreeNode<int>? q)
-        => p is null || q is null
-            ? p is null && q is null
-            : p.Value == q.Value && IsSame(p.Left, q.Left) && IsSame(p.Right, q.Right);
-
     // Serializes both trees to a '#'-delimited preorder string (every token
     // prefixed with '#', so no two values can ever run together across a token
     // boundary) and checks subRoot's serialization is a substring of root's via
@@ -40,6 +35,11 @@ internal static class SubtreeOfAnotherTreeSolution
         AppendPreorder(node, builder);
         return builder.ToString();
     }
+
+    private static bool IsSame(BinaryTreeNode<int>? p, BinaryTreeNode<int>? q)
+        => p is null || q is null
+            ? p is null && q is null
+            : p.Value == q.Value && IsSame(p.Left, q.Left) && IsSame(p.Right, q.Right);
 
     private static void AppendPreorder(BinaryTreeNode<int>? node, StringBuilder builder)
     {

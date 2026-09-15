@@ -15,11 +15,11 @@ public class MinimumPartitionScoreBenchmarks
     private const int Seed = 3826; // LC problem number
     private const int MaxValueExclusive = 10_000;
 
-    [Params(12, 20)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(12, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

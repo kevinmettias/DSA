@@ -53,10 +53,7 @@ public sealed partial class SetTests
     }
 
     [Fact]
-    public void Count_NewSet_IsZero()
-    {
-        Assert.Equal(0, new Set<int>().Count);
-    }
+    public void Count_NewSet_IsZero() => Assert.Equal(0, new Set<int>().Count);
 
     [Fact]
     public void Count_RisesOnlyForItemsNotAlreadyPresent()
@@ -82,8 +79,5 @@ public sealed partial class SetTests
     }
 
     [Fact]
-    public void Count_BulkSeededSet_ReflectsTheDistinctItems()
-    {
-        Assert.Equal(3, new Set<int>([1, 2, 3, 2, 1]).Count);
-    }
+    public void Count_BulkSeededSet_ReflectsTheDistinctItems() => Assert.Equal(3, new Set<int>([1, 2, 3, 2, 1]).Count);
 }

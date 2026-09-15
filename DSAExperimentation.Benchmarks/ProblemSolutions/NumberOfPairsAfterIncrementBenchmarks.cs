@@ -16,12 +16,12 @@ public class NumberOfPairsAfterIncrementBenchmarks
     private const int Seed = 3943; // LC problem number
     private const int QueryCount = 2_000;
 
-    [Params(500, 5_000)]
-    public int Nums2Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
-    private PairQuery[] _queries = null!;
+    private int[] _nums2 = [];
+    private PairQuery[] _queries = [];
+    [Params(500, 5_000)]
+    public int Nums2Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

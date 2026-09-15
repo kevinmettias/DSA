@@ -47,6 +47,16 @@ internal static class SpiralMatrixIIISolution
             return result.ToArray();
         }
 
+        CollectRemainingCells(grid, result, visited);
+
+        return result.ToArray();
+    }
+
+    // Drives the growing-stride walk until either every cell has been collected or a
+    // step lands outside the grid, appending each cell it reaches to the shared result.
+    private static void CollectRemainingCells(
+        SpiralGrid grid, List<int[]> result, HashSet<(int Row, int Col)>? visited)
+    {
         var walk = new SpiralWalk(grid, result, visited);
         var position = new SpiralPosition { Row = grid.RowStart, Col = grid.ColumnStart };
         var stride = 1;
@@ -60,8 +70,6 @@ internal static class SpiralMatrixIIISolution
 
             stride++;
         }
-
-        return result.ToArray();
     }
 
     private static bool WalkTurns(SpiralWalk walk, ref SpiralPosition position, int stride)
@@ -102,7 +110,7 @@ internal static class SpiralMatrixIIISolution
             return false;
         }
 
-        if (walk.Visited != null && !walk.Visited.Add((position.Row, position.Col)))
+        if (walk.Visited is not null && !walk.Visited.Add((position.Row, position.Col)))
         {
             return false;
         }
@@ -122,10 +130,10 @@ internal static class SpiralMatrixIIISolution
     private readonly record struct SpiralWalk(
         SpiralGrid Grid, List<int[]> Result, HashSet<(int Row, int Col)>? Visited);
 
-    private struct SpiralPosition
+    private sealed class SpiralPosition
     {
-        public int Row;
-        public int Col;
-        public int Direction;
+        public int Row { get; set; }
+        public int Col { get; set; }
+        public int Direction { get; set; }
     }
 }

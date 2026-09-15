@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution;
+using DSAExperimentation.LeetCode.SeatReservationManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -16,12 +16,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SeatReservationManagerBenchmarks
 {
     private const int UnreserveStride = 3;
-    private const int ReservePassCount = 2; // Reserve is called OperationCount times in two separate passes
+    private const int ReservePassCount = 2; private int[] _unreserveTargets = [];
+
+    // Reserve is called OperationCount times in two separate passes
 
     [Params(200, 5_000)]
-    public int OperationCount;
-
-    private int[] _unreserveTargets = null!;
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>
@@ -33,12 +33,12 @@ public class SeatReservationManagerBenchmarks
     // enough for every seat both passes issue.
     [Benchmark(Baseline = true)]
     public int LinearScanArray() =>
-        Replay(new SeatManagerByLinearScanArray(OperationCount * ReservePassCount + 1));
+        Replay(new SeatReservationManagerSolution.SeatManagerByLinearScanArray(OperationCount * ReservePassCount + 1));
 
     [Benchmark]
-    public int ReleasedSeatHeap() => Replay(new SeatManagerByReleasedSeatHeap());
+    public int ReleasedSeatHeap() => Replay(new SeatReservationManagerSolution.SeatManagerByReleasedSeatHeap());
 
-    private int Replay(ISeatManager manager)
+    private int Replay(SeatReservationManagerSolution.ISeatManager manager)
     {
         var last = 0;
 

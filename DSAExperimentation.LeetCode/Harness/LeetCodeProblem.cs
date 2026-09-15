@@ -40,13 +40,13 @@ internal abstract class LeetCodeProblem
     public static LeetCodeProblemBuilder<TInput, TOutput> For<TInput, TOutput>(string titleSlug)
         => new(titleSlug);
 
-    public abstract LeetCodeRunOutcome RunCase(string strategyName, string caseName);
+    public abstract LeetCodeRunOutcome RunCase(StrategyName strategyName, CaseName caseName);
 
-    // Returns the measured region as a closure over an ALREADY-PREPARED input, so
-    // a benchmark's [GlobalSetup] can resolve the arm once and the timed call is
-    // one delegate invocation with no lookup, no parsing and no boxing of the
-    // input inside it. That single indirection is constant across every arm of a
-    // comparison, which is what keeps the relative numbers these benchmarks exist
+    // Returns the measured region as an IBoundWorkload over an ALREADY-PREPARED
+    // input, so a benchmark's [GlobalSetup] can resolve the arm once and the timed
+    // call is one operation invocation with no lookup, no parsing and no boxing of
+    // the input inside it. That single indirection is constant across every arm of
+    // a comparison, which is what keeps the relative numbers these benchmarks exist
     // to produce trustworthy even though it is not a direct static call.
-    public abstract Func<object?> BindWorkload(string strategyName, string workloadName);
+    public abstract IBoundWorkload BindWorkload(StrategyName strategyName, WorkloadName workloadName);
 }

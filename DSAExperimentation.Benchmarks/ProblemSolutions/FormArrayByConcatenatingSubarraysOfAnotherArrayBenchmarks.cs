@@ -16,13 +16,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks
 {
-    private const int GroupLengthDivisor = 2; // the group is built at half the length of nums
+    private const int GroupLengthDivisor = 2; private int[] _nums = [];
+
+    private int[][] _groups = [];
+    // the group is built at half the length of nums
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
-    private int[][] _groups = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

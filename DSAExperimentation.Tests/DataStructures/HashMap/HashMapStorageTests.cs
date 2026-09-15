@@ -7,10 +7,7 @@ public sealed class HashMapStorageTests
     private static HashMapStorage<string, int> Storage() => new();
 
     [Fact]
-    public void Count_NewStorage_IsZero()
-    {
-        Assert.Equal(0, Storage().Count);
-    }
+    public void Count_NewStorage_IsZero() => Assert.Equal(0, Storage().Count);
 
     [Fact]
     public void Insert_IncrementsTheCount()
@@ -33,10 +30,7 @@ public sealed class HashMapStorageTests
     }
 
     [Fact]
-    public void BucketHead_EmptyBucket_IsMinusOne()
-    {
-        Assert.Equal(-1, Storage().BucketHead(0));
-    }
+    public void BucketHead_EmptyBucket_IsMinusOne() => Assert.Equal(-1, Storage().BucketHead(0));
 
     [Fact]
     public void BucketHead_AfterInsert_PointsAtTheNewEntry()
@@ -78,10 +72,7 @@ public sealed class HashMapStorageTests
     }
 
     [Fact]
-    public void SnapshotEntries_NewStorage_IsEmpty()
-    {
-        Assert.Empty(Storage().SnapshotEntries());
-    }
+    public void SnapshotEntries_NewStorage_IsEmpty() => Assert.Empty(Storage().SnapshotEntries());
 
     [Fact]
     public void SnapshotEntries_ReturnsEveryInsertedEntry()

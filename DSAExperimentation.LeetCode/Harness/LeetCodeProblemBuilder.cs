@@ -67,6 +67,7 @@ internal sealed class LeetCodeProblemBuilder<TInput, TOutput>(string titleSlug)
             ?? throw new InvalidOperationException(
                 $"'{titleSlug}' did not state how answers compare - call MatchingAnswersWith.");
 
-        return new TypedLeetCodeProblem<TInput, TOutput>(titleSlug, _strategies, _cases, _workloads, answersMatch);
+        return new TypedLeetCodeProblem<TInput, TOutput>(
+            titleSlug, new LeetCodeRegistration<TInput, TOutput>(_strategies, _cases, _workloads, answersMatch));
     }
 }

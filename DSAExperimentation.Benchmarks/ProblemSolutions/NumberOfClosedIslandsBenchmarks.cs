@@ -17,10 +17,10 @@ public class NumberOfClosedIslandsBenchmarks
 
     private const double LandDensity = 0.55;
 
-    [Params(30, 120)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(30, 120)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,7 +34,8 @@ public class NumberOfClosedIslandsBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < LandDensity ? 1 : 0;
+                var isLand = random.NextDouble() < LandDensity;
+                _grid[r][c] = isLand ? 1 : 0;
             }
         }
     }

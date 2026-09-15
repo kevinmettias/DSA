@@ -44,26 +44,53 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
 
         for (var i = 1; i <= n; i++)
         {
-            for (var j = 1; j <= m; j++)
-            {
-                var best = dp[i - 1][j];
-
-                for (var length = l; length <= r && length <= i; length++)
-                {
-                    var start = i - length;
-
-                    if (dp[start][j - 1] == Infeasible)
-                    {
-                        continue;
-                    }
-
-                    best = Math.Max(best, dp[start][j - 1] + prefix[i] - prefix[start]);
-                }
-
-                dp[i][j] = best;
-            }
+            FillRowForEachCount(dp, prefix, i, (m, l, r));
         }
 
+        return BestOverAtLeastOneSubarray(dp, n, m);
+    }
+
+    private static long[][] BuildInfeasibleGrid(int n, int m)
+    {
+        var dp = new long[n + 1][];
+
+        for (var i = 0; i <= n; i++)
+        {
+            dp[i] = new long[m + 1];
+            Array.Fill(dp[i], Infeasible);
+            dp[i][0] = 0;
+        }
+
+        return dp;
+    }
+
+    // Fills row i of Part I's table: dp[i][j] is the best sum using exactly j
+    // disjoint subarrays fully inside nums[0..i), each of length in [l, r].
+    private static void FillRowForEachCount(
+        long[][] dp, long[] prefix, int i, (int MaxCount, int MinLength, int MaxLength) limits)
+    {
+        for (var j = 1; j <= limits.MaxCount; j++)
+        {
+            var best = dp[i - 1][j];
+
+            for (var length = limits.MinLength; length <= limits.MaxLength && length <= i; length++)
+            {
+                var start = i - length;
+
+                if (dp[start][j - 1] != Infeasible)
+                {
+                    best = Math.Max(best, dp[start][j - 1] + prefix[i] - prefix[start]);
+                }
+            }
+
+            dp[i][j] = best;
+        }
+    }
+
+    // The answer is the best "exactly j subarrays" entry across the whole j = 1..m
+    // range, since using fewer than m subarrays is always allowed.
+    private static long BestOverAtLeastOneSubarray(long[][] dp, int n, int m)
+    {
         var answer = Infeasible;
 
         for (var j = 1; j <= m; j++)
@@ -129,34 +156,89 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
         best[0] = (0, 0);
 
         var deque = new MonotonicDeque();
+        var tables = (Best: best, NonEmpty: bestNonEmpty);
 
         for (var i = 1; i <= n; i++)
         {
-            var enter = i - l;
-
-            if (enter >= 0)
-            {
-                PushCandidate(deque, best, prefix, enter);
-            }
-
-            while (deque.TryPeekFront(out var front) && front < i - r)
-            {
-                deque.TryPopFront(out _);
-            }
-
-            (long Value, long Count)? transition = null;
-
-            if (deque.TryPeekFront(out var start))
-            {
-                var value = best[start].Value - lambda + prefix[i] - prefix[start];
-                transition = (value, best[start].Count + 1);
-            }
-
-            best[i] = PreferFewerOnTie(best[i - 1], transition);
-            bestNonEmpty[i] = PreferFewerOnTie(bestNonEmpty[i - 1], transition);
+            RefreshPenaltyWindow(prefix, best, deque, (i, l, r));
+            AdvancePenalizedTables(prefix, tables, deque, (i, lambda));
         }
 
         return bestNonEmpty[n];
+    }
+
+    // Slide the window of starts a subarray ending at window.Index may use: i - l
+    // just became eligible, and anything before i - r has expired.
+    private static void RefreshPenaltyWindow(
+        long[] prefix,
+        (long Value, long Count)[] best,
+        MonotonicDeque deque,
+        (int Index, int MinLength, int MaxLength) window)
+    {
+        var enter = window.Index - window.MinLength;
+
+        if (enter >= 0)
+        {
+            PushCandidate(deque, best, prefix, enter);
+        }
+
+        while (deque.TryPeekFront(out var front) && front < window.Index - window.MaxLength)
+        {
+            deque.TryPopFront(out _);
+        }
+    }
+
+    // Maintains a deque of candidate starts, decreasing by best[start].Value -
+    // prefix[start], with ties broken so the front always holds the fewest-
+    // subarray candidate among equal keys - the same tie-break PreferFewerOnTie
+    // applies at the transition itself.
+    private static void PushCandidate(MonotonicDeque deque, (long Value, long Count)[] best, long[] prefix, int start)
+    {
+        var key = best[start].Value - prefix[start];
+        var count = best[start].Count;
+
+        while (deque.TryPeekBack(out var backStart))
+        {
+            var backKey = best[backStart].Value - prefix[backStart];
+
+            if (IsDominatedByArriving(backKey, best[backStart].Count, key, count))
+            {
+                deque.TryPopBack(out _);
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        deque.PushBack(start);
+    }
+
+    // A queued candidate keeps its place only while it beats the arriving one: a smaller
+    // key loses outright, and an equal key loses by carrying no fewer subarrays.
+    private static bool IsDominatedByArriving(long backKey, long backCount, long key, long count) =>
+        backKey < key || (backKey == key && backCount >= count);
+
+    // Take the best transition off the window's front and let both tables carry the
+    // better of their previous entry and it.
+    private static void AdvancePenalizedTables(
+        long[] prefix,
+        ((long Value, long Count)[] Best, (long Value, long Count)[] NonEmpty) tables,
+        MonotonicDeque deque,
+        (int Index, long Lambda) at)
+    {
+        var (best, bestNonEmpty) = tables;
+
+        (long Value, long Count)? transition = null;
+
+        if (deque.TryPeekFront(out var start))
+        {
+            var value = best[start].Value - at.Lambda + prefix[at.Index] - prefix[start];
+            transition = (value, best[start].Count + 1);
+        }
+
+        best[at.Index] = PreferFewerOnTie(best[at.Index - 1], transition);
+        bestNonEmpty[at.Index] = PreferFewerOnTie(bestNonEmpty[at.Index - 1], transition);
     }
 
     private static (long Value, long Count) PreferFewerOnTie(
@@ -173,32 +255,6 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
         return currentWins ? current : value;
     }
 
-    // Maintains a deque of candidate starts, decreasing by best[start].Value -
-    // prefix[start], with ties broken so the front always holds the fewest-
-    // subarray candidate among equal keys - the same tie-break PreferFewerOnTie
-    // applies at the transition itself.
-    private static void PushCandidate(MonotonicDeque deque, (long Value, long Count)[] best, long[] prefix, int start)
-    {
-        var key = best[start].Value - prefix[start];
-        var count = best[start].Count;
-
-        while (deque.TryPeekBack(out var backStart))
-        {
-            var backKey = best[backStart].Value - prefix[backStart];
-
-            if (backKey < key || (backKey == key && best[backStart].Count >= count))
-            {
-                deque.TryPopBack(out _);
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        deque.PushBack(start);
-    }
-
     private static long[] BuildPrefixSums(int[] nums)
     {
         var prefix = new long[nums.Length + 1];
@@ -209,19 +265,5 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
         }
 
         return prefix;
-    }
-
-    private static long[][] BuildInfeasibleGrid(int n, int m)
-    {
-        var dp = new long[n + 1][];
-
-        for (var i = 0; i <= n; i++)
-        {
-            dp[i] = new long[m + 1];
-            Array.Fill(dp[i], Infeasible);
-            dp[i][0] = 0;
-        }
-
-        return dp;
     }
 }

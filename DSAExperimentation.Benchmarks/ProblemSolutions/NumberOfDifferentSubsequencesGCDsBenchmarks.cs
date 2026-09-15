@@ -17,10 +17,10 @@ public class NumberOfDifferentSubsequencesGCDsBenchmarks
     private const int MinValue = 1;
     private const int MaxValueExclusive = 5_000;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

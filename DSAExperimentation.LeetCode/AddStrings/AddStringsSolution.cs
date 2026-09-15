@@ -52,7 +52,7 @@ internal static class AddStringsSolution
 
     // The carry walk itself, shared by both strategies so the only thing they
     // differ in is the digit buffer.
-    private struct DigitWalk(string a, string b)
+    private sealed class DigitWalk(string a, string b)
     {
         private readonly string _a = a;
         private readonly string _b = b;
@@ -60,7 +60,7 @@ internal static class AddStringsSolution
         private int _j = b.Length - 1;
         private int _carry;
 
-        public readonly bool HasMore => _i >= 0 || _j >= 0 || _carry > 0;
+        public bool HasMore => _i >= 0 || _j >= 0 || _carry > 0;
 
         public char NextDigit()
         {

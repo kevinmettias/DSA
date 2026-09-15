@@ -14,14 +14,26 @@ public class GasStationBenchmarks
     private const int RandomSeed = 134; // LC problem number
     private const int MaxStationAmount = 10;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _gas = [];
 
-    private int[] _gas = null!;
-    private int[] _cost = null!;
+    private int[] _cost = [];
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
+    {
+        FillWithRandomAmounts();
+
+        // Guarantee a solution exists (total gas >= total cost) without moving it to
+        // index 0, so brute force can't short-circuit on its very first candidate.
+        var deficit = _cost.Sum() - _gas.Sum();
+        _gas[^1] += Math.Max(deficit, 0) + 1;
+    }
+
+    // One draw for gas and one for cost per station, in that order, off a single
+    // seeded generator - the exact sequence the benchmarks are pinned to.
+    private void FillWithRandomAmounts()
     {
         var random = new Random(RandomSeed);
         _gas = new int[Length];
@@ -32,11 +44,6 @@ public class GasStationBenchmarks
             _gas[i] = random.Next(1, MaxStationAmount);
             _cost[i] = random.Next(1, MaxStationAmount);
         }
-
-        // Guarantee a solution exists (total gas >= total cost) without moving it to
-        // index 0, so brute force can't short-circuit on its very first candidate.
-        var deficit = _cost.Sum() - _gas.Sum();
-        _gas[^1] += Math.Max(deficit, 0) + 1;
     }
 
     [Benchmark(Baseline = true)]

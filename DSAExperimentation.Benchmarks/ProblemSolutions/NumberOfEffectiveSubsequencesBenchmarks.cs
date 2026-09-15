@@ -11,12 +11,12 @@ public class NumberOfEffectiveSubsequencesBenchmarks
     private const int Seed = 3757;
     private const int MaxValueExclusive = 1_000_000;
 
+    private int[] _nums = [];
+
     // Kept small: BruteForce is O(n * 2^n), so Length only spans what it can
     // still finish walking every subset for.
     [Params(12, 18)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes.MinimumNumberOfVerticesToReachAllNodesSolution;
+using DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -16,10 +16,10 @@ public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
     private const int RandomSeed = 1557; // LC problem number
     private const int EdgeCountUpperBoundExclusive = 3;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -41,9 +41,9 @@ public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
 
     [Benchmark(Baseline = true)]
     public List<int> NestedScanForZeroInDegree() =>
-        FindSmallestSetOfVerticesByNestedScan(NodeCount, _edges);
+        MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByNestedScan(NodeCount, _edges);
 
     [Benchmark]
     public List<int> SetTrackedInDegree() =>
-        FindSmallestSetOfVerticesByInDegreeSet(NodeCount, _edges);
+        MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByInDegreeSet(NodeCount, _edges);
 }

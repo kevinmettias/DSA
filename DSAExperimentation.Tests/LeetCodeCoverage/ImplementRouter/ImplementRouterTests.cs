@@ -77,42 +77,29 @@ public sealed class ImplementRouterTests
 // One call in a Router script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct RouterOp
+public readonly record struct RouterOp(RouterOp.OpKind kind, int first, int second, int third)
 {
-    private readonly Kind _kind;
-    private readonly int _first;
-    private readonly int _second;
-    private readonly int _third;
-
-    private RouterOp(Kind kind, int first, int second, int third)
-    {
-        _kind = kind;
-        _first = first;
-        _second = second;
-        _third = third;
-    }
-
     public static RouterOp AddPacket(int source, int destination, int timestamp) =>
-        new(Kind.AddPacket, source, destination, timestamp);
+        new(OpKind.AddPacket, source, destination, timestamp);
 
-    public static RouterOp ForwardPacket() => new(Kind.ForwardPacket, 0, 0, 0);
+    public static RouterOp ForwardPacket() => new(OpKind.ForwardPacket, 0, 0, 0);
 
     public static RouterOp GetCount(int destination, int startTime, int endTime) =>
-        new(Kind.GetCount, destination, startTime, endTime);
+        new(OpKind.GetCount, destination, startTime, endTime);
 
     // bool for addPacket, int[] for forwardPacket, int for getCount - boxed
     // uniformly so a script runner can assert against one expected value per
     // operation regardless of which method it dispatches to. Internal, not
     // public: IRouterStrategy is internal to ImplementRouterSolution, and only
     // this same assembly's RunScript ever calls Apply.
-    internal object? Apply(IRouterStrategy strategy) => _kind switch
+    internal object? Apply(IRouterStrategy strategy) => kind switch
     {
-        Kind.AddPacket => strategy.AddPacket(_first, _second, _third),
-        Kind.ForwardPacket => strategy.ForwardPacket(),
-        _ => strategy.GetCount(_first, _second, _third),
+        OpKind.AddPacket => strategy.AddPacket(first, second, third),
+        OpKind.ForwardPacket => strategy.ForwardPacket(),
+        _ => strategy.GetCount(first, second, third),
     };
 
-    private enum Kind
+    public enum OpKind
     {
         AddPacket,
         ForwardPacket,

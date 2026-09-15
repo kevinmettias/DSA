@@ -54,7 +54,19 @@ internal static class SelectCellsInGridWithMaximumScoreSolution
     {
         var values = rowsByValue.Keys.ToArray();
 
-        int Recurrence((int ValueIndex, int RowMask) state, Func<(int, int), int> best)
+        return Memoizer.Memoize<(int ValueIndex, int RowMask), int>(
+            (0, 0), new ValueClaimOrder(rowsByValue, values));
+    }
+
+    // The rule, named: the current distinct value is either skipped outright, or claimed
+    // by one of the still-free rows it appears in, adding its own value to the best score
+    // of the remaining values. Which values there are, and which rows each appears in, is
+    // the whole of what the rule needs from its caller, so they are the constructor's
+    // only inputs.
+    private sealed class ValueClaimOrder(Dictionary<int, List<int>> rowsByValue, int[] values)
+        : IRecurrence<(int ValueIndex, int RowMask), int>
+    {
+        public int Replay((int ValueIndex, int RowMask) state, IRecurrence<(int ValueIndex, int RowMask), int> rest)
         {
             var (valueIndex, rowMask) = state;
 
@@ -63,9 +75,8 @@ internal static class SelectCellsInGridWithMaximumScoreSolution
                 return 0;
             }
 
-            var skip = best((valueIndex + 1, rowMask));
             var value = values[valueIndex];
-            var claimed = skip;
+            var claimed = rest.Replay((valueIndex + 1, rowMask), rest);
 
             foreach (var row in rowsByValue[value])
             {
@@ -73,14 +84,12 @@ internal static class SelectCellsInGridWithMaximumScoreSolution
 
                 if ((rowMask & bit) == 0)
                 {
-                    claimed = Math.Max(claimed, value + best((valueIndex + 1, rowMask | bit)));
+                    claimed = Math.Max(claimed, value + rest.Replay((valueIndex + 1, rowMask | bit), rest));
                 }
             }
 
             return claimed;
         }
-
-        return Memoizer.Memoize<(int ValueIndex, int RowMask), int>((0, 0), Recurrence);
     }
 
     // Every distinct value mapped to the rows it appears in - the input the

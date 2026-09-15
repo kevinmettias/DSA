@@ -13,13 +13,17 @@ public class MoveZeroesBenchmarks
 {
     private const int FrontHalfDivisor = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i < Length / FrontHalfDivisor ? 0 : i + 1).ToArray();
+    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => IsInFrontHalf(i) ? 0 : NonZeroValueAt(i)).ToArray();
+
+    private bool IsInFrontHalf(int index) => index < Length / FrontHalfDivisor;
+
+    private static int NonZeroValueAt(int index) => index + 1;
 
     [Benchmark(Baseline = true)]
     public int LinearScan()

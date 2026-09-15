@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class JumpGameBenchmarks
 {
     private const int RandomSeed = 55; // LC problem number
-    private const int MinJumpLengthDivisor = 4; // keeps every jump length deep into the rest of the array
+    private const int MinJumpLengthDivisor = 4; private int[] _values = [];
+
+    // keeps every jump length deep into the rest of the array
 
     [Params(200, 3_000)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

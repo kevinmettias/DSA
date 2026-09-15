@@ -13,5 +13,7 @@ internal readonly struct SquareExceedsSequence(long x, int length) : IRandomAcce
 {
     public int Length => length;
 
-    public int Get(int value) => (long)value * value > x ? 1 : 0;
+    public int Get(int value) => SquareExceeds(value) ? 1 : 0;
+
+    private bool SquareExceeds(int value) => (long)value * value > x;
 }

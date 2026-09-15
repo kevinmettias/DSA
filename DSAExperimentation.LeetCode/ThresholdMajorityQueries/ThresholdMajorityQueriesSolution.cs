@@ -21,27 +21,39 @@ internal static class ThresholdMajorityQueriesSolution
 
         for (var q = 0; q < queries.Length; q++)
         {
-            var (l, r, threshold) = (queries[q][0], queries[q][1], queries[q][2]);
-            var freq = new Dictionary<int, int>();
-            var best = (Value: 0, Freq: 0);
-
-            for (var i = l; i <= r; i++)
-            {
-                freq.TryGetValue(nums[i], out var count);
-                count++;
-                freq[nums[i]] = count;
-
-                if (count > best.Freq || (count == best.Freq && nums[i] < best.Value))
-                {
-                    best = (nums[i], count);
-                }
-            }
-
-            answers[q] = best.Freq >= threshold ? best.Value : LeetCodeAnswer.None;
+            answers[q] = MajorityOfRange(nums, queries[q]);
         }
 
         return answers;
     }
+
+    // One query answered by scanning its whole range into a fresh frequency table,
+    // keeping the running (highest freq, smallest value on tie) winner.
+    private static int MajorityOfRange(int[] nums, int[] query)
+    {
+        var (l, r, threshold) = (query[0], query[1], query[2]);
+        var freq = new Dictionary<int, int>();
+        var best = (Value: 0, Freq: 0);
+
+        for (var i = l; i <= r; i++)
+        {
+            freq.TryGetValue(nums[i], out var count);
+            count++;
+            freq[nums[i]] = count;
+
+            if (IsBetterWinner(nums[i], count, best))
+            {
+                best = (nums[i], count);
+            }
+        }
+
+        return best.Freq >= threshold ? best.Value : LeetCodeAnswer.None;
+    }
+
+    // A better winner for the range: more frequent, or equally frequent but a smaller
+    // value - the problem's own tie-break.
+    private static bool IsBetterWinner(int value, int count, (int Value, int Freq) best)
+        => count > best.Freq || (count == best.Freq && value < best.Value);
 
     // Sqrt decomposition: ThresholdMajorityBlockIndex's block-mode table plus each
     // value's sorted occurrence list turn every query into O(sqrt(n)) exactly-

@@ -18,18 +18,21 @@ public class LongestBinarySubsequenceLessThanOrEqualToKBenchmarks
     private const int BinaryDigits = 2; // '0' or '1', the only characters the input holds
     private const int K = 100;
 
-    [Params(16, 20)]
-    public int Length;
+    private string _bits = "";
 
-    private string _bits = null!;
+    [Params(16, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
         _bits = new string(
-            Enumerable.Range(0, Length).Select(_ => random.Next(BinaryDigits) == 0 ? '0' : '1').ToArray());
+            Enumerable.Range(0, Length).Select(_ => IsZeroBit(random) ? '0' : '1').ToArray());
     }
+
+    // The character is the draw itself: a zero out of BinaryDigits is the '0' bit.
+    private static bool IsZeroBit(Random random) => random.Next(BinaryDigits) == 0;
 
     [Benchmark(Baseline = true)]
     public int BruteForceSubsetEnumeration() =>

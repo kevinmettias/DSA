@@ -134,46 +134,37 @@ public sealed class DesignBitsetTests
 // One call in a Bitset script: which operation to invoke and with what index. Pure
 // dispatch, built via the named factories below so a script (like Examples above)
 // reads like the LeetCode call sequence it replays.
-public readonly record struct BitsetOp
+public readonly record struct BitsetOp(BitsetOp.OpKind kind, int index)
 {
     private const string VoidResult = "null";
     private const string TrueResult = "true";
     private const string FalseResult = "false";
 
-    private readonly Kind _kind;
-    private readonly int _index;
+    public static BitsetOp Fix(int idx) => new(OpKind.Fix, idx);
 
-    private BitsetOp(Kind kind, int index)
-    {
-        _kind = kind;
-        _index = index;
-    }
+    public static BitsetOp Unfix(int idx) => new(OpKind.Unfix, idx);
 
-    public static BitsetOp Fix(int idx) => new(Kind.Fix, idx);
+    public static BitsetOp Flip() => new(OpKind.Flip, 0);
 
-    public static BitsetOp Unfix(int idx) => new(Kind.Unfix, idx);
+    public static BitsetOp All() => new(OpKind.All, 0);
 
-    public static BitsetOp Flip() => new(Kind.Flip, 0);
+    public static BitsetOp One() => new(OpKind.One, 0);
 
-    public static BitsetOp All() => new(Kind.All, 0);
+    public static BitsetOp Count() => new(OpKind.Count, 0);
 
-    public static BitsetOp One() => new(Kind.One, 0);
-
-    public static BitsetOp Count() => new(Kind.Count, 0);
-
-    public static BitsetOp ToBitString() => new(Kind.ToBitString, 0);
+    public static BitsetOp ToBitString() => new(OpKind.ToBitString, 0);
 
     // The string LeetCode's own judge output shows for this call, so one expected
     // value per operation covers the mutators, the two predicates, the count and
     // the rendering uniformly.
-    internal string Apply(IBitset bitset) => _kind switch
+    internal string Apply(IBitset bitset) => kind switch
     {
-        Kind.Fix => ApplyVoid(bitset.Fix, _index),
-        Kind.Unfix => ApplyVoid(bitset.Unfix, _index),
-        Kind.Flip => ApplyFlip(bitset),
-        Kind.All => Rendered(bitset.All()),
-        Kind.One => Rendered(bitset.One()),
-        Kind.Count => bitset.Count().ToString(CultureInfo.InvariantCulture),
+        OpKind.Fix => ApplyVoid(bitset.Fix, index),
+        OpKind.Unfix => ApplyVoid(bitset.Unfix, index),
+        OpKind.Flip => ApplyFlip(bitset),
+        OpKind.All => Rendered(bitset.All()),
+        OpKind.One => Rendered(bitset.One()),
+        OpKind.Count => bitset.Count().ToString(CultureInfo.InvariantCulture),
         _ => bitset.ToBitString(),
     };
 
@@ -193,7 +184,7 @@ public readonly record struct BitsetOp
 
     private static string Rendered(bool value) => value ? TrueResult : FalseResult;
 
-    private enum Kind
+    public enum OpKind
     {
         Fix,
         Unfix,

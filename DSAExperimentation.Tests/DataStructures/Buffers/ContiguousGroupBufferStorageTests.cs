@@ -7,16 +7,10 @@ public sealed class ContiguousGroupBufferStorageTests
     private static ContiguousGroupBufferStorage<int, string> Storage() => new();
 
     [Fact]
-    public void HasCurrentKey_NewStorage_IsFalse()
-    {
-        Assert.False(Storage().HasCurrentKey);
-    }
+    public void HasCurrentKey_NewStorage_IsFalse() => Assert.False(Storage().HasCurrentKey);
 
     [Fact]
-    public void CurrentGroupCount_NewStorage_IsZero()
-    {
-        Assert.Equal(0, Storage().CurrentGroupCount);
-    }
+    public void CurrentGroupCount_NewStorage_IsZero() => Assert.Equal(0, Storage().CurrentGroupCount);
 
     [Fact]
     public void AppendToCurrentGroup_RaisesTheGroupCount()

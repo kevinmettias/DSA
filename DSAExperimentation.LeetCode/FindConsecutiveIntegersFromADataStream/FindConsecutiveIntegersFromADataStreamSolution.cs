@@ -69,12 +69,17 @@ internal static class FindConsecutiveIntegersFromADataStreamSolution
                 _matchCount++;
             }
 
-            if (_window.Count > k && _window.TryPopFront(out var evicted) && evicted == value)
+            if (EvictsAMatchedValue(_window, k, value))
             {
                 _matchCount--;
             }
 
             return _window.Count == k && _matchCount == k;
         }
+
+        // The window has grown past k and the entry leaving its front is one of
+        // the values being counted, so the running match count gives it back.
+        private static bool EvictsAMatchedValue(RepoDeque window, int k, int value)
+            => window.Count > k && window.TryPopFront(out var evicted) && evicted == value;
     }
 }

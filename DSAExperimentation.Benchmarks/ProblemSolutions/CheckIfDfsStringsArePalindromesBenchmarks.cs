@@ -19,34 +19,47 @@ public class CheckIfDfsStringsArePalindromesBenchmarks
     private const int AlphabetSize = 4;
     private const int Seed = 3327;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private RootedTreeNode[] _nodes = [];
 
-    private RootedTreeNode[] _nodes = null!;
-    private string _s = null!;
+    private string _s = "";
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var parent = new int[NodeCount];
+        _nodes = BuildChainTree(NodeCount);
+        _s = BuildRandomString(NodeCount);
+    }
+
+    // The chain's parent array: parent[i] = i - 1, so every node's subtree is
+    // nearly the whole tree.
+    private static RootedTreeNode[] BuildChainTree(int nodeCount)
+    {
+        var parent = new int[nodeCount];
         parent[0] = -1;
 
-        for (var i = 1; i < NodeCount; i++)
+        for (var i = 1; i < nodeCount; i++)
         {
             parent[i] = i - 1;
         }
 
-        _nodes = ParentArrayTree.Build(parent);
+        return ParentArrayTree.Build(parent);
+    }
 
+    // The string the workloads are judged on: one seeded draw per node, in node
+    // order, over an alphabet small enough that palindromic subtrees are common.
+    private static string BuildRandomString(int nodeCount)
+    {
         var random = new Random(Seed);
-        var chars = new char[NodeCount];
+        var chars = new char[nodeCount];
 
-        for (var i = 0; i < NodeCount; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
-        _s = new string(chars);
+        return new string(chars);
     }
 
     [Benchmark(Baseline = true)]

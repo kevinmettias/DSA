@@ -15,12 +15,12 @@ public class MinimumCostWalkInWeightedGraphBenchmarks
     private const int Seed = 3108;
     private const int QueryCount = 200;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
-    private int[][] _query = null!;
+    private int[][] _query = [];
     private WalkCostComponents _components = null!;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

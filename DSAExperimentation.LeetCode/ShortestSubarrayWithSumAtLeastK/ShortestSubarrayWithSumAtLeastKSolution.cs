@@ -27,7 +27,9 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
 
         for (var start = 0; start < prefix.Length; start++)
         {
-            best = Math.Min(best, ShortestWindowFrom(prefix, start, k));
+            var candidate = ShortestWindowFrom(prefix, start, k);
+
+            best = Math.Min(best, candidate);
         }
 
         return ReportLength(best, nums.Length);
@@ -61,7 +63,9 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
 
         for (var i = 0; i < prefix.Length; i++)
         {
-            best = Math.Min(best, ClaimReachableStarts(prefix, window, i, k));
+            var candidate = ClaimReachableStarts(prefix, window, i, k);
+
+            best = Math.Min(best, candidate);
             DropDominatedStarts(prefix, window, i);
             window.PushBack(i);
         }

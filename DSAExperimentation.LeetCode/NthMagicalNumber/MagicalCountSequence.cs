@@ -14,5 +14,10 @@ internal readonly struct MagicalCountSequence(int n, int a, int b, long lcm, int
 {
     public int Length => upperBound + 1;
 
-    public int Get(int index) => (index / a) + (index / b) - (index / lcm) >= n ? 1 : 0;
+    public int Get(int index)
+    {
+        var multiplesUpToIndex = (index / a) + (index / b) - (index / lcm);
+
+        return multiplesUpToIndex >= n ? 1 : 0;
+    }
 }

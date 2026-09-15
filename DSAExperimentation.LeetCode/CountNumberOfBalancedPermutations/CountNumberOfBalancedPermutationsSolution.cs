@@ -34,22 +34,6 @@ internal static class CountNumberOfBalancedPermutationsSolution
         return balanced % ModularArithmetic.Modulo;
     }
 
-    private static void Permute(char[] digits, int start, HashSet<string> distinct)
-    {
-        if (start == digits.Length)
-        {
-            distinct.Add(new string(digits));
-            return;
-        }
-
-        for (var i = start; i < digits.Length; i++)
-        {
-            (digits[start], digits[i]) = (digits[i], digits[start]);
-            Permute(digits, start + 1, distinct);
-            (digits[start], digits[i]) = (digits[i], digits[start]);
-        }
-    }
-
     private static bool IsBalanced(string permutation)
     {
         var evenSum = 0;
@@ -109,56 +93,6 @@ internal static class CountNumberOfBalancedPermutationsSolution
         return ways * factorial[evenSlots] % ModularArithmetic.Modulo * factorial[oddSlots] % ModularArithmetic.Modulo;
     }
 
-    private static long FoldDigitSplits(int[] counts, int evenSlots, int half, long[] inverseFactorial)
-    {
-        var dp = new long[evenSlots + 1, half + 1];
-        dp[0, 0] = 1;
-
-        for (var digit = 0; digit < counts.Length; digit++)
-        {
-            dp = FoldDigit(dp, digit, counts[digit], evenSlots, half, inverseFactorial);
-        }
-
-        return dp[evenSlots, half];
-    }
-
-    private static long[,] FoldDigit(long[,] dp, int digit, int count, int evenSlots, int half, long[] inverseFactorial)
-    {
-        var next = new long[evenSlots + 1, half + 1];
-
-        for (var used = 0; used <= evenSlots; used++)
-        {
-            for (var sum = 0; sum <= half; sum++)
-            {
-                if (dp[used, sum] != 0)
-                {
-                    AccumulateDigitSplits(next, dp[used, sum], digit, count, used, sum, evenSlots, half, inverseFactorial);
-                }
-            }
-        }
-
-        return next;
-    }
-
-    private static void AccumulateDigitSplits(
-        long[,] next, long ways, int digit, int count, int used, int sum, int evenSlots, int half, long[] inverseFactorial)
-    {
-        for (var k = 0; k <= count; k++)
-        {
-            var nextUsed = used + k;
-            var nextSum = sum + k * digit;
-
-            if (nextUsed > evenSlots || nextSum > half)
-            {
-                break;
-            }
-
-            var contribution = ways * inverseFactorial[k] % ModularArithmetic.Modulo *
-                inverseFactorial[count - k] % ModularArithmetic.Modulo;
-            next[nextUsed, nextSum] = (next[nextUsed, nextSum] + contribution) % ModularArithmetic.Modulo;
-        }
-    }
-
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
     {
         var factorial = new long[maxSize + 1];
@@ -178,5 +112,86 @@ internal static class CountNumberOfBalancedPermutationsSolution
         }
 
         return (factorial, inverseFactorial);
+    }
+
+    private static long FoldDigitSplits(int[] counts, int evenSlots, int half, long[] inverseFactorial)
+    {
+        var dp = new long[evenSlots + 1, half + 1];
+        dp[0, 0] = 1;
+
+        for (var digit = 0; digit < counts.Length; digit++)
+        {
+            dp = FoldDigit(dp, digit, counts[digit], inverseFactorial);
+        }
+
+        return dp[evenSlots, half];
+    }
+
+    // Every table the fold builds is (evenSlots + 1) x (half + 1), so both bounds are
+    // the dimensions of the table it is handed - and one digit's value and its copy
+    // count are a single fact about that digit rather than two.
+    private static long[,] FoldDigit(long[,] dp, int digit, int count, long[] inverseFactorial)
+    {
+        var evenSlots = dp.GetLength(0) - 1;
+        var half = dp.GetLength(1) - 1;
+        var next = new long[evenSlots + 1, half + 1];
+
+        for (var used = 0; used <= evenSlots; used++)
+        {
+            for (var sum = 0; sum <= half; sum++)
+            {
+                if (dp[used, sum] != 0)
+                {
+                    var cell = (Used: used, Sum: sum, Ways: dp[used, sum]);
+                    AccumulateDigitSplits(next, cell, (Value: digit, Count: count), inverseFactorial);
+                }
+            }
+        }
+
+        return next;
+    }
+
+    // The table being written is also the source of the fold's bounds, so the bounds
+    // are read off it; the reached cell and the ways standing on it are one value, and
+    // so are a digit and the number of copies being split.
+    private static void AccumulateDigitSplits(
+        long[,] next,
+        (int Used, int Sum, long Ways) cell,
+        (int Value, int Count) group,
+        long[] inverseFactorial)
+    {
+        var evenSlots = next.GetLength(0) - 1;
+        var half = next.GetLength(1) - 1;
+
+        for (var k = 0; k <= group.Count; k++)
+        {
+            var nextUsed = cell.Used + k;
+            var nextSum = cell.Sum + k * group.Value;
+
+            if (nextUsed > evenSlots || nextSum > half)
+            {
+                break;
+            }
+
+            var contribution = cell.Ways * inverseFactorial[k] % ModularArithmetic.Modulo *
+                inverseFactorial[group.Count - k] % ModularArithmetic.Modulo;
+            next[nextUsed, nextSum] = (next[nextUsed, nextSum] + contribution) % ModularArithmetic.Modulo;
+        }
+    }
+
+    private static void Permute(char[] digits, int start, HashSet<string> distinct)
+    {
+        if (start == digits.Length)
+        {
+            distinct.Add(new string(digits));
+            return;
+        }
+
+        for (var i = start; i < digits.Length; i++)
+        {
+            (digits[start], digits[i]) = (digits[i], digits[start]);
+            Permute(digits, start + 1, distinct);
+            (digits[start], digits[i]) = (digits[i], digits[start]);
+        }
     }
 }

@@ -127,6 +127,15 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
     // internal dependencies are disturbed by the regrouping.
     private static int[] Combine(List<ItemNode> itemOrder, List<GroupNode> groupOrder, int groupCount)
     {
+        var buckets = BucketItemIdsByGroup(itemOrder, groupCount);
+
+        return ConcatenateBuckets(buckets, groupOrder, itemOrder.Count);
+    }
+
+    // One bucket of item ids per group, each bucket holding its items in the order the
+    // valid item order gave them.
+    private static List<int>[] BucketItemIdsByGroup(List<ItemNode> itemOrder, int groupCount)
+    {
         var buckets = new List<int>[groupCount];
 
         for (var groupId = 0; groupId < groupCount; groupId++)
@@ -139,7 +148,13 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
             buckets[item.GroupId].Add(item.Id);
         }
 
-        var result = new int[itemOrder.Count];
+        return buckets;
+    }
+
+    // The buckets laid end to end in group order, which is the ordering Combine returns.
+    private static int[] ConcatenateBuckets(List<int>[] buckets, List<GroupNode> groupOrder, int itemCount)
+    {
+        var result = new int[itemCount];
         var index = 0;
 
         foreach (var groupNode in groupOrder)

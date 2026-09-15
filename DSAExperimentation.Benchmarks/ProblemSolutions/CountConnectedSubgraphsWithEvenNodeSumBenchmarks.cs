@@ -14,11 +14,11 @@ public class CountConnectedSubgraphsWithEvenNodeSumBenchmarks
 {
     private const int Seed = 3910;
 
-    [Params(8, 13)]
-    public int NodeCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _edges = null!;
+    private int[][] _edges = [];
+    [Params(8, 13)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => (_nums, _edges) = EvenNodeSumGraphWorkloads.Build(NodeCount, seed: Seed);

@@ -9,48 +9,34 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PathSumBenchmarks
 {
-    // LeetCode 112's own example tree: the root-to-leaf path RootValue -> LeftValue
-    // -> LeftLeftValue -> LeftLeftRightValue (5 -> 4 -> 11 -> 2) sums to TargetSum,
-    // the only accepting path among the tree's four root-to-leaf paths.
-    private const int TargetSum = 22;
-    private const int RootValue = 5;
-    private const int LeftValue = 4;
-    private const int LeftLeftValue = 11;
-    private const int LeftLeftLeftValue = 7;
-    private const int LeftLeftRightValue = 2;
-    private const int RightValue = 8;
-    private const int RightLeftValue = 13;
-    private const int RightRightValue = 4;
-    private const int RightRightRightValue = 1;
-
     private BinaryTreeNode<int> _root = null!;
 
     [GlobalSetup]
     public void Setup() => _root = Tree();
 
-    [Benchmark(Baseline = true)]
-    public bool RecursivePathSum() => PathSumSolution.HasPathSumByRecursion(_root, TargetSum);
-
-    [Benchmark]
-    public bool AllRootToLeafPathsSum() => PathSumSolution.HasPathSumByPathEnumeration(_root, TargetSum);
-
-    private static BinaryTreeNode<int> Tree() => new(RootValue)
+    private static BinaryTreeNode<int> Tree() => new(PathSumExampleTree.Root)
     {
-        Left = new(LeftValue)
+        Left = new(PathSumExampleTree.Left)
         {
-            Left = new(LeftLeftValue)
+            Left = new(PathSumExampleTree.LeftLeft)
             {
-                Left = new(LeftLeftLeftValue),
-                Right = new(LeftLeftRightValue)
+                Left = new(PathSumExampleTree.LeftLeftLeft),
+                Right = new(PathSumExampleTree.LeftLeftRight)
             }
         },
-        Right = new(RightValue)
+        Right = new(PathSumExampleTree.Right)
         {
-            Left = new(RightLeftValue),
-            Right = new(RightRightValue)
+            Left = new(PathSumExampleTree.RightLeft),
+            Right = new(PathSumExampleTree.RightRight)
             {
-                Right = new(RightRightRightValue)
+                Right = new(PathSumExampleTree.RightRightRight)
             }
         }
     };
+
+    [Benchmark(Baseline = true)]
+    public bool RecursivePathSum() => PathSumSolution.HasPathSumByRecursion(_root, PathSumExampleTree.TargetSum);
+
+    [Benchmark]
+    public bool AllRootToLeafPathsSum() => PathSumSolution.HasPathSumByPathEnumeration(_root, PathSumExampleTree.TargetSum);
 }

@@ -19,10 +19,10 @@ public class CountAnagramsBenchmarks
     private const int WordCount = 20;
     private const string Alphabet = "abcde";
 
-    [Params(4, 7)]
-    public int WordLength;
+    private string _sentence = "";
 
-    private string _sentence = null!;
+    [Params(4, 7)]
+    public int WordLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,12 +32,12 @@ public class CountAnagramsBenchmarks
         _sentence = string.Join(' ', words);
     }
 
+    private static string BuildWord(Random random, int length)
+        => new(Enumerable.Range(0, length).Select(_ => Alphabet[random.Next(Alphabet.Length)]).ToArray());
+
     [Benchmark(Baseline = true)]
     public long BruteForcePermutations() => CountAnagramsSolution.CountAnagramsByBruteForce(_sentence);
 
     [Benchmark]
     public long ModularFactorial() => CountAnagramsSolution.CountAnagramsByModularFactorial(_sentence);
-
-    private static string BuildWord(Random random, int length)
-        => new(Enumerable.Range(0, length).Select(_ => Alphabet[random.Next(Alphabet.Length)]).ToArray());
 }

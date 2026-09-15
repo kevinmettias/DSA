@@ -14,13 +14,13 @@ public class MaximumNumberOfMovesToKillAllPawnsBenchmarks
 {
     private const int Seed = 3283;
 
-    [Params(5, 15)]
-    public int PawnCount;
-
     private int _kx;
+
     private int _ky;
-    private int[][] _positions = null!;
+    private int[][] _positions = [];
     private KnightDistances _knightDistances = null!;
+    [Params(5, 15)]
+    public int PawnCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

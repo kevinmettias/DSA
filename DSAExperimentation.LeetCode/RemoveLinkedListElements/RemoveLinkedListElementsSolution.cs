@@ -22,6 +22,20 @@ internal static class RemoveLinkedListElementsSolution
         SinglyLinkedListNode<int>? head, int val)
         => BuildList(ToArray(head).Where(value => value != val));
 
+    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
     // LeetCode's own idiomatic answer: a dummy node in front of head lets the walk
     // splice out a match - head included - by rewiring the previous node's Next,
     // never special-casing "is this the head". No extra storage.
@@ -56,19 +70,5 @@ internal static class RemoveLinkedListElementsSolution
         }
 
         return values.ToArray();
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 }

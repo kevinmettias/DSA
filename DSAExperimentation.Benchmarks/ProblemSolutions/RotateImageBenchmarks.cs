@@ -12,10 +12,10 @@ public class RotateImageBenchmarks
 {
     private const int MaxCellValueExclusive = 1_000;
 
-    [Params(50, 300)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(50, 300)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -77,8 +77,6 @@ internal sealed class RangeFenwickTree<Element, TOperation>
         return TOperation.Combine(scaledB1, TOperation.Invert(_b2.PrefixQuery(index)));
     }
 
-    private void ValidateIndex(int index) => RangeBounds.ValidateIndex(index, _size, IndexOutOfBoundsMessage);
-
     public Element Query(int left, int right)
     {
         ValidateRange(left, right);
@@ -87,6 +85,8 @@ internal sealed class RangeFenwickTree<Element, TOperation>
 
         return left == 0 ? rightPrefix : TOperation.Combine(rightPrefix, TOperation.Invert(PrefixQuery(left - 1)));
     }
+
+    private void ValidateIndex(int index) => RangeBounds.ValidateIndex(index, _size, IndexOutOfBoundsMessage);
 
     private void ValidateRange(int left, int right) => RangeBounds.ValidateRange(left, right, _size, RangeOutOfBoundsMessage);
 }

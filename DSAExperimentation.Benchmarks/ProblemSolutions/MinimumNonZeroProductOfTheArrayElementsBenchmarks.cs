@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumNonZeroProductOfTheArrayElementsBenchmarks
 {
     [Params(15, 21)]
-    public int Power;
+    public int Power { get; set; }
 
     [Benchmark(Baseline = true)]
     public long RepeatedModularMultiplication() =>

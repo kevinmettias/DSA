@@ -28,16 +28,20 @@ internal static class Dota2SenateSolution
         while (remainingRadiant > 0 && remainingDire > 0)
         {
             (remainingRadiant, remainingDire) =
-                AdvanceCircularRescan(senate, banned, i, remainingRadiant, remainingDire);
+                AdvanceCircularRescan(senate, banned, i, (remainingRadiant, remainingDire));
             i = (i + 1) % senate.Length;
         }
 
         return remainingRadiant > 0 ? Radiant : Dire;
     }
 
+    // The two parties' remaining counts are one tally, not two arguments: every path
+    // either returns them unchanged or decrements exactly one of them.
     private static (int RemainingRadiant, int RemainingDire) AdvanceCircularRescan(
-        string senate, bool[] banned, int i, int remainingRadiant, int remainingDire)
+        string senate, bool[] banned, int i, (int Radiant, int Dire) remaining)
     {
+        var (remainingRadiant, remainingDire) = remaining;
+
         if (banned[i])
         {
             return (remainingRadiant, remainingDire);

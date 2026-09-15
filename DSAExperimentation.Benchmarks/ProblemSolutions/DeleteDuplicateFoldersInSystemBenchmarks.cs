@@ -22,10 +22,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DeleteDuplicateFoldersInSystemBenchmarks
 {
-    [Params(100, 1_000)]
-    public int TopLevelCount;
+    private string[][] _paths = [];
 
-    private string[][] _paths = null!;
+    [Params(100, 1_000)]
+    public int TopLevelCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _paths = FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount);

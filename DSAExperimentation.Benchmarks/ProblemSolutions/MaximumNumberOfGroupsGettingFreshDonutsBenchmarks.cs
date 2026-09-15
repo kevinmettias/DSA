@@ -15,10 +15,10 @@ public class MaximumNumberOfGroupsGettingFreshDonutsBenchmarks
     private const int MaxGroupSizeExclusive = 50;
     private const int GroupSeed = 1;
 
-    [Params(6, 9)]
-    public int GroupCount;
+    private int[] _groups = [];
 
-    private int[] _groups = null!;
+    [Params(6, 9)]
+    public int GroupCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

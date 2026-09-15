@@ -23,7 +23,8 @@ internal static class LongestWellPerformingIntervalSolution
 
         for (var start = 0; start < hours.Length; start++)
         {
-            longest = Math.Max(longest, LongestIntervalFrom(hours, start));
+            var intervalLength = LongestIntervalFrom(hours, start);
+            longest = Math.Max(longest, intervalLength);
         }
 
         return longest;
@@ -49,6 +50,8 @@ internal static class LongestWellPerformingIntervalSolution
         return longest;
     }
 
+    private static int Tiring(int hour) => hour > TiringThreshold ? 1 : -1;
+
     // This repo's own HashMap<int,int> (running score -> earliest index it was first
     // seen at) - the exact "first occurrence index" shape
     // ContinuousSubarraySumSolution uses for "% K == 0", with the target relation
@@ -65,8 +68,6 @@ internal static class LongestWellPerformingIntervalSolution
 
         return tracker.Longest;
     }
-
-    private static int Tiring(int hour) => hour > TiringThreshold ? 1 : -1;
 
     // The running score and the best interval seen so far, advanced one day at a
     // time against the first-occurrence map.

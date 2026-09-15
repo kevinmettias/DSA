@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignANumberContainerSystem.DesignANumberContainerSystemSolution;
+using DSAExperimentation.LeetCode.DesignANumberContainerSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -24,12 +24,12 @@ public class DesignANumberContainerSystemBenchmarks
     private const int RandomSeed = 2349;
     private const int ChurnDivisor = 5;
 
-    [Params(200, 3_000)]
-    public int Count;
+    private int[] _changeIndices = [];
 
-    private int[] _changeIndices = null!;
-    private int[] _changeNumbers = null!;
-    private int[] _findQueries = null!;
+    private int[] _changeNumbers = [];
+    private int[] _findQueries = [];
+    [Params(200, 3_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -47,14 +47,14 @@ public class DesignANumberContainerSystemBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new NumberContainersByLinearScan());
+    public long LinearScan() => Replay(new DesignANumberContainerSystemSolution.NumberContainersByLinearScan());
 
     [Benchmark]
-    public long LazyDeletionHeap() => Replay(new NumberContainersByLazyDeletionHeap());
+    public long LazyDeletionHeap() => Replay(new DesignANumberContainerSystemSolution.NumberContainersByLazyDeletionHeap());
 
     // Sums every reported index rather than discarding it, so the JIT can't
     // eliminate the replay as dead code.
-    private long Replay(INumberContainerStrategy strategy)
+    private long Replay(DesignANumberContainerSystemSolution.INumberContainerStrategy strategy)
     {
         for (var i = 0; i < _changeIndices.Length; i++)
         {

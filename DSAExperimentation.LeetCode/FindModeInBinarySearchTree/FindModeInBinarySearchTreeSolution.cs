@@ -48,18 +48,6 @@ internal static class FindModeInBinarySearchTreeSolution
         return modes.ToArray();
     }
 
-    private static void CountFrequencies(BinaryTreeNode<int>? node, Dictionary<int, int> counts)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        counts[node.Value] = counts.GetValueOrDefault(node.Value) + 1;
-        CountFrequencies(node.Left, counts);
-        CountFrequencies(node.Right, counts);
-    }
-
     // This repo's own InOrderTraversal/IInOrderHooks composition. Hooks are
     // static, so the running value/streak/max/result live in AsyncLocal state
     // alongside the walk.
@@ -81,6 +69,18 @@ internal static class FindModeInBinarySearchTreeSolution
         }
 
         return result;
+    }
+
+    private static void CountFrequencies(BinaryTreeNode<int>? node, Dictionary<int, int> counts)
+    {
+        if (node is null)
+        {
+            return;
+        }
+
+        counts[node.Value] = counts.GetValueOrDefault(node.Value) + 1;
+        CountFrequencies(node.Left, counts);
+        CountFrequencies(node.Right, counts);
     }
 
     private readonly struct ModeHooks : IInOrderHooks<int>

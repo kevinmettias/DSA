@@ -35,8 +35,6 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
         return best;
     }
 
-    private static bool InRange(int value, int low, int high) => value >= low && value <= high;
-
     // Composed: split nums into its maximal [low, high]-valid runs - an
     // out-of-range value can never appear inside a valid subarray, so it always
     // ends one run and starts the search for the next. Within one run, a
@@ -51,30 +49,49 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
     {
         var best = 0;
         var start = 0;
+        var range = (low, high);
 
         while (start < nums.Length)
         {
-            if (!InRange(nums[start], low, high))
-            {
-                start++;
-                continue;
-            }
-
-            var end = start;
-
-            while (end < nums.Length && InRange(nums[end], low, high))
-            {
-                end++;
-            }
-
-            best = Math.Max(best, MaxSubarrayXorWithinRun(nums, start, end));
-            start = end;
+            (best, start) = SweepRun(nums, range, best, start);
         }
 
         return best;
     }
 
+    // One step of the sweep: an out-of-range value is stepped over outright; an
+    // in-range one opens a run, whose own best subarray XOR is folded into `best`
+    // before the sweep jumps past the run.
+    private static (int Best, int Start) SweepRun(
+        int[] nums, (int Low, int High) range, int best, int start)
+    {
+        if (!InRange(nums[start], range.Low, range.High))
+        {
+            return (best, start + 1);
+        }
+
+        var end = start;
+
+        while (end < nums.Length && InRange(nums[end], range.Low, range.High))
+        {
+            end++;
+        }
+
+        var runBest = MaxSubarrayXorWithinRun(nums, start, end);
+
+        return (Math.Max(best, runBest), end);
+    }
+
     private static int MaxSubarrayXorWithinRun(int[] nums, int start, int end)
+    {
+        var (trie, prefixValues) = BuildPrefixTrie(nums, start, end);
+
+        return MaxXorAgainstPrefixes(trie, prefixValues);
+    }
+
+    // The run's own prefix-XOR values, each inserted into the trie as it is produced.
+    private static (BitTrie Trie, List<int> PrefixValues) BuildPrefixTrie(
+        int[] nums, int start, int end)
     {
         var trie = new BitTrie();
         var prefixValues = new List<int> { 0 };
@@ -88,6 +105,12 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
             prefixValues.Add(prefixXor);
         }
 
+        return (trie, prefixValues);
+    }
+
+    // The best XOR any one of the run's prefix values can make against the trie.
+    private static int MaxXorAgainstPrefixes(BitTrie trie, List<int> prefixValues)
+    {
         var best = 0;
 
         foreach (var value in prefixValues)
@@ -100,4 +123,6 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
 
         return best;
     }
+
+    private static bool InRange(int value, int low, int high) => value >= low && value <= high;
 }

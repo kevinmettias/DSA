@@ -92,26 +92,13 @@ internal static class CycleLengthQueriesInATreeSolution
         var indexB = b - RootId;
         var depthA = Depth(indexA);
         var depthB = Depth(indexB);
-        var distance = 0;
 
-        while (depthA > depthB)
-        {
-            indexA = HeapArrayIndex.Parent(indexA);
-            depthA--;
-            distance++;
-        }
+        var (leveledA, leveledB, distance) = LiftDeeperSide(indexA, depthA, indexB, depthB);
 
-        while (depthB > depthA)
+        while (leveledA != leveledB)
         {
-            indexB = HeapArrayIndex.Parent(indexB);
-            depthB--;
-            distance++;
-        }
-
-        while (indexA != indexB)
-        {
-            indexA = HeapArrayIndex.Parent(indexA);
-            indexB = HeapArrayIndex.Parent(indexB);
+            leveledA = HeapArrayIndex.Parent(leveledA);
+            leveledB = HeapArrayIndex.Parent(leveledB);
             distance += EdgesPerSharedLift;
         }
 
@@ -129,5 +116,30 @@ internal static class CycleLengthQueriesInATreeSolution
         }
 
         return depth;
+    }
+
+    // Lifts whichever of the two endpoints is deeper until both sit at the same
+    // level, charging one edge per lift, and reports the leveled ids alongside what
+    // that half of the walk cost.
+    private static (int IndexA, int IndexB, int Distance) LiftDeeperSide(
+        int indexA, int depthA, int indexB, int depthB)
+    {
+        var distance = 0;
+
+        while (depthA > depthB)
+        {
+            indexA = HeapArrayIndex.Parent(indexA);
+            depthA--;
+            distance++;
+        }
+
+        while (depthB > depthA)
+        {
+            indexB = HeapArrayIndex.Parent(indexB);
+            depthB--;
+            distance++;
+        }
+
+        return (indexA, indexB, distance);
     }
 }

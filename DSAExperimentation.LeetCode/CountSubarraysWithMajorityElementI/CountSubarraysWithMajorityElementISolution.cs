@@ -77,7 +77,8 @@ internal static class CountSubarraysWithMajorityElementISolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            prefix[i + 1] = prefix[i] + (nums[i] == target ? 1 : -1);
+            var isTarget = nums[i] == target;
+            prefix[i + 1] = prefix[i] + (isTarget ? 1 : -1);
         }
 
         return prefix;

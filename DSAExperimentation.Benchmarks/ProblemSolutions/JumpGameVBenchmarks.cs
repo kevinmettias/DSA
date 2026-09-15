@@ -19,10 +19,10 @@ public class JumpGameVBenchmarks
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 1340;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

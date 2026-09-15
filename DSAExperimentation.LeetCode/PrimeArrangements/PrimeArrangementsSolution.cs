@@ -25,33 +25,6 @@ internal static class PrimeArrangementsSolution
     public static int NumPrimeArrangementsByTrialDivision(int n) =>
         Arrangements(CountPrimesUpToByTrialDivision(n), n);
 
-    // Sieve of Eratosthenes over this repo's own DynamicArray<bool> as the
-    // composite-tracking array, marking multiples of each newly found prime
-    // starting at its square - the same composition CountPrimesSolution uses.
-    public static int NumPrimeArrangementsBySieveOfEratosthenes(int n) =>
-        Arrangements(CountPrimesUpToBySieve(n), n);
-
-    // primeCount! * compositeCount! mod 1e9+7 - the whole answer once the prime
-    // count is known, shared so the strategies differ only in the counting.
-    private static int Arrangements(int primeCount, int n)
-    {
-        var compositeCount = n - primeCount;
-
-        return (int)(Factorial(primeCount) * Factorial(compositeCount) % ModularArithmetic.Modulo);
-    }
-
-    private static long Factorial(int n)
-    {
-        var result = 1L;
-
-        for (var i = FactorialLoopStart; i <= n; i++)
-        {
-            result = result * i % ModularArithmetic.Modulo;
-        }
-
-        return result;
-    }
-
     private static int CountPrimesUpToByTrialDivision(int n)
     {
         var count = 0;
@@ -77,6 +50,12 @@ internal static class PrimeArrangementsSolution
 
         return count;
     }
+
+    // Sieve of Eratosthenes over this repo's own DynamicArray<bool> as the
+    // composite-tracking array, marking multiples of each newly found prime
+    // starting at its square - the same composition CountPrimesSolution uses.
+    public static int NumPrimeArrangementsBySieveOfEratosthenes(int n) =>
+        Arrangements(CountPrimesUpToBySieve(n), n);
 
     private static int CountPrimesUpToBySieve(int n)
     {
@@ -131,5 +110,26 @@ internal static class PrimeArrangementsSolution
         }
 
         return count;
+    }
+
+    // primeCount! * compositeCount! mod 1e9+7 - the whole answer once the prime
+    // count is known, shared so the strategies differ only in the counting.
+    private static int Arrangements(int primeCount, int n)
+    {
+        var compositeCount = n - primeCount;
+
+        return (int)(Factorial(primeCount) * Factorial(compositeCount) % ModularArithmetic.Modulo);
+    }
+
+    private static long Factorial(int n)
+    {
+        var result = 1L;
+
+        for (var i = FactorialLoopStart; i <= n; i++)
+        {
+            result = result * i % ModularArithmetic.Modulo;
+        }
+
+        return result;
     }
 }

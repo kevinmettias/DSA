@@ -22,11 +22,11 @@ public class JumpGameIVBenchmarks
 
     private const int ValueRangeDivisor = 5;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
-    private ValueHopNode[] _hopGraph = null!;
+    private ValueHopNode[] _hopGraph = [];
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

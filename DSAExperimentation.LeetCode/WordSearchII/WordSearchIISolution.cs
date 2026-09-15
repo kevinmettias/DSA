@@ -38,39 +38,17 @@ internal static class WordSearchIISolution
         var used = new bool[board.Length, board[0].Length];
 
         for (var row = 0; row < board.Length; row++)
-        for (var col = 0; col < board[0].Length; col++)
         {
-            if (SearchFromCell(board, word, used, row, col, 0))
+            for (var col = 0; col < board[0].Length; col++)
             {
-                return true;
+                if (SearchFromCell(board, word, used, (row, col, 0)))
+                {
+                    return true;
+                }
             }
         }
 
         return false;
-    }
-
-    private static bool SearchFromCell(char[][] board, string word, bool[,] used, int row, int col, int index)
-    {
-        if (index == word.Length)
-        {
-            return true;
-        }
-
-        if (row < 0 || row >= board.Length || col < 0 || col >= board[0].Length
-            || used[row, col] || board[row][col] != word[index])
-        {
-            return false;
-        }
-
-        used[row, col] = true;
-
-        var matched = SearchFromCell(board, word, used, row + 1, col, index + 1)
-            || SearchFromCell(board, word, used, row - 1, col, index + 1)
-            || SearchFromCell(board, word, used, row, col + 1, index + 1)
-            || SearchFromCell(board, word, used, row, col - 1, index + 1);
-
-        used[row, col] = false;
-        return matched;
     }
 
     // This repo's own choose/explore/unchoose engine, pruned by a LowercaseTrie
@@ -89,17 +67,19 @@ internal static class WordSearchIISolution
         var found = new HashSet<string>();
 
         for (var row = 0; row < board.Length; row++)
-        for (var col = 0; col < board[0].Length; col++)
         {
-            SearchFrom(board, trie.Root, row, col, found);
+            for (var col = 0; col < board[0].Length; col++)
+            {
+                SearchFrom(board, trie.Root, (row, col), found);
+            }
         }
 
         return found;
     }
 
-    private static void SearchFrom(char[][] board, LowercaseTrieNode<string> root, int row, int col, HashSet<string> found)
+    private static void SearchFrom(char[][] board, LowercaseTrieNode<string> root, (int Row, int Col) cell, HashSet<string> found)
     {
-        var state = new State(board, root, row, col);
+        var state = new State(board, root, cell.Row, cell.Col);
         Backtrack.Search(state,
             isSolution: s => s.AtWord,
             candidates: s => s.Candidates(),
@@ -107,6 +87,43 @@ internal static class WordSearchIISolution
             unchoose: (s, p) => s.Unchoose(p),
             onSolution: s => found.Add(s.Word));
     }
+
+    // The walk's own state is which cell it stands on and how much of the word it has
+    // matched there; the two advance together on every recursive step, so they are one
+    // argument rather than three.
+    private static bool SearchFromCell(char[][] board, string word, bool[,] used, (int Row, int Col, int Index) walk)
+    {
+        var (row, col, index) = walk;
+
+        if (index == word.Length)
+        {
+            return true;
+        }
+
+        if (IsOutsideBoard(row, col, board) || CannotSupplyLetter((row, col), used, board, word[index]))
+        {
+            return false;
+        }
+
+        used[row, col] = true;
+
+        var matched = SearchFromCell(board, word, used, (row + 1, col, index + 1))
+            || SearchFromCell(board, word, used, (row - 1, col, index + 1))
+            || SearchFromCell(board, word, used, (row, col + 1, index + 1))
+            || SearchFromCell(board, word, used, (row, col - 1, index + 1));
+
+        used[row, col] = false;
+        return matched;
+    }
+
+    // Off the board on any of its four edges - there is no cell to match against.
+    private static bool IsOutsideBoard(int row, int col, char[][] board)
+        => row < 0 || row >= board.Length || col < 0 || col >= board[0].Length;
+
+    // A cell supplies the word's next letter only once, and only if its own letter
+    // is that one.
+    private static bool CannotSupplyLetter((int Row, int Col) cell, bool[,] used, char[][] board, char expected)
+        => used[cell.Row, cell.Col] || board[cell.Row][cell.Col] != expected;
 
     // Bespoke to LC 212: walks the board and a LowercaseTrieNode in lockstep, so a
     // cell whose letter has no corresponding trie child is never offered as a
@@ -128,15 +145,12 @@ internal static class WordSearchIISolution
         {
             foreach (var p in Neighbors())
             {
-                if (InBounds(p) && !_used[p.Row, p.Col] && _node.Children[board[p.Row][p.Col] - 'a'] is not null)
+                if (InBounds(p) && CanExtendWalk(p))
                 {
                     yield return p;
                 }
             }
         }
-
-        private bool InBounds((int Row, int Col) p)
-            => p.Row >= 0 && p.Row < board.Length && p.Col >= 0 && p.Col < board[0].Length;
 
         private IEnumerable<(int Row, int Col)> Neighbors()
         {
@@ -151,6 +165,14 @@ internal static class WordSearchIISolution
             yield return (Row, Col + 1);
             yield return (Row, Col - 1);
         }
+
+        private bool InBounds((int Row, int Col) p)
+            => p.Row >= 0 && p.Row < board.Length && p.Col >= 0 && p.Col < board[0].Length;
+
+        // A neighbour can extend the walk when the walk has not used it yet and the
+        // trie has a child for its letter.
+        private bool CanExtendWalk((int Row, int Col) p) =>
+            !_used[p.Row, p.Col] && _node.Children[board[p.Row][p.Col] - 'a'] is not null;
 
         public void Choose((int Row, int Col) p)
         {

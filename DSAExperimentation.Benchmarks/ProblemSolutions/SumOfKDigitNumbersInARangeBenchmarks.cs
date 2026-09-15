@@ -16,7 +16,7 @@ public class SumOfKDigitNumbersInARangeBenchmarks
     private const int High = 9;
 
     [Params(4, 6)]
-    public int K;
+    public int K { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForceEnumeration() =>

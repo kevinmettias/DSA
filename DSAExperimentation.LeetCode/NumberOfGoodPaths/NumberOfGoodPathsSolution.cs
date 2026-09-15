@@ -141,7 +141,7 @@ internal static class NumberOfGoodPathsSolution
         var firstMax = components.MaxValue[firstRoot];
         var secondMax = components.MaxValue[secondRoot];
         var newPaths = firstMax == secondMax
-            ? components.MaxCount[firstRoot] * components.MaxCount[secondRoot]
+            ? CrossPairs(components, firstRoot, secondRoot)
             : 0;
         var mergedCount = MergedCount(components, firstRoot, secondRoot);
 
@@ -152,6 +152,10 @@ internal static class NumberOfGoodPathsSolution
 
         return newPaths;
     }
+
+    // Every max-value node on one side pairs with every max-value node on the other.
+    private static int CrossPairs(ValueComponents components, int firstRoot, int secondRoot) =>
+        components.MaxCount[firstRoot] * components.MaxCount[secondRoot];
 
     // How many nodes attain the merged component's maximum: both sides' counts when
     // they tie, otherwise only the larger side's, since the smaller side's nodes are
@@ -166,8 +170,11 @@ internal static class NumberOfGoodPathsSolution
             return components.MaxCount[firstRoot] + components.MaxCount[secondRoot];
         }
 
-        return firstMax > secondMax ? components.MaxCount[firstRoot] : components.MaxCount[secondRoot];
+        return firstMax > secondMax ? MaxCountOf(components, firstRoot) : MaxCountOf(components, secondRoot);
     }
+
+    // How many of that component's nodes attain its maximum value.
+    private static int MaxCountOf(ValueComponents components, int root) => components.MaxCount[root];
 
     // The per-component bookkeeping threaded alongside Find/Union, indexed by
     // component root: the largest value inside that component and how many of its

@@ -16,10 +16,10 @@ public class ProjectionAreaOf3DShapesBenchmarks
 
     private const int RandomSeed = 1;
 
-    [Params(50, 500)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(50, 500)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

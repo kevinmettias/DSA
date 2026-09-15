@@ -22,13 +22,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SwappingNodesInALinkedListBenchmarks
 {
-    private const int TargetIndexDivisor = 3; // k picks a node one third of the way into the list
+    private const int TargetIndexDivisor = 3; private int[] _values = [];
+
+    private int _k;
+    // k picks a node one third of the way into the list
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _values = null!;
-    private int _k;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

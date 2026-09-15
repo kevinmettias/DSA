@@ -12,10 +12,10 @@ public class TopKFrequentElementsBenchmarks
     private const int RandomSeed = 5;
     private const int ValueUpperBoundExclusive = 2_000;
 
-    [Params(1_000, 50_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(1_000, 50_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

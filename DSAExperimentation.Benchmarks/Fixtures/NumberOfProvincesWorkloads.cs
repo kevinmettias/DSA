@@ -22,7 +22,8 @@ internal static class NumberOfProvincesWorkloads
         {
             for (var j = i + 1; j < cityCount; j++)
             {
-                var connected = random.Next(0, ConnectionOddsDenominator) == 0 ? 1 : 0;
+                var edgeDrawn = random.Next(0, ConnectionOddsDenominator) == 0;
+                var connected = edgeDrawn ? 1 : 0;
                 isConnected[i][j] = connected;
                 isConnected[j][i] = connected;
             }

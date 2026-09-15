@@ -17,10 +17,10 @@ public class ComplexNumberMultiplicationBenchmarks
     private const int MinComponentValue = -100;
     private const int MaxComponentValueExclusive = 101;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private (string A, string B)[] _pairs = [];
 
-    private (string A, string B)[] _pairs = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

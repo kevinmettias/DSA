@@ -14,10 +14,15 @@ namespace DSAExperimentation.LeetCode.RotateImage;
 // this way.
 internal sealed class RotateImageRegistration : ILeetCodeProblemRegistration
 {
+    // Both mechanisms are stateless, so one instance each serves every run and no
+    // benchmark iteration allocates one just to name a strategy.
+    private static readonly IRotation ArrayReverseRotation = new ArrayReverseMechanism();
+    private static readonly IRotation StackReverseRotation = new StackReverseMechanism();
+
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<Func<int[][]>, int[][]>("rotate-image")
-            .Strategy("ArrayReverse", input => Rotated(RotateImageSolution.RotateByArrayReverse, input))
-            .Strategy("StackReverse", input => Rotated(RotateImageSolution.RotateByStackReverse, input))
+            .Strategy("ArrayReverse", input => Rotated(ArrayReverseRotation, input()))
+            .Strategy("StackReverse", input => Rotated(StackReverseRotation, input()))
             .MatchingAnswersWith(LeetCodeAnswers.SequenceOfSequencesEqual<int>)
             .Case(
                 "example-1",
@@ -36,14 +41,33 @@ internal sealed class RotateImageRegistration : ILeetCodeProblemRegistration
             .Workload("square-300", () => BuildSquare(300))
             .Build();
 
-    private static int[][] Rotated(Action<int[][]> rotate, Func<int[][]> buildMatrix)
+    // How a matrix gets rotated in place - the one thing the two strategies do
+    // differently. The matrix is built and handed in by the caller rather than by this
+    // interface, because a mutating problem's input has to be a factory (see above).
+    private interface IRotation
     {
-        var matrix = buildMatrix();
-        rotate(matrix);
+        void ApplyTo(int[][] matrix);
+    }
+
+    private static int[][] Rotated(IRotation rotation, int[][] matrix)
+    {
+        rotation.ApplyTo(matrix);
 
         return matrix;
     }
 
     private static int[][] BuildSquare(int size)
         => [.. Enumerable.Range(0, size).Select(row => Enumerable.Range(row * size, size).ToArray())];
+
+    // Each mechanism is a direct call to the solution method it names: the rotation is
+    // the code under test, so nothing here may stand between a strategy and it.
+    private sealed class ArrayReverseMechanism : IRotation
+    {
+        public void ApplyTo(int[][] matrix) => RotateImageSolution.RotateByArrayReverse(matrix);
+    }
+
+    private sealed class StackReverseMechanism : IRotation
+    {
+        public void ApplyTo(int[][] matrix) => RotateImageSolution.RotateByStackReverse(matrix);
+    }
 }

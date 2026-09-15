@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.BookingConcertTicketsInGroups.BookingConcertTicketsInGroupsSolution;
+using DSAExperimentation.LeetCode.BookingConcertTicketsInGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -19,10 +19,10 @@ public class BookingConcertTicketsInGroupsBenchmarks
     private const int RandomSeed = 2286; // LC problem number
     private const int OperationTypeCount = 2;
 
-    [Params(200, 2_000)]
-    public int RowCount;
+    private (bool IsGather, int K, int MaxRow)[] _operations = [];
 
-    private (bool IsGather, int K, int MaxRow)[] _operations = null!;
+    [Params(200, 2_000)]
+    public int RowCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -40,15 +40,15 @@ public class BookingConcertTicketsInGroupsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long RowScan() => Replay(new BookMyShowByRowScan(RowCount, SeatsPerRow));
+    public long RowScan() => Replay(new BookingConcertTicketsInGroupsSolution.BookMyShowByRowScan(RowCount, SeatsPerRow));
 
     [Benchmark]
-    public long SegmentTreeBinarySearch() => Replay(new BookMyShowBySegmentTreeBinarySearch(RowCount, SeatsPerRow));
+    public long SegmentTreeBinarySearch() => Replay(new BookingConcertTicketsInGroupsSolution.BookMyShowBySegmentTreeBinarySearch(RowCount, SeatsPerRow));
 
     // Folds every answer into a checksum rather than discarding it, so the JIT
     // cannot eliminate the replay as dead code - the same "return the real answer,
     // not a weaker proxy" shape DesignTaskManagerBenchmarks already follows.
-    private long Replay(IBookMyShowStrategy strategy)
+    private long Replay(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy)
     {
         var checksum = 0L;
 
@@ -60,13 +60,15 @@ public class BookingConcertTicketsInGroupsBenchmarks
         return checksum;
     }
 
-    private static long GatherChecksum(IBookMyShowStrategy strategy, int k, int maxRow)
+    private static long GatherChecksum(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int k, int maxRow)
     {
         var seating = strategy.Gather(k, maxRow);
 
-        return seating.Length == 0 ? 0 : seating[0] + seating[1];
+        return seating.Length == 0 ? 0 : SeatPairSum(seating);
     }
 
-    private static long ScatterChecksum(IBookMyShowStrategy strategy, int k, int maxRow)
+    private static long SeatPairSum(int[] seating) => seating[0] + seating[1];
+
+    private static long ScatterChecksum(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int k, int maxRow)
         => strategy.Scatter(k, maxRow) ? 1 : 0;
 }

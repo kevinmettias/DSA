@@ -14,10 +14,10 @@ public class ErectTheFenceBenchmarks
     private const int RandomSeed = 587; // LC problem number
     private const int CoordinateBound = 1_000;
 
-    [Params(50, 300)]
-    public int Length;
+    private (int X, int Y)[] _points = [];
 
-    private (int X, int Y)[] _points = null!;
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

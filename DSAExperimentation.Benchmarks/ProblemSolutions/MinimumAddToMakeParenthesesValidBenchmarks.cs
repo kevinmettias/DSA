@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumAddToMakeParenthesesValidBenchmarks
 {
     private const int RandomSeed = 921; // LC problem number
-    private const int BracketTypeExclusiveBound = 2; // picks between '(' and ')'
+    private const int BracketTypeExclusiveBound = 2; private string _brackets = "";
+
+    // picks between '(' and ')'
 
     [Params(1_000, 20_000)]
-    public int Length;
-
-    private string _brackets = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,11 +27,14 @@ public class MinimumAddToMakeParenthesesValidBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = random.Next(0, BracketTypeExclusiveBound) == 0 ? '(' : ')';
+            chars[i] = IsOpenBracket(random) ? '(' : ')';
         }
 
         _brackets = new string(chars);
     }
+
+    // One draw per position, in the same order the loop above consumes them.
+    private static bool IsOpenBracket(Random random) => random.Next(0, BracketTypeExclusiveBound) == 0;
 
     [Benchmark(Baseline = true)]
     public int RunningCounter() =>

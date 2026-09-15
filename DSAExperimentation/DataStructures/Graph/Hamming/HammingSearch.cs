@@ -17,17 +17,19 @@ internal static class HammingSearch
     // through `allowed` - a nullable result rather than a sentinel, so each caller
     // maps "unreachable" onto whatever its own problem reports (0 for LC 127, -1
     // for LC 433) without a shared magic value in between. `start` itself need not
-    // be a member of `allowed`, matching LeetCode's beginWord/startGene convention.
-    public static int? MutationDistance(string start, string target, Set<string> allowed, Alphabet alphabet)
+    // be a member of `allowed`, matching LeetCode's beginWord/startGene convention,
+    // which is also why the two endpoints are distinct types and not two strings.
+    public static int? MutationDistance(
+        MutationStart start, MutationTarget target, Set<string> allowed, Alphabet alphabet)
     {
-        var walk = new MutationWalk(alphabet, allowed, [start], new Queue<(string, int)>());
-        walk.Queue.Enqueue((start, 0));
+        var walk = new MutationWalk(alphabet, allowed, [start.Text], new Queue<(string, int)>());
+        walk.Queue.Enqueue((start.Text, 0));
 
         while (walk.Queue.Count > 0)
         {
             var (value, distance) = walk.Queue.Dequeue();
 
-            if (value == target)
+            if (value == target.Text)
             {
                 return distance;
             }

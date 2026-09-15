@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignFrontMiddleBackQueue.DesignFrontMiddleBackQueueSolution;
+using DSAExperimentation.LeetCode.DesignFrontMiddleBackQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -15,17 +15,17 @@ public class DesignFrontMiddleBackQueueBenchmarks
     private const int OperationCycleLength = 3; // cycles push front/middle/back
 
     [Params(5_000, 50_000)]
-    public int Calls;
+    public int Calls { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int ArrayListInsertAtPosition() => RunPushCycle(new FrontMiddleBackQueueByListInsert());
+    public int ArrayListInsertAtPosition() => RunPushCycle(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByListInsert());
 
     [Benchmark]
-    public int TwoDequeFrontMiddleBackQueue() => RunPushCycle(new FrontMiddleBackQueueByTwoDeques());
+    public int TwoDequeFrontMiddleBackQueue() => RunPushCycle(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByTwoDeques());
 
     // Returns the queue's own Count, the same non-dead value both of this
     // problem's original arms returned, so the pushes cannot be optimized away.
-    private int RunPushCycle(IFrontMiddleBackQueue queue)
+    private int RunPushCycle(DesignFrontMiddleBackQueueSolution.IFrontMiddleBackQueue queue)
     {
         for (var i = 0; i < Calls; i++)
         {

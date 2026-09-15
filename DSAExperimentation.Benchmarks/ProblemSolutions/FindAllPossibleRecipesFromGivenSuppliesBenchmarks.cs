@@ -16,12 +16,12 @@ public class FindAllPossibleRecipesFromGivenSuppliesBenchmarks
 {
     private const string InitialSupply = "s";
 
-    [Params(200, 2_000)]
-    public int RecipeCount;
+    private string[] _recipes = [];
 
-    private string[] _recipes = null!;
-    private string[][] _ingredients = null!;
-    private string[] _supplies = null!;
+    private string[][] _ingredients = [];
+    private string[] _supplies = [];
+    [Params(200, 2_000)]
+    public int RecipeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

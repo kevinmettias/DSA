@@ -26,10 +26,10 @@ public class StoneGameIIBenchmarks
     // Exclusive upper bound for a pile's stone count.
     private const int MaxPileSize = 100;
 
-    [Params(10, 14)]
-    public int PileCount;
+    private int[] _piles = [];
 
-    private int[] _piles = null!;
+    [Params(10, 14)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

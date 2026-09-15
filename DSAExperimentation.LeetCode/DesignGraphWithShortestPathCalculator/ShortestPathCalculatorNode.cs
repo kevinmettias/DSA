@@ -9,9 +9,7 @@ namespace DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 // The edge list is mutable because AddEdge is part of LeetCode's own API here -
 // the graph grows between queries, which is exactly why no query result may be
 // cached.
-internal sealed class ShortestPathCalculatorNode(int id)
+internal sealed record ShortestPathCalculatorNode(int Id)
 {
-    public int Id { get; } = id;
-
     public List<(int Weight, ShortestPathCalculatorNode Target)> Edges { get; } = [];
 }

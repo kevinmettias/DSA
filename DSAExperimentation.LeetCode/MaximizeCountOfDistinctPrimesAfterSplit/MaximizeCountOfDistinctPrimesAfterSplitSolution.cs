@@ -45,30 +45,31 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
 
         for (var k = 1; k < nums.Length; k++)
         {
-            var prefixPrimes = new Set<int>();
+            var left = CountDistinctPrimes(nums, isComposite, 0, k);
+            var right = CountDistinctPrimes(nums, isComposite, k, nums.Length);
 
-            for (var i = 0; i < k; i++)
-            {
-                if (!isComposite.Get(nums[i]))
-                {
-                    prefixPrimes.TryAdd(nums[i]);
-                }
-            }
-
-            var suffixPrimes = new Set<int>();
-
-            for (var i = k; i < nums.Length; i++)
-            {
-                if (!isComposite.Get(nums[i]))
-                {
-                    suffixPrimes.TryAdd(nums[i]);
-                }
-            }
-
-            best = Math.Max(best, prefixPrimes.Count + suffixPrimes.Count);
+            best = Math.Max(best, left + right);
         }
 
         return best;
+    }
+
+    // The distinct primes among nums[start..end), counted from scratch through a fresh
+    // Set<int> - the O(n) rescan this arm repeats for each side of each candidate split.
+    private static int CountDistinctPrimes(
+        int[] nums, DynamicArray<bool> isComposite, int start, int end)
+    {
+        var primes = new Set<int>();
+
+        for (var i = start; i < end; i++)
+        {
+            if (!isComposite.Get(nums[i]))
+            {
+                primes.TryAdd(nums[i]);
+            }
+        }
+
+        return primes.Count;
     }
 
     // This repo's own Sieve of Eratosthenes built once, then a single
@@ -91,11 +92,19 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
 
     private static int BestSplitByPrefixSuffixScan(int[] nums, DynamicArray<bool> isComposite)
     {
-        var n = nums.Length;
-        var prefixDistinctPrimeCounts = new int[n];
+        var prefixDistinctPrimeCounts = BuildPrefixDistinctPrimeCounts(nums, isComposite);
+
+        return BestSuffixSplit(nums, isComposite, prefixDistinctPrimeCounts);
+    }
+
+    // The single left-to-right pass both halves of the composed arm share:
+    // prefixDistinctPrimeCounts[i] is the number of distinct primes among nums[0..i].
+    private static int[] BuildPrefixDistinctPrimeCounts(int[] nums, DynamicArray<bool> isComposite)
+    {
+        var prefixDistinctPrimeCounts = new int[nums.Length];
         var seenFromLeft = new Set<int>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nums.Length; i++)
         {
             if (!isComposite.Get(nums[i]))
             {
@@ -105,10 +114,18 @@ internal static class MaximizeCountOfDistinctPrimesAfterSplitSolution
             prefixDistinctPrimeCounts[i] = seenFromLeft.Count;
         }
 
+        return prefixDistinctPrimeCounts;
+    }
+
+    // The right-to-left pass that folds the matching suffix count into the prefix one
+    // already recorded at the split point, keeping the best total over every k.
+    private static int BestSuffixSplit(
+        int[] nums, DynamicArray<bool> isComposite, int[] prefixDistinctPrimeCounts)
+    {
         var best = 0;
         var seenFromRight = new Set<int>();
 
-        for (var k = n - 1; k >= 1; k--)
+        for (var k = nums.Length - 1; k >= 1; k--)
         {
             if (!isComposite.Get(nums[k]))
             {

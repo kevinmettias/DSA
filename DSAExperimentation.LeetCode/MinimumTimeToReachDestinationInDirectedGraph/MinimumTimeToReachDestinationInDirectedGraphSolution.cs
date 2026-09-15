@@ -19,8 +19,12 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
 {
     // Baseline: BCL PriorityQueue<int,int> - "what you'd write without this repo"
     // (ARCHITECTURE.md 17.5).
-    public static int MinimumTimeByBclPriorityQueue(int n, int[][] edges) =>
-        MinimumTimeByBclPriorityQueue(TimeWindowAdjacency.Build(n, edges));
+    public static int MinimumTimeByBclPriorityQueue(int n, int[][] edges)
+    {
+        var graph = TimeWindowAdjacency.Build(n, edges);
+
+        return MinimumTimeByBclPriorityQueue(graph);
+    }
 
     public static int MinimumTimeByBclPriorityQueue(TimeWindowAdjacency graph)
     {
@@ -31,39 +35,72 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
             return 0;
         }
 
+        var state = NewBclQueueSearchState(graph);
+
+        return SearchByBclQueue(state, graph, destination);
+    }
+
+    // The mutable working set of one BCL-queue Dijkstra run: the best arrival
+    // time known per node, which nodes have already been settled, and the
+    // frontier the unsettled ones wait in.
+    private static (
+        int[] Earliest,
+        bool[] Settled,
+        PriorityQueue<int, int> Frontier) NewBclQueueSearchState(TimeWindowAdjacency graph)
+    {
         var earliest = NewUnreachableTimes(graph.Neighbors.Length);
         earliest[0] = 0;
         var settled = new bool[graph.Neighbors.Length];
         var frontier = new PriorityQueue<int, int>();
         frontier.Enqueue(0, 0);
 
-        while (frontier.TryDequeue(out var node, out var time))
+        return (earliest, settled, frontier);
+    }
+
+    // The relax step for the node just settled: every edge out of it is skipped
+    // when its far end is settled or its window cannot be met from `time`, and
+    // queued only when it improves the arrival time already known for that far
+    // end.
+    private static void RelaxNeighborsByBclQueue(
+        (int[] Earliest, bool[] Settled, PriorityQueue<int, int> Frontier) state,
+        TimeWindowAdjacency graph, int node, int time)
+    {
+        foreach (var (neighbor, start, end) in graph.Neighbors[node])
         {
-            if (settled[node])
+            if (state.Settled[neighbor] || !TryArrivalTime(time, start, end, out var arrival))
             {
                 continue;
             }
 
-            settled[node] = true;
+            if (arrival < state.Earliest[neighbor])
+            {
+                state.Earliest[neighbor] = arrival;
+                state.Frontier.Enqueue(neighbor, arrival);
+            }
+        }
+    }
+
+    // Dijkstra over time instead of distance: the frontier is ordered by arrival
+    // time, so the first time the destination surfaces is the answer.
+    private static int SearchByBclQueue(
+        (int[] Earliest, bool[] Settled, PriorityQueue<int, int> Frontier) state,
+        TimeWindowAdjacency graph, int destination)
+    {
+        while (state.Frontier.TryDequeue(out var node, out var time))
+        {
+            if (state.Settled[node])
+            {
+                continue;
+            }
+
+            state.Settled[node] = true;
 
             if (node == destination)
             {
                 return time;
             }
 
-            foreach (var (neighbor, start, end) in graph.Neighbors[node])
-            {
-                if (settled[neighbor] || !TryArrivalTime(time, start, end, out var arrival))
-                {
-                    continue;
-                }
-
-                if (arrival < earliest[neighbor])
-                {
-                    earliest[neighbor] = arrival;
-                    frontier.Enqueue(neighbor, arrival);
-                }
-            }
+            RelaxNeighborsByBclQueue(state, graph, node, time);
         }
 
         return LeetCodeAnswer.None;
@@ -73,8 +110,12 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
     // Heap<Element,TOrder> ordered by ByPriorityOrder<TNode,TWeight> - the same
     // frontier ShortestPath.Dijkstra/AStar and every other dynamic-relaxation
     // Dijkstra coverage problem in this repo already use.
-    public static int MinimumTimeByHeap(int n, int[][] edges) =>
-        MinimumTimeByHeap(TimeWindowAdjacency.Build(n, edges));
+    public static int MinimumTimeByHeap(int n, int[][] edges)
+    {
+        var graph = TimeWindowAdjacency.Build(n, edges);
+
+        return MinimumTimeByHeap(graph);
+    }
 
     public static int MinimumTimeByHeap(TimeWindowAdjacency graph)
     {
@@ -85,41 +126,67 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
             return 0;
         }
 
+        var state = NewHeapSearchState(graph);
+
+        return SearchByHeap(state, graph, destination);
+    }
+
+    // The same working set as NewBclQueueSearchState, over this repo's own
+    // priority queue.
+    private static (
+        int[] Earliest,
+        bool[] Settled,
+        Heap<(int Node, int Time), ByPriorityOrder<int, int>> Frontier) NewHeapSearchState(TimeWindowAdjacency graph)
+    {
         var earliest = NewUnreachableTimes(graph.Neighbors.Length);
         earliest[0] = 0;
         var settled = new bool[graph.Neighbors.Length];
         var frontier = new Heap<(int Node, int Time), ByPriorityOrder<int, int>>();
         frontier.Push((0, 0));
 
-        while (frontier.TryPop(out var entry))
-        {
-            var (node, time) = entry;
+        return (earliest, settled, frontier);
+    }
 
-            if (settled[node])
+    private static void RelaxNeighborsByHeap(
+        (int[] Earliest, bool[] Settled, Heap<(int Node, int Time), ByPriorityOrder<int, int>> Frontier) state,
+        TimeWindowAdjacency graph, int node, int time)
+    {
+        foreach (var (neighbor, start, end) in graph.Neighbors[node])
+        {
+            if (state.Settled[neighbor] || !TryArrivalTime(time, start, end, out var arrival))
             {
                 continue;
             }
 
-            settled[node] = true;
+            if (arrival < state.Earliest[neighbor])
+            {
+                state.Earliest[neighbor] = arrival;
+                state.Frontier.Push((neighbor, arrival));
+            }
+        }
+    }
+
+    private static int SearchByHeap(
+        (int[] Earliest, bool[] Settled, Heap<(int Node, int Time), ByPriorityOrder<int, int>> Frontier) state,
+        TimeWindowAdjacency graph, int destination)
+    {
+        while (state.Frontier.TryPop(out var entry))
+        {
+            var (node, time) = entry;
+
+            if (state.Settled[node])
+            {
+                continue;
+            }
+
+            state.Settled[node] = true;
 
             if (node == destination)
             {
                 return time;
             }
 
-            foreach (var (neighbor, start, end) in graph.Neighbors[node])
-            {
-                if (settled[neighbor] || !TryArrivalTime(time, start, end, out var arrival))
-                {
-                    continue;
-                }
-
-                if (arrival < earliest[neighbor])
-                {
-                    earliest[neighbor] = arrival;
-                    frontier.Push((neighbor, arrival));
-                }
-            }
+            RelaxNeighborsByHeap(state, graph, node, time);
         }
 
         return LeetCodeAnswer.None;

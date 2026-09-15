@@ -36,34 +36,37 @@ internal static class SlidingWindowMaximumSolution
     public static int[] MaxSlidingWindowByMonotonicDeque(int[] nums, int k)
     {
         var result = new int[nums.Length - k + 1];
-        var window = new RepoDeque();
+        var sweep = (Window: new RepoDeque(), Result: result);
 
         for (var i = 0; i < nums.Length; i++)
         {
-            SlideWindow(nums, k, window, result, i);
+            SlideWindow(nums, k, sweep, i);
         }
 
         return result;
     }
 
-    private static void SlideWindow(int[] nums, int k, RepoDeque window, int[] result, int i)
+    // The sweep's two accumulators - the monotonic deque and the answers it fills -
+    // are created together by the caller and mutated together on every step, so they
+    // arrive as the one piece of state this pass carries.
+    private static void SlideWindow(int[] nums, int k, (RepoDeque Window, int[] Result) sweep, int i)
     {
-        while (window.TryPeekBack(out var backIndex) && nums[backIndex] <= nums[i])
+        while (sweep.Window.TryPeekBack(out var backIndex) && nums[backIndex] <= nums[i])
         {
-            window.TryPopBack(out _);
+            sweep.Window.TryPopBack(out _);
         }
 
-        window.PushBack(i);
+        sweep.Window.PushBack(i);
 
-        if (window.TryPeekFront(out var frontIndex) && frontIndex <= i - k)
+        if (sweep.Window.TryPeekFront(out var frontIndex) && frontIndex <= i - k)
         {
-            window.TryPopFront(out _);
+            sweep.Window.TryPopFront(out _);
         }
 
         if (i >= k - 1)
         {
-            window.TryPeekFront(out var maxIndex);
-            result[i - k + 1] = nums[maxIndex];
+            sweep.Window.TryPeekFront(out var maxIndex);
+            sweep.Result[i - k + 1] = nums[maxIndex];
         }
     }
 }

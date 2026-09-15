@@ -19,10 +19,10 @@ public class LinkedListRandomNodeBenchmarks
 {
     private const int CallCount = 2_000;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = LinkedListRandomNodeWorkloads.Build(Length);

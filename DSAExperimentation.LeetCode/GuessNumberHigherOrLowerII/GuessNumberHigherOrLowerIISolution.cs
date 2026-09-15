@@ -17,6 +17,43 @@ internal static class GuessNumberHigherOrLowerIISolution
     // the arm the memoized strategy below has to justify itself against.
     public static int GetMoneyAmountByUnmemoizedRecursion(int n) => WorstCaseCostUnmemoized(1, n);
 
+    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
+    // (low, high) bound pair - the same 2-tuple-state shape BurstBalloons already
+    // uses for its own interval DP.
+    public static int GetMoneyAmountByMemoizedRecursion(int n) =>
+        Memoizer.Memoize<(int Low, int High), int>((1, n), new WorstCaseGuessCost());
+
+    /// <summary>
+    /// The recurrence, named: over a (low, high) range the guesser picks a guess
+    /// minimizing the worst-case money the adversary can force by revealing the wrong
+    /// half, and that worst case is itself the larger of the two sub-range costs.
+    /// </summary>
+    private sealed class WorstCaseGuessCost : IRecurrence<(int Low, int High), int>
+    {
+        /// <inheritdoc/>
+        public int Replay((int Low, int High) state, IRecurrence<(int Low, int High), int> rest)
+        {
+            var (low, high) = state;
+
+            if (low >= high)
+            {
+                return 0;
+            }
+
+            var best = int.MaxValue;
+
+            for (var guess = low; guess <= high; guess++)
+            {
+                var lowHalf = rest.Replay((low, guess - 1), rest);
+                var highHalf = rest.Replay((guess + 1, high), rest);
+                var worstHalf = Math.Max(lowHalf, highHalf);
+                best = Math.Min(best, guess + worstHalf);
+            }
+
+            return best;
+        }
+    }
+
     private static int WorstCaseCostUnmemoized(int low, int high)
     {
         if (low >= high)
@@ -28,35 +65,9 @@ internal static class GuessNumberHigherOrLowerIISolution
 
         for (var guess = low; guess <= high; guess++)
         {
-            var worstHalf = Math.Max(
-                WorstCaseCostUnmemoized(low, guess - 1), WorstCaseCostUnmemoized(guess + 1, high));
-            best = Math.Min(best, guess + worstHalf);
-        }
-
-        return best;
-    }
-
-    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
-    // (low, high) bound pair - the same 2-tuple-state shape BurstBalloons already
-    // uses for its own interval DP.
-    public static int GetMoneyAmountByMemoizedRecursion(int n) =>
-        Memoizer.Memoize<(int Low, int High), int>((1, n), WorstCaseCostMemoized);
-
-    private static int WorstCaseCostMemoized((int Low, int High) range, Func<(int Low, int High), int> costFor)
-    {
-        var (low, high) = range;
-
-        if (low >= high)
-        {
-            return 0;
-        }
-
-        var best = int.MaxValue;
-
-        for (var guess = low; guess <= high; guess++)
-        {
-            var worstHalf = Math.Max(costFor((low, guess - 1)), costFor((guess + 1, high)));
-            best = Math.Min(best, guess + worstHalf);
+            var lowHalf = WorstCaseCostUnmemoized(low, guess - 1);
+            var highHalf = WorstCaseCostUnmemoized(guess + 1, high);
+            best = Math.Min(best, guess + Math.Max(lowHalf, highHalf));
         }
 
         return best;

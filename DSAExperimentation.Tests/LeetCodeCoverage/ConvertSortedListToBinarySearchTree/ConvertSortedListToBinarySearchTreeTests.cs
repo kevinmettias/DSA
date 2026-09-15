@@ -30,7 +30,7 @@ public sealed class ConvertSortedListToBinarySearchTreeTests
         var root = ConvertSortedListToBinarySearchTreeSolution.BuildByMidpointRecursion(head);
 
         Assert.Equal(sortedValues, InOrder(root));
-        Assert.True(IsHeightBalanced(root, out _));
+        Assert.True(IsHeightBalanced(root).IsBalanced);
     }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
@@ -60,22 +60,27 @@ public sealed class ConvertSortedListToBinarySearchTreeTests
     private static int[] InOrder(BinaryTreeNode<int>? node) =>
         node is null ? [] : [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
 
-    private static bool IsHeightBalanced(BinaryTreeNode<int>? node, out int height)
+    private static (bool IsBalanced, int Height) IsHeightBalanced(BinaryTreeNode<int>? node)
     {
         if (node is null)
         {
-            height = 0;
-            return true;
+            return (true, 0);
         }
 
-        if (!IsHeightBalanced(node.Left, out var leftHeight) ||
-            !IsHeightBalanced(node.Right, out var rightHeight))
+        var (leftBalanced, leftHeight) = IsHeightBalanced(node.Left);
+
+        if (!leftBalanced)
         {
-            height = 0;
-            return false;
+            return (false, 0);
         }
 
-        height = 1 + Math.Max(leftHeight, rightHeight);
-        return Math.Abs(leftHeight - rightHeight) <= 1;
+        var (rightBalanced, rightHeight) = IsHeightBalanced(node.Right);
+
+        if (!rightBalanced)
+        {
+            return (false, 0);
+        }
+
+        return (Math.Abs(leftHeight - rightHeight) <= 1, 1 + Math.Max(leftHeight, rightHeight));
     }
 }

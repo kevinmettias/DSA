@@ -18,10 +18,10 @@ public class SmallestSufficientTeamBenchmarks
 {
     private const int PeoplePerSkill = 3;
 
-    [Params(6, 10)]
-    public int SkillCount;
-
     private SkillMasks _masks = null!;
+
+    [Params(6, 10)]
+    public int SkillCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

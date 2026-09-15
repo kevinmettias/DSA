@@ -14,7 +14,7 @@ public class CreateGridWithExactlyKPathsIBenchmarks
     private const int K = 4;
 
     [Params(4, 10)]
-    public int Side;
+    public int Side { get; set; }
 
     [Benchmark(Baseline = true)]
     public string[] PathCountDp() => CreateGridWithExactlyKPathsISolution.CreateGridByPathCountDp(Side, Side, K);

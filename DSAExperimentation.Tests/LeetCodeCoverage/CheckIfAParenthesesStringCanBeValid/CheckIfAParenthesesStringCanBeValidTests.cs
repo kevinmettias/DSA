@@ -32,7 +32,9 @@ public sealed class CheckIfAParenthesesStringCanBeValidTests
         string s, string locked, bool expected) =>
         Assert.Equal(
             expected,
-            CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByReachableOpenCountDp(s, locked));
+            CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByReachableOpenCountDp(
+                new CheckIfAParenthesesStringCanBeValidSolution.ParenthesisString(s),
+                new CheckIfAParenthesesStringCanBeValidSolution.LockMask(locked)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -40,5 +42,7 @@ public sealed class CheckIfAParenthesesStringCanBeValidTests
         string s, string locked, bool expected) =>
         Assert.Equal(
             expected,
-            CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByIndexStackSweep(s, locked));
+            CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByIndexStackSweep(
+                new CheckIfAParenthesesStringCanBeValidSolution.ParenthesisString(s),
+                new CheckIfAParenthesesStringCanBeValidSolution.LockMask(locked)));
 }

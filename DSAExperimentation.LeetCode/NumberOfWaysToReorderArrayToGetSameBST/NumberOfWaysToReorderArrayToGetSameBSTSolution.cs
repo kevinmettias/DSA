@@ -28,26 +28,6 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
     // solution below has to justify itself against.
     public static int NumOfWaysByListSplitting(int[] nums) => ExcludeOriginal(SplitWays(nums));
 
-    private static long SplitWays(int[] arr)
-    {
-        if (arr.Length <= 1)
-        {
-            return 1;
-        }
-
-        var root = arr[0];
-        var left = new List<int>();
-        var right = new List<int>();
-
-        for (var i = 1; i < arr.Length; i++)
-        {
-            (arr[i] < root ? left : right).Add(arr[i]);
-        }
-
-        return Choose(left.Count + right.Count, left.Count) * SplitWays([.. left]) % ModularArithmetic.Modulo
-            * SplitWays([.. right]) % ModularArithmetic.Modulo;
-    }
-
     // Build the actual BST via this repo's own BinarySearchTree<int>.Insert, then
     // fold it bottom-up with this repo's own TreeFold/IFoldAlgebra catamorphism -
     // the same machinery TreeMetrics closes over BinaryTreeNode<int> for - so every
@@ -70,20 +50,53 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
         return ExcludeOriginal(ways);
     }
 
+    // Pascal's rule, named: a binomial coefficient is the sum of the two terms above
+    // it in the triangle, and the edges of the triangle are 1.
+    private sealed class PascalRow : IRecurrence<(int N, int K), long>
+    {
+        public long Replay((int N, int K) state, IRecurrence<(int N, int K), long> rest)
+        {
+            var (n, k) = state;
+
+            if (k == 0 || k == n)
+            {
+                return 1;
+            }
+
+            var aboveLeft = rest.Replay((n - 1, k - 1), rest);
+            var aboveRight = rest.Replay((n - 1, k), rest);
+
+            return (aboveLeft + aboveRight) % ModularArithmetic.Modulo;
+        }
+    }
+
+    private static long SplitWays(int[] arr)
+    {
+        if (arr.Length <= 1)
+        {
+            return 1;
+        }
+
+        var root = arr[0];
+        var left = new List<int>();
+        var right = new List<int>();
+
+        for (var i = 1; i < arr.Length; i++)
+        {
+            var belongsLeft = arr[i] < root;
+            (belongsLeft ? left : right).Add(arr[i]);
+        }
+
+        return Choose(left.Count + right.Count, left.Count) * SplitWays([.. left]) % ModularArithmetic.Modulo
+            * SplitWays([.. right]) % ModularArithmetic.Modulo;
+    }
+
     // Every count above includes the original array's own insertion order, which LC
     // does not count as a reordering.
     private static int ExcludeOriginal(long ways) =>
         (int)((ways - 1 + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
 
-    private static long Choose(int n, int k) => Memoizer.Memoize<(int N, int K), long>((n, k), ChooseRecurrence);
-
-    private static long ChooseRecurrence((int N, int K) state, Func<(int, int), long> choose)
-    {
-        var (n, k) = state;
-        return k == 0 || k == n
-            ? 1
-            : (choose((n - 1, k - 1)) + choose((n - 1, k))) % ModularArithmetic.Modulo;
-    }
+    private static long Choose(int n, int k) => Memoizer.Memoize<(int N, int K), long>((n, k), new PascalRow());
 
     // Per node: total child-subtree size, and the ways to interleave every child's
     // already-counted insertion sequence back into one sequence for this node - a

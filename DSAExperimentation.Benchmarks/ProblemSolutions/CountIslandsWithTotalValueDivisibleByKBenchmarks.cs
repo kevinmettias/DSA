@@ -14,10 +14,10 @@ public class CountIslandsWithTotalValueDivisibleByKBenchmarks
     private const int GridSeed = 3619;
     private const int Divisor = 7;
 
-    [Params(50, 200)]
-    public int GridSize;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(50, 200)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = IslandValueGridWorkloads.BuildGrid(GridSize, GridSize, GridSeed);

@@ -8,9 +8,9 @@ namespace DSAExperimentation.LeetCode.CountAlmostEqualPairsII;
 // ParenthesesState uses.
 internal sealed class SwapBudgetState(char[] digits, char[] target, int budget)
 {
-    public bool MatchesTarget => digits.AsSpan().SequenceEqual(target);
-
     private int SwapsUsed { get; set; }
+
+    public bool MatchesTarget => digits.AsSpan().SequenceEqual(target);
 
     // A swap between two equal digits is never useful (it's a no-op on the string),
     // so it is pruned here rather than left for Choose/Unchoose to waste a level of

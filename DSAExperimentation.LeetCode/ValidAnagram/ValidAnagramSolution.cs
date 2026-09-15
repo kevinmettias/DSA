@@ -24,25 +24,28 @@ internal static class ValidAnagramSolution
 
         foreach (var c in s)
         {
-            var found = false;
-
-            for (var j = 0; j < t.Length; j++)
-            {
-                if (!matched[j] && t[j] == c)
-                {
-                    matched[j] = true;
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
+            if (!TryMatchCharacter(t, c, matched))
             {
                 return false;
             }
         }
 
         return true;
+    }
+
+    // Claims the first not-yet-matched occurrence of `c` in t, if there is one.
+    private static bool TryMatchCharacter(string t, char c, bool[] matched)
+    {
+        for (var j = 0; j < t.Length; j++)
+        {
+            if (!matched[j] && t[j] == c)
+            {
+                matched[j] = true;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // One O(n) pass: increment per character of s, decrement per character of t,

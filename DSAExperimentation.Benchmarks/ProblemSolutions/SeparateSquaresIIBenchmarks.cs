@@ -18,10 +18,10 @@ public class SeparateSquaresIIBenchmarks
     private const int CoordinateRange = 100;
     private const int MaxSide = 20;
 
-    [Params(20, 200)]
-    public int SquareCount;
+    private Square[] _squares = [];
 
-    private Square[] _squares = null!;
+    [Params(20, 200)]
+    public int SquareCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

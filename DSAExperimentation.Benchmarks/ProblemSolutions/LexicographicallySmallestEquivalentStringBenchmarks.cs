@@ -15,12 +15,12 @@ public class LexicographicallySmallestEquivalentStringBenchmarks
     private const int RandomSeed = 1061; // LC problem number
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s1 = "";
 
-    private string _s1 = null!;
-    private string _s2 = null!;
-    private string _baseStr = null!;
+    private string _s2 = "";
+    private string _baseStr = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -44,9 +44,15 @@ public class LexicographicallySmallestEquivalentStringBenchmarks
 
     [Benchmark(Baseline = true)]
     public string AdjacencyListBfs() =>
-        LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByAdjacencyListBfs(_s1, _s2, _baseStr);
+        LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByAdjacencyListBfs(
+            _s1,
+            _s2,
+            new LexicographicallySmallestEquivalentStringSolution.BaseText(_baseStr));
 
     [Benchmark]
     public string DisjointSetUnionFind() =>
-        LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByDisjointSet(_s1, _s2, _baseStr);
+        LexicographicallySmallestEquivalentStringSolution.SmallestEquivalentStringByDisjointSet(
+            _s1,
+            _s2,
+            new LexicographicallySmallestEquivalentStringSolution.BaseText(_baseStr));
 }

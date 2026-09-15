@@ -143,7 +143,8 @@ internal static class TaskSchedulerSolution
 
         for (var i = 0; i < EnglishAlphabetSize; i++)
         {
-            if (counts[i] > 0 && time - lastUsed[i] > n && (best == -1 || counts[i] > counts[best]))
+            if (IsReadyToRun(counts[i], time - lastUsed[i], n)
+                && IsBetterCandidate(counts, i, best))
             {
                 best = i;
             }
@@ -151,4 +152,14 @@ internal static class TaskSchedulerSolution
 
         return best;
     }
+
+    // A task is ready to run when it still has occurrences left and enough ticks
+    // have passed since it last ran.
+    private static bool IsReadyToRun(int remainingCount, int cooldownAge, int cooldown)
+        => remainingCount > 0 && cooldownAge > cooldown;
+
+    // Among the ready tasks the one with the most occurrences left wins, and the
+    // first ready task wins while none has been chosen yet.
+    private static bool IsBetterCandidate(int[] counts, int i, int best)
+        => best == -1 || counts[i] > counts[best];
 }

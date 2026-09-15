@@ -14,10 +14,10 @@ public class MinimumScoreOfAPathBetweenTwoCitiesBenchmarks
     private const int RandomSeed = 2492; // LC problem number
     private const int MaxWeightExclusive = 1_000;
 
-    [Params(200, 5_000)]
-    public int CityCount;
+    private int[][] _roads = [];
 
-    private int[][] _roads = null!;
+    [Params(200, 5_000)]
+    public int CityCount { get; set; }
 
     // A connected spine 1..CityCount guarantees city 1 and city CityCount share a
     // component, matching this problem's own guarantee, plus extra random chords

@@ -17,11 +17,11 @@ public class MaximizeCountOfDistinctPrimesAfterSplitBenchmarks
     private const int MaxValueExclusive = 100_001;
     private const int QueryCount = 15;
 
-    [Params(50, 200)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(50, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

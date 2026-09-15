@@ -47,20 +47,28 @@ internal static class CountTheNumberOfGoodPartitionsSolution
                 groupId++;
             }
 
-            if (groupOfValue.TryGetValue(nums[i], out var existingGroup))
+            if (IsInAnotherGroup(groupOfValue, nums[i], groupId))
             {
-                if (existingGroup != groupId)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                groupOfValue[nums[i]] = groupId;
+                return false;
             }
         }
 
         return true;
+    }
+
+    // Whether `value` already belongs to a group other than `groupId` - the one
+    // thing that makes a partition bad. A value not seen before joins `groupId`
+    // and is by definition fine.
+    private static bool IsInAnotherGroup(Dictionary<int, int> groupOfValue, int value, int groupId)
+    {
+        if (!groupOfValue.TryGetValue(value, out var existingGroup))
+        {
+            groupOfValue[value] = groupId;
+
+            return false;
+        }
+
+        return existingGroup != groupId;
     }
 
     // One O(n) scan finds every forced-close index by tracking the furthest

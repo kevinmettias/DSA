@@ -21,15 +21,15 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
     // Doubling factor for the largest reachable sum (Bound + Bound).
     private const int MaxSumFactor = 2;
 
-    // Hoisted so the delegate allocation is not charged to any measured method - and
-    // all three arms pay the same one call-through-delegate cost the hidden
+    // Hoisted so the oracle's construction is not charged to any measured method - and
+    // all three arms pay the same one call-through-the-interface cost the hidden
     // CustomFunction imposes.
-    private static readonly Func<int, int, int> Sum = (x, y) => x + y;
-
-    [Params(300, 1_000)]
-    public int Bound;
+    private static readonly ICustomFunction Sum = new SumFunction();
 
     private int _z;
+
+    [Params(300, 1_000)]
+    public int Bound { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -55,4 +55,12 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
     public int BinarySearchPerRow() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
             .FindSolutionsByBinarySearchPerRow(Sum, _z, Bound).Count;
+
+    // LeetCode example 1's function_id, f(x, y) = x + y, as a named implementation
+    // because the three arms now take an ICustomFunction and C# converts no lambda to an
+    // interface - the same thing LeetCode's own CustomFunction object asks of a caller.
+    private sealed class SumFunction : ICustomFunction
+    {
+        public int Evaluate(int x, int y) => x + y;
+    }
 }

@@ -27,43 +27,7 @@ internal static class PartitionToKEqualSumSubsetsSolution
         var sorted = SortedDescending(nums);
         var buckets = new int[k];
 
-        return SearchByNaiveBacktracking(sorted, buckets, target, k, 0);
-    }
-
-    private static bool SearchByNaiveBacktracking(int[] sorted, int[] buckets, int target, int k, int index)
-    {
-        if (index == sorted.Length)
-        {
-            return true;
-        }
-
-        for (var bucket = 0; bucket < k; bucket++)
-        {
-            if (TryPlaceInBucket(sorted, buckets, target, k, bucket, index))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryPlaceInBucket(int[] sorted, int[] buckets, int target, int k, int bucket, int index)
-    {
-        if (buckets[bucket] + sorted[index] > target)
-        {
-            return false;
-        }
-
-        buckets[bucket] += sorted[index];
-
-        if (SearchByNaiveBacktracking(sorted, buckets, target, k, index + 1))
-        {
-            return true;
-        }
-
-        buckets[bucket] -= sorted[index];
-        return false;
+        return SearchByNaiveBacktracking(sorted, (buckets, target), 0);
     }
 
     // This repo's own Backtrack.TrySearch (the NQueens/SudokuSolver/
@@ -81,10 +45,54 @@ internal static class PartitionToKEqualSumSubsetsSolution
 
         return Backtrack.TrySearch<BucketState, int>(state, new BacktrackingSteps<BucketState, int>(
             IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? [] : Enumerable.Range(0, k).Where(s.CanPlace),
+            Candidates: s => s.Index == sorted.Length ? Array.Empty<int>() : AvailableBuckets(s, k),
             Choose: (s, bucket) => s.Place(bucket),
             Unchoose: (s, bucket) => s.Remove(bucket),
             OnSolution: _ => true));
+    }
+
+    // The candidate buckets for the next number: every bucket it still fits into
+    // without overshooting the target sum, offered in bucket order.
+    private static IEnumerable<int> AvailableBuckets(BucketState state, int bucketCount)
+        => Enumerable.Range(0, bucketCount).Where(state.CanPlace);
+
+    // The running bucket sums and the target each of them has to land on are one
+    // thing - the bucket state the search is filling - and k is just how many of
+    // them there are, so it is read off the array rather than threaded alongside it.
+    private static bool SearchByNaiveBacktracking(int[] sorted, (int[] Buckets, int Target) state, int index)
+    {
+        if (index == sorted.Length)
+        {
+            return true;
+        }
+
+        for (var bucket = 0; bucket < state.Buckets.Length; bucket++)
+        {
+            if (TryPlaceInBucket(sorted, state, bucket, index))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryPlaceInBucket(int[] sorted, (int[] Buckets, int Target) state, int bucket, int index)
+    {
+        if (state.Buckets[bucket] + sorted[index] > state.Target)
+        {
+            return false;
+        }
+
+        state.Buckets[bucket] += sorted[index];
+
+        if (SearchByNaiveBacktracking(sorted, state, index + 1))
+        {
+            return true;
+        }
+
+        state.Buckets[bucket] -= sorted[index];
+        return false;
     }
 
     private static bool TryComputeTarget(int[] nums, int k, out int target)

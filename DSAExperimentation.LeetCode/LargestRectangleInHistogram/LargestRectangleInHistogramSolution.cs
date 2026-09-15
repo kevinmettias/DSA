@@ -52,13 +52,13 @@ internal static class LargestRectangleInHistogramSolution
 
         for (var i = 0; i <= heights.Length; i++)
         {
-            var currentHeight = i == heights.Length ? 0 : heights[i];
+            var currentHeight = i == heights.Length ? 0 : BarHeight(heights, i);
 
             while (indices.TryPeek(out var top) && heights[top] >= currentHeight)
             {
                 indices.TryPop(out _);
                 var height = heights[top];
-                var width = indices.TryPeek(out var left) ? i - left - 1 : i;
+                var width = indices.TryPeek(out var left) ? BoundedWidth(i, left) : i;
                 maxArea = Math.Max(maxArea, height * width);
             }
 
@@ -67,4 +67,10 @@ internal static class LargestRectangleInHistogramSolution
 
         return maxArea;
     }
+
+    private static int BarHeight(int[] heights, int index) => heights[index];
+
+    // The run's width when a popped bar is bounded on the left by another bar's
+    // index and on the right by the current one.
+    private static int BoundedWidth(int right, int left) => right - left - 1;
 }

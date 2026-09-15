@@ -53,11 +53,17 @@ internal static class NumberOfMusicPlaylistsSolution
     // (length, unique) state the first time it is reached, so the recurrence reads
     // as ordinary recursion with no hand-rolled cache dictionary, and only the
     // states actually reachable from (goal, n) are ever evaluated.
-    public static long NumMusicPlaylistsByMemoizedRecurrence(int n, int goal, int k)
-    {
-        return Memoizer.Memoize<(int Length, int Unique), long>((goal, n), Ways);
+    public static long NumMusicPlaylistsByMemoizedRecurrence(int n, int goal, int k) =>
+        Memoizer.Memoize<(int Length, int Unique), long>((goal, n), new PlaylistCounts(n, k));
 
-        long Ways((int Length, int Unique) state, Func<(int Length, int Unique), long> ways)
+    // The recurrence, as a named type: a playlist of a given length drawing on a given
+    // number of distinct songs either adds a brand-new song - one of those not yet used -
+    // to a shorter playlist, or replays an old one, any already played except the k most
+    // recent.
+    private sealed class PlaylistCounts(int songCount, int replayGap)
+        : IRecurrence<(int Length, int Unique), long>
+    {
+        public long Replay((int Length, int Unique) state, IRecurrence<(int Length, int Unique), long> rest)
         {
             var (length, unique) = state;
 
@@ -71,11 +77,13 @@ internal static class NumberOfMusicPlaylistsSolution
                 return 0;
             }
 
-            var total = ways((length - 1, unique - 1)) * (n - unique + 1) % ModularArithmetic.Modulo;
+            var total = rest.Replay((length - 1, unique - 1), rest) * (songCount - unique + 1)
+                % ModularArithmetic.Modulo;
 
-            if (unique > k)
+            if (unique > replayGap)
             {
-                total = (total + (ways((length - 1, unique)) * (unique - k))) % ModularArithmetic.Modulo;
+                total = (total + (rest.Replay((length - 1, unique), rest) * (unique - replayGap)))
+                    % ModularArithmetic.Modulo;
             }
 
             return total;

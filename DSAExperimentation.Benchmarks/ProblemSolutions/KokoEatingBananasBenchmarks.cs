@@ -17,11 +17,11 @@ public class KokoEatingBananasBenchmarks
     private const int MaxPileSizeExclusive = 1_000;
     private const int HoursPerBanana = 5;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _piles = [];
 
-    private int[] _piles = null!;
     private int _h;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

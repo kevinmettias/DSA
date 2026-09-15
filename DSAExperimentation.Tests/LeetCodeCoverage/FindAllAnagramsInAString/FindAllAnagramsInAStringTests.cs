@@ -20,12 +20,16 @@ public sealed class FindAllAnagramsInAStringTests
     public void FindAnagramIndicesByBruteForceRebuild_LeetCodeExamples_ReturnsEveryAnagramStart(
         string s, string p, int[] expected) =>
         Assert.Equal(
-            expected, FindAllAnagramsInAStringSolution.FindAnagramIndicesByBruteForceRebuild(s, p));
+            expected,
+            FindAllAnagramsInAStringSolution.FindAnagramIndicesByBruteForceRebuild(
+                new ScannedText(s), new AnagramPattern(p)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindAnagramIndicesBySlidingWindow_LeetCodeExamples_ReturnsEveryAnagramStart(
         string s, string p, int[] expected) =>
         Assert.Equal(
-            expected, FindAllAnagramsInAStringSolution.FindAnagramIndicesBySlidingWindow(s, p));
+            expected,
+            FindAllAnagramsInAStringSolution.FindAnagramIndicesBySlidingWindow(
+                new ScannedText(s), new AnagramPattern(p)));
 }

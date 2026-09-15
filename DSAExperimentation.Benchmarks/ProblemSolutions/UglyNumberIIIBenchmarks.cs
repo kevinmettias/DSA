@@ -17,7 +17,7 @@ public class UglyNumberIIIBenchmarks
     private const int C = 5;
 
     [Params(2_000, 50_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForceCount() => UglyNumberIIISolution.NthUglyNumberByCountScan(N, A, B, C);

@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LargestPerimeterTriangleBenchmarks
 {
-    private const int RandomSeed = 976; // LC problem number
+    private const int RandomSeed = 976; private int[] _values = [];
+
+    // LC problem number
 
     [Params(80, 300)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = PolygonWorkloads.BuildSides(Length, seed: RandomSeed);

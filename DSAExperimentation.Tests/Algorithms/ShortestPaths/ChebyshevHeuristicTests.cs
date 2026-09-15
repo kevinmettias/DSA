@@ -18,10 +18,7 @@ public sealed class ChebyshevHeuristicTests
             ChebyshevHeuristic.Estimate(new WeightedGridNode(row, col), new WeightedGridNode(targetRow, targetCol)));
 
     [Fact]
-    public void Estimate_NullTarget_ReturnsZero()
-    {
-        Assert.Equal(0, ChebyshevHeuristic.Estimate(new WeightedGridNode(5, 5), null));
-    }
+    public void Estimate_NullTarget_ReturnsZero() => Assert.Equal(0, ChebyshevHeuristic.Estimate(new WeightedGridNode(5, 5), null));
 
     [Fact]
     public void Estimate_NeverExceedsTheManhattanDistance()

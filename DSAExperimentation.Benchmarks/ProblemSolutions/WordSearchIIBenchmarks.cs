@@ -15,11 +15,11 @@ public class WordSearchIIBenchmarks
     private const int RandomSeed = 17;
     private const int AlphabetSize = 26;
 
-    [Params(20, 200)]
-    public int WordCount;
+    private char[][] _board = [];
 
-    private char[][] _board = null!;
-    private string[] _words = null!;
+    private string[] _words = [];
+    [Params(20, 200)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

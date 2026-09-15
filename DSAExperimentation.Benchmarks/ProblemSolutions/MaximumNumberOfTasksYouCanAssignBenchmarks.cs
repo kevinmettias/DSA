@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign.MaximumNumberOfTasksYouCanAssignSolution;
+using DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -25,10 +25,10 @@ public class MaximumNumberOfTasksYouCanAssignBenchmarks
     private const int Pills = 5;
     private const int Strength = 100;
 
-    [Params(2_000, 50_000)]
-    public int Length;
+    private MaximumNumberOfTasksYouCanAssignSolution.SortedTaskAssignment _assignment;
 
-    private SortedTaskAssignment _assignment;
+    [Params(2_000, 50_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -43,12 +43,12 @@ public class MaximumNumberOfTasksYouCanAssignBenchmarks
             .Order()
             .ToArray();
 
-        _assignment = new SortedTaskAssignment(tasks, workers, Pills, Strength);
+        _assignment = new MaximumNumberOfTasksYouCanAssignSolution.SortedTaskAssignment(tasks, workers, Pills, Strength);
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScan() => MaxTaskAssignmentByLinearScan(_assignment);
+    public int LinearScan() => MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentByLinearScan(_assignment);
 
     [Benchmark]
-    public int SequenceLowerBound() => MaxTaskAssignmentBySequenceLowerBound(_assignment);
+    public int SequenceLowerBound() => MaximumNumberOfTasksYouCanAssignSolution.MaxTaskAssignmentBySequenceLowerBound(_assignment);
 }

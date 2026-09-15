@@ -32,6 +32,14 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
         visited[zeroCount] = true;
         queue.Enqueue((zeroCount, 0));
 
+        return ShortestPathLength(queue, visited, n, k);
+    }
+
+    // The BFS itself: expand the frontier one flip at a time until the all-ones state
+    // surfaces, or report unreachable once the frontier empties.
+    private static int ShortestPathLength(
+        Queue<(int ZeroCount, int Ops)> queue, bool[] visited, int n, int k)
+    {
         while (queue.Count > 0)
         {
             var (currentZeroCount, ops) = queue.Dequeue();

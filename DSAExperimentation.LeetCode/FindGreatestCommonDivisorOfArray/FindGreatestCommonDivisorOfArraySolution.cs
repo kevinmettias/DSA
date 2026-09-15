@@ -25,6 +25,26 @@ internal static class FindGreatestCommonDivisorOfArraySolution
         return SubtractionGcd(min, max);
     }
 
+    // Correct, but O(max/min): a small min forces one subtraction per unit of the
+    // gap instead of one division. Terminates because every value here is at
+    // least 1 (LC 1979's own bound), so the pair strictly decreases.
+    private static int SubtractionGcd(int a, int b)
+    {
+        while (a != b)
+        {
+            if (a > b)
+            {
+                a -= b;
+            }
+            else
+            {
+                b -= a;
+            }
+        }
+
+        return a;
+    }
+
     // The modulo form: each step replaces the pair with (b, a % b), so the values
     // shrink geometrically instead of by one multiple at a time.
     public static int FindGcdByEuclidean(int[] nums)
@@ -48,26 +68,6 @@ internal static class FindGreatestCommonDivisorOfArraySolution
         }
 
         return (min, max);
-    }
-
-    // Correct, but O(max/min): a small min forces one subtraction per unit of the
-    // gap instead of one division. Terminates because every value here is at
-    // least 1 (LC 1979's own bound), so the pair strictly decreases.
-    private static int SubtractionGcd(int a, int b)
-    {
-        while (a != b)
-        {
-            if (a > b)
-            {
-                a -= b;
-            }
-            else
-            {
-                b -= a;
-            }
-        }
-
-        return a;
     }
 
     private static int EuclideanGcd(int a, int b) => b == 0 ? a : EuclideanGcd(b, a % b);

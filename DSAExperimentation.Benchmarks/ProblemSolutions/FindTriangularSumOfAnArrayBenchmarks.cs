@@ -13,12 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindTriangularSumOfAnArrayBenchmarks
 {
     private const int RandomSeed = 2221; // LC problem number
-    private const int DigitBound = 10; // LC 2221's inputs are single decimal digits
+    private const int DigitBound = 10; private int[] _nums = [];
+
+    // LC 2221's inputs are single decimal digits
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

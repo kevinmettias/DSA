@@ -119,55 +119,46 @@ public sealed class DesignFrontMiddleBackQueueTests
 // One call in a FrontMiddleBackQueue script: which operation to invoke and with
 // what argument. Pure dispatch, built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct FrontMiddleBackQueueOp
+public readonly record struct FrontMiddleBackQueueOp(FrontMiddleBackQueueOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static FrontMiddleBackQueueOp PushFront(int value) => new(OpKind.PushFront, value);
 
-    private FrontMiddleBackQueueOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static FrontMiddleBackQueueOp PushMiddle(int value) => new(OpKind.PushMiddle, value);
 
-    public static FrontMiddleBackQueueOp PushFront(int value) => new(Kind.PushFront, value);
+    public static FrontMiddleBackQueueOp PushBack(int value) => new(OpKind.PushBack, value);
 
-    public static FrontMiddleBackQueueOp PushMiddle(int value) => new(Kind.PushMiddle, value);
+    public static FrontMiddleBackQueueOp PopFront() => new(OpKind.PopFront, 0);
 
-    public static FrontMiddleBackQueueOp PushBack(int value) => new(Kind.PushBack, value);
+    public static FrontMiddleBackQueueOp PopMiddle() => new(OpKind.PopMiddle, 0);
 
-    public static FrontMiddleBackQueueOp PopFront() => new(Kind.PopFront, 0);
-
-    public static FrontMiddleBackQueueOp PopMiddle() => new(Kind.PopMiddle, 0);
-
-    public static FrontMiddleBackQueueOp PopBack() => new(Kind.PopBack, 0);
+    public static FrontMiddleBackQueueOp PopBack() => new(OpKind.PopBack, 0);
 
     // null for the three void pushes, the popped value for the three pops - so a
     // script runner can assert against LeetCode's own judge output, which reports
     // the same nulls.
     internal int? Apply(IFrontMiddleBackQueue queue)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.PushFront:
-                queue.PushFront(_value);
+            case OpKind.PushFront:
+                queue.PushFront(value);
                 return null;
-            case Kind.PushMiddle:
-                queue.PushMiddle(_value);
+            case OpKind.PushMiddle:
+                queue.PushMiddle(value);
                 return null;
-            case Kind.PushBack:
-                queue.PushBack(_value);
+            case OpKind.PushBack:
+                queue.PushBack(value);
                 return null;
-            case Kind.PopFront:
+            case OpKind.PopFront:
                 return queue.PopFront();
-            case Kind.PopMiddle:
+            case OpKind.PopMiddle:
                 return queue.PopMiddle();
             default:
                 return queue.PopBack();
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         PushFront,
         PushMiddle,

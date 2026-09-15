@@ -8,8 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CombinationSumIIBenchmarks
 {
-    private static readonly int[] ExampleCandidates = [10, 1, 2, 7, 6, 1, 5];
     private const int ExampleTarget = 8;
+    private static readonly int[] ExampleCandidates = [10, 1, 2, 7, 6, 1, 5];
 
     [Benchmark(Baseline = true)]
     public List<List<int>> SortAndBacktrackSpecialized() =>

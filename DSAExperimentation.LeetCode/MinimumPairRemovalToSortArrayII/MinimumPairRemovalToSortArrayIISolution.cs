@@ -96,10 +96,22 @@ internal static class MinimumPairRemovalToSortArrayIISolution
         }
 
         var order = new PairNode[n];
-        var list = new DoublyLinkedList<(long Sum, int OriginalIndex)>();
         var alive = new Set<PairNode>();
+        var list = BuildList(nums, order, alive);
+        var heap = new Heap<RemovalCandidate, MinHeapOrder<RemovalCandidate>>();
+        var descents = SeedCandidates(order, heap);
 
-        for (var i = n - 1; i >= 0; i--)
+        return MergeUntilSorted(list, alive, heap, descents);
+    }
+
+    // The starting list: one node per element, linked in input order, each recorded at
+    // its own index in `order` and registered as alive.
+    private static DoublyLinkedList<(long Sum, int OriginalIndex)> BuildList(
+        int[] nums, PairNode[] order, Set<PairNode> alive)
+    {
+        var list = new DoublyLinkedList<(long Sum, int OriginalIndex)>();
+
+        for (var i = nums.Length - 1; i >= 0; i--)
         {
             var node = new PairNode { Value = (nums[i], i) };
             list.AddFront(node);
@@ -107,10 +119,17 @@ internal static class MinimumPairRemovalToSortArrayIISolution
             alive.TryAdd(node);
         }
 
-        var heap = new Heap<RemovalCandidate, MinHeapOrder<RemovalCandidate>>();
+        return list;
+    }
+
+    // A candidate for every initially adjacent pair, pushed into `heap`, plus how many
+    // of those pairs descend.
+    private static int SeedCandidates(
+        PairNode[] order, Heap<RemovalCandidate, MinHeapOrder<RemovalCandidate>> heap)
+    {
         var descents = 0;
 
-        for (var i = 0; i < n - 1; i++)
+        for (var i = 0; i < order.Length - 1; i++)
         {
             var left = order[i];
             var right = order[i + 1];
@@ -122,6 +141,17 @@ internal static class MinimumPairRemovalToSortArrayIISolution
             }
         }
 
+        return descents;
+    }
+
+    // Merges the current smallest-sum adjacent pair until nothing descends any more,
+    // reporting how many merges that took.
+    private static int MergeUntilSorted(
+        DoublyLinkedList<(long Sum, int OriginalIndex)> list,
+        Set<PairNode> alive,
+        Heap<RemovalCandidate, MinHeapOrder<RemovalCandidate>> heap,
+        int descents)
+    {
         var operations = 0;
 
         while (descents > 0)
@@ -187,18 +217,32 @@ internal static class MinimumPairRemovalToSortArrayIISolution
         descentDelta += hasPrevious && previous.Value.Sum > left.Value.Sum ? 1 : 0;
         descentDelta += hasNext && left.Value.Sum > next.Value.Sum ? 1 : 0;
 
-        if (hasPrevious)
+        PushRefreshedCandidates((left, previous, next), alive, heap);
+
+        return descentDelta;
+    }
+
+    // Fresh candidates for the pairs the merge just created, so every currently
+    // adjacent pair always has at least one live entry sitting in the heap. Ends of the
+    // surviving node that are not alive are the list's own bounds, and get no candidate.
+    private static void PushRefreshedCandidates(
+        (PairNode Left, PairNode Previous, PairNode Next) neighbors,
+        Set<PairNode> alive, Heap<RemovalCandidate, MinHeapOrder<RemovalCandidate>> heap)
+    {
+        var previous = neighbors.Previous;
+        var next = neighbors.Next;
+        var left = neighbors.Left;
+
+        if (alive.Has(previous))
         {
             heap.Push(new RemovalCandidate(
                 previous.Value.Sum + left.Value.Sum, previous.Value.OriginalIndex, previous, left));
         }
 
-        if (hasNext)
+        if (alive.Has(next))
         {
             heap.Push(new RemovalCandidate(left.Value.Sum + next.Value.Sum, left.Value.OriginalIndex, left, next));
         }
-
-        return descentDelta;
     }
 
     // A witness over two nodes of the shared DoublyLinkedList, ranked by sum then

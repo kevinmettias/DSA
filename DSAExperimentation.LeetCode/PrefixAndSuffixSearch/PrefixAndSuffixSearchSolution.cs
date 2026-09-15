@@ -13,14 +13,14 @@ internal static class PrefixAndSuffixSearchSolution
     // The textbook baseline: scan every word for every query. Iterating words in
     // index order and letting a later match overwrite an earlier one is exactly
     // LeetCode's own "largest index" tie-break, achieved by iteration order alone.
-    public static int SearchByLinearScan(string[] words, string prefix, string suffix)
+    public static int SearchByLinearScan(string[] words, SearchPrefix prefix, SearchSuffix suffix)
     {
         var found = LeetCodeAnswer.None;
 
         for (var i = 0; i < words.Length; i++)
         {
-            if (words[i].StartsWith(prefix, StringComparison.Ordinal) &&
-                words[i].EndsWith(suffix, StringComparison.Ordinal))
+            if (words[i].StartsWith(prefix.Text, StringComparison.Ordinal) &&
+                words[i].EndsWith(suffix.Text, StringComparison.Ordinal))
             {
                 found = i;
             }
@@ -34,7 +34,7 @@ internal static class PrefixAndSuffixSearchSolution
     // words overwriting earlier ones on a shared key - so a hit always reports the
     // largest matching word index - after which every query is a single
     // O(1)-average lookup.
-    public static int SearchByPrecomputedHashMap(string[] words, string prefix, string suffix)
+    public static int SearchByPrecomputedHashMap(string[] words, SearchPrefix prefix, SearchSuffix suffix)
     {
         var index = BuildPrefixSuffixIndex(words);
 
@@ -42,8 +42,8 @@ internal static class PrefixAndSuffixSearchSolution
     }
 
     public static int SearchByPrecomputedHashMap(
-        HashMap<string, int> indexByPrefixAndSuffix, string prefix, string suffix)
-        => indexByPrefixAndSuffix.TryGetValue(prefix + PrefixSuffixSeparator + suffix, out var index)
+        HashMap<string, int> indexByPrefixAndSuffix, SearchPrefix prefix, SearchSuffix suffix)
+        => indexByPrefixAndSuffix.TryGetValue(prefix.Text + PrefixSuffixSeparator + suffix.Text, out var index)
             ? index
             : LeetCodeAnswer.None;
 

@@ -35,11 +35,21 @@ public sealed class MinimumCostToConvertStringITests
     [MemberData(nameof(Examples))]
     public void MinimumCostByBruteForceFloydWarshall_LeetCodeExamples_ReturnsMinimumConversionCost(
         string source, string target, char[] original, char[] changed, int[] cost, long expected) =>
-        Assert.Equal(expected, MinimumCostToConvertStringISolution.MinimumCostByBruteForceFloydWarshall(source, target, original, changed, cost));
+        Assert.Equal(
+            expected,
+            MinimumCostToConvertStringISolution.MinimumCostByBruteForceFloydWarshall(
+                new MinimumCostToConvertStringISolution.SourceText(source),
+                new MinimumCostToConvertStringISolution.TargetText(target),
+                (original, changed, cost)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByAllPairsShortestPaths_LeetCodeExamples_ReturnsMinimumConversionCost(
         string source, string target, char[] original, char[] changed, int[] cost, long expected) =>
-        Assert.Equal(expected, MinimumCostToConvertStringISolution.MinimumCostByAllPairsShortestPaths(source, target, original, changed, cost));
+        Assert.Equal(
+            expected,
+            MinimumCostToConvertStringISolution.MinimumCostByAllPairsShortestPaths(
+                new MinimumCostToConvertStringISolution.SourceText(source),
+                new MinimumCostToConvertStringISolution.TargetText(target),
+                (original, changed, cost)));
 }

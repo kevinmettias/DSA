@@ -30,8 +30,10 @@ internal static class BinaryTreeMaximumPathSumSolution
             return 0;
         }
 
-        var left = Math.Max(0, Gain(node.Left, ref best));
-        var right = Math.Max(0, Gain(node.Right, ref best));
+        var leftGain = Gain(node.Left, ref best);
+        var left = Math.Max(0, leftGain);
+        var rightGain = Gain(node.Right, ref best);
+        var right = Math.Max(0, rightGain);
 
         best = Math.Max(best, node.Value + left + right);
 

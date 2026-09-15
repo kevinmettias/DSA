@@ -20,13 +20,13 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
     // sweep below has to beat. Its reachable set can grow with the string, making it
     // O(n^2) where the sweep is O(n). No parity guard is needed: after an odd number
     // of positions every reachable count is odd, so zero cannot survive.
-    public static bool CanBeValidByReachableOpenCountDp(string s, string locked)
+    public static bool CanBeValidByReachableOpenCountDp(ParenthesisString s, LockMask locked)
     {
         var reachable = new HashSet<int> { 0 };
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < s.Text.Length; i++)
         {
-            reachable = ComputeNextReachable(reachable, s[i], locked[i]);
+            reachable = ComputeNextReachable(reachable, s.Text[i], locked.Digits[i]);
 
             if (reachable.Count == 0)
             {
@@ -77,9 +77,9 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
     // after them, greedily from the innermost pair out. The length parity check is
     // load-bearing here - without it a lone free position reports valid, because
     // nothing is left on either stack to contradict it.
-    public static bool CanBeValidByIndexStackSweep(string s, string locked)
+    public static bool CanBeValidByIndexStackSweep(ParenthesisString s, LockMask locked)
     {
-        if (s.Length % 2 != 0)
+        if (s.Text.Length % 2 != 0)
         {
             return false;
         }
@@ -96,15 +96,15 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
     }
 
     private static bool TryMatchClosingParens(
-        string s, string locked, RepoIndexStack openIndices, RepoIndexStack freeIndices)
+        ParenthesisString s, LockMask locked, RepoIndexStack openIndices, RepoIndexStack freeIndices)
     {
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < s.Text.Length; i++)
         {
-            if (locked[i] == FreePosition)
+            if (locked.Digits[i] == FreePosition)
             {
                 freeIndices.Push(i);
             }
-            else if (s[i] == OpenParenthesis)
+            else if (s.Text[i] == OpenParenthesis)
             {
                 openIndices.Push(i);
             }
@@ -129,4 +129,14 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
 
         return true;
     }
+
+    // LC 2116's two operands, named for the roles they play here rather than left as two
+    // adjacent `string` positions a caller could hand over the wrong way round with the
+    // compiler none the wiser. `s` is the bracket string itself; `locked` is the
+    // per-position lock digit string that decides which characters may still move. The
+    // two hold different alphabets, so a swap is a silently wrong answer rather than a
+    // different question.
+    internal readonly record struct ParenthesisString(string Text);
+
+    internal readonly record struct LockMask(string Digits);
 }

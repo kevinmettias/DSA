@@ -14,10 +14,10 @@ public class CanIWinBenchmarks
 {
     private const int GaussSumDivisor = 2;
 
-    [Params(6, 8)]
-    public int MaxChoosableInteger;
-
     private int _desiredTotal;
+
+    [Params(6, 8)]
+    public int MaxChoosableInteger { get; set; }
 
     [GlobalSetup]
     public void Setup() => _desiredTotal = MaxChoosableInteger * (MaxChoosableInteger + 1) / GaussSumDivisor;

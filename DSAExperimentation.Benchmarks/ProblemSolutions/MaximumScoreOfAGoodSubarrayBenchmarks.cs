@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MaximumScoreOfAGoodSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,20 +16,19 @@ public class MaximumScoreOfAGoodSubarrayBenchmarks
 {
     private const int RandomSeed = 3;
     private const int MaxNumValue = 20_000;
-    private const int MidpointDivisor = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxNumValue)).ToArray();
-        _k = Length / MidpointDivisor;
+        _k = Length / AlgorithmConstants.HalvingFactor;
     }
 
     [Benchmark(Baseline = true)]

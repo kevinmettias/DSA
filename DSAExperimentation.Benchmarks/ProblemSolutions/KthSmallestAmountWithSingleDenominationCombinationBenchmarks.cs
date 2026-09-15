@@ -17,10 +17,10 @@ public class KthSmallestAmountWithSingleDenominationCombinationBenchmarks
     private const int CoinCount = 8;
     private const int MaxCoinValueExclusive = 26;
 
-    [Params(200, 5_000)]
-    public int K;
+    private int[] _coins = [];
 
-    private int[] _coins = null!;
+    [Params(200, 5_000)]
+    public int K { get; set; }
 
     [GlobalSetup]
     public void Setup()

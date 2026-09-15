@@ -19,10 +19,10 @@ public class ConstrainedSubsequenceSumBenchmarks
     // [-ValueRange, ValueRange) so the window's running maximum keeps changing.
     private const int ValueRange = 1_000;
 
-    [Params(2_000, 20_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(2_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

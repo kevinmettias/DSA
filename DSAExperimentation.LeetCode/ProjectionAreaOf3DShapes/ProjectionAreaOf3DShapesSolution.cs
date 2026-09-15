@@ -65,25 +65,6 @@ internal static class ProjectionAreaOf3DShapesSolution
         return front;
     }
 
-    private static int SumSideView(int[][] grid, int rows, int cols)
-    {
-        var side = 0;
-
-        for (var c = 0; c < cols; c++)
-        {
-            var colMax = 0;
-
-            for (var r = 0; r < rows; r++)
-            {
-                colMax = Math.Max(colMax, grid[r][c]);
-            }
-
-            side += colMax;
-        }
-
-        return side;
-    }
-
     // Two passes: top and front share the row-major walk (both are decided by the
     // cells of one row), while side keeps its own column-major walk. No scratch array,
     // but the grid is still read twice - the middle ground between the baseline's
@@ -136,7 +117,7 @@ internal static class ProjectionAreaOf3DShapesSolution
 
         for (var r = 0; r < rows; r++)
         {
-            var rowState = ScanRow(grid, r, cols, colMax, top);
+            var rowState = ScanRow(grid, r, colMax, top);
             top = rowState.Top;
             front += rowState.RowMax;
         }
@@ -144,24 +125,29 @@ internal static class ProjectionAreaOf3DShapesSolution
         return top + front + SumColumnMaxima(colMax);
     }
 
-    private static RowScanState ScanRow(int[][] grid, int r, int cols, int[] colMax, int top)
+    // cols is the caller's own grid[0].Length - every row of the projection grid has
+    // the same width - so the scan reads it off the grid rather than taking it again.
+    private static RowScanState ScanRow(int[][] grid, int r, int[] colMax, int top)
     {
+        var cols = grid[0].Length;
         var rowState = new RowScanState(top, 0);
 
         for (var c = 0; c < cols; c++)
         {
-            rowState = ScanCell(grid, r, c, colMax, rowState);
+            rowState = ScanCell(grid, (Row: r, Col: c), colMax, rowState);
         }
 
         return rowState;
     }
 
-    private static RowScanState ScanCell(int[][] grid, int r, int c, int[] colMax, RowScanState state)
+    // A cell is one coordinate: neither index is ever supplied without the other.
+    private static RowScanState ScanCell(
+        int[][] grid, (int Row, int Col) cell, int[] colMax, RowScanState state)
     {
-        var value = grid[r][c];
+        var value = grid[cell.Row][cell.Col];
         var top = state.Top + (value > 0 ? 1 : 0);
         var rowMax = Math.Max(state.RowMax, value);
-        colMax[c] = Math.Max(colMax[c], value);
+        colMax[cell.Col] = Math.Max(colMax[cell.Col], value);
 
         return new RowScanState(top, rowMax);
     }
@@ -173,6 +159,25 @@ internal static class ProjectionAreaOf3DShapesSolution
         foreach (var max in colMax)
         {
             side += max;
+        }
+
+        return side;
+    }
+
+    private static int SumSideView(int[][] grid, int rows, int cols)
+    {
+        var side = 0;
+
+        for (var c = 0; c < cols; c++)
+        {
+            var colMax = 0;
+
+            for (var r = 0; r < rows; r++)
+            {
+                colMax = Math.Max(colMax, grid[r][c]);
+            }
+
+            side += colMax;
         }
 
         return side;

@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.SpecialPermutations.SpecialPermutationsSolution;
+using DSAExperimentation.LeetCode.SpecialPermutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,10 +17,10 @@ public class SpecialPermutationsBenchmarks
     // LC problem number, reused as the deterministic element seed.
     private const int Seed = 2741;
 
-    [Params(8, 10)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(8, 10)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,15 +30,16 @@ public class SpecialPermutationsBenchmarks
 
         while (distinct.Count < Length)
         {
-            distinct.Add(random.Next(1, MaxValueExclusive));
+            var value = random.Next(1, MaxValueExclusive);
+            distinct.Add(value);
         }
 
         _nums = [.. distinct];
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceBacktracking() => CountByBruteForceBacktracking(_nums);
+    public int BruteForceBacktracking() => SpecialPermutationsSolution.CountByBruteForceBacktracking(_nums);
 
     [Benchmark]
-    public int BitmaskMemo() => CountByBitmaskMemo(_nums);
+    public int BitmaskMemo() => SpecialPermutationsSolution.CountByBitmaskMemo(_nums);
 }

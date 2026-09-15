@@ -19,31 +19,9 @@ internal static class NQueensIISolution
         var columns = new bool[n];
         var diagonals = new bool[(DiagonalArrayMultiplier * n) - 1];
         var antiDiagonals = new bool[(DiagonalArrayMultiplier * n) - 1];
-        var count = 0;
+        var board = (Columns: columns, Diagonals: diagonals, AntiDiagonals: antiDiagonals);
 
-        void SearchRow(int row)
-        {
-            if (row == n)
-            {
-                count++;
-                return;
-            }
-
-            for (var col = 0; col < n; col++)
-            {
-                if (columns[col] || diagonals[row - col + n - 1] || antiDiagonals[row + col])
-                {
-                    continue;
-                }
-
-                columns[col] = diagonals[row - col + n - 1] = antiDiagonals[row + col] = true;
-                SearchRow(row + 1);
-                columns[col] = diagonals[row - col + n - 1] = antiDiagonals[row + col] = false;
-            }
-        }
-
-        SearchRow(0);
-        return count;
+        return CountFrom(board, 0);
     }
 
     // This repo's own Backtrack.Search: BoardState's column/diagonal/
@@ -59,13 +37,64 @@ internal static class NQueensIISolution
         Backtrack.Search<BoardState, int>(
             state,
             s => s.Row == n,
-            s => s.Row == n ? [] : Enumerable.Range(0, n).Where(s.CanPlace),
+            s => s.Row == n ? Array.Empty<int>() : OpenColumns(s, n),
             (s, col) => s.Place(col),
             (s, col) => s.Remove(col),
             _ => count++);
 
         return count;
     }
+
+    // The columns still open in the row being decided. Read lazily, so each Remove is
+    // seen reopening a column before the next candidate is asked for.
+    private static IEnumerable<int> OpenColumns(BoardState state, int columnCount) =>
+        Enumerable.Range(0, columnCount).Where(state.CanPlace);
+
+    // How many placements complete the board from `row` down, given the occupancy
+    // the caller has already established. Getting past the last row means every row
+    // placed a queen, so that one descent counts as a completed board.
+    private static int CountFrom((bool[] Columns, bool[] Diagonals, bool[] AntiDiagonals) board, int row)
+    {
+        var n = board.Columns.Length;
+        if (row == n)
+        {
+            return 1;
+        }
+
+        var count = 0;
+        for (var col = 0; col < n; col++)
+        {
+            count += PlaceColumn(board, row, col);
+        }
+
+        return count;
+    }
+
+    // One column at one row: a queen may stand there only when the column and both
+    // diagonals through it are free, and a free square contributes however many
+    // placements complete the board below it. The square is cleared again so the
+    // caller's loop can go on to the next column.
+    private static int PlaceColumn((bool[] Columns, bool[] Diagonals, bool[] AntiDiagonals) board, int row, int col)
+    {
+        var n = board.Columns.Length;
+        var diagonal = row - col + n - 1;
+        var antiDiagonal = row + col;
+
+        if (board.Columns[col] || IsOnEitherDiagonal(board.Diagonals, diagonal, board.AntiDiagonals, antiDiagonal))
+        {
+            return 0;
+        }
+
+        board.Columns[col] = board.Diagonals[diagonal] = board.AntiDiagonals[antiDiagonal] = true;
+        var count = CountFrom(board, row + 1);
+        board.Columns[col] = board.Diagonals[diagonal] = board.AntiDiagonals[antiDiagonal] = false;
+        return count;
+    }
+
+    // A square is already attacked when either of the two diagonals through it holds
+    // a queen - the "/" diagonal indexed one way, the "\" anti-diagonal the other.
+    private static bool IsOnEitherDiagonal(bool[] diagonals, int diagonal, bool[] antiDiagonals, int antiDiagonal) =>
+        diagonals[diagonal] || antiDiagonals[antiDiagonal];
 
     // Bespoke to this problem: tracks column/diagonal/anti-diagonal
     // occupancy for Backtrack.Search's choose/unchoose contract. Meaningless

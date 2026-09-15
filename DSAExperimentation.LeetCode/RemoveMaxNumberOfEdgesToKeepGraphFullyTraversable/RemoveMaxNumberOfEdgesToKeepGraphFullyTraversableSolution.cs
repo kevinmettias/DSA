@@ -41,11 +41,10 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
         var bob = BuildEmptyAdjacency(n);
 
         var usedEdges = ConnectSharedEdges(alice, bob, edges);
-        usedEdges += ConnectOwnEdges(alice, edges, AliceOnlyEdgeType);
-        usedEdges += ConnectOwnEdges(bob, edges, BobOnlyEdgeType);
+        usedEdges += ConnectOwnEdgesForBoth(alice, bob, edges);
 
         return IsFullyConnected(alice) && IsFullyConnected(bob)
-            ? edges.Length - usedEdges
+            ? RemovableEdgeCount(edges, usedEdges)
             : LeetCodeAnswer.None;
     }
 
@@ -109,6 +108,10 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
 
         return used;
     }
+
+    // Each traverser then takes the single-owner edges only it can use.
+    private static int ConnectOwnEdgesForBoth(List<int>[] alice, List<int>[] bob, int[][] edges) =>
+        ConnectOwnEdges(alice, edges, AliceOnlyEdgeType) + ConnectOwnEdges(bob, edges, BobOnlyEdgeType);
 
     private static void Connect(List<int>[] adjacency, int u, int v)
     {
@@ -184,11 +187,10 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
         var bob = new DisjointSet(n);
 
         var usedEdges = UnionSharedEdges(alice, bob, edges);
-        usedEdges += UnionOwnEdges(alice, edges, AliceOnlyEdgeType);
-        usedEdges += UnionOwnEdges(bob, edges, BobOnlyEdgeType);
+        usedEdges += UnionOwnEdgesForBoth(alice, bob, edges);
 
         return IsFullyConnected(alice) && IsFullyConnected(bob)
-            ? edges.Length - usedEdges
+            ? RemovableEdgeCount(edges, usedEdges)
             : LeetCodeAnswer.None;
     }
 
@@ -241,6 +243,10 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
         return used;
     }
 
+    // Each traverser then takes the single-owner edges only it can use.
+    private static int UnionOwnEdgesForBoth(DisjointSet alice, DisjointSet bob, int[][] edges) =>
+        UnionOwnEdges(alice, edges, AliceOnlyEdgeType) + UnionOwnEdges(bob, edges, BobOnlyEdgeType);
+
     private static bool IsFullyConnected(DisjointSet components)
     {
         var root = components.Find(0);
@@ -258,4 +264,7 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
 
     private static (int U, int V) Endpoints(int[] edge) =>
         (edge[EdgeSourceIndex] - FirstNodeLabel, edge[EdgeTargetIndex] - FirstNodeLabel);
+
+    // The edges no traversal needed, so the answer is however many of them exist.
+    private static int RemovableEdgeCount(int[][] edges, int usedEdges) => edges.Length - usedEdges;
 }

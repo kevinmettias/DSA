@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignCircularDeque.DesignCircularDequeSolution;
+using DSAExperimentation.LeetCode.DesignCircularDeque;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -15,19 +15,19 @@ public class DesignCircularDequeBenchmarks
     private const int OperationCount = 50_000;
 
     [Params(8, 512)]
-    public int Capacity;
+    public int Capacity { get; set; }
 
     [Benchmark(Baseline = true)]
-    public long ArrayBacked() => RunChurnCycle(new CircularDequeByArrayBacked(Capacity));
+    public long ArrayBacked() => RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByArrayBacked(Capacity));
 
     [Benchmark]
-    public long DequeBacked() => RunChurnCycle(new CircularDequeByDequeBacked(Capacity));
+    public long DequeBacked() => RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByDequeBacked(Capacity));
 
     // Sums every returned value rather than discarding it, so the JIT can't
     // eliminate the churn as dead code - the same "return the real answer, not a
     // weaker proxy" shape OpenTheLockBenchmarks/DesignCircularQueueBenchmarks
     // already follow.
-    private static long RunChurnCycle(ICircularDeque deque)
+    private static long RunChurnCycle(DesignCircularDequeSolution.ICircularDeque deque)
     {
         var sum = 0L;
 

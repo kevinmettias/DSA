@@ -85,6 +85,29 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
         return BusiestServers(pool.Handled);
     }
 
+    // Smallest available server index >= start, wrapping to [0, start) when nothing
+    // is free from start through the end of the ring.
+    private static bool TryFindAvailableServer(
+        FenwickTree<int, SumOperation<int>> availability, int k, int start, out int server)
+    {
+        var totalAvailable = availability.PrefixQuery(k - 1);
+
+        if (totalAvailable == 0)
+        {
+            server = NoFreeServer;
+            return false;
+        }
+
+        var beforeStart = start == 0 ? 0 : availability.PrefixQuery(start - 1);
+        var threshold = beforeStart < totalAvailable ? NextRank(beforeStart) : 1;
+        var sequence = new AvailabilityPrefixSequence(availability, k);
+
+        server = BinarySearch.LowerBound(sequence, threshold);
+        return true;
+    }
+
+    private static int NextRank(int rank) => rank + 1;
+
     // LeetCode reports every server tied for the most requests, in ascending order.
     private static int[] BusiestServers(int[] handled)
     {
@@ -126,27 +149,6 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
             _busy.Push((arrivalTime + load, server));
             Handled[server]++;
         }
-    }
-
-    // Smallest available server index >= start, wrapping to [0, start) when nothing
-    // is free from start through the end of the ring.
-    private static bool TryFindAvailableServer(
-        FenwickTree<int, SumOperation<int>> availability, int k, int start, out int server)
-    {
-        var totalAvailable = availability.PrefixQuery(k - 1);
-
-        if (totalAvailable == 0)
-        {
-            server = NoFreeServer;
-            return false;
-        }
-
-        var beforeStart = start == 0 ? 0 : availability.PrefixQuery(start - 1);
-        var threshold = beforeStart < totalAvailable ? beforeStart + 1 : 1;
-        var sequence = new AvailabilityPrefixSequence(availability, k);
-
-        server = BinarySearch.LowerBound(sequence, threshold);
-        return true;
     }
 
     private readonly struct AvailabilityPrefixSequence(FenwickTree<int, SumOperation<int>> availability, int length)

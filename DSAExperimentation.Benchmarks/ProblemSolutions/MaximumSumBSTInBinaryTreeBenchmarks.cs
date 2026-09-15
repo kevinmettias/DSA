@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumSumBSTInBinaryTreeBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Skewed(NodeCount);

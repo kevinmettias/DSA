@@ -14,7 +14,7 @@ public class SuperEggDropBenchmarks
     private const int Eggs = 2;
 
     [Params(50, 400)]
-    public int Floors;
+    public int Floors { get; set; }
 
     [Benchmark(Baseline = true)]
     public int LinearScanDp() => SuperEggDropSolution.MinMovesByLinearScan(Eggs, Floors);

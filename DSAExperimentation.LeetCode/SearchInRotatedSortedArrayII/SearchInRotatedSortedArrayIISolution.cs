@@ -60,17 +60,22 @@ internal static class SearchInRotatedSortedArrayIISolution
             new PivotSequence(nums, range.Left, range.Length, range.LastValue), 1);
         var searchRight = target <= range.LastValue;
         var start = searchRight ? pivot : 0;
-        var length = searchRight ? range.Length - pivot : pivot;
+        var length = searchRight ? TailLength(range, pivot) : pivot;
 
         return BinarySearch.Find<int, OffsetSequence>(new OffsetSequence(nums, range.Left + start, length), target);
     }
+
+    // How many entries of the trimmed range lie past the pivot, in its tail run.
+    private static int TailLength(TrimmedRange range, int pivot) => range.Length - pivot;
 
     // 1 past the pivot, 0 up to and including it: LowerBound on this predicate
     // lands exactly on the first index belonging to the trimmed slice's tail run.
     private readonly struct PivotSequence(int[] nums, int start, int length, int lastValue) : IRandomAccessSequence<int>
     {
         public int Length => length;
-        public int Get(int index) => nums[start + index] <= lastValue ? 1 : 0;
+        public int Get(int index) => IsInTailRun(index) ? 1 : 0;
+
+        private bool IsInTailRun(int index) => nums[start + index] <= lastValue;
     }
 
     // A plain sorted window [start, start + length) of nums, reindexed from 0 so

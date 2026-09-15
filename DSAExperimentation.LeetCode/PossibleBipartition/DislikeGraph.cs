@@ -11,11 +11,11 @@ namespace DSAExperimentation.LeetCode.PossibleBipartition;
 // LeetCode-shaped one (ARCHITECTURE.md #17.4).
 internal sealed class DislikeGraph
 {
-    private DislikeGraph(IReadOnlyList<PersonNode> people) => People = people;
-
     // Every person, including those nobody dislikes: BipartiteCheck is a
     // multi-root walk and only visits the components its roots reach.
     public IReadOnlyList<PersonNode> People { get; }
+
+    private DislikeGraph(IReadOnlyList<PersonNode> people) => People = people;
 
     public static DislikeGraph Build(int n, int[][] dislikes)
     {
@@ -23,7 +23,7 @@ internal sealed class DislikeGraph
         // slot 0 is a placeholder that carries no edges and is not returned.
         var byId = new PersonNode[n + 1];
 
-        for (var id = PossibleBipartitionSolution.FirstPerson; id <= n; id++)
+        for (var id = PersonNumbering.First; id <= n; id++)
         {
             byId[id] = new PersonNode(id);
         }
@@ -34,6 +34,6 @@ internal sealed class DislikeGraph
             byId[pair[1]].Dislikes.Add(byId[pair[0]]);
         }
 
-        return new DislikeGraph(byId[PossibleBipartitionSolution.FirstPerson..]);
+        return new DislikeGraph(byId[PersonNumbering.First..]);
     }
 }

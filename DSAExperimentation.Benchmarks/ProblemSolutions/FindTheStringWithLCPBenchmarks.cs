@@ -15,10 +15,10 @@ public class FindTheStringWithLCPBenchmarks
     private const int AlphabetSize = 4;
     private const int Seed = 2573;
 
-    [Params(50, 300)]
-    public int Length;
+    private int[][] _lcp = [];
 
-    private int[][] _lcp = null!;
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,12 +34,6 @@ public class FindTheStringWithLCPBenchmarks
         _lcp = BuildLcp(word);
     }
 
-    [Benchmark(Baseline = true)]
-    public string DirectSweep() => FindTheStringWithLCPSolution.ConstructByDirectSweep(_lcp);
-
-    [Benchmark]
-    public string DisjointSet() => FindTheStringWithLCPSolution.ConstructByDisjointSet(_lcp);
-
     private static int[][] BuildLcp(char[] word)
     {
         var n = word.Length;
@@ -54,11 +48,23 @@ public class FindTheStringWithLCPBenchmarks
         {
             for (var j = n - 1; j >= 0; j--)
             {
-                var diagonal = i + 1 < n && j + 1 < n ? lcp[i + 1][j + 1] : 0;
-                lcp[i][j] = word[i] == word[j] ? diagonal + 1 : 0;
+                var hasDiagonalNeighbor = i + 1 < n && j + 1 < n;
+                var lettersMatch = word[i] == word[j];
+                var diagonal = hasDiagonalNeighbor ? DiagonalLcp(lcp, i, j) : 0;
+                lcp[i][j] = lettersMatch ? ExtendedLcp(diagonal) : 0;
             }
         }
 
         return lcp;
     }
+
+    private static int DiagonalLcp(int[][] lcp, int i, int j) => lcp[i + 1][j + 1];
+
+    private static int ExtendedLcp(int diagonal) => diagonal + 1;
+
+    [Benchmark(Baseline = true)]
+    public string DirectSweep() => FindTheStringWithLCPSolution.ConstructByDirectSweep(_lcp);
+
+    [Benchmark]
+    public string DisjointSet() => FindTheStringWithLCPSolution.ConstructByDisjointSet(_lcp);
 }

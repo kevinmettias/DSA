@@ -28,11 +28,16 @@ internal static class BalancedBinaryTreeSolution
         var leftHeight = HeightOrUnbalanced(node.Left);
         var rightHeight = HeightOrUnbalanced(node.Right);
 
-        if (leftHeight < 0 || rightHeight < 0 || Math.Abs(leftHeight - rightHeight) > MaxAllowedHeightDifference)
+        if (IsUnbalanced(leftHeight, rightHeight))
         {
             return UnbalancedHeightMarker;
         }
 
         return 1 + Math.Max(leftHeight, rightHeight);
     }
+
+    // This node's subtree is unbalanced when either child already reported the marker,
+    // or the two heights it just handed back differ by more than the one allowed.
+    private static bool IsUnbalanced(int leftHeight, int rightHeight) =>
+        leftHeight < 0 || rightHeight < 0 || Math.Abs(leftHeight - rightHeight) > MaxAllowedHeightDifference;
 }

@@ -44,7 +44,7 @@ internal static class LargestPerimeterTriangleSolution
         {
             int a = nums[i], b = nums[j], c = nums[k];
 
-            if (a + b > c && a + c > b && b + c > a)
+            if (FormsTriangle(a, b, c))
             {
                 best = Math.Max(best, a + b + c);
             }
@@ -52,6 +52,10 @@ internal static class LargestPerimeterTriangleSolution
 
         return best;
     }
+
+    // All three triangle inequalities hold, so the sides enclose a non-zero area.
+    private static bool FormsTriangle(int a, int b, int c)
+        => a + b > c && a + c > b && b + c > a;
 
     // This repo's own MergeSort over an ArrayIndexedSequence<int> - the same
     // composition SortAnArray proves out for LC 912 and

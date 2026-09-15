@@ -19,16 +19,21 @@ internal static class MinimumCostToConvertStringISolution
     // justify itself against. Same shape as
     // NumberOfPossibleSetsOfClosingBranchesSolution's brute-force arm.
     public static long MinimumCostByBruteForceFloydWarshall(
-        string source, string target, char[] original, char[] changed, int[] cost) =>
-        MinimumCostByBruteForceFloydWarshall(source, target, BuildDistanceMatrix(original, changed, cost));
+        SourceText source, TargetText target, (char[] Original, char[] Changed, int[] Cost) rules)
+    {
+        var distances = BuildDistanceMatrix(rules.Original, rules.Changed, rules.Cost);
 
-    public static long MinimumCostByBruteForceFloydWarshall(string source, string target, long[,] distances)
+        return MinimumCostByBruteForceFloydWarshall(source, target, distances);
+    }
+
+    public static long MinimumCostByBruteForceFloydWarshall(
+        SourceText source, TargetText target, long[,] distances)
     {
         var total = 0L;
 
-        for (var i = 0; i < source.Length; i++)
+        for (var i = 0; i < source.Text.Length; i++)
         {
-            var distance = distances[source[i] - 'a', target[i] - 'a'];
+            var distance = distances[source.Text[i] - 'a', target.Text[i] - 'a'];
 
             if (distance >= Unreachable)
             {
@@ -47,6 +52,18 @@ internal static class MinimumCostToConvertStringISolution
     // NumberOfPossibleSetsOfClosingBranches's benchmark.
     public static long[,] BuildDistanceMatrix(char[] original, char[] changed, int[] cost)
     {
+        var distances = BuildIdentityMatrix();
+
+        ApplyDirectConversions(distances, (original, changed, cost));
+        CloseUnderTransitiveChains(distances);
+
+        return distances;
+    }
+
+    // The starting matrix: every letter reaches itself at no cost and every other
+    // letter not at all, until a stated rule or a chain of them proves otherwise.
+    private static long[,] BuildIdentityMatrix()
+    {
         var distances = new long[Alphabet, Alphabet];
 
         for (var i = 0; i < Alphabet; i++)
@@ -57,48 +74,75 @@ internal static class MinimumCostToConvertStringISolution
             }
         }
 
-        for (var i = 0; i < original.Length; i++)
-        {
-            var (from, to) = (original[i] - 'a', changed[i] - 'a');
-            distances[from, to] = Math.Min(distances[from, to], cost[i]);
-        }
+        return distances;
+    }
 
-        for (var k = 0; k < Alphabet; k++)
+    // Every stated rule is one direct edge, and a conversion stated more than once
+    // keeps its cheapest cost.
+    private static void ApplyDirectConversions(
+        long[,] distances, (char[] Original, char[] Changed, int[] Cost) rules)
+    {
+        for (var i = 0; i < rules.Original.Length; i++)
         {
-            for (var i = 0; i < Alphabet; i++)
+            var (from, to) = (rules.Original[i] - 'a', rules.Changed[i] - 'a');
+            distances[from, to] = Math.Min(distances[from, to], rules.Cost[i]);
+        }
+    }
+
+    // Floyd-Warshall: each letter takes a turn as an intermediate hop, so after its
+    // pass no i -> j entry is worse than routing that one letter.
+    private static void CloseUnderTransitiveChains(long[,] distances)
+    {
+        for (var through = 0; through < Alphabet; through++)
+        {
+            for (var from = 0; from < Alphabet; from++)
             {
-                for (var j = 0; j < Alphabet; j++)
-                {
-                    if (distances[i, k] + distances[k, j] < distances[i, j])
-                    {
-                        distances[i, j] = distances[i, k] + distances[k, j];
-                    }
-                }
+                RelaxThrough(distances, from, through);
             }
         }
+    }
 
-        return distances;
+    // One row of a pass: does going from -> through -> j beat the best from -> j so far?
+    private static void RelaxThrough(long[,] distances, int from, int through)
+    {
+        for (var to = 0; to < Alphabet; to++)
+        {
+            var viaIntermediate = distances[from, through] + distances[through, to];
+
+            if (viaIntermediate < distances[from, to])
+            {
+                distances[from, to] = viaIntermediate;
+            }
+        }
     }
 
     // Algorithms.ShortestPaths.AllPairsShortestPaths' Floyd-Warshall over the
     // 26-node LetterNetwork - the same composition
     // NumberOfPossibleSetsOfClosingBranchesSolution's
     // CountClosingSetsByAllPairsShortestPaths uses for BranchNetwork.
+    // The three parallel arrays are one rule set - the (original, changed, cost)
+    // triples the problem states - so they are one argument rather than three whose
+    // order only the signature remembers.
     public static long MinimumCostByAllPairsShortestPaths(
-        string source, string target, char[] original, char[] changed, int[] cost) =>
-        MinimumCostByAllPairsShortestPaths(source, target, LetterNetwork.Build(original, changed, cost));
+        SourceText source, TargetText target, (char[] Original, char[] Changed, int[] Cost) rules)
+    {
+        var network = LetterNetwork.Build(rules.Original, rules.Changed, rules.Cost);
 
-    public static long MinimumCostByAllPairsShortestPaths(string source, string target, LetterNetwork network)
+        return MinimumCostByAllPairsShortestPaths(source, target, network);
+    }
+
+    public static long MinimumCostByAllPairsShortestPaths(
+        SourceText source, TargetText target, LetterNetwork network)
     {
         AllPairsShortestPaths.TryComputeDistances<LetterNode, LetterTopology, ListEdges<LetterNode, int>, int>(
             network.Nodes, out var distances);
 
         var total = 0L;
 
-        for (var i = 0; i < source.Length; i++)
+        for (var i = 0; i < source.Text.Length; i++)
         {
-            var from = network.Nodes[source[i] - 'a'];
-            var to = network.Nodes[target[i] - 'a'];
+            var from = network.Nodes[source.Text[i] - 'a'];
+            var to = network.Nodes[target.Text[i] - 'a'];
 
             if (!distances.TryGetValue((from, to), out var distance))
             {
@@ -110,4 +154,14 @@ internal static class MinimumCostToConvertStringISolution
 
         return total;
     }
+
+    // The two ends of every per-position conversion, named for the roles they play here
+    // rather than left as two adjacent `string` positions a caller could hand over the
+    // wrong way round with the compiler none the wiser. The conversion graph is
+    // directed - `distances[source[i] - 'a', target[i] - 'a']` reads one entry and not
+    // its mirror - so the source letter each position starts from and the target letter
+    // it must become are not interchangeable.
+    internal readonly record struct SourceText(string Text);
+
+    internal readonly record struct TargetText(string Text);
 }

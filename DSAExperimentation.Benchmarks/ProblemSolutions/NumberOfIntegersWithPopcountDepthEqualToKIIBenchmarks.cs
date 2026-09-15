@@ -24,17 +24,25 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
     private const long MaxValue = 1_000_000_000_000_000; // 10^15, LC's own bound
     private const int UpdateQuery = 2;
 
-    [Params(200, 2_000)]
-    public int N;
+    private long[] _nums = [];
 
-    private long[] _nums = null!;
-    private long[][] _queries = null!;
+    private long[][] _queries = [];
     private PopcountDepthFenwickIndex _index = null!;
+    [Params(200, 2_000)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
+
+        _nums = BuildNums(random);
+        _queries = BuildQueries(random);
+    }
+
+    // The N values every query runs against, drawn uniformly from [1, MaxValue).
+    private long[] BuildNums(Random random)
+    {
         var nums = new long[N];
 
         for (var i = 0; i < N; i++)
@@ -42,27 +50,41 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
             nums[i] = random.NextInt64(1, MaxValue);
         }
 
-        _nums = nums;
+        return nums;
+    }
 
+    // QueryCount queries alternating the two kinds, so every iteration interleaves range
+    // reads with point updates rather than measuring one kind alone.
+    private long[][] BuildQueries(Random random)
+    {
         var queries = new long[QueryCount][];
 
         for (var i = 0; i < QueryCount; i++)
         {
-            if (i % 2 == 0)
-            {
-                var left = random.Next(N);
-                var right = left + random.Next(N - left);
-                var k = random.Next(0, PopcountDepthFenwickIndex.MaxTrackedDepth + 1);
-                queries[i] = [1, left, right, k];
-            }
-            else
-            {
-                queries[i] = [UpdateQuery, random.Next(N), random.NextInt64(1, MaxValue)];
-            }
+            queries[i] = IsRangeQueryIndex(i)
+                ? BuildRangeQuery(random)
+                : BuildUpdateQuery(random);
         }
 
-        _queries = queries;
+        return queries;
     }
+
+    // Whether query `index` is a range count (type 1) rather than a point update (type 2).
+    private static bool IsRangeQueryIndex(int index) => index % 2 == 0;
+
+    // One type-1 query: the range being counted over and the popcount depth it counts.
+    private long[] BuildRangeQuery(Random random)
+    {
+        var left = random.Next(N);
+        var right = left + random.Next(N - left);
+        var k = random.Next(0, PopcountDepthBounds.MaxTrackedDepth + 1);
+
+        return [1, left, right, k];
+    }
+
+    // One type-2 query: the point being updated and the value written to it.
+    private long[] BuildUpdateQuery(Random random) =>
+        [UpdateQuery, random.Next(N), random.NextInt64(1, MaxValue)];
 
     [IterationSetup]
     public void IterationSetup() => _index = PopcountDepthFenwickIndex.Build(_nums);

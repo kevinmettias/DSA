@@ -54,37 +54,19 @@ internal static class NumberOfIncreasingPathsInAGridSolution
     public static int CountPathsByMemoizedRecurrence(int[,] grid)
     {
         var pathsGrid = ToPathsGrid(grid);
+        var pathsFromCell = new IncreasingPathsFromCell(pathsGrid);
         var total = 0L;
 
         for (var row = 0; row < pathsGrid.Rows; row++)
         {
             for (var col = 0; col < pathsGrid.Cols; col++)
             {
-                total += Memoizer.Memoize<(int Row, int Col), long>(
-                    (row, col), (state, pathsFrom) => PathsFromMemoized(pathsGrid, state, pathsFrom));
+                total += Memoizer.Memoize<(int Row, int Col), long>((row, col), pathsFromCell);
                 total %= ModularArithmetic.Modulo;
             }
         }
 
         return (int)total;
-    }
-
-    private static long PathsFromMemoized(
-        PathsGrid grid, (int Row, int Col) cell, Func<(int Row, int Col), long> pathsFrom)
-    {
-        var count = 1L;
-
-        foreach (var (rowOffset, colOffset) in Directions)
-        {
-            var next = (Row: cell.Row + rowOffset, Col: cell.Col + colOffset);
-
-            if (IsIncreasingStep(grid, cell, next))
-            {
-                count += pathsFrom(next);
-            }
-        }
-
-        return count % ModularArithmetic.Modulo;
     }
 
     private static long PathsFromNaive(PathsGrid grid, (int Row, int Col) cell)
@@ -110,4 +92,27 @@ internal static class NumberOfIncreasingPathsInAGridSolution
 
     private static PathsGrid ToPathsGrid(int[,] grid) =>
         new(grid, grid.GetLength(0), grid.GetLength(1));
+
+    // The recurrence, as a named type: the paths starting at a cell are the trivial
+    // single-cell one plus the paths starting at every strictly greater neighbor.
+    private sealed class IncreasingPathsFromCell(PathsGrid grid)
+        : IRecurrence<(int Row, int Col), long>
+    {
+        public long Replay((int Row, int Col) cell, IRecurrence<(int Row, int Col), long> rest)
+        {
+            var count = 1L;
+
+            foreach (var (rowOffset, colOffset) in Directions)
+            {
+                var next = (Row: cell.Row + rowOffset, Col: cell.Col + colOffset);
+
+                if (IsIncreasingStep(grid, cell, next))
+                {
+                    count += rest.Replay(next, rest);
+                }
+            }
+
+            return count % ModularArithmetic.Modulo;
+        }
+    }
 }

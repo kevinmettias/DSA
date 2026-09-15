@@ -19,7 +19,7 @@ internal static class WordLadderIISolution
     // every layer's parents until the whole layer finishes, so a word discovered
     // from two same-level parents keeps both.
     public static List<string[]> FindLaddersByLayeredMutation(
-        string beginWord, string endWord, IEnumerable<string> wordList)
+        BeginWord beginWord, EndWord endWord, IEnumerable<string> wordList)
     {
         var wordSet = new Set<string>(wordList);
 
@@ -27,40 +27,40 @@ internal static class WordLadderIISolution
     }
 
     public static List<string[]> FindLaddersByLayeredMutation(
-        string beginWord, string endWord, Set<string> wordSet)
+        BeginWord beginWord, EndWord endWord, Set<string> wordSet)
     {
-        if (beginWord == endWord)
+        if (beginWord.Text == endWord.Text)
         {
-            return [[beginWord]];
+            return [[beginWord.Text]];
         }
 
-        if (!wordSet.Has(endWord))
+        if (!wordSet.Has(endWord.Text))
         {
             return [];
         }
 
         var parents = BuildParentsByLayer(beginWord, endWord, wordSet);
 
-        if (!parents.ContainsKey(endWord))
+        if (!parents.ContainsKey(endWord.Text))
         {
             return [];
         }
 
         var sequences = new List<string[]>();
-        CollectByParents(endWord, new ParentWalk(beginWord, parents, [endWord], sequences));
+        CollectByParents(endWord.Text, new ParentWalk(beginWord.Text, parents, [endWord.Text], sequences));
         return sequences;
     }
 
     // Expands one BFS layer at a time until endWord is first reached, recording
     // every predecessor a word was discovered from within its own layer.
     private static Dictionary<string, List<string>> BuildParentsByLayer(
-        string beginWord, string endWord, Set<string> wordSet)
+        BeginWord beginWord, EndWord endWord, Set<string> wordSet)
     {
         var parents = new Dictionary<string, List<string>>();
-        var knownDistance = new Dictionary<string, int> { [beginWord] = 0 };
-        var currentLevel = new List<string> { beginWord };
+        var knownDistance = new Dictionary<string, int> { [beginWord.Text] = 0 };
+        var currentLevel = new List<string> { beginWord.Text };
 
-        while (currentLevel.Count > 0 && !parents.ContainsKey(endWord))
+        while (currentLevel.Count > 0 && !parents.ContainsKey(endWord.Text))
         {
             currentLevel = ExpandLayer(currentLevel, wordSet, knownDistance, parents);
         }
@@ -72,16 +72,16 @@ internal static class WordLadderIISolution
     // beginWord in one pass; backtracking then follows only edges that strictly
     // decrease that label.
     public static List<string[]> FindLaddersByReduceGraph(
-        string beginWord, string endWord, IEnumerable<string> wordList)
+        BeginWord beginWord, EndWord endWord, IEnumerable<string> wordList)
     {
-        var graph = HammingGraph.Build(beginWord, wordList);
+        var graph = HammingGraph.Build(beginWord.Text, wordList);
 
         return FindLaddersByReduceGraph(graph, endWord);
     }
 
-    public static List<string[]> FindLaddersByReduceGraph(HammingGraph graph, string endWord)
+    public static List<string[]> FindLaddersByReduceGraph(HammingGraph graph, EndWord endWord)
     {
-        if (!graph.TryGetNode(endWord, out var endNode))
+        if (!graph.TryGetNode(endWord.Text, out var endNode))
         {
             return [];
         }
@@ -223,4 +223,14 @@ internal static class WordLadderIISolution
 
         return sequence;
     }
+
+    // The two ends of every ladder, named for the roles they play here rather than left
+    // as two adjacent `string` positions a caller could hand over the wrong way round
+    // with the compiler none the wiser. beginWord is where the transformations start;
+    // endWord is the word they must arrive at - and the relation is one-directional,
+    // since every sequence is backtracked from endWord to beginWord and only the
+    // begin-word end terminates the walk.
+    internal readonly record struct BeginWord(string Text);
+
+    internal readonly record struct EndWord(string Text);
 }

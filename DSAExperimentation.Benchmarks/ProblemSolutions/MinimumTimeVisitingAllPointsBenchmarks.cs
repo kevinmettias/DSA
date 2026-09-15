@@ -12,10 +12,10 @@ public class MinimumTimeVisitingAllPointsBenchmarks
     private const int CoordinateMagnitude = 1_000;
     private const int Seed = 1;
 
-    [Params(200, 5_000)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(200, 5_000)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -48,7 +48,7 @@ internal static class KthSmallestPathXORSumSolution
             var sorted = new List<int>(distinct);
             sorted.Sort();
 
-            answers[i] = k <= sorted.Count ? sorted[k - 1] : LeetCodeAnswer.None;
+            answers[i] = k <= sorted.Count ? KthSmallestDistinctSum(sorted, k) : LeetCodeAnswer.None;
         }
 
         return answers;
@@ -127,11 +127,16 @@ internal static class KthSmallestPathXORSumSolution
                 cache[u] = sorted;
             }
 
-            answers[i] = k <= sorted.Length ? sorted[k - 1] : LeetCodeAnswer.None;
+            answers[i] = k <= sorted.Length ? KthSmallestDistinctSum(sorted, k) : LeetCodeAnswer.None;
         }
 
         return answers;
     }
+
+    // The query's k is 1-based, so the k-th smallest distinct sum is the entry at
+    // k - 1 in the ascending list the callers have already established is long
+    // enough.
+    private static int KthSmallestDistinctSum(IReadOnlyList<int> sortedDistinct, int k) => sortedDistinct[k - 1];
 
     private static (int[] PathXor, int[] VisitOrder, int[] TimeIn, int[] TimeOut) BuildEulerTourWithPathXor(
         RootedTreeNode[] nodes, int[] parent, int[] vals)
@@ -146,10 +151,7 @@ internal static class KthSmallestPathXORSumSolution
 
         while (stack.TryPop(out var frame))
         {
-            timeIn[frame.Node.Id] = timer;
-            visitOrder[timer] = frame.Node.Id;
-            pathXor[frame.Node.Id] = frame.Xor;
-            timer++;
+            timer = RecordVisit((pathXor, visitOrder, timeIn), frame, timer);
 
             foreach (var child in frame.Node.Children)
             {
@@ -157,23 +159,54 @@ internal static class KthSmallestPathXORSumSolution
             }
         }
 
-        var size = new int[n];
+        var timeOut = BuildTimeOutRanges(visitOrder, parent, timeIn);
+
+        return (pathXor, visitOrder, timeIn, timeOut);
+    }
+
+    // Writes one visit of the pre-order walk into the three parallel tour arrays: the
+    // node's entry time, its position in the visit order, and its root-to-node XOR sum.
+    // Returns the timer slot the next visit will take.
+    private static int RecordVisit(
+        (int[] PathXor, int[] VisitOrder, int[] TimeIn) tour, (RootedTreeNode Node, int Xor) frame, int timer)
+    {
+        tour.TimeIn[frame.Node.Id] = timer;
+        tour.VisitOrder[timer] = frame.Node.Id;
+        tour.PathXor[frame.Node.Id] = frame.Xor;
+
+        return timer + 1;
+    }
+
+    // The [timeIn, timeOut] range each node's subtree occupies: the last of its
+    // descendants in the visit order, found by closing the range from its size.
+    private static int[] BuildTimeOutRanges(int[] visitOrder, int[] parent, int[] timeIn)
+    {
+        var size = BuildSubtreeSizes(visitOrder, parent);
+        var timeOut = new int[size.Length];
+
+        for (var id = 0; id < timeOut.Length; id++)
+        {
+            timeOut[id] = timeIn[id] + size[id] - 1;
+        }
+
+        return timeOut;
+    }
+
+    // How many nodes each node's subtree holds: one reverse sweep of the visit order
+    // accumulates every node's count into its parent, since a child is always visited
+    // after the node that heads its subtree.
+    private static int[] BuildSubtreeSizes(int[] visitOrder, int[] parent)
+    {
+        var size = new int[visitOrder.Length];
         Array.Fill(size, 1);
 
-        for (var i = n - 1; i >= 1; i--)
+        for (var i = size.Length - 1; i >= 1; i--)
         {
             var id = visitOrder[i];
             size[parent[id]] += size[id];
         }
 
-        var timeOut = new int[n];
-
-        for (var id = 0; id < n; id++)
-        {
-            timeOut[id] = timeIn[id] + size[id] - 1;
-        }
-
-        return (pathXor, visitOrder, timeIn, timeOut);
+        return size;
     }
 
     private static int[] DistinctSortedXorsInRange(int[] pathXor, int[] visitOrder, int start, int end)

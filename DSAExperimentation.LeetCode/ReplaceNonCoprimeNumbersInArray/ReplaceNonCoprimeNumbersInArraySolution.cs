@@ -23,21 +23,36 @@ internal static class ReplaceNonCoprimeNumbersInArraySolution
     // to justify itself against.
     public static int[] ReplaceByRepeatedRescan(int[] nums)
     {
-        var list = new List<long>(nums.Length);
+        var list = ToLongList(nums);
+
+        MergeUntilNoPairRemains(list);
+
+        return ToIntArray(list);
+    }
+
+    // Merging is LCM, so the working copy is widened to long.
+    private static List<long> ToLongList(int[] nums)
+    {
+        var values = new List<long>(nums.Length);
 
         foreach (var num in nums)
         {
-            list.Add(num);
+            values.Add(num);
         }
 
+        return values;
+    }
+
+    // Restarted from scratch after every merge, because a merge can cascade
+    // arbitrarily far back.
+    private static void MergeUntilNoPairRemains(List<long> list)
+    {
         var mergedAny = true;
 
         while (mergedAny)
         {
             mergedAny = MergeFirstNonCoprimePair(list);
         }
-
-        return ToIntArray(list);
     }
 
     private static bool MergeFirstNonCoprimePair(List<long> list)

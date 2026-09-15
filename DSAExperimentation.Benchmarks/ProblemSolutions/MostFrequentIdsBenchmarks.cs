@@ -14,11 +14,11 @@ public class MostFrequentIdsBenchmarks
     private const int MaxFreqMagnitude = 5;
     private const int Seed = 3092;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _freq = null!;
+    private int[] _freq = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,7 +36,7 @@ public class MostFrequentIdsBenchmarks
             var id = random.Next(1, MaxIdExclusive);
             counts.TryGetValue(id, out var current);
 
-            var delta = current > 0 && random.Next(2) == 0
+            var delta = ShouldDecrease(current, random)
                 ? -random.Next(1, Math.Min(current, MaxFreqMagnitude) + 1)
                 : random.Next(1, MaxFreqMagnitude + 1);
 
@@ -45,6 +45,11 @@ public class MostFrequentIdsBenchmarks
             _freq[i] = delta;
         }
     }
+
+    // The coin decides between a decrease and an increase, and it sits behind the
+    // "still has count to give" guard so an id at zero consumes no randomness.
+    private static bool ShouldDecrease(int current, Random random) =>
+        current > 0 && random.Next(2) == 0;
 
     [Benchmark(Baseline = true)]
     public long[] BruteForce() => MostFrequentIdsSolution.MostFrequentCountsByBruteForce(_nums, _freq);

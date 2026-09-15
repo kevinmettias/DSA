@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NQueensIIBenchmarks
 {
     [Params(8)]
-    public int Size;
+    public int Size { get; set; }
 
     [Benchmark(Baseline = true)]
     public int ArrayRecursion() => NQueensIISolution.TotalNQueensByArrayRecursion(Size);

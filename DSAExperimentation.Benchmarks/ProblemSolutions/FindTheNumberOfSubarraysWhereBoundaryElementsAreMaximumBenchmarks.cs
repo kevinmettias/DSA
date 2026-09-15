@@ -13,12 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumBenchmarks
 {
     private const int Seed = 3113;
-    private const int MaxValueExclusive = 1_000_000_001; // LC bounds nums[i] to [1, 1e9]
+    private const int MaxValueExclusive = 1_000_000_001; private int[] _nums = [];
+
+    // LC bounds nums[i] to [1, 1e9]
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

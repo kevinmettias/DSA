@@ -12,6 +12,28 @@ namespace DSAExperimentation.LeetCode.HouseRobber;
 internal static class HouseRobberSolution
 {
     public static int RobByMemoizedRecursion(int[] nums) =>
-        Memoizer.Memoize<int, int>(0, (i, rob) =>
-            i >= nums.Length ? 0 : Math.Max(rob(i + 1), nums[i] + rob(i + 2)));
+        Memoizer.Memoize<int, int>(0, new BestHaulFromHouse(nums));
+
+    /// <summary>
+    /// The recurrence, named: from house <paramref name="state"/> the best haul is
+    /// either the best haul from the next house, or this house's value plus the best
+    /// haul from the house after it. Those two choices at every house are the whole
+    /// of the rule - the decision the bare lambda left anonymous.
+    /// </summary>
+    private sealed class BestHaulFromHouse(int[] nums) : IRecurrence<int, int>
+    {
+        /// <inheritdoc/>
+        public int Replay(int state, IRecurrence<int, int> rest)
+        {
+            if (state >= nums.Length)
+            {
+                return 0;
+            }
+
+            var skipThisHouse = rest.Replay(state + 1, rest);
+            var robThisHouse = nums[state] + rest.Replay(state + 2, rest);
+
+            return Math.Max(skipThisHouse, robThisHouse);
+        }
+    }
 }

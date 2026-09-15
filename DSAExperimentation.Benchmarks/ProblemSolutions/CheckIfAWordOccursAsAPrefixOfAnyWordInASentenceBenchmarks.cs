@@ -17,23 +17,25 @@ public class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks
     // LC problem number, reused as the deterministic sentence seed.
     private const int SentenceSeed = 1455;
 
-    [Params(200, 5_000)]
-    public int WordCount;
+    private DynamicArray<string> _words = new();
 
-    private DynamicArray<string> _words = null!;
+    [Params(200, 5_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() =>
-        _words = CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SplitWords(
-            PrefixSentenceWorkloads.BuildSentence(WordCount, seed: SentenceSeed));
+    public void Setup()
+    {
+        var sentence = PrefixSentenceWorkloads.BuildSentence(WordCount, seed: SentenceSeed);
+        _words = CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SplitWords(sentence);
+    }
 
     [Benchmark(Baseline = true)]
     public int StartsWithScan() =>
         CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByStartsWithScan(
-            _words, PrefixSentenceWorkloads.UnmatchedSearchWord);
+            _words, PrefixSentenceScenario.UnmatchedSearchWord);
 
     [Benchmark]
     public int TriePerWordHasPrefix() =>
         CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByTriePerWord(
-            _words, PrefixSentenceWorkloads.UnmatchedSearchWord);
+            _words, PrefixSentenceScenario.UnmatchedSearchWord);
 }

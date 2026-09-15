@@ -35,6 +35,28 @@ internal static class MaximumIceCreamBarsSolution
         return count;
     }
 
+    // Precondition: at least one bar is still unbought, which the caller's round
+    // count guarantees - round r runs with exactly r bars bought out of costs.Length.
+    private static int CheapestUnbought(int[] costs, bool[] bought)
+    {
+        var cheapest = 0;
+
+        while (bought[cheapest])
+        {
+            cheapest++;
+        }
+
+        for (var i = cheapest + 1; i < costs.Length; i++)
+        {
+            if (!bought[i] && costs[i] < costs[cheapest])
+            {
+                cheapest = i;
+            }
+        }
+
+        return cheapest;
+    }
+
     // This repo's MergeSort over an ArrayIndexedSequence view of a private copy,
     // once up front, then a single O(n) walk that buys until the coins run out.
     // The copy is what keeps the caller's array unreordered.
@@ -57,27 +79,5 @@ internal static class MaximumIceCreamBarsSolution
         }
 
         return count;
-    }
-
-    // Precondition: at least one bar is still unbought, which the caller's round
-    // count guarantees - round r runs with exactly r bars bought out of costs.Length.
-    private static int CheapestUnbought(int[] costs, bool[] bought)
-    {
-        var cheapest = 0;
-
-        while (bought[cheapest])
-        {
-            cheapest++;
-        }
-
-        for (var i = cheapest + 1; i < costs.Length; i++)
-        {
-            if (!bought[i] && costs[i] < costs[cheapest])
-            {
-                cheapest = i;
-            }
-        }
-
-        return cheapest;
     }
 }

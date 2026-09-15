@@ -18,10 +18,10 @@ public class StoneGameIXBenchmarks
     private const int WorkloadSeed = 1;
     private const int MaxStoneValueExclusive = 1_000;
 
-    [Params(20, 50)]
-    public int Length;
+    private int[] _stones = [];
 
-    private int[] _stones = null!;
+    [Params(20, 50)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -25,12 +25,12 @@ public class PrefixAndSuffixSearchBenchmarks
     // Length of the prefix/suffix pulled from each word to build a query.
     private const int QueryAffixLength = 2;
 
-    [Params(200, 2_000)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private (string Prefix, string Suffix)[] _queries = null!;
-    private HashMap<string, int> _index = null!;
+    private (string Prefix, string Suffix)[] _queries = [];
+    private HashMap<string, int> _index = new();
+    [Params(200, 2_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -50,7 +50,8 @@ public class PrefixAndSuffixSearchBenchmarks
 
         foreach (var (prefix, suffix) in _queries)
         {
-            found = PrefixAndSuffixSearchSolution.SearchByLinearScan(_words, prefix, suffix);
+            found = PrefixAndSuffixSearchSolution.SearchByLinearScan(
+                _words, new SearchPrefix(prefix), new SearchSuffix(suffix));
         }
 
         return found;
@@ -63,7 +64,8 @@ public class PrefixAndSuffixSearchBenchmarks
 
         foreach (var (prefix, suffix) in _queries)
         {
-            found = PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(_index, prefix, suffix);
+            found = PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(
+                _index, new SearchPrefix(prefix), new SearchSuffix(suffix));
         }
 
         return found;

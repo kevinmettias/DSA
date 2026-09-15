@@ -18,10 +18,10 @@ public class CountKReducibleNumbersLessThanNBenchmarks
     private const int Seed = 3352; // LC problem number
     private const int K = 3;
 
-    [Params(16, 24)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(16, 24)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,7 +32,8 @@ public class CountKReducibleNumbersLessThanNBenchmarks
 
         for (var i = 1; i < Length; i++)
         {
-            bits[i] = random.Next(2) == 0 ? '0' : '1';
+            var isZeroBit = random.Next(2) == 0;
+            bits[i] = isZeroBit ? '0' : '1';
         }
 
         _s = new string(bits);

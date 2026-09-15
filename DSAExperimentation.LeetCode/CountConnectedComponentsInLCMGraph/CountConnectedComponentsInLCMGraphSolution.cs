@@ -38,8 +38,6 @@ internal static class CountConnectedComponentsInLCMGraphSolution
         return roots.Count;
     }
 
-    private static long Gcd(long a, long b) => b == 0 ? a : Gcd(b, a % b);
-
     private static long Lcm(long a, long b) => a / Gcd(a, b) * b;
 
     // Composed: DisjointSet(threshold + 1) over the VALUE space rather than index
@@ -53,19 +51,7 @@ internal static class CountConnectedComponentsInLCMGraphSolution
     public static int CountComponentsByMultipleUnion(int[] nums, int threshold)
     {
         var forest = new DisjointSet(threshold + 1);
-
-        foreach (var value in nums)
-        {
-            if (value > threshold)
-            {
-                continue;
-            }
-
-            for (var multiple = 2 * value; multiple <= threshold; multiple += value)
-            {
-                forest.Union(value, multiple);
-            }
-        }
+        UnionMultiplesOfPresentValues(forest, nums, threshold);
 
         var roots = new HashSet<int>();
         var isolatedAboveThreshold = 0;
@@ -87,4 +73,25 @@ internal static class CountConnectedComponentsInLCMGraphSolution
 
         return roots.Count + isolatedAboveThreshold;
     }
+
+    // Every present value at or below threshold is unioned with each of its own
+    // multiples, and nothing else: lcm(x, k*x) is k*x by construction, so each of
+    // those unions is a real edge.
+    private static void UnionMultiplesOfPresentValues(DisjointSet forest, int[] nums, int threshold)
+    {
+        foreach (var value in nums)
+        {
+            if (value > threshold)
+            {
+                continue;
+            }
+
+            for (var multiple = 2 * value; multiple <= threshold; multiple += value)
+            {
+                forest.Union(value, multiple);
+            }
+        }
+    }
+
+    private static long Gcd(long a, long b) => b == 0 ? a : Gcd(b, a % b);
 }

@@ -17,10 +17,10 @@ public class ChalkboardXorGameBenchmarks
     private const int RandomSeed = 810; // LC problem number
     private const int RandomValueBitWidth = 16;
 
-    [Params(9, 13)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(9, 13)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

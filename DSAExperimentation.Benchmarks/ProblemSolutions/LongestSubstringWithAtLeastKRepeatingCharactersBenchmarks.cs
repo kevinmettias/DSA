@@ -14,10 +14,10 @@ public class LongestSubstringWithAtLeastKRepeatingCharactersBenchmarks
     private const int Seed = 395;
     private const int K = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _s = LongestSubstringWithAtLeastKRepeatingCharactersWorkloads.BuildString(Length, Seed);

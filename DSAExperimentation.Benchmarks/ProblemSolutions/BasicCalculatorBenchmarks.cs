@@ -12,10 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BasicCalculatorBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private string _expression = "";
 
-    private string _expression = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _expression = BasicCalculatorWorkloads.BuildExpression(Length);

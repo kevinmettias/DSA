@@ -25,7 +25,9 @@ internal static class FruitIntoBasketsSolution
 
         for (var start = 0; start < fruits.Length; start++)
         {
-            longest = Math.Max(longest, LongestRunFrom(fruits, start));
+            var runLength = LongestRunFrom(fruits, start);
+
+            longest = Math.Max(longest, runLength);
         }
 
         return longest;

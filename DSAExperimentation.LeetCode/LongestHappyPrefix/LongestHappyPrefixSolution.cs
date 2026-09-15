@@ -18,7 +18,10 @@ internal static class LongestHappyPrefixSolution
     {
         for (var length = s.Length - 1; length >= 1; length--)
         {
-            if (s.AsSpan(0, length).SequenceEqual(s.AsSpan(s.Length - length, length)))
+            var prefix = s.AsSpan(0, length);
+            var suffix = s.AsSpan(s.Length - length, length);
+
+            if (prefix.SequenceEqual(suffix))
             {
                 return s[..length];
             }
@@ -34,8 +37,11 @@ internal static class LongestHappyPrefixSolution
     public static string LongestPrefixByPrefixFunction(string s)
     {
         var failure = PrefixFunctionSearch.ComputeFailureFunction(s);
-        var length = failure.Length == 0 ? 0 : failure[^1];
+        var length = failure.Length == 0 ? 0 : LastFailureValue(failure);
 
         return s[..length];
     }
+
+    // The failure function's final entry: its longest prefix-that-is-also-a-suffix length.
+    private static int LastFailureValue(int[] failure) => failure[^1];
 }

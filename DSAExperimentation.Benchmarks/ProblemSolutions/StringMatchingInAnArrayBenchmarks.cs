@@ -31,10 +31,10 @@ public class StringMatchingInAnArrayBenchmarks
     private const int MinLength = 6;
     private const string TrailingLetter = "b";
 
-    [Params(60, 150)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(60, 150)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

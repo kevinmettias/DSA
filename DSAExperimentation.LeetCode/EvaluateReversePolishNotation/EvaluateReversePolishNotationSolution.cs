@@ -27,7 +27,8 @@ internal static class EvaluateReversePolishNotationSolution
 
             stack.TryPop(out var right);
             stack.TryPop(out var left);
-            stack.Push(Apply(token, left, right));
+            var value = Apply(token, left, right);
+            stack.Push(value);
         }
 
         stack.TryPop(out var result);

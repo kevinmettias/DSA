@@ -26,5 +26,25 @@ internal static class HouseRobberIISolution
     }
 
     private static int RobRange(int[] nums, int start, int end) =>
-        Memoizer.Memoize<int, int>(start, (i, rob) => i > end ? 0 : Math.Max(rob(i + 1), nums[i] + rob(i + 2)));
+        Memoizer.Memoize<int, int>(start, new BestRobberyThroughRun(nums, end));
+
+    // The linear #198 rule, named: the best run through house `state` is the larger of
+    // skipping that house and robbing it on top of the best run ending two houses
+    // earlier. `end` caps the run, so the same rule serves both halves of the circle.
+    private sealed class BestRobberyThroughRun(int[] nums, int end) : IRecurrence<int, int>
+    {
+        /// <inheritdoc/>
+        public int Replay(int state, IRecurrence<int, int> rest)
+        {
+            if (state > end)
+            {
+                return 0;
+            }
+
+            var skip = rest.Replay(state + 1, rest);
+            var take = nums[state] + rest.Replay(state + 2, rest);
+
+            return Math.Max(skip, take);
+        }
+    }
 }

@@ -104,39 +104,30 @@ public sealed class FrequencyTrackerTests
 // Examples above) reads like the LeetCode call sequence it replays. Add/DeleteOne
 // return null (no value to compare); HasFrequency returns the actual answer - the
 // same null-means-"no return value" convention AllOneOp.Apply uses.
-public readonly record struct FrequencyTrackerOp
+public readonly record struct FrequencyTrackerOp(FrequencyTrackerOp.OpKind kind, int argument)
 {
-    private readonly Kind _kind;
-    private readonly int _argument;
+    public static FrequencyTrackerOp Add(int number) => new(OpKind.Add, number);
 
-    private FrequencyTrackerOp(Kind kind, int argument)
-    {
-        _kind = kind;
-        _argument = argument;
-    }
+    public static FrequencyTrackerOp DeleteOne(int number) => new(OpKind.DeleteOne, number);
 
-    public static FrequencyTrackerOp Add(int number) => new(Kind.Add, number);
-
-    public static FrequencyTrackerOp DeleteOne(int number) => new(Kind.DeleteOne, number);
-
-    public static FrequencyTrackerOp HasFrequency(int frequency) => new(Kind.HasFrequency, frequency);
+    public static FrequencyTrackerOp HasFrequency(int frequency) => new(OpKind.HasFrequency, frequency);
 
     internal bool? Apply(FrequencyTrackerSolution.IFrequencyTracker tracker)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Add:
-                tracker.Add(_argument);
+            case OpKind.Add:
+                tracker.Add(argument);
                 return null;
-            case Kind.DeleteOne:
-                tracker.DeleteOne(_argument);
+            case OpKind.DeleteOne:
+                tracker.DeleteOne(argument);
                 return null;
             default:
-                return tracker.HasFrequency(_argument);
+                return tracker.HasFrequency(argument);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Add,
         DeleteOne,

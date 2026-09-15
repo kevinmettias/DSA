@@ -30,25 +30,15 @@ internal static class MaximizeNumberOfNiceDivisorsSolution
     public static int MaxNiceDivisorsByNaiveRecursion(int primeFactors)
         => ReportedAnswer(MaxProductNaive(primeFactors));
 
-    private static BigInteger MaxProductNaive(int remaining) => BestSplit(remaining, MaxProductNaive);
-
-    // This repo's own Memoizer (Algorithms/DynamicProgramming/Memoizer.cs) keyed on
-    // the int `remaining` state: many different peel-2/peel-3 orders land on the
-    // same budget, which is exactly the overlapping-subproblem shape memoization
-    // exists for, collapsing the naive arm's exponential tree to O(n) states - the
-    // same idiom CountAllPossibleRoutes uses over a wider state shape.
-    public static int MaxNiceDivisorsByMemoizedRecurrence(int primeFactors)
-        => ReportedAnswer(Memoizer.Memoize<int, BigInteger>(primeFactors, Recurrence));
-
-    private static BigInteger Recurrence(int remaining, Func<int, BigInteger> maxProduct)
-        => BestSplit(remaining, maxProduct);
-
-    private static int ReportedAnswer(BigInteger maxProduct) => (int)(maxProduct % ModularArithmetic.Modulo);
+    private static BigInteger MaxProductNaive(int remaining) => BestSplit(remaining, new BestSplitRecurrence());
 
     // Shared shape between the naive self-recursion and the memoized recurrence:
     // peel off either a factor of 2 or a factor of 3 and keep whichever split
-    // yields the larger product, against leaving the budget whole.
-    private static BigInteger BestSplit(int remaining, Func<int, BigInteger> maxProduct)
+    // yields the larger product, against leaving the budget whole. `maxProduct` is
+    // the handle on this same rule for the budget a peel leaves behind - the memo
+    // run's own when the caller came through Memoize, and the bare rule itself when
+    // it did not, which is exactly the difference between the two arms.
+    private static BigInteger BestSplit(int remaining, IRecurrence<int, BigInteger> maxProduct)
     {
         if (remaining == 0)
         {
@@ -59,14 +49,39 @@ internal static class MaximizeNumberOfNiceDivisorsSolution
 
         if (remaining >= FactorOfTwo)
         {
-            best = BigInteger.Max(best, FactorOfTwo * maxProduct(remaining - FactorOfTwo));
+            var peeledTwo = maxProduct.Replay(remaining - FactorOfTwo, maxProduct);
+            best = BigInteger.Max(best, FactorOfTwo * peeledTwo);
         }
 
         if (remaining >= FactorOfThree)
         {
-            best = BigInteger.Max(best, FactorOfThree * maxProduct(remaining - FactorOfThree));
+            var peeledThree = maxProduct.Replay(remaining - FactorOfThree, maxProduct);
+            best = BigInteger.Max(best, FactorOfThree * peeledThree);
         }
 
         return best;
+    }
+
+    // This repo's own Memoizer (Algorithms/DynamicProgramming/Memoizer.cs) keyed on
+    // the int `remaining` state: many different peel-2/peel-3 orders land on the
+    // same budget, which is exactly the overlapping-subproblem shape memoization
+    // exists for, collapsing the naive arm's exponential tree to O(n) states - the
+    // same idiom CountAllPossibleRoutes uses over a wider state shape.
+    public static int MaxNiceDivisorsByMemoizedRecurrence(int primeFactors)
+    {
+        var maxProduct = Memoizer.Memoize<int, BigInteger>(primeFactors, new BestSplitRecurrence());
+        return ReportedAnswer(maxProduct);
+    }
+
+    private static int ReportedAnswer(BigInteger maxProduct) => (int)(maxProduct % ModularArithmetic.Modulo);
+
+    // The split rule, named: a budget either stands whole or peels off one factor of
+    // two or three, and the larger resulting product wins. `rest` is the memo run's own
+    // handle on the rule, so each peel below is a method call on a named type rather
+    // than an anonymous call-back value.
+    private sealed class BestSplitRecurrence : IRecurrence<int, BigInteger>
+    {
+        /// <inheritdoc/>
+        public BigInteger Replay(int state, IRecurrence<int, BigInteger> rest) => BestSplit(state, rest);
     }
 }

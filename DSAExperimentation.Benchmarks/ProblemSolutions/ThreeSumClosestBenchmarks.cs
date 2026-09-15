@@ -14,10 +14,10 @@ public class ThreeSumClosestBenchmarks
     // LC problem number, used as the deterministic seed for value generation.
     private const int RandomSeed = 16;
 
-    private int[] _values = null!;
+    private int[] _values = [];
 
     [Params(80, 500)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

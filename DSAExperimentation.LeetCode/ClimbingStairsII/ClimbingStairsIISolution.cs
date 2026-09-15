@@ -18,6 +18,36 @@ internal static class ClimbingStairsIISolution
     // strategy below has to justify itself against.
     public static long MinCostByBruteForce(int n, int[] costs) => MinCostFrom(n, costs);
 
+    // This repo's own Memoizer over the identical recurrence - natural-looking
+    // recursion via a shared cache instead of a hand-rolled dp[] array.
+    public static long MinCostByMemoizedRecurrence(int n, int[] costs) =>
+        Memoizer.Memoize<int, long>(n, new MinCostToStep(costs));
+
+    // The rule, named: the cheapest way to reach a step is the cheapest way to reach
+    // one of the three steps below it, plus that step's own cost and the squared
+    // length of the jump.
+    private sealed class MinCostToStep(int[] costs) : IRecurrence<int, long>
+    {
+        public long Replay(int step, IRecurrence<int, long> rest)
+        {
+            if (step == 0)
+            {
+                return 0;
+            }
+
+            var best = long.MaxValue;
+
+            for (var jump = 1; jump <= Math.Min(MaxJump, step); jump++)
+            {
+                var origin = step - jump;
+                var candidate = rest.Replay(origin, rest) + costs[step - 1] + (long)jump * jump;
+                best = Math.Min(best, candidate);
+            }
+
+            return best;
+        }
+    }
+
     private static long MinCostFrom(int step, int[] costs)
     {
         if (step == 0)
@@ -31,30 +61,6 @@ internal static class ClimbingStairsIISolution
         {
             var origin = step - jump;
             var candidate = MinCostFrom(origin, costs) + costs[step - 1] + (long)jump * jump;
-            best = Math.Min(best, candidate);
-        }
-
-        return best;
-    }
-
-    // This repo's own Memoizer over the identical recurrence - natural-looking
-    // recursion via a shared cache instead of a hand-rolled dp[] array.
-    public static long MinCostByMemoizedRecurrence(int n, int[] costs) =>
-        Memoizer.Memoize<int, long>(n, (step, minCostTo) => MinCostToStep(step, costs, minCostTo));
-
-    private static long MinCostToStep(int step, int[] costs, Func<int, long> minCostTo)
-    {
-        if (step == 0)
-        {
-            return 0;
-        }
-
-        var best = long.MaxValue;
-
-        for (var jump = 1; jump <= Math.Min(MaxJump, step); jump++)
-        {
-            var origin = step - jump;
-            var candidate = minCostTo(origin) + costs[step - 1] + (long)jump * jump;
             best = Math.Min(best, candidate);
         }
 

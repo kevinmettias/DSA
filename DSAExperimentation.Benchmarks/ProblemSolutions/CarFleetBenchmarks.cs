@@ -19,10 +19,10 @@ public class CarFleetBenchmarks
 
     private const int MaxRandomSpeedDivisorExclusive = 100;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private DynamicArray<double> _arrivalTimesByPositionDescending = new();
 
-    private DynamicArray<double> _arrivalTimesByPositionDescending = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

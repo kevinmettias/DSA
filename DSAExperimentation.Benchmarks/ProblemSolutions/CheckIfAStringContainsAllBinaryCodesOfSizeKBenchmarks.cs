@@ -12,10 +12,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks
 {
-    [Params(8, 10)]
-    public int K;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(8, 10)]
+    public int K { get; set; }
 
     [GlobalSetup]
     public void Setup() => _text = BinaryCodeTextWorkloads.BuildCoveringText(K);

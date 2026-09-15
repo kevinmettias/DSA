@@ -23,21 +23,9 @@ internal static class MinimumSumOfValuesByDividingArraySolution
     // own Memoizer-based strategy below has to beat.
     public static long MinimumValueSumByDictionaryMemo(int[] nums, int[] andValues)
     {
-        var memo = new Dictionary<(int Index, int GroupIndex), long?>();
+        var run = new DictionaryMemoRun(nums, andValues);
 
-        long? Recurse((int Index, int GroupIndex) state)
-        {
-            if (memo.TryGetValue(state, out var cached))
-            {
-                return cached;
-            }
-
-            var result = PartitionStep(state, nums, andValues, Recurse);
-            memo[state] = result;
-            return result;
-        }
-
-        return Recurse((0, 0)) ?? LeetCodeAnswer.None;
+        return run.Replay((0, 0), run) ?? LeetCodeAnswer.None;
     }
 
     // Same recurrence, routed through this repo's own Memoizer so each
@@ -45,12 +33,40 @@ internal static class MinimumSumOfValuesByDividingArraySolution
     // the cache lookup/store around every call.
     public static long MinimumValueSumByMemoizedPartition(int[] nums, int[] andValues)
     {
-        long? Recurrence((int Index, int GroupIndex) state, Func<(int Index, int GroupIndex), long?> solveRest) =>
-            PartitionStep(state, nums, andValues, solveRest);
-
-        var result = Memoizer.Memoize<(int Index, int GroupIndex), long?>((0, 0), Recurrence);
+        var result = Memoizer.Memoize((0, 0), new MinimumSumFromGroupStart(nums, andValues));
 
         return result ?? LeetCodeAnswer.None;
+    }
+
+    // The next group's start index and which andValue it must match are the whole state;
+    // the array and the targets stay fixed for the call and live here.
+    private sealed class MinimumSumFromGroupStart(int[] nums, int[] andValues)
+        : IRecurrence<(int Index, int GroupIndex), long?>
+    {
+        public long? Replay((int Index, int GroupIndex) state, IRecurrence<(int Index, int GroupIndex), long?> rest)
+            => PartitionStep(state, nums, andValues, rest);
+    }
+
+    // The hand-rolled memo run: it keeps the table and hands itself to the recurrence as
+    // the recursion, exactly as Memoizer's own run does - the lookup and the store are
+    // just written out here instead of being supplied by the library.
+    private sealed class DictionaryMemoRun(int[] nums, int[] andValues)
+        : IRecurrence<(int Index, int GroupIndex), long?>
+    {
+        private readonly MinimumSumFromGroupStart step = new(nums, andValues);
+        private readonly Dictionary<(int Index, int GroupIndex), long?> memo = [];
+
+        public long? Replay((int Index, int GroupIndex) state, IRecurrence<(int Index, int GroupIndex), long?> rest)
+        {
+            if (memo.TryGetValue(state, out var cached))
+            {
+                return cached;
+            }
+
+            var result = step.Replay(state, this);
+            memo[state] = result;
+            return result;
+        }
     }
 
     // null means "no valid partition from here" - the same nullable-over-
@@ -61,7 +77,7 @@ internal static class MinimumSumOfValuesByDividingArraySolution
         (int Index, int GroupIndex) state,
         int[] nums,
         int[] andValues,
-        Func<(int Index, int GroupIndex), long?> solveRest)
+        IRecurrence<(int Index, int GroupIndex), long?> solveRest)
     {
         var (index, groupIndex) = state;
         var remainingGroups = andValues.Length - groupIndex;
@@ -76,39 +92,56 @@ internal static class MinimumSumOfValuesByDividingArraySolution
             return null;
         }
 
+        return BestGroupExtension(state, nums, andValues, solveRest);
+    }
+
+    // The cheapest completion of the current group: it starts at `index` holding that
+    // element's own value and may stop anywhere from `index` onward.
+    private static long? BestGroupExtension(
+        (int Index, int GroupIndex) state,
+        int[] nums,
+        int[] andValues,
+        IRecurrence<(int Index, int GroupIndex), long?> solveRest)
+    {
+        var (index, groupIndex) = state;
+        long runningAnd = nums[index];
         long? best = null;
-        var runningAnd = nums[index];
 
-        for (var end = index; end < nums.Length; end++)
+        // The AND only ever clears bits, so once it has dropped below the target it can
+        // never climb back - the group stops extending there, in the loop bound itself.
+        for (var end = index; end < nums.Length && runningAnd >= andValues[groupIndex]; end++)
         {
-            if (end > index)
-            {
-                runningAnd &= nums[end];
-            }
-
-            if (runningAnd < andValues[groupIndex])
-            {
-                break;
-            }
+            runningAnd = FoldNext(nums, runningAnd, end, index);
 
             if (runningAnd != andValues[groupIndex])
             {
                 continue;
             }
 
-            var tail = solveRest((end + 1, groupIndex + 1));
+            var tail = solveRest.Replay((end + 1, groupIndex + 1), solveRest);
+            best = tail is null ? best : Cheaper(best, nums[end] + tail.Value);
+        }
 
-            if (tail is null)
-            {
-                continue;
-            }
+        return best;
+    }
 
-            var candidate = nums[end] + tail.Value;
+    // The first element seeds the group, every later one is folded into the AND.
+    private static long FoldNext(int[] nums, long runningAnd, int end, int index)
+    {
+        if (end == index)
+        {
+            return runningAnd;
+        }
 
-            if (best is null || candidate < best)
-            {
-                best = candidate;
-            }
+        return runningAnd & nums[end];
+    }
+
+    // The cheaper of two valid group ends, either of which may be absent.
+    private static long? Cheaper(long? best, long candidate)
+    {
+        if (best is null || candidate < best)
+        {
+            return candidate;
         }
 
         return best;

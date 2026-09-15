@@ -38,11 +38,26 @@ internal static class CountAllValidPickupAndDeliveryOptionsSolution
     // Same recurrence driven top-down through Memoizer, so each order count is solved
     // once and shared across every recursive call that needs it.
     public static long CountOrdersByMemoizedRecurrence(int n) =>
-        Memoizer.Memoize<int, long>(n, Ways);
+        Memoizer.Memoize<int, long>(n, new Ways());
 
-    private static long Ways(int orders, Func<int, long> ways) =>
-        orders == 0
-            ? 1L
-            : ways(orders - 1) * orders % ModularArithmetic.Modulo
-                * (NewOrderSlotCoefficient * orders - 1) % ModularArithmetic.Modulo;
+    // The rule, named: the sequences for n orders are the sequences for n - 1 orders
+    // times the n * (2n - 1) slots order n's own pickup/delivery pair can land in,
+    // each multiplication reduced mod 1e9+7.
+    private sealed class Ways : IRecurrence<int, long>
+    {
+        public long Replay(int orders, IRecurrence<int, long> rest)
+        {
+            if (orders == 0)
+            {
+                return 1L;
+            }
+
+            var waysBelow = rest.Replay(orders - 1, rest);
+            var placements = NewOrderSlotCoefficient * orders - 1;
+            return ReduceModulo(ReduceModulo(waysBelow * orders) * placements);
+        }
+    }
+
+    // The modular reduction the recurrence applies after each multiplication.
+    private static long ReduceModulo(long value) => value % ModularArithmetic.Modulo;
 }

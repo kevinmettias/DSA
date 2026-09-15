@@ -13,11 +13,11 @@ public class TwoCitySchedulingBenchmarks
     private const int RandomSeed = 1029; // LC problem number
     private const int MaxCost = 1_000;
 
+    private (int ACost, int BCost)[] _people = [];
+
     // Kept even: costs.Length must be 2n per LC 1029's own constraint.
     [Params(200, 4_000)]
-    public int Length;
-
-    private (int ACost, int BCost)[] _people = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

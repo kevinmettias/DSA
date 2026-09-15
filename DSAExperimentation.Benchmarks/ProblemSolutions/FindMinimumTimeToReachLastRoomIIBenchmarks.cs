@@ -16,10 +16,10 @@ public class FindMinimumTimeToReachLastRoomIIBenchmarks
     private const int MaxWaitExclusive = 200;
     private const int Seed = 3342;
 
-    [Params(20, 60)]
-    public int Size;
+    private int[][] _moveTime = [];
 
-    private int[][] _moveTime = null!;
+    [Params(20, 60)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

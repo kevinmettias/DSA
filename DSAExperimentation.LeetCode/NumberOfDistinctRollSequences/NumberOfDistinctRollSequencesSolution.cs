@@ -30,6 +30,14 @@ internal static class NumberOfDistinctRollSequencesSolution
     public static long DistinctSequencesByBruteForceRecursion(int n) =>
         CountSequences(n, FirstDay, NoRoll, NoRoll);
 
+    // This repo's own answer: the identical recurrence handed to Memoizer, keyed on
+    // the 3-tuple state - the same composition NumberOfMusicPlaylists and
+    // SuperEggDrop use for a multi-field DP state.
+    public static long DistinctSequencesByMemoizedRecursion(int n) =>
+        Memoizer.Memoize<(int Day, int SecondLastRoll, int LastRoll), long>(
+            (FirstDay, NoRoll, NoRoll),
+            new SequenceCounts(n));
+
     private static long CountSequences(int n, int day, int secondLastRoll, int lastRoll)
     {
         if (day > n)
@@ -52,40 +60,6 @@ internal static class NumberOfDistinctRollSequencesSolution
         return total;
     }
 
-    // This repo's own answer: the identical recurrence handed to Memoizer, keyed on
-    // the 3-tuple state - the same composition NumberOfMusicPlaylists and
-    // SuperEggDrop use for a multi-field DP state.
-    public static long DistinctSequencesByMemoizedRecursion(int n)
-    {
-        return Memoizer.Memoize<(int Day, int SecondLastRoll, int LastRoll), long>(
-            (FirstDay, NoRoll, NoRoll),
-            Ways);
-
-        long Ways((int Day, int SecondLastRoll, int LastRoll) state, Func<(int, int, int), long> ways)
-        {
-            var (day, secondLastRoll, lastRoll) = state;
-
-            if (day > n)
-            {
-                return 1;
-            }
-
-            var total = 0L;
-
-            for (var face = 1; face <= DieFaces; face++)
-            {
-                if (!CanFollow(face, secondLastRoll, lastRoll))
-                {
-                    continue;
-                }
-
-                total = (total + ways((day + 1, lastRoll, face))) % ModularArithmetic.Modulo;
-            }
-
-            return total;
-        }
-    }
-
     // The problem's two rules in one place: a face may not repeat either of the
     // previous two rolls, and must be coprime with the roll immediately before it.
     private static bool CanFollow(int face, int secondLastRoll, int lastRoll)
@@ -99,4 +73,38 @@ internal static class NumberOfDistinctRollSequencesSolution
     }
 
     private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+
+    // The recurrence, as a named type: the sequences a (day, second-last, last) state
+    // opens up are the ones each face that may legally follow it leads to, summed, and
+    // exactly one once the requested length has been passed.
+    private sealed class SequenceCounts(int requestedLength)
+        : IRecurrence<(int Day, int SecondLastRoll, int LastRoll), long>
+    {
+        public long Replay(
+            (int Day, int SecondLastRoll, int LastRoll) state,
+            IRecurrence<(int Day, int SecondLastRoll, int LastRoll), long> rest)
+        {
+            var (day, secondLastRoll, lastRoll) = state;
+
+            if (day > requestedLength)
+            {
+                return 1;
+            }
+
+            var total = 0L;
+
+            for (var face = 1; face <= DieFaces; face++)
+            {
+                if (!CanFollow(face, secondLastRoll, lastRoll))
+                {
+                    continue;
+                }
+
+                total = (total + rest.Replay((day + 1, lastRoll, face), rest))
+                    % ModularArithmetic.Modulo;
+            }
+
+            return total;
+        }
+    }
 }

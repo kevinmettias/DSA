@@ -20,35 +20,40 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
     // justify itself against.
     public static long MaxProfitByBruteForceWindowSum(int[] prices, int[] strategy, int k)
     {
-        var baseProfit = 0L;
-
-        for (var i = 0; i < prices.Length; i++)
-        {
-            baseProfit += (long)strategy[i] * prices[i];
-        }
-
+        var baseProfit = BaseProfit(prices, strategy);
         var bestDelta = 0L;
         var half = k / 2;
 
         for (var start = 0; start + k <= prices.Length; start++)
         {
-            var original = 0L;
-            var sellHalf = 0L;
-
-            for (var offset = 0; offset < k; offset++)
-            {
-                original += (long)strategy[start + offset] * prices[start + offset];
-
-                if (offset >= half)
-                {
-                    sellHalf += prices[start + offset];
-                }
-            }
-
-            bestDelta = Math.Max(bestDelta, sellHalf - original);
+            var delta = WindowDelta((prices, strategy), (start, k), half);
+            bestDelta = Math.Max(bestDelta, delta);
         }
 
         return baseProfit + bestDelta;
+    }
+
+    // What overwriting one window with "hold then sell" would do to the total: the price sum
+    // over its sell half, less the strategy*price contribution the window already had. Both
+    // halves are recomputed from scratch, which is the arm the sliding version below avoids.
+    private static long WindowDelta((int[] Prices, int[] Strategy) market, (int Start, int K) window, int half)
+    {
+        var (prices, strategy) = market;
+        var (start, k) = window;
+        var original = 0L;
+        var sellHalf = 0L;
+
+        for (var offset = 0; offset < k; offset++)
+        {
+            original += (long)strategy[start + offset] * prices[start + offset];
+
+            if (offset >= half)
+            {
+                sellHalf += prices[start + offset];
+            }
+        }
+
+        return sellHalf - original;
     }
 
     // Same delta, computed with two running window sums that each move by exactly
@@ -57,14 +62,26 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
     // prices[start + half] and adds prices[start + k]. O(n) total instead of O(n * k).
     public static long MaxProfitBySlidingWindowSum(int[] prices, int[] strategy, int k)
     {
-        var baseProfit = 0L;
+        var baseProfit = BaseProfit(prices, strategy);
+        var half = k / 2;
+        var (original, sellHalf) = InitialWindowSums((prices, strategy), k, half);
+        var bestDelta = Math.Max(0L, sellHalf - original);
 
-        for (var i = 0; i < prices.Length; i++)
+        for (var start = 1; start + k <= prices.Length; start++)
         {
-            baseProfit += (long)strategy[i] * prices[i];
+            (original, sellHalf) = SlideWindow((prices, strategy), (start, k), half, (original, sellHalf));
+            bestDelta = Math.Max(bestDelta, sellHalf - original);
         }
 
-        var half = k / 2;
+        return baseProfit + bestDelta;
+    }
+
+    // The first window's two sums, computed from scratch: its strategy*price contribution
+    // over the whole window, and the price sum over its second half alone.
+    private static (long Original, long SellHalf) InitialWindowSums(
+        (int[] Prices, int[] Strategy) market, int k, int half)
+    {
+        var (prices, strategy) = market;
         var original = 0L;
         var sellHalf = 0L;
 
@@ -78,20 +95,38 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
             }
         }
 
-        var bestDelta = Math.Max(0L, sellHalf - original);
+        return (original, sellHalf);
+    }
 
-        for (var start = 1; start + k <= prices.Length; start++)
+    // Carry both running sums one step right: the original-contribution sum drops the price
+    // leaving the window and adds the one entering it, and the sell-half sum does the same.
+    private static (long Original, long SellHalf) SlideWindow(
+        (int[] Prices, int[] Strategy) market, (int Start, int K) window, int half, (long Original, long SellHalf) running)
+    {
+        var (prices, strategy) = market;
+        var (start, k) = window;
+        var (original, sellHalf) = running;
+        var leaving = start - 1;
+        var entering = start + k - 1;
+        var leavingHalf = start + half - 1;
+
+        original += (long)strategy[entering] * prices[entering] - (long)strategy[leaving] * prices[leaving];
+        sellHalf += prices[entering] - prices[leavingHalf];
+
+        return (original, sellHalf);
+    }
+
+    // The profit the unmodified strategy already earns - the floor both strategies measure
+    // their delta against.
+    private static long BaseProfit(int[] prices, int[] strategy)
+    {
+        var baseProfit = 0L;
+
+        for (var i = 0; i < prices.Length; i++)
         {
-            var leaving = start - 1;
-            var entering = start + k - 1;
-            var leavingHalf = start + half - 1;
-
-            original += (long)strategy[entering] * prices[entering] - (long)strategy[leaving] * prices[leaving];
-            sellHalf += prices[entering] - prices[leavingHalf];
-
-            bestDelta = Math.Max(bestDelta, sellHalf - original);
+            baseProfit += (long)strategy[i] * prices[i];
         }
 
-        return baseProfit + bestDelta;
+        return baseProfit;
     }
 }

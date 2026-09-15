@@ -72,16 +72,22 @@ internal static class SearchA2DMatrixIISolution
                 return true;
             }
 
-            if (current > target)
-            {
-                col--;
-            }
-            else
-            {
-                row++;
-            }
+            (row, col) = StepFromCorner(row, col, current, target);
         }
 
         return false;
+    }
+
+    // The stepping rule at the corner: a value above the target eliminates its column, since
+    // everything below it in that column is even bigger, and one below eliminates its row, so
+    // each step retires a whole row or column and neither pointer ever backtracks.
+    private static (int Row, int Col) StepFromCorner(int row, int col, int current, int target)
+    {
+        if (current > target)
+        {
+            return (row, col - 1);
+        }
+
+        return (row + 1, col);
     }
 }

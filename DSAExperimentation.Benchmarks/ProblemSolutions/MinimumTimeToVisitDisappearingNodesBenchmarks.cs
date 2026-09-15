@@ -13,11 +13,11 @@ public class MinimumTimeToVisitDisappearingNodesBenchmarks
 {
     private const int Seed = 3112;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private TimedAdjacency _graph = null!;
-    private int[] _disappear = null!;
+
+    private int[] _disappear = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

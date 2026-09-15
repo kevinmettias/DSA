@@ -11,6 +11,11 @@ namespace DSAExperimentation.LeetCode.MaximizeSubarrayGCDScore;
 // count doesn't exceed k.
 internal static class MaximizeSubarrayGCDScoreSolution
 {
+    // The bottleneck scan's running state for the window so far: its gcd, the
+    // smallest power-of-two exponent any of its elements has, and how many
+    // elements share that exponent.
+    private readonly record struct WindowScan(int Gcd, int MinExponent, int MinExponentCount);
+
     // The literal reading of the problem: every subarray, every subset of its
     // own indices (up to k of them) tried as the doubled set, gcd recomputed
     // from scratch each time. Genuinely exponential in subarray length - the
@@ -23,7 +28,8 @@ internal static class MaximizeSubarrayGCDScoreSolution
         {
             for (var right = left; right < nums.Length; right++)
             {
-                best = Math.Max(best, BestScoreForSubarrayByTryingEverySubset(nums, left, right, k));
+                var score = BestScoreForSubarrayByTryingEverySubset(nums, left, right, k);
+                best = Math.Max(best, score);
             }
         }
 
@@ -43,21 +49,8 @@ internal static class MaximizeSubarrayGCDScoreSolution
                 continue;
             }
 
-            var gcd = 0;
-
-            for (var offset = 0; offset < length; offset++)
-            {
-                var value = nums[left + offset];
-
-                if ((mask & (1 << offset)) != 0)
-                {
-                    value *= 2;
-                }
-
-                gcd = Gcd(gcd, value);
-            }
-
-            best = Math.Max(best, (long)length * gcd);
+            var score = ScoreForDoubledSubset(nums, left, length, mask);
+            best = Math.Max(best, score);
         }
 
         return best;
@@ -76,6 +69,28 @@ internal static class MaximizeSubarrayGCDScoreSolution
         return count;
     }
 
+    // The score of doubling exactly the indices `mask` selects - the subarray's
+    // length times the gcd the doubled elements leave behind. The caller has
+    // already rejected the masks that double more than k elements.
+    private static long ScoreForDoubledSubset(int[] nums, int left, int length, int mask)
+    {
+        var gcd = 0;
+
+        for (var offset = 0; offset < length; offset++)
+        {
+            var value = nums[left + offset];
+
+            if ((mask & (1 << offset)) != 0)
+            {
+                value *= 2;
+            }
+
+            gcd = Gcd(gcd, value);
+        }
+
+        return (long)length * gcd;
+    }
+
     // One O(n) pass per left endpoint, tracking the running gcd plus the
     // minimum power-of-two exponent seen so far and how many elements share it
     // - the only two facts a subarray's best achievable score depends on, per
@@ -86,33 +101,48 @@ internal static class MaximizeSubarrayGCDScoreSolution
 
         for (var left = 0; left < nums.Length; left++)
         {
-            var runningGcd = 0;
-            var minExponent = int.MaxValue;
-            var minExponentCount = 0;
-
-            for (var right = left; right < nums.Length; right++)
-            {
-                runningGcd = Gcd(runningGcd, nums[right]);
-                var exponent = TrailingZeroCount(nums[right]);
-
-                if (exponent < minExponent)
-                {
-                    minExponent = exponent;
-                    minExponentCount = 1;
-                }
-                else if (exponent == minExponent)
-                {
-                    minExponentCount++;
-                }
-
-                var length = right - left + 1;
-                var multiplier = minExponentCount <= k ? 2 : 1;
-
-                best = Math.Max(best, (long)length * runningGcd * multiplier);
-            }
+            best = BestFromLeftEndpoint(nums, left, k, best);
         }
 
         return best;
+    }
+
+    // One O(n) pass over every window starting at `left`: length * gcd, doubled
+    // when the elements sitting at the window's minimum power-of-two exponent
+    // number no more than k, so all of them can be doubled.
+    private static long BestFromLeftEndpoint(int[] nums, int left, int k, long best)
+    {
+        var scan = new WindowScan(0, int.MaxValue, 0);
+
+        for (var right = left; right < nums.Length; right++)
+        {
+            scan = AbsorbElement(nums[right], scan);
+
+            var multiplier = scan.MinExponentCount <= k ? 2 : 1;
+            best = Math.Max(best, (long)(right - left + 1) * scan.Gcd * multiplier);
+        }
+
+        return best;
+    }
+
+    // Folds one more element into the window's running state: its running gcd,
+    // and its minimum power-of-two exponent with the count sharing it.
+    private static WindowScan AbsorbElement(int value, WindowScan scan)
+    {
+        var runningGcd = Gcd(scan.Gcd, value);
+        var exponent = TrailingZeroCount(value);
+
+        if (exponent < scan.MinExponent)
+        {
+            return new WindowScan(runningGcd, exponent, 1);
+        }
+
+        if (exponent > scan.MinExponent)
+        {
+            return new WindowScan(runningGcd, scan.MinExponent, scan.MinExponentCount);
+        }
+
+        return new WindowScan(runningGcd, scan.MinExponent, scan.MinExponentCount + 1);
     }
 
     private static int TrailingZeroCount(int value)

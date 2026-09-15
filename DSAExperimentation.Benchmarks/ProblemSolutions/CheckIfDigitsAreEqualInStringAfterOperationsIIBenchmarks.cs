@@ -11,10 +11,10 @@ public class CheckIfDigitsAreEqualInStringAfterOperationsIIBenchmarks
 {
     private const int RandomSeed = 3463;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _digits = "";
 
-    private string _digits = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

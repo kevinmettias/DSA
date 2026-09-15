@@ -140,20 +140,9 @@ public sealed class DesignAStackWithIncrementOperationTests
 // Examples above) reads like the LeetCode call sequence it replays. Push and
 // Increment return null (no return value); Pop returns the popped value - the same
 // null-means-"no return value" convention FreqStackOp.Apply uses.
-public readonly record struct CustomStackOp
+public readonly record struct CustomStackOp(CustomStackOp.OpKind kind, int first, int second)
 {
-    private readonly OpKind _kind;
-    private readonly int _first;
-    private readonly int _second;
-
-    private CustomStackOp(OpKind kind, int first, int second)
-    {
-        _kind = kind;
-        _first = first;
-        _second = second;
-    }
-
-    private enum OpKind
+    public enum OpKind
     {
         Push,
         Pop,
@@ -168,15 +157,15 @@ public readonly record struct CustomStackOp
 
     internal int? Apply(DesignAStackWithIncrementOperationSolution.ICustomStack stack)
     {
-        switch (_kind)
+        switch (kind)
         {
             case OpKind.Pop:
                 return stack.Pop();
             case OpKind.Increment:
-                stack.Increment(_first, _second);
+                stack.Increment(first, second);
                 return null;
             default:
-                stack.Push(_first);
+                stack.Push(first);
                 return null;
         }
     }

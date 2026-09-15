@@ -31,30 +31,16 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
     {
         var fullMask = (1 << nums.Length) - 1;
         var memo = new Dictionary<(int Mask, bool AliceTurn), int>();
+        var run = new DictionaryMinimaxRun(nums, memo);
 
-        int Recurse((int Mask, bool AliceTurn) state)
-        {
-            if (memo.TryGetValue(state, out var cached))
-            {
-                return cached;
-            }
-
-            var result = PlayStep(state, nums, Recurse);
-            memo[state] = result;
-            return result;
-        }
-
-        return Recurse((fullMask, true));
+        return run.Replay((fullMask, true), run);
     }
 
     public static int FinalElementByMemoizedMinimax(int[] nums)
     {
         var fullMask = (1 << nums.Length) - 1;
 
-        int Recurrence((int Mask, bool AliceTurn) state, Func<(int, bool), int> solveRest) =>
-            PlayStep(state, nums, solveRest);
-
-        return Memoizer.Memoize<(int Mask, bool AliceTurn), int>((fullMask, true), Recurrence);
+        return Memoizer.Memoize<(int Mask, bool AliceTurn), int>((fullMask, true), new MinimaxFromState(nums));
     }
 
     public static int FinalElementByEndpointComparison(int[] nums) =>
@@ -63,29 +49,22 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
     private static int PlayStep(
         (int Mask, bool AliceTurn) state,
         int[] nums,
-        Func<(int Mask, bool AliceTurn), int> solveRest)
+        IRecurrence<(int Mask, bool AliceTurn), int> solveRest)
     {
-        var (mask, aliceTurn) = state;
-        var survivors = SurvivorPositions(mask);
-        var count = survivors.Count;
+        var survivors = SurvivorPositions(state.Mask);
 
-        if (count == 1)
+        if (survivors.Count == 1)
         {
             return nums[survivors[0]];
         }
 
+        var aliceTurn = state.AliceTurn;
         var best = aliceTurn ? int.MinValue : int.MaxValue;
 
-        for (var start = 0; start < count; start++)
+        foreach (var next in NextStates(state, survivors))
         {
-            var removedMask = 0;
-
-            for (var end = start; end < count && end - start + 1 < count; end++)
-            {
-                removedMask |= 1 << survivors[end];
-                var value = solveRest((mask & ~removedMask, !aliceTurn));
-                best = aliceTurn ? Math.Max(best, value) : Math.Min(best, value);
-            }
+            var value = solveRest.Replay(next, solveRest);
+            best = aliceTurn ? Math.Max(best, value) : Math.Min(best, value);
         }
 
         return best;
@@ -102,5 +81,58 @@ internal static class FinalElementAfterSubarrayDeletionsSolution
         }
 
         return positions;
+    }
+
+    // Every move available to whoever is to play: delete a contiguous run of the
+    // survivors (positions among what remains, not original indices) shorter than
+    // the survivor count. Yields each resulting state in the same order the nested
+    // start/end scan would reach it, so the caller's recursion runs exactly where
+    // it did before.
+    private static IEnumerable<(int Mask, bool AliceTurn)> NextStates(
+        (int Mask, bool AliceTurn) state,
+        List<int> survivors)
+    {
+        var (mask, aliceTurn) = state;
+        var count = survivors.Count;
+
+        for (var start = 0; start < count; start++)
+        {
+            var removedMask = 0;
+
+            for (var end = start; end < count && end - start + 1 < count; end++)
+            {
+                removedMask |= 1 << survivors[end];
+                yield return (mask & ~removedMask, !aliceTurn);
+            }
+        }
+    }
+
+    // The hand-rolled arm, as a named run: it holds the caller's own cache and passes
+    // itself as the recursion, the same hand-written Dictionary the memoized arm
+    // replaces with Memoizer's.
+    private sealed class DictionaryMinimaxRun(
+        int[] nums,
+        Dictionary<(int Mask, bool AliceTurn), int> memo) : IRecurrence<(int Mask, bool AliceTurn), int>
+    {
+        public int Replay((int Mask, bool AliceTurn) state, IRecurrence<(int Mask, bool AliceTurn), int> rest)
+        {
+            if (memo.TryGetValue(state, out var cached))
+            {
+                return cached;
+            }
+
+            var result = PlayStep(state, nums, this);
+            memo[state] = result;
+
+            return result;
+        }
+    }
+
+    // The recurrence, as a named type: a position's value is PlayStep's best over the
+    // positions one move reaches - the rule both arms above play the game out through.
+    private sealed class MinimaxFromState(int[] nums) : IRecurrence<(int Mask, bool AliceTurn), int>
+    {
+        public int Replay((int Mask, bool AliceTurn) state, IRecurrence<(int Mask, bool AliceTurn), int> rest) =>
+            PlayStep(state, nums, rest);
     }
 }

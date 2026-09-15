@@ -30,26 +30,33 @@ internal static class FindTheCountOfMonotonicPairsIISolution
 
         for (var i = 1; i < nums.Length; i++)
         {
-            var delta = Math.Max(0, nums[i] - nums[i - 1]);
-            var currentRow = new long[maxValue + 1];
-
-            for (var j = 0; j <= nums[i]; j++)
-            {
-                var limit = Math.Min(j - delta, nums[i - 1]);
-                var sum = 0L;
-
-                for (var previousValue = 0; previousValue <= limit; previousValue++)
-                {
-                    sum += previousRow[previousValue];
-                }
-
-                currentRow[j] = sum % ModularArithmetic.Modulo;
-            }
-
-            previousRow = currentRow;
+            previousRow = BuildRowByBruteForce(previousRow, nums, i, maxValue);
         }
 
         return Total(previousRow);
+    }
+
+    // One row of the brute-force DP: for every j, re-sum the first
+    // min(j - delta, nums[i - 1]) entries of row i-1 from scratch.
+    private static long[] BuildRowByBruteForce(long[] previousRow, int[] nums, int i, int maxValue)
+    {
+        var delta = Math.Max(0, nums[i] - nums[i - 1]);
+        var currentRow = new long[maxValue + 1];
+
+        for (var j = 0; j <= nums[i]; j++)
+        {
+            var limit = Math.Min(j - delta, nums[i - 1]);
+            var sum = 0L;
+
+            for (var previousValue = 0; previousValue <= limit; previousValue++)
+            {
+                sum += previousRow[previousValue];
+            }
+
+            currentRow[j] = sum % ModularArithmetic.Modulo;
+        }
+
+        return currentRow;
     }
 
     // A running prefix sum turns each row into O(maxValue) instead of
@@ -68,20 +75,27 @@ internal static class FindTheCountOfMonotonicPairsIISolution
 
         for (var i = 1; i < nums.Length; i++)
         {
-            var delta = Math.Max(0, nums[i] - nums[i - 1]);
-            var prefix = PrefixSums(previousRow, nums[i - 1]);
-            var currentRow = new long[maxValue + 1];
-
-            for (var j = 0; j <= nums[i]; j++)
-            {
-                var limit = j - delta;
-                currentRow[j] = limit < 0 ? 0 : prefix[Math.Min(limit, nums[i - 1])];
-            }
-
-            previousRow = currentRow;
+            previousRow = BuildRowByPrefixSum(previousRow, nums, i, maxValue);
         }
 
         return Total(previousRow);
+    }
+
+    // The prefix-sum twin of BuildRowByBruteForce: the same row, but each entry is
+    // read out of one upfront running-prefix pass over row i-1 instead of re-summed.
+    private static long[] BuildRowByPrefixSum(long[] previousRow, int[] nums, int i, int maxValue)
+    {
+        var delta = Math.Max(0, nums[i] - nums[i - 1]);
+        var prefix = PrefixSums(previousRow, nums[i - 1]);
+        var currentRow = new long[maxValue + 1];
+
+        for (var j = 0; j <= nums[i]; j++)
+        {
+            var limit = j - delta;
+            currentRow[j] = limit < 0 ? 0 : PrefixAt(prefix, limit, nums[i - 1]);
+        }
+
+        return currentRow;
     }
 
     private static long[] PrefixSums(long[] row, int upperInclusive)
@@ -97,6 +111,10 @@ internal static class FindTheCountOfMonotonicPairsIISolution
 
         return prefix;
     }
+
+    // The prefix sum at the limit, clamped to the largest index this row's prefix covers.
+    private static long PrefixAt(long[] prefix, int limit, int upperInclusive) =>
+        prefix[Math.Min(limit, upperInclusive)];
 
     private static long Total(long[] lastRow)
     {

@@ -18,10 +18,10 @@ public class KDivisibleElementsSubarraysBenchmarks
     private const int DivisorP = 3;
     private const int MaxDivisibleCount = 5;
 
-    [Params(50, 200)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(50, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

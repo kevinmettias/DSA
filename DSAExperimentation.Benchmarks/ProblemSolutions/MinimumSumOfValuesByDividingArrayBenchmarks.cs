@@ -18,11 +18,11 @@ public class MinimumSumOfValuesByDividingArrayBenchmarks
     private const int MaxValueExclusive = 1 << 17;
     private const int GroupCount = 4;
 
-    [Params(12, 20)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _andValues = null!;
+    private int[] _andValues = [];
+    [Params(12, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,14 +31,6 @@ public class MinimumSumOfValuesByDividingArrayBenchmarks
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxValueExclusive)).ToArray();
         _andValues = BuildFeasibleAndValues(_nums, GroupCount, random);
     }
-
-    [Benchmark(Baseline = true)]
-    public long DictionaryMemo() =>
-        MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByDictionaryMemo(_nums, _andValues);
-
-    [Benchmark]
-    public long MemoizedPartition() =>
-        MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByMemoizedPartition(_nums, _andValues);
 
     // Picks GroupCount - 1 random cut points, then reads each resulting
     // group's own AND back off nums - the workload's andValues are the exact
@@ -58,17 +50,32 @@ public class MinimumSumOfValuesByDividingArrayBenchmarks
 
         for (var i = 0; i < boundaries.Length; i++)
         {
-            var groupAnd = nums[start];
-
-            for (var j = start + 1; j < boundaries[i]; j++)
-            {
-                groupAnd &= nums[j];
-            }
-
-            andValues[i] = groupAnd;
+            andValues[i] = GroupAnd(nums, start, boundaries[i]);
             start = boundaries[i];
         }
 
         return andValues;
     }
+
+    // The AND of nums[start..end), which is exactly the value that group must have
+    // for the cut at `end` to be feasible.
+    private static int GroupAnd(int[] nums, int start, int end)
+    {
+        var groupAnd = nums[start];
+
+        for (var j = start + 1; j < end; j++)
+        {
+            groupAnd &= nums[j];
+        }
+
+        return groupAnd;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long DictionaryMemo() =>
+        MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByDictionaryMemo(_nums, _andValues);
+
+    [Benchmark]
+    public long MemoizedPartition() =>
+        MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByMemoizedPartition(_nums, _andValues);
 }

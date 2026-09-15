@@ -14,15 +14,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumGeneticMutationBenchmarks
 {
     private const int GeneLength = 8;
-    private const int RandomSeed = 433; // LC problem number
+    private const int RandomSeed = 433; private Set<string> _bank = new();
+
+    private HammingGraph _graph = null!;
+    private string _startGene = "";
+    private string _endGene = "";
+    // LC problem number
 
     [Params(200, 2_000)]
-    public int GeneCount;
-
-    private Set<string> _bank = null!;
-    private HammingGraph _graph = null!;
-    private string _startGene = null!;
-    private string _endGene = null!;
+    public int GeneCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,7 +38,10 @@ public class MinimumGeneticMutationBenchmarks
 
     [Benchmark(Baseline = true)]
     public int MutationQueueBfs() =>
-        MinimumGeneticMutationSolution.MinMutationByMutationQueue(_startGene, _endGene, _bank);
+        MinimumGeneticMutationSolution.MinMutationByMutationQueue(
+            new MinimumGeneticMutationSolution.StartGene(_startGene),
+            new MinimumGeneticMutationSolution.EndGene(_endGene),
+            _bank);
 
     [Benchmark]
     public int ReduceGraphBfs() => MinimumGeneticMutationSolution.MinMutationByReduceGraph(_graph, _endGene);

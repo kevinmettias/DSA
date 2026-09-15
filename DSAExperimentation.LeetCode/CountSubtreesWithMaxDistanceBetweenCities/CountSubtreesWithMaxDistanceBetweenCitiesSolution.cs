@@ -22,31 +22,51 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
     // Distance-array marker for a city the confined BFS never reached.
     private const int Unreached = -1;
 
+    // Both strategies are stateless, so one instance each serves every call and the
+    // benchmark arms that measure these two methods allocate nothing to pick one.
+    private static readonly IDiameterStrategy AllPairsBfsDiameter = new DiameterByAllPairsBfs();
+    private static readonly IDiameterStrategy DoubleBfsDiameter = new DiameterByDoubleBfs();
+
     // The textbook baseline: for each city in the mask, BFS from it and take the
     // largest distance seen anywhere in the mask, which is the mask's diameter once
     // every start has been tried. Connectivity falls out of the same passes - a mask
     // that leaves one of its own cities unreached is not a subtree. Deliberately
     // written with BCL collections only; it is the arm the double-BFS strategy below
     // has to justify itself against.
-    public static int[] CountSubtreesByAllPairsBfs(int n, int[][] edges) =>
-        CountSubtreesByAllPairsBfs(BuildAdjacency(n, edges));
+    public static int[] CountSubtreesByAllPairsBfs(int n, int[][] edges)
+    {
+        var adjacency = BuildAdjacency(n, edges);
+
+        return CountSubtreesByAllPairsBfs(adjacency);
+    }
 
     public static int[] CountSubtreesByAllPairsBfs(List<int>[] adjacency) =>
-        CountSubtrees(adjacency, TryComputeDiameterAllPairs);
+        CountSubtrees(adjacency, AllPairsBfsDiameter);
 
     // The same mask enumeration, but each mask's diameter costs a constant two BFS
     // passes instead of one per member city. The frontier is this repo's own
     // Queue<int>, the same adjacency-list-plus-Queue shape MinimumHeightTreesSolution
     // uses for its own edge-list search.
-    public static int[] CountSubtreesByDoubleBfs(int n, int[][] edges) =>
-        CountSubtreesByDoubleBfs(BuildAdjacency(n, edges));
+    public static int[] CountSubtreesByDoubleBfs(int n, int[][] edges)
+    {
+        var adjacency = BuildAdjacency(n, edges);
+
+        return CountSubtreesByDoubleBfs(adjacency);
+    }
 
     public static int[] CountSubtreesByDoubleBfs(List<int>[] adjacency) =>
-        CountSubtrees(adjacency, TryComputeDiameterDoubleBfs);
+        CountSubtrees(adjacency, DoubleBfsDiameter);
 
-    private delegate bool DiameterStrategy(int mask, List<int>[] adjacency, out int diameter);
+    // The one question the two arms answer differently: this mask's diameter, and
+    // whether the mask holds together at all. The operation and both of its inputs are
+    // named here, and what `false` means - a city inside the mask the confined BFS
+    // never reached, so the mask is not a subtree - has somewhere to be stated.
+    private interface IDiameterStrategy
+    {
+        bool TryCompute(int mask, List<int>[] adjacency, out int diameter);
+    }
 
-    private static int[] CountSubtrees(List<int>[] adjacency, DiameterStrategy computeDiameter)
+    private static int[] CountSubtrees(List<int>[] adjacency, IDiameterStrategy computeDiameter)
     {
         var n = adjacency.Length;
         var counts = new int[n - 1];
@@ -58,7 +78,7 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
                 continue;
             }
 
-            if (computeDiameter(mask, adjacency, out var diameter))
+            if (computeDiameter.TryCompute(mask, adjacency, out var diameter))
             {
                 counts[diameter - 1]++;
             }
@@ -67,26 +87,29 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
         return counts;
     }
 
-    private static bool TryComputeDiameterAllPairs(int mask, List<int>[] adjacency, out int diameter)
+    private sealed class DiameterByAllPairsBfs : IDiameterStrategy
     {
-        var accumulation = new DiameterAccumulation { Diameter = 0, Connected = true };
-
-        for (var start = 0; start < adjacency.Length; start++)
+        public bool TryCompute(int mask, List<int>[] adjacency, out int diameter)
         {
-            if ((mask & (1 << start)) == 0)
+            var accumulation = new DiameterAccumulation { Diameter = 0, Connected = true };
+
+            for (var start = 0; start < adjacency.Length; start++)
             {
-                continue;
+                if ((mask & (1 << start)) == 0)
+                {
+                    continue;
+                }
+
+                var distances = BclBfsDistances(start, mask, adjacency);
+                AccumulateDiameter(mask, distances, accumulation);
             }
 
-            var distances = BclBfsDistances(start, mask, adjacency);
-            AccumulateDiameter(mask, distances, ref accumulation);
+            diameter = accumulation.Diameter;
+            return accumulation.Connected;
         }
-
-        diameter = accumulation.Diameter;
-        return accumulation.Connected;
     }
 
-    private static void AccumulateDiameter(int mask, int[] distances, ref DiameterAccumulation accumulation)
+    private static void AccumulateDiameter(int mask, int[] distances, DiameterAccumulation accumulation)
     {
         for (var node = 0; node < distances.Length; node++)
         {
@@ -106,26 +129,29 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
         }
     }
 
-    private struct DiameterAccumulation
+    private sealed class DiameterAccumulation
     {
-        public int Diameter;
-        public bool Connected;
+        public int Diameter { get; set; }
+        public bool Connected { get; set; }
     }
 
-    private static bool TryComputeDiameterDoubleBfs(int mask, List<int>[] adjacency, out int diameter)
+    private sealed class DiameterByDoubleBfs : IDiameterStrategy
     {
-        var start = LowestSetBitIndex(mask);
-        var firstPass = QueueBfsDistances(start, mask, adjacency);
-
-        if (!TryFindFarthestNode(mask, firstPass, start, out var farthest))
+        public bool TryCompute(int mask, List<int>[] adjacency, out int diameter)
         {
-            diameter = 0;
-            return false;
-        }
+            var start = LowestSetBitIndex(mask);
+            var firstPass = QueueBfsDistances(start, mask, adjacency);
 
-        var secondPass = QueueBfsDistances(farthest, mask, adjacency);
-        diameter = MaxDistanceInMask(mask, secondPass);
-        return true;
+            if (!TryFindFarthestNode(mask, firstPass, start, out var farthest))
+            {
+                diameter = 0;
+                return false;
+            }
+
+            var secondPass = QueueBfsDistances(farthest, mask, adjacency);
+            diameter = MaxDistanceInMask(mask, secondPass);
+            return true;
+        }
     }
 
     private static bool TryFindFarthestNode(int mask, int[] distances, int start, out int farthest)
@@ -145,14 +171,14 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
                 return false;
             }
 
-            UpdateFarthest(node, distances[node], ref search);
+            UpdateFarthest(node, distances[node], search);
         }
 
         farthest = search.Farthest;
         return true;
     }
 
-    private static void UpdateFarthest(int node, int distance, ref FarthestNodeSearch search)
+    private static void UpdateFarthest(int node, int distance, FarthestNodeSearch search)
     {
         if (distance > search.MaxDistance)
         {
@@ -161,10 +187,10 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
         }
     }
 
-    private struct FarthestNodeSearch
+    private sealed class FarthestNodeSearch
     {
-        public int Farthest;
-        public int MaxDistance;
+        public int Farthest { get; set; }
+        public int MaxDistance { get; set; }
     }
 
     private static int MaxDistanceInMask(int mask, int[] distances)

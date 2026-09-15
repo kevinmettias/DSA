@@ -10,16 +10,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestBalancedSubarrayIBenchmarks
 {
-    [Params(100, 1_500)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(100, 1_500)]
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _nums = Enumerable.Range(0, Length).Select(i => 2 * i + (i % 2)).ToArray();
-    }
+    public void Setup() => _nums = Enumerable.Range(0, Length).Select(i => 2 * i + (i % 2)).ToArray();
 
     [Benchmark(Baseline = true)]
     public int BruteForce() => LongestBalancedSubarrayISolution.FindLongestBalancedLengthByBruteForce(_nums);

@@ -18,7 +18,7 @@ internal static class LexicographicallySmallestEquivalentStringSolution
     // out of each unvisited letter to collect its component, tracking the smallest
     // member seen. Deliberately BCL-only - it is the arm the DisjointSet composition
     // below has to justify itself against.
-    public static string SmallestEquivalentStringByAdjacencyListBfs(string s1, string s2, string baseStr)
+    public static string SmallestEquivalentStringByAdjacencyListBfs(string s1, string s2, BaseText baseStr)
     {
         var adjacency = BuildAdjacencyList(s1, s2);
         var smallestInGroup = ComputeSmallestPerComponent(adjacency);
@@ -96,14 +96,6 @@ internal static class LexicographicallySmallestEquivalentStringSolution
         return (smallest, component);
     }
 
-    private static void AssignSmallestToComponent(List<int> component, char smallest, char[] smallestInGroup)
-    {
-        foreach (var member in component)
-        {
-            smallestInGroup[member] = smallest;
-        }
-    }
-
     private static char VisitCandidate(int next, ComponentScan scan, char smallest)
     {
         if (scan.Visited[next])
@@ -119,14 +111,32 @@ internal static class LexicographicallySmallestEquivalentStringSolution
         return candidate < smallest ? candidate : smallest;
     }
 
-    private readonly record struct ComponentScan(bool[] Visited, List<int> Component, Queue<int> Queue);
+    private static void AssignSmallestToComponent(List<int> component, char smallest, char[] smallestInGroup)
+    {
+        foreach (var member in component)
+        {
+            smallestInGroup[member] = smallest;
+        }
+    }
+
+    private static string RemapThroughComponents(BaseText baseStr, char[] smallestInGroup)
+    {
+        var result = new char[baseStr.Text.Length];
+
+        for (var i = 0; i < baseStr.Text.Length; i++)
+        {
+            result[i] = smallestInGroup[baseStr.Text[i] - 'a'];
+        }
+
+        return new string(result);
+    }
 
     // This repo's own DisjointSet over the 26 letter ids - the same union-over-26-
     // letters shape SatisfiabilityOfEqualityEquations uses. Union is O(1) amortized
     // per pair and Find is O(a(26)) per baseStr character, with no per-component list
     // allocated at all: one pass records the smallest letter reached per root and one
     // pass remaps baseStr through it.
-    public static string SmallestEquivalentStringByDisjointSet(string s1, string s2, string baseStr)
+    public static string SmallestEquivalentStringByDisjointSet(string s1, string s2, BaseText baseStr)
     {
         var equivalences = BuildEquivalences(s1, s2);
         var smallestInGroup = ComputeSmallestPerRoot(equivalences);
@@ -164,27 +174,24 @@ internal static class LexicographicallySmallestEquivalentStringSolution
         return smallestInGroup;
     }
 
-    private static string RemapThroughRoots(string baseStr, DisjointSet equivalences, char[] smallestInGroup)
+    private static string RemapThroughRoots(BaseText baseStr, DisjointSet equivalences, char[] smallestInGroup)
     {
-        var result = new char[baseStr.Length];
+        var result = new char[baseStr.Text.Length];
 
-        for (var i = 0; i < baseStr.Length; i++)
+        for (var i = 0; i < baseStr.Text.Length; i++)
         {
-            result[i] = smallestInGroup[equivalences.Find(baseStr[i] - 'a')];
+            result[i] = smallestInGroup[equivalences.Find(baseStr.Text[i] - 'a')];
         }
 
         return new string(result);
     }
 
-    private static string RemapThroughComponents(string baseStr, char[] smallestInGroup)
-    {
-        var result = new char[baseStr.Length];
+    private readonly record struct ComponentScan(bool[] Visited, List<int> Component, Queue<int> Queue);
 
-        for (var i = 0; i < baseStr.Length; i++)
-        {
-            result[i] = smallestInGroup[baseStr[i] - 'a'];
-        }
-
-        return new string(result);
-    }
+    // The string that gets rewritten. `s1` and `s2` are the two equivalence lists - the
+    // pair (s1[i], s2[i]) states a symmetric relation, so swapping the two lists describes
+    // the same classes - but `baseStr` is the text those classes are then applied to, and
+    // it is not one of them. Naming that role separately keeps a caller from handing the
+    // text over in a list's position with the compiler none the wiser.
+    internal readonly record struct BaseText(string Text);
 }

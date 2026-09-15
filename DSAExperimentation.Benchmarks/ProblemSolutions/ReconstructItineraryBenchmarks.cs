@@ -14,10 +14,10 @@ public class ReconstructItineraryBenchmarks
     // LC problem number, reused as the deterministic ticket seed.
     private const int TicketSeed = 332;
 
-    [Params(200, 2_000)]
-    public int TicketCount;
+    private string[][] _tickets = [];
 
-    private string[][] _tickets = null!;
+    [Params(200, 2_000)]
+    public int TicketCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _tickets = ItineraryWorkloads.BuildTickets(TicketCount, seed: TicketSeed);

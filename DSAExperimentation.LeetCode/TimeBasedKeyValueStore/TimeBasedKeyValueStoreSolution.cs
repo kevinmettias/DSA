@@ -70,7 +70,7 @@ internal static class TimeBasedKeyValueStoreSolution
             return floorIndex < 0 ? string.Empty : history.Values.Get(floorIndex);
         }
 
-        private sealed class History
+        private sealed record History
         {
             public DynamicArray<int> Timestamps { get; } = new();
 

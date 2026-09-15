@@ -20,10 +20,10 @@ public class SortListBenchmarks
 {
     private const int ShuffleSeed = 148;
 
-    [Params(100, 1_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int>? _head;
+
+    [Params(100, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -40,9 +40,6 @@ public class SortListBenchmarks
         _head = BuildList(values);
     }
 
-    [Benchmark(Baseline = true)]
-    public object? MergeSortOverSequence() => SortListSolution.SortByMergeSortOverSequence(_head);
-
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         var dummy = new SinglyLinkedListNode<int>(0);
@@ -56,4 +53,7 @@ public class SortListBenchmarks
 
         return dummy.Next;
     }
+
+    [Benchmark(Baseline = true)]
+    public object? MergeSortOverSequence() => SortListSolution.SortByMergeSortOverSequence(_head);
 }

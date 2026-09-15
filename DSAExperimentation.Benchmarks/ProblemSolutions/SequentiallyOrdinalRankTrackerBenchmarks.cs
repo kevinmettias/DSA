@@ -17,11 +17,11 @@ public class SequentiallyOrdinalRankTrackerBenchmarks
     private const int RandomSeed = 1;
     private const string NamePrefix = "loc";
 
-    [Params(100, 1_000)]
-    public int OperationCount;
+    private string[] _names = [];
 
-    private string[] _names = null!;
-    private int[] _scores = null!;
+    private int[] _scores = [];
+    [Params(100, 1_000)]
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

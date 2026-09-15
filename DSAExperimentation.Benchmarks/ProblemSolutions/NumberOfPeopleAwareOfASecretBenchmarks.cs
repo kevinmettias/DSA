@@ -15,11 +15,11 @@ public class NumberOfPeopleAwareOfASecretBenchmarks
     private const int DelayDivisor = 20;
     private const int ForgetDivisor = 2;
 
-    [Params(2_000, 6_000)]
-    public int Length;
-
     private int _delay;
+
     private int _forget;
+    [Params(2_000, 6_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

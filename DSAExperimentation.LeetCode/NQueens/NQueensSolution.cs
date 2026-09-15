@@ -24,30 +24,9 @@ internal static class NQueensSolution
         var diag = new bool[(DiagonalArrayMultiplier * n) - 1];
         var anti = new bool[(DiagonalArrayMultiplier * n) - 1];
 
-        Search(0);
+        SearchRows(0, placed, (cols, diag, anti), results);
+
         return results;
-
-        void Search(int row)
-        {
-            if (row == n)
-            {
-                results.Add(Board(n, placed));
-                return;
-            }
-
-            for (var col = 0; col < n; col++)
-            {
-                if (cols[col] || diag[row - col + n - 1] || anti[row + col])
-                {
-                    continue;
-                }
-
-                placed[row] = col;
-                cols[col] = diag[row - col + n - 1] = anti[row + col] = true;
-                Search(row + 1);
-                cols[col] = diag[row - col + n - 1] = anti[row + col] = false;
-            }
-        }
     }
 
     // This repo's own backtracking engine: row-by-row queen placement with
@@ -61,7 +40,7 @@ internal static class NQueensSolution
         Backtrack.Search<QueensState, int>(
             state,
             s => s.Row == n,
-            s => s.Row == n ? [] : Enumerable.Range(0, n).Where(s.CanPlace),
+            s => s.Row == n ? NoCandidates() : CandidateColumns(s, n),
             (s, col) => s.Place(col),
             (s, col) => s.Remove(col),
             s => results.Add(s.Board()));
@@ -69,10 +48,64 @@ internal static class NQueensSolution
         return results;
     }
 
+    // The candidate columns a state with every row already placed still offers: none.
+    // That empty answer is how Backtrack.Search learns the board is complete, not a
+    // failure, so it is a value the selector must be able to answer with.
+    private static IEnumerable<int> NoCandidates() => [];
+
+    // The columns a row can still take: every column no already-placed queen attacks.
+    private static IEnumerable<int> CandidateColumns(QueensState state, int n) =>
+        Enumerable.Range(0, n).Where(state.CanPlace);
+
+    // One row of the recursion: `row` is the row being decided, `placed` holds the
+    // column every earlier row chose (so its length is the board's own size),
+    // `occupancy` is what those queens already attack, and `results` collects whole
+    // boards as they complete. Its own recursive call is a second caller of it, so
+    // call order puts it with the file's other shared helpers rather than directly
+    // beneath SolveByRecursiveDfs.
+    private static void SearchRows(
+        int row, int[] placed, (bool[] Cols, bool[] Diag, bool[] Anti) occupancy, List<List<string>> results)
+    {
+        var (cols, diag, anti) = occupancy;
+        var n = placed.Length;
+
+        if (row == n)
+        {
+            var board = Board(n, placed);
+            results.Add(board);
+            return;
+        }
+
+        for (var col = 0; col < n; col++)
+        {
+            if (IsAttacked(occupancy, row, col, n))
+            {
+                continue;
+            }
+
+            placed[row] = col;
+            cols[col] = diag[row - col + n - 1] = anti[row + col] = true;
+            SearchRows(row + 1, placed, occupancy, results);
+            cols[col] = diag[row - col + n - 1] = anti[row + col] = false;
+        }
+    }
+
+    // The three occupancy arrays are one idea - what the queens already placed
+    // attack - so the baseline's column/diagonal/anti-diagonal test reads as one
+    // question instead of three index expressions.
+    private static bool IsAttacked((bool[] Cols, bool[] Diag, bool[] Anti) occupancy, int row, int col, int n)
+        => occupancy.Cols[col]
+            || occupancy.Diag[row - col + n - 1]
+            || occupancy.Anti[row + col];
+
     private static List<string> Board(int n, int[] placed) =>
         Enumerable.Range(0, n)
-            .Select(row => new string(Enumerable.Range(0, n).Select(col => placed[row] == col ? 'Q' : '.').ToArray()))
+            .Select(row => BoardRow(n, placed[row]))
             .ToList();
+
+    // One row as the puzzle prints it, given the column that row's queen holds.
+    private static string BoardRow(int n, int queenColumn) =>
+        new string(Enumerable.Range(0, n).Select(col => col == queenColumn ? 'Q' : '.').ToArray());
 
     private sealed class QueensState(int n)
     {
@@ -100,7 +133,7 @@ internal static class NQueensSolution
 
         public List<string> Board() =>
             Enumerable.Range(0, n)
-                .Select(row => new string(Enumerable.Range(0, n).Select(col => _placed[row] == col ? 'Q' : '.').ToArray()))
+                .Select(row => BoardRow(n, _placed[row]))
                 .ToList();
     }
 }

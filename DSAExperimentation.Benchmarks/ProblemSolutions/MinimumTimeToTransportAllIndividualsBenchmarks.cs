@@ -16,12 +16,12 @@ public class MinimumTimeToTransportAllIndividualsBenchmarks
     private const int Capacity = 3;
     private const int StageCount = 3;
 
-    [Params(6, 10)]
-    public int IndividualCount;
+    private int[] _time = [];
 
-    private int[] _time = null!;
-    private double[] _mul = null!;
+    private double[] _mul = [];
     private TransportGraph _graph = null!;
+    [Params(6, 10)]
+    public int IndividualCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

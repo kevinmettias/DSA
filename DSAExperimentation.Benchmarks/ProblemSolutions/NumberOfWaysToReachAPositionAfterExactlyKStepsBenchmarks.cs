@@ -16,7 +16,7 @@ public class NumberOfWaysToReachAPositionAfterExactlyKStepsBenchmarks
     private const int EndPos = 2;
 
     [Params(18, 22)]
-    public int K;
+    public int K { get; set; }
 
     [Benchmark(Baseline = true)]
     public int UnmemoizedRecursion() =>

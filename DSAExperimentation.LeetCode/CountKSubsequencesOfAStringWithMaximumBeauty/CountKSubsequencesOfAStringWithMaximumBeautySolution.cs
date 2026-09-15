@@ -51,8 +51,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
             return 0;
         }
 
-        var maxBeauty = -1L;
-        var count = 0L;
+        var best = (Beauty: -1L, Count: 0L);
         var state = new ComboState();
 
         Backtrack.Search<ComboState, int>(
@@ -61,29 +60,9 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
             st => CandidateIndices(st, chars.Count, k),
             (st, index) => st.Chosen.Add(index),
             (st, _) => st.Chosen.RemoveAt(st.Chosen.Count - 1),
-            st =>
-            {
-                var beauty = 0L;
-                var ways = 1L;
+            st => best = FoldChosenSubset(best, st, frequency, chars));
 
-                foreach (var index in st.Chosen)
-                {
-                    beauty += frequency[chars[index]];
-                    ways = ways * frequency[chars[index]] % ModularArithmetic.Modulo;
-                }
-
-                if (beauty > maxBeauty)
-                {
-                    maxBeauty = beauty;
-                    count = ways;
-                }
-                else if (beauty == maxBeauty)
-                {
-                    count = (count + ways) % ModularArithmetic.Modulo;
-                }
-            });
-
-        return count;
+        return best.Count;
     }
 
     private static IEnumerable<int> CandidateIndices(ComboState state, int charCount, int k)
@@ -93,8 +72,39 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
             return [];
         }
 
-        var start = state.Chosen.Count == 0 ? 0 : state.Chosen[^1] + 1;
+        // Chosen holds strictly increasing indices, so the next candidate starts one past
+        // the last one chosen - and at 0 when nothing is chosen yet, which is that same
+        // "one past" read against a missing last index of -1.
+        var start = state.Chosen.LastOrDefault(-1) + 1;
         return Enumerable.Range(start, charCount - start);
+    }
+
+    // One complete size-k subset: its beauty is the summed frequencies of its characters
+    // and its ways the product of those frequencies. A strictly better beauty replaces the
+    // running best; an equal one adds its ways to that best's count.
+    private static (long Beauty, long Count) FoldChosenSubset(
+        (long Beauty, long Count) best, ComboState chosen, int[] frequency, List<int> chars)
+    {
+        var beauty = 0L;
+        var ways = 1L;
+
+        foreach (var index in chosen.Chosen)
+        {
+            beauty += frequency[chars[index]];
+            ways = ways * frequency[chars[index]] % ModularArithmetic.Modulo;
+        }
+
+        if (beauty > best.Beauty)
+        {
+            return (beauty, ways);
+        }
+
+        if (beauty == best.Beauty)
+        {
+            return (best.Beauty, (best.Count + ways) % ModularArithmetic.Modulo);
+        }
+
+        return best;
     }
 
     public static long CountByGroupedFrequencyProduct(string s, int k)
@@ -117,22 +127,33 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 
         while (remaining > 0)
         {
-            var value = values[index];
-            var groupSize = 0;
-
-            while (index < values.Length && values[index] == value)
-            {
-                groupSize++;
-                index++;
-            }
-
-            var taken = Math.Min(groupSize, remaining);
-            product = product * ModularArithmetic.Power(value, taken) % ModularArithmetic.Modulo;
-            product = product * Combinations(groupSize, taken) % ModularArithmetic.Modulo;
-            remaining -= taken;
+            (index, remaining, product) = TakeTopFrequencyGroup(values, index, remaining, product);
         }
 
         return product;
+    }
+
+    // Consume one group of equal frequency from the top: `remaining` of its characters
+    // join the chosen set (all of them when the group fits entirely), each contributing
+    // freq choices of index and each set of `remaining` counted by nCr(groupSize, taken).
+    // Returns the cursor past the group, what is left of k, and the updated product.
+    private static (int Index, int Remaining, long Product) TakeTopFrequencyGroup(
+        int[] values, int index, int remaining, long product)
+    {
+        var value = values[index];
+        var groupSize = 0;
+
+        while (index < values.Length && values[index] == value)
+        {
+            groupSize++;
+            index++;
+        }
+
+        var taken = Math.Min(groupSize, remaining);
+        product = product * ModularArithmetic.Power(value, taken) % ModularArithmetic.Modulo;
+        product = product * Combinations(groupSize, taken) % ModularArithmetic.Modulo;
+
+        return (index, remaining - taken, product);
     }
 
     private static long Combinations(int n, int r)
@@ -186,7 +207,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return chars;
     }
 
-    private sealed class ComboState
+    private sealed record ComboState
     {
         public List<int> Chosen { get; } = [];
     }

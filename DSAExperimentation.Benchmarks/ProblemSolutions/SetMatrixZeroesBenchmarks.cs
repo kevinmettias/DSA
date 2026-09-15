@@ -13,10 +13,10 @@ public class SetMatrixZeroesBenchmarks
     private const int ZeroProbabilityDenominator = 100;
     private const int MaxCellValue = 1_000;
 
-    [Params(50, 300)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(50, 300)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -24,10 +24,13 @@ public class SetMatrixZeroesBenchmarks
         var random = new Random(1);
         _matrix = Enumerable.Range(0, Size)
             .Select(_ => Enumerable.Range(0, Size)
-                .Select(_ => random.Next(0, ZeroProbabilityDenominator) == 0 ? 0 : random.Next(1, MaxCellValue))
+                .Select(_ => IsZeroCell(random) ? 0 : random.Next(1, MaxCellValue))
                 .ToArray())
             .ToArray();
     }
+
+    // One draw per cell, taken before the second draw in the arm.
+    private static bool IsZeroCell(Random random) => random.Next(0, ZeroProbabilityDenominator) == 0;
 
     [Benchmark(Baseline = true)]
     public int[][] CopyAndScan()

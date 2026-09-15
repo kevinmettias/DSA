@@ -15,10 +15,10 @@ public class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesBenchmarks
     // across every Length below.
     private const int K = 50;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

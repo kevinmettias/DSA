@@ -16,21 +16,24 @@ public class ShortestPathInBinaryMatrixBenchmarks
     // 1-in-10 chance a cell is blocked.
     private const int BlockedCellProbability = 10;
 
-    [Params(10, 25)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(10, 25)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
         _grid = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, BlockedCellProbability) == 0 ? 1 : 0).ToArray())
+            .Select(_ => Enumerable.Range(0, Size).Select(_ => IsBlockedCell(random) ? 1 : 0).ToArray())
             .ToArray();
         _grid[0][0] = 0;
         _grid[Size - 1][Size - 1] = 0;
     }
+
+    // Whether the next cell drawn is blocked - one chance in BlockedCellProbability.
+    private static bool IsBlockedCell(Random random) => random.Next(0, BlockedCellProbability) == 0;
 
     [Benchmark(Baseline = true)]
     public int BclQueueBfs() =>

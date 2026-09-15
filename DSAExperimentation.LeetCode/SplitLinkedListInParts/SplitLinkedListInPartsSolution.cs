@@ -38,6 +38,28 @@ internal static class SplitLinkedListInPartsSolution
         return parts;
     }
 
+    private static (SinglyLinkedListNode<int>? Part, int NextIndex) BuildPart(
+        List<int> values, PartSizing sizing, int i, int index)
+    {
+        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
+
+        if (currentSize == 0)
+        {
+            return (null, index);
+        }
+
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        for (var j = 0; j < currentSize; j++)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(values[index++]);
+            tail = tail.Next;
+        }
+
+        return (dummy.Next, index);
+    }
+
     // Walks this repo's own SinglyLinkedListNode<int> chain once and cuts its
     // existing Next pointers to carve out each part, reusing every original
     // node - only the k-length result array is new allocation. Mutates the
@@ -64,43 +86,30 @@ internal static class SplitLinkedListInPartsSolution
         return parts;
     }
 
-    private static (SinglyLinkedListNode<int>? Part, int NextIndex) BuildPart(
-        List<int> values, PartSizing sizing, int i, int index)
-    {
-        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
-
-        if (currentSize == 0)
-        {
-            return (null, index);
-        }
-
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        for (var j = 0; j < currentSize; j++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[index++]);
-            tail = tail.Next;
-        }
-
-        return (dummy.Next, index);
-    }
-
     private static (SinglyLinkedListNode<int> Part, SinglyLinkedListNode<int>? NextCurrent) CarvePart(
         SinglyLinkedListNode<int> current, PartSizing sizing, int i)
     {
-        var part = current;
-        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
+        var last = LastNodeOfPart(current, sizing, i);
+        var next = last.Next;
+        last.Next = null;
 
-        for (var j = 1; j < currentSize; j++)
+        return (current, next);
+    }
+
+    // Walks `first` to the last node of part `i`: the base size, plus one node while
+    // the remainder lasts.
+    private static SinglyLinkedListNode<int> LastNodeOfPart(
+        SinglyLinkedListNode<int> first, PartSizing sizing, int i)
+    {
+        var last = first;
+        var size = sizing.Size + (i < sizing.Extra ? 1 : 0);
+
+        for (var j = 1; j < size; j++)
         {
-            current = current.Next!;
+            last = last.Next!;
         }
 
-        var next = current.Next;
-        current.Next = null;
-
-        return (part, next);
+        return last;
     }
 
     // The base part length and how many leading parts get one extra node -

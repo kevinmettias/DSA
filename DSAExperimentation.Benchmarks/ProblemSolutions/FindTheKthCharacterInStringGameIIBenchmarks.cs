@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheKthCharacterInStringGameIIBenchmarks
 {
-    [Params(8, 16)]
-    public int OperationCount;
-
     private long _k;
-    private int[] _operations = null!;
+
+    private int[] _operations = [];
+    [Params(8, 16)]
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

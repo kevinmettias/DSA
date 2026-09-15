@@ -15,10 +15,10 @@ public class QueueReconstructionByHeightBenchmarks
 {
     private const int RandomSeed = 406;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private (int Height, int K)[] _people = [];
 
-    private (int Height, int K)[] _people = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

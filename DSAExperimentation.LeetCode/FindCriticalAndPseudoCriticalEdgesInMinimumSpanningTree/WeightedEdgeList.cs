@@ -9,25 +9,18 @@ namespace DSAExperimentation.LeetCode.FindCriticalAndPseudoCriticalEdgesInMinimu
 // the sort into [GlobalSetup] and hand the prepared edge list to a strategy's second
 // overload without that overload becoming ambiguous with the LeetCode-shaped one
 // (ARCHITECTURE.md #17.4).
-internal sealed class WeightedEdgeList
+internal sealed class WeightedEdgeList(int nodeCount, int[][] edges, int[] byWeight)
 {
     // LeetCode states each edge as [from, to, weight].
     private const int WeightIndex = 2;
 
-    private WeightedEdgeList(int nodeCount, int[][] edges, int[] byWeight)
-    {
-        NodeCount = nodeCount;
-        Edges = edges;
-        ByWeight = byWeight;
-    }
-
-    public int NodeCount { get; }
+    public int NodeCount { get; } = nodeCount;
 
     // Indexed by LeetCode's own edge numbering, which is what the answer reports.
-    public int[][] Edges { get; }
+    public int[][] Edges { get; } = edges;
 
     // Edge indices in ascending weight order - Kruskal's scan order.
-    public int[] ByWeight { get; }
+    public int[] ByWeight { get; } = byWeight;
 
     public static int WeightOf(int[] edge) => edge[WeightIndex];
 

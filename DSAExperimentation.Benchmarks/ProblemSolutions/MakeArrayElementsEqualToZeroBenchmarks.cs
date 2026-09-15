@@ -14,10 +14,10 @@ public class MakeArrayElementsEqualToZeroBenchmarks
     private const int MaxValueExclusive = 20;
     private const double ZeroProbability = 0.3;
 
-    [Params(20, 100)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(20, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,7 +27,8 @@ public class MakeArrayElementsEqualToZeroBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            _nums[i] = random.NextDouble() < ZeroProbability ? 0 : random.Next(1, MaxValueExclusive);
+            var isZero = random.NextDouble() < ZeroProbability;
+            _nums[i] = isZero ? 0 : random.Next(1, MaxValueExclusive);
         }
 
         _nums[0] = 0;

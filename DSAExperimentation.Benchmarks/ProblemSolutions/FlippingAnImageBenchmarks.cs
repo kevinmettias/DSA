@@ -13,12 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FlippingAnImageBenchmarks
 {
     private const int RandomSeed = 4;
-    private const int PixelValueExclusiveBound = 2; // pixels are binary: 0 or 1
+    private const int PixelValueExclusiveBound = 2; private int[][] _image = [];
+
+    // pixels are binary: 0 or 1
 
     [Params(50, 300)]
-    public int Side;
-
-    private int[][] _image = null!;
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()

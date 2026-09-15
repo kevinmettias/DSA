@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumOneBitOperationsToMakeIntegersZeroBenchmarks
 {
     [Params(2_000, 50_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BreadthFirstSearch() =>

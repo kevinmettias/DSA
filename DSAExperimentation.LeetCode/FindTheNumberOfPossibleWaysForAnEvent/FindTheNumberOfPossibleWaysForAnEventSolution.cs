@@ -28,6 +28,59 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
         return (int)(total % ModularArithmetic.Modulo);
     }
 
+    // Memoizer.Memoize's TResult is the whole row f(performers, 0..x) at once, so
+    // one memoized call over "performer count" builds exactly the O(n * x) table
+    // the textbook DP describes - f(i, j) = f(i-1, j) * j (add to one of j existing
+    // bands) + f(i-1, j-1) * (x - j + 1) (open a new band) - without hand-rolling
+    // the table's iteration order. ModularArithmetic.Power then folds y^j into the
+    // final sum the same way Domain.Modular's own doc comment expects any "modulo
+    // 1e9+7" counting problem to.
+    public static int NumberOfWaysByStagePartitionMemo(int n, int x, int y)
+    {
+        var waysByStageCount = Memoizer.Memoize<int, long[]>(n, new StagePartitionRows(x));
+
+        var total = 0L;
+
+        for (var stages = 1; stages <= x; stages++)
+        {
+            var scoreWays = ModularArithmetic.Power(y, stages);
+            total = (total + waysByStageCount[stages] * scoreWays) % ModularArithmetic.Modulo;
+        }
+
+        return (int)total;
+    }
+
+    /// <summary>
+    /// The recurrence, named: one performer count's whole row f(performers, 0..x) at
+    /// once, built from the row one performer shorter - each performer either joins one
+    /// of the j stages already open or opens one of the x - j + 1 that are still empty.
+    /// </summary>
+    private sealed class StagePartitionRows(int x) : IRecurrence<int, long[]>
+    {
+        /// <inheritdoc/>
+        public long[] Replay(int state, IRecurrence<int, long[]> rest)
+        {
+            var row = new long[x + 1];
+
+            if (state == 0)
+            {
+                row[0] = 1;
+                return row;
+            }
+
+            var previousRow = rest.Replay(state - 1, rest);
+
+            for (var stages = 1; stages <= x; stages++)
+            {
+                var joinExistingStage = previousRow[stages] * stages;
+                var openNewStage = previousRow[stages - 1] * (x - stages + 1);
+                row[stages] = (joinExistingStage + openNewStage) % ModularArithmetic.Modulo;
+            }
+
+            return row;
+        }
+    }
+
     private static long CountFromPerformer(int performer, int[] stages, int x, int y)
     {
         if (performer == stages.Length)
@@ -70,50 +123,5 @@ internal static class FindTheNumberOfPossibleWaysForAnEventSolution
         }
 
         return ways;
-    }
-
-    // Memoizer.Memoize's TResult is the whole row f(performers, 0..x) at once, so
-    // one memoized call over "performer count" builds exactly the O(n * x) table
-    // the textbook DP describes - f(i, j) = f(i-1, j) * j (add to one of j existing
-    // bands) + f(i-1, j-1) * (x - j + 1) (open a new band) - without hand-rolling
-    // the table's iteration order. ModularArithmetic.Power then folds y^j into the
-    // final sum the same way Domain.Modular's own doc comment expects any "modulo
-    // 1e9+7" counting problem to.
-    public static int NumberOfWaysByStagePartitionMemo(int n, int x, int y)
-    {
-        var waysByStageCount = Memoizer.Memoize<int, long[]>(n, (performers, waysWithFewerPerformers) =>
-            BuildRow(performers, x, waysWithFewerPerformers));
-
-        var total = 0L;
-
-        for (var stages = 1; stages <= x; stages++)
-        {
-            var scoreWays = ModularArithmetic.Power(y, stages);
-            total = (total + waysByStageCount[stages] * scoreWays) % ModularArithmetic.Modulo;
-        }
-
-        return (int)total;
-    }
-
-    private static long[] BuildRow(int performers, int x, Func<int, long[]> waysWithFewerPerformers)
-    {
-        var row = new long[x + 1];
-
-        if (performers == 0)
-        {
-            row[0] = 1;
-            return row;
-        }
-
-        var previousRow = waysWithFewerPerformers(performers - 1);
-
-        for (var stages = 1; stages <= x; stages++)
-        {
-            var joinExistingStage = previousRow[stages] * stages;
-            var openNewStage = previousRow[stages - 1] * (x - stages + 1);
-            row[stages] = (joinExistingStage + openNewStage) % ModularArithmetic.Modulo;
-        }
-
-        return row;
     }
 }

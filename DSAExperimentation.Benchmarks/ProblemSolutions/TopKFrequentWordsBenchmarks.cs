@@ -16,10 +16,10 @@ public class TopKFrequentWordsBenchmarks
     private const string WordPrefix = "word";
     private const int WordPoolSize = 500;
 
-    [Params(1_000, 20_000)]
-    public int Length;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(1_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,8 +32,8 @@ public class TopKFrequentWordsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string[] TopKFrequentByFullSort() => TopKFrequentWordsSolution.TopKFrequentByFullSort(_words, K);
+    public string[] ByFullSort() => TopKFrequentWordsSolution.TopKFrequentByFullSort(_words, K);
 
     [Benchmark]
-    public string[] TopKFrequentByMinHeap() => TopKFrequentWordsSolution.TopKFrequentByMinHeap(_words, K);
+    public string[] ByMinHeap() => TopKFrequentWordsSolution.TopKFrequentByMinHeap(_words, K);
 }

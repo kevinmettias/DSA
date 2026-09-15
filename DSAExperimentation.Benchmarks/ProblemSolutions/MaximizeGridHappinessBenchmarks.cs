@@ -19,10 +19,10 @@ public class MaximizeGridHappinessBenchmarks
     private const int IntrovertsCount = 3;
     private const int ExtrovertsCount = 2;
 
-    [Params(3, 4)]
-    public int Rows;
-
     private GridLayout _layout = null!;
+
+    [Params(3, 4)]
+    public int Rows { get; set; }
 
     [GlobalSetup]
     public void Setup() => _layout = GridLayout.Build(Rows, Columns);

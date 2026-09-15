@@ -13,11 +13,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
 {
-    [Params(2_000, 8_000)]
-    public int NodeCount;
+    private int[] _inorder = [];
 
-    private int[] _inorder = null!;
-    private int[] _postorder = null!;
+    private int[] _postorder = [];
+    [Params(2_000, 8_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,10 +27,6 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
         _postorder = Postorder(tree);
     }
 
-    [Benchmark]
-    public object? PostorderIndexMap() =>
-        ConstructBinaryTreeFromInorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(_inorder, _postorder);
-
     private static int[] Inorder(BinaryTreeNode<int>? root)
     {
         var values = new List<int>();
@@ -39,7 +35,10 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
 
         static void Walk(BinaryTreeNode<int>? node, List<int> values)
         {
-            if (node is null) return;
+            if (node is null)
+            {
+                return;
+            }
             Walk(node.Left, values);
             values.Add(node.Value);
             Walk(node.Right, values);
@@ -54,10 +53,17 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
 
         static void Walk(BinaryTreeNode<int>? node, List<int> values)
         {
-            if (node is null) return;
+            if (node is null)
+            {
+                return;
+            }
             Walk(node.Left, values);
             Walk(node.Right, values);
             values.Add(node.Value);
         }
     }
+
+    [Benchmark]
+    public object? PostorderIndexMap() =>
+        ConstructBinaryTreeFromInorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(_inorder, _postorder);
 }

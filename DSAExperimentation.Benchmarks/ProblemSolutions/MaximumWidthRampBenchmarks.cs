@@ -9,12 +9,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumWidthRampBenchmarks
 {
-    private const int RandomSeed = 962; // LC problem number
+    private const int RandomSeed = 962; private int[] _nums = [];
+
+    // LC problem number
 
     [Params(500, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

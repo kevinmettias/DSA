@@ -19,12 +19,12 @@ public class HandlingSumQueriesAfterUpdateBenchmarks
     private const int MaxNums2ValueExclusive = 1_000;
     private const int QueryKindModulus = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
-    private int[][] _queries = null!;
+    private int[] _nums2 = [];
+    private int[][] _queries = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,14 +34,6 @@ public class HandlingSumQueriesAfterUpdateBenchmarks
         _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxNums2ValueExclusive)).ToArray();
         _queries = Enumerable.Range(0, Length).Select(i => BuildQuery(random, i)).ToArray();
     }
-
-    [Benchmark(Baseline = true)]
-    public long[] ArrayRescan() =>
-        HandlingSumQueriesAfterUpdateSolution.HandleQueryByArrayRescan(_nums1, _nums2, _queries);
-
-    [Benchmark]
-    public long[] LazySegmentTreeFlip() =>
-        HandlingSumQueriesAfterUpdateSolution.HandleQueryByLazySegmentTree(_nums1, _nums2, _queries);
 
     private int[] BuildQuery(Random random, int index)
     {
@@ -54,6 +46,18 @@ public class HandlingSumQueriesAfterUpdateBenchmarks
             return [1, left, right];
         }
 
-        return kind == 1 ? [2, random.Next(1, MaxNums2ValueExclusive), 0] : [3, 0, 0];
+        return kind == 1 ? AddScaledOnesQuery(random) : ReadTotalQuery();
     }
+
+    private static int[] AddScaledOnesQuery(Random random) => [2, random.Next(1, MaxNums2ValueExclusive), 0];
+
+    private static int[] ReadTotalQuery() => [3, 0, 0];
+
+    [Benchmark(Baseline = true)]
+    public long[] ArrayRescan() =>
+        HandlingSumQueriesAfterUpdateSolution.HandleQueryByArrayRescan(_nums1, _nums2, _queries);
+
+    [Benchmark]
+    public long[] LazySegmentTreeFlip() =>
+        HandlingSumQueriesAfterUpdateSolution.HandleQueryByLazySegmentTree(_nums1, _nums2, _queries);
 }

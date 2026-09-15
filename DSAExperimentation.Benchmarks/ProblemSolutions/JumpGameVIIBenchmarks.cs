@@ -21,10 +21,10 @@ public class JumpGameVIIBenchmarks
     private const int MinJump = 1;
     private const int MaxJump = 2;
 
-    [Params(28, 32)]
-    public int StringLength;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(28, 32)]
+    public int StringLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

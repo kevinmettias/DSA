@@ -24,8 +24,11 @@ internal static class FindAllPeopleWithSecretSolution
     // parts only; it is the arm the composed strategy below has to justify itself
     // against.
     public static int[] FindAllPeopleByRepeatedRelaxation(
-        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson) =>
-        FindAllPeopleByRepeatedRelaxation(MeetingSchedule.Build(peopleCount, meetings, firstPerson));
+        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson)
+    {
+        var schedule = MeetingSchedule.Build(peopleCount, meetings, firstPerson);
+        return FindAllPeopleByRepeatedRelaxation(schedule);
+    }
 
     public static int[] FindAllPeopleByRepeatedRelaxation(MeetingSchedule schedule)
     {
@@ -75,8 +78,11 @@ internal static class FindAllPeopleWithSecretSolution
     // keeps a same-timestamp-only chain from ever leaking a false connection into
     // a later timestamp's group.
     public static int[] FindAllPeopleByKeyedDisjointSet(
-        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson) =>
-        FindAllPeopleByKeyedDisjointSet(MeetingSchedule.Build(peopleCount, meetings, firstPerson));
+        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson)
+    {
+        var schedule = MeetingSchedule.Build(peopleCount, meetings, firstPerson);
+        return FindAllPeopleByKeyedDisjointSet(schedule);
+    }
 
     public static int[] FindAllPeopleByKeyedDisjointSet(MeetingSchedule schedule)
     {

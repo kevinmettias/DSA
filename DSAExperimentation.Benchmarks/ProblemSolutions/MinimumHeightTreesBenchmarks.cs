@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumHeightTreesBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private List<int>[] _adjacency = [];
 
-    private List<int>[] _adjacency = null!;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

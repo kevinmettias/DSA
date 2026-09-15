@@ -92,7 +92,7 @@ internal static class StrangePrinterIISolution
 
         foreach (var (color, rectangle) in rectangles)
         {
-            AddCoveredColorEdges(targetGrid, color, rectangle, nodes, seenEdges);
+            AddCoveredColorEdges(targetGrid, (color, rectangle), nodes, seenEdges);
         }
 
         return nodes.Values.ToList();
@@ -120,23 +120,24 @@ internal static class StrangePrinterIISolution
 
     // A different color found inside this color's rectangle was printed on top of
     // it, so this color must print first - one dependency edge per (color, other)
-    // pair, the first time that pair is seen.
+    // pair, the first time that pair is seen. The color and its rectangle are the
+    // key and value ComputeColorRectangles produced together, and a rectangle on
+    // its own says nothing about which color it bounds, so they travel as one.
     private static void AddCoveredColorEdges(
         int[][] targetGrid,
-        int color,
-        ColorRectangle rectangle,
+        (int Color, ColorRectangle Rectangle) block,
         Dictionary<int, ColorNode> nodes,
         HashSet<(int Before, int After)> seenEdges)
     {
-        for (var row = rectangle.MinRow; row <= rectangle.MaxRow; row++)
+        for (var row = block.Rectangle.MinRow; row <= block.Rectangle.MaxRow; row++)
         {
-            for (var col = rectangle.MinCol; col <= rectangle.MaxCol; col++)
+            for (var col = block.Rectangle.MinCol; col <= block.Rectangle.MaxCol; col++)
             {
                 var other = targetGrid[row][col];
 
-                if (other != color && seenEdges.Add((color, other)))
+                if (other != block.Color && seenEdges.Add((block.Color, other)))
                 {
-                    nodes[color].MustPrintBefore.Add(nodes[other]);
+                    nodes[block.Color].MustPrintBefore.Add(nodes[other]);
                 }
             }
         }

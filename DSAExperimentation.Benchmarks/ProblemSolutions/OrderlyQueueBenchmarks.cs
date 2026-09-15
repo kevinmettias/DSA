@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.OrderlyQueue.OrderlyQueueSolution;
+using DSAExperimentation.LeetCode.OrderlyQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -24,10 +24,10 @@ public class OrderlyQueueBenchmarks
     private const int AlphabetSize = 26;
     private const int RotationsOnly = 1;
 
-    [Params(50_000, 100_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(50_000, 100_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -37,8 +37,8 @@ public class OrderlyQueueBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string BruteForceAllRotations() => SmallestStringByBruteForceRotations(_s, RotationsOnly);
+    public string BruteForceAllRotations() => OrderlyQueueSolution.SmallestStringByBruteForceRotations(_s, RotationsOnly);
 
     [Benchmark]
-    public string SuffixArraySmallestRotation() => SmallestStringBySuffixArray(_s, RotationsOnly);
+    public string SuffixArraySmallestRotation() => OrderlyQueueSolution.SmallestStringBySuffixArray(_s, RotationsOnly);
 }

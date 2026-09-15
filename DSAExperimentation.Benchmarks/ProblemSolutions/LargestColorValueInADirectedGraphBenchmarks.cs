@@ -19,10 +19,10 @@ public class LargestColorValueInADirectedGraphBenchmarks
     // LC problem number, reused as the deterministic node-color seed.
     private const int RandomSeed = 1857;
 
-    [Params(50, 1_000)]
-    public int NodeCount;
+    private List<ColorGraphNode> _nodes = new();
 
-    private List<ColorGraphNode> _nodes = null!;
+    [Params(50, 1_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

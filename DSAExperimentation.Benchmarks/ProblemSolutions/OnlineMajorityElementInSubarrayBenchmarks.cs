@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray.OnlineMajorityElementInSubarraySolution;
+using DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -20,22 +20,22 @@ public class OnlineMajorityElementInSubarrayBenchmarks
 {
     private const int RunLength = 25;
     private const int QueryCount = 200;
-    private const int RandomSeed = 1; // unchanged from the pre-migration workload
+    private const int RandomSeed = 1; private (int Left, int Right, int Threshold)[] _queries = [];
+
+    private OnlineMajorityElementInSubarraySolution.IMajorityChecker _rangeTally = null!;
+    private OnlineMajorityElementInSubarraySolution.IMajorityChecker _positionIndex = null!;
+    // unchanged from the pre-migration workload
 
     [Params(1_000, 8_000)]
-    public int Length;
-
-    private (int Left, int Right, int Threshold)[] _queries = null!;
-    private IMajorityChecker _rangeTally = null!;
-    private IMajorityChecker _positionIndex = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var values = BuildRunLengthEncodedArray(Length);
         _queries = BuildQueriesWithinRuns(Length);
-        _rangeTally = new MajorityCheckerByRangeTally(values);
-        _positionIndex = new MajorityCheckerByPositionIndex(values);
+        _rangeTally = new OnlineMajorityElementInSubarraySolution.MajorityCheckerByRangeTally(values);
+        _positionIndex = new OnlineMajorityElementInSubarraySolution.MajorityCheckerByPositionIndex(values);
     }
 
     private static int[] BuildRunLengthEncodedArray(int length)
@@ -77,7 +77,7 @@ public class OnlineMajorityElementInSubarrayBenchmarks
 
     // Sums the answers rather than discarding them, so the JIT can't eliminate the
     // replay as dead code.
-    private long ReplayQueries(IMajorityChecker checker)
+    private long ReplayQueries(OnlineMajorityElementInSubarraySolution.IMajorityChecker checker)
     {
         var total = 0L;
 

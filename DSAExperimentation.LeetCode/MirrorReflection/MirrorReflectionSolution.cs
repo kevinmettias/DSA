@@ -37,7 +37,7 @@ internal static class MirrorReflectionSolution
         }
 
         var m = (long)k * q / p;
-        return Receptor(k % ParityDivisor == 1, m % ParityDivisor == 0);
+        return Receptor(ParityOf(k), ParityOf(m));
     }
 
     // The same k and m, reached in one Euclidean reduction instead of p steps.
@@ -47,20 +47,40 @@ internal static class MirrorReflectionSolution
         var crossings = p / divisor;
         var rooms = q / divisor;
 
-        return Receptor(crossings % ParityDivisor == 1, rooms % ParityDivisor == 0);
+        return Receptor(ParityOf(crossings), ParityOf(rooms));
     }
 
     // The shared parity reading, so the two strategies differ only in how they
     // arrive at the crossing counts rather than in how they interpret them.
-    private static int Receptor(bool oddCrossings, bool evenRooms)
+    private static int Receptor(Parity crossingParity, Parity roomParity)
     {
-        if (oddCrossings && evenRooms)
+        if (crossingParity == Parity.Odd && roomParity == Parity.Even)
         {
             return BottomRightReceptor;
         }
 
-        return oddCrossings ? TopRightReceptor : TopLeftReceptor;
+        return crossingParity == Parity.Odd ? TopRightReceptor : TopLeftReceptor;
     }
 
+    // The parity of a crossing count is the whole of what the receptor lookup reads
+    // off it, named so a call site says which side of the reading the count lands on.
+    private static Parity ParityOf(long value) =>
+        IsEven(value) ? Parity.Even : Parity.Odd;
+
+    // A crossing count the parity divisor divides exactly - the whole of the reading
+    // above.
+    private static bool IsEven(long value) => value % ParityDivisor == 0;
+
     private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+
+    // The two parity readings Receptor branches on - each is a state of one crossing
+    // count, named so the call site reads `Parity.Odd` rather than `true`.
+    private enum Parity
+    {
+        // An even number of rooms crossed.
+        Even,
+
+        // An odd number of rooms crossed.
+        Odd,
+    }
 }

@@ -15,11 +15,11 @@ public class MinimumCostToDivideArrayIntoSubarraysBenchmarks
     private const int Seed = 3500; // LC problem number
     private const int K = 5;
 
-    [Params(50, 200)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _cost = null!;
+    private int[] _cost = [];
+    [Params(50, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => (_nums, _cost) = MinimumCostToDivideArrayIntoSubarraysWorkloads.Build(Length, Seed);

@@ -25,27 +25,37 @@ internal static class BaseballGameSolution
 
         foreach (var op in ops)
         {
-            switch (op)
-            {
-                case CancelOp:
-                    top--;
-                    break;
-                case DoubleOp:
-                    record[top] = record[top - 1] * DoublingMultiplier;
-                    top++;
-                    break;
-                case SumOp:
-                    record[top] = record[top - 1] + record[top - SecondToLastOffset];
-                    top++;
-                    break;
-                default:
-                    record[top] = int.Parse(op);
-                    top++;
-                    break;
-            }
+            top = ApplyArrayOperation(record, op, top);
         }
 
         return SumRange(record, top);
+    }
+
+    // One round against the hand-managed array: "C" discards the last score, "D" doubles it,
+    // "+" sums the last two, and any other op is the round's own score. `top` is the record's
+    // next free slot and comes back updated.
+    private static int ApplyArrayOperation(int[] record, string op, int top)
+    {
+        switch (op)
+        {
+            case CancelOp:
+                top--;
+                break;
+            case DoubleOp:
+                record[top] = record[top - 1] * DoublingMultiplier;
+                top++;
+                break;
+            case SumOp:
+                record[top] = record[top - 1] + record[top - SecondToLastOffset];
+                top++;
+                break;
+            default:
+                record[top] = int.Parse(op);
+                top++;
+                break;
+        }
+
+        return top;
     }
 
     private static int SumRange(int[] record, int count)
@@ -84,17 +94,23 @@ internal static class BaseballGameSolution
                 record.Push(last * DoublingMultiplier);
                 break;
             case SumOp:
-                record.TryPop(out var top);
-                record.TryPop(out var second);
-                var sum = top + second;
-                record.Push(second);
-                record.Push(top);
-                record.Push(sum);
+                PushSumOfLastTwoScores(record);
                 break;
             default:
                 record.Push(int.Parse(op));
                 break;
         }
+    }
+
+    // "+" is the one op that reads the record without consuming it: pop the last two
+    // scores, then put both back with their sum on top.
+    private static void PushSumOfLastTwoScores(RepoIntStack record)
+    {
+        record.TryPop(out var top);
+        record.TryPop(out var second);
+        record.Push(second);
+        record.Push(top);
+        record.Push(top + second);
     }
 
     private static int DrainStackTotal(RepoIntStack record)

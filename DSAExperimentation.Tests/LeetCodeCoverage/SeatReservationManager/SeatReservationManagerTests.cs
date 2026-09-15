@@ -117,35 +117,26 @@ public readonly record struct SeatManagerScript(int SeatCount, SeatManagerOp[] O
 // One call in a SeatManager script: which operation to invoke, and for unreserve,
 // on which seat. Pure dispatch, built via the named factories below so a script
 // reads like the LeetCode call sequence it replays.
-public readonly record struct SeatManagerOp
+public readonly record struct SeatManagerOp(SeatManagerOp.OpKind kind, int seatNumber)
 {
-    private readonly Kind _kind;
-    private readonly int _seatNumber;
+    public static SeatManagerOp Reserve() => new(OpKind.Reserve, seatNumber: 0);
 
-    private SeatManagerOp(Kind kind, int seatNumber)
-    {
-        _kind = kind;
-        _seatNumber = seatNumber;
-    }
-
-    public static SeatManagerOp Reserve() => new(Kind.Reserve, seatNumber: 0);
-
-    public static SeatManagerOp Unreserve(int seatNumber) => new(Kind.Unreserve, seatNumber);
+    public static SeatManagerOp Unreserve(int seatNumber) => new(OpKind.Unreserve, seatNumber);
 
     // null for unreserve, matching LeetCode's own judge output, so a script runner
     // can assert against one expected value per operation uniformly.
     internal int? Apply(ISeatManager manager)
     {
-        if (_kind == Kind.Reserve)
+        if (kind == OpKind.Reserve)
         {
             return manager.Reserve();
         }
 
-        manager.Unreserve(_seatNumber);
+        manager.Unreserve(seatNumber);
         return null;
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Reserve,
         Unreserve,

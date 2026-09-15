@@ -31,11 +31,23 @@ internal static class MinimumTimeToRevertWordToInitialStateISolution
         {
             var shift = t * k;
 
-            if (shift >= n || word.AsSpan(shift).SequenceEqual(word.AsSpan(0, n - shift)))
+            if (shift >= n || SuffixMatchesPrefix(word, shift, n))
             {
                 return t;
             }
         }
+    }
+
+    // word[shift:] equals word's own prefix of that same length - i.e. whatever
+    // the drops have taken so far can be exactly refilled. Only reached while
+    // shift < n (the caller short-circuits past it otherwise), so both slices
+    // are always in range here.
+    private static bool SuffixMatchesPrefix(string word, int shift, int n)
+    {
+        var dropped = word.AsSpan(shift);
+        var prefix = word.AsSpan(0, n - shift);
+
+        return dropped.SequenceEqual(prefix);
     }
 
     // Algorithms.StringMatching.ZFunction.Compute(word)[shift] is the longest

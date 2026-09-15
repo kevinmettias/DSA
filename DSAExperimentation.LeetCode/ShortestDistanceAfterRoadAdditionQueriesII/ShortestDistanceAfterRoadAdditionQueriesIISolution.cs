@@ -31,7 +31,9 @@ internal static class ShortestDistanceAfterRoadAdditionQueriesIISolution
 
         for (var city = 0; city < n; city++)
         {
-            adjacency[city] = city + 1 < n ? [city + 1] : [];
+            var hasNextCity = city + 1 < n;
+
+            adjacency[city] = hasNextCity ? AdjacencyToNextCity(city) : NoAdjacency();
         }
 
         var answers = new int[queries.Length];
@@ -45,6 +47,10 @@ internal static class ShortestDistanceAfterRoadAdditionQueriesIISolution
 
         return answers;
     }
+
+    private static List<int> AdjacencyToNextCity(int city) => [city + 1];
+
+    private static List<int> NoAdjacency() => [];
 
     private static int ShortestPathLength(List<int>[] adjacency, int n)
     {
@@ -64,19 +70,30 @@ internal static class ShortestDistanceAfterRoadAdditionQueriesIISolution
                 return distance[city];
             }
 
-            foreach (var neighbor in adjacency[city])
-            {
-                if (distance[neighbor] != -1)
-                {
-                    continue;
-                }
-
-                distance[neighbor] = distance[city] + 1;
-                queue.Enqueue(neighbor);
-            }
+            RelaxNeighbors(adjacency, city, distance, queue);
         }
 
         return -1;
+    }
+
+    // The BFS front's one step outward: every not-yet-seen neighbor of city joins the
+    // queue one hop further out, and the ones already seen are left where they are.
+    private static void RelaxNeighbors(
+        List<int>[] adjacency,
+        int city,
+        int[] distance,
+        Queue<int> queue)
+    {
+        foreach (var neighbor in adjacency[city])
+        {
+            if (distance[neighbor] != -1)
+            {
+                continue;
+            }
+
+            distance[neighbor] = distance[city] + 1;
+            queue.Enqueue(neighbor);
+        }
     }
 
     // Composed: every query (u, v) bypasses the closed range of interior cities

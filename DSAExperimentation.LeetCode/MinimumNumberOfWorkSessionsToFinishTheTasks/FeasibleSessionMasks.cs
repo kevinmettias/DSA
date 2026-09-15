@@ -14,18 +14,10 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfWorkSessionsToFinishTheTask
 // benchmark builds it once in [GlobalSetup] so the table is not charged to the
 // recurrence being measured, and it is deliberately not a collection type, so it
 // can never be confused with the LeetCode-shaped `int[] tasks` overload.
-internal sealed class FeasibleSessionMasks
+internal sealed class FeasibleSessionMasks(bool[] fitsInOneSession, int fullMask)
 {
-    private readonly bool[] _fitsInOneSession;
-
-    private FeasibleSessionMasks(bool[] fitsInOneSession, int fullMask)
-    {
-        _fitsInOneSession = fitsInOneSession;
-        FullMask = fullMask;
-    }
-
     // Every task scheduled - the state the recurrence starts from.
-    public int FullMask { get; }
+    public int FullMask { get; } = fullMask;
 
     public static FeasibleSessionMasks Build(int[] tasks, int sessionTime)
     {
@@ -44,5 +36,5 @@ internal sealed class FeasibleSessionMasks
         return new FeasibleSessionMasks(fits, maskCount - 1);
     }
 
-    public bool FitsInOneSession(int mask) => _fitsInOneSession[mask];
+    public bool FitsInOneSession(int mask) => fitsInOneSession[mask];
 }

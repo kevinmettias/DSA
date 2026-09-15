@@ -21,11 +21,16 @@ public sealed class PrefixAndSuffixSearchTests
     [MemberData(nameof(Examples))]
     public void SearchByLinearScan_LeetCodeExamples_ReturnsLargestMatchingIndex(
         string[] words, string prefix, string suffix, int expected) =>
-        Assert.Equal(expected, PrefixAndSuffixSearchSolution.SearchByLinearScan(words, prefix, suffix));
+        Assert.Equal(
+            expected,
+            PrefixAndSuffixSearchSolution.SearchByLinearScan(words, new SearchPrefix(prefix), new SearchSuffix(suffix)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SearchByPrecomputedHashMap_LeetCodeExamples_ReturnsLargestMatchingIndex(
         string[] words, string prefix, string suffix, int expected) =>
-        Assert.Equal(expected, PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(words, prefix, suffix));
+        Assert.Equal(
+            expected,
+            PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(
+                words, new SearchPrefix(prefix), new SearchSuffix(suffix)));
 }

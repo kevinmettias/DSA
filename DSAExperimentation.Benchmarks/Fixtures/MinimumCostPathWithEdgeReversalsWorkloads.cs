@@ -23,6 +23,15 @@ internal static class MinimumCostPathWithEdgeReversalsWorkloads
             edges.Add([j, i, random.Next(1, EdgeWeightUpperBound)]);
         }
 
+        AddExtraEdges(edges, random, nodeCount, extraEdgesPerNode);
+
+        return [.. edges];
+    }
+
+    // Extra random directed edges for density, so a reversal can still occasionally shorten
+    // the path. A self-edge is skipped: it neither reaches a new node nor is worth reversing.
+    private static void AddExtraEdges(List<int[]> edges, Random random, int nodeCount, int extraEdgesPerNode)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < extraEdgesPerNode; e++)
@@ -35,7 +44,5 @@ internal static class MinimumCostPathWithEdgeReversalsWorkloads
                 }
             }
         }
-
-        return [.. edges];
     }
 }

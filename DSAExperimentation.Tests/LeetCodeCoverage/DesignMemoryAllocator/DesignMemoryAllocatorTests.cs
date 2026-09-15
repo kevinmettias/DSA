@@ -103,19 +103,8 @@ public sealed class DesignMemoryAllocatorTests
 // One call in an allocator script: which method to invoke and with what arguments.
 // Pure dispatch, built via the named factories below so a script (like Examples
 // above) reads like the LeetCode call sequence it replays.
-public readonly record struct MemoryAllocatorOp
+public readonly record struct MemoryAllocatorOp(bool isFree, int size, int memoryId)
 {
-    private readonly bool _isFree;
-    private readonly int _size;
-    private readonly int _memoryId;
-
-    private MemoryAllocatorOp(bool isFree, int size, int memoryId)
-    {
-        _isFree = isFree;
-        _size = size;
-        _memoryId = memoryId;
-    }
-
     public static MemoryAllocatorOp Allocate(int size, int memoryId) => new(isFree: false, size, memoryId);
 
     public static MemoryAllocatorOp Free(int memoryId) => new(isFree: true, size: 0, memoryId);
@@ -125,5 +114,5 @@ public readonly record struct MemoryAllocatorOp
     // IMemoryAllocatorStrategy is internal to DesignMemoryAllocatorSolution, and
     // only this same assembly's RunScript ever calls Apply.
     internal int Apply(IMemoryAllocatorStrategy allocator)
-        => _isFree ? allocator.Free(_memoryId) : allocator.Allocate(_size, _memoryId);
+        => isFree ? allocator.Free(memoryId) : allocator.Allocate(size, memoryId);
 }

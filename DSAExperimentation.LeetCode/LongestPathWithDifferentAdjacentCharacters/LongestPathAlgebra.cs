@@ -13,14 +13,17 @@ namespace DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters
 // Prepare before the fold begins and indexed by that id - the same "external state
 // established before the walk starts" shape RoomWaysPrecomputedFactorialAlgebra
 // uses for its factorial table, and the only shape a static-abstract algebra
-// admits. This algebra answers one LeetCode problem and nothing else, which is why
-// it lives beside the solution rather than in Domain.
+// admits. They sit in an AsyncLocal rather than in a plain static field so the
+// stash is owned by the flow that called Prepare: a second fold running on another
+// thread indexes its own labels, never this one's. This algebra answers one
+// LeetCode problem and nothing else, which is why it lives beside the solution
+// rather than in Domain.
 internal readonly struct LongestPathAlgebra : IFoldAlgebra<RootedTreeNode, PathState>
 {
     // No node carries this label, so an Empty state never matches a real one.
     private const char NoLabel = '\0';
 
-    private static string _labels = string.Empty;
+    private static readonly AsyncLocal<string> Labels = new();
 
     public static PathState Empty => new(0, 1, NoLabel);
 
@@ -30,11 +33,11 @@ internal readonly struct LongestPathAlgebra : IFoldAlgebra<RootedTreeNode, PathS
 
     // s[i] is node i's character; ParentArrayTree numbers its nodes by the same
     // index, so one lookup by id is all Combine needs.
-    public static void Prepare(string labels) => _labels = labels;
+    public static void Prepare(string labels) => Labels.Value = labels;
 
     public static PathState Combine(RootedTreeNode node, IReadOnlyList<PathState> children)
     {
-        var label = _labels[node.Id];
+        var label = Labels.Value[node.Id];
         var accumulator = new ChildAccumulator(0, 0, 1);
 
         for (var i = 0; i < children.Count; i++)

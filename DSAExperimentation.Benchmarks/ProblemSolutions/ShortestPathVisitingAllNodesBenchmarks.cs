@@ -19,11 +19,11 @@ public class ShortestPathVisitingAllNodesBenchmarks
 {
     private const int RandomSeed = 847;
 
-    [Params(8, 11)]
-    public int NodeCount;
+    private int[][] _graph = [];
 
-    private int[][] _graph = null!;
     private VisitStateGraph _stateGraph = null!;
+    [Params(8, 11)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

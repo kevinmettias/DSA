@@ -15,10 +15,10 @@ public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
     private const int RandomSeed = 1453; // LC problem number
     private const int CoordinateRange = 100;
 
-    [Params(20, 60)]
-    public int DartCount;
+    private int[][] _darts = [];
 
-    private int[][] _darts = null!;
+    [Params(20, 60)]
+    public int DartCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

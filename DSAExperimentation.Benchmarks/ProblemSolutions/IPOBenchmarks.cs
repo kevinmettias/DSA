@@ -14,11 +14,11 @@ public class IPOBenchmarks
     private const int MaxProfit = 1_000;
     private const int MaxCapital = 1_000;
 
-    [Params(200, 5_000)]
-    public int ProjectCount;
+    private int[] _profits = [];
 
-    private int[] _profits = null!;
-    private int[] _capitals = null!;
+    private int[] _capitals = [];
+    [Params(200, 5_000)]
+    public int ProjectCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

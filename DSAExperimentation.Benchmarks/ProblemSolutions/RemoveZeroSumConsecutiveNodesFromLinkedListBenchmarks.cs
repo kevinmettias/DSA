@@ -26,10 +26,10 @@ public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
     // workload's values identical to what this benchmark measured before migration.
     private const int ValueSeed = 1;
 
-    [Params(300, 3_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(300, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

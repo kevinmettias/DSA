@@ -45,22 +45,13 @@ public sealed class ImplementTrieTests
 // One call in an Implement-Trie script: which method to invoke and on what word.
 // Built via the named factories below so a script (like Examples above) reads
 // like the LeetCode call sequence it replays.
-public readonly record struct ImplementTrieOp
+public readonly record struct ImplementTrieOp(ImplementTrieOp.OpKind kind, string word)
 {
-    private readonly Kind _kind;
-    private readonly string _word;
+    public static ImplementTrieOp Insert(string word) => new(OpKind.Insert, word);
 
-    private ImplementTrieOp(Kind kind, string word)
-    {
-        _kind = kind;
-        _word = word;
-    }
+    public static ImplementTrieOp Search(string word) => new(OpKind.Search, word);
 
-    public static ImplementTrieOp Insert(string word) => new(Kind.Insert, word);
-
-    public static ImplementTrieOp Search(string word) => new(Kind.Search, word);
-
-    public static ImplementTrieOp StartsWith(string prefix) => new(Kind.StartsWith, prefix);
+    public static ImplementTrieOp StartsWith(string prefix) => new(OpKind.StartsWith, prefix);
 
     // null for insert (LeetCode's own void return), the boolean result for
     // search/startsWith - so a script runner can assert against one expected
@@ -68,16 +59,16 @@ public readonly record struct ImplementTrieOp
     // assembly's test method ever calls Apply.
     internal bool? Apply(Trie<bool> trie)
     {
-        if (_kind == Kind.Insert)
+        if (kind == OpKind.Insert)
         {
-            trie.Set(_word, true);
+            trie.Set(word, true);
             return null;
         }
 
-        return _kind == Kind.Search ? trie.HasKey(_word) : trie.HasPrefix(_word);
+        return kind == OpKind.Search ? trie.HasKey(word) : trie.HasPrefix(word);
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Insert,
         Search,

@@ -14,10 +14,10 @@ public class ExtraCharactersInAStringBenchmarks
 {
     private static readonly string[] Dictionary = ["ab", "cd", "ef", "gh", "ij"];
 
-    [Params(300, 1_500)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(300, 1_500)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

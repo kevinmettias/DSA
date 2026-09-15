@@ -14,10 +14,10 @@ public class SumOfTotalStrengthOfWizardsBenchmarks
     // LC problem number, used as the RNG seed.
     private const int RandomSeed = 2281;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _strength = [];
 
-    private int[] _strength = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

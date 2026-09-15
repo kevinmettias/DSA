@@ -45,30 +45,8 @@ internal static class MinimumMovesToSpreadStonesOverGridSolution
 
         var used = new bool[sources.Count];
         var best = int.MaxValue;
-        Permute(sources, targets, used, 0, 0, ref best);
+        Permute((sources, targets), (used, 0, 0), ref best);
         return best;
-    }
-
-    private static void Permute(
-        List<(int Row, int Col)> sources, List<(int Row, int Col)> targets, bool[] used, int position, int costSoFar, ref int best)
-    {
-        if (position == sources.Count)
-        {
-            best = Math.Min(best, costSoFar);
-            return;
-        }
-
-        for (var i = 0; i < sources.Count; i++)
-        {
-            if (used[i])
-            {
-                continue;
-            }
-
-            used[i] = true;
-            Permute(sources, targets, used, position + 1, costSoFar + ManhattanDistance(sources[i], targets[position]), ref best);
-            used[i] = false;
-        }
     }
 
     public static int MinimumMovesByBacktrackPermutation(int[][] grid)
@@ -80,30 +58,112 @@ internal static class MinimumMovesToSpreadStonesOverGridSolution
             return 0;
         }
 
-        var best = int.MaxValue;
+        return RunBacktrackSearch(sources, targets);
+    }
+
+    // The composed arm's walk: AssignmentState threads the running Manhattan-distance
+    // sum through Choose/Unchoose so the pair stays each other's exact inverse, and the
+    // best cost is folded in on each complete assignment and returned. It is a local
+    // rather than a ref because the fold runs inside the solution callback, and C#
+    // forbids a lambda capturing a ref parameter.
+    private static int RunBacktrackSearch(
+        List<(int Row, int Col)> sources, List<(int Row, int Col)> targets)
+    {
         var state = new AssignmentState(sources.Count);
+        var best = int.MaxValue;
 
         Backtrack.Search<AssignmentState, int>(
             state,
             st => st.Assigned.Count == sources.Count,
             st => st.Assigned.Count == sources.Count
                 ? Enumerable.Empty<int>()
-                : Enumerable.Range(0, sources.Count).Where(i => !st.Used[i]),
-            (st, i) =>
-            {
-                st.Used[i] = true;
-                st.Cost += ManhattanDistance(sources[i], targets[st.Assigned.Count]);
-                st.Assigned.Add(i);
-            },
-            (st, i) =>
-            {
-                st.Assigned.RemoveAt(st.Assigned.Count - 1);
-                st.Cost -= ManhattanDistance(sources[i], targets[st.Assigned.Count]);
-                st.Used[i] = false;
-            },
+                : UnassignedSources(st, sources),
+            (st, i) => ChooseSource(st, sources, targets, i),
+            (st, i) => UnchooseSource(st, sources, targets, i),
             st => best = Math.Min(best, st.Cost));
 
         return best;
+    }
+
+    // Every source stone still unassigned, in index order - the moves the walk may
+    // choose next.
+    private static IEnumerable<int> UnassignedSources(
+        AssignmentState state, List<(int Row, int Col)> sources) =>
+        Enumerable.Range(0, sources.Count).Where(i => !state.Used[i]);
+
+    // Source i takes the position the walk is currently filling: it is marked used,
+    // charged the Manhattan distance to the target that position owns, and recorded
+    // as the pick.
+    private static void ChooseSource(
+        AssignmentState state,
+        List<(int Row, int Col)> sources,
+        List<(int Row, int Col)> targets,
+        int index)
+    {
+        state.Used[index] = true;
+        state.Cost += ManhattanDistance(sources[index], targets[state.Assigned.Count]);
+        state.Assigned.Add(index);
+    }
+
+    // UnchooseSource is ChooseSource's exact inverse - the pick comes back off, the
+    // distance it charged is given back, and the source is free again - which is the
+    // precondition Backtrack.cs's walk rests on.
+    private static void UnchooseSource(
+        AssignmentState state,
+        List<(int Row, int Col)> sources,
+        List<(int Row, int Col)> targets,
+        int index)
+    {
+        state.Assigned.RemoveAt(state.Assigned.Count - 1);
+        state.Cost -= ManhattanDistance(sources[index], targets[state.Assigned.Count]);
+        state.Used[index] = false;
+    }
+
+    // The excess-stone cells and the deficit cells are the two sides of one bijection,
+    // and a position plus the cost accumulated to reach it is exactly the state
+    // AssignmentState threads through Choose/Unchoose for the composed arm - so each
+    // pair travels as one argument. The best cost stays a ref: it is the one value
+    // every path in the search shares.
+    private static void Permute(
+        (List<(int Row, int Col)> Sources, List<(int Row, int Col)> Targets) assignment,
+        (bool[] Used, int Position, int Cost) state,
+        ref int best)
+    {
+        if (state.Position == assignment.Sources.Count)
+        {
+            best = Math.Min(best, state.Cost);
+            return;
+        }
+
+        for (var i = 0; i < assignment.Sources.Count; i++)
+        {
+            TryAssignSource(assignment, state, i, ref best);
+        }
+    }
+
+    // One branch of the walk: source i takes the current position, the cost of that
+    // pairing is added, and the extended state recurses - the choose/recurse/unchoose
+    // step the loop above repeats over every source still free.
+    private static void TryAssignSource(
+        (List<(int Row, int Col)> Sources, List<(int Row, int Col)> Targets) assignment,
+        (bool[] Used, int Position, int Cost) state,
+        int index,
+        ref int best)
+    {
+        if (state.Used[index])
+        {
+            return;
+        }
+
+        state.Used[index] = true;
+
+        var next = (
+            Used: state.Used,
+            Position: state.Position + 1,
+            Cost: state.Cost + ManhattanDistance(assignment.Sources[index], assignment.Targets[state.Position]));
+
+        Permute(assignment, next, ref best);
+        state.Used[index] = false;
     }
 
     private static (List<(int Row, int Col)> Sources, List<(int Row, int Col)> Targets) BuildSourcesAndTargets(int[][] grid)
@@ -111,6 +171,17 @@ internal static class MinimumMovesToSpreadStonesOverGridSolution
         var sources = new List<(int Row, int Col)>();
         var targets = new List<(int Row, int Col)>();
 
+        ClassifyCells(grid, sources, targets);
+
+        return (sources, targets);
+    }
+
+    // Each cell is one side of the bijection or neither: a cell holding more than its
+    // one stone contributes that many interchangeable sources, a cell holding none is
+    // a target, and a cell holding exactly one never moves.
+    private static void ClassifyCells(
+        int[][] grid, List<(int Row, int Col)> sources, List<(int Row, int Col)> targets)
+    {
         for (var row = 0; row < GridSize; row++)
         {
             for (var col = 0; col < GridSize; col++)
@@ -119,10 +190,7 @@ internal static class MinimumMovesToSpreadStonesOverGridSolution
 
                 if (excess > 0)
                 {
-                    for (var i = 0; i < excess; i++)
-                    {
-                        sources.Add((row, col));
-                    }
+                    AddExcessStones(sources, (row, col), excess);
                 }
                 else if (excess < 0)
                 {
@@ -130,8 +198,16 @@ internal static class MinimumMovesToSpreadStonesOverGridSolution
                 }
             }
         }
+    }
 
-        return (sources, targets);
+    // An excess cell's surplus stones are that many sources standing in the same place.
+    private static void AddExcessStones(
+        List<(int Row, int Col)> sources, (int Row, int Col) cell, int excess)
+    {
+        for (var i = 0; i < excess; i++)
+        {
+            sources.Add(cell);
+        }
     }
 
     private static int ManhattanDistance((int Row, int Col) a, (int Row, int Col) b)

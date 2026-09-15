@@ -17,10 +17,10 @@ public class MinimumWindowSubstringBenchmarks
     private const string Target = "XYZ";
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,8 +30,12 @@ public class MinimumWindowSubstringBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string BruteForce() => MinimumWindowSubstringSolution.MinWindowByBruteForce(_s, Target);
+    public string BruteForce() => MinimumWindowSubstringSolution.MinWindowByBruteForce(
+        new MinimumWindowSubstringSolution.SearchedText(_s),
+        new MinimumWindowSubstringSolution.RequiredCharacters(Target));
 
     [Benchmark]
-    public string SlidingWindowHashMap() => MinimumWindowSubstringSolution.MinWindowBySlidingWindowHashMap(_s, Target);
+    public string SlidingWindowHashMap() => MinimumWindowSubstringSolution.MinWindowBySlidingWindowHashMap(
+        new MinimumWindowSubstringSolution.SearchedText(_s),
+        new MinimumWindowSubstringSolution.RequiredCharacters(Target));
 }

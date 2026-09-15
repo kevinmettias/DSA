@@ -12,19 +12,23 @@ public class CircularArrayLoopBenchmarks
 {
     private const int SignChoiceCount = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
         _values = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(1, Length) * (random.Next(SignChoiceCount) == 0 ? 1 : -1))
+            .Select(_ => random.Next(1, Length) * (IsPositiveSign(random) ? 1 : -1))
             .ToArray();
     }
+
+    // The sign is a second independent draw, taken after the magnitude so the two
+    // stay in the step order the sequence is seeded from.
+    private static bool IsPositiveSign(Random random) => random.Next(SignChoiceCount) == 0;
 
     [Benchmark(Baseline = true)]
     public bool HashSetPerStartWalk() => CircularArrayLoopSolution.HasLoopByHashSetWalk(_values);

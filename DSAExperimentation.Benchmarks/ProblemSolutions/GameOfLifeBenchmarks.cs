@@ -14,10 +14,10 @@ public class GameOfLifeBenchmarks
     private const int RandomSeed = 289;
     private const int LiveCellExclusiveBound = 2;
 
-    [Params(50, 300)]
-    public int Size;
+    private int[][] _board = [];
 
-    private int[][] _board = null!;
+    [Params(50, 300)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

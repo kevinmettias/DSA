@@ -14,7 +14,7 @@ public class CombinationSumIIIBenchmarks
     private const int K = 5;
 
     [Params(20, 25)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public List<List<int>> BruteForce() =>

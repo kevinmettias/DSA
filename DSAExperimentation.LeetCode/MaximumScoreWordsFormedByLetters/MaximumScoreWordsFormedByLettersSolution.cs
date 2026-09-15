@@ -33,6 +33,57 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         return SearchByInclusion(0, remaining, 0, new WordData(wordCounts, wordScores));
     }
 
+    private static int WordScore(string word, int[] score)
+    {
+        var total = 0;
+
+        foreach (var c in word)
+        {
+            total += score[c - 'a'];
+        }
+
+        return total;
+    }
+
+    // This repo's own Backtrack.Search, closed over the identical choose/explore/
+    // unchoose steps the naive recursion writes out by hand: the shared letter
+    // budget is the mutated state, "include this word" is the choice, and every
+    // leaf reports its running score so OnSolution can keep the maximum.
+    public static int MaxScoreWordsByBacktrackSearch(string[] words, char[] letters, int[] score)
+    {
+        var state = new WordChoiceState(words, score, LetterCounts(letters));
+        var best = 0;
+
+        Backtrack.Search<WordChoiceState, bool>(
+            state,
+            isSolution: s => s.Index == words.Length,
+            candidates: s => CandidatesFor(s, words.Length),
+            choose: (s, include) => s.Choose(include),
+            unchoose: (s, include) => s.Unchoose(include),
+            onSolution: s => best = Math.Max(best, s.CurrentScore));
+
+        return best;
+    }
+
+    // The choices at one node: none once every word has been decided, otherwise
+    // include-or-skip while the current word still fits the shared letter budget, and
+    // skip alone when it does not. CanInclude is only read for an undecided node, which
+    // is what keeps it from indexing past the last word.
+    private static IEnumerable<bool> CandidatesFor(WordChoiceState state, int wordCount)
+    {
+        if (state.Index == wordCount)
+        {
+            return [];
+        }
+
+        if (state.CanInclude)
+        {
+            return [true, false];
+        }
+
+        return [false];
+    }
+
     private static int SearchByInclusion(int index, int[] remaining, int currentScore, WordData words)
     {
         if (index == words.Scores.Length)
@@ -48,9 +99,9 @@ internal static class MaximumScoreWordsFormedByLettersSolution
             return skipped;
         }
 
-        ApplyCounts(remaining, counts, subtract: true);
+        ApplyCounts(remaining, counts, LetterBudget.Spend);
         var included = SearchByInclusion(index + 1, remaining, currentScore + words.Scores[index], words);
-        ApplyCounts(remaining, counts, subtract: false);
+        ApplyCounts(remaining, counts, LetterBudget.Restore);
 
         return Math.Max(skipped, included);
     }
@@ -68,36 +119,14 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         return true;
     }
 
-    private static void ApplyCounts(int[] remaining, int[] counts, bool subtract)
+    private static void ApplyCounts(int[] remaining, int[] counts, LetterBudget change)
     {
-        var sign = subtract ? -1 : 1;
+        var sign = change == LetterBudget.Spend ? -1 : 1;
 
         for (var c = 0; c < AlphabetSize; c++)
         {
             remaining[c] += sign * counts[c];
         }
-    }
-
-    private readonly record struct WordData(int[][] Counts, int[] Scores);
-
-    // This repo's own Backtrack.Search, closed over the identical choose/explore/
-    // unchoose steps the naive recursion writes out by hand: the shared letter
-    // budget is the mutated state, "include this word" is the choice, and every
-    // leaf reports its running score so OnSolution can keep the maximum.
-    public static int MaxScoreWordsByBacktrackSearch(string[] words, char[] letters, int[] score)
-    {
-        var state = new WordChoiceState(words, score, LetterCounts(letters));
-        var best = 0;
-
-        Backtrack.Search<WordChoiceState, bool>(
-            state,
-            isSolution: s => s.Index == words.Length,
-            candidates: s => s.Index == words.Length ? [] : s.CanInclude ? [true, false] : [false],
-            choose: (s, include) => s.Choose(include),
-            unchoose: (s, include) => s.Unchoose(include),
-            onSolution: s => best = Math.Max(best, s.CurrentScore));
-
-        return best;
     }
 
     private static int[] LetterCounts(IEnumerable<char> chars)
@@ -112,17 +141,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         return counts;
     }
 
-    private static int WordScore(string word, int[] score)
-    {
-        var total = 0;
-
-        foreach (var c in word)
-        {
-            total += score[c - 'a'];
-        }
-
-        return total;
-    }
+    private readonly record struct WordData(int[][] Counts, int[] Scores);
 
     // One word index plus the shared, mutated letter budget. Unchoose is Choose's
     // exact inverse, which is what lets Candidates re-read CanInclude lazily.
@@ -131,6 +150,12 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         private readonly int[][] _wordCounts;
         private readonly int[] _wordScores;
         private readonly int[] _available;
+
+        public int Index { get; private set; }
+
+        public int CurrentScore { get; private set; }
+
+        public bool CanInclude => Fits(_wordCounts[Index], _available);
 
         public WordChoiceState(string[] words, int[] score, int[] available)
         {
@@ -145,17 +170,11 @@ internal static class MaximumScoreWordsFormedByLettersSolution
             }
         }
 
-        public int Index { get; private set; }
-
-        public int CurrentScore { get; private set; }
-
-        public bool CanInclude => Fits(_wordCounts[Index], _available);
-
         public void Choose(bool include)
         {
             if (include)
             {
-                ApplyCounts(_available, _wordCounts[Index], subtract: true);
+                ApplyCounts(_available, _wordCounts[Index], LetterBudget.Spend);
                 CurrentScore += _wordScores[Index];
             }
 
@@ -168,9 +187,17 @@ internal static class MaximumScoreWordsFormedByLettersSolution
 
             if (include)
             {
-                ApplyCounts(_available, _wordCounts[Index], subtract: false);
+                ApplyCounts(_available, _wordCounts[Index], LetterBudget.Restore);
                 CurrentScore -= _wordScores[Index];
             }
         }
+    }
+
+    // Which direction a shared letter-budget adjustment runs: Spend takes the word's own
+    // letter counts back out of the pool, Restore puts them back on the way up.
+    private enum LetterBudget
+    {
+        Spend,
+        Restore,
     }
 }

@@ -28,19 +28,29 @@ internal static class SubarrayProductLessThanKSolution
 
         for (var start = 0; start < nums.Length; start++)
         {
-            long product = 1;
+            count += CountEndsFrom(nums, start, k);
+        }
 
-            for (var end = start; end < nums.Length; end++)
+        return count;
+    }
+
+    // Extends the running product right from `start` until it stops being < k;
+    // every end index before that is one valid subarray.
+    private static int CountEndsFrom(int[] nums, int start, int k)
+    {
+        var count = 0;
+        long product = 1;
+
+        for (var end = start; end < nums.Length; end++)
+        {
+            product *= nums[end];
+
+            if (product >= k)
             {
-                product *= nums[end];
-
-                if (product >= k)
-                {
-                    break;
-                }
-
-                count++;
+                break;
             }
+
+            count++;
         }
 
         return count;
@@ -57,12 +67,7 @@ internal static class SubarrayProductLessThanKSolution
             return 0;
         }
 
-        var logPrefix = new double[nums.Length + 1];
-        for (var i = 0; i < nums.Length; i++)
-        {
-            logPrefix[i + 1] = logPrefix[i] + Math.Log(nums[i]);
-        }
-
+        var logPrefix = BuildLogPrefix(nums);
         var sequence = new ArraySequence<double>(logPrefix);
         var count = 0;
         var logK = Math.Log(k);
@@ -75,5 +80,19 @@ internal static class SubarrayProductLessThanKSolution
         }
 
         return count;
+    }
+
+    // Cumulative sums of the elements' logs; monotonically non-decreasing because
+    // every element is at least 1, which is what LowerBound's own precondition
+    // needs of it.
+    private static double[] BuildLogPrefix(int[] nums)
+    {
+        var logPrefix = new double[nums.Length + 1];
+        for (var i = 0; i < nums.Length; i++)
+        {
+            logPrefix[i + 1] = logPrefix[i] + Math.Log(nums[i]);
+        }
+
+        return logPrefix;
     }
 }

@@ -10,19 +10,23 @@ public class FindTheIndexOfTheFirstOccurrenceInAStringBenchmarks
 {
     private const string Needle = "needle";
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _haystack = "";
 
-    private string _haystack = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _haystack = new string('a', Length) + Needle;
 
     [Benchmark(Baseline = true)]
     public int StringIndexOf() =>
-        FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByStringIndexOf(_haystack, Needle);
+        FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByStringIndexOf(
+            new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Haystack(_haystack),
+            new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Needle(Needle));
 
     [Benchmark]
     public int RollingHashSearchFirst() =>
-        FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByRollingHash(_haystack, Needle);
+        FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByRollingHash(
+            new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Haystack(_haystack),
+            new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Needle(Needle));
 }

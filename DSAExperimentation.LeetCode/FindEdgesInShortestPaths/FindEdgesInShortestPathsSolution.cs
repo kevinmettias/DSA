@@ -100,16 +100,17 @@ internal static class FindEdgesInShortestPathsSolution
             var edge = edges[i];
             var (a, b, w) = (edge[0], edge[1], (long)edge[2]);
 
-            answer[i] = OnShortestPath(distFromStart, distFromEnd, a, b, w, shortest)
-                || OnShortestPath(distFromStart, distFromEnd, b, a, w, shortest);
+            answer[i] = OnShortestPath(distFromStart, distFromEnd, (a, b, w), shortest)
+                || OnShortestPath(distFromStart, distFromEnd, (b, a, w), shortest);
         }
 
         return answer;
     }
 
-    private static bool OnShortestPath(long[] distFromStart, long[] distFromEnd, int u, int v, long w, long shortest)
-        => distFromStart[u] != long.MaxValue && distFromEnd[v] != long.MaxValue
-            && distFromStart[u] + w + distFromEnd[v] == shortest;
+    private static bool OnShortestPath(
+        long[] distFromStart, long[] distFromEnd, (int U, int V, long W) edge, long shortest)
+        => distFromStart[edge.U] != long.MaxValue && distFromEnd[edge.V] != long.MaxValue
+            && distFromStart[edge.U] + edge.W + distFromEnd[edge.V] == shortest;
 
     // This repo's own Dijkstra: ShortestPath.Dijkstra over EdgeGraphNode via
     // EdgeGraphTopology gives every reachable node's distance from a source in
@@ -117,8 +118,12 @@ internal static class FindEdgesInShortestPathsSolution
     // n-1) plus a per-edge lookup - the same "search once, answer many
     // queries" composition OpenTheLockSolution's MinTurnsByReduceGraph uses
     // for its own graph-reduce arm.
-    public static bool[] AnswerByShortestPathDijkstra(int n, int[][] edges) =>
-        AnswerByShortestPathDijkstra(EdgeGraph.Build(n, edges));
+    public static bool[] AnswerByShortestPathDijkstra(int n, int[][] edges)
+    {
+        var graph = EdgeGraph.Build(n, edges);
+
+        return AnswerByShortestPathDijkstra(graph);
+    }
 
     public static bool[] AnswerByShortestPathDijkstra(EdgeGraph graph)
     {
@@ -127,21 +132,34 @@ internal static class FindEdgesInShortestPathsSolution
             .Dijkstra<EdgeGraphNode, EdgeGraphTopology, ListEdges<EdgeGraphNode, long>, long>(nodes[0]);
         var distFromEnd = ShortestPath
             .Dijkstra<EdgeGraphNode, EdgeGraphTopology, ListEdges<EdgeGraphNode, long>, long>(nodes[^1]);
-
-        var answer = new bool[graph.Edges.Length];
+        var distances = (distFromStart, distFromEnd);
 
         if (!distFromStart.TryGetValue(nodes[^1], out var shortest))
         {
-            return answer;
+            return new bool[graph.Edges.Length];
         }
+
+        return MarkShortestPathEdges(graph, nodes, distances, shortest);
+    }
+
+    // The per-edge test run over the whole graph: an edge lies on some shortest
+    // 0 -> (n-1) path when either of its two orientations has
+    // dist(0, u) + w + dist(v, n-1) equal to the overall shortest distance.
+    private static bool[] MarkShortestPathEdges(
+        EdgeGraph graph,
+        EdgeGraphNode[] nodes,
+        (Dictionary<EdgeGraphNode, long> FromStart, Dictionary<EdgeGraphNode, long> FromEnd) distances,
+        long shortest)
+    {
+        var answer = new bool[graph.Edges.Length];
 
         for (var i = 0; i < graph.Edges.Length; i++)
         {
             var edge = graph.Edges[i];
             var (a, b, w) = (edge[0], edge[1], (long)edge[2]);
 
-            answer[i] = OnShortestPath(nodes, distFromStart, distFromEnd, a, b, w, shortest)
-                || OnShortestPath(nodes, distFromStart, distFromEnd, b, a, w, shortest);
+            answer[i] = OnShortestPath(nodes, distances, (a, b, w), shortest)
+                || OnShortestPath(nodes, distances, (b, a, w), shortest);
         }
 
         return answer;
@@ -149,10 +167,10 @@ internal static class FindEdgesInShortestPathsSolution
 
     private static bool OnShortestPath(
         EdgeGraphNode[] nodes,
-        Dictionary<EdgeGraphNode, long> distFromStart,
-        Dictionary<EdgeGraphNode, long> distFromEnd,
-        int u, int v, long w, long shortest)
-        => distFromStart.TryGetValue(nodes[u], out var du)
-            && distFromEnd.TryGetValue(nodes[v], out var dv)
-            && du + w + dv == shortest;
+        (Dictionary<EdgeGraphNode, long> FromStart, Dictionary<EdgeGraphNode, long> FromEnd) distances,
+        (int U, int V, long W) edge,
+        long shortest)
+        => distances.FromStart.TryGetValue(nodes[edge.U], out var du)
+            && distances.FromEnd.TryGetValue(nodes[edge.V], out var dv)
+            && du + edge.W + dv == shortest;
 }

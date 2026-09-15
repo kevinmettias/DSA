@@ -33,8 +33,12 @@ internal static class LargestColorValueInADirectedGraphSolution
 
     // LeetCode's own input shape: colors[i] is node i's lowercase color letter and
     // edges[j] = [from, to] is a directed edge.
-    public static int LargestPathValueByKahnsTopologicalSort(string colors, int[][] edges) =>
-        LargestPathValueByKahnsTopologicalSort(BuildGraph(colors, edges));
+    public static int LargestPathValueByKahnsTopologicalSort(string colors, int[][] edges)
+    {
+        var nodes = BuildGraph(colors, edges);
+
+        return LargestPathValueByKahnsTopologicalSort(nodes);
+    }
 
     public static int LargestPathValueByKahnsTopologicalSort(List<ColorGraphNode> nodes)
     {
@@ -53,7 +57,9 @@ internal static class LargestColorValueInADirectedGraphSolution
 
         foreach (var node in ordering)
         {
-            best = Math.Max(best, RelaxForward(node, counts));
+            var nodeBest = RelaxForward(node, counts);
+
+            best = Math.Max(best, nodeBest);
         }
 
         return best;
@@ -88,8 +94,12 @@ internal static class LargestColorValueInADirectedGraphSolution
     // fixed point whatever order the nodes happen to be enumerated in. Deliberately
     // written with BCL collections and no ordering primitive - it is the arm the
     // composed solution above has to justify itself against.
-    public static int LargestPathValueByRepeatedRelaxation(string colors, int[][] edges) =>
-        LargestPathValueByRepeatedRelaxation(BuildGraph(colors, edges));
+    public static int LargestPathValueByRepeatedRelaxation(string colors, int[][] edges)
+    {
+        var nodes = BuildGraph(colors, edges);
+
+        return LargestPathValueByRepeatedRelaxation(nodes);
+    }
 
     public static int LargestPathValueByRepeatedRelaxation(List<ColorGraphNode> nodes)
     {
@@ -105,14 +115,12 @@ internal static class LargestColorValueInADirectedGraphSolution
     }
 
     private static Dictionary<ColorGraphNode, int[]> BuildInitialCounts(List<ColorGraphNode> nodes)
-    {
-        return nodes.ToDictionary(node => node, node =>
+        => nodes.ToDictionary(node => node, node =>
         {
             var counts = new int[AlphabetSize];
             counts[node.Color] = 1;
             return counts;
         });
-    }
 
     private static void RelaxAllRounds(List<ColorGraphNode> nodes, Dictionary<ColorGraphNode, int[]> counts)
     {
@@ -158,8 +166,7 @@ internal static class LargestColorValueInADirectedGraphSolution
 
         foreach (var child in node.Successors)
         {
-            if (marks[child] == InProgress ||
-                (marks[child] == Unvisited && ReachesItsOwnAncestor(child, marks)))
+            if (ClosesCycle(child, marks))
             {
                 return true;
             }
@@ -168,6 +175,11 @@ internal static class LargestColorValueInADirectedGraphSolution
         marks[node] = Finished;
         return false;
     }
+
+    // A child still in progress on the walk's own path closes a cycle outright; an
+    // unvisited child closes one if it can reach back to an ancestor from below.
+    private static bool ClosesCycle(ColorGraphNode child, Dictionary<ColorGraphNode, int> marks)
+        => marks[child] == InProgress || (marks[child] == Unvisited && ReachesItsOwnAncestor(child, marks));
 
     private static List<ColorGraphNode> BuildGraph(string colors, int[][] edges)
     {

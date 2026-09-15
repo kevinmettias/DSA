@@ -19,14 +19,18 @@ public class FindTheShortestSuperstringBenchmarks
     private const int WordSeed = 943;
     private const int WordLength = 5;
 
-    [Params(6, 9)]
-    public int WordCount;
-
     private WordOverlaps _overlaps = null!;
 
+    [Params(6, 9)]
+    public int WordCount { get; set; }
+
     [GlobalSetup]
-    public void Setup() =>
-        _overlaps = WordOverlaps.Build(SuperstringWordWorkloads.BuildWords(WordCount, WordLength, WordSeed));
+    public void Setup()
+    {
+        var words = SuperstringWordWorkloads.BuildWords(WordCount, WordLength, WordSeed);
+
+        _overlaps = WordOverlaps.Build(words);
+    }
 
     [Benchmark(Baseline = true)]
     public string BruteForcePermutations() =>

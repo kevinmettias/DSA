@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Sequence;
 
@@ -30,7 +31,6 @@ namespace DSAExperimentation.LeetCode.ExamRoom;
 internal static class ExamRoomSolution
 {
     // Splits a left/right occupied-seat pair to find the midpoint candidate seat.
-    private const int MidpointDivisor = 2;
 
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
@@ -40,6 +40,19 @@ internal static class ExamRoomSolution
         int Seat();
 
         void Leave(int p);
+    }
+
+    // The occupied seats as a rank-ordered sequence: rank 0 is the lowest occupied
+    // seat, rank count-1 the highest. Both rooms ARE this view of their own storage -
+    // List<int>'s indexer for one, DynamicArray<int>.Get for the other - so the gap
+    // scan below asks for "the occupied seat at rank i" instead of being handed a raw
+    // index accessor whose only documentation was its arity.
+    private interface IOccupiedSeats
+    {
+        // The occupied seat at `rank`, counting up from the lowest occupied seat.
+        // Ranks are only ever asked for below the room's own occupied count, so this
+        // never has to answer for an empty rank.
+        int SeatAt(int rank);
     }
 
     // Baseline: sorted BCL List<int>, Leave(p) via List<T>.Remove's own linear scan.
@@ -52,7 +65,7 @@ internal static class ExamRoomSolution
     public static IExamRoom CreateByBinarySearchDynamicArray(int seatCount)
         => new BinarySearchDynamicArrayRoom(seatCount);
 
-    private sealed class LinearScanListRoom(int seatCount) : IExamRoom
+    private sealed class LinearScanListRoom(int seatCount) : IExamRoom, IOccupiedSeats
     {
         private readonly List<int> _occupied = [];
 
@@ -64,15 +77,17 @@ internal static class ExamRoomSolution
                 return 0;
             }
 
-            var best = BestAvailableSeat(seatCount, _occupied.Count, i => _occupied[i]);
+            var best = BestAvailableSeat(seatCount, _occupied.Count, this);
             _occupied.Insert(best.Index, best.Seat);
             return best.Seat;
         }
 
         public void Leave(int p) => _occupied.Remove(p);
+
+        public int SeatAt(int rank) => _occupied[rank];
     }
 
-    private sealed class BinarySearchDynamicArrayRoom(int seatCount) : IExamRoom
+    private sealed class BinarySearchDynamicArrayRoom(int seatCount) : IExamRoom, IOccupiedSeats
     {
         private readonly DynamicArray<int> _occupied = new();
 
@@ -84,7 +99,7 @@ internal static class ExamRoomSolution
                 return 0;
             }
 
-            var best = BestAvailableSeat(seatCount, _occupied.Count, _occupied.Get);
+            var best = BestAvailableSeat(seatCount, _occupied.Count, this);
             _occupied.Insert(best.Index, best.Seat);
             return best.Seat;
         }
@@ -96,21 +111,23 @@ internal static class ExamRoomSolution
 
             _occupied.RemoveAt(index);
         }
+
+        public int SeatAt(int rank) => _occupied.Get(rank);
     }
 
-    // The gap scan both strategies share, expressed over an index accessor so the
+    // The gap scan both strategies share, expressed over the seats by rank so the
     // baseline's List<int> and the composed strategy's DynamicArray<int> feed it
     // unchanged - Seat() itself is not what the two differ in.
-    private static SeatCandidate BestAvailableSeat(int seatCount, int count, Func<int, int> get)
+    private static SeatCandidate BestAvailableSeat(int seatCount, int count, IOccupiedSeats seats)
     {
-        var best = new SeatCandidate(0, 0, get(0));
+        var best = new SeatCandidate(0, 0, seats.SeatAt(0));
 
         for (var i = 0; i < count - 1; i++)
         {
-            best = ConsiderGapSeat(get, i, best);
+            best = ConsiderGapSeat(seats, i, best);
         }
 
-        var lastSeat = get(count - 1);
+        var lastSeat = seats.SeatAt(count - 1);
         var endDistance = seatCount - 1 - lastSeat;
 
         return endDistance > best.Distance
@@ -118,14 +135,21 @@ internal static class ExamRoomSolution
             : best;
     }
 
-    private static SeatCandidate ConsiderGapSeat(Func<int, int> get, int i, SeatCandidate best)
+    private static SeatCandidate ConsiderGapSeat(IOccupiedSeats seats, int i, SeatCandidate best)
     {
-        var left = get(i);
-        var right = get(i + 1);
-        var candidate = left + ((right - left) / MidpointDivisor);
-        var distance = candidate - left;
+        var left = seats.SeatAt(i);
+        var candidate = MidpointCandidate(i + 1, left, seats.SeatAt(i + 1));
 
-        return distance > best.Distance ? new SeatCandidate(i + 1, candidate, distance) : best;
+        return candidate.Distance > best.Distance ? candidate : best;
+    }
+
+    // The seat midway between the occupants at `i` and `i + 1`, rounded toward the
+    // left one, together with the distance that ranks it against the best so far.
+    private static SeatCandidate MidpointCandidate(int index, int left, int right)
+    {
+        var seat = left + ((right - left) / AlgorithmConstants.HalvingFactor);
+
+        return new SeatCandidate(index, seat, seat - left);
     }
 
     private readonly record struct SeatCandidate(int Index, int Seat, int Distance);

@@ -18,8 +18,8 @@ internal static class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution
     // The textbook answer: split on spaces and ask string.StartsWith. Deliberately
     // written with nothing but the BCL - it is the arm the Trie composition below
     // has to justify itself against.
-    public static int IndexOfPrefixWordByStartsWithScan(string sentence, string searchWord) =>
-        IndexOfPrefixWordByStartsWithScan(SplitWords(sentence), searchWord);
+    public static int IndexOfPrefixWordByStartsWithScan(SentenceText sentence, SearchedPrefix searchWord) =>
+        IndexOfPrefixWordByStartsWithScan(SplitWords(sentence.Text), searchWord.Text);
 
     public static int IndexOfPrefixWordByStartsWithScan(DynamicArray<string> words, string searchWord)
     {
@@ -39,8 +39,8 @@ internal static class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution
     // (LC 208), re-run per word until the first match. A fresh Trie per word is what
     // keeps the question "does THIS word start with searchWord" rather than "does
     // any word so far".
-    public static int IndexOfPrefixWordByTriePerWord(string sentence, string searchWord) =>
-        IndexOfPrefixWordByTriePerWord(SplitWords(sentence), searchWord);
+    public static int IndexOfPrefixWordByTriePerWord(SentenceText sentence, SearchedPrefix searchWord) =>
+        IndexOfPrefixWordByTriePerWord(SplitWords(sentence.Text), searchWord.Text);
 
     public static int IndexOfPrefixWordByTriePerWord(DynamicArray<string> words, string searchWord)
     {
@@ -72,4 +72,15 @@ internal static class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution
 
         return words;
     }
+
+    // LC 1455's two operands, named for the roles they play here rather than left as two
+    // adjacent `string` positions a caller could hand over the wrong way round with the
+    // compiler none the wiser. `sentence` is the whole space-separated sentence, and
+    // `searchWord` the prefix looked for at the start of one of its words - asking
+    // whether the search word occurs in the sentence is not the reverse question.
+    // The hoisted overloads above take the already-split form, so only the
+    // whole-sentence entry points carry the pair.
+    internal readonly record struct SentenceText(string Text);
+
+    internal readonly record struct SearchedPrefix(string Text);
 }

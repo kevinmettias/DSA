@@ -7,28 +7,38 @@ namespace DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 // not an answer to any one query about it (LockGraph's own framing). Both
 // strategies below share this same prepared network; only how each one searches
 // it differs.
-internal sealed class RecoveryNetwork
+internal sealed class RecoveryNetwork(
+    RecoveryNode[] nodes, List<(int From, int To, long Weight)> onlineEdges, long maxCost)
 {
-    private RecoveryNetwork(RecoveryNode[] nodes, List<(int From, int To, long Weight)> onlineEdges, long maxCost)
-    {
-        Nodes = nodes;
-        OnlineEdges = onlineEdges;
-        MaxCost = maxCost;
-    }
+    // The three views RecoveryNetworkPathwaysSolution reads by name, kept as
+    // properties over the primary constructor's own values.
+    public RecoveryNode[] Nodes => nodes;
 
-    public RecoveryNode[] Nodes { get; }
-
-    public List<(int From, int To, long Weight)> OnlineEdges { get; }
+    public List<(int From, int To, long Weight)> OnlineEdges => onlineEdges;
 
     // Upper bound for the path-score binary search: no path's minimum edge can
     // exceed the heaviest online edge in the graph.
-    public long MaxCost { get; }
+    public long MaxCost => maxCost;
 
     public RecoveryNode Source => Nodes[0];
 
     public RecoveryNode Destination => Nodes[^1];
 
     public static RecoveryNetwork Build(int n, int[][] edges, bool[] online)
+    {
+        var nodes = BuildNodes(n);
+        var onlineEdges = new List<(int From, int To, long Weight)>();
+        var maxCost = 0L;
+
+        foreach (var edge in edges)
+        {
+            maxCost = AdmitEdge(edge, online, onlineEdges, maxCost);
+        }
+
+        return new RecoveryNetwork(nodes, onlineEdges, maxCost);
+    }
+
+    private static RecoveryNode[] BuildNodes(int n)
     {
         var nodes = new RecoveryNode[n];
 
@@ -37,25 +47,26 @@ internal sealed class RecoveryNetwork
             nodes[i] = new RecoveryNode(i);
         }
 
-        var onlineEdges = new List<(int From, int To, long Weight)>();
-        var maxCost = 0L;
+        return nodes;
+    }
 
-        foreach (var edge in edges)
+    // An edge with an offline endpoint can never lie on a valid path, so it is dropped;
+    // an admitted edge's weight feeds the running upper bound for the path-score search.
+    private static long AdmitEdge(
+        int[] edge, bool[] online, List<(int From, int To, long Weight)> onlineEdges, long maxCost)
+    {
+        var from = edge[0];
+        var to = edge[1];
+        var weight = (long)edge[2];
+
+        if (!online[from] || !online[to])
         {
-            var from = edge[0];
-            var to = edge[1];
-            var weight = (long)edge[2];
-
-            if (!online[from] || !online[to])
-            {
-                continue;
-            }
-
-            onlineEdges.Add((from, to, weight));
-            maxCost = Math.Max(maxCost, weight);
+            return maxCost;
         }
 
-        return new RecoveryNetwork(nodes, onlineEdges, maxCost);
+        onlineEdges.Add((from, to, weight));
+
+        return Math.Max(maxCost, weight);
     }
 
     // Repopulates every node's outgoing edges to exactly the online edges whose

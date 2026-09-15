@@ -13,10 +13,10 @@ public class BeautifulTowersIIBenchmarks
 {
     private const int MaxHeight = 1_000_000_000;
 
-    [Params(1_000, 8_000)]
-    public int Length;
+    private int[] _maxHeights = [];
 
-    private int[] _maxHeights = null!;
+    [Params(1_000, 8_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

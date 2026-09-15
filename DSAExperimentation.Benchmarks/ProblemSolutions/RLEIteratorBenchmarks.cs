@@ -1,6 +1,5 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RLEIterator;
-using static DSAExperimentation.LeetCode.RLEIterator.RLEIteratorSolution;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -21,11 +20,11 @@ public class RLEIteratorBenchmarks
     private const int MaxRunValueExclusive = 1_000;
     private const int MaxQueryLength = 50;
 
-    [Params(2_000, 200_000)]
-    public int TotalCount;
+    private int[] _encoding = [];
 
-    private int[] _encoding = null!;
-    private int[] _queries = null!;
+    private int[] _queries = [];
+    [Params(2_000, 200_000)]
+    public int TotalCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,37 +34,20 @@ public class RLEIteratorBenchmarks
         _queries = BuildQueries(random, TotalCount);
     }
 
-    [Benchmark(Baseline = true)]
-    public int DecompressedArrayCursor() => Drain(CreateByDecompressedArray(_encoding));
-
-    [Benchmark]
-    public int RunLengthQueue() => Drain(CreateByRunLengthQueue(_encoding));
-
-    private int Drain(IRleIterator iterator)
-    {
-        var last = -1;
-
-        foreach (var n in _queries)
-        {
-            last = iterator.Next(n);
-        }
-
-        return last;
-    }
-
     private static int[] BuildEncoding(Random random, int totalCount)
     {
-        var encoding = new int[RunCount * ValuesPerRun];
+        var encoding = new int[RunCount * RunEncoding.ValuesPerRun];
         var remaining = totalCount;
 
         for (var run = 0; run < RunCount; run++)
         {
             var runsLeft = RunCount - run;
-            var count = run == RunCount - 1 ? remaining : Math.Max(1, remaining / runsLeft);
+            var isLastRun = run == RunCount - 1;
+            var count = isLastRun ? remaining : Math.Max(1, remaining / runsLeft);
             remaining -= count;
 
-            encoding[run * ValuesPerRun] = count;
-            encoding[(run * ValuesPerRun) + 1] = random.Next(1, MaxRunValueExclusive);
+            encoding[run * RunEncoding.ValuesPerRun] = count;
+            encoding[(run * RunEncoding.ValuesPerRun) + 1] = random.Next(1, MaxRunValueExclusive);
         }
 
         return encoding;
@@ -85,5 +67,23 @@ public class RLEIteratorBenchmarks
         }
 
         return [.. queries];
+    }
+
+    [Benchmark(Baseline = true)]
+    public int DecompressedArrayCursor() => Drain(RLEIteratorSolution.CreateByDecompressedArray(_encoding));
+
+    [Benchmark]
+    public int RunLengthQueue() => Drain(RLEIteratorSolution.CreateByRunLengthQueue(_encoding));
+
+    private int Drain(IRleIterator iterator)
+    {
+        var last = -1;
+
+        foreach (var n in _queries)
+        {
+            last = iterator.Next(n);
+        }
+
+        return last;
     }
 }

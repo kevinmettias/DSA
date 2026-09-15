@@ -15,11 +15,11 @@ public class QueryKthSmallestTrimmedNumberBenchmarks
     private const int QueryCount = 8;
     private const int RandomSeed = 2343;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private string[] _nums = [];
 
-    private string[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

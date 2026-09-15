@@ -18,10 +18,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ReverseNodesInEvenLengthGroupsBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();

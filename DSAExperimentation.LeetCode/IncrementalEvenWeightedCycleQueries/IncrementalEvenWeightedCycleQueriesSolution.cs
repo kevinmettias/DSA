@@ -60,44 +60,46 @@ internal static class IncrementalEvenWeightedCycleQueriesSolution
 
         foreach (var edge in edges)
         {
-            var (u, v, w) = (edge[0], edge[1], edge[2]);
-            var sameComponent = components.IsConnected(u, v);
-
-            if (sameComponent && TryFindParity(adjacency, u, v, out var parity) && parity != w)
+            if (TryAcceptPrunedEdge(adjacency, components, edge))
             {
-                continue;
+                addedCount++;
             }
-
-            AddEdge(adjacency, u, v, w);
-
-            if (!sameComponent)
-            {
-                components.Union(u, v);
-            }
-
-            addedCount++;
         }
 
         return addedCount;
     }
 
-    private static List<(int Neighbor, int Weight)>[] BuildEmptyAdjacency(int n)
+    // Accept one incoming edge unless it would close an odd-weight cycle. Only a pair
+    // the disjoint-set already joins can close one, so only that pair pays for the
+    // BFS parity walk.
+    private static bool TryAcceptPrunedEdge(
+        List<(int Neighbor, int Weight)>[] adjacency, DisjointSet components, int[] edge)
     {
-        var adjacency = new List<(int Neighbor, int Weight)>[n];
+        var (u, v, w) = (edge[0], edge[1], edge[2]);
+        var sameComponent = components.IsConnected(u, v);
 
-        for (var node = 0; node < n; node++)
+        if (sameComponent && HasConflictingParity(adjacency, u, v, w))
         {
-            adjacency[node] = [];
+            return false;
         }
 
-        return adjacency;
+        AddEdge(adjacency, u, v, w);
+
+        if (!sameComponent)
+        {
+            components.Union(u, v);
+        }
+
+        return true;
     }
 
-    private static void AddEdge(List<(int Neighbor, int Weight)>[] adjacency, int u, int v, int w)
-    {
-        adjacency[u].Add((v, w));
-        adjacency[v].Add((u, w));
-    }
+    // The accepted graph already reaches target from source at a parity that
+    // disagrees with weight, so adding this edge would close an odd-weight cycle.
+    // Unreached target means no parity at all, which the walk reports as false and
+    // which never conflicts.
+    private static bool HasConflictingParity(
+        List<(int Neighbor, int Weight)>[] adjacency, int source, int target, int weight) =>
+        TryFindParity(adjacency, source, target, out var parity) && parity != weight;
 
     // BFS from source over the accepted-edges adjacency; parity is the running
     // XOR of edge weights from source to each reached node ("sum is even" and
@@ -121,19 +123,49 @@ internal static class IncrementalEvenWeightedCycleQueriesSolution
                 return true;
             }
 
-            foreach (var (neighbor, weight) in adjacency[node])
-            {
-                if (parityToSource.ContainsKey(neighbor))
-                {
-                    continue;
-                }
-
-                parityToSource[neighbor] = parityToSource[node] ^ weight;
-                frontier.Enqueue(neighbor);
-            }
+            ExpandParityNeighbors(adjacency, node, parityToSource, frontier);
         }
 
         parity = default;
         return false;
+    }
+
+    // Give every unreached neighbour of node its parity one edge further out, and
+    // queue it: BFS discovers each node at the closest source parity, which is the
+    // only parity it can ever report.
+    private static void ExpandParityNeighbors(
+        List<(int Neighbor, int Weight)>[] adjacency,
+        int node,
+        Dictionary<int, int> parityToSource,
+        Queue<int> frontier)
+    {
+        foreach (var (neighbor, weight) in adjacency[node])
+        {
+            if (parityToSource.ContainsKey(neighbor))
+            {
+                continue;
+            }
+
+            parityToSource[neighbor] = parityToSource[node] ^ weight;
+            frontier.Enqueue(neighbor);
+        }
+    }
+
+    private static List<(int Neighbor, int Weight)>[] BuildEmptyAdjacency(int n)
+    {
+        var adjacency = new List<(int Neighbor, int Weight)>[n];
+
+        for (var node = 0; node < n; node++)
+        {
+            adjacency[node] = [];
+        }
+
+        return adjacency;
+    }
+
+    private static void AddEdge(List<(int Neighbor, int Weight)>[] adjacency, int u, int v, int w)
+    {
+        adjacency[u].Add((v, w));
+        adjacency[v].Add((u, w));
     }
 }

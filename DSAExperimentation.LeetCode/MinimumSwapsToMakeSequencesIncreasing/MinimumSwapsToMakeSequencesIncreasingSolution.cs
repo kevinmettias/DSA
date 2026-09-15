@@ -25,8 +25,17 @@ internal static class MinimumSwapsToMakeSequencesIncreasingSolution
     // is the arm the composed solution below has to justify itself against.
     public static int MinSwapByTabulation(int[] nums1, int[] nums2)
     {
-        var arrays = new SwapArrays(nums1, nums2);
+        var rows = BuildTabulationRows(nums1, nums2);
         var last = nums1.Length - 1;
+
+        return Math.Min(rows.Keep[last], rows.Swap[last]);
+    }
+
+    // The keep/swap table itself: both arrays paired up, index 0 already carrying the
+    // swap cost, and every later index filled in from the one before it.
+    private static TabulationRows BuildTabulationRows(int[] nums1, int[] nums2)
+    {
+        var arrays = new SwapArrays(nums1, nums2);
         var rows = new TabulationRows(new int[nums1.Length], new int[nums1.Length]);
         rows.Swap[0] = SwapCost;
 
@@ -35,7 +44,7 @@ internal static class MinimumSwapsToMakeSequencesIncreasingSolution
             UpdateTabulationStep(arrays, rows, i);
         }
 
-        return Math.Min(rows.Keep[last], rows.Swap[last]);
+        return rows;
     }
 
     private static void UpdateTabulationStep(SwapArrays arrays, TabulationRows rows, int i)
@@ -63,49 +72,81 @@ internal static class MinimumSwapsToMakeSequencesIncreasingSolution
     {
         var arrays = new SwapArrays(nums1, nums2);
         var last = nums1.Length - 1;
+        var costs = MemoizedCostsAt(arrays, last);
 
-        var keepCost = Memoizer.Memoize<(int Index, bool Swapped), int>(
-            (last, false), (state, cost) => Cost(arrays, state, cost));
-        var swapCost = Memoizer.Memoize<(int Index, bool Swapped), int>(
-            (last, true), (state, cost) => Cost(arrays, state, cost));
-
-        return Math.Min(keepCost, swapCost);
+        return Math.Min(costs.Keep, costs.Swap);
     }
 
-    private static int Cost(SwapArrays arrays, (int Index, bool Swapped) state, Func<(int Index, bool Swapped), int> cost)
+    // Both arms of the same last index, memoized side by side.
+    private static (int Keep, int Swap) MemoizedCostsAt(SwapArrays arrays, int last)
     {
-        var (i, swapped) = state;
+        var keepCost = MemoizedCostAt(arrays, last, IndexState.Kept);
+        var swapCost = MemoizedCostAt(arrays, last, IndexState.Swapped);
 
-        if (i == 0)
-        {
-            return swapped ? SwapCost : 0;
-        }
-
-        var curA = swapped ? arrays.Nums2[i] : arrays.Nums1[i];
-        var curB = swapped ? arrays.Nums1[i] : arrays.Nums2[i];
-        var best = BestSwapChoice(arrays, i, (curA, curB), cost);
-
-        return best + (swapped ? SwapCost : 0);
+        return (keepCost, swapCost);
     }
 
-    private static int BestSwapChoice(SwapArrays arrays, int i, (int CurA, int CurB) current, Func<(int Index, bool Swapped), int> cost)
+    // One state's own memoized cost: the same (index, state) recurrence, seeded at
+    // the state asked for and discovered backwards from there by the Memoizer.
+    private static int MemoizedCostAt(SwapArrays arrays, int index, IndexState state)
+        => Memoizer.Memoize((index, state), new CostFromIndexState(arrays));
+
+    // The recurrence, as a named type: what it costs to reach one index in one of its two
+    // states, read backwards from the state asked for - index 0 pays the swap cost if it
+    // was swapped, and every later index pays it only when this transition swaps it.
+    private sealed class CostFromIndexState(SwapArrays arrays) : IRecurrence<(int Index, IndexState State), int>
     {
-        var best = int.MaxValue;
-
-        if (current.CurA > arrays.Nums1[i - 1] && current.CurB > arrays.Nums2[i - 1])
+        public int Replay((int Index, IndexState State) state, IRecurrence<(int Index, IndexState State), int> rest)
         {
-            best = Math.Min(best, cost((i - 1, false)));
+            var (i, current) = state;
+
+            if (i == 0)
+            {
+                return current == IndexState.Swapped ? SwapCost : 0;
+            }
+
+            var curA = current == IndexState.Swapped ? ElementAt(arrays.Nums2, i) : ElementAt(arrays.Nums1, i);
+            var curB = current == IndexState.Swapped ? ElementAt(arrays.Nums1, i) : ElementAt(arrays.Nums2, i);
+            var best = BestSwapChoice(i, (curA, curB), rest);
+
+            return best + (current == IndexState.Swapped ? SwapCost : 0);
         }
 
-        if (current.CurA > arrays.Nums2[i - 1] && current.CurB > arrays.Nums1[i - 1])
+        // Either predecessor is offered as a candidate - the previous index kept, or the
+        // previous index swapped - and only the ones this pair actually accepts count.
+        private int BestSwapChoice(
+            int i, (int CurA, int CurB) current, IRecurrence<(int Index, IndexState State), int> rest)
         {
-            best = Math.Min(best, cost((i - 1, true)));
-        }
+            var best = int.MaxValue;
 
-        return best;
+            if (current.CurA > arrays.Nums1[i - 1] && current.CurB > arrays.Nums2[i - 1])
+            {
+                var precededByKept = rest.Replay((i - 1, IndexState.Kept), rest);
+                best = Math.Min(best, precededByKept);
+            }
+
+            if (current.CurA > arrays.Nums2[i - 1] && current.CurB > arrays.Nums1[i - 1])
+            {
+                var precededBySwapped = rest.Replay((i - 1, IndexState.Swapped), rest);
+                best = Math.Min(best, precededBySwapped);
+            }
+
+            return best;
+        }
     }
+
+    private static int ElementAt(int[] values, int index) => values[index];
 
     private readonly record struct SwapArrays(int[] Nums1, int[] Nums2);
 
     private readonly record struct TabulationRows(int[] Keep, int[] Swap);
+
+    // Which of the two states at an index is being costed: the pair kept as it is,
+    // or the pair exchanged. The tabulation arm's Keep/Swap rows are the same two,
+    // and the memoized arm's state tuple carries one of them rather than a bare bool.
+    private enum IndexState
+    {
+        Kept,
+        Swapped,
+    }
 }

@@ -25,7 +25,7 @@ internal static class TypeOfTriangleSolution
     {
         var (first, second, third) = (sides[0], sides[1], sides[2]);
 
-        if (first + second <= third || first + third <= second || second + third <= first)
+        if (BreaksTriangleInequality(first, second, third))
         {
             return None;
         }
@@ -35,8 +35,17 @@ internal static class TypeOfTriangleSolution
             return Equilateral;
         }
 
-        return first == second || second == third || first == third ? Isosceles : Scalene;
+        return HasTwoEqualSides(first, second, third) ? Isosceles : Scalene;
     }
+
+    // Any one of the three triangle inequalities failing leaves no triangle at all.
+    private static bool BreaksTriangleInequality(int a, int b, int c)
+        => a + b <= c || a + c <= b || b + c <= a;
+
+    // Two of the three sides coincide, which is all "isosceles" needs once
+    // "equilateral" has been ruled out.
+    private static bool HasTwoEqualSides(int a, int b, int c)
+        => a == b || b == c || a == c;
 
     // This repo's own MergeSort, run over a copy so the caller's array is never
     // mutated: once sorted ascending, the triangle inequality is a single

@@ -34,7 +34,7 @@ internal static class CountPrefixAndSuffixPairsIISolution
         {
             for (var j = i + 1; j < words.Length; j++)
             {
-                if (IsPrefixAndSuffix(words[i], words[j]))
+                if (IsPrefixAndSuffix(new PrefixSuffixCandidate(words[i]), new ContainingWord(words[j])))
                 {
                     count++;
                 }
@@ -44,15 +44,15 @@ internal static class CountPrefixAndSuffixPairsIISolution
         return count;
     }
 
-    private static bool IsPrefixAndSuffix(string candidate, string word)
+    private static bool IsPrefixAndSuffix(PrefixSuffixCandidate candidate, ContainingWord word)
     {
-        if (candidate.Length > word.Length)
+        if (candidate.Text.Length > word.Text.Length)
         {
             return false;
         }
 
-        return word.AsSpan(0, candidate.Length).SequenceEqual(candidate) &&
-               word.AsSpan(word.Length - candidate.Length).SequenceEqual(candidate);
+        return word.Text.AsSpan(0, candidate.Text.Length).SequenceEqual(candidate.Text) &&
+               word.Text.AsSpan(word.Text.Length - candidate.Text.Length).SequenceEqual(candidate.Text);
     }
 
     // This repo's own LowercaseTrie<TValue> (Graph/Engines/Dags/Trees), keyed
@@ -90,4 +90,11 @@ internal static class CountPrefixAndSuffixPairsIISolution
 
     private static LowercaseTrieNode<int> StepInto(LowercaseTrieNode<int> node, char letter)
         => node.Children[letter - 'a'] ??= new LowercaseTrieNode<int>();
+
+    // The two sides of "is words[i] a prefix-and-suffix of words[j]": the candidate that has
+    // to appear at both ends, and the word it has to appear in. The relation is one-directional,
+    // so the two `string` positions they used to be were a swap the compiler would have allowed.
+    private readonly record struct PrefixSuffixCandidate(string Text);
+
+    private readonly record struct ContainingWord(string Text);
 }

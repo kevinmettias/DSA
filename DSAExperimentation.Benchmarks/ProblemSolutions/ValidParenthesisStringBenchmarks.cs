@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.ValidParenthesisString.ValidParenthesisStringSolution;
+using DSAExperimentation.LeetCode.ValidParenthesisString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -12,21 +12,21 @@ public class ValidParenthesisStringBenchmarks
 {
     private const string OpenParenthesis = "(";
     private const string CloseParenthesis = ")";
-    private const int BoundaryParenthesisCount = 2; // one leading '(' + one trailing ')'
+    private const int BoundaryParenthesisCount = 2; private string _s = "";
+
+    // one leading '(' + one trailing ')'
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private string _s = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _s = BuildInput(Length);
 
+    private static string BuildInput(int length) => OpenParenthesis + new string('*', length - BoundaryParenthesisCount) + CloseParenthesis;
+
     [Benchmark(Baseline = true)]
-    public bool ReachableOpenCountDp() => CheckValidStringByReachableOpenCountDp(_s);
+    public bool ReachableOpenCountDp() => ValidParenthesisStringSolution.CheckValidStringByReachableOpenCountDp(_s);
 
     [Benchmark]
-    public bool TwoIndexStackSweep() => CheckValidStringByTwoIndexStackSweep(_s);
-
-    private static string BuildInput(int length) => OpenParenthesis + new string('*', length - BoundaryParenthesisCount) + CloseParenthesis;
+    public bool TwoIndexStackSweep() => ValidParenthesisStringSolution.CheckValidStringByTwoIndexStackSweep(_s);
 }

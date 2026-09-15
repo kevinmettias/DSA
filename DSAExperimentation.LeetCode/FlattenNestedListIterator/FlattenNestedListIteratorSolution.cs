@@ -47,18 +47,18 @@ internal static class FlattenNestedListIteratorSolution
             return _pending.Count > 0;
         }
 
-        public int Next()
-        {
-            _pending.TryPop(out var top);
-            return top.Value;
-        }
-
         private void PushReversed(List<NestedInteger> elements)
         {
             for (var i = elements.Count - 1; i >= 0; i--)
             {
                 _pending.Push(elements[i]);
             }
+        }
+
+        public int Next()
+        {
+            _pending.TryPop(out var top);
+            return top.Value;
         }
     }
 

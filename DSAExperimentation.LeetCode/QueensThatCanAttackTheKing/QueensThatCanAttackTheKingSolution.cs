@@ -113,6 +113,8 @@ internal static class QueensThatCanAttackTheKingSolution
             col += direction.DCol;
         }
 
-        return board.IsInBounds(row, col) ? (row, col) : null;
+        return board.IsInBounds(row, col) ? Position(row, col) : null;
     }
+
+    private static (int Row, int Col) Position(int row, int col) => (row, col);
 }

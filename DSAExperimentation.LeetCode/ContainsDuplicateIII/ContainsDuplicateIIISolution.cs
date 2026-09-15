@@ -20,12 +20,11 @@ internal static class ContainsDuplicateIIISolution
             return false;
         }
 
-        var width = (long)valueDiff + 1;
         var buckets = new HashMap<long, long>();
 
         for (var i = 0; i < nums.Length; i++)
         {
-            if (HasNearbyDuplicate(nums, i, indexDiff, valueDiff, width, buckets))
+            if (HasNearbyDuplicate(nums, i, (indexDiff, valueDiff), buckets))
             {
                 return true;
             }
@@ -34,14 +33,16 @@ internal static class ContainsDuplicateIIISolution
         return false;
     }
 
+    // indexDiff and valueDiff are adjacent ints of the same type, so only position told
+    // them apart at the call site; as one `bounds` argument each says what it measures.
     private static bool HasNearbyDuplicate(
-        int[] nums, int i, int indexDiff, int valueDiff, long width, HashMap<long, long> buckets)
+        int[] nums, int i, (int IndexDiff, int ValueDiff) bounds, HashMap<long, long> buckets)
     {
+        var (indexDiff, valueDiff) = bounds;
+        var width = (long)valueDiff + 1;
         var bucketId = BucketId(nums[i], width);
 
-        if (buckets.HasKey(bucketId)
-            || (buckets.TryGetValue(bucketId - 1, out var lower) && nums[i] - lower <= valueDiff)
-            || (buckets.TryGetValue(bucketId + 1, out var upper) && upper - nums[i] <= valueDiff))
+        if (HasDuplicateWithinValueDiff(bucketId, nums[i], valueDiff, buckets))
         {
             return true;
         }
@@ -57,7 +58,25 @@ internal static class ContainsDuplicateIIISolution
         return false;
     }
 
-    private static long BucketId(long value, long width) => value >= 0 ? value / width : ((value + 1) / width) - 1;
+    private static long BucketId(long value, long width) =>
+        value >= 0 ? NonNegativeBucket(value, width) : NegativeBucket(value, width);
+
+    // A non-negative value's bucket: C#'s integer division already floors a
+    // non-negative quotient, so the quotient IS the bucket.
+    private static long NonNegativeBucket(long value, long width) => value / width;
+
+    // A negative value's bucket, floored: C#'s division truncates toward zero, so the
+    // bucket a negative value belongs to sits one below the quotient it truncates to.
+    private static long NegativeBucket(long value, long width) => ((value + 1) / width) - 1;
+
+    // The value's own bucket, or either neighbor, can hold a value within valueDiff;
+    // a neighbor bucket only qualifies if the pair of values is also close enough,
+    // since one bucket's width is exactly valueDiff + 1.
+    private static bool HasDuplicateWithinValueDiff(
+        long bucketId, long value, int valueDiff, HashMap<long, long> buckets)
+        => buckets.HasKey(bucketId)
+            || (buckets.TryGetValue(bucketId - 1, out var lower) && value - lower <= valueDiff)
+            || (buckets.TryGetValue(bucketId + 1, out var upper) && upper - value <= valueDiff);
 
     // The canonical O(n*indexDiff) sliding-window brute force: for every index,
     // scan back across the last indexDiff elements directly, no bucketing.

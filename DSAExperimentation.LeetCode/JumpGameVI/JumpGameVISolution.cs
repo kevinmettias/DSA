@@ -63,6 +63,8 @@ internal static class JumpGameVISolution
         private readonly int[] _bestResults;
         private readonly RepoDeque _indices = new();
 
+        public int BestAtLastIndex => _bestResults[^1];
+
         public BestResultWindow(int[] nums, int k)
         {
             _nums = nums;
@@ -71,8 +73,6 @@ internal static class JumpGameVISolution
             _bestResults[0] = nums[0];
             _indices.PushBack(0);
         }
-
-        public int BestAtLastIndex => _bestResults[^1];
 
         public void ExtendTo(int index)
         {
@@ -100,7 +100,11 @@ internal static class JumpGameVISolution
         // and cannot have expired, since k is at least 1. Every jump is mandatory, so
         // unlike LC 1425 there is no clamp at zero here.
         private int WindowMaximum()
-            => _indices.TryPeekFront(out var maximumIndex) ? _bestResults[maximumIndex] : 0;
+            => _indices.TryPeekFront(out var maximumIndex) ? BestResultAt(maximumIndex) : 0;
+
+        // The best result at the window's front index, which is the window's largest by
+        // construction.
+        private int BestResultAt(int index) => _bestResults[index];
 
         // Indices whose best-result this one matches or beats can never be the window
         // maximum again, since they also leave the window no later than this one.

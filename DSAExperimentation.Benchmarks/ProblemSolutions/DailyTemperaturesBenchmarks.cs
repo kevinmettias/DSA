@@ -9,12 +9,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DailyTemperaturesBenchmarks
 {
-    private const int RandomSeed = 739; // LC problem number
+    private const int RandomSeed = 739; private int[] _temperatures = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _temperatures = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

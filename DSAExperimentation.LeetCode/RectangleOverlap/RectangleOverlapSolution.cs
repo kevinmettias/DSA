@@ -41,29 +41,29 @@ internal static class RectangleOverlapSolution
         var height = maxY - minY;
         var covered = new bool[width * height];
 
-        MarkRectangle(covered, width, minX, minY, rec1);
+        MarkRectangle(covered, width, (minX, minY), rec1);
 
-        return IntersectsMarkedGrid(covered, width, minX, minY, rec2);
+        return IntersectsMarkedGrid(covered, width, (minX, minY), rec2);
     }
 
-    private static void MarkRectangle(bool[] covered, int width, int minX, int minY, int[] rect)
+    private static void MarkRectangle(bool[] covered, int width, (int X, int Y) origin, int[] rect)
     {
         for (var y = rect[Y1]; y < rect[Y2]; y++)
         {
             for (var x = rect[X1]; x < rect[X2]; x++)
             {
-                covered[((y - minY) * width) + (x - minX)] = true;
+                covered[((y - origin.Y) * width) + (x - origin.X)] = true;
             }
         }
     }
 
-    private static bool IntersectsMarkedGrid(bool[] covered, int width, int minX, int minY, int[] rect)
+    private static bool IntersectsMarkedGrid(bool[] covered, int width, (int X, int Y) origin, int[] rect)
     {
         for (var y = rect[Y1]; y < rect[Y2]; y++)
         {
             for (var x = rect[X1]; x < rect[X2]; x++)
             {
-                if (covered[((y - minY) * width) + (x - minX)])
+                if (covered[((y - origin.Y) * width) + (x - origin.X)])
                 {
                     return true;
                 }

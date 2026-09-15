@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignSpreadsheet.DesignSpreadsheetSolution;
+using DSAExperimentation.LeetCode.DesignSpreadsheet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,39 +17,30 @@ public class DesignSpreadsheetBenchmarks
     private const int ValueUpperBound = 100_000;
     private const int ColumnCount = 26;
 
-    [Params(200, 2_000)]
-    public int CellCount;
+    private List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> _script = new();
 
-    private List<Func<ISpreadsheetStrategy, int?>> _script = null!;
+    [Params(200, 2_000)]
+    public int CellCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _script = BuildScript(CellCount, new Random(Seed));
 
-    [Benchmark(Baseline = true)]
-    public long Dictionary() => Replay(new SpreadsheetByDictionary(CellCount));
-
-    [Benchmark]
-    public long HashMap() => Replay(new SpreadsheetByHashMap(CellCount));
-
-    // Sums every GetValue result rather than discarding it, so the JIT can't
-    // eliminate the replay as dead code - the same "return the real answer, not a
-    // weaker proxy" shape DesignTaskManagerBenchmarks already follows.
-    private long Replay(ISpreadsheetStrategy strategy)
+    private static List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> BuildScript(int cellCount, Random random)
     {
-        var sum = 0L;
+        var script = new List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>>();
 
-        foreach (var op in _script)
-        {
-            sum += op(strategy) ?? 0;
-        }
+        AppendSetCellCalls(script, cellCount, random);
+        AppendGetValueCalls(script, cellCount, random);
+        AppendResetCellCalls(script, cellCount, random);
 
-        return sum;
+        return script;
     }
 
-    private static List<Func<ISpreadsheetStrategy, int?>> BuildScript(int cellCount, Random random)
+    // SetCell across a spread of cell references, each call closing over its own
+    // freshly drawn cell and value.
+    private static void AppendSetCellCalls(
+        List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> script, int cellCount, Random random)
     {
-        var script = new List<Func<ISpreadsheetStrategy, int?>>();
-
         for (var i = 0; i < cellCount; i++)
         {
             var cell = RandomCell(cellCount, random);
@@ -60,13 +51,33 @@ public class DesignSpreadsheetBenchmarks
                 return null;
             });
         }
+    }
 
+    // GetValue against both formula shapes, so the replay exercises the two parsing
+    // paths rather than only one.
+    private static void AppendGetValueCalls(
+        List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> script, int cellCount, Random random)
+    {
         for (var i = 0; i < cellCount; i++)
         {
             var formula = RandomFormula(cellCount, random);
             script.Add(strategy => strategy.GetValue(formula));
         }
+    }
 
+    private static string RandomFormula(int cellCount, Random random)
+    {
+        var picksTwoCells = random.Next(0, 2) == 0;
+
+        return picksTwoCells
+            ? $"={RandomCell(cellCount, random)}+{RandomCell(cellCount, random)}"
+            : $"={RandomCell(cellCount, random)}+{random.Next(0, ValueUpperBound)}";
+    }
+
+    // A tenth of the cells reset, interleaved after the reads.
+    private static void AppendResetCellCalls(
+        List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> script, int cellCount, Random random)
+    {
         var resetCount = cellCount / 10;
 
         for (var i = 0; i < resetCount; i++)
@@ -78,8 +89,27 @@ public class DesignSpreadsheetBenchmarks
                 return null;
             });
         }
+    }
 
-        return script;
+    [Benchmark(Baseline = true)]
+    public long Dictionary() => Replay(new DesignSpreadsheetSolution.SpreadsheetByDictionary(CellCount));
+
+    [Benchmark]
+    public long HashMap() => Replay(new DesignSpreadsheetSolution.SpreadsheetByHashMap(CellCount));
+
+    // Sums every GetValue result rather than discarding it, so the JIT can't
+    // eliminate the replay as dead code - the same "return the real answer, not a
+    // weaker proxy" shape DesignTaskManagerBenchmarks already follows.
+    private long Replay(DesignSpreadsheetSolution.ISpreadsheetStrategy strategy)
+    {
+        var sum = 0L;
+
+        foreach (var op in _script)
+        {
+            sum += op(strategy) ?? 0;
+        }
+
+        return sum;
     }
 
     private static string RandomCell(int cellCount, Random random)
@@ -88,9 +118,4 @@ public class DesignSpreadsheetBenchmarks
         var row = random.Next(1, cellCount + 1);
         return $"{column}{row}";
     }
-
-    private static string RandomFormula(int cellCount, Random random)
-        => random.Next(0, 2) == 0
-            ? $"={RandomCell(cellCount, random)}+{RandomCell(cellCount, random)}"
-            : $"={RandomCell(cellCount, random)}+{random.Next(0, ValueUpperBound)}";
 }

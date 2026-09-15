@@ -33,25 +33,39 @@ internal static class ConstructStringWithMinimumCostSolution
 
             for (var w = 0; w < words.Length; w++)
             {
-                var word = words[w];
-                var end = i + word.Length;
-
-                if (end > target.Length || !MatchesAt(target, i, word))
-                {
-                    continue;
-                }
-
-                var candidate = dp[i] + costs[w];
-
-                if (candidate < dp[end])
-                {
-                    dp[end] = candidate;
-                }
+                RelaxWithWordAt(dp, target, i, (words[w], costs[w]));
             }
         }
 
-        return dp[target.Length] == Unreached ? LeetCodeAnswer.None : dp[target.Length];
+        return TargetIsUnreachable(dp, target) ? LeetCodeAnswer.None : CostToBuildTarget(dp);
     }
+
+    // One word offered at one position: skip it when it overruns the target or does not
+    // match there, otherwise let the cost already paid for `start` plus this word's own
+    // cost relax the slot the word would end at.
+    private static void RelaxWithWordAt(int[] dp, string target, int start, (string Word, int Cost) candidate)
+    {
+        var end = start + candidate.Word.Length;
+
+        if (end > target.Length || !MatchesAt(target, start, candidate.Word))
+        {
+            return;
+        }
+
+        var total = dp[start] + candidate.Cost;
+
+        if (total < dp[end])
+        {
+            dp[end] = total;
+        }
+    }
+
+    // dp[i] is the min cost to build target's first i characters, so the slot
+    // for the whole target is the only one a finished answer is read from, and
+    // Unreached there is the "cannot be built at all" sentinel.
+    private static bool TargetIsUnreachable(int[] dp, string target) => dp[target.Length] == Unreached;
+
+    private static int CostToBuildTarget(int[] dp) => dp[^1];
 
     private static bool MatchesAt(string target, int start, string word)
     {
@@ -120,6 +134,6 @@ internal static class ConstructStringWithMinimumCostSolution
             }
         }
 
-        return dp[target.Length] == Unreached ? LeetCodeAnswer.None : dp[target.Length];
+        return TargetIsUnreachable(dp, target) ? LeetCodeAnswer.None : CostToBuildTarget(dp);
     }
 }

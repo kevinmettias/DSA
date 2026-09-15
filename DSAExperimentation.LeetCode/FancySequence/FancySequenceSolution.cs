@@ -81,7 +81,9 @@ internal static class FancySequenceSolution
         }
 
         public int GetIndex(int idx) =>
-            idx >= _values.Count ? LeetCodeAnswer.None : (int)_values[idx];
+            idx >= _values.Count ? LeetCodeAnswer.None : ValueAt(idx);
+
+        private int ValueAt(int idx) => (int)_values[idx];
     }
 
     private sealed class LazySegmentTreeAffineFancySequence(int capacity) : IFancySequence

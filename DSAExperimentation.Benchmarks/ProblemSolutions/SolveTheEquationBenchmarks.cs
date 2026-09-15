@@ -19,10 +19,10 @@ public class SolveTheEquationBenchmarks
     // Exclusive upper bound on a generated term's numeric coefficient magnitude.
     private const int CoefficientUpperBound = 100;
 
-    [Params(200, 5_000)]
-    public int TermsPerSide;
+    private string _equation = "";
 
-    private string _equation = null!;
+    [Params(200, 5_000)]
+    public int TermsPerSide { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -39,7 +39,8 @@ public class SolveTheEquationBenchmarks
         {
             if (t > 0)
             {
-                side.Append(random.Next(BinaryChoiceBound) == 0 ? '+' : '-');
+                var isPlus = random.Next(BinaryChoiceBound) == 0;
+                side.Append(isPlus ? '+' : '-');
             }
 
             var coefficient = random.Next(1, CoefficientUpperBound);

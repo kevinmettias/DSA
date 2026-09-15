@@ -39,6 +39,30 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
         return Dfs((0, 0), visited, grid);
     }
 
+    // This repo's own DepthFirstSearch.Traverse over a bespoke successor function -
+    // an explicit stack plus a visited hash set, with no recursion depth bounded by
+    // the grid's cell count - reporting whether the bottom-right corner shows up in
+    // the reachable set from (0,0).
+    public static bool HasValidPathByDepthFirstTraverse(int[][] grid)
+    {
+        var corner = (Row: grid.Length - 1, Col: grid[0].Length - 1);
+
+        return DepthFirstSearch.Traverse((Row: 0, Col: 0), cell => Neighbors(cell, grid)).Contains(corner);
+    }
+
+    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) cell, int[][] grid)
+    {
+        foreach (var direction in Openings[grid[cell.Row][cell.Col]])
+        {
+            var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
+
+            if (OpensBackToward(next, direction, grid))
+            {
+                yield return next;
+            }
+        }
+    }
+
     private static bool Dfs((int Row, int Col) cell, bool[,] visited, int[][] grid)
     {
         if (visited[cell.Row, cell.Col])
@@ -82,41 +106,21 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
         return Dfs(next, visited, grid);
     }
 
-    // This repo's own DepthFirstSearch.Traverse over a bespoke successor function -
-    // an explicit stack plus a visited hash set, with no recursion depth bounded by
-    // the grid's cell count - reporting whether the bottom-right corner shows up in
-    // the reachable set from (0,0).
-    public static bool HasValidPathByDepthFirstTraverse(int[][] grid)
-    {
-        var corner = (Row: grid.Length - 1, Col: grid[0].Length - 1);
-
-        return DepthFirstSearch.Traverse((Row: 0, Col: 0), cell => Neighbors(cell, grid)).Contains(corner);
-    }
-
-    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) cell, int[][] grid)
-    {
-        foreach (var direction in Openings[grid[cell.Row][cell.Col]])
-        {
-            var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
-
-            if (OpensBackToward(next, direction, grid))
-            {
-                yield return next;
-            }
-        }
-    }
-
     // The street-compatibility rule both strategies walk: the neighbor must be on
     // the board and must itself open back along the direction it was entered from.
     // Plain array indexing and Array.IndexOf, so sharing it leaves the baseline's
     // textbook character intact (ARCHITECTURE.md section 17.5).
     private static bool OpensBackToward((int Row, int Col) next, (int DRow, int DCol) direction, int[][] grid)
     {
-        if (next.Row < 0 || next.Row >= grid.Length || next.Col < 0 || next.Col >= grid[0].Length)
+        if (!IsOnBoard(next, grid))
         {
             return false;
         }
 
         return Array.IndexOf(Openings[grid[next.Row][next.Col]], (-direction.DRow, -direction.DCol)) >= 0;
     }
+
+    // Whether the cell lies on the board at all.
+    private static bool IsOnBoard((int Row, int Col) cell, int[][] grid)
+        => cell.Row >= 0 && cell.Row < grid.Length && cell.Col >= 0 && cell.Col < grid[0].Length;
 }

@@ -14,7 +14,11 @@ internal static class MaximumDepthOfBinaryTreeSolution
 {
     // Textbook baseline: plain recursion, stopping at null.
     public static int MaxDepthByRecursion(BinaryTreeNode<int>? root) =>
-        root is null ? 0 : 1 + Math.Max(MaxDepthByRecursion(root.Left), MaxDepthByRecursion(root.Right));
+        root is null ? 0 : DepthBelow(root);
+
+    // One level, plus whichever subtree reaches deeper.
+    private static int DepthBelow(BinaryTreeNode<int> node)
+        => 1 + Math.Max(MaxDepthByRecursion(node.Left), MaxDepthByRecursion(node.Right));
 
     // This repo's own height metric.
     public static int MaxDepthByTreeMetrics(BinaryTreeNode<int>? root) =>

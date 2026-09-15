@@ -6,16 +6,10 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 public sealed class ListChildrenTests
 {
     [Fact]
-    public void Count_ReportsTheBackingListsLength()
-    {
-        Assert.Equal(2, new ListChildren<TestNode>([new("A"), new("B")]).Count);
-    }
+    public void Count_ReportsTheBackingListsLength() => Assert.Equal(2, new ListChildren<TestNode>([new("A"), new("B")]).Count);
 
     [Fact]
-    public void Count_EmptyList_IsZero()
-    {
-        Assert.Equal(0, new ListChildren<TestNode>([]).Count);
-    }
+    public void Count_EmptyList_IsZero() => Assert.Equal(0, new ListChildren<TestNode>([]).Count);
 
     [Fact]
     public void Get_ReturnsItemsInTheBackingListsOrder()

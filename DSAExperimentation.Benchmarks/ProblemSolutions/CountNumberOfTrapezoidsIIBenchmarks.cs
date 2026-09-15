@@ -17,10 +17,10 @@ public class CountNumberOfTrapezoidsIIBenchmarks
     private const int Seed = 3625; // LC problem number
     private const int CoordinateBound = 20;
 
-    [Params(30, 80)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(30, 80)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

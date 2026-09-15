@@ -15,10 +15,10 @@ public class KClosestPointsToOriginBenchmarks
     private const int RandomSeed = 973; // LC problem number
     private const int CoordinateBound = 10_000;
 
-    [Params(1_000, 50_000)]
-    public int Length;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(1_000, 50_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

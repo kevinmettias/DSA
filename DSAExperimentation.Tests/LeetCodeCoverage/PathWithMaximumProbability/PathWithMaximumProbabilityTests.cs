@@ -37,7 +37,7 @@ public sealed class PathWithMaximumProbabilityTests
         Assert.Equal(
             expected,
             PathWithMaximumProbabilitySolution.MaxProbabilityByExhaustiveDfs(
-                nodeCount, edges, successProbabilities, start, end),
+                nodeCount, edges, successProbabilities, (start, end)),
             Precision);
 
     [Theory]
@@ -47,6 +47,6 @@ public sealed class PathWithMaximumProbabilityTests
         Assert.Equal(
             expected,
             PathWithMaximumProbabilitySolution.MaxProbabilityByDijkstra(
-                nodeCount, edges, successProbabilities, start, end),
+                nodeCount, edges, successProbabilities, (start, end)),
             Precision);
 }

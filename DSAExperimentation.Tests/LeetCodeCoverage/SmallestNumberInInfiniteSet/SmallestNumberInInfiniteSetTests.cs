@@ -92,33 +92,24 @@ public sealed class SmallestNumberInInfiniteSetTests
 // Examples above) reads like the LeetCode call sequence it replays. AddBack returns
 // null (no value); PopSmallest returns the actual answer - the same null-means-"no
 // return value" convention AllOneOp.Apply uses for its own void/value split.
-public readonly record struct InfiniteSetOp
+public readonly record struct InfiniteSetOp(InfiniteSetOp.OpKind kind, int num)
 {
-    private readonly Kind _kind;
-    private readonly int _num;
+    public static InfiniteSetOp Pop() => new(OpKind.Pop, 0);
 
-    private InfiniteSetOp(Kind kind, int num)
-    {
-        _kind = kind;
-        _num = num;
-    }
-
-    public static InfiniteSetOp Pop() => new(Kind.Pop, 0);
-
-    public static InfiniteSetOp AddBack(int num) => new(Kind.AddBack, num);
+    public static InfiniteSetOp AddBack(int num) => new(OpKind.AddBack, num);
 
     internal int? Apply(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
     {
-        if (_kind == Kind.AddBack)
+        if (kind == OpKind.AddBack)
         {
-            set.AddBack(_num);
+            set.AddBack(num);
             return null;
         }
 
         return set.PopSmallest();
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Pop,
         AddBack,

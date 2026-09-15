@@ -17,21 +17,13 @@ public class MaximumTwinSumOfALinkedListBenchmarks
     // The deterministic value seed this benchmark has always used.
     private const int ValueSeed = 1;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = BuildRandomList(Length, seed: ValueSeed);
-
-    [Benchmark(Baseline = true)]
-    public int ArrayIndexTwoPointer() =>
-        MaximumTwinSumOfALinkedListSolution.PairSumByArrayIndexTwoPointer(_head);
-
-    [Benchmark]
-    public int DequeFrontBackDrain() =>
-        MaximumTwinSumOfALinkedListSolution.PairSumByDequeFrontBackDrain(_head);
 
     private static SinglyLinkedListNode<int> BuildRandomList(int length, int seed)
     {
@@ -47,4 +39,12 @@ public class MaximumTwinSumOfALinkedListBenchmarks
 
         return head;
     }
+
+    [Benchmark(Baseline = true)]
+    public int ArrayIndexTwoPointer() =>
+        MaximumTwinSumOfALinkedListSolution.PairSumByArrayIndexTwoPointer(_head);
+
+    [Benchmark]
+    public int DequeFrontBackDrain() =>
+        MaximumTwinSumOfALinkedListSolution.PairSumByDequeFrontBackDrain(_head);
 }

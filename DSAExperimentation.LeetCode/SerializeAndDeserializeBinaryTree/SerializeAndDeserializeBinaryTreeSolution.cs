@@ -70,19 +70,6 @@ internal static class SerializeAndDeserializeBinaryTreeSolution
         return string.Join(TokenSeparator, tokens);
     }
 
-    private static void WriteNode(BinaryTreeNode<int>? node, List<string> tokens)
-    {
-        if (node is null)
-        {
-            tokens.Add(NullMarker);
-            return;
-        }
-
-        tokens.Add(node.Value.ToString());
-        WriteNode(node.Left, tokens);
-        WriteNode(node.Right, tokens);
-    }
-
     // This repo's own Queue<string> replays the tokens back into a tree by
     // dequeuing them in the exact preorder they were written - no index bookkeeping.
     public static BinaryTreeNode<int>? DeserializeByQueue(string data)
@@ -95,6 +82,19 @@ internal static class SerializeAndDeserializeBinaryTreeSolution
         }
 
         return ReadNode(tokens);
+    }
+
+    private static void WriteNode(BinaryTreeNode<int>? node, List<string> tokens)
+    {
+        if (node is null)
+        {
+            tokens.Add(NullMarker);
+            return;
+        }
+
+        tokens.Add(node.Value.ToString());
+        WriteNode(node.Left, tokens);
+        WriteNode(node.Right, tokens);
     }
 
     private static BinaryTreeNode<int>? ReadNode(RepoQueue tokens)

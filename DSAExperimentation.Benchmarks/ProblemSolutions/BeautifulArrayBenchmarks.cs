@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class BeautifulArrayBenchmarks
 {
     [Params(6, 8)]
-    public int Length;
+    public int Length { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[] PrunedBacktrackingSearch() =>

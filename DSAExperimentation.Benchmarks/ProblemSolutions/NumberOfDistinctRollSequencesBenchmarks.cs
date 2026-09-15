@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfDistinctRollSequencesBenchmarks
 {
     [Params(6, 10)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForceRecursion() =>

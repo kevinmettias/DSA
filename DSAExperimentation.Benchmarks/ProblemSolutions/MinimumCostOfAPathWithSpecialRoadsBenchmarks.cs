@@ -18,12 +18,12 @@ public class MinimumCostOfAPathWithSpecialRoadsBenchmarks
     private const int CoordinateUpperBound = 1_000;
     private const int CostUpperBound = 500;
 
-    [Params(20, 100)]
-    public int SpecialRoadCount;
+    private int[] _start = [];
 
-    private int[] _start = null!;
-    private int[] _target = null!;
-    private int[][] _specialRoads = null!;
+    private int[] _target = [];
+    private int[][] _specialRoads = [];
+    [Params(20, 100)]
+    public int SpecialRoadCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -9,17 +9,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class RobotReturnToOriginBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private const string Alphabet = "UDLR";
 
-    private string _moves = null!;
+    private string _moves = "";
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
-        const string alphabet = "UDLR";
-        _moves = new string(Enumerable.Range(0, Length).Select(_ => alphabet[random.Next(alphabet.Length)]).ToArray());
+        _moves = new string(Enumerable.Range(0, Length).Select(_ => Alphabet[random.Next(Alphabet.Length)]).ToArray());
     }
 
     [Benchmark(Baseline = true)]

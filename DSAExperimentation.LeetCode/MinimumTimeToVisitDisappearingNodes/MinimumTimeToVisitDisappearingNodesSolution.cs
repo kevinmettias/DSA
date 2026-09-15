@@ -19,8 +19,12 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToVisitDisappearingNodes;
 internal static class MinimumTimeToVisitDisappearingNodesSolution
 {
     // Baseline: BCL PriorityQueue<int,int> - "what you'd write without this repo".
-    public static int[] MinimumTimesByDijkstraQueue(int n, int[][] edges, int[] disappear) =>
-        MinimumTimesByDijkstraQueue(TimedAdjacency.Build(n, edges), disappear);
+    public static int[] MinimumTimesByDijkstraQueue(int n, int[][] edges, int[] disappear)
+    {
+        var graph = TimedAdjacency.Build(n, edges);
+
+        return MinimumTimesByDijkstraQueue(graph, disappear);
+    }
 
     public static int[] MinimumTimesByDijkstraQueue(TimedAdjacency graph, int[] disappear)
     {
@@ -29,26 +33,37 @@ internal static class MinimumTimeToVisitDisappearingNodesSolution
         var frontier = new PriorityQueue<int, int>();
         frontier.Enqueue(0, 0);
 
+        SettleAndRelaxByQueue(graph, disappear, frontier, (settled, distances));
+
+        return distances;
+    }
+
+    // The one settle/relax loop both arms share, parameterized on the frontier: a node
+    // pops with its best-known arrival time, is dropped when it is stale or already
+    // past its own deadline, and otherwise settles at that time and offers every
+    // unsettled neighbor back to the frontier.
+    private static void SettleAndRelaxByQueue(
+        TimedAdjacency graph, int[] disappear, PriorityQueue<int, int> frontier,
+        (bool[] Settled, int[] Distances) state)
+    {
         while (frontier.TryDequeue(out var node, out var time))
         {
-            if (settled[node] || time >= disappear[node])
+            if (state.Settled[node] || time >= disappear[node])
             {
                 continue;
             }
 
-            settled[node] = true;
-            distances[node] = time;
+            state.Settled[node] = true;
+            state.Distances[node] = time;
 
             foreach (var (neighbor, weight) in graph.Neighbors[node])
             {
-                if (!settled[neighbor])
+                if (!state.Settled[neighbor])
                 {
                     frontier.Enqueue(neighbor, time + weight);
                 }
             }
         }
-
-        return distances;
     }
 
     // Composed: this repo's own Heap<T,TOrder> as the frontier, ordered by
@@ -56,8 +71,12 @@ internal static class MinimumTimeToVisitDisappearingNodesSolution
     // primitive ShortestPath.Dijkstra itself is built from (§7's "prefer an
     // already-existing self-hosted structure over its BCL equivalent"), just with
     // the settle-time deadline check threaded through the relax loop by hand.
-    public static int[] MinimumTimesByPriorityHeap(int n, int[][] edges, int[] disappear) =>
-        MinimumTimesByPriorityHeap(TimedAdjacency.Build(n, edges), disappear);
+    public static int[] MinimumTimesByPriorityHeap(int n, int[][] edges, int[] disappear)
+    {
+        var graph = TimedAdjacency.Build(n, edges);
+
+        return MinimumTimesByPriorityHeap(graph, disappear);
+    }
 
     public static int[] MinimumTimesByPriorityHeap(TimedAdjacency graph, int[] disappear)
     {
@@ -66,28 +85,39 @@ internal static class MinimumTimeToVisitDisappearingNodesSolution
         var frontier = new Heap<(int Node, int Time), ByPriorityOrder<int, int>>();
         frontier.Push((0, 0));
 
+        SettleAndRelaxByHeap(graph, disappear, frontier, (settled, distances));
+
+        return distances;
+    }
+
+    // The same loop as SettleAndRelaxByQueue against this repo's own Heap frontier;
+    // only the pop and push calls differ, the deadline check and the relax order are
+    // identical.
+    private static void SettleAndRelaxByHeap(
+        TimedAdjacency graph, int[] disappear,
+        Heap<(int Node, int Time), ByPriorityOrder<int, int>> frontier,
+        (bool[] Settled, int[] Distances) state)
+    {
         while (frontier.TryPop(out var entry))
         {
             var (node, time) = entry;
 
-            if (settled[node] || time >= disappear[node])
+            if (state.Settled[node] || time >= disappear[node])
             {
                 continue;
             }
 
-            settled[node] = true;
-            distances[node] = time;
+            state.Settled[node] = true;
+            state.Distances[node] = time;
 
             foreach (var (neighbor, weight) in graph.Neighbors[node])
             {
-                if (!settled[neighbor])
+                if (!state.Settled[neighbor])
                 {
                     frontier.Push((neighbor, time + weight));
                 }
             }
         }
-
-        return distances;
     }
 
     private static int[] NewUnreachableDistances(int n)

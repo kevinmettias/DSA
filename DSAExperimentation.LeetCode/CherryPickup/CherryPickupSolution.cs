@@ -25,27 +25,8 @@ internal static class CherryPickupSolution
     // itself against.
     public static int MaxCherriesByUnmemoizedRecursion(int[,] grid)
     {
-        var n = grid.GetLength(0);
-        var cherries = CherriesFromUnmemoized(0, 0, 0, grid, n);
+        var cherries = CherriesFromUnmemoized(0, 0, 0, grid);
         return Math.Max(0, cherries);
-    }
-
-    private static int CherriesFromUnmemoized(int row1, int col1, int col2, int[,] grid, int n)
-    {
-        var (isTerminal, terminalValue, picked) = EvaluateCherryState(row1, col1, col2, grid, n);
-
-        if (isTerminal)
-        {
-            return terminalValue;
-        }
-
-        var moveDownAddCol2 = CherriesFromUnmemoized(row1 + 1, col1, col2 + 1, grid, n);
-        var moveDownSameCol2 = CherriesFromUnmemoized(row1 + 1, col1, col2, grid, n);
-        var moveRightAddCol2 = CherriesFromUnmemoized(row1, col1 + 1, col2 + 1, grid, n);
-        var moveRightSameCol2 = CherriesFromUnmemoized(row1, col1 + 1, col2, grid, n);
-        var bestNext = BestOfFour(moveDownAddCol2, moveDownSameCol2, moveRightAddCol2, moveRightSameCol2);
-
-        return bestNext == Blocked ? Blocked : picked + bestNext;
     }
 
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
@@ -54,48 +35,73 @@ internal static class CherryPickupSolution
     // un-memoized-vs-Memoizer shape).
     public static int MaxCherriesByMemoizedRecursion(int[,] grid)
     {
-        var n = grid.GetLength(0);
-
         var result = Memoizer.Memoize<(int Row1, int Col1, int Col2), int>(
-            (0, 0, 0),
-            (state, cherriesFrom) => CherriesFromMemoized(state, cherriesFrom, grid, n));
+            (0, 0, 0), new CherriesFromMemoized(grid));
 
         return Math.Max(0, result);
     }
 
-    private static int CherriesFromMemoized(
-        (int Row1, int Col1, int Col2) state,
-        Func<(int Row1, int Col1, int Col2), int> cherriesFrom,
-        int[,] grid,
-        int n)
+    // The memoized rule, named: what a (Row1, Col1, Col2) state is worth is the
+    // cherries entering it plus the best of its four simultaneous forward moves.
+    private sealed class CherriesFromMemoized(int[,] grid)
+        : IRecurrence<(int Row1, int Col1, int Col2), int>
     {
-        var (row1, col1, col2) = state;
-        var (isTerminal, terminalValue, picked) = EvaluateCherryState(row1, col1, col2, grid, n);
+        public int Replay(
+            (int Row1, int Col1, int Col2) state,
+            IRecurrence<(int Row1, int Col1, int Col2), int> rest)
+        {
+            var (row1, col1, col2) = state;
+            var (isTerminal, terminalValue, picked) = EvaluateCherryState(row1, col1, col2, grid);
+
+            if (isTerminal)
+            {
+                return terminalValue;
+            }
+
+            var moveDownAddCol2 = rest.Replay((row1 + 1, col1, col2 + 1), rest);
+            var moveDownSameCol2 = rest.Replay((row1 + 1, col1, col2), rest);
+            var moveRightAddCol2 = rest.Replay((row1, col1 + 1, col2 + 1), rest);
+            var moveRightSameCol2 = rest.Replay((row1, col1 + 1, col2), rest);
+            var bestNext = BestOfFour(
+                moveDownAddCol2, moveDownSameCol2, moveRightAddCol2, moveRightSameCol2);
+
+            if (bestNext == Blocked)
+            {
+                return Blocked;
+            }
+
+            return TotalCherries(picked, bestNext);
+        }
+    }
+
+    private static int CherriesFromUnmemoized(int row1, int col1, int col2, int[,] grid)
+    {
+        var (isTerminal, terminalValue, picked) = EvaluateCherryState(row1, col1, col2, grid);
 
         if (isTerminal)
         {
             return terminalValue;
         }
 
-        var moveDownAddCol2 = cherriesFrom((row1 + 1, col1, col2 + 1));
-        var moveDownSameCol2 = cherriesFrom((row1 + 1, col1, col2));
-        var moveRightAddCol2 = cherriesFrom((row1, col1 + 1, col2 + 1));
-        var moveRightSameCol2 = cherriesFrom((row1, col1 + 1, col2));
+        var moveDownAddCol2 = CherriesFromUnmemoized(row1 + 1, col1, col2 + 1, grid);
+        var moveDownSameCol2 = CherriesFromUnmemoized(row1 + 1, col1, col2, grid);
+        var moveRightAddCol2 = CherriesFromUnmemoized(row1, col1 + 1, col2 + 1, grid);
+        var moveRightSameCol2 = CherriesFromUnmemoized(row1, col1 + 1, col2, grid);
         var bestNext = BestOfFour(moveDownAddCol2, moveDownSameCol2, moveRightAddCol2, moveRightSameCol2);
 
-        return bestNext == Blocked ? Blocked : picked + bestNext;
+        return bestNext == Blocked ? Blocked : TotalCherries(picked, bestNext);
     }
 
     // Shared shape between the un-memoized and memoized walks: given a state, decide
     // whether it's a terminal (blocked/goal) value, and if not, the cherries picked
     // up by entering it. Neither branch here recurses - only the caller knows how.
     private static (bool IsTerminal, int TerminalValue, int Picked) EvaluateCherryState(
-        int row1, int col1, int col2, int[,] grid, int n)
+        int row1, int col1, int col2, int[,] grid)
     {
+        var n = grid.GetLength(0);
         var row2 = row1 + col1 - col2;
 
-        if (row1 >= n || col1 >= n || row2 < 0 || row2 >= n || col2 < 0 || col2 >= n
-            || grid[row1, col1] == -1 || grid[row2, col2] == -1)
+        if (IsUnusablePosition(grid, row1, col1, n) || IsUnusablePosition(grid, row2, col2, n))
         {
             return (true, Blocked, 0);
         }
@@ -105,9 +111,23 @@ internal static class CherryPickupSolution
             return (true, grid[row1, col1], 0);
         }
 
-        var picked = grid[row1, col1] + (col1 == col2 ? 0 : grid[row2, col2]);
-        return (false, 0, picked);
+        return (false, 0, CherriesPickedByEntering(grid, (row1, col1, col2)));
     }
+
+    // What a non-terminal state has already banked before either walker moves on: the cherries
+    // in both walkers' cells, with a shared cell counted once. Row2 is derived here rather than
+    // passed in, being the same Row1+Col1-Col2 identity the recurrence itself is stated over.
+    private static int CherriesPickedByEntering(int[,] grid, (int Row1, int Col1, int Col2) state)
+    {
+        var row2 = state.Row1 + state.Col1 - state.Col2;
+        return grid[state.Row1, state.Col1]
+            + (state.Col1 == state.Col2 ? 0 : CherriesAt(grid, row2, state.Col2));
+    }
+
+    // A walker's cell is unusable when it falls outside the grid or holds a thorn -
+    // said once for each of the two walkers rather than eight times in one line.
+    private static bool IsUnusablePosition(int[,] grid, int row, int col, int n)
+        => row < 0 || row >= n || col < 0 || col >= n || grid[row, col] == -1;
 
     private static int BestOfFour(int downAddCol2, int downSameCol2, int rightAddCol2, int rightSameCol2)
     {
@@ -115,4 +135,10 @@ internal static class CherryPickupSolution
         var rightBest = Math.Max(rightAddCol2, rightSameCol2);
         return Math.Max(downBest, rightBest);
     }
+
+    // What a non-terminal state is worth: the cherries entering the cells picks up, plus
+    // the best the two walkers can still collect from there.
+    private static int TotalCherries(int picked, int bestNext) => picked + bestNext;
+
+    private static int CherriesAt(int[,] grid, int row, int col) => grid[row, col];
 }

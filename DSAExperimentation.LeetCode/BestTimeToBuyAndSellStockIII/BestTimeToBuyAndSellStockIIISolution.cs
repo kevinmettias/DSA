@@ -12,21 +12,7 @@ internal static class BestTimeToBuyAndSellStockIIISolution
     // Unmemoized recursion over the exact same state machine the composed
     // strategy below runs through Memoizer - up to 2 branches per day, genuinely
     // exponential, the arm the memoized strategy has to beat.
-    public static int MaxProfitByBruteForce(int[] prices) => ProfitFrom(0, holding: 0, transactions: 0, prices);
-
-    private static int ProfitFrom(int day, int holding, int transactions, int[] prices)
-    {
-        if (day == prices.Length || transactions == 2)
-        {
-            return 0;
-        }
-
-        var skip = ProfitFrom(day + 1, holding, transactions, prices);
-
-        return holding == 1
-            ? Math.Max(skip, prices[day] + ProfitFrom(day + 1, holding: 0, transactions + 1, prices))
-            : Math.Max(skip, -prices[day] + ProfitFrom(day + 1, holding: 1, transactions, prices));
-    }
+    public static int MaxProfitByBruteForce(int[] prices) => ProfitFrom((0, 0, 0), prices);
 
     // Same recurrence, run through Algorithms.DynamicProgramming.Memoizer so each
     // of the at-most 2 * n * 3 distinct (day, holding, transactions) states is
@@ -34,21 +20,46 @@ internal static class BestTimeToBuyAndSellStockIIISolution
     public static int MaxProfitByTransactionMemoization(int[] prices) =>
         Memoizer.Memoize<(int Day, int Holding, int Transactions), int>(
             (0, 0, 0),
-            (state, recurse) => ProfitFrom(state.Day, state.Holding, state.Transactions, prices, recurse));
+            new ProfitDayByDay(prices));
 
-    private static int ProfitFrom(
-        int day, int holding, int transactions, int[] prices,
-        Func<(int Day, int Holding, int Transactions), int> recurse)
+    private static int ProfitFrom((int Day, int Holding, int Transactions) state, int[] prices)
     {
-        if (day == prices.Length || transactions == 2)
+        if (state.Day == prices.Length || state.Transactions == 2)
         {
             return 0;
         }
 
-        var skip = recurse((day + 1, holding, transactions));
+        var skip = ProfitFrom((state.Day + 1, state.Holding, state.Transactions), prices);
 
-        return holding == 1
-            ? Math.Max(skip, prices[day] + recurse((day + 1, 0, transactions + 1)))
-            : Math.Max(skip, -prices[day] + recurse((day + 1, 1, transactions)));
+        return state.Holding == 1
+            ? Math.Max(skip, prices[state.Day] + ProfitFrom((state.Day + 1, 0, state.Transactions + 1), prices))
+            : Math.Max(skip, -prices[state.Day] + ProfitFrom((state.Day + 1, 1, state.Transactions), prices));
+    }
+
+    // The recurrence, named: one day of the state machine, where skipping the day is
+    // always allowed and whether a share is held decides what else is. `prices` is the
+    // whole of what the rule needs from its caller, so it is the constructor's only
+    // input.
+    private sealed class ProfitDayByDay(int[] prices)
+        : IRecurrence<(int Day, int Holding, int Transactions), int>
+    {
+        public int Replay(
+            (int Day, int Holding, int Transactions) state,
+            IRecurrence<(int Day, int Holding, int Transactions), int> rest)
+        {
+            if (state.Day == prices.Length || state.Transactions == 2)
+            {
+                return 0;
+            }
+
+            var skip = rest.Replay((state.Day + 1, state.Holding, state.Transactions), rest);
+
+            if (state.Holding == 1)
+            {
+                return Math.Max(skip, prices[state.Day] + rest.Replay((state.Day + 1, 0, state.Transactions + 1), rest));
+            }
+
+            return Math.Max(skip, -prices[state.Day] + rest.Replay((state.Day + 1, 1, state.Transactions), rest));
+        }
     }
 }

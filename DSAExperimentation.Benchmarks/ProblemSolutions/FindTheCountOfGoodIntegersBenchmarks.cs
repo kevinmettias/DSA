@@ -11,7 +11,7 @@ public class FindTheCountOfGoodIntegersBenchmarks
     private const int K = 6;
 
     [Params(6, 10)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long PalindromeEnumeration() => FindTheCountOfGoodIntegersSolution.CountByPalindromeEnumeration(N, K);

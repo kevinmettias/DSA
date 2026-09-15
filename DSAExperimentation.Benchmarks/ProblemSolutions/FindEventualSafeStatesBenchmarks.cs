@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindEventualSafeStates;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,19 +15,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindEventualSafeStatesBenchmarks
 {
-    private const int HalfSplitDivisor = 2;
     private const int MaxForwardFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int NodeCount;
+    private int[][] _graph = [];
 
-    private int[][] _graph = null!;
-    private List<SafeStateNode> _reversed = null!;
+    private List<SafeStateNode> _reversed = new();
+    [Params(50, 1_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var half = NodeCount / HalfSplitDivisor;
+        var half = NodeCount / AlgorithmConstants.HalvingFactor;
         _graph = new int[NodeCount][];
 
         for (var i = 0; i < half; i++)
@@ -37,12 +37,17 @@ public class FindEventualSafeStatesBenchmarks
 
         for (var i = half; i < NodeCount; i++)
         {
-            var next = i + 1 < NodeCount ? i + 1 : half;
+            var hasForwardNeighbour = i + 1 < NodeCount;
+            var next = hasForwardNeighbour ? ForwardNeighbour(i) : half;
             _graph[i] = [next];
         }
 
         _reversed = FindEventualSafeStatesSolution.BuildReversedGraph(_graph);
     }
+
+    // The ring half's forward step: the node one index on, which the wrap arm
+    // replaces at the ring's last node.
+    private static int ForwardNeighbour(int nodeIndex) => nodeIndex + 1;
 
     [Benchmark(Baseline = true)]
     public int[] DfsThreeColoring() =>

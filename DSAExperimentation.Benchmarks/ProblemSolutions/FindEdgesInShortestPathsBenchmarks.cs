@@ -16,11 +16,11 @@ public class FindEdgesInShortestPathsBenchmarks
     private const int Seed = 3123;
     private const int ExtraEdgesPerNode = 2;
 
-    [Params(50, 500)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
     private EdgeGraph _graph = null!;
+    [Params(50, 500)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

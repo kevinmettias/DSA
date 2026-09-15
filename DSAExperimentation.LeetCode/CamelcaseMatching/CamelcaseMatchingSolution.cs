@@ -66,19 +66,19 @@ internal static class CamelcaseMatchingSolution
 
         for (var i = 0; i < queries.Length; i++)
         {
-            results[i] = IsCamelMatch(queries[i], pattern);
+            results[i] = IsCamelMatch(new CamelQuery(queries[i]), new CamelPattern(pattern));
         }
 
         return results;
     }
 
-    private static bool IsCamelMatch(string query, string pattern)
+    private static bool IsCamelMatch(CamelQuery query, CamelPattern pattern)
     {
         var p = 0;
 
-        foreach (var c in query)
+        foreach (var c in query.Text)
         {
-            if (p < pattern.Length && pattern[p] == c)
+            if (p < pattern.Text.Length && pattern.Text[p] == c)
             {
                 p++;
                 continue;
@@ -90,6 +90,6 @@ internal static class CamelcaseMatchingSolution
             }
         }
 
-        return p == pattern.Length;
+        return p == pattern.Text.Length;
     }
 }

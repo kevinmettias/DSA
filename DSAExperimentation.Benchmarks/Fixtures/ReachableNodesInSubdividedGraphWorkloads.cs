@@ -22,12 +22,27 @@ internal static class ReachableNodesInSubdividedGraphWorkloads
         var random = new Random(seed);
         var edges = new List<int[]>();
 
+        AddBackboneEdges(nodeCount, random, edges);
+        AddDensityEdges(nodeCount, extraEdgesPerNode, random, edges);
+
+        return [.. edges];
+    }
+
+    // Every node i > 0 gets a back edge to some earlier node j < i, which is what
+    // guarantees reachability from node 0.
+    private static void AddBackboneEdges(int nodeCount, Random random, List<int[]> edges)
+    {
         for (var i = 1; i < nodeCount; i++)
         {
             var j = random.Next(i);
             edges.Add([j, i, random.Next(1, EdgeWeightUpperBound) - 1]);
         }
+    }
 
+    // Extra random edges for density, skipping the self-loops an unconstrained draw
+    // would otherwise produce.
+    private static void AddDensityEdges(int nodeCount, int extraEdgesPerNode, Random random, List<int[]> edges)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < extraEdgesPerNode; e++)
@@ -40,7 +55,5 @@ internal static class ReachableNodesInSubdividedGraphWorkloads
                 }
             }
         }
-
-        return [.. edges];
     }
 }

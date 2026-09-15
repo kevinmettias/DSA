@@ -16,10 +16,10 @@ public class BurstBalloonsBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(10, 14)]
-    public int BalloonCount;
-
     private PaddedBalloons _padded;
+
+    [Params(10, 14)]
+    public int BalloonCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

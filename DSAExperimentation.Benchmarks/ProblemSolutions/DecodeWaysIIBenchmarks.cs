@@ -11,10 +11,10 @@ public class DecodeWaysIIBenchmarks
     private const string WildcardPair = "2*";
     private const int PairLength = 2;
 
-    [Params(20, 200)]
-    public int Length;
+    private string _value = "";
 
-    private string _value = null!;
+    [Params(20, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

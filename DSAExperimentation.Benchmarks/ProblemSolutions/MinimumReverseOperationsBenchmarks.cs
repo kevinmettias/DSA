@@ -23,11 +23,11 @@ public class MinimumReverseOperationsBenchmarks
     private const int WindowSize = 8;
     private const int StartPosition = 0;
 
-    [Params(200, 4_000)]
-    public int NodeCount;
+    private int[] _banned = [];
 
-    private int[] _banned = null!;
     private ReversalBoard _board = null!;
+    [Params(200, 4_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

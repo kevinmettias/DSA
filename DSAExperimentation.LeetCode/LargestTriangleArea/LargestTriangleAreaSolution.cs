@@ -49,25 +49,7 @@ internal static class LargestTriangleAreaSolution
     {
         var hull = ConvexHull(points);
 
-        return LargestOver(hull.Count >= MinHullVerticesForTriangle ? [.. hull] : points);
-    }
-
-    private static double LargestOver((int X, int Y)[] points)
-    {
-        var best = 0.0;
-
-        for (var i = 0; i < points.Length; i++)
-        {
-            for (var j = i + 1; j < points.Length; j++)
-            {
-                for (var k = j + 1; k < points.Length; k++)
-                {
-                    best = Math.Max(best, Area(points[i], points[j], points[k]));
-                }
-            }
-        }
-
-        return best;
+        return LargestOver(hull.Count >= MinHullVerticesForTriangle ? HullVertices(hull) : points);
     }
 
     private static List<(int X, int Y)> ConvexHull((int X, int Y)[] points)
@@ -143,8 +125,35 @@ internal static class LargestTriangleAreaSolution
         return chain;
     }
 
+    // The convex hull's own vertices, as the candidate array to enumerate.
+    private static (int X, int Y)[] HullVertices(List<(int X, int Y)> hull) => [.. hull];
+
+    private static double LargestOver((int X, int Y)[] points)
+    {
+        var best = 0.0;
+
+        for (var i = 0; i < points.Length; i++)
+        {
+            for (var j = i + 1; j < points.Length; j++)
+            {
+                for (var k = j + 1; k < points.Length; k++)
+                {
+                    var area = Area(points[i], points[j], points[k]);
+
+                    best = Math.Max(best, area);
+                }
+            }
+        }
+
+        return best;
+    }
+
     private static double Area((int X, int Y) a, (int X, int Y) b, (int X, int Y) c)
-        => Math.Abs(Cross(a, b, c)) / TriangleAreaDivisor;
+    {
+        var cross = Cross(a, b, c);
+
+        return Math.Abs(cross) / TriangleAreaDivisor;
+    }
 
     private static long Cross((int X, int Y) o, (int X, int Y) a, (int X, int Y) b)
         => (long)(a.X - o.X) * (b.Y - o.Y) - (long)(a.Y - o.Y) * (b.X - o.X);

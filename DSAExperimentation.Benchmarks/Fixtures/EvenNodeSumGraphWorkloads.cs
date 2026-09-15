@@ -12,6 +12,14 @@ internal static class EvenNodeSumGraphWorkloads
     public static (int[] Nums, int[][] Edges) Build(int nodeCount, int seed)
     {
         var random = new Random(seed);
+        var nums = BuildNums(random, nodeCount);
+        var edges = BuildEdges(random, nodeCount);
+
+        return (nums, edges);
+    }
+
+    private static int[] BuildNums(Random random, int nodeCount)
+    {
         var nums = new int[nodeCount];
 
         for (var i = 0; i < nodeCount; i++)
@@ -19,6 +27,14 @@ internal static class EvenNodeSumGraphWorkloads
             nums[i] = random.Next(2);
         }
 
+        return nums;
+    }
+
+    // The spanning backbone first - every node i > 0 reaches a lower-numbered one, so the
+    // graph is connected by construction - then one extra edge per node, deduped through the
+    // set because the extra draw may repeat a backbone edge.
+    private static int[][] BuildEdges(Random random, int nodeCount)
+    {
         var edgeSet = new HashSet<(int Low, int High)>();
 
         for (var i = 1; i < nodeCount; i++)
@@ -39,8 +55,6 @@ internal static class EvenNodeSumGraphWorkloads
             }
         }
 
-        var edges = edgeSet.Select(pair => new[] { pair.Low, pair.High }).ToArray();
-
-        return (nums, edges);
+        return [.. edgeSet.Select(pair => new[] { pair.Low, pair.High })];
     }
 }

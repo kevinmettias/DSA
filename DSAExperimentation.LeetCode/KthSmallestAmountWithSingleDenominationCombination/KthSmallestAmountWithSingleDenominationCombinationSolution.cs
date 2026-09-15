@@ -23,6 +23,14 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
     // grows large.
     public static long KthSmallestAmountByHeapMerge(int[] coins, long k)
     {
+        var frontier = SeedFrontier(coins);
+
+        return PopUntilKth(frontier, coins, k);
+    }
+
+    // Every denomination's own first multiple: the frontier the k-way merge starts from.
+    private static Heap<(long Amount, int CoinIndex), MinHeapOrder<(long, int)>> SeedFrontier(int[] coins)
+    {
         var frontier = new Heap<(long Amount, int CoinIndex), MinHeapOrder<(long, int)>>();
 
         for (var i = 0; i < coins.Length; i++)
@@ -30,6 +38,16 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
             frontier.Push((coins[i], i));
         }
 
+        return frontier;
+    }
+
+    // The merge itself: always pop the frontier's smallest pending multiple, counting an
+    // amount only the first time it is popped (two coins landing on the same multiple
+    // are one achievable amount), and push that coin's next multiple back. The rank-th
+    // distinct amount popped is the answer.
+    private static long PopUntilKth(
+        Heap<(long Amount, int CoinIndex), MinHeapOrder<(long, int)>> frontier, int[] coins, long rank)
+    {
         var lastAmount = 0L;
         var count = 0L;
 
@@ -42,7 +60,7 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
                 count++;
                 lastAmount = amount;
 
-                if (count == k)
+                if (count == rank)
                 {
                     return amount;
                 }
@@ -92,35 +110,40 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
 
         for (var mask = 1; mask < subsetCount; mask++)
         {
-            var lcm = 1L;
-            var coinsInSubset = 0;
+            total += SubsetContribution(mask, coins, x);
+        }
 
-            for (var i = 0; i < coins.Length; i++)
-            {
-                if ((mask & (1 << i)) == 0)
-                {
-                    continue;
-                }
+        return total;
+    }
 
-                coinsInSubset++;
-                lcm = Lcm(lcm, coins[i]);
+    // One non-empty subset of coins, named by its bit mask: it covers exactly its
+    // multiples of lcm(subset), added back for an odd-sized subset and subtracted for an
+    // even one so no amount is counted twice. The walk stops as soon as the running lcm
+    // passes the limit, because such a subset covers no amount <= limit at all.
+    private static long SubsetContribution(int mask, int[] coins, long limit)
+    {
+        var lcm = 1L;
+        var coinsInSubset = 0;
 
-                if (lcm > x)
-                {
-                    break;
-                }
-            }
-
-            if (lcm > x)
+        for (var i = 0; i < coins.Length; i++)
+        {
+            if ((mask & (1 << i)) == 0)
             {
                 continue;
             }
 
-            var multiplesOfLcm = x / lcm;
-            total += coinsInSubset % 2 == 1 ? multiplesOfLcm : -multiplesOfLcm;
-        }
+            coinsInSubset++;
+            lcm = Lcm(lcm, coins[i]);
 
-        return total;
+            if (lcm > limit)
+            {
+                return 0;
+            }
+        }
+        var multiplesOfLcm = limit / lcm;
+        var subsetSizeIsOdd = coinsInSubset % 2 == 1;
+
+        return subsetSizeIsOdd ? multiplesOfLcm : -multiplesOfLcm;
     }
 
     private static long Lcm(long a, long b) => a / Gcd(a, b) * b;

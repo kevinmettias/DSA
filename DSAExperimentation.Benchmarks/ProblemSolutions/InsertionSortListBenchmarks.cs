@@ -20,10 +20,10 @@ public class InsertionSortListBenchmarks
 {
     private const int ShuffleSeed = 147;
 
-    [Params(100, 1_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(100, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

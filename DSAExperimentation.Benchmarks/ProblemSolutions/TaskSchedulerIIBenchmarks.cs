@@ -15,10 +15,10 @@ public class TaskSchedulerIIBenchmarks
 {
     private const int Space = 1;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _tasks = [];
 
-    private int[] _tasks = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _tasks = Enumerable.Range(0, Length).ToArray();

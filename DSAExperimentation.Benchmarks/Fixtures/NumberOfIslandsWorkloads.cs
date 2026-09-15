@@ -18,7 +18,8 @@ internal static class NumberOfIslandsWorkloads
 
             for (var col = 0; col < cols; col++)
             {
-                grid[row][col] = random.Next(LandChance) == 0 ? '1' : '0';
+                var isLand = random.Next(LandChance) == 0;
+                grid[row][col] = isLand ? '1' : '0';
             }
         }
 

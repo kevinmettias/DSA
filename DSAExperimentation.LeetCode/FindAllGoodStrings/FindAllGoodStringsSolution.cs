@@ -13,21 +13,23 @@ internal static class FindAllGoodStringsSolution
     // this repo's primitives - it is the arm the composed solution below has to
     // justify itself against, and it pays the full 26^n cost when the bounds span
     // the alphabet.
-    public static int CountGoodStringsByEnumeration(int n, string s1, string s2, string evil)
+    public static int CountGoodStringsByEnumeration(
+        int n, LowerBound s1, UpperBound s2, ForbiddenSubstring evil)
     {
-        var current = s1[..n].ToCharArray();
+        var current = s1.Text[..n].ToCharArray();
         var count = 0L;
 
+        // Stops when the odometer reaches s2: that candidate is tested, counted, and the total then returned.
         while (true)
         {
             var candidate = new string(current);
 
-            if (candidate.IndexOf(evil, StringComparison.Ordinal) < 0)
+            if (candidate.IndexOf(evil.Text, StringComparison.Ordinal) < 0)
             {
                 count = (count + 1) % ModularArithmetic.Modulo;
             }
 
-            if (string.CompareOrdinal(candidate, s2) >= 0)
+            if (string.CompareOrdinal(candidate, s2.Text) >= 0)
             {
                 return (int)count;
             }
@@ -58,38 +60,50 @@ internal static class FindAllGoodStringsSolution
     // is then a standard digit DP: it counts every string in [s1, s2] whose
     // automaton state never reaches evil.Length, without ever materializing a
     // candidate string.
-    public static int CountGoodStringsByAutomatonDigitDp(int n, string s1, string s2, string evil)
+    public static int CountGoodStringsByAutomatonDigitDp(
+        int n, LowerBound s1, UpperBound s2, ForbiddenSubstring evil)
     {
-        var failure = PrefixFunctionSearch.ComputeFailureFunction(evil);
-        var bounds = new GoodStringBounds(n, s1, s2, evil, failure);
+        var failure = PrefixFunctionSearch.ComputeFailureFunction(evil.Text);
+        var bounds = new GoodStringBounds(n, s1.Text, s2.Text, evil.Text, failure);
 
         var result = Memoizer.Memoize<(int Position, int Matched, bool TightLow, bool TightHigh), long>(
-            (0, 0, true, true), (state, count) => CountFrom(bounds, state, count));
+            (0, 0, true, true), new GoodStringDigitWalk(bounds));
 
         return (int)result;
     }
 
-    private static long CountFrom(
-        GoodStringBounds bounds,
-        (int Position, int Matched, bool TightLow, bool TightHigh) state,
-        Func<(int Position, int Matched, bool TightLow, bool TightHigh), long> count)
+    /// <summary>
+    /// The recurrence, named: how many strings remain from a (position, automaton state,
+    /// tight-to-s1, tight-to-s2) state - zero once the automaton has matched all of evil,
+    /// one at the end of the string, and otherwise the sum over every allowed next letter.
+    /// </summary>
+    private sealed class GoodStringDigitWalk(GoodStringBounds bounds)
+        : IRecurrence<(int Position, int Matched, bool TightLow, bool TightHigh), long>
     {
-        if (state.Matched == bounds.Evil.Length)
+        /// <inheritdoc/>
+        public long Replay(
+            (int Position, int Matched, bool TightLow, bool TightHigh) state,
+            IRecurrence<(int Position, int Matched, bool TightLow, bool TightHigh), long> rest)
         {
-            return 0;
+            if (state.Matched == bounds.Evil.Length)
+            {
+                return 0;
+            }
+
+            if (state.Position == bounds.N)
+            {
+                return 1;
+            }
+
+            var low = state.TightLow ? BoundCharAt(bounds.S1, state.Position) : 'a';
+            var high = state.TightHigh ? BoundCharAt(bounds.S2, state.Position) : 'z';
+            var walk = new GoodStringWalk(bounds.Evil, bounds.Failure, state, low, high, rest);
+
+            return SumTransitions(walk, low, high);
         }
-
-        if (state.Position == bounds.N)
-        {
-            return 1;
-        }
-
-        var low = state.TightLow ? bounds.S1[state.Position] : 'a';
-        var high = state.TightHigh ? bounds.S2[state.Position] : 'z';
-        var walk = new GoodStringWalk(bounds.Evil, bounds.Failure, state, low, high, count);
-
-        return SumTransitions(walk, low, high);
     }
+
+    private static char BoundCharAt(string bound, int position) => bound[position];
 
     private static long SumTransitions(GoodStringWalk walk, char low, char high)
     {
@@ -108,7 +122,7 @@ internal static class FindAllGoodStringsSolution
         return total;
     }
 
-    private readonly record struct GoodStringBounds(int N, string S1, string S2, string Evil, int[] Failure);
+    internal readonly record struct GoodStringBounds(int N, string S1, string S2, string Evil, int[] Failure);
 
     private static long? ComputeTransitionContribution(GoodStringWalk walk, char c)
     {
@@ -119,16 +133,16 @@ internal static class FindAllGoodStringsSolution
         }
 
         var next = (walk.State.Position + 1, matched, walk.State.TightLow && c == walk.Low, walk.State.TightHigh && c == walk.High);
-        return walk.Count(next);
+        return walk.Rest.Replay(next, walk.Rest);
     }
 
-    private readonly record struct GoodStringWalk(
+    internal readonly record struct GoodStringWalk(
         string Evil,
         int[] Failure,
         (int Position, int Matched, bool TightLow, bool TightHigh) State,
         char Low,
         char High,
-        Func<(int Position, int Matched, bool TightLow, bool TightHigh), long> Count);
+        IRecurrence<(int Position, int Matched, bool TightLow, bool TightHigh), long> Rest);
 
     // The KMP fallback walk PrefixFunctionSearch.ComputeFailureFunction's own
     // Advance performs internally, rebuilt here from its public failure array -
@@ -141,6 +155,22 @@ internal static class FindAllGoodStringsSolution
             matched = failure[matched - 1];
         }
 
-        return evil[matched] == next ? matched + 1 : matched;
+        var extendsMatch = evil[matched] == next;
+
+        return extendsMatch ? MatchLengthWithNext(matched) : matched;
     }
+
+    private static int MatchLengthWithNext(int matched) => matched + 1;
+
+    // LC 1397's three operands, named for the roles they play here rather than left as
+    // three adjacent `string` positions a caller could hand over the wrong way round
+    // with the compiler none the wiser. `s1` and `s2` are the inclusive lexicographic
+    // range the count is taken over and `evil` the substring no counted string may
+    // contain - three different meanings, and s1 and s2 are not even symmetric with
+    // each other.
+    internal readonly record struct LowerBound(string Text);
+
+    internal readonly record struct UpperBound(string Text);
+
+    internal readonly record struct ForbiddenSubstring(string Text);
 }

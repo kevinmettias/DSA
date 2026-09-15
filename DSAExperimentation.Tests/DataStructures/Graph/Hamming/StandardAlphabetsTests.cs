@@ -12,10 +12,7 @@ public sealed class StandardAlphabetsTests
     }
 
     [Fact]
-    public void Dna_IsTheFourBases()
-    {
-        Assert.Equal("ACGT", StandardAlphabets.Dna.Characters);
-    }
+    public void Dna_IsTheFourBases() => Assert.Equal("ACGT", StandardAlphabets.Dna.Characters);
 
     [Fact]
     public void LowercaseLatin_And_Dna_ContainNoRepeats()

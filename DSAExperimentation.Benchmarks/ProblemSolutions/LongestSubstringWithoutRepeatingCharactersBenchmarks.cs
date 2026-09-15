@@ -17,16 +17,13 @@ public class LongestSubstringWithoutRepeatingCharactersBenchmarks
 {
     private const int DistinctCharacterBase = 256;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _text = new string(Enumerable.Range(0, Length).Select(i => (char)(DistinctCharacterBase + i)).ToArray());
-    }
+    public void Setup() => _text = new string(Enumerable.Range(0, Length).Select(i => (char)(DistinctCharacterBase + i)).ToArray());
 
     [Benchmark(Baseline = true)]
     public int BruteForce() => LongestSubstringWithoutRepeatingCharactersSolution.FindLengthByBruteForce(_text);

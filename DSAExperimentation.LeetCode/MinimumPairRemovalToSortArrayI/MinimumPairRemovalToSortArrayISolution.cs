@@ -78,72 +78,134 @@ internal static class MinimumPairRemovalToSortArrayISolution
             return 0;
         }
 
-        var values = (int[])nums.Clone();
-        var next = new int[n];
-        var prev = new int[n];
-        var alive = new bool[n];
+        var list = (Values: (int[])nums.Clone(), Next: new int[n], Prev: new int[n], Alive: new bool[n]);
         var heap = new Heap<PairCandidate, MinHeapOrder<PairCandidate>>();
-        var violations = 0;
-
-        for (var i = 0; i < n; i++)
-        {
-            next[i] = i + 1 < n ? i + 1 : -1;
-            prev[i] = i - 1 >= 0 ? i - 1 : -1;
-            alive[i] = true;
-
-            if (i < n - 1)
-            {
-                heap.Push(new PairCandidate(values[i] + values[i + 1], i));
-
-                if (values[i] > values[i + 1])
-                {
-                    violations++;
-                }
-            }
-        }
-
+        var violations = FillInitialLinks(list, heap);
         var operations = 0;
 
         while (violations > 0 && heap.TryPop(out var candidate))
         {
-            if (!alive[candidate.LeftIndex])
-            {
-                continue;
-            }
+            var applied = ApplyCandidate(list, candidate, heap);
 
-            var right = next[candidate.LeftIndex];
-
-            if (right < 0 || values[candidate.LeftIndex] + values[right] != candidate.Sum)
-            {
-                continue;
-            }
-
-            var left = candidate.LeftIndex;
-            violations -= BoundaryViolations(values, prev[left], left, right, next[right]);
-
-            values[left] += values[right];
-            alive[right] = false;
-
-            var after = next[right];
-            next[left] = after;
-
-            if (after >= 0)
-            {
-                prev[after] = left;
-            }
-
-            violations += MergedNeighborViolations(values, prev[left], left, after, heap);
-            operations++;
+            violations += applied.Violations;
+            operations += applied.Merges;
         }
 
         return operations;
     }
 
+    // Every original position's place in the live list - its neighbour on either side, or
+    // -1 where that side has none - and every adjacent pair seeded into the heap. Returns
+    // how many of those pairs start out as an inversion, which is "is it sorted" as a count.
+    private static int FillInitialLinks(
+        (int[] Values, int[] Next, int[] Prev, bool[] Alive) list,
+        Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap)
+    {
+        var n = list.Values.Length;
+        var violations = 0;
+
+        for (var i = 0; i < n; i++)
+        {
+            var hasSuccessor = i + 1 < n;
+            var hasPredecessor = i - 1 >= 0;
+
+            list.Next[i] = hasSuccessor ? SuccessorOf(i) : -1;
+            list.Prev[i] = hasPredecessor ? PredecessorOf(i) : -1;
+            list.Alive[i] = true;
+
+            if (hasSuccessor)
+            {
+                violations += SeedPair(list.Values, heap, i);
+            }
+        }
+
+        return violations;
+    }
+
+    // The index one along from `index`, and the one before it - what a live next/prev
+    // link points at when that neighbour exists at all.
+    private static int SuccessorOf(int index) => index + 1;
+
+    private static int PredecessorOf(int index) => index - 1;
+
+    // The adjacent pair starting at `index`, pushed as the heap candidate for that
+    // boundary and returned as 1 when the two values are themselves an inversion.
+    private static int SeedPair(
+        int[] values, Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap, int index)
+    {
+        heap.Push(new PairCandidate(values[index] + values[index + 1], index));
+
+        var inverted = values[index] > values[index + 1];
+
+        return inverted ? 1 : 0;
+    }
+
+    // One candidate popped from the heap, resolved against the live list: a stale
+    // candidate changes nothing, and a live one merges its pair and reports how the
+    // adjacent-inversion count moved.
+    private static (int Violations, int Merges) ApplyCandidate(
+        (int[] Values, int[] Next, int[] Prev, bool[] Alive) list,
+        PairCandidate candidate,
+        Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap)
+    {
+        var left = candidate.LeftIndex;
+        var right = list.Next[left];
+
+        if (!IsLivePair(list, left, right, candidate.Sum))
+        {
+            return (0, 0);
+        }
+
+        return MergeAndCount(list, left, right, heap);
+    }
+
+    // A candidate is live while an earlier merge has not consumed its left endpoint and
+    // the pair it stored is still the one sitting there: the same right neighbour, the
+    // same sum. `right` is -1 past the end of the list, and the sum is read only beyond
+    // that guard.
+    private static bool IsLivePair(
+        (int[] Values, int[] Next, int[] Prev, bool[] Alive) list, int left, int right, int sum)
+    {
+        var inRange = list.Alive[left] && right >= 0;
+
+        return inRange && list.Values[left] + list.Values[right] == sum;
+    }
+
+    // Fuse `right` into `left`, re-thread the live links around the pair, and report how
+    // the adjacent-inversion count moved: down by the pairs the merge erased, up by the
+    // new pairs the merged node creates. The erased ones are read before the merge
+    // changes either endpoint's value.
+    private static (int Violations, int Merges) MergeAndCount(
+        (int[] Values, int[] Next, int[] Prev, bool[] Alive) list,
+        int left, int right,
+        Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap)
+    {
+        var removed = BoundaryViolations(list.Values, (list.Prev[left], list.Next[right]), left, right);
+
+        list.Values[left] += list.Values[right];
+        list.Alive[right] = false;
+
+        var after = list.Next[right];
+        list.Next[left] = after;
+
+        if (after >= 0)
+        {
+            list.Prev[after] = left;
+        }
+
+        var added = MergedNeighborViolations(list.Values, left, (list.Prev[left], after), heap);
+
+        return (added - removed, 1);
+    }
+
     // The inversion contribution of the (up to) three pairs a merge is about
     // to erase - (before, left), (left, right) itself, and (right, after) -
     // read before the merge changes either endpoint's value.
-    private static int BoundaryViolations(int[] values, int before, int left, int right, int after)
+    // `neighbors` is the two live positions flanking the pair being merged - either of
+    // which is -1 at that end of the list, and each read only under that guard.
+    private static int BoundaryViolations(int[] values, (int Before, int After) neighbors, int left, int right)
     {
+        var (before, after) = neighbors;
         var removed = 0;
 
         if (before >= 0 && values[before] > values[left])
@@ -168,30 +230,29 @@ internal static class MinimumPairRemovalToSortArrayISolution
     // (merged, after) - each pushed as a fresh heap candidate and counted if
     // it is itself an inversion under the post-merge values.
     private static int MergedNeighborViolations(
-        int[] values, int before, int merged, int after, Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap)
+        int[] values, int merged, (int Before, int After) neighbors, Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap)
     {
-        var added = 0;
+        var (before, after) = neighbors;
 
-        if (before >= 0)
+        return CountInversion(values, before, merged, heap) + CountInversion(values, merged, after, heap);
+    }
+
+    // One adjacent pair - (left, right) at the positions given - pushed as a fresh heap
+    // candidate for the pair starting at `left`, and returned as 1 when the two values
+    // are themselves an inversion. A side with no live neighbour is -1, and contributes
+    // no candidate and no inversion.
+    private static int CountInversion(
+        int[] values, int left, int right, Heap<PairCandidate, MinHeapOrder<PairCandidate>> heap)
+    {
+        if (left < 0 || right < 0)
         {
-            heap.Push(new PairCandidate(values[before] + values[merged], before));
-
-            if (values[before] > values[merged])
-            {
-                added++;
-            }
+            return 0;
         }
 
-        if (after >= 0)
-        {
-            heap.Push(new PairCandidate(values[merged] + values[after], merged));
+        heap.Push(new PairCandidate(values[left] + values[right], left));
 
-            if (values[merged] > values[after])
-            {
-                added++;
-            }
-        }
+        var inverted = values[left] > values[right];
 
-        return added;
+        return inverted ? 1 : 0;
     }
 }

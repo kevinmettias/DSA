@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
 // prepared-input shape section 17.4 calls for: the benchmark builds it once in
 // [GlobalSetup] and hands it to the measured method, and since it is not an
 // IEnumerable it can never be confused with the int[][] overload.
-internal sealed class BoxDeliverySchedule
+internal sealed class BoxDeliverySchedule(int[] portSwitchPrefix, long[] weightPrefix)
 {
     // Each box is LeetCode's [port, weight] pair.
     private const int PortSlot = 0;
@@ -22,17 +22,8 @@ internal sealed class BoxDeliverySchedule
     // second one.
     private const int FirstComparablePosition = 2;
 
-    private readonly int[] _portSwitchPrefix;
-    private readonly long[] _weightPrefix;
-
-    private BoxDeliverySchedule(int[] portSwitchPrefix, long[] weightPrefix)
-    {
-        _portSwitchPrefix = portSwitchPrefix;
-        _weightPrefix = weightPrefix;
-    }
-
     // How many boxes the storage holds, in delivery order.
-    public int BoxCount => _weightPrefix.Length - 1;
+    public int BoxCount => weightPrefix.Length - 1;
 
     public static BoxDeliverySchedule Build(int[][] boxes)
     {
@@ -44,21 +35,31 @@ internal sealed class BoxDeliverySchedule
             weightPrefix[i] = weightPrefix[i - 1] + boxes[i - 1][WeightSlot];
             portSwitchPrefix[i] = i < FirstComparablePosition
                 ? 0
-                : portSwitchPrefix[i - 1] + SwitchesInto(boxes, i);
+                : SwitchesThrough(portSwitchPrefix, boxes, i);
         }
 
         return new BoxDeliverySchedule(portSwitchPrefix, weightPrefix);
     }
 
+    // Port changes counted through the first `position` boxes: the running count
+    // up to the box before it, plus whether the port changes into it.
+    private static int SwitchesThrough(int[] portSwitchPrefix, int[][] boxes, int position)
+        => portSwitchPrefix[position - 1] + SwitchesInto(boxes, position);
+
+    private static int SwitchesInto(int[][] boxes, int position)
+        => PortChangedInto(boxes, position) ? 1 : 0;
+
+    // Whether the destination port differs between the box at `position` and the
+    // one immediately before it.
+    private static bool PortChangedInto(int[][] boxes, int position)
+        => boxes[position - FirstComparablePosition][PortSlot] != boxes[position - 1][PortSlot];
+
     // The number of times the destination port changes between consecutive boxes
     // among the first `boxCount` of them - so the extra legs a single trip over
     // that whole prefix would pay, on top of leaving and returning.
-    public int PortSwitchesAmongFirst(int boxCount) => _portSwitchPrefix[boxCount];
+    public int PortSwitchesAmongFirst(int boxCount) => portSwitchPrefix[boxCount];
 
     // Total weight of the first `boxCount` boxes; the ship's load limit is checked
     // as a difference of two of these.
-    public long WeightOfFirst(int boxCount) => _weightPrefix[boxCount];
-
-    private static int SwitchesInto(int[][] boxes, int position)
-        => boxes[position - FirstComparablePosition][PortSlot] != boxes[position - 1][PortSlot] ? 1 : 0;
+    public long WeightOfFirst(int boxCount) => weightPrefix[boxCount];
 }

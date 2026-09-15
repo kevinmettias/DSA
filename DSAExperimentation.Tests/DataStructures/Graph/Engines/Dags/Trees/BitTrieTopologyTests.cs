@@ -18,8 +18,5 @@ public sealed class BitTrieTopologyTests
     }
 
     [Fact]
-    public void GetChildren_LeafNode_ReturnsNone()
-    {
-        Assert.Equal(0, BitTrieTopology.GetChildren(new BitTrieNode()).Count);
-    }
+    public void GetChildren_LeafNode_ReturnsNone() => Assert.Equal(0, BitTrieTopology.GetChildren(new BitTrieNode()).Count);
 }

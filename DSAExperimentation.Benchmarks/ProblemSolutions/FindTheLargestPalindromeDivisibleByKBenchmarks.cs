@@ -14,7 +14,7 @@ public class FindTheLargestPalindromeDivisibleByKBenchmarks
     private const int K = 7;
 
     [Params(5, 9)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public string BruteForce() => FindTheLargestPalindromeDivisibleByKSolution.LargestPalindromeByBruteForce(N, K);

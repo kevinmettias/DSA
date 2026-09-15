@@ -12,14 +12,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumPossibleMaximumWaitingTimeBenchmarks
 {
-    private static readonly int[] Fuel = [50, 50];
     private const int MaxDemandExclusive = 6;
     private const int Seed = 4009;
+    private static readonly int[] Fuel = [50, 50];
+
+    private int[] _demand = [];
 
     [Params(10, 18)]
-    public int Length;
-
-    private int[] _demand = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

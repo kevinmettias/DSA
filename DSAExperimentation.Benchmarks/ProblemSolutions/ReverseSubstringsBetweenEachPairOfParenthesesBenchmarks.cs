@@ -15,10 +15,10 @@ public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
 {
     private const string GroupBody = "abcdef";
 
-    [Params(500, 5_000)]
-    public int GroupCount;
+    private string _input = "";
 
-    private string _input = null!;
+    [Params(500, 5_000)]
+    public int GroupCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

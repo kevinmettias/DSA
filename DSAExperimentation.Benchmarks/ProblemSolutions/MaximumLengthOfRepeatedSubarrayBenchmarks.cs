@@ -15,11 +15,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumLengthOfRepeatedSubarrayBenchmarks
 {
-    [Params(60, 300, 1000)]
-    public int Length;
+    private int[] _first = [];
 
-    private int[] _first = null!;
-    private int[] _second = null!;
+    private int[] _second = [];
+    [Params(60, 300, 1000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

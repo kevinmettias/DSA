@@ -22,11 +22,11 @@ public class ShortestPathAlgorithmBenchmarks
     private const int ExtraEdgesPerNode = 3;
     private const int RandomSeed = 42;
 
-    [Params(50, 300)]
-    public int NodeCount;
+    private List<WeightedGraphNode> _vertices = new();
 
-    private List<WeightedGraphNode> _vertices = null!;
     private WeightedGraphNode _source = null!;
+    [Params(50, 300)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

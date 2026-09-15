@@ -13,11 +13,11 @@ public class RemoveKDigitsBenchmarks
     private const int DigitCount = 10;
     private const int RemovalFraction = 3;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private string _num = "";
 
-    private string _num = null!;
     private int _k;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

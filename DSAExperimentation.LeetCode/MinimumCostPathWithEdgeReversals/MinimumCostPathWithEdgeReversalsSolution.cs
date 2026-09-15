@@ -23,11 +23,29 @@ internal static class MinimumCostPathWithEdgeReversalsSolution
     public static int MinCostByBruteForceDijkstra(int n, int[][] edges)
     {
         var adjacency = BuildAdjacency(n, edges);
+        var dist = SeedDistances(n);
+
+        RunDijkstra(adjacency, dist);
+
+        return DestinationDistance(dist, n);
+    }
+
+    // The distance array every arm starts from: node 0 at distance 0, every other node
+    // still unreached.
+    private static long[] SeedDistances(int n)
+    {
         var dist = new long[n];
         Array.Fill(dist, long.MaxValue);
         dist[0] = 0;
 
-        var settled = new bool[n];
+        return dist;
+    }
+
+    // PriorityQueue<int, long> Dijkstra from node 0: settle each node once, then offer
+    // every one of its outgoing edges' candidate distances to the queue.
+    private static void RunDijkstra(List<(int Neighbor, long Weight)>[] adjacency, long[] dist)
+    {
+        var settled = new bool[dist.Length];
         var queue = new PriorityQueue<int, long>();
         queue.Enqueue(0, 0);
 
@@ -39,20 +57,34 @@ internal static class MinimumCostPathWithEdgeReversalsSolution
             }
 
             settled[node] = true;
+            RelaxOutgoing(adjacency[node], dist, queue, node);
+        }
+    }
 
-            foreach (var (neighbor, weight) in adjacency[node])
+    // One settled node's edge scan: a shorter route through it replaces the neighbor's
+    // distance and re-offers that neighbor to the queue.
+    private static void RelaxOutgoing(
+        List<(int Neighbor, long Weight)> outgoing, long[] dist, PriorityQueue<int, long> queue, int node)
+    {
+        foreach (var (neighbor, weight) in outgoing)
+        {
+            var candidate = dist[node] + weight;
+
+            if (candidate < dist[neighbor])
             {
-                var candidate = dist[node] + weight;
-
-                if (candidate < dist[neighbor])
-                {
-                    dist[neighbor] = candidate;
-                    queue.Enqueue(neighbor, candidate);
-                }
+                dist[neighbor] = candidate;
+                queue.Enqueue(neighbor, candidate);
             }
         }
+    }
 
-        return dist[n - 1] == long.MaxValue ? LeetCodeAnswer.None : (int)dist[n - 1];
+    // The settled distance to the destination, narrowed to the problem's int answer, or
+    // the problem's "no path" sentinel when node n - 1 was never reached.
+    private static int DestinationDistance(long[] dist, int n)
+    {
+        var destinationDistance = dist[n - 1];
+
+        return destinationDistance == long.MaxValue ? LeetCodeAnswer.None : (int)destinationDistance;
     }
 
     private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int n, int[][] edges)
@@ -79,8 +111,11 @@ internal static class MinimumCostPathWithEdgeReversalsSolution
     // call, so the puzzle reduces to building the augmented graph once and reading
     // off node n-1's distance - the same composition FindEdgesInShortestPathsSolution
     // uses for LC 3123's own Dijkstra arm.
-    public static int MinCostByShortestPathDijkstra(int n, int[][] edges) =>
-        MinCostByShortestPathDijkstra(ReversalGraph.Build(n, edges));
+    public static int MinCostByShortestPathDijkstra(int n, int[][] edges)
+    {
+        var graph = ReversalGraph.Build(n, edges);
+        return MinCostByShortestPathDijkstra(graph);
+    }
 
     public static int MinCostByShortestPathDijkstra(ReversalGraph graph)
     {

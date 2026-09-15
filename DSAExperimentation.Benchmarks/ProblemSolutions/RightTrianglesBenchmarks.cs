@@ -14,10 +14,10 @@ public class RightTrianglesBenchmarks
 {
     private const int Seed = 3128;
 
-    [Params(20, 200)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(20, 200)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = RightTriangleWorkloads.BuildGrid(Size, seed: Seed);

@@ -12,11 +12,11 @@ public class EditDistanceBenchmarks
 {
     private const string DifferingSuffix = "b";
 
-    private string _first = null!;
-    private string _second = null!;
+    private string _first = "";
+    private string _second = "";
 
     [Params(20, 80)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

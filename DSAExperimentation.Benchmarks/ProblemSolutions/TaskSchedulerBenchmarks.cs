@@ -18,10 +18,10 @@ public class TaskSchedulerBenchmarks
     // LC problem number, used as the deterministic seed for task-sequence generation.
     private const int RandomSeed = 621;
 
-    [Params(2_000, 40_000)]
-    public int TaskCount;
+    private char[] _tasks = [];
 
-    private char[] _tasks = null!;
+    [Params(2_000, 40_000)]
+    public int TaskCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -87,8 +87,8 @@ internal static class LongestBinarySubsequenceLessThanOrEqualToKSolution
     // they are worth read as a binary number, and how far left the next character's
     // weight has moved. It exists so the scan above stays a single loop rather than
     // four locals threaded through a branch by hand, the same job AddBinarySolution's
-    // DigitWalk does for the carry walk; a class rather than a walk struct because
-    // every one of these fields is assigned after construction.
+    // DigitWalk does for the carry walk; a reference type because every one of these
+    // fields is assigned after construction.
     private sealed class GreedyTake(int budget)
     {
         private readonly int _budget = budget;

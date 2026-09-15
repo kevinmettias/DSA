@@ -22,11 +22,11 @@ public class SmallestStringWithSwapsBenchmarks
     private const int RandomSeed = 1202;
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private int[][] _pairs = null!;
+    private int[][] _pairs = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

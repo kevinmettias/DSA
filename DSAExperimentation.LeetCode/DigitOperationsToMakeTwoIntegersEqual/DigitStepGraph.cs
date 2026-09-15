@@ -8,9 +8,9 @@ namespace DSAExperimentation.LeetCode.DigitOperationsToMakeTwoIntegersEqual;
 // query about it (EdgeGraph's own framing for LC 3123's identical shape).
 internal sealed class DigitStepGraph
 {
-    private DigitStepGraph(Dictionary<int, DigitStepNode> nodes) => Nodes = nodes;
-
     public Dictionary<int, DigitStepNode> Nodes { get; }
+
+    private DigitStepGraph(Dictionary<int, DigitStepNode> nodes) => Nodes = nodes;
 
     public static DigitStepGraph Build(int digitCount)
     {
@@ -78,7 +78,7 @@ internal sealed class DigitStepGraph
                 yield return WithDigit(digits, i, digit + 1);
             }
 
-            if (digit > 0 && !(i == 0 && digit == 1))
+            if (CanDecrementDigit(i, digit))
             {
                 yield return WithDigit(digits, i, digit - 1);
             }
@@ -92,6 +92,11 @@ internal sealed class DigitStepGraph
 
         return int.Parse(new string(chars));
     }
+
+    // Any digit may step down except a 0, and the leading digit may not fall from 1
+    // to 0 - that mutation would drop a digit and change n's digit count.
+    private static bool CanDecrementDigit(int index, int digit) =>
+        digit > 0 && !(index == 0 && digit == 1);
 
     // LC 3377's own primality law: values as small as this repo ever builds
     // (n, m < 10^4) make trial division up to sqrt(value) the natural check -

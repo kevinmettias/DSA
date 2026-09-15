@@ -19,10 +19,10 @@ public class MaximumFrequencyStackBenchmarks
     private const double PushProbability = 0.6;
     private const int ValueRange = 50;
 
-    [Params(200, 3_000)]
-    public int OperationCount;
+    private (bool IsPush, int Value)[] _operations = [];
 
-    private (bool IsPush, int Value)[] _operations = null!;
+    [Params(200, 3_000)]
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -23,10 +23,10 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
     private const int MinCellValue = -10;
     private const int MaxCellValueExclusive = 11;
 
-    [Params(200, 3_000)]
-    public int Rows;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(200, 3_000)]
+    public int Rows { get; set; }
 
     [GlobalSetup]
     public void Setup()

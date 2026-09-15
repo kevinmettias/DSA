@@ -64,7 +64,8 @@ internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
             return 0;
         }
 
-        return UnsuppliedCountWithDictionary(CollectComponent(start, adjacency, visited), values);
+        var component = CollectComponent(start, adjacency, visited);
+        return UnsuppliedCountWithDictionary(component, values);
     }
 
     private static List<int> CollectComponent(int start, List<int>[] adjacency, bool[] visited)
@@ -98,6 +99,43 @@ internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
         visited[next] = true;
         component.Add(next);
         queue.Enqueue(next);
+    }
+
+    // The same shortfall count as UnsuppliedCountWithHashMap, over a BCL Dictionary,
+    // so the baseline arm stays what you would write without this repo.
+    private static int UnsuppliedCountWithDictionary(List<int> indices, ValueArrays values)
+    {
+        var availableCounts = new Dictionary<int, int>();
+
+        foreach (var index in indices)
+        {
+            availableCounts.TryGetValue(values.Source[index], out var count);
+            availableCounts[values.Source[index]] = count + 1;
+        }
+
+        return CountShortfallWithDictionary(availableCounts, indices, values);
+    }
+
+    // Spend the component's own source values on its target values, counting each target
+    // the tally cannot cover.
+    private static int CountShortfallWithDictionary(
+        Dictionary<int, int> availableCounts, List<int> indices, ValueArrays values)
+    {
+        var distance = 0;
+
+        foreach (var index in indices)
+        {
+            if (availableCounts.TryGetValue(values.Target[index], out var count) && count > 0)
+            {
+                availableCounts[values.Target[index]] = count - 1;
+            }
+            else
+            {
+                distance++;
+            }
+        }
+
+        return distance;
     }
 
     // This repo's own DisjointSet over the array's index positions: O(1) amortized
@@ -165,6 +203,14 @@ internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
             availableCounts.Set(values.Source[index], count + 1);
         }
 
+        return CountShortfallWithHashMap(availableCounts, indices, values);
+    }
+
+    // The same spend-and-count as CountShortfallWithDictionary, over this repo's HashMap,
+    // so the composed arm never falls back to a BCL map.
+    private static int CountShortfallWithHashMap(
+        HashMap<int, int> availableCounts, List<int> indices, ValueArrays values)
+    {
         var distance = 0;
 
         foreach (var index in indices)
@@ -172,35 +218,6 @@ internal static class MinimizeHammingDistanceAfterSwapOperationsSolution
             if (availableCounts.TryGetValue(values.Target[index], out var count) && count > 0)
             {
                 availableCounts.Set(values.Target[index], count - 1);
-            }
-            else
-            {
-                distance++;
-            }
-        }
-
-        return distance;
-    }
-
-    // The same shortfall count as UnsuppliedCountWithHashMap, over a BCL Dictionary,
-    // so the baseline arm stays what you would write without this repo.
-    private static int UnsuppliedCountWithDictionary(List<int> indices, ValueArrays values)
-    {
-        var availableCounts = new Dictionary<int, int>();
-
-        foreach (var index in indices)
-        {
-            availableCounts.TryGetValue(values.Source[index], out var count);
-            availableCounts[values.Source[index]] = count + 1;
-        }
-
-        var distance = 0;
-
-        foreach (var index in indices)
-        {
-            if (availableCounts.TryGetValue(values.Target[index], out var count) && count > 0)
-            {
-                availableCounts[values.Target[index]] = count - 1;
             }
             else
             {

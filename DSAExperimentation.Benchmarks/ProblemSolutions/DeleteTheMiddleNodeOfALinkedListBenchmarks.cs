@@ -20,10 +20,10 @@ public class DeleteTheMiddleNodeOfALinkedListBenchmarks
     private const int RandomSeed = 2095; // LC problem number
     private const int ValueRangeExclusive = 1_000;
 
-    [Params(500, 20_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(500, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

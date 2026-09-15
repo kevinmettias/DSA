@@ -27,6 +27,12 @@ internal static class MinimumXorSumOfTwoArraysSolution
     public static int MinimumXorSumByBruteForceRecursion(int[] nums1, int[] nums2) =>
         CheapestFromScratch(nums1, nums2, 0, 0);
 
+    // The same recurrence routed through this repo's own Memoizer, keyed on the tuple
+    // state (index, claimedMask), so each reachable state is evaluated once rather
+    // than once per ordering that reaches it.
+    public static int MinimumXorSumByMemoizedBitmask(int[] nums1, int[] nums2) =>
+        Memoizer.Memoize<(int Index, int Mask), int>((0, 0), new CheapestAssignment(nums1, nums2));
+
     private static int CheapestFromScratch(int[] nums1, int[] nums2, int index, int mask)
     {
         if (index == nums1.Length)
@@ -51,39 +57,35 @@ internal static class MinimumXorSumOfTwoArraysSolution
         return best;
     }
 
-    // The same recurrence routed through this repo's own Memoizer, keyed on the tuple
-    // state (index, claimedMask), so each reachable state is evaluated once rather
-    // than once per ordering that reaches it.
-    public static int MinimumXorSumByMemoizedBitmask(int[] nums1, int[] nums2) =>
-        Memoizer.Memoize<(int Index, int Mask), int>(
-            (0, 0), (state, cheapestFor) => CheapestFor(nums1, nums2, state, cheapestFor));
-
-    private static int CheapestFor(
-        int[] nums1,
-        int[] nums2,
-        (int Index, int Mask) state,
-        Func<(int Index, int Mask), int> cheapestFor)
+    // The recurrence, as a named type: the cheapest pairing from (index, claimedMask) is
+    // the best of handing nums1[index] any still-unclaimed nums2 element - that pair's
+    // XOR cost plus the cheapest pairing from the state the claim leaves behind.
+    private sealed class CheapestAssignment(int[] nums1, int[] nums2)
+        : IRecurrence<(int Index, int Mask), int>
     {
-        var (index, mask) = state;
-
-        if (index == nums1.Length)
+        public int Replay((int Index, int Mask) state, IRecurrence<(int Index, int Mask), int> rest)
         {
-            return 0;
-        }
+            var (index, mask) = state;
 
-        var best = int.MaxValue;
-
-        for (var j = 0; j < nums2.Length; j++)
-        {
-            if ((mask & (1 << j)) != 0)
+            if (index == nums1.Length)
             {
-                continue;
+                return 0;
             }
 
-            var candidate = (nums1[index] ^ nums2[j]) + cheapestFor((index + 1, mask | (1 << j)));
-            best = Math.Min(best, candidate);
-        }
+            var best = int.MaxValue;
 
-        return best;
+            for (var j = 0; j < nums2.Length; j++)
+            {
+                if ((mask & (1 << j)) != 0)
+                {
+                    continue;
+                }
+
+                var candidate = (nums1[index] ^ nums2[j]) + rest.Replay((index + 1, mask | (1 << j)), rest);
+                best = Math.Min(best, candidate);
+            }
+
+            return best;
+        }
     }
 }

@@ -172,10 +172,7 @@ public sealed partial class HashMapTests
     }
 
     [Fact]
-    public void Count_NewMap_IsZero()
-    {
-        Assert.Equal(0, new HashMap<string, int>().Count);
-    }
+    public void Count_NewMap_IsZero() => Assert.Equal(0, new HashMap<string, int>().Count);
 
     [Fact]
     public void Count_RisesOnlyForNewKeys()

@@ -58,39 +58,61 @@ internal static class PathExistenceQueriesInAGraphIISolution
             return 0;
         }
 
-        var n = sortedValues.Length;
-        var visited = new bool[n];
+        return WalkLevelsToTarget(sortedValues, maxDiff, start, target);
+    }
+
+    // Level-order walk from the start position: the answer is the level at which the target
+    // first appears, so the walk carries the level counter and reports -1 if the target is
+    // never reached.
+    private static int WalkLevelsToTarget(int[] sortedValues, int maxDiff, int start, int target)
+    {
+        var visited = new bool[sortedValues.Length];
         var queue = new Queue<int>();
         visited[start] = true;
         queue.Enqueue(start);
+
         var distance = 0;
 
         while (queue.Count > 0)
         {
             distance++;
 
-            for (var levelSize = queue.Count; levelSize > 0; levelSize--)
+            if (ExpandLevel(sortedValues, maxDiff, (visited, queue), target))
             {
-                var node = queue.Dequeue();
-                var (lo, hi) = ReachableRange(sortedValues, maxDiff, node);
-
-                for (var next = lo; next <= hi; next++)
-                {
-                    if (next == target)
-                    {
-                        return distance;
-                    }
-
-                    if (!visited[next])
-                    {
-                        visited[next] = true;
-                        queue.Enqueue(next);
-                    }
-                }
+                return distance;
             }
         }
 
         return -1;
+    }
+
+    // One BFS level: every unvisited position whose value is within maxDiff of a position
+    // dequeued at this level, reported as a hit the moment the target is among them - so the
+    // caller's own distance counter is already the hop count for that arrival.
+    private static bool ExpandLevel(
+        int[] sortedValues, int maxDiff, (bool[] Visited, Queue<int> Queue) frontier, int target)
+    {
+        for (var levelSize = frontier.Queue.Count; levelSize > 0; levelSize--)
+        {
+            var node = frontier.Queue.Dequeue();
+            var (lo, hi) = ReachableRange(sortedValues, maxDiff, node);
+
+            for (var next = lo; next <= hi; next++)
+            {
+                if (next == target)
+                {
+                    return true;
+                }
+
+                if (!frontier.Visited[next])
+                {
+                    frontier.Visited[next] = true;
+                    frontier.Queue.Enqueue(next);
+                }
+            }
+        }
+
+        return false;
     }
 
     private static (int Lo, int Hi) ReachableRange(int[] sortedValues, int maxDiff, int node)

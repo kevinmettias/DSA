@@ -34,7 +34,8 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
             }
             else
             {
-                answers.Add(CountAdjacentEqualPairs(chars, query[1], query[2]));
+                var equalPairs = CountAdjacentEqualPairs(chars, query[1], query[2]);
+                answers.Add(equalPairs);
             }
         }
 
@@ -73,7 +74,8 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
             }
             else
             {
-                answers.Add(query[1] == query[2] ? 0 : tree.Query(query[1], query[2] - 1));
+                var isSingleIndexRange = query[1] == query[2];
+                answers.Add(isSingleIndexRange ? 0 : tree.Query(query[1], query[2] - 1));
             }
         }
 
@@ -95,7 +97,8 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
     private static void Flip(FenwickTree<int, SumOperation<int>> tree, char[] chars, int index)
     {
         var oldLeftEdge = index > 0 ? EdgeValue(chars[index - 1], chars[index]) : 0;
-        var oldRightEdge = index < chars.Length - 1 ? EdgeValue(chars[index], chars[index + 1]) : 0;
+        var hasRightNeighbor = index < chars.Length - 1;
+        var oldRightEdge = hasRightNeighbor ? EdgeValue(chars[index], chars[index + 1]) : 0;
 
         chars[index] = Flip(chars[index]);
 

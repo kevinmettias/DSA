@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountWaysToBuildRoomsInAnAntColonyBenchmarks
 {
-    [Params(200, 2_000)]
-    public int RoomCount;
-
     private RootedTreeNode _root = null!;
+
+    [Params(200, 2_000)]
+    public int RoomCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = ParentArrayTree.Chain(RoomCount);

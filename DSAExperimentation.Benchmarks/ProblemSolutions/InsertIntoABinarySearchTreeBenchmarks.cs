@@ -14,11 +14,11 @@ public class InsertIntoABinarySearchTreeBenchmarks
 {
     private const int ValueStride = 2;
 
-    [Params(500, 20_000)]
-    public int NodeCount;
+    private int[] _insertionOrder = [];
 
-    private int[] _insertionOrder = null!;
     private int _newValue;
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

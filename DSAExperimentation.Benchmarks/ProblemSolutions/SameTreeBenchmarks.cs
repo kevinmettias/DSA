@@ -24,8 +24,8 @@ public class SameTreeBenchmarks
         _b = Tree();
     }
 
+    private static BinaryTreeNode<int> Tree() => new(1) { Left = new(LeftChildValue), Right = new(RightChildValue) };
+
     [Benchmark]
     public bool RecursiveCompare() => SameTreeSolution.IsSameByRecursiveCompare(_a, _b);
-
-    private static BinaryTreeNode<int> Tree() => new(1) { Left = new(LeftChildValue), Right = new(RightChildValue) };
 }

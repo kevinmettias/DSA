@@ -16,11 +16,11 @@ public class MinimumNumberOfMovesToSeatEveryoneBenchmarks
     // Exclusive upper bound on a generated seat or student position.
     private const int MaxSeatPosition = 1_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _seats = [];
 
-    private int[] _seats = null!;
-    private int[] _students = null!;
+    private int[] _students = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -11,13 +11,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumSubarraySumAfterAtMostKSwapsBenchmarks
 {
-    private const int Seed = 3962; // LC problem number
+    private const int Seed = 3962; private int[] _nums = [];
+
+    private int _k;
+    // LC problem number
 
     [Params(30, 120)]
-    public int Length;
-
-    private int[] _nums = null!;
-    private int _k;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

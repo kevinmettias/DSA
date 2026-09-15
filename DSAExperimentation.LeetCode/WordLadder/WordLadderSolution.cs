@@ -19,33 +19,34 @@ internal static class WordLadderSolution
     // The textbook answer: BCL Queue + HashSet, generating each of the 25 * L
     // candidate mutations on the fly and keeping the ones the dictionary contains,
     // so the graph is never materialized.
-    public static int LadderLengthByMutationQueue(string beginWord, string endWord, IEnumerable<string> wordList)
+    public static int LadderLengthByMutationQueue(BeginWord beginWord, EndWord endWord, IEnumerable<string> wordList)
     {
         var wordSet = new Set<string>(wordList);
 
         return LadderLengthByMutationQueue(beginWord, endWord, wordSet);
     }
 
-    public static int LadderLengthByMutationQueue(string beginWord, string endWord, Set<string> wordSet)
+    public static int LadderLengthByMutationQueue(BeginWord beginWord, EndWord endWord, Set<string> wordSet)
     {
-        if (!wordSet.Has(endWord))
+        if (!wordSet.Has(endWord.Text))
         {
             return NoLadder;
         }
 
-        var distance = HammingSearch.MutationDistance(beginWord, endWord, wordSet, StandardAlphabets.LowercaseLatin);
+        var distance = HammingSearch.MutationDistance(
+            new MutationStart(beginWord.Text), new MutationTarget(endWord.Text), wordSet, StandardAlphabets.LowercaseLatin);
 
-        return distance is null ? NoLadder : distance.Value + 1;
+        return distance is null ? NoLadder : WordCount(distance.Value);
     }
 
     // This repo's own BFS over DataStructures.Graph.Hamming's materialized graph: Reduce.Graph in
     // BreadthFirstReduceOrder with DistanceMapReduceAlgebra is already "distance
     // from a root to every node", so the puzzle is one lookup in the result.
-    public static int LadderLengthByReduceGraph(string beginWord, string endWord, IEnumerable<string> wordList)
+    public static int LadderLengthByReduceGraph(BeginWord beginWord, EndWord endWord, IEnumerable<string> wordList)
     {
-        var graph = HammingGraph.Build(beginWord, wordList);
+        var graph = HammingGraph.Build(beginWord.Text, wordList);
 
-        return LadderLengthByReduceGraph(graph, endWord);
+        return LadderLengthByReduceGraph(graph, endWord.Text);
     }
 
     public static int LadderLengthByReduceGraph(HammingGraph graph, string endWord)
@@ -57,6 +58,9 @@ internal static class WordLadderSolution
 
         var distances = HammingDistances.From(graph.Root);
 
-        return distances.TryGetValue(endNode, out var distance) ? distance + 1 : NoLadder;
+        return distances.TryGetValue(endNode, out var distance) ? WordCount(distance) : NoLadder;
     }
+
+    // LeetCode counts the words in the chain, not the edges walked between them.
+    private static int WordCount(int edges) => edges + 1;
 }

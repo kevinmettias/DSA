@@ -30,11 +30,11 @@ internal static class PathWithMaximumProbabilitySolution
     // marking the vertices already on the current path, which is what keeps a cycle in
     // the undirected input from looping forever.
     public static double MaxProbabilityByExhaustiveDfs(
-        int nodeCount, int[][] edges, double[] successProbabilities, int start, int end)
+        int nodeCount, int[][] edges, double[] successProbabilities, (int Start, int End) endpoints)
     {
         var graph = ProbabilityGraph.Build(nodeCount, edges, successProbabilities);
 
-        return MaxProbabilityByExhaustiveDfs(graph, start, end);
+        return MaxProbabilityByExhaustiveDfs(graph, endpoints.Start, endpoints.End);
     }
 
     public static double MaxProbabilityByExhaustiveDfs(ProbabilityGraph graph, int start, int end)
@@ -71,11 +71,11 @@ internal static class PathWithMaximumProbabilitySolution
     // path run from start settles every vertex, and the answer is that distance
     // transformed back into a product.
     public static double MaxProbabilityByDijkstra(
-        int nodeCount, int[][] edges, double[] successProbabilities, int start, int end)
+        int nodeCount, int[][] edges, double[] successProbabilities, (int Start, int End) endpoints)
     {
         var graph = ProbabilityGraph.Build(nodeCount, edges, successProbabilities);
 
-        return MaxProbabilityByDijkstra(graph, start, end);
+        return MaxProbabilityByDijkstra(graph, endpoints.Start, endpoints.End);
     }
 
     public static double MaxProbabilityByDijkstra(ProbabilityGraph graph, int start, int end)

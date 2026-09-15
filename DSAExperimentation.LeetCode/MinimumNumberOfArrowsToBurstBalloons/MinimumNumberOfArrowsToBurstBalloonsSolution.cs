@@ -53,7 +53,7 @@ internal static class MinimumNumberOfArrowsToBurstBalloonsSolution
 
         for (var i = 0; i < points.Length; i++)
         {
-            if (!burst[i] && points[i].Start <= minEnd && minEnd <= points[i].End)
+            if (!burst[i] && IsStruckByArrow(points[i].Start, points[i].End, minEnd))
             {
                 burst[i] = true;
                 remaining--;
@@ -62,6 +62,11 @@ internal static class MinimumNumberOfArrowsToBurstBalloonsSolution
 
         return remaining;
     }
+
+    // An arrow fired at the earliest remaining end bursts exactly the balloons whose
+    // own span reaches that point.
+    private static bool IsStruckByArrow(int start, int end, int arrowPosition) =>
+        start <= arrowPosition && arrowPosition <= end;
 
     // LeetCode's own shape.
     public static int FindMinArrowShotsBySortEndsThenGreedyScan(int[][] points) =>

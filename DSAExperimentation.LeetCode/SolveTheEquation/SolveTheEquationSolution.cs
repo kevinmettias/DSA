@@ -32,33 +32,6 @@ internal static class SolveTheEquationSolution
         return Combine(leftCoefficient, leftConstant, rightCoefficient, rightConstant);
     }
 
-    // Walks the same term boundaries over a ReadOnlySpan<char> and parses
-    // directly from the slice, allocating nothing per term.
-    public static string SolveBySpanParse(string equation)
-    {
-        var separator = equation.IndexOf('=');
-        var leftSpan = equation.AsSpan(0, separator);
-        var (leftCoefficient, leftConstant) = ParseSideSpan(leftSpan);
-        var rightSpan = equation.AsSpan(separator + 1);
-        var (rightCoefficient, rightConstant) = ParseSideSpan(rightSpan);
-        return Combine(leftCoefficient, leftConstant, rightCoefficient, rightConstant);
-    }
-
-    private static string Combine(int leftCoefficient, int leftConstant, int rightCoefficient, int rightConstant)
-    {
-        var coefficientX = leftCoefficient - rightCoefficient;
-        var constant = rightConstant - leftConstant;
-
-        if (coefficientX == 0)
-        {
-            return constant == 0 ? InfiniteSolutionsMessage : NoSolutionMessage;
-        }
-
-        return $"x={constant / coefficientX}";
-    }
-
-    private readonly record struct EquationParseState(int CoefficientX, int Constant, int Sign, int Index);
-
     private static (int CoefficientX, int Constant) ParseSideSubstring(string side)
     {
         var state = new EquationParseState(0, 0, 1, 0);
@@ -69,64 +42,6 @@ internal static class SolveTheEquationSolution
         }
 
         return (state.CoefficientX, state.Constant);
-    }
-
-    private static bool TryConsumeSign(char c, out int sign)
-    {
-        if (c == '+')
-        {
-            sign = 1;
-            return true;
-        }
-
-        if (c == '-')
-        {
-            sign = -1;
-            return true;
-        }
-
-        sign = 0;
-        return false;
-    }
-
-    private static int FindTermEnd(ReadOnlySpan<char> side, int start)
-    {
-        var i = start;
-
-        while (i < side.Length && side[i] != '+' && side[i] != '-')
-        {
-            i++;
-        }
-
-        return i;
-    }
-
-    private static (bool IsCoefficient, int Value) ParseTermValue(ReadOnlySpan<char> term)
-    {
-        if (term[^1] == 'x')
-        {
-            var digits = term[..^1];
-            return (true, digits.IsEmpty ? 1 : int.Parse(digits));
-        }
-
-        return (false, int.Parse(term));
-    }
-
-    private static EquationParseState ApplyTerm(EquationParseState state, bool isCoefficient, int value, int newIndex)
-    {
-        var coefficientX = state.CoefficientX;
-        var constant = state.Constant;
-
-        if (isCoefficient)
-        {
-            coefficientX += state.Sign * value;
-        }
-        else
-        {
-            constant += state.Sign * value;
-        }
-
-        return state with { CoefficientX = coefficientX, Constant = constant, Index = newIndex };
     }
 
     private static EquationParseState ConsumeTermSubstring(string side, EquationParseState state)
@@ -140,9 +55,21 @@ internal static class SolveTheEquationSolution
 
         var end = FindTermEnd(side, i);
         var term = side.Substring(i, end - i);
-        var (isCoefficient, value) = ParseTermValue(term);
+        var (kind, value) = ParseTermValue(term);
 
-        return ApplyTerm(state, isCoefficient, value, end);
+        return ApplyTerm(state, kind, value, end);
+    }
+
+    // Walks the same term boundaries over a ReadOnlySpan<char> and parses
+    // directly from the slice, allocating nothing per term.
+    public static string SolveBySpanParse(string equation)
+    {
+        var separator = equation.IndexOf('=');
+        var leftSpan = equation.AsSpan(0, separator);
+        var (leftCoefficient, leftConstant) = ParseSideSpan(leftSpan);
+        var rightSpan = equation.AsSpan(separator + 1);
+        var (rightCoefficient, rightConstant) = ParseSideSpan(rightSpan);
+        return Combine(leftCoefficient, leftConstant, rightCoefficient, rightConstant);
     }
 
     private static (int CoefficientX, int Constant) ParseSideSpan(ReadOnlySpan<char> side)
@@ -168,8 +95,93 @@ internal static class SolveTheEquationSolution
 
         var end = FindTermEnd(side, i);
         var term = side[i..end];
-        var (isCoefficient, value) = ParseTermValue(term);
+        var (kind, value) = ParseTermValue(term);
 
-        return ApplyTerm(state, isCoefficient, value, end);
+        return ApplyTerm(state, kind, value, end);
+    }
+
+    private static string Combine(int leftCoefficient, int leftConstant, int rightCoefficient, int rightConstant)
+    {
+        var coefficientX = leftCoefficient - rightCoefficient;
+        var constant = rightConstant - leftConstant;
+
+        if (coefficientX == 0)
+        {
+            return constant == 0 ? InfiniteSolutionsMessage : NoSolutionMessage;
+        }
+
+        return $"x={constant / coefficientX}";
+    }
+
+    private static bool TryConsumeSign(char c, out int sign)
+    {
+        if (c == '+')
+        {
+            sign = 1;
+            return true;
+        }
+
+        if (c == '-')
+        {
+            sign = -1;
+            return true;
+        }
+
+        sign = 0;
+        return false;
+    }
+
+    private static int FindTermEnd(ReadOnlySpan<char> side, int start)
+    {
+        var i = start;
+
+        while (IsInsideTerm(side, i))
+        {
+            i++;
+        }
+
+        return i;
+    }
+
+    // A term's text runs up to the next sign, or to the end of the side it sits on.
+    private static bool IsInsideTerm(ReadOnlySpan<char> side, int index) =>
+        index < side.Length && side[index] != '+' && side[index] != '-';
+
+    private static (TermKind Kind, int Value) ParseTermValue(ReadOnlySpan<char> term)
+    {
+        if (term[^1] == 'x')
+        {
+            var digits = term[..^1];
+            return (TermKind.Coefficient, digits.IsEmpty ? 1 : int.Parse(digits));
+        }
+
+        return (TermKind.Constant, int.Parse(term));
+    }
+
+    private static EquationParseState ApplyTerm(EquationParseState state, TermKind kind, int value, int newIndex)
+    {
+        var coefficientX = state.CoefficientX;
+        var constant = state.Constant;
+
+        if (kind == TermKind.Coefficient)
+        {
+            coefficientX += state.Sign * value;
+        }
+        else
+        {
+            constant += state.Sign * value;
+        }
+
+        return state with { CoefficientX = coefficientX, Constant = constant, Index = newIndex };
+    }
+
+    private readonly record struct EquationParseState(int CoefficientX, int Constant, int Sign, int Index);
+
+    // What a parsed term contributes to: Coefficient adds to the running coefficient of x,
+    // Constant adds to the running constant. The sign applied is the state's, not the term's.
+    private enum TermKind
+    {
+        Coefficient,
+        Constant,
     }
 }

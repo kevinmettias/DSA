@@ -56,30 +56,17 @@ public sealed class DesignAuctionSystemTests
 // One call in an AuctionSystem script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct AuctionOp
+public readonly record struct AuctionOp(AuctionOp.OpKind kind, int userId, int itemId, int amount)
 {
-    private readonly Kind _kind;
-    private readonly int _userId;
-    private readonly int _itemId;
-    private readonly int _amount;
-
-    private AuctionOp(Kind kind, int userId, int itemId, int amount)
-    {
-        _kind = kind;
-        _userId = userId;
-        _itemId = itemId;
-        _amount = amount;
-    }
-
     public static AuctionOp AddBid(int userId, int itemId, int bidAmount) =>
-        new(Kind.AddBid, userId, itemId, bidAmount);
+        new(OpKind.AddBid, userId, itemId, bidAmount);
 
     public static AuctionOp UpdateBid(int userId, int itemId, int newAmount) =>
-        new(Kind.UpdateBid, userId, itemId, newAmount);
+        new(OpKind.UpdateBid, userId, itemId, newAmount);
 
-    public static AuctionOp RemoveBid(int userId, int itemId) => new(Kind.RemoveBid, userId, itemId, 0);
+    public static AuctionOp RemoveBid(int userId, int itemId) => new(OpKind.RemoveBid, userId, itemId, 0);
 
-    public static AuctionOp GetHighestBidder(int itemId) => new(Kind.GetHighestBidder, 0, itemId, 0);
+    public static AuctionOp GetHighestBidder(int itemId) => new(OpKind.GetHighestBidder, 0, itemId, 0);
 
     // null for the three void calls, the returned userId for GetHighestBidder - so
     // a script runner can assert against one expected value per operation
@@ -88,23 +75,23 @@ public readonly record struct AuctionOp
     // calls Apply.
     internal int? Apply(IAuctionSystemStrategy strategy)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.AddBid:
-                strategy.AddBid(_userId, _itemId, _amount);
+            case OpKind.AddBid:
+                strategy.AddBid(userId, itemId, amount);
                 return null;
-            case Kind.UpdateBid:
-                strategy.UpdateBid(_userId, _itemId, _amount);
+            case OpKind.UpdateBid:
+                strategy.UpdateBid(userId, itemId, amount);
                 return null;
-            case Kind.RemoveBid:
-                strategy.RemoveBid(_userId, _itemId);
+            case OpKind.RemoveBid:
+                strategy.RemoveBid(userId, itemId);
                 return null;
             default:
-                return strategy.GetHighestBidder(_itemId);
+                return strategy.GetHighestBidder(itemId);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         AddBid,
         UpdateBid,

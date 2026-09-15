@@ -19,11 +19,11 @@ public class MinimumIncrementsForTargetMultiplesInAnArrayBenchmarks
 
     private static readonly int[] Target = [4, 6, 9, 10];
 
-    [Params(100, 1_000)]
-    public int NumsCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private TargetLcmTable _lcmTable;
+    [Params(100, 1_000)]
+    public int NumsCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

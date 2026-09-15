@@ -118,12 +118,19 @@ internal static class RobotCollisionsSolution
             }
             else
             {
-                health[topIndex] = 0;
-                health[leftIndex] = 0;
-                rightMovers.TryPop(out _);
+                DestroyBothRobots(rightMovers, health, topIndex, leftIndex);
                 alive = false;
             }
         }
+    }
+
+    // A collision between two robots of equal health destroys both: the survivor
+    // loses one health, and on a tie - which leaves no survivor - neither keeps any.
+    private static void DestroyBothRobots(RepoStack rightMovers, int[] health, int topIndex, int leftIndex)
+    {
+        health[topIndex] = 0;
+        health[leftIndex] = 0;
+        rightMovers.TryPop(out _);
     }
 
     // Original indices, ordered by the position each robot starts at.

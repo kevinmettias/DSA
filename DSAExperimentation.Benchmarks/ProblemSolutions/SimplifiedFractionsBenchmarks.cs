@@ -16,7 +16,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SimplifiedFractionsBenchmarks
 {
     [Params(200, 2_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public List<string> TrialDivisionGcd() => SimplifiedFractionsSolution.ListFractionsByTrialDivisionGcd(N);

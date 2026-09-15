@@ -30,8 +30,8 @@ internal static class RepositoryFiles
             return [];
         }
 
-        var obj = Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar;
-        var bin = Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar;
+        var obj = $"{Path.DirectorySeparatorChar}obj{Path.DirectorySeparatorChar}";
+        var bin = $"{Path.DirectorySeparatorChar}bin{Path.DirectorySeparatorChar}";
 
         return Directory.EnumerateFiles(directory, "*.cs", SearchOption.AllDirectories)
             .Where(file => !file.Contains(obj) && !file.Contains(bin));

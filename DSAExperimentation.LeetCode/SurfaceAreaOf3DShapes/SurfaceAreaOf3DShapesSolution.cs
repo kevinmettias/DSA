@@ -40,21 +40,30 @@ internal static class SurfaceAreaOf3DShapesSolution
         {
             for (var col = 0; col < view.Size; col++)
             {
-                var height = grid[row][col];
-
-                if (height == 0)
-                {
-                    continue;
-                }
-
-                area += TopAndBottomFaceArea;
-                area += ExposedSide(view, height, row - 1, col);
-                area += ExposedSide(view, height, row + 1, col);
-                area += ExposedSide(view, height, row, col - 1);
-                area += ExposedSide(view, height, row, col + 1);
+                area += CellExposedArea(view, row, col);
             }
         }
 
+        return area;
+    }
+
+    // One cell's whole contribution: top and bottom faces once it carries any cubes,
+    // plus each of the 4 orthogonal sides as the height difference against that
+    // neighbour's stack.
+    private static int CellExposedArea(GridView view, int row, int col)
+    {
+        var height = view.Cells[row][col];
+
+        if (height == 0)
+        {
+            return 0;
+        }
+
+        var area = TopAndBottomFaceArea;
+        area += ExposedSide(view, height, row - 1, col);
+        area += ExposedSide(view, height, row + 1, col);
+        area += ExposedSide(view, height, row, col - 1);
+        area += ExposedSide(view, height, row, col + 1);
         return area;
     }
 
@@ -62,12 +71,19 @@ internal static class SurfaceAreaOf3DShapesSolution
 
     private static int ExposedSide(GridView view, int height, int row, int col)
     {
-        var neighborHeight = row >= 0 && row < view.Size && col >= 0 && col < view.Size
-            ? view.Cells[row][col]
-            : 0;
+        var neighborHeight = IsInside(view, row, col) ? HeightAt(view, row, col) : 0;
 
         return Math.Max(0, height - neighborHeight);
     }
+
+    // Every side probe steps one cell outside the grid, so both coordinates have to
+    // be in range before the neighbour's height may be read at all.
+    private static bool IsInside(GridView view, int row, int col) =>
+        row >= 0 && row < view.Size && col >= 0 && col < view.Size;
+
+    // The stack height at a cell - read only once IsInside has vouched for the
+    // coordinates.
+    private static int HeightAt(GridView view, int row, int col) => view.Cells[row][col];
 
     // Pay for one height-0 border up front, then index all 4 neighbors
     // unconditionally - the per-cell branches the baseline spends become a single

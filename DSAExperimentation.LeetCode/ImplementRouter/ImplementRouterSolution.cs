@@ -77,7 +77,7 @@ internal static class ImplementRouterSolution
 
             foreach (var packet in _stored)
             {
-                if (packet.Destination == destination && packet.Timestamp >= startTime && packet.Timestamp <= endTime)
+                if (IsInWindow(packet, destination, startTime, endTime))
                 {
                     count++;
                 }
@@ -85,6 +85,17 @@ internal static class ImplementRouterSolution
 
             return count;
         }
+
+        // A packet counts only when it is headed for the queried destination and its
+        // timestamp falls inside the queried window.
+        private static bool IsInWindow(
+            (int Source, int Destination, int Timestamp) packet,
+            int destination,
+            int startTime,
+            int endTime)
+            => packet.Destination == destination
+                && packet.Timestamp >= startTime
+                && packet.Timestamp <= endTime;
     }
 
     // This repo's own Queue<Element> for global FIFO storage order, Set<Element>
@@ -130,6 +141,15 @@ internal static class ImplementRouterSolution
             return true;
         }
 
+        private void Evict()
+        {
+            if (_stored.TryDequeue(out var evicted))
+            {
+                _seen.TryRemove(evicted);
+                LogFor(evicted.Destination).StartIndex++;
+            }
+        }
+
         public int[] ForwardPacket()
         {
             if (!_stored.TryDequeue(out var packet))
@@ -150,18 +170,10 @@ internal static class ImplementRouterSolution
             }
 
             var sequence = new DynamicArraySequence<int>(log.Timestamps);
-            var lower = Math.Max(log.StartIndex, BinarySearch.LowerBound<int, DynamicArraySequence<int>>(sequence, startTime));
+            var firstAtOrAfterStart = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(sequence, startTime);
+            var lower = Math.Max(log.StartIndex, firstAtOrAfterStart);
             var upper = BinarySearch.UpperBound<int, DynamicArraySequence<int>>(sequence, endTime);
             return Math.Max(0, upper - lower);
-        }
-
-        private void Evict()
-        {
-            if (_stored.TryDequeue(out var evicted))
-            {
-                _seen.TryRemove(evicted);
-                LogFor(evicted.Destination).StartIndex++;
-            }
         }
 
         private DestinationLog LogFor(int destination)

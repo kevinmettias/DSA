@@ -87,31 +87,20 @@ public sealed class DetectSquaresTests
 // reads like the LeetCode call sequence it replays. Add returns null (no answer);
 // Count returns the actual answer - the same null-means-"no return value" convention
 // AllOneOp.Apply uses for its own mutator/query split.
-public readonly record struct DetectSquaresOp
+public readonly record struct DetectSquaresOp(bool isCount, int pointX, int pointY)
 {
-    private readonly bool _isCount;
-    private readonly int _pointX;
-    private readonly int _pointY;
-
-    private DetectSquaresOp(bool isCount, int pointX, int pointY)
-    {
-        _isCount = isCount;
-        _pointX = pointX;
-        _pointY = pointY;
-    }
-
     public static DetectSquaresOp Add(int pointX, int pointY) => new(isCount: false, pointX, pointY);
 
     public static DetectSquaresOp Count(int pointX, int pointY) => new(isCount: true, pointX, pointY);
 
     internal int? Apply(DetectSquaresSolution.IDetectSquares detector)
     {
-        if (_isCount)
+        if (isCount)
         {
-            return detector.Count(_pointX, _pointY);
+            return detector.Count(pointX, pointY);
         }
 
-        detector.Add(_pointX, _pointY);
+        detector.Add(pointX, pointY);
 
         return null;
     }

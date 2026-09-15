@@ -11,10 +11,10 @@ public class RemoveDuplicateLettersBenchmarks
     private const int RandomSeed = 316; // LC problem number
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _letters = "";
 
-    private string _letters = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

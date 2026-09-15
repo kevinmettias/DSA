@@ -27,9 +27,6 @@ namespace DSAExperimentation.LeetCode.EscapeALargeMaze;
 // no defaulted overload and is measured, and tested, on a reduced board.
 internal static class EscapeALargeMazeSolution
 {
-    // LC 1036's board is 10^6 x 10^6, so coordinates run 0 .. 999_999.
-    public const int LeetCodeBoardSize = 1_000_000;
-
     private const int PairCountDivisor = 2; // n choose 2: n * (n - 1) / PairCountDivisor
     private static readonly (int DRow, int DCol)[] Directions = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
@@ -97,7 +94,7 @@ internal static class EscapeALargeMazeSolution
     // This repo's own implicit-graph search, capped at the pocket bound so its cost
     // depends on the blocked-cell count alone and not on the board size at all.
     public static bool CanEscapeByCappedTraversal(int[][] blockedCells, int[] source, int[] target) =>
-        CanEscapeByCappedTraversal(blockedCells, source, target, LeetCodeBoardSize);
+        CanEscapeByCappedTraversal(blockedCells, source, target, EscapeALargeMazeBoard.Size);
 
     public static bool CanEscapeByCappedTraversal(int[][] blockedCells, int[] source, int[] target, int boardSize) =>
         CanEscapeByCappedTraversal(BuildBlocked(blockedCells), ToCell(source), ToCell(target), boardSize);
@@ -105,21 +102,25 @@ internal static class EscapeALargeMazeSolution
     public static bool CanEscapeByCappedTraversal(
         Set<(int Row, int Col)> blocked, (int Row, int Col) source, (int Row, int Col) target, int boardSize)
     {
-        var threshold = blocked.Count * (blocked.Count - 1) / PairCountDivisor;
+        // Every helper below reads the blocked cells and the board's side length
+        // together - they are the board, so they travel as one argument.
+        var board = (Blocked: blocked, Size: boardSize);
 
-        return CanEscapeOrReach(source, target, blocked, threshold, boardSize)
-            && CanEscapeOrReach(target, source, blocked, threshold, boardSize);
+        return CanEscapeOrReach(source, target, board)
+            && CanEscapeOrReach(target, source, board);
     }
 
     private static bool CanEscapeOrReach(
         (int Row, int Col) start,
         (int Row, int Col) other,
-        Set<(int Row, int Col)> blocked,
-        int threshold,
-        int boardSize)
+        (Set<(int Row, int Col)> Blocked, int Size) board)
     {
+        // The pocket bound is a property of the blocked set alone, so the search
+        // derives it here instead of being handed a value computed from the same set.
+        var threshold = board.Blocked.Count * (board.Blocked.Count - 1) / PairCountDivisor;
         var budget = new VisitBudget();
-        var reached = DepthFirstSearch.Traverse(start, cell => Successors(cell, blocked, threshold, boardSize, budget));
+
+        var reached = DepthFirstSearch.Traverse(start, cell => Successors(cell, board, threshold, budget));
 
         return reached.Count > threshold || reached.Contains(other);
     }
@@ -130,14 +131,13 @@ internal static class EscapeALargeMazeSolution
     // once Successors is a real method rather than a closure, hence the holder.
     private sealed class VisitBudget
     {
-        public int VisitedCount;
+        public int VisitedCount { get; set; }
     }
 
     private static IEnumerable<(int Row, int Col)> Successors(
         (int Row, int Col) cell,
-        Set<(int Row, int Col)> blocked,
+        (Set<(int Row, int Col)> Blocked, int Size) board,
         int threshold,
-        int boardSize,
         VisitBudget budget)
     {
         budget.VisitedCount++;
@@ -149,7 +149,7 @@ internal static class EscapeALargeMazeSolution
 
         foreach (var direction in Directions)
         {
-            if (TryGetOpenNeighbor(cell, direction, blocked, boardSize, out var next))
+            if (TryGetOpenNeighbor(cell, direction, board, out var next))
             {
                 yield return next;
             }
@@ -159,13 +159,12 @@ internal static class EscapeALargeMazeSolution
     private static bool TryGetOpenNeighbor(
         (int Row, int Col) cell,
         (int DRow, int DCol) direction,
-        Set<(int Row, int Col)> blocked,
-        int boardSize,
+        (Set<(int Row, int Col)> Blocked, int Size) board,
         out (int Row, int Col) next)
     {
         next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
 
-        return InBounds(next.Row, next.Col, boardSize) && !blocked.Has(next);
+        return InBounds(next.Row, next.Col, board.Size) && !board.Blocked.Has(next);
     }
 
     private static bool InBounds(int row, int col, int boardSize) =>

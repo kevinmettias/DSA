@@ -7,11 +7,11 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // genuine work rather than settling on a trivial answer.
 internal static class StabilityFactorWorkloads
 {
-    private static readonly int[] Primes = [2, 3, 5, 7];
     private const int RunLengthCeilingExclusive = 12;
     private const int MultiplierCeilingExclusive = 100;
     private const int BreakChanceOutOf = 5;
     private const int BreakValue = 1;
+    private static readonly int[] Primes = [2, 3, 5, 7];
 
     public static int[] Build(int length, int seed)
     {
@@ -22,7 +22,8 @@ internal static class StabilityFactorWorkloads
         while (index < length)
         {
             var prime = Primes[random.Next(Primes.Length)];
-            var runLength = Math.Min(length - index, random.Next(1, RunLengthCeilingExclusive));
+            var maxRunLength = random.Next(1, RunLengthCeilingExclusive);
+            var runLength = Math.Min(length - index, maxRunLength);
 
             for (var i = 0; i < runLength; i++)
             {

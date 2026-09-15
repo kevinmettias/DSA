@@ -16,10 +16,10 @@ public class MinimumCostTreeFromLeafValuesBenchmarks
 
     private const int MaxLeafValueExclusive = 100;
 
-    [Params(10, 14)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
+    [Params(10, 14)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

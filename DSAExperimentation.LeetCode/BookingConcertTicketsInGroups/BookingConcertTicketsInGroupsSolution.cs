@@ -176,8 +176,10 @@ internal static class BookingConcertTicketsInGroupsSolution
             var sequence = new HasCapacitySequence(_maxAvailable, fromRow, maxRow, threshold);
             var offset = BinarySearch.LowerBound(sequence, true);
 
-            return offset >= sequence.Length ? null : fromRow + offset;
+            return offset >= sequence.Length ? null : RowAtOffset(fromRow, offset);
         }
+
+        private static int RowAtOffset(int fromRow, int offset) => fromRow + offset;
 
         private void SetAvailable(int row, int available)
         {

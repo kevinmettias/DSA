@@ -34,8 +34,11 @@ internal static class LongestCommonSuffixQueriesSolution
         {
             var suffixLength = CommonSuffixLength(wordsContainer[i], query);
 
-            if (suffixLength > bestSuffixLength ||
-                (suffixLength == bestSuffixLength && wordsContainer[i].Length < wordsContainer[bestIndex].Length))
+            if (BeatsBestMatch(
+                suffixLength,
+                bestSuffixLength,
+                new CandidateWord(wordsContainer[i]),
+                new BestWord(wordsContainer[bestIndex])))
             {
                 bestSuffixLength = suffixLength;
                 bestIndex = i;
@@ -45,21 +48,38 @@ internal static class LongestCommonSuffixQueriesSolution
         return bestIndex;
     }
 
+    // A candidate word takes over as the best match when it shares a longer suffix
+    // with the query, or an equally long one while being the shorter word - the
+    // problem's own tie-break. The two words are NOT interchangeable here: only the
+    // candidate's length is ever compared against the incumbent's, so the pair is
+    // named for which is which rather than left as two adjacent `string` positions.
+    private static bool BeatsBestMatch(int suffixLength, int bestSuffixLength, CandidateWord candidate, BestWord best)
+        => suffixLength > bestSuffixLength ||
+            (suffixLength == bestSuffixLength && candidate.Text.Length < best.Text.Length);
+
     private static int CommonSuffixLength(string a, string b)
     {
-        var i = a.Length - 1;
-        var j = b.Length - 1;
+        var left = new SuffixCursor(a, a.Length - 1);
+        var right = new SuffixCursor(b, b.Length - 1);
         var length = 0;
 
-        while (i >= 0 && j >= 0 && a[i] == b[j])
+        while (SharesCharacterAt(left, right))
         {
             length++;
-            i--;
-            j--;
+            left = left with { Index = left.Index - 1 };
+            right = right with { Index = right.Index - 1 };
         }
 
         return length;
     }
+
+    // Walking towards the front, the two words share another suffix character while
+    // both still have a position to compare and those positions agree. Each word
+    // travels with the position being read in it - a position only means anything
+    // against its own word - so the comparison takes one cursor per side rather than
+    // a bare index and a bare word a caller could pair up wrongly.
+    private static bool SharesCharacterAt(SuffixCursor left, SuffixCursor right)
+        => left.Index >= 0 && right.Index >= 0 && left.Text[left.Index] == right.Text[right.Index];
 
     // Trie<int>.Set only ever marks the FINAL node of the key it is given - there is
     // no public way to touch every ancestor node in a single walk - so, unlike a
@@ -159,4 +179,17 @@ internal static class LongestCommonSuffixQueriesSolution
         Array.Reverse(chars);
         return new string(chars);
     }
+
+    // The two words a best-match comparison weighs up: the candidate the scan is
+    // currently looking at, and the incumbent it has to beat. They are told apart by
+    // type because the tie-break reads them apart - the candidate is the one whose
+    // length is tested against the incumbent's.
+    internal readonly record struct CandidateWord(string Text);
+
+    internal readonly record struct BestWord(string Text);
+
+    // One word plus the position in it currently being compared, walked towards the
+    // front. The position is only meaningful against its own word, so the two travel
+    // as one value instead of as separate arguments a caller could pair up wrongly.
+    internal readonly record struct SuffixCursor(string Text, int Index);
 }

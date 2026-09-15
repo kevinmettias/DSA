@@ -14,10 +14,10 @@ public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
 {
     private const int Seed = 3480;
 
-    [Params(10, 50)]
-    public int N;
+    private int[][] _conflictingPairs = [];
 
-    private int[][] _conflictingPairs = null!;
+    [Params(10, 50)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -25,14 +25,6 @@ public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
         var random = new Random(Seed);
         _conflictingPairs = BuildConflictingPairs(N, random);
     }
-
-    [Benchmark(Baseline = true)]
-    public int BruteForce() =>
-        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByBruteForce(N, _conflictingPairs);
-
-    [Benchmark]
-    public int GroupedBoundSweep() =>
-        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByGroupedBoundSweep(N, _conflictingPairs);
 
     // One pair per position, both endpoints drawn from [1, n] and never equal -
     // stays within LC's own conflictingPairs.length <= 2n bound.
@@ -56,4 +48,12 @@ public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
 
         return pairs;
     }
+
+    [Benchmark(Baseline = true)]
+    public int BruteForce() =>
+        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByBruteForce(N, _conflictingPairs);
+
+    [Benchmark]
+    public int GroupedBoundSweep() =>
+        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByGroupedBoundSweep(N, _conflictingPairs);
 }

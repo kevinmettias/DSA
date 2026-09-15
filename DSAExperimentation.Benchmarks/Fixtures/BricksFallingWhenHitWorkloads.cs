@@ -32,7 +32,8 @@ internal static class BricksFallingWhenHitWorkloads
 
             for (var c = 0; c < size; c++)
             {
-                grid[r][c] = r == 0 || random.NextDouble() < BrickDensity ? 1 : 0;
+                var isBrick = r == 0 || random.NextDouble() < BrickDensity;
+                grid[r][c] = isBrick ? 1 : 0;
             }
         }
 

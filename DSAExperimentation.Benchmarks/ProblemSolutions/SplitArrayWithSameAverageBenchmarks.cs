@@ -18,10 +18,10 @@ public class SplitArrayWithSameAverageBenchmarks
     // LC problem number, used as the RNG seed.
     private const int RandomSeed = 805;
 
-    [Params(16, 24)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(16, 24)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

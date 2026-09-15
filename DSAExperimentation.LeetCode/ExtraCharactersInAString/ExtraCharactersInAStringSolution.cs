@@ -58,33 +58,7 @@ internal static class ExtraCharactersInAStringSolution
     {
         var words = BuildTrie(dictionary);
 
-        return Memoizer.Memoize<int, int>(0, FewestLeftoverFrom);
-
-        int FewestLeftoverFrom(int start, Func<int, int> fewestFrom)
-        {
-            if (start == s.Length)
-            {
-                return 0;
-            }
-
-            var best = 1 + fewestFrom(start + 1);
-
-            for (var end = start + 1; end <= s.Length; end++)
-            {
-                var piece = s[start..end];
-                if (!words.HasPrefix(piece))
-                {
-                    break;
-                }
-
-                if (words.HasKey(piece))
-                {
-                    best = Math.Min(best, fewestFrom(end));
-                }
-            }
-
-            return best;
-        }
+        return FewestLeftoverByTrie(s, words);
     }
 
     private static Trie<bool> BuildTrie(string[] dictionary)
@@ -97,5 +71,56 @@ internal static class ExtraCharactersInAStringSolution
         }
 
         return words;
+    }
+
+    // The recurrence the memoized arm fills, with the trie handed in already built:
+    // from a start position the fewest leftover characters are either "waste this one
+    // and continue" or the best over the dictionary words that begin here.
+    private static int FewestLeftoverByTrie(string s, Trie<bool> words) =>
+        Memoizer.Memoize<int, int>(0, new FewestLeftoverFromStart(s, words));
+
+    // The end positions of the dictionary words that begin at `start`, in ascending
+    // order, giving up as soon as the candidate leaves the dictionary: the same
+    // Trie<bool> walk, just handed to the recurrence one word at a time so the
+    // recurrence itself reads as the two branches it chooses between.
+    private static IEnumerable<int> WordEndsStartingAt(string s, Trie<bool> words, int start)
+    {
+        for (var end = start + 1; end <= s.Length; end++)
+        {
+            var piece = s[start..end];
+            if (!words.HasPrefix(piece))
+            {
+                yield break;
+            }
+
+            if (words.HasKey(piece))
+            {
+                yield return end;
+            }
+        }
+    }
+
+    // The recurrence, as a named type: from a start position the fewest leftover
+    // characters are either this one wasted and the rest continued, or the best over
+    // the dictionary words that begin right here.
+    private sealed class FewestLeftoverFromStart(string s, Trie<bool> words) : IRecurrence<int, int>
+    {
+        public int Replay(int start, IRecurrence<int, int> rest)
+        {
+            if (start == s.Length)
+            {
+                return 0;
+            }
+
+            var best = 1 + rest.Replay(start + 1, rest);
+
+            foreach (var end in WordEndsStartingAt(s, words, start))
+            {
+                var afterWord = rest.Replay(end, rest);
+                best = Math.Min(best, afterWord);
+            }
+
+            return best;
+        }
     }
 }

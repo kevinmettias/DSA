@@ -18,10 +18,10 @@ public class CheckIfItIsAGoodArrayBenchmarks
     private const int MultipleFactor = 3; // keeps _values multiples of 3 so the running gcd never reaches 1 early
     private const int MaxRandomValueExclusive = 50_000;
 
-    [Params(50, 200)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(50, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

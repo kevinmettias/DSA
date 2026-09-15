@@ -21,10 +21,10 @@ public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
 {
     private const int Land = 1;
 
-    [Params(10, 20)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(10, 20)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()

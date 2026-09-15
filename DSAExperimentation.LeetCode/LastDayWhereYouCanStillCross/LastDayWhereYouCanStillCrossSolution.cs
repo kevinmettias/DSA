@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
@@ -14,7 +15,6 @@ namespace DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
 // differ only in who runs the bisection, which is the whole comparison.
 internal static class LastDayWhereYouCanStillCrossSolution
 {
-    private const int MidpointDivisor = 2;
 
     // A virtual node above the grid, wired to every still-dry top-row cell, so one
     // Traverse call replaces one search per dry top-row column.
@@ -39,7 +39,7 @@ internal static class LastDayWhereYouCanStillCrossSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / MidpointDivisor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
             if (CanCross(flooding, mid))
             {

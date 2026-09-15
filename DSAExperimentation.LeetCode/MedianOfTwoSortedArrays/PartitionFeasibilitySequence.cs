@@ -17,8 +17,10 @@ internal readonly struct PartitionFeasibilitySequence(int[] nums1, int[] nums2, 
     public int Get(int i)
     {
         var j = half - i;
-        var leftOfNums1 = i == 0 ? int.MinValue : nums1[i - 1];
-        var rightOfNums2 = j == nums2.Length ? int.MaxValue : nums2[j];
+        var leftOfNums1 = i == 0 ? int.MinValue : ValueAt(nums1, i - 1);
+        var rightOfNums2 = j == nums2.Length ? int.MaxValue : ValueAt(nums2, j);
         return leftOfNums1 <= rightOfNums2 ? 0 : 1;
     }
+
+    private static int ValueAt(int[] nums, int index) => nums[index];
 }

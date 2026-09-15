@@ -28,37 +28,9 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
     {
         var adjacency = BuildAdjacency(coins.Length, edges);
         var memo = new Dictionary<(int Node, int Halvings), long>();
+        var state = (Adjacency: adjacency, Coins: coins, K: k, Memo: memo);
 
-        return Dfs(0, -1, 0);
-
-        long Dfs(int node, int parent, int halvings)
-        {
-            var cappedHalvings = Math.Min(halvings, CoinPointsAlgebra.MaxHalvings);
-
-            if (memo.TryGetValue((node, cappedHalvings), out var cached))
-            {
-                return cached;
-            }
-
-            var nextHalvings = Math.Min(cappedHalvings + 1, CoinPointsAlgebra.MaxHalvings);
-            var take = ((long)coins[node] >> cappedHalvings) - k;
-            var halve = (long)coins[node] >> nextHalvings;
-
-            foreach (var neighbor in adjacency[node])
-            {
-                if (neighbor == parent)
-                {
-                    continue;
-                }
-
-                take += Dfs(neighbor, node, cappedHalvings);
-                halve += Dfs(neighbor, node, nextHalvings);
-            }
-
-            var best = Math.Max(take, halve);
-            memo[(node, cappedHalvings)] = best;
-            return best;
-        }
+        return Dfs(state, 0, -1, 0);
     }
 
     // Composed: edges[] converted to a parent array via a BFS over this repo's own
@@ -83,23 +55,6 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         return table[0];
     }
 
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
-    {
-        var adjacency = new List<int>[n];
-        for (var i = 0; i < n; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            adjacency[edge[0]].Add(edge[1]);
-            adjacency[edge[1]].Add(edge[0]);
-        }
-
-        return adjacency;
-    }
-
     // edges[] is undirected, so a BFS from the root is what turns it into the
     // parent-points-at-child encoding ParentArrayTree.Build expects.
     private static int[] BuildParentArray(int n, int[][] edges)
@@ -109,6 +64,16 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         Array.Fill(parent, NoParentAssignedYet);
         parent[0] = -1;
 
+        AssignParentsByBfs(adjacency, parent);
+
+        return parent;
+    }
+
+    // A BFS from the root fills in parent[]; NoParentAssignedYet marks "not
+    // reached yet", so the -1 the caller seeded on the root is what stops the
+    // walk from turning back into it.
+    private static void AssignParentsByBfs(List<int>[] adjacency, int[] parent)
+    {
         var queue = new RepoQueue();
         queue.Enqueue(0);
 
@@ -125,7 +90,74 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
                 queue.Enqueue(neighbor);
             }
         }
+    }
 
-        return parent;
+    // The memo table, the adjacency and the problem constants travel together,
+    // so they are bundled rather than threaded one by one through the recursion.
+    private static long Dfs(
+        (List<int>[] Adjacency, int[] Coins, int K, Dictionary<(int Node, int Halvings), long> Memo) state,
+        int node, int parent, int halvings)
+    {
+        var cappedHalvings = Math.Min(halvings, HalvingDepth.Max);
+
+        if (state.Memo.TryGetValue((node, cappedHalvings), out var cached))
+        {
+            return cached;
+        }
+
+        var nextHalvings = Math.Min(cappedHalvings + 1, HalvingDepth.Max);
+        var take = ((long)state.Coins[node] >> cappedHalvings) - state.K;
+        var halve = (long)state.Coins[node] >> nextHalvings;
+
+        var (takeDelta, halveDelta) = AccumulateChildBranches(state, node, parent, cappedHalvings);
+        take += takeDelta;
+        halve += halveDelta;
+
+        var best = Math.Max(take, halve);
+        state.Memo[(node, cappedHalvings)] = best;
+        return best;
+    }
+
+    // Each child is asked for both of its branches - the one that keeps this
+    // node's halving count and the one that increments it - and the two totals
+    // are what Dfs adds to its own two candidates. Children are visited in
+    // adjacency order so the memo writes land in the same sequence as before.
+    private static (long Take, long Halve) AccumulateChildBranches(
+        (List<int>[] Adjacency, int[] Coins, int K, Dictionary<(int Node, int Halvings), long> Memo) state,
+        int node, int parent, int cappedHalvings)
+    {
+        var nextHalvings = Math.Min(cappedHalvings + 1, HalvingDepth.Max);
+        long take = 0;
+        long halve = 0;
+
+        foreach (var neighbor in state.Adjacency[node])
+        {
+            if (neighbor == parent)
+            {
+                continue;
+            }
+
+            take += Dfs(state, neighbor, node, cappedHalvings);
+            halve += Dfs(state, neighbor, node, nextHalvings);
+        }
+
+        return (take, halve);
+    }
+
+    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    {
+        var adjacency = new List<int>[n];
+        for (var i = 0; i < n; i++)
+        {
+            adjacency[i] = [];
+        }
+
+        foreach (var edge in edges)
+        {
+            adjacency[edge[0]].Add(edge[1]);
+            adjacency[edge[1]].Add(edge[0]);
+        }
+
+        return adjacency;
     }
 }

@@ -14,11 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementRand10UsingRand7;
 // against it would be asserting a property the strategy does not have.
 public sealed class ImplementRand10UsingRand7Tests
 {
-    private static Func<int> SeededRand7(int seed)
-    {
-        var random = new Random(seed);
-        return () => random.Next(1, 8);
-    }
+    private static IRand7 SeededRand7(int seed) => new SeededRandomRand7(new Random(seed));
 
     [Fact]
     public void Rand10ByRejectionSampling_ManyCalls_AlwaysStaysInRange()
@@ -63,5 +59,13 @@ public sealed class ImplementRand10UsingRand7Tests
             var value = ImplementRand10UsingRand7Solution.Rand10ByNaiveModuloFold(rand7);
             Assert.InRange(value, 1, 10);
         }
+    }
+
+    // The stand-in for LeetCode's black-box Rand7(): a seeded System.Random drawn
+    // from per call. One type serves every test here, so the seed stays the only
+    // thing a test picks.
+    private sealed class SeededRandomRand7(Random random) : IRand7
+    {
+        public int Draw() => random.Next(1, 8);
     }
 }

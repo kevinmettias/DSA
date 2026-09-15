@@ -40,7 +40,7 @@ internal static class FindTheScoreDifferenceInAGameSolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            if (!marked[i] && (best == -1 || nums[i] < nums[best]))
+            if (!marked[i] && BeatsCurrentSmallest(nums, i, best))
             {
                 best = i;
             }
@@ -49,19 +49,10 @@ internal static class FindTheScoreDifferenceInAGameSolution
         return best;
     }
 
-    private static int MarkAndCountNewlyMarked(bool[] marked, int index) =>
-        Mark(marked, index) + Mark(marked, index - 1) + Mark(marked, index + 1);
-
-    private static int Mark(bool[] marked, int index)
-    {
-        if (index < 0 || index >= marked.Length || marked[index])
-        {
-            return 0;
-        }
-
-        marked[index] = true;
-        return 1;
-    }
+    // The first candidate found starts the search; after that a value has to be strictly
+    // smaller to take the title.
+    private static bool BeatsCurrentSmallest(int[] nums, int index, int bestIndex) =>
+        bestIndex < 0 || nums[index] < nums[bestIndex];
 
     // Composed: push every (value, index) pair into this repo's Heap once -
     // MinHeapOrder needs nothing beyond ValueTuple's own built-in lexicographic
@@ -95,11 +86,39 @@ internal static class FindTheScoreDifferenceInAGameSolution
                 continue;
             }
 
-            MarkAndCountNewlyMarked(marked, entry.Index);
-            scores[turn] += entry.Value;
-            turn = 1 - turn;
+            turn = PlayTurn(marked, scores, turn, entry);
         }
 
         return scores[0] - scores[1];
     }
+
+    // One turn of the fixed simulation, taken from a live (value, index) pair: mark
+    // that slot and its two array neighbors, score the value for the player to move,
+    // and hand play to the other player.
+    private static int PlayTurn(bool[] marked, int[] scores, int turn, (int Value, int Index) entry)
+    {
+        MarkAndCountNewlyMarked(marked, entry.Index);
+        scores[turn] += entry.Value;
+
+        return 1 - turn;
+    }
+
+    private static int MarkAndCountNewlyMarked(bool[] marked, int index) =>
+        Mark(marked, index) + Mark(marked, index - 1) + Mark(marked, index + 1);
+
+    private static int Mark(bool[] marked, int index)
+    {
+        if (HasNoUnmarkedSlot(marked, index))
+        {
+            return 0;
+        }
+
+        marked[index] = true;
+        return 1;
+    }
+
+    // An index that does not name a slot in the array, or names one already marked, has
+    // nothing left for this turn to mark.
+    private static bool HasNoUnmarkedSlot(bool[] marked, int index) =>
+        index < 0 || index >= marked.Length || marked[index];
 }

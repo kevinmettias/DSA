@@ -5,16 +5,10 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 public sealed class BitTrieChildrenTests
 {
     [Fact]
-    public void Count_NoBranches_IsZero()
-    {
-        Assert.Equal(0, new BitTrieChildren(new BitTrieNode()).Count);
-    }
+    public void Count_NoBranches_IsZero() => Assert.Equal(0, new BitTrieChildren(new BitTrieNode()).Count);
 
     [Fact]
-    public void Count_OnlyTheOneBranch_IsOne()
-    {
-        Assert.Equal(1, new BitTrieChildren(new BitTrieNode { One = new BitTrieNode() }).Count);
-    }
+    public void Count_OnlyTheOneBranch_IsOne() => Assert.Equal(1, new BitTrieChildren(new BitTrieNode { One = new BitTrieNode() }).Count);
 
     [Fact]
     public void Count_BothBranches_IsTwo()

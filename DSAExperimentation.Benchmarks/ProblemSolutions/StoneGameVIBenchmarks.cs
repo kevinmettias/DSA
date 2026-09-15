@@ -12,13 +12,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class StoneGameVIBenchmarks
 {
     private const int RandomSeed = 1686; // LC problem number
-    private const int MaxStoneValue = 1_000; // exclusive upper bound passed to Random.Next
+    private const int MaxStoneValue = 1_000; private int[] _aliceValues = [];
+
+    private int[] _bobValues = [];
+    // exclusive upper bound passed to Random.Next
 
     [Params(200, 4_000)]
-    public int Length;
-
-    private int[] _aliceValues = null!;
-    private int[] _bobValues = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

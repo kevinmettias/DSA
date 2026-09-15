@@ -18,11 +18,11 @@ public class RangeFrequencyQueriesBenchmarks
 
     private const int ValueRange = 50;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
-    private (int Left, int Right, int Value)[] _queries = null!;
+    private (int Left, int Right, int Value)[] _queries = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

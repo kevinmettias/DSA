@@ -10,18 +10,18 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToReachTargetWithLimitedPower;
 // their own expanded graphs.
 internal sealed class PowerStateGraph
 {
-    private PowerStateGraph(PowerStateNode[,] states, int power)
-    {
-        States = states;
-        Power = power;
-    }
-
     // [nodeId, remainingPower].
     public PowerStateNode[,] States { get; }
 
     public int Power { get; }
 
     public int NodeCount => States.GetLength(0);
+
+    private PowerStateGraph(PowerStateNode[,] states, int power)
+    {
+        States = states;
+        Power = power;
+    }
 
     public PowerStateNode SourceState(int source) => States[source, Power];
 

@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckIfPointIsReachableBenchmarks
 {
-    [Params(50, 300)]
-    public int Length;
-
     private int _targetX;
+
     private int _targetY;
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -94,39 +94,30 @@ public sealed class InsertDeleteGetRandomO1DuplicatesAllowedTests
 // One call in a RandomizedCollection script: which method to invoke and with what
 // argument. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the call sequence it replays.
-public readonly record struct RandomizedCollectionOp
+public readonly record struct RandomizedCollectionOp(RandomizedCollectionOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static RandomizedCollectionOp Insert(int value) => new(OpKind.Insert, value);
 
-    private RandomizedCollectionOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static RandomizedCollectionOp Remove(int value) => new(OpKind.Remove, value);
 
-    public static RandomizedCollectionOp Insert(int value) => new(Kind.Insert, value);
+    public static RandomizedCollectionOp GetRandom() => new(OpKind.GetRandom, 0);
 
-    public static RandomizedCollectionOp Remove(int value) => new(Kind.Remove, value);
-
-    public static RandomizedCollectionOp GetRandom() => new(Kind.GetRandom, 0);
-
-    public static RandomizedCollectionOp Count() => new(Kind.Count, 0);
+    public static RandomizedCollectionOp Count() => new(OpKind.Count, 0);
 
     // Boxed uniformly so a script runner can assert against one expected value per
     // operation regardless of which method it dispatches to. Internal, not public:
     // IRandomizedCollection is internal to
     // InsertDeleteGetRandomO1DuplicatesAllowedSolution, and only this same assembly's
     // RunScript ever calls Apply.
-    internal object? Apply(IRandomizedCollection collection) => _kind switch
+    internal object? Apply(IRandomizedCollection collection) => kind switch
     {
-        Kind.Insert => collection.Insert(_value),
-        Kind.Remove => collection.Remove(_value),
-        Kind.GetRandom => collection.GetRandom(),
+        OpKind.Insert => collection.Insert(value),
+        OpKind.Remove => collection.Remove(value),
+        OpKind.GetRandom => collection.GetRandom(),
         _ => collection.Count,
     };
 
-    private enum Kind
+    public enum OpKind
     {
         Insert,
         Remove,

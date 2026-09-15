@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class GuessNumberHigherOrLowerIIBenchmarks
 {
     [Params(10, 14)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int UnmemoizedRecursion() => GuessNumberHigherOrLowerIISolution.GetMoneyAmountByUnmemoizedRecursion(N);

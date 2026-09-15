@@ -18,11 +18,17 @@ public sealed class MinimumMovesToCaptureTheQueenTests
     [MemberData(nameof(Examples))]
     public void MinMovesByDestinationEnumeration_LeetCodeExamples_ReturnsFewestMoves(
         int a, int b, int c, int d, int e, int f, int expected) =>
-        Assert.Equal(expected, MinimumMovesToCaptureTheQueenSolution.MinMovesByDestinationEnumeration(a, b, c, d, e, f));
+        Assert.Equal(
+            expected,
+            MinimumMovesToCaptureTheQueenSolution.MinMovesByDestinationEnumeration(
+                new ChessSquare(a, b), new ChessSquare(c, d), new ChessSquare(e, f)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMovesByLineOfSight_LeetCodeExamples_ReturnsFewestMoves(
         int a, int b, int c, int d, int e, int f, int expected) =>
-        Assert.Equal(expected, MinimumMovesToCaptureTheQueenSolution.MinMovesByLineOfSight(a, b, c, d, e, f));
+        Assert.Equal(
+            expected,
+            MinimumMovesToCaptureTheQueenSolution.MinMovesByLineOfSight(
+                new ChessSquare(a, b), new ChessSquare(c, d), new ChessSquare(e, f)));
 }

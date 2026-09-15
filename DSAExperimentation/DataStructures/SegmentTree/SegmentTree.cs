@@ -98,6 +98,13 @@ internal sealed class SegmentTree<Element, TOperation>
             return _nodes.Get(range.Node);
         }
 
+        return QueryChildren(range, left, right);
+    }
+
+    // The range straddles both halves, so each child answers its own overlap and the
+    // two answers combine.
+    private Element QueryChildren(SegmentRange range, int left, int right)
+    {
         var (leftChild, rightChild) = range.Split();
         var leftResult = Query(leftChild, left, right);
         var rightResult = Query(rightChild, left, right);

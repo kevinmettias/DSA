@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountTheNumberOfInfectionSequencesBenchmarks
 {
-    [Params(12, 18)]
-    public int QueueLength;
+    private int[] _sick = [];
 
-    private int[] _sick = null!;
+    [Params(12, 18)]
+    public int QueueLength { get; set; }
 
     [GlobalSetup]
     public void Setup() => _sick = [0, QueueLength - 1];

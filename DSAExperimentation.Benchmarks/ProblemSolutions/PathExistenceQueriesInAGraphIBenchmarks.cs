@@ -16,13 +16,13 @@ public class PathExistenceQueriesInAGraphIBenchmarks
     private const int Seed = 3532;
     private const int QueryCount = 500;
 
-    [Params(500, 5_000)]
-    public int NodeCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _maxDiff;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
     private DisjointSet _groups = null!;
+    [Params(500, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

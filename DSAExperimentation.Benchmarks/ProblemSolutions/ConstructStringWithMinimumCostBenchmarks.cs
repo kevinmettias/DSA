@@ -23,13 +23,13 @@ public class ConstructStringWithMinimumCostBenchmarks
     private static readonly string[] Words = ["a", "b", "c", "ab", "bc", "ca", "abc"];
     private static readonly int[] Costs = [5, 5, 5, 3, 3, 3, 1];
 
-    [Params(1_000, 20_000)]
-    public int TargetLength;
+    private string _target = "";
 
-    private string _target = null!;
-    private List<string> _uniqueWords = null!;
-    private int[] _uniqueCosts = null!;
+    private List<string> _uniqueWords = new();
+    private int[] _uniqueCosts = [];
     private AhoCorasick _automaton = null!;
+    [Params(1_000, 20_000)]
+    public int TargetLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

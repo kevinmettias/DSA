@@ -24,11 +24,11 @@ public class SortItemsByGroupsRespectingDependenciesBenchmarks
     private const int GroupCount = 5;
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int ItemCount;
+    private List<ItemNode> _items = new();
 
-    private List<ItemNode> _items = null!;
-    private List<GroupNode> _groups = null!;
+    private List<GroupNode> _groups = new();
+    [Params(50, 1_000)]
+    public int ItemCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

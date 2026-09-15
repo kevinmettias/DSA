@@ -17,19 +17,13 @@ public class BaseballGameBenchmarks
     private const int SumOpRemainder = 3;
     private const int MaxBaseScore = 50;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string[] _ops = [];
 
-    private string[] _ops = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _ops = BuildOperations(Length);
-
-    [Benchmark(Baseline = true)]
-    public int ManualArrayCursor() => BaseballGameSolution.CalPointsByManualArrayCursor(_ops);
-
-    [Benchmark]
-    public int StackReplay() => BaseballGameSolution.CalPointsByStackReplay(_ops);
 
     private static string[] BuildOperations(int length)
     {
@@ -47,4 +41,10 @@ public class BaseballGameBenchmarks
 
         return ops;
     }
+
+    [Benchmark(Baseline = true)]
+    public int ManualArrayCursor() => BaseballGameSolution.CalPointsByManualArrayCursor(_ops);
+
+    [Benchmark]
+    public int StackReplay() => BaseballGameSolution.CalPointsByStackReplay(_ops);
 }

@@ -21,10 +21,10 @@ public class MergeIntervalsBenchmarks
     private const int StartRangeMultiplier = 2;
     private const int MaxIntervalLength = 5;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private (int Start, int End)[] _intervals = [];
 
-    private (int Start, int End)[] _intervals = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

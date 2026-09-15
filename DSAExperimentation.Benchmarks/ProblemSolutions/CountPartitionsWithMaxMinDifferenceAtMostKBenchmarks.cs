@@ -12,10 +12,10 @@ public class CountPartitionsWithMaxMinDifferenceAtMostKBenchmarks
 {
     private const int NumsSeed = 3578;
 
-    [Params(500, 4_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(500, 4_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = MaxMinPartitionWorkloads.BuildNums(Length, NumsSeed);
@@ -23,10 +23,10 @@ public class CountPartitionsWithMaxMinDifferenceAtMostKBenchmarks
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
         CountPartitionsWithMaxMinDifferenceAtMostKSolution.CountPartitionsByBruteForce(
-            _nums, MaxMinPartitionWorkloads.MaxMinDifference);
+            _nums, MaxMinPartitionScenario.MaxMinDifference);
 
     [Benchmark]
     public int SlidingWindowDeque() =>
         CountPartitionsWithMaxMinDifferenceAtMostKSolution.CountPartitionsBySlidingWindowDeque(
-            _nums, MaxMinPartitionWorkloads.MaxMinDifference);
+            _nums, MaxMinPartitionScenario.MaxMinDifference);
 }

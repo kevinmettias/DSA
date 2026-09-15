@@ -10,17 +10,8 @@ namespace DSAExperimentation.LeetCode.CountValidSequences;
 // Domain/Modular (17.3): a witness generic enough to be a real "nCr table"
 // primitive would still need callers elsewhere in the catalogue before that move
 // is honest, per 17.6's "sharing is not the classification test".
-internal sealed class FactorialTable
+internal sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
 {
-    private readonly long[] _factorial;
-    private readonly long[] _inverseFactorial;
-
-    private FactorialTable(long[] factorial, long[] inverseFactorial)
-    {
-        _factorial = factorial;
-        _inverseFactorial = inverseFactorial;
-    }
-
     public static FactorialTable Build(int maxN)
     {
         var factorial = new long[maxN + 1];
@@ -44,11 +35,15 @@ internal sealed class FactorialTable
 
     public long Choose(int n, int r)
     {
-        if (n < 0 || r < 0 || r > n)
+        if (IsImpossibleChoice(n, r))
         {
             return 0;
         }
 
-        return _factorial[n] * _inverseFactorial[r] % ModularArithmetic.Modulo * _inverseFactorial[n - r] % ModularArithmetic.Modulo;
+        return factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo * inverseFactorial[n - r] % ModularArithmetic.Modulo;
     }
+
+    // nCr counts subsets of r taken from n, so a negative n or r, or an r past n,
+    // names a subset that cannot exist.
+    private static bool IsImpossibleChoice(int n, int r) => n < 0 || r < 0 || r > n;
 }

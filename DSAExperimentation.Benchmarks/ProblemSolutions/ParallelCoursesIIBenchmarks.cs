@@ -14,10 +14,10 @@ public class ParallelCoursesIIBenchmarks
 {
     private const int K = 2;
 
-    [Params(6, 8)]
-    public int CourseCount;
+    private int[][] _relations = [];
 
-    private int[][] _relations = null!;
+    [Params(6, 8)]
+    public int CourseCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _relations = [];

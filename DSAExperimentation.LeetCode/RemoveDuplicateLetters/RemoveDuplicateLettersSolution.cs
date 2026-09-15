@@ -64,17 +64,6 @@ internal static class RemoveDuplicateLettersSolution
         return c + SmallestSubsequenceByRecursiveSplit(remainder);
     }
 
-    private static bool[] DistinctLetters(string s)
-    {
-        var seen = new bool[AlphabetSize];
-        foreach (var c in s)
-        {
-            seen[c - 'a'] = true;
-        }
-
-        return seen;
-    }
-
     private static bool SameDistinctLetters(bool[] left, bool[] right)
     {
         for (var i = 0; i < AlphabetSize; i++)
@@ -107,13 +96,7 @@ internal static class RemoveDuplicateLettersSolution
             AppendCandidateLetter(candidate, lastOccurrence, s[i], i);
         }
 
-        var result = new char[candidate.Stack.Count];
-        for (var i = result.Length - 1; i >= 0; i--)
-        {
-            candidate.Stack.TryPop(out result[i]);
-        }
-
-        return new string(result);
+        return DrainToAnswer(candidate);
     }
 
     private static void AppendCandidateLetter(CandidateStack candidate, int[] lastOccurrence, char c, int index)
@@ -123,7 +106,7 @@ internal static class RemoveDuplicateLettersSolution
             return;
         }
 
-        while (candidate.Stack.TryPeek(out var top) && top > c && lastOccurrence[top - 'a'] > index)
+        while (candidate.Stack.TryPeek(out var top) && ShouldPopTop(top, c, lastOccurrence, index))
         {
             candidate.Stack.TryPop(out _);
             candidate.OnStack.TryRemove(top);
@@ -133,11 +116,40 @@ internal static class RemoveDuplicateLettersSolution
         candidate.OnStack.TryAdd(c);
     }
 
+    // The letter on top is larger than the one arriving and still appears later in the
+    // string, so dropping it now keeps the answer smaller without ever losing it.
+    private static bool ShouldPopTop(char top, char incoming, int[] lastOccurrence, int index) =>
+        top > incoming && lastOccurrence[top - 'a'] > index;
+
+    // The candidate stack read off into the answer, bottom of the stack first.
+    private static string DrainToAnswer(CandidateStack candidate)
+    {
+        var result = new char[candidate.Stack.Count];
+
+        for (var i = result.Length - 1; i >= 0; i--)
+        {
+            candidate.Stack.TryPop(out result[i]);
+        }
+
+        return new string(result);
+    }
+
+    private static bool[] DistinctLetters(string s)
+    {
+        var seen = new bool[AlphabetSize];
+        foreach (var c in s)
+        {
+            seen[c - 'a'] = true;
+        }
+
+        return seen;
+    }
+
     // The candidate answer (as a stack) and which letters are currently on it,
     // always mutated together.
-    private sealed class CandidateStack
+    private sealed record CandidateStack
     {
-        public readonly RepoCharStack Stack = new();
-        public readonly RepoCharSet OnStack = new();
+        public RepoCharStack Stack { get; } = new();
+        public RepoCharSet OnStack { get; } = new();
     }
 }

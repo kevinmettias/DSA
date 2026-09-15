@@ -14,17 +14,14 @@ public class XORAfterRangeMultiplicationQueriesIBenchmarks
     private const int Seed = 3653;
     private const int QueryCount = 200;
 
-    [Params(100, 1_000)]
-    public int NumCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(100, 1_000)]
+    public int NumCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        (_nums, _queries) = XORAfterRangeMultiplicationQueriesIWorkloads.Build(NumCount, QueryCount, seed: Seed);
-    }
+    public void Setup() => (_nums, _queries) = XORAfterRangeMultiplicationQueriesIWorkloads.Build(NumCount, QueryCount, seed: Seed);
 
     [Benchmark(Baseline = true)]
     public int RangeScan() =>

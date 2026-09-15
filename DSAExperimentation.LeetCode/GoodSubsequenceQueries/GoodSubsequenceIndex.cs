@@ -13,24 +13,20 @@ namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 // answering "range gcd" and "range multiple-count" in O(log n) apiece, both point
 // updated together on every query so CountGoodSubseqBySegmentTreeGcd never rescans
 // the whole array except in the one case explained on HasGoodSubsequenceByRangeQuery.
-internal sealed class GoodSubsequenceIndex
+internal sealed class GoodSubsequenceIndex(
+    SegmentTree<int, GcdOperation> gcdTree,
+    SegmentTree<int, SumOperation<int>> multipleCountTree,
+    int[] divided,
+    int p)
 {
-    public SegmentTree<int, GcdOperation> GcdTree { get; }
-    public SegmentTree<int, SumOperation<int>> MultipleCountTree { get; }
-    public int[] Divided { get; }
-    public int P { get; }
+    // The three views GoodSubsequenceQueriesSolution reads by name, kept as
+    // properties over the primary constructor's own values. The modulus `p` has no
+    // reader outside this type, so it stays a plain primary constructor parameter.
+    public SegmentTree<int, GcdOperation> GcdTree => gcdTree;
 
-    private GoodSubsequenceIndex(
-        SegmentTree<int, GcdOperation> gcdTree,
-        SegmentTree<int, SumOperation<int>> multipleCountTree,
-        int[] divided,
-        int p)
-    {
-        GcdTree = gcdTree;
-        MultipleCountTree = multipleCountTree;
-        Divided = divided;
-        P = p;
-    }
+    public SegmentTree<int, SumOperation<int>> MultipleCountTree => multipleCountTree;
+
+    public int[] Divided => divided;
 
     public static GoodSubsequenceIndex Build(int[] nums, int p)
     {
@@ -40,7 +36,8 @@ internal sealed class GoodSubsequenceIndex
         for (var i = 0; i < nums.Length; i++)
         {
             divided[i] = DivideByP(nums[i], p);
-            multiples[i] = divided[i] == 0 ? 0 : 1;
+            var pDoesNotDivide = divided[i] == 0;
+            multiples[i] = pDoesNotDivide ? 0 : 1;
         }
 
         return new GoodSubsequenceIndex(
@@ -52,12 +49,19 @@ internal sealed class GoodSubsequenceIndex
 
     public void Apply(int index, int value)
     {
-        var divided = DivideByP(value, P);
+        var dividedValue = DivideByP(value, p);
 
-        Divided[index] = divided;
-        GcdTree.Update(index, divided);
-        MultipleCountTree.Update(index, divided == 0 ? 0 : 1);
+        divided[index] = dividedValue;
+        gcdTree.Update(index, dividedValue);
+        multipleCountTree.Update(index, dividedValue == 0 ? 0 : 1);
     }
 
-    private static int DivideByP(int value, int p) => value % p == 0 ? value / p : 0;
+    private static int DivideByP(int value, int p)
+    {
+        var pDividesValue = value % p == 0;
+
+        return pDividesValue ? QuotientOf(value, p) : 0;
+    }
+
+    private static int QuotientOf(int value, int p) => value / p;
 }

@@ -19,17 +19,8 @@ namespace DSAExperimentation.LeetCode.MinimumCostWalkInWeightedGraph;
 // Aliased to DisjointSetOperations for the same reason KeyedDisjointSet.cs needs
 // it: DataStructures.DisjointSet is both this file's namespace segment and the
 // type's own name.
-internal sealed class WalkCostComponents
+internal sealed class WalkCostComponents(DisjointSetOperations components, int[] andByRoot)
 {
-    private readonly DisjointSetOperations _components;
-    private readonly int[] _andByRoot;
-
-    private WalkCostComponents(DisjointSetOperations components, int[] andByRoot)
-    {
-        _components = components;
-        _andByRoot = andByRoot;
-    }
-
     public static WalkCostComponents Build(int n, int[][] edges)
     {
         var components = new DisjointSetOperations(n);
@@ -55,7 +46,11 @@ internal sealed class WalkCostComponents
     }
 
     public int MinimumCost(int source, int target)
-        => _components.IsConnected(source, target)
-            ? _andByRoot[_components.Find(source)]
+        => components.IsConnected(source, target)
+            ? AndForSource(source)
             : LeetCodeAnswer.None;
+
+    // The component-wide AND for whichever component source sits in - read only once
+    // connectivity has already established that both vertices share one.
+    private int AndForSource(int source) => andByRoot[components.Find(source)];
 }

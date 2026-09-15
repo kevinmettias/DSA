@@ -110,6 +110,20 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
 
     private static int? TryPlaceDigit(PlacementContext context, int digit, int slot, int remainingSwaps)
     {
+        if (AffordablePlacement(context, digit, remainingSwaps) is not { } placement)
+        {
+            return null;
+        }
+
+        CommitPlacement(context, digit, slot, placement.Position);
+        return remainingSwaps - placement.Cost;
+    }
+
+    // This digit's frontmost still-unplaced occurrence, with the swap count that
+    // pulling it to the front costs - or nothing, when that exceeds the budget.
+    private static (int Position, int Cost)? AffordablePlacement(
+        PlacementContext context, int digit, int remainingSwaps)
+    {
         if (!context.PositionsByDigit[digit].TryPeek(out var position))
         {
             return null;
@@ -122,11 +136,16 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
             return null;
         }
 
+        return (position, cost);
+    }
+
+    // Placing the digit consumes its occurrence and marks the position taken, so
+    // no later query counts it as still in front of anything.
+    private static void CommitPlacement(PlacementContext context, int digit, int slot, int position)
+    {
         context.Result[slot] = (char)('0' + digit);
         context.PositionsByDigit[digit].TryDequeue(out _);
         context.StillUnplaced.Add(position, -1);
-
-        return remainingSwaps - cost;
     }
 
     private readonly record struct PlacementContext(

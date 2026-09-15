@@ -38,7 +38,8 @@ internal static class MinimumCutsToDivideACircleSolution
         }
 
         var remaining = n;
-        var slicesPerCut = remaining % SlicesPerDiameterCut == 0
+        var remainingIsEven = remaining % SlicesPerDiameterCut == 0;
+        var slicesPerCut = remainingIsEven
             ? SlicesPerDiameterCut
             : SlicesPerRadiusCut;
         var cuts = 0;
@@ -60,6 +61,11 @@ internal static class MinimumCutsToDivideACircleSolution
             return 0;
         }
 
-        return n % SlicesPerDiameterCut == 0 ? n / SlicesPerDiameterCut : n;
+        var nIsEven = n % SlicesPerDiameterCut == 0;
+
+        return nIsEven ? DiameterCutCount(n) : n;
     }
+
+    // An even slice count is halved by cutting through the centre.
+    private static int DiameterCutCount(int sliceCount) => sliceCount / SlicesPerDiameterCut;
 }

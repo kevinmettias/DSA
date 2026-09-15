@@ -62,8 +62,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
             return true;
         }
 
-        if ((node.Left is not null && TryFindPath(node.Left, target, path)) ||
-            (node.Right is not null && TryFindPath(node.Right, target, path)))
+        if (DescendsToTarget(node, target, path))
         {
             return true;
         }
@@ -72,6 +71,21 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
         return false;
     }
 
+    // The target hangs off this node: the left child is tried before the right,
+    // because each attempt appends to the shared path and rolls it back on failure.
+    private static bool DescendsToTarget(
+        BinaryTreeNode<int> node, BinaryTreeNode<int> target, List<BinaryTreeNode<int>> path)
+        => (node.Left is not null && TryFindPath(node.Left, target, path))
+            || (node.Right is not null && TryFindPath(node.Right, target, path));
+
+    // The two paths still agree here: both have a step at this offset, and it is
+    // the same node.
+    private static bool PathsAgreeAt(
+        List<BinaryTreeNode<int>> pathToStart, List<BinaryTreeNode<int>> pathToDest, int offset)
+        => offset < pathToStart.Count
+            && offset < pathToDest.Count
+            && pathToStart[offset] == pathToDest[offset];
+
     // The shared prefix of the two root-to-node paths ends at the lowest common
     // ancestor, so its length is where the climb stops and the descent starts.
     private static string BuildDirections(
@@ -79,8 +93,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
     {
         var commonLength = 0;
 
-        while (commonLength < pathToStart.Count && commonLength < pathToDest.Count
-               && pathToStart[commonLength] == pathToDest[commonLength])
+        while (PathsAgreeAt(pathToStart, pathToDest, commonLength))
         {
             commonLength++;
         }
@@ -91,7 +104,8 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
         for (var i = 0; i < down.Length; i++)
         {
             var parent = pathToDest[commonLength + i - 1];
-            down[i] = parent.Left == pathToDest[commonLength + i] ? Left : Right;
+            var child = pathToDest[commonLength + i];
+            down[i] = parent.Left == child ? Left : Right;
         }
 
         return up + new string(down);
@@ -155,7 +169,8 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
 
         for (var i = 0; i < down.Length; i++)
         {
-            down[i] = pathToDest[i].Left == pathToDest[i + 1] ? Left : Right;
+            var child = pathToDest[i + 1];
+            down[i] = pathToDest[i].Left == child ? Left : Right;
         }
 
         return new string(down);
@@ -196,8 +211,11 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
             return null;
         }
 
-        return node.Value == value
-            ? node
-            : TryFindNode(node.Left, value) ?? TryFindNode(node.Right, value);
+        return node.Value == value ? node : TryFindInSubtrees(node, value);
     }
+
+    // The value is not at this node, so it is somewhere below it: the left child is
+    // searched first, and the right one only while the left came back empty.
+    private static BinaryTreeNode<int>? TryFindInSubtrees(BinaryTreeNode<int> node, int value) =>
+        TryFindNode(node.Left, value) ?? TryFindNode(node.Right, value);
 }

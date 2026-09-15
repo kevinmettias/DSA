@@ -16,11 +16,11 @@ public class MinimumIncompatibilityBenchmarks
     // LC problem number, reused as the fixed benchmark-data seed.
     private const int RandomSeed = 1681;
 
-    [Params(10, 14)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _groupCount;
+    [Params(10, 14)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

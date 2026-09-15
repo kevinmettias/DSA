@@ -19,15 +19,15 @@ public class MaximumSumQueriesBenchmarks
     private const int RandomSeed = 2736; // LC problem number
     private const int ValueRange = 1_000_000;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    [Params(200, 2_000)]
-    public int QueryCount;
+    private int[] _nums2 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(200, 2_000)]
+    public int Length { get; set; }
+    [Params(200, 2_000)]
+    public int QueryCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

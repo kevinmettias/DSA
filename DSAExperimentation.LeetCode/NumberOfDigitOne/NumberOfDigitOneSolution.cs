@@ -45,20 +45,8 @@ internal static class NumberOfDigitOneSolution
             return 0;
         }
 
-        var digits = new DigitStack();
-
-        for (var remaining = n; remaining > 0; remaining /= DecimalBase)
-        {
-            digits.Push(remaining % DecimalBase);
-        }
-
-        var placeValue = 1L;
-
-        for (var i = 1; i < digits.Count; i++)
-        {
-            placeValue *= DecimalBase;
-        }
-
+        var digits = DigitsMostSignificantFirst(n);
+        var placeValue = HighestPlaceValue(digits.Count);
         long count = 0;
         var higherDigits = 0L;
 
@@ -68,6 +56,34 @@ internal static class NumberOfDigitOneSolution
         }
 
         return count;
+    }
+
+    // Pushes n's decimal digits onto this repo's own Stack<int> least significant
+    // first, so popping them yields the most significant digit first.
+    private static DigitStack DigitsMostSignificantFirst(int n)
+    {
+        var digits = new DigitStack();
+
+        for (var remaining = n; remaining > 0; remaining /= DecimalBase)
+        {
+            digits.Push(remaining % DecimalBase);
+        }
+
+        return digits;
+    }
+
+    // The place value of the digit that pops first (the most significant one):
+    // DecimalBase raised to one less than the digit count.
+    private static long HighestPlaceValue(int digitCount)
+    {
+        var placeValue = 1L;
+
+        for (var i = 1; i < digitCount; i++)
+        {
+            placeValue *= DecimalBase;
+        }
+
+        return placeValue;
     }
 
     // Folds one popped digit into the running ones-count, then advances

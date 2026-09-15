@@ -41,25 +41,6 @@ internal static class CountLatticePointsInsideACircleSolution
         return count;
     }
 
-    // Membership is the whole job, so Set<Element> is the whole answer: each circle
-    // contributes only the points in its own bounding box, and TryAdd silently drops
-    // the ones an earlier circle already claimed.
-    public static int CountLatticePointsByPerCircleSetUnion(int[][] circles)
-    {
-        var points = new Set<(int X, int Y)>();
-
-        foreach (var circle in circles)
-        {
-            AddCirclePoints(circle, points);
-        }
-
-        return points.Count;
-    }
-
-    // The smallest axis-aligned box containing every circle. Empty when there are
-    // no circles at all, which leaves the scan's loops with nothing to visit.
-    private readonly record struct BoundingBox(int MinX, int MaxX, int MinY, int MaxY);
-
     private static BoundingBox BoundingBoxOf(int[][] circles)
     {
         var box = new BoundingBox(int.MaxValue, int.MinValue, int.MaxValue, int.MinValue);
@@ -91,6 +72,21 @@ internal static class CountLatticePointsInsideACircleSolution
         return false;
     }
 
+    // Membership is the whole job, so Set<Element> is the whole answer: each circle
+    // contributes only the points in its own bounding box, and TryAdd silently drops
+    // the ones an earlier circle already claimed.
+    public static int CountLatticePointsByPerCircleSetUnion(int[][] circles)
+    {
+        var points = new Set<(int X, int Y)>();
+
+        foreach (var circle in circles)
+        {
+            AddCirclePoints(circle, points);
+        }
+
+        return points.Count;
+    }
+
     private static void AddCirclePoints(int[] circle, Set<(int X, int Y)> points)
     {
         var x = circle[CenterXIndex];
@@ -112,4 +108,8 @@ internal static class CountLatticePointsInsideACircleSolution
     // Inclusive: LeetCode counts a point exactly on the circumference as inside.
     private static bool Covers(int[] circle, int dx, int dy)
         => (dx * dx) + (dy * dy) <= circle[RadiusIndex] * circle[RadiusIndex];
+
+    // The smallest axis-aligned box containing every circle. Empty when there are
+    // no circles at all, which leaves the scan's loops with nothing to visit.
+    private readonly record struct BoundingBox(int MinX, int MaxX, int MinY, int MaxY);
 }

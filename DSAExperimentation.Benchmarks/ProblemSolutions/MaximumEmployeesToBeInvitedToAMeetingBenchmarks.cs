@@ -23,11 +23,11 @@ public class MaximumEmployeesToBeInvitedToAMeetingBenchmarks
     // The deterministic chain seed this benchmark has always used.
     private const int ChainSeed = 1;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private int[] _favorite = [];
 
-    private int[] _favorite = null!;
     private EmployeeGraph _graph;
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,14 +35,6 @@ public class MaximumEmployeesToBeInvitedToAMeetingBenchmarks
         _favorite = BuildFavorites(NodeCount);
         _graph = EmployeeGraph.Build(_favorite);
     }
-
-    [Benchmark(Baseline = true)]
-    public int ManualPeelAndCycleWalk() =>
-        MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByManualPeelAndCycleWalk(_favorite);
-
-    [Benchmark]
-    public int GraphPrimitiveComposition() =>
-        MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByGraphPrimitiveComposition(_graph);
 
     private static int[] BuildFavorites(int nodeCount)
     {
@@ -86,4 +78,12 @@ public class MaximumEmployeesToBeInvitedToAMeetingBenchmarks
             favorite[i] = random.Next(i); // a uniformly random strictly-earlier node
         }
     }
+
+    [Benchmark(Baseline = true)]
+    public int ManualPeelAndCycleWalk() =>
+        MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByManualPeelAndCycleWalk(_favorite);
+
+    [Benchmark]
+    public int GraphPrimitiveComposition() =>
+        MaximumEmployeesToBeInvitedToAMeetingSolution.MaximumInvitedByGraphPrimitiveComposition(_graph);
 }

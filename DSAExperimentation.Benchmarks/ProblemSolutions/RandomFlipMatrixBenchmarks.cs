@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.RandomFlipMatrix.RandomFlipMatrixSolution;
+using DSAExperimentation.LeetCode.RandomFlipMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -13,15 +13,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RandomFlipMatrixBenchmarks
 {
     [Params(200, 5_000)]
-    public int Cells;
+    public int Cells { get; set; }
 
     [Benchmark(Baseline = true)]
-    public long ListScan() => Drain(new FlipMatrixByListScan(1, Cells, new Random(1)));
+    public long ListScan() => Drain(new RandomFlipMatrixSolution.FlipMatrixByListScan(1, Cells, new Random(1)));
 
     [Benchmark]
-    public long HashMapSwapRemove() => Drain(new FlipMatrixByHashMapSwapRemove(1, Cells, new Random(1)));
+    public long HashMapSwapRemove() => Drain(new RandomFlipMatrixSolution.FlipMatrixByHashMapSwapRemove(1, Cells, new Random(1)));
 
-    private long Drain(IFlipMatrix matrix)
+    private long Drain(RandomFlipMatrixSolution.IFlipMatrix matrix)
     {
         long checksum = 0;
         for (var i = 0; i < Cells; i++)

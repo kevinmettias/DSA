@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class IncrementalMemoryLeakBenchmarks
 {
     [Params(1_000_000, 100_000_000)]
-    public int Capacity;
+    public int Capacity { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[] Arithmetic() => IncrementalMemoryLeakSolution.MemoryLeakByArithmetic(Capacity, Capacity);

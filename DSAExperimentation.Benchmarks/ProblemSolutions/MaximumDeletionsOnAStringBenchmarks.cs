@@ -14,10 +14,10 @@ public class MaximumDeletionsOnAStringBenchmarks
     private const int RandomSeed = 2430; // LC problem number
     private const int LowercaseAlphabetSize = 26;
 
-    [Params(80, 400)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(80, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

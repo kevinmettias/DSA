@@ -16,10 +16,10 @@ public class ContainsDuplicateIIIBenchmarks
     private const int RandomValueUpperBound = 1_000;
     private const int ValueSpacingMultiplier = 100;
 
-    [Params(500, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(500, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -16,11 +16,11 @@ public class LoudAndRichBenchmarks
     private const int RandomSeed = 5;
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int PersonCount;
+    private int[] _quiet = [];
 
-    private int[] _quiet = null!;
-    private List<PersonNode> _people = null!;
+    private List<PersonNode> _people = new();
+    [Params(50, 1_000)]
+    public int PersonCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -18,11 +18,17 @@ public sealed class WordLadderTests
     [MemberData(nameof(Examples))]
     public void LadderLengthByMutationQueue_LeetCodeExamples_ReturnsShortestSequenceWordCount(
         string beginWord, string endWord, string[] wordList, int expected) =>
-        Assert.Equal(expected, WordLadderSolution.LadderLengthByMutationQueue(beginWord, endWord, wordList));
+        Assert.Equal(
+            expected,
+            WordLadderSolution.LadderLengthByMutationQueue(
+                new BeginWord(beginWord), new EndWord(endWord), wordList));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LadderLengthByReduceGraph_LeetCodeExamples_ReturnsShortestSequenceWordCount(
         string beginWord, string endWord, string[] wordList, int expected) =>
-        Assert.Equal(expected, WordLadderSolution.LadderLengthByReduceGraph(beginWord, endWord, wordList));
+        Assert.Equal(
+            expected,
+            WordLadderSolution.LadderLengthByReduceGraph(
+                new BeginWord(beginWord), new EndWord(endWord), wordList));
 }

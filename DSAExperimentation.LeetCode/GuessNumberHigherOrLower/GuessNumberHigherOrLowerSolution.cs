@@ -26,6 +26,8 @@ internal static class GuessNumberHigherOrLowerSolution
         return LeetCodeAnswer.None;
     }
 
+    private static int Guess(int candidate, int pick) => pick.CompareTo(candidate);
+
     // This repo's own BinarySearch.Find over a virtual sequence of the candidates
     // 1..n - the sequence is never materialized, n can be as large as 2^31 - 1 without
     // allocating anything - routed through guess() via a custom IComparer, finding pick
@@ -37,8 +39,6 @@ internal static class GuessNumberHigherOrLowerSolution
 
         return BinarySearch.Find<int, NumberLineSequence>(sequence, target: 0, comparer)!.Value + 1;
     }
-
-    private static int Guess(int candidate, int pick) => pick.CompareTo(candidate);
 
     // Get(index) is the 1-based candidate itself.
     private readonly struct NumberLineSequence(int length) : IRandomAccessSequence<int>

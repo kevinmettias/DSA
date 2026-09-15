@@ -84,7 +84,7 @@ internal static class JumpGameIVSolution
 
     private static void EnqueueUnvisited(int target, HopWalk walk)
     {
-        if (target < 0 || target >= walk.Length || walk.Visited[target])
+        if (CannotBeEnqueued(walk, target))
         {
             return;
         }
@@ -92,6 +92,11 @@ internal static class JumpGameIVSolution
         walk.Visited[target] = true;
         walk.Frontier.Enqueue(target);
     }
+
+    // A hop target only joins the frontier when it lands on the array and has not been
+    // reached yet - anything else is a step to nowhere or a step already taken.
+    private static bool CannotBeEnqueued(HopWalk walk, int target) =>
+        target < 0 || target >= walk.Length || walk.Visited[target];
 
     private readonly record struct HopWalk(
         int Length,

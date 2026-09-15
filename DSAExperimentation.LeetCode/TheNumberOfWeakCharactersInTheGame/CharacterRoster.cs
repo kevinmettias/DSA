@@ -16,9 +16,9 @@ internal sealed class CharacterRoster
 
     private readonly (int Attack, int Defense)[] _characters;
 
-    private CharacterRoster((int Attack, int Defense)[] characters) => _characters = characters;
-
     public int Count => _characters.Length;
+
+    private CharacterRoster((int Attack, int Defense)[] characters) => _characters = characters;
 
     public (int Attack, int Defense) At(int index) => _characters[index];
 

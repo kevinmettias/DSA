@@ -18,10 +18,10 @@ public class SmallestPalindromicRearrangementIIBenchmarks
     private const int Rank = 500;
     private const int HalfAlphabetSize = 4;
 
-    [Params(20, 200)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(20, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

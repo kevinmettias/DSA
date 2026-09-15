@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignBitset.DesignBitsetSolution;
+using DSAExperimentation.LeetCode.DesignBitset;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -16,15 +16,15 @@ public class DesignBitsetBenchmarks
     private const int UnfixEveryNth = 5;
 
     [Params(500, 20_000)]
-    public int Size;
+    public int Size { get; set; }
 
     [Benchmark(Baseline = true)]
-    public long EagerArrayFlip() => RunWorkload(new BitsetByEagerFlip(Size));
+    public long EagerArrayFlip() => RunWorkload(new DesignBitsetSolution.BitsetByEagerFlip(Size));
 
     [Benchmark]
-    public long LazyFlagDynamicArray() => RunWorkload(new BitsetByLazyFlag(Size));
+    public long LazyFlagDynamicArray() => RunWorkload(new DesignBitsetSolution.BitsetByLazyFlag(Size));
 
-    private long RunWorkload(IBitset bitset)
+    private long RunWorkload(DesignBitsetSolution.IBitset bitset)
     {
         for (var i = 0; i < Size; i++)
         {

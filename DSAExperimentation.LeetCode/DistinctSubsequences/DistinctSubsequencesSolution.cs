@@ -11,29 +11,34 @@ namespace DSAExperimentation.LeetCode.DistinctSubsequences;
 // exactly when it matches the next unconsumed target character.
 internal static class DistinctSubsequencesSolution
 {
-    public static int NumDistinctByMemoizedRecursion(string source, string target)
-    {
-        return Memoizer.Memoize<(int Source, int Target), int>((0, 0), Ways);
+    public static int NumDistinctByMemoizedRecursion(SourceText source, TargetPattern target) =>
+        Memoizer.Memoize<(int Source, int Target), int>((0, 0), new MatchesFromConsumedPrefixes(source, target));
 
-        int Ways((int Source, int Target) state, Func<(int Source, int Target), int> ways)
+    // The recurrence, as a named type: a fully consumed target is one match, a fully
+    // consumed source with target left is none, and otherwise every source character
+    // is skipped, and also consumed when it matches the next unconsumed target one.
+    private sealed class MatchesFromConsumedPrefixes(SourceText source, TargetPattern target)
+        : IRecurrence<(int Source, int Target), int>
+    {
+        public int Replay((int Source, int Target) state, IRecurrence<(int Source, int Target), int> rest)
         {
             var (i, j) = state;
 
-            if (j == target.Length)
+            if (j == target.Pattern.Length)
             {
                 return 1;
             }
 
-            if (i == source.Length)
+            if (i == source.Text.Length)
             {
                 return 0;
             }
 
-            var total = ways((i + 1, j));
+            var total = rest.Replay((i + 1, j), rest);
 
-            if (source[i] == target[j])
+            if (source.Text[i] == target.Pattern[j])
             {
-                total += ways((i + 1, j + 1));
+                total += rest.Replay((i + 1, j + 1), rest);
             }
 
             return total;

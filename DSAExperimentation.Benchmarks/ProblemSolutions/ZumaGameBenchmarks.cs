@@ -18,10 +18,10 @@ public class ZumaGameBenchmarks
     private const string Hand = "WWWWW";
     private const string BoardRepeatUnit = "RRWW";
 
-    [Params(3, 9)]
-    public int BoardRepeats;
+    private string _board = "";
 
-    private string _board = null!;
+    [Params(3, 9)]
+    public int BoardRepeats { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,8 +31,8 @@ public class ZumaGameBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceDfs() => ZumaGameSolution.FindMinStepByBruteForceDfs(_board, Hand);
+    public int BruteForceDfs() => ZumaGameSolution.FindMinStepByBruteForceDfs(new BallBoard(_board), new BallHand(Hand));
 
     [Benchmark]
-    public int QueueBfsDedup() => ZumaGameSolution.FindMinStepByQueueBfsDedup(_board, Hand);
+    public int QueueBfsDedup() => ZumaGameSolution.FindMinStepByQueueBfsDedup(new BallBoard(_board), new BallHand(Hand));
 }

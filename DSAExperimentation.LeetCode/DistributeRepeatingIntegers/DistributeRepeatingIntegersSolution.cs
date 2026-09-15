@@ -79,11 +79,19 @@ internal static class DistributeRepeatingIntegersSolution
 
         return Backtrack.TrySearch<OrderState, int>(state, new BacktrackingSteps<OrderState, int>(
             IsSolution: s => s.Index == orders.Length,
-            Candidates: s => s.Index == orders.Length ? [] : Enumerable.Range(0, stock.Length).Where(s.CanPlace),
+            Candidates: s => s.Index == orders.Length ? NoCandidates() : PlaceableValues(s, stock),
             Choose: (s, value) => s.Place(value),
             Unchoose: (s, value) => s.Remove(value),
             OnSolution: _ => true));
     }
+
+    // Every order is placed once the index runs past the last of them, so there is
+    // nothing left for the search to try.
+    private static IEnumerable<int> NoCandidates() => [];
+
+    // The values whose stock still covers the order currently being placed.
+    private static IEnumerable<int> PlaceableValues(OrderState state, int[] stock) =>
+        Enumerable.Range(0, stock.Length).Where(state.CanPlace);
 
     // Every distinct value is interchangeable with any other of the same count, so
     // nums is only ever needed as "how many copies of each value exist".

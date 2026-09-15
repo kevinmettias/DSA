@@ -22,10 +22,10 @@ public class PrintWordsVerticallyBenchmarks
     private const int WordLengthUpperBound = 12; // exclusive upper bound passed to Random.Next
     private const int AlphabetSize = 26;
 
-    [Params(50, 500)]
-    public int WordCount;
+    private DynamicArray<string> _words = new();
 
-    private DynamicArray<string> _words = null!;
+    [Params(50, 500)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

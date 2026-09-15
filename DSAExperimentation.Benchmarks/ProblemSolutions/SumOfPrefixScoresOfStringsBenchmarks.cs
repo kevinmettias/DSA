@@ -20,10 +20,10 @@ public class SumOfPrefixScoresOfStringsBenchmarks
     private const int RandomSeed = 2416; // LC problem number
     private const int AlphabetSize = 26;
 
-    [Params(300, 1_500)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
+    [Params(300, 1_500)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,13 +32,13 @@ public class SumOfPrefixScoresOfStringsBenchmarks
         _words = Enumerable.Range(0, WordCount).Select(_ => RandomWord(random)).ToArray();
     }
 
+    private static string RandomWord(Random random)
+        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+
     [Benchmark(Baseline = true)]
     public int[] StartsWithScan() => SumOfPrefixScoresOfStringsSolution.SumPrefixScoresByStartsWithScan(_words);
 
     [Benchmark]
     public int[] PrefixCountingTrie() =>
         SumOfPrefixScoresOfStringsSolution.SumPrefixScoresByPrefixCountingTrie(_words);
-
-    private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
 }

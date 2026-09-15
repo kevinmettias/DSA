@@ -22,7 +22,7 @@ internal static class KDivisibleElementsSubarraysSolution
     {
         var distinctSubarrays = new HashSet<string>();
 
-        RecordSubarraySignatures(nums, k, p, signature => distinctSubarrays.Add(signature));
+        RecordSubarraySignatures(nums, k, p, new HashSetSignatureRecorder(distinctSubarrays));
 
         return distinctSubarrays.Count;
     }
@@ -33,7 +33,7 @@ internal static class KDivisibleElementsSubarraysSolution
     {
         var distinctSubarrays = new Set<string>();
 
-        RecordSubarraySignatures(nums, k, p, signature => distinctSubarrays.TryAdd(signature));
+        RecordSubarraySignatures(nums, k, p, new SetSignatureRecorder(distinctSubarrays));
 
         return distinctSubarrays.Count;
     }
@@ -41,7 +41,7 @@ internal static class KDivisibleElementsSubarraysSolution
     // Shared enumeration for both dedupe strategies - only how a discovered subarray
     // signature gets recorded differs, so the walk itself cannot drift between them.
     private static void RecordSubarraySignatures(
-        int[] nums, int maxDivisibleCount, int divisor, Action<string> recordSignature)
+        int[] nums, int maxDivisibleCount, int divisor, ISignatureRecorder recorder)
     {
         for (var start = 0; start < nums.Length; start++)
         {
@@ -59,8 +59,29 @@ internal static class KDivisibleElementsSubarraysSolution
                     break;
                 }
 
-                recordSignature(string.Join(',', nums[start..(end + 1)]));
+                var signature = string.Join(',', nums[start..(end + 1)]);
+                recorder.Record(signature);
             }
         }
+    }
+
+    // Where a discovered signature goes. The enumeration above is identical for both
+    // strategies, so what each one chooses here is the only thing that differs between
+    // them - and naming that choice as a type gives each store its own place to say
+    // what "already present" means: Add's ignored result for the BCL HashSet, TryAdd's
+    // for this repo's Set.
+    private interface ISignatureRecorder
+    {
+        void Record(string signature);
+    }
+
+    private sealed class HashSetSignatureRecorder(HashSet<string> signatures) : ISignatureRecorder
+    {
+        public void Record(string signature) => signatures.Add(signature);
+    }
+
+    private sealed class SetSignatureRecorder(Set<string> signatures) : ISignatureRecorder
+    {
+        public void Record(string signature) => signatures.TryAdd(signature);
     }
 }

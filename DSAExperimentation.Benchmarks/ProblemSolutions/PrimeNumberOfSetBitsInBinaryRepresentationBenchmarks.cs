@@ -10,11 +10,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
 {
-    [Params(1_000, 100_000)]
-    public int RangeWidth;
-
     private int _left;
+
     private int _right;
+    [Params(1_000, 100_000)]
+    public int RangeWidth { get; set; }
 
     [GlobalSetup]
     public void Setup()

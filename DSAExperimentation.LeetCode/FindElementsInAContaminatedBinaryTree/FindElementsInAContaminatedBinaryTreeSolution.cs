@@ -85,16 +85,14 @@ internal static class FindElementsInAContaminatedBinaryTreeSolution
             public static (int Value, Set<int> Found) Descend(
                 BinaryTreeNode<int> parent, (int Value, Set<int> Found) parentState, BinaryTreeNode<int> child)
                 => (child == parent.Left
-                    ? (ChildIndexMultiplier * parentState.Value) + 1
-                    : (ChildIndexMultiplier * parentState.Value) + RightChildOffset, parentState.Found);
+                    ? LeftChildValue(parentState.Value)
+                    : RightChildValue(parentState.Value), parentState.Found);
+
+            // A left child is 2*parent+1 and a right child is 2*parent+2, the
+            // recovery rule this problem's contaminated tree is rebuilt from.
+            private static int LeftChildValue(int parentValue) => (ChildIndexMultiplier * parentValue) + 1;
+
+            private static int RightChildValue(int parentValue) => (ChildIndexMultiplier * parentValue) + RightChildOffset;
         }
     }
-}
-
-// The Find contract every strategy above implements - LeetCode's own FindElements
-// API, reduced to the one query it exposes. Bespoke to this problem, so it stays
-// beside the solution rather than in DataStructures/.
-internal interface IFindElements
-{
-    bool Find(int target);
 }

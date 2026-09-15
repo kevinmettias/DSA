@@ -18,11 +18,11 @@ public class CountElementsWithAtLeastKGreaterValuesBenchmarks
     private const int MaxValueExclusive = 1_000_000;
     private const int K = 10;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private ArraySequence<int> _sortedNums;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

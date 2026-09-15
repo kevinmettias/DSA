@@ -28,20 +28,20 @@ internal static class MergeBSTsToCreateSingleBSTSolution
     // itself against. O(trees^2) lookups where the indexed strategy is O(trees).
     public static BinaryTreeNode<int>? CanMergeByLinearScan(IReadOnlyList<BinaryTreeNode<int>> trees)
     {
-        var leafValues = new HashSet<int>();
+        ILeafValues leafValues = new LeafValuesInHashSet();
 
         foreach (var tree in trees)
         {
-            CollectLeafValues(tree, value => leafValues.Add(value));
+            CollectLeafValues(tree, leafValues);
         }
 
-        if (FindOverallRoot(trees, leafValues.Contains) is not { } overallRoot)
+        if (FindOverallRoot(trees, leafValues) is not { } overallRoot)
         {
             return null;
         }
 
         var candidates = RemainingTrees(trees, overallRoot);
-        var merged = Splice(overallRoot, value => TakeByLinearScan(candidates, value));
+        var merged = Splice(overallRoot, new RootByLinearScan(candidates));
 
         return candidates.TrueForAll(candidate => candidate is null) && IsStrictlyAscending(merged)
             ? merged
@@ -61,20 +61,6 @@ internal static class MergeBSTsToCreateSingleBSTSolution
         }
 
         return candidates;
-    }
-
-    private static BinaryTreeNode<int>? TakeByLinearScan(List<BinaryTreeNode<int>?> candidates, int value)
-    {
-        for (var i = 0; i < candidates.Count; i++)
-        {
-            if (candidates[i] is { } candidate && candidate.Value == value)
-            {
-                candidates[i] = null;
-                return candidate;
-            }
-        }
-
-        return null;
     }
 
     // Textbook in-order check: collect the values into a BCL List by plain
@@ -110,21 +96,21 @@ internal static class MergeBSTsToCreateSingleBSTSolution
         }
 
         var rootByValue = BuildRootIndex(trees, overallRoot);
-        var merged = Splice(overallRoot, value => TakeFromIndex(rootByValue, value));
+        var merged = Splice(overallRoot, new RootByIndex(rootByValue));
 
         return rootByValue.Count == 0 && IsStrictlyAscendingByInOrderWalk(merged) ? merged : null;
     }
 
     private static BinaryTreeNode<int>? FindOverallRootByLeafSet(IReadOnlyList<BinaryTreeNode<int>> trees)
     {
-        var leafValues = new Set<int>();
+        ILeafValues leafValues = new LeafValuesInRepoSet();
 
         foreach (var tree in trees)
         {
-            CollectLeafValues(tree, value => leafValues.TryAdd(value));
+            CollectLeafValues(tree, leafValues);
         }
 
-        return FindOverallRoot(trees, leafValues.Has);
+        return FindOverallRoot(trees, leafValues);
     }
 
     // Every tree but the overall root, keyed by its root value and removed once
@@ -145,18 +131,6 @@ internal static class MergeBSTsToCreateSingleBSTSolution
         }
 
         return rootByValue;
-    }
-
-    private static BinaryTreeNode<int>? TakeFromIndex(HashMap<int, BinaryTreeNode<int>> rootByValue, int value)
-    {
-        if (!rootByValue.TryGetValue(value, out var tree))
-        {
-            return null;
-        }
-
-        rootByValue.TryRemove(value);
-
-        return tree;
     }
 
     private static bool IsStrictlyAscendingByInOrderWalk(BinaryTreeNode<int> root)
@@ -188,13 +162,13 @@ internal static class MergeBSTsToCreateSingleBSTSolution
     // The overall merged root is whichever tree's own root value is never anyone's
     // leaf; zero or more than one such candidate means no valid single merge exists.
     private static BinaryTreeNode<int>? FindOverallRoot(
-        IReadOnlyList<BinaryTreeNode<int>> trees, Func<int, bool> isLeafValue)
+        IReadOnlyList<BinaryTreeNode<int>> trees, ILeafValues leafValues)
     {
         BinaryTreeNode<int>? overallRoot = null;
 
         foreach (var tree in trees)
         {
-            if (isLeafValue(tree.Value))
+            if (leafValues.Contains(tree.Value))
             {
                 continue;
             }
@@ -210,30 +184,30 @@ internal static class MergeBSTsToCreateSingleBSTSolution
         return overallRoot;
     }
 
-    private static void CollectLeafValues(BinaryTreeNode<int> node, Action<int> collect)
+    private static void CollectLeafValues(BinaryTreeNode<int> node, ILeafValues leafValues)
     {
         if (IsLeaf(node))
         {
-            collect(node.Value);
+            leafValues.Collect(node.Value);
             return;
         }
 
         if (node.Left is { } left)
         {
-            CollectLeafValues(left, collect);
+            CollectLeafValues(left, leafValues);
         }
 
         if (node.Right is { } right)
         {
-            CollectLeafValues(right, collect);
+            CollectLeafValues(right, leafValues);
         }
     }
 
     // Shared by both strategies, so the only thing they differ in is how takeRoot
     // finds the tree to splice in.
-    private static BinaryTreeNode<int> Splice(BinaryTreeNode<int> node, Func<int, BinaryTreeNode<int>?> takeRoot)
+    private static BinaryTreeNode<int> Splice(BinaryTreeNode<int> node, IRootLookup takeRoot)
     {
-        if (IsLeaf(node) && takeRoot(node.Value) is { } mergeRoot)
+        if (IsLeaf(node) && takeRoot.Take(node.Value) is { } mergeRoot)
         {
             return Splice(mergeRoot, takeRoot);
         }
@@ -254,6 +228,86 @@ internal static class MergeBSTsToCreateSingleBSTSolution
     // A leaf is where another tree's root may be spliced in, and the only place a
     // leaf value is recorded.
     private static bool IsLeaf(BinaryTreeNode<int> node) => node.Left is null && node.Right is null;
+
+    // The record of every leaf value the forest holds, and the only thing the
+    // overall-root search reads: a tree is the overall root exactly when its own root
+    // value was never collected here. Recording and reading share one type because they
+    // share one record, and the two strategies differ only in what
+    // backs it - a BCL HashSet<int> for the plain arm, this repo's Set<int> for the
+    // composed one - which neither the walk nor the search has to know.
+    private interface ILeafValues
+    {
+        // Records one leaf value. Called once per leaf of every tree, so the same
+        // value can arrive more than once.
+        void Collect(int value);
+
+        // Whether this value was ever recorded, i.e. whether some tree has it as a
+        // leaf.
+        bool Contains(int value);
+    }
+
+    // The baseline's record: a BCL HashSet<int>.
+    private sealed class LeafValuesInHashSet : ILeafValues
+    {
+        private readonly HashSet<int> _values = [];
+
+        public void Collect(int value) => _values.Add(value);
+
+        public bool Contains(int value) => _values.Contains(value);
+    }
+
+    // This repo's own Set<int> over HashMap<int,bool>, the same membership primitive
+    // AccountsMerge and Finding3DigitEvenNumbers use for their own dedupe.
+    private sealed class LeafValuesInRepoSet : ILeafValues
+    {
+        private readonly Set<int> _values = new();
+
+        public void Collect(int value) => _values.TryAdd(value);
+
+        public bool Contains(int value) => _values.Has(value);
+    }
+
+    // The one question the two splice arms answer differently: which not-yet-consumed
+    // tree, if any, is rooted at this value. Taking one consumes it, so no tree can be
+    // spliced in twice, and null means the leaf stays a leaf.
+    private interface IRootLookup
+    {
+        BinaryTreeNode<int>? Take(int value);
+    }
+
+    // The baseline's answer: rescan the remaining-tree slots linearly.
+    private sealed class RootByLinearScan(List<BinaryTreeNode<int>?> candidates) : IRootLookup
+    {
+        public BinaryTreeNode<int>? Take(int value)
+        {
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                if (candidates[i] is { } candidate && candidate.Value == value)
+                {
+                    candidates[i] = null;
+                    return candidate;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    // The composed answer: one HashMap<int,BinaryTreeNode<int>> lookup.
+    private sealed class RootByIndex(HashMap<int, BinaryTreeNode<int>> rootByValue) : IRootLookup
+    {
+        public BinaryTreeNode<int>? Take(int value)
+        {
+            if (!rootByValue.TryGetValue(value, out var tree))
+            {
+                return null;
+            }
+
+            rootByValue.TryRemove(value);
+
+            return tree;
+        }
+    }
 
     // Hooks are static, so the running comparison state lives in AsyncLocal
     // alongside the walk - the same arrangement AllElementsInTwoBinarySearchTrees

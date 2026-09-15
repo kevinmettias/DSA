@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ValidSudokuBenchmarks
 {
-    private char[][] _board = null!;
+    private char[][] _board = [];
 
     [GlobalSetup]
     public void Setup() => _board =

@@ -16,6 +16,17 @@ internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
 
     public static ToggleTree Build(int n, int[][] edges)
     {
+        var adjacency = BuildAdjacency(n, edges);
+        var (parent, parentEdgeIndex) = BuildParentArray(adjacency, n);
+
+        var nodes = ParentArrayTree.Build(parent);
+        return new ToggleTree(nodes[0], parentEdgeIndex);
+    }
+
+    // Both directions of every edge, each side carrying the index it came from: that index
+    // is the one thing a bare parent array cannot recover once the BFS has run.
+    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int n, int[][] edges)
+    {
         var adjacency = new List<(int To, int EdgeIndex)>[n];
 
         for (var i = 0; i < n; i++)
@@ -30,6 +41,14 @@ internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
             adjacency[v].Add((u, edgeIndex));
         }
 
+        return adjacency;
+    }
+
+    // The BFS-to-parent-array conversion, rooted at 0, returning each node's parent and the
+    // edge index that attached it.
+    private static (int[] Parent, int[] ParentEdgeIndex) BuildParentArray(
+        List<(int To, int EdgeIndex)>[] adjacency, int n)
+    {
         var parent = new int[n];
         var parentEdgeIndex = new int[n];
         Array.Fill(parent, NoParentAssignedYet);
@@ -40,20 +59,30 @@ internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
 
         while (queue.TryDequeue(out var current))
         {
-            foreach (var (next, edgeIndex) in adjacency[current])
-            {
-                if (parent[next] != NoParentAssignedYet)
-                {
-                    continue;
-                }
-
-                parent[next] = current;
-                parentEdgeIndex[next] = edgeIndex;
-                queue.Enqueue(next);
-            }
+            ClaimUnvisitedNeighbours(adjacency[current], current, (parent, parentEdgeIndex), queue);
         }
 
-        var nodes = ParentArrayTree.Build(parent);
-        return new ToggleTree(nodes[0], parentEdgeIndex);
+        return (parent, parentEdgeIndex);
+    }
+
+    // First visit wins: a node already carrying a parent is one the BFS reached earlier, and
+    // on a tree that means the edge under consideration is the edge back to it.
+    private static void ClaimUnvisitedNeighbours(
+        List<(int To, int EdgeIndex)> neighbours,
+        int current,
+        (int[] Parent, int[] ParentEdgeIndex) assignment,
+        RepoQueue queue)
+    {
+        foreach (var (next, edgeIndex) in neighbours)
+        {
+            if (assignment.Parent[next] != NoParentAssignedYet)
+            {
+                continue;
+            }
+
+            assignment.Parent[next] = current;
+            assignment.ParentEdgeIndex[next] = edgeIndex;
+            queue.Enqueue(next);
+        }
     }
 }

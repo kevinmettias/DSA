@@ -49,9 +49,7 @@ public sealed partial class LeetCodeSolutionValidatorTests
     }
 
     private static int SolveClimbingStairs(int stepCount)
-        => Memoizer.Memoize<int, int>(stepCount, (step, climb) => step <= 1 ? 1 : WaysFromPreviousTwoSteps(step, climb));
-
-    private static int WaysFromPreviousTwoSteps(int step, Func<int, int> climb) => climb(step - 1) + climb(step - 2);
+        => Memoizer.Memoize<int, int>(stepCount, new WaysFromPreviousTwoSteps());
 
     [Fact]
     public void Validate_MergeIntervals_AgainstCachedFixture_AllExampleCasesPass()
@@ -86,5 +84,21 @@ public sealed partial class LeetCodeSolutionValidatorTests
         }
 
         return result;
+    }
+
+    // The Climbing Stairs recurrence, named: one step plus two steps back, with the
+    // two base cases being the whole of the rule. The memo run passes this
+    // implementation back to itself, so no delegate is handed around.
+    private sealed class WaysFromPreviousTwoSteps : IRecurrence<int, int>
+    {
+        public int Replay(int state, IRecurrence<int, int> rest)
+        {
+            if (state <= 1)
+            {
+                return 1;
+            }
+
+            return rest.Replay(state - 1, rest) + rest.Replay(state - 2, rest);
+        }
     }
 }

@@ -71,29 +71,6 @@ internal static class LargestComponentSizeByCommonFactorSolution
         }
     }
 
-    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
-
-    private static int Find(int[] parent, int id)
-    {
-        while (parent[id] != id)
-        {
-            id = parent[id];
-        }
-
-        return id;
-    }
-
-    private static void Union(int[] parent, int first, int second)
-    {
-        var firstRoot = Find(parent, first);
-        var secondRoot = Find(parent, second);
-
-        if (firstRoot != secondRoot)
-        {
-            parent[firstRoot] = secondRoot;
-        }
-    }
-
     // This repo's DisjointSet, unioned by first-seen owner per prime factor so no two
     // values are ever compared directly.
     public static int LargestComponentSizeByPrimeFactorUnion(int[] nums)
@@ -133,16 +110,6 @@ internal static class LargestComponentSizeByCommonFactorSolution
         }
     }
 
-    private static int TallyComponent(DisjointSet components, HashMap<int, int> sizeByRoot, int index)
-    {
-        var root = components.Find(index);
-        sizeByRoot.TryGetValue(root, out var count);
-        count++;
-        sizeByRoot.Set(root, count);
-
-        return count;
-    }
-
     private static IEnumerable<int> PrimeFactors(int value)
     {
         for (var factor = SmallestPrimeFactor; factor * factor <= value; factor++)
@@ -163,6 +130,39 @@ internal static class LargestComponentSizeByCommonFactorSolution
         if (value > 1)
         {
             yield return value;
+        }
+    }
+
+    private static int TallyComponent(DisjointSet components, HashMap<int, int> sizeByRoot, int index)
+    {
+        var root = components.Find(index);
+        sizeByRoot.TryGetValue(root, out var count);
+        count++;
+        sizeByRoot.Set(root, count);
+
+        return count;
+    }
+
+    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
+
+    private static int Find(int[] parent, int id)
+    {
+        while (parent[id] != id)
+        {
+            id = parent[id];
+        }
+
+        return id;
+    }
+
+    private static void Union(int[] parent, int first, int second)
+    {
+        var firstRoot = Find(parent, first);
+        var secondRoot = Find(parent, second);
+
+        if (firstRoot != secondRoot)
+        {
+            parent[firstRoot] = secondRoot;
         }
     }
 }

@@ -28,21 +28,7 @@ namespace DSAExperimentation.LeetCode.CountSequencesToK;
 internal static class CountSequencesToKSolution
 {
     public static long CountSequencesByBruteForceSearch(int[] nums, long k) =>
-        BruteForceSearch(nums, index: 0, numerator: 1, denominator: 1, k);
-
-    private static long BruteForceSearch(int[] nums, int index, long numerator, long denominator, long k)
-    {
-        if (index == nums.Length)
-        {
-            return numerator % denominator == 0 && numerator / denominator == k ? 1 : 0;
-        }
-
-        var value = nums[index];
-
-        return BruteForceSearch(nums, index + 1, numerator * value, denominator, k)
-            + BruteForceSearch(nums, index + 1, numerator, denominator * value, k)
-            + BruteForceSearch(nums, index + 1, numerator, denominator, k);
-    }
+        BruteForceSearch(nums, index: 0, rational: (1, 1), k);
 
     public static long CountSequencesByPrimeExponentMemo(int[] nums, long k)
     {
@@ -53,6 +39,40 @@ internal static class CountSequencesToKSolution
             return 0;
         }
 
+        return CountSequencesByMemoSearch(nums, (targetE2, targetE3, targetE5));
+    }
+
+    // Strips k down to its 2/3/5 exponents; Reachable is false when what is left
+    // over isn't 1, i.e. k has some other prime factor no sequence could ever
+    // produce.
+    private static (int E2, int E3, int E5, bool Reachable) TargetExponents(long k)
+    {
+        var (after2, e2) = ExtractPrimeFactor(k, 2);
+        var (after3, e3) = ExtractPrimeFactor(after2, 3);
+        var (after5, e5) = ExtractPrimeFactor(after3, 5);
+
+        return (e2, e3, e5, after5 == 1);
+    }
+
+    // Divides one prime out of value as many times as it goes, handing back what is
+    // left together with the exponent it yielded.
+    private static (long Remaining, int Exponent) ExtractPrimeFactor(long value, int prime)
+    {
+        var exponent = 0;
+
+        while (value % prime == 0)
+        {
+            value /= prime;
+            exponent++;
+        }
+
+        return (value, exponent);
+    }
+
+    // Walks the (index, e2, e3, e5) state space through this repo's own Memoizer:
+    // each nums[i] is multiplied in, divided out, or skipped.
+    private static long CountSequencesByMemoSearch(int[] nums, (int E2, int E3, int E5) target)
+    {
         var exponents = new (int E2, int E3, int E5)[nums.Length];
         for (var i = 0; i < nums.Length; i++)
         {
@@ -60,22 +80,7 @@ internal static class CountSequencesToKSolution
         }
 
         return Memoizer.Memoize<(int Index, int E2, int E3, int E5), long>(
-            (0, 0, 0, 0),
-            (state, count) =>
-            {
-                var (index, e2, e3, e5) = state;
-
-                if (index == nums.Length)
-                {
-                    return e2 == targetE2 && e3 == targetE3 && e5 == targetE5 ? 1 : 0;
-                }
-
-                var (d2, d3, d5) = exponents[index];
-
-                return count((index + 1, e2 + d2, e3 + d3, e5 + d5))
-                    + count((index + 1, e2 - d2, e3 - d3, e5 - d5))
-                    + count((index + 1, e2, e3, e5));
-            });
+            (0, 0, 0, 0), new CountSequencesFromState(target, exponents));
     }
 
     private static (int E2, int E3, int E5) PrimeExponents(int value) => value switch
@@ -89,33 +94,56 @@ internal static class CountSequencesToKSolution
         _ => throw new ArgumentOutOfRangeException(nameof(value), value, "nums[i] must be in [1,6]."),
     };
 
-    // Strips k down to its 2/3/5 exponents; Reachable is false when what is left
-    // over isn't 1, i.e. k has some other prime factor no sequence could ever
-    // produce.
-    private static (int E2, int E3, int E5, bool Reachable) TargetExponents(long k)
+    // One memoized step, named: at the end of nums the accumulated exponents are the
+    // whole success test, otherwise all three choices branch off the same state.
+    private sealed class CountSequencesFromState(
+        (int E2, int E3, int E5) target,
+        (int E2, int E3, int E5)[] exponents)
+        : IRecurrence<(int Index, int E2, int E3, int E5), long>
     {
-        var e2 = 0;
-        var e3 = 0;
-        var e5 = 0;
-
-        while (k % 2 == 0)
+        public long Replay(
+            (int Index, int E2, int E3, int E5) state,
+            IRecurrence<(int Index, int E2, int E3, int E5), long> rest)
         {
-            k /= 2;
-            e2++;
+            var (index, e2, e3, e5) = state;
+
+            if (index == exponents.Length)
+            {
+                if (IsTargetReached((e2, e3, e5), target))
+                {
+                    return 1;
+                }
+
+                return 0;
+            }
+
+            var (d2, d3, d5) = exponents[index];
+
+            return rest.Replay((index + 1, e2 + d2, e3 + d3, e5 + d5), rest)
+                + rest.Replay((index + 1, e2 - d2, e3 - d3, e5 - d5), rest)
+                + rest.Replay((index + 1, e2, e3, e5), rest);
+        }
+    }
+
+    // The exponents accumulated so far are the target's - the whole success test,
+    // since k's other prime factors were ruled out before the search started.
+    private static bool IsTargetReached((int E2, int E3, int E5) current, (int E2, int E3, int E5) target)
+        => current.E2 == target.E2 && current.E3 == target.E3 && current.E5 == target.E5;
+
+    private static long BruteForceSearch(
+        int[] nums, int index, (long Numerator, long Denominator) rational, long k)
+    {
+        if (index == nums.Length)
+        {
+            var valEqualsK = rational.Numerator % rational.Denominator == 0
+                && rational.Numerator / rational.Denominator == k;
+            return valEqualsK ? 1 : 0;
         }
 
-        while (k % 3 == 0)
-        {
-            k /= 3;
-            e3++;
-        }
+        var value = nums[index];
 
-        while (k % 5 == 0)
-        {
-            k /= 5;
-            e5++;
-        }
-
-        return (e2, e3, e5, k == 1);
+        return BruteForceSearch(nums, index + 1, (rational.Numerator * value, rational.Denominator), k)
+            + BruteForceSearch(nums, index + 1, (rational.Numerator, rational.Denominator * value), k)
+            + BruteForceSearch(nums, index + 1, rational, k);
     }
 }

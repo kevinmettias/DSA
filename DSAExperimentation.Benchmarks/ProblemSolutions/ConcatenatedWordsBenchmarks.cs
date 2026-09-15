@@ -19,12 +19,12 @@ public class ConcatenatedWordsBenchmarks
     private const string DictionaryWord = "cat";
     private const int DictionaryWordLength = 3;
 
-    [Params(600, 3000)]
-    public int Length;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private Set<string> _dictionary = null!;
-    private Trie<bool> _trie = null!;
+    private Set<string> _dictionary = new();
+    private Trie<bool> _trie = new();
+    [Params(600, 3000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

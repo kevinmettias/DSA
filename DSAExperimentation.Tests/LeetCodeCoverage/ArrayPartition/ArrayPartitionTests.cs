@@ -15,15 +15,9 @@ public sealed class ArrayPartitionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxSumByRepeatedSmallestPairScan_Example_ReturnsMaximizedMinPairSum(int[] nums, int expected)
-    {
-        Assert.Equal(expected, ArrayPartitionSolution.MaxSumByRepeatedSmallestPairScan(nums));
-    }
+    public void MaxSumByRepeatedSmallestPairScan_Example_ReturnsMaximizedMinPairSum(int[] nums, int expected) => Assert.Equal(expected, ArrayPartitionSolution.MaxSumByRepeatedSmallestPairScan(nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxSumByMergeSort_Example_ReturnsMaximizedMinPairSum(int[] nums, int expected)
-    {
-        Assert.Equal(expected, ArrayPartitionSolution.MaxSumByMergeSort(nums));
-    }
+    public void MaxSumByMergeSort_Example_ReturnsMaximizedMinPairSum(int[] nums, int expected) => Assert.Equal(expected, ArrayPartitionSolution.MaxSumByMergeSort(nums));
 }

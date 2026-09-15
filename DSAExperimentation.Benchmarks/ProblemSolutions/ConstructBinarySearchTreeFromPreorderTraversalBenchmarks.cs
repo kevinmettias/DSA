@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
 {
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _ascendingPreorder = [];
 
-    private int[] _ascendingPreorder = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

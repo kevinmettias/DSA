@@ -19,6 +19,16 @@ internal static class ProcessRestrictedFriendRequestsSolution
     // - it is the arm the composed strategy below has to justify itself against.
     public static bool[] FriendRequestsByReachabilityScan(int n, int[][] restrictions, int[][] requests)
     {
+        var adjacency = EmptyAdjacency(n);
+        var approved = ApproveEachRequest(adjacency, restrictions, requests);
+
+        return approved;
+    }
+
+    // n people, none of them friends yet: the scan rebuilds group membership from
+    // this list on every request, so it starts out empty.
+    private static List<int>[] EmptyAdjacency(int n)
+    {
         var adjacency = new List<int>[n];
 
         for (var i = 0; i < n; i++)
@@ -26,6 +36,11 @@ internal static class ProcessRestrictedFriendRequestsSolution
             adjacency[i] = [];
         }
 
+        return adjacency;
+    }
+
+    private static bool[] ApproveEachRequest(List<int>[] adjacency, int[][] restrictions, int[][] requests)
+    {
         var approved = new bool[requests.Length];
 
         for (var i = 0; i < requests.Length; i++)
@@ -58,27 +73,6 @@ internal static class ProcessRestrictedFriendRequestsSolution
         return true;
     }
 
-    private static bool GroupsWouldViolateRestriction(
-        int[][] restrictions, HashSet<int> personGroup, HashSet<int> otherGroup)
-    {
-        foreach (var restriction in restrictions)
-        {
-            var first = restriction[0];
-            var second = restriction[1];
-
-            var wouldConnect =
-                (personGroup.Contains(first) && otherGroup.Contains(second)) ||
-                (personGroup.Contains(second) && otherGroup.Contains(first));
-
-            if (wouldConnect)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     private static HashSet<int> ReachableSet(List<int>[] adjacency, int start)
     {
         var visited = new HashSet<int> { start };
@@ -99,6 +93,27 @@ internal static class ProcessRestrictedFriendRequestsSolution
         }
 
         return visited;
+    }
+
+    private static bool GroupsWouldViolateRestriction(
+        int[][] restrictions, HashSet<int> personGroup, HashSet<int> otherGroup)
+    {
+        foreach (var restriction in restrictions)
+        {
+            var first = restriction[0];
+            var second = restriction[1];
+
+            var wouldConnect =
+                (personGroup.Contains(first) && otherGroup.Contains(second)) ||
+                (personGroup.Contains(second) && otherGroup.Contains(first));
+
+            if (wouldConnect)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // This repo's own DisjointSet: each request is checked against every restriction

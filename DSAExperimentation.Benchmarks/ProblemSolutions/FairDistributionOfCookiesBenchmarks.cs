@@ -19,10 +19,10 @@ public class FairDistributionOfCookiesBenchmarks
     private const int MaxBagSize = 20;
     private const int Children = 3;
 
-    [Params(6, 8)]
-    public int BagCount;
+    private int[] _cookies = [];
 
-    private int[] _cookies = null!;
+    [Params(6, 8)]
+    public int BagCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

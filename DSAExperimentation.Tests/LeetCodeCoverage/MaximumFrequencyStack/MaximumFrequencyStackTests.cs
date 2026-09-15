@@ -105,29 +105,20 @@ public sealed class MaximumFrequencyStackTests
 // named factories below so a script (like Examples above) reads like the LeetCode call
 // sequence it replays. Push returns null (no return value); Pop returns the popped
 // value - the same null-means-"no return value" convention MinStackOp.Apply uses.
-public readonly record struct FreqStackOp
+public readonly record struct FreqStackOp(bool isPush, int value)
 {
-    private readonly bool _isPush;
-    private readonly int _value;
-
-    private FreqStackOp(bool isPush, int value)
-    {
-        _isPush = isPush;
-        _value = value;
-    }
-
     public static FreqStackOp Push(int value) => new(true, value);
 
     public static FreqStackOp Pop() => new(false, 0);
 
     internal int? Apply(MaximumFrequencyStackSolution.IFreqStack freqStack)
     {
-        if (!_isPush)
+        if (!isPush)
         {
             return freqStack.Pop();
         }
 
-        freqStack.Push(_value);
+        freqStack.Push(value);
         return null;
     }
 }

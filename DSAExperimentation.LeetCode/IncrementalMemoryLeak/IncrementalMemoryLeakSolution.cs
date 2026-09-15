@@ -73,6 +73,7 @@ internal static class IncrementalMemoryLeakSolution
     {
         var second = 1;
 
+        // Stops at the first second the popped largest stick cannot cover: it is pushed back unreduced and that second returned.
         while (true)
         {
             sticks.TryPop(out var largest);

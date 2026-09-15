@@ -23,14 +23,19 @@ internal static class BuildAMatrixWithConditionsSolution
     // This repo's own Kahn's algorithm, once per axis. TrySort's false-on-cycle
     // result is LeetCode's empty-matrix answer one-for-one.
     public static int[][] BuildMatrixByKahnsTopologicalSort(
-        int k, int[][] rowConditions, int[][] colConditions) =>
-        BuildMatrixByKahnsTopologicalSort(BuildValues(k, rowConditions), BuildValues(k, colConditions));
+        int k, int[][] rowConditions, int[][] colConditions)
+    {
+        var rowValues = BuildValues(k, rowConditions);
+        var colValues = BuildValues(k, colConditions);
+
+        return BuildMatrixByKahnsTopologicalSort(rowValues, colValues);
+    }
 
     public static int[][] BuildMatrixByKahnsTopologicalSort(
         List<ValueNode> rowValues, List<ValueNode> colValues) =>
         TryKahnsOrder(rowValues, out var rowOrder) && TryKahnsOrder(colValues, out var colOrder)
             ? Place(rowOrder, colOrder)
-            : [];
+            : Array.Empty<int[]>();
 
     private static bool TryKahnsOrder(List<ValueNode> values, out List<int> order)
     {
@@ -39,22 +44,30 @@ internal static class BuildAMatrixWithConditionsSolution
             NaturalChildOrder<ValueNode, ListChildren<ValueNode>>, ListChildren<ValueNode>>(
             values, out var ordering);
 
-        order = ordered ? ordering.Select(value => value.Id).ToList() : [];
+        order = ordered ? Ids(ordering) : new List<int>();
         return ordered;
     }
+
+    // The ids of an ordering, in order.
+    private static List<int> Ids(List<ValueNode> values) => values.Select(value => value.Id).ToList();
 
     // The textbook answer: rescan the values still unplaced from scratch on every
     // step looking for the next one with nothing left ahead of it, rather than
     // tracking a frontier queue. Deliberately written without this repo's
     // TopologicalSort - it is the arm the composed strategy above has to justify
     // itself against.
-    public static int[][] BuildMatrixByNaiveRescan(int k, int[][] rowConditions, int[][] colConditions) =>
-        BuildMatrixByNaiveRescan(BuildValues(k, rowConditions), BuildValues(k, colConditions));
+    public static int[][] BuildMatrixByNaiveRescan(int k, int[][] rowConditions, int[][] colConditions)
+    {
+        var rowValues = BuildValues(k, rowConditions);
+        var colValues = BuildValues(k, colConditions);
+
+        return BuildMatrixByNaiveRescan(rowValues, colValues);
+    }
 
     public static int[][] BuildMatrixByNaiveRescan(List<ValueNode> rowValues, List<ValueNode> colValues) =>
         TryNaiveRescanOrder(rowValues, out var rowOrder) && TryNaiveRescanOrder(colValues, out var colOrder)
             ? Place(rowOrder, colOrder)
-            : [];
+            : Array.Empty<int[]>();
 
     private static bool TryNaiveRescanOrder(List<ValueNode> values, out List<int> order)
     {
@@ -74,7 +87,7 @@ internal static class BuildAMatrixWithConditionsSolution
         {
         }
 
-        order = placed.Count == values.Count ? placed.Select(value => value.Id).ToList() : [];
+        order = placed.Count == values.Count ? Ids(placed) : new List<int>();
         return placed.Count == values.Count;
     }
 

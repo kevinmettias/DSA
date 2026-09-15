@@ -44,13 +44,13 @@ internal static class CandySolution
     {
         var changed = false;
 
-        if (i > 0 && ratings[i] > ratings[i - 1] && candies[i] <= candies[i - 1])
+        if (IsUnderpaidAgainstLeftNeighbor(ratings, candies, i))
         {
             candies[i] = candies[i - 1] + 1;
             changed = true;
         }
 
-        if (i < ratings.Length - 1 && ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1])
+        if (IsUnderpaidAgainstRightNeighbor(ratings, candies, i))
         {
             candies[i] = candies[i + 1] + 1;
             changed = true;
@@ -58,6 +58,14 @@ internal static class CandySolution
 
         return changed;
     }
+
+    // A child outranks its left neighbor but does not yet hold more candy than it.
+    private static bool IsUnderpaidAgainstLeftNeighbor(int[] ratings, int[] candies, int i) =>
+        i > 0 && ratings[i] > ratings[i - 1] && candies[i] <= candies[i - 1];
+
+    // The same violation against the neighbor on the right.
+    private static bool IsUnderpaidAgainstRightNeighbor(int[] ratings, int[] candies, int i) =>
+        i < ratings.Length - 1 && ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1];
 
     // O(n) two-pass slope-constraint approach: a forward pass enforcing "rises
     // must get more candy than their left neighbor," then a backward pass

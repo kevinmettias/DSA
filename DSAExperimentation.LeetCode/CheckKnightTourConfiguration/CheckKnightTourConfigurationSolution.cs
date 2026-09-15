@@ -78,6 +78,23 @@ internal static class CheckKnightTourConfigurationSolution
             return false;
         }
 
+        var positionByMove = InvertToPositionByMove(grid);
+
+        for (var move = 0; move < positionByMove.Length - 1; move++)
+        {
+            if (!IsKnightMove(positionByMove[move], positionByMove[move + 1]))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // The board already IS the map from cell to move number; this single O(n^2) pass
+    // inverts it into the map from move number to cell the walk above reads.
+    private static (int Row, int Col)[] InvertToPositionByMove(int[][] grid)
+    {
         var n = grid.Length;
         var positionByMove = new (int Row, int Col)[n * n];
 
@@ -89,15 +106,7 @@ internal static class CheckKnightTourConfigurationSolution
             }
         }
 
-        for (var move = 0; move < (n * n) - 1; move++)
-        {
-            if (!IsKnightMove(positionByMove[move], positionByMove[move + 1]))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return positionByMove;
     }
 
     private static bool StartsAtTopLeft(int[][] grid) => grid[0][0] == FirstMove;

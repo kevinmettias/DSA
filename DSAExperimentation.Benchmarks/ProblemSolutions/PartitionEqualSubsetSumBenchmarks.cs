@@ -14,11 +14,11 @@ public class PartitionEqualSubsetSumBenchmarks
     private const int MaxElementValue = 100;
     private const int SubsetSumDivisor = 2;
 
-    [Params(50, 400)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _half;
+    [Params(50, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

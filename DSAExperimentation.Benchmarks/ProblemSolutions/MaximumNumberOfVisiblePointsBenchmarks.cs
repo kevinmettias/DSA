@@ -18,10 +18,10 @@ public class MaximumNumberOfVisiblePointsBenchmarks
     private const int RandomSeed = 1;
     private static readonly int[] Location = [0, 0];
 
-    [Params(200, 2_000)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(200, 2_000)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

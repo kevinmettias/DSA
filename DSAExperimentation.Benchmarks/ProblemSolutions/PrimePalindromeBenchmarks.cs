@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PrimePalindromeBenchmarks
 {
     [Params(13, 999)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long SequentialScan() => PrimePalindromeSolution.SmallestPrimePalindromeBySequentialScan(N);

@@ -11,11 +11,11 @@ public class WildcardMatchingBenchmarks
     private const string TextSuffix = "b";
     private const string PatternValue = "*a*b";
 
-    private string _text = null!;
-    private string _pattern = null!;
+    private string _text = "";
+    private string _pattern = "";
 
     [Params(20, 80)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -25,8 +25,12 @@ public class WildcardMatchingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool GreedyTwoPointer() => WildcardMatchingSolution.IsMatchByGreedyTwoPointer(_text, _pattern);
+    public bool GreedyTwoPointer() => WildcardMatchingSolution.IsMatchByGreedyTwoPointer(
+        new WildcardMatchingSolution.MatchedText(_text),
+        new WildcardMatchingSolution.WildcardPattern(_pattern));
 
     [Benchmark]
-    public bool MemoizedDp() => WildcardMatchingSolution.IsMatchByMemoizedDp(_text, _pattern);
+    public bool MemoizedDp() => WildcardMatchingSolution.IsMatchByMemoizedDp(
+        new WildcardMatchingSolution.MatchedText(_text),
+        new WildcardMatchingSolution.WildcardPattern(_pattern));
 }

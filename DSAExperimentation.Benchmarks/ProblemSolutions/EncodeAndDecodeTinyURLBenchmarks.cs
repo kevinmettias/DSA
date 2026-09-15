@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.EncodeAndDecodeTinyURL.EncodeAndDecodeTinyURLSolution;
+using DSAExperimentation.LeetCode.EncodeAndDecodeTinyURL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -14,18 +14,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class EncodeAndDecodeTinyURLBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private EncodeAndDecodeTinyURLSolution.CodecByLinearScan _linearScan = new();
 
-    private CodecByLinearScan _linearScan = null!;
-    private CodecByHashMap _hashMap = null!;
-    private string _targetShortUrl = null!;
+    private EncodeAndDecodeTinyURLSolution.CodecByHashMap _hashMap = new();
+    private string _targetShortUrl = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _linearScan = new CodecByLinearScan();
-        _hashMap = new CodecByHashMap();
+        _linearScan = new EncodeAndDecodeTinyURLSolution.CodecByLinearScan();
+        _hashMap = new EncodeAndDecodeTinyURLSolution.CodecByHashMap();
 
         for (var i = 0; i < Length; i++)
         {

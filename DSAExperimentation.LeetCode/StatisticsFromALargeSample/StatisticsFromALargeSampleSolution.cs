@@ -36,28 +36,30 @@ internal static class StatisticsFromALargeSampleSolution
     // time and allocation for a median the buckets already determine.
     public static double[] ComputeStatisticsBySampleExpansion(long[] count)
     {
-        long total = 0;
+        var accumulator = new SampleAccumulator();
+        var sample = ExpandSample(count, accumulator);
+        var total = accumulator.Total;
+        var weightedSum = accumulator.WeightedSum;
 
-        foreach (var occurrences in count)
-        {
-            total += occurrences;
-        }
+        var totalIsOdd = total % MedianParityDivisor == 1;
+        var median = totalIsOdd
+            ? MiddleElement(sample, total)
+            : AveragedMiddlePair(sample, total);
 
+        return [sample[0], sample[total - 1], (double)weightedSum / total, median, accumulator.ModeValue];
+    }
+
+    // One pass over the buckets rebuilds the sorted sample they describe, folding each
+    // bucket's order-independent statistics into the accumulator as it goes.
+    private static int[] ExpandSample(long[] count, SampleAccumulator accumulator)
+    {
+        var total = TotalCount(count);
         var sample = new int[total];
         long index = 0;
-        long weightedSum = 0;
-        var modeValue = 0;
-        long modeCount = 0;
 
         for (var value = 0; value < count.Length; value++)
         {
-            weightedSum += (long)value * count[value];
-
-            if (count[value] > modeCount)
-            {
-                modeCount = count[value];
-                modeValue = value;
-            }
+            accumulator.Accumulate(value, count[value]);
 
             for (long occurrence = 0; occurrence < count[value]; occurrence++)
             {
@@ -65,11 +67,34 @@ internal static class StatisticsFromALargeSampleSolution
             }
         }
 
-        var median = total % MedianParityDivisor == 1
-            ? sample[total / MedianIndexDivisor]
-            : (sample[(total / MedianIndexDivisor) - 1] + sample[total / MedianIndexDivisor]) / MedianPairAverageDivisor;
+        return sample;
+    }
 
-        return [sample[0], sample[total - 1], (double)weightedSum / total, median, modeValue];
+    // The sample's size: how many elements the buckets describe in total.
+    private static long TotalCount(long[] count)
+    {
+        long total = 0;
+
+        foreach (var occurrences in count)
+        {
+            total += occurrences;
+        }
+
+        return total;
+    }
+
+    // An odd total has one middle element, and it is the median bare.
+    private static int MiddleElement(int[] sample, long total)
+        => sample[total / MedianIndexDivisor];
+
+    // An even total straddles two middle indices instead, and the median is their
+    // average.
+    private static double AveragedMiddlePair(int[] sample, long total)
+    {
+        var lowerMiddle = sample[(total / MedianIndexDivisor) - 1];
+        var upperMiddle = sample[total / MedianIndexDivisor];
+
+        return (lowerMiddle + upperMiddle) / MedianPairAverageDivisor;
     }
 
     // This repo's own answer: one pass builds the running cumulative sum of the
@@ -101,14 +126,14 @@ internal static class StatisticsFromALargeSampleSolution
     // value order: the first non-empty bucket is the minimum, the last is the
     // maximum, and the largest bucket is the mode (LeetCode guarantees it is
     // unique, so first-wins on a tie is never observable).
-    private struct SampleAccumulator
+    private sealed class SampleAccumulator
     {
-        public int Min = NoValueSeen;
-        public int Max = NoValueSeen;
-        public long Total;
-        public long WeightedSum;
-        public int ModeValue;
-        public long ModeCount;
+        public int Min { get; set; } = NoValueSeen;
+        public int Max { get; set; } = NoValueSeen;
+        public long Total { get; set; }
+        public long WeightedSum { get; set; }
+        public int ModeValue { get; set; }
+        public long ModeCount { get; set; }
 
         public SampleAccumulator()
         {

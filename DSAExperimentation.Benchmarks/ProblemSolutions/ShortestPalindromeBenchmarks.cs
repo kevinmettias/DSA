@@ -13,10 +13,10 @@ public class ShortestPalindromeBenchmarks
 {
     private const int AlphabetSize = 26;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private string _value = "";
 
-    private string _value = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

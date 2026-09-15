@@ -13,16 +13,16 @@ public class MinimizeManhattanDistancesBenchmarks
     private const int Seed = 3102;
     private const int CoordinateBound = 1_000_000;
 
+    private int[][] _points = [];
+
+    private (long Value, int PointIndex)[] _sortedByU = [];
+    private (long Value, int PointIndex)[] _sortedByV = [];
     // BruteForce is O(n^3) - it is the arm ManhattanTransform has to justify itself
     // against, so PointCount stays small enough for that cubic scan to stay
     // reasonable rather than growing to sizes only the composed strategy could
     // finish.
     [Params(50, 200)]
-    public int PointCount;
-
-    private int[][] _points = null!;
-    private (long Value, int PointIndex)[] _sortedByU = null!;
-    private (long Value, int PointIndex)[] _sortedByV = null!;
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

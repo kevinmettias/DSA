@@ -18,10 +18,10 @@ public class AccountsMergeBenchmarks
     private const int MinEmailsPerAccount = 2;
     private const int EmailCountRange = 3;
 
-    [Params(50, 400)]
-    public int AccountCount;
+    private string[][] _accounts = [];
 
-    private string[][] _accounts = null!;
+    [Params(50, 400)]
+    public int AccountCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

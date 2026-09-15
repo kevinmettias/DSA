@@ -15,10 +15,10 @@ public class PropertiesGraphBenchmarks
     private const int ColumnCount = 20;
     private const int K = 6;
 
-    [Params(20, 100)]
-    public int RowCount;
+    private int[][] _properties = [];
 
-    private int[][] _properties = null!;
+    [Params(20, 100)]
+    public int RowCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _properties = PropertiesGraphWorkloads.BuildProperties(RowCount, ColumnCount, Seed);

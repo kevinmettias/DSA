@@ -15,18 +15,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SubtreeOfAnotherTreeBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
     private BinaryTreeNode<int> _subRoot = null!;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _root = SubtreeOfAnotherTreeWorkloads.BuildLeftChain(NodeCount, lastValue: 1);
         _subRoot = SubtreeOfAnotherTreeWorkloads.BuildLeftChain(
-            NodeCount / SubtreeOfAnotherTreeWorkloads.SubRootSizeDivisor, lastValue: -1);
+            NodeCount / SubtreeOfAnotherTreeScenario.SubRootSizeDivisor, lastValue: -1);
     }
 
     [Benchmark(Baseline = true)]

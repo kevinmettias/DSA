@@ -27,34 +27,18 @@ internal static class CountAllPossibleRoutesSolution
     public static int CountRoutesByNaiveRecursion(int[] locations, int start, int finish, int fuel) =>
         WaysWithoutCache(locations, finish, start, fuel);
 
-    private static int WaysWithoutCache(int[] locations, int finish, int city, int remaining)
-    {
-        var total = city == finish ? 1 : 0;
-
-        for (var next = 0; next < locations.Length; next++)
-        {
-            if (next == city)
-            {
-                continue;
-            }
-
-            var cost = Math.Abs(locations[city] - locations[next]);
-            if (cost <= remaining)
-            {
-                total = AddModulo(total, WaysWithoutCache(locations, finish, next, remaining - cost));
-            }
-        }
-
-        return total;
-    }
-
     // Same recurrence driven top-down through Memoizer, so each (city, fuel) state is
     // solved once and shared by every branch that reaches it.
-    public static int CountRoutesByMemoizedRecurrence(int[] locations, int start, int finish, int fuel)
-    {
-        return Memoizer.Memoize<(int City, int Fuel), int>((start, fuel), WaysFrom);
+    public static int CountRoutesByMemoizedRecurrence(int[] locations, int start, int finish, int fuel) =>
+        Memoizer.Memoize<(int City, int Fuel), int>((start, fuel), new WaysFrom(locations, finish));
 
-        int WaysFrom((int City, int Fuel) state, Func<(int City, int Fuel), int> ways)
+    // The rule, named: a state counts one route when it already stands on the finish,
+    // plus one route for every city the fuel still left can pay to reach.
+    private sealed class WaysFrom(int[] locations, int finish) : IRecurrence<(int City, int Fuel), int>
+    {
+        public int Replay(
+            (int City, int Fuel) state,
+            IRecurrence<(int City, int Fuel), int> rest)
         {
             var (city, remaining) = state;
             var total = city == finish ? 1 : 0;
@@ -69,12 +53,35 @@ internal static class CountAllPossibleRoutesSolution
                 var cost = Math.Abs(locations[city] - locations[next]);
                 if (cost <= remaining)
                 {
-                    total = AddModulo(total, ways((next, remaining - cost)));
+                    var ways = rest.Replay((next, remaining - cost), rest);
+                    total = AddModulo(total, ways);
                 }
             }
 
             return total;
         }
+    }
+
+    private static int WaysWithoutCache(int[] locations, int finish, int city, int remaining)
+    {
+        var total = city == finish ? 1 : 0;
+
+        for (var next = 0; next < locations.Length; next++)
+        {
+            if (next == city)
+            {
+                continue;
+            }
+
+            var cost = Math.Abs(locations[city] - locations[next]);
+            if (cost <= remaining)
+            {
+                var ways = WaysWithoutCache(locations, finish, next, remaining - cost);
+                total = AddModulo(total, ways);
+            }
+        }
+
+        return total;
     }
 
     private static int AddModulo(int total, int addend) =>

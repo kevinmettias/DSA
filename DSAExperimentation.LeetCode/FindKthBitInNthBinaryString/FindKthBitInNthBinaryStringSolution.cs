@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.LeetCode.FindKthBitInNthBinaryString;
 
 // LeetCode 1545. Find Kth Bit in Nth Binary String, over the construction rule
@@ -16,7 +18,6 @@ internal static class FindKthBitInNthBinaryStringSolution
 {
     private const string BaseCaseBit = "0"; // S(1)
     private const string MiddleBitSeparator = "1";
-    private const int MidpointDivisor = 2;
 
     // Baseline: BCL-only, builds S(n) in full and reads the kth character.
     public static char FindKthBitByStringConstruction(int n, int k) => BuildNthString(n)[k - 1];
@@ -31,7 +32,7 @@ internal static class FindKthBitInNthBinaryStringSolution
         }
 
         var length = (1 << n) - 1;
-        var mid = (length / MidpointDivisor) + 1;
+        var mid = (length / AlgorithmConstants.HalvingFactor) + 1;
 
         if (k == mid)
         {
@@ -65,5 +66,11 @@ internal static class FindKthBitInNthBinaryStringSolution
         return previous + MiddleBitSeparator + new string(invertedReversed);
     }
 
-    private static char Invert(char bit) => bit == BaseCaseBit[0] ? MiddleBitSeparator[0] : BaseCaseBit[0];
+    private static char Invert(char bit) => IsBaseBit(bit) ? SeparatorBit() : BaseBit();
+
+    private static bool IsBaseBit(char bit) => bit == BaseBit();
+
+    private static char BaseBit() => BaseCaseBit[0];
+
+    private static char SeparatorBit() => MiddleBitSeparator[0];
 }

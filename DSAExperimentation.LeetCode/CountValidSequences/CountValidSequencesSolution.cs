@@ -26,7 +26,7 @@ internal static class CountValidSequencesSolution
     public static int CountByDirectBinomial(int n, int k)
     {
         var total = ChooseDirect(n - 1, k - 1);
-        var odd = (n + k) % 2 == 0 ? ChooseDirect((n + k) / 2 - 1, k - 1) : 0;
+        var odd = HasAllOddSequences(n, k) ? ChooseDirect((n + k) / 2 - 1, k - 1) : 0;
 
         return Difference(total, odd);
     }
@@ -39,7 +39,7 @@ internal static class CountValidSequencesSolution
     public static int CountByPrecomputedFactorials(FactorialTable table, int n, int k)
     {
         var total = table.Choose(n - 1, k - 1);
-        var odd = (n + k) % 2 == 0 ? table.Choose((n + k) / 2 - 1, k - 1) : 0;
+        var odd = HasAllOddSequences(n, k) ? table.Choose((n + k) / 2 - 1, k - 1) : 0;
 
         return Difference(total, odd);
     }
@@ -47,9 +47,18 @@ internal static class CountValidSequencesSolution
     private static int Difference(long total, long odd) =>
         (int)((total - odd + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
 
+    // An all-odd sequence exists only when n + k is even: the substitution
+    // x_i = 2y_i - 1 makes the k odd entries sum to (n + k) / 2, which has to be a
+    // whole number of positive y_i.
+    private static bool HasAllOddSequences(int targetSum, int length) => (targetSum + length) % 2 == 0;
+
+    // nCr is zero whenever n or r is negative, or r overshoots n.
+    private static bool IsOutsideBinomialRange(int n, int r)
+        => n < 0 || r < 0 || r > n;
+
     private static long ChooseDirect(int n, int r)
     {
-        if (n < 0 || r < 0 || r > n)
+        if (IsOutsideBinomialRange(n, r))
         {
             return 0;
         }

@@ -39,7 +39,7 @@ internal static class ValidateStackSequencesSolution
 
     private static int DrainMatchingTop(RepoIntStack stack, int[] popped, int popIndex)
     {
-        while (popIndex < popped.Length && stack.TryPeek(out var top) && top == popped[popIndex])
+        while (IsTopTheNextExpected(stack, popped, popIndex))
         {
             stack.TryPop(out _);
             popIndex++;
@@ -47,6 +47,10 @@ internal static class ValidateStackSequencesSolution
 
         return popIndex;
     }
+
+    // There is still an expected value to match, and the stack's top is it.
+    private static bool IsTopTheNextExpected(RepoIntStack stack, int[] popped, int popIndex)
+        => popIndex < popped.Length && stack.TryPeek(out var top) && top == popped[popIndex];
 
     // Exhaustive push/pop-timing search: at each state try popping first, and fall
     // back to pushing the next value, restoring the stack on a failed branch.
@@ -67,6 +71,13 @@ internal static class ValidateStackSequencesSolution
                 return false;
             }
 
+            return TryMatchAfterPop(pushIndex, popIndex, stack);
+        }
+
+        // Pop the matching top, explore from there, and put it back when that branch
+        // turned out to be a dead end.
+        private bool TryMatchAfterPop(int pushIndex, int popIndex, BclIntStack stack)
+        {
             var top = stack.Pop();
 
             if (TryMatch(pushIndex, popIndex + 1, stack))

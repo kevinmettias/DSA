@@ -22,7 +22,8 @@ internal static class FindTheLengthOfTheLongestCommonPrefixSolution
 
             foreach (var y in arr2)
             {
-                best = Math.Max(best, SharedPrefixLength(xDigits, y.ToString()));
+                var shared = SharedPrefixLength(xDigits, y.ToString());
+                best = Math.Max(best, shared);
             }
         }
 
@@ -59,7 +60,8 @@ internal static class FindTheLengthOfTheLongestCommonPrefixSolution
 
         foreach (var y in arr2)
         {
-            best = Math.Max(best, MatchedPrefixLength(trie, y.ToString()));
+            var matched = MatchedPrefixLength(trie, y.ToString());
+            best = Math.Max(best, matched);
         }
 
         return best;

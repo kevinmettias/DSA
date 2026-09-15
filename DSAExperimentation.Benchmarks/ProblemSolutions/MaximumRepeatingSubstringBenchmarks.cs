@@ -12,10 +12,10 @@ public class MaximumRepeatingSubstringBenchmarks
 {
     private const string Word = "ab";
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _sequence = "";
 
-    private string _sequence = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -25,9 +25,13 @@ public class MaximumRepeatingSubstringBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int StringContains() => MaximumRepeatingSubstringSolution.MaxRepeatingByStringContains(_sequence, Word);
+    public int StringContains() => MaximumRepeatingSubstringSolution.MaxRepeatingByStringContains(
+        new MaximumRepeatingSubstringSolution.Haystack(_sequence),
+        new MaximumRepeatingSubstringSolution.RepeatedWord(Word));
 
     [Benchmark]
     public int PrefixFunctionSearchContains() =>
-        MaximumRepeatingSubstringSolution.MaxRepeatingByPrefixFunctionSearch(_sequence, Word);
+        MaximumRepeatingSubstringSolution.MaxRepeatingByPrefixFunctionSearch(
+            new MaximumRepeatingSubstringSolution.Haystack(_sequence),
+            new MaximumRepeatingSubstringSolution.RepeatedWord(Word));
 }

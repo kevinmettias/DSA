@@ -11,7 +11,7 @@ public class DivideTwoIntegersBenchmarks
     private const int Divisor = 7;
 
     [Params(1_000_000, int.MaxValue)]
-    public int Dividend;
+    public int Dividend { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BuiltInDivide() => DivideTwoIntegersSolution.DivideByBuiltInDivision(Dividend, Divisor);

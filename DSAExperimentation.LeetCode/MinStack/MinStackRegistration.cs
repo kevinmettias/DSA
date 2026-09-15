@@ -69,7 +69,8 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
 
         foreach (var operation in script)
         {
-            results.Add(Apply(stack, operation));
+            var result = Apply(stack, operation);
+            results.Add(result);
         }
 
         return results;

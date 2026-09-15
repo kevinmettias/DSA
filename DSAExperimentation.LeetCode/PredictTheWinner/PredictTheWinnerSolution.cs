@@ -14,6 +14,38 @@ internal static class PredictTheWinnerSolution
     // it is the arm the memoized strategy below has to justify itself against.
     public static bool CanWinByUnmemoizedRecursion(int[] nums) => ScoreDiff(nums, 0, nums.Length - 1) >= 0;
 
+    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the same
+    // (Left, Right)-state shape BurstBalloons/GuessNumberHigherOrLowerII already use
+    // for their own interval DP.
+    public static bool CanWinByMemoizedRecursion(int[] nums)
+    {
+        var scoreDiff = Memoizer.Memoize<(int Left, int Right), int>(
+            (0, nums.Length - 1),
+            new ScoreDifferenceFrom(nums));
+
+        return scoreDiff >= 0;
+    }
+
+    // The recurrence itself, named: taking either end leaves the opponent the rest,
+    // and what the player to move forces is that end's value minus whatever
+    // difference the opponent then forces back.
+    private sealed class ScoreDifferenceFrom(int[] nums) : IRecurrence<(int Left, int Right), int>
+    {
+        public int Replay((int Left, int Right) range, IRecurrence<(int Left, int Right), int> rest)
+        {
+            var (left, right) = range;
+
+            if (left == right)
+            {
+                return nums[left];
+            }
+
+            var takeLeft = nums[left] - rest.Replay((left + 1, right), rest);
+            var takeRight = nums[right] - rest.Replay((left, right - 1), rest);
+            return Math.Max(takeLeft, takeRight);
+        }
+    }
+
     private static int ScoreDiff(int[] nums, int left, int right)
     {
         if (left == right)
@@ -23,32 +55,6 @@ internal static class PredictTheWinnerSolution
 
         var takeLeft = nums[left] - ScoreDiff(nums, left + 1, right);
         var takeRight = nums[right] - ScoreDiff(nums, left, right - 1);
-        return Math.Max(takeLeft, takeRight);
-    }
-
-    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the same
-    // (Left, Right)-state shape BurstBalloons/GuessNumberHigherOrLowerII already use
-    // for their own interval DP.
-    public static bool CanWinByMemoizedRecursion(int[] nums)
-    {
-        var scoreDiff = Memoizer.Memoize<(int Left, int Right), int>(
-            (0, nums.Length - 1),
-            (range, bestDiff) => ScoreDiffMemoized(nums, range, bestDiff));
-
-        return scoreDiff >= 0;
-    }
-
-    private static int ScoreDiffMemoized(int[] nums, (int Left, int Right) range, Func<(int Left, int Right), int> bestDiff)
-    {
-        var (left, right) = range;
-
-        if (left == right)
-        {
-            return nums[left];
-        }
-
-        var takeLeft = nums[left] - bestDiff((left + 1, right));
-        var takeRight = nums[right] - bestDiff((left, right - 1));
         return Math.Max(takeLeft, takeRight);
     }
 }

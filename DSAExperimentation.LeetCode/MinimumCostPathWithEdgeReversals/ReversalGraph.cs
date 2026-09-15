@@ -7,12 +7,9 @@ namespace DSAExperimentation.LeetCode.MinimumCostPathWithEdgeReversals;
 // already folded into the graph's shape by the time a search runs over it.
 internal sealed class ReversalGraph
 {
-    private ReversalGraph(ReversalGraphNode[] nodes)
-    {
-        Nodes = nodes;
-    }
-
     public ReversalGraphNode[] Nodes { get; }
+
+    private ReversalGraph(ReversalGraphNode[] nodes) => Nodes = nodes;
 
     public static ReversalGraph Build(int n, int[][] edges)
     {

@@ -22,10 +22,10 @@ public class FrogJumpBenchmarks
     // sits far enough away that no jump size can ever reach it.
     private const int UnreachableStoneGap = 1_000;
 
-    [Params(10, 16)]
-    public int StoneCount;
+    private int[] _stones = [];
 
-    private int[] _stones = null!;
+    [Params(10, 16)]
+    public int StoneCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

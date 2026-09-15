@@ -12,10 +12,10 @@ public class NextGreaterElementIIBenchmarks
     private const int RandomSeed = 3;
     private const int MaxElementValue = 1_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -13,16 +13,13 @@ public class LongestRepeatingCharacterReplacementBenchmarks
 {
     private const int K = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _text = "";
 
-    private string _text = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _text = new string('A', Length);
-    }
+    public void Setup() => _text = new string('A', Length);
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>

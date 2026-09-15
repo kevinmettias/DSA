@@ -16,7 +16,7 @@ public class ManhattanDistancesOfAllArrangementsOfPiecesBenchmarks
     private const int Columns = 4;
 
     [Params(2, 4, 6)]
-    public int K;
+    public int K { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForceArrangements() =>

@@ -12,13 +12,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountGoodTripletsInAnArrayBenchmarks
 {
-    private const int RandomSeed = 2179; // LC problem number
+    private const int RandomSeed = 2179; private int[] _nums1 = [];
+
+    private int[] _nums2 = [];
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,14 +27,6 @@ public class CountGoodTripletsInAnArrayBenchmarks
         _nums1 = ShuffledPermutation(random, Length);
         _nums2 = ShuffledPermutation(random, Length);
     }
-
-    [Benchmark(Baseline = true)]
-    public long PairwiseScan() =>
-        CountGoodTripletsInAnArraySolution.CountGoodTripletsByPairwiseScan(_nums1, _nums2);
-
-    [Benchmark]
-    public long FenwickTreeSweep() =>
-        CountGoodTripletsInAnArraySolution.CountGoodTripletsByFenwickTreeSweep(_nums1, _nums2);
 
     private static int[] ShuffledPermutation(Random random, int length)
     {
@@ -48,4 +40,12 @@ public class CountGoodTripletsInAnArrayBenchmarks
 
         return values;
     }
+
+    [Benchmark(Baseline = true)]
+    public long PairwiseScan() =>
+        CountGoodTripletsInAnArraySolution.CountGoodTripletsByPairwiseScan(_nums1, _nums2);
+
+    [Benchmark]
+    public long FenwickTreeSweep() =>
+        CountGoodTripletsInAnArraySolution.CountGoodTripletsByFenwickTreeSweep(_nums1, _nums2);
 }

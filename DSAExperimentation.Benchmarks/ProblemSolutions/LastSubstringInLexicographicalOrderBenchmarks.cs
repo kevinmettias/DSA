@@ -15,12 +15,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LastSubstringInLexicographicalOrderBenchmarks
 {
     private const int AlphabetSize = 4;
-    private const int RandomSeed = 1; // unchanged from the pre-migration workload
+    private const int RandomSeed = 1; private string _text = "";
+
+    // unchanged from the pre-migration workload
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private string _text = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

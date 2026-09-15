@@ -24,34 +24,44 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // arm the segment-tree sweep below has to beat.
     public static long MaxAlternatingSumByBruteForce(int[] nums, int k)
     {
-        var n = nums.Length;
-        var peakEnd = new long[n];
-        var valleyEnd = new long[n];
+        var state = (Nums: nums, PeakEnd: new long[nums.Length], ValleyEnd: new long[nums.Length]);
         var answer = long.MinValue;
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nums.Length; i++)
         {
-            var bestFromValley = 0L;
-            var bestFromPeak = 0L;
-
-            for (var j = 0; j <= i - k; j++)
-            {
-                if (nums[j] < nums[i])
-                {
-                    bestFromValley = Math.Max(bestFromValley, valleyEnd[j]);
-                }
-                else if (nums[j] > nums[i])
-                {
-                    bestFromPeak = Math.Max(bestFromPeak, peakEnd[j]);
-                }
-            }
-
-            peakEnd[i] = nums[i] + bestFromValley;
-            valleyEnd[i] = nums[i] + bestFromPeak;
-            answer = Math.Max(answer, Math.Max(peakEnd[i], valleyEnd[i]));
+            var extensions = BestExtensionsBefore(state, i, i - k);
+            answer = CommitChainsAt(state, i, extensions, answer);
         }
 
         return answer;
+    }
+
+    // The scan at the heart of the brute-force arm: over every eligible
+    // predecessor j <= lastEligible, the best valleyEnd[j] whose value is below
+    // nums[index] (completing a rise into index) and the best peakEnd[j] whose
+    // value is above it (completing a fall). Both start at 0 - the sum of a chain
+    // that starts fresh at index.
+    private static (long BestFromValley, long BestFromPeak) BestExtensionsBefore(
+        (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state,
+        int index,
+        int lastEligible)
+    {
+        var bestFromValley = 0L;
+        var bestFromPeak = 0L;
+
+        for (var j = 0; j <= lastEligible; j++)
+        {
+            if (state.Nums[j] < state.Nums[index])
+            {
+                bestFromValley = Math.Max(bestFromValley, state.ValleyEnd[j]);
+            }
+            else if (state.Nums[j] > state.Nums[index])
+            {
+                bestFromPeak = Math.Max(bestFromPeak, state.PeakEnd[j]);
+            }
+        }
+
+        return (bestFromValley, bestFromPeak);
     }
 
     // Composed: coordinate-compress nums via this repo's own BinarySearch.LowerBound
@@ -65,43 +75,12 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // reaches i = j + k, so a query at i can never see a predecessor closer than k.
     public static long MaxAlternatingSumBySegmentTree(int[] nums, int k)
     {
-        var n = nums.Length;
         var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
         var sequence = new ArraySequence<int>(sortedDistinct);
-        var rankCount = sortedDistinct.Length;
+        var trees = (PeakByValley: BuildRankedTree(sortedDistinct.Length), ValleyByPeak: BuildRankedTree(sortedDistinct.Length));
+        var state = (Nums: nums, PeakEnd: new long[nums.Length], ValleyEnd: new long[nums.Length]);
 
-        var peakByValleyRank = BuildRankedTree(rankCount);
-        var valleyByPeakRank = BuildRankedTree(rankCount);
-
-        var peakEnd = new long[n];
-        var valleyEnd = new long[n];
-        var answer = long.MinValue;
-        var activated = 0;
-
-        for (var i = 0; i < n; i++)
-        {
-            while (activated <= i - k)
-            {
-                var rank = BinarySearch.LowerBound(sequence, nums[activated]);
-                Raise(peakByValleyRank, rank, valleyEnd[activated]);
-                Raise(valleyByPeakRank, rank, peakEnd[activated]);
-                activated++;
-            }
-
-            var currentRank = BinarySearch.LowerBound(sequence, nums[i]);
-            var bestFromValley = currentRank > 0
-                ? Math.Max(0L, peakByValleyRank.Query(0, currentRank - 1))
-                : 0L;
-            var bestFromPeak = currentRank < rankCount - 1
-                ? Math.Max(0L, valleyByPeakRank.Query(currentRank + 1, rankCount - 1))
-                : 0L;
-
-            peakEnd[i] = nums[i] + bestFromValley;
-            valleyEnd[i] = nums[i] + bestFromPeak;
-            answer = Math.Max(answer, Math.Max(peakEnd[i], valleyEnd[i]));
-        }
-
-        return answer;
+        return SweepByValueRank(k, sequence, trees, state);
     }
 
     private static RepoSegmentTree BuildRankedTree(int rankCount)
@@ -111,11 +90,88 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
         return new RepoSegmentTree(initial);
     }
 
+    // The ranked sweep itself: walk i left to right, first publishing every
+    // predecessor the distance constraint has just freed, then extending the two
+    // chains at i out of the trees.
+    private static long SweepByValueRank(
+        int k,
+        ArraySequence<int> sequence,
+        (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees,
+        (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state)
+    {
+        var answer = long.MinValue;
+        var activated = 0;
+
+        for (var i = 0; i < state.Nums.Length; i++)
+        {
+            while (activated <= i - k)
+            {
+                RaisePredecessor(state, activated, sequence, trees);
+                activated++;
+            }
+
+            var extensions = BestExtensionsFromRank(state.Nums[i], sequence, trees);
+            answer = CommitChainsAt(state, i, extensions, answer);
+        }
+
+        return answer;
+    }
+
+    // Publish predecessor `index` at its own value rank into both trees: its
+    // valleyEnd can extend a later peak, its peakEnd a later valley.
+    private static void RaisePredecessor(
+        (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state,
+        int index,
+        ArraySequence<int> sequence,
+        (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees)
+    {
+        var rank = BinarySearch.LowerBound(sequence, state.Nums[index]);
+        Raise(trees.PeakByValley, rank, state.ValleyEnd[index]);
+        Raise(trees.ValleyByPeak, rank, state.PeakEnd[index]);
+    }
+
     private static void Raise(RepoSegmentTree tree, int rank, long value)
     {
         if (value > tree.Query(rank, rank))
         {
             tree.Update(rank, value);
         }
+    }
+
+    // The best extension of a chain at `value` out of the ranks strictly below it
+    // (a valley predecessor, completing a rise) and strictly above it (a peak
+    // predecessor, completing a fall). A side with no eligible predecessor
+    // contributes 0 - the sum of a chain that starts fresh at `value`.
+    private static (long BestFromValley, long BestFromPeak) BestExtensionsFromRank(
+        int value,
+        ArraySequence<int> sequence,
+        (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees)
+    {
+        var rank = BinarySearch.LowerBound(sequence, value);
+        var lastRank = sequence.Length - 1;
+        var lowerExtension = rank > 0 ? trees.PeakByValley.Query(0, rank - 1) : 0L;
+        var bestFromValley = Math.Max(0L, lowerExtension);
+        var higherExtension = rank < lastRank ? trees.ValleyByPeak.Query(rank + 1, lastRank) : 0L;
+        var bestFromPeak = Math.Max(0L, higherExtension);
+
+        return (bestFromValley, bestFromPeak);
+    }
+
+    // Both arms close an index the same way: the two chain ends at `index` are
+    // nums[index] extended by the best eligible predecessor on each side, and the
+    // running answer keeps the better of the two.
+    private static long CommitChainsAt(
+        (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state,
+        int index,
+        (long BestFromValley, long BestFromPeak) extensions,
+        long answer)
+    {
+        var peakEnd = state.Nums[index] + extensions.BestFromValley;
+        var valleyEnd = state.Nums[index] + extensions.BestFromPeak;
+        state.PeakEnd[index] = peakEnd;
+        state.ValleyEnd[index] = valleyEnd;
+        var bestEndHere = Math.Max(peakEnd, valleyEnd);
+
+        return Math.Max(answer, bestEndHere);
     }
 }

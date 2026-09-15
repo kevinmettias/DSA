@@ -34,11 +34,22 @@ internal static class MinimumTimeToRevertWordToInitialStateIISolution
         {
             var shift = t * k;
 
-            if (shift >= n || word.AsSpan(shift).SequenceEqual(word.AsSpan(0, n - shift)))
+            if (shift >= n || SuffixMatchesPrefix(word, shift))
             {
                 return t;
             }
         }
+    }
+
+    // Whether the surviving suffix at `shift` equals word's own prefix of that same
+    // length - exactly the refill condition above. Only reached with shift < word's
+    // length, so both spans are non-empty.
+    private static bool SuffixMatchesPrefix(string word, int shift)
+    {
+        var suffix = word.AsSpan(shift);
+        var prefix = word.AsSpan(0, word.Length - shift);
+
+        return suffix.SequenceEqual(prefix);
     }
 
     // Algorithms.StringMatching.ZFunction.Compute(word)[shift] is the longest

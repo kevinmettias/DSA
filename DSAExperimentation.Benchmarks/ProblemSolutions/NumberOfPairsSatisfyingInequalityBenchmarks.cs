@@ -13,12 +13,12 @@ public class NumberOfPairsSatisfyingInequalityBenchmarks
     private const int RandomSeed = 2426; // LeetCode problem number
     private const int ValueBound = 10_000;
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    private int[] _nums1 = [];
+    private int[] _nums2 = [];
     private int _diff;
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

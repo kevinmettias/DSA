@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class IntersectionOfTwoLinkedListsBenchmarks
 {
-    [Params(100, 5_000)]
-    public int PrefixLength;
-
     private SinglyLinkedListNode<int> _headA = null!;
+
     private SinglyLinkedListNode<int> _headB = null!;
+    [Params(100, 5_000)]
+    public int PrefixLength { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

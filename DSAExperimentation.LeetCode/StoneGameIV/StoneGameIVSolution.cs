@@ -35,16 +35,24 @@ internal static class StoneGameIVSolution
     // count the first time it is resolved, collapsing the exponential tree to one
     // evaluation per distinct count.
     public static bool AliceWinsByMemoizedRecursion(int n)
-        => Memoizer.Memoize<int, bool>(n, (current, aliceWins) =>
+        => Memoizer.Memoize<int, bool>(n, new WinFromSquareRemoval());
+
+    // The recurrence, as a named type: the mover wins from `state` stones exactly when
+    // some square-sized removal leaves the opponent losing, and loses once no square
+    // still fits. This is the decision the bare lambda left anonymous.
+    private sealed class WinFromSquareRemoval : IRecurrence<int, bool>
+    {
+        public bool Replay(int state, IRecurrence<int, bool> rest)
         {
-            for (var square = 1; square * square <= current; square++)
+            for (var square = 1; square * square <= state; square++)
             {
-                if (!aliceWins(current - (square * square)))
+                if (!rest.Replay(state - (square * square), rest))
                 {
                     return true;
                 }
             }
 
             return false;
-        });
+        }
+    }
 }

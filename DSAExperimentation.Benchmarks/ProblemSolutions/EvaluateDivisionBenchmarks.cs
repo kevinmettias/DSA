@@ -13,12 +13,12 @@ public class EvaluateDivisionBenchmarks
     private const double EdgeWeight = 2.0;
     private const string FirstVariableName = "v0";
 
-    [Params(200, 5_000)]
-    public int VariableCount;
+    private (string Dividend, string Divisor, double Value)[] _equations = [];
 
-    private (string Dividend, string Divisor, double Value)[] _equations = null!;
-    private string _firstVariable = null!;
-    private string _lastVariable = null!;
+    private string _firstVariable = "";
+    private string _lastVariable = "";
+    [Params(200, 5_000)]
+    public int VariableCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -36,9 +36,15 @@ public class EvaluateDivisionBenchmarks
 
     [Benchmark(Baseline = true)]
     public double DictionaryBased() =>
-        EvaluateDivisionSolution.EvaluateByDictionaryDfs(_equations, _firstVariable, _lastVariable);
+        EvaluateDivisionSolution.EvaluateByDictionaryDfs(
+            _equations,
+            new EvaluateDivisionSolution.Dividend(_firstVariable),
+            new EvaluateDivisionSolution.Divisor(_lastVariable));
 
     [Benchmark]
     public double HashMapStackComposed() =>
-        EvaluateDivisionSolution.EvaluateByHashMapStackDfs(_equations, _firstVariable, _lastVariable);
+        EvaluateDivisionSolution.EvaluateByHashMapStackDfs(
+            _equations,
+            new EvaluateDivisionSolution.Dividend(_firstVariable),
+            new EvaluateDivisionSolution.Divisor(_lastVariable));
 }

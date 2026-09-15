@@ -92,8 +92,7 @@ internal static class BricksFallingWhenHitSolution
 
         foreach (var (neighborRow, neighborCol) in neighbors)
         {
-            if (neighborRow >= 0 && neighborRow < grid.Rows && neighborCol >= 0 && neighborCol < grid.Cols
-                && grid.Standing[neighborRow, neighborCol] && !grid.Visited[neighborRow, neighborCol])
+            if (IsUnvisitedStandingBrick(grid, neighborRow, neighborCol))
             {
                 grid.Visited[neighborRow, neighborCol] = true;
                 frontier.Enqueue((neighborRow, neighborCol));
@@ -102,6 +101,12 @@ internal static class BricksFallingWhenHitSolution
 
         return 1;
     }
+
+    // A neighbour worth flooding into: on the board, still standing, and not yet
+    // reached by the roof flood.
+    private static bool IsUnvisitedStandingBrick(RoofGrid grid, int row, int col)
+        => row >= 0 && row < grid.Rows && col >= 0 && col < grid.Cols
+            && grid.Standing[row, col] && !grid.Visited[row, col];
 
     // This repo's own DisjointSet, driven backwards through the hit list: the roof
     // component's size before and after restoring a brick differs by exactly that
@@ -205,7 +210,20 @@ internal static class BricksFallingWhenHitSolution
         ConnectToStandingNeighbors(state, row, col);
         var afterSize = state.Size[state.Components.Find(state.Roof)];
 
-        context.FallenReversed[i] = afterSize > beforeSize ? afterSize - beforeSize - 1 : 0;
+        context.FallenReversed[i] = FallenBrickCount(afterSize, beforeSize);
+    }
+
+    // How many bricks this hit knocked down, read off the roof component's size before
+    // and after the hit was undone: the growth less the restored brick itself, and none
+    // at all when the roof ended no larger than it started.
+    private static int FallenBrickCount(int afterSize, int beforeSize)
+    {
+        if (afterSize > beforeSize)
+        {
+            return afterSize - beforeSize - 1;
+        }
+
+        return 0;
     }
 
     private static void ConnectToStandingNeighbors(GridState state, int row, int col)
@@ -221,13 +239,17 @@ internal static class BricksFallingWhenHitSolution
 
         foreach (var (neighborRow, neighborCol) in neighbors)
         {
-            if (neighborRow >= 0 && neighborRow < state.Rows && neighborCol >= 0 && neighborCol < state.Cols
-                && state.Present[neighborRow, neighborCol])
+            if (IsStandingBrick(state, neighborRow, neighborCol))
             {
                 Union(state.Components, state.Size, cellId, (neighborRow * state.Cols) + neighborCol);
             }
         }
     }
+
+    // A neighbour on the board that still has its brick.
+    private static bool IsStandingBrick(GridState state, int row, int col)
+        => row >= 0 && row < state.Rows && col >= 0 && col < state.Cols
+            && state.Present[row, col];
 
     private static void Union(DisjointSet components, int[] size, int first, int second)
     {

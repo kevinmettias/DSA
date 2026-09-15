@@ -1,6 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream
-    .FindConsecutiveIntegersFromADataStreamSolution;
+using DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -20,10 +19,10 @@ public class FindConsecutiveIntegersFromADataStreamBenchmarks
     private const int K = 20;
     private const int ValueBoundExclusive = 1_000;
 
-    [Params(2_000, 20_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(2_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,14 +32,14 @@ public class FindConsecutiveIntegersFromADataStreamBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int UnboundedHistoryRescan() => CountConsecutiveHits(new DataStreamByHistoryRescan(Value, K));
+    public int UnboundedHistoryRescan() => CountConsecutiveHits(new FindConsecutiveIntegersFromADataStreamSolution.DataStreamByHistoryRescan(Value, K));
 
     [Benchmark]
-    public int FixedWindowIncrementalCount() => CountConsecutiveHits(new DataStreamByFixedWindow(Value, K));
+    public int FixedWindowIncrementalCount() => CountConsecutiveHits(new FindConsecutiveIntegersFromADataStreamSolution.DataStreamByFixedWindow(Value, K));
 
     // Counts the true answers rather than discarding each Consec result, so the JIT
     // cannot eliminate the replay as dead code.
-    private int CountConsecutiveHits(IDataStreamStrategy stream)
+    private int CountConsecutiveHits(FindConsecutiveIntegersFromADataStreamSolution.IDataStreamStrategy stream)
     {
         var trueCount = 0;
 

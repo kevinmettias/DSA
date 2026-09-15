@@ -15,15 +15,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class WordLadderBenchmarks
 {
     private const int WordLength = 6;
-    private const int RandomSeed = 127; // LC problem number
+    private const int RandomSeed = 127; private Set<string> _wordSet = new();
+
+    private HammingGraph _graph = null!;
+    private string _beginWord = "";
+    private string _endWord = "";
+    // LC problem number
 
     [Params(200, 2_000)]
-    public int WordCount;
-
-    private Set<string> _wordSet = null!;
-    private HammingGraph _graph = null!;
-    private string _beginWord = null!;
-    private string _endWord = null!;
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -39,7 +39,8 @@ public class WordLadderBenchmarks
 
     [Benchmark(Baseline = true)]
     public int MutationQueueBfs() =>
-        WordLadderSolution.LadderLengthByMutationQueue(_beginWord, _endWord, _wordSet);
+        WordLadderSolution.LadderLengthByMutationQueue(
+            new BeginWord(_beginWord), new EndWord(_endWord), _wordSet);
 
     [Benchmark]
     public int ReduceGraphBfs() => WordLadderSolution.LadderLengthByReduceGraph(_graph, _endWord);

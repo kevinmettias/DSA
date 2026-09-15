@@ -23,7 +23,7 @@ internal static class NumberOfMatchingSubsequencesSolution
 
         foreach (var word in words)
         {
-            if (IsSubsequence(word, s))
+            if (IsSubsequence(new CandidateWord(word), new SearchedText(s)))
             {
                 matches++;
             }
@@ -32,19 +32,19 @@ internal static class NumberOfMatchingSubsequencesSolution
         return matches;
     }
 
-    private static bool IsSubsequence(string word, string s)
+    private static bool IsSubsequence(CandidateWord word, SearchedText s)
     {
         var next = 0;
 
-        for (var i = 0; i < s.Length && next < word.Length; i++)
+        for (var i = 0; i < s.Text.Length && next < word.Text.Length; i++)
         {
-            if (s[i] == word[next])
+            if (s.Text[i] == word.Text[next])
             {
                 next++;
             }
         }
 
-        return next == word.Length;
+        return next == word.Text.Length;
     }
 
     // One pass over s: reaching character c releases exactly the words waiting on
@@ -114,4 +114,13 @@ internal static class NumberOfMatchingSubsequencesSolution
 
         waiting.Enqueue((word, index));
     }
+
+    // LC 792's two operands, named for the roles they play here rather than left as two
+    // adjacent `string` positions a caller could hand over the wrong way round with the
+    // compiler none the wiser. `word` is the candidate whose characters have to appear
+    // in order and `s` the string they are looked for in - subsequence containment is
+    // one-directional, so a swap asks a different question.
+    internal readonly record struct CandidateWord(string Text);
+
+    internal readonly record struct SearchedText(string Text);
 }

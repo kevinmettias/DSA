@@ -16,25 +16,29 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheOccurrenceOfFirstAlmostEqualSubstringBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _pattern = null!;
+    private string _pattern = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var patternLength = Math.Max(2, Length / 10);
         _s = new string('a', Length);
-        _pattern = new string('a', patternLength - 2) + "bb";
+        _pattern = $"{new string('a', patternLength - 2)}bb";
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
-        FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByBruteForce(_s, _pattern);
+        FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByBruteForce(
+            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(_s),
+            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.MatchPattern(_pattern));
 
     [Benchmark]
     public int ZFunction() =>
-        FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByZFunction(_s, _pattern);
+        FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByZFunction(
+            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(_s),
+            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.MatchPattern(_pattern));
 }

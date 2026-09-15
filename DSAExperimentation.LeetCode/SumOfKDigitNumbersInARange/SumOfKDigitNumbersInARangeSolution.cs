@@ -26,24 +26,7 @@ namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 internal static class SumOfKDigitNumbersInARangeSolution
 {
     public static long SumOfKDigitNumbersByBruteForceEnumeration(int l, int r, int k) =>
-        BruteForceEnumeration(l, r, k, position: 0, valueSoFar: 0);
-
-    private static long BruteForceEnumeration(int l, int r, int k, int position, long valueSoFar)
-    {
-        if (position == k)
-        {
-            return valueSoFar;
-        }
-
-        var total = 0L;
-        for (var digit = l; digit <= r; digit++)
-        {
-            var next = (valueSoFar * 10 + digit) % ModularArithmetic.Modulo;
-            total = (total + BruteForceEnumeration(l, r, k, position + 1, next)) % ModularArithmetic.Modulo;
-        }
-
-        return total;
-    }
+        BruteForceEnumeration((Low: l, High: r), k, position: 0, valueSoFar: 0);
 
     public static long SumOfKDigitNumbersByModularRepunit(int l, int r, int k)
     {
@@ -55,5 +38,26 @@ internal static class SumOfKDigitNumbersInARangeSolution
         var combinationsPerDigit = ModularArithmetic.Power(digitCount, k - 1);
 
         return digitSum * combinationsPerDigit % ModularArithmetic.Modulo * repunit % ModularArithmetic.Modulo;
+    }
+
+    // The digits one position may take are a single closed interval: l and r are
+    // chosen together and never mean anything apart, so they travel as one range.
+    private static long BruteForceEnumeration(
+        (int Low, int High) digitRange, int k, int position, long valueSoFar)
+    {
+        if (position == k)
+        {
+            return valueSoFar;
+        }
+
+        var total = 0L;
+        for (var digit = digitRange.Low; digit <= digitRange.High; digit++)
+        {
+            var next = (valueSoFar * 10 + digit) % ModularArithmetic.Modulo;
+            total = (total + BruteForceEnumeration(digitRange, k, position + 1, next))
+                % ModularArithmetic.Modulo;
+        }
+
+        return total;
     }
 }

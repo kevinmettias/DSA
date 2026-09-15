@@ -45,7 +45,7 @@ internal static class SpiralMatrixIISolution
         var nextRow = row + deltaRow[direction];
         var nextCol = col + deltaCol[direction];
 
-        if (nextRow < 0 || nextRow >= n || nextCol < 0 || nextCol >= n || visited.Contains((nextRow, nextCol)))
+        if (IsBlocked(visited, nextRow, nextCol, n))
         {
             direction = (direction + 1) % DirectionCount;
             nextRow = row + deltaRow[direction];
@@ -54,6 +54,10 @@ internal static class SpiralMatrixIISolution
 
         return new SpiralPosition(nextRow, nextCol, direction);
     }
+
+    // The walk turns whenever the cell ahead is off the board or already filled.
+    private static bool IsBlocked(HashSet<(int Row, int Col)> visited, int row, int col, int n)
+        => row < 0 || row >= n || col < 0 || col >= n || visited.Contains((row, col));
 
     // Boundary-shrinking: fill each ring's top/right/bottom/left edge in turn and
     // shrink the frame afterward. No membership lookup is needed at all.
@@ -120,11 +124,11 @@ internal static class SpiralMatrixIISolution
 
     private readonly record struct SpiralPosition(int Row, int Col, int Direction);
 
-    private struct SpiralBounds
+    private sealed class SpiralBounds
     {
-        public int Top;
-        public int Bottom;
-        public int Left;
-        public int Right;
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+        public int Left { get; set; }
+        public int Right { get; set; }
     }
 }

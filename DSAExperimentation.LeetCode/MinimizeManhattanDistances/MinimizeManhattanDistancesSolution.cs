@@ -25,30 +25,40 @@ internal static class MinimizeManhattanDistancesSolution
 
         for (var removed = 0; removed < points.Length; removed++)
         {
-            var maxDistance = 0;
-
-            for (var i = 0; i < points.Length; i++)
-            {
-                if (i == removed)
-                {
-                    continue;
-                }
-
-                for (var j = i + 1; j < points.Length; j++)
-                {
-                    if (j == removed)
-                    {
-                        continue;
-                    }
-
-                    maxDistance = Math.Max(maxDistance, ManhattanDistance(points[i], points[j]));
-                }
-            }
-
+            var maxDistance = MaxDistanceWithout(points, removed);
             best = Math.Min(best, maxDistance);
         }
 
         return best;
+    }
+
+    // The widest distance among the pairs that survive removing one point. Rescanning
+    // every such pair is the O(n^2)-per-removal work the transform strategy below has to
+    // beat, so it stays its own named unit.
+    private static int MaxDistanceWithout(int[][] points, int removed)
+    {
+        var maxDistance = 0;
+
+        for (var i = 0; i < points.Length; i++)
+        {
+            if (i == removed)
+            {
+                continue;
+            }
+
+            for (var j = i + 1; j < points.Length; j++)
+            {
+                if (j == removed)
+                {
+                    continue;
+                }
+
+                var distance = ManhattanDistance(points[i], points[j]);
+                maxDistance = Math.Max(maxDistance, distance);
+            }
+        }
+
+        return maxDistance;
     }
 
     private static int ManhattanDistance(int[] a, int[] b) => Math.Abs(a[0] - b[0]) + Math.Abs(a[1] - b[1]);
@@ -73,7 +83,8 @@ internal static class MinimizeManhattanDistancesSolution
         {
             var rangeU = RangeExcluding(sortedByU, removed);
             var rangeV = RangeExcluding(sortedByV, removed);
-            best = Math.Min(best, Math.Max(rangeU, rangeV));
+            var widest = Math.Max(rangeU, rangeV);
+            best = Math.Min(best, widest);
         }
 
         return (int)best;
@@ -107,13 +118,21 @@ internal static class MinimizeManhattanDistancesSolution
             byV[i] = ((long)points[i][0] - points[i][1], i);
         }
 
+        SortByValue(byU, byV);
+
+        return (byU, byV);
+    }
+
+    // Both transforms sorted ascending by their own value, in place, so the "try every
+    // removal" sweep can read an extreme straight off either end of either array.
+    private static void SortByValue(
+        (long Value, int PointIndex)[] byU, (long Value, int PointIndex)[] byV)
+    {
         var byValue = Comparer<(long Value, int PointIndex)>.Create((a, b) => a.Value.CompareTo(b.Value));
 
         MergeSort.Sort<(long Value, int PointIndex), ArrayIndexedSequence<(long Value, int PointIndex)>>(
             new ArrayIndexedSequence<(long Value, int PointIndex)>(byU), byValue);
         MergeSort.Sort<(long Value, int PointIndex), ArrayIndexedSequence<(long Value, int PointIndex)>>(
             new ArrayIndexedSequence<(long Value, int PointIndex)>(byV), byValue);
-
-        return (byU, byV);
     }
 }

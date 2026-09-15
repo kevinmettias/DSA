@@ -73,14 +73,12 @@ internal static class DetectCyclesIn2DGridSolution
         var nextRow = current.Row + direction.DRow;
         var nextCol = current.Col + direction.DCol;
 
-        if (nextRow < 0 || nextRow >= walk.Grid.Length
-            || nextCol < 0 || nextCol >= walk.Grid[0].Length)
+        if (IsOutsideGrid(nextRow, nextCol, walk.Grid.Length, walk.Grid[0].Length))
         {
             return false;
         }
 
-        if (walk.Grid[nextRow][nextCol] != walk.Grid[current.Row][current.Col]
-            || (nextRow == current.ParentRow && nextCol == current.ParentCol))
+        if (IsBlockedNeighbor(walk.Grid, nextRow, nextCol, current))
         {
             return false;
         }
@@ -95,9 +93,12 @@ internal static class DetectCyclesIn2DGridSolution
         return false;
     }
 
-    private readonly record struct Step(int Row, int Col, int ParentRow, int ParentCol);
-
-    private readonly record struct CycleWalk(char[][] Grid, bool[,] Visited, Stack<Step> Stack);
+    // A neighbor only continues the walk when it carries the same character and is not
+    // the cell we arrived from - stepping straight back along the parent edge is not a
+    // cycle, it is the way we came.
+    private static bool IsBlockedNeighbor(char[][] grid, int nextRow, int nextCol, Step current) =>
+        grid[nextRow][nextCol] != grid[current.Row][current.Col]
+        || (nextRow == current.ParentRow && nextCol == current.ParentCol);
 
     // This repo's own DisjointSet: union each cell with its same-character
     // right/down neighbor exactly once per edge - the "already connected before the
@@ -131,10 +132,14 @@ internal static class DetectCyclesIn2DGridSolution
         return false;
     }
 
+    private readonly record struct Step(int Row, int Col, int ParentRow, int ParentCol);
+
+    private readonly record struct CycleWalk(char[][] Grid, bool[,] Visited, Stack<Step> Stack);
+
     private static bool HasCycleThroughNeighbor(
         GridComponents context, (int Row, int Col) cell, (int Row, int Col) neighbor)
     {
-        if (neighbor.Row >= context.Grid.Length || neighbor.Col >= context.Cols
+        if (IsOutsideGrid(neighbor.Row, neighbor.Col, context.Grid.Length, context.Cols)
             || context.Grid[neighbor.Row][neighbor.Col] != context.Grid[cell.Row][cell.Col])
         {
             return false;
@@ -151,6 +156,9 @@ internal static class DetectCyclesIn2DGridSolution
         context.Components.Union(id, neighborId);
         return false;
     }
+
+    private static bool IsOutsideGrid(int row, int col, int rows, int cols) =>
+        row < 0 || row >= rows || col < 0 || col >= cols;
 
     private readonly record struct GridComponents(char[][] Grid, DisjointSet Components, int Cols);
 }

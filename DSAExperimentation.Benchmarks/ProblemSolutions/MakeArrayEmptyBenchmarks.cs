@@ -11,24 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MakeArrayEmptyBenchmarks
 {
-    private const int Seed = 2659; // LC problem number
+    private const int Seed = 2659; private int[] _nums = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _nums = ShuffledDistinctValues(new Random(Seed), Length);
-    }
-
-    [Benchmark(Baseline = true)]
-    public long LinearScan() => MakeArrayEmptySolution.CountOperationsByLinearScan(_nums);
-
-    [Benchmark]
-    public long FenwickTreeSweep() => MakeArrayEmptySolution.CountOperationsByFenwickTree(_nums);
+    public void Setup() => _nums = ShuffledDistinctValues(new Random(Seed), Length);
 
     private static int[] ShuffledDistinctValues(Random random, int length)
     {
@@ -42,4 +33,10 @@ public class MakeArrayEmptyBenchmarks
 
         return values;
     }
+
+    [Benchmark(Baseline = true)]
+    public long LinearScan() => MakeArrayEmptySolution.CountOperationsByLinearScan(_nums);
+
+    [Benchmark]
+    public long FenwickTreeSweep() => MakeArrayEmptySolution.CountOperationsByFenwickTree(_nums);
 }

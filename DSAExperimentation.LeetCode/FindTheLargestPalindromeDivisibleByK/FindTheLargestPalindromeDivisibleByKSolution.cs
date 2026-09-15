@@ -33,90 +33,40 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
         return TryFillDescending(0, half, n, k) ? Mirror(half, n) : string.Empty;
     }
 
-    private static bool TryFillDescending(int position, char[] half, int n, int k)
-    {
-        if (position == half.Length)
-        {
-            return IsDivisible(Mirror(half, n), k);
-        }
-
-        var lowestDigit = position == 0 ? 1 : 0;
-
-        for (var digit = 9; digit >= lowestDigit; digit--)
-        {
-            half[position] = (char)('0' + digit);
-
-            if (TryFillDescending(position + 1, half, n, k))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static string LargestPalindromeByDigitDpMemo(int n, int k)
     {
         var h = HalfLength(n);
         var weight = BuildWeights(n, k, h);
-        var digitChoice = new Dictionary<(int Position, int Needed), int>();
+        var digitChoice = FeasibleDigitChoices(weight, k);
 
-        var feasible = Memoizer.Memoize<(int Position, int Needed), bool>(
-            (0, 0),
-            (state, recurse) => IsFeasible(state, h, weight, k, digitChoice, recurse));
-
-        if (!feasible)
+        if (digitChoice is null)
         {
             return string.Empty;
         }
 
-        var half = new char[h];
-        var needed = 0;
-
-        for (var position = 0; position < h; position++)
-        {
-            var digit = digitChoice[(position, needed)];
-            half[position] = (char)('0' + digit);
-            needed = Reduce(needed - digit * weight[position], k);
-        }
+        var half = FillGreedyHalf(h, k, weight, digitChoice);
 
         return Mirror(half, n);
     }
 
-    // Side channel: Memoizer's own return value only reports whether (0, 0) is
-    // feasible, so the digit that MADE each visited state feasible is recorded here
-    // as it is discovered - every state this records is one the greedy replay above
-    // will actually ask for, since replay starts at the same (0, 0) and re-derives
-    // Needed the same way this recursion did.
-    private static bool IsFeasible(
-        (int Position, int Needed) state,
-        int h,
-        int[] weight,
-        int k,
-        Dictionary<(int Position, int Needed), int> digitChoice,
-        Func<(int Position, int Needed), bool> recurse)
+    /// <summary>
+    /// The recurrence, named: whether the half-digits still to be chosen at
+    /// <c>Position</c> can drive the running residue to <c>Needed</c> - true once the
+    /// positions run out and nothing is left needed, and otherwise true as soon as some
+    /// digit keeps the rest of the walk feasible. The largest such digit is recorded
+    /// against the state, which is what FillGreedyHalf's replay reads back.
+    /// </summary>
+    private sealed class FeasibleRemainder(
+        int[] weights,
+        int modulus,
+        Dictionary<(int Position, int Needed), int> digitChoice)
+        : IRecurrence<(int Position, int Needed), bool>
     {
-        var (position, needed) = state;
-
-        if (position == h)
-        {
-            return needed == 0;
-        }
-
-        var lowestDigit = position == 0 ? 1 : 0;
-
-        for (var digit = 9; digit >= lowestDigit; digit--)
-        {
-            var nextNeeded = Reduce(needed - digit * weight[position], k);
-
-            if (recurse((position + 1, nextNeeded)))
-            {
-                digitChoice[state] = digit;
-                return true;
-            }
-        }
-
-        return false;
+        /// <inheritdoc/>
+        public bool Replay(
+            (int Position, int Needed) state,
+            IRecurrence<(int Position, int Needed), bool> rest) =>
+            IsFeasible(state, (Weights: weights, Modulus: modulus), digitChoice, rest);
     }
 
     private static int[] BuildWeights(int n, int k, int h)
@@ -134,10 +84,119 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
         for (var i = 0; i < h; i++)
         {
             var mirrorPosition = n - 1 - i;
-            weight[i] = mirrorPosition == i ? pow10[i] : (pow10[i] + pow10[mirrorPosition]) % k;
+            weight[i] = WeightForPosition(pow10, i, mirrorPosition, k);
         }
 
         return weight;
+    }
+
+    // The residue weight a half digit at this position carries: the position it mirrors
+    // contributes its own power of ten as well, unless this is the unmirrored middle of
+    // an odd-length palindrome and stands alone.
+    private static int WeightForPosition(int[] pow10, int position, int mirrorPosition, int modulus)
+    {
+        if (mirrorPosition == position)
+        {
+            return pow10[position];
+        }
+
+        return (pow10[position] + pow10[mirrorPosition]) % modulus;
+    }
+
+    // The memoized walk, named: it answers whether the start state (0, 0) is feasible
+    // at all, and hands back the side dictionary of digits that made each visited
+    // state feasible. Null is the "no such palindrome exists" answer - there is then
+    // no state for the greedy replay to read, so the empty string is all that is left.
+    private static Dictionary<(int Position, int Needed), int>? FeasibleDigitChoices(
+        int[] weight, int k)
+    {
+        var digitChoice = new Dictionary<(int Position, int Needed), int>();
+
+        var feasible = Memoizer.Memoize<(int Position, int Needed), bool>(
+            (0, 0), new FeasibleRemainder(weight, k, digitChoice));
+
+        return feasible ? digitChoice : null;
+    }
+
+    // The greedy replay, named: each position's digit is read straight out of the
+    // recorded choice, and Needed is re-derived exactly the way the feasibility walk
+    // derived it - replay starts at the same (0, 0), so it visits the same states and
+    // finds a digit recorded for every one of them.
+    private static char[] FillGreedyHalf(
+        int h, int k, int[] weight, Dictionary<(int Position, int Needed), int> digitChoice)
+    {
+        var half = new char[h];
+        var needed = 0;
+
+        for (var position = 0; position < h; position++)
+        {
+            var digit = digitChoice[(position, needed)];
+            half[position] = (char)('0' + digit);
+            needed = Reduce(needed - digit * weight[position], k);
+        }
+
+        return half;
+    }
+
+    // Side channel: Memoizer's own return value only reports whether (0, 0) is
+    // feasible, so the digit that MADE each visited state feasible is recorded here
+    // as it is discovered - every state this records is one the greedy replay above
+    // will actually ask for, since replay starts at the same (0, 0) and re-derives
+    // Needed the same way this recursion did.
+    //
+    // The weight table and the modulus it was reduced under are one residue rule:
+    // every weight is a residue mod k, and neither is ever read without the other.
+    // Its length is h itself, so the walk's end reads off the table.
+    private static bool IsFeasible(
+        (int Position, int Needed) state,
+        (int[] Weights, int Modulus) residue,
+        Dictionary<(int Position, int Needed), int> digitChoice,
+        IRecurrence<(int Position, int Needed), bool> rest)
+    {
+        var (position, needed) = state;
+
+        if (position == residue.Weights.Length)
+        {
+            return needed == 0;
+        }
+
+        var lowestDigit = position == 0 ? 1 : 0;
+
+        for (var digit = 9; digit >= lowestDigit; digit--)
+        {
+            var nextNeeded = Reduce(needed - digit * residue.Weights[position], residue.Modulus);
+
+            if (rest.Replay((position + 1, nextNeeded), rest))
+            {
+                digitChoice[state] = digit;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryFillDescending(int position, char[] half, int n, int k)
+    {
+        if (position == half.Length)
+        {
+            var candidate = Mirror(half, n);
+            return IsDivisible(candidate, k);
+        }
+
+        var lowestDigit = position == 0 ? 1 : 0;
+
+        for (var digit = 9; digit >= lowestDigit; digit--)
+        {
+            half[position] = (char)('0' + digit);
+
+            if (TryFillDescending(position + 1, half, n, k))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static bool IsDivisible(string number, int k)

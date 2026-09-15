@@ -22,17 +22,30 @@ internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
     // states on the fly instead of materializing them - "what you'd write
     // without this repo" (ARCHITECTURE.md 17.5).
     public static long[] MinTimeMaxPowerByBclPriorityQueue(
-        int n, int[][] edges, int power, int[] cost, int source, int target)
+        (int NodeCount, int[][] Edges, int Power, int[] Cost) input, int source, int target)
     {
-        var adjacency = BuildAdjacency(n, edges);
-        var distances = new Dictionary<(int Node, int Power), long> { [(source, power)] = 0L };
+        var adjacency = BuildAdjacency(input.NodeCount, input.Edges);
+        var distances = new Dictionary<(int Node, int Power), long> { [(source, input.Power)] = 0L };
         var settled = new HashSet<(int Node, int Power)>();
         var frontier = new PriorityQueue<(int Node, int Power), long>();
-        frontier.Enqueue((source, power), 0L);
+        frontier.Enqueue((source, input.Power), 0L);
 
-        while (frontier.TryDequeue(out var state, out var time))
+        RelaxStates(adjacency, input.Cost, (distances, settled, frontier));
+
+        return BestForTarget(distances, target, input.Power);
+    }
+
+    // Drain the state frontier, settling each (node, remainingPower) state once and
+    // relaxing the edges out of it - the whole Dijkstra expansion, run in place over
+    // the three collections the caller owns.
+    private static void RelaxStates(
+        List<(int To, long Weight)>[] adjacency,
+        int[] cost,
+        (Dictionary<(int Node, int Power), long> Times, HashSet<(int Node, int Power)> Settled, PriorityQueue<(int Node, int Power), long> Frontier) search)
+    {
+        while (search.Frontier.TryDequeue(out var state, out var time))
         {
-            if (!settled.Add(state) || state.Power < cost[state.Node])
+            if (!search.Settled.Add(state) || state.Power < cost[state.Node])
             {
                 continue;
             }
@@ -44,16 +57,27 @@ internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
                 var nextState = (to, remaining);
                 var candidate = time + weight;
 
-                if (!distances.TryGetValue(nextState, out var known) || candidate < known)
+                if (!search.Times.TryGetValue(nextState, out var known) || candidate < known)
                 {
-                    distances[nextState] = candidate;
-                    frontier.Enqueue(nextState, candidate);
+                    search.Times[nextState] = candidate;
+                    search.Frontier.Enqueue(nextState, candidate);
                 }
             }
         }
-
-        return BestForTarget(distances, target, power);
     }
+
+    // A strictly faster arrival at the target, or an equally fast one with more
+    // power left over - the problem's own tie-break.
+    private static bool IsBetterArrival(long time, long bestTime, int remaining, int bestPower)
+        => time < bestTime || (time == bestTime && remaining > bestPower);
+
+    // The answer pair LeetCode reads back from this problem: the minimum time,
+    // then the largest power left over among the paths that achieve it.
+    private static long[] TimeAndPower(long time, int power) => [time, power];
+
+    // No path reaches the target at any remaining-power level, so neither entry
+    // of the answer pair carries a time or a power.
+    private static long[] NoPath() => [LeetCodeAnswer.None, LeetCodeAnswer.None];
 
     private static long[] BestForTarget(Dictionary<(int Node, int Power), long> distances, int target, int power)
     {
@@ -66,13 +90,13 @@ internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
                 continue;
             }
 
-            if (time < bestTime || (time == bestTime && remaining > bestPower))
+            if (IsBetterArrival(time, bestTime, remaining, bestPower))
             {
                 (bestTime, bestPower) = (time, remaining);
             }
         }
 
-        return bestPower < 0 ? [LeetCodeAnswer.None, LeetCodeAnswer.None] : [bestTime, bestPower];
+        return bestPower < 0 ? NoPath() : TimeAndPower(bestTime, bestPower);
     }
 
     private static List<(int To, long Weight)>[] BuildAdjacency(int n, int[][] edges)
@@ -98,8 +122,12 @@ internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
     // NetworkRecoveryPathwaysSolution's two arms make around
     // RecoveryNetwork/RecoveryTopology.
     public static long[] MinTimeMaxPowerByReduceGraph(
-        int n, int[][] edges, int power, int[] cost, int source, int target) =>
-        MinTimeMaxPowerByReduceGraph(PowerStateGraph.Build(n, edges, power, cost), source, target);
+        (int NodeCount, int[][] Edges, int Power, int[] Cost) input, int source, int target)
+    {
+        var graph = PowerStateGraph.Build(input.NodeCount, input.Edges, input.Power, input.Cost);
+
+        return MinTimeMaxPowerByReduceGraph(graph, source, target);
+    }
 
     public static long[] MinTimeMaxPowerByReduceGraph(PowerStateGraph graph, int source, int target)
     {
@@ -115,12 +143,12 @@ internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
                 continue;
             }
 
-            if (time < bestTime || (time == bestTime && remaining > bestPower))
+            if (IsBetterArrival(time, bestTime, remaining, bestPower))
             {
                 (bestTime, bestPower) = (time, remaining);
             }
         }
 
-        return bestPower < 0 ? [LeetCodeAnswer.None, LeetCodeAnswer.None] : [bestTime, bestPower];
+        return bestPower < 0 ? NoPath() : TimeAndPower(bestTime, bestPower);
     }
 }

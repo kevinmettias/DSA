@@ -34,7 +34,7 @@ internal static class PacificAtlanticWaterFlowSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                if (CanReachBorder(r, c, pacific: true, heights) && CanReachBorder(r, c, pacific: false, heights))
+                if (CanReachBorder(r, c, Ocean.Pacific, heights) && CanReachBorder(r, c, Ocean.Atlantic, heights))
                 {
                     result.Add((r, c));
                 }
@@ -44,71 +44,12 @@ internal static class PacificAtlanticWaterFlowSolution
         return result;
     }
 
-    private static bool CanReachBorder(int startRow, int startCol, bool pacific, int[][] heights)
+    private static bool CanReachBorder(int startRow, int startCol, Ocean ocean, int[][] heights)
     {
         var visited = new bool[heights.Length, heights[0].Length];
-        return Dfs(startRow, startCol, visited, pacific, heights);
-    }
+        var search = new DownhillSearch(heights, visited, ocean);
 
-    private static bool Dfs(int row, int col, bool[,] visited, bool pacific, int[][] heights)
-    {
-        if (visited[row, col])
-        {
-            return false;
-        }
-
-        visited[row, col] = true;
-
-        if (IsBorderCell(row, col, pacific, heights))
-        {
-            return true;
-        }
-
-        return TryReachAnyDirection(row, col, visited, pacific, heights);
-    }
-
-    private static bool IsBorderCell(int row, int col, bool pacific, int[][] heights)
-    {
-        if (pacific)
-        {
-            return row == 0 || col == 0;
-        }
-
-        return row == heights.Length - 1 || col == heights[0].Length - 1;
-    }
-
-    private static bool TryReachAnyDirection(int row, int col, bool[,] visited, bool pacific, int[][] heights)
-    {
-        foreach (var direction in Directions)
-        {
-            if (TryReachViaDirection((row, col), direction, visited, pacific, heights))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryReachViaDirection(
-        (int Row, int Col) from, (int DRow, int DCol) direction, bool[,] visited, bool pacific, int[][] heights)
-    {
-        var nextRow = from.Row + direction.DRow;
-        var nextCol = from.Col + direction.DCol;
-        var rows = heights.Length;
-        var cols = heights[0].Length;
-
-        if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols || visited[nextRow, nextCol])
-        {
-            return false;
-        }
-
-        if (heights[nextRow][nextCol] > heights[from.Row][from.Col])
-        {
-            return false;
-        }
-
-        return Dfs(nextRow, nextCol, visited, pacific, heights);
+        return Dfs(startRow, startCol, search);
     }
 
     // This repo's own DepthFirstSearch.Traverse, run once per border cell walking
@@ -137,25 +78,6 @@ internal static class PacificAtlanticWaterFlowSolution
         return CellsReachingBothOceans(heights, pacific, atlantic);
     }
 
-    private static List<(int Row, int Col)> CellsReachingBothOceans(
-        int[][] heights, Set<(int Row, int Col)> pacific, Set<(int Row, int Col)> atlantic)
-    {
-        var result = new List<(int Row, int Col)>();
-
-        for (var r = 0; r < heights.Length; r++)
-        {
-            for (var c = 0; c < heights[0].Length; c++)
-            {
-                if (pacific.Has((r, c)) && atlantic.Has((r, c)))
-                {
-                    result.Add((r, c));
-                }
-            }
-        }
-
-        return result;
-    }
-
     private static void FloodFrom((int Row, int Col) start, Set<(int Row, int Col)> reached, int[][] heights)
     {
         if (reached.Has(start))
@@ -178,7 +100,7 @@ internal static class PacificAtlanticWaterFlowSolution
         {
             var next = (Row: p.Row + dRow, Col: p.Col + dCol);
 
-            if (next.Row < 0 || next.Row >= rows || next.Col < 0 || next.Col >= cols)
+            if (!IsInside(next.Row, next.Col, rows, cols))
             {
                 continue;
             }
@@ -191,4 +113,112 @@ internal static class PacificAtlanticWaterFlowSolution
             yield return next;
         }
     }
+
+    private static List<(int Row, int Col)> CellsReachingBothOceans(
+        int[][] heights, Set<(int Row, int Col)> pacific, Set<(int Row, int Col)> atlantic)
+    {
+        var result = new List<(int Row, int Col)>();
+
+        for (var r = 0; r < heights.Length; r++)
+        {
+            for (var c = 0; c < heights[0].Length; c++)
+            {
+                if (pacific.Has((r, c)) && atlantic.Has((r, c)))
+                {
+                    result.Add((r, c));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static bool Dfs(int row, int col, DownhillSearch search)
+    {
+        if (search.Visited[row, col])
+        {
+            return false;
+        }
+
+        search.Visited[row, col] = true;
+
+        if (IsBorderCell(row, col, search.Ocean, search.Heights))
+        {
+            return true;
+        }
+
+        return TryReachAnyDirection(row, col, search);
+    }
+
+    private static bool IsBorderCell(int row, int col, Ocean ocean, int[][] heights)
+    {
+        if (ocean == Ocean.Pacific)
+        {
+            return row == 0 || col == 0;
+        }
+
+        return row == heights.Length - 1 || col == heights[0].Length - 1;
+    }
+
+    private static bool TryReachAnyDirection(int row, int col, DownhillSearch search)
+    {
+        foreach (var direction in Directions)
+        {
+            if (TryReachViaDirection((row, col), direction, search))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryReachViaDirection(
+        (int Row, int Col) from, (int DRow, int DCol) direction, DownhillSearch search)
+    {
+        var nextRow = from.Row + direction.DRow;
+        var nextCol = from.Col + direction.DCol;
+
+        if (!CanStepTo(search.Heights, from, (nextRow, nextCol), search.Visited))
+        {
+            return false;
+        }
+
+        return Dfs(nextRow, nextCol, search);
+    }
+
+    // A step is open when the cell one move away lies inside the grid, has not been
+    // visited, and is no higher than the cell it came from - which is the reverse,
+    // uphill-or-flat walk the flood fill makes. The bounds test comes first because the
+    // visited grid cannot be indexed until it has passed.
+    private static bool CanStepTo(
+        int[][] heights, (int Row, int Col) from, (int Row, int Col) next, bool[,] visited)
+    {
+        if (!IsInside(next.Row, next.Col, heights.Length, heights[0].Length) || visited[next.Row, next.Col])
+        {
+            return false;
+        }
+
+        return heights[next.Row][next.Col] <= heights[from.Row][from.Col];
+    }
+
+    // Both coordinates within the grid is one idea, and both walks over neighbors
+    // ask for its negation.
+    private static bool IsInside(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
+
+    // Which ocean's border the downhill walk is trying to reach, named where the
+    // rewritten `true`/`false` at the call site said it only by position.
+    private enum Ocean
+    {
+        Pacific,
+        Atlantic,
+    }
+
+    // The three values every level of the downhill recursion threads: the read-only
+    // height grid it walks, the visited marks one walk fills in, and the ocean whose
+    // border that walk is trying to reach. They travel together, so they travel as
+    // one value - which is also what keeps Dfs and its two helpers within the
+    // parameter-count limit.
+    private readonly record struct DownhillSearch(int[][] Heights, bool[,] Visited, Ocean Ocean);
 }

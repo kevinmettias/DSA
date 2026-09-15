@@ -20,10 +20,10 @@ public class StatisticsFromALargeSampleBenchmarks
     // Fixed seed so the bucket draw is identical from run to run.
     private const int CountSeed = 1;
 
-    [Params(100, 5_000)]
-    public int AverageCountPerValue;
+    private long[] _count = [];
 
-    private long[] _count = null!;
+    [Params(100, 5_000)]
+    public int AverageCountPerValue { get; set; }
 
     [GlobalSetup]
     public void Setup()

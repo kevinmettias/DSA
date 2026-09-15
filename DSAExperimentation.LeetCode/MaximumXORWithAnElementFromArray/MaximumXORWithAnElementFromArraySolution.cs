@@ -57,15 +57,31 @@ internal static class MaximumXORWithAnElementFromArraySolution
     // that query with TryMaxXor in O(32). O((n + q) log(n + q)) overall.
     public static int[] MaximizeXorByOfflineBitTrieSweep(int[] nums, int[][] queries)
     {
-        var sortedNums = nums.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedNums));
-
-        var queryOrder = Enumerable.Range(0, queries.Length).ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
-            new ArrayIndexedSequence<int>(queryOrder),
-            Comparer<int>.Create((a, b) => queries[a][1].CompareTo(queries[b][1])));
+        var sortedNums = AscendingCopyOf(nums);
+        var queryOrder = QueryIndicesByLimit(queries);
 
         return AnswerInLimitOrder(new Sweep(sortedNums, new BitTrie()), queries, queryOrder);
+    }
+
+    // A copy, because the caller's nums is left as it was found.
+    private static int[] AscendingCopyOf(int[] nums)
+    {
+        var sorted = nums.ToArray();
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+
+        return sorted;
+    }
+
+    // The query indices, not the queries, so the sweep can answer in increasing-limit
+    // order while still writing each answer back to its own slot.
+    private static int[] QueryIndicesByLimit(int[][] queries)
+    {
+        var order = Enumerable.Range(0, queries.Length).ToArray();
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(
+            new ArrayIndexedSequence<int>(order),
+            Comparer<int>.Create((a, b) => queries[a][1].CompareTo(queries[b][1])));
+
+        return order;
     }
 
     private static int[] AnswerInLimitOrder(Sweep sweep, int[][] queries, int[] queryOrder)

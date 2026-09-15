@@ -13,11 +13,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
 {
-    [Params(2_000, 8_000)]
-    public int NodeCount;
+    private int[] _preorder = [];
 
-    private int[] _preorder = null!;
-    private int[] _inorder = null!;
+    private int[] _inorder = [];
+    [Params(2_000, 8_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,13 +27,6 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
         _inorder = Inorder(tree);
     }
 
-    [Benchmark]
-    public int PreorderIndexMap() =>
-        CountNodes(ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(_preorder, _inorder));
-
-    private static int CountNodes(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);
-
     private static int[] Preorder(BinaryTreeNode<int>? root)
     {
         var values = new List<int>();
@@ -42,7 +35,10 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
 
         static void Walk(BinaryTreeNode<int>? node, List<int> values)
         {
-            if (node is null) return;
+            if (node is null)
+            {
+                return;
+            }
             values.Add(node.Value);
             Walk(node.Left, values);
             Walk(node.Right, values);
@@ -57,10 +53,27 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
 
         static void Walk(BinaryTreeNode<int>? node, List<int> values)
         {
-            if (node is null) return;
+            if (node is null)
+            {
+                return;
+            }
             Walk(node.Left, values);
             values.Add(node.Value);
             Walk(node.Right, values);
         }
     }
+
+    [Benchmark]
+    public int PreorderIndexMap()
+    {
+        var tree = ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(_preorder, _inorder);
+        return CountNodes(tree);
+    }
+
+    private static int CountNodes(BinaryTreeNode<int>? node) =>
+        node is null ? 0 : CountSubtree(node);
+
+    // One for this node plus every node beneath it.
+    private static int CountSubtree(BinaryTreeNode<int> node) =>
+        1 + CountNodes(node.Left) + CountNodes(node.Right);
 }

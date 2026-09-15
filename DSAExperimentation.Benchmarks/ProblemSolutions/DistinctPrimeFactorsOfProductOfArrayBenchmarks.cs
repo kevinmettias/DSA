@@ -15,12 +15,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DistinctPrimeFactorsOfProductOfArrayBenchmarks
 {
     private const int MaxValueInclusive = 1_000;
-    private const int Seed = 2521; // LC problem number
+    private const int Seed = 2521; private int[] _values = [];
+
+    // LC problem number
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

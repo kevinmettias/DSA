@@ -19,17 +19,13 @@ public class ConvertSortedListToBinarySearchTreeBenchmarks
 {
     private const int ValueStep = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int>? _head;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = BuildAscendingList(Length);
-
-    [Benchmark(Baseline = true)]
-    public object? MidpointRecursion() =>
-        ConvertSortedListToBinarySearchTreeSolution.BuildByMidpointRecursion(_head);
 
     private static SinglyLinkedListNode<int>? BuildAscendingList(int length)
     {
@@ -49,4 +45,8 @@ public class ConvertSortedListToBinarySearchTreeBenchmarks
 
         return head;
     }
+
+    [Benchmark(Baseline = true)]
+    public object? MidpointRecursion() =>
+        ConvertSortedListToBinarySearchTreeSolution.BuildByMidpointRecursion(_head);
 }

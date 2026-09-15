@@ -12,9 +12,6 @@ namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 // in how a garden's already-planted neighbors are found.
 internal static class FlowerPlantingWithNoAdjacentSolution
 {
-    // LeetCode numbers gardens 1..n and the answer array 0..n-1.
-    public const int FirstGarden = 1;
-
     // Flower types are numbered 1..4, the same 1-based convention LeetCode uses
     // for the gardens themselves.
     private const int FirstFlowerType = 1;
@@ -32,9 +29,10 @@ internal static class FlowerPlantingWithNoAdjacentSolution
     {
         var flowers = new int[n];
 
-        for (var garden = FirstGarden; garden <= n; garden++)
+        for (var garden = GardenNumbering.FirstGarden; garden <= n; garden++)
         {
-            flowers[garden - FirstGarden] = FirstAvailableFlower(ComputeUsedFlowerMask(garden, paths, flowers));
+            var usedMask = ComputeUsedFlowerMask(garden, paths, flowers);
+            flowers[garden - GardenNumbering.FirstGarden] = FirstAvailableFlower(usedMask);
         }
 
         return flowers;
@@ -47,9 +45,9 @@ internal static class FlowerPlantingWithNoAdjacentSolution
         foreach (var path in paths)
         {
             if (TryGetNeighbor(garden, path, out var neighbor) &&
-                flowers[neighbor - FirstGarden] != Unplanted)
+                flowers[neighbor - GardenNumbering.FirstGarden] != Unplanted)
             {
-                used |= 1 << flowers[neighbor - FirstGarden];
+                used |= 1 << flowers[neighbor - GardenNumbering.FirstGarden];
             }
         }
 
@@ -91,8 +89,11 @@ internal static class FlowerPlantingWithNoAdjacentSolution
     // GardenTopology, so each garden reads only its own neighbors rather than the
     // whole paths array, and Set<int> tracks the types they took instead of a
     // hand-rolled bool[4] or bitmask.
-    public static int[] GardenNoAdjByAdjacencyList(int n, int[][] paths) =>
-        GardenNoAdjByAdjacencyList(GardenNetwork.Build(n, paths));
+    public static int[] GardenNoAdjByAdjacencyList(int n, int[][] paths)
+    {
+        var network = GardenNetwork.Build(n, paths);
+        return GardenNoAdjByAdjacencyList(network);
+    }
 
     public static int[] GardenNoAdjByAdjacencyList(GardenNetwork network)
     {
@@ -100,7 +101,8 @@ internal static class FlowerPlantingWithNoAdjacentSolution
 
         foreach (var garden in network.Gardens)
         {
-            flowers[garden.Id - FirstGarden] = FirstAvailableFlower(ComputeUsedFlowerSet(garden, flowers));
+            var usedFlowers = ComputeUsedFlowerSet(garden, flowers);
+            flowers[garden.Id - GardenNumbering.FirstGarden] = FirstAvailableFlower(usedFlowers);
         }
 
         return flowers;
@@ -113,7 +115,7 @@ internal static class FlowerPlantingWithNoAdjacentSolution
 
         for (var i = 0; i < neighbors.Count; i++)
         {
-            var neighborFlower = flowers[neighbors.Get(i).Id - FirstGarden];
+            var neighborFlower = flowers[neighbors.Get(i).Id - GardenNumbering.FirstGarden];
 
             if (neighborFlower != Unplanted)
             {

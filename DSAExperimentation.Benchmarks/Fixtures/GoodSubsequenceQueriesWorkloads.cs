@@ -8,8 +8,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // tells for LC 3605's window gcds.
 internal static class GoodSubsequenceQueriesWorkloads
 {
-    public const int P = 3;
-
     private const int MaxValue = 50;
 
     public static (int[] Nums, int[][] Queries) Build(int length, int queryCount, int seed)

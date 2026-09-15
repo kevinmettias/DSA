@@ -26,35 +26,58 @@ internal static class ShortestPathWithAtMostKConsecutiveIdenticalCharactersSolut
         var frontier = new PriorityQueue<(int Node, int Run), long>();
         frontier.Enqueue((0, 1), 0L);
 
-        while (frontier.TryDequeue(out var state, out var distance))
+        SettleAll(adjacency, labels, k, (settled, frontier, distances));
+
+        return BestForTarget(distances, n - 1, k);
+    }
+
+    // The expanded-state search proper: settle each (node, run) state once, relax every
+    // edge out of it, and leave `Distances` holding the best route to each state reached.
+    private static void SettleAll(
+        List<(int To, long Weight)>[] adjacency, string labels, int k,
+        (HashSet<(int Node, int Run)> Settled, PriorityQueue<(int Node, int Run), long> Frontier,
+            Dictionary<(int Node, int Run), long> Distances) search)
+    {
+        while (search.Frontier.TryDequeue(out var state, out var distance))
         {
-            if (!settled.Add(state))
+            if (!search.Settled.Add(state))
             {
                 continue;
             }
 
             foreach (var (to, weight) in adjacency[state.Node])
             {
-                var nextRun = labels[state.Node] == labels[to] ? state.Run + 1 : 1;
+                var nextRun = IsSameLabel(labels[state.Node], labels[to]) ? ContinuedRun(state.Run) : 1;
 
                 if (nextRun > k)
                 {
                     continue;
                 }
 
-                var nextState = (to, nextRun);
-                var candidate = distance + weight;
-
-                if (!distances.TryGetValue(nextState, out var known) || candidate < known)
-                {
-                    distances[nextState] = candidate;
-                    frontier.Enqueue(nextState, candidate);
-                }
+                RecordRoute((to, nextRun), distance + weight, search.Distances, search.Frontier);
             }
         }
-
-        return BestForTarget(distances, n - 1, k);
     }
+
+    // Records a route to `state` once it is strictly shorter than the one already known,
+    // and re-queues the state so the frontier can pick it up again.
+    private static void RecordRoute(
+        (int Node, int Run) state, long candidate,
+        Dictionary<(int Node, int Run), long> distances,
+        PriorityQueue<(int Node, int Run), long> frontier)
+    {
+        if (!distances.TryGetValue(state, out var known) || candidate < known)
+        {
+            distances[state] = candidate;
+            frontier.Enqueue(state, candidate);
+        }
+    }
+
+    // Both endpoints carry the same label, so the identical-character run carries on.
+    private static bool IsSameLabel(char from, char to) => from == to;
+
+    // A matching label continues the identical-character run rather than restarting it.
+    private static int ContinuedRun(int run) => run + 1;
 
     private static int BestForTarget(Dictionary<(int Node, int Run), long> distances, int target, int k)
     {
@@ -93,8 +116,12 @@ internal static class ShortestPathWithAtMostKConsecutiveIdenticalCharactersSolut
     // baseline's hand-rolled BCL priority queue - the same swap
     // NetworkRecoveryPathwaysSolution's two arms make around
     // RecoveryNetwork/RecoveryTopology.
-    public static int MinimumPathWeightByReduceGraph(int n, int[][] edges, string labels, int k) =>
-        MinimumPathWeightByReduceGraph(ConsecutiveRunGraph.Build(n, edges, labels, k));
+    public static int MinimumPathWeightByReduceGraph(int n, int[][] edges, string labels, int k)
+    {
+        var graph = ConsecutiveRunGraph.Build(n, edges, labels, k);
+
+        return MinimumPathWeightByReduceGraph(graph);
+    }
 
     public static int MinimumPathWeightByReduceGraph(ConsecutiveRunGraph graph)
     {

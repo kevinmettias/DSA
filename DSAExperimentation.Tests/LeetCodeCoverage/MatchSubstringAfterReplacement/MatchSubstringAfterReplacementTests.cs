@@ -35,7 +35,11 @@ public sealed class MatchSubstringAfterReplacementTests
     public void IsMatchByLinearScan_LeetCodeExamples_ReportsWhetherSubMatchesSomewhere(
         string s, string sub, (char Old, char New)[] mappings, bool expected) =>
         Assert.Equal(
-            expected, MatchSubstringAfterReplacementSolution.IsMatchByLinearScan(s, sub, mappings));
+            expected,
+            MatchSubstringAfterReplacementSolution.IsMatchByLinearScan(
+                new MatchSubstringAfterReplacementSolution.SourceText(s),
+                new MatchSubstringAfterReplacementSolution.SubstringPattern(sub),
+                mappings));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -43,5 +47,8 @@ public sealed class MatchSubstringAfterReplacementTests
         string s, string sub, (char Old, char New)[] mappings, bool expected) =>
         Assert.Equal(
             expected,
-            MatchSubstringAfterReplacementSolution.IsMatchByHashMapLookup(s, sub, mappings));
+            MatchSubstringAfterReplacementSolution.IsMatchByHashMapLookup(
+                new MatchSubstringAfterReplacementSolution.SourceText(s),
+                new MatchSubstringAfterReplacementSolution.SubstringPattern(sub),
+                mappings));
 }

@@ -45,7 +45,7 @@ internal static class MaxValueOfEquationSolution
 
         for (var j = 0; j < points.Length; j++)
         {
-            best = ScorePoint(points, k, window, j, best);
+            best = ScorePoint((points, k), window, j, best);
         }
 
         return best;
@@ -53,29 +53,48 @@ internal static class MaxValueOfEquationSolution
 
     // Evicts out-of-window (x-distance > k) front entries, scores the pair against
     // the best remaining front index, then evicts back entries dominated by the new
-    // point's (y - x) before pushing it - one sliding-window step.
-    private static int ScorePoint(int[][] points, int k, RepoDeque window, int j, int best)
+    // point's (y - x) before pushing it - one sliding-window step. The points and the
+    // k that bounds every pair of them are the query both strategies are asked, so
+    // they travel as one argument.
+    private static int ScorePoint((int[][] Points, int K) query, RepoDeque window, int j, int best)
     {
-        var (x, y) = (points[j][0], points[j][1]);
+        best = BestAgainstFront(query, window, j, best);
+        InsertIntoWindow(query, window, j);
 
-        while (window.TryPeekFront(out var frontIndex) && x - points[frontIndex][0] > k)
+        return best;
+    }
+
+    // Evicts out-of-window (x-distance > k) front entries, then scores the pair against
+    // the best front index that survived.
+    private static int BestAgainstFront((int[][] Points, int K) query, RepoDeque window, int j, int best)
+    {
+        var (x, y) = (query.Points[j][0], query.Points[j][1]);
+
+        while (window.TryPeekFront(out var frontIndex) && x - query.Points[frontIndex][0] > query.K)
         {
             window.TryPopFront(out _);
         }
 
         if (window.TryPeekFront(out var bestIndex))
         {
-            var value = x + y + points[bestIndex][1] - points[bestIndex][0];
+            var value = x + y + query.Points[bestIndex][1] - query.Points[bestIndex][0];
             best = Math.Max(best, value);
         }
 
-        while (window.TryPeekBack(out var backIndex) && points[backIndex][1] - points[backIndex][0] <= y - x)
+        return best;
+    }
+
+    // Evicts the back entries the new point's (y - x) dominates, then pushes it, so the
+    // window keeps its decreasing-(y - x) order for the next step.
+    private static void InsertIntoWindow((int[][] Points, int K) query, RepoDeque window, int j)
+    {
+        var (x, y) = (query.Points[j][0], query.Points[j][1]);
+
+        while (window.TryPeekBack(out var backIndex) && query.Points[backIndex][1] - query.Points[backIndex][0] <= y - x)
         {
             window.TryPopBack(out _);
         }
 
         window.PushBack(j);
-
-        return best;
     }
 }

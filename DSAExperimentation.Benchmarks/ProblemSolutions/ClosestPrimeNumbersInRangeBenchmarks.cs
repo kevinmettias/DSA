@@ -17,7 +17,7 @@ public class ClosestPrimeNumbersInRangeBenchmarks
     private const int Left = 2;
 
     [Params(2_000, 20_000)]
-    public int Right;
+    public int Right { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[] TrialDivisionScan() =>

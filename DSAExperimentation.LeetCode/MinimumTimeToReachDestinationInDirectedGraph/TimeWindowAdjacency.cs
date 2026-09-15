@@ -6,9 +6,9 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToReachDestinationInDirectedGra
 // TimedAdjacency uses for LC 3112's undirected, weight-only edges.
 internal sealed class TimeWindowAdjacency
 {
-    private TimeWindowAdjacency(List<(int Neighbor, int Start, int End)>[] neighbors) => Neighbors = neighbors;
-
     public List<(int Neighbor, int Start, int End)>[] Neighbors { get; }
+
+    private TimeWindowAdjacency(List<(int Neighbor, int Start, int End)>[] neighbors) => Neighbors = neighbors;
 
     public static TimeWindowAdjacency Build(int n, int[][] edges)
     {

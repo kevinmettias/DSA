@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfSubarraysThatMatchAPatternIBenchmarks
 {
-    [Params(20, 100)]
-    public int NumsLength;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _pattern = null!;
+    private int[] _pattern = [];
+    [Params(20, 100)]
+    public int NumsLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

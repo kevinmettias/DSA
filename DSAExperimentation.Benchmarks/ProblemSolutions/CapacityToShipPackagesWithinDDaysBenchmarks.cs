@@ -17,11 +17,11 @@ public class CapacityToShipPackagesWithinDDaysBenchmarks
     private const int MaxWeightExclusive = 1_000;
     private const int DaysDivisor = 20;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _weights = [];
 
-    private int[] _weights = null!;
     private int _days;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

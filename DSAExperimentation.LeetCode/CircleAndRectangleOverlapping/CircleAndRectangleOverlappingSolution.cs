@@ -20,16 +20,16 @@ internal static class CircleAndRectangleOverlappingSolution
     // Note this only samples the rectangle at integer coordinates, so it answers the
     // continuous question only where the two agree; it is a measurement baseline, and
     // the examples it is asserted against are ones where they do.
-    public static bool CheckOverlapByLatticePointScan(
-        int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2)
+    public static bool CheckOverlapByLatticePointScan(Circle circle, Rectangle rectangle)
     {
         var withinCircle = new List<bool>();
 
-        for (var y = y1; y <= y2; y++)
+        for (var y = rectangle.Y1; y <= rectangle.Y2; y++)
         {
-            for (var x = x1; x <= x2; x++)
+            for (var x = rectangle.X1; x <= rectangle.X2; x++)
             {
-                withinCircle.Add(IsWithinCircle(x, y, radius, xCenter, yCenter));
+                var isWithin = IsWithinCircle(x, y, circle);
+                withinCircle.Add(isWithin);
             }
         }
 
@@ -47,22 +47,21 @@ internal static class CircleAndRectangleOverlappingSolution
     // O(1): clamping the centre to the rectangle's bounds yields the rectangle point
     // nearest the centre, so the circle overlaps exactly when that point is within the
     // radius. Squared distances keep the comparison in integer arithmetic.
-    public static bool CheckOverlapByClampedDistance(
-        int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2)
+    public static bool CheckOverlapByClampedDistance(Circle circle, Rectangle rectangle)
     {
-        var closestX = Math.Clamp(xCenter, x1, x2);
-        var closestY = Math.Clamp(yCenter, y1, y2);
+        var closestX = Math.Clamp(circle.X, rectangle.X1, rectangle.X2);
+        var closestY = Math.Clamp(circle.Y, rectangle.Y1, rectangle.Y2);
 
-        return IsWithinCircle(closestX, closestY, radius, xCenter, yCenter);
+        return IsWithinCircle(closestX, closestY, circle);
     }
 
     // Shared by both strategies so the only thing they differ in is which points they
     // ask about. Widened to long because the coordinate range squares past int.
-    private static bool IsWithinCircle(int x, int y, int radius, int xCenter, int yCenter)
+    private static bool IsWithinCircle(int x, int y, Circle circle)
     {
-        var dx = (long)(x - xCenter);
-        var dy = (long)(y - yCenter);
+        var dx = (long)(x - circle.X);
+        var dy = (long)(y - circle.Y);
 
-        return (dx * dx) + (dy * dy) <= (long)radius * radius;
+        return (dx * dx) + (dy * dy) <= (long)circle.Radius * circle.Radius;
     }
 }

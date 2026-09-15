@@ -14,10 +14,10 @@ public class CountNonDecreasingSubarraysAfterKOperationsBenchmarks
     private const int Seed = 3420;
     private const int Budget = 300;
 
-    [Params(200, 1000)]
-    public int Size;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 1000)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup() => _nums = NonDecreasingSubarrayWorkloads.BuildNums(Size, Seed);

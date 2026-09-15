@@ -45,7 +45,7 @@ internal static class NumberOfBeautifulIntegersInTheRangeSolution
 
         foreach (var c in x.ToString())
         {
-            diff += (c - '0') % 2 == 0 ? 1 : -1;
+            diff += DiffContribution(c - '0');
         }
 
         return diff == 0;
@@ -65,32 +65,72 @@ internal static class NumberOfBeautifulIntegersInTheRangeSolution
 
         return Memoizer.Memoize<(int Position, bool Tight, bool Started, int Diff, int Remainder), long>(
             (0, true, false, 0, 0),
-            (state, recurse) => CountFrom(state, digits, k, recurse));
+            new BeautifulCountsFrom(digits, k));
     }
 
-    private static long CountFrom(
-        (int Position, bool Tight, bool Started, int Diff, int Remainder) state,
-        string digits,
-        int k,
-        Func<(int Position, bool Tight, bool Started, int Diff, int Remainder), long> recurse)
+    // Every digit has been placed by the time this is asked: the number is beautiful when
+    // it has started (leading zero-padding is not a number), its even and odd digit counts
+    // cancel out, and it divides by k.
+    private static bool IsBeautifulNumber(
+        (int Position, bool Tight, bool Started, int Diff, int Remainder) state) =>
+        state.Started && state.Diff == 0 && state.Remainder == 0;
+
+    private static int DigitValue(string digits, int position) => digits[position] - '0';
+
+    // The walk's Started flag and running even-minus-odd count once `digit` is placed: the
+    // first non-zero digit starts the number, and every digit after that moves Diff by one,
+    // while the leading zeros placed before it are padding and leave Diff standing.
+    private static (bool Started, int Diff) DiffAfterDigit(
+        (int Position, bool Tight, bool Started, int Diff, int Remainder) state, int digit)
     {
-        if (state.Position == digits.Length)
+        if (!state.Started && digit == 0)
         {
-            return state.Started && state.Diff == 0 && state.Remainder == 0 ? 1 : 0;
+            return (false, state.Diff);
         }
 
-        var limit = state.Tight ? digits[state.Position] - '0' : 9;
-        var total = 0L;
+        return (true, state.Diff + DiffContribution(digit));
+    }
 
-        for (var digit = 0; digit <= limit; digit++)
+    // A digit's contribution to Diff, which counts even digits minus odd ones.
+    private static int DiffContribution(int digit)
+    {
+        if (digit % 2 == 0)
         {
-            var started = state.Started || digit != 0;
-            var diff = started ? state.Diff + (digit % 2 == 0 ? 1 : -1) : state.Diff;
-            var remainder = (state.Remainder * 10 + digit) % k;
-
-            total += recurse((state.Position + 1, state.Tight && digit == limit, started, diff, remainder));
+            return 1;
         }
 
-        return total;
+        return -1;
+    }
+
+    // The digit-DP recurrence, as a named type: walk the number's own digits left to
+    // right, place every digit the tight bound still allows, and count the completions
+    // that land on a beautiful number.
+    private sealed class BeautifulCountsFrom(string digits, int k)
+        : IRecurrence<(int Position, bool Tight, bool Started, int Diff, int Remainder), long>
+    {
+        public long Replay(
+            (int Position, bool Tight, bool Started, int Diff, int Remainder) state,
+            IRecurrence<(int Position, bool Tight, bool Started, int Diff, int Remainder), long> rest)
+        {
+            if (state.Position == digits.Length)
+            {
+                return IsBeautifulNumber(state) ? 1 : 0;
+            }
+
+            var limit = state.Tight ? DigitValue(digits, state.Position) : 9;
+            var total = 0L;
+
+            for (var digit = 0; digit <= limit; digit++)
+            {
+                var (started, diff) = DiffAfterDigit(state, digit);
+                var remainder = (state.Remainder * 10 + digit) % k;
+
+                total += rest.Replay(
+                    (state.Position + 1, state.Tight && digit == limit, started, diff, remainder),
+                    rest);
+            }
+
+            return total;
+        }
     }
 }

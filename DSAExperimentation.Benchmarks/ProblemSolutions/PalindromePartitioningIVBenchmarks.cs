@@ -22,10 +22,10 @@ public class PalindromePartitioningIVBenchmarks
     private const string MiddleSeparator = "b";
     private const string UniqueTrailingCharacter = "c";
 
-    [Params(30, 100)]
-    public int BlockSize;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(30, 100)]
+    public int BlockSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _s = new string('a', BlockSize) + MiddleSeparator + new string('a', BlockSize) + UniqueTrailingCharacter;

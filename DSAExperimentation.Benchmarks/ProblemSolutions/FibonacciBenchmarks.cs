@@ -15,16 +15,13 @@ public class FibonacciBenchmarks
     private const int RecurrenceOrder = 2; // Fibonacci depends on the previous two terms
 
     [Params(20, 30)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursive() => Fib(N);
 
-    private static int Fib(int n) => n <= 1 ? n : Fib(n - 1) + Fib(n - RecurrenceOrder);
-
     [Benchmark]
-    public int TopDownMemoized()
-        => Memoizer.Memoize<int, int>(N, (n, fib) => n <= 1 ? n : fib(n - 1) + fib(n - RecurrenceOrder));
+    public int TopDownMemoized() => Memoizer.Memoize<int, int>(N, new MemoizedSumOfPreviousTerms());
 
     [Benchmark]
     public int IterativeConstantSpace()
@@ -42,5 +39,27 @@ public class FibonacciBenchmarks
         }
 
         return current;
+    }
+
+    private static int Fib(int n) => n <= 1 ? n : SumOfPreviousTerms(n);
+
+    // NaiveRecursive's two previous terms, added. It calls this only once its base
+    // case no longer answers, so the recursion stays lazy.
+    private static int SumOfPreviousTerms(int n) => Fib(n - 1) + Fib(n - RecurrenceOrder);
+
+    // TopDownMemoized's recurrence, named: n is its two previous terms added, and the
+    // two base cases are the whole of the rule. The memo run passes this
+    // implementation back to itself, so no delegate is handed around.
+    private sealed class MemoizedSumOfPreviousTerms : IRecurrence<int, int>
+    {
+        public int Replay(int state, IRecurrence<int, int> rest)
+        {
+            if (state <= 1)
+            {
+                return state;
+            }
+
+            return rest.Replay(state - 1, rest) + rest.Replay(state - RecurrenceOrder, rest);
+        }
     }
 }

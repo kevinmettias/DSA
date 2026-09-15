@@ -17,13 +17,13 @@ public class MinimumOperationsToEqualizeSubarraysBenchmarks
     private const int K = 4;
     private const int MaxMultiplesPerElement = 1_000;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
-    private int[] _runId = null!;
+    private int[][] _queries = [];
+    private int[] _runId = [];
     private SegmentTree<int[], SortedMergeOperation> _tree = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

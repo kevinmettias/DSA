@@ -65,8 +65,7 @@ internal static class FindTheMostCompetitiveSubsequenceSolution
     {
         for (var i = 0; i < nums.Length; i++)
         {
-            while (stack.Count > 0 && stack.TryPeek(out var top) && top > nums[i]
-                   && stack.Count - 1 + (nums.Length - i) >= k)
+            while (CanAffordToDropTop(stack, nums[i], nums.Length - i, k))
             {
                 stack.TryPop(out _);
             }
@@ -77,6 +76,16 @@ internal static class FindTheMostCompetitiveSubsequenceSolution
             }
         }
     }
+
+    // The stack is allowed to give up its top: something is there, it is strictly
+    // greater than the element arriving, and enough elements remain after the drop
+    // to still reach length k.
+    private static bool CanAffordToDropTop(
+        CompetitiveStack stack, int incoming, int remaining, int k)
+        => stack.Count > 0
+            && stack.TryPeek(out var top)
+            && top > incoming
+            && stack.Count - 1 + remaining >= k;
 
     // The stack holds the answer in reverse, so it is filled back to front.
     private static int[] DrainStackToArray(CompetitiveStack stack)

@@ -16,14 +16,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StickersToSpellWordBenchmarks
 {
-    private static readonly string[] Stickers = ["ab", "ba"];
-
     private const string RepeatedPair = "ab";
 
-    [Params(10, 16)]
-    public int PairCount;
+    private static readonly string[] Stickers = ["ab", "ba"];
 
     private PreparedStickers _input;
+
+    [Params(10, 16)]
+    public int PairCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

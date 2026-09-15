@@ -32,6 +32,18 @@ internal sealed class ActiveSectionTradeIndex
         _s = s;
         ActiveOnes = s.Count(c => c == '1');
 
+        var (zeroRuns, zeroRunAtOrBefore) = BuildZeroRunIndex(s);
+        _zeroRuns = zeroRuns;
+        _zeroRunAtOrBefore = zeroRunAtOrBefore;
+
+        _adjacentPairMax = BuildAdjacentPairMax(zeroRuns);
+    }
+
+    // Every maximal run of '0's in s, plus a per-position pointer to the most
+    // recent zero-run starting at or before that position (-1 while s has produced
+    // none yet).
+    private static ((int Start, int Length)[] ZeroRuns, int[] RunAtOrBefore) BuildZeroRunIndex(string s)
+    {
         var zeroRuns = new List<(int Start, int Length)>();
         var zeroRunAtOrBefore = new int[s.Length];
 
@@ -53,20 +65,27 @@ internal sealed class ActiveSectionTradeIndex
             zeroRunAtOrBefore[i] = zeroRuns.Count - 1;
         }
 
-        _zeroRuns = [.. zeroRuns];
-        _zeroRunAtOrBefore = zeroRunAtOrBefore;
+        return ([.. zeroRuns], zeroRunAtOrBefore);
+    }
 
-        if (_zeroRuns.Length >= 2)
+    // The score for sacrificing the single one-run between each pair of CONSECUTIVE
+    // zero-runs, as a range-maximum tree over those pairwise sums - or null when s
+    // holds fewer than two runs, leaving no pair to merge.
+    private static SegmentTree<int, MaxOperation<int>>? BuildAdjacentPairMax((int Start, int Length)[] zeroRuns)
+    {
+        if (zeroRuns.Length < 2)
         {
-            var adjacentPairSums = new int[_zeroRuns.Length - 1];
-
-            for (var i = 0; i < adjacentPairSums.Length; i++)
-            {
-                adjacentPairSums[i] = _zeroRuns[i].Length + _zeroRuns[i + 1].Length;
-            }
-
-            _adjacentPairMax = new SegmentTree<int, MaxOperation<int>>(adjacentPairSums);
+            return null;
         }
+
+        var adjacentPairSums = new int[zeroRuns.Length - 1];
+
+        for (var i = 0; i < adjacentPairSums.Length; i++)
+        {
+            adjacentPairSums[i] = zeroRuns[i].Length + zeroRuns[i + 1].Length;
+        }
+
+        return new SegmentTree<int, MaxOperation<int>>(adjacentPairSums);
     }
 
     // The best achievable active-section count after at most one trade
@@ -80,53 +99,89 @@ internal sealed class ActiveSectionTradeIndex
             return ActiveOnes;
         }
 
+        var window = ClipToWindow(left, right);
+
+        var interiorGain = InteriorPairGain(window.InteriorStart, window.InteriorEnd);
+        var clippedGain = ClippedEndGain(left, right, window.LeftRemainder, window.RightRemainder);
+
+        return ActiveOnes + Math.Max(interiorGain, clippedGain);
+    }
+
+    // What the query window sees of the zero-run index: the surviving
+    // (query-clipped) tail of the zero-run straddling `left`, and head of the one
+    // straddling `right` - only meaningful when s[left]/s[right] is itself '0',
+    // guarded at every use. The interior bounds are the zero-run indices fully
+    // inside (left, right), neither clipped by the window, so adjacent pairs among
+    // them are valid sacrifice-and-merge candidates with no boundary special-casing.
+    private (int LeftRemainder, int RightRemainder, int InteriorStart, int InteriorEnd) ClipToWindow(int left, int right)
+    {
         var zeroRunAtLeft = _zeroRunAtOrBefore[left];
         var zeroRunAtRight = _zeroRunAtOrBefore[right];
 
-        // The surviving (query-clipped) tail of the zero-run straddling
-        // `left`, and head of the one straddling `right` - only meaningful
-        // when s[left]/s[right] is itself '0', guarded at every use below.
         var leftRemainder = zeroRunAtLeft < 0
             ? 0
-            : _zeroRuns[zeroRunAtLeft].Length - (left - _zeroRuns[zeroRunAtLeft].Start);
+            : ClippedTailLength(_zeroRuns[zeroRunAtLeft], left);
         var rightRemainder = zeroRunAtRight < 0
             ? 0
-            : right - _zeroRuns[zeroRunAtRight].Start + 1;
+            : ClippedHeadLength(_zeroRuns[zeroRunAtRight], right);
+        var rightIsZero = _s[right] == '0';
 
-        // Zero-run indices [interiorStart, interiorEnd] are the ones fully
-        // inside (left, right) - neither clipped by the query window - so
-        // adjacent pairs among them are valid sacrifice-and-merge candidates
-        // with no boundary special-casing needed.
-        var interiorStart = zeroRunAtLeft + 1;
-        var interiorEnd = zeroRunAtRight - (_s[right] == '0' ? 1 : 0);
+        return (leftRemainder, rightRemainder, zeroRunAtLeft + 1, zeroRunAtRight - (rightIsZero ? 1 : 0));
+    }
 
-        var best = ActiveOnes;
+    // The query-clipped tail of the zero-run straddling `left`: the run's own length
+    // less the positions the window cut off its front.
+    private static int ClippedTailLength((int Start, int Length) run, int left) =>
+        run.Length - (left - run.Start);
 
-        if (_adjacentPairMax is not null && interiorStart < interiorEnd)
+    // The query-clipped head of the zero-run straddling `right`: the run's start
+    // through `right` inclusive.
+    private static int ClippedHeadLength((int Start, int Length) run, int right) =>
+        right - run.Start + 1;
+
+    // The best merge wholly inside the window: the largest pairwise sum among
+    // consecutive interior zero-runs, or 0 when the window holds no such pair.
+    private int InteriorPairGain(int interiorStart, int interiorEnd)
+    {
+        if (_adjacentPairMax is null || interiorStart >= interiorEnd)
         {
-            best = Math.Max(best, ActiveOnes + _adjacentPairMax.Query(interiorStart, interiorEnd - 1));
+            return 0;
         }
 
-        // Both ends clipped, and nothing but a single one-run separates
-        // them: sacrifice that one-run, merge the two remainders.
-        if (_s[left] == '0' && _s[right] == '0' && zeroRunAtLeft + 1 == zeroRunAtRight)
+        return _adjacentPairMax.Query(interiorStart, interiorEnd - 1);
+    }
+
+    // The best merge that uses a query-clipped end: both ends clipped with nothing
+    // but a single one-run between them, or one clipped end paired with the
+    // neighbouring (fully interior) zero-run.
+    private int ClippedEndGain(int left, int right, int leftRemainder, int rightRemainder)
+    {
+        var zeroRunAtLeft = _zeroRunAtOrBefore[left];
+        var zeroRunAtRight = _zeroRunAtOrBefore[right];
+        var rightIsOne = _s[right] == '1';
+        var best = 0;
+
+        if (EndsAreClippedAndAdjacent(_s[left], _s[right], zeroRunAtLeft, zeroRunAtRight))
         {
-            best = Math.Max(best, ActiveOnes + leftRemainder + rightRemainder);
+            best = Math.Max(best, leftRemainder + rightRemainder);
         }
 
-        // Left end clipped: pair its remainder with the next (fully
-        // interior) zero-run, sacrificing the one-run between them.
-        if (_s[left] == '0' && zeroRunAtLeft + 1 < zeroRunAtRight + (_s[right] == '1' ? 1 : 0))
+        if (_s[left] == '0' && zeroRunAtLeft + 1 < zeroRunAtRight + (rightIsOne ? 1 : 0))
         {
-            best = Math.Max(best, ActiveOnes + leftRemainder + _zeroRuns[zeroRunAtLeft + 1].Length);
+            best = Math.Max(best, leftRemainder + _zeroRuns[zeroRunAtLeft + 1].Length);
         }
 
-        // Right end clipped: symmetric pairing with the previous zero-run.
         if (_s[right] == '0' && zeroRunAtLeft < zeroRunAtRight - 1)
         {
-            best = Math.Max(best, ActiveOnes + rightRemainder + _zeroRuns[zeroRunAtRight - 1].Length);
+            best = Math.Max(best, rightRemainder + _zeroRuns[zeroRunAtRight - 1].Length);
         }
 
         return best;
     }
+
+    // Both query ends sit on a '0' and their zero-runs are neighbours, so a single
+    // one-run is all that separates the two clipped remainders.
+    private static bool EndsAreClippedAndAdjacent(
+        char leftChar, char rightChar, int leftZeroRun, int rightZeroRun) =>
+        leftChar == '0' && rightChar == '0' && leftZeroRun + 1 == rightZeroRun;
 }

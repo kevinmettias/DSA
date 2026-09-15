@@ -33,6 +33,14 @@ internal static class FindMinimumTimeToReachLastRoomISolution
             return 0;
         }
 
+        return SearchByBclQueue(moveTime, (rows, cols));
+    }
+
+    // The search itself: settle rooms in nondecreasing arrival order until the last
+    // room comes off the BCL queue - its priority is then final - and report -1 if
+    // the queue runs dry first.
+    private static int SearchByBclQueue(int[][] moveTime, (int Rows, int Cols) size)
+    {
         var distances = new Dictionary<(int Row, int Col), int> { [(0, 0)] = 0 };
         var settled = new HashSet<(int Row, int Col)>();
         var frontier = new PriorityQueue<(int Row, int Col), int>();
@@ -45,24 +53,35 @@ internal static class FindMinimumTimeToReachLastRoomISolution
                 continue;
             }
 
-            if (node.Row == rows - 1 && node.Col == cols - 1)
+            if (node.Row == size.Rows - 1 && node.Col == size.Cols - 1)
             {
                 return priority;
             }
 
-            foreach (var neighbor in Neighbors(node, rows, cols))
-            {
-                var arrival = ArrivalTime(priority, moveTime[neighbor.Row][neighbor.Col]);
-
-                if (!distances.TryGetValue(neighbor, out var known) || arrival < known)
-                {
-                    distances[neighbor] = arrival;
-                    frontier.Enqueue(neighbor, arrival);
-                }
-            }
+            RelaxBclNeighbors(moveTime, (node, priority), distances, frontier);
         }
 
         return -1;
+    }
+
+    // Relaxes every neighbor of the room just settled: an arrival earlier than the
+    // one already recorded replaces it and re-enters the queue.
+    private static void RelaxBclNeighbors(
+        int[][] moveTime, ((int Row, int Col) Node, int Priority) entry,
+        Dictionary<(int Row, int Col), int> distances, PriorityQueue<(int Row, int Col), int> frontier)
+    {
+        var (rows, cols) = (moveTime.Length, moveTime[0].Length);
+
+        foreach (var neighbor in Neighbors(entry.Node, rows, cols))
+        {
+            var arrival = ArrivalTime(entry.Priority, moveTime[neighbor.Row][neighbor.Col]);
+
+            if (!distances.TryGetValue(neighbor, out var known) || arrival < known)
+            {
+                distances[neighbor] = arrival;
+                frontier.Enqueue(neighbor, arrival);
+            }
+        }
     }
 
     // Composed: identical algorithm, fronted by this repo's own
@@ -78,6 +97,13 @@ internal static class FindMinimumTimeToReachLastRoomISolution
             return 0;
         }
 
+        return SearchByHeap(moveTime, (rows, cols));
+    }
+
+    // The same search over this repo's own frontier, whose popped entry already
+    // carries the node and its priority together.
+    private static int SearchByHeap(int[][] moveTime, (int Rows, int Cols) size)
+    {
         var distances = new Dictionary<(int Row, int Col), int> { [(0, 0)] = 0 };
         var settled = new HashSet<(int Row, int Col)>();
         var frontier = new Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>>();
@@ -90,24 +116,34 @@ internal static class FindMinimumTimeToReachLastRoomISolution
                 continue;
             }
 
-            if (entry.Node.Row == rows - 1 && entry.Node.Col == cols - 1)
+            if (entry.Node.Row == size.Rows - 1 && entry.Node.Col == size.Cols - 1)
             {
                 return entry.Priority;
             }
 
-            foreach (var neighbor in Neighbors(entry.Node, rows, cols))
-            {
-                var arrival = ArrivalTime(entry.Priority, moveTime[neighbor.Row][neighbor.Col]);
-
-                if (!distances.TryGetValue(neighbor, out var known) || arrival < known)
-                {
-                    distances[neighbor] = arrival;
-                    frontier.Push((neighbor, arrival));
-                }
-            }
+            RelaxHeapNeighbors(moveTime, entry, distances, frontier);
         }
 
         return -1;
+    }
+
+    private static void RelaxHeapNeighbors(
+        int[][] moveTime, ((int Row, int Col) Node, int Priority) entry,
+        Dictionary<(int Row, int Col), int> distances,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> frontier)
+    {
+        var (rows, cols) = (moveTime.Length, moveTime[0].Length);
+
+        foreach (var neighbor in Neighbors(entry.Node, rows, cols))
+        {
+            var arrival = ArrivalTime(entry.Priority, moveTime[neighbor.Row][neighbor.Col]);
+
+            if (!distances.TryGetValue(neighbor, out var known) || arrival < known)
+            {
+                distances[neighbor] = arrival;
+                frontier.Push((neighbor, arrival));
+            }
+        }
     }
 
     private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) node, int rows, int cols)
@@ -116,12 +152,17 @@ internal static class FindMinimumTimeToReachLastRoomISolution
         {
             var next = (Row: node.Row + dRow, Col: node.Col + dCol);
 
-            if (next.Row >= 0 && next.Row < rows && next.Col >= 0 && next.Col < cols)
+            if (IsInside(next.Row, next.Col, rows, cols))
             {
                 yield return next;
             }
         }
     }
+
+    // Both coordinates within the room grid is one idea, tested as a pair on all
+    // four edges.
+    private static bool IsInside(int row, int col, int rows, int cols)
+        => row >= 0 && row < rows && col >= 0 && col < cols;
 
     // Earliest arrival at a room requiring `requiredTime`, moving on from
     // `currentTime`: one second to step in, or - if that is still too early - wait

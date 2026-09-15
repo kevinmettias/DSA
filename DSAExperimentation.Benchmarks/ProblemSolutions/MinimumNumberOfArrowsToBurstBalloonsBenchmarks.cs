@@ -20,10 +20,10 @@ public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
     private const int IntervalSpacing = 3;
     private const int EndOffsetUpperBound = 2;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private (int Start, int End)[] _points = [];
 
-    private (int Start, int End)[] _points = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

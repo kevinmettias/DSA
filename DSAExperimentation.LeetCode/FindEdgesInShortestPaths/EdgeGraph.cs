@@ -7,15 +7,15 @@ namespace DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
 // without a second pass over the raw input.
 internal sealed class EdgeGraph
 {
+    public EdgeGraphNode[] Nodes { get; }
+
+    public int[][] Edges { get; }
+
     private EdgeGraph(EdgeGraphNode[] nodes, int[][] edges)
     {
         Nodes = nodes;
         Edges = edges;
     }
-
-    public EdgeGraphNode[] Nodes { get; }
-
-    public int[][] Edges { get; }
 
     public static EdgeGraph Build(int n, int[][] edges)
     {

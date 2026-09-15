@@ -24,11 +24,11 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
     // so each dimension halves at every recursion level.
     private const int QuadrantSplitFactor = 2;
 
-    [Params(16, 128)]
-    public int Size;
-
     private QuadTreeNode _tree1 = null!;
+
     private QuadTreeNode _tree2 = null!;
+    [Params(16, 128)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -46,14 +46,18 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
                 // grid1 splits top/bottom, grid2 splits left/right - every top-level
                 // quadrant of the OR result is genuinely mixed, so neither input tree
                 // nor the merged grid collapses trivially at the root.
-                grid1[row][col] = row < Size / QuadrantSplitFactor ? 0 : 1;
-                grid2[row][col] = col < Size / QuadrantSplitFactor ? 0 : 1;
+                grid1[row][col] = IsTopHalf(row) ? 0 : 1;
+                grid2[row][col] = IsLeftHalf(col) ? 0 : 1;
             }
         }
 
         _tree1 = ConstructQuadTreeSolution.BuildByBruteForceCellScan(grid1);
         _tree2 = ConstructQuadTreeSolution.BuildByBruteForceCellScan(grid2);
     }
+
+    private bool IsTopHalf(int row) => row < Size / QuadrantSplitFactor;
+
+    private bool IsLeftHalf(int col) => col < Size / QuadrantSplitFactor;
 
     [Benchmark(Baseline = true)]
     public object? BruteForceGridMaterialize() =>

@@ -17,8 +17,12 @@ internal static class CourseScheduleIISolution
     // LeetCode's own input shape: prerequisites[i] = [a, b] means course b must
     // be completed before course a, i.e. an edge from b (prerequisite) to a
     // (dependent).
-    public static int[] FindOrderByKahnsTopologicalSort(int numCourses, int[][] prerequisites) =>
-        FindOrderByKahnsTopologicalSort(BuildCourses(numCourses, prerequisites));
+    public static int[] FindOrderByKahnsTopologicalSort(int numCourses, int[][] prerequisites)
+    {
+        var courses = BuildCourses(numCourses, prerequisites);
+
+        return FindOrderByKahnsTopologicalSort(courses);
+    }
 
     public static int[] FindOrderByKahnsTopologicalSort(List<CourseNode> courses)
     {
@@ -27,7 +31,7 @@ internal static class CourseScheduleIISolution
             NaturalChildOrder<CourseNode, ListChildren<CourseNode>>, ListChildren<CourseNode>>(
             courses, out var ordering);
 
-        return canFinish ? ordering.Select(c => c.Id).ToArray() : [];
+        return canFinish ? CourseIds(ordering) : EmptyOrder();
     }
 
     // The textbook answer: rescan the remaining courses from scratch on every
@@ -35,8 +39,12 @@ internal static class CourseScheduleIISolution
     // than tracking a frontier queue. Deliberately written without this repo's
     // TopologicalSort - it is the arm the composed solution above has to
     // justify itself against.
-    public static int[] FindOrderByNaiveRescan(int numCourses, int[][] prerequisites) =>
-        FindOrderByNaiveRescan(BuildCourses(numCourses, prerequisites));
+    public static int[] FindOrderByNaiveRescan(int numCourses, int[][] prerequisites)
+    {
+        var courses = BuildCourses(numCourses, prerequisites);
+
+        return FindOrderByNaiveRescan(courses);
+    }
 
     public static int[] FindOrderByNaiveRescan(List<CourseNode> courses)
     {
@@ -56,7 +64,7 @@ internal static class CourseScheduleIISolution
         {
         }
 
-        return order.Count == courses.Count ? order.Select(c => c.Id).ToArray() : [];
+        return order.Count == courses.Count ? CourseIds(order) : EmptyOrder();
     }
 
     private static bool TryAdvanceNaiveRescan(
@@ -98,4 +106,10 @@ internal static class CourseScheduleIISolution
 
         return courses;
     }
+
+    private static int[] CourseIds(IEnumerable<CourseNode> ordering) =>
+        ordering.Select(course => course.Id).ToArray();
+
+    // The empty order a caller gets back when no valid ordering exists.
+    private static int[] EmptyOrder() => [];
 }

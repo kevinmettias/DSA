@@ -21,12 +21,12 @@ public class MinimizeHammingDistanceAfterSwapOperationsBenchmarks
     private const int RandomSeed = 1722; // LC problem number
     private const int MaxValueExclusive = 50;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _source = [];
 
-    private int[] _source = null!;
-    private int[] _target = null!;
-    private int[][] _allowedSwaps = null!;
+    private int[] _target = [];
+    private int[][] _allowedSwaps = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

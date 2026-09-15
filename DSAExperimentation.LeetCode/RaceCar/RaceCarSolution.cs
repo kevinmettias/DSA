@@ -25,10 +25,10 @@ internal static class RaceCarSolution
     {
         var visited = new HashSet<(int Position, int Speed)>
         {
-            (RaceCarStateSpace.StartPosition, RaceCarStateSpace.StartSpeed),
+            (RaceCarMotion.StartPosition, RaceCarMotion.StartSpeed),
         };
         var walk = new CommandWalk(space, visited, new Queue<(int Position, int Speed, int Commands)>());
-        walk.Queue.Enqueue((RaceCarStateSpace.StartPosition, RaceCarStateSpace.StartSpeed, 0));
+        walk.Queue.Enqueue((RaceCarMotion.StartPosition, RaceCarMotion.StartSpeed, 0));
 
         while (walk.Queue.Count > 0)
         {
@@ -48,7 +48,7 @@ internal static class RaceCarSolution
     private static void EnqueueCommands((int Position, int Speed, int Commands) state, CommandWalk walk)
     {
         var acceleratePosition = state.Position + state.Speed;
-        var accelerateSpeed = state.Speed * RaceCarStateSpace.SpeedDoublingFactor;
+        var accelerateSpeed = state.Speed * RaceCarMotion.SpeedDoublingFactor;
 
         if (walk.Space.Contains(acceleratePosition, accelerateSpeed) &&
             walk.Visited.Add((acceleratePosition, accelerateSpeed)))
@@ -57,7 +57,7 @@ internal static class RaceCarSolution
         }
 
         // 'R' never moves the car, so the reversed state is always in the box.
-        var reverseSpeed = state.Speed > 0 ? -RaceCarStateSpace.StartSpeed : RaceCarStateSpace.StartSpeed;
+        var reverseSpeed = state.Speed > 0 ? -RaceCarMotion.StartSpeed : RaceCarMotion.StartSpeed;
 
         if (walk.Visited.Add((state.Position, reverseSpeed)))
         {
@@ -99,13 +99,28 @@ internal static class RaceCarSolution
 
         foreach (var speed in graph.Speeds)
         {
-            if (graph.TryGetNode(target, speed, out var node) &&
-                distances.TryGetValue(node, out var distance) && distance < best)
+            var distance = ArrivalDistance(graph, distances, target, speed);
+
+            if (distance < best)
             {
                 best = distance;
             }
         }
 
         return best;
+    }
+
+    // The command count the BFS recorded for arriving at `target` at this speed -
+    // int.MaxValue when that arrival has no recorded distance at all, so it can
+    // never beat one that does.
+    private static int ArrivalDistance(
+        RaceCarStateGraph graph, Dictionary<RaceCarNode, int> distances, int target, int speed)
+    {
+        if (graph.TryGetNode(target, speed, out var node) && distances.TryGetValue(node, out var distance))
+        {
+            return distance;
+        }
+
+        return int.MaxValue;
     }
 }

@@ -15,32 +15,7 @@ internal static class KthSmallestElementInABSTSolution
     // arm KthSmallestByInOrderTraversal below has to justify itself against.
     public static int KthSmallestByRecursiveWalk(BinaryTreeNode<int>? root, int k)
     {
-        var remaining = k;
-        int? result = null;
-
-        void Visit(BinaryTreeNode<int>? node)
-        {
-            if (node is null)
-            {
-                return;
-            }
-
-            Visit(node.Left);
-
-            if (result is null)
-            {
-                remaining--;
-
-                if (remaining == 0)
-                {
-                    result = node.Value;
-                }
-            }
-
-            Visit(node.Right);
-        }
-
-        Visit(root);
+        var (_, result) = VisitByRecursiveWalk(root, k, null);
         return result!.Value;
     }
 
@@ -55,6 +30,32 @@ internal static class KthSmallestElementInABSTSolution
         InOrderTraversal.Walk<int, RankHooks>(root);
 
         return State.Result.Value!.Value;
+    }
+
+    // The hand-rolled in-order walk, carrying its two pieces of running state -
+    // visits still owed and the value that emptied the count - through the recursion
+    // rather than closing over them.
+    private static (int Remaining, int? Result) VisitByRecursiveWalk(
+        BinaryTreeNode<int>? node, int remaining, int? result)
+    {
+        if (node is null)
+        {
+            return (remaining, result);
+        }
+
+        (remaining, result) = VisitByRecursiveWalk(node.Left, remaining, result);
+
+        if (result is null)
+        {
+            remaining--;
+
+            if (remaining == 0)
+            {
+                result = node.Value;
+            }
+        }
+
+        return VisitByRecursiveWalk(node.Right, remaining, result);
     }
 
     private readonly struct RankHooks : IInOrderHooks<int>

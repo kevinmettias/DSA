@@ -70,17 +70,30 @@ internal static class FindNthSmallestIntegerWithKOneBitsSolution
     // C(items, chosen) via Pascal's rule, memoized per call by this repo's
     // Memoizer rather than a hand-threaded cache.
     private static long Binomial(int items, int chosen) =>
-        Memoizer.Memoize<(int Items, int Chosen), long>(
-            (items, chosen),
-            (state, choose) =>
+        Memoizer.Memoize<(int Items, int Chosen), long>((items, chosen), new PascalAddition());
+
+    /// <summary>
+    /// The recurrence, named: C(n, k) is 1 at k = 0, 0 at n = 0, and otherwise
+    /// Pascal's rule - the two terms of the row above, summed.
+    /// </summary>
+    private sealed class PascalAddition : IRecurrence<(int Items, int Chosen), long>
+    {
+        /// <inheritdoc/>
+        public long Replay((int Items, int Chosen) state, IRecurrence<(int Items, int Chosen), long> rest)
+        {
+            var (items, chosen) = state;
+
+            if (chosen == 0)
             {
-                var (n, k) = state;
+                return 1;
+            }
 
-                if (k == 0)
-                {
-                    return 1;
-                }
+            if (items == 0)
+            {
+                return 0;
+            }
 
-                return n == 0 ? 0 : choose((n - 1, k - 1)) + choose((n - 1, k));
-            });
+            return rest.Replay((items - 1, chosen - 1), rest) + rest.Replay((items - 1, chosen), rest);
+        }
+    }
 }

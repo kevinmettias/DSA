@@ -19,7 +19,8 @@ internal static class ObstacleGridWorkloads
 
             for (var col = 0; col < size; col++)
             {
-                grid[row][col] = random.Next(ObstacleOneIn) == 0 ? 1 : 0;
+                var isObstacle = random.Next(ObstacleOneIn) == 0;
+                grid[row][col] = isObstacle ? 1 : 0;
             }
         }
 

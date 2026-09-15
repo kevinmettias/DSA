@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignSkiplist.DesignSkiplistSolution;
+using DSAExperimentation.LeetCode.DesignSkiplist;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -17,10 +17,10 @@ public class DesignSkiplistBenchmarks
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 1206;
 
-    [Params(200, 5_000)]
-    public int OperationCount;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,18 +30,31 @@ public class DesignSkiplistBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanList() => Replay(new SkiplistByLinearScanList());
+    public int LinearScanList() => Replay(new DesignSkiplistSolution.SkiplistByLinearScanList());
 
     [Benchmark]
-    public int FenwickTreeFrequencyMultiset() => Replay(new SkiplistByFenwickFrequencies());
+    public int FenwickTreeFrequencyMultiset() => Replay(new DesignSkiplistSolution.SkiplistByFenwickFrequencies());
 
-    private int Replay(ISkiplist skiplist)
+    private int Replay(DesignSkiplistSolution.ISkiplist skiplist)
+    {
+        AddEveryValue(skiplist);
+
+        var searchHits = CountSearchHits(skiplist);
+        var eraseHits = CountEraseHits(skiplist);
+
+        return searchHits + eraseHits;
+    }
+
+    private void AddEveryValue(DesignSkiplistSolution.ISkiplist skiplist)
     {
         foreach (var value in _values)
         {
             skiplist.Add(value);
         }
+    }
 
+    private int CountSearchHits(DesignSkiplistSolution.ISkiplist skiplist)
+    {
         var trueCount = 0;
 
         foreach (var value in _values)
@@ -51,6 +64,13 @@ public class DesignSkiplistBenchmarks
                 trueCount++;
             }
         }
+
+        return trueCount;
+    }
+
+    private int CountEraseHits(DesignSkiplistSolution.ISkiplist skiplist)
+    {
+        var trueCount = 0;
 
         foreach (var value in _values)
         {

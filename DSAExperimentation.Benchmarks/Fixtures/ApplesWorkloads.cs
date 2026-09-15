@@ -14,6 +14,17 @@ internal static class ApplesWorkloads
     public static (int[] Prices, int[][] Roads) Build(int shopCount, int extraRoadsPerShop, int seed)
     {
         var random = new Random(seed);
+        var prices = BuildPrices(random, shopCount);
+        var roads = new List<int[]>();
+
+        AppendSpanningRoads(roads, random, shopCount);
+        AppendExtraRoads(roads, random, shopCount, extraRoadsPerShop);
+
+        return (prices, [.. roads]);
+    }
+
+    private static int[] BuildPrices(Random random, int shopCount)
+    {
         var prices = new int[shopCount];
 
         for (var i = 0; i < shopCount; i++)
@@ -21,14 +32,23 @@ internal static class ApplesWorkloads
             prices[i] = random.Next(1, PriceUpperBound);
         }
 
-        var roads = new List<int[]>();
+        return prices;
+    }
 
+    // Every shop i > 0 reaches some earlier shop j < i, so these roads alone span the network.
+    private static void AppendSpanningRoads(List<int[]> roads, Random random, int shopCount)
+    {
         for (var i = 1; i < shopCount; i++)
         {
             var j = random.Next(i);
-            roads.Add(BuildRoad(random, i, j));
-        }
 
+            var road = BuildRoad(random, i, j);
+            roads.Add(road);
+        }
+    }
+
+    private static void AppendExtraRoads(List<int[]> roads, Random random, int shopCount, int extraRoadsPerShop)
+    {
         for (var i = 0; i < shopCount; i++)
         {
             for (var e = 0; e < extraRoadsPerShop; e++)
@@ -37,12 +57,11 @@ internal static class ApplesWorkloads
 
                 if (target != i)
                 {
-                    roads.Add(BuildRoad(random, i, target));
+                    var road = BuildRoad(random, i, target);
+                    roads.Add(road);
                 }
             }
         }
-
-        return (prices, [.. roads]);
     }
 
     private static int[] BuildRoad(Random random, int u, int v) =>

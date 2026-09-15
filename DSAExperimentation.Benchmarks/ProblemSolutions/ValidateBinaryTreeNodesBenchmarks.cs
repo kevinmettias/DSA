@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ValidateBinaryTreeNodesBenchmarks
 {
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private int[] _leftChild = [];
 
-    private int[] _leftChild = null!;
-    private int[] _rightChild = null!;
+    private int[] _rightChild = [];
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

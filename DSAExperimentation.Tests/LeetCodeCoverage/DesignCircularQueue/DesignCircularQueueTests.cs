@@ -66,43 +66,34 @@ public sealed class DesignCircularQueueTests
 // argument. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the LeetCode call sequence it replays. Internal, not
 // public: only this same assembly's test method ever calls Apply.
-public readonly record struct CircularQueueOp
+public readonly record struct CircularQueueOp(CircularQueueOp.OpKind kind, int value)
 {
-    private readonly Kind _kind;
-    private readonly int _value;
+    public static CircularQueueOp EnQueue(int value) => new(OpKind.EnQueue, value);
 
-    private CircularQueueOp(Kind kind, int value)
-    {
-        _kind = kind;
-        _value = value;
-    }
+    public static CircularQueueOp DeQueue() => new(OpKind.DeQueue, 0);
 
-    public static CircularQueueOp EnQueue(int value) => new(Kind.EnQueue, value);
+    public static CircularQueueOp Front() => new(OpKind.Front, 0);
 
-    public static CircularQueueOp DeQueue() => new(Kind.DeQueue, 0);
+    public static CircularQueueOp Rear() => new(OpKind.Rear, 0);
 
-    public static CircularQueueOp Front() => new(Kind.Front, 0);
+    public static CircularQueueOp IsEmpty() => new(OpKind.IsEmpty, 0);
 
-    public static CircularQueueOp Rear() => new(Kind.Rear, 0);
-
-    public static CircularQueueOp IsEmpty() => new(Kind.IsEmpty, 0);
-
-    public static CircularQueueOp IsFull() => new(Kind.IsFull, 0);
+    public static CircularQueueOp IsFull() => new(OpKind.IsFull, 0);
 
     // 1/0 for the four bool-returning operations, the actual value for
     // Front/Rear - so a script runner can assert against one expected value per
     // operation uniformly.
-    internal int Apply(ICircularQueue queue) => _kind switch
+    internal int Apply(ICircularQueue queue) => kind switch
     {
-        Kind.EnQueue => queue.EnQueue(_value) ? 1 : 0,
-        Kind.DeQueue => queue.DeQueue() ? 1 : 0,
-        Kind.Front => queue.Front(),
-        Kind.Rear => queue.Rear(),
-        Kind.IsEmpty => queue.IsEmpty() ? 1 : 0,
+        OpKind.EnQueue => queue.EnQueue(value) ? 1 : 0,
+        OpKind.DeQueue => queue.DeQueue() ? 1 : 0,
+        OpKind.Front => queue.Front(),
+        OpKind.Rear => queue.Rear(),
+        OpKind.IsEmpty => queue.IsEmpty() ? 1 : 0,
         _ => queue.IsFull() ? 1 : 0,
     };
 
-    private enum Kind
+    public enum OpKind
     {
         EnQueue,
         DeQueue,

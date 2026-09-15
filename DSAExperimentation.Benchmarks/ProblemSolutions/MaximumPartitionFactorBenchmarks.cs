@@ -14,18 +14,16 @@ public class MaximumPartitionFactorBenchmarks
 {
     private const int GridWidth = 32;
 
-    [Params(50, 300)]
-    public int PointCount;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(50, 300)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
+    public void Setup() =>
         _points = Enumerable.Range(0, PointCount)
             .Select(i => new[] { i % GridWidth, i / GridWidth })
             .ToArray();
-    }
 
     [Benchmark(Baseline = true)]
     public int LinearScan() => MaximumPartitionFactorSolution.MaxPartitionFactorByLinearScan(_points);

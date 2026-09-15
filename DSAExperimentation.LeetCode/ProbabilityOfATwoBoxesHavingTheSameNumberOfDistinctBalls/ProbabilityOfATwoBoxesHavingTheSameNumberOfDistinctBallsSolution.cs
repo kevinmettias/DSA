@@ -27,34 +27,12 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
     {
         var total = balls.Sum();
         var half = total / BoxCount;
+        var deal = (Balls: balls, Half: half);
 
-        double Recurse(int colorIndex, SplitCounts counts, double ways)
-        {
-            if (colorIndex == balls.Length)
-            {
-                return counts.Box1Total == half && counts.Box1Distinct == counts.Box2Distinct
-                    ? ways
-                    : 0.0;
-            }
-
-            var colorCount = balls[colorIndex];
-            var matching = 0.0;
-
-            for (var toBox1 = 0; toBox1 <= colorCount; toBox1++)
-            {
-                matching += Recurse(
-                    colorIndex + 1,
-                    counts.Deal(colorCount, toBox1),
-                    ways * BinomialCoefficient(colorCount, toBox1));
-            }
-
-            return matching;
-        }
-
-        return Recurse(0, default, 1.0) / BinomialCoefficient(total, half);
+        return Recurse(deal, 0, default, 1.0) / BinomialCoefficient(total, half);
     }
 
-    // Bundles the recursion's per-branch running totals so Recurse stays at three
+    // Bundles the recursion's per-branch running totals so Recurse stays at four
     // parameters, and puts the "what does dealing toBox1 of this colour do to
     // them" rule in one place - the same rule Choose/Unchoose apply and undo
     // below.
@@ -63,7 +41,9 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
         public SplitCounts Deal(int colorCount, int toBox1) =>
             new(Box1Total + toBox1,
                 Box1Distinct + (toBox1 > 0 ? 1 : 0),
-                Box2Distinct + (colorCount - toBox1 > 0 ? 1 : 0));
+                Box2Distinct + (HasBallsForBox2(colorCount, toBox1) ? 1 : 0));
+
+        private static bool HasBallsForBox2(int colorCount, int toBox1) => colorCount - toBox1 > 0;
     }
 
     // This repo's Backtrack.Search primitive drives the identical walk
@@ -88,7 +68,7 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
             // already true - Candidates must return empty there rather than
             // index balls out of bounds.
             candidates: s => s.ColorIndex == balls.Length
-                ? []
+                ? NoCandidates()
                 : Enumerable.Range(0, balls[s.ColorIndex] + 1),
             choose: (s, toBox1) => Choose(s, balls, toBox1),
             unchoose: (s, toBox1) => Unchoose(s, balls, toBox1),
@@ -96,6 +76,8 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
 
         return matchingWays / BinomialCoefficient(total, half);
     }
+
+    private static IEnumerable<int> NoCandidates() => [];
 
     // Mutable per-search scratch state Choose/Unchoose thread through - the
     // TState : class Backtrack.Search requires (ARCHITECTURE.md: mutations must
@@ -155,6 +137,39 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
         state.Box1Total == half && state.Box1DistinctCount == state.Box2DistinctCount
             ? state.Ways
             : 0.0;
+
+    // One node of the hand-rolled walk: offer "send toBox1 of this colour's copies
+    // to box 1" for every legal toBox1, and score a completed deal by the leaf
+    // test. `deal` bundles the two inputs that never change during the walk, so the
+    // recursion stays at four parameters.
+    private static double Recurse(
+        (int[] Balls, int Half) deal,
+        int colorIndex,
+        SplitCounts counts,
+        double ways)
+    {
+        if (colorIndex == deal.Balls.Length)
+        {
+            return counts.Box1Total == deal.Half && counts.Box1Distinct == counts.Box2Distinct
+                ? ways
+                : 0.0;
+        }
+
+        var colorCount = deal.Balls[colorIndex];
+        var matching = 0.0;
+
+        for (var toBox1 = 0; toBox1 <= colorCount; toBox1++)
+        {
+            var nextCounts = counts.Deal(colorCount, toBox1);
+            matching += Recurse(
+                deal,
+                colorIndex + 1,
+                nextCounts,
+                ways * BinomialCoefficient(colorCount, toBox1));
+        }
+
+        return matching;
+    }
 
     // C(n, r) accumulated in double rather than exactly: LC 1467 caps a colour at
     // 6 copies and the total at 48, and the answer it wants is a probability, so

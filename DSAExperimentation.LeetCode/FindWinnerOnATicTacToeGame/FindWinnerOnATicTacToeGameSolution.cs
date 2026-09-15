@@ -1,3 +1,5 @@
+using Vocabulary = DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame.TicTacToeVocabulary;
+
 namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 
 // LeetCode 1275. Find Winner on a Tic Tac Toe Game: replay the alternating moves
@@ -9,26 +11,14 @@ namespace DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 // how much of the board each move re-examines: rebuild and rescan every row,
 // column and diagonal, or keep running +/-1 tallies and touch only the lines the
 // new move actually falls on. Both are generalized over board size so a benchmark
-// can scale them; LC 1275 itself fixes the board at BoardSize.
+// can scale them; LC 1275 itself fixes the board at TicTacToeVocabulary.BoardSize.
 internal static class FindWinnerOnATicTacToeGameSolution
 {
-    // LC 1275's board is 3 x 3, and a line is three marks long.
-    public const int BoardSize = 3;
-
-    private const string PlayerA = "A";
-    private const string PlayerB = "B";
-    private const string Draw = "Draw";
-    private const string Pending = "Pending";
-    private const int PlayerCount = 2;
-    private const int Empty = 0;
-    private const int MarkA = 1;
-    private const int MarkB = -1;
-
     // The textbook baseline: keep the board itself and, after each move, rescan
     // every row, every column and both diagonals from scratch. Plain BCL arrays
     // and loops - this is what you would write without any bookkeeping insight.
     public static string FindWinnerByBoardRescan(int[][] moves) =>
-        FindWinnerByBoardRescan(moves, BoardSize);
+        FindWinnerByBoardRescan(moves, Vocabulary.BoardSize);
 
     public static string FindWinnerByBoardRescan(int[][] moves, int boardSize)
     {
@@ -40,7 +30,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
 
             var winner = ScanAllLines(board, boardSize);
 
-            if (winner != Empty)
+            if (winner != Vocabulary.Empty)
             {
                 return PlayerFor(winner);
             }
@@ -51,29 +41,50 @@ internal static class FindWinnerOnATicTacToeGameSolution
 
     private static int ScanAllLines(int[,] board, int boardSize)
     {
+        var rowWinner = ScanRows(board, boardSize);
+        var columnWinner = rowWinner != Vocabulary.Empty ? rowWinner : ScanColumns(board, boardSize);
+
+        return columnWinner != Vocabulary.Empty ? columnWinner : ScanDiagonals(board, boardSize);
+    }
+
+    // Every row's line, one at a time, until one of them comes back decided.
+    private static int ScanRows(int[,] board, int boardSize)
+    {
         for (var row = 0; row < boardSize; row++)
         {
             var winner = LineWinner(board, boardSize, new LineScan(row, 0, 0, 1));
 
-            if (winner != Empty)
+            if (winner != Vocabulary.Empty)
             {
                 return winner;
             }
         }
 
+        return Vocabulary.Empty;
+    }
+
+    // Every column's line, same shape as the row scan above.
+    private static int ScanColumns(int[,] board, int boardSize)
+    {
         for (var column = 0; column < boardSize; column++)
         {
             var winner = LineWinner(board, boardSize, new LineScan(0, column, 1, 0));
 
-            if (winner != Empty)
+            if (winner != Vocabulary.Empty)
             {
                 return winner;
             }
         }
 
+        return Vocabulary.Empty;
+    }
+
+    // Both diagonals last, since neither belongs to a row or a column.
+    private static int ScanDiagonals(int[,] board, int boardSize)
+    {
         var diagonal = LineWinner(board, boardSize, new LineScan(0, 0, 1, 1));
 
-        return diagonal != Empty
+        return diagonal != Vocabulary.Empty
             ? diagonal
             : LineWinner(board, boardSize, new LineScan(0, boardSize - 1, 1, -1));
     }
@@ -82,16 +93,16 @@ internal static class FindWinnerOnATicTacToeGameSolution
     {
         var first = board[line.StartRow, line.StartColumn];
 
-        if (first == Empty)
+        if (first == Vocabulary.Empty)
         {
-            return Empty;
+            return Vocabulary.Empty;
         }
 
         for (var i = 1; i < boardSize; i++)
         {
             if (board[line.StartRow + (i * line.RowStep), line.StartColumn + (i * line.ColumnStep)] != first)
             {
-                return Empty;
+                return Vocabulary.Empty;
             }
         }
 
@@ -105,7 +116,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
     // -1 for B: a line is won the instant its tally reaches +/-boardSize, so each
     // move costs O(1) instead of a full board rescan.
     public static string FindWinnerByRunningCounts(int[][] moves) =>
-        FindWinnerByRunningCounts(moves, BoardSize);
+        FindWinnerByRunningCounts(moves, Vocabulary.BoardSize);
 
     public static string FindWinnerByRunningCounts(int[][] moves, int boardSize)
     {
@@ -135,8 +146,11 @@ internal static class FindWinnerOnATicTacToeGameSolution
         {
             _rowCount[row] += mark;
             _columnCount[column] += mark;
+
+            var isOnAntiDiagonal = row + column == boardSize - 1;
+
             _diagonal += row == column ? mark : 0;
-            _antiDiagonal += row + column == boardSize - 1 ? mark : 0;
+            _antiDiagonal += isOnAntiDiagonal ? mark : 0;
 
             return Math.Abs(_rowCount[row]) == boardSize
                 || Math.Abs(_columnCount[column]) == boardSize
@@ -146,12 +160,20 @@ internal static class FindWinnerOnATicTacToeGameSolution
     }
 
     // Player A takes every even-indexed move, player B every odd one.
-    private static int MarkFor(int moveIndex) => moveIndex % PlayerCount == 0 ? MarkA : MarkB;
+    private static int MarkFor(int moveIndex) =>
+        IsPlayerATurn(moveIndex) ? Vocabulary.MarkA : Vocabulary.MarkB;
 
-    private static string PlayerFor(int mark) => mark == MarkA ? PlayerA : PlayerB;
+    // Named because it is a question the alternation above keeps asking, not a quantity
+    // the board itself ever holds.
+    private static bool IsPlayerATurn(int moveIndex) => moveIndex % Vocabulary.PlayerCount == 0;
+
+    private static string PlayerFor(int mark) =>
+        mark == Vocabulary.MarkA ? Vocabulary.PlayerA : Vocabulary.PlayerB;
 
     // With no line completed, the game is a draw once every square is taken and
     // pending while any remain.
     private static string Outcome(int moveCount, int boardSize) =>
-        moveCount == boardSize * boardSize ? Draw : Pending;
+        IsBoardFull(moveCount, boardSize) ? Vocabulary.Draw : Vocabulary.Pending;
+
+    private static bool IsBoardFull(int moveCount, int boardSize) => moveCount == boardSize * boardSize;
 }

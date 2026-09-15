@@ -23,26 +23,6 @@ internal static class RandomWeightedGraphs
         return (nodes, nodes[0]);
     }
 
-    // The same graph, flattened back into LeetCode's own [from, to, weight] edge
-    // list, for problems whose input shape is the edge list rather than a built
-    // node graph (Design Graph With Shortest Path Calculator, LC 2642). Same seed
-    // and same density, so the two forms are the identical workload.
-    public static int[][] BuildEdges(int nodeCount, int extraEdgesPerNode, int seed)
-    {
-        var (vertices, _) = Build(nodeCount, extraEdgesPerNode, seed);
-        var edges = new List<int[]>();
-
-        foreach (var node in vertices)
-        {
-            foreach (var (weight, target) in node.Edges)
-            {
-                edges.Add([node.Id, target.Id, weight]);
-            }
-        }
-
-        return [.. edges];
-    }
-
     private static List<WeightedGraphNode> CreateNodes(int nodeCount)
         => Enumerable.Range(0, nodeCount).Select(id => new WeightedGraphNode(id)).ToList();
 
@@ -69,6 +49,26 @@ internal static class RandomWeightedGraphs
                 }
             }
         }
+    }
+
+    // The same graph, flattened back into LeetCode's own [from, to, weight] edge
+    // list, for problems whose input shape is the edge list rather than a built
+    // node graph (Design Graph With Shortest Path Calculator, LC 2642). Same seed
+    // and same density, so the two forms are the identical workload.
+    public static int[][] BuildEdges(int nodeCount, int extraEdgesPerNode, int seed)
+    {
+        var (vertices, _) = Build(nodeCount, extraEdgesPerNode, seed);
+        var edges = new List<int[]>();
+
+        foreach (var node in vertices)
+        {
+            foreach (var (weight, target) in node.Edges)
+            {
+                edges.Add([node.Id, target.Id, weight]);
+            }
+        }
+
+        return [.. edges];
     }
 
     private static void AddEdge(WeightedGraphNode from, WeightedGraphNode to, Random random)

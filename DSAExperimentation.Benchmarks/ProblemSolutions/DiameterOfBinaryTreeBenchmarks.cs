@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DiameterOfBinaryTreeBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     // A left-skewed chain, not a bushy random tree: the naive baseline's O(n^2)
     // comes from recomputing a full-height walk at every node, and that only

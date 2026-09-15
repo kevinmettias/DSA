@@ -14,12 +14,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SortingTheSentenceBenchmarks
 {
-    private const int RandomSeed = 1859; // LC problem number
+    private const int RandomSeed = 1859; private string[] _words = [];
+
+    // LC problem number
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private string[] _words = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

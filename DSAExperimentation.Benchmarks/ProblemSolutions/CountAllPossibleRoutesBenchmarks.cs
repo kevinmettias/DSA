@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CountAllPossibleRoutesBenchmarks
 {
-    private static readonly int[] Locations = [0, 1, 2, 3];
     private const int Start = 0;
     private const int Finish = 3;
+    private static readonly int[] Locations = [0, 1, 2, 3];
 
     [Params(8, 12)]
-    public int Fuel;
+    public int Fuel { get; set; }
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursion() =>

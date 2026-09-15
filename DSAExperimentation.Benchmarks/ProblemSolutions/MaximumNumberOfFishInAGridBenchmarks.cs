@@ -17,10 +17,10 @@ public class MaximumNumberOfFishInAGridBenchmarks
     private const double WaterProbability = 0.55;
     private const int MaxFishExclusive = 11;
 
-    [Params(30, 120)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(30, 120)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,7 +34,8 @@ public class MaximumNumberOfFishInAGridBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < WaterProbability ? random.Next(1, MaxFishExclusive) : 0;
+                var isWater = random.NextDouble() < WaterProbability;
+                _grid[r][c] = isWater ? random.Next(1, MaxFishExclusive) : 0;
             }
         }
     }

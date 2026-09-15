@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.RandomPickWithWeight.RandomPickWithWeightSolution;
+using DSAExperimentation.LeetCode.RandomPickWithWeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -20,10 +20,10 @@ public class RandomPickWithWeightBenchmarks
     private const int RandomSeed = 528; // LC problem number
     private const int MaxWeightExclusive = 100;
 
-    [Params(50, 2_000)]
-    public int WeightCount;
+    private int[] _weights = [];
 
-    private int[] _weights = null!;
+    [Params(50, 2_000)]
+    public int WeightCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,13 +33,13 @@ public class RandomPickWithWeightBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new RandomPickWithWeightByLinearScan(_weights, new Random(1)));
+    public long LinearScan() => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(_weights, new Random(1)));
 
     [Benchmark]
     public long BinarySearchUpperBound()
-        => Replay(new RandomPickWithWeightByBinarySearchUpperBound(_weights, new Random(1)));
+        => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(_weights, new Random(1)));
 
-    private static long Replay(IRandomPickWithWeight solution)
+    private static long Replay(RandomPickWithWeightSolution.IRandomPickWithWeight solution)
     {
         long total = 0;
 

@@ -14,10 +14,10 @@ public class FindTheSumOfSubsequencePowersBenchmarks
     private const int Seed = 3098;
     private const int K = 4;
 
-    [Params(10, 16)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(10, 16)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

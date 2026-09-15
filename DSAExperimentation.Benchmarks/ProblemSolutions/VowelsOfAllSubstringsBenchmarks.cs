@@ -14,10 +14,10 @@ public class VowelsOfAllSubstringsBenchmarks
     // The deterministic word seed this benchmark has always used.
     private const int WordSeed = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _word = "";
 
-    private string _word = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _word = VowelsOfAllSubstringsWorkloads.BuildRandomLowercaseWord(Length, seed: WordSeed);

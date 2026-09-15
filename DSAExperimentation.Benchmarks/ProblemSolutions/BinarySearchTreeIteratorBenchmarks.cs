@@ -15,10 +15,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class BinarySearchTreeIteratorBenchmarks
 {
-    [Params(200, 5_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);

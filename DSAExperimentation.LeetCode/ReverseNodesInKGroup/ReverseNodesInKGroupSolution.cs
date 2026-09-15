@@ -28,6 +28,20 @@ internal static class ReverseNodesInKGroupSolution
         return dummy.Next;
     }
 
+    private static bool TryGetKth(
+        SinglyLinkedListNode<int> groupPrevious, int k, out SinglyLinkedListNode<int> kth)
+    {
+        SinglyLinkedListNode<int>? node = groupPrevious;
+
+        for (var i = 0; i < k && node is not null; i++)
+        {
+            node = node.Next;
+        }
+
+        kth = node!;
+        return node is not null;
+    }
+
     private static SinglyLinkedListNode<int> ReverseOneGroup(
         SinglyLinkedListNode<int> groupPrevious, SinglyLinkedListNode<int> kth)
     {
@@ -49,20 +63,6 @@ internal static class ReverseNodesInKGroupSolution
         return oldGroupHead;
     }
 
-    private static bool TryGetKth(
-        SinglyLinkedListNode<int> groupPrevious, int k, out SinglyLinkedListNode<int> kth)
-    {
-        SinglyLinkedListNode<int>? node = groupPrevious;
-
-        for (var i = 0; i < k && node is not null; i++)
-        {
-            node = node.Next;
-        }
-
-        kth = node!;
-        return node is not null;
-    }
-
     // The textbook alternative: read every value off the list into a plain array,
     // reverse each complete run of k with the BCL's own Array.Reverse, then
     // rebuild the list from the reordered values. Deliberately written without
@@ -72,14 +72,7 @@ internal static class ReverseNodesInKGroupSolution
     public static SinglyLinkedListNode<int>? ReverseKGroupByArrayReverse(
         SinglyLinkedListNode<int>? head, int k)
     {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        var array = values.ToArray();
+        var array = ReadValues(head);
         var completeGroups = array.Length / k * k;
 
         for (var i = 0; i < completeGroups; i += k)
@@ -87,6 +80,25 @@ internal static class ReverseNodesInKGroupSolution
             Array.Reverse(array, i, k);
         }
 
+        return RebuildFromArray(array);
+    }
+
+    // Every value on the list, in order, as a plain array.
+    private static int[] ReadValues(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values.ToArray();
+    }
+
+    // A fresh list holding the array's values in order.
+    private static SinglyLinkedListNode<int>? RebuildFromArray(int[] array)
+    {
         var dummy = new SinglyLinkedListNode<int>(0);
         var tail = dummy;
 

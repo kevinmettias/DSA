@@ -13,10 +13,10 @@ public class MinimumMovesToReachTargetInGridBenchmarks
 {
     private const int Seed = 3609;
 
-    [Params(8, 14)]
-    public int MoveCount;
-
     private (int Sx, int Sy, int Tx, int Ty) _pair;
+
+    [Params(8, 14)]
+    public int MoveCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _pair = TargetGridWorkloads.BuildReachablePair(MoveCount, Seed);

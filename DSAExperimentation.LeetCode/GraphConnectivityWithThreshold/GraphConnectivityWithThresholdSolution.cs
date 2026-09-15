@@ -25,6 +25,16 @@ internal static class GraphConnectivityWithThresholdSolution
     // uncompressed parent chain degrade toward O(n) per Find.
     public static bool[] AreConnectedByNaiveUnionFind(int n, int threshold, int[][] queries)
     {
+        var parent = BuildNaiveComponents(n, threshold);
+
+        return ConnectivityByNaiveFind(parent, queries);
+    }
+
+    // The bare parent array plus the sieve over it: every divisor above the threshold
+    // shares itself with each of its multiples, so unioning the two joins exactly the
+    // cities that share a divisor.
+    private static int[] BuildNaiveComponents(int n, int threshold)
+    {
         var parent = new int[n + 1];
 
         for (var city = 0; city <= n; city++)
@@ -40,11 +50,62 @@ internal static class GraphConnectivityWithThresholdSolution
             }
         }
 
+        return parent;
+    }
+
+    // One connectivity lookup per query, both sides resolved through the naive Find.
+    private static bool[] ConnectivityByNaiveFind(int[] parent, int[][] queries)
+    {
         var results = new bool[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)
         {
             results[i] = Find(parent, queries[i][0]) == Find(parent, queries[i][1]);
+        }
+
+        return results;
+    }
+
+    // The same sieve over this repo's own DisjointSet, whose path compression and
+    // union-by-rank keep Find/Union at O(alpha(n)) amortized - the same
+    // sieve-drives-Union composition NumberOfProvinces and
+    // NumberOfOperationsToMakeNetworkConnected use, just with a divisor sieve
+    // producing the pairs to Union instead of an explicit edge list. Cities are
+    // already dense integers in [1, n], so they are their own DisjointSet ids; the
+    // set is sized n + 1 so id 0 simply goes unused.
+    public static bool[] AreConnectedByDisjointSet(int n, int threshold, int[][] queries)
+    {
+        var components = BuildDisjointSetComponents(n, threshold);
+
+        return ConnectivityByDisjointSet(components, queries);
+    }
+
+    // The same divisor sieve, driving this repo's DisjointSet instead of a bare parent
+    // array.
+    private static DisjointSet BuildDisjointSetComponents(int n, int threshold)
+    {
+        var components = new DisjointSet(n + 1);
+
+        for (var divisor = threshold + 1; divisor <= n; divisor++)
+        {
+            for (var multiple = FirstMultipleFactor * divisor; multiple <= n; multiple += divisor)
+            {
+                components.Union(divisor, multiple);
+            }
+        }
+
+        return components;
+    }
+
+    // One connectivity lookup per query, both sides resolved through DisjointSet's own
+    // compressed Find.
+    private static bool[] ConnectivityByDisjointSet(DisjointSet components, int[][] queries)
+    {
+        var results = new bool[queries.Length];
+
+        for (var i = 0; i < queries.Length; i++)
+        {
+            results[i] = components.IsConnected(queries[i][0], queries[i][1]);
         }
 
         return results;
@@ -69,34 +130,5 @@ internal static class GraphConnectivityWithThresholdSolution
         {
             parent[firstRoot] = secondRoot;
         }
-    }
-
-    // The same sieve over this repo's own DisjointSet, whose path compression and
-    // union-by-rank keep Find/Union at O(alpha(n)) amortized - the same
-    // sieve-drives-Union composition NumberOfProvinces and
-    // NumberOfOperationsToMakeNetworkConnected use, just with a divisor sieve
-    // producing the pairs to Union instead of an explicit edge list. Cities are
-    // already dense integers in [1, n], so they are their own DisjointSet ids; the
-    // set is sized n + 1 so id 0 simply goes unused.
-    public static bool[] AreConnectedByDisjointSet(int n, int threshold, int[][] queries)
-    {
-        var components = new DisjointSet(n + 1);
-
-        for (var divisor = threshold + 1; divisor <= n; divisor++)
-        {
-            for (var multiple = FirstMultipleFactor * divisor; multiple <= n; multiple += divisor)
-            {
-                components.Union(divisor, multiple);
-            }
-        }
-
-        var results = new bool[queries.Length];
-
-        for (var i = 0; i < queries.Length; i++)
-        {
-            results[i] = components.IsConnected(queries[i][0], queries[i][1]);
-        }
-
-        return results;
     }
 }

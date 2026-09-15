@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class UniqueBinarySearchTreesBenchmarks
 {
     [Params(10, 16)]
-    public int Nodes;
+    public int Nodes { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Tabulation() => UniqueBinarySearchTreesSolution.NumTreesByTabulation(Nodes);

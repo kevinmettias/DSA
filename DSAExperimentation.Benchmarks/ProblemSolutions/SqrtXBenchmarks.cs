@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SqrtXBenchmarks
 {
     [Params(10_000, int.MaxValue)]
-    public int Value;
+    public int Value { get; set; }
 
     [Benchmark(Baseline = true)]
     public int MathSqrt() => SqrtXSolution.RootByMathSqrt(Value);

@@ -13,11 +13,11 @@ public class IsomorphicStringsBenchmarks
 {
     private const int Seed = 205;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _t = null!;
+    private string _t = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => (_s, _t) = IsomorphicStringWorkloads.BuildIsomorphicPair(Length, Seed);

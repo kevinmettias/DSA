@@ -17,9 +17,9 @@ namespace DSAExperimentation.LeetCode.SumGame;
 //                         halves level exactly when the known-digit difference
 //                         already equals 9 per pair of blanks he is owed).
 //
-// The two recursive arms share one Resolve body: they differ only in what they
-// hand it as the recursive call-back, which is the whole difference the benchmark
-// measures.
+// The two recursive arms share one Resolve body and one named recurrence: they differ
+// only in whether the driver between recursive calls is this repo's Memoizer cache or
+// the call stack itself, which is the whole difference the benchmark measures.
 internal static class SumGameSolution
 {
     private const int MinDigit = 0;
@@ -33,20 +33,17 @@ internal static class SumGameSolution
     private const int OptimalMarginDivisor = 2;
 
     // The textbook answer: plain recursion with no cache, so a position reached by
-    // k different fill-in orders is resolved k times. Deliberately written without
-    // this repo's primitives - only the state it is handed is a repo type
-    // (ARCHITECTURE.md section 17.5) - because it is the arm the memoized and
-    // closed-form arms below have to justify themselves against.
+    // k different fill-in orders is resolved k times. Only the recurrence's shape is
+    // shared with the memoized arm below - nothing here caches - because it is the arm
+    // the memoized and closed-form arms have to justify themselves against.
     public static bool AliceWinsByBruteForceRecursion(string num) =>
         AliceWinsByBruteForceRecursion(SumGameState.Of(num));
 
     public static bool AliceWinsByBruteForceRecursion(SumGameState start)
     {
-        var totalBlanks = start.TotalBlanks;
+        var recurrence = new AliceWinsFrom(start.TotalBlanks);
 
-        bool AliceWinsFrom(SumGameState state) => Resolve(state, totalBlanks, AliceWinsFrom);
-
-        return AliceWinsFrom(start);
+        return recurrence.Replay(start, recurrence);
     }
 
     // The same recursion, with Memoizer supplying the recursive call-back: the
@@ -56,21 +53,16 @@ internal static class SumGameSolution
     public static bool AliceWinsByMemoizedRecursion(string num) =>
         AliceWinsByMemoizedRecursion(SumGameState.Of(num));
 
-    public static bool AliceWinsByMemoizedRecursion(SumGameState start)
-    {
-        var totalBlanks = start.TotalBlanks;
-
-        return Memoizer.Memoize<SumGameState, bool>(
-            start,
-            (state, aliceWins) => Resolve(state, totalBlanks, aliceWins));
-    }
+    public static bool AliceWinsByMemoizedRecursion(SumGameState start) =>
+        Memoizer.Memoize<SumGameState, bool>(start, new AliceWinsFrom(start.TotalBlanks));
 
     // One loop shape covers both quantifiers: on Alice's turn she wants SOME move
     // whose outcome is her own win, on Bob's turn he wants SOME move whose outcome
     // is his - so "return isAliceTurn as soon as a branch's outcome equals
     // isAliceTurn, else !isAliceTurn" is OR-for-Alice / AND-for-Bob without two
     // separate loops.
-    private static bool Resolve(SumGameState state, int totalBlanks, Func<SumGameState, bool> aliceWins)
+    private static bool Resolve(
+        SumGameState state, int totalBlanks, IRecurrence<SumGameState, bool> rest)
     {
         if (state.TotalBlanks == 0)
         {
@@ -78,22 +70,33 @@ internal static class SumGameSolution
         }
 
         var movesMade = totalBlanks - state.TotalBlanks;
-        var turn = new MoverTurn(aliceWins, IsAliceTurn: movesMade % TurnParityDivisor == 0);
+        var turn = new MoverTurn(rest, IsAliceTurn: movesMade % TurnParityDivisor == 0);
 
-        return TryFindWinningDigit(state.LeftBlanks, state.FillLeft, turn)
-            ?? TryFindWinningDigit(state.RightBlanks, state.FillRight, turn)
+        return TryFindWinningDigit(state.LeftBlanks, new LeftHalfPlacement(state), turn)
+            ?? TryFindWinningDigit(state.RightBlanks, new RightHalfPlacement(state), turn)
             ?? !turn.IsAliceTurn;
+    }
+
+    // The recurrence, as a named type: one game-tree resolution over SumGameState,
+    // deciding whether the player to move can force Alice's win. The board's original
+    // blank total arrives through the primary constructor and the memoized continuation
+    // through `rest`, so the recursive call-back is a method on a named type.
+    private sealed class AliceWinsFrom(int totalBlanks) : IRecurrence<SumGameState, bool>
+    {
+        public bool Replay(SumGameState state, IRecurrence<SumGameState, bool> rest)
+            => Resolve(state, totalBlanks, rest);
     }
 
     // Whose move it is, together with the recursive call-back that resolves the
     // positions it leads to - carried as one value the way OpenTheLockSolution's own
-    // TurnWalk is, so a digit search names one turn instead of a loose flag.
-    private readonly record struct MoverTurn(Func<SumGameState, bool> AliceWins, bool IsAliceTurn);
+    // TurnWalk is, so a digit search names one turn instead of a loose flag. The
+    // call-back is the named recurrence itself, never a delegate.
+    private readonly record struct MoverTurn(IRecurrence<SumGameState, bool> AliceWins, bool IsAliceTurn);
 
     // Tries every digit that could fill one of the remaining blanks on a given
     // side, returning isAliceTurn as soon as some move settles the game in the
     // current mover's favor - null if no digit on this side achieves that.
-    private static bool? TryFindWinningDigit(int blanksOnSide, Func<int, SumGameState> fill, MoverTurn turn)
+    private static bool? TryFindWinningDigit(int blanksOnSide, IDigitPlacement placement, MoverTurn turn)
     {
         if (blanksOnSide == 0)
         {
@@ -102,13 +105,37 @@ internal static class SumGameSolution
 
         for (var digit = MinDigit; digit <= MaxDigit; digit++)
         {
-            if (turn.AliceWins(fill(digit)) == turn.IsAliceTurn)
+            if (turn.AliceWins.Replay(placement.Place(digit), turn.AliceWins) == turn.IsAliceTurn)
             {
                 return turn.IsAliceTurn;
             }
         }
 
         return null;
+    }
+
+    // Which side of the board a digit is written on, which is the only thing the two
+    // calls into the digit search below differ in: writing on the left moves the
+    // difference in the left half's favor, writing the same digit on the right moves
+    // it the other way, and each consumes the blank it filled. Naming that choice
+    // keeps "some int becomes some state" from being the whole of what a caller of
+    // the search is told.
+    private interface IDigitPlacement
+    {
+        // The board after writing `digit` in one of this side's remaining blanks. The
+        // caller only ever offers digits 0-9, and only while a blank remains on this
+        // side, so every call describes a legal move.
+        SumGameState Place(int digit);
+    }
+
+    private sealed class LeftHalfPlacement(SumGameState state) : IDigitPlacement
+    {
+        public SumGameState Place(int digit) => state.FillLeft(digit);
+    }
+
+    private sealed class RightHalfPlacement(SumGameState state) : IDigitPlacement
+    {
+        public SumGameState Place(int digit) => state.FillRight(digit);
     }
 
     // The rule the recursion above reduces to. An odd blank count hands Alice the

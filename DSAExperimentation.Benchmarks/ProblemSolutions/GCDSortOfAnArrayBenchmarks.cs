@@ -12,15 +12,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class GCDSortOfAnArrayBenchmarks
 {
-    private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13];
-
     // LC problem number, reused as the deterministic benchmark seed.
     private const int RandomSeed = 1998;
 
-    [Params(50, 400)]
-    public int Length;
+    private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13];
 
-    private int[] _values = null!;
+    private int[] _values = [];
+
+    [Params(50, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

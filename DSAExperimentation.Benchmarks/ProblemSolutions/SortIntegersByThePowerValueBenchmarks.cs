@@ -16,7 +16,7 @@ public class SortIntegersByThePowerValueBenchmarks
     private const int Lo = 1;
 
     [Params(200, 5_000)]
-    public int RangeLength;
+    public int RangeLength { get; set; }
 
     [Benchmark(Baseline = true)]
     public int InsertionSort() =>

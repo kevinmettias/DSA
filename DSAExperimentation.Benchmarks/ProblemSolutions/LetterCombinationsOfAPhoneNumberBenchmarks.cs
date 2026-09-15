@@ -16,10 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LetterCombinationsOfAPhoneNumberBenchmarks
 {
-    private string _digits = null!;
+    private string _digits = "";
 
     [Params(3, 5)]
-    public int DigitCount;
+    public int DigitCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _digits = new string('7', DigitCount);

@@ -43,12 +43,17 @@ internal static class MaximumSegmentSumAfterRemovalsSolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            current = removed[i] ? 0L : current + nums[i];
+            var isRemoved = removed[i];
+            current = isRemoved ? 0L : ExtendedRunSum(current, nums[i]);
             best = Math.Max(best, current);
         }
 
         return best;
     }
+
+    // A surviving index continues the run it is standing in, so the run's total
+    // grows by that one element's value.
+    private static long ExtendedRunSum(long runSum, int value) => runSum + value;
 
     // This repo's own DisjointSet, walked backwards: answer[n-1] is 0 because the
     // last query removes the final index, and each earlier answer is the running

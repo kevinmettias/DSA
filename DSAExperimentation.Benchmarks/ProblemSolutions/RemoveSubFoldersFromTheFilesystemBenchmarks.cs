@@ -19,10 +19,10 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     private const string FolderNamePrefix = "f";
     private const string PathSeparator = "/";
 
-    [Params(200, 3_000)]
-    public int Length;
+    private string[] _folders = [];
 
-    private string[] _folders = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

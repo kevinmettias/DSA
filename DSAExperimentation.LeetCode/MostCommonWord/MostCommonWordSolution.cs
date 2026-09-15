@@ -1,7 +1,5 @@
 using System.Text;
 using DSAExperimentation.DataStructures.DynamicArray;
-using DSAExperimentation.DataStructures.HashMap;
-using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.MostCommonWord;
 
@@ -32,31 +30,9 @@ internal static class MostCommonWordSolution
     // than to the counting scan being measured.
     public static string MostCommonByDictionaryScan(DynamicArray<string> words, string[] banned)
     {
-        var bannedWords = new HashSet<string>();
+        var tally = new DictionaryWordTally(banned);
 
-        foreach (var word in banned)
-        {
-            bannedWords.Add(word.ToLowerInvariant());
-        }
-
-        var counts = new Dictionary<string, int>();
-        var best = new BestWord(string.Empty, 0);
-
-        for (var i = 0; i < words.Count; i++)
-        {
-            var word = words.Get(i);
-
-            if (bannedWords.Contains(word))
-            {
-                continue;
-            }
-
-            var count = counts.GetValueOrDefault(word) + 1;
-            counts[word] = count;
-            best = best.Challenge(word, count);
-        }
-
-        return best.Word;
+        return MostCommonOf(words, tally);
     }
 
     // This repo's own HashMap<string,int> tallies occurrences and Set<string>
@@ -71,28 +47,31 @@ internal static class MostCommonWordSolution
 
     public static string MostCommonByHashMapTally(DynamicArray<string> words, string[] banned)
     {
-        var bannedWords = new Set<string>();
+        var tally = new HashMapWordTally(banned);
 
-        foreach (var word in banned)
-        {
-            bannedWords.TryAdd(word.ToLowerInvariant());
-        }
+        return MostCommonOf(words, tally);
+    }
 
-        var counts = new HashMap<string, int>();
+    // The counting pass both strategies share: walk the tokens once, skip the banned
+    // ones, and let each surviving word challenge the running winner as its tally
+    // lands. Which pair of structures answers "is this banned" and "what is this
+    // word's new tally" is the arms' only disagreement, so it arrives as a named
+    // strategy type - both questions, both inputs, and the contract behind them are
+    // written down on IWordTally rather than left as two bare delegates.
+    private static string MostCommonOf(DynamicArray<string> words, IWordTally tally)
+    {
         var best = new BestWord(string.Empty, 0);
 
         for (var i = 0; i < words.Count; i++)
         {
             var word = words.Get(i);
 
-            if (bannedWords.Has(word))
+            if (tally.IsBanned(word))
             {
                 continue;
             }
 
-            counts.TryGetValue(word, out var count);
-            count++;
-            counts.Set(word, count);
+            var count = tally.Count(word);
             best = best.Challenge(word, count);
         }
 
@@ -112,24 +91,25 @@ internal static class MostCommonWordSolution
         {
             if (char.IsLetter(character))
             {
-                var lowered = char.ToLowerInvariant(character);
-                current.Append(lowered);
+                current.Append(char.ToLowerInvariant(character));
                 continue;
             }
 
-            if (current.Length > 0)
-            {
-                words.Add(current.ToString());
-                current.Clear();
-            }
+            FlushCurrent(current, words);
+            current.Clear();
         }
 
+        FlushCurrent(current, words);
+
+        return words;
+    }
+
+    private static void FlushCurrent(StringBuilder current, DynamicArray<string> words)
+    {
         if (current.Length > 0)
         {
             words.Add(current.ToString());
         }
-
-        return words;
     }
 
     // The running winner. LeetCode guarantees exactly one answer, so a strict

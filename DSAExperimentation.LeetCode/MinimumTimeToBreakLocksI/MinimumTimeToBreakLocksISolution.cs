@@ -18,10 +18,17 @@ internal static class MinimumTimeToBreakLocksISolution
     {
         var used = new bool[strength.Length];
 
-        return SearchPermutations(strength, k, used, brokenCount: 0, factor: 1);
+        return SearchPermutations(strength, k, used, brokenCount: 0);
     }
 
-    private static int SearchPermutations(int[] strength, int k, bool[] used, int brokenCount, int factor)
+    // This repo's own Memoizer: the DP state is the bitmask of locks already
+    // broken (TState : notnull, satisfied for free by int), and the recurrence
+    // is a named type - try every still-unbroken lock next, recurse on the
+    // smaller remaining set.
+    public static int FindMinimumTimeByBitmaskMemo(int[] strength, int k)
+        => Memoizer.Memoize<int, int>(0, new MinimumMinutesFromMask(strength, k));
+
+    private static int SearchPermutations(int[] strength, int k, bool[] used, int brokenCount)
     {
         if (brokenCount == strength.Length)
         {
@@ -32,56 +39,72 @@ internal static class MinimumTimeToBreakLocksISolution
 
         for (var i = 0; i < strength.Length; i++)
         {
-            if (used[i])
-            {
-                continue;
-            }
-
-            used[i] = true;
-            var minutes = CeilDivide(strength[i], factor)
-                + SearchPermutations(strength, k, used, brokenCount + 1, factor + k);
-            used[i] = false;
-
-            best = Math.Min(best, minutes);
+            var candidate = MinutesBreakingNext(strength, k, (used, brokenCount), i);
+            best = Math.Min(best, candidate);
         }
 
         return best;
     }
 
+    // What it costs to break lock `index` next and then break the rest optimally - or
+    // int.MaxValue when that lock is already broken, which the caller's minimum never
+    // picks. The lock is marked only for the duration of the recursive call, so the
+    // smaller set that call explores can never choose it again.
+    //
+    // The factor is a pure function of how many locks are already broken - the same
+    // 1 + k * brokenCount the memo arm reads off its mask - so it is derived here rather
+    // than carried alongside as a redundant argument.
+    private static int MinutesBreakingNext(
+        int[] strength, int energyStep, (bool[] Used, int BrokenCount) progress, int index)
+    {
+        if (progress.Used[index])
+        {
+            return int.MaxValue;
+        }
+
+        var factor = 1 + energyStep * progress.BrokenCount;
+        progress.Used[index] = true;
+        var minutes = CeilDivide(strength[index], factor)
+            + SearchPermutations(strength, energyStep, progress.Used, progress.BrokenCount + 1);
+        progress.Used[index] = false;
+
+        return minutes;
+    }
+
     private static int CeilDivide(int value, int divisor) => (value + divisor - 1) / divisor;
 
-    // This repo's own Memoizer: the DP state is the bitmask of locks already
-    // broken (TState : notnull, satisfied for free by int), and the
-    // recurrence is exactly Memoizer's Y-combinator shape - try every
-    // still-unbroken lock next, recurse on the smaller remaining set.
-    public static int FindMinimumTimeByBitmaskMemo(int[] strength, int k)
-    {
-        var full = (1 << strength.Length) - 1;
+    private static int PopCount(int mask) => System.Numerics.BitOperations.PopCount((uint)mask);
 
-        return Memoizer.Memoize<int, int>(0, (mask, minMinutesFrom) =>
+    // The recurrence, as a named type: the minutes still owed from a mask of broken
+    // locks is the best of breaking any one still-unbroken lock next - that lock's own
+    // cost at the current energy factor, plus the minutes owed from the mask it leaves.
+    private sealed class MinimumMinutesFromMask(int[] strength, int energyStep)
+        : IRecurrence<int, int>
+    {
+        public int Replay(int state, IRecurrence<int, int> rest)
         {
-            if (mask == full)
+            var allBroken = (1 << strength.Length) - 1;
+
+            if (state == allBroken)
             {
                 return 0;
             }
 
-            var factor = 1 + k * PopCount(mask);
+            var factor = 1 + energyStep * PopCount(state);
             var best = int.MaxValue;
 
             for (var i = 0; i < strength.Length; i++)
             {
-                if ((mask & (1 << i)) != 0)
+                if ((state & (1 << i)) != 0)
                 {
                     continue;
                 }
 
-                var minutes = CeilDivide(strength[i], factor) + minMinutesFrom(mask | (1 << i));
+                var minutes = CeilDivide(strength[i], factor) + rest.Replay(state | (1 << i), rest);
                 best = Math.Min(best, minutes);
             }
 
             return best;
-        });
+        }
     }
-
-    private static int PopCount(int mask) => System.Numerics.BitOperations.PopCount((uint)mask);
 }

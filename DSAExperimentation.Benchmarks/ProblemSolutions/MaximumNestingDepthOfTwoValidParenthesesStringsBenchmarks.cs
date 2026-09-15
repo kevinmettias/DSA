@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MaximumNestingDepthOfTwoValidParenthesesStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,38 +14,29 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
     private const int RandomSeed = 1111;
 
     // The generated sequence is split evenly between '(' and ')'.
-    private const int HalfLengthDivisor = 2;
 
     // Exclusive upper bound for the open/close coin flip (0 or 1).
     private const int CoinFlipBound = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _sequence = "";
 
-    private string _sequence = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _sequence = Generate(new Random(RandomSeed), Length);
-
-    [Benchmark(Baseline = true)]
-    public int[] RecomputeDepthPerPosition() =>
-        MaximumNestingDepthOfTwoValidParenthesesStringsSolution.MaxDepthAfterSplitByDepthRescan(_sequence);
-
-    [Benchmark]
-    public int[] StackTrackedSinglePass() =>
-        MaximumNestingDepthOfTwoValidParenthesesStringsSolution.MaxDepthAfterSplitByOpenerStack(_sequence);
 
     // Workload sizing only: a random but always-valid parentheses sequence of the
     // requested length.
     private static string Generate(Random random, int length)
     {
         var builder = new System.Text.StringBuilder(length);
-        var openRemaining = length / HalfLengthDivisor;
-        var closeRemaining = length / HalfLengthDivisor;
+        var openRemaining = length / AlgorithmConstants.HalvingFactor;
+        var closeRemaining = length / AlgorithmConstants.HalvingFactor;
 
         while (openRemaining > 0 || closeRemaining > 0)
         {
-            if (openRemaining > 0 && (closeRemaining == openRemaining || random.Next(CoinFlipBound) == 0))
+            if (OpensNext(openRemaining, closeRemaining, random))
             {
                 builder.Append('(');
                 openRemaining--;
@@ -58,4 +50,17 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
 
         return builder.ToString();
     }
+
+    // An opener goes down while one is still owed and either the closers have caught
+    // up - an opener is owed to keep the sequence valid - or the coin flip says so.
+    private static bool OpensNext(int openRemaining, int closeRemaining, Random random) =>
+        openRemaining > 0 && (closeRemaining == openRemaining || random.Next(CoinFlipBound) == 0);
+
+    [Benchmark(Baseline = true)]
+    public int[] RecomputeDepthPerPosition() =>
+        MaximumNestingDepthOfTwoValidParenthesesStringsSolution.MaxDepthAfterSplitByDepthRescan(_sequence);
+
+    [Benchmark]
+    public int[] StackTrackedSinglePass() =>
+        MaximumNestingDepthOfTwoValidParenthesesStringsSolution.MaxDepthAfterSplitByOpenerStack(_sequence);
 }

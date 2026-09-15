@@ -13,6 +13,10 @@ namespace DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperatio
 // Pascal's triangle's addition rule computes.
 internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
 {
+    // Both strategies reduce modulo the same thing - a single decimal digit - and the
+    // file states that base in two places, so it is named once.
+    private const int DecimalDigitModulus = 10;
+
     public static bool AreEqualByAdjacentSumReduction(string s)
     {
         var digits = ToDigits(s);
@@ -23,7 +27,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
 
             for (var i = 0; i < next.Length; i++)
             {
-                next[i] = (digits[i] + digits[i + 1]) % 10;
+                next[i] = (digits[i] + digits[i + 1]) % DecimalDigitModulus;
             }
 
             digits = next;
@@ -47,18 +51,6 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
         return Reduce(digits, row, 0) == Reduce(digits, row, 1);
     }
 
-    private static int Reduce(int[] digits, int[] coefficients, int offset)
-    {
-        var sum = 0;
-
-        for (var i = 0; i < coefficients.Length; i++)
-        {
-            sum += coefficients[i] * digits[offset + i];
-        }
-
-        return sum % 10;
-    }
-
     private static int[] PascalRow(int row)
     {
         var coefficients = new int[row + 1];
@@ -73,6 +65,18 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
         }
 
         return coefficients;
+    }
+
+    private static int Reduce(int[] digits, int[] coefficients, int offset)
+    {
+        var sum = 0;
+
+        for (var i = 0; i < coefficients.Length; i++)
+        {
+            sum += coefficients[i] * digits[offset + i];
+        }
+
+        return sum % DecimalDigitModulus;
     }
 
     private static int[] ToDigits(string s)

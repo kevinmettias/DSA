@@ -21,13 +21,13 @@ public class EscapeALargeMazeBenchmarks
     private const int RandomSeed = 1036; // LC problem number
     private const int BoardMargin = 2;
 
-    [Params(500, 2_000)]
-    public int BoardSize;
+    private (int Row, int Col)[] _blockedCells = [];
 
-    private (int Row, int Col)[] _blockedCells = null!;
-    private Set<(int Row, int Col)> _blocked = null!;
+    private Set<(int Row, int Col)> _blocked = new();
     private (int Row, int Col) _source;
     private (int Row, int Col) _target;
+    [Params(500, 2_000)]
+    public int BoardSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -39,7 +39,7 @@ internal static class AvailableCapturesForRookSolution
         {
             for (var col = 0; col < board[0].Length; col++)
             {
-                if (board[row][col] != Pawn || (row != rook.Row && col != rook.Col))
+                if (!IsCaptureCandidate(board, row, col, rook))
                 {
                     continue;
                 }
@@ -109,6 +109,11 @@ internal static class AvailableCapturesForRookSolution
 
     private static bool IsInBounds(char[][] board, int row, int col) =>
         row >= 0 && row < board.Length && col >= 0 && col < board[0].Length;
+
+    // Only a pawn sharing the rook's row or column can ever be captured, so the full
+    // board scan drops every other square before it pays for the path check.
+    private static bool IsCaptureCandidate(char[][] board, int row, int col, RookSquare rook) =>
+        board[row][col] == Pawn && (row == rook.Row || col == rook.Col);
 
     // LeetCode guarantees exactly one rook, so a board without one is a caller
     // error rather than an answerable input.

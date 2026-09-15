@@ -22,10 +22,10 @@ public class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneBenchmarks
     private const int MultipleFactor = 6; // every value stays a multiple of 6, so no window's gcd ever reaches 1
     private const int MaxRandomValueExclusive = 5_000;
 
-    [Params(30, 100)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(30, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -159,35 +159,24 @@ public sealed class OperationsOnTreeTests
 // One call in an OperationsOnTree script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct LockingTreeOp
+public readonly record struct LockingTreeOp(LockingTreeOp.OpKind kind, int num, int user)
 {
-    private readonly Kind _kind;
-    private readonly int _num;
-    private readonly int _user;
+    public static LockingTreeOp Lock(int num, int user) => new(OpKind.Lock, num, user);
 
-    private LockingTreeOp(Kind kind, int num, int user)
-    {
-        _kind = kind;
-        _num = num;
-        _user = user;
-    }
+    public static LockingTreeOp Unlock(int num, int user) => new(OpKind.Unlock, num, user);
 
-    public static LockingTreeOp Lock(int num, int user) => new(Kind.Lock, num, user);
-
-    public static LockingTreeOp Unlock(int num, int user) => new(Kind.Unlock, num, user);
-
-    public static LockingTreeOp Upgrade(int num, int user) => new(Kind.Upgrade, num, user);
+    public static LockingTreeOp Upgrade(int num, int user) => new(OpKind.Upgrade, num, user);
 
     // Internal, not public: only this same assembly's test methods ever call Apply,
     // and LockingTree itself is internal to the solution tier.
-    internal bool Apply(LockingTree tree) => _kind switch
+    internal bool Apply(LockingTree tree) => kind switch
     {
-        Kind.Lock => tree.Lock(_num, _user),
-        Kind.Unlock => tree.Unlock(_num, _user),
-        _ => tree.Upgrade(_num, _user),
+        OpKind.Lock => tree.Lock(num, user),
+        OpKind.Unlock => tree.Unlock(num, user),
+        _ => tree.Upgrade(num, user),
     };
 
-    private enum Kind
+    public enum OpKind
     {
         Lock,
         Unlock,

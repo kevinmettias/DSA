@@ -46,6 +46,127 @@ internal static class FindTheShortestSuperstringSolution
     public static string ShortestSuperstringByMemoizedBitmask(WordOverlaps overlaps) =>
         overlaps.Assemble(BestOrderByMemoizedBitmask(overlaps));
 
+    private static int[] BestOrderByMemoizedBitmask(WordOverlaps overlaps)
+    {
+        var (wordCount, fullMask) = TourSearchDomain(overlaps);
+        var recurrence = new BestTourEndingAtWord(overlaps);
+
+        var (last, prev) = BestFinalWord(wordCount, fullMask, recurrence);
+
+        return BacktrackOrder(wordCount, last, prev, recurrence);
+    }
+
+    // The words to order, and the mask with every one of them placed - the domain the
+    // bitmask tour search walks.
+    private static (int WordCount, int FullMask) TourSearchDomain(WordOverlaps overlaps)
+    {
+        var wordCount = overlaps.Count;
+
+        return (wordCount, (1 << wordCount) - 1);
+    }
+
+    // Memoizer.Memoize only ever returns the result for the one start state it is
+    // given, so each candidate final word is a separate top-level call; the best of
+    // them is the tour to rebuild.
+    private static (int Last, int Prev) BestFinalWord(
+        int wordCount,
+        int fullMask,
+        IRecurrence<TourState, TourBest> recurrence)
+    {
+        var last = 0;
+        var prev = NoPredecessor;
+        var bestTotal = NoTourYet;
+
+        for (var candidate = 0; candidate < wordCount; candidate++)
+        {
+            var (total, candidatePrev) = Memoizer.Memoize<TourState, TourBest>((fullMask, candidate), recurrence);
+
+            if (total > bestTotal)
+            {
+                bestTotal = total;
+                last = candidate;
+                prev = candidatePrev;
+            }
+        }
+
+        return (last, prev);
+    }
+
+    /// <summary>
+    /// The recurrence, named: the state (Mask, Last) means these words are placed and Last
+    /// is the rightmost one; the result is the best total overlap still achievable, and
+    /// the predecessor achieving it.
+    /// </summary>
+    private sealed class BestTourEndingAtWord(WordOverlaps overlaps) : IRecurrence<TourState, TourBest>
+    {
+        /// <inheritdoc/>
+        public TourBest Replay(TourState state, IRecurrence<TourState, TourBest> rest)
+        {
+            var remaining = state.Mask & ~(1 << state.Last);
+
+            if (remaining == 0)
+            {
+                return (0, NoPredecessor);
+            }
+
+            var search = new PredecessorSearch(remaining, state.Last, rest, overlaps);
+            var result = (Best: NoTourYet, Prev: NoPredecessor);
+
+            for (var candidate = 0; candidate < overlaps.Count; candidate++)
+            {
+                result = ConsiderPredecessor(candidate, search, result);
+            }
+
+            return result;
+        }
+    }
+
+    private static TourBest ConsiderPredecessor(int candidate, PredecessorSearch search, TourBest current)
+    {
+        if ((search.Remaining & (1 << candidate)) == 0)
+        {
+            return current;
+        }
+
+        var (subBest, _) = search.Rest.Replay((search.Remaining, candidate), search.Rest);
+        var total = subBest + search.Overlaps.Between(candidate, search.LastWord);
+
+        return total > current.Best ? ImprovedTour(total, candidate) : current;
+    }
+
+    // The tour this candidate improves to: its longer total, with this word as the
+    // predecessor the backtrack walks through.
+    private static TourBest ImprovedTour(int total, int candidate) => (total, candidate);
+
+    // Walk the (Mask, Last) -> Prev chain backwards from the best final state,
+    // rebuilding the word order the memoized recurrence discovered.
+    private static int[] BacktrackOrder(
+        int wordCount,
+        int last,
+        int prev,
+        IRecurrence<TourState, TourBest> recurrence)
+    {
+        var order = new int[wordCount];
+        var mask = (1 << wordCount) - 1;
+
+        for (var i = wordCount - 1; i >= 0; i--)
+        {
+            order[i] = last;
+            mask &= ~(1 << last);
+
+            if (mask == 0)
+            {
+                break;
+            }
+
+            last = prev;
+            var (_, nextPrev) = Memoizer.Memoize<TourState, TourBest>((mask, last), recurrence);
+            prev = nextPrev;
+        }
+
+        return order;
+    }
+
     // Exhaustive permutation search: place every word in every remaining slot,
     // keeping whichever complete order accumulated the most overlap. Deliberately
     // written with nothing but BCL arrays - it represents what you would write
@@ -76,6 +197,15 @@ internal static class FindTheShortestSuperstringSolution
             }
         }
 
+        private void Record(int overlapSoFar)
+        {
+            if (overlapSoFar > _bestOverlap)
+            {
+                _bestOverlap = overlapSoFar;
+                _order.CopyTo(BestOrder, 0);
+            }
+        }
+
         private void TryCandidate(int next, int depth, int overlapSoFar)
         {
             _used[next] = true;
@@ -86,127 +216,11 @@ internal static class FindTheShortestSuperstringSolution
 
             _used[next] = false;
         }
-
-        private void Record(int overlapSoFar)
-        {
-            if (overlapSoFar > _bestOverlap)
-            {
-                _bestOverlap = overlapSoFar;
-                _order.CopyTo(BestOrder, 0);
-            }
-        }
-    }
-
-    private static int[] BestOrderByMemoizedBitmask(WordOverlaps overlaps)
-    {
-        var wordCount = overlaps.Count;
-        var fullMask = (1 << wordCount) - 1;
-
-        TourBest Recur(TourState state, Func<TourState, TourBest> best) =>
-            BestTourEndingAt(state, best, overlaps);
-
-        var (last, prev) = BestFinalWord(wordCount, fullMask, Recur);
-
-        return BacktrackOrder(wordCount, last, prev, Recur);
-    }
-
-    // Memoizer.Memoize only ever returns the result for the one start state it is
-    // given, so each candidate final word is a separate top-level call; the best of
-    // them is the tour to rebuild.
-    private static (int Last, int Prev) BestFinalWord(
-        int wordCount,
-        int fullMask,
-        Func<TourState, Func<TourState, TourBest>, TourBest> recurrence)
-    {
-        var last = 0;
-        var prev = NoPredecessor;
-        var bestTotal = NoTourYet;
-
-        for (var candidate = 0; candidate < wordCount; candidate++)
-        {
-            var (total, candidatePrev) = Memoizer.Memoize<TourState, TourBest>((fullMask, candidate), recurrence);
-
-            if (total > bestTotal)
-            {
-                bestTotal = total;
-                last = candidate;
-                prev = candidatePrev;
-            }
-        }
-
-        return (last, prev);
-    }
-
-    // State (Mask, Last) = "these words are placed and Last is the rightmost one";
-    // result = (the best total overlap achievable, the predecessor achieving it).
-    private static TourBest BestTourEndingAt(
-        TourState state,
-        Func<TourState, TourBest> best,
-        WordOverlaps overlaps)
-    {
-        var remaining = state.Mask & ~(1 << state.Last);
-
-        if (remaining == 0)
-        {
-            return (0, NoPredecessor);
-        }
-
-        var search = new PredecessorSearch(remaining, state.Last, best, overlaps);
-        var result = (Best: NoTourYet, Prev: NoPredecessor);
-
-        for (var candidate = 0; candidate < overlaps.Count; candidate++)
-        {
-            result = ConsiderPredecessor(candidate, search, result);
-        }
-
-        return result;
     }
 
     private readonly record struct PredecessorSearch(
         int Remaining,
         int LastWord,
-        Func<TourState, TourBest> Best,
+        IRecurrence<TourState, TourBest> Rest,
         WordOverlaps Overlaps);
-
-    private static TourBest ConsiderPredecessor(int candidate, PredecessorSearch search, TourBest current)
-    {
-        if ((search.Remaining & (1 << candidate)) == 0)
-        {
-            return current;
-        }
-
-        var (subBest, _) = search.Best((search.Remaining, candidate));
-        var total = subBest + search.Overlaps.Between(candidate, search.LastWord);
-
-        return total > current.Best ? (total, candidate) : current;
-    }
-
-    // Walk the (Mask, Last) -> Prev chain backwards from the best final state,
-    // rebuilding the word order the memoized recurrence discovered.
-    private static int[] BacktrackOrder(
-        int wordCount,
-        int last,
-        int prev,
-        Func<TourState, Func<TourState, TourBest>, TourBest> recurrence)
-    {
-        var order = new int[wordCount];
-        var mask = (1 << wordCount) - 1;
-
-        for (var i = wordCount - 1; i >= 0; i--)
-        {
-            order[i] = last;
-            mask &= ~(1 << last);
-
-            if (mask == 0)
-            {
-                break;
-            }
-
-            last = prev;
-            var (_, nextPrev) = Memoizer.Memoize<TourState, TourBest>((mask, last), recurrence);
-            prev = nextPrev;
-        }
-
-        return order;
-    }
 }

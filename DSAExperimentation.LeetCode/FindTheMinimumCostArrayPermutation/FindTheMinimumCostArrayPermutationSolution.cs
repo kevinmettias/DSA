@@ -39,24 +39,123 @@ internal static class FindTheMinimumCostArrayPermutationSolution
             perm[i] = i;
         }
 
-        int[]? best = null;
-        var bestScore = long.MaxValue;
+        (int[]? Perm, long Score) best = (null, long.MaxValue);
 
-        SearchPermutations(perm, 0, nums, ref best, ref bestScore);
+        SearchPermutations(perm, 0, nums, ref best);
 
-        return best!;
+        return best.Perm!;
     }
 
-    private static void SearchPermutations(int[] perm, int start, int[] nums, ref int[]? best, ref long bestScore)
+    // This repo's own Memoizer over bitmask-TSP state (Mask, Last): g(mask, last)
+    // is the minimum cost to complete the tour from `last`.
+    public static int[] FindPermutationByBitmaskMemoization(int[] nums)
+    {
+        var n = nums.Length;
+        var fullMask = (1 << n) - 1;
+
+        return ReconstructPermutation(new TourCompletionCost(fullMask, nums), n, nums);
+    }
+
+    /// <summary>
+    /// The recurrence, named: g(mask, last) is the minimum cost to finish the tour,
+    /// walking every node still outside <c>mask</c> exactly once and closing back to 0.
+    /// </summary>
+    private sealed class TourCompletionCost(int fullMask, int[] nums) : IRecurrence<(int Mask, int Last), long>
+    {
+        /// <inheritdoc/>
+        public long Replay((int Mask, int Last) state, IRecurrence<(int Mask, int Last), long> rest)
+        {
+            var (mask, last) = state;
+
+            if (mask == fullMask)
+            {
+                return Math.Abs(last - nums[0]);
+            }
+
+            var best = long.MaxValue;
+
+            for (var candidate = 1; candidate < nums.Length; candidate++)
+            {
+                if ((mask & (1 << candidate)) != 0)
+                {
+                    continue;
+                }
+
+                var cost = Math.Abs(last - nums[candidate]) + rest.Replay((mask | (1 << candidate), candidate), rest);
+                best = Math.Min(best, cost);
+            }
+
+            return best;
+        }
+    }
+
+    // Reconstruction walks forward from (mask = {0}, last = 0), at each step picking
+    // the SMALLEST unvisited candidate whose edge cost plus its own completion cost
+    // matches the current state's optimum - since g is exact, any candidate meeting
+    // that equality keeps the tour globally optimal, and always preferring the
+    // smallest such candidate is what makes the reconstructed permutation
+    // lexicographically smallest among every permutation achieving the minimum score.
+    private static int[] ReconstructPermutation(
+        IRecurrence<(int Mask, int Last), long> completion, int n, int[] nums)
+    {
+        var permutation = new int[n];
+        var visited = 1;
+        var current = 0;
+
+        for (var position = 1; position < n; position++)
+        {
+            var candidate = SmallestCandidateAchieving((visited, current), completion, n, nums);
+
+            if (candidate is null)
+            {
+                continue;
+            }
+
+            permutation[position] = candidate.Value;
+            visited |= 1 << candidate.Value;
+            current = candidate.Value;
+        }
+
+        return permutation;
+    }
+
+    // The smallest unvisited candidate whose edge cost plus its own completion cost
+    // equals the state's own optimum, or null when no candidate does.
+    private static int? SmallestCandidateAchieving(
+        (int Mask, int Last) state, IRecurrence<(int Mask, int Last), long> completion, int n, int[] nums)
+    {
+        var (mask, last) = state;
+        var target = Memoizer.Memoize(state, completion);
+
+        for (var candidate = 1; candidate < n; candidate++)
+        {
+            if ((mask & (1 << candidate)) != 0)
+            {
+                continue;
+            }
+
+            var edgeCost = Math.Abs(last - nums[candidate]);
+            var candidateCompletion = Memoizer.Memoize((mask | (1 << candidate), candidate), completion);
+
+            if (edgeCost + candidateCompletion == target)
+            {
+                return candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private static void SearchPermutations(
+        int[] perm, int start, int[] nums, ref (int[]? Perm, long Score) best)
     {
         if (start == perm.Length)
         {
             var score = Score(perm, nums);
 
-            if (score < bestScore || (score == bestScore && IsLexicographicallySmaller(perm, best!)))
+            if (BeatsBestSoFar(score, best.Score, perm, best.Perm!))
             {
-                bestScore = score;
-                best = (int[])perm.Clone();
+                best = ((int[])perm.Clone(), score);
             }
 
             return;
@@ -65,10 +164,15 @@ internal static class FindTheMinimumCostArrayPermutationSolution
         for (var i = start; i < perm.Length; i++)
         {
             (perm[start], perm[i]) = (perm[i], perm[start]);
-            SearchPermutations(perm, start + 1, nums, ref best, ref bestScore);
+            SearchPermutations(perm, start + 1, nums, ref best);
             (perm[start], perm[i]) = (perm[i], perm[start]);
         }
     }
+
+    // A candidate permutation beats the best one found so far when it scores lower, or
+    // ties on score and reads smaller.
+    private static bool BeatsBestSoFar(long score, long bestScore, int[] candidate, int[] best) =>
+        score < bestScore || (score == bestScore && IsLexicographicallySmaller(candidate, best));
 
     private static long Score(int[] perm, int[] nums)
     {
@@ -94,78 +198,5 @@ internal static class FindTheMinimumCostArrayPermutationSolution
         }
 
         return false;
-    }
-
-    // This repo's own Memoizer over bitmask-TSP state (Mask, Last): g(mask, last)
-    // is the minimum cost to complete the tour from `last`. Reconstruction walks
-    // forward from (mask = {0}, last = 0), at each step picking the SMALLEST
-    // unvisited candidate whose edge cost plus its own completion cost matches the
-    // current state's optimum - since g is exact, any candidate meeting that
-    // equality keeps the tour globally optimal, and always preferring the smallest
-    // such candidate is what makes the reconstructed permutation lexicographically
-    // smallest among every permutation achieving the minimum score.
-    public static int[] FindPermutationByBitmaskMemoization(int[] nums)
-    {
-        var n = nums.Length;
-        var fullMask = (1 << n) - 1;
-
-        long CompletionCost((int Mask, int Last) state) =>
-            Memoizer.Memoize<(int Mask, int Last), long>(state, (s, best) => Recurrence(s, best, n, fullMask, nums));
-
-        var permutation = new int[n];
-        var visited = 1;
-        var current = 0;
-
-        for (var position = 1; position < n; position++)
-        {
-            var target = CompletionCost((visited, current));
-
-            for (var candidate = 1; candidate < n; candidate++)
-            {
-                if ((visited & (1 << candidate)) != 0)
-                {
-                    continue;
-                }
-
-                var edgeCost = Math.Abs(current - nums[candidate]);
-                var completion = CompletionCost((visited | (1 << candidate), candidate));
-
-                if (edgeCost + completion == target)
-                {
-                    permutation[position] = candidate;
-                    visited |= 1 << candidate;
-                    current = candidate;
-                    break;
-                }
-            }
-        }
-
-        return permutation;
-    }
-
-    private static long Recurrence(
-        (int Mask, int Last) state, Func<(int Mask, int Last), long> completionCost, int n, int fullMask, int[] nums)
-    {
-        var (mask, last) = state;
-
-        if (mask == fullMask)
-        {
-            return Math.Abs(last - nums[0]);
-        }
-
-        var best = long.MaxValue;
-
-        for (var candidate = 1; candidate < n; candidate++)
-        {
-            if ((mask & (1 << candidate)) != 0)
-            {
-                continue;
-            }
-
-            var cost = Math.Abs(last - nums[candidate]) + completionCost((mask | (1 << candidate), candidate));
-            best = Math.Min(best, cost);
-        }
-
-        return best;
     }
 }

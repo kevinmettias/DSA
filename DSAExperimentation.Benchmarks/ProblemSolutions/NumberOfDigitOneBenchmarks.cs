@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfDigitOneBenchmarks
 {
     [Params(20_000, 500_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForceScan() => NumberOfDigitOneSolution.CountDigitOneByBruteForceScan(N);

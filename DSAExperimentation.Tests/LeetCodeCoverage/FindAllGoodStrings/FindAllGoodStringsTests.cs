@@ -22,11 +22,23 @@ public sealed class FindAllGoodStringsTests
     [MemberData(nameof(Examples))]
     public void CountGoodStringsByEnumeration_LeetCodeExamples_ReturnsCountExcludingEvilSubstring(
         int n, string s1, string s2, string evil, int expected) =>
-        Assert.Equal(expected, FindAllGoodStringsSolution.CountGoodStringsByEnumeration(n, s1, s2, evil));
+        Assert.Equal(
+            expected,
+            FindAllGoodStringsSolution.CountGoodStringsByEnumeration(
+                n,
+                new FindAllGoodStringsSolution.LowerBound(s1),
+                new FindAllGoodStringsSolution.UpperBound(s2),
+                new FindAllGoodStringsSolution.ForbiddenSubstring(evil)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodStringsByAutomatonDigitDp_LeetCodeExamples_ReturnsCountExcludingEvilSubstring(
         int n, string s1, string s2, string evil, int expected) =>
-        Assert.Equal(expected, FindAllGoodStringsSolution.CountGoodStringsByAutomatonDigitDp(n, s1, s2, evil));
+        Assert.Equal(
+            expected,
+            FindAllGoodStringsSolution.CountGoodStringsByAutomatonDigitDp(
+                n,
+                new FindAllGoodStringsSolution.LowerBound(s1),
+                new FindAllGoodStringsSolution.UpperBound(s2),
+                new FindAllGoodStringsSolution.ForbiddenSubstring(evil)));
 }

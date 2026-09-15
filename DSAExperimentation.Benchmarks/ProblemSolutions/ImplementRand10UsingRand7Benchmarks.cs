@@ -11,16 +11,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ImplementRand10UsingRand7Benchmarks
 {
-    [Params(1_000, 100_000)]
-    public int Calls;
+    private IRand7 _rand7 = null!;
 
-    private Func<int> _rand7 = null!;
+    [Params(1_000, 100_000)]
+    public int Calls { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
-        _rand7 = () => random.Next(1, 8);
+        _rand7 = new SeededRandomRand7(random);
     }
 
     [Benchmark(Baseline = true)]
@@ -47,5 +47,13 @@ public class ImplementRand10UsingRand7Benchmarks
         }
 
         return last;
+    }
+
+    // The harness's own Rand7: a seeded System.Random drawn from per call. The seed is
+    // the only thing this class holds, and it is what stands in for LeetCode's black
+    // box - the same stand-in the tests use.
+    private sealed class SeededRandomRand7(Random random) : IRand7
+    {
+        public int Draw() => random.Next(1, 8);
     }
 }

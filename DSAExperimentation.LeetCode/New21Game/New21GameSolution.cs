@@ -25,6 +25,11 @@ internal static class New21GameSolution
     public static double ProbabilityByUnmemoizedRecursion(int n, int k, int maxPts) =>
         Probability(Start, n, k, maxPts);
 
+    // The same recurrence routed through this repo's own Memoizer, keyed on the
+    // running total, so each of the O(k + maxPts) reachable totals is computed once.
+    public static double ProbabilityByMemoizedRecursion(int n, int k, int maxPts) =>
+        Memoizer.Memoize<int, double>(Start, new WinningProbability(n, k, maxPts));
+
     private static double Probability(int points, int n, int k, int maxPts)
     {
         if (points >= k)
@@ -42,28 +47,27 @@ internal static class New21GameSolution
         return total / maxPts;
     }
 
-    // The same recurrence routed through this repo's own Memoizer, keyed on the
-    // running total, so each of the O(k + maxPts) reachable totals is computed once.
-    public static double ProbabilityByMemoizedRecursion(int n, int k, int maxPts)
+    // The recurrence, as a named type: the chance of finishing at or below the limit from
+    // a running total is the mean of the chances from each total one draw away - or the
+    // settled 1-or-0 once the total has reached the stop point and drawing has ended.
+    private sealed class WinningProbability(int limit, int stopAt, int faceCount)
+        : IRecurrence<int, double>
     {
-        return Memoizer.Memoize<int, double>(Start, Recurrence);
-
-        // Closes over n, k and maxPts so the memo key stays the running total alone.
-        double Recurrence(int points, Func<int, double> probability)
+        public double Replay(int state, IRecurrence<int, double> rest)
         {
-            if (points >= k)
+            if (state >= stopAt)
             {
-                return points <= n ? 1.0 : 0.0;
+                return state <= limit ? 1.0 : 0.0;
             }
 
             var total = 0.0;
 
-            for (var draw = 1; draw <= maxPts; draw++)
+            for (var draw = 1; draw <= faceCount; draw++)
             {
-                total += probability(points + draw);
+                total += rest.Replay(state + draw, rest);
             }
 
-            return total / maxPts;
+            return total / faceCount;
         }
     }
 }

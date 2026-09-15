@@ -36,11 +36,7 @@ internal static class JumpGameIXSolution
 
     private static int MaxReachableFrom(int[] nums, int start)
     {
-        var n = nums.Length;
-        var visited = new bool[n];
-        var queue = new Queue<int>();
-        visited[start] = true;
-        queue.Enqueue(start);
+        var (visited, queue) = CreateFrontier(nums.Length, start);
         var best = nums[start];
 
         while (queue.Count > 0)
@@ -48,7 +44,7 @@ internal static class JumpGameIXSolution
             var i = queue.Dequeue();
             best = Math.Max(best, nums[i]);
 
-            for (var j = 0; j < n; j++)
+            for (var j = 0; j < nums.Length; j++)
             {
                 if (!visited[j] && CanJump(nums, i, j))
                 {
@@ -59,6 +55,17 @@ internal static class JumpGameIXSolution
         }
 
         return best;
+    }
+
+    // The frontier a BFS starts from: the start index alone, already marked visited.
+    private static (bool[] Visited, Queue<int> Queue) CreateFrontier(int n, int start)
+    {
+        var visited = new bool[n];
+        var queue = new Queue<int>();
+        visited[start] = true;
+        queue.Enqueue(start);
+
+        return (visited, queue);
     }
 
     private static bool CanJump(int[] nums, int i, int j) =>
@@ -73,22 +80,19 @@ internal static class JumpGameIXSolution
     public static int[] MaxValuesByAdjacentUnionFind(int[] nums)
     {
         var n = nums.Length;
-        var prefixMax = new int[n];
-        var suffixMin = new int[n];
+        var components = UnionSplitComponents(n, PrefixMaxima(nums), SuffixMinima(nums));
 
-        prefixMax[0] = nums[0];
-        for (var i = 1; i < n; i++)
-        {
-            prefixMax[i] = Math.Max(prefixMax[i - 1], nums[i]);
-        }
+        var maxByRoot = MaxValuePerRoot(nums, components);
 
-        suffixMin[n - 1] = nums[n - 1];
-        for (var i = n - 2; i >= 0; i--)
-        {
-            suffixMin[i] = Math.Min(suffixMin[i + 1], nums[i]);
-        }
+        return ReadComponentMaxima(nums, components, maxByRoot);
+    }
 
+    // A valid split point sits where max(nums[0..i]) <= min(nums[i+1..n-1]); every
+    // boundary that is not one joins i to i + 1 in the same component.
+    private static DisjointSet UnionSplitComponents(int n, int[] prefixMax, int[] suffixMin)
+    {
         var components = new DisjointSet(n);
+
         for (var i = 0; i < n - 1; i++)
         {
             if (prefixMax[i] > suffixMin[i + 1])
@@ -97,15 +101,65 @@ internal static class JumpGameIXSolution
             }
         }
 
-        var maxByRoot = new Dictionary<int, int>();
-        for (var i = 0; i < n; i++)
+        return components;
+    }
+
+    // Running maximum from the left, at every index.
+    private static int[] PrefixMaxima(int[] nums)
+    {
+        var prefixMax = new int[nums.Length];
+
+        prefixMax[0] = nums[0];
+        for (var i = 1; i < nums.Length; i++)
         {
-            var root = components.Find(i);
-            maxByRoot[root] = maxByRoot.TryGetValue(root, out var current) ? Math.Max(current, nums[i]) : nums[i];
+            prefixMax[i] = Math.Max(prefixMax[i - 1], nums[i]);
         }
 
-        var answer = new int[n];
-        for (var i = 0; i < n; i++)
+        return prefixMax;
+    }
+
+    // Running minimum from the right, at every index.
+    private static int[] SuffixMinima(int[] nums)
+    {
+        var n = nums.Length;
+        var suffixMin = new int[n];
+
+        suffixMin[n - 1] = nums[n - 1];
+        for (var i = n - 2; i >= 0; i--)
+        {
+            suffixMin[i] = Math.Min(suffixMin[i + 1], nums[i]);
+        }
+
+        return suffixMin;
+    }
+
+    // Every component's maximum value, keyed by that component's root.
+    private static Dictionary<int, int> MaxValuePerRoot(int[] nums, DisjointSet components)
+    {
+        var maxByRoot = new Dictionary<int, int>();
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            var root = components.Find(i);
+
+            if (maxByRoot.TryGetValue(root, out var current))
+            {
+                maxByRoot[root] = Math.Max(current, nums[i]);
+                continue;
+            }
+
+            maxByRoot[root] = nums[i];
+        }
+
+        return maxByRoot;
+    }
+
+    // Each index's own answer: the maximum value in its component.
+    private static int[] ReadComponentMaxima(int[] nums, DisjointSet components, Dictionary<int, int> maxByRoot)
+    {
+        var answer = new int[nums.Length];
+
+        for (var i = 0; i < nums.Length; i++)
         {
             answer[i] = maxByRoot[components.Find(i)];
         }

@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.MaxPointsOnALine;
 // points, count every third point whose cross product against that pair is
 // zero. MaxPointsBySlopeGrouping anchors on each point in turn and groups
 // every other point by its reduced-fraction slope (dy/dx, GCD-reduced and
-// sign-normalized) in this repo's own HashMap<(int,int),int> - the largest
+// sign-normalized) in this repo's own HashMap<SlopeKey,int> - the largest
 // slope bucket at any anchor, plus the anchor itself and any point that
 // coincides with it (which lies on every line through the anchor, not just
 // one slope's bucket), is that anchor's best line.
@@ -32,7 +32,8 @@ internal static class MaxPointsOnALineSolution
         {
             for (var j = i + 1; j < n; j++)
             {
-                best = Math.Max(best, CountCollinearWithPair(points, i, j));
+                var collinearWithPair = CountCollinearWithPair(points, i, j);
+                best = Math.Max(best, collinearWithPair);
             }
         }
 
@@ -95,7 +96,7 @@ internal static class MaxPointsOnALineSolution
     // slope wins rather than forming a "slope" bucket of their own.
     private sealed class AnchorScan
     {
-        private readonly HashMap<(int Dx, int Dy), int> _slopeCounts = new();
+        private readonly HashMap<SlopeKey, int> _slopeCounts = new();
         private int _duplicates;
         private int _localBest;
 
@@ -113,29 +114,47 @@ internal static class MaxPointsOnALineSolution
             }
 
             var key = ReducedSlope(dx, dy);
-            var count = _slopeCounts.TryGetValue(key, out var existing) ? existing + 1 : 1;
+            var count = CountIncludingThisPoint(key);
             _slopeCounts.Set(key, count);
             _localBest = Math.Max(_localBest, count);
+        }
+
+        // How many points share this slope with the anchor now: one more than the
+        // count this point joins, or the 1 that starts the slope when it is the
+        // first point to take it.
+        private int CountIncludingThisPoint(SlopeKey key)
+        {
+            if (_slopeCounts.TryGetValue(key, out var existing))
+            {
+                return existing + 1;
+            }
+
+            return 1;
         }
     }
 
     // Reduces (dx, dy) to a canonical slope key: divide out the GCD, then fix
     // the sign so (dx, dy) and (-dx, -dy) - the same line, opposite direction -
     // always hash to the same bucket.
-    private static (int, int) ReducedSlope(int dx, int dy)
+    private static SlopeKey ReducedSlope(int dx, int dy)
     {
         var divisor = Gcd(Math.Abs(dx), Math.Abs(dy));
         dx /= divisor;
         dy /= divisor;
 
-        if (dx < 0 || (dx == 0 && dy < 0))
+        if (PointsTheWrongWay(dx, dy))
         {
             dx = -dx;
             dy = -dy;
         }
 
-        return (dx, dy);
+        return new(dx, dy);
     }
+
+    // A direction pointing left, or straight down, is the flipped twin of one that
+    // does not - the same line, opposite direction - so it is the one negated.
+    private static bool PointsTheWrongWay(int dx, int dy)
+        => dx < 0 || (dx == 0 && dy < 0);
 
     private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
 }

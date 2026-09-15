@@ -12,5 +12,8 @@ public class DistinctSubsequencesBenchmarks
     private const string Target = "rabbit";
 
     [Benchmark(Baseline = true)]
-    public int MemoizedRecursion() => DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(Source, Target);
+    public int MemoizedRecursion() =>
+        DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(
+            new SourceText(Source),
+            new TargetPattern(Target));
 }

@@ -15,11 +15,11 @@ public class PalindromePartitioningIIIBenchmarks
     private const int AlphabetSize = 4;
     private const int PartitionDivisor = 2;
 
-    [Params(12, 18)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
     private int _k;
+    [Params(12, 18)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

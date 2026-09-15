@@ -16,10 +16,10 @@ public class CountGoodNodesInBinaryTreeBenchmarks
     private const int CompleteTreeBranchingFactor = 2;
     private const int RightChildIndexOffset = 2;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -20,11 +20,11 @@ public class GreatestCommonDivisorOfStringsBenchmarks
     private const int Str1RepeatCount = 13;
     private const int Str2RepeatCount = 7;
 
-    [Params(20, 500)]
-    public int UnitLength;
+    private string _str1 = "";
 
-    private string _str1 = null!;
-    private string _str2 = null!;
+    private string _str2 = "";
+    [Params(20, 500)]
+    public int UnitLength { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -89,7 +89,7 @@ internal static class SnapshotArraySolution
             return floorIndex < 0 ? UnwrittenValue : history.Values.Get(floorIndex);
         }
 
-        private sealed class History
+        private sealed record History
         {
             public DynamicArray<int> SnapIds { get; } = new();
 

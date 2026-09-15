@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 
 namespace DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
@@ -10,7 +11,6 @@ namespace DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
 // caller's business.
 internal static class MiddleOfTheLinkedListSolution
 {
-    private const int MidpointDivisor = 2;
 
     // Floyd's slow/fast two-pointer walk over this repo's own
     // SinglyLinkedListNode<TValue>.Next - the same node representation
@@ -44,7 +44,7 @@ internal static class MiddleOfTheLinkedListSolution
             count++;
         }
 
-        var target = count / MidpointDivisor;
+        var target = count / AlgorithmConstants.HalvingFactor;
         var current = head;
 
         for (var step = 0; step < target; step++)

@@ -15,10 +15,10 @@ public class SubsequencesWithAUniqueMiddleModeIBenchmarks
     private const int RandomSeed = 3395; // LC problem number
     private const int ValueRange = 5;
 
-    [Params(10, 14)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(10, 14)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

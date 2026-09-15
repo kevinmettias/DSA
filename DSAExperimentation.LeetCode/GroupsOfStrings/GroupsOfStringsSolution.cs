@@ -206,7 +206,7 @@ internal static class GroupsOfStringsSolution
         for (var i = 0; i < count; i++)
         {
             var root = components.Find(i);
-            var size = sizeByRoot.TryGetValue(root, out var existing) ? existing + 1 : 1;
+            var size = sizeByRoot.TryGetValue(root, out var existing) ? IncrementedSize(existing) : 1;
             sizeByRoot.Set(root, size);
 
             if (size == 1)
@@ -222,6 +222,9 @@ internal static class GroupsOfStringsSolution
 
         return [groups, largest];
     }
+
+    // A component's size once the word currently being tallied has joined it.
+    private static int IncrementedSize(int existingSize) => existingSize + 1;
 
     // The prepared input both hoisted overloads take: one 26-bit letter set per
     // word, so a benchmark's [GlobalSetup] can charge the mask pass to setup rather

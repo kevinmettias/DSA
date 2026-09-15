@@ -73,7 +73,7 @@ internal static class CountNumberOfRectanglesContainingEachPointSolution
         return counts;
     }
 
-    private static (int[] Heights, HashMap<int, int[]> LengthsByHeight) GroupSortedLengthsByHeight(int[][] rectangles)
+    private static LengthsGroupedByHeight GroupSortedLengthsByHeight(int[][] rectangles)
     {
         var grouped = new HashMap<int, List<int>>();
 
@@ -94,7 +94,7 @@ internal static class CountNumberOfRectanglesContainingEachPointSolution
         var heights = lengthsByHeight.Keys.ToArray();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(heights));
 
-        return (heights, lengthsByHeight);
+        return new(heights, lengthsByHeight);
     }
 
     private static void AddRectangleToGroup(int[] rectangle, HashMap<int, List<int>> grouped)

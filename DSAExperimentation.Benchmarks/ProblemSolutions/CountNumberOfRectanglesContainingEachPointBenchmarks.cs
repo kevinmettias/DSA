@@ -20,11 +20,11 @@ public class CountNumberOfRectanglesContainingEachPointBenchmarks
     private const int MaxHeightExclusive = 101;
     private const int CoordinateBoundExclusive = 1_000_000_000;
 
-    [Params(500, 4_000)]
-    public int RectangleCount;
+    private int[][] _rectangles = [];
 
-    private int[][] _rectangles = null!;
-    private int[][] _points = null!;
+    private int[][] _points = [];
+    [Params(500, 4_000)]
+    public int RectangleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

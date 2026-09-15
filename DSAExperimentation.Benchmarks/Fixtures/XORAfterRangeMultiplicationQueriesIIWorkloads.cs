@@ -25,16 +25,25 @@ internal static class XORAfterRangeMultiplicationQueriesIIWorkloads
 
         for (var i = 0; i < queryCount; i++)
         {
-            var k = i % 2 == 0
-                ? random.Next(1, smallStrideCeiling + 1)
-                : random.Next(1, nodeCount + 1);
-            var l = random.Next(nodeCount);
-            var r = random.Next(l, nodeCount);
-            var v = random.Next(1, MaxMultiplier + 1);
-
-            queries[i] = [l, r, k, v];
+            queries[i] = BuildQuery(random, i, nodeCount, smallStrideCeiling);
         }
 
         return (nums, queries);
+    }
+
+    // One [l, r, k, v] query: an even index draws its stride from the small-stride
+    // range so the bucketed path is exercised, an odd index from the whole array,
+    // and l/r always name a non-empty range.
+    private static int[] BuildQuery(Random random, int index, int nodeCount, int smallStrideCeiling)
+    {
+        var usesSmallStride = index % 2 == 0;
+        var k = usesSmallStride
+            ? random.Next(1, smallStrideCeiling + 1)
+            : random.Next(1, nodeCount + 1);
+        var l = random.Next(nodeCount);
+        var r = random.Next(l, nodeCount);
+        var v = random.Next(1, MaxMultiplier + 1);
+
+        return [l, r, k, v];
     }
 }

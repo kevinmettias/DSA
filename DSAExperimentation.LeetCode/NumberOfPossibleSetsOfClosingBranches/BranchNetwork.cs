@@ -8,9 +8,9 @@ namespace DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 // takes the shorter one on relax, so there is nothing to precompute here.
 internal sealed class BranchNetwork
 {
-    private BranchNetwork(BranchNode[] nodes) => Nodes = nodes;
-
     public BranchNode[] Nodes { get; }
+
+    private BranchNetwork(BranchNode[] nodes) => Nodes = nodes;
 
     public static BranchNetwork Build(int n, int[][] roads)
     {

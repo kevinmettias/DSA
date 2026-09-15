@@ -18,10 +18,10 @@ public class ScoreOfParenthesesBenchmarks
     // LC problem number, used as the RNG seed.
     private const int RandomSeed = 856;
 
-    [Params(100, 2_000)]
-    public int PairCount;
+    private string _expression = "";
 
-    private string _expression = null!;
+    [Params(100, 2_000)]
+    public int PairCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

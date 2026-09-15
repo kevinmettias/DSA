@@ -12,13 +12,23 @@ namespace DSAExperimentation.LeetCode.FindTheIndexOfTheFirstOccurrenceInAString;
 internal static class FindTheIndexOfTheFirstOccurrenceInAStringSolution
 {
     // What you would write without this repo: BCL ordinal substring search.
-    public static int IndexOfByStringIndexOf(string haystack, string needle) =>
-        haystack.IndexOf(needle, StringComparison.Ordinal);
+    public static int IndexOfByStringIndexOf(Haystack haystack, Needle needle) =>
+        haystack.Text.IndexOf(needle.Text, StringComparison.Ordinal);
 
-    public static int IndexOfByRollingHash(string haystack, string needle)
+    public static int IndexOfByRollingHash(Haystack haystack, Needle needle)
     {
-        var matches = RollingHashSearch.FindAll(haystack, needle);
+        var matches = RollingHashSearch.FindAll(haystack.Text, needle.Text);
 
-        return matches.Count == 0 ? -1 : matches[0];
+        return matches.Count == 0 ? -1 : FirstMatchIndex(matches);
     }
+
+    private static int FirstMatchIndex(List<int> matches) => matches[0];
+
+    // The two sides of a substring search, named for what each is in this problem
+    // rather than left as two adjacent `string` positions a caller could hand over the
+    // wrong way round with the compiler none the wiser: `haystack` is the text being
+    // searched, `needle` the substring being looked for inside it.
+    internal readonly record struct Haystack(string Text);
+
+    internal readonly record struct Needle(string Text);
 }

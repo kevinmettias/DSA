@@ -11,10 +11,10 @@ public class FirstBadVersionBenchmarks
 {
     private const double FirstBadFraction = 0.7;
 
-    [Params(1_000, 1_000_000)]
-    public int VersionCount;
-
     private int _firstBad;
+
+    [Params(1_000, 1_000_000)]
+    public int VersionCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _firstBad = (int)(VersionCount * FirstBadFraction);

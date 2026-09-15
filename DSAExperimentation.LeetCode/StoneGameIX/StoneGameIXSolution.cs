@@ -42,7 +42,7 @@ internal static class StoneGameIXSolution
         var counts = CountByRemainder(stones);
         var outcome = Memoizer.Memoize<(int C0, int C1, int C2, int TurnSum), int>(
             (counts[0], counts[1], counts[RemainderTwoIndex], 0),
-            SolveState);
+            new GameTreeOutcome());
 
         return outcome == MoverWins;
     }
@@ -59,64 +59,80 @@ internal static class StoneGameIXSolution
         return counts;
     }
 
-    // Running out of stones without anyone busting is a loss for the mover, who is the
-    // player that would have had to move next - which is exactly LeetCode's "Bob wins if
-    // all the stones are removed" clause seen from the other side.
-    private static int SolveState(
-        (int C0, int C1, int C2, int TurnSum) state, Func<(int, int, int, int), int> solve)
+    // The recurrence, as a named type: the game-tree search over the counts still in
+    // play and the running sum mod 3, with the memoized continuation arriving as `rest`
+    // rather than as an anonymous delegate.
+    private sealed class GameTreeOutcome
+        : IRecurrence<(int C0, int C1, int C2, int TurnSum), int>
     {
-        var (c0, c1, c2, _) = state;
-
-        if (c0 + c1 + c2 == 0)
+        // Running out of stones without anyone busting is a loss for the mover, who is
+        // the player that would have had to move next - which is exactly LeetCode's "Bob
+        // wins if all the stones are removed" clause seen from the other side.
+        public int Replay(
+            (int C0, int C1, int C2, int TurnSum) state,
+            IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
         {
-            return NoStonesLeft;
-        }
+            var (c0, c1, c2, _) = state;
 
-        return BestOverRemainders(state, solve);
-    }
-
-    private static int BestOverRemainders(
-        (int C0, int C1, int C2, int TurnSum) state, Func<(int, int, int, int), int> solve)
-    {
-        var (c0, c1, c2, _) = state;
-        var counts = new[] { c0, c1, c2 };
-        var best = int.MinValue;
-
-        for (var r = 0; r < RemainderBucketCount; r++)
-        {
-            if (counts[r] == 0)
+            if (c0 + c1 + c2 == 0)
             {
-                continue;
+                return NoStonesLeft;
             }
 
-            var nextState = NextState(state, r);
-            var branchValue = Branch(r, nextState, solve);
-            best = Math.Max(best, branchValue);
+            return BestOverRemainders(state, rest);
         }
 
-        return best;
-    }
-
-    private static GameState NextState((int C0, int C1, int C2, int TurnSum) state, int r)
-    {
-        var (c0, c1, c2, turnSum) = state;
-
-        return r switch
+        private static int BestOverRemainders(
+            (int C0, int C1, int C2, int TurnSum) state,
+            IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
         {
-            0 => new GameState(c0 - 1, c1, c2, turnSum),
-            1 => new GameState(c0, c1 - 1, c2, turnSum),
-            _ => new GameState(c0, c1, c2 - 1, turnSum),
-        };
-    }
+            var (c0, c1, c2, _) = state;
+            var counts = new[] { c0, c1, c2 };
+            var best = int.MinValue;
 
-    // Negamax step: a move of remainder r updates the running sum; landing on a multiple
-    // of 3 loses immediately for the mover, otherwise the outcome is whatever the
-    // opponent's own best play yields, negated back to this mover's perspective.
-    private static int Branch(int r, GameState state, Func<(int, int, int, int), int> solve)
-    {
-        var newSum = (state.TurnSum + r) % RemainderBucketCount;
+            for (var r = 0; r < RemainderBucketCount; r++)
+            {
+                if (counts[r] == 0)
+                {
+                    continue;
+                }
 
-        return newSum == 0 ? MoverLoses : -solve((state.C0, state.C1, state.C2, newSum));
+                var nextState = NextState(state, r);
+                var branchValue = Branch(r, nextState, rest);
+                best = Math.Max(best, branchValue);
+            }
+
+            return best;
+        }
+
+        private static GameState NextState((int C0, int C1, int C2, int TurnSum) state, int r)
+        {
+            var (c0, c1, c2, turnSum) = state;
+
+            return r switch
+            {
+                0 => new GameState(c0 - 1, c1, c2, turnSum),
+                1 => new GameState(c0, c1 - 1, c2, turnSum),
+                _ => new GameState(c0, c1, c2 - 1, turnSum),
+            };
+        }
+
+        // Negamax step: a move of remainder r updates the running sum; landing on a
+        // multiple of 3 loses immediately for the mover, otherwise the outcome is
+        // whatever the opponent's own best play yields, negated back to this mover's
+        // perspective.
+        private static int Branch(
+            int r, GameState state, IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
+        {
+            var newSum = (state.TurnSum + r) % RemainderBucketCount;
+
+            if (newSum == 0)
+            {
+                return MoverLoses;
+            }
+
+            return -rest.Replay((state.C0, state.C1, state.C2, newSum), rest);
+        }
     }
 
     // Bucket the stones by value mod 3 with this repo's own HashMap<int,int>, then read

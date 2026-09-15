@@ -42,18 +42,6 @@ internal static class HouseRobberIVSolution
         return ceiling;
     }
 
-    // Bisect the same monotone predicate instead of scanning it. LowerBound
-    // returns the offset of the first "true" within [floor, ceiling], so the
-    // capability itself is floor plus that offset.
-    public static int MinCapabilityBySequenceLowerBound(int[] nums, int k)
-    {
-        var floor = nums.Min();
-        var ceiling = nums.Max();
-        var sequence = new FeasibleCapabilitySequence(nums, k, floor, ceiling);
-
-        return floor + BinarySearch.LowerBound(sequence, true);
-    }
-
     // The greedy count both strategies share: taking every affordable house whose
     // predecessor was skipped is optimal, because deferring an affordable house
     // can never let more of them be taken later.
@@ -76,6 +64,18 @@ internal static class HouseRobberIVSolution
         }
 
         return count >= k;
+    }
+
+    // Bisect the same monotone predicate instead of scanning it. LowerBound
+    // returns the offset of the first "true" within [floor, ceiling], so the
+    // capability itself is floor plus that offset.
+    public static int MinCapabilityBySequenceLowerBound(int[] nums, int k)
+    {
+        var floor = nums.Min();
+        var ceiling = nums.Max();
+        var sequence = new FeasibleCapabilitySequence(nums, k, floor, ceiling);
+
+        return floor + BinarySearch.LowerBound(sequence, true);
     }
 
     // Meaningless outside this one problem's feasibility check - stays beside the

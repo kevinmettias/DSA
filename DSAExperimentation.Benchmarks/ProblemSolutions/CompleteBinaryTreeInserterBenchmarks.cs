@@ -17,10 +17,10 @@ public class CompleteBinaryTreeInserterBenchmarks
 {
     private const int InsertCount = 200;
 
-    [Params(63, 1_023)]
-    public int NodeCount;
+    private int[] _insertValues = [];
 
-    private int[] _insertValues = null!;
+    [Params(63, 1_023)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _insertValues = Enumerable.Range(NodeCount, InsertCount).ToArray();

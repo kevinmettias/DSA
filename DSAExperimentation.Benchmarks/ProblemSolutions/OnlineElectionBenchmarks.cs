@@ -16,12 +16,12 @@ public class OnlineElectionBenchmarks
     private const int CandidateCount = 10;
     private const int TimeStep = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _persons = [];
 
-    private int[] _persons = null!;
-    private int[] _times = null!;
-    private int[] _queries = null!;
+    private int[] _times = [];
+    private int[] _queries = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

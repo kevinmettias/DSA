@@ -14,10 +14,10 @@ public class CountAlmostEqualPairsIIBenchmarks
     private const int MaxValueExclusive = 10_000_000; // LC's own nums[i] < 1e7 bound
     private const int Seed = 3267;
 
-    [Params(10, 30)]
-    public int Length;
+    private string[] _padded = [];
 
-    private string[] _padded = null!;
+    [Params(10, 30)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

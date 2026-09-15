@@ -71,9 +71,13 @@ internal static class DesignCircularQueueSolution
             return true;
         }
 
-        public int Front() => IsEmpty() ? LeetCodeAnswer.None : _items[_head];
+        public int Front() => IsEmpty() ? LeetCodeAnswer.None : FrontItem();
 
-        public int Rear() => IsEmpty() ? LeetCodeAnswer.None : _items[(_head + _count - 1) % _items.Length];
+        private int FrontItem() => _items[_head];
+
+        public int Rear() => IsEmpty() ? LeetCodeAnswer.None : RearItem();
+
+        private int RearItem() => _items[(_head + _count - 1) % _items.Length];
     }
 
     // The composed answer: this repo's own Deque<int> (already a wraparound-array

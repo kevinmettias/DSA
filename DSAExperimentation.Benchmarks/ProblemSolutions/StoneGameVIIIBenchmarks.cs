@@ -20,10 +20,10 @@ public class StoneGameVIIIBenchmarks
 
     private const int StoneValueBound = 100;
 
-    [Params(22, 26)]
-    public int PileCount;
-
     private ArraySequence<long> _prefix;
+
+    [Params(22, 26)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

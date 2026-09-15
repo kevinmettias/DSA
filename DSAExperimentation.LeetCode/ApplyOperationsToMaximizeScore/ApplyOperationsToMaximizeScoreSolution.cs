@@ -45,6 +45,56 @@ internal static class ApplyOperationsToMaximizeScoreSolution
         return SpendOperations(ValueDescendingByArraySort(nums), left, right, k);
     }
 
+    private static (int[] Left, int[] Right) BoundariesByOutwardScan(int[] scores)
+    {
+        var left = new int[scores.Length];
+        var right = new int[scores.Length];
+
+        for (var i = 0; i < scores.Length; i++)
+        {
+            left[i] = LeftBoundaryByOutwardScan(scores, i);
+            right[i] = RightBoundaryByOutwardScan(scores, i);
+        }
+
+        return (left, right);
+    }
+
+    // Nearest index to the left whose score this one does not beat, found by walking
+    // outward until the strict "lower than mine" condition breaks.
+    private static int LeftBoundaryByOutwardScan(int[] scores, int i)
+    {
+        var earlier = i - 1;
+
+        while (earlier >= 0 && scores[earlier] < scores[i])
+        {
+            earlier--;
+        }
+
+        return earlier;
+    }
+
+    // Nearest index to the right whose score is strictly greater, found by walking
+    // outward until that condition breaks.
+    private static int RightBoundaryByOutwardScan(int[] scores, int i)
+    {
+        var later = i + 1;
+
+        while (later < scores.Length && scores[later] <= scores[i])
+        {
+            later++;
+        }
+
+        return later;
+    }
+
+    private static IndexedValue[] ValueDescendingByArraySort(int[] nums)
+    {
+        var order = IndexedValues(nums);
+        Array.Sort(order, (first, second) => second.Value.CompareTo(first.Value));
+
+        return order;
+    }
+
     // Two passes over this repo's own Stack<int> - the same LIFO primitive
     // AddTwoNumbersII uses for a different purpose - each maintaining a monotonic
     // stack of indices, so every index is pushed and popped at most once per pass and
@@ -58,78 +108,6 @@ internal static class ApplyOperationsToMaximizeScoreSolution
         var right = RightBoundariesByMonotonicStack(scores);
 
         return SpendOperations(ValueDescendingByMergeSort(nums), left, right, k);
-    }
-
-    // Trial division, shared by both arms because it is plain BCL arithmetic either
-    // way - the same shape CountTheNumberOfSquareFreeSubsets' own prime mask uses, not
-    // a production primitive this repo offers.
-    private static int[] PrimeScores(int[] nums)
-    {
-        var scores = new int[nums.Length];
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            scores[i] = DistinctPrimeFactorCount(nums[i]);
-        }
-
-        return scores;
-    }
-
-    private static int DistinctPrimeFactorCount(int value)
-    {
-        var score = 0;
-
-        for (var factor = SmallestPrime; (long)factor * factor <= value; factor++)
-        {
-            if (value % factor != 0)
-            {
-                continue;
-            }
-
-            score++;
-
-            while (value % factor == 0)
-            {
-                value /= factor;
-            }
-        }
-
-        // Whatever survives the loop is a prime larger than the square root.
-        if (value > 1)
-        {
-            score++;
-        }
-
-        return score;
-    }
-
-    private static (int[] Left, int[] Right) BoundariesByOutwardScan(int[] scores)
-    {
-        var left = new int[scores.Length];
-        var right = new int[scores.Length];
-
-        for (var i = 0; i < scores.Length; i++)
-        {
-            var earlier = i - 1;
-
-            while (earlier >= 0 && scores[earlier] < scores[i])
-            {
-                earlier--;
-            }
-
-            left[i] = earlier;
-
-            var later = i + 1;
-
-            while (later < scores.Length && scores[later] <= scores[i])
-            {
-                later++;
-            }
-
-            right[i] = later;
-        }
-
-        return (left, right);
     }
 
     // Nearest index to the left with a score >= this one - keeps popping
@@ -175,14 +153,6 @@ internal static class ApplyOperationsToMaximizeScoreSolution
         return right;
     }
 
-    private static IndexedValue[] ValueDescendingByArraySort(int[] nums)
-    {
-        var order = IndexedValues(nums);
-        Array.Sort(order, (first, second) => second.Value.CompareTo(first.Value));
-
-        return order;
-    }
-
     private static IndexedValue[] ValueDescendingByMergeSort(int[] nums)
     {
         var order = IndexedValues(nums);
@@ -192,6 +162,58 @@ internal static class ApplyOperationsToMaximizeScoreSolution
             Comparer<IndexedValue>.Create((first, second) => second.Value.CompareTo(first.Value)));
 
         return order;
+    }
+
+    // Trial division, shared by both arms because it is plain BCL arithmetic either
+    // way - the same shape CountTheNumberOfSquareFreeSubsets' own prime mask uses, not
+    // a production primitive this repo offers.
+    private static int[] PrimeScores(int[] nums)
+    {
+        var scores = new int[nums.Length];
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            scores[i] = DistinctPrimeFactorCount(nums[i]);
+        }
+
+        return scores;
+    }
+
+    private static int DistinctPrimeFactorCount(int value)
+    {
+        var score = 0;
+
+        for (var factor = SmallestPrime; (long)factor * factor <= value; factor++)
+        {
+            if (value % factor != 0)
+            {
+                continue;
+            }
+
+            score++;
+
+            value = DivideOutFactor(value, factor);
+        }
+
+        // Whatever survives the loop is a prime larger than the square root.
+        if (value > 1)
+        {
+            score++;
+        }
+
+        return score;
+    }
+
+    // Divides every copy of `factor` out of `value`, leaving only the part `factor`
+    // no longer divides.
+    private static int DivideOutFactor(int value, int factor)
+    {
+        while (value % factor == 0)
+        {
+            value /= factor;
+        }
+
+        return value;
     }
 
     private static IndexedValue[] IndexedValues(int[] nums)

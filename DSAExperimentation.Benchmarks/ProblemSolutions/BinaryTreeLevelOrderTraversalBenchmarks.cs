@@ -20,13 +20,13 @@ public class BinaryTreeLevelOrderTraversalBenchmarks
     [GlobalSetup]
     public void Setup() => _root = Tree();
 
+    private static BinaryTreeNode<int> Tree() =>
+        new(RootValue) { Left = new(LeftValue), Right = new(RightValue) { Left = new(RightLeftValue), Right = new(RightRightValue) } };
+
     [Benchmark(Baseline = true)]
     public List<List<int>> QueueLevels() => BinaryTreeLevelOrderTraversalSolution.LevelOrderByQueueLevels(_root);
 
     [Benchmark]
     public List<List<int>> LevelGroupedTraversal() =>
         BinaryTreeLevelOrderTraversalSolution.LevelOrderByLevelGroupedTraversal(_root);
-
-    private static BinaryTreeNode<int> Tree() =>
-        new(RootValue) { Left = new(LeftValue), Right = new(RightValue) { Left = new(RightLeftValue), Right = new(RightRightValue) } };
 }

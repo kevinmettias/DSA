@@ -17,10 +17,10 @@ public class Finding3DigitEvenNumbersBenchmarks
     private const int RandomSeed = 2094; // LC problem number
     private const int DigitRangeExclusive = 10;
 
-    [Params(30, 100)]
-    public int Length;
+    private int[] _digits = [];
 
-    private int[] _digits = null!;
+    [Params(30, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -15,11 +15,11 @@ public class CheckIfDigitsAreEqualInStringAfterOperationsIBenchmarks
     // LC problem number, reused as the deterministic digit-string seed.
     private const int DigitSeed = 3461;
 
+    private string _digits = "";
+
     // LC's own bound: 3 <= s.Length <= 10.
     [Params(3, 10)]
-    public int Length;
-
-    private string _digits = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _digits = DigitStringWorkloads.BuildDigits(Length, seed: DigitSeed);

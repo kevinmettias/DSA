@@ -38,7 +38,7 @@ internal static class MaximumNumberOfDartsInsideOfACircularDartboardSolution
     public static int MaxDartsByListCandidates(int[][] darts, int radius)
     {
         var candidates = new List<(double X, double Y)>();
-        CollectCandidates(darts, radius, candidates.Add);
+        CollectCandidates(darts, radius, new ListCandidateBuffer(candidates));
 
         var best = LoneDartCount;
 
@@ -56,7 +56,7 @@ internal static class MaximumNumberOfDartsInsideOfACircularDartboardSolution
     public static int MaxDartsByDynamicArrayCandidates(int[][] darts, int radius)
     {
         var candidates = new DynamicArray<(double X, double Y)>();
-        CollectCandidates(darts, radius, candidates.Add);
+        CollectCandidates(darts, radius, new DynamicArrayCandidateBuffer(candidates));
 
         var best = LoneDartCount;
 
@@ -69,25 +69,47 @@ internal static class MaximumNumberOfDartsInsideOfACircularDartboardSolution
         return best;
     }
 
+    // Where the candidate centers go. Naming the sink puts the container in the sweep's
+    // contract as well as in the two strategies below: CollectCandidates produces centers
+    // for a buffer, rather than calling something that takes a pair of doubles.
+    private interface ICandidateBuffer
+    {
+        void Collect((double X, double Y) center);
+    }
+
     // Every center worth scoring, handed to whichever buffer the calling strategy
     // grows: each dart itself, plus the circle positions every close-enough pair of
     // darts admits. Shared so the only thing the two strategies differ in is the
     // container, which is the whole point of the comparison.
-    private static void CollectCandidates(int[][] darts, int radius, Action<(double X, double Y)> add)
+    private static void CollectCandidates(int[][] darts, int radius, ICandidateBuffer buffer)
     {
         for (var i = 0; i < darts.Length; i++)
         {
-            add((darts[i][0], darts[i][1]));
+            buffer.Collect((darts[i][0], darts[i][1]));
 
             for (var j = i + 1; j < darts.Length; j++)
             {
                 if (BoundaryCenters(darts[i], darts[j], radius) is { } centers)
                 {
-                    add(centers.First);
-                    add(centers.Second);
+                    buffer.Collect(centers.First);
+                    buffer.Collect(centers.Second);
                 }
             }
         }
+    }
+
+    // The BCL list arm's buffer, holding the same List the scoring pass below walks.
+    private sealed class ListCandidateBuffer(List<(double X, double Y)> candidates) : ICandidateBuffer
+    {
+        public void Collect((double X, double Y) center) => candidates.Add(center);
+    }
+
+    // The composed arm's buffer, holding this repo's DynamicArray that the scoring
+    // pass below indexes into.
+    private sealed class DynamicArrayCandidateBuffer(DynamicArray<(double X, double Y)> candidates)
+        : ICandidateBuffer
+    {
+        public void Collect((double X, double Y) center) => candidates.Add(center);
     }
 
     // The two centers of a radius-r circle through both darts: the chord's midpoint

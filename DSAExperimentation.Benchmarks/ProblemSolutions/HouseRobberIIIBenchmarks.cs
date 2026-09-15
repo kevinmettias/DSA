@@ -14,10 +14,10 @@ public class HouseRobberIIIBenchmarks
 {
     private const int Seed = 1;
 
-    [Params(10, 15)]
-    public int Depth;
-
     private BinaryTreeNode<int> _root = null!;
+
+    [Params(10, 15)]
+    public int Depth { get; set; }
 
     [GlobalSetup]
     public void Setup() => _root = HouseRobberIIIWorkloads.RandomFullTree(Depth, Seed);

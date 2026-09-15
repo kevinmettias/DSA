@@ -54,6 +54,14 @@ internal static class MinimumCostWalkInWeightedGraphSolution
         var frontier = new Queue<int>();
         frontier.Enqueue(source);
 
+        var (reached, cost) = FloodComponent(adjacency, frontier, visited, target);
+
+        return reached ? cost : LeetCodeAnswer.None;
+    }
+
+    private static (bool Reached, int Cost) FloodComponent(
+        List<(int Neighbor, int Weight)>[] adjacency, Queue<int> frontier, HashSet<int> visited, int target)
+    {
         var reached = false;
         var cost = -1;
 
@@ -73,14 +81,17 @@ internal static class MinimumCostWalkInWeightedGraphSolution
             }
         }
 
-        return reached ? cost : LeetCodeAnswer.None;
+        return (reached, cost);
     }
 
     // Composed: DataStructures.DisjointSet groups every vertex into a component
     // once; WalkCostComponents folds each component's AND alongside it, so every
     // query after that first pass is a single Find plus an array lookup.
-    public static int[] MinimumCostByUnionFind(int n, int[][] edges, int[][] query) =>
-        MinimumCostByUnionFind(WalkCostComponents.Build(n, edges), query);
+    public static int[] MinimumCostByUnionFind(int n, int[][] edges, int[][] query)
+    {
+        var components = WalkCostComponents.Build(n, edges);
+        return MinimumCostByUnionFind(components, query);
+    }
 
     public static int[] MinimumCostByUnionFind(WalkCostComponents components, int[][] query)
     {

@@ -17,10 +17,10 @@ public class MeetingRoomsIIIBenchmarks
     private const int MaxDurationMultiplier = 3;
     private const int RandomSeed = 1;
 
-    [Params(20, 80)]
-    public int RoomCount;
+    private int[][] _meetings = [];
 
-    private int[][] _meetings = null!;
+    [Params(20, 80)]
+    public int RoomCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

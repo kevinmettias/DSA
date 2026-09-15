@@ -17,10 +17,10 @@ public class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceBenchmarks
     // Symmetric bound for the generated values' range: [-ValueBound, ValueBound).
     private const int ValueBound = 50;
 
-    [Params(16, 20)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(16, 20)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -33,27 +33,38 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
 
         while (deletedSomething)
         {
-            deletedSomething = false;
-
-            for (var i = 0; i < chars.Count; i++)
-            {
-                var isTrailing = i == chars.Count - 1;
-                var precedesSomethingSmaller = !isTrailing && chars[i] > chars[i + 1];
-
-                if (counts[chars[i] - 'a'] <= 1 || !(isTrailing || precedesSomethingSmaller))
-                {
-                    continue;
-                }
-
-                counts[chars[i] - 'a']--;
-                chars.RemoveAt(i);
-                deletedSomething = true;
-                break;
-            }
+            deletedSomething = DeleteFirstRemovableDuplicate(chars, counts);
         }
 
         return new string([.. chars]);
     }
+
+    // Drop the leftmost removable character, starting the scan over from the front
+    // after every deletion - removing a character shifts everything after it, so a
+    // position that was not removable before may be now. Reports whether anything
+    // was dropped at all, which is what ends the caller's scan.
+    private static bool DeleteFirstRemovableDuplicate(List<char> chars, int[] counts)
+    {
+        for (var i = 0; i < chars.Count; i++)
+        {
+            if (!IsRemovableDuplicate(chars, i, counts))
+            {
+                continue;
+            }
+
+            counts[chars[i] - 'a']--;
+            chars.RemoveAt(i);
+            return true;
+        }
+
+        return false;
+    }
+
+    // A character may be deleted only while a copy of it survives the deletion,
+    // and only when it is the last one left or sits immediately before something
+    // smaller - a smaller prefix always wins lexicographically.
+    private static bool IsRemovableDuplicate(List<char> chars, int i, int[] counts)
+        => counts[chars[i] - 'a'] > 1 && (i == chars.Count - 1 || chars[i] > chars[i + 1]);
 
     // Single left-to-right sweep with this repo's own Stack<char>: cnt[c] tracks
     // how many copies of c remain undeleted (in the stack plus the untouched
@@ -68,7 +79,7 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
 
         foreach (var c in s)
         {
-            while (stack.TryPeek(out var top) && top > c && counts[top - 'a'] > 1)
+            while (stack.TryPeek(out var top) && IsDroppableFor(top, c, counts))
             {
                 stack.TryPop(out _);
                 counts[top - 'a']--;
@@ -86,17 +97,10 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
         return DrainToString(stack);
     }
 
-    private static int[] CountLetters(string s)
-    {
-        var counts = new int[AlphabetSize];
-
-        foreach (var c in s)
-        {
-            counts[c - 'a']++;
-        }
-
-        return counts;
-    }
+    // The stack's top can be given up for the character arriving: it is larger,
+    // and a copy of it survives the pop.
+    private static bool IsDroppableFor(char top, char incoming, int[] counts)
+        => top > incoming && counts[top - 'a'] > 1;
 
     private static string DrainToString(DupStack stack)
     {
@@ -109,5 +113,17 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
 
         chars.Reverse();
         return new string([.. chars]);
+    }
+
+    private static int[] CountLetters(string s)
+    {
+        var counts = new int[AlphabetSize];
+
+        foreach (var c in s)
+        {
+            counts[c - 'a']++;
+        }
+
+        return counts;
     }
 }

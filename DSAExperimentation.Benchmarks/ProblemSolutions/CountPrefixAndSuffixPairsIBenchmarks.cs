@@ -14,11 +14,11 @@ public class CountPrefixAndSuffixPairsIBenchmarks
 {
     private const int Seed = 3042;
 
-    [Params(25, 100)]
-    public int WordCount;
+    private string[] _words = [];
 
-    private string[] _words = null!;
-    private RollingHash[] _hashes = null!;
+    private RollingHash[] _hashes = [];
+    [Params(25, 100)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

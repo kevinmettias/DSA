@@ -20,10 +20,7 @@ public sealed class DynamicArrayStorageTests
         Enumerable.Range(0, storage.Count).Select(storage.Get);
 
     [Fact]
-    public void Count_NewStorage_IsZero()
-    {
-        Assert.Equal(0, new DynamicArrayStorage<int>().Count);
-    }
+    public void Count_NewStorage_IsZero() => Assert.Equal(0, new DynamicArrayStorage<int>().Count);
 
     [Fact]
     public void Add_AppendsAtTheEndAndRaisesTheCount()
@@ -44,10 +41,7 @@ public sealed class DynamicArrayStorageTests
     }
 
     [Fact]
-    public void Get_ReturnsTheElementAtTheIndex()
-    {
-        Assert.Equal(2, Seeded(1, 2, 3).Get(1));
-    }
+    public void Get_ReturnsTheElementAtTheIndex() => Assert.Equal(2, Seeded(1, 2, 3).Get(1));
 
     [Fact]
     public void Set_ReplacesInPlaceWithoutChangingTheCount()

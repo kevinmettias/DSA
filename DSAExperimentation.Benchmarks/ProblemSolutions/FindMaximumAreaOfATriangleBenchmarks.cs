@@ -13,10 +13,10 @@ public class FindMaximumAreaOfATriangleBenchmarks
 {
     private const int Seed = 3588;
 
-    [Params(60, 300)]
-    public int PointCount;
+    private int[][] _coords = [];
 
-    private int[][] _coords = null!;
+    [Params(60, 300)]
+    public int PointCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

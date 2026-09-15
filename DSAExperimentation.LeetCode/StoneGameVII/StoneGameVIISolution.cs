@@ -31,19 +31,6 @@ internal static class StoneGameVIISolution
         return Best(prefix, 0, stones.Length - 1);
     }
 
-    private static int Best(int[] prefix, int left, int right)
-    {
-        if (left >= right)
-        {
-            return 0;
-        }
-
-        var takeLeft = RemoveLeftScore(prefix, left, right) - Best(prefix, left + 1, right);
-        var takeRight = RemoveRightScore(prefix, left, right) - Best(prefix, left, right - 1);
-
-        return Math.Max(takeLeft, takeRight);
-    }
-
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
     // (Left, Right) range the recurrence branches on, so each of the O(n^2) distinct
     // ranges is evaluated once instead of once per removal order that reaches it.
@@ -53,21 +40,41 @@ internal static class StoneGameVIISolution
 
         return Memoizer.Memoize<(int Left, int Right), int>(
             (0, stones.Length - 1),
-            (range, bestDifference) => BestMemoized(prefix, range, bestDifference));
+            new ScoreDifferencesOverPrefix(prefix));
     }
 
-    private static int BestMemoized(
-        int[] prefix, (int Left, int Right) range, Func<(int Left, int Right), int> bestDifference)
+    // The recurrence, as a named type: the score difference the mover can force from one
+    // (Left, Right) range. The prefix-sum table it reads arrives through the primary
+    // constructor and the memoized continuation through `rest`, so neither is a delegate.
+    private sealed class ScoreDifferencesOverPrefix(int[] prefix)
+        : IRecurrence<(int Left, int Right), int>
     {
-        var (left, right) = range;
+        public int Replay(
+            (int Left, int Right) range, IRecurrence<(int Left, int Right), int> rest)
+        {
+            var (left, right) = range;
 
+            if (left >= right)
+            {
+                return 0;
+            }
+
+            var takeLeft = RemoveLeftScore(prefix, left, right) - rest.Replay((left + 1, right), rest);
+            var takeRight = RemoveRightScore(prefix, left, right) - rest.Replay((left, right - 1), rest);
+
+            return Math.Max(takeLeft, takeRight);
+        }
+    }
+
+    private static int Best(int[] prefix, int left, int right)
+    {
         if (left >= right)
         {
             return 0;
         }
 
-        var takeLeft = RemoveLeftScore(prefix, left, right) - bestDifference((left + 1, right));
-        var takeRight = RemoveRightScore(prefix, left, right) - bestDifference((left, right - 1));
+        var takeLeft = RemoveLeftScore(prefix, left, right) - Best(prefix, left + 1, right);
+        var takeRight = RemoveRightScore(prefix, left, right) - Best(prefix, left, right - 1);
 
         return Math.Max(takeLeft, takeRight);
     }

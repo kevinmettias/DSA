@@ -18,10 +18,10 @@ public class CheckIfThereIsAValidPathInAGridBenchmarks
 
     private const int StreetTypeUpperBound = 7;
 
-    [Params(10, 30)]
-    public int Size;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(10, 30)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

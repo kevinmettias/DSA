@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class UniqueBinarySearchTreesIIBenchmarks
 {
     [Params(8, 12)]
-    public int Nodes;
+    public int Nodes { get; set; }
 
     [Benchmark(Baseline = true)]
     public int PlainRecursion() => UniqueBinarySearchTreesIISolution.GenerateTreesByPlainRecursion(Nodes).Count;

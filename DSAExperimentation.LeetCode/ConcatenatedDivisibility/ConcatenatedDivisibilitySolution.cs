@@ -44,7 +44,7 @@ internal static class ConcatenatedDivisibilitySolution
             Unchoose: Unchoose,
             OnSolution: OnSolution));
 
-        return state.Result is null ? [] : [.. state.Result.Select(i => state.Nums[i])];
+        return NumbersOf(state.Result, state.Nums);
     }
 
     private static bool OnSolution(BacktrackState state)
@@ -86,54 +86,9 @@ internal static class ConcatenatedDivisibilitySolution
         var fullMask = (1 << nums.Length) - 1;
 
         var suffix = Memoizer.Memoize<(int Mask, int Remainder), List<int>?>(
-            (fullMask, 0),
-            (state, recurse) => BestSuffix(state, nums, order, pow10ModK, k, recurse));
+            (fullMask, 0), new BestSuffix((nums, order), (pow10ModK, k)));
 
-        return suffix is null ? [] : [.. suffix.Select(i => nums[i])];
-    }
-
-    private static List<int>? BestSuffix(
-        (int Mask, int Remainder) state,
-        int[] nums,
-        int[] order,
-        int[] pow10ModK,
-        int k,
-        Func<(int Mask, int Remainder), List<int>?> recurse)
-    {
-        if (state.Mask == 0)
-        {
-            return state.Remainder == 0 ? [] : null;
-        }
-
-        foreach (var i in order)
-        {
-            var bit = 1 << i;
-
-            if ((state.Mask & bit) == 0)
-            {
-                continue;
-            }
-
-            var nextRemainder = (state.Remainder * pow10ModK[i] + nums[i]) % k;
-            var rest = recurse((state.Mask & ~bit, nextRemainder));
-
-            if (rest is not null)
-            {
-                return [i, .. rest];
-            }
-        }
-
-        return null;
-    }
-
-    // Ascending by value once, up front: both strategies only ever need to offer
-    // candidates in this order to guarantee lexicographically-smallest-by-value
-    // output, so the sort is shared rather than repeated per strategy.
-    private static int[] SortIndicesByValue(int[] nums)
-    {
-        var order = Enumerable.Range(0, nums.Length).ToArray();
-        Array.Sort(order, (x, y) => nums[x].CompareTo(nums[y]));
-        return order;
+        return NumbersOf(suffix, nums);
     }
 
     // 10^(decimal digit count of nums[i]), mod k - the factor a running remainder
@@ -157,6 +112,87 @@ internal static class ConcatenatedDivisibilitySolution
         }
 
         return pow10ModK;
+    }
+
+    // The reconstruction rule, named: the winning suffix for a state is the first
+    // viable candidate prepended to that candidate's own winning suffix. order is an
+    // ascending permutation of nums' indices and pow10ModK is the place value of each
+    // number mod k, so each pair describes one thing the rule needs whole: the
+    // candidates and the order to offer them in, and the modular arithmetic of
+    // appending one.
+    private sealed class BestSuffix(
+        (int[] Nums, int[] Order) candidates,
+        (int[] Pow10ModK, int K) modulus) : IRecurrence<(int Mask, int Remainder), List<int>?>
+    {
+        public List<int>? Replay(
+            (int Mask, int Remainder) state,
+            IRecurrence<(int Mask, int Remainder), List<int>?> rest)
+        {
+            if (state.Mask == 0)
+            {
+                if (state.Remainder == 0)
+                {
+                    return new List<int>();
+                }
+
+                return null;
+            }
+
+            return FirstCompletion(state, rest);
+        }
+
+        // The first candidate still unused whose remaining numbers can carry the
+        // remainder to 0 - the first, not the best, because the order is ascending by
+        // value and so the first viable choice is already the lexicographically
+        // smallest one. Null when no candidate is viable.
+        private List<int>? FirstCompletion(
+            (int Mask, int Remainder) state,
+            IRecurrence<(int Mask, int Remainder), List<int>?> rest)
+        {
+            foreach (var i in candidates.Order)
+            {
+                var bit = 1 << i;
+
+                if ((state.Mask & bit) == 0)
+                {
+                    continue;
+                }
+
+                var nextRemainder = (state.Remainder * modulus.Pow10ModK[i] + candidates.Nums[i]) % modulus.K;
+                var completion = rest.Replay((state.Mask & ~bit, nextRemainder), rest);
+
+                if (completion is not null)
+                {
+                    return [i, .. completion];
+                }
+            }
+
+            return null;
+        }
+    }
+
+    // The last step from a search result to the answer, shared because both
+    // strategies reach it identically: the winning order is an index permutation
+    // internally, and the problem wants the numbers themselves - or the empty
+    // list, its answer for "no order works", when the search found none.
+    private static IList<int> NumbersOf(List<int>? order, int[] nums)
+    {
+        if (order is null)
+        {
+            return [];
+        }
+
+        return [.. order.Select(i => nums[i])];
+    }
+
+    // Ascending by value once, up front: both strategies only ever need to offer
+    // candidates in this order to guarantee lexicographically-smallest-by-value
+    // output, so the sort is shared rather than repeated per strategy.
+    private static int[] SortIndicesByValue(int[] nums)
+    {
+        var order = Enumerable.Range(0, nums.Length).ToArray();
+        Array.Sort(order, (x, y) => nums[x].CompareTo(nums[y]));
+        return order;
     }
 
     // The mutable board Backtrack.TrySearch threads Choose/Unchoose through -

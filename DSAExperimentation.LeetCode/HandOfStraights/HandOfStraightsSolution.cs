@@ -28,6 +28,14 @@ internal static class HandOfStraightsSolution
             return false;
         }
 
+        var counts = BuildBclCounts(hand);
+        var sortedHand = BclSortedCopy(hand);
+
+        return ConsumeStraightsByBclDictionary(counts, sortedHand, groupSize);
+    }
+
+    private static Dictionary<int, int> BuildBclCounts(int[] hand)
+    {
         var counts = new Dictionary<int, int>();
 
         foreach (var card in hand)
@@ -35,9 +43,22 @@ internal static class HandOfStraightsSolution
             counts[card] = counts.GetValueOrDefault(card) + 1;
         }
 
+        return counts;
+    }
+
+    private static int[] BclSortedCopy(int[] hand)
+    {
         var sortedHand = (int[])hand.Clone();
         Array.Sort(sortedHand);
 
+        return sortedHand;
+    }
+
+    // Every card that still has copies left must start a group of its own: in
+    // ascending order nothing smaller is left to sit beneath it.
+    private static bool ConsumeStraightsByBclDictionary(
+        Dictionary<int, int> counts, int[] sortedHand, int groupSize)
+    {
         foreach (var card in sortedHand)
         {
             if (counts[card] == 0)
@@ -83,22 +104,7 @@ internal static class HandOfStraightsSolution
         var counts = BuildCounts(hand);
         var sortedHand = SortedCopy(hand);
 
-        foreach (var card in sortedHand)
-        {
-            counts.TryGetValue(card, out var remaining);
-
-            if (remaining == 0)
-            {
-                continue;
-            }
-
-            if (!TryConsumeGroup(counts, card, groupSize))
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return ConsumeStraightsByHashMap(counts, sortedHand, groupSize);
     }
 
     private static HashMap<int, int> BuildCounts(int[] hand)
@@ -122,6 +128,26 @@ internal static class HandOfStraightsSolution
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sortedHand));
 
         return sortedHand;
+    }
+
+    private static bool ConsumeStraightsByHashMap(HashMap<int, int> counts, int[] sortedHand, int groupSize)
+    {
+        foreach (var card in sortedHand)
+        {
+            counts.TryGetValue(card, out var remaining);
+
+            if (remaining == 0)
+            {
+                continue;
+            }
+
+            if (!TryConsumeGroup(counts, card, groupSize))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static bool TryConsumeGroup(HashMap<int, int> counts, int card, int groupSize)

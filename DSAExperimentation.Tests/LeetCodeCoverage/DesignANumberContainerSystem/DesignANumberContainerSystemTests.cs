@@ -95,19 +95,8 @@ public sealed class DesignANumberContainerSystemTests
 // One call in a NumberContainers script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct NumberContainerOp
+public readonly record struct NumberContainerOp(bool isFind, int index, int number)
 {
-    private readonly bool _isFind;
-    private readonly int _index;
-    private readonly int _number;
-
-    private NumberContainerOp(bool isFind, int index, int number)
-    {
-        _isFind = isFind;
-        _index = index;
-        _number = number;
-    }
-
     public static NumberContainerOp Change(int index, int number) => new(isFind: false, index, number);
 
     public static NumberContainerOp Find(int number) => new(isFind: true, index: 0, number);
@@ -119,12 +108,12 @@ public readonly record struct NumberContainerOp
     // RunScript ever calls Apply.
     internal int? Apply(INumberContainerStrategy strategy)
     {
-        if (_isFind)
+        if (isFind)
         {
-            return strategy.Find(_number);
+            return strategy.Find(number);
         }
 
-        strategy.Change(_index, _number);
+        strategy.Change(index, number);
         return null;
     }
 }

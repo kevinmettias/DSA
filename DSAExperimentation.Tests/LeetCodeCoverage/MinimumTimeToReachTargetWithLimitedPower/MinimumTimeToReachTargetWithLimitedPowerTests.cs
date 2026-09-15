@@ -48,7 +48,7 @@ public sealed class MinimumTimeToReachTargetWithLimitedPowerTests
         Assert.Equal(
             expected,
             MinimumTimeToReachTargetWithLimitedPowerSolution.MinTimeMaxPowerByBclPriorityQueue(
-                n, edges, power, cost, source, target));
+                (n, edges, power, cost), source, target));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -57,5 +57,5 @@ public sealed class MinimumTimeToReachTargetWithLimitedPowerTests
         Assert.Equal(
             expected,
             MinimumTimeToReachTargetWithLimitedPowerSolution.MinTimeMaxPowerByReduceGraph(
-                n, edges, power, cost, source, target));
+                (n, edges, power, cost), source, target));
 }

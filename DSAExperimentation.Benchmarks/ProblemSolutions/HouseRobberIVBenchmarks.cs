@@ -14,11 +14,11 @@ public class HouseRobberIVBenchmarks
     private const int MaxValueExclusive = 2_000;
     private const int KDivisor = 4;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -16,10 +16,7 @@ internal static class PartitionEqualSubsetSumSolution
 
     // The textbook answer: bottom-up bool[] tabulation, walking each candidate sum
     // downward so an element is never reused within the same pass.
-    public static bool CanPartitionByTabulation(int[] nums)
-    {
-        return TryGetHalf(nums, out var half) && CanPartitionByTabulation(nums, half);
-    }
+    public static bool CanPartitionByTabulation(int[] nums) => TryGetHalf(nums, out var half) && CanPartitionByTabulation(nums, half);
 
     public static bool CanPartitionByTabulation(int[] nums, int half)
     {
@@ -42,32 +39,31 @@ internal static class PartitionEqualSubsetSumSolution
     // (f(index+1, remaining-nums[index]) || f(index+1, remaining))) - each
     // (index, remaining) state is solved once and reused across every branch that
     // lands back on it.
-    public static bool CanPartitionByMemoization(int[] nums)
-    {
-        return TryGetHalf(nums, out var half) && CanPartitionByMemoization(nums, half);
-    }
+    public static bool CanPartitionByMemoization(int[] nums) => TryGetHalf(nums, out var half) && CanPartitionByMemoization(nums, half);
 
     public static bool CanPartitionByMemoization(int[] nums, int half)
+        => Memoizer.Memoize<(int Index, int Remaining), bool>((0, half), new ReachabilityFrom(nums));
+
+    // The recurrence itself, named: an exactly-spent remainder is reachable, an
+    // over-spent one or an exhausted array is not, and otherwise the element here is
+    // either taken or skipped.
+    private sealed class ReachabilityFrom(int[] nums) : IRecurrence<(int Index, int Remaining), bool>
     {
-        return Memoizer.Memoize<(int Index, int Remaining), bool>(
-            (0, half), (state, canReach) => CanReach(state, canReach, nums));
-    }
-
-    private static bool CanReach(
-        (int Index, int Remaining) state, Func<(int Index, int Remaining), bool> canReach, int[] nums)
-    {
-        if (state.Remaining == 0)
+        public bool Replay((int Index, int Remaining) state, IRecurrence<(int Index, int Remaining), bool> rest)
         {
-            return true;
-        }
+            if (state.Remaining == 0)
+            {
+                return true;
+            }
 
-        if (state.Remaining < 0 || state.Index == nums.Length)
-        {
-            return false;
-        }
+            if (state.Remaining < 0 || state.Index == nums.Length)
+            {
+                return false;
+            }
 
-        return canReach((state.Index + 1, state.Remaining - nums[state.Index]))
-            || canReach((state.Index + 1, state.Remaining));
+            return rest.Replay((state.Index + 1, state.Remaining - nums[state.Index]), rest)
+                || rest.Replay((state.Index + 1, state.Remaining), rest);
+        }
     }
 
     private static bool TryGetHalf(int[] nums, out int half)

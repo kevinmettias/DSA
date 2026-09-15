@@ -68,12 +68,12 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         var count = 0;
         var state = new SubsetWalk();
 
-        Backtrack.Search<SubsetWalk, bool>(
+        Backtrack.Search<SubsetWalk, Inclusion>(
             state,
             s => s.Index == nums.Length,
             s => Candidates(s, nums, k),
-            (s, include) => Choose(s, nums, include),
-            (s, include) => Unchoose(s, nums, include),
+            (s, inclusion) => Choose(s, nums, inclusion),
+            (s, inclusion) => Unchoose(s, nums, inclusion),
             s =>
             {
                 if (s.Size > 0)
@@ -85,18 +85,18 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         return count;
     }
 
-    private static IEnumerable<bool> Candidates(SubsetWalk state, int[] nums, int k)
+    private static IEnumerable<Inclusion> Candidates(SubsetWalk state, int[] nums, int k)
     {
         if (state.Index == nums.Length)
         {
             yield break;
         }
 
-        yield return false;
+        yield return Inclusion.Exclude;
 
         if (CanInclude(state, nums[state.Index], k))
         {
-            yield return true;
+            yield return Inclusion.Include;
         }
     }
 
@@ -108,9 +108,9 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         return lower == 0 && upper == 0;
     }
 
-    private static void Choose(SubsetWalk state, int[] nums, bool include)
+    private static void Choose(SubsetWalk state, int[] nums, Inclusion inclusion)
     {
-        if (include)
+        if (inclusion == Inclusion.Include)
         {
             var value = nums[state.Index];
             state.Frequency.TryGetValue(value, out var current);
@@ -121,11 +121,11 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         state.Index++;
     }
 
-    private static void Unchoose(SubsetWalk state, int[] nums, bool include)
+    private static void Unchoose(SubsetWalk state, int[] nums, Inclusion inclusion)
     {
         state.Index--;
 
-        if (include)
+        if (inclusion == Inclusion.Include)
         {
             var value = nums[state.Index];
             state.Frequency.TryGetValue(value, out var current);
@@ -143,5 +143,14 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         public int Size { get; set; }
 
         public HashMap<int, int> Frequency { get; } = new();
+    }
+
+    // Whether this step of the walk takes nums[Index] into the subset or leaves it out -
+    // the choice Backtrack.Search hands to Choose/Unchoose, named where a bare
+    // true/false at the call site said it only by position.
+    private enum Inclusion
+    {
+        Include,
+        Exclude,
     }
 }

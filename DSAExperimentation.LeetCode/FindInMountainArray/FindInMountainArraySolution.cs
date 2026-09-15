@@ -54,7 +54,9 @@ internal static class FindInMountainArraySolution
         var descending = new OffsetSequence<int>(mountain, peakIndex, mountain.Length - peakIndex);
         var descendingIndex = BinarySearch.Find(descending, target, Descending);
 
-        return descendingIndex is null ? LeetCodeAnswer.None : descendingIndex.Value + peakIndex;
+        return descendingIndex is null
+            ? LeetCodeAnswer.None
+            : AbsoluteIndex(descendingIndex.Value, peakIndex);
     }
 
     // "Is this slot still climbing?" is monotone across the array - true on the
@@ -69,11 +71,28 @@ internal static class FindInMountainArraySolution
         {
             var mid = range.Low + ((range.High - range.Low) / AlgorithmConstants.HalvingFactor);
 
-            range = sequence.Get(mid) < sequence.Get(mid + 1)
-                ? range with { Low = mid + 1 }
-                : range with { High = mid };
+            range = IsStillClimbing(sequence, mid)
+                ? NarrowToUpperHalf(range, mid)
+                : NarrowToLowerHalf(range, mid);
         }
 
         return range.Low;
     }
+
+    // The predicate the peak bisection converges on, read off the slot and its
+    // neighbour: still rising puts the peak at mid or beyond it.
+    private static bool IsStillClimbing(OffsetSequence<int> sequence, int mid)
+        => sequence.Get(mid) < sequence.Get(mid + 1);
+
+    // Which half survives the comparison - the upper one starts past mid, the lower
+    // one keeps mid, since mid is only known to be below the peak.
+    private static SearchRange NarrowToUpperHalf(SearchRange range, int mid)
+        => range with { Low = mid + 1 };
+
+    private static SearchRange NarrowToLowerHalf(SearchRange range, int mid)
+        => range with { High = mid };
+
+    // The window's local index is not the array's index; the window's start has to
+    // come back on.
+    private static int AbsoluteIndex(int localIndex, int windowStart) => localIndex + windowStart;
 }

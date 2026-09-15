@@ -17,11 +17,11 @@ public class HouseRobberVBenchmarks
     private const int MaxValueExclusive = 100_001;
     private const int ColorPoolSize = 5;
 
-    [Params(500, 3_000)]
-    public int HouseCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _colors = null!;
+    private int[] _colors = [];
+    [Params(500, 3_000)]
+    public int HouseCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -17,10 +17,10 @@ internal static class FindBeautifulIndicesInTheGivenArrayISolution
     // The textbook double loop for both occurrence searches, then an O(|A| * |B|)
     // scan pairing every a-occurrence against every b-occurrence. Correct, and the
     // arm the composed strategy below has to beat.
-    public static int[] FindBeautifulIndicesByBruteForce(string s, string a, string b, int k)
+    public static int[] FindBeautifulIndicesByBruteForce(SearchedText s, AnchorPattern a, NearbyPattern b, int k)
     {
-        var aIndices = FindOccurrencesNaive(s, a);
-        var bIndices = FindOccurrencesNaive(s, b);
+        var aIndices = FindOccurrencesNaive(s, a.Text);
+        var bIndices = FindOccurrencesNaive(s, b.Text);
         var result = new List<int>();
 
         foreach (var i in aIndices)
@@ -34,17 +34,20 @@ internal static class FindBeautifulIndicesInTheGivenArrayISolution
         return [.. result];
     }
 
-    private static List<int> FindOccurrencesNaive(string s, string pattern)
+    // Which of the two roles this pattern plays is the caller's business, so the search
+    // itself takes only the text being scanned and the raw text to look for; `s` stays a
+    // SearchedText so the two positions still cannot be handed over the wrong way round.
+    private static List<int> FindOccurrencesNaive(SearchedText s, string pattern)
     {
         var matches = new List<int>();
 
-        for (var i = 0; i + pattern.Length <= s.Length; i++)
+        for (var i = 0; i + pattern.Length <= s.Text.Length; i++)
         {
             var isMatch = true;
 
             for (var j = 0; j < pattern.Length; j++)
             {
-                if (s[i + j] != pattern[j])
+                if (s.Text[i + j] != pattern[j])
                 {
                     isMatch = false;
                     break;
@@ -78,10 +81,10 @@ internal static class FindBeautifulIndicesInTheGivenArrayISolution
     // BinarySearch.LowerBound over the b-occurrences (already ascending, since
     // FindAll discovers them left to right) instead of scanning every b for every
     // a.
-    public static int[] FindBeautifulIndicesByPrefixFunctionSearch(string s, string a, string b, int k)
+    public static int[] FindBeautifulIndicesByPrefixFunctionSearch(SearchedText s, AnchorPattern a, NearbyPattern b, int k)
     {
-        var aIndices = PrefixFunctionSearch.FindAll(s, a);
-        var bIndices = PrefixFunctionSearch.FindAll(s, b);
+        var aIndices = PrefixFunctionSearch.FindAll(s.Text, a.Text);
+        var bIndices = PrefixFunctionSearch.FindAll(s.Text, b.Text);
 
         return CollectNearbyIndices(aIndices, bIndices, k);
     }
@@ -106,4 +109,15 @@ internal static class FindBeautifulIndicesInTheGivenArrayISolution
 
         return [.. result];
     }
+
+    // The three roles a beautiful-index query names, spelled out where a run of bare
+    // `string` positions left them to the caller's memory. `s` is the text being
+    // scanned, `a` the pattern an occurrence of which anchors a beautiful index, and
+    // `b` the pattern that has to occur within k of it - different jobs, so different
+    // types.
+    internal readonly record struct SearchedText(string Text);
+
+    internal readonly record struct AnchorPattern(string Text);
+
+    internal readonly record struct NearbyPattern(string Text);
 }

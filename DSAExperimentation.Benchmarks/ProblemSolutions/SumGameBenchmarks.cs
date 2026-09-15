@@ -13,13 +13,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SumGameBenchmarks
 {
+    private SumGameState _board;
+
     // Kept modest: branching is 10 digits per remaining blank, so the unmemoized
     // tree is already O(10^(2 * BlanksPerSide)) - 4 and 6 total blanks keep
     // BruteForceRecursion in the thousands-to-millions of calls, not billions.
     [Params(2, 3)]
-    public int BlanksPerSide;
-
-    private SumGameState _board;
+    public int BlanksPerSide { get; set; }
 
     [GlobalSetup]
     public void Setup() => _board = new SumGameState(BlanksPerSide, BlanksPerSide, SumDifference: 0);

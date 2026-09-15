@@ -6,9 +6,7 @@ namespace DSAExperimentation.LeetCode.NetworkDelayTime;
 // cover the general "weighted graph node" fixture role for a dozen still-unmigrated
 // problems - duplicating a third copy here would recreate the exact defect this
 // migration exists to remove, not fix it.
-internal sealed class NetworkNode(int id)
+internal sealed record NetworkNode(int Id)
 {
-    public int Id { get; } = id;
-
     public List<(int Weight, NetworkNode Target)> Edges { get; } = [];
 }

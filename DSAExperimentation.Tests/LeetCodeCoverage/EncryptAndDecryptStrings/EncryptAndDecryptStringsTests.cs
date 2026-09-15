@@ -111,29 +111,20 @@ public sealed class EncryptAndDecryptStringsTests
 // One call in an Encrypter script: which of the two operations to invoke and on
 // what word. Pure dispatch, built via the named factories below so a script reads
 // like the LeetCode call sequence it replays.
-public readonly record struct EncrypterCall
+public readonly record struct EncrypterCall(EncrypterCall.OpKind kind, string word)
 {
-    private readonly Kind _kind;
-    private readonly string _word;
+    public static EncrypterCall Encrypt(string word1) => new(OpKind.Encrypt, word1);
 
-    private EncrypterCall(Kind kind, string word)
-    {
-        _kind = kind;
-        _word = word;
-    }
-
-    public static EncrypterCall Encrypt(string word1) => new(Kind.Encrypt, word1);
-
-    public static EncrypterCall Decrypt(string word2) => new(Kind.Decrypt, word2);
+    public static EncrypterCall Decrypt(string word2) => new(OpKind.Decrypt, word2);
 
     // The string LeetCode's own judge output shows for this call - the ciphertext
     // itself for encrypt, the decimal count for decrypt - so one expected value
     // per call covers both operations uniformly.
-    internal string Apply(IEncrypter encrypter) => _kind == Kind.Encrypt
-        ? encrypter.Encrypt(_word)
-        : encrypter.Decrypt(_word).ToString(CultureInfo.InvariantCulture);
+    internal string Apply(IEncrypter encrypter) => kind == OpKind.Encrypt
+        ? encrypter.Encrypt(word)
+        : encrypter.Decrypt(word).ToString(CultureInfo.InvariantCulture);
 
-    private enum Kind
+    public enum OpKind
     {
         Encrypt,
         Decrypt,

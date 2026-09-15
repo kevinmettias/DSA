@@ -9,10 +9,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheSequenceOfStringsAppearedOnTheScreenBenchmarks
 {
-    [Params(100, 400)]
-    public int Length;
+    private string _target = "";
 
-    private string _target = null!;
+    [Params(100, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _target = new string('z', Length);

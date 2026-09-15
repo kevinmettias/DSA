@@ -15,10 +15,10 @@ public class FindMinimumTimeToReachLastRoomIBenchmarks
     private const int MaxMoveTimeExclusive = 200;
     private const int Seed = 3341;
 
-    [Params(20, 60)]
-    public int Size;
+    private int[][] _moveTime = [];
 
-    private int[][] _moveTime = null!;
+    [Params(20, 60)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -26,6 +26,69 @@ internal static class StoneGameVSolution
         return Best(prefix, 0, stoneValue.Length - 1);
     }
 
+    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
+    // (Left, Right) range the recurrence branches on, so each of the O(n^2) distinct
+    // ranges is evaluated once instead of once per parent split that reaches it.
+    public static int MaxScoreByMemoizedRecursion(int[] stoneValue)
+    {
+        var prefix = BuildPrefixSums(stoneValue);
+
+        return Memoizer.Memoize<(int Left, int Right), int>(
+            (0, stoneValue.Length - 1),
+            new BestSplitsOverPrefix(prefix));
+    }
+
+    // The recurrence, as a named type: the best score reachable from one (Left, Right)
+    // range. The prefix-sum table it reads arrives through the primary constructor and
+    // the memoized continuation through `rest`, so neither travels as a delegate.
+    private sealed class BestSplitsOverPrefix(int[] prefix)
+        : IRecurrence<(int Left, int Right), int>
+    {
+        public int Replay(
+            (int Left, int Right) range, IRecurrence<(int Left, int Right), int> rest)
+        {
+            var (left, right) = range;
+
+            if (left >= right)
+            {
+                return 0;
+            }
+
+            var result = 0;
+
+            for (var mid = left; mid < right; mid++)
+            {
+                result = BestForSplit((left, mid, right), result, rest);
+            }
+
+            return result;
+        }
+
+        // A split is the range together with the point inside it, so all three travel
+        // as one argument rather than as a range plus a stray index.
+        private int BestForSplit(
+            (int Left, int Mid, int Right) split,
+            int result,
+            IRecurrence<(int Left, int Right), int> rest)
+        {
+            var (left, mid, right) = split;
+            var leftSum = prefix[mid + 1] - prefix[left];
+            var rightSum = prefix[right + 1] - prefix[mid + 1];
+
+            if (leftSum <= rightSum)
+            {
+                result = Math.Max(result, leftSum + rest.Replay((left, mid), rest));
+            }
+
+            if (rightSum <= leftSum)
+            {
+                result = Math.Max(result, rightSum + rest.Replay((mid + 1, right), rest));
+            }
+
+            return result;
+        }
+    }
+
     private static int Best(int[] prefix, int left, int right)
     {
         if (left >= right)
@@ -37,7 +100,7 @@ internal static class StoneGameVSolution
 
         for (var mid = left; mid < right; mid++)
         {
-            result = BestForSplit(prefix, left, right, mid, result);
+            result = BestForSplit(prefix, (left, mid, right), result);
         }
 
         return result;
@@ -46,8 +109,9 @@ internal static class StoneGameVSolution
     // Whichever side of the split at `mid` sums to no more than the other is the one
     // scored (and recursed into) this round, per Stone Game V's rule that a tie lets
     // either side be kept.
-    private static int BestForSplit(int[] prefix, int left, int right, int mid, int result)
+    private static int BestForSplit(int[] prefix, (int Left, int Mid, int Right) split, int result)
     {
+        var (left, mid, right) = split;
         var leftSum = prefix[mid + 1] - prefix[left];
         var rightSum = prefix[right + 1] - prefix[mid + 1];
 
@@ -59,57 +123,6 @@ internal static class StoneGameVSolution
         if (rightSum <= leftSum)
         {
             result = Math.Max(result, rightSum + Best(prefix, mid + 1, right));
-        }
-
-        return result;
-    }
-
-    // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the exact
-    // (Left, Right) range the recurrence branches on, so each of the O(n^2) distinct
-    // ranges is evaluated once instead of once per parent split that reaches it.
-    public static int MaxScoreByMemoizedRecursion(int[] stoneValue)
-    {
-        var prefix = BuildPrefixSums(stoneValue);
-
-        return Memoizer.Memoize<(int Left, int Right), int>(
-            (0, stoneValue.Length - 1),
-            (range, best) => BestMemoized(prefix, range, best));
-    }
-
-    private static int BestMemoized(int[] prefix, (int Left, int Right) range, Func<(int, int), int> best)
-    {
-        var (left, right) = range;
-
-        if (left >= right)
-        {
-            return 0;
-        }
-
-        var result = 0;
-
-        for (var mid = left; mid < right; mid++)
-        {
-            result = BestForSplitMemoized(prefix, range, mid, result, best);
-        }
-
-        return result;
-    }
-
-    private static int BestForSplitMemoized(
-        int[] prefix, (int Left, int Right) range, int mid, int result, Func<(int, int), int> best)
-    {
-        var (left, right) = range;
-        var leftSum = prefix[mid + 1] - prefix[left];
-        var rightSum = prefix[right + 1] - prefix[mid + 1];
-
-        if (leftSum <= rightSum)
-        {
-            result = Math.Max(result, leftSum + best((left, mid)));
-        }
-
-        if (rightSum <= leftSum)
-        {
-            result = Math.Max(result, rightSum + best((mid + 1, right)));
         }
 
         return result;

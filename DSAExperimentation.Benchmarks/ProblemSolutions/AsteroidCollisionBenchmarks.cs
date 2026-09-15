@@ -21,10 +21,10 @@ public class AsteroidCollisionBenchmarks
     // Coin-flip range: half the asteroids move left (negative), half move right.
     private const int SignCoinFlipRange = 2;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _asteroids = [];
 
-    private int[] _asteroids = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,7 +34,8 @@ public class AsteroidCollisionBenchmarks
             .Select(_ =>
             {
                 var magnitude = random.Next(1, MaxMagnitude);
-                return random.Next(SignCoinFlipRange) == 0 ? magnitude : -magnitude;
+                var movesRight = random.Next(SignCoinFlipRange) == 0;
+                return movesRight ? magnitude : -magnitude;
             })
             .ToArray();
     }

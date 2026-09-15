@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.DeleteNodeInABST;
@@ -10,7 +11,6 @@ namespace DSAExperimentation.LeetCode.DeleteNodeInABST;
 // InOrderTraversal, the composition KthSmallestElementInABSTTests already uses.
 internal static class DeleteNodeInABSTSolution
 {
-    private const int MidpointDivisor = 2;
 
     // The naive approach many first solutions reach for: walk the whole tree
     // in-order, drop the key from the resulting sorted values, and insert what
@@ -63,7 +63,7 @@ internal static class DeleteNodeInABSTSolution
             return;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
         tree.Insert(values[mid]);
         InsertBalanced(tree, values, low, mid - 1);
         InsertBalanced(tree, values, mid + 1, high);

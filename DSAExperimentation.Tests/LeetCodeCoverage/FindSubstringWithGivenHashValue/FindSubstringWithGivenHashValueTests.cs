@@ -46,7 +46,7 @@ public sealed class FindSubstringWithGivenHashValueTests
         string s, int power, int modulo, int k, long hashValue, string expected)
     {
         var found = FindSubstringWithGivenHashValueSolution.TryFindSubstringByWindowRehash(
-            s, new RollingHashLane(power, modulo), k, hashValue, out var substring);
+            s, new RollingHashLane(power, modulo), (WindowLength: k, HashValue: hashValue), out var substring);
 
         AssertFirstMatch(expected, found, substring);
     }
@@ -57,7 +57,7 @@ public sealed class FindSubstringWithGivenHashValueTests
         string s, int power, int modulo, int k, long hashValue, string expected)
     {
         var found = FindSubstringWithGivenHashValueSolution.TryFindSubstringByRollingHash(
-            s, new RollingHashLane(power, modulo), k, hashValue, out var substring);
+            s, new RollingHashLane(power, modulo), (WindowLength: k, HashValue: hashValue), out var substring);
 
         AssertFirstMatch(expected, found, substring);
     }

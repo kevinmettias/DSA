@@ -78,10 +78,13 @@ internal static class TimeNeededToBuyTicketsSolution
 
         for (var index = 0; index < tickets.Length; index++)
         {
-            var turns = index <= k ? target : target - TurnsLostBehindK;
+            var turns = index <= k ? target : TurnsBehindK(target);
             time += Math.Min(tickets[index], turns);
         }
 
         return time;
     }
+
+    // Everyone behind person k loses that last turn, once k has bought out.
+    private static int TurnsBehindK(int target) => target - TurnsLostBehindK;
 }

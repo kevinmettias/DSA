@@ -26,10 +26,10 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
     private const int MaxEdgeWeight = 1_000;
     private const int ExtraEdgeMultiplier = 3;
 
-    [Params(40, 150)]
-    public int NodeCount;
-
     private WeightedEdgeList _graph = null!;
+
+    [Params(40, 150)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

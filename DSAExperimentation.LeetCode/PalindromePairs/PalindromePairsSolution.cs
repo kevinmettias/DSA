@@ -54,7 +54,7 @@ internal static class PalindromePairsSolution
 
             for (var cut = 0; cut <= word.Length; cut++)
             {
-                AddPairsAtCut(word, i, cut, indexOf, pairs);
+                AddPairsAtCut((word, i), cut, indexOf, pairs);
             }
         }
 
@@ -62,26 +62,45 @@ internal static class PalindromePairsSolution
     }
 
     private static void AddPairsAtCut(
-        string word, int i, int cut, HashMap<string, int> indexOf, List<(int, int)> pairs)
+        (string Word, int Index) entry, int cut, HashMap<string, int> indexOf, List<(int, int)> pairs)
     {
-        var prefix = word[..cut];
-        var suffix = word[cut..];
+        var prefix = entry.Word[..cut];
+        var suffix = entry.Word[cut..];
+        var suffixMatch = FindComplementIndex(indexOf, suffix);
 
-        if (IsPalindrome(prefix)
-            && indexOf.TryGetValue(Reverse(suffix), out var suffixMatch)
-            && suffixMatch != i)
+        if (IsPalindrome(prefix) && IsAnotherWord(suffixMatch, entry.Index))
         {
-            pairs.Add((suffixMatch, i));
+            pairs.Add((suffixMatch, entry.Index));
         }
 
-        if (cut != word.Length
-            && IsPalindrome(suffix)
-            && indexOf.TryGetValue(Reverse(prefix), out var prefixMatch)
-            && prefixMatch != i)
+        var prefixMatch = FindComplementIndex(indexOf, prefix);
+
+        if (LeavesPalindromicRightSide(entry.Word, cut, suffix) && IsAnotherWord(prefixMatch, entry.Index))
         {
-            pairs.Add((i, prefixMatch));
+            pairs.Add((entry.Index, prefixMatch));
         }
     }
+
+    // Where the reversed complement of one side sits in the list, or -1 when no such
+    // word is present.
+    private static int FindComplementIndex(HashMap<string, int> indexOf, string side)
+    {
+        if (indexOf.TryGetValue(Reverse(side), out var match))
+        {
+            return match;
+        }
+
+        return -1;
+    }
+
+    // A pair needs two distinct words, so the complement found must be another one.
+    private static bool IsAnotherWord(int matchIndex, int i)
+        => matchIndex >= 0 && matchIndex != i;
+
+    // The cut leaves a right-hand side, and that side already reads as a palindrome,
+    // so a reversed complement on the left completes the pair.
+    private static bool LeavesPalindromicRightSide(string word, int cut, string suffix)
+        => cut != word.Length && IsPalindrome(suffix);
 
     private static bool IsPalindrome(string s)
     {

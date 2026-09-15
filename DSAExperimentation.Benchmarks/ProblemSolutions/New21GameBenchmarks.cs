@@ -18,7 +18,7 @@ public class New21GameBenchmarks
     private const int MaxPts = 6;
 
     [Params(12, 20)]
-    public int K;
+    public int K { get; set; }
 
     [Benchmark(Baseline = true)]
     public double UnmemoizedRecursion() =>

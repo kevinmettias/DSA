@@ -15,7 +15,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class StoneGameIVBenchmarks
 {
     [Params(16, 20)]
-    public int StoneCount;
+    public int StoneCount { get; set; }
 
     [Benchmark(Baseline = true)]
     public bool UnmemoizedRecursion() => StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(StoneCount);

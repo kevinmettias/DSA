@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SearchInABinarySearchTreeBenchmarks
 {
-    [Params(500, 20_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int> _root = null!;
+
     private int _target;
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

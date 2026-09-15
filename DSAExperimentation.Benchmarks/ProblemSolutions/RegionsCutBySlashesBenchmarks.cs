@@ -16,10 +16,10 @@ public class RegionsCutBySlashesBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(30, 150)]
-    public int GridSize;
+    private string[] _grid = [];
 
-    private string[] _grid = null!;
+    [Params(30, 150)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => _grid = RegionsCutBySlashesWorkloads.BuildGrid(GridSize, seed: RandomSeed);

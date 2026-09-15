@@ -13,19 +13,13 @@ public class ValidPalindromeIIBenchmarks
 {
     private const int OffsetDivisor = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _s = BuildInput(Length);
-
-    [Benchmark(Baseline = true)]
-    public bool TryEachSingleDeletion() => ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(_s);
-
-    [Benchmark]
-    public bool MismatchSkipTwoPointer() => ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(_s);
 
     private static string BuildInput(int length)
     {
@@ -39,4 +33,10 @@ public class ValidPalindromeIIBenchmarks
 
         return new string(chars);
     }
+
+    [Benchmark(Baseline = true)]
+    public bool TryEachSingleDeletion() => ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(_s);
+
+    [Benchmark]
+    public bool MismatchSkipTwoPointer() => ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(_s);
 }

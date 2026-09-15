@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CountCollisionsOfMonkeysOnAPolygonBenchmarks
 {
     [Params(1_000, 1_000_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int RepeatedMultiplication() =>

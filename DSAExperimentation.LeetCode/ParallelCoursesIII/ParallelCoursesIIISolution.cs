@@ -27,8 +27,11 @@ internal static class ParallelCoursesIIISolution
     // LeetCode's own input shape: courses are 1-indexed, relations[j] =
     // [prevCourse, nextCourse] means prevCourse must finish before nextCourse may
     // start, and time[i] is course i + 1's duration in months.
-    public static int MinimumTimeByKahnsTopologicalSortDp(int n, int[][] relations, int[] time) =>
-        MinimumTimeByKahnsTopologicalSortDp(BuildCourses(n, relations, time));
+    public static int MinimumTimeByKahnsTopologicalSortDp(int n, int[][] relations, int[] time)
+    {
+        var courses = BuildCourses(n, relations, time);
+        return MinimumTimeByKahnsTopologicalSortDp(courses);
+    }
 
     public static int MinimumTimeByKahnsTopologicalSortDp(List<CourseTimeNode> courses)
     {
@@ -42,7 +45,8 @@ internal static class ParallelCoursesIIISolution
 
         foreach (var course in ordering)
         {
-            best = Math.Max(best, RelaxForward(course, readyAt));
+            var finish = RelaxForward(course, readyAt);
+            best = Math.Max(best, finish);
         }
 
         return best;
@@ -70,8 +74,11 @@ internal static class ParallelCoursesIIISolution
     // to be enumerated in. Deliberately written with BCL collections and no ordering
     // primitive - it is the arm the composed solution above has to justify itself
     // against.
-    public static int MinimumTimeByRepeatedRelaxation(int n, int[][] relations, int[] time) =>
-        MinimumTimeByRepeatedRelaxation(BuildCourses(n, relations, time));
+    public static int MinimumTimeByRepeatedRelaxation(int n, int[][] relations, int[] time)
+    {
+        var courses = BuildCourses(n, relations, time);
+        return MinimumTimeByRepeatedRelaxation(courses);
+    }
 
     public static int MinimumTimeByRepeatedRelaxation(List<CourseTimeNode> courses)
     {

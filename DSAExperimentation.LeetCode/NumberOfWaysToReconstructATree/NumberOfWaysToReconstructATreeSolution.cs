@@ -192,7 +192,12 @@ internal static class NumberOfWaysToReconstructATreeSolution
         var nodes = adjacency.Keys.ToArray();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(
             new ArrayIndexedSequence<int>(nodes),
-            Comparer<int>.Create((a, b) => Degree(adjacency, a).CompareTo(Degree(adjacency, b))));
+            Comparer<int>.Create((a, b) =>
+            {
+                var degreeA = Degree(adjacency, a);
+                var degreeB = Degree(adjacency, b);
+                return degreeA.CompareTo(degreeB);
+            }));
 
         return nodes;
     }
@@ -245,7 +250,8 @@ internal static class NumberOfWaysToReconstructATreeSolution
 
         foreach (var neighbor in neighbors.Keys)
         {
-            candidate = ConsiderNeighbor(candidate, neighbor, Degree(adjacency, neighbor), ownDegree);
+            var neighborDegree = Degree(adjacency, neighbor);
+            candidate = ConsiderNeighbor(candidate, neighbor, neighborDegree, ownDegree);
         }
 
         return candidate;

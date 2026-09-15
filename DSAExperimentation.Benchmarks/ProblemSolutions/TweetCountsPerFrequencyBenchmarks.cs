@@ -1,5 +1,6 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.TweetCountsPerFrequency.TweetCountsPerFrequencySolution;
+using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.TweetCountsPerFrequency;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -27,22 +28,21 @@ public class TweetCountsPerFrequencyBenchmarks
     private const int RandomSeed = 1348; // LC 1348
     private const string NamePrefix = "tweet";
     private const int HourBucketCount = 10;
-    private const string QueryName = "tweet0";
     private const int WindowStart = 0;
     private const int WindowEnd = (HourBucketCount * SecondsPerHour) - 1;
 
-    [Params(2_000, 20_000)]
-    public int TweetCount;
+    private TweetCountsPerFrequencySolution.ITweetCountsStrategy _flatList = null!;
 
-    private ITweetCountsStrategy _flatList = null!;
-    private ITweetCountsStrategy _grouped = null!;
+    private TweetCountsPerFrequencySolution.ITweetCountsStrategy _grouped = null!;
+    [Params(2_000, 20_000)]
+    public int TweetCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _flatList = new TweetCountsByFlatListFilter();
-        _grouped = new TweetCountsByHashMapGroupedByName();
+        _flatList = new TweetCountsPerFrequencySolution.TweetCountsByFlatListFilter();
+        _grouped = new TweetCountsPerFrequencySolution.TweetCountsByHashMapGroupedByName();
 
         for (var i = 0; i < TweetCount; i++)
         {
@@ -60,6 +60,7 @@ public class TweetCountsPerFrequencyBenchmarks
     [Benchmark]
     public int HashMapGroupedByName() => Query(_grouped);
 
-    private static int Query(ITweetCountsStrategy strategy) =>
-        strategy.GetTweetCountsPerFrequency(Hour, QueryName, WindowStart, WindowEnd).Sum();
+    private static int Query(TweetCountsPerFrequencySolution.ITweetCountsStrategy strategy) =>
+        strategy.GetTweetCountsPerFrequency(
+            TweetCountsScenario.QueryFrequency, TweetCountsScenario.QueryName, WindowStart, WindowEnd).Sum();
 }

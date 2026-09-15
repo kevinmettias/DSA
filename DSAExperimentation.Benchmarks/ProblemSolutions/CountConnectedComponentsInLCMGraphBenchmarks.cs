@@ -14,10 +14,10 @@ public class CountConnectedComponentsInLCMGraphBenchmarks
     private const int Threshold = 2_000;
     private const int Seed = 3378;
 
-    [Params(50, 400)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(50, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,7 +27,8 @@ public class CountConnectedComponentsInLCMGraphBenchmarks
 
         while (values.Count < Length)
         {
-            values.Add(random.Next(1, Threshold + 1));
+            var candidate = random.Next(1, Threshold + 1);
+            values.Add(candidate);
         }
 
         _nums = values.ToArray();

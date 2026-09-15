@@ -9,8 +9,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // and both run to completion.
 internal static class SubtreeOfAnotherTreeWorkloads
 {
-    public const int SubRootSizeDivisor = 2;
-
     public static BinaryTreeNode<int> BuildLeftChain(int length, int lastValue)
     {
         var root = new BinaryTreeNode<int>(length == 1 ? lastValue : 1);
@@ -18,7 +16,8 @@ internal static class SubtreeOfAnotherTreeWorkloads
 
         for (var i = 1; i < length; i++)
         {
-            current.Left = new BinaryTreeNode<int>(i == length - 1 ? lastValue : 1);
+            var isLastNode = i == length - 1;
+            current.Left = new BinaryTreeNode<int>(isLastNode ? lastValue : 1);
             current = current.Left;
         }
 

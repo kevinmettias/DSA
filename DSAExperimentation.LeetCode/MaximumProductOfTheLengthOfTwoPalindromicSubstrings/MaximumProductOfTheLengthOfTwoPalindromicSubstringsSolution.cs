@@ -57,8 +57,8 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
         {
             var radius = 0;
 
-            while (center - radius - 1 >= lo && center + radius + 1 <= hi
-                && s[center - radius - 1] == s[center + radius + 1])
+            while (HasRoomToExpand(center, radius, lo, hi)
+                && OuterCharactersMirror(s, center, radius))
             {
                 radius++;
             }
@@ -68,6 +68,14 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
 
         return best;
     }
+
+    // The pair of characters one step outside the current radius has to stay inside
+    // s[lo..hi] for the palindrome to keep growing within the window.
+    private static bool HasRoomToExpand(int center, int radius, int lo, int hi) =>
+        center - radius - 1 >= lo && center + radius + 1 <= hi;
+
+    private static bool OuterCharactersMirror(string s, int center, int radius) =>
+        s[center - radius - 1] == s[center + radius + 1];
 
     // One O(n) Manacher pass, then two sweeps over its per-center radii.
     public static long MaxProductByManacherRadii(string s)
@@ -88,20 +96,20 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
 
     // best[i] = length of the longest odd palindrome entirely within s[0..i].
     private static int[] BestPalindromeEndingAtOrBefore(int length, int[] oddRadii) =>
-        BestPalindromeInDirection(length, oddRadii, forward: true);
+        BestPalindromeInDirection(length, oddRadii, SweepDirection.Forward);
 
     // best[i] = length of the longest odd palindrome entirely within s[i..length-1].
     private static int[] BestPalindromeStartingAtOrAfter(int length, int[] oddRadii) =>
-        BestPalindromeInDirection(length, oddRadii, forward: false);
+        BestPalindromeInDirection(length, oddRadii, SweepDirection.Backward);
 
     // The two directions read the same per-center radii and differ only in which
     // edge of each nested palindrome they mark and which way the running max sweeps.
-    private static int[] BestPalindromeInDirection(int length, int[] oddRadii, bool forward)
+    private static int[] BestPalindromeInDirection(int length, int[] oddRadii, SweepDirection direction)
     {
         var best = InitializeBest(length);
-        FillFromRadii(best, oddRadii, forward);
+        FillFromRadii(best, oddRadii, direction);
 
-        if (forward)
+        if (direction == SweepDirection.Forward)
         {
             SweepForward(best);
         }
@@ -121,17 +129,26 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
         return best;
     }
 
-    private static void FillFromRadii(int[] best, int[] oddRadii, bool forward)
+    private static void FillFromRadii(int[] best, int[] oddRadii, SweepDirection direction)
     {
         for (var center = 0; center < best.Length; center++)
         {
             for (var radius = 1; radius <= oddRadii[center]; radius++)
             {
-                var edge = forward ? center + radius - 1 : center - radius + 1;
+                var edge = direction == SweepDirection.Forward
+                    ? RightEdge(center, radius)
+                    : LeftEdge(center, radius);
                 best[edge] = Math.Max(best[edge], (RadiusToDiameterMultiplier * radius) - 1);
             }
         }
     }
+
+    // A palindrome of this radius at this center reaches radius - 1 past the center
+    // on each side, so its right edge sits that far right and its left edge that far
+    // left of the center.
+    private static int RightEdge(int center, int radius) => center + radius - 1;
+
+    private static int LeftEdge(int center, int radius) => center - radius + 1;
 
     private static void SweepForward(int[] best)
     {
@@ -147,5 +164,17 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
         {
             best[i] = Math.Max(best[i], best[i + 1]);
         }
+    }
+
+    // Which edge of every nested palindrome gets marked, and which way the running
+    // max then sweeps, is a state rather than a flag - the two directions are named
+    // so the call site says which one it wants.
+    private enum SweepDirection
+    {
+        // Mark the right edge of each palindrome, then running-max forward.
+        Forward,
+
+        // Mark the left edge of each palindrome, then running-max backward.
+        Backward,
     }
 }

@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges.MinimumNumberOfDaysToEatNOrangesSolution;
+using DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimumNumberOfDaysToEatNOrangesBenchmarks
 {
     [Params(100_000, 2_000_000_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => MinDaysByUnmemoizedRecursion(N);
+    public int UnmemoizedRecursion() => MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByUnmemoizedRecursion(N);
 
     [Benchmark]
-    public int MemoizedRecurrence() => MinDaysByMemoizedRecurrence(N);
+    public int MemoizedRecurrence() => MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByMemoizedRecurrence(N);
 }

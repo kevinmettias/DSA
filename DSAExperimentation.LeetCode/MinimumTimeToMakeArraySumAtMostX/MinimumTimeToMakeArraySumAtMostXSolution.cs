@@ -41,7 +41,7 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
             FillRow(dp, pairs[i - 1], i, n);
         }
 
-        return FirstSecondAtOrBelow(nums1, nums2, x, t => dp[n, t]);
+        return FirstSecondAtOrBelow(nums1, nums2, x, new ReductionByDenseTable(dp, n));
     }
 
     // Row i of the dense table: either the pair is left alone, keeping row i-1's
@@ -85,7 +85,7 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
             }
         }
 
-        return FirstSecondAtOrBelow(nums1, nums2, x, t => dp[t]);
+        return FirstSecondAtOrBelow(nums1, nums2, x, new ReductionByRollingRow(dp));
     }
 
     private static void SortAscendingByNums2((int Nums1, int Nums2)[] pairs)
@@ -110,14 +110,14 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
 
     // After t seconds the untouched entries have each grown t times, so the total
     // is sum1 + t*sum2 less whatever the best t zeroings saved.
-    private static int FirstSecondAtOrBelow(int[] nums1, int[] nums2, int x, Func<int, long> reductionAt)
+    private static int FirstSecondAtOrBelow(int[] nums1, int[] nums2, int x, IReductionTotals reductionAt)
     {
         var sum1 = Total(nums1);
         var sum2 = Total(nums2);
 
         for (var t = 0; t <= nums1.Length; t++)
         {
-            if (sum1 + (sum2 * t) - reductionAt(t) <= x)
+            if (sum1 + (sum2 * t) - reductionAt.TotalAt(t) <= x)
             {
                 return t;
             }
@@ -136,5 +136,28 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
         }
 
         return total;
+    }
+
+    // The one question the two arms answer differently: the best total reduction that
+    // zeroing exactly t of the sorted pairs can achieve. What the argument counts -
+    // the pairs zeroed so far, which is also the second the next zeroing lands in - is
+    // named here for both arms to share, which a bare callable had nowhere to put.
+    private interface IReductionTotals
+    {
+        long TotalAt(int second);
+    }
+
+    // The dense table's final row read across its columns: dp[n, t] is the best
+    // reduction over all n pairs with exactly t of them zeroed.
+    private sealed class ReductionByDenseTable(long[,] table, int finalRow) : IReductionTotals
+    {
+        public long TotalAt(int second) => table[finalRow, second];
+    }
+
+    // The collapsed table's single row: running the j loop backwards leaves dp[t]
+    // holding the same figure the dense table's final row does.
+    private sealed class ReductionByRollingRow(long[] row) : IReductionTotals
+    {
+        public long TotalAt(int second) => row[second];
     }
 }

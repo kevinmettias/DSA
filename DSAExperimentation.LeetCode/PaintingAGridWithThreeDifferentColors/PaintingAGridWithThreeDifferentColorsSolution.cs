@@ -47,7 +47,7 @@ internal static class PaintingAGridWithThreeDifferentColorsSolution
 
         var total = Memoizer.Memoize<(int Column, int PreviousPattern), long>(
             (0, NoPreviousPattern),
-            (state, recurse) => ComputeColumnTotal(state, recurse, patterns, columns));
+            new ColumnTotals(patterns, columns));
 
         return (int)total;
     }
@@ -84,29 +84,33 @@ internal static class PaintingAGridWithThreeDifferentColorsSolution
         }
     }
 
-    private static long ComputeColumnTotal(
-        (int Column, int PreviousPattern) state,
-        Func<(int Column, int PreviousPattern), long> recurse,
-        List<int[]> patterns,
-        int columns)
+    // The recurrence itself, named: one column past the last is a finished grid, and
+    // otherwise every pattern compatible with the column to its left contributes the
+    // completions that follow it.
+    private sealed class ColumnTotals(List<int[]> patterns, int columns)
+        : IRecurrence<(int Column, int PreviousPattern), long>
     {
-        if (state.Column == columns)
+        public long Replay(
+            (int Column, int PreviousPattern) state, IRecurrence<(int Column, int PreviousPattern), long> rest)
         {
-            return 1L;
-        }
-
-        var total = 0L;
-
-        for (var i = 0; i < patterns.Count; i++)
-        {
-            if (state.PreviousPattern == NoPreviousPattern ||
-                IsCompatible(patterns[state.PreviousPattern], patterns[i]))
+            if (state.Column == columns)
             {
-                total = (total + recurse((state.Column + 1, i))) % ModularArithmetic.Modulo;
+                return 1L;
             }
-        }
 
-        return total;
+            var total = 0L;
+
+            for (var i = 0; i < patterns.Count; i++)
+            {
+                if (state.PreviousPattern == NoPreviousPattern ||
+                    IsCompatible(patterns[state.PreviousPattern], patterns[i]))
+                {
+                    total = (total + rest.Replay((state.Column + 1, i), rest)) % ModularArithmetic.Modulo;
+                }
+            }
+
+            return total;
+        }
     }
 
     // Two adjacent columns are compatible when no row holds the same color twice.

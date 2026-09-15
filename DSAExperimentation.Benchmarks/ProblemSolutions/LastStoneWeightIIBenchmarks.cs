@@ -15,10 +15,10 @@ public class LastStoneWeightIIBenchmarks
     // Exclusive upper bound for the random stone weights: weights are 1..100.
     private const int StoneWeightUpperBoundExclusive = 100;
 
-    [Params(30, 200)]
-    public int Length;
+    private int[] _stones = [];
 
-    private int[] _stones = null!;
+    [Params(30, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -16,10 +16,10 @@ public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
     private const int RandomSeed = 1290; // LeetCode problem number
     private const int BitValueUpperBoundExclusive = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,14 +27,6 @@ public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
         var random = new Random(RandomSeed);
         _head = BuildRandomBitList(random, Length);
     }
-
-    [Benchmark(Baseline = true)]
-    public int CollectThenFold() =>
-        ConvertBinaryNumberInALinkedListToIntegerSolution.GetDecimalValueByCollectThenFold(_head);
-
-    [Benchmark]
-    public int SinglePassShift() =>
-        ConvertBinaryNumberInALinkedListToIntegerSolution.GetDecimalValueBySinglePassShift(_head);
 
     private static SinglyLinkedListNode<int> BuildRandomBitList(Random random, int length)
     {
@@ -49,4 +41,12 @@ public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
 
         return head;
     }
+
+    [Benchmark(Baseline = true)]
+    public int CollectThenFold() =>
+        ConvertBinaryNumberInALinkedListToIntegerSolution.GetDecimalValueByCollectThenFold(_head);
+
+    [Benchmark]
+    public int SinglePassShift() =>
+        ConvertBinaryNumberInALinkedListToIntegerSolution.GetDecimalValueBySinglePassShift(_head);
 }

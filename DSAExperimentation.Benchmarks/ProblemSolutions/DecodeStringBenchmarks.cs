@@ -9,10 +9,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DecodeStringBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private string _encoded = "";
 
-    private string _encoded = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _encoded = DecodeStringWorkloads.BuildEncoded(Length);

@@ -12,19 +12,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FindTheNumberOfWaysToPlacePeopleIIBenchmarks for the same comparison at the
 // scale that actually favors the sweep strategy. SortedSweep is handed the
 // pre-sorted ArrayIndexedSequence<int[]> its hoisted overload takes, sorted
-// by the solution's own ByXThenDescendingY rule, so sorting is charged to
-// [GlobalSetup] rather than to the sweep being measured.
+// by PointOrder.ByXThenDescendingY, the rule the sweep is defined over, so
+// sorting is charged to [GlobalSetup] rather than to the sweep being measured.
 [MemoryDiagnoser]
 public class FindTheNumberOfWaysToPlacePeopleIBenchmarks
 {
     private const int RandomSeed = 3025;
     private const int MaxCoordinateExclusive = 51;
 
-    [Params(10, 50)]
-    public int Length;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
     private ArrayIndexedSequence<int[]> _sortedPoints;
+    [Params(10, 50)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -41,7 +41,7 @@ public class FindTheNumberOfWaysToPlacePeopleIBenchmarks
 
         _sortedPoints = new ArrayIndexedSequence<int[]>((int[][])_points.Clone());
         MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(
-            _sortedPoints, FindTheNumberOfWaysToPlacePeopleISolution.ByXThenDescendingY);
+            _sortedPoints, PointOrder.ByXThenDescendingY);
     }
 
     [Benchmark(Baseline = true)]

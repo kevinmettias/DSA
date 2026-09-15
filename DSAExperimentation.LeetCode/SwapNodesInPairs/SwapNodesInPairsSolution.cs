@@ -39,6 +39,14 @@ internal static class SwapNodesInPairsSolution
     // justify itself against.
     public static SinglyLinkedListNode<int>? SwapPairsByArrayRoundTrip(SinglyLinkedListNode<int>? head)
     {
+        var array = CollectValues(head);
+        SwapAdjacentEntries(array);
+
+        return BuildList(array);
+    }
+
+    private static int[] CollectValues(SinglyLinkedListNode<int>? head)
+    {
         var values = new List<int>();
 
         for (var node = head; node is not null; node = node.Next)
@@ -46,13 +54,19 @@ internal static class SwapNodesInPairsSolution
             values.Add(node.Value);
         }
 
-        var array = values.ToArray();
+        return values.ToArray();
+    }
 
+    private static void SwapAdjacentEntries(int[] array)
+    {
         for (var i = 0; i + 1 < array.Length; i += PairStride)
         {
             (array[i], array[i + 1]) = (array[i + 1], array[i]);
         }
+    }
 
+    private static SinglyLinkedListNode<int>? BuildList(int[] array)
+    {
         var dummy = new SinglyLinkedListNode<int>(0);
         var tail = dummy;
 

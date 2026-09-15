@@ -12,10 +12,10 @@ public class MaximumNumberOfCoinsYouCanGetBenchmarks
     private const int RandomSeed = 1561; // LC problem number
     private const int MaxPileValueExclusive = 10_000;
 
-    [Params(300, 3_000)]
-    public int PileCount;
+    private int[] _piles = [];
 
-    private int[] _piles = null!;
+    [Params(300, 3_000)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

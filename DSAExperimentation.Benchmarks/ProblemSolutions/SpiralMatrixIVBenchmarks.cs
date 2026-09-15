@@ -17,21 +17,13 @@ public class SpiralMatrixIVBenchmarks
     private const int RandomSeed = 2326; // LC problem number
     private const int NodeValueExclusiveUpperBound = 1_000;
 
-    [Params(50, 200)]
-    public int Size;
-
     private SinglyLinkedListNode<int> _head = null!;
+
+    [Params(50, 200)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup() => _head = BuildRandomList(Size * Size);
-
-    [Benchmark(Baseline = true)]
-    public int[][] DirectionArrayWithVisitedTracking() =>
-        SpiralMatrixIVSolution.SpiralMatrixByDirectionArray(Size, Size, _head);
-
-    [Benchmark]
-    public int[][] BoundaryShrinkingSpiralWalk() =>
-        SpiralMatrixIVSolution.SpiralMatrixByBoundaryShrink(Size, Size, _head);
 
     private static SinglyLinkedListNode<int> BuildRandomList(int length)
     {
@@ -47,4 +39,12 @@ public class SpiralMatrixIVBenchmarks
 
         return head;
     }
+
+    [Benchmark(Baseline = true)]
+    public int[][] DirectionArrayWithVisitedTracking() =>
+        SpiralMatrixIVSolution.SpiralMatrixByDirectionArray(Size, Size, _head);
+
+    [Benchmark]
+    public int[][] BoundaryShrinkingSpiralWalk() =>
+        SpiralMatrixIVSolution.SpiralMatrixByBoundaryShrink(Size, Size, _head);
 }

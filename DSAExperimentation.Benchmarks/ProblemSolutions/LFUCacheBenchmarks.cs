@@ -16,13 +16,54 @@ public class LFUCacheBenchmarks
 {
     private const int Seed = 460;
 
-    [Params(200, 2_000)]
-    public int Capacity;
+    private List<Func<ICache<int, int>, int?>> _script = new();
 
-    private List<Func<ICache<int, int>, int?>> _script = null!;
+    [Params(200, 2_000)]
+    public int Capacity { get; set; }
 
     [GlobalSetup]
     public void Setup() => _script = BuildScript(Capacity, new Random(Seed));
+
+    private static List<Func<ICache<int, int>, int?>> BuildScript(int capacity, Random random)
+    {
+        var script = new List<Func<ICache<int, int>, int?>>();
+
+        for (var key = 0; key < capacity; key++)
+        {
+            var value = random.Next(0, capacity);
+            script.Add(cache =>
+            {
+                cache.Set(key, value);
+                return null;
+            });
+        }
+
+        var roundKeyUpperBound = capacity * 2;
+
+        for (var round = 0; round < capacity; round++)
+        {
+            AppendRound(script, random, capacity, roundKeyUpperBound);
+        }
+
+        return script;
+    }
+
+    // The get/put pair one measured round replays: a get of a key drawn from the wider range
+    // the later rounds reach over, then a put of a fresh value under another such key.
+    private static void AppendRound(
+        List<Func<ICache<int, int>, int?>> script, Random random, int capacity, int roundKeyUpperBound)
+    {
+        var getKey = random.Next(0, roundKeyUpperBound);
+        script.Add(cache => cache.TryGetValue(getKey, out var value) ? value : -1);
+
+        var putKey = random.Next(0, roundKeyUpperBound);
+        var putValue = random.Next(0, capacity);
+        script.Add(cache =>
+        {
+            cache.Set(putKey, putValue);
+            return null;
+        });
+    }
 
     [Benchmark(Baseline = true)]
     public long DictionaryLinearScan() => Replay(LFUCacheSolution.CreateByDictionaryLinearScan(Capacity));
@@ -43,38 +84,5 @@ public class LFUCacheBenchmarks
         }
 
         return executedValueSum;
-    }
-
-    private static List<Func<ICache<int, int>, int?>> BuildScript(int capacity, Random random)
-    {
-        var script = new List<Func<ICache<int, int>, int?>>();
-
-        for (var key = 0; key < capacity; key++)
-        {
-            var value = random.Next(0, capacity);
-            script.Add(cache =>
-            {
-                cache.Set(key, value);
-                return null;
-            });
-        }
-
-        var roundKeyUpperBound = capacity * 2;
-
-        for (var round = 0; round < capacity; round++)
-        {
-            var getKey = random.Next(0, roundKeyUpperBound);
-            script.Add(cache => cache.TryGetValue(getKey, out var value) ? value : -1);
-
-            var putKey = random.Next(0, roundKeyUpperBound);
-            var putValue = random.Next(0, capacity);
-            script.Add(cache =>
-            {
-                cache.Set(putKey, putValue);
-                return null;
-            });
-        }
-
-        return script;
     }
 }

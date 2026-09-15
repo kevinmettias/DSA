@@ -13,11 +13,11 @@ public class CountCellsInOverlappingHorizontalAndVerticalSubstringsBenchmarks
 {
     private const int Seed = 3529;
 
-    [Params(60, 300)]
-    public int GridSize;
+    private char[][] _grid = [];
 
-    private char[][] _grid = null!;
-    private string _pattern = null!;
+    private string _pattern = "";
+    [Params(60, 300)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup() => (_grid, _pattern) = OverlappingSubstringGridWorkloads.Build(GridSize, Seed);

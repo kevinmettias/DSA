@@ -17,15 +17,17 @@ internal static class SubstringMatchingPatternSolution
     // each directly against prefix/suffix with plain BCL span comparisons -
     // deliberately without this repo's string-matching primitives, the arm the KMP
     // strategy below has to justify itself against.
-    public static bool HasMatchByBruteForce(string s, string p)
+    public static bool HasMatchByBruteForce(SubjectText s, WildcardPattern p)
     {
-        var (prefix, suffix) = SplitOnWildcard(p);
+        var (prefix, suffix) = SplitOnWildcard(p.Text);
 
-        for (var start = 0; start <= s.Length; start++)
+        for (var start = 0; start <= s.Text.Length; start++)
         {
-            for (var end = start; end <= s.Length; end++)
+            for (var end = start; end <= s.Text.Length; end++)
             {
-                if (IsWildcardMatch(s.AsSpan(start, end - start), prefix, suffix))
+                var window = s.Text.AsSpan(start, end - start);
+
+                if (IsWildcardMatch(window, prefix, suffix))
                 {
                     return true;
                 }
@@ -43,12 +45,12 @@ internal static class SubstringMatchingPatternSolution
     // one O(s.Length + prefix.Length) pass locates every prefix occurrence, one more
     // every suffix occurrence, and the answer is a single comparison between the
     // earliest prefix start and the latest suffix start.
-    public static bool HasMatchByPrefixFunctionSearch(string s, string p)
+    public static bool HasMatchByPrefixFunctionSearch(SubjectText s, WildcardPattern p)
     {
-        var (prefix, suffix) = SplitOnWildcard(p);
+        var (prefix, suffix) = SplitOnWildcard(p.Text);
 
-        var prefixStarts = PrefixFunctionSearch.FindAll(s, prefix);
-        var suffixStarts = PrefixFunctionSearch.FindAll(s, suffix);
+        var prefixStarts = PrefixFunctionSearch.FindAll(s.Text, prefix);
+        var suffixStarts = PrefixFunctionSearch.FindAll(s.Text, suffix);
 
         if (prefixStarts.Count == 0 || suffixStarts.Count == 0)
         {

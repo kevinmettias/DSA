@@ -12,7 +12,7 @@ public class PowXnBenchmarks
     private const double Base = 1.0000001;
 
     [Params(10_000, 1_000_000)]
-    public int Exponent;
+    public int Exponent { get; set; }
 
     [Benchmark(Baseline = true)]
     public double RepeatedMultiplication() => PowXnSolution.PowByRepeatedMultiplication(Base, Exponent);

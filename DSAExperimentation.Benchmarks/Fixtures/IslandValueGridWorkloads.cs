@@ -19,7 +19,8 @@ internal static class IslandValueGridWorkloads
 
             for (var col = 0; col < cols; col++)
             {
-                grid[row][col] = random.Next(WaterChance) == 0 ? 0 : random.Next(1, LandValueUpperBound);
+                var isWater = random.Next(WaterChance) == 0;
+                grid[row][col] = isWater ? 0 : random.Next(1, LandValueUpperBound);
             }
         }
 

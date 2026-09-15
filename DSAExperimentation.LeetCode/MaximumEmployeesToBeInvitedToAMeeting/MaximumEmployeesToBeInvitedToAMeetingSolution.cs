@@ -73,7 +73,7 @@ internal static class MaximumEmployeesToBeInvitedToAMeetingSolution
         }
     }
 
-    private sealed class PeelState
+    private sealed record PeelState
     {
         public int[] InDegree { get; }
 
@@ -142,7 +142,7 @@ internal static class MaximumEmployeesToBeInvitedToAMeetingSolution
         return cycle;
     }
 
-    private sealed class CycleWalkContext
+    private sealed record CycleWalkContext
     {
         public int[] Favorite { get; }
 

@@ -24,7 +24,11 @@ internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, 
     private const int MaskCount = 1 << DigitCount;
     private const long Unreachable = long.MinValue / 2;
 
-    private static int[] _vals = [];
+    // IFoldAlgebra is static-abstract: the algebra IS the type argument, so no instance of it
+    // exists to own per-call input, and a plain static would let two folds running on different
+    // threads read each other's values mid-walk. The AsyncLocal gives the values an owner - the
+    // calling flow - so each fold sees only the values its own Prepare was handed.
+    private static readonly AsyncLocal<int[]> Vals = new();
 
     public static (long[] Dp, long ScoreSum) Empty => (EmptyDp(), 0);
 
@@ -32,7 +36,7 @@ internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, 
     // the same "external state stashed before the fold starts" shape
     // RoomWaysPrecomputedFactorialAlgebra.Prepare uses, since a static-abstract
     // algebra carries no instance state of its own.
-    public static void Prepare(int[] vals) => _vals = vals;
+    public static void Prepare(int[] vals) => Vals.Value = vals;
 
     public static (long[] Dp, long ScoreSum) Combine(
         RootedTreeNode node, IReadOnlyList<(long[] Dp, long ScoreSum)> children)
@@ -51,23 +55,6 @@ internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, 
         return (merged, childScoreSum + MaxOf(merged));
     }
 
-    // A one-item "child" that either contributes this node's own value or nothing -
-    // merged through the same disjoint-mask knapsack as a real child, so a value
-    // whose own digits repeat (its mask computation fails) simply leaves nothing
-    // beyond the always-present empty choice.
-    private static long[] OwnValueDp(RootedTreeNode node)
-    {
-        var dp = EmptyDp();
-        var value = _vals[node.Id];
-
-        if (TryDigitMask(value, out var mask))
-        {
-            dp[mask] = value;
-        }
-
-        return dp;
-    }
-
     private static long[] MergeDisjoint(long[] left, long[] right)
     {
         var next = EmptyDp();
@@ -79,24 +66,69 @@ internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, 
                 continue;
             }
 
-            for (var rightMask = 0; rightMask < MaskCount; rightMask++)
-            {
-                if (right[rightMask] == Unreachable || (leftMask & rightMask) != 0)
-                {
-                    continue;
-                }
-
-                var combinedMask = leftMask | rightMask;
-                var combinedScore = left[leftMask] + right[rightMask];
-
-                if (combinedScore > next[combinedMask])
-                {
-                    next[combinedMask] = combinedScore;
-                }
-            }
+            MergeAcrossRightMasks(left, right, next, leftMask);
         }
 
         return next;
+    }
+
+    // Folds every right-hand mask disjoint from leftMask into next: the union's own
+    // digits are free, so the two scores simply add and the better one wins.
+    private static void MergeAcrossRightMasks(long[] left, long[] right, long[] next, int leftMask)
+    {
+        for (var rightMask = 0; rightMask < MaskCount; rightMask++)
+        {
+            if (right[rightMask] == Unreachable || (leftMask & rightMask) != 0)
+            {
+                continue;
+            }
+
+            var combinedMask = leftMask | rightMask;
+            var combinedScore = left[leftMask] + right[rightMask];
+
+            if (combinedScore > next[combinedMask])
+            {
+                next[combinedMask] = combinedScore;
+            }
+        }
+    }
+
+    // A one-item "child" that either contributes this node's own value or nothing -
+    // merged through the same disjoint-mask knapsack as a real child, so a value
+    // whose own digits repeat (its mask computation fails) simply leaves nothing
+    // beyond the always-present empty choice.
+    private static long[] OwnValueDp(RootedTreeNode node)
+    {
+        var dp = EmptyDp();
+        var value = Vals.Value[node.Id];
+
+        if (TryDigitMask(value, out var mask))
+        {
+            dp[mask] = value;
+        }
+
+        return dp;
+    }
+
+    private static bool TryDigitMask(int value, out int mask)
+    {
+        mask = 0;
+
+        while (value > 0)
+        {
+            var bit = 1 << (value % DigitCount);
+
+            if ((mask & bit) != 0)
+            {
+                mask = 0;
+                return false;
+            }
+
+            mask |= bit;
+            value /= DigitCount;
+        }
+
+        return true;
     }
 
     private static long MaxOf(long[] dp)
@@ -120,26 +152,5 @@ internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, 
         Array.Fill(dp, Unreachable);
         dp[0] = 0;
         return dp;
-    }
-
-    private static bool TryDigitMask(int value, out int mask)
-    {
-        mask = 0;
-
-        while (value > 0)
-        {
-            var bit = 1 << (value % DigitCount);
-
-            if ((mask & bit) != 0)
-            {
-                mask = 0;
-                return false;
-            }
-
-            mask |= bit;
-            value /= DigitCount;
-        }
-
-        return true;
     }
 }

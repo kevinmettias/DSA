@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.SubrectangleQueries.SubrectangleQueriesSolution;
+using DSAExperimentation.LeetCode.SubrectangleQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -16,16 +16,16 @@ public class SubrectangleQueriesBenchmarks
     private const int QueryCount = 200;
     private const int UpdateSeed = 1;
 
-    [Params(20, 100)]
-    public int Size;
+    private (SubrectangleQueriesSolution.SubrectangleBounds Bounds, int Value)[] _updates = [];
 
-    private (SubrectangleBounds Bounds, int Value)[] _updates = null!;
+    [Params(20, 100)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(UpdateSeed);
-        _updates = new (SubrectangleBounds, int)[QueryCount];
+        _updates = new (SubrectangleQueriesSolution.SubrectangleBounds, int)[QueryCount];
 
         for (var i = 0; i < QueryCount; i++)
         {
@@ -33,19 +33,19 @@ public class SubrectangleQueriesBenchmarks
             var col1 = random.Next(0, Size);
             var row2 = random.Next(row1, Size);
             var col2 = random.Next(col1, Size);
-            _updates[i] = (new SubrectangleBounds(row1, col1, row2, col2), i);
+            _updates[i] = (new SubrectangleQueriesSolution.SubrectangleBounds(row1, col1, row2, col2), i);
         }
     }
 
     [Benchmark(Baseline = true)]
-    public int ArrayBacked() => Replay(new SubrectangleQueriesByArrayBacked(Size, Size));
+    public int ArrayBacked() => Replay(new SubrectangleQueriesSolution.SubrectangleQueriesByArrayBacked(Size, Size));
 
     [Benchmark]
-    public int DynamicArrayBacked() => Replay(new SubrectangleQueriesByDynamicArrayBacked(Size, Size));
+    public int DynamicArrayBacked() => Replay(new SubrectangleQueriesSolution.SubrectangleQueriesByDynamicArrayBacked(Size, Size));
 
     // Returns the far-corner cell rather than discarding the result, so the JIT
     // cannot eliminate the replay as dead code.
-    private int Replay(ISubrectangleQueries queries)
+    private int Replay(SubrectangleQueriesSolution.ISubrectangleQueries queries)
     {
         foreach (var (bounds, value) in _updates)
         {

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 
@@ -13,7 +14,6 @@ namespace DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 // index, exactly the "sorted ascending" shape LowerBound already assumes.
 internal static class MedianOfTwoSortedArraysSolution
 {
-    private const int HalfSplitDivisor = 2;
     private const int ParityModulus = 2;
     private const double AverageDivisor = 2.0;
 
@@ -24,12 +24,16 @@ internal static class MedianOfTwoSortedArraysSolution
     public static double FindMedianByMergeAndSort(int[] nums1, int[] nums2)
     {
         var merged = nums1.Concat(nums2).OrderBy(value => value).ToArray();
-        var mid = merged.Length / HalfSplitDivisor;
+        var mid = merged.Length / AlgorithmConstants.HalvingFactor;
+        var hasOddLength = merged.Length % ParityModulus == 1;
 
-        return merged.Length % ParityModulus == 1
-            ? merged[mid]
-            : (merged[mid - 1] + merged[mid]) / AverageDivisor;
+        return hasOddLength
+            ? ElementAt(merged, mid)
+            : AverageOfMiddleTwo(merged, mid);
     }
+
+    private static double AverageOfMiddleTwo(int[] values, int mid)
+        => (values[mid - 1] + values[mid]) / AverageDivisor;
 
     public static double FindMedianByBinarySearchPartition(int[] nums1, int[] nums2)
     {
@@ -40,7 +44,7 @@ internal static class MedianOfTwoSortedArraysSolution
 
         var m = nums1.Length;
         var n = nums2.Length;
-        var half = (m + n + 1) / HalfSplitDivisor;
+        var half = (m + n + 1) / AlgorithmConstants.HalvingFactor;
 
         var (i, j) = FindPartitionIndices(nums1, nums2, half);
         var leftOfPartition = LeftOfPartition(nums1, nums2, i, j);
@@ -66,11 +70,15 @@ internal static class MedianOfTwoSortedArraysSolution
 
     private static int LeftOfPartition(int[] nums1, int[] nums2, int i, int j)
         => Math.Max(
-            i == 0 ? int.MinValue : nums1[i - 1],
-            j == 0 ? int.MinValue : nums2[j - 1]);
+            i == 0 ? int.MinValue : ElementBefore(nums1, i),
+            j == 0 ? int.MinValue : ElementBefore(nums2, j));
+
+    private static int ElementBefore(int[] values, int index) => values[index - 1];
 
     private static int RightOfPartition(int[] nums1, int[] nums2, int i, int j)
         => Math.Min(
-            i == nums1.Length ? int.MaxValue : nums1[i],
-            j == nums2.Length ? int.MaxValue : nums2[j]);
+            i == nums1.Length ? int.MaxValue : ElementAt(nums1, i),
+            j == nums2.Length ? int.MaxValue : ElementAt(nums2, j));
+
+    private static int ElementAt(int[] values, int index) => values[index];
 }

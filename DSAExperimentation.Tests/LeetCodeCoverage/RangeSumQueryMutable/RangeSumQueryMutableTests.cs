@@ -55,39 +55,28 @@ public sealed class RangeSumQueryMutableTests
 // One call in a NumArray script: which operation to invoke and with what arguments. Pure
 // dispatch, built via the named factories below so a script (like Examples above) reads like the
 // LeetCode call sequence it replays.
-public readonly record struct NumArrayOp
+public readonly record struct NumArrayOp(NumArrayOp.OpKind kind, int a, int b)
 {
-    private readonly Kind _kind;
-    private readonly int _a;
-    private readonly int _b;
+    public static NumArrayOp Update(int index, int val) => new(OpKind.Update, index, val);
 
-    private NumArrayOp(Kind kind, int a, int b)
-    {
-        _kind = kind;
-        _a = a;
-        _b = b;
-    }
-
-    public static NumArrayOp Update(int index, int val) => new(Kind.Update, index, val);
-
-    public static NumArrayOp SumRange(int left, int right) => new(Kind.SumRange, left, right);
+    public static NumArrayOp SumRange(int left, int right) => new(OpKind.SumRange, left, right);
 
     // null for Update, the returned sum for SumRange - so a script runner can assert against one
     // expected value per operation uniformly. Internal, not public: only this same assembly's
     // RunScript ever calls Apply.
     internal int? Apply(INumArray numArray)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Update:
-                numArray.Update(_a, _b);
+            case OpKind.Update:
+                numArray.Update(a, b);
                 return null;
             default:
-                return numArray.SumRange(_a, _b);
+                return numArray.SumRange(a, b);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Update,
         SumRange,

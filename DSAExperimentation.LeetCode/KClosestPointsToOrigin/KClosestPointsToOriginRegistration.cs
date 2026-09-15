@@ -11,7 +11,12 @@ namespace DSAExperimentation.LeetCode.KClosestPointsToOrigin;
 internal sealed class KClosestPointsToOriginRegistration : ILeetCodeProblemRegistration
 {
     public LeetCodeProblem Describe()
-        => LeetCodeProblem.For<(int[][] Points, int K), int[][]>("k-closest-points-to-origin")
+    {
+        var thousandPoints = BuildScatteredPoints(count: 1_000, k: 10);
+        var fiftyThousandPoints = BuildScatteredPoints(count: 50_000, k: 10);
+        var twentyThousandPoints = BuildScatteredPoints(count: 20_000, k: 100);
+
+        return LeetCodeProblem.For<(int[][] Points, int K), int[][]>("k-closest-points-to-origin")
             .Strategy("FullSort", input => KClosestPointsToOriginSolution.KClosestByFullSort(input.Points, input.K))
             .Strategy(
                 "SizeKMaxHeap",
@@ -34,10 +39,11 @@ internal sealed class KClosestPointsToOriginRegistration : ILeetCodeProblemRegis
             // [Params], at its k of 10: the whole claim of the size-k heap is that
             // it never orders more than k points, so it has to be measured where
             // n/k is small and where it is large.
-            .Workload("scattered-1000", BuildScatteredPoints(count: 1_000, k: 10))
-            .Workload("scattered-50000", BuildScatteredPoints(count: 50_000, k: 10))
-            .Workload("scattered-20000", BuildScatteredPoints(count: 20_000, k: 100))
+            .Workload("scattered-1000", thousandPoints)
+            .Workload("scattered-50000", fiftyThousandPoints)
+            .Workload("scattered-20000", twentyThousandPoints)
             .Build();
+    }
 
     private static (int[][] Points, int K) BuildScatteredPoints(int count, int k)
     {

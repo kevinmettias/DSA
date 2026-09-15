@@ -16,11 +16,11 @@ public class MaximumNumberOfRobotsWithinBudgetBenchmarks
     private const int RunningCostBoundExclusive = 10;
     private const long Budget = 5_000;
 
-    [Params(500, 4_000)]
-    public int Length;
+    private int[] _chargeTimes = [];
 
-    private int[] _chargeTimes = null!;
-    private int[] _runningCosts = null!;
+    private int[] _runningCosts = [];
+    [Params(500, 4_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

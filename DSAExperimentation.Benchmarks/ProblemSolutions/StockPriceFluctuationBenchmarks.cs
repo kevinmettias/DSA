@@ -21,11 +21,11 @@ public class StockPriceFluctuationBenchmarks
     // competitive.
     private const int CorrectionStride = 3;
 
-    [Params(200, 2_000)]
-    public int UpdateCount;
+    private int[] _timestamps = [];
 
-    private int[] _timestamps = null!;
-    private int[] _prices = null!;
+    private int[] _prices = [];
+    [Params(200, 2_000)]
+    public int UpdateCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,16 +33,31 @@ public class StockPriceFluctuationBenchmarks
         var random = new Random(RandomSeed);
         _timestamps = new int[UpdateCount];
         _prices = new int[UpdateCount];
+
+        BuildUpdateScript(random);
+    }
+
+    // Fills both arrays one index at a time, left to right, so the script a given seed
+    // produces is fixed: each index's correction draw (if it takes one) always precedes
+    // that index's price draw.
+    private void BuildUpdateScript(Random random)
+    {
         var nextFreshTimestamp = 1;
+        int TakeFreshTimestamp() => nextFreshTimestamp++;
 
         for (var i = 0; i < UpdateCount; i++)
         {
-            _timestamps[i] = i > 0 && i % CorrectionStride == 0
-                ? _timestamps[random.Next(i)]
-                : nextFreshTimestamp++;
+            var isCorrection = i > 0 && i % CorrectionStride == 0;
+
+            _timestamps[i] = isCorrection
+                ? RandomRecordedTimestamp(_timestamps, random, i)
+                : TakeFreshTimestamp();
             _prices[i] = random.Next(1, MaxPrice);
         }
     }
+
+    private static int RandomRecordedTimestamp(int[] timestamps, Random random, int count)
+        => timestamps[random.Next(count)];
 
     [Benchmark(Baseline = true)]
     public int FullScanEveryQuery() => Replay(StockPriceFluctuationSolution.CreateByFullScan());

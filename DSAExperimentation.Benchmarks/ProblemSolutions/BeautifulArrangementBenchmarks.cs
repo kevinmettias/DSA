@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.BeautifulArrangement.BeautifulArrangementSolution;
+using DSAExperimentation.LeetCode.BeautifulArrangement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class BeautifulArrangementBenchmarks
 {
     [Params(6, 8)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int GenerateThenFilter() => CountByGenerateThenFilter(N);
+    public int GenerateThenFilter() => BeautifulArrangementSolution.CountByGenerateThenFilter(N);
 
     [Benchmark]
-    public int PrunedBacktracking() => CountByPrunedBacktracking(N);
+    public int PrunedBacktracking() => BeautifulArrangementSolution.CountByPrunedBacktracking(N);
 }

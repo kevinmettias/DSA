@@ -61,16 +61,29 @@ internal static class RegionsCutBySlashesSolution
         switch (cell)
         {
             case '/':
-                blocked[rowOffset, colOffset + BlockLastOffset] = true;
-                blocked[rowOffset + 1, colOffset + 1] = true;
-                blocked[rowOffset + BlockLastOffset, colOffset] = true;
+                BlockForwardSlashDiagonal(blocked, rowOffset, colOffset);
                 break;
             case '\\':
-                blocked[rowOffset, colOffset] = true;
-                blocked[rowOffset + 1, colOffset + 1] = true;
-                blocked[rowOffset + BlockLastOffset, colOffset + BlockLastOffset] = true;
+                BlockBackSlashDiagonal(blocked, rowOffset, colOffset);
                 break;
         }
+    }
+
+    // '/' runs from the block's top-right corner down to its bottom-left, so it
+    // walls those two corners and the centre the diagonal passes through.
+    private static void BlockForwardSlashDiagonal(bool[,] blocked, int rowOffset, int colOffset)
+    {
+        blocked[rowOffset, colOffset + BlockLastOffset] = true;
+        blocked[rowOffset + 1, colOffset + 1] = true;
+        blocked[rowOffset + BlockLastOffset, colOffset] = true;
+    }
+
+    // '\' mirrors that: top-left, centre, bottom-right.
+    private static void BlockBackSlashDiagonal(bool[,] blocked, int rowOffset, int colOffset)
+    {
+        blocked[rowOffset, colOffset] = true;
+        blocked[rowOffset + 1, colOffset + 1] = true;
+        blocked[rowOffset + BlockLastOffset, colOffset + BlockLastOffset] = true;
     }
 
     private static int CountFloodFillRegions(bool[,] blocked, int expandedSize)
@@ -119,7 +132,7 @@ internal static class RegionsCutBySlashesSolution
 
     private static void VisitNeighborIfOpen(FloodFillGrid grid, Stack<(int Row, int Col)> stack, int nextRow, int nextCol)
     {
-        if (nextRow < 0 || nextRow >= grid.ExpandedSize || nextCol < 0 || nextCol >= grid.ExpandedSize)
+        if (!IsOnGrid(grid, nextRow, nextCol))
         {
             return;
         }
@@ -132,6 +145,10 @@ internal static class RegionsCutBySlashesSolution
         grid.Visited[nextRow, nextCol] = true;
         stack.Push((nextRow, nextCol));
     }
+
+    // Whether the neighbor lies on the expanded grid at all.
+    private static bool IsOnGrid(FloodFillGrid grid, int row, int col)
+        => row >= 0 && row < grid.ExpandedSize && col >= 0 && col < grid.ExpandedSize;
 
     // Four triangles per cell in this repo's own DisjointSet, unioned according to
     // the cut and then across every shared edge; the distinct roots this repo's
@@ -168,15 +185,7 @@ internal static class RegionsCutBySlashesSolution
         var baseId = TrianglesPerCell * (r * size + c);
         UnionWithinCell(triangles, baseId, grid[r][c]);
 
-        if (c + 1 < size)
-        {
-            triangles.Union(baseId + East, TrianglesPerCell * (r * size + c + 1) + West);
-        }
-
-        if (r + 1 < size)
-        {
-            triangles.Union(baseId + South, TrianglesPerCell * ((r + 1) * size + c) + North);
-        }
+        UnionWithNeighborCells(triangles, baseId, size, (r, c));
     }
 
     private static void UnionWithinCell(DisjointSet triangles, int baseId, char cell)
@@ -184,18 +193,54 @@ internal static class RegionsCutBySlashesSolution
         switch (cell)
         {
             case '/':
-                triangles.Union(baseId + North, baseId + West);
-                triangles.Union(baseId + East, baseId + South);
+                UnionTrianglesCutByForwardSlash(triangles, baseId);
                 break;
             case '\\':
-                triangles.Union(baseId + North, baseId + East);
-                triangles.Union(baseId + South, baseId + West);
+                UnionTrianglesCutByBackSlash(triangles, baseId);
                 break;
             default:
-                triangles.Union(baseId + North, baseId + East);
-                triangles.Union(baseId + East, baseId + South);
-                triangles.Union(baseId + South, baseId + West);
+                UnionTrianglesOfBlankCell(triangles, baseId);
                 break;
+        }
+    }
+
+    // '/' separates the North/West triangles from the East/South ones.
+    private static void UnionTrianglesCutByForwardSlash(DisjointSet triangles, int baseId)
+    {
+        triangles.Union(baseId + North, baseId + West);
+        triangles.Union(baseId + East, baseId + South);
+    }
+
+    // '\' separates North/East from South/West instead.
+    private static void UnionTrianglesCutByBackSlash(DisjointSet triangles, int baseId)
+    {
+        triangles.Union(baseId + North, baseId + East);
+        triangles.Union(baseId + South, baseId + West);
+    }
+
+    // A blank cell is uncut, so all four triangles stay one region. Two unions
+    // chained through East and South reach all four without a third lookup.
+    private static void UnionTrianglesOfBlankCell(DisjointSet triangles, int baseId)
+    {
+        triangles.Union(baseId + North, baseId + East);
+        triangles.Union(baseId + East, baseId + South);
+        triangles.Union(baseId + South, baseId + West);
+    }
+
+    // Unions this cell's East/South triangle with the West/North triangle of its right
+    // and below neighbours along the shared edge - the cross-cell half of the union
+    // above.
+    private static void UnionWithNeighborCells(
+        DisjointSet triangles, int baseId, int size, (int Row, int Col) cell)
+    {
+        if (cell.Col + 1 < size)
+        {
+            triangles.Union(baseId + East, TrianglesPerCell * (cell.Row * size + cell.Col + 1) + West);
+        }
+
+        if (cell.Row + 1 < size)
+        {
+            triangles.Union(baseId + South, TrianglesPerCell * ((cell.Row + 1) * size + cell.Col) + North);
         }
     }
 }

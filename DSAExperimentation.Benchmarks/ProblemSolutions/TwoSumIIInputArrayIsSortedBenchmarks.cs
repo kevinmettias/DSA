@@ -12,11 +12,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class TwoSumIIInputArrayIsSortedBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _target;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

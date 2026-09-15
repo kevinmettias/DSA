@@ -36,25 +36,38 @@ internal static class SpiralMatrixIVSolution
         {
             matrix[row][column] = node.Value;
             visited[row, column] = true;
-
-            var (deltaRow, deltaColumn) = directions[direction];
-            var nextRow = row + deltaRow;
-            var nextColumn = column + deltaColumn;
-
-            if (nextRow < 0 || nextRow >= m || nextColumn < 0 || nextColumn >= n || visited[nextRow, nextColumn])
-            {
-                direction = (direction + 1) % directions.Length;
-                (deltaRow, deltaColumn) = directions[direction];
-                nextRow = row + deltaRow;
-                nextColumn = column + deltaColumn;
-            }
-
-            row = nextRow;
-            column = nextColumn;
+            (row, column, direction) = NextSpiralStep((row, column, direction), (visited, directions, m, n));
         }
 
         return matrix;
     }
+
+    // Where the cursor goes after writing one cell: one step along the current
+    // direction, turning right first when that step would leave the grid or land on
+    // a cell already written.
+    private static (int Row, int Column, int Direction) NextSpiralStep(
+        (int Row, int Column, int Direction) cursor,
+        (bool[,] Visited, (int DeltaRow, int DeltaColumn)[] Directions, int Rows, int Columns) grid)
+    {
+        var (row, column, direction) = cursor;
+        var (deltaRow, deltaColumn) = grid.Directions[direction];
+        var nextRow = row + deltaRow;
+        var nextColumn = column + deltaColumn;
+
+        if (IsOutsideGrid(nextRow, nextColumn, grid.Rows, grid.Columns) || grid.Visited[nextRow, nextColumn])
+        {
+            direction = (direction + 1) % grid.Directions.Length;
+            (deltaRow, deltaColumn) = grid.Directions[direction];
+            nextRow = row + deltaRow;
+            nextColumn = column + deltaColumn;
+        }
+
+        return (nextRow, nextColumn, direction);
+    }
+
+    // Both coordinates have to land inside the m x n matrix.
+    private static bool IsOutsideGrid(int row, int column, int rows, int columns) =>
+        row < 0 || row >= rows || column < 0 || column >= columns;
 
     // Four cursors bound the still-unwritten rectangle; each side is walked in
     // full and then its cursor is pulled in, so the walk never asks whether a
@@ -64,50 +77,67 @@ internal static class SpiralMatrixIVSolution
     {
         var matrix = EmptyMatrix(m, n);
         var node = head;
-        int top = 0, bottom = m - 1, left = 0, right = n - 1;
+        var bounds = (Top: 0, Bottom: m - 1, Left: 0, Right: n - 1);
 
-        while (top <= bottom && left <= right && node is not null)
+        while (StillHasUnwrittenCells(bounds.Top, bounds.Bottom, bounds.Left, bounds.Right) && node is not null)
         {
-            for (var column = left; column <= right && node is not null; column++)
-            {
-                matrix[top][column] = node.Value;
-                node = node.Next;
-            }
-
-            top++;
-
-            for (var row = top; row <= bottom && node is not null; row++)
-            {
-                matrix[row][right] = node.Value;
-                node = node.Next;
-            }
-
-            right--;
-
-            if (top <= bottom)
-            {
-                for (var column = right; column >= left && node is not null; column--)
-                {
-                    matrix[bottom][column] = node.Value;
-                    node = node.Next;
-                }
-
-                bottom--;
-            }
-
-            if (left <= right)
-            {
-                for (var row = bottom; row >= top && node is not null; row--)
-                {
-                    matrix[row][left] = node.Value;
-                    node = node.Next;
-                }
-
-                left++;
-            }
+            (bounds, node) = ShrinkOneRing(matrix, node, bounds);
         }
 
         return matrix;
+    }
+
+    // The shrunken rectangle still has cells to write while both of its pairs of cursors
+    // have not crossed.
+    private static bool StillHasUnwrittenCells(int top, int bottom, int left, int right) =>
+        top <= bottom && left <= right;
+
+    // Walk the current rectangle's four sides in order, pulling each cursor in after
+    // the side it bounds, and hand back the ring that is left along with where the
+    // list got to.
+    private static ((int Top, int Bottom, int Left, int Right) Bounds, SinglyLinkedListNode<int>? Node) ShrinkOneRing(
+        int[][] matrix, SinglyLinkedListNode<int>? node, (int Top, int Bottom, int Left, int Right) bounds)
+    {
+        var (top, bottom, left, right) = bounds;
+
+        node = WriteRun(matrix, node, (top, left, 0, 1), (right - left) + 1);
+        top++;
+
+        node = WriteRun(matrix, node, (top, right, 1, 0), (bottom - top) + 1);
+        right--;
+
+        if (top <= bottom)
+        {
+            node = WriteRun(matrix, node, (bottom, right, 0, -1), (right - left) + 1);
+            bottom--;
+        }
+
+        if (left <= right)
+        {
+            node = WriteRun(matrix, node, (bottom, left, -1, 0), (bottom - top) + 1);
+            left++;
+        }
+
+        return ((top, bottom, left, right), node);
+    }
+
+    // Copy the list into one straight run of the matrix, a cell per step, stopping
+    // early when the list runs out; hand back where the list got to.
+    private static SinglyLinkedListNode<int>? WriteRun(
+        int[][] matrix,
+        SinglyLinkedListNode<int>? node,
+        (int Row, int Column, int RowStep, int ColumnStep) run,
+        int length)
+    {
+        for (var step = 0; step < length && node is not null; step++)
+        {
+            matrix[run.Row][run.Column] = node.Value;
+            node = node.Next;
+            run.Row += run.RowStep;
+            run.Column += run.ColumnStep;
+        }
+
+        return node;
     }
 
     // Both strategies start from the same all-empty matrix, so the fill lives

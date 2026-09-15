@@ -19,10 +19,10 @@ public class MaximumStrictlyIncreasingCellsInAMatrixBenchmarks
     private const int RandomSeed = 2713; // LC problem number
     private const int ValueRange = 1_000;
 
-    [Params(8, 20)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(8, 20)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

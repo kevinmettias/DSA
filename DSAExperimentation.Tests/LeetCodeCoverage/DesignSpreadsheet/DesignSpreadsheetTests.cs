@@ -52,24 +52,13 @@ public sealed class DesignSpreadsheetTests
 // One call in a Spreadsheet script: which method to invoke and with what
 // arguments. Pure dispatch, built via the named factories below so a script (like
 // Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct SpreadsheetOp
+public readonly record struct SpreadsheetOp(SpreadsheetOp.OpKind kind, string cellOrFormula, int value)
 {
-    private readonly Kind _kind;
-    private readonly string _cellOrFormula;
-    private readonly int _value;
+    public static SpreadsheetOp SetCell(string cell, int value) => new(OpKind.SetCell, cell, value);
 
-    private SpreadsheetOp(Kind kind, string cellOrFormula, int value)
-    {
-        _kind = kind;
-        _cellOrFormula = cellOrFormula;
-        _value = value;
-    }
+    public static SpreadsheetOp ResetCell(string cell) => new(OpKind.ResetCell, cell, 0);
 
-    public static SpreadsheetOp SetCell(string cell, int value) => new(Kind.SetCell, cell, value);
-
-    public static SpreadsheetOp ResetCell(string cell) => new(Kind.ResetCell, cell, 0);
-
-    public static SpreadsheetOp GetValue(string formula) => new(Kind.GetValue, formula, 0);
+    public static SpreadsheetOp GetValue(string formula) => new(OpKind.GetValue, formula, 0);
 
     // null for the two void calls, the computed sum for GetValue - so a script
     // runner can assert against one expected value per operation uniformly.
@@ -78,20 +67,20 @@ public readonly record struct SpreadsheetOp
     // calls Apply.
     internal int? Apply(ISpreadsheetStrategy strategy)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.SetCell:
-                strategy.SetCell(_cellOrFormula, _value);
+            case OpKind.SetCell:
+                strategy.SetCell(cellOrFormula, value);
                 return null;
-            case Kind.ResetCell:
-                strategy.ResetCell(_cellOrFormula);
+            case OpKind.ResetCell:
+                strategy.ResetCell(cellOrFormula);
                 return null;
             default:
-                return strategy.GetValue(_cellOrFormula);
+                return strategy.GetValue(cellOrFormula);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         SetCell,
         ResetCell,

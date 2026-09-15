@@ -18,11 +18,11 @@ public class PathExistenceQueriesInAGraphIIBenchmarks
     private const int MaxDiff = 500;
     private const int QueryCount = 300;
 
-    [Params(500, 4_000)]
-    public int NodeCount;
-
     private SortedByValueGraph _graph = null!;
-    private int[][] _queries = null!;
+
+    private int[][] _queries = [];
+    [Params(500, 4_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

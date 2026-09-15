@@ -22,12 +22,12 @@ public class MaximumTotalBeautyOfTheGardensBenchmarks
     private const int FlowerHeightRangeMultiplier = 2;
     private const int RandomSeed = 1;
 
-    [Params(200, 2_000)]
-    public int Length;
-
     private int _target;
-    private int[] _flowers = null!;
+
+    private int[] _flowers = [];
     private long _newFlowers;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -47,10 +47,10 @@ public class MaximumTotalBeautyOfTheGardensBenchmarks
     [Benchmark(Baseline = true)]
     public long LinearSearchOnAnswer() =>
         MaximumTotalBeautyOfTheGardensSolution.MaximumBeautyByLinearSearchOnAnswer(
-            _flowers, _newFlowers, _target, Full, Partial);
+            _flowers, _newFlowers, _target, new BeautyWeights(Full, Partial));
 
     [Benchmark]
     public long SortAndBinarySearch() =>
         MaximumTotalBeautyOfTheGardensSolution.MaximumBeautyBySortAndBinarySearch(
-            _flowers, _newFlowers, _target, Full, Partial);
+            _flowers, _newFlowers, _target, new BeautyWeights(Full, Partial));
 }

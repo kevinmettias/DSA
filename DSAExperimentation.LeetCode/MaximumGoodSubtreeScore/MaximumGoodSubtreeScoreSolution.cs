@@ -66,26 +66,7 @@ internal static class MaximumGoodSubtreeScoreSolution
 
         for (var subset = 0; subset < (1 << values.Count); subset++)
         {
-            var digitsUsed = 0;
-            var sum = 0L;
-            var isGood = true;
-
-            for (var i = 0; i < values.Count; i++)
-            {
-                if ((subset & (1 << i)) == 0)
-                {
-                    continue;
-                }
-
-                if (!TryDigitMask(values[i], out var valueMask) || (digitsUsed & valueMask) != 0)
-                {
-                    isGood = false;
-                    break;
-                }
-
-                digitsUsed |= valueMask;
-                sum += values[i];
-            }
+            var (isGood, sum) = EvaluateSubset(values, subset);
 
             if (isGood && sum > best)
             {
@@ -94,6 +75,33 @@ internal static class MaximumGoodSubtreeScoreSolution
         }
 
         return best;
+    }
+
+    // What one candidate subset is worth: its values summed, and whether it is good at all -
+    // no two of the values it picks may share a digit, so a repeated digit disqualifies the
+    // whole subset and its sum never reaches the caller.
+    private static (bool IsGood, long Sum) EvaluateSubset(List<int> values, int subset)
+    {
+        var digitsUsed = 0;
+        var sum = 0L;
+
+        for (var i = 0; i < values.Count; i++)
+        {
+            if ((subset & (1 << i)) == 0)
+            {
+                continue;
+            }
+
+            if (!TryDigitMask(values[i], out var valueMask) || (digitsUsed & valueMask) != 0)
+            {
+                return (false, sum);
+            }
+
+            digitsUsed |= valueMask;
+            sum += values[i];
+        }
+
+        return (true, sum);
     }
 
     private static bool TryDigitMask(int value, out int mask)

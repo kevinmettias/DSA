@@ -19,11 +19,11 @@ public class ConcatenatedDivisibilityBenchmarks
     // LC problem number, reused as the deterministic input seed.
     private const int Seed = 3533;
 
-    [Params(6, 9)]
-    public int NumberCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(6, 9)]
+    public int NumberCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -13,9 +13,6 @@ namespace DSAExperimentation.LeetCode.OpenTheLock;
 // how to search.
 internal static class OpenTheLockSolution
 {
-    // Every lock starts at "0000"; LC treats a deadend there as unopenable.
-    public const string Start = "0000";
-
     // The textbook answer: BCL Queue + HashSet, generating each of the 8 candidate
     // turns on the fly and never materializing the graph. Deliberately written
     // without this repo's primitives - it is the arm the composed solution below
@@ -29,13 +26,13 @@ internal static class OpenTheLockSolution
 
     public static int MinTurnsByMutationQueue(Set<string> deadends, string target)
     {
-        if (deadends.Has(Start))
+        if (deadends.Has(LockStart.Combination))
         {
             return LeetCodeAnswer.None;
         }
 
-        var walk = new TurnWalk(deadends, [Start], new Queue<(string, int)>());
-        walk.Queue.Enqueue((Start, 0));
+        var walk = new TurnWalk(deadends, [LockStart.Combination], new Queue<(string, int)>());
+        walk.Queue.Enqueue((LockStart.Combination, 0));
 
         while (walk.Queue.Count > 0)
         {
@@ -81,7 +78,7 @@ internal static class OpenTheLockSolution
 
     public static int MinTurnsByReduceGraph(LockGraph graph, string target)
     {
-        if (!graph.TryGetNode(Start, out var startNode) ||
+        if (!graph.TryGetNode(LockStart.Combination, out var startNode) ||
             !graph.TryGetNode(target, out var targetNode))
         {
             return LeetCodeAnswer.None;

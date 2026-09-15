@@ -15,10 +15,10 @@ public class ShortestUncommonSubstringInAnArrayBenchmarks
     private const int AlphabetSize = 4;
     private const int Seed = 3076;
 
-    [Params(10, 100)]
-    public int WordCount;
+    private string[] _arr = [];
 
-    private string[] _arr = null!;
+    [Params(10, 100)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

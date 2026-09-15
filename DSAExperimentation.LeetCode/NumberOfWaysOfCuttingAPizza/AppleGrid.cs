@@ -23,6 +23,10 @@ internal readonly struct AppleGrid
 
     private readonly int[,] _apples;
 
+    public int Rows { get; }
+
+    public int Cols { get; }
+
     public AppleGrid(string[] pizza)
     {
         Rows = pizza.Length;
@@ -33,15 +37,12 @@ internal readonly struct AppleGrid
         {
             for (var col = Cols - 1; col >= 0; col--)
             {
-                _apples[row, col] = (pizza[row][col] == Apple ? 1 : 0)
+                var isApple = pizza[row][col] == Apple;
+                _apples[row, col] = (isApple ? 1 : 0)
                     + _apples[row + 1, col] + _apples[row, col + 1] - _apples[row + 1, col + 1];
             }
         }
     }
-
-    public int Rows { get; }
-
-    public int Cols { get; }
 
     // Apples in the bottom-right rectangle anchored at (row, col). Valid for
     // row in [0, Rows] and col in [0, Cols] - the padded row/column read as zero.

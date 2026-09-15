@@ -16,10 +16,10 @@ public class FindTheCountOfMonotonicPairsIIBenchmarks
     private const int MaxValue = 1_000;
     private const int Seed = 3251;
 
-    [Params(100, 500)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(100, 500)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

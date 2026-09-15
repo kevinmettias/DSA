@@ -36,8 +36,8 @@ internal static class SpecialPermutationsSolution
             state,
             s => s.Values.Count == nums.Length,
             s => s.Values.Count == nums.Length
-                ? []
-                : Enumerable.Range(0, nums.Length).Where(i => !s.Used[i]),
+                ? NoCandidates()
+                : UnplacedCandidates(s, nums),
             (s, i) => { s.Used[i] = true; s.Values.Add(nums[i]); },
             (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
             s =>
@@ -51,12 +51,19 @@ internal static class SpecialPermutationsSolution
         return count;
     }
 
+    // No candidate remains: every element has already been placed.
+    private static IEnumerable<int> NoCandidates() => [];
+
+    // Every element still unplaced, in index order - the candidates the walk may
+    // choose next.
+    private static IEnumerable<int> UnplacedCandidates(PermutationState state, int[] nums) =>
+        Enumerable.Range(0, nums.Length).Where(i => !state.Used[i]);
+
     private static bool IsSpecial(List<int> permutation)
     {
         for (var i = 0; i < permutation.Count - 1; i++)
         {
-            var (a, b) = (permutation[i], permutation[i + 1]);
-            if (a % b != 0 && b % a != 0)
+            if (!CanFollow(permutation[i], permutation[i + 1]))
             {
                 return false;
             }
@@ -78,9 +85,20 @@ internal static class SpecialPermutationsSolution
     {
         var fullMask = (1 << nums.Length) - 1;
 
-        long Recurrence((int Remaining, int Last) state, Func<(int Remaining, int Last), long> ways)
+        return (int)Memoizer.Memoize<(int Remaining, int Last), long>(
+            (fullMask, NoPreviousElement),
+            new PermutationCompletion(nums));
+    }
+
+    // How many legal completions follow a state, named: every still-unplaced element
+    // that the pair rule allows may go next, and each one's own completions are added
+    // in modulo-reduced. The elements are the whole of what the rule needs from its
+    // caller, so they are the constructor's only input.
+    private sealed class PermutationCompletion(int[] nums) : IRecurrence<(int Remaining, int Last), long>
+    {
+        public long Replay((int Remaining, int Last) state, IRecurrence<(int Remaining, int Last), long> rest)
         {
-            var (remaining, last) = state;
+            var (remaining, _) = state;
             if (remaining == 0)
             {
                 return 1L;
@@ -90,31 +108,37 @@ internal static class SpecialPermutationsSolution
 
             for (var next = 0; next < nums.Length; next++)
             {
-                if ((remaining & (1 << next)) == 0)
+                if (ShouldSkipCandidate(state, next, nums))
                 {
                     continue;
                 }
 
-                if (last != NoPreviousElement &&
-                    nums[last] % nums[next] != 0 &&
-                    nums[next] % nums[last] != 0)
-                {
-                    continue;
-                }
-
-                total = (total + ways((remaining & ~(1 << next), next))) % ModularArithmetic.Modulo;
+                total = (total + rest.Replay((remaining & ~(1 << next), next), rest)) % ModularArithmetic.Modulo;
             }
 
             return total;
         }
-
-        return (int)Memoizer.Memoize<(int Remaining, int Last), long>(
-            (fullMask, NoPreviousElement), Recurrence);
     }
 
-    private sealed class PermutationState(int length)
+    // A candidate is skipped when it is no longer unplaced, or when it cannot follow
+    // the last placed element under the pair rule.
+    private static bool ShouldSkipCandidate((int Remaining, int Last) state, int next, int[] nums) =>
+        (state.Remaining & (1 << next)) == 0 || IsPairRuleBroken(state.Last, next, nums);
+
+    // A candidate cannot follow the last placed element unless one of the two
+    // divides the other; with nothing placed yet there is no pair to break.
+    private static bool IsPairRuleBroken(int last, int next, int[] nums)
+        => last != NoPreviousElement && !CanFollow(nums[last], nums[next]);
+
+    // The adjacency rule itself, stated once for both arms: two elements may sit
+    // next to each other exactly when one divides the other.
+    private static bool CanFollow(int placed, int next) => placed % next == 0 || next % placed == 0;
+
+    private sealed record PermutationState
     {
-        public bool[] Used { get; } = new bool[length];
+        public bool[] Used { get; }
         public List<int> Values { get; } = [];
+
+        public PermutationState(int length) => Used = new bool[length];
     }
 }

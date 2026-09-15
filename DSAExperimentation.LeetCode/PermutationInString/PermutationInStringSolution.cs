@@ -15,18 +15,19 @@ internal static class PermutationInStringSolution
     // every window start, O(|s2| * |s1|). Deliberately written without this
     // repo's HashMap - it is the arm the sliding-window strategy below has to
     // justify itself against.
-    public static bool CheckInclusionByPerWindowRebuild(string s1, string s2)
+    public static bool CheckInclusionByPerWindowRebuild(PermutationPattern s1, SearchedText s2)
     {
-        if (s1.Length > s2.Length)
+        if (s1.Text.Length > s2.Text.Length)
         {
             return false;
         }
 
-        var target = BuildFrequencyMap(s1);
+        var target = BuildFrequencyMap(s1.Text);
 
-        for (var start = 0; start <= s2.Length - s1.Length; start++)
+        for (var start = 0; start <= s2.Text.Length - s1.Text.Length; start++)
         {
-            var window = BuildFrequencyMap(s2.Substring(start, s1.Length));
+            var slice = s2.Text.Substring(start, s1.Text.Length);
+            var window = BuildFrequencyMap(slice);
             if (FrequenciesEqual(window, target))
             {
                 return true;
@@ -71,21 +72,21 @@ internal static class PermutationInStringSolution
     // as it slides, with a running "matched distinct characters" counter so a
     // full match is a count comparison rather than a per-window walk -
     // O(|s1| + |s2|).
-    public static bool CheckInclusionBySlidingWindow(string s1, string s2)
+    public static bool CheckInclusionBySlidingWindow(PermutationPattern s1, SearchedText s2)
     {
-        if (s1.Length > s2.Length)
+        if (s1.Text.Length > s2.Text.Length)
         {
             return false;
         }
 
-        var need = BuildNeedMap(s1);
+        var need = BuildNeedMap(s1.Text);
         var window = new HashMap<char, int>();
         var matched = 0;
-        var context = new SlidingWindowContext(s1, need, window);
+        var context = new SlidingWindowContext(s1.Text, need, window);
 
-        for (var i = 0; i < s2.Length; i++)
+        for (var i = 0; i < s2.Text.Length; i++)
         {
-            if (SlideWindow(context, s2, i, ref matched))
+            if (SlideWindow(context, s2.Text, i, ref matched))
             {
                 return true;
             }

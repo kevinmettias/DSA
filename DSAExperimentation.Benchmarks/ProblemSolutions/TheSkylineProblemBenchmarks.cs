@@ -15,10 +15,10 @@ public class TheSkylineProblemBenchmarks
     private const int MaxBuildingHeight = 1_000;
     private const int Seed = 218;
 
-    [Params(100, 1_000)]
-    public int BuildingCount;
+    private int[][] _buildings = [];
 
-    private int[][] _buildings = null!;
+    [Params(100, 1_000)]
+    public int BuildingCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

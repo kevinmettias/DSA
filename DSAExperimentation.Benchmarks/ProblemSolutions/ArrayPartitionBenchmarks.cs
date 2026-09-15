@@ -17,10 +17,10 @@ public class ArrayPartitionBenchmarks
     // Symmetric bound for the generated values' range: [-ValueBound, ValueBound).
     private const int ValueBound = 10_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

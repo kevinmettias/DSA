@@ -45,6 +45,8 @@ internal static class FindModeInBinarySearchTreeWorkloads
         }
 
         var node = root;
+
+        // Stops when the walk reaches the null child slot the value belongs in, where the new node is linked and the method returns.
         while (true)
         {
             if (value <= node.Value)

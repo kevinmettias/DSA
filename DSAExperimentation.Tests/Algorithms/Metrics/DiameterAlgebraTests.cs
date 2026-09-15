@@ -10,22 +10,13 @@ public sealed class DiameterAlgebraTests
     private static HeightDiameterState State(int height, int diameter) => new(height, diameter);
 
     [Fact]
-    public void Empty_IsZeroHeightAndZeroDiameter()
-    {
-        Assert.Equal(State(0, 0), DiameterAlgebra<TestNode>.Empty);
-    }
+    public void Empty_IsZeroHeightAndZeroDiameter() => Assert.Equal(State(0, 0), DiameterAlgebra<TestNode>.Empty);
 
     [Fact]
-    public void Combine_Leaf_IsHeightOneAndDiameterZero()
-    {
-        Assert.Equal(State(1, 0), DiameterAlgebra<TestNode>.Combine(Node, []));
-    }
+    public void Combine_Leaf_IsHeightOneAndDiameterZero() => Assert.Equal(State(1, 0), DiameterAlgebra<TestNode>.Combine(Node, []));
 
     [Fact]
-    public void Combine_HeightIsOneMoreThanTheTallestChild()
-    {
-        Assert.Equal(4, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0), State(1, 0)]).Height);
-    }
+    public void Combine_HeightIsOneMoreThanTheTallestChild() => Assert.Equal(4, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0), State(1, 0)]).Height);
 
     [Fact]
     public void Combine_TwoChildren_DiameterJoinsTheTwoTallestBranches()
@@ -35,10 +26,7 @@ public sealed class DiameterAlgebraTests
     }
 
     [Fact]
-    public void Combine_OneChild_DiameterIsThatBranchesHeightAlone()
-    {
-        Assert.Equal(3, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0)]).Diameter);
-    }
+    public void Combine_OneChild_DiameterIsThatBranchesHeightAlone() => Assert.Equal(3, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0)]).Diameter);
 
     [Fact]
     public void Combine_KeepsAChildsDiameterWhenItBeatsThePathThroughThisNode()
@@ -48,11 +36,9 @@ public sealed class DiameterAlgebraTests
     }
 
     [Fact]
-    public void Combine_ThreeChildren_UsesOnlyTheTwoTallest()
-    {
+    public void Combine_ThreeChildren_UsesOnlyTheTwoTallest() =>
         Assert.Equal(5 + 4, DiameterAlgebra<TestNode>.Combine(
             Node, [State(5, 0), State(4, 0), State(3, 0)]).Diameter);
-    }
 
     [Fact]
     public void Combine_IsUnaffectedByChildOrder()

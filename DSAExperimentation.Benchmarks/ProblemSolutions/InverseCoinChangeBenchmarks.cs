@@ -14,10 +14,10 @@ public class InverseCoinChangeBenchmarks
 {
     private const int Seed = 3592;
 
-    [Params(30, 100)]
-    public int Length;
+    private int[] _numWays = [];
 
-    private int[] _numWays = null!;
+    [Params(30, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -25,12 +25,6 @@ public class InverseCoinChangeBenchmarks
         var denominations = BuildDenominations(Length, seed: Seed);
         _numWays = BuildNumWays(Length, denominations);
     }
-
-    [Benchmark(Baseline = true)]
-    public int[] ArrayTabulation() => InverseCoinChangeSolution.FindDenominationsByArrayTabulation(_numWays);
-
-    [Benchmark]
-    public int[] MemoizedRecurrence() => InverseCoinChangeSolution.FindDenominationsByMemoizedRecurrence(_numWays);
 
     private static List<int> BuildDenominations(int length, int seed)
     {
@@ -68,4 +62,10 @@ public class InverseCoinChangeBenchmarks
 
         return ways[1..];
     }
+
+    [Benchmark(Baseline = true)]
+    public int[] ArrayTabulation() => InverseCoinChangeSolution.FindDenominationsByArrayTabulation(_numWays);
+
+    [Benchmark]
+    public int[] MemoizedRecurrence() => InverseCoinChangeSolution.FindDenominationsByMemoizedRecurrence(_numWays);
 }

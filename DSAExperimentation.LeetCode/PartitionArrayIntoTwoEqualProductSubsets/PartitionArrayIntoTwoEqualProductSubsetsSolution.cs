@@ -25,9 +25,7 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
 
         for (var mask = 1; mask < fullMask; mask++)
         {
-            if (TryProduct(nums, mask, target, out var group1) &&
-                TryProduct(nums, fullMask & ~mask, target, out var group2) &&
-                group1 == target && group2 == target)
+            if (IsSplitAtTarget(nums, mask, fullMask, target))
             {
                 return true;
             }
@@ -35,6 +33,14 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
 
         return false;
     }
+
+    // A mask is a valid split when each of its two sides multiplies out to the
+    // target exactly - TryProduct has already rejected any side that overshot it.
+    private static bool IsSplitAtTarget(int[] nums, int mask, int fullMask, long target)
+        => TryProduct(nums, mask, target, out var group1)
+            && TryProduct(nums, fullMask & ~mask, target, out var group2)
+            && group1 == target
+            && group2 == target;
 
     private static bool TryProduct(int[] nums, int mask, long target, out long product)
     {
@@ -66,37 +72,37 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
     {
         var state = new PartitionState();
 
-        return Backtrack.TrySearch(state, new BacktrackingSteps<PartitionState, bool>(
+        return Backtrack.TrySearch(state, new BacktrackingSteps<PartitionState, SubsetSide>(
             IsSolution: s => s.Index == nums.Length,
             Candidates: s => s.Index == nums.Length
-                ? Array.Empty<bool>()
+                ? Array.Empty<SubsetSide>()
                 : CandidateAssignments(s, nums, target),
-            Choose: (s, toGroup1) => Choose(s, nums, toGroup1),
-            Unchoose: (s, toGroup1) => Unchoose(s, nums, toGroup1),
+            Choose: (s, side) => Choose(s, nums, side),
+            Unchoose: (s, side) => Unchoose(s, nums, side),
             OnSolution: s =>
                 s.Count1 > 0 && s.Count1 < nums.Length && s.Product1 == target && s.Product2 == target));
     }
 
-    private static IEnumerable<bool> CandidateAssignments(PartitionState state, int[] nums, long target)
+    private static IEnumerable<SubsetSide> CandidateAssignments(PartitionState state, int[] nums, long target)
     {
         var value = nums[state.Index];
 
         if (state.Product1 * value <= target)
         {
-            yield return true;
+            yield return SubsetSide.First;
         }
 
         if (state.Product2 * value <= target)
         {
-            yield return false;
+            yield return SubsetSide.Second;
         }
     }
 
-    private static void Choose(PartitionState state, int[] nums, bool toGroup1)
+    private static void Choose(PartitionState state, int[] nums, SubsetSide side)
     {
         var value = nums[state.Index];
 
-        if (toGroup1)
+        if (side == SubsetSide.First)
         {
             state.Product1 *= value;
             state.Count1++;
@@ -109,12 +115,12 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
         state.Index++;
     }
 
-    private static void Unchoose(PartitionState state, int[] nums, bool toGroup1)
+    private static void Unchoose(PartitionState state, int[] nums, SubsetSide side)
     {
         state.Index--;
         var value = nums[state.Index];
 
-        if (toGroup1)
+        if (side == SubsetSide.First)
         {
             state.Product1 /= value;
             state.Count1--;
@@ -134,5 +140,14 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
         public int Count1 { get; set; }
 
         public int Index { get; set; }
+    }
+
+    // Which of the two non-empty subsets an index is assigned to - First is the
+    // group whose running product PartitionState.Product1 holds, Second is Product2's.
+    // Naming the choice keeps a bare `true` from standing for one of the two groups.
+    private enum SubsetSide
+    {
+        First,
+        Second,
     }
 }

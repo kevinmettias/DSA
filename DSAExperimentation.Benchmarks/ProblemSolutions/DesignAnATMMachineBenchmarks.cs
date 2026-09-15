@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode;
-using static DSAExperimentation.LeetCode.DesignAnATMMachine.DesignAnATMMachineSolution;
+using DSAExperimentation.LeetCode.DesignAnATMMachine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -25,11 +25,11 @@ public class DesignAnATMMachineBenchmarks
     private const int MaxAmountMultiplier = 1_000;
     private const int RandomSeed = 1;
 
-    [Params(1_000, 50_000)]
-    public int Calls;
+    private long[] _amounts = [];
 
-    private long[] _amounts = null!;
-    private long[] _openingDeposit = null!;
+    private long[] _openingDeposit = [];
+    [Params(1_000, 50_000)]
+    public int Calls { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -41,16 +41,16 @@ public class DesignAnATMMachineBenchmarks
         // after subtracting as many 500s as fit), so every call below succeeds
         // identically for both variants instead of diverging on a failed withdrawal.
         _amounts = Enumerable.Range(0, Calls).Select(_ => (long)random.Next(1, MaxAmountMultiplier) * AmountGranularity).ToArray();
-        _openingDeposit = Enumerable.Repeat(InitialCountPerDenomination, DenominationCount).ToArray();
+        _openingDeposit = Enumerable.Repeat(InitialCountPerDenomination, DesignAnATMMachineSolution.DenominationCount).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public long FiveSlotArrayDispatch() => Replay(new AtmByFiveSlotArray());
+    public long FiveSlotArrayDispatch() => Replay(new DesignAnATMMachineSolution.AtmByFiveSlotArray());
 
     [Benchmark]
-    public long HashMapDispatch() => Replay(new AtmByHashMap());
+    public long HashMapDispatch() => Replay(new DesignAnATMMachineSolution.AtmByHashMap());
 
-    private long Replay(IAtm atm)
+    private long Replay(DesignAnATMMachineSolution.IAtm atm)
     {
         atm.Deposit(_openingDeposit);
 

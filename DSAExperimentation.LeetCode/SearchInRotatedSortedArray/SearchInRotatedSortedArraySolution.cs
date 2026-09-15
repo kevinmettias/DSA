@@ -28,18 +28,24 @@ internal static class SearchInRotatedSortedArraySolution
         var pivot = BinarySearch.LowerBound<int, PivotSequence>(new PivotSequence(nums), 1);
         var searchRight = target <= nums[^1];
         var start = searchRight ? pivot : 0;
-        var length = searchRight ? nums.Length - pivot : pivot;
+        var length = searchRight ? RightWindowLength(nums, pivot) : pivot;
         var found = BinarySearch.Find<int, OffsetSequence>(new OffsetSequence(nums, start, length), target);
 
-        return found is null ? -1 : start + found.Value;
+        return found is null ? -1 : AbsoluteIndex(start, found.Value);
     }
+
+    private static int RightWindowLength(int[] nums, int pivot) => nums.Length - pivot;
+
+    private static int AbsoluteIndex(int start, int offset) => start + offset;
 
     // 1 past the pivot, 0 up to and including it: LowerBound on this predicate
     // lands exactly on the first index belonging to the array's tail run.
     private readonly struct PivotSequence(int[] nums) : IRandomAccessSequence<int>
     {
         public int Length => nums.Length;
-        public int Get(int index) => nums[index] <= nums[^1] ? 1 : 0;
+        public int Get(int index) => BelongsToTailRun(index) ? 1 : 0;
+
+        private bool BelongsToTailRun(int index) => nums[index] <= nums[^1];
     }
 
     // A plain sorted window [start, start + length) of nums, reindexed from 0

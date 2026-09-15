@@ -187,10 +187,7 @@ public sealed partial class DynamicArrayTests
     }
 
     [Fact]
-    public void Count_NewArray_IsZero()
-    {
-        Assert.Equal(0, new DynamicArray<int>().Count);
-    }
+    public void Count_NewArray_IsZero() => Assert.Equal(0, new DynamicArray<int>().Count);
 
     [Fact]
     public void Count_TracksAddsAndRemovals()

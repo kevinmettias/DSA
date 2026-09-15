@@ -10,8 +10,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // the BFS arm walks is CircularArrayGraph.Build's job, one tier down.
 internal static class CircularArrayWorkloads
 {
-    public const string Target = "target-word";
-    public const int StartIndex = 0;
     private const string Filler = "filler-word";
 
     public static string[] BuildWords(int length)
@@ -23,7 +21,7 @@ internal static class CircularArrayWorkloads
             words[i] = Filler;
         }
 
-        words[length / 2] = Target;
+        words[length / 2] = CircularArrayScenario.Target;
 
         return words;
     }

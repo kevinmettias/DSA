@@ -19,12 +19,12 @@ public class MatchSubstringAfterReplacementBenchmarks
     private const int MappingCount = 200;
     private const int DistinctOldCharacters = 20;
 
-    [Params(500, 5_000)]
-    public int SLength;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _sub = null!;
-    private (char Old, char New)[] _mappings = null!;
+    private string _sub = "";
+    private (char Old, char New)[] _mappings = [];
+    [Params(500, 5_000)]
+    public int SLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -38,9 +38,15 @@ public class MatchSubstringAfterReplacementBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool LinearScanMappings() =>
-        MatchSubstringAfterReplacementSolution.IsMatchByLinearScan(_s, _sub, _mappings);
+        MatchSubstringAfterReplacementSolution.IsMatchByLinearScan(
+            new MatchSubstringAfterReplacementSolution.SourceText(_s),
+            new MatchSubstringAfterReplacementSolution.SubstringPattern(_sub),
+            _mappings);
 
     [Benchmark]
     public bool HashMapSetLookup() =>
-        MatchSubstringAfterReplacementSolution.IsMatchByHashMapLookup(_s, _sub, _mappings);
+        MatchSubstringAfterReplacementSolution.IsMatchByHashMapLookup(
+            new MatchSubstringAfterReplacementSolution.SourceText(_s),
+            new MatchSubstringAfterReplacementSolution.SubstringPattern(_sub),
+            _mappings);
 }

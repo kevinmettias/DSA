@@ -15,10 +15,10 @@ public class OddEvenJumpBenchmarks
     // LC problem number, used as the deterministic setup seed.
     private const int RandomSeed = 975;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

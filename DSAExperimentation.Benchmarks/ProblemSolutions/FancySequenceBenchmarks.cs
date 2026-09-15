@@ -24,11 +24,11 @@ public class FancySequenceBenchmarks
     private const int MinOperationAmount = 2;
     private const int MaxOperationAmountExclusive = 5;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _appendValues = [];
 
-    private int[] _appendValues = null!;
-    private (bool IsMultiply, int Amount)[] _operations = null!;
+    private (bool IsMultiply, int Amount)[] _operations = [];
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -48,11 +48,31 @@ public class FancySequenceBenchmarks
 
     private long Replay(FancySequenceSolution.IFancySequence fancy)
     {
+        AppendAll(fancy);
+        ReplayOperations(fancy);
+
+        var sum = 0L;
+
+        for (var i = 0; i < Length; i++)
+        {
+            sum = (sum + fancy.GetIndex(i)) % ModularArithmetic.Modulo;
+        }
+
+        return sum;
+    }
+
+    // The fixed append workload, in order.
+    private void AppendAll(FancySequenceSolution.IFancySequence fancy)
+    {
         foreach (var value in _appendValues)
         {
             fancy.Append(value);
         }
+    }
 
+    // The fixed addAll/multAll workload, in order.
+    private void ReplayOperations(FancySequenceSolution.IFancySequence fancy)
+    {
         foreach (var (isMultiply, amount) in _operations)
         {
             if (isMultiply)
@@ -64,13 +84,5 @@ public class FancySequenceBenchmarks
                 fancy.AddAll(amount);
             }
         }
-
-        var sum = 0L;
-        for (var i = 0; i < Length; i++)
-        {
-            sum = (sum + fancy.GetIndex(i)) % ModularArithmetic.Modulo;
-        }
-
-        return sum;
     }
 }

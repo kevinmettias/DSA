@@ -13,10 +13,10 @@ public class MinimumAreaRectangleBenchmarks
     private const int RandomSeed = 939; // LC 939
     private const int GridPadding = 2;
 
-    [Params(60, 400)]
-    public int Length;
+    private int[][] _points = [];
 
-    private int[][] _points = null!;
+    [Params(60, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

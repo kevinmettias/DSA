@@ -22,12 +22,12 @@ public class OperationsOnTreeBenchmarks
     private const int LockEveryNth = 7;
     private const int LockHolder = 1;
 
-    [Params(2_000, 20_000)]
-    public int NodeCount;
-
     private LockingTree _wholeTreeScan = null!;
+
     private LockingTree _subtreeDepthFirstSearch = null!;
     private int _targetId;
+    [Params(2_000, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -37,24 +37,6 @@ public class OperationsOnTreeBenchmarks
         _subtreeDepthFirstSearch =
             LockEveryNthNode(OperationsOnTreeSolution.CreateBySubtreeDepthFirstSearch(parent));
         _targetId = NodeCount - 1;
-    }
-
-    [Benchmark(Baseline = true)]
-    public int WholeTreeScanEachQuery() => TotalLockedDescendants(_wholeTreeScan);
-
-    [Benchmark]
-    public int SubtreeDepthFirstSearchEachQuery() => TotalLockedDescendants(_subtreeDepthFirstSearch);
-
-    private int TotalLockedDescendants(LockingTree tree)
-    {
-        var totalFound = 0;
-
-        for (var query = 0; query < QueryCount; query++)
-        {
-            totalFound += tree.LockedDescendantsOf(_targetId).Length;
-        }
-
-        return totalFound;
     }
 
     private static int[] HeapShapedParents(int nodeCount)
@@ -78,5 +60,23 @@ public class OperationsOnTreeBenchmarks
         }
 
         return tree;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int WholeTreeScanEachQuery() => TotalLockedDescendants(_wholeTreeScan);
+
+    [Benchmark]
+    public int SubtreeDepthFirstSearchEachQuery() => TotalLockedDescendants(_subtreeDepthFirstSearch);
+
+    private int TotalLockedDescendants(LockingTree tree)
+    {
+        var totalFound = 0;
+
+        for (var query = 0; query < QueryCount; query++)
+        {
+            totalFound += tree.LockedDescendantsOf(_targetId).Length;
+        }
+
+        return totalFound;
     }
 }

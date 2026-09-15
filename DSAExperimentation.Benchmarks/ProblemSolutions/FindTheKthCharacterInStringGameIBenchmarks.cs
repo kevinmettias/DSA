@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindTheKthCharacterInStringGameIBenchmarks
 {
     [Params(10, 500)]
-    public int K;
+    public int K { get; set; }
 
     [Benchmark(Baseline = true)]
     public char Simulation() => FindTheKthCharacterInStringGameISolution.KthCharacterBySimulation(K);

@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumMovesToSpreadStonesOverGridBenchmarks
 {
-    [Params(1, 3)]
-    public int PileCount;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(1, 3)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -27,9 +27,15 @@ public class MinimumMovesToSpreadStonesOverGridBenchmarks
         // differently) so both cases exercise the same 6!-sized search space with
         // a different distribution shape.
         _grid = PileCount == 1
-            ? [[7, 0, 0], [0, 1, 0], [0, 0, 1]]
-            : [[3, 0, 0], [0, 3, 0], [0, 0, 3]];
+            ? ConcentratedGrid()
+            : SpreadGrid();
     }
+
+    // All six spare stones piled onto a single cell.
+    private static int[][] ConcentratedGrid() => [[7, 0, 0], [0, 1, 0], [0, 0, 1]];
+
+    // The same six spare stones spread across three cells.
+    private static int[][] SpreadGrid() => [[3, 0, 0], [0, 3, 0], [0, 0, 3]];
 
     [Benchmark(Baseline = true)]
     public int BruteForcePermutation() => MinimumMovesToSpreadStonesOverGridSolution.MinimumMovesByBruteForcePermutation(_grid);

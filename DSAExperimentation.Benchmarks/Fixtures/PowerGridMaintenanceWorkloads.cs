@@ -39,8 +39,9 @@ internal static class PowerGridMaintenanceWorkloads
 
         for (var i = 0; i < queryCount; i++)
         {
-            var type = i % 3 == 0 ? 2 : 1;
-            queries[i] = [type, random.Next(1, c + 1)];
+            var isOfflineQuery = i % 3 == 0;
+            var queryKind = isOfflineQuery ? 2 : 1;
+            queries[i] = [queryKind, random.Next(1, c + 1)];
         }
 
         return queries;

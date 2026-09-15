@@ -19,13 +19,13 @@ public class GoodSubsequenceQueriesBenchmarks
     private const int Seed = 3901;
     private const int QueryCount = 500;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[][] _queries = null!;
-    private int[] _bruteForceNums = null!;
+    private int[][] _queries = [];
+    private int[] _bruteForceNums = [];
     private GoodSubsequenceIndex _index = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() =>
@@ -35,12 +35,12 @@ public class GoodSubsequenceQueriesBenchmarks
     public void IterationSetup()
     {
         _bruteForceNums = (int[])_nums.Clone();
-        _index = GoodSubsequenceIndex.Build(_nums, GoodSubsequenceQueriesWorkloads.P);
+        _index = GoodSubsequenceIndex.Build(_nums, GoodSubsequenceQueriesScenario.P);
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
-        GoodSubsequenceQueriesSolution.CountGoodSubseqByBruteForce(_bruteForceNums, GoodSubsequenceQueriesWorkloads.P, _queries);
+        GoodSubsequenceQueriesSolution.CountGoodSubseqByBruteForce(_bruteForceNums, GoodSubsequenceQueriesScenario.P, _queries);
 
     [Benchmark]
     public int SegmentTreeGcd() =>

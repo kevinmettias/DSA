@@ -32,46 +32,19 @@ namespace DSAExperimentation.LeetCode.MinimumCostToPartitionABinaryString;
 internal static class MinimumCostToPartitionABinaryStringSolution
 {
     public static long MinCostByLinearScanRecursion(string s, int encCost, int flatCost) =>
-        LinearScanRecursion(s, left: 0, right: s.Length - 1, encCost, flatCost);
-
-    private static long LinearScanRecursion(string s, int left, int right, int encCost, int flatCost)
-    {
-        var length = right - left + 1;
-        var sensitiveCount = CountSensitive(s, left, right);
-        var wholeCost = SegmentCost(length, sensitiveCount, encCost, flatCost);
-
-        if (length % 2 != 0)
-        {
-            return wholeCost;
-        }
-
-        var mid = left + length / 2 - 1;
-        var splitCost = LinearScanRecursion(s, left, mid, encCost, flatCost)
-            + LinearScanRecursion(s, mid + 1, right, encCost, flatCost);
-
-        return Math.Min(wholeCost, splitCost);
-    }
-
-    private static int CountSensitive(string s, int left, int right)
-    {
-        var count = 0;
-        for (var i = left; i <= right; i++)
-        {
-            if (s[i] == '1')
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
+        MinCostOfRange(
+            (Left: 0, Right: s.Length - 1),
+            encCost,
+            flatCost,
+            new LinearScanSensitiveCount(s));
 
     public static long MinCostByFenwickRangeSum(string s, int encCost, int flatCost)
     {
         var sensitive = new int[s.Length];
         for (var i = 0; i < s.Length; i++)
         {
-            sensitive[i] = s[i] == '1' ? 1 : 0;
+            var isSensitive = s[i] == '1';
+            sensitive[i] = isSensitive ? 1 : 0;
         }
 
         var ones = new FenwickTree<int, SumOperation<int>>(sensitive);
@@ -81,13 +54,32 @@ internal static class MinimumCostToPartitionABinaryStringSolution
 
     public static long MinCostByFenwickRangeSum(
         FenwickTree<int, SumOperation<int>> sensitiveCounts, int length, int encCost, int flatCost) =>
-        FenwickRangeSumRecursion(sensitiveCounts, left: 0, right: length - 1, encCost, flatCost);
+        MinCostOfRange(
+            (Left: 0, Right: length - 1),
+            encCost,
+            flatCost,
+            new FenwickRangeSumSensitiveCount(sensitiveCounts));
 
-    private static long FenwickRangeSumRecursion(
-        FenwickTree<int, SumOperation<int>> sensitiveCounts, int left, int right, int encCost, int flatCost)
+    // The single question a segment asks of the input - how many sensitive elements
+    // does it hold - with both endpoints named together, so a count can never be taken
+    // over a range handed in the wrong way round. Answering it is the one step the two
+    // strategies differ in; what a count is used for belongs to the recursion below.
+    private interface ISensitiveCount
     {
+        int CountIn(int left, int right);
+    }
+
+    // The segment is one range, not two loose ends: every use of one endpoint is a
+    // use of the other, and each half of an even-length split is another range of it.
+    // The two strategies above differ only in how a range's sensitive count is
+    // answered, so that one step arrives as countSensitive while the split recursion
+    // itself is written once.
+    private static long MinCostOfRange(
+        (int Left, int Right) range, int encCost, int flatCost, ISensitiveCount countSensitive)
+    {
+        var (left, right) = range;
         var length = right - left + 1;
-        var sensitiveCount = sensitiveCounts.Query(left, right);
+        var sensitiveCount = countSensitive.CountIn(left, right);
         var wholeCost = SegmentCost(length, sensitiveCount, encCost, flatCost);
 
         if (length % 2 != 0)
@@ -96,12 +88,44 @@ internal static class MinimumCostToPartitionABinaryStringSolution
         }
 
         var mid = left + length / 2 - 1;
-        var splitCost = FenwickRangeSumRecursion(sensitiveCounts, left, mid, encCost, flatCost)
-            + FenwickRangeSumRecursion(sensitiveCounts, mid + 1, right, encCost, flatCost);
+        var splitCost = MinCostOfRange((Left: left, Right: mid), encCost, flatCost, countSensitive)
+            + MinCostOfRange((Left: mid + 1, Right: right), encCost, flatCost, countSensitive);
 
         return Math.Min(wholeCost, splitCost);
     }
 
+    // The baseline arm's answer: a direct O(length) scan of the string it was built
+    // over, so the whole recursion re-reads the segment every time it needs the count.
+    private sealed class LinearScanSensitiveCount(string s) : ISensitiveCount
+    {
+        public int CountIn(int left, int right)
+        {
+            var count = 0;
+            for (var i = left; i <= right; i++)
+            {
+                if (s[i] == '1')
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+    }
+
+    // The composed arm's answer: one range-sum query against this repo's Fenwick tree,
+    // built once over s and then answering every call in O(log n).
+    private sealed class FenwickRangeSumSensitiveCount(FenwickTree<int, SumOperation<int>> sensitiveCounts)
+        : ISensitiveCount
+    {
+        public int CountIn(int left, int right) => sensitiveCounts.Query(left, right);
+    }
+
     private static long SegmentCost(int length, int sensitiveCount, int encCost, int flatCost) =>
-        sensitiveCount == 0 ? flatCost : (long)length * sensitiveCount * encCost;
+        sensitiveCount == 0 ? flatCost : EncryptionCost(length, sensitiveCount, encCost);
+
+    // A segment holding at least one sensitive element costs its length times that
+    // count times the per-element encoding cost.
+    private static long EncryptionCost(int length, int sensitiveCount, int encCost) =>
+        (long)length * sensitiveCount * encCost;
 }

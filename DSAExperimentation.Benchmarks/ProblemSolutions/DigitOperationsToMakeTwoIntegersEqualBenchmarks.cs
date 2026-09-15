@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
 {
-    [Params(2, 4)]
-    public int DigitCount;
-
     private int _n;
+
     private int _m;
     private DigitStepGraph _graph = null!;
+    [Params(2, 4)]
+    public int DigitCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

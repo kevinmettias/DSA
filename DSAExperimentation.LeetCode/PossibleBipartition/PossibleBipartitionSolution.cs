@@ -13,10 +13,6 @@ namespace DSAExperimentation.LeetCode.PossibleBipartition;
 // so both restart from every still-uncolored person.
 internal static class PossibleBipartitionSolution
 {
-    // LeetCode numbers people from 1, so index 0 of either prepared input is an
-    // unused placeholder.
-    public const int FirstPerson = 1;
-
     // Uncolored; the two groups are +1 and -1 so switching groups is a negation.
     private const sbyte Uncolored = 0;
     private const sbyte FirstGroup = 1;
@@ -25,8 +21,11 @@ internal static class PossibleBipartitionSolution
     // explicit Stack<int> walking the dislikes adjacency iteratively, depth
     // first. Deliberately written without this repo's primitives - it is the arm
     // the composed solution below has to justify itself against.
-    public static bool PossibleBipartitionByColorArrayDfs(int n, int[][] dislikes) =>
-        PossibleBipartitionByColorArrayDfs(DislikeAdjacency.Build(n, dislikes));
+    public static bool PossibleBipartitionByColorArrayDfs(int n, int[][] dislikes)
+    {
+        var adjacency = DislikeAdjacency.Build(n, dislikes);
+        return PossibleBipartitionByColorArrayDfs(adjacency);
+    }
 
     public static bool PossibleBipartitionByColorArrayDfs(DislikeAdjacency adjacency)
     {
@@ -34,7 +33,7 @@ internal static class PossibleBipartitionSolution
         var group = new sbyte[neighbors.Length];
         var stack = new Stack<int>();
 
-        for (var start = FirstPerson; start < neighbors.Length; start++)
+        for (var start = PersonNumbering.First; start < neighbors.Length; start++)
         {
             if (group[start] != Uncolored)
             {
@@ -92,8 +91,11 @@ internal static class PossibleBipartitionSolution
     // materializing the dislikes as a PersonNode graph and asking it - the same
     // composition IsGraphBipartiteSolution uses for LC 785, just fed from
     // 1-indexed people and a pair list instead of an adjacency list.
-    public static bool PossibleBipartitionByBipartiteCheck(int n, int[][] dislikes) =>
-        PossibleBipartitionByBipartiteCheck(DislikeGraph.Build(n, dislikes));
+    public static bool PossibleBipartitionByBipartiteCheck(int n, int[][] dislikes)
+    {
+        var graph = DislikeGraph.Build(n, dislikes);
+        return PossibleBipartitionByBipartiteCheck(graph);
+    }
 
     public static bool PossibleBipartitionByBipartiteCheck(DislikeGraph graph) =>
         BipartiteCheck.IsBipartite<

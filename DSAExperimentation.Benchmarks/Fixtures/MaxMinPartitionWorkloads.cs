@@ -9,8 +9,6 @@ internal static class MaxMinPartitionWorkloads
 {
     private const int ValueBound = 1_000;
 
-    public const int MaxMinDifference = 1_000_000;
-
     public static int[] BuildNums(int length, int seed)
     {
         var random = new Random(seed);

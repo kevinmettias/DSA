@@ -31,6 +31,17 @@ internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
         var queue = new Queue<(int Value, int Operations)>();
         queue.Enqueue((x, 0));
 
+        return FewestOperationsInFrontier(queue, visited, bound, y)
+            ?? throw new InvalidOperationException("y is unreachable from x within the search bound");
+    }
+
+    // The BFS itself: every dequeued value's candidate operations are explored, the first
+    // one equal to y ends the search, and a value not yet visited joins the frontier one
+    // operation deeper. Null when the frontier drains first - a case the padding bound
+    // above leaves unreachable, so the caller treats it as a broken precondition.
+    private static int? FewestOperationsInFrontier(
+        Queue<(int Value, int Operations)> queue, HashSet<int> visited, int bound, int y)
+    {
         while (queue.Count > 0)
         {
             var (value, operations) = queue.Dequeue();
@@ -49,7 +60,7 @@ internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
             }
         }
 
-        throw new InvalidOperationException("y is unreachable from x within the search bound");
+        return null;
     }
 
     private static IEnumerable<int> CandidateOperations(int value, int bound)
@@ -82,38 +93,45 @@ internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
     // CountTheNumberOfSquareFreeSubsetsSolution.CountByBitmaskMemo and
     // NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo already prove
     // out for unrelated counting recurrences.
-    public static int MinOperationsByMemoizedReduce(int x, int y) =>
-        Memoizer.Memoize<int, int>(x, (value, recurse) => OperationsFrom(value, y, recurse));
+    public static int MinOperationsByMemoizedReduce(int x, int y) => Memoizer.Memoize(x, new OperationsFromValue(y));
 
-    private static int OperationsFrom(int value, int y, Func<int, int> recurse)
+    // The recurrence, as a named type, over the value still to work down towards y: walk
+    // straight down to it, or round to a multiple of 11 (or 5) from either side and
+    // divide, whichever costs fewer operations in total.
+    private sealed class OperationsFromValue(int y) : IRecurrence<int, int>
     {
-        if (value <= y)
+        public int Replay(int value, IRecurrence<int, int> rest)
         {
-            return y - value;
+            if (value <= y)
+            {
+                return y - value;
+            }
+
+            var best = value - y; // decrement straight down, no divide at all
+
+            var viaEleven = OperationsViaDivisor(value, 11, rest);
+            best = Math.Min(best, viaEleven);
+            var viaFive = OperationsViaDivisor(value, 5, rest);
+            best = Math.Min(best, viaFive);
+
+            return best;
         }
 
-        var best = value - y; // decrement straight down, no divide at all
-
-        best = Math.Min(best, OperationsViaDivisor(value, y, 11, recurse));
-        best = Math.Min(best, OperationsViaDivisor(value, y, 5, recurse));
-
-        return best;
-    }
-
-    private static int OperationsViaDivisor(int value, int y, int divisor, Func<int, int> recurse)
-    {
-        var remainder = value % divisor;
-        var down = value - remainder;
-        var costDown = remainder + 1 + recurse(down / divisor);
-
-        if (remainder == 0)
+        private int OperationsViaDivisor(int value, int divisor, IRecurrence<int, int> rest)
         {
-            return costDown;
+            var remainder = value % divisor;
+            var down = value - remainder;
+            var costDown = remainder + 1 + rest.Replay(down / divisor, rest);
+
+            if (remainder == 0)
+            {
+                return costDown;
+            }
+
+            var up = down + divisor;
+            var costUp = (divisor - remainder) + 1 + rest.Replay(up / divisor, rest);
+
+            return Math.Min(costDown, costUp);
         }
-
-        var up = down + divisor;
-        var costUp = (divisor - remainder) + 1 + recurse(up / divisor);
-
-        return Math.Min(costDown, costUp);
     }
 }

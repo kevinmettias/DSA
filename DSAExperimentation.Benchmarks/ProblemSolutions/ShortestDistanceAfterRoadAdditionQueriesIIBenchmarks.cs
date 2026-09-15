@@ -11,10 +11,10 @@ public class ShortestDistanceAfterRoadAdditionQueriesIIBenchmarks
 {
     private const int Seed = 3244;
 
-    [Params(100, 2_000)]
-    public int CityCount;
+    private int[][] _queries = [];
 
-    private int[][] _queries = null!;
+    [Params(100, 2_000)]
+    public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _queries = RoadAdditionQueryWorkloads.BuildQueries(CityCount, CityCount, Seed);

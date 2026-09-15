@@ -30,7 +30,7 @@ internal static class MaximumSumOfSubsequenceWithNonAdjacentElementsSolution
     private static long MaxNonAdjacentSum(int[] array)
     {
         var excluded = 0L;
-        var included = NonAdjacentSumNode.NegativeInfinity;
+        var included = NonAdjacentSumBound.NegativeInfinity;
 
         foreach (var value in array)
         {

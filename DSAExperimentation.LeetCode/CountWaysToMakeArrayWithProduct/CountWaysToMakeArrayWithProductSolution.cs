@@ -46,25 +46,6 @@ internal static class CountWaysToMakeArrayWithProductSolution
         return answers;
     }
 
-    // Build one smallest-prime-factor table over the largest k in the batch, using
-    // this repo's own DynamicArray<int> as the sieve buffer - the same
-    // Sieve-of-Eratosthenes composite-marking pattern CountPrimes and
-    // PrimeArrangements establish with DynamicArray<bool>, generalized from a flag
-    // array to a factor array so every query afterwards factors in O(log k).
-    public static int[] WaysToFillArrayBySmallestPrimeFactorSieve(int[][] queries)
-    {
-        var maxK = queries.Max(query => query[1]);
-        var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(maxK);
-        var answers = new int[queries.Length];
-
-        for (var i = 0; i < queries.Length; i++)
-        {
-            answers[i] = WaysBySieve(queries[i][0], queries[i][1], smallestPrimeFactor);
-        }
-
-        return answers;
-    }
-
     private static int WaysByTrialDivision(int n, int k)
     {
         var remaining = k;
@@ -100,26 +81,23 @@ internal static class CountWaysToMakeArrayWithProductSolution
         return result * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
     }
 
-    private static int WaysBySieve(int n, int k, DynamicArray<int> smallestPrimeFactor)
+    // Build one smallest-prime-factor table over the largest k in the batch, using
+    // this repo's own DynamicArray<int> as the sieve buffer - the same
+    // Sieve-of-Eratosthenes composite-marking pattern CountPrimes and
+    // PrimeArrangements establish with DynamicArray<bool>, generalized from a flag
+    // array to a factor array so every query afterwards factors in O(log k).
+    public static int[] WaysToFillArrayBySmallestPrimeFactorSieve(int[][] queries)
     {
-        var remaining = k;
-        var result = 1L;
+        var maxK = queries.Max(query => query[1]);
+        var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(maxK);
+        var answers = new int[queries.Length];
 
-        while (remaining > 1)
+        for (var i = 0; i < queries.Length; i++)
         {
-            var factor = smallestPrimeFactor.Get(remaining);
-            var exponent = 0;
-
-            while (remaining % factor == 0)
-            {
-                remaining /= factor;
-                exponent++;
-            }
-
-            result = result * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
+            answers[i] = WaysBySieve(queries[i][0], queries[i][1], smallestPrimeFactor);
         }
 
-        return (int)result;
+        return answers;
     }
 
     // spf[i] holds i's smallest prime factor (spf[i] == i means i is prime, or 1).
@@ -164,6 +142,28 @@ internal static class CountWaysToMakeArrayWithProductSolution
                 spf.Set(multiple, prime);
             }
         }
+    }
+
+    private static int WaysBySieve(int n, int k, DynamicArray<int> smallestPrimeFactor)
+    {
+        var remaining = k;
+        var result = 1L;
+
+        while (remaining > 1)
+        {
+            var factor = smallestPrimeFactor.Get(remaining);
+            var exponent = 0;
+
+            while (remaining % factor == 0)
+            {
+                remaining /= factor;
+                exponent++;
+            }
+
+            result = result * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
+        }
+
+        return (int)result;
     }
 
     private static long BinomialMod(int total, int r)

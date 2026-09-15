@@ -27,7 +27,8 @@ internal static class FindTheWinningPlayerInCoinGameSolution
             turns++;
         }
 
-        return turns % 2 == 1 ? Alice : Bob;
+        var isOddTurnCount = turns % 2 == 1;
+        return isOddTurnCount ? Alice : Bob;
     }
 
     // The game ends after exactly min(x, y / 4) turns - whichever pile runs out
@@ -35,6 +36,7 @@ internal static class FindTheWinningPlayerInCoinGameSolution
     public static string WinningPlayerByTurnParity(int x, int y)
     {
         var turns = Math.Min(x, y / CoinsPerTurn);
-        return turns % 2 == 1 ? Alice : Bob;
+        var isOddTurnCount = turns % 2 == 1;
+        return isOddTurnCount ? Alice : Bob;
     }
 }

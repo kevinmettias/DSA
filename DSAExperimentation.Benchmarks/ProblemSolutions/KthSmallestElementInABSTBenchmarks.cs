@@ -17,13 +17,13 @@ public class KthSmallestElementInABSTBenchmarks
 {
     private const int MedianDivisor = 2;
 
-    [Params(500, 20_000)]
-    public int NodeCount;
-
     private BinaryTreeNode<int>? _root;
+
     private int _k;
     private int _recursiveRemaining;
     private int? _recursiveResult;
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

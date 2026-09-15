@@ -17,13 +17,21 @@ internal static class NimGameSolution
     private const int LosingPositionModulus = 4;
 
     public static bool CanWinByMemoizedRecursion(int n) =>
-        Memoizer.Memoize<int, bool>(n, (stones, canWin) => stones switch
-        {
-            <= 0 => false,
-            _ => !canWin(stones - 1)
-                || (stones >= TwoStoneRemoval && !canWin(stones - TwoStoneRemoval))
-                || (stones >= ThreeStoneRemoval && !canWin(stones - ThreeStoneRemoval)),
-        });
+        Memoizer.Memoize<int, bool>(n, new WinFromStoneRemoval());
 
     public static bool CanWinByModuloFormula(int n) => n % LosingPositionModulus != 0;
+
+    // The recurrence, as a named type: the mover wins from a pile exactly when some
+    // removal of one to three stones leaves the opponent facing a losing pile, and
+    // loses outright once there are no stones left to take.
+    private sealed class WinFromStoneRemoval : IRecurrence<int, bool>
+    {
+        public bool Replay(int stones, IRecurrence<int, bool> rest) => stones switch
+        {
+            <= 0 => false,
+            _ => !rest.Replay(stones - 1, rest)
+                || (stones >= TwoStoneRemoval && !rest.Replay(stones - TwoStoneRemoval, rest))
+                || (stones >= ThreeStoneRemoval && !rest.Replay(stones - ThreeStoneRemoval, rest)),
+        };
+    }
 }

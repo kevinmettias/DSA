@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Searching;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.SplitArrayLargestSum;
@@ -19,7 +20,6 @@ namespace DSAExperimentation.LeetCode.SplitArrayLargestSum;
 // O(nums.Length * log(sum - max)).
 internal static class SplitArrayLargestSumSolution
 {
-    private const int MidpointDivisor = 2;
 
     public static int MinimizedLargestSumByManualBinarySearch(int[] nums, int k)
     {
@@ -28,7 +28,7 @@ internal static class SplitArrayLargestSumSolution
 
         while (low < high)
         {
-            var mid = low + ((high - low) / MidpointDivisor);
+            var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
             if (CanSplitWithinLimit(nums, k, mid))
             {
                 high = mid;
@@ -40,15 +40,6 @@ internal static class SplitArrayLargestSumSolution
         }
 
         return low;
-    }
-
-    public static int MinimizedLargestSumBySequenceLowerBound(int[] nums, int k)
-    {
-        var floor = nums.Max();
-        var ceiling = nums.Sum();
-        var sequence = new FeasibleSplitSequence(nums, k, floor, ceiling);
-
-        return floor + BinarySearch.LowerBound(sequence, true);
     }
 
     private static bool CanSplitWithinLimit(int[] nums, int k, int limit)
@@ -68,6 +59,15 @@ internal static class SplitArrayLargestSumSolution
         }
 
         return subarrays <= k;
+    }
+
+    public static int MinimizedLargestSumBySequenceLowerBound(int[] nums, int k)
+    {
+        var floor = nums.Max();
+        var ceiling = nums.Sum();
+        var sequence = new FeasibleSplitSequence(nums, k, floor, ceiling);
+
+        return floor + BinarySearch.LowerBound(sequence, true);
     }
 
     // Meaningless outside this one problem's feasibility check - stays beside

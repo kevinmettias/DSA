@@ -15,12 +15,27 @@ internal static class TimeWindowGraphWorkloads
         var random = new Random(seed);
         var edges = new List<int[]>();
 
+        AddBackboneEdges(edges, nodeCount, random);
+        AddExtraEdges(edges, nodeCount, random);
+
+        return [.. edges];
+    }
+
+    // The forward-edge backbone - every node hangs off an earlier one - which is
+    // what guarantees node n-1 stays reachable from node 0.
+    private static void AddBackboneEdges(List<int[]> edges, int nodeCount, Random random)
+    {
         for (var node = 1; node < nodeCount; node++)
         {
             var source = random.Next(node);
-            edges.Add(BuildEdge(source, node, random));
+            var edge = BuildEdge(source, node, random);
+            edges.Add(edge);
         }
+    }
 
+    // The extra random edges on top of the backbone.
+    private static void AddExtraEdges(List<int[]> edges, int nodeCount, Random random)
+    {
         for (var node = 0; node < nodeCount; node++)
         {
             for (var extra = 0; extra < ExtraEdgesPerNode; extra++)
@@ -29,12 +44,11 @@ internal static class TimeWindowGraphWorkloads
 
                 if (target != node)
                 {
-                    edges.Add(BuildEdge(node, target, random));
+                    var edge = BuildEdge(node, target, random);
+                    edges.Add(edge);
                 }
             }
         }
-
-        return [.. edges];
     }
 
     private static int[] BuildEdge(int u, int v, Random random)

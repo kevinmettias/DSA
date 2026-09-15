@@ -16,11 +16,11 @@ public class ValidateStackSequencesBenchmarks
     // LC problem number, reused as the deterministic interleaving seed.
     private const int RandomSeed = 946;
 
-    [Params(10, 16)]
-    public int Length;
+    private int[] _pushed = [];
 
-    private int[] _pushed = null!;
-    private int[] _popped = null!;
+    private int[] _popped = [];
+    [Params(10, 16)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

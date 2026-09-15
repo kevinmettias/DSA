@@ -13,10 +13,10 @@ public class MostStonesRemovedWithSameRowOrColumnBenchmarks
     private const int RandomSeed = 947; // LC problem number
     private const int CoordinateRangeDivisor = 4;
 
-    [Params(200, 2_000)]
-    public int StoneCount;
+    private int[][] _stones = [];
 
-    private int[][] _stones = null!;
+    [Params(200, 2_000)]
+    public int StoneCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

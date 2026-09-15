@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
 
@@ -9,23 +10,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumAbsoluteDifferenceInBSTBenchmarks
 {
-    private const int MidpointDivisor = 2;
-
-    [Params(100, 5_000)]
-    public int Size;
 
     private BinaryTreeNode<int> _root = null!;
 
+    [Params(100, 5_000)]
+    public int Size { get; set; }
+
     [GlobalSetup]
     public void Setup() => _root = BuildBalancedBst(Size);
-
-    [Benchmark(Baseline = true)]
-    public int RecursiveScan() =>
-        MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByRecursiveScan(_root);
-
-    [Benchmark]
-    public int InOrderTraversalHooks() =>
-        MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByInOrderHooks(_root);
 
     // A balanced BST over 0..size-1 - every adjacent in-order pair differs by
     // exactly 1, so the minimum difference is size-independent and never trivially
@@ -36,6 +28,14 @@ public class MinimumAbsoluteDifferenceInBSTBenchmarks
         return BuildBalanced(values, 0, size - 1)!;
     }
 
+    [Benchmark(Baseline = true)]
+    public int RecursiveScan() =>
+        MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByRecursiveScan(_root);
+
+    [Benchmark]
+    public int InOrderTraversalHooks() =>
+        MinimumAbsoluteDifferenceInBSTSolution.GetMinimumDifferenceByInOrderHooks(_root);
+
     private static BinaryTreeNode<int>? BuildBalanced(int[] values, int low, int high)
     {
         if (low > high)
@@ -43,7 +43,7 @@ public class MinimumAbsoluteDifferenceInBSTBenchmarks
             return null;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

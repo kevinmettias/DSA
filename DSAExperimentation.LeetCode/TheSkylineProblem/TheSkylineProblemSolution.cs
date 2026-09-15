@@ -22,18 +22,10 @@ internal static class TheSkylineProblemSolution
     // using the BCL SortedSet a caller would reach for on their own.
     public static List<int[]> GetSkylineByBruteForce(int[][] buildings)
     {
-        var criticalX = new SortedSet<int>();
-
-        foreach (var building in buildings)
-        {
-            criticalX.Add(building[0]);
-            criticalX.Add(building[1]);
-        }
-
         var result = new List<int[]>();
         var previousHeight = 0;
 
-        foreach (var x in criticalX)
+        foreach (var x in CriticalXCoordinates(buildings))
         {
             var currentHeight = MaxHeightAt(buildings, x);
 
@@ -47,13 +39,28 @@ internal static class TheSkylineProblemSolution
         return result;
     }
 
+    // Every distinct x-coordinate where the contour can change: a building's start and
+    // its own end - the only places the brute-force scan has to re-derive the height.
+    private static SortedSet<int> CriticalXCoordinates(int[][] buildings)
+    {
+        var criticalX = new SortedSet<int>();
+
+        foreach (var building in buildings)
+        {
+            criticalX.Add(building[0]);
+            criticalX.Add(building[1]);
+        }
+
+        return criticalX;
+    }
+
     private static int MaxHeightAt(int[][] buildings, int x)
     {
         var currentHeight = 0;
 
         foreach (var building in buildings)
         {
-            if (building[0] <= x && x < building[1] && building[HeightIndex] > currentHeight)
+            if (RaisesSkylineAt(building, x, currentHeight))
             {
                 currentHeight = building[HeightIndex];
             }
@@ -61,6 +68,11 @@ internal static class TheSkylineProblemSolution
 
         return currentHeight;
     }
+
+    // A building only raises the skyline at x while x lies inside its span and it
+    // stands taller than the best height found so far.
+    private static bool RaisesSkylineAt(int[] building, int x, int currentHeight)
+        => building[0] <= x && x < building[1] && building[HeightIndex] > currentHeight;
 
     // This repo's own Heap<int, MaxHeapOrder<int>> as the active-height
     // frontier during the sweep, with lazy deletion via a
@@ -134,11 +146,26 @@ internal static class TheSkylineProblemSolution
 
     private static void DiscardRemovedTops(Heap<int, MaxHeapOrder<int>> heap, HashMap<int, int> pendingRemovals)
     {
-        while (heap.TryPeek(out var top) && pendingRemovals.TryGetValue(top, out var count) && count > 0)
+        while (heap.TryPeek(out var top))
         {
+            var (isPending, count) = HasPendingRemoval(pendingRemovals, top);
+
+            if (!isPending)
+            {
+                break;
+            }
+
             heap.TryPop(out _);
             pendingRemovals.Set(top, count - 1);
         }
+    }
+
+    // A height still sitting at the top is only lazily dead when it is one of those
+    // the sweep owes a removal to.
+    private static (bool IsPending, int Count) HasPendingRemoval(HashMap<int, int> pendingRemovals, int top)
+    {
+        var isPending = pendingRemovals.TryGetValue(top, out var count) && count > 0;
+        return (isPending, count);
     }
 
     private sealed class SweepState

@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
@@ -7,7 +8,6 @@ namespace DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
 // two nodes is always between some adjacent pair in that walk.
 internal static class MinimumAbsoluteDifferenceInBSTSolution
 {
-    private const int MidpointDivisor = 2;
 
     // The textbook answer: collect every value with a hand-rolled recursive
     // in-order walk, then scan the resulting list for the smallest adjacent gap.

@@ -9,16 +9,10 @@ public sealed class SparseArrayChildrenTests
     private static readonly TestNode B = new("B");
 
     [Fact]
-    public void Count_CountsOnlyOccupiedSlots()
-    {
-        Assert.Equal(2, new SparseArrayChildren<TestNode>([null, A, null, B, null]).Count);
-    }
+    public void Count_CountsOnlyOccupiedSlots() => Assert.Equal(2, new SparseArrayChildren<TestNode>([null, A, null, B, null]).Count);
 
     [Fact]
-    public void Count_AllSlotsEmpty_IsZero()
-    {
-        Assert.Equal(0, new SparseArrayChildren<TestNode>([null, null]).Count);
-    }
+    public void Count_AllSlotsEmpty_IsZero() => Assert.Equal(0, new SparseArrayChildren<TestNode>([null, null]).Count);
 
     [Fact]
     public void Get_SkipsEmptySlotsAndCompactsTheIndexSpace()

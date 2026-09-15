@@ -16,5 +16,8 @@ public class InterleavingStringBenchmarks
 
     [Benchmark]
     public bool MemoizedRecursion() =>
-        InterleavingStringSolution.IsInterleaveByMemoizedRecursion(First, Second, Target);
+        InterleavingStringSolution.IsInterleaveByMemoizedRecursion(
+            First,
+            Second,
+            new InterleavingStringSolution.TargetText(Target));
 }

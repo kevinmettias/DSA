@@ -39,25 +39,6 @@ internal static class MaximumPointsActivatedWithOneAdditionSolution
         return SumOfTwoLargest(sizeByRoot.Values) + 1;
     }
 
-    private static (bool IsX, int Value) Find(
-        Dictionary<(bool IsX, int Value), (bool IsX, int Value)> parent, (bool IsX, int Value) node)
-    {
-        if (!parent.TryGetValue(node, out var next))
-        {
-            parent[node] = node;
-            return node;
-        }
-
-        if (next == node)
-        {
-            return node;
-        }
-
-        var root = Find(parent, next);
-        parent[node] = root;
-        return root;
-    }
-
     private static void Union(
         Dictionary<(bool IsX, int Value), (bool IsX, int Value)> parent,
         (bool IsX, int Value) first, (bool IsX, int Value) second)
@@ -78,6 +59,18 @@ internal static class MaximumPointsActivatedWithOneAdditionSolution
     // as the (bool, int) tuple above, just as a named record struct instead.
     public static int MaxActivatedByKeyedDisjointSet(int[][] points)
     {
+        var disjointSet = new KeyedDisjointSet<AxisKey>(BuildAxisKeys(points));
+        UnionPointAxes(disjointSet, points);
+
+        var sizeByRoot = TallyRootSizes(disjointSet, points);
+
+        return SumOfTwoLargest(sizeByRoot.Values) + 1;
+    }
+
+    // One node per distinct x-value and one per distinct y-value; each point is
+    // then a single edge between its column node and its row node.
+    private static List<AxisKey> BuildAxisKeys(int[][] points)
+    {
         var keys = new List<AxisKey>(points.Length * 2);
 
         foreach (var point in points)
@@ -86,13 +79,22 @@ internal static class MaximumPointsActivatedWithOneAdditionSolution
             keys.Add(new AxisKey(false, point[1]));
         }
 
-        var disjointSet = new KeyedDisjointSet<AxisKey>(keys);
+        return keys;
+    }
 
+    private static void UnionPointAxes(KeyedDisjointSet<AxisKey> disjointSet, int[][] points)
+    {
         foreach (var point in points)
         {
             disjointSet.TryUnion(new AxisKey(true, point[0]), new AxisKey(false, point[1]));
         }
+    }
 
+    // Each point is counted once, against its own x-node's component root, so a
+    // component's size is exactly the number of points it activates.
+    private static Dictionary<AxisKey, int> TallyRootSizes(
+        KeyedDisjointSet<AxisKey> disjointSet, int[][] points)
+    {
         var sizeByRoot = new Dictionary<AxisKey, int>();
 
         foreach (var point in points)
@@ -101,7 +103,26 @@ internal static class MaximumPointsActivatedWithOneAdditionSolution
             sizeByRoot[root] = sizeByRoot.GetValueOrDefault(root) + 1;
         }
 
-        return SumOfTwoLargest(sizeByRoot.Values) + 1;
+        return sizeByRoot;
+    }
+
+    private static (bool IsX, int Value) Find(
+        Dictionary<(bool IsX, int Value), (bool IsX, int Value)> parent, (bool IsX, int Value) node)
+    {
+        if (!parent.TryGetValue(node, out var next))
+        {
+            parent[node] = node;
+            return node;
+        }
+
+        if (next == node)
+        {
+            return node;
+        }
+
+        var root = Find(parent, next);
+        parent[node] = root;
+        return root;
     }
 
     private static int SumOfTwoLargest(IEnumerable<int> componentSizes)

@@ -16,10 +16,10 @@ public class NumberOfSquarefulArraysBenchmarks
     // Fixed so every run measures the same values.
     private const int ValueSeed = 1;
 
-    [Params(8, 10)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(8, 10)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

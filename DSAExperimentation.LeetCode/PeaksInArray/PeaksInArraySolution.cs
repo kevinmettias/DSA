@@ -25,7 +25,8 @@ internal static class PeaksInArraySolution
         {
             if (query[0] == 1)
             {
-                answer.Add(CountPeaksInRange(working, query[1], query[2]));
+                var peaksInRange = CountPeaksInRange(working, query[1], query[2]);
+                answer.Add(peaksInRange);
             }
             else
             {
@@ -61,15 +62,7 @@ internal static class PeaksInArraySolution
     public static List<int> CountPeaksByFenwickTree(int[] nums, int[][] queries)
     {
         var working = (int[])nums.Clone();
-        var peaks = new FenwickTree<int, SumOperation<int>>(working.Length);
-
-        for (var i = 1; i < working.Length - 1; i++)
-        {
-            if (IsPeak(working, i))
-            {
-                peaks.Add(i, 1);
-            }
-        }
+        var peaks = BuildPeakTree(working);
 
         var answer = new List<int>();
 
@@ -77,7 +70,8 @@ internal static class PeaksInArraySolution
         {
             if (query[0] == 1)
             {
-                answer.Add(CountPeaks(peaks, query[1], query[2]));
+                var peaksInRange = CountPeaks(peaks, query[1], query[2]);
+                answer.Add(peaksInRange);
             }
             else
             {
@@ -86,6 +80,23 @@ internal static class PeaksInArraySolution
         }
 
         return answer;
+    }
+
+    // The indicator tree the type-1 queries above read: a 1 at every peak index
+    // of the working copy and 0 elsewhere.
+    private static FenwickTree<int, SumOperation<int>> BuildPeakTree(int[] nums)
+    {
+        var peaks = new FenwickTree<int, SumOperation<int>>(nums.Length);
+
+        for (var i = 1; i < nums.Length - 1; i++)
+        {
+            if (IsPeak(nums, i))
+            {
+                peaks.Add(i, 1);
+            }
+        }
+
+        return peaks;
     }
 
     private static int CountPeaks(FenwickTree<int, SumOperation<int>> peaks, int left, int right)
@@ -107,7 +118,8 @@ internal static class PeaksInArraySolution
 
         foreach (var position in AffectedPositions(index, working.Length))
         {
-            peaks.Add(position, IndicatorOf(working, position));
+            var indicator = IndicatorOf(working, position);
+            peaks.Add(position, indicator);
         }
     }
 

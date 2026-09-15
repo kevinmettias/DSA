@@ -15,10 +15,10 @@ public class MinimumCostPathWithAlternatingDirectionsIIIBenchmarks
     private const int Seed = 4003;
     private const int MaxPenalty = 100_000;
 
-    [Params(30, 300)]
-    public int Side;
+    private int[][] _penalty = [];
 
-    private int[][] _penalty = null!;
+    [Params(30, 300)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()

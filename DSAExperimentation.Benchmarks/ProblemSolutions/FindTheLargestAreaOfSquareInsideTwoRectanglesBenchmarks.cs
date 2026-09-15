@@ -15,11 +15,11 @@ public class FindTheLargestAreaOfSquareInsideTwoRectanglesBenchmarks
 {
     private const int Seed = 3047;
 
-    [Params(50, 300)]
-    public int RectangleCount;
+    private int[][] _bottomLeft = [];
 
-    private int[][] _bottomLeft = null!;
-    private int[][] _topRight = null!;
+    private int[][] _topRight = [];
+    [Params(50, 300)]
+    public int RectangleCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => (_bottomLeft, _topRight) = RectangleWorkloads.BuildRectangles(RectangleCount, seed: Seed);

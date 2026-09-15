@@ -22,10 +22,10 @@ public class ValidBoomerangBenchmarks
     private const int AlternationModulus = 2;
     private const int Point3DisplacementMultiplier = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[][][] _triples = [];
 
-    private int[][][] _triples = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -45,7 +45,8 @@ public class ValidBoomerangBenchmarks
             // cross product both have a genuinely close call to resolve.
             var x2 = x1 + dx;
             var y2 = y1 + dy;
-            var offset = i % AlternationModulus == 0 ? 0 : 1;
+            var liesExactlyOnLine = i % AlternationModulus == 0;
+            var offset = liesExactlyOnLine ? 0 : 1;
             var x3 = x1 + (Point3DisplacementMultiplier * dx) + offset;
             var y3 = y1 + (Point3DisplacementMultiplier * dy);
 

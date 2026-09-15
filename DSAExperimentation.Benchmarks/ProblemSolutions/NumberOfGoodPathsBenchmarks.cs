@@ -11,13 +11,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NumberOfGoodPathsBenchmarks
 {
-    private const int RandomSeed = 2421; // LC problem number
+    private const int RandomSeed = 2421; private int[] _vals = [];
+
+    private int[][] _edges = [];
+    // LC problem number
 
     [Params(50, 500)]
-    public int NodeCount;
-
-    private int[] _vals = null!;
-    private int[][] _edges = null!;
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,14 +29,20 @@ public class NumberOfGoodPathsBenchmarks
         var random = new Random(RandomSeed);
         _vals = Enumerable.Range(0, NodeCount).Select(_ => random.Next(1, NodeCount)).ToArray();
 
-        var edges = new int[NodeCount - 1][];
+        _edges = BuildPathEdges(NodeCount);
+    }
 
-        for (var i = 0; i < NodeCount - 1; i++)
+    // The path graph 0-1-2-...-(n-1): one edge between each consecutive pair.
+    private static int[][] BuildPathEdges(int nodeCount)
+    {
+        var edges = new int[nodeCount - 1][];
+
+        for (var i = 0; i < nodeCount - 1; i++)
         {
             edges[i] = [i, i + 1];
         }
 
-        _edges = edges;
+        return edges;
     }
 
     [Benchmark(Baseline = true)]

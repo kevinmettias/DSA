@@ -99,23 +99,9 @@ public sealed class BookingConcertTicketsInGroupsTests
 // One call in a BookMyShow script: which method to invoke, with what arguments, and
 // what LeetCode says it answers. Built via the named factories below so a script
 // (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct BookMyShowOp
+public readonly record struct BookMyShowOp(
+    bool isGather, int k, int maxRow, int[] expectedSeating, bool expectedSeated)
 {
-    private readonly bool _isGather;
-    private readonly int _k;
-    private readonly int _maxRow;
-    private readonly int[] _expectedSeating;
-    private readonly bool _expectedSeated;
-
-    private BookMyShowOp(bool isGather, int k, int maxRow, int[] expectedSeating, bool expectedSeated)
-    {
-        _isGather = isGather;
-        _k = k;
-        _maxRow = maxRow;
-        _expectedSeating = expectedSeating;
-        _expectedSeated = expectedSeated;
-    }
-
     public static BookMyShowOp Gather(int k, int maxRow, int[] expected) => new(true, k, maxRow, expected, false);
 
     public static BookMyShowOp Scatter(int k, int maxRow, bool expected) => new(false, k, maxRow, [], expected);
@@ -125,12 +111,12 @@ public readonly record struct BookMyShowOp
     // RunScript ever calls this.
     internal void AssertAgainst(IBookMyShowStrategy strategy)
     {
-        if (_isGather)
+        if (isGather)
         {
-            Assert.Equal(_expectedSeating, strategy.Gather(_k, _maxRow));
+            Assert.Equal(expectedSeating, strategy.Gather(k, maxRow));
             return;
         }
 
-        Assert.Equal(_expectedSeated, strategy.Scatter(_k, _maxRow));
+        Assert.Equal(expectedSeated, strategy.Scatter(k, maxRow));
     }
 }

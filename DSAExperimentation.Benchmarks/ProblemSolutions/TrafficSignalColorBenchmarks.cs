@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TrafficSignalColorBenchmarks
 {
     [Params(0, 30, 60, 1000)]
-    public int Timer;
+    public int Timer { get; set; }
 
     [Benchmark(Baseline = true)]
     public string RangeCheck() => TrafficSignalColorSolution.ColorByRangeCheck(Timer);

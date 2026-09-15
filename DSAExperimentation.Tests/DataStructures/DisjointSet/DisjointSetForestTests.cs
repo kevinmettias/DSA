@@ -146,10 +146,7 @@ public sealed partial class DisjointSetForestTests
     }
 
     [Fact]
-    public void GetRank_FreshElement_StartsAtZero()
-    {
-        Assert.Equal(0, new DisjointSetForest(4).GetRank(0));
-    }
+    public void GetRank_FreshElement_StartsAtZero() => Assert.Equal(0, new DisjointSetForest(4).GetRank(0));
 
     [Fact]
     public void GetRank_ReflectsEveryIncrement()

@@ -17,6 +17,20 @@ internal static class RemoveDuplicatesFromSortedListSolution
     public static SinglyLinkedListNode<int>? DeleteDuplicatesByDistinctFilter(SinglyLinkedListNode<int>? head)
         => BuildList(ToArray(head).Distinct());
 
+    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
     // One pass, one pointer: skip forward past every node whose value repeats the
     // current one, splicing it out of the list in place. LeetCode's own idiomatic
     // answer.
@@ -43,19 +57,5 @@ internal static class RemoveDuplicatesFromSortedListSolution
         }
 
         return values.ToArray();
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 }

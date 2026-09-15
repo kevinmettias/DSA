@@ -45,7 +45,8 @@ internal static class DecodeWaysSolution
             return;
         }
 
-        var twoDigit = int.Parse(s.AsSpan(i, TwoDigitGroupLength));
+        var span = s.AsSpan(i, TwoDigitGroupLength);
+        var twoDigit = int.Parse(span);
 
         if (twoDigit <= MaxTwoDigitCode)
         {
@@ -56,11 +57,30 @@ internal static class DecodeWaysSolution
     // This repo's own top-down engine: Memoizer.Memoize caches decode(i) the
     // first time each index is reached, so the recurrence reads as ordinary
     // recursion with no hand-rolled cache dictionary.
-    public static int NumDecodingsByMemoization(string s)
-    {
-        return Memoizer.Memoize<int, int>(0, DecodeFrom);
+    public static int NumDecodingsByMemoization(string s) =>
+        Memoizer.Memoize<int, int>(0, new WaysFromDecodedIndex(s));
 
-        int DecodeFrom(int index, Func<int, int> decode)
+    // Whether the pair starting at `index` spells a code at all: false when there
+    // is no room for a second digit, and false when the pair runs past 'Z'.
+    private static bool HasTwoDigitGroup(string s, int index)
+    {
+        if (index + 1 >= s.Length)
+        {
+            return false;
+        }
+
+        var span = s.AsSpan(index, TwoDigitGroupLength);
+        var twoDigit = int.Parse(span);
+
+        return twoDigit <= MaxTwoDigitCode;
+    }
+
+    // The recurrence, as a named type: an index past the end is one way, a leading
+    // '0' is none, and otherwise one digit carries the ways from the next index
+    // while a pair that spells a code adds the ways from two on.
+    private sealed class WaysFromDecodedIndex(string s) : IRecurrence<int, int>
+    {
+        public int Replay(int index, IRecurrence<int, int> rest)
         {
             if (index == s.Length)
             {
@@ -72,16 +92,11 @@ internal static class DecodeWaysSolution
                 return 0;
             }
 
-            var total = decode(index + 1);
+            var total = rest.Replay(index + 1, rest);
 
-            if (index + 1 < s.Length)
+            if (HasTwoDigitGroup(s, index))
             {
-                var twoDigit = int.Parse(s.AsSpan(index, TwoDigitGroupLength));
-
-                if (twoDigit <= MaxTwoDigitCode)
-                {
-                    total += decode(index + 2);
-                }
+                total += rest.Replay(index + TwoDigitGroupLength, rest);
             }
 
             return total;

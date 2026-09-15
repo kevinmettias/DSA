@@ -15,12 +15,20 @@ namespace DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 // subset cheap.
 internal static class NumberOfPossibleSetsOfClosingBranchesSolution
 {
+    // The sentinel for a pair with no road between them, scaled below
+    // long.MaxValue so adding two of them during a Floyd-Warshall relaxation
+    // cannot overflow.
+    private const long Unreachable = long.MaxValue / 4;
+
     // Textbook baseline: a plain BCL long[,] distance matrix and a hand-rolled
     // Floyd-Warshall per subset - deliberately without this repo's own
     // AllPairsShortestPaths, the arm the composed strategy below has to justify
     // itself against.
-    public static long CountClosingSetsByBruteForceFloydWarshall(int n, int[][] roads, int maxDistance) =>
-        CountClosingSetsByBruteForceFloydWarshall(BuildDistanceMatrix(n, roads), maxDistance);
+    public static long CountClosingSetsByBruteForceFloydWarshall(int n, int[][] roads, int maxDistance)
+    {
+        var baseDistances = BuildDistanceMatrix(n, roads);
+        return CountClosingSetsByBruteForceFloydWarshall(baseDistances, maxDistance);
+    }
 
     public static long CountClosingSetsByBruteForceFloydWarshall(long[,] baseDistances, int maxDistance)
     {
@@ -43,14 +51,13 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // it - the same role LockGraph.Build plays for OpenTheLock's benchmark.
     public static long[,] BuildDistanceMatrix(int n, int[][] roads)
     {
-        const long unreachable = long.MaxValue / 4;
         var distances = new long[n, n];
 
         for (var i = 0; i < n; i++)
         {
             for (var j = 0; j < n; j++)
             {
-                distances[i, j] = i == j ? 0 : unreachable;
+                distances[i, j] = i == j ? 0 : Unreachable;
             }
         }
 
@@ -80,6 +87,15 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
 
     private static long[,] RestrictAndRefine(long[,] baseDistances, List<int> openBranches)
     {
+        var distances = RestrictToOpenBranches(baseDistances, openBranches);
+        RefineShortestPaths(distances);
+        return distances;
+    }
+
+    // Dropping the closed branches as endpoints: the restricted matrix holds only
+    // the open set's own pairwise base distances.
+    private static long[,] RestrictToOpenBranches(long[,] baseDistances, List<int> openBranches)
+    {
         var size = openBranches.Count;
         var distances = new long[size, size];
 
@@ -91,21 +107,34 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
             }
         }
 
+        return distances;
+    }
+
+    // Floyd-Warshall over the restricted matrix: relaxing through vertex k only
+    // ever uses a k drawn from the open set, which is what confines routing to
+    // open branches.
+    private static void RefineShortestPaths(long[,] distances)
+    {
+        var size = distances.GetLength(0);
+
         for (var k = 0; k < size; k++)
         {
-            for (var i = 0; i < size; i++)
+            RelaxThroughIntermediate(distances, k, size);
+        }
+    }
+
+    private static void RelaxThroughIntermediate(long[,] distances, int k, int size)
+    {
+        for (var i = 0; i < size; i++)
+        {
+            for (var j = 0; j < size; j++)
             {
-                for (var j = 0; j < size; j++)
+                if (distances[i, k] + distances[k, j] < distances[i, j])
                 {
-                    if (distances[i, k] + distances[k, j] < distances[i, j])
-                    {
-                        distances[i, j] = distances[i, k] + distances[k, j];
-                    }
+                    distances[i, j] = distances[i, k] + distances[k, j];
                 }
             }
         }
-
-        return distances;
     }
 
     private static bool EveryPairWithinLimit(long[,] distances, int size, int maxDistance)
@@ -130,8 +159,11 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // both drops the closed branches as endpoints and - because Refine only ever
     // uses vertices from that same list as an intermediate - as a routing hop,
     // which is exactly "may only route through other open branches".
-    public static long CountClosingSetsByAllPairsShortestPaths(int n, int[][] roads, int maxDistance) =>
-        CountClosingSetsByAllPairsShortestPaths(BranchNetwork.Build(n, roads), maxDistance);
+    public static long CountClosingSetsByAllPairsShortestPaths(int n, int[][] roads, int maxDistance)
+    {
+        var network = BranchNetwork.Build(n, roads);
+        return CountClosingSetsByAllPairsShortestPaths(network, maxDistance);
+    }
 
     public static long CountClosingSetsByAllPairsShortestPaths(BranchNetwork network, int maxDistance)
     {
@@ -152,7 +184,6 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     private static bool IsValidOpenSetByGraph(BranchNetwork network, int openMask, int maxDistance)
     {
         var openNodes = SelectOpenNodes(network, openMask);
-
         if (openNodes.Count <= 1)
         {
             return true;
@@ -161,6 +192,16 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
         AllPairsShortestPaths.TryComputeDistances<BranchNode, BranchTopology, ListEdges<BranchNode, int>, int>(
             openNodes, out var distances);
 
+        return AllPairsWithinLimit(distances, openNodes, maxDistance);
+    }
+
+    // A pair further apart than maxDistance - or with no route at all among the
+    // open set - makes the set invalid, and the missing-key arm is that same
+    // refusal: the distance dictionary holds an unreached sentinel rather than
+    // dropping the pair.
+    private static bool AllPairsWithinLimit(
+        Dictionary<(BranchNode From, BranchNode To), int> distances, List<BranchNode> openNodes, int maxDistance)
+    {
         foreach (var from in openNodes)
         {
             foreach (var to in openNodes)

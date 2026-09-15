@@ -23,38 +23,6 @@ internal static class FrogJumpSolution
     // itself against.
     public static bool CanCrossByRecursiveBruteForce(int[] stones) => TryJump(stones, 0, 0);
 
-    private static bool TryJump(int[] stones, int index, int lastJump)
-    {
-        if (index == stones.Length - 1)
-        {
-            return true;
-        }
-
-        for (var delta = -1; delta <= 1; delta++)
-        {
-            if (TryDelta(stones, index, lastJump, delta))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static bool TryDelta(int[] stones, int index, int lastJump, int delta)
-    {
-        var jump = lastJump + delta;
-
-        if (jump <= 0)
-        {
-            return false;
-        }
-
-        var nextIndex = Array.BinarySearch(stones, index + 1, stones.Length - index - 1, stones[index] + jump);
-
-        return nextIndex >= 0 && TryJump(stones, nextIndex, jump);
-    }
-
     // DP over the set of jump sizes known to reach each stone, so no state is ever
     // re-explored.
     public static bool CanCrossByHashMapDynamicProgramming(int[] stones)
@@ -119,5 +87,37 @@ internal static class FrogJumpSolution
     {
         jumpsByStone.TryGetValue(lastStone, out var lastJumps);
         return lastJumps.Count > 0;
+    }
+
+    private static bool TryJump(int[] stones, int index, int lastJump)
+    {
+        if (index == stones.Length - 1)
+        {
+            return true;
+        }
+
+        for (var delta = -1; delta <= 1; delta++)
+        {
+            if (TryDelta(stones, index, lastJump, delta))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool TryDelta(int[] stones, int index, int lastJump, int delta)
+    {
+        var jump = lastJump + delta;
+
+        if (jump <= 0)
+        {
+            return false;
+        }
+
+        var nextIndex = Array.BinarySearch(stones, index + 1, stones.Length - index - 1, stones[index] + jump);
+
+        return nextIndex >= 0 && TryJump(stones, nextIndex, jump);
     }
 }

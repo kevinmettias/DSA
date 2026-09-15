@@ -19,22 +19,54 @@ internal static class SimplifiedFractionsSolution
     // gcd == 1 is exactly "already in simplest form".
     private const int Coprime = 1;
 
+    // Both gcds are stateless, so one instance each serves every call and the benchmark
+    // arms that measure the two listings allocate nothing to pick one.
+    private static readonly IGcdStrategy TrialDivisionGcd = new GcdByTrialDivision();
+    private static readonly IGcdStrategy EuclideanGcd = new GcdByEuclideanAlgorithm();
+
     // The textbook answer: find each gcd by counting divisors down from
     // min(a, b) until one divides both - O(min(a, b)) per pair. Deliberately
     // written without this repo's primitives; it is the arm the strategy below has
     // to justify itself against.
     public static List<string> ListFractionsByTrialDivisionGcd(int n) =>
-        ListFractions(n, GcdByTrialDivision);
+        ListFractions(n, TrialDivisionGcd);
 
     // The standard Euclidean algorithm, O(log min(a, b)) per pair - the same
     // private-helper shape CheckIfItIsAGoodArraySolution, NthMagicalNumberSolution
     // and XOfAKindInADeckOfCardsSolution already reuse inline.
     public static List<string> ListFractionsByEuclideanGcd(int n) =>
-        ListFractions(n, GcdByEuclideanAlgorithm);
+        ListFractions(n, EuclideanGcd);
+
+    // The one question the two arms answer differently: the greatest common divisor of
+    // the fraction's two terms, which is exactly what decides whether the fraction is
+    // already in simplest form. Both of its inputs are named here, and this is where the
+    // contract the bare form had nowhere to write goes - the result is always at least
+    // Coprime, so a caller comparing it against Coprime never has to special-case a zero.
+    private interface IGcdStrategy
+    {
+        int Compute(int a, int b);
+    }
+
+    // The trial-division arm: walk divisors down from min(a, b) until one divides both.
+    private sealed class GcdByTrialDivision : IGcdStrategy
+    {
+        public int Compute(int a, int b)
+        {
+            for (var divisor = Math.Min(a, b); divisor >= Coprime; divisor--)
+            {
+                if (a % divisor == 0 && b % divisor == 0)
+                {
+                    return divisor;
+                }
+            }
+
+            return Coprime;
+        }
+    }
 
     // The enumeration itself, shared by both strategies so that the only thing they
     // differ in is the gcd they are handed.
-    private static List<string> ListFractions(int n, Func<int, int, int> gcd)
+    private static List<string> ListFractions(int n, IGcdStrategy gcd)
     {
         var fractions = new List<string>();
 
@@ -42,7 +74,7 @@ internal static class SimplifiedFractionsSolution
         {
             for (var numerator = 1; numerator < denominator; numerator++)
             {
-                if (gcd(numerator, denominator) == Coprime)
+                if (gcd.Compute(numerator, denominator) == Coprime)
                 {
                     fractions.Add($"{numerator}/{denominator}");
                 }
@@ -52,18 +84,8 @@ internal static class SimplifiedFractionsSolution
         return fractions;
     }
 
-    private static int GcdByTrialDivision(int a, int b)
+    private sealed class GcdByEuclideanAlgorithm : IGcdStrategy
     {
-        for (var divisor = Math.Min(a, b); divisor >= Coprime; divisor--)
-        {
-            if (a % divisor == 0 && b % divisor == 0)
-            {
-                return divisor;
-            }
-        }
-
-        return Coprime;
+        public int Compute(int a, int b) => b == 0 ? a : Compute(b, a % b);
     }
-
-    private static int GcdByEuclideanAlgorithm(int a, int b) => b == 0 ? a : GcdByEuclideanAlgorithm(b, a % b);
 }

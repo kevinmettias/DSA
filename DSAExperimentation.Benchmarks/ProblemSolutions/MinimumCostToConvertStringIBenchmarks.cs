@@ -17,13 +17,13 @@ public class MinimumCostToConvertStringIBenchmarks
     private const int RulesSeed = 2976;
     private const int StringSeed = 29760;
 
-    [Params(100, 5000)]
-    public int StringLength;
+    private string _source = "";
 
-    private string _source = null!;
-    private string _target = null!;
-    private long[,] _distances = null!;
+    private string _target = "";
+    private long[,] _distances = new long[0, 0];
     private LetterNetwork _network = null!;
+    [Params(100, 5000)]
+    public int StringLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -39,9 +39,15 @@ public class MinimumCostToConvertStringIBenchmarks
 
     [Benchmark(Baseline = true)]
     public long BruteForceFloydWarshall() =>
-        MinimumCostToConvertStringISolution.MinimumCostByBruteForceFloydWarshall(_source, _target, _distances);
+        MinimumCostToConvertStringISolution.MinimumCostByBruteForceFloydWarshall(
+            new MinimumCostToConvertStringISolution.SourceText(_source),
+            new MinimumCostToConvertStringISolution.TargetText(_target),
+            _distances);
 
     [Benchmark]
     public long AllPairsShortestPaths() =>
-        MinimumCostToConvertStringISolution.MinimumCostByAllPairsShortestPaths(_source, _target, _network);
+        MinimumCostToConvertStringISolution.MinimumCostByAllPairsShortestPaths(
+            new MinimumCostToConvertStringISolution.SourceText(_source),
+            new MinimumCostToConvertStringISolution.TargetText(_target),
+            _network);
 }

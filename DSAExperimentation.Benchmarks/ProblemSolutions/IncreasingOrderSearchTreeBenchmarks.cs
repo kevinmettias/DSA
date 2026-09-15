@@ -19,10 +19,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class IncreasingOrderSearchTreeBenchmarks
 {
-    [Params(500, 20_000)]
-    public int NodeCount;
+    private int[] _shuffledValues = [];
 
-    private int[] _shuffledValues = null!;
+    [Params(500, 20_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -31,7 +31,7 @@ internal static class NumberOfIslandsSolution
 
                 count++;
 
-                foreach (var cell in DepthFirstSearch.Traverse((row, col), Neighbors))
+                foreach (var cell in DepthFirstSearch.Traverse((row, col), cell => Neighbors(cell, grid, claimed)))
                 {
                     claimed.Add(cell);
                 }
@@ -39,27 +39,37 @@ internal static class NumberOfIslandsSolution
         }
 
         return count;
+    }
 
-        IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) cell)
+    // The successor function the scan hands to DepthFirstSearch.Traverse: a cell's four
+    // orthogonal candidates, minus the ones that are off the grid, no longer hold land,
+    // or were already covered by an earlier island's traversal.
+    private static IEnumerable<(int Row, int Col)> Neighbors(
+        (int Row, int Col) cell, char[][] grid, HashSet<(int Row, int Col)> claimed)
+    {
+        (int Row, int Col)[] candidates =
+        [
+            (cell.Row + 1, cell.Col),
+            (cell.Row - 1, cell.Col),
+            (cell.Row, cell.Col + 1),
+            (cell.Row, cell.Col - 1),
+        ];
+
+        foreach (var candidate in candidates)
         {
-            (int Row, int Col)[] candidates =
-            [
-                (cell.Row + 1, cell.Col),
-                (cell.Row - 1, cell.Col),
-                (cell.Row, cell.Col + 1),
-                (cell.Row, cell.Col - 1),
-            ];
-
-            foreach (var candidate in candidates)
+            if (IsUnclaimedLandNeighbor(candidate, grid, claimed))
             {
-                if (candidate.Row >= 0 && candidate.Row < grid.Length &&
-                    candidate.Col >= 0 && candidate.Col < grid[0].Length &&
-                    grid[candidate.Row][candidate.Col] == '1' &&
-                    !claimed.Contains(candidate))
-                {
-                    yield return candidate;
-                }
+                yield return candidate;
             }
         }
     }
+
+    // A neighbor joins the island when it is on the grid, still holds a '1', and
+    // has not already been claimed by an earlier island's traversal.
+    private static bool IsUnclaimedLandNeighbor(
+        (int Row, int Col) candidate, char[][] grid, HashSet<(int Row, int Col)> claimed)
+        => candidate.Row >= 0 && candidate.Row < grid.Length
+            && candidate.Col >= 0 && candidate.Col < grid[0].Length
+            && grid[candidate.Row][candidate.Col] == '1'
+            && !claimed.Contains(candidate);
 }

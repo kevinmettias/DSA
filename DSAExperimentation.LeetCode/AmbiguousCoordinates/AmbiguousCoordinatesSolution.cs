@@ -33,6 +33,12 @@ internal static class AmbiguousCoordinatesSolution
     private const char ZeroDigit = '0';
     private const char DecimalPoint = '.';
 
+    // Both arms are stateless and hold nothing between calls, so one instance each
+    // serves every call: the two benchmark arms that measure these methods allocate
+    // nothing to pick a strategy.
+    private static readonly IDecimalForms RebuiltAndRescanned = new DecimalFormsByRebuildAndRescan();
+    private static readonly IDecimalForms SlicedAndChecked = new DecimalFormsBySliceAndCheck();
+
     // The baseline: rebuild every dotted candidate into a fresh string and validate
     // it by re-scanning the finished string. Deliberately written the way you would
     // without this repo - the arm the sliced strategy has to justify itself against.
@@ -40,7 +46,7 @@ internal static class AmbiguousCoordinatesSolution
     {
         var digits = DigitRun(s);
 
-        return Combine(digits, RebuiltValidNumbers);
+        return Combine(digits, RebuiltAndRescanned);
     }
 
     // Slice each half directly out of the digit run and check only the two boundary
@@ -49,13 +55,15 @@ internal static class AmbiguousCoordinatesSolution
     {
         var digits = DigitRun(s);
 
-        return Combine(digits, SlicedValidNumbers);
+        return Combine(digits, SlicedAndChecked);
     }
+
+    private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != ZeroDigit;
 
     // Everything between the parentheses LeetCode wraps the input in.
     private static string DigitRun(string s) => s[1..^1];
 
-    private static List<string> Combine(string digits, Func<string, IEnumerable<string>> validNumbers)
+    private static List<string> Combine(string digits, IDecimalForms decimalForms)
     {
         var results = new List<string>();
 
@@ -64,9 +72,9 @@ internal static class AmbiguousCoordinatesSolution
             var left = digits[..split];
             var right = digits[split..];
 
-            foreach (var x in validNumbers(left))
+            foreach (var x in decimalForms.Enumerate(left))
             {
-                foreach (var y in validNumbers(right))
+                foreach (var y in decimalForms.Enumerate(right))
                 {
                     results.Add($"({x}, {y})");
                 }
@@ -76,52 +84,70 @@ internal static class AmbiguousCoordinatesSolution
         return results;
     }
 
-    private static IEnumerable<string> RebuiltValidNumbers(string digits)
+    // What the two arms answer differently: which numbers a run of digits could have
+    // been read as once its decimal point, if any, is placed. Every form offered is a
+    // complete coordinate number - no sign, no exponent - in the scan's own order, so
+    // a caller sorts nothing.
+    private interface IDecimalForms
     {
-        if (IsValidWhole(digits))
-        {
-            yield return digits;
-        }
+        IEnumerable<string> Enumerate(string digits);
+    }
 
-        for (var dot = 1; dot < digits.Length; dot++)
+    // The baseline's answer: rebuild each dotted candidate into a fresh string, then
+    // re-scan that finished string to validate it.
+    private sealed class DecimalFormsByRebuildAndRescan : IDecimalForms
+    {
+        public IEnumerable<string> Enumerate(string digits)
         {
-            var builder = new StringBuilder(digits.Length + 1);
-            builder.Append(digits, 0, dot).Append(DecimalPoint).Append(digits, dot, digits.Length - dot);
-            var candidate = builder.ToString();
-
-            if (IsValidWithDot(candidate))
+            if (IsValidWhole(digits))
             {
-                yield return candidate;
+                yield return digits;
+            }
+
+            for (var dot = 1; dot < digits.Length; dot++)
+            {
+                var builder = new StringBuilder(digits.Length + 1);
+                builder.Append(digits, 0, dot).Append(DecimalPoint).Append(digits, dot, digits.Length - dot);
+                var candidate = builder.ToString();
+
+                if (IsValidWithDot(candidate))
+                {
+                    yield return candidate;
+                }
             }
         }
-    }
 
-    private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != ZeroDigit;
-
-    private static bool IsValidWithDot(string candidate)
-    {
-        var dotIndex = candidate.IndexOf(DecimalPoint);
-        var intPart = candidate[..dotIndex];
-        var fracPart = candidate[(dotIndex + 1)..];
-
-        return IsValidWhole(intPart) && fracPart[^1] != ZeroDigit;
-    }
-
-    private static IEnumerable<string> SlicedValidNumbers(string digits)
-    {
-        if (IsValidWhole(digits))
+        private static bool IsValidWithDot(string candidate)
         {
-            yield return digits;
+            var dotIndex = candidate.IndexOf(DecimalPoint);
+            var intPart = candidate[..dotIndex];
+            var fracPart = candidate[(dotIndex + 1)..];
+
+            return IsValidWhole(intPart) && fracPart[^1] != ZeroDigit;
         }
+    }
 
-        for (var dot = 1; dot < digits.Length; dot++)
+    // The composed arm's answer: it already knows the split point that produced each
+    // half, so it slices the run and inspects only the boundary characters that can
+    // violate the rule.
+    private sealed class DecimalFormsBySliceAndCheck : IDecimalForms
+    {
+        public IEnumerable<string> Enumerate(string digits)
         {
-            var intPart = digits[..dot];
-            var fracPart = digits[dot..];
-
-            if (IsValidWhole(intPart) && fracPart[^1] != ZeroDigit)
+            if (IsValidWhole(digits))
             {
-                yield return $"{intPart}{DecimalPoint}{fracPart}";
+                yield return digits;
+            }
+
+            for (var dot = 1; dot < digits.Length; dot++)
+            {
+                var intPart = digits[..dot];
+                var fracPart = digits[dot..];
+
+                if (IsValidWhole(intPart) && fracPart[^1] != ZeroDigit)
+                {
+                    yield return $"{intPart}{DecimalPoint}{fracPart}";
+                }
             }
         }
     }

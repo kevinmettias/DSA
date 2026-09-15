@@ -41,7 +41,9 @@ public sealed class MinimumWeightedSubgraphWithTheRequiredPathsTests
         Assert.Equal(
             expected,
             MinimumWeightedSubgraphWithTheRequiredPathsSolution.MinimumWeightByPerNodeSearch(
-                n, edges, src1, src2, dest));
+                n,
+                edges,
+                new MinimumWeightedSubgraphWithTheRequiredPathsSolution.PathEndpoints(src1, src2, dest)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -50,5 +52,7 @@ public sealed class MinimumWeightedSubgraphWithTheRequiredPathsTests
         Assert.Equal(
             expected,
             MinimumWeightedSubgraphWithTheRequiredPathsSolution.MinimumWeightByReverseGraphDijkstra(
-                n, edges, src1, src2, dest));
+                n,
+                edges,
+                new MinimumWeightedSubgraphWithTheRequiredPathsSolution.PathEndpoints(src1, src2, dest)));
 }

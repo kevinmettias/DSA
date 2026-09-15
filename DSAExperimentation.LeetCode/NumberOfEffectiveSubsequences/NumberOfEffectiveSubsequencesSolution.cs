@@ -34,23 +34,31 @@ internal static class NumberOfEffectiveSubsequencesSolution
 
         for (var removed = 0; removed < (1 << n); removed++)
         {
-            var survivingOr = 0;
-
-            for (var i = 0; i < n; i++)
-            {
-                if ((removed & (1 << i)) == 0)
-                {
-                    survivingOr |= nums[i];
-                }
-            }
-
-            if (survivingOr != strength)
+            if (IsEffectiveWhenRemoved(nums, removed, strength))
             {
                 effective++;
             }
         }
 
         return (int)(effective % ModularArithmetic.Modulo);
+    }
+
+    // Whether removing exactly the index set `removed` lowers the array's OR:
+    // the OR of the elements it keeps, recomputed from scratch, differs from
+    // the full strength.
+    private static bool IsEffectiveWhenRemoved(int[] nums, int removed, int strength)
+    {
+        var survivingOr = 0;
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if ((removed & (1 << i)) == 0)
+            {
+                survivingOr |= nums[i];
+            }
+        }
+
+        return survivingOr != strength;
     }
 
     // Sum-over-subsets: count subsets whose OR equals the full strength via
@@ -70,35 +78,12 @@ internal static class NumberOfEffectiveSubsequencesSolution
             frequencyByMask[Compact(value, bitPositions)]++;
         }
 
-        ZetaTransformSubsetSums(frequencyByMask, bitCount);
-
-        var subsetsByOrSubmask = new long[universeSize];
-
-        for (var mask = 0; mask < universeSize; mask++)
-        {
-            subsetsByOrSubmask[mask] = ModularArithmetic.Power(2, frequencyByMask[mask]);
-        }
-
-        MobiusInvertSubsetSums(subsetsByOrSubmask, bitCount);
-
-        var subsetsWithFullOr = subsetsByOrSubmask[universeSize - 1];
+        var subsetsWithFullOr = CountSubsetsWithFullOr(frequencyByMask, bitCount);
         var totalSubsets = ModularArithmetic.Power(2, n);
         var effective = ((totalSubsets - subsetsWithFullOr) % ModularArithmetic.Modulo + ModularArithmetic.Modulo)
             % ModularArithmetic.Modulo;
 
         return (int)effective;
-    }
-
-    private static int OrOfAll(int[] nums)
-    {
-        var strength = 0;
-
-        foreach (var value in nums)
-        {
-            strength |= value;
-        }
-
-        return strength;
     }
 
     // The positions of strength's own set bits, low to high - the compact
@@ -131,6 +116,27 @@ internal static class NumberOfEffectiveSubsequencesSolution
         }
 
         return compact;
+    }
+
+    // "# subsets whose OR is exactly the full strength", over the compacted
+    // mask space: the zeta transform turns per-mask frequencies into "how many
+    // elements are a submask of t" counts, 2^(that count) is "# subsets whose
+    // OR is a submask of t", and the Mobius pass inverts those back to exact
+    // values - read off at the full mask, the last one.
+    private static long CountSubsetsWithFullOr(long[] frequencyByMask, int bitCount)
+    {
+        var subsetsByOrSubmask = new long[frequencyByMask.Length];
+
+        ZetaTransformSubsetSums(frequencyByMask, bitCount);
+
+        for (var mask = 0; mask < subsetsByOrSubmask.Length; mask++)
+        {
+            subsetsByOrSubmask[mask] = ModularArithmetic.Power(2, frequencyByMask[mask]);
+        }
+
+        MobiusInvertSubsetSums(subsetsByOrSubmask, bitCount);
+
+        return subsetsByOrSubmask[subsetsByOrSubmask.Length - 1];
     }
 
     // In place: counts[t] becomes the number of elements whose compacted mask
@@ -168,5 +174,17 @@ internal static class NumberOfEffectiveSubsequencesSolution
                 }
             }
         }
+    }
+
+    private static int OrOfAll(int[] nums)
+    {
+        var strength = 0;
+
+        foreach (var value in nums)
+        {
+            strength |= value;
+        }
+
+        return strength;
     }
 }

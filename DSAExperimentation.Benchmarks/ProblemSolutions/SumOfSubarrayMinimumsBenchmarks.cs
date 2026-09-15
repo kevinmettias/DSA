@@ -13,10 +13,10 @@ public class SumOfSubarrayMinimumsBenchmarks
     // LC problem number, used as the RNG seed.
     private const int RandomSeed = 907;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

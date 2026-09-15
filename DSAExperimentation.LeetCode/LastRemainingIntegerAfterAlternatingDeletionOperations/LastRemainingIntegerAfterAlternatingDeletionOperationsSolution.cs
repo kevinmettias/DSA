@@ -24,22 +24,22 @@ internal static class LastRemainingIntegerAfterAlternatingDeletionOperationsSolu
             current.Add(value);
         }
 
-        var fromLeft = true;
+        var side = PassDirection.Left;
 
         while (current.Count > 1)
         {
-            current = KeepEverySecond(current, fromLeft);
-            fromLeft = !fromLeft;
+            current = KeepEverySecond(current, side);
+            side = side == PassDirection.Left ? PassDirection.Right : PassDirection.Left;
         }
 
         return current[0];
     }
 
-    private static List<long> KeepEverySecond(List<long> values, bool fromLeft)
+    private static List<long> KeepEverySecond(List<long> values, PassDirection side)
     {
         var kept = new List<long>();
 
-        if (fromLeft)
+        if (side == PassDirection.Left)
         {
             for (var i = 0; i < values.Count; i += 2)
             {
@@ -70,20 +70,30 @@ internal static class LastRemainingIntegerAfterAlternatingDeletionOperationsSolu
         var head = 1L;
         var step = 1L;
         var remaining = n;
-        var fromLeft = true;
+        var side = PassDirection.Left;
 
         while (remaining > 1)
         {
-            if (!fromLeft && remaining % 2 == 0)
+            if (side == PassDirection.Right && remaining % 2 == 0)
             {
                 head += step;
             }
 
             remaining = (remaining + 1) / 2;
             step *= 2;
-            fromLeft = !fromLeft;
+            side = side == PassDirection.Left ? PassDirection.Right : PassDirection.Left;
         }
 
         return head;
+    }
+
+    // The end a pass counts "every second" from, which is also the direction it
+    // sweeps in: a Left pass keeps indices 0, 2, 4, ... straight off the run, a
+    // Right pass keeps the same ordinals counted back from the end. The two
+    // strategies alternate it once per pass.
+    private enum PassDirection
+    {
+        Left,
+        Right,
     }
 }

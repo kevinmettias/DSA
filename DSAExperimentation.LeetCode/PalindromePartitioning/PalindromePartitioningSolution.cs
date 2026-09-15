@@ -21,7 +21,7 @@ internal static class PalindromePartitioningSolution
         Backtrack.Search<PartitionState, string>(
             state,
             x => x.Index == s.Length,
-            x => x.Index == s.Length ? [] : Candidates(s, x.Index),
+            x => x.Index == s.Length ? NoCandidates() : Candidates(s, x.Index),
             (x, part) =>
             {
                 x.Starts.Push(x.Index);
@@ -37,6 +37,9 @@ internal static class PalindromePartitioningSolution
 
         return results;
     }
+
+    // No palindromic prefix is left once the cursor reaches the end of s.
+    private static IEnumerable<string> NoCandidates() => [];
 
     private static IEnumerable<string> Candidates(string s, int start)
     {

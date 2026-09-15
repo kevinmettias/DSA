@@ -29,7 +29,7 @@ internal static class MaximumLengthOfRepeatedSubarraySolution
             {
                 var len = 0;
 
-                while (i + len < first.Length && j + len < second.Length && first[i + len] == second[j + len])
+                while (CanExtendRun(first, second, (i, j), len))
                 {
                     len++;
                 }
@@ -41,13 +41,31 @@ internal static class MaximumLengthOfRepeatedSubarraySolution
         return best;
     }
 
+    // Both walks still have an element at this offset, and those elements match -
+    // so the run starting at (i, j) can grow by one more.
+    private static bool CanExtendRun(int[] first, int[] second, (int First, int Second) start, int len)
+        => start.First + len < first.Length && start.Second + len < second.Length
+            && first[start.First + len] == second[start.Second + len];
+
     public static int FindLengthByMemoizedSuffixPairDp(int[] first, int[] second)
     {
-        var (_, best) = Memoizer.Memoize<(int First, int Second), (int MatchLen, int Best)>((0, 0), Explore);
-        return best;
+        var (_, best) = Memoizer.Memoize<(int First, int Second), (int MatchLen, int Best)>(
+            (0, 0), new SuffixPairRuns(first, second));
 
-        (int MatchLen, int Best) Explore(
-            (int First, int Second) state, Func<(int First, int Second), (int MatchLen, int Best)> explore)
+        return best;
+    }
+
+    // The suffix-pair rule, named: what the match run starting at (i, j) is worth, and the
+    // best run found anywhere from (i, j) onward. Both arrays are fixed for the whole walk
+    // and arrive once through the primary constructor; `rest` is the memo run's own handle
+    // on this rule, so each recurrence below is a call on a named type.
+    private sealed class SuffixPairRuns(int[] first, int[] second)
+        : IRecurrence<(int First, int Second), (int MatchLen, int Best)>
+    {
+        /// <inheritdoc/>
+        public (int MatchLen, int Best) Replay(
+            (int First, int Second) state,
+            IRecurrence<(int First, int Second), (int MatchLen, int Best)> rest)
         {
             var (i, j) = state;
 
@@ -60,12 +78,12 @@ internal static class MaximumLengthOfRepeatedSubarraySolution
 
             if (first[i] == second[j])
             {
-                var (nextMatch, _) = explore((i + 1, j + 1));
+                var (nextMatch, _) = rest.Replay((i + 1, j + 1), rest);
                 matchLen = 1 + nextMatch;
             }
 
-            var (_, bestRight) = explore((i + 1, j));
-            var (_, bestDown) = explore((i, j + 1));
+            var (_, bestRight) = rest.Replay((i + 1, j), rest);
+            var (_, bestDown) = rest.Replay((i, j + 1), rest);
             var bestOfRightAndDown = Math.Max(bestRight, bestDown);
 
             return (matchLen, Math.Max(matchLen, bestOfRightAndDown));

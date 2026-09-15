@@ -37,18 +37,6 @@ internal static class PerfectRectangleSolution
         return AreaMatchesBoundingBox(rectangles);
     }
 
-    public static bool IsRectangleCoverByCornerToggle(int[][] rectangles)
-    {
-        var accumulator = new RectangleAccumulator();
-
-        foreach (var rect in rectangles)
-        {
-            accumulator.Add(rect);
-        }
-
-        return accumulator.IsPerfectCover();
-    }
-
     private static bool Overlaps(int[] a, int[] b)
         => a[0] < b[X2Index] && b[0] < a[X2Index] && a[1] < b[Y2Index] && b[1] < a[Y2Index];
 
@@ -72,6 +60,18 @@ internal static class PerfectRectangleSolution
         return totalArea == (long)(maxX - minX) * (maxY - minY);
     }
 
+    public static bool IsRectangleCoverByCornerToggle(int[][] rectangles)
+    {
+        var accumulator = new RectangleAccumulator();
+
+        foreach (var rect in rectangles)
+        {
+            accumulator.Add(rect);
+        }
+
+        return accumulator.IsPerfectCover();
+    }
+
     // The brute-force strategy's pairing-check counterpart: toggling four corners
     // per rectangle and re-deriving the bounding box from the same running min/max
     // this repo's other strategy computes with a foreach loop instead of a class.
@@ -89,16 +89,38 @@ internal static class PerfectRectangleSolution
         public void Add(int[] rect)
         {
             var (x1, y1, x2, y2) = (rect[0], rect[1], rect[X2Index], rect[Y2Index]);
+
+            AccumulateExtentsAndArea(x1, y1, x2, y2);
+            ToggleCorners(x1, y1, x2, y2);
+        }
+
+        // Grow the running bounding box to take in this rectangle, and charge its own
+        // area to the running total.
+        private void AccumulateExtentsAndArea(int x1, int y1, int x2, int y2)
+        {
             _minX = Math.Min(_minX, x1);
             _minY = Math.Min(_minY, y1);
             _maxX = Math.Max(_maxX, x2);
             _maxY = Math.Max(_maxY, y2);
             _totalArea += (long)(x2 - x1) * (y2 - y1);
+        }
 
+        // Every corner is toggled in or out of the set, so a corner shared by an even
+        // number of rectangles cancels back out.
+        private void ToggleCorners(int x1, int y1, int x2, int y2)
+        {
             ToggleCorner(_corners, (x1, y1));
             ToggleCorner(_corners, (x1, y2));
             ToggleCorner(_corners, (x2, y1));
             ToggleCorner(_corners, (x2, y2));
+        }
+
+        private static void ToggleCorner(Set<(int X, int Y)> corners, (int X, int Y) point)
+        {
+            if (!corners.TryAdd(point))
+            {
+                corners.TryRemove(point);
+            }
         }
 
         public bool IsPerfectCover()
@@ -111,14 +133,6 @@ internal static class PerfectRectangleSolution
 
             return _corners.Has((_minX, _minY)) && _corners.Has((_minX, _maxY))
                 && _corners.Has((_maxX, _minY)) && _corners.Has((_maxX, _maxY));
-        }
-
-        private static void ToggleCorner(Set<(int X, int Y)> corners, (int X, int Y) point)
-        {
-            if (!corners.TryAdd(point))
-            {
-                corners.TryRemove(point);
-            }
         }
     }
 }

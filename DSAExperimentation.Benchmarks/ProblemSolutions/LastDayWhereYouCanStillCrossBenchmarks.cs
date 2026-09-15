@@ -15,10 +15,10 @@ public class LastDayWhereYouCanStillCrossBenchmarks
     private const int RandomSeed = 1970; // LC problem number
     private const int OneBased = 1;
 
-    [Params(20, 50)]
-    public int Size;
-
     private FloodSchedule _flooding = null!;
+
+    [Params(20, 50)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

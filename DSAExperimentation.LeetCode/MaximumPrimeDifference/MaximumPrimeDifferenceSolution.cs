@@ -16,6 +16,9 @@ internal static class MaximumPrimeDifferenceSolution
     // needs to cover this many values regardless of how long nums itself is.
     private const int MaxValue = 100;
 
+    // The smallest prime, and so the first divisor trial division ever tests.
+    private const int SmallestPrime = 2;
+
     // The textbook scan: every pair of prime-valued indices, trial-division
     // tested on the fly. Correct, and the arm the sieve strategy below has to
     // beat - O(n^2) in the number of primes nums actually contains.
@@ -44,8 +47,6 @@ internal static class MaximumPrimeDifferenceSolution
 
     private static bool IsPrimeByTrialDivision(int value)
     {
-        const int SmallestPrime = 2;
-
         if (value < SmallestPrime)
         {
             return false;
@@ -89,7 +90,7 @@ internal static class MaximumPrimeDifferenceSolution
             last = i;
         }
 
-        return first == LeetCodeAnswer.None ? LeetCodeAnswer.None : last - first;
+        return first == LeetCodeAnswer.None ? LeetCodeAnswer.None : EndpointDistance(first, last);
     }
 
     private static DynamicArray<bool> BuildSieve(int bound)
@@ -116,4 +117,7 @@ internal static class MaximumPrimeDifferenceSolution
 
         return isComposite;
     }
+
+    // How far apart the first and last prime indices are.
+    private static int EndpointDistance(int first, int last) => last - first;
 }

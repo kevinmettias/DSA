@@ -11,16 +11,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FaultyKeyboardBenchmarks
 {
+    private const int Seed = 1;
+
     // Excludes 'i' itself, so the non-'i' characters never accidentally trigger a
     // reversal of their own and dilute the deliberate every-other-char ratio.
     private static readonly char[] NonIAlphabet = "abcdefghjklmnopqrstuvwxyz".ToCharArray();
 
-    private const int Seed = 1;
+    private string _input = "";
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private string _input = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,11 +31,14 @@ public class FaultyKeyboardBenchmarks
 
         for (var i = 1; i < Length; i++)
         {
-            chars[i] = i % 2 == 0 ? 'i' : NonIAlphabet[random.Next(NonIAlphabet.Length)];
+            var isFiller = i % 2 == 0;
+            chars[i] = isFiller ? 'i' : RandomNonIChar(random);
         }
 
         _input = new string(chars);
     }
+
+    private static char RandomNonIChar(Random random) => NonIAlphabet[random.Next(NonIAlphabet.Length)];
 
     [Benchmark(Baseline = true)]
     public string Reversal() => FaultyKeyboardSolution.FinalStringByReversal(_input);

@@ -25,9 +25,14 @@ internal static class TweetCountsPerFrequencySolution
     private const int SecondsPerHour = 3_600;
     private const int SecondsPerDay = 86_400;
 
-    public const string Minute = "minute";
-    public const string Hour = "hour";
-    public const string Day = "day";
+    // The three frequency names LC 1348 fixes. Private because nothing outside this
+    // type needs the *declaration*: the tests and the benchmark each replay LC's own
+    // call script, and a script states the names it is replaying. ResolveChunkSeconds
+    // below is the only reader, and it is what makes these three a closed set the
+    // program chooses between rather than three loose strings.
+    private const string Minute = "minute";
+    private const string Hour = "hour";
+    private const string Day = "day";
 
     // The chunk width each frequency name stands for. LC 1348 fixes these three
     // names and nothing else, so both strategies read them from here rather than
@@ -42,6 +47,11 @@ internal static class TweetCountsPerFrequencySolution
 
     private static int BucketCount(int startTime, int endTime, int chunkSeconds)
         => (endTime - startTime) / chunkSeconds + 1;
+
+    // A tweet only lands in a bucket when it was recorded inside the query window,
+    // both ends included.
+    private static bool IsWithinWindow(int time, int startTime, int endTime)
+        => time >= startTime && time <= endTime;
 
     // The shared surface both strategies implement, so the test and benchmark
     // harnesses can replay one call script against either strategy without
@@ -71,7 +81,7 @@ internal static class TweetCountsPerFrequencySolution
 
             foreach (var (name, time) in _tweets)
             {
-                if (name == tweetName && time >= startTime && time <= endTime)
+                if (name == tweetName && IsWithinWindow(time, startTime, endTime))
                 {
                     buckets[(time - startTime) / chunkSeconds]++;
                 }
@@ -110,21 +120,21 @@ internal static class TweetCountsPerFrequencySolution
                 return buckets;
             }
 
-            BucketTweetTimes(times, startTime, endTime, chunkSeconds, buckets);
+            BucketTweetTimes(times, (startTime, endTime), chunkSeconds, buckets);
 
             return buckets;
         }
 
         private static void BucketTweetTimes(
-            DynamicArray<int> times, int startTime, int endTime, int chunkSeconds, List<int> buckets)
+            DynamicArray<int> times, (int StartTime, int EndTime) window, int chunkSeconds, List<int> buckets)
         {
             for (var i = 0; i < times.Count; i++)
             {
                 var time = times.Get(i);
 
-                if (time >= startTime && time <= endTime)
+                if (time >= window.StartTime && time <= window.EndTime)
                 {
-                    buckets[(time - startTime) / chunkSeconds]++;
+                    buckets[(time - window.StartTime) / chunkSeconds]++;
                 }
             }
         }

@@ -98,10 +98,17 @@ internal static class DesignCircularDequeSolution
             return true;
         }
 
-        public int GetFront() => IsEmpty() ? LeetCodeAnswer.None : _items[_head];
+        public int GetFront() => IsEmpty() ? LeetCodeAnswer.None : FrontItem();
+
+        // The item at the head slot, which the empty guard above has made safe to read.
+        private int FrontItem() => _items[_head];
 
         public int GetRear() =>
-            IsEmpty() ? LeetCodeAnswer.None : _items[(_head + _count - 1 + _items.Length) % _items.Length];
+            IsEmpty() ? LeetCodeAnswer.None : RearItem();
+
+        // The item at the rear slot: one step back from the head, wrapped by the buffer
+        // length so the read stays inside the array.
+        private int RearItem() => _items[(_head + _count - 1 + _items.Length) % _items.Length];
     }
 
     // The composed answer: this repo's own Deque<int> (already a wraparound-array

@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CountSortedVowelStringsBenchmarks
 {
     [Params(20, 35)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BacktrackingEnumeration() =>

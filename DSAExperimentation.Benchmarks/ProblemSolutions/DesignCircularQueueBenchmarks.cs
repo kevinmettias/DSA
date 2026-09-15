@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignCircularQueue.DesignCircularQueueSolution;
+using DSAExperimentation.LeetCode.DesignCircularQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -15,39 +15,17 @@ public class DesignCircularQueueBenchmarks
 {
     private const int OperationCount = 50_000;
 
-    [Params(8, 512)]
-    public int Capacity;
+    private List<Func<DesignCircularQueueSolution.ICircularQueue, int>> _script = new();
 
-    private List<Func<ICircularQueue, int>> _script = null!;
+    [Params(8, 512)]
+    public int Capacity { get; set; }
 
     [GlobalSetup]
     public void Setup() => _script = BuildScript(Capacity, OperationCount);
 
-    [Benchmark(Baseline = true)]
-    public long ArrayBacked() => Replay(new CircularQueueByArrayBacked(Capacity));
-
-    [Benchmark]
-    public long DequeBacked() => Replay(new CircularQueueByDequeBacked(Capacity));
-
-    // Sums every returned value rather than discarding it, so the JIT can't
-    // eliminate the replay as dead code - the same "return the real answer, not a
-    // weaker proxy" shape OpenTheLockBenchmarks/DesignTaskManagerBenchmarks
-    // already follow.
-    private long Replay(ICircularQueue queue)
+    private static List<Func<DesignCircularQueueSolution.ICircularQueue, int>> BuildScript(int capacity, int operationCount)
     {
-        var resultSum = 0L;
-
-        foreach (var op in _script)
-        {
-            resultSum += op(queue);
-        }
-
-        return resultSum;
-    }
-
-    private static List<Func<ICircularQueue, int>> BuildScript(int capacity, int operationCount)
-    {
-        var script = new List<Func<ICircularQueue, int>>();
+        var script = new List<Func<DesignCircularQueueSolution.ICircularQueue, int>>();
 
         for (var i = 0; i < operationCount; i++)
         {
@@ -67,5 +45,27 @@ public class DesignCircularQueueBenchmarks
         }
 
         return script;
+    }
+
+    [Benchmark(Baseline = true)]
+    public long ArrayBacked() => Replay(new DesignCircularQueueSolution.CircularQueueByArrayBacked(Capacity));
+
+    [Benchmark]
+    public long DequeBacked() => Replay(new DesignCircularQueueSolution.CircularQueueByDequeBacked(Capacity));
+
+    // Sums every returned value rather than discarding it, so the JIT can't
+    // eliminate the replay as dead code - the same "return the real answer, not a
+    // weaker proxy" shape OpenTheLockBenchmarks/DesignTaskManagerBenchmarks
+    // already follow.
+    private long Replay(DesignCircularQueueSolution.ICircularQueue queue)
+    {
+        var resultSum = 0L;
+
+        foreach (var op in _script)
+        {
+            resultSum += op(queue);
+        }
+
+        return resultSum;
     }
 }

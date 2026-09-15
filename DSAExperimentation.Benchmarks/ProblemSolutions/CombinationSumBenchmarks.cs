@@ -10,10 +10,10 @@ public class CombinationSumBenchmarks
 {
     private static readonly int[] CandidateValues = [2, 3, 5, 7];
 
-    [Params(30, 60)]
-    public int Target;
+    private int[] _candidates = [];
 
-    private int[] _candidates = null!;
+    [Params(30, 60)]
+    public int Target { get; set; }
 
     [GlobalSetup]
     public void Setup() => _candidates = CandidateValues;

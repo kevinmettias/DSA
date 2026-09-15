@@ -21,6 +21,12 @@ internal static class IntegerReplacementSolution
     // recurrence below has to justify itself against.
     public static int MinStepsByUnmemoizedRecursion(int n) => Replace(n);
 
+    // This repo's own Memoizer-driven DP recurrence (same CountingBitsSolution/
+    // HouseRobberSolution composition) over the identical recurrence above - caching
+    // collapses the same exploding call tree down to a few dozen distinct states.
+    public static int MinStepsByMemoizedRecurrence(int n)
+        => Memoizer.Memoize<long, int>(n, new StepsToReduceToOne());
+
     private static int Replace(long n)
         => n switch
         {
@@ -29,14 +35,28 @@ internal static class IntegerReplacementSolution
             _ => 1 + Math.Min(Replace(n - 1), Replace(n + 1)),
         };
 
-    // This repo's own Memoizer-driven DP recurrence (same CountingBitsSolution/
-    // HouseRobberSolution composition) over the identical recurrence above - caching
-    // collapses the same exploding call tree down to a few dozen distinct states.
-    public static int MinStepsByMemoizedRecurrence(int n)
-        => Memoizer.Memoize<long, int>(n, (value, replace) => value switch
+    // The step rule above, named so the memoized arm states it as a type rather than
+    // as a callable handed in: one step off an even value, the cheaper of the two
+    // neighbours off an odd one.
+    private sealed class StepsToReduceToOne : IRecurrence<long, int>
+    {
+        /// <inheritdoc/>
+        public int Replay(long state, IRecurrence<long, int> rest)
         {
-            1 => 0,
-            _ when value % EvenCheckDivisor == 0 => 1 + replace(value / EvenCheckDivisor),
-            _ => 1 + Math.Min(replace(value - 1), replace(value + 1)),
-        });
+            if (state == 1)
+            {
+                return 0;
+            }
+
+            if (state % EvenCheckDivisor == 0)
+            {
+                return 1 + rest.Replay(state / EvenCheckDivisor, rest);
+            }
+
+            var stepDown = rest.Replay(state - 1, rest);
+            var stepUp = rest.Replay(state + 1, rest);
+
+            return 1 + Math.Min(stepDown, stepUp);
+        }
+    }
 }

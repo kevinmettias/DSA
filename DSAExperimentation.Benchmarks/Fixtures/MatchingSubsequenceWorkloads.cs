@@ -7,8 +7,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // which is exactly the case the waiting-bucket pass wins.
 internal static class MatchingSubsequenceWorkloads
 {
-    public const int TextLength = 20_000;
-
     private const char UnreachableChar = 'z';
 
     private const int WordLength = 4;

@@ -6,24 +6,19 @@ namespace DSAExperimentation.LeetCode.FlattenNestedListIterator;
 // own interface hands every strategy here, so it lives beside the solution rather
 // than in Domain/ (ARCHITECTURE.md #17.6), the same call CourseNode makes for
 // CourseSchedule/CourseScheduleII.
-internal sealed class NestedInteger
+internal sealed class NestedInteger(int value, List<NestedInteger>? list)
 {
-    private readonly List<NestedInteger>? _list;
-    private readonly int _value;
+    public bool IsInteger => list is null;
 
-    private NestedInteger(int value, List<NestedInteger>? list)
-    {
-        _value = value;
-        _list = list;
-    }
+    public int Value => IsInteger ? value : ThrowNotAnInteger();
 
-    public bool IsInteger => _list is null;
-
-    public int Value => IsInteger ? _value : throw new InvalidOperationException("Not an integer.");
-
-    public List<NestedInteger> Elements => _list ?? throw new InvalidOperationException("Not a list.");
+    public List<NestedInteger> Elements => list ?? throw new InvalidOperationException("Not a list.");
 
     public static NestedInteger OfInteger(int value) => new(value, null);
 
     public static NestedInteger OfList(params NestedInteger[] elements) => new(0, [.. elements]);
+
+    // `Value`'s non-integer arm: a node that holds a list has no single integer.
+    private static int ThrowNotAnInteger() =>
+        throw new InvalidOperationException("Not an integer.");
 }

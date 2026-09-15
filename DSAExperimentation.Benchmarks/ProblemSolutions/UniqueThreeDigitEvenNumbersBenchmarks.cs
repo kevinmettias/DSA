@@ -13,10 +13,10 @@ public class UniqueThreeDigitEvenNumbersBenchmarks
     private const int Seed = 3483;
     private const int DigitUpperBound = 10;
 
-    [Params(5, 10)]
-    public int DigitCount;
+    private int[] _digits = [];
 
-    private int[] _digits = null!;
+    [Params(5, 10)]
+    public int DigitCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

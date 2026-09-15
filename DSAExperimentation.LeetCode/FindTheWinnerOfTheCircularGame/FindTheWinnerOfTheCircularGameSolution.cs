@@ -21,6 +21,15 @@ internal static class FindTheWinnerOfTheCircularGameSolution
     // below has to justify itself against.
     public static int FindTheWinnerByListRemoval(int n, int k)
     {
+        var friends = BuildFriendCircle(n);
+
+        return EliminateUntilOneRemains(friends, k);
+    }
+
+    // Friends 1..n seated in order, so a survivor's position in the list is its
+    // position in the circle.
+    private static List<int> BuildFriendCircle(int n)
+    {
         var friends = new List<int>(n);
 
         for (var friend = 1; friend <= n; friend++)
@@ -28,6 +37,13 @@ internal static class FindTheWinnerOfTheCircularGameSolution
             friends.Add(friend);
         }
 
+        return friends;
+    }
+
+    // Delete the loser in place and advance the count index modulo the shrinking
+    // circle; the last friend left standing is the winner.
+    private static int EliminateUntilOneRemains(List<int> friends, int k)
+    {
         var index = 0;
 
         while (friends.Count > 1)

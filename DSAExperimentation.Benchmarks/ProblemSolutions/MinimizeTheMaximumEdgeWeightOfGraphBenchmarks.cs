@@ -16,10 +16,10 @@ public class MinimizeTheMaximumEdgeWeightOfGraphBenchmarks
     private const int ExtraEdgesPerNode = 2;
     private const int Threshold = 4;
 
-    [Params(100, 1000)]
-    public int NodeCount;
-
     private EdgeWeightGraph _graph = null!;
+
+    [Params(100, 1000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -20,32 +20,49 @@ internal static class BestTimeToBuyAndSellStockWithCooldownSolution
 {
     private const int CooldownDays = 2;
 
-    public static int MaxProfitByUnmemoizedRecursion(int[] prices) => ProfitFrom(prices, 0, false);
+    public static int MaxProfitByUnmemoizedRecursion(int[] prices) => ProfitFrom(prices, 0, HoldingState.Flat);
 
-    private static int ProfitFrom(int[] prices, int day, bool holding)
+    public static int MaxProfitByMemoizedRecursion(int[] prices) =>
+        Memoizer.Memoize<(int Day, bool Holding), int>((0, false), new ProfitDayByDay(prices));
+
+    private static int ProfitFrom(int[] prices, int day, HoldingState holding)
     {
         if (day >= prices.Length)
         {
             return 0;
         }
 
-        if (holding)
+        if (holding == HoldingState.Holding)
         {
-            var sell = prices[day] + ProfitFrom(prices, day + CooldownDays, false);
-            var hold = ProfitFrom(prices, day + 1, true);
+            var sell = prices[day] + ProfitFrom(prices, day + CooldownDays, HoldingState.Flat);
+            var hold = ProfitFrom(prices, day + 1, HoldingState.Holding);
             return Math.Max(sell, hold);
         }
 
-        var buy = -prices[day] + ProfitFrom(prices, day + 1, true);
-        var rest = ProfitFrom(prices, day + 1, false);
+        var buy = -prices[day] + ProfitFrom(prices, day + 1, HoldingState.Holding);
+        var rest = ProfitFrom(prices, day + 1, HoldingState.Flat);
         return Math.Max(buy, rest);
     }
 
-    public static int MaxProfitByMemoizedRecursion(int[] prices)
+    // Whether the recurrence is standing on a day with a share already bought, which
+    // is the state that decides whether the day's price is a sell or a buy - named so
+    // the call site says which one it is rather than spelling it `true`.
+    private enum HoldingState
     {
-        return Memoizer.Memoize<(int Day, bool Holding), int>((0, false), ProfitFrom);
+        // A share is held, so this day can sell it (or keep holding).
+        Holding,
 
-        int ProfitFrom((int Day, bool Holding) state, Func<(int Day, bool Holding), int> profit)
+        // No share is held, so this day can buy one (or rest).
+        Flat,
+    }
+
+    // The recurrence, named: one day of the state machine, where a held share can be
+    // sold (skipping the next day) or kept, and a flat day can buy or stand still.
+    // The day's prices are the whole of what the rule needs from its caller, so they
+    // are the constructor's only input.
+    private sealed class ProfitDayByDay(int[] prices) : IRecurrence<(int Day, bool Holding), int>
+    {
+        public int Replay((int Day, bool Holding) state, IRecurrence<(int Day, bool Holding), int> rest)
         {
             var (day, holding) = state;
             if (day >= prices.Length)
@@ -55,14 +72,14 @@ internal static class BestTimeToBuyAndSellStockWithCooldownSolution
 
             if (holding)
             {
-                var sell = prices[day] + profit((day + CooldownDays, false));
-                var hold = profit((day + 1, true));
+                var sell = prices[day] + rest.Replay((day + CooldownDays, false), rest);
+                var hold = rest.Replay((day + 1, true), rest);
                 return Math.Max(sell, hold);
             }
 
-            var buy = -prices[day] + profit((day + 1, true));
-            var rest = profit((day + 1, false));
-            return Math.Max(buy, rest);
+            var buy = -prices[day] + rest.Replay((day + 1, true), rest);
+            var idle = rest.Replay((day + 1, false), rest);
+            return Math.Max(buy, idle);
         }
     }
 }

@@ -77,8 +77,9 @@ internal static class LongestPathWithDifferentAdjacentCharactersSolution
             return accumulator with { BestPath = bestPath };
         }
 
+        var childHeight = Height(child, labels);
         var (bestHeight, secondBestHeight) = FoldHeight(
-            Height(child, labels), accumulator.BestHeight, accumulator.SecondBestHeight);
+            childHeight, accumulator.BestHeight, accumulator.SecondBestHeight);
 
         return new PathViaAccumulator(bestHeight, secondBestHeight, bestPath);
     }

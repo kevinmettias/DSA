@@ -64,7 +64,19 @@ internal static class MaximumCompatibilityScoreSumSolution
     }
 
     public static int MaxCompatibilitySumByMemoizedBitmask(CompatibilityScoreMatrix scores) =>
-        Memoizer.Memoize<(int Student, int UsedMask), int>((0, 0), (state, best) =>
+        Memoizer.Memoize<(int Student, int UsedMask), int>((0, 0), new BestPairingFrom(scores));
+
+    // The pairing rule, named: the next student pairs with whichever still-free mentor
+    // leaves the highest-scoring completion. The score table is fixed for the whole search
+    // and arrives once through the primary constructor; `rest` is the memo run's own handle
+    // on this rule, so the recursion below is a call on a named type rather than on an
+    // anonymous call-back value.
+    private sealed class BestPairingFrom(CompatibilityScoreMatrix scores)
+        : IRecurrence<(int Student, int UsedMask), int>
+    {
+        /// <inheritdoc/>
+        public int Replay(
+            (int Student, int UsedMask) state, IRecurrence<(int Student, int UsedMask), int> rest)
         {
             var (student, usedMask) = state;
 
@@ -82,10 +94,11 @@ internal static class MaximumCompatibilityScoreSumSolution
                     continue;
                 }
 
-                var rest = best((student + 1, usedMask | (1 << mentor)));
-                top = Math.Max(top, scores.Score(student, mentor) + rest);
+                var remaining = rest.Replay((student + 1, usedMask | (1 << mentor)), rest);
+                top = Math.Max(top, scores.Score(student, mentor) + remaining);
             }
 
             return top;
-        });
+        }
+    }
 }

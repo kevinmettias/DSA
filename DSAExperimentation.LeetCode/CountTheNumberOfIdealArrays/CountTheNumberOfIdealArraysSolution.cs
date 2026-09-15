@@ -50,23 +50,6 @@ internal static class CountTheNumberOfIdealArraysSolution
         return (int)total;
     }
 
-    // Build one smallest-prime-factor table over maxValue, using this repo's own
-    // DynamicArray<int> as the sieve buffer - the same Sieve-of-Eratosthenes
-    // composite-marking pattern CountWaysToMakeArrayWithProduct establishes for LC
-    // 1735 - so every value afterwards factors in O(log value).
-    public static int IdealArraysBySmallestPrimeFactorSieve(int n, int maxValue)
-    {
-        var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(maxValue);
-        var total = 0L;
-
-        for (var value = 1; value <= maxValue; value++)
-        {
-            total = (total + CountEndingAtBySieve(value, n, smallestPrimeFactor)) % ModularArithmetic.Modulo;
-        }
-
-        return (int)total;
-    }
-
     private static long CountEndingAtByTrialDivision(int value, int n)
     {
         var remaining = value;
@@ -102,26 +85,21 @@ internal static class CountTheNumberOfIdealArraysSolution
         return product * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
     }
 
-    private static long CountEndingAtBySieve(int value, int n, DynamicArray<int> smallestPrimeFactor)
+    // Build one smallest-prime-factor table over maxValue, using this repo's own
+    // DynamicArray<int> as the sieve buffer - the same Sieve-of-Eratosthenes
+    // composite-marking pattern CountWaysToMakeArrayWithProduct establishes for LC
+    // 1735 - so every value afterwards factors in O(log value).
+    public static int IdealArraysBySmallestPrimeFactorSieve(int n, int maxValue)
     {
-        var remaining = value;
-        var product = 1L;
+        var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(maxValue);
+        var total = 0L;
 
-        while (remaining > 1)
+        for (var value = 1; value <= maxValue; value++)
         {
-            var factor = smallestPrimeFactor.Get(remaining);
-            var exponent = 0;
-
-            while (remaining % factor == 0)
-            {
-                remaining /= factor;
-                exponent++;
-            }
-
-            product = product * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
+            total = (total + CountEndingAtBySieve(value, n, smallestPrimeFactor)) % ModularArithmetic.Modulo;
         }
 
-        return product;
+        return (int)total;
     }
 
     // spf[i] holds i's smallest prime factor (spf[i] == i means i is prime, or 1).
@@ -166,6 +144,28 @@ internal static class CountTheNumberOfIdealArraysSolution
                 spf.Set(multiple, prime);
             }
         }
+    }
+
+    private static long CountEndingAtBySieve(int value, int n, DynamicArray<int> smallestPrimeFactor)
+    {
+        var remaining = value;
+        var product = 1L;
+
+        while (remaining > 1)
+        {
+            var factor = smallestPrimeFactor.Get(remaining);
+            var exponent = 0;
+
+            while (remaining % factor == 0)
+            {
+                remaining /= factor;
+                exponent++;
+            }
+
+            product = product * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
+        }
+
+        return product;
     }
 
     private static long BinomialMod(int total, int r)

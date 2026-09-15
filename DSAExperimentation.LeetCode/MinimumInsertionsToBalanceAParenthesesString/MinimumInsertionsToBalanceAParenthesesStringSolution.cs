@@ -33,20 +33,6 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
         return insertions + needed;
     }
 
-    // Every unmatched opener is pushed onto Stack<char>, so the count left standing
-    // at the end says directly how many openers still owe two closers each.
-    public static int MinInsertionsByOpenerStack(string s)
-    {
-        var scanner = new ParenScanner(s);
-
-        while (scanner.HasNext)
-        {
-            scanner.Advance();
-        }
-
-        return scanner.Insertions + (scanner.RemainingOpeners * ClosersPerOpener);
-    }
-
     private static int ProcessOpener(int needed, ref int insertions)
     {
         needed += ClosersPerOpener;
@@ -71,6 +57,20 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
         }
 
         return needed;
+    }
+
+    // Every unmatched opener is pushed onto Stack<char>, so the count left standing
+    // at the end says directly how many openers still owe two closers each.
+    public static int MinInsertionsByOpenerStack(string s)
+    {
+        var scanner = new ParenScanner(s);
+
+        while (scanner.HasNext)
+        {
+            scanner.Advance();
+        }
+
+        return scanner.Insertions + (scanner.RemainingOpeners * ClosersPerOpener);
     }
 
     // Consumes the string one balanced unit at a time: a ')' followed by a second

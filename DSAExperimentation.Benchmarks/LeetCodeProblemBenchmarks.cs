@@ -22,7 +22,9 @@ public class LeetCodeProblemBenchmarks
     private const char ArmSeparator = '/';
     private const int ArmPartCount = 3;
 
-    private Func<object?> _run = () => null;
+    // Resolved once in [GlobalSetup]; BenchmarkDotNet calls the [Benchmark] only
+    // after that, so reading it unbound would mean the arm was never bound at all.
+    private IBoundWorkload? _bound;
 
     public static IEnumerable<string> Arms
         => LeetCodeProblemRegistry.WorkloadArms().Select(arm => arm.ToString());
@@ -40,9 +42,18 @@ public class LeetCodeProblemBenchmarks
             throw new InvalidOperationException($"'{Arm}' is not a problem/strategy/workload arm.");
         }
 
-        _run = LeetCodeProblemRegistry.Get(parts[0]).BindWorkload(parts[1], parts[2]);
+        _bound = LeetCodeProblemRegistry.Get(parts[0]).BindWorkload(
+            new StrategyName(parts[1]), new WorkloadName(parts[2]));
     }
 
     [Benchmark]
-    public object? Run() => _run();
+    public object? Run() => BoundArm().Run();
+
+    // BenchmarkDotNet runs [GlobalSetup] before the first [Benchmark] call and only
+    // re-runs it when an arm changes, so this is bound whenever the harness drives
+    // the class its documented way. The throw is for every other way in - a unit
+    // test that invokes Run() directly, a future harness that forgets Setup - and it
+    // names the step that is missing rather than dereferencing nothing.
+    private IBoundWorkload BoundArm() =>
+        _bound ?? throw new InvalidOperationException($"[GlobalSetup] has not bound the '{Arm}' arm yet.");
 }

@@ -35,18 +35,6 @@ internal static class RecoverBinarySearchTreeSolution
         (first!.Value, second!.Value) = (second!.Value, first!.Value);
     }
 
-    private static void CollectInOrder(BinaryTreeNode<int>? node, List<BinaryTreeNode<int>> values)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        CollectInOrder(node.Left, values);
-        values.Add(node);
-        CollectInOrder(node.Right, values);
-    }
-
     // This repo's own InOrderTraversal/IInOrderHooks walking the tree with no
     // intermediate list allocation. Hooks are static, so the two candidate nodes
     // live in AsyncLocal state alongside the walk rather than captured locals.
@@ -61,6 +49,18 @@ internal static class RecoverBinarySearchTreeSolution
         var first = State.First.Value!;
         var second = State.Second.Value!;
         (first.Value, second.Value) = (second.Value, first.Value);
+    }
+
+    private static void CollectInOrder(BinaryTreeNode<int>? node, List<BinaryTreeNode<int>> values)
+    {
+        if (node is null)
+        {
+            return;
+        }
+
+        CollectInOrder(node.Left, values);
+        values.Add(node);
+        CollectInOrder(node.Right, values);
     }
 
     private readonly struct ScanHooks : IInOrderHooks<int>

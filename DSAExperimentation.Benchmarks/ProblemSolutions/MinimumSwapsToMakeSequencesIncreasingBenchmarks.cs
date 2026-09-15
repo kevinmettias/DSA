@@ -22,11 +22,11 @@ public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
     // random.Next(CoinFlipBound) picks one of exactly two outcomes.
     private const int CoinFlipBound = 2;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    private int[] _nums2 = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

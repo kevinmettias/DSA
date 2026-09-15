@@ -24,11 +24,11 @@ public class ReplaceWordsBenchmarks
 
     private const int LowercaseAlphabetSize = 26;
 
-    [Params(50, 1_000)]
-    public int DictionarySize;
+    private string[] _dictionary = [];
 
-    private string[] _dictionary = null!;
-    private string _sentence = null!;
+    private string _sentence = "";
+    [Params(50, 1_000)]
+    public int DictionarySize { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -39,10 +39,17 @@ public class ReplaceWordsBenchmarks
             .Distinct()
             .ToArray();
         _sentence = string.Join(' ', Enumerable.Range(0, DictionarySize)
-            .Select(i => i % AlternationModulus == 0
-                ? _dictionary[random.Next(_dictionary.Length)] + RandomWord(random, WordLength - RootLength)
+            .Select(i => UsesDictionaryRoot(i)
+                ? PrefixedWord(random)
                 : RandomWord(random, WordLength)));
     }
+
+    // Alternates the sentence between "prefixed with a real dictionary root" and
+    // "fully random" so half the words exercise each strategy.
+    private static bool UsesDictionaryRoot(int i) => i % AlternationModulus == 0;
+
+    private string PrefixedWord(Random random) =>
+        _dictionary[random.Next(_dictionary.Length)] + RandomWord(random, WordLength - RootLength);
 
     [Benchmark(Baseline = true)]
     public string DictionaryScanPerWord() => ReplaceWordsSolution.ReplaceByDictionaryScan(_dictionary, _sentence);

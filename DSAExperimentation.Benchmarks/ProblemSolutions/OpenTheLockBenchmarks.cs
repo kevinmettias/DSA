@@ -17,11 +17,11 @@ public class OpenTheLockBenchmarks
     // LC problem number, reused as the deterministic deadend seed.
     private const int DeadendSeed = 752;
 
-    [Params(0, 500)]
-    public int DeadendCount;
+    private Set<string> _deadends = new();
 
-    private Set<string> _deadends = null!;
     private LockGraph _graph = null!;
+    [Params(0, 500)]
+    public int DeadendCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -33,9 +33,9 @@ public class OpenTheLockBenchmarks
 
     [Benchmark(Baseline = true)]
     public int MutationQueueBfs() =>
-        OpenTheLockSolution.MinTurnsByMutationQueue(_deadends, LockWorkloads.FarthestTarget);
+        OpenTheLockSolution.MinTurnsByMutationQueue(_deadends, LockScenario.FarthestTarget);
 
     [Benchmark]
     public int ReduceGraphBfs() =>
-        OpenTheLockSolution.MinTurnsByReduceGraph(_graph, LockWorkloads.FarthestTarget);
+        OpenTheLockSolution.MinTurnsByReduceGraph(_graph, LockScenario.FarthestTarget);
 }

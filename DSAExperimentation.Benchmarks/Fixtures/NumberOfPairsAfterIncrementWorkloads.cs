@@ -37,11 +37,13 @@ internal static class NumberOfPairsAfterIncrementWorkloads
             {
                 var left = random.Next(nums2Length);
                 var right = random.Next(left, nums2Length);
-                queries[i] = PairQuery.Increment(left, right, random.Next(1, ValueExclusiveBound));
+                var delta = random.Next(1, ValueExclusiveBound);
+                queries[i] = PairQuery.Increment(left, right, delta);
             }
             else
             {
-                queries[i] = PairQuery.Count(random.Next(2, 2 * ValueExclusiveBound));
+                var total = random.Next(2, 2 * ValueExclusiveBound);
+                queries[i] = PairQuery.Count(total);
             }
         }
 

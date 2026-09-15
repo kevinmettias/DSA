@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class WiggleSortIIBenchmarks
 {
     private const int RandomSeed = 324; // LC problem number
-    private const int ValueRangeDivisor = 2; // bounds random values to Length/2 so duplicates are common
+    private const int ValueRangeDivisor = 2; private int[] _values = [];
+
+    // bounds random values to Length/2 so duplicates are common
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private int[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

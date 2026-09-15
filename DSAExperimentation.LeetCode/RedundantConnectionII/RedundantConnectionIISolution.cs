@@ -101,6 +101,13 @@ internal static class RedundantConnectionIISolution
         }
 
         var (u, v) = (edges[i][0], edges[i][1]);
+        return UnionRoots(parent, u, v);
+    }
+
+    // Endpoints already sharing a root are what closes a cycle; otherwise the edge
+    // joins the two components and closes nothing.
+    private static bool UnionRoots(int[] parent, int u, int v)
+    {
         var rootU = FindRootNoCompression(parent, u);
         var rootV = FindRootNoCompression(parent, v);
 
@@ -164,8 +171,12 @@ internal static class RedundantConnectionIISolution
     private static int[] ResolveTwoParentConflict(int[][] edges, int conflictEdge, int priorEdge)
     {
         var cycleEdge = FindCycleEdge(edges, edges.Length, skip: conflictEdge);
-        return cycleEdge.Length == 0 ? edges[conflictEdge] : edges[priorEdge];
+        return cycleEdge.Length == 0 ? EdgeAt(edges, conflictEdge) : EdgeAt(edges, priorEdge);
     }
+
+    // edges is the problem's own [parent, child] row per edge, so this is the edge
+    // standing at that row.
+    private static int[] EdgeAt(int[][] edges, int index) => edges[index];
 
     // Builds the DisjointSet over every edge except `skip` and returns the first edge
     // that closes a cycle, or [] if none does.

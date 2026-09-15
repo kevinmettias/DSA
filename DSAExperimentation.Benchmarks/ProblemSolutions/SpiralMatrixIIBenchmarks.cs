@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class SpiralMatrixIIBenchmarks
 {
     [Params(10, 100)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int[][] DirectionVectorWithVisitedSet() => SpiralMatrixIISolution.GenerateMatrixByDirectionVectorWalk(N);

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NQueensBenchmarks
 {
     [Params(8)]
-    public int Size;
+    public int Size { get; set; }
 
     [Benchmark(Baseline = true)]
     public List<List<string>> RecursiveDfs() => NQueensSolution.SolveByRecursiveDfs(Size);

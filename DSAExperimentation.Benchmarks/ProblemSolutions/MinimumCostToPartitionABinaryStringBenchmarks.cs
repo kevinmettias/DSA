@@ -19,11 +19,11 @@ public class MinimumCostToPartitionABinaryStringBenchmarks
     private const int EncCost = 7;
     private const int FlatCost = 11;
 
-    [Params(1024, 8192)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
     private FenwickTree<int, SumOperation<int>> _sensitiveCounts = null!;
+    [Params(1024, 8192)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

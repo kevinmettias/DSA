@@ -44,38 +44,75 @@ internal static class ZeroOneMatrixSolution
             return 0;
         }
 
-        var rows = mat.Length;
-        var cols = mat[0].Length;
-        var visited = new bool[rows, cols];
+        var (visited, queue) = SeedSingleSourceSearch(mat, startRow, startCol);
+
+        return RunSingleSourceBfs(mat, visited, queue);
+    }
+
+    // The single-source arm's counterpart to SeedDistancesAndFrontier: the search's own
+    // visited grid and its one-cell frontier, already holding the starting cell at
+    // distance 0.
+    private static (bool[,] Visited, System.Collections.Generic.Queue<(int Row, int Col, int Dist)> Queue)
+        SeedSingleSourceSearch(int[][] mat, int startRow, int startCol)
+    {
+        var visited = new bool[mat.Length, mat[0].Length];
         var queue = new System.Collections.Generic.Queue<(int Row, int Col, int Dist)>();
         visited[startRow, startCol] = true;
         queue.Enqueue((startRow, startCol, 0));
 
+        return (visited, queue);
+    }
+
+    // The single-source BFS loop, the counterpart to RunMultiSourceBfs: walk the
+    // frontier out from the one starting cell and answer with the distance the moment a
+    // 0 cell is reached.
+    private static int RunSingleSourceBfs(
+        int[][] mat, bool[,] visited, System.Collections.Generic.Queue<(int Row, int Col, int Dist)> queue)
+    {
         while (queue.Count > 0)
         {
-            var (row, col, dist) = queue.Dequeue();
+            var cell = queue.Dequeue();
 
             foreach (var (dRow, dCol) in Directions)
             {
-                var nextRow = row + dRow;
-                var nextCol = col + dCol;
+                var distance = DistanceThroughNeighbor((mat, visited, queue), cell, (dRow, dCol));
 
-                if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols || visited[nextRow, nextCol])
+                if (distance is int found)
                 {
-                    continue;
+                    return found;
                 }
-
-                if (mat[nextRow][nextCol] == 0)
-                {
-                    return dist + 1;
-                }
-
-                visited[nextRow, nextCol] = true;
-                queue.Enqueue((nextRow, nextCol, dist + 1));
             }
         }
 
         return LeetCodeAnswer.None;
+    }
+
+    // One neighbor of the cell just dequeued: off the board or already visited offers
+    // nothing, a 0 cell is the answer, and anything else is claimed and enqueued one
+    // step further out.
+    private static int? DistanceThroughNeighbor(
+        (int[][] Mat, bool[,] Visited, System.Collections.Generic.Queue<(int Row, int Col, int Dist)> Queue) search,
+        (int Row, int Col, int Dist) cell,
+        (int DRow, int DCol) delta)
+    {
+        var nextRow = cell.Row + delta.DRow;
+        var nextCol = cell.Col + delta.DCol;
+
+        if (IsOffBoard(nextRow, nextCol, search.Mat.Length, search.Mat[0].Length) ||
+            search.Visited[nextRow, nextCol])
+        {
+            return null;
+        }
+
+        if (search.Mat[nextRow][nextCol] == 0)
+        {
+            return cell.Dist + 1;
+        }
+
+        search.Visited[nextRow, nextCol] = true;
+        search.Queue.Enqueue((nextRow, nextCol, cell.Dist + 1));
+
+        return null;
     }
 
     // This repo's own multi-source BFS: seed the frontier with every 0 cell at
@@ -111,7 +148,9 @@ internal static class ZeroOneMatrixSolution
 
         for (var c = 0; c < cols; c++)
         {
-            distanceRow[c] = mat[row][c] == 0 ? 0 : LeetCodeAnswer.None;
+            var isSeedCell = mat[row][c] == 0;
+
+            distanceRow[c] = isSeedCell ? 0 : LeetCodeAnswer.None;
 
             if (mat[row][c] == 0)
             {
@@ -140,7 +179,7 @@ internal static class ZeroOneMatrixSolution
             var nextRow = cell.Row + dRow;
             var nextCol = cell.Col + dCol;
 
-            if (nextRow < 0 || nextRow >= rows || nextCol < 0 || nextCol >= cols ||
+            if (IsOffBoard(nextRow, nextCol, rows, cols) ||
                 distances[nextRow][nextCol] != LeetCodeAnswer.None)
             {
                 continue;
@@ -150,4 +189,9 @@ internal static class ZeroOneMatrixSolution
             frontier.Enqueue((nextRow, nextCol));
         }
     }
+
+    // Both coordinates outside the matrix is one idea, and both BFS walks ask it of
+    // the cell ahead before anything else.
+    private static bool IsOffBoard(int row, int col, int rows, int cols)
+        => row < 0 || row >= rows || col < 0 || col >= cols;
 }

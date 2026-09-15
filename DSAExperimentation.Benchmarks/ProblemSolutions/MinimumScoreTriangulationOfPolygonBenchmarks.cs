@@ -16,10 +16,10 @@ public class MinimumScoreTriangulationOfPolygonBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(10, 14)]
-    public int VertexCount;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(10, 14)]
+    public int VertexCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

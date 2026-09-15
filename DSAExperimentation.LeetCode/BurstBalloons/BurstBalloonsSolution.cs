@@ -50,27 +50,33 @@ internal static class BurstBalloonsSolution
     public static int MaxCoinsByMemoizedRecursion(PaddedBalloons padded) =>
         Memoizer.Memoize<(int Left, int Right), int>(
             (0, padded.Values.Length - 1),
-            (range, coins) => CoinsBetweenMemoized(range, coins, padded.Values));
+            new CoinsBetweenBoundaries(padded.Values));
 
-    private static int CoinsBetweenMemoized(
-        (int Left, int Right) range, Func<(int Left, int Right), int> coins, int[] values)
+    // The recurrence, named: the coins a range yields once its own last balloon is the
+    // one that bursts, which is what makes the choice of `last` independent of every
+    // other choice in the range. The padded values are the whole of what the rule needs
+    // from its caller, so they are the constructor's only input.
+    private sealed class CoinsBetweenBoundaries(int[] values) : IRecurrence<(int Left, int Right), int>
     {
-        var (left, right) = range;
-
-        if (right - left <= 1)
+        public int Replay((int Left, int Right) range, IRecurrence<(int Left, int Right), int> rest)
         {
-            return 0;
+            var (left, right) = range;
+
+            if (right - left <= 1)
+            {
+                return 0;
+            }
+
+            var best = 0;
+
+            for (var last = left + 1; last < right; last++)
+            {
+                var gained = (values[left] * values[last] * values[right])
+                    + rest.Replay((left, last), rest) + rest.Replay((last, right), rest);
+                best = Math.Max(best, gained);
+            }
+
+            return best;
         }
-
-        var best = 0;
-
-        for (var last = left + 1; last < right; last++)
-        {
-            var gained = (values[left] * values[last] * values[right])
-                + coins((left, last)) + coins((last, right));
-            best = Math.Max(best, gained);
-        }
-
-        return best;
     }
 }

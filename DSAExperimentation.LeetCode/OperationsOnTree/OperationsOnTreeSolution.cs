@@ -45,7 +45,7 @@ internal static class OperationsOnTreeSolution
 
             for (var candidate = 0; candidate < NodeCount; candidate++)
             {
-                if (candidate != num && IsLocked(candidate) && IsDescendantOf(candidate, num))
+                if (IsOtherLockedDescendant(candidate, num))
                 {
                     found.Add(candidate);
                 }
@@ -53,6 +53,11 @@ internal static class OperationsOnTreeSolution
 
             return [.. found];
         }
+
+        // A node counts when it is not the target itself, holds a lock, and sits
+        // beneath the target.
+        private bool IsOtherLockedDescendant(int candidate, int target) =>
+            candidate != target && IsLocked(candidate) && IsDescendantOf(candidate, target);
 
         private bool IsDescendantOf(int candidate, int target)
         {

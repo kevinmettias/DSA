@@ -7,9 +7,14 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindPositiveIntegerSolutionF
 // stand-in for LeetCode's hidden CustomFunction - strictly increasing in both x and y,
 // which is all any strategy is allowed to assume - and every strategy emits its pairs
 // with x ascending, so the expectations are stated that way once for all three.
+//
+// The stand-ins are written as lambdas because that is how a formula reads best, and
+// ICustomFunction is an interface no lambda converts to, so EquationFunction below is
+// the single adapter the three calls wrap them in. Keeping the rows as lambdas keeps
+// the theory data's shape - and so each row's identity - exactly as it was.
 public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
 {
-    private const int Bound = FindPositiveIntegerSolutionForAGivenEquationSolution.Bound;
+    private const int Bound = SearchRange.Bound;
 
     public static TheoryData<Func<int, int, int>, int, (int X, int Y)[]> Examples =>
         new()
@@ -35,7 +40,8 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
         Func<int, int, int> function, int z, (int X, int Y)[] expected) =>
         Assert.Equal(
             expected,
-            FindPositiveIntegerSolutionForAGivenEquationSolution.FindSolutionsByBruteForce(function, z));
+            FindPositiveIntegerSolutionForAGivenEquationSolution
+                .FindSolutionsByBruteForce(new EquationFunction(function), z));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -43,7 +49,8 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
         Func<int, int, int> function, int z, (int X, int Y)[] expected) =>
         Assert.Equal(
             expected,
-            FindPositiveIntegerSolutionForAGivenEquationSolution.FindSolutionsByTwoPointer(function, z));
+            FindPositiveIntegerSolutionForAGivenEquationSolution
+                .FindSolutionsByTwoPointer(new EquationFunction(function), z));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -52,5 +59,12 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
         Assert.Equal(
             expected,
             FindPositiveIntegerSolutionForAGivenEquationSolution
-                .FindSolutionsByBinarySearchPerRow(function, z));
+                .FindSolutionsByBinarySearchPerRow(new EquationFunction(function), z));
+
+    // One adapter for all six rows: the formulas above stay lambdas, and this is the
+    // only place the conversion to ICustomFunction happens.
+    private sealed class EquationFunction(Func<int, int, int> formula) : ICustomFunction
+    {
+        public int Evaluate(int x, int y) => formula(x, y);
+    }
 }

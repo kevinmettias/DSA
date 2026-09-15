@@ -16,15 +16,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class WordLadderIIBenchmarks
 {
     private const int WordLength = 6;
-    private const int RandomSeed = 126; // LC problem number
+    private const int RandomSeed = 126; private Set<string> _wordSet = new();
+
+    private HammingGraph _graph = null!;
+    private string _beginWord = "";
+    private string _endWord = "";
+    // LC problem number
 
     [Params(50, 300)]
-    public int WordCount;
-
-    private Set<string> _wordSet = null!;
-    private HammingGraph _graph = null!;
-    private string _beginWord = null!;
-    private string _endWord = null!;
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -40,9 +40,13 @@ public class WordLadderIIBenchmarks
 
     [Benchmark(Baseline = true)]
     public int MutationLayeredBfsBacktrack() =>
-        WordLadderIISolution.FindLaddersByLayeredMutation(_beginWord, _endWord, _wordSet).Count;
+        WordLadderIISolution.FindLaddersByLayeredMutation(
+            new WordLadderIISolution.BeginWord(_beginWord),
+            new WordLadderIISolution.EndWord(_endWord),
+            _wordSet).Count;
 
     [Benchmark]
     public int ReduceGraphBfsBacktrack() =>
-        WordLadderIISolution.FindLaddersByReduceGraph(_graph, _endWord).Count;
+        WordLadderIISolution.FindLaddersByReduceGraph(
+            _graph, new WordLadderIISolution.EndWord(_endWord)).Count;
 }

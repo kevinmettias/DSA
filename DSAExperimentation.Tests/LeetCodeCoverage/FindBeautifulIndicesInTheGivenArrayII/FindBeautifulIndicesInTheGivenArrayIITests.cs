@@ -20,11 +20,23 @@ public sealed class FindBeautifulIndicesInTheGivenArrayIITests
     [MemberData(nameof(Examples))]
     public void FindBeautifulIndicesByBruteForce_LeetCodeExamples_ReturnsSortedBeautifulIndices(
         string s, string a, string b, int k, int[] expected) =>
-        Assert.Equal(expected, FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByBruteForce(s, a, b, k));
+        Assert.Equal(
+            expected,
+            FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByBruteForce(
+                new FindBeautifulIndicesInTheGivenArrayIISolution.Haystack(s),
+                new FindBeautifulIndicesInTheGivenArrayIISolution.PrefixPattern(a),
+                new FindBeautifulIndicesInTheGivenArrayIISolution.NearbyPattern(b),
+                k));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindBeautifulIndicesByZFunction_LeetCodeExamples_ReturnsSortedBeautifulIndices(
         string s, string a, string b, int k, int[] expected) =>
-        Assert.Equal(expected, FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByZFunction(s, a, b, k));
+        Assert.Equal(
+            expected,
+            FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByZFunction(
+                new FindBeautifulIndicesInTheGivenArrayIISolution.Haystack(s),
+                new FindBeautifulIndicesInTheGivenArrayIISolution.PrefixPattern(a),
+                new FindBeautifulIndicesInTheGivenArrayIISolution.NearbyPattern(b),
+                k));
 }

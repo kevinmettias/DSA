@@ -15,7 +15,7 @@ public class CombinationSumIVBenchmarks
     private static readonly int[] Nums = [1, 2, 3, 5, 10];
 
     [Params(200, 2_000)]
-    public int Target;
+    public int Target { get; set; }
 
     [Benchmark(Baseline = true)]
     public int Tabulation() => CombinationSumIVSolution.CountCombinationsByTabulation(Nums, Target);

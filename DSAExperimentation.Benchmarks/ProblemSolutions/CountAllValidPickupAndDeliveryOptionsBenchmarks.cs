@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CountAllValidPickupAndDeliveryOptionsBenchmarks
 {
     [Params(100, 10_000)]
-    public int Orders;
+    public int Orders { get; set; }
 
     [Benchmark(Baseline = true)]
     public long Tabulation() =>

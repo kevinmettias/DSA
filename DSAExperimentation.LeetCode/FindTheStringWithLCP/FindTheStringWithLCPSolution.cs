@@ -25,6 +25,7 @@ internal static class FindTheStringWithLCPSolution
         var n = lcp.Length;
         var word = new char[n];
         var assigned = new bool[n];
+        var state = (Lcp: lcp, Word: word, Assigned: assigned);
         var nextLetter = FirstLetter;
 
         for (var i = 0; i < n; i++)
@@ -34,18 +35,9 @@ internal static class FindTheStringWithLCPSolution
                 continue;
             }
 
-            if (nextLetter > LastLetter)
+            if (!TryStampClassWithLetter(state, i, nextLetter))
             {
                 return string.Empty;
-            }
-
-            for (var j = i; j < n; j++)
-            {
-                if (lcp[i][j] > 0)
-                {
-                    word[j] = nextLetter;
-                    assigned[j] = true;
-                }
             }
 
             nextLetter++;
@@ -54,17 +46,52 @@ internal static class FindTheStringWithLCPSolution
         return IsConsistent(word, lcp) ? new string(word) : string.Empty;
     }
 
+    // Stamps position i's own letter across every j >= i that shares its class, and
+    // reports false once the alphabet is exhausted - no valid word can then exist.
+    private static bool TryStampClassWithLetter(
+        (int[][] Lcp, char[] Word, bool[] Assigned) state, int i, char letter)
+    {
+        if (letter > LastLetter)
+        {
+            return false;
+        }
+
+        for (var j = i; j < state.Lcp.Length; j++)
+        {
+            if (state.Lcp[i][j] > 0)
+            {
+                state.Word[j] = letter;
+                state.Assigned[j] = true;
+            }
+        }
+
+        return true;
+    }
+
     // Composed: DisjointSet unions every pair of positions with a nonzero LCP into one
     // character class, then each class's root is mapped to the next available letter
     // in the order its first member appears.
     public static string ConstructByDisjointSet(int[][] lcp)
     {
-        var n = lcp.Length;
-        var positions = new DisjointSet(n);
+        var positions = BuildCharacterClasses(lcp);
+        var word = new char[lcp.Length];
 
-        for (var i = 0; i < n; i++)
+        if (!TryFillLettersByClass(positions, word))
         {
-            for (var j = i + 1; j < n; j++)
+            return string.Empty;
+        }
+
+        return IsConsistent(word, lcp) ? new string(word) : string.Empty;
+    }
+
+    // Unions every pair of positions with a nonzero LCP into one character class.
+    private static DisjointSet BuildCharacterClasses(int[][] lcp)
+    {
+        var positions = new DisjointSet(lcp.Length);
+
+        for (var i = 0; i < lcp.Length; i++)
+        {
+            for (var j = i + 1; j < lcp.Length; j++)
             {
                 if (lcp[i][j] > 0)
                 {
@@ -73,11 +100,17 @@ internal static class FindTheStringWithLCPSolution
             }
         }
 
-        var word = new char[n];
+        return positions;
+    }
+
+    // Fills each position with its class's letter, minting the letters in the order each
+    // class's first member appears. Reports false once the alphabet runs out.
+    private static bool TryFillLettersByClass(DisjointSet positions, char[] word)
+    {
         var letterForRoot = new Dictionary<int, char>();
         var nextLetter = FirstLetter;
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < word.Length; i++)
         {
             var root = positions.Find(i);
 
@@ -85,7 +118,7 @@ internal static class FindTheStringWithLCPSolution
             {
                 if (nextLetter > LastLetter)
                 {
-                    return string.Empty;
+                    return false;
                 }
 
                 letter = nextLetter++;
@@ -95,7 +128,7 @@ internal static class FindTheStringWithLCPSolution
             word[i] = letter;
         }
 
-        return IsConsistent(word, lcp) ? new string(word) : string.Empty;
+        return true;
     }
 
     // Rebuilds the LCP matrix implied by `candidate` from the bottom-right corner
@@ -110,7 +143,8 @@ internal static class FindTheStringWithLCPSolution
         {
             for (var j = n - 1; j >= 0; j--)
             {
-                actual[i, j] = candidate[i] == candidate[j] ? actual[i + 1, j + 1] + 1 : 0;
+                var charactersMatch = candidate[i] == candidate[j];
+                actual[i, j] = charactersMatch ? MatchedLcp(actual, i, j) : 0;
 
                 if (actual[i, j] != lcp[i][j])
                 {
@@ -121,4 +155,7 @@ internal static class FindTheStringWithLCPSolution
 
         return true;
     }
+
+    // The characters match, so this pair's lcp is the next pair's, one longer.
+    private static int MatchedLcp(int[,] actual, int i, int j) => actual[i + 1, j + 1] + 1;
 }

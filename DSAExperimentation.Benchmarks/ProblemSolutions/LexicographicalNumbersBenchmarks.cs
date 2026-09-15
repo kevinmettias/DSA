@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LexicographicalNumbersBenchmarks
 {
     [Params(1_000, 500_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public List<int> StringSort() => LexicographicalNumbersSolution.LexicalOrderByStringSort(N);

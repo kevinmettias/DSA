@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class StepsToMakeArrayNonDecreasingBenchmarks
 {
-    private const int RandomSeed = 2289; // LC problem number
+    private const int RandomSeed = 2289; private int[] _nums = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

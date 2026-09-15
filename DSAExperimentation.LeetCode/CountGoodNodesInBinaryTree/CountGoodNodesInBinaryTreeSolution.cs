@@ -56,7 +56,7 @@ internal static class CountGoodNodesInBinaryTreeSolution
     // the state tuple can carry unchanged down every path.
     private sealed class Counter
     {
-        public int Count;
+        public int Count { get; set; }
     }
 
     // A witness for this problem alone: "good" is LC 1448's own predicate, which is

@@ -13,12 +13,12 @@ public class CountArrayPairsDivisibleByKBenchmarks
 {
     private const int K = 100;
     private const int MaxValueExclusive = 1_000;
-    private const int RandomSeed = 2183; // LC problem number
+    private const int RandomSeed = 2183; private int[] _nums = [];
+
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

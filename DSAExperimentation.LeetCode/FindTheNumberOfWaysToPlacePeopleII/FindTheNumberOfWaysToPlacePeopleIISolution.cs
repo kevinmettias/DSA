@@ -36,9 +36,7 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
         {
             for (var bobIndex = 0; bobIndex < points.Length; bobIndex++)
             {
-                if (aliceIndex != bobIndex &&
-                    IsUpperLeftOf(points[aliceIndex], points[bobIndex]) &&
-                    NoPointBlocks(points, aliceIndex, bobIndex))
+                if (IsValidPlacement(points, aliceIndex, bobIndex))
                 {
                     count++;
                 }
@@ -47,6 +45,13 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
 
         return count;
     }
+
+    // An ordered pair counts when the two points are distinct, Alice's sits at the
+    // rectangle's upper-left corner, and no third point blocks it.
+    private static bool IsValidPlacement(int[][] points, int aliceIndex, int bobIndex) =>
+        aliceIndex != bobIndex
+        && IsUpperLeftOf(points[aliceIndex], points[bobIndex])
+        && NoPointBlocks(points, aliceIndex, bobIndex);
 
     private static bool IsUpperLeftOf(int[] alice, int[] bob) => alice[0] <= bob[0] && alice[1] >= bob[1];
 
@@ -64,7 +69,7 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
 
             var (x, y) = (points[k][0], points[k][1]);
 
-            if (x >= aliceX && x <= bobX && y <= aliceY && y >= bobY)
+            if (IsWithinXSpan(x, aliceX, bobX) && IsWithinYSpan(y, aliceY, bobY))
             {
                 return false;
             }
@@ -73,18 +78,22 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
         return true;
     }
 
+    private static bool IsWithinXSpan(int x, int left, int right) => x >= left && x <= right;
+
+    private static bool IsWithinYSpan(int y, int top, int bottom) => y <= top && y >= bottom;
+
     public static int CountPairsBySortedSweep(int[][] points)
     {
         var sorted = new ArrayIndexedSequence<int[]>((int[][])points.Clone());
-        MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(sorted, ByXThenDescendingY);
+        MergeSort.Sort<int[], ArrayIndexedSequence<int[]>>(sorted, XThenDescendingYOrder.Rule);
 
         return CountPairsBySortedSweep(sorted);
     }
 
     // Prepared-input overload: `sortedPoints` must already be sorted by x
-    // ascending, y descending on ties (ByXThenDescendingY below - exposed so
-    // a benchmark's [GlobalSetup] can sort with the exact rule this
-    // strategy's precondition depends on, instead of duplicating it). See
+    // ascending, y descending on ties (the XThenDescendingYOrder rule this
+    // strategy's precondition names - a type of its own so a benchmark's
+    // [GlobalSetup] can sort with the exact rule instead of duplicating it). See
     // this class's own doc comment for why the maxY sweep is sufficient.
     public static int CountPairsBySortedSweep(ArrayIndexedSequence<int[]> sortedPoints)
     {
@@ -109,7 +118,4 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
 
         return count;
     }
-
-    public static readonly IComparer<int[]> ByXThenDescendingY =
-        Comparer<int[]>.Create((a, b) => a[0] != b[0] ? a[0].CompareTo(b[0]) : b[1].CompareTo(a[1]));
 }

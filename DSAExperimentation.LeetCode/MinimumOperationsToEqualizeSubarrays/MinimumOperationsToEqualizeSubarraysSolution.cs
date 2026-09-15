@@ -77,19 +77,32 @@ internal static class MinimumOperationsToEqualizeSubarraysSolution
             var left = queries[q][0];
             var right = queries[q][1];
 
-            answers[q] = runId[left] == runId[right]
-                ? SumOfAbsoluteDeviationsFromMedian(tree.Query(left, right)) / k
+            var isSameRun = runId[left] == runId[right];
+
+            answers[q] = isSameRun
+                ? EqualizationCost(tree, left, right, k)
                 : LeetCodeAnswer.None;
         }
 
         return answers;
     }
 
+    // The run's answer: the range's sum of absolute deviations from its median, one
+    // operation per k of it, read straight off the tree's sorted query result. Only an
+    // all-one-run range has one - the other arm is the -1.
+    private static long EqualizationCost(
+        SegmentTree<int[], SortedMergeOperation> tree, int left, int right, int k)
+    {
+        var sortedRange = tree.Query(left, right);
+
+        return SumOfAbsoluteDeviationsFromMedian(sortedRange) / k;
+    }
+
     // The prepared input MinOperationsByMergeSortTree's hoisted overload
     // takes: one merge-sort tree over the whole array plus the run-id every
     // query's [l, r] gets checked against, built once regardless of how many
     // queries follow.
-    public static (SegmentTree<int[], SortedMergeOperation> Tree, int[] RunId) BuildIndex(int[] nums, int k)
+    public static EqualizeIndex BuildIndex(int[] nums, int k)
     {
         var runId = BuildRunIds(nums, k);
         var leaves = new int[nums.Length][];
@@ -99,7 +112,7 @@ internal static class MinimumOperationsToEqualizeSubarraysSolution
             leaves[i] = [nums[i]];
         }
 
-        return (new SegmentTree<int[], SortedMergeOperation>(leaves), runId);
+        return new(new SegmentTree<int[], SortedMergeOperation>(leaves), runId);
     }
 
     // runId[i] increments every time the remainder mod k changes from the
@@ -111,7 +124,8 @@ internal static class MinimumOperationsToEqualizeSubarraysSolution
 
         for (var i = 1; i < nums.Length; i++)
         {
-            runId[i] = Modulo(nums[i], k) == Modulo(nums[i - 1], k) ? runId[i - 1] : runId[i - 1] + 1;
+            var sameRemainder = Modulo(nums[i], k) == Modulo(nums[i - 1], k);
+            runId[i] = sameRemainder ? RunIdAt(runId, i - 1) : IncrementedRunIdAt(runId, i - 1);
         }
 
         return runId;
@@ -131,4 +145,9 @@ internal static class MinimumOperationsToEqualizeSubarraysSolution
 
         return sum;
     }
+
+    // The previous position's run id, and that same id one run later.
+    private static int RunIdAt(int[] runId, int index) => runId[index];
+
+    private static int IncrementedRunIdAt(int[] runId, int index) => runId[index] + 1;
 }

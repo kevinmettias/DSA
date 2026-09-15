@@ -12,11 +12,11 @@ internal sealed class FlightStateGraph
 {
     private readonly FlightState[,] _states;
 
-    private FlightStateGraph(FlightState[,] states) => _states = states;
-
     // The most edges any path in this graph can use: LeetCode's "at most K stops"
     // is "at most K+1 edges", and that is the last stop layer.
     public int MaxEdges => _states.GetLength(1) - 1;
+
+    private FlightStateGraph(FlightState[,] states) => _states = states;
 
     public static FlightStateGraph Build(int n, int[][] flights, int k)
     {
@@ -27,8 +27,6 @@ internal sealed class FlightStateGraph
 
         return new FlightStateGraph(states);
     }
-
-    public FlightState At(int city, int stops) => _states[city, stops];
 
     private static FlightState[,] BuildStates(int n, int maxEdges)
     {
@@ -57,4 +55,6 @@ internal sealed class FlightStateGraph
             }
         }
     }
+
+    public FlightState At(int city, int stops) => _states[city, stops];
 }

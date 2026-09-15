@@ -18,10 +18,10 @@ public class StoneGameVIIBenchmarks
 
     private const int StoneValueUpperBoundExclusive = 100;
 
-    [Params(22, 26)]
-    public int PileCount;
+    private int[] _stones = [];
 
-    private int[] _stones = null!;
+    [Params(22, 26)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

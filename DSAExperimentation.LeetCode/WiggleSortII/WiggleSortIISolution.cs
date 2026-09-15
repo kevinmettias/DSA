@@ -54,9 +54,16 @@ internal static class WiggleSortIISolution
         var lowIndex = (n - 1) / 2;
         var highIndex = n - 1;
 
+        // One of these two runs per index - the cursor it reads is the one it
+        // advances, so exactly one half is consumed per position.
+        int NextLowerValue() => sorted[lowIndex--];
+
+        int NextUpperValue() => sorted[highIndex--];
+
         for (var i = 0; i < n; i++)
         {
-            destination[i] = i % 2 == 0 ? sorted[lowIndex--] : sorted[highIndex--];
+            var isEvenIndex = i % 2 == 0;
+            destination[i] = isEvenIndex ? NextLowerValue() : NextUpperValue();
         }
     }
 }

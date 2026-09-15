@@ -46,6 +46,52 @@ internal static class SoupServingsSolution
         return Probability(servings, servings);
     }
 
+    // The same recurrence routed through this repo's own Memoizer, keyed on the
+    // remaining (A, B) pair, so each of the O(servings^2) states is computed once.
+    public static double ProbabilityByMemoizedRecursion(int n)
+    {
+        if (n >= LargeNThreshold)
+        {
+            return 1.0;
+        }
+
+        var servings = ServingsFor(n);
+        return Memoizer.Memoize<(int A, int B), double>((servings, servings), new PourSequence());
+    }
+
+    // The recurrence, named: the chance that soup A runs out first, that both run out
+    // together, or that B runs out first, as the equally likely quarter-weighted sum of
+    // the four pours a turn may make. Nothing here is caller-supplied - the rule is the
+    // same for every n - so it needs no state at all.
+    private sealed class PourSequence : IRecurrence<(int A, int B), double>
+    {
+        public double Replay((int A, int B) remaining, IRecurrence<(int A, int B), double> rest)
+        {
+            var (a, b) = remaining;
+
+            if (a <= 0 && b <= 0)
+            {
+                return TieProbability;
+            }
+
+            if (a <= 0)
+            {
+                return 1.0;
+            }
+
+            if (b <= 0)
+            {
+                return 0.0;
+            }
+
+            return BranchProbability * (
+                rest.Replay((a - FourUnitPour, b), rest)
+                + rest.Replay((a - ThreeUnitPour, b - 1), rest)
+                + rest.Replay((a - TwoUnitPour, b - TwoUnitPour), rest)
+                + rest.Replay((a - 1, b - ThreeUnitPour), rest));
+        }
+    }
+
     private static double Probability(int a, int b)
     {
         if (a <= 0 && b <= 0)
@@ -68,45 +114,6 @@ internal static class SoupServingsSolution
             + Probability(a - ThreeUnitPour, b - 1)
             + Probability(a - TwoUnitPour, b - TwoUnitPour)
             + Probability(a - 1, b - ThreeUnitPour));
-    }
-
-    // The same recurrence routed through this repo's own Memoizer, keyed on the
-    // remaining (A, B) pair, so each of the O(servings^2) states is computed once.
-    public static double ProbabilityByMemoizedRecursion(int n)
-    {
-        if (n >= LargeNThreshold)
-        {
-            return 1.0;
-        }
-
-        var servings = ServingsFor(n);
-        return Memoizer.Memoize<(int A, int B), double>((servings, servings), ProbabilityMemoized);
-    }
-
-    private static double ProbabilityMemoized((int A, int B) remaining, Func<(int A, int B), double> probability)
-    {
-        var (a, b) = remaining;
-
-        if (a <= 0 && b <= 0)
-        {
-            return TieProbability;
-        }
-
-        if (a <= 0)
-        {
-            return 1.0;
-        }
-
-        if (b <= 0)
-        {
-            return 0.0;
-        }
-
-        return BranchProbability * (
-            probability((a - FourUnitPour, b))
-            + probability((a - ThreeUnitPour, b - 1))
-            + probability((a - TwoUnitPour, b - TwoUnitPour))
-            + probability((a - 1, b - ThreeUnitPour)));
     }
 
     // Every pour is a multiple of 25ml, so n millilitres is ceil(n / 25) servings.

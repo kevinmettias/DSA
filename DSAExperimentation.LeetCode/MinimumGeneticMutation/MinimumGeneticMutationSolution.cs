@@ -15,31 +15,33 @@ internal static class MinimumGeneticMutationSolution
 {
     // The textbook answer: BCL Queue + HashSet over candidates generated on the
     // fly, never materializing the graph.
-    public static int MinMutationByMutationQueue(string startGene, string endGene, IEnumerable<string> bank)
+    public static int MinMutationByMutationQueue(StartGene startGene, EndGene endGene, IEnumerable<string> bank)
     {
         var bankSet = new Set<string>(bank);
 
         return MinMutationByMutationQueue(startGene, endGene, bankSet);
     }
 
-    public static int MinMutationByMutationQueue(string startGene, string endGene, Set<string> bank)
+    public static int MinMutationByMutationQueue(StartGene startGene, EndGene endGene, Set<string> bank)
     {
         // The graph strategy seeds startGene itself, so an endGene equal to it is
         // reachable even when the bank omits it - matched here for parity.
-        if (!bank.Has(endGene) && endGene != startGene)
+        if (!bank.Has(endGene.Name) && endGene.Name != startGene.Name)
         {
             return LeetCodeAnswer.None;
         }
 
-        return HammingSearch.MutationDistance(startGene, endGene, bank, StandardAlphabets.Dna) ?? LeetCodeAnswer.None;
+        return HammingSearch.MutationDistance(
+            new MutationStart(startGene.Name), new MutationTarget(endGene.Name), bank, StandardAlphabets.Dna)
+            ?? LeetCodeAnswer.None;
     }
 
     // This repo's own BFS over the materialized bank graph.
-    public static int MinMutationByReduceGraph(string startGene, string endGene, IEnumerable<string> bank)
+    public static int MinMutationByReduceGraph(StartGene startGene, EndGene endGene, IEnumerable<string> bank)
     {
-        var graph = HammingGraph.Build(startGene, bank);
+        var graph = HammingGraph.Build(startGene.Name, bank);
 
-        return MinMutationByReduceGraph(graph, endGene);
+        return MinMutationByReduceGraph(graph, endGene.Name);
     }
 
     public static int MinMutationByReduceGraph(HammingGraph graph, string endGene)
@@ -53,4 +55,12 @@ internal static class MinimumGeneticMutationSolution
 
         return distances.TryGetValue(endNode, out var distance) ? distance : LeetCodeAnswer.None;
     }
+
+    // LC 433's two endpoints, named for the roles they play here rather than left as two
+    // adjacent `string` positions a caller could hand over the wrong way round with the
+    // compiler none the wiser. `startGene` is the gene the walk begins at and `endGene`
+    // the one it is trying to reach; a mutation count is not symmetric between them.
+    internal readonly record struct StartGene(string Name);
+
+    internal readonly record struct EndGene(string Name);
 }

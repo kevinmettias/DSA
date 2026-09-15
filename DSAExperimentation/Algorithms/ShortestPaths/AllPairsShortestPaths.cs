@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
@@ -12,20 +13,13 @@ namespace DSAExperimentation.Algorithms.ShortestPaths;
 // invented it - unlike BellmanFord.cs, a real descriptive name is available here that doesn't
 // collide with anything else in this folder.
 //
-// Reuses ShortestPath.cs's own IEdgeTopology/IEdges purely to seed the initial matrix - the
-// same same-domain reuse MinimumSpanningTree.cs already established for the identical
-// contracts. The matrix itself is Operations-internal scratch state, the same bucket
-// ShortestPath's own Heap frontier is in, not a second Representation competing for its own
-// interface.
-//
-// The index map below is local scratch state - the same bucket ShortestPath.Distances and
-// TopologicalSort.inDegree already occupy - not a reusable DataStructures-tier wrapper, so it's
-// a plain Dictionary<TNode,int>, not this repo's own HashMap the way KeyedDisjointSet<TKey>
-// composes one for its comparable-looking dense-core-plus-id-map shape.
+// This file is the walk itself: the entry point and the relaxation that refines the matrix in
+// place. Producing the matrix it refines - the index map, the default cells, the seeded direct
+// edges, all of it built from the same IEdgeTopology/IEdges contracts - is a separate
+// responsibility with no state in common with the refinement, and lives in
+// DenseDistanceMatrix.cs.
 internal static class AllPairsShortestPaths
 {
-    private const string ReservedEdgeWeightMessage = "An edge weight equal to TWeight.MaxValue is reserved to mean \"still unreached\" and cannot be a real edge weight.";
-
     public static bool TryComputeDistances<TNode, TTopology, TEdges, TWeight>(
         IEnumerable<TNode> vertices, out Dictionary<(TNode From, TNode To), TWeight> distances)
         where TNode : class
@@ -34,8 +28,9 @@ internal static class AllPairsShortestPaths
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
     {
         var vertexList = vertices.ToList();
-        var index = BuildIndex(vertexList);
-        var matrix = BuildInitialMatrix<TNode, TTopology, TEdges, TWeight>(vertexList, index);
+        var index = DenseDistanceMatrix.BuildIndex(vertexList);
+        var matrix = DenseDistanceMatrix.BuildInitialMatrix<TNode, TTopology, TEdges, TWeight>(
+            vertexList, index);
 
         Refine(matrix, vertexList.Count);
 
@@ -50,97 +45,6 @@ internal static class AllPairsShortestPaths
         }
 
         return true;
-    }
-
-    private static Dictionary<TNode, int> BuildIndex<TNode>(List<TNode> vertices)
-        where TNode : class
-    {
-        var index = new Dictionary<TNode, int>();
-
-        for (var i = 0; i < vertices.Count; i++)
-        {
-            index[vertices[i]] = i;
-        }
-
-        return index;
-    }
-
-    private static TWeight[,] BuildInitialMatrix<TNode, TTopology, TEdges, TWeight>(
-        List<TNode> vertices, Dictionary<TNode, int> index)
-        where TNode : class
-        where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
-        where TEdges : struct, IEdges<TNode, TWeight>
-        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
-    {
-        var count = vertices.Count;
-        var matrix = new TWeight[count, count];
-
-        for (var i = 0; i < count; i++)
-        {
-            for (var j = 0; j < count; j++)
-            {
-                matrix[i, j] = i == j ? TWeight.Zero : TWeight.MaxValue;
-            }
-        }
-
-        foreach (var vertex in vertices)
-        {
-            SeedRow<TNode, TTopology, TEdges, TWeight>(vertex, matrix, index);
-        }
-
-        return matrix;
-    }
-
-    private static void SeedRow<TNode, TTopology, TEdges, TWeight>(
-        TNode vertex, TWeight[,] matrix, Dictionary<TNode, int> index)
-        where TNode : class
-        where TTopology : struct, IEdgeTopology<TNode, TEdges, TWeight>
-        where TEdges : struct, IEdges<TNode, TWeight>
-        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
-    {
-        var from = index[vertex];
-        var neighbors = TTopology.GetEdges(vertex);
-
-        for (var i = 0; i < neighbors.Count; i++)
-        {
-            var (weight, neighbor) = neighbors.Get(i);
-
-            RelaxEdge(matrix, index, new PendingEdge<TNode, TWeight>(from, weight, neighbor));
-        }
-    }
-
-    private readonly record struct PendingEdge<TNode, TWeight>(int From, TWeight Weight, TNode Neighbor)
-        where TNode : class
-        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>;
-
-    private static void RelaxEdge<TNode, TWeight>(
-        TWeight[,] matrix, Dictionary<TNode, int> index, PendingEdge<TNode, TWeight> edge)
-        where TNode : class
-        where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
-    {
-        // Unlike the caller-omitted-vertex case just below, a weight colliding with the
-        // "still unreached" sentinel isn't a wrong-but-plausible answer we can silently
-        // let ride - it would make a real edge indistinguishable from no edge at all in
-        // every later read of this cell, so this one precondition is validated rather
-        // than documented-and-trusted.
-        if (edge.Weight == TWeight.MaxValue)
-        {
-            throw new ArgumentOutOfRangeException(nameof(edge), ReservedEdgeWeightMessage);
-        }
-
-        // An edge whose target lies outside `vertices` is silently skipped, not an
-        // exception - the same "wrong/incomplete answer, never a throw" convention
-        // TopologicalSort's GetValueOrDefault-guarded child lookup already uses for an
-        // analogous caller-omitted-vertex precondition.
-        if (!index.TryGetValue(edge.Neighbor, out var to))
-        {
-            return;
-        }
-
-        if (edge.Weight < matrix[edge.From, to])
-        {
-            matrix[edge.From, to] = edge.Weight;
-        }
     }
 
     private static void Refine<TWeight>(TWeight[,] matrix, int count)
@@ -191,7 +95,11 @@ internal static class AllPairsShortestPaths
         UpdateIfShorter(matrix, i, j, candidate);
     }
 
-    private static bool TryAddChecked<TWeight>(TWeight first, TWeight second, out TWeight sum)
+    // [MaybeNullWhen(false)] is what lets the overflow branch assign `default` rather than
+    // `default!`: it declares in the signature that `sum` is only read when this returns
+    // true, which is exactly the contract the assignment used to assert.
+    private static bool TryAddChecked<TWeight>(TWeight first, TWeight second,
+                                              [MaybeNullWhen(false)] out TWeight sum)
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
     {
         // Two finite (non-sentinel) weights can still sum past TWeight's own
@@ -209,7 +117,7 @@ internal static class AllPairsShortestPaths
         }
         catch (OverflowException)
         {
-            sum = default!;
+            sum = default;
 
             return false;
         }

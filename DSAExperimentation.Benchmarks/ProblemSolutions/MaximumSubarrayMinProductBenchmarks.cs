@@ -17,10 +17,10 @@ public class MaximumSubarrayMinProductBenchmarks
     // LC problem number, reused as the deterministic benchmark seed.
     private const int RandomSeed = 1856;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

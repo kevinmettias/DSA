@@ -19,12 +19,12 @@ public class FrequencyTrackerBenchmarks
     private const int QueryCountDivisor = 10;
     private const int DeleteCountDivisor = 4;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _numbersToAdd = [];
 
-    private int[] _numbersToAdd = null!;
-    private int[] _numbersToDelete = null!;
-    private int[] _frequenciesToQuery = null!;
+    private int[] _numbersToDelete = [];
+    private int[] _frequenciesToQuery = [];
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

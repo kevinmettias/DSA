@@ -33,11 +33,7 @@ internal static class ScoreOfParenthesesWorkloads
     // open/close counts accordingly.
     private static char NextParenChar(int pairCount, int maxDepth, Random random, ref ParenCounts counts)
     {
-        var depth = counts.Open - counts.Close;
-        var canOpen = counts.Open < pairCount && depth < maxDepth;
-        var canClose = counts.Close < counts.Open;
-
-        if (canOpen && (!canClose || random.Next(CoinFlipBound) == 0))
+        if (ShouldOpen(counts, pairCount, maxDepth, random))
         {
             counts.Open++;
             return '(';
@@ -47,9 +43,17 @@ internal static class ScoreOfParenthesesWorkloads
         return ')';
     }
 
-    private struct ParenCounts
+    // Whether the next character opens a new pair: only while pairs remain and the
+    // depth cap is not reached, and then only on a coin flip - except when closing
+    // is impossible, which forces another open.
+    private static bool ShouldOpen(ParenCounts counts, int pairCount, int maxDepth, Random random)
+        => counts.Open < pairCount
+            && counts.Open - counts.Close < maxDepth
+            && (counts.Close >= counts.Open || random.Next(CoinFlipBound) == 0);
+
+    private sealed class ParenCounts
     {
-        public int Open;
-        public int Close;
+        public int Open { get; set; }
+        public int Close { get; set; }
     }
 }

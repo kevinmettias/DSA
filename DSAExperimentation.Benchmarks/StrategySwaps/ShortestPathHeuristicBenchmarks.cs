@@ -16,11 +16,11 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 [MemoryDiagnoser]
 public class ShortestPathHeuristicBenchmarks
 {
-    [Params(20, 80)]
-    public int GridSize;
-
     private WeightedGridNode _source = null!;
+
     private WeightedGridNode _target = null!;
+    [Params(20, 80)]
+    public int GridSize { get; set; }
 
     [GlobalSetup]
     public void Setup()

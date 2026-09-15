@@ -20,10 +20,18 @@ public sealed class RegularExpressionMatchingTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsMatchByRecursion_LeetCodeExamples_ReturnsExpectedResult(string text, string pattern, bool expected) =>
-        Assert.Equal(expected, RegularExpressionMatchingSolution.IsMatchByRecursion(text, pattern));
+        Assert.Equal(
+            expected,
+            RegularExpressionMatchingSolution.IsMatchByRecursion(
+                new RegularExpressionMatchingSolution.SubjectText(text),
+                new RegularExpressionMatchingSolution.RegexPattern(pattern)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsMatchByMemoization_LeetCodeExamples_ReturnsExpectedResult(string text, string pattern, bool expected) =>
-        Assert.Equal(expected, RegularExpressionMatchingSolution.IsMatchByMemoization(text, pattern));
+        Assert.Equal(
+            expected,
+            RegularExpressionMatchingSolution.IsMatchByMemoization(
+                new RegularExpressionMatchingSolution.SubjectText(text),
+                new RegularExpressionMatchingSolution.RegexPattern(pattern)));
 }

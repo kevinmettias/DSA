@@ -22,12 +22,12 @@ public class MaximumGeneticDifferenceQueryBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[] _parents = [];
 
-    private int[] _parents = null!;
     private RootedTreeNode _root = null!;
-    private int[][] _queries = null!;
+    private int[][] _queries = [];
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

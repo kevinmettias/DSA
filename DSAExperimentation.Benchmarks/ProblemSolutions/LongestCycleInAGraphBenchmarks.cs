@@ -26,11 +26,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LongestCycleInAGraphBenchmarks
 {
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[] _edges = [];
 
-    private int[] _edges = null!;
     private FunctionalGraph _graph;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

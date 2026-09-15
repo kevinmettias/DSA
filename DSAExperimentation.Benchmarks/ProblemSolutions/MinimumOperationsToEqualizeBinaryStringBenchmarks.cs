@@ -14,13 +14,13 @@ public class MinimumOperationsToEqualizeBinaryStringBenchmarks
 {
     private const int Seed = 3666;
 
-    [Params(200, 1_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
     private int _k;
     private int _zeroCount;
     private EqualizeStateGraph _graph = null!;
+    [Params(200, 1_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

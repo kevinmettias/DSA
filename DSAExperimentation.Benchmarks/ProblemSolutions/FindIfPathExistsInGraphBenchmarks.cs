@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindIfPathExistsInGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,20 +14,18 @@ public class FindIfPathExistsInGraphBenchmarks
 {
     private const int RandomSeed = 1971; // LC problem number
 
-    private const int HalfDivisor = 2;
+    private int[][] _edges = [];
 
-    [Params(300, 3_000)]
-    public int NodeCount;
-
-    private int[][] _edges = null!;
     private int _source;
     private int _destination;
+    [Params(300, 3_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var half = NodeCount / HalfDivisor;
+        var half = NodeCount / AlgorithmConstants.HalvingFactor;
         var edges = new List<int[]>();
 
         // Two separate spanning trees - [0, half) and [half, NodeCount) - so

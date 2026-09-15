@@ -33,6 +33,20 @@ internal static class InsertGreatestCommonDivisorsInLinkedListSolution
         return BuildList(Interleaved(original));
     }
 
+    private static SinglyLinkedListNode<int>? BuildList(List<int> values)
+    {
+        var dummy = new SinglyLinkedListNode<int>(0);
+        var tail = dummy;
+
+        foreach (var value in values)
+        {
+            tail.Next = new SinglyLinkedListNode<int>(value);
+            tail = tail.Next;
+        }
+
+        return dummy.Next;
+    }
+
     // nums[0], gcd(nums[0], nums[1]), nums[1], ... - the gcd goes in front of
     // every element except the first, which has no predecessor to pair with.
     private static List<int> Interleaved(List<int> original)
@@ -52,20 +66,6 @@ internal static class InsertGreatestCommonDivisorsInLinkedListSolution
         }
 
         return interleaved;
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(List<int> values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 
     // Pointer rewiring over the mutable SinglyLinkedListNode<int> the repo already

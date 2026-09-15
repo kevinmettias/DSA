@@ -32,7 +32,7 @@ internal static class MakeLexicographicallySmallestArrayBySwappingElementsSoluti
                 continue;
             }
 
-            AssignGroup(nums, order, groupStart, k, result);
+            AssignGroup(nums, order, (groupStart, k), result);
             groupStart = k + 1;
         }
 
@@ -57,6 +57,17 @@ internal static class MakeLexicographicallySmallestArrayBySwappingElementsSoluti
         }
 
         var result = new int[nums.Length];
+        AssignGroupsByComponent(nums, order, groups, result);
+
+        return result;
+    }
+
+    // Scans the sorted order and writes each group into the result as it ends: a
+    // group ends where two sorted-order neighbours fall in different components of
+    // the union-find built above, or where the sorted order itself runs out.
+    private static void AssignGroupsByComponent(
+        int[] nums, int[] order, DisjointSetOperations groups, int[] result)
+    {
         var groupStart = 0;
 
         for (var k = 0; k < order.Length; k++)
@@ -67,11 +78,9 @@ internal static class MakeLexicographicallySmallestArrayBySwappingElementsSoluti
                 continue;
             }
 
-            AssignGroup(nums, order, groupStart, k, result);
+            AssignGroup(nums, order, (groupStart, k), result);
             groupStart = k + 1;
         }
-
-        return result;
     }
 
     // Original indices in ascending order of nums[index], the shared basis both
@@ -93,15 +102,15 @@ internal static class MakeLexicographicallySmallestArrayBySwappingElementsSoluti
     // (order is sorted by value), so writing them into its original indices,
     // smallest index first, is the lexicographically smallest assignment for the
     // group.
-    private static void AssignGroup(int[] nums, int[] order, int start, int end, int[] result)
+    private static void AssignGroup(int[] nums, int[] order, (int Start, int End) range, int[] result)
     {
-        var indices = new int[end - start + 1];
-        Array.Copy(order, start, indices, 0, indices.Length);
+        var indices = new int[range.End - range.Start + 1];
+        Array.Copy(order, range.Start, indices, 0, indices.Length);
         Array.Sort(indices);
 
         for (var offset = 0; offset < indices.Length; offset++)
         {
-            result[indices[offset]] = nums[order[start + offset]];
+            result[indices[offset]] = nums[order[range.Start + offset]];
         }
     }
 }

@@ -12,11 +12,11 @@ public class ValidAnagramBenchmarks
 {
     private const int AlphabetSize = 26;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
-    private string _t = null!;
+    private string _t = "";
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

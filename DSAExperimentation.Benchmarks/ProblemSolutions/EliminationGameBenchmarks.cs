@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class EliminationGameBenchmarks
 {
     [Params(10_000, 1_000_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int ListSimulation() => EliminationGameSolution.LastRemainingByListSimulation(N);

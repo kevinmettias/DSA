@@ -9,9 +9,9 @@ namespace DSAExperimentation.LeetCode.MinimumCostToConvertStringII;
 // same-length strings.
 internal sealed class SubstringNetwork
 {
-    private SubstringNetwork(Dictionary<string, StringNode> nodesByValue) => NodesByValue = nodesByValue;
-
     public Dictionary<string, StringNode> NodesByValue { get; }
+
+    private SubstringNetwork(Dictionary<string, StringNode> nodesByValue) => NodesByValue = nodesByValue;
 
     public static SubstringNetwork Build(string[] original, string[] changed, int[] cost)
     {

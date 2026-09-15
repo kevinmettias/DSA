@@ -17,10 +17,10 @@ public class NumberOfWaysOfCuttingAPizzaBenchmarks
     // the piece count LeetCode's own signature takes.
     private const int Pieces = 5;
 
-    [Params(6, 8)]
-    public int Size;
-
     private AppleGrid _apples;
+
+    [Params(6, 8)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

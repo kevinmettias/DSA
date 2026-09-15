@@ -20,7 +20,7 @@ public class NumberOfCommonFactorsBenchmarks
     private int _second;
 
     [Params(10_000, 1_000_000)]
-    public int Magnitude;
+    public int Magnitude { get; set; }
 
     [GlobalSetup]
     public void Setup()

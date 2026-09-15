@@ -16,11 +16,11 @@ public class FindSumOfArrayProductOfMagicalSequencesBenchmarks
     private const int IndexCount = 8;
     private const int Seed = 3539;
 
-    [Params(4, 6)]
-    public int SlotCount;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
     private int _k;
+    [Params(4, 6)]
+    public int SlotCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

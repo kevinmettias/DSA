@@ -28,29 +28,49 @@ internal static class MaximumSumOfMNonOverlappingSubarraysISolution
         var prefix = BuildPrefixSums(nums);
         var dp = BuildInfeasibleGrid(n, m);
 
-        for (var i = 1; i <= n; i++)
-        {
-            for (var j = 1; j <= m; j++)
-            {
-                var best = dp[i - 1][j];
-
-                for (var length = l; length <= r && length <= i; length++)
-                {
-                    var start = i - length;
-
-                    if (dp[start][j - 1] == Infeasible)
-                    {
-                        continue;
-                    }
-
-                    best = Math.Max(best, dp[start][j - 1] + prefix[i] - prefix[start]);
-                }
-
-                dp[i][j] = best;
-            }
-        }
+        FillByFreshScans(prefix, dp, (l, r), m);
 
         return BestOverAtLeastOneSubarray(dp, n, m);
+    }
+
+    // Fills the whole exact-count grid by recomputing the inner max over every candidate
+    // length in [l, r] from scratch for each (i, j) - O(n*m*(r-l+1)), the arm the
+    // sliding-window strategy below has to beat.
+    private static void FillByFreshScans(
+        long[] prefix, long[][] dp, (int MinLength, int MaxLength) lengthBounds, int maxSubarrays)
+    {
+        var n = prefix.Length - 1;
+
+        for (var i = 1; i <= n; i++)
+        {
+            for (var j = 1; j <= maxSubarrays; j++)
+            {
+                dp[i][j] = BestFreshScan(prefix, dp, lengthBounds, (i, j));
+            }
+        }
+    }
+
+    // The best total for exactly `Subarrays` disjoint subarrays ending at `End`: the best
+    // of not taking another one at all and of every admissible final length in
+    // [MinLength, MaxLength].
+    private static long BestFreshScan(
+        long[] prefix, long[][] dp, (int MinLength, int MaxLength) lengthBounds, (int End, int Subarrays) position)
+    {
+        var best = dp[position.End - 1][position.Subarrays];
+
+        for (var length = lengthBounds.MinLength; length <= lengthBounds.MaxLength && length <= position.End; length++)
+        {
+            var start = position.End - length;
+
+            if (dp[start][position.Subarrays - 1] == Infeasible)
+            {
+                continue;
+            }
+
+            best = Math.Max(best, dp[start][position.Subarrays - 1] + prefix[position.End] - prefix[start]);
+        }
+
+        return best;
     }
 
     // Same recurrence, but the inner max over length in [l, r] is answered from
@@ -69,43 +89,60 @@ internal static class MaximumSumOfMNonOverlappingSubarraysISolution
 
         for (var j = 1; j <= m; j++)
         {
-            SolveLayer(dp, prefix, n, l, r, j);
+            SolveLayer((dp, prefix, j), (l, r));
         }
 
         return BestOverAtLeastOneSubarray(dp, n, m);
     }
 
-    private static void SolveLayer(long[][] dp, long[] prefix, int n, int l, int r, int j)
+    // A layer is one j of the recurrence together with what its transitions read: the
+    // grid being filled, the prefix sums, and the layer index itself.
+    private static void SolveLayer(
+        (long[][] Dp, long[] Prefix, int J) layer, (int MinLength, int MaxLength) lengthBounds)
     {
+        var (dp, prefix, j) = layer;
+        var n = prefix.Length - 1;
         var deque = new MonotonicDeque();
 
         for (var i = 1; i <= n; i++)
         {
-            var enter = i - l;
-
-            if (enter >= 0 && dp[enter][j - 1] != Infeasible)
-            {
-                PushCandidate(deque, dp, prefix, j, enter);
-            }
-
-            while (deque.TryPeekFront(out var front) && front < i - r)
-            {
-                deque.TryPopFront(out _);
-            }
-
-            var best = dp[i - 1][j];
-
-            if (deque.TryPeekFront(out var start))
-            {
-                best = Math.Max(best, dp[start][j - 1] + prefix[i] - prefix[start]);
-            }
-
-            dp[i][j] = best;
+            dp[i][j] = BestAtPosition(layer, lengthBounds, deque, i);
         }
     }
 
-    private static void PushCandidate(MonotonicDeque deque, long[][] dp, long[] prefix, int j, int start)
+    // One position of a layer: admit the start that has just entered the sliding window
+    // [i - MaxLength, i - MinLength], drop the candidate starts that have left it, and
+    // take the best transition still inside it.
+    private static long BestAtPosition(
+        (long[][] Dp, long[] Prefix, int J) layer, (int MinLength, int MaxLength) lengthBounds,
+        MonotonicDeque deque, int position)
     {
+        var (dp, prefix, j) = layer;
+        var enter = position - lengthBounds.MinLength;
+
+        if (enter >= 0 && dp[enter][j - 1] != Infeasible)
+        {
+            PushCandidate(deque, layer, enter);
+        }
+
+        while (deque.TryPeekFront(out var front) && front < position - lengthBounds.MaxLength)
+        {
+            deque.TryPopFront(out _);
+        }
+
+        var best = dp[position - 1][j];
+
+        if (deque.TryPeekFront(out var start))
+        {
+            best = Math.Max(best, dp[start][j - 1] + prefix[position] - prefix[start]);
+        }
+
+        return best;
+    }
+
+    private static void PushCandidate(MonotonicDeque deque, (long[][] Dp, long[] Prefix, int J) layer, int start)
+    {
+        var (dp, prefix, j) = layer;
         var key = dp[start][j - 1] - prefix[start];
 
         while (deque.TryPeekBack(out var backStart) && dp[backStart][j - 1] - prefix[backStart] <= key)

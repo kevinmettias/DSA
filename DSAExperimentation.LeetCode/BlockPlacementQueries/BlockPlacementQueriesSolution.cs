@@ -27,7 +27,8 @@ internal static class BlockPlacementQueriesSolution
             }
             else
             {
-                results.Add(CanPlace(obstacles, query[1], query[2]));
+                var fits = CanPlace(obstacles, query[1], query[2]);
+                results.Add(fits);
             }
         }
 
@@ -47,12 +48,16 @@ internal static class BlockPlacementQueriesSolution
         for (var i = 0; i < obstacles.Count && obstacles[i] <= x; i++)
         {
             var nextIsWithinRange = i + 1 < obstacles.Count && obstacles[i + 1] <= x;
-            var rightBound = nextIsWithinRange ? obstacles[i + 1] : x;
+            var rightBound = nextIsWithinRange ? NextObstaclePosition(obstacles, i) : x;
             maxGap = Math.Max(maxGap, rightBound - obstacles[i]);
         }
 
         return size <= maxGap;
     }
+
+    // The obstacle following index i, read only where the caller has already
+    // established that one exists at or before x.
+    private static long NextObstaclePosition(List<long> obstacles, int i) => obstacles[i + 1];
 
     // This repo's own point-update SegmentTree<long, MaxOperation<long>> for
     // "the largest gap ending at or before a coordinate", plus this problem's
@@ -70,38 +75,9 @@ internal static class BlockPlacementQueriesSolution
     // prefix-max query, indexed by each gap's own right-hand obstacle).
     public static bool[] CanPlaceBySegmentTreeMerge(int[][] queries)
     {
-        var maxCoordinate = 0;
-
-        foreach (var query in queries)
-        {
-            maxCoordinate = Math.Max(maxCoordinate, query[1]);
-        }
-
-        var isFinalObstacle = new bool[maxCoordinate + 1];
-        isFinalObstacle[0] = true;
-
-        foreach (var query in queries)
-        {
-            if (query[0] == PlaceObstacle)
-            {
-                isFinalObstacle[query[1]] = true;
-            }
-        }
-
-        var gaps = new long[maxCoordinate + 1];
-        Array.Fill(gaps, MaxOperation<long>.Identity);
-
-        var previousObstacle = 0;
-        for (var coordinate = 1; coordinate <= maxCoordinate; coordinate++)
-        {
-            if (isFinalObstacle[coordinate])
-            {
-                gaps[coordinate] = coordinate - previousObstacle;
-                previousObstacle = coordinate;
-            }
-        }
-
-        var gapTree = new SegmentTree<long, MaxOperation<long>>(gaps);
+        var maxCoordinate = MaxCoordinate(queries);
+        var isFinalObstacle = ObstaclePresence(queries, maxCoordinate);
+        var gapTree = BuildGapTree(isFinalObstacle, maxCoordinate);
         var nearest = new NearestActiveObstacle(isFinalObstacle, maxCoordinate);
         var results = new bool[queries.Length];
 
@@ -115,30 +91,81 @@ internal static class BlockPlacementQueriesSolution
             }
             else
             {
-                var x = query[1];
-                var lastActive = nearest.NearestAtOrBefore(x);
-                var trailingGap = x - lastActive;
-                var interiorMax = gapTree.Query(0, lastActive);
-
-                results[t] = query[2] <= Math.Max(trailingGap, interiorMax);
+                results[t] = CanPlaceAmongActive(nearest, gapTree, (query[1], query[2]));
             }
         }
 
         return ExtractTypeTwoResults(queries, results);
     }
 
-    private static void Deactivate(
-        SegmentTree<long, MaxOperation<long>> gapTree, NearestActiveObstacle nearest, int position)
+    // The highest coordinate any query names - the size of every coordinate-indexed
+    // array the reverse walk builds.
+    private static int MaxCoordinate(int[][] queries)
     {
-        var leftNeighbor = nearest.NearestAtOrBefore(position - 1);
+        var maxCoordinate = 0;
 
-        if (nearest.TryNearestAtOrAfter(position + 1, out var rightNeighbor))
+        foreach (var query in queries)
         {
-            gapTree.Update(rightNeighbor, rightNeighbor - leftNeighbor);
+            maxCoordinate = Math.Max(maxCoordinate, query[1]);
         }
 
-        gapTree.Update(position, MaxOperation<long>.Identity);
-        nearest.Deactivate(position);
+        return maxCoordinate;
+    }
+
+    // Which coordinates hold an obstacle once every type-1 query has been applied,
+    // with the permanent obstacle at 0 - the "final" picture the reverse walk starts
+    // from and removes obstacles out of.
+    private static bool[] ObstaclePresence(int[][] queries, int maxCoordinate)
+    {
+        var isFinalObstacle = new bool[maxCoordinate + 1];
+        isFinalObstacle[0] = true;
+
+        foreach (var query in queries)
+        {
+            if (query[0] == PlaceObstacle)
+            {
+                isFinalObstacle[query[1]] = true;
+            }
+        }
+
+        return isFinalObstacle;
+    }
+
+    // The gap ending at each obstacle, indexed by that obstacle's own coordinate -
+    // the array the prefix-max segment tree is built over.
+    private static SegmentTree<long, MaxOperation<long>> BuildGapTree(
+        bool[] isFinalObstacle, int maxCoordinate)
+    {
+        var gaps = new long[maxCoordinate + 1];
+        Array.Fill(gaps, MaxOperation<long>.Identity);
+
+        var previousObstacle = 0;
+        for (var coordinate = 1; coordinate <= maxCoordinate; coordinate++)
+        {
+            if (isFinalObstacle[coordinate])
+            {
+                gaps[coordinate] = coordinate - previousObstacle;
+                previousObstacle = coordinate;
+            }
+        }
+
+        return new SegmentTree<long, MaxOperation<long>>(gaps);
+    }
+
+    // A type-2 query answered against the obstacles still active at this point in the
+    // reverse walk: the block fits either in the trailing gap running up to x, or in
+    // the largest gap ending at or before the nearest active obstacle.
+    private static bool CanPlaceAmongActive(
+        NearestActiveObstacle nearest,
+        SegmentTree<long, MaxOperation<long>> gapTree,
+        (int X, int Size) query)
+    {
+        var x = query.X;
+        var lastActive = nearest.NearestAtOrBefore(x);
+        var trailingGap = x - lastActive;
+        var interiorMax = gapTree.Query(0, lastActive);
+
+        return query.Size <= Math.Max(trailingGap, interiorMax);
     }
 
     private static bool[] ExtractTypeTwoResults(int[][] queries, bool[] results)
@@ -154,5 +181,18 @@ internal static class BlockPlacementQueriesSolution
         }
 
         return [.. extracted];
+    }
+
+    private static void Deactivate(
+        SegmentTree<long, MaxOperation<long>> gapTree, NearestActiveObstacle nearest, int position)
+    {
+        if (nearest.TryNearestAtOrAfter(position + 1, out var rightNeighbor))
+        {
+            var leftNeighbor = nearest.NearestAtOrBefore(position - 1);
+            gapTree.Update(rightNeighbor, rightNeighbor - leftNeighbor);
+        }
+
+        gapTree.Update(position, MaxOperation<long>.Identity);
+        nearest.Deactivate(position);
     }
 }

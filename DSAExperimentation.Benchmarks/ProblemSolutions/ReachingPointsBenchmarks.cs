@@ -15,7 +15,7 @@ public class ReachingPointsBenchmarks
     private const int Ty = 3;
 
     [Params(10_000, 10_000_000)]
-    public int Tx;
+    public int Tx { get; set; }
 
     [Benchmark(Baseline = true)]
     public bool SubtractiveBackwardReduction() =>

@@ -15,10 +15,10 @@ public class MaxAreaOfIslandBenchmarks
     private const int RandomSeed = 3;
     private const double LandProbability = 0.55;
 
-    [Params(30, 120)]
-    public int Side;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
+    [Params(30, 120)]
+    public int Side { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,14 +32,15 @@ public class MaxAreaOfIslandBenchmarks
 
             for (var c = 0; c < Side; c++)
             {
-                _grid[r][c] = random.NextDouble() < LandProbability ? 1 : 0;
+                var isLand = random.NextDouble() < LandProbability;
+                _grid[r][c] = isLand ? 1 : 0;
             }
         }
     }
 
     [Benchmark(Baseline = true)]
-    public int MaxAreaByNaiveFloodFill() => MaxAreaOfIslandSolution.MaxAreaByNaiveFloodFill(_grid);
+    public int ByNaiveFloodFill() => MaxAreaOfIslandSolution.MaxAreaByNaiveFloodFill(_grid);
 
     [Benchmark]
-    public int MaxAreaByDepthFirstSearch() => MaxAreaOfIslandSolution.MaxAreaByDepthFirstSearch(_grid);
+    public int ByDepthFirstSearch() => MaxAreaOfIslandSolution.MaxAreaByDepthFirstSearch(_grid);
 }

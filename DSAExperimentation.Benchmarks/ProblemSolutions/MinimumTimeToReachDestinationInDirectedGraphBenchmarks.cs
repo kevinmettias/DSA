@@ -14,10 +14,10 @@ public class MinimumTimeToReachDestinationInDirectedGraphBenchmarks
 {
     private const int Seed = 3604;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private TimeWindowAdjacency _graph = null!;
+
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

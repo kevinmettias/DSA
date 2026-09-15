@@ -7,17 +7,17 @@ namespace DSAExperimentation.LeetCode.MinimumWeightedSubgraphWithTheRequiredPath
 // that constructs the forward one, so the reverse copy costs nothing extra.
 internal sealed class RequiredPathsGraph
 {
-    private RequiredPathsGraph(RequiredPathsNode[] forward, RequiredPathsNode[] reverse)
-    {
-        Forward = forward;
-        Reverse = reverse;
-    }
-
     // Node i of each orientation is the same vertex i, so a candidate meeting
     // vertex is looked up by the same index in both.
     public RequiredPathsNode[] Forward { get; }
 
     public RequiredPathsNode[] Reverse { get; }
+
+    private RequiredPathsGraph(RequiredPathsNode[] forward, RequiredPathsNode[] reverse)
+    {
+        Forward = forward;
+        Reverse = reverse;
+    }
 
     public static RequiredPathsGraph Build(int n, int[][] edges)
     {

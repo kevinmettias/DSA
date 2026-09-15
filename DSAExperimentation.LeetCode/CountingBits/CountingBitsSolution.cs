@@ -41,10 +41,24 @@ internal static class CountingBitsSolution
 
         for (var i = 0; i <= n; i++)
         {
-            result[i] = Memoizer.Memoize<int, int>(
-                i, (value, countBits) => value == 0 ? 0 : countBits(value >> 1) + (value & 1));
+            result[i] = Memoizer.Memoize<int, int>(i, new BitsShiftedFromHalf());
         }
 
         return result;
+    }
+
+    // The recurrence, as a named type: a value's bit count is the bit count of the
+    // value halved, plus the value's own low bit.
+    private sealed class BitsShiftedFromHalf : IRecurrence<int, int>
+    {
+        public int Replay(int value, IRecurrence<int, int> rest)
+        {
+            if (value == 0)
+            {
+                return 0;
+            }
+
+            return rest.Replay(value >> 1, rest) + (value & 1);
+        }
     }
 }

@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignMemoryAllocator.DesignMemoryAllocatorSolution;
+using DSAExperimentation.LeetCode.DesignMemoryAllocator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -24,23 +24,23 @@ public class DesignMemoryAllocatorBenchmarks
     // Every allocation in this workload is one unit wide.
     private const int SingleUnit = 1;
 
-    [Params(200, 2_000)]
-    public int Count;
+    private int[] _memoryIds = [];
 
-    private int[] _memoryIds = null!;
+    [Params(200, 2_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup() => _memoryIds = Enumerable.Range(1, Count).ToArray();
 
     [Benchmark(Baseline = true)]
-    public int ArrayScanFree() => Replay(new MemoryAllocatorByArrayScan(Count));
+    public int ArrayScanFree() => Replay(new DesignMemoryAllocatorSolution.MemoryAllocatorByArrayScan(Count));
 
     [Benchmark]
-    public int HashMapTrackedFree() => Replay(new MemoryAllocatorByHashMapIndex(Count));
+    public int HashMapTrackedFree() => Replay(new DesignMemoryAllocatorSolution.MemoryAllocatorByHashMapIndex(Count));
 
     // Sums every reported unit count rather than discarding it, so the JIT can't
     // eliminate the replay as dead code.
-    private int Replay(IMemoryAllocatorStrategy allocator)
+    private int Replay(DesignMemoryAllocatorSolution.IMemoryAllocatorStrategy allocator)
     {
         foreach (var memoryId in _memoryIds)
         {

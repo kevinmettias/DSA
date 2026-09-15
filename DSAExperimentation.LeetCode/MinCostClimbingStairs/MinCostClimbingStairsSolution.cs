@@ -16,24 +16,26 @@ internal static class MinCostClimbingStairsSolution
     // no cache - O(2^n), deliberately written without this repo's Memoizer. It is
     // the arm the memoized and iterative strategies below have to justify
     // themselves against.
-    public static int MinCostByNaiveRecursive(int[] cost) =>
-        Math.Min(CostFrom(0, cost), CostFrom(1, cost));
-
-    private static int CostFrom(int step, int[] cost) =>
-        step >= cost.Length
-            ? 0
-            : cost[step] + Math.Min(CostFrom(step + 1, cost), CostFrom(step + TwoStepClimb, cost));
+    public static int MinCostByNaiveRecursive(int[] cost)
+    {
+        var fromFirstStep = CostFrom(0, cost);
+        var fromSecondStep = CostFrom(1, cost);
+        return Math.Min(fromFirstStep, fromSecondStep);
+    }
 
     // This repo's own top-down DP: Memoizer over the exact recurrence above, with
     // the virtual start state (-1) folding "start at 0 or 1" into one shared cache.
     public static int MinCostByMemoizedRecurrence(int[] cost) =>
-        Memoizer.Memoize<int, int>(-1, (step, minCostFrom) => MinCostFromStep(step, cost, minCostFrom));
+        Memoizer.Memoize<int, int>(-1, new CheapestWayFromStep(cost));
 
-    private static int MinCostFromStep(int step, int[] cost, Func<int, int> minCostFrom)
+    private static int MinCostFromStep(int step, int[] cost, IRecurrence<int, int> rest)
     {
         if (step < 0)
         {
-            return Math.Min(minCostFrom(0), minCostFrom(1));
+            var fromFirstStep = rest.Replay(0, rest);
+            var fromSecondStep = rest.Replay(1, rest);
+
+            return Math.Min(fromFirstStep, fromSecondStep);
         }
 
         if (step >= cost.Length)
@@ -41,7 +43,10 @@ internal static class MinCostClimbingStairsSolution
             return 0;
         }
 
-        return cost[step] + Math.Min(minCostFrom(step + 1), minCostFrom(step + TwoStepClimb));
+        var afterOneStep = rest.Replay(step + 1, rest);
+        var afterTwoSteps = rest.Replay(step + TwoStepClimb, rest);
+
+        return cost[step] + Math.Min(afterOneStep, afterTwoSteps);
     }
 
     // The O(n)-time O(1)-space answer neither of the other two even needs to beat.
@@ -56,5 +61,29 @@ internal static class MinCostClimbingStairsSolution
         }
 
         return oneBack;
+    }
+
+    private static int CostFrom(int step, int[] cost) =>
+        step >= cost.Length
+            ? 0
+            : CostOfStep(step, cost);
+
+    // The step's own cost plus the cheaper of the two ways on from it.
+    private static int CostOfStep(int step, int[] cost)
+    {
+        var afterOneStep = CostFrom(step + 1, cost);
+        var afterTwoSteps = CostFrom(step + TwoStepClimb, cost);
+        return cost[step] + Math.Min(afterOneStep, afterTwoSteps);
+    }
+
+    // The climbing rule, named: from a step, the cheapest way to the top is that step's own
+    // cost plus the better of the one-step and two-step continuations - and the virtual
+    // start state below the first step simply takes the better of the two entry points. The
+    // cost array is fixed for the whole walk and arrives once through the primary
+    // constructor; `rest` is the memo run's own handle on this rule.
+    private sealed class CheapestWayFromStep(int[] cost) : IRecurrence<int, int>
+    {
+        /// <inheritdoc/>
+        public int Replay(int step, IRecurrence<int, int> rest) => MinCostFromStep(step, cost, rest);
     }
 }

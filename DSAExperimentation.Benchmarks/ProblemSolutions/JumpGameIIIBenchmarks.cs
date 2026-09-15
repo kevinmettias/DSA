@@ -14,11 +14,11 @@ public class JumpGameIIIBenchmarks
     // LC problem number, reused as the deterministic seed.
     private const int RandomSeed = 1306;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _arr = [];
 
-    private int[] _arr = null!;
     private int _start;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

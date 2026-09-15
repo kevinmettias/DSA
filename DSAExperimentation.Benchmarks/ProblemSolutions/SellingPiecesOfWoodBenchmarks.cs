@@ -24,10 +24,10 @@ public class SellingPiecesOfWoodBenchmarks
     private const int RandomSeed = 2312; // LC problem number
     private const int MaxPrice = 50;
 
-    [Params(4, 6)]
-    public int Size;
+    private HashMap<(int Height, int Width), int> _prices = new();
 
-    private HashMap<(int Height, int Width), int> _prices = null!;
+    [Params(4, 6)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

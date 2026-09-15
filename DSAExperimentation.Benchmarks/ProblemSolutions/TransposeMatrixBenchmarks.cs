@@ -13,10 +13,10 @@ public class TransposeMatrixBenchmarks
     private const int MatrixValueUpperBoundExclusive = 1_000;
     private const int Seed = 1;
 
-    [Params(100, 800)]
-    public int Size;
+    private int[][] _matrix = [];
 
-    private int[][] _matrix = null!;
+    [Params(100, 800)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()

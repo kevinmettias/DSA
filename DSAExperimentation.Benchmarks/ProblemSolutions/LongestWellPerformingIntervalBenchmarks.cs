@@ -20,19 +20,22 @@ public class LongestWellPerformingIntervalBenchmarks
 
     private const int NotTiringHour = 6;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _hours = [];
 
-    private int[] _hours = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
         _hours = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(0, CoinFlipUpperBoundExclusive) == 1 ? TiringHour : NotTiringHour)
+            .Select(_ => IsTiringHour(random) ? TiringHour : NotTiringHour)
             .ToArray();
     }
+
+    // An unweighted coin flip, heads (1) being the tiring hour.
+    private static bool IsTiringHour(Random random) => random.Next(0, CoinFlipUpperBoundExclusive) == 1;
 
     [Benchmark(Baseline = true)]
     public int BruteForce() => LongestWellPerformingIntervalSolution.LongestWpiByBruteForce(_hours);

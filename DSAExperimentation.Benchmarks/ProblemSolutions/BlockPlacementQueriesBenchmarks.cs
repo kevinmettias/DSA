@@ -20,39 +20,60 @@ public class BlockPlacementQueriesBenchmarks
     private const int Seed = 3161;
     private const int CoordinateSpread = 3;
 
-    [Params(5_000, 50_000)]
-    public int QueryCount;
+    private int[][] _queries = [];
 
-    private int[][] _queries = null!;
+    [Params(5_000, 50_000)]
+    public int QueryCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
         var maxCoordinate = QueryCount * CoordinateSpread;
+
+        _queries = BuildQueries(random, maxCoordinate, QueryCount);
+    }
+
+    // Half the script places obstacles at distinct random coordinates, half asks
+    // type-2 queries against a random prefix, so that by the end of the run most
+    // obstacles are already active rather than the obstacle set being mostly empty.
+    private static int[][] BuildQueries(Random random, int maxCoordinate, int queryCount)
+    {
         var usedPositions = new HashSet<int>();
-        var queries = new int[QueryCount][];
+        var queries = new int[queryCount][];
 
-        for (var i = 0; i < QueryCount; i++)
+        for (var i = 0; i < queryCount; i++)
         {
-            if (i % 2 == 0 || usedPositions.Count == 0)
-            {
-                int position;
-                do
-                {
-                    position = random.Next(1, maxCoordinate + 1);
-                }
-                while (!usedPositions.Add(position));
-
-                queries[i] = [1, position];
-            }
-            else
-            {
-                queries[i] = [2, random.Next(1, maxCoordinate + 1), random.Next(1, maxCoordinate + 1)];
-            }
+            queries[i] = BuildQuery(random, usedPositions, maxCoordinate, i);
         }
 
-        _queries = queries;
+        return queries;
+    }
+
+    // Even indices place an obstacle, odd indices ask a type-2 query; the empty
+    // usedPositions check forces the first operation to be a placement.
+    private static int[] BuildQuery(Random random, HashSet<int> usedPositions, int maxCoordinate, int index)
+    {
+        if (index % 2 == 0 || usedPositions.Count == 0)
+        {
+            return [1, TakeFreePosition(random, usedPositions, maxCoordinate)];
+        }
+
+        return [2, random.Next(1, maxCoordinate + 1), random.Next(1, maxCoordinate + 1)];
+    }
+
+    // A coordinate not already used: placing an obstacle twice at the same
+    // coordinate is a no-op, so this draws until the position is fresh.
+    private static int TakeFreePosition(Random random, HashSet<int> usedPositions, int maxCoordinate)
+    {
+        int position;
+        do
+        {
+            position = random.Next(1, maxCoordinate + 1);
+        }
+        while (!usedPositions.Add(position));
+
+        return position;
     }
 
     [Benchmark(Baseline = true)]

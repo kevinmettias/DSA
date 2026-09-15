@@ -16,38 +16,60 @@ internal static class EditDistanceSolution
     {
         var dp = new int[word1.Length + 1, word2.Length + 1];
 
-        for (var i = 0; i <= word1.Length; i++)
-        {
-            dp[i, word2.Length] = word1.Length - i;
-        }
-
-        for (var j = 0; j <= word2.Length; j++)
-        {
-            dp[word1.Length, j] = word2.Length - j;
-        }
+        FillEmptySuffixBorders(dp, word1.Length, word2.Length);
 
         for (var i = word1.Length - 1; i >= 0; i--)
         {
             for (var j = word2.Length - 1; j >= 0; j--)
             {
                 var insertOrReplace = Math.Min(dp[i, j + 1], dp[i + 1, j + 1]);
-                dp[i, j] = word1[i] == word2[j]
-                    ? dp[i + 1, j + 1]
-                    : 1 + Math.Min(dp[i + 1, j], insertOrReplace);
+                var lettersMatch = word1[i] == word2[j];
+                dp[i, j] = lettersMatch
+                    ? DiagonalCost(dp, i, j)
+                    : CostAfterOneEdit(dp, i, j, insertOrReplace);
             }
         }
 
         return dp[0, 0];
     }
 
+    // The two empty-suffix borders: turning the whole of one word into the empty
+    // suffix of the other costs one delete per character still standing.
+    private static void FillEmptySuffixBorders(int[,] dp, int firstLength, int secondLength)
+    {
+        for (var i = 0; i <= firstLength; i++)
+        {
+            dp[i, secondLength] = firstLength - i;
+        }
+
+        for (var j = 0; j <= secondLength; j++)
+        {
+            dp[firstLength, j] = secondLength - j;
+        }
+    }
+
+    // The diagonal entry: both suffixes advanced by one, the free match-through.
+    private static int DiagonalCost(int[,] dp, int i, int j) => dp[i + 1, j + 1];
+
+    // One edit charged, plus the cheaper of the remaining delete and the insert-or-
+    // replace the caller has already minimized in.
+    private static int CostAfterOneEdit(int[,] dp, int i, int j, int insertOrReplace) =>
+        1 + Math.Min(dp[i + 1, j], insertOrReplace);
+
     // Memoizer caches the same recurrence, called top-down from (0, 0) instead of
     // filled bottom-up, so only the suffix pairs the walk actually visits get
     // computed.
-    public static int MinDistanceByMemoizedRecurrence(string word1, string word2)
-    {
-        return Memoizer.Memoize<(int First, int Second), int>((0, 0), DistanceFrom);
+    public static int MinDistanceByMemoizedRecurrence(string word1, string word2) =>
+        Memoizer.Memoize<(int First, int Second), int>((0, 0), new EditsFromSuffixPair(word1, word2));
 
-        int DistanceFrom((int First, int Second) state, Func<(int First, int Second), int> distance)
+    // The recurrence, as a named type: either suffix exhausted costs one delete per
+    // character still standing on the other side, next characters that agree are free
+    // to match through, and otherwise one edit is charged on top of the cheapest of
+    // the insert, delete and replace moves left.
+    private sealed class EditsFromSuffixPair(string word1, string word2)
+        : IRecurrence<(int First, int Second), int>
+    {
+        public int Replay((int First, int Second) state, IRecurrence<(int First, int Second), int> rest)
         {
             var (i, j) = state;
 
@@ -63,11 +85,24 @@ internal static class EditDistanceSolution
 
             if (word1[i] == word2[j])
             {
-                return distance((i + 1, j + 1));
+                return rest.Replay((i + 1, j + 1), rest);
             }
 
-            var insertOrReplace = Math.Min(distance((i, j + 1)), distance((i + 1, j + 1)));
-            return 1 + Math.Min(distance((i + 1, j)), insertOrReplace);
+            return OneEditPlusCheapestMove(i, j, rest);
+        }
+
+        // One edit charged, plus the cheaper of the remaining delete and the
+        // insert-or-replace - the same charge the tabulation arm's CostAfterOneEdit
+        // makes, with the three suffixes it chooses between reached through the memo.
+        private static int OneEditPlusCheapestMove(
+            int i, int j, IRecurrence<(int First, int Second), int> rest)
+        {
+            var insert = rest.Replay((i, j + 1), rest);
+            var replace = rest.Replay((i + 1, j + 1), rest);
+            var delete = rest.Replay((i + 1, j), rest);
+            var insertOrReplace = Math.Min(insert, replace);
+
+            return 1 + Math.Min(delete, insertOrReplace);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfWaysToPaintN3GridBenchmarks
 {
     [Params(1_000, 5_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public long Tabulation() => NumberOfWaysToPaintN3GridSolution.NumOfWaysByTabulation(N);

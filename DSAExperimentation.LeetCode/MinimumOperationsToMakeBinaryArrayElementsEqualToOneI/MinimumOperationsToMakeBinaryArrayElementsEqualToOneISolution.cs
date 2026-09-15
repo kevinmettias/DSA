@@ -58,27 +58,43 @@ internal static class MinimumOperationsToMakeBinaryArrayElementsEqualToOneISolut
 
         for (var i = 0; i < nums.Length; i++)
         {
-            while (activeFlips.TryPeek(out var start) && start <= i - FlipLength)
-            {
-                activeFlips.TryDequeue(out _);
-            }
+            var (canFinish, updatedOperations) = ApplyFlipAt(activeFlips, nums, i, operations);
+            operations = updatedOperations;
 
-            var effectiveValue = nums[i] ^ (activeFlips.Count % 2);
-
-            if (effectiveValue == 1)
-            {
-                continue;
-            }
-
-            if (i + FlipLength > nums.Length)
+            if (!canFinish)
             {
                 return LeetCodeAnswer.None;
             }
-
-            activeFlips.Enqueue(i);
-            operations++;
         }
 
         return operations;
+    }
+
+    // Retires the operations that can no longer cover `index`, then - if the
+    // element's effective value is 0 - spends the one operation that has to
+    // start here. Returns false when that operation would run off the end.
+    private static (bool CanFinish, int Operations) ApplyFlipAt(
+        FlipStartQueue activeFlips, int[] nums, int index, int operations)
+    {
+        while (activeFlips.TryPeek(out var start) && start <= index - FlipLength)
+        {
+            activeFlips.TryDequeue(out _);
+        }
+
+        var effectiveValue = nums[index] ^ (activeFlips.Count % 2);
+
+        if (effectiveValue == 1)
+        {
+            return (true, operations);
+        }
+
+        if (index + FlipLength > nums.Length)
+        {
+            return (false, operations);
+        }
+
+        activeFlips.Enqueue(index);
+
+        return (true, operations + 1);
     }
 }

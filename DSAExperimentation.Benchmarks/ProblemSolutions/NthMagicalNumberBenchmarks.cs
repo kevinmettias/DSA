@@ -16,7 +16,7 @@ public class NthMagicalNumberBenchmarks
     private const int B = 10;
 
     [Params(2_000, 50_000)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForceCount() => NthMagicalNumberSolution.NthMagicalNumberByCountScan(N, A, B);

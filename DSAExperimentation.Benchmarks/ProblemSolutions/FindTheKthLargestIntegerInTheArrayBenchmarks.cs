@@ -15,12 +15,12 @@ public class FindTheKthLargestIntegerInTheArrayBenchmarks
     private const int RandomSeed = 1985; // LC problem number
     private const int MaxDigitCountExclusive = 12;
     private const int NonZeroDigitChoices = 9; // leading digit is drawn from 1-9
-    private const int DecimalDigitRadix = 10; // remaining digits are drawn from 0-9
+    private const int DecimalDigitRadix = 10; private string[] _values = [];
+
+    // remaining digits are drawn from 0-9
 
     [Params(500, 10_000)]
-    public int Length;
-
-    private string[] _values = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

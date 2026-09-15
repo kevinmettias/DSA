@@ -97,19 +97,8 @@ public sealed class DesignAFoodRatingSystemTests
 // One call in a FoodRatings script: which method to invoke and with what arguments.
 // Pure dispatch, built via the named factories below so a script (like Examples
 // above) reads like the LeetCode call sequence it replays.
-public readonly record struct FoodRatingOp
+public readonly record struct FoodRatingOp(bool isQuery, string subject, int rating)
 {
-    private readonly bool _isQuery;
-    private readonly string _subject;
-    private readonly int _rating;
-
-    private FoodRatingOp(bool isQuery, string subject, int rating)
-    {
-        _isQuery = isQuery;
-        _subject = subject;
-        _rating = rating;
-    }
-
     public static FoodRatingOp ChangeRating(string food, int newRating) => new(isQuery: false, food, newRating);
 
     public static FoodRatingOp HighestRated(string cuisine) => new(isQuery: true, cuisine, rating: 0);
@@ -121,12 +110,12 @@ public readonly record struct FoodRatingOp
     // calls Apply.
     internal string? Apply(IFoodRatingStrategy strategy)
     {
-        if (_isQuery)
+        if (isQuery)
         {
-            return strategy.HighestRated(_subject);
+            return strategy.HighestRated(subject);
         }
 
-        strategy.ChangeRating(_subject, _rating);
+        strategy.ChangeRating(subject, rating);
         return null;
     }
 }

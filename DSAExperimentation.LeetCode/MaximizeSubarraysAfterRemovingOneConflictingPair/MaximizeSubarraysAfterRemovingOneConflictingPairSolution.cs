@@ -18,7 +18,8 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
 
         for (var removedIndex = 0; removedIndex < conflictingPairs.Length; removedIndex++)
         {
-            best = Math.Max(best, CountValidSubarrays(n, conflictingPairs, removedIndex));
+            var validIfRemoved = CountValidSubarrays(n, conflictingPairs, removedIndex);
+            best = Math.Max(best, validIfRemoved);
         }
 
         return best;
@@ -54,7 +55,7 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
             var a = pairs[i][0];
             var b = pairs[i][1];
 
-            if (a >= left && a <= right && b >= left && b <= right)
+            if (IsInsideSubarray(a, left, right) && IsInsideSubarray(b, left, right))
             {
                 return false;
             }
@@ -62,6 +63,11 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
 
         return true;
     }
+
+    // A subarray's bounds are inclusive, so an endpoint lies inside it when it is at or
+    // past the left bound and at or before the right one.
+    private static bool IsInsideSubarray(int value, int left, int right) =>
+        value >= left && value <= right;
 
     // One O(n + m) sweep: bucket every pair by its larger endpoint into this repo's
     // own DynamicArray<int>, then walk right = 1..n tracking the two largest
@@ -78,6 +84,16 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
     // unmodified count plus the single largest accumulated gain.
     public static int MaxSubarraysByGroupedBoundSweep(int n, int[][] conflictingPairs)
     {
+        var conflictsByRightEndpoint = BucketByRightEndpoint(n, conflictingPairs);
+        var (validSubarrays, gainByLeftBound) = SweepBoundGains(conflictsByRightEndpoint, n);
+
+        return validSubarrays + LargestGain(gainByLeftBound);
+    }
+
+    // Every pair is bucketed by its larger endpoint, so a sweep of right endpoints
+    // meets a pair exactly at the right endpoint where it first comes into force.
+    private static DynamicArray<int>[] BucketByRightEndpoint(int n, int[][] conflictingPairs)
+    {
         var conflictsByRightEndpoint = new DynamicArray<int>[n + 1];
 
         for (var right = 1; right <= n; right++)
@@ -92,6 +108,15 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
             conflictsByRightEndpoint[rightEndpoint].Add(leftEndpoint);
         }
 
+        return conflictsByRightEndpoint;
+    }
+
+    // The sweep itself: for each right endpoint, fold in the left endpoints that come
+    // into force there, then credit the subarrays that right adds and record what
+    // removing the pair currently driving maxLeft would be worth.
+    private static (int ValidSubarrays, int[] GainByLeftBound) SweepBoundGains(
+        DynamicArray<int>[] conflictsByRightEndpoint, int n)
+    {
         var validSubarrays = 0;
         var maxLeft = 0;
         var secondMaxLeft = 0;
@@ -99,27 +124,39 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
 
         for (var right = 1; right <= n; right++)
         {
-            var bucket = conflictsByRightEndpoint[right];
-
-            for (var i = 0; i < bucket.Count; i++)
-            {
-                var left = bucket.Get(i);
-
-                if (left > maxLeft)
-                {
-                    secondMaxLeft = maxLeft;
-                    maxLeft = left;
-                }
-                else if (left > secondMaxLeft)
-                {
-                    secondMaxLeft = left;
-                }
-            }
-
+            (maxLeft, secondMaxLeft) = FoldLeftEndpoints(conflictsByRightEndpoint[right], maxLeft, secondMaxLeft);
             validSubarrays += right - maxLeft;
             gainByLeftBound[maxLeft] += maxLeft - secondMaxLeft;
         }
 
+        return (validSubarrays, gainByLeftBound);
+    }
+
+    // Keeps the two largest left endpoints seen so far: a new largest demotes the old
+    // one to runner-up, and anything smaller only matters if it beats the runner-up.
+    private static (int MaxLeft, int SecondMaxLeft) FoldLeftEndpoints(
+        DynamicArray<int> bucket, int maxLeft, int secondMaxLeft)
+    {
+        for (var i = 0; i < bucket.Count; i++)
+        {
+            var left = bucket.Get(i);
+
+            if (left > maxLeft)
+            {
+                secondMaxLeft = maxLeft;
+                maxLeft = left;
+            }
+            else if (left > secondMaxLeft)
+            {
+                secondMaxLeft = left;
+            }
+        }
+
+        return (maxLeft, secondMaxLeft);
+    }
+
+    private static int LargestGain(int[] gainByLeftBound)
+    {
         var bestGain = 0;
 
         foreach (var gain in gainByLeftBound)
@@ -127,6 +164,6 @@ internal static class MaximizeSubarraysAfterRemovingOneConflictingPairSolution
             bestGain = Math.Max(bestGain, gain);
         }
 
-        return validSubarrays + bestGain;
+        return bestGain;
     }
 }

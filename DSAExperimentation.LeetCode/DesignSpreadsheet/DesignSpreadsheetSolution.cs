@@ -74,7 +74,11 @@ internal static class DesignSpreadsheetSolution
         }
 
         private int ResolveOperand(string operand)
-            => char.IsDigit(operand[0]) ? int.Parse(operand) : (_cells.TryGetValue(operand, out var value) ? value : 0);
+            => char.IsDigit(operand[0]) ? int.Parse(operand) : CellValueOrDefault(operand);
+
+        // The cell's current value, or 0 where it has never been set - HashMap's
+        // counterpart to the BCL Dictionary's own GetValueOrDefault above.
+        private int CellValueOrDefault(string cell) => _cells.TryGetValue(cell, out var value) ? value : 0;
     }
 
     // Shared formula parsing: strip the leading '=' and split on the single '+' -

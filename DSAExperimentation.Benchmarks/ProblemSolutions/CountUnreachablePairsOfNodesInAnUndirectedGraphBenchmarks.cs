@@ -14,15 +14,16 @@ public class CountUnreachablePairsOfNodesInAnUndirectedGraphBenchmarks
 {
     private const int NodesPerComponent = 25;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
+    private int[][] _edges = [];
 
-    private int[][] _edges = null!;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var segmentSize = Math.Max(2, Math.Min(NodesPerComponent, NodeCount));
+        var cappedComponentSize = Math.Min(NodesPerComponent, NodeCount);
+        var segmentSize = Math.Max(2, cappedComponentSize);
         var edges = new List<int[]>();
 
         for (var node = 1; node < NodeCount; node++)

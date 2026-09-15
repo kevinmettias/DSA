@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SumOfTwoIntegersBenchmarks
 {
-    [Params(1_000, 1_000_000)]
-    public int A;
-
     private const int B = 123_456_789;
+
+    [Params(1_000, 1_000_000)]
+    public int A { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BuiltInAdd() => SumOfTwoIntegersSolution.GetSumByBuiltInAddition(A, B);

@@ -39,8 +39,12 @@ internal static class MatrixCellsInDistanceOrderSolution
     // DistanceMapReduceAlgebra - GridShortestPath.cs's own combination - produces
     // every cell's distance in one O(rows*cols) pass, and MergeSort.Sort over an
     // ArrayIndexedSequence orders them by it.
-    public static int[][] AllCellsDistOrderByGridBfs(int rows, int cols, int rCenter, int cCenter) =>
-        AllCellsDistOrderByGridBfs(BuildOpenGrid(rows, cols), rCenter, cCenter);
+    public static int[][] AllCellsDistOrderByGridBfs(int rows, int cols, int rCenter, int cCenter)
+    {
+        var grid = BuildOpenGrid(rows, cols);
+
+        return AllCellsDistOrderByGridBfs(grid, rCenter, cCenter);
+    }
 
     public static int[][] AllCellsDistOrderByGridBfs(Grid grid, int rCenter, int cCenter)
     {

@@ -17,13 +17,13 @@ public class ApplyDiscountEveryNOrdersBenchmarks
     private const int DiscountEvery = 3;
     private const int DiscountPercent = 50;
 
-    [Params(200, 5_000)]
-    public int ProductCount;
-
     private ApplyDiscountEveryNOrdersSolution.ICashier _linearCatalogScan = null!;
+
     private ApplyDiscountEveryNOrdersSolution.ICashier _hashMapLookup = null!;
-    private int[] _billProductIds = null!;
-    private int[] _billAmounts = null!;
+    private int[] _billProductIds = [];
+    private int[] _billAmounts = [];
+    [Params(200, 5_000)]
+    public int ProductCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

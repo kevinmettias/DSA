@@ -14,12 +14,12 @@ public class SortedGcdPairQueriesBenchmarks
     private const int QueryCount = 200;
     private const int Seed = 3312;
 
-    [Params(50, 300)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _queries = null!;
+    private int[] _queries = [];
     private GcdPairCountIndex _index = null!;
+    [Params(50, 300)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

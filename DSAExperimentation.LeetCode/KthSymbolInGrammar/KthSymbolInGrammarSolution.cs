@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.LeetCode.KthSymbolInGrammar;
 
 // LeetCode 779. K-th Symbol in Grammar: row 1 is "0", and every later row replaces
@@ -14,8 +16,6 @@ namespace DSAExperimentation.LeetCode.KthSymbolInGrammar;
 // Pow(x, n)'s exponentiation by squaring already is.
 internal static class KthSymbolInGrammarSolution
 {
-    private const int BranchingFactor = 2;
-
     // Baseline: build every row in full, then index the requested position. O(2^n)
     // time and space - what you would write without thinking about the recurrence.
     // Deliberately BCL-only internals (§17.5).
@@ -31,24 +31,9 @@ internal static class KthSymbolInGrammarSolution
         return row[k - 1] - '0';
     }
 
-    // Walk k up to row 1 one level at a time, flipping whenever k sits in the second
-    // half of its parent's two-symbol expansion. O(n) time, O(1) symbols held.
-    public static int KthGrammarByRecursiveHalving(int n, int k)
-    {
-        if (n == 1)
-        {
-            return 0;
-        }
-
-        var parent = KthGrammarByRecursiveHalving(n - 1, (k + 1) / BranchingFactor);
-        var isSecondHalfOfParent = k % BranchingFactor == 0;
-
-        return isSecondHalfOfParent ? 1 - parent : parent;
-    }
-
     private static List<char> ExpandRow(List<char> row)
     {
-        var next = new List<char>(row.Count * BranchingFactor);
+        var next = new List<char>(row.Count * AlgorithmConstants.BranchingFactor);
 
         foreach (var symbol in row)
         {
@@ -66,4 +51,22 @@ internal static class KthSymbolInGrammarSolution
 
         return next;
     }
+
+    // Walk k up to row 1 one level at a time, flipping whenever k sits in the second
+    // half of its parent's two-symbol expansion. O(n) time, O(1) symbols held.
+    public static int KthGrammarByRecursiveHalving(int n, int k)
+    {
+        if (n == 1)
+        {
+            return 0;
+        }
+
+        var parent = KthGrammarByRecursiveHalving(n - 1, (k + 1) / AlgorithmConstants.BranchingFactor);
+        var isSecondHalfOfParent = k % AlgorithmConstants.BranchingFactor == 0;
+
+        return isSecondHalfOfParent ? FlippedSymbol(parent) : parent;
+    }
+
+    // The second symbol of a parent's expansion is its first symbol's complement.
+    private static int FlippedSymbol(int parent) => 1 - parent;
 }

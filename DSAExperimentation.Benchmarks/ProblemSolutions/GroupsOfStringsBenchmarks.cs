@@ -22,10 +22,10 @@ public class GroupsOfStringsBenchmarks
     private const int MaxWordLengthExclusive = 9;
     private const int AlphabetSize = 26;
 
-    [Params(200, 2_000)]
-    public int WordCount;
-
     private ArraySequence<int> _masks;
+
+    [Params(200, 2_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

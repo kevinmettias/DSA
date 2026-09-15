@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class XOfAKindInADeckOfCardsBenchmarks
 {
     private const int GroupSize = 4;
-    private const int RandomSeed = 914; // LC problem number
+    private const int RandomSeed = 914; private int[] _deck = [];
+
+    // LC problem number
 
     [Params(400, 20_000)]
-    public int DeckSize;
-
-    private int[] _deck = null!;
+    public int DeckSize { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

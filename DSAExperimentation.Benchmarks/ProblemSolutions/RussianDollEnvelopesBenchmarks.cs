@@ -12,10 +12,10 @@ public class RussianDollEnvelopesBenchmarks
 {
     private const int RandomSeed = 11;
 
-    [Params(200, 3_000)]
-    public int Length;
+    private (int Width, int Height)[] _envelopes = [];
 
-    private (int Width, int Height)[] _envelopes = null!;
+    [Params(200, 3_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

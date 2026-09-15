@@ -18,11 +18,11 @@ public class CamelcaseMatchingBenchmarks
     // LC problem number, used as the deterministic seed for query generation.
     private const int RandomSeed = 1023;
 
-    [Params(500, 10_000)]
-    public int QueryCount;
+    private string[] _queries = [];
 
-    private string[] _queries = null!;
     private Regex _matcher = null!;
+    [Params(500, 10_000)]
+    public int QueryCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

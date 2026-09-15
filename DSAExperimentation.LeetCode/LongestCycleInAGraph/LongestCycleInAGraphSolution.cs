@@ -61,8 +61,12 @@ internal static class LongestCycleInAGraphSolution
 
         return current == FunctionalGraphEdges.NoOutgoingEdge
             ? LeetCodeAnswer.None
-            : step - stepOf[current];
+            : ElapsedSteps(step, stepOf[current]);
     }
+
+    // The cycle's length is how many steps the walk took between first seeing the
+    // repeated node and arriving back at it.
+    private static int ElapsedSteps(int step, int stepAtRepeat) => step - stepAtRepeat;
 
     // LeetCode's own input shape: edges[i] is node i's single successor, or -1.
     public static int LongestCycleByTarjanComponents(int[] edges) =>

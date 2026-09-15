@@ -16,11 +16,9 @@ namespace DSAExperimentation.LeetCode.LeastOperatorsToExpressNumber;
 // the next exponent). The cross-exponent joins are one fewer than the total
 // monomial count, so the recursion's raw total is corrected by -1 at the end.
 //
-// LeastOpsExpressTargetByUnmemoizedRecursion is the naive baseline: the same
-// recursion with no cache, so every (remaining, level) pair reachable by two
-// different digit paths is re-explored from scratch and the recursion tree stays
-// fully binary. Written with nothing but BCL recursion.
-//
+// Both arms run one named recurrence, DigitExpressionCost. The unmemoized baseline
+// calls it bare, so every (remaining, level) pair reachable by two different digit
+// paths is re-explored from scratch and the recursion tree stays fully binary.
 // LeastOpsExpressTargetByMemoizedRecursion caches on exactly that pair via this
 // repo's own Memoizer<TState,TResult> - the same 2-tuple state shape
 // BurstBalloonsSolution already uses - collapsing the tree to the handful of
@@ -36,42 +34,20 @@ internal static class LeastOperatorsToExpressNumberSolution
     // are monomials, so the accumulated weight overcounts by exactly one.
     private const int JoinCorrection = 1;
 
-    public static int LeastOpsExpressTargetByUnmemoizedRecursion(int x, int target) =>
-        UnmemoizedCost(x, target, level: 0) - JoinCorrection;
-
-    private static int UnmemoizedCost(int x, int remaining, int level)
+    public static int LeastOpsExpressTargetByUnmemoizedRecursion(int x, int target)
     {
-        var weight = level == 0 ? UnitsDigitWeight : level;
+        var recurrence = new DigitExpressionCost(x);
 
-        if (remaining < x)
-        {
-            return BaseCaseCost(x, remaining, level, weight);
-        }
-
-        var step = new DigitStep(x, level, weight, remaining % x, remaining / x);
-        return RecursiveCost(step, remaining, state => UnmemoizedCost(x, state.Remaining, state.Level));
+        return recurrence.Replay((target, 0), recurrence) - JoinCorrection;
     }
 
     public static int LeastOpsExpressTargetByMemoizedRecursion(int x, int target)
     {
-        var totalWeight = Memoizer.Memoize<(int Remaining, int Level), int>(
-            (target, 0), (state, cost) => MemoizedCost(x, state, cost));
+        var recurrence = new DigitExpressionCost(x);
+
+        var totalWeight = Memoizer.Memoize<(int Remaining, int Level), int>((target, 0), recurrence);
 
         return totalWeight - JoinCorrection;
-    }
-
-    private static int MemoizedCost(int x, (int Remaining, int Level) state, Func<(int Remaining, int Level), int> cost)
-    {
-        var (remaining, level) = state;
-        var weight = level == 0 ? UnitsDigitWeight : level;
-
-        if (remaining < x)
-        {
-            return BaseCaseCost(x, remaining, level, weight);
-        }
-
-        var step = new DigitStep(x, level, weight, remaining % x, remaining / x);
-        return RecursiveCost(step, remaining, cost);
     }
 
     // remaining < x is the base case, not just remaining == 0: once the current
@@ -87,7 +63,8 @@ internal static class LeastOperatorsToExpressNumberSolution
         return Math.Min(roundDown, roundUp);
     }
 
-    private static int RecursiveCost(DigitStep step, int remaining, Func<(int Remaining, int Level), int> cost)
+    private static int RecursiveCost(
+        DigitStep step, int remaining, IRecurrence<(int Remaining, int Level), int> cost)
     {
         var down = DownCost(step, cost);
 
@@ -100,16 +77,39 @@ internal static class LeastOperatorsToExpressNumberSolution
             return down;
         }
 
-        return Math.Min(down, UpCost(step, cost));
+        var up = UpCost(step, cost);
+        return Math.Min(down, up);
     }
+
+    private static int DownCost(DigitStep step, IRecurrence<(int Remaining, int Level), int> cost)
+        => (step.Digit * step.Weight) + cost.Replay((step.Quotient, step.Level + 1), cost);
+
+    private static int UpCost(DigitStep step, IRecurrence<(int Remaining, int Level), int> cost)
+        => ((step.X - step.Digit) * step.Weight) + cost.Replay((step.Quotient + 1, step.Level + 1), cost);
 
     // Bundles the pieces DownCost/UpCost need for one non-base-case digit step,
     // keeping each helper's parameter list to (step, cost) instead of five loose values.
     private readonly record struct DigitStep(int X, int Level, int Weight, int Digit, int Quotient);
 
-    private static int DownCost(DigitStep step, Func<(int Remaining, int Level), int> cost)
-        => (step.Digit * step.Weight) + cost((step.Quotient, step.Level + 1));
+    // The digit rule, named: a digit is read either as itself, rounding down and
+    // carrying nothing, or as x-minus-the-digit, rounding up and carrying one into the
+    // next exponent. Memoizing it is the caller's choice, not part of the rule.
+    private sealed class DigitExpressionCost(int x) : IRecurrence<(int Remaining, int Level), int>
+    {
+        /// <inheritdoc/>
+        public int Replay((int Remaining, int Level) state, IRecurrence<(int Remaining, int Level), int> rest)
+        {
+            var (remaining, level) = state;
+            var weight = level == 0 ? UnitsDigitWeight : level;
 
-    private static int UpCost(DigitStep step, Func<(int Remaining, int Level), int> cost)
-        => ((step.X - step.Digit) * step.Weight) + cost((step.Quotient + 1, step.Level + 1));
+            if (remaining < x)
+            {
+                return BaseCaseCost(x, remaining, level, weight);
+            }
+
+            var step = new DigitStep(x, level, weight, remaining % x, remaining / x);
+
+            return RecursiveCost(step, remaining, rest);
+        }
+    }
 }

@@ -98,11 +98,12 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
     {
         var target = state.Query[state.Index] - 'a';
 
-        for (var candidate = 0; candidate < LowercaseTrieNode<bool>.AlphabetSize; candidate++)
+        for (var candidate = 0; candidate < LowercaseAlphabet.Size; candidate++)
         {
             var next = node.Children[candidate];
+            var match = candidate == target ? ChildMatch.Target : ChildMatch.Substitution;
 
-            if (next is not null && TryMatchCandidate(next, state, isTargetCandidate: candidate == target))
+            if (next is not null && TryMatchCandidate(next, state, match))
             {
                 return true;
             }
@@ -111,9 +112,9 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
         return false;
     }
 
-    private static bool TryMatchCandidate(LowercaseTrieNode<bool> next, SearchState state, bool isTargetCandidate)
+    private static bool TryMatchCandidate(LowercaseTrieNode<bool> next, SearchState state, ChildMatch match)
     {
-        var nextBudget = isTargetCandidate ? state.RemainingEdits : state.RemainingEdits - 1;
+        var nextBudget = match == ChildMatch.Target ? state.RemainingEdits : ReducedEditBudget(state);
 
         if (nextBudget < 0)
         {
@@ -121,5 +122,20 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
         }
 
         return Search(next, state with { Index = state.Index + 1, RemainingEdits = nextBudget });
+    }
+
+    // A candidate that is not the target character spends one of the two edits.
+    private static int ReducedEditBudget(SearchState state) => state.RemainingEdits - 1;
+
+    // Which of the two kinds of descent into a candidate child this is: the character
+    // the query wants next, or a substitution for it. Named so the call site says
+    // which one it is instead of spelling it `true`.
+    private enum ChildMatch
+    {
+        // The candidate is the query's own next character, so it costs no edit.
+        Target,
+
+        // The candidate is some other character, so it spends one of the two edits.
+        Substitution,
     }
 }

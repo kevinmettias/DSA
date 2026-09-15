@@ -21,7 +21,7 @@ internal static class CountPrefixAndSuffixPairsISolution
         {
             for (var j = i + 1; j < words.Length; j++)
             {
-                if (IsPrefixAndSuffix(words[i], words[j]))
+                if (IsPrefixAndSuffix(new CandidateWord(words[i]), new ContainingWord(words[j])))
                 {
                     count++;
                 }
@@ -31,15 +31,15 @@ internal static class CountPrefixAndSuffixPairsISolution
         return count;
     }
 
-    private static bool IsPrefixAndSuffix(string candidate, string word)
+    private static bool IsPrefixAndSuffix(CandidateWord candidate, ContainingWord word)
     {
-        if (candidate.Length > word.Length)
+        if (candidate.Text.Length > word.Text.Length)
         {
             return false;
         }
 
-        return word.AsSpan(0, candidate.Length).SequenceEqual(candidate) &&
-               word.AsSpan(word.Length - candidate.Length).SequenceEqual(candidate);
+        return word.Text.AsSpan(0, candidate.Text.Length).SequenceEqual(candidate.Text) &&
+               word.Text.AsSpan(word.Text.Length - candidate.Text.Length).SequenceEqual(candidate.Text);
     }
 
     // Each word gets its own this-repo RollingHash once; checking whether
@@ -85,4 +85,14 @@ internal static class CountPrefixAndSuffixPairsISolution
     }
 
     public static RollingHash[] BuildHashes(string[] words) => Array.ConvertAll(words, word => new RollingHash(word));
+
+    // The two sides of LC 3042's prefix-and-suffix test, named for the roles they play
+    // here rather than left as two adjacent `string` positions a caller could hand over
+    // the wrong way round with the compiler none the wiser. The candidate is the word
+    // being tested; the containing word is the later word it must be both a prefix and
+    // a suffix of - which is one-directional, since a longer candidate is rejected
+    // outright rather than scanned the other way round.
+    private readonly record struct CandidateWord(string Text);
+
+    private readonly record struct ContainingWord(string Text);
 }

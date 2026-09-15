@@ -31,6 +31,13 @@ internal static class CountSortedVowelStringsSolution
         return strings.Count;
     }
 
+    // This repo's own Memoizer caches the same rule by (remaining length, smallest
+    // allowed vowel), collapsing the enumeration above to one evaluation per state
+    // with no string ever built - the same memoized-recurrence shape UniquePaths
+    // and FibonacciNumber already use for their own recurrences.
+    public static int CountVowelStringsByMemoizedRecurrence(int n) =>
+        Memoizer.Memoize<(int Remaining, int Start), int>((n, 0), new ChoicesFromAllowedVowel());
+
     private static void Build(char[] buffer, int position, int start, List<string> strings)
     {
         if (position == buffer.Length)
@@ -46,15 +53,12 @@ internal static class CountSortedVowelStringsSolution
         }
     }
 
-    // This repo's own Memoizer caches the same rule by (remaining length, smallest
-    // allowed vowel), collapsing the enumeration above to one evaluation per state
-    // with no string ever built - the same memoized-recurrence shape UniquePaths
-    // and FibonacciNumber already use for their own recurrences.
-    public static int CountVowelStringsByMemoizedRecurrence(int n)
+    // The recurrence, as a named type: one vowel is chosen for the current position
+    // and the choices for the rest of the string start from that same vowel, so every
+    // non-decreasing sequence is counted exactly once.
+    private sealed class ChoicesFromAllowedVowel : IRecurrence<(int Remaining, int Start), int>
     {
-        return Memoizer.Memoize<(int Remaining, int Start), int>((n, 0), Count);
-
-        int Count((int Remaining, int Start) state, Func<(int Remaining, int Start), int> count)
+        public int Replay((int Remaining, int Start) state, IRecurrence<(int Remaining, int Start), int> rest)
         {
             var (remaining, start) = state;
 
@@ -67,7 +71,7 @@ internal static class CountSortedVowelStringsSolution
 
             for (var vowel = start; vowel < VowelCount; vowel++)
             {
-                total += count((remaining - 1, vowel));
+                total += rest.Replay((remaining - 1, vowel), rest);
             }
 
             return total;

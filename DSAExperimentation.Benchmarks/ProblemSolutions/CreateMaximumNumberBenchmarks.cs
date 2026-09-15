@@ -12,12 +12,12 @@ public class CreateMaximumNumberBenchmarks
 
     private const int DigitUpperBoundExclusive = 10;
 
-    [Params(20, 100)]
-    public int Length;
+    private int[] _nums1 = [];
 
-    private int[] _nums1 = null!;
-    private int[] _nums2 = null!;
+    private int[] _nums2 = [];
     private int _k;
+    [Params(20, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

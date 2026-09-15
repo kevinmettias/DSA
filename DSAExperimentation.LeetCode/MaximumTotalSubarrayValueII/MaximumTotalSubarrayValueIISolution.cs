@@ -25,6 +25,15 @@ internal static class MaximumTotalSubarrayValueIISolution
     // and sum the k largest.
     public static long MaxTotalValueByBruteForce(int[] nums, int k)
     {
+        var values = CollectSubarrayValues(nums);
+
+        return SumLargest(values, k);
+    }
+
+    // value(l, r) for every subarray, measured from scratch: a running max/min as
+    // r grows for each fixed l, appended in l-major order. O(n^2) values.
+    private static List<long> CollectSubarrayValues(int[] nums)
+    {
         var values = new List<long>();
 
         for (var l = 0; l < nums.Length; l++)
@@ -40,6 +49,13 @@ internal static class MaximumTotalSubarrayValueIISolution
             }
         }
 
+        return values;
+    }
+
+    // The greedy sum: sort descending and take the first k, which is exactly the
+    // k largest values in the set.
+    private static long SumLargest(List<long> values, int k)
+    {
         values.Sort((left, right) => right.CompareTo(left));
 
         var total = 0L;
@@ -68,9 +84,22 @@ internal static class MaximumTotalSubarrayValueIISolution
 
         for (var left = 0; left < maxTree.Count; left++)
         {
-            heap.Push(MakeCandidate(maxTree, minTree, left, maxTree.Count - 1));
+            var widest = MakeCandidate(maxTree, minTree, left, maxTree.Count - 1);
+            heap.Push(widest);
         }
 
+        return SumTopK(heap, maxTree, minTree, k);
+    }
+
+    // The greedy half of the walk: pop the largest window, add its value, and only
+    // then reveal the same left endpoint's next-shorter window - never before,
+    // since the row is sorted in that one direction only.
+    private static long SumTopK(
+        Heap<SubarrayCandidate, MaxHeapOrder<SubarrayCandidate>> heap,
+        SegmentTree<int, MaxOperation<int>> maxTree,
+        SegmentTree<int, MinOperation<int>> minTree,
+        int k)
+    {
         var total = 0L;
 
         for (var taken = 0; taken < k; taken++)
@@ -80,7 +109,8 @@ internal static class MaximumTotalSubarrayValueIISolution
 
             if (candidate.Right > candidate.Left)
             {
-                heap.Push(MakeCandidate(maxTree, minTree, candidate.Left, candidate.Right - 1));
+                var narrower = MakeCandidate(maxTree, minTree, candidate.Left, candidate.Right - 1);
+                heap.Push(narrower);
             }
         }
 

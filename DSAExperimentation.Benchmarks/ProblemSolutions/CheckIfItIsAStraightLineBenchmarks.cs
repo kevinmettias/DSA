@@ -12,16 +12,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class CheckIfItIsAStraightLineBenchmarks
 {
-    [Params(20, 100)]
-    public int Length;
+    private int[][] _coordinates = [];
 
-    private int[][] _coordinates = null!;
+    [Params(20, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        _coordinates = Enumerable.Range(0, Length).Select(i => new[] { i, i }).ToArray();
-    }
+    public void Setup() => _coordinates = Enumerable.Range(0, Length).Select(i => new[] { i, i }).ToArray();
 
     [Benchmark(Baseline = true)]
     public bool BruteForceEveryTriple()

@@ -23,7 +23,7 @@ public class DivideNodesIntoTheMaximumNumberOfGroupsBenchmarks
     private GroupGraph _graph = null!;
 
     [Params(50, 200)]
-    public int NodeCount;
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

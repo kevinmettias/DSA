@@ -25,15 +25,6 @@ internal static class HeightCheckerSolution
         return CountMismatches(heights, expected);
     }
 
-    // Same shape, with this repo's MergeSort composed over ArrayIndexedSequence.
-    public static int CountMismatchesByMergeSort(int[] heights)
-    {
-        var expected = heights.ToArray();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(expected));
-
-        return CountMismatches(heights, expected);
-    }
-
     private static void InsertOne(int[] expected, int index)
     {
         var current = expected[index];
@@ -46,6 +37,15 @@ internal static class HeightCheckerSolution
         }
 
         expected[j + 1] = current;
+    }
+
+    // Same shape, with this repo's MergeSort composed over ArrayIndexedSequence.
+    public static int CountMismatchesByMergeSort(int[] heights)
+    {
+        var expected = heights.ToArray();
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(expected));
+
+        return CountMismatches(heights, expected);
     }
 
     private static int CountMismatches(int[] heights, int[] expected)

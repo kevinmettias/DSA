@@ -26,6 +26,39 @@ internal static class PalindromePartitioningIVSolution
 
     public static bool CheckPartitioningByNaiveRecursion(string s) => CanSplit(s, 0, PartitionCount);
 
+    public static bool CheckPartitioningByMemoizedRecurrence(string s)
+        => Memoizer.Memoize<(int Position, int PartitionsLeft), bool>(
+            (0, PartitionCount),
+            new AnyPalindromicSplit(s));
+
+    // The recurrence itself, named: a split works when some palindromic piece at this
+    // position leaves a remainder that itself splits the remaining pieces owed.
+    private sealed class AnyPalindromicSplit(string s) : IRecurrence<(int Position, int PartitionsLeft), bool>
+    {
+        public bool Replay(
+            (int Position, int PartitionsLeft) state, IRecurrence<(int Position, int PartitionsLeft), bool> rest)
+        {
+            var (position, partitionsLeft) = state;
+
+            if (partitionsLeft == 0)
+            {
+                return position == s.Length;
+            }
+
+            var lastEnd = LastEnd(s, partitionsLeft);
+
+            for (var end = position + 1; end <= lastEnd; end++)
+            {
+                if (IsPalindrome(s, position, end - 1) && rest.Replay((end, partitionsLeft - 1), rest))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
     private static bool CanSplit(string s, int position, int partitionsLeft)
     {
         if (partitionsLeft == 0)
@@ -38,36 +71,6 @@ internal static class PalindromePartitioningIVSolution
         for (var end = position + 1; end <= lastEnd; end++)
         {
             if (IsPalindrome(s, position, end - 1) && CanSplit(s, end, partitionsLeft - 1))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static bool CheckPartitioningByMemoizedRecurrence(string s)
-        => Memoizer.Memoize<(int Position, int PartitionsLeft), bool>(
-            (0, PartitionCount),
-            (state, splitsFrom) => HasAnySplit(s, state, splitsFrom));
-
-    private static bool HasAnySplit(
-        string s,
-        (int Position, int PartitionsLeft) state,
-        Func<(int Position, int PartitionsLeft), bool> splitsFrom)
-    {
-        var (position, partitionsLeft) = state;
-
-        if (partitionsLeft == 0)
-        {
-            return position == s.Length;
-        }
-
-        var lastEnd = LastEnd(s, partitionsLeft);
-
-        for (var end = position + 1; end <= lastEnd; end++)
-        {
-            if (IsPalindrome(s, position, end - 1) && splitsFrom((end, partitionsLeft - 1)))
             {
                 return true;
             }

@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LexicographicallyMaximumMEXArrayBenchmarks
 {
-    private const int Seed = 3948; // LC problem number
+    private const int Seed = 3948; private int[] _nums = [];
+
+    // LC problem number
 
     [Params(200, 2_000)]
-    public int Length;
-
-    private int[] _nums = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

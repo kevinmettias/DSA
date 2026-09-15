@@ -12,18 +12,9 @@ namespace DSAExperimentation.LeetCode.FindTheShortestSuperstring;
 // outside this problem: it fixes LC 943's own "no word is a substring of another"
 // premise and its assemble-by-dropping-the-overlap rule, the same reason
 // CountWaysToBuildRoomsInAnAntColony keeps its two algebras in its own folder.
-internal sealed class WordOverlaps
+internal sealed class WordOverlaps(string[] words, int[,] overlap)
 {
-    private readonly string[] _words;
-    private readonly int[,] _overlap;
-
-    private WordOverlaps(string[] words, int[,] overlap)
-    {
-        _words = words;
-        _overlap = overlap;
-    }
-
-    public int Count => _words.Length;
+    public int Count => words.Length;
 
     public static WordOverlaps Build(IReadOnlyList<string> words)
     {
@@ -34,16 +25,32 @@ internal sealed class WordOverlaps
         {
             for (var right = 0; right < count; right++)
             {
-                overlap[left, right] = left == right ? 0 : OverlapLength(words[left], words[right]);
+                overlap[left, right] = left == right ? 0 : OverlapLength(new PredecessorWord(words[left]), new SuccessorWord(words[right]));
             }
         }
 
         return new WordOverlaps([.. words], overlap);
     }
 
+    private static int OverlapLength(PredecessorWord predecessor, SuccessorWord successor)
+    {
+        var longest = Math.Min(predecessor.Text.Length, successor.Text.Length);
+
+        for (var length = longest; length > 0; length--)
+        {
+            var successorPrefix = successor.Text.AsSpan(0, length);
+            if (predecessor.Text.AsSpan(predecessor.Text.Length - length).SequenceEqual(successorPrefix))
+            {
+                return length;
+            }
+        }
+
+        return 0;
+    }
+
     // How many characters of the word at `right` are already spelled by the tail of
     // the word at `left`.
-    public int Between(int left, int right) => _overlap[left, right];
+    public int Between(int left, int right) => overlap[left, right];
 
     // Concatenate the words in the given order, dropping from each the prefix its
     // predecessor already ends with. This is the answer LeetCode asks for.
@@ -54,28 +61,13 @@ internal sealed class WordOverlaps
             return string.Empty;
         }
 
-        var superstring = _words[order[0]];
+        var superstring = words[order[0]];
 
         for (var i = 1; i < order.Length; i++)
         {
-            superstring += _words[order[i]][_overlap[order[i - 1], order[i]]..];
+            superstring += words[order[i]][overlap[order[i - 1], order[i]]..];
         }
 
         return superstring;
-    }
-
-    private static int OverlapLength(string left, string right)
-    {
-        var longest = Math.Min(left.Length, right.Length);
-
-        for (var length = longest; length > 0; length--)
-        {
-            if (left.AsSpan(left.Length - length).SequenceEqual(right.AsSpan(0, length)))
-            {
-                return length;
-            }
-        }
-
-        return 0;
     }
 }

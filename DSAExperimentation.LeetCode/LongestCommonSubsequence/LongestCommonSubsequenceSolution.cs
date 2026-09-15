@@ -26,8 +26,9 @@ internal static class LongestCommonSubsequenceSolution
         {
             for (var j = text2.Length - 1; j >= 0; j--)
             {
-                lcs[i, j] = text1[i] == text2[j]
-                    ? 1 + lcs[i + 1, j + 1]
+                var charactersMatch = text1[i] == text2[j];
+                lcs[i, j] = charactersMatch
+                    ? MatchedLcs(lcs, i, j)
                     : Math.Max(lcs[i + 1, j], lcs[i, j + 1]);
             }
         }
@@ -35,14 +36,27 @@ internal static class LongestCommonSubsequenceSolution
         return lcs[0, 0];
     }
 
+    // The characters match, so both cursors advance and the shared subsequence is the
+    // next suffix pair's, one character longer.
+    private static int MatchedLcs(int[,] lcs, int i, int j) => 1 + lcs[i + 1, j + 1];
+
     // The same recurrence run top-down, with this repo's own Memoizer<TState,TResult>
     // caching each (i, j) suffix pair - so only the states actually reachable from
     // (0, 0) are ever evaluated, rather than the whole table.
     public static int LengthByMemoizedSuffixPairDp(string text1, string text2)
     {
-        return Memoizer.Memoize<(int First, int Second), int>((0, 0), LcsFrom);
+        var recurrence = new SharedSubsequenceLength(text1, text2);
 
-        int LcsFrom((int First, int Second) state, Func<(int First, int Second), int> lcs)
+        return Memoizer.Memoize<(int First, int Second), int>((0, 0), recurrence);
+    }
+
+    // The recurrence, named: matching leading characters advance both cursors, and
+    // otherwise the better of dropping a character from either string wins.
+    private sealed class SharedSubsequenceLength(string text1, string text2)
+        : IRecurrence<(int First, int Second), int>
+    {
+        /// <inheritdoc/>
+        public int Replay((int First, int Second) state, IRecurrence<(int First, int Second), int> rest)
         {
             var (i, j) = state;
 
@@ -53,10 +67,13 @@ internal static class LongestCommonSubsequenceSolution
 
             if (text1[i] == text2[j])
             {
-                return 1 + lcs((i + 1, j + 1));
+                return 1 + rest.Replay((i + 1, j + 1), rest);
             }
 
-            return Math.Max(lcs((i + 1, j)), lcs((i, j + 1)));
+            var skipFromFirst = rest.Replay((i + 1, j), rest);
+            var skipFromSecond = rest.Replay((i, j + 1), rest);
+
+            return Math.Max(skipFromFirst, skipFromSecond);
         }
     }
 }

@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.IntegerReplacement.IntegerReplacementSolution;
+using DSAExperimentation.LeetCode.IntegerReplacement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -15,11 +15,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class IntegerReplacementBenchmarks
 {
     [Params(21_845, 1_431_655_765)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => MinStepsByUnmemoizedRecursion(N);
+    public int UnmemoizedRecursion() => IntegerReplacementSolution.MinStepsByUnmemoizedRecursion(N);
 
     [Benchmark]
-    public int MemoizedRecurrence() => MinStepsByMemoizedRecurrence(N);
+    public int MemoizedRecurrence() => IntegerReplacementSolution.MinStepsByMemoizedRecurrence(N);
 }

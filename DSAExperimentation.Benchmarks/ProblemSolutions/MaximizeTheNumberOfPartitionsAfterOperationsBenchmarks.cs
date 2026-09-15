@@ -16,10 +16,10 @@ public class MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks
     private const int K = 3;
     private const int Seed = 3003;
 
-    [Params(100, 400)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(100, 400)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

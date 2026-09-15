@@ -17,7 +17,8 @@ internal static class SurroundedRegionsWorkloads
 
             for (var col = 0; col < size; col++)
             {
-                board[row][col] = random.Next(2) == 0 ? 'O' : 'X';
+                var isOpen = random.Next(2) == 0;
+                board[row][col] = isOpen ? 'O' : 'X';
             }
         }
 

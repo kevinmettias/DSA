@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignTwitter.DesignTwitterSolution;
+using DSAExperimentation.LeetCode.DesignTwitter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -20,10 +20,10 @@ public class DesignTwitterBenchmarks
     private const int TweetsPerSource = 20;
     private const int RandomSeed = 13;
 
-    [Params(50, 500)]
-    public int FollowedUsers;
+    private List<Action<DesignTwitterSolution.ITwitterStrategy>> _script = new();
 
-    private List<Action<ITwitterStrategy>> _script = null!;
+    [Params(50, 500)]
+    public int FollowedUsers { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -32,28 +32,9 @@ public class DesignTwitterBenchmarks
         _script = BuildScript(FollowedUsers, random);
     }
 
-    [Benchmark(Baseline = true)]
-    public int GatherAllAndSort() => Replay(new TwitterByGatherAllAndSort());
-
-    [Benchmark]
-    public int HeapKWayMerge() => Replay(new TwitterByHeapKWayMerge());
-
-    // Sums the returned feed's tweetIds rather than discarding them, so the JIT
-    // can't eliminate the replay as dead code - the same "return the real answer,
-    // not a weaker proxy" shape DesignAuctionSystemBenchmarks already follows.
-    private int Replay(ITwitterStrategy strategy)
+    private static List<Action<DesignTwitterSolution.ITwitterStrategy>> BuildScript(int followedUsers, Random random)
     {
-        foreach (var op in _script)
-        {
-            op(strategy);
-        }
-
-        return strategy.GetNewsFeed(SelfUserId).Sum();
-    }
-
-    private static List<Action<ITwitterStrategy>> BuildScript(int followedUsers, Random random)
-    {
-        var script = new List<Action<ITwitterStrategy>>();
+        var script = new List<Action<DesignTwitterSolution.ITwitterStrategy>>();
 
         for (var followeeId = 1; followeeId <= followedUsers; followeeId++)
         {
@@ -71,5 +52,24 @@ public class DesignTwitterBenchmarks
         }
 
         return script;
+    }
+
+    [Benchmark(Baseline = true)]
+    public int GatherAllAndSort() => Replay(new DesignTwitterSolution.TwitterByGatherAllAndSort());
+
+    [Benchmark]
+    public int HeapKWayMerge() => Replay(new DesignTwitterSolution.TwitterByHeapKWayMerge());
+
+    // Sums the returned feed's tweetIds rather than discarding them, so the JIT
+    // can't eliminate the replay as dead code - the same "return the real answer,
+    // not a weaker proxy" shape DesignAuctionSystemBenchmarks already follows.
+    private int Replay(DesignTwitterSolution.ITwitterStrategy strategy)
+    {
+        foreach (var op in _script)
+        {
+            op(strategy);
+        }
+
+        return strategy.GetNewsFeed(SelfUserId).Sum();
     }
 }

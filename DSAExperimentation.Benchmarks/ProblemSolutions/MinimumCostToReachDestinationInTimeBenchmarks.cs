@@ -22,12 +22,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumCostToReachDestinationInTimeBenchmarks
 {
-    [Params(10, 14)]
-    public int N;
-
     private RoadNetwork _roads = null!;
+
     private TimeCityGraph _graph = null!;
     private int _maxTime;
+    [Params(10, 14)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -42,25 +42,6 @@ internal static class KthSmallestInstructionsSolution
         return paths[(int)k - 1];
     }
 
-    private static void Generate(string prefix, int remainingV, int remainingH, List<string> paths)
-    {
-        if (remainingV == 0 && remainingH == 0)
-        {
-            paths.Add(prefix);
-            return;
-        }
-
-        if (remainingH > 0)
-        {
-            Generate(prefix + Horizontal, remainingV, remainingH - 1, paths);
-        }
-
-        if (remainingV > 0)
-        {
-            Generate(prefix + Vertical, remainingV - 1, remainingH, paths);
-        }
-    }
-
     // This repo's own Memoizer caches the binomial counts, so each of the v + h
     // characters is decided in O(v * h) cached states instead of enumerating
     // C(v+h, v) whole strings.
@@ -93,7 +74,8 @@ internal static class KthSmallestInstructionsSolution
             return state with { RemainingH = state.RemainingH - 1 };
         }
 
-        var waysIfH = Memoizer.Memoize<(int V, int H), long>((state.RemainingV, state.RemainingH - 1), Ways);
+        var waysIfH = Memoizer.Memoize<(int V, int H), long>(
+            (state.RemainingV, state.RemainingH - 1), new RoutesFromStepsLeft());
 
         if (state.K <= waysIfH)
         {
@@ -105,11 +87,43 @@ internal static class KthSmallestInstructionsSolution
         return state with { RemainingV = state.RemainingV - 1, K = state.K - waysIfH };
     }
 
-    private static long Ways((int V, int H) state, Func<(int V, int H), long> ways)
+    private static void Generate(string prefix, int remainingV, int remainingH, List<string> paths)
     {
-        var (v, h) = state;
-        return v == 0 || h == 0 ? 1 : ways((v - 1, h)) + ways((v, h - 1));
+        if (remainingV == 0 && remainingH == 0)
+        {
+            paths.Add(prefix);
+            return;
+        }
+
+        if (remainingH > 0)
+        {
+            Generate(prefix + Horizontal, remainingV, remainingH - 1, paths);
+        }
+
+        if (remainingV > 0)
+        {
+            Generate(prefix + Vertical, remainingV - 1, remainingH, paths);
+        }
     }
 
     private readonly record struct GreedyState(int RemainingV, int RemainingH, long K);
+
+    // The route-count rule, named: ways(v, h) = ways(v - 1, h) + ways(v, h - 1) - the
+    // routes split on whether the next step is the horizontal one or the vertical one,
+    // and one step left on either axis leaves exactly one route.
+    private sealed class RoutesFromStepsLeft : IRecurrence<(int V, int H), long>
+    {
+        /// <inheritdoc/>
+        public long Replay((int V, int H) state, IRecurrence<(int V, int H), long> rest)
+        {
+            var (v, h) = state;
+
+            if (v == 0 || h == 0)
+            {
+                return 1;
+            }
+
+            return rest.Replay((v - 1, h), rest) + rest.Replay((v, h - 1), rest);
+        }
+    }
 }

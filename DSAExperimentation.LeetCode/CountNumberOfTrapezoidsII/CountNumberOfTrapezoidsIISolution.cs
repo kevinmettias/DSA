@@ -30,14 +30,26 @@ internal static class CountNumberOfTrapezoidsIISolution
             {
                 for (var c = b + 1; c < n; c++)
                 {
-                    for (var d = c + 1; d < n; d++)
-                    {
-                        if (HasParallelSidePair(points[a], points[b], points[c], points[d]))
-                        {
-                            count++;
-                        }
-                    }
+                    count += CountTrapezoidsWithFirstThree(points, a, b, c);
                 }
+            }
+        }
+
+        return count;
+    }
+
+    // The fourth point d > c of a 4-point combination: the split is a trapezoid
+    // when one of its three pairings gives two parallel, non-collinear sides.
+    // Lifted out of the brute-force scan above, which is then only three loops deep.
+    private static int CountTrapezoidsWithFirstThree(int[][] points, int a, int b, int c)
+    {
+        var count = 0;
+
+        for (var d = c + 1; d < points.Length; d++)
+        {
+            if (HasParallelSidePair(points[a], points[b], points[c], points[d]))
+            {
+                count++;
             }
         }
 
@@ -83,47 +95,61 @@ internal static class CountNumberOfTrapezoidsIISolution
     // halving that count removes the duplicate.
     public static int CountTrapezoidsByParallelSegmentCounting(int[][] points)
     {
-        var lookupSlope = new HashMap<(int A, int B), int>();
-        var lookupLine = new HashMap<(int A, int B, int C), int>();
-        var lookupSlopeLength = new HashMap<(int A, int B, int Length), int>();
-        var lookupLineLength = new HashMap<(int A, int B, int C, int Length), int>();
+        var lookups = (
+            LookupSlope: new HashMap<(int A, int B), int>(),
+            LookupLine: new HashMap<(int A, int B, int C), int>(),
+            LookupSlopeLength: new HashMap<(int A, int B, int Length), int>(),
+            LookupLineLength: new HashMap<(int A, int B, int C, int Length), int>());
+
         var result = 0L;
         var same = 0L;
 
         for (var i = 0; i < points.Length; i++)
         {
-            var (x1, y1) = (points[i][0], points[i][1]);
-
             for (var j = 0; j < i; j++)
             {
-                var (x2, y2) = (points[j][0], points[j][1]);
-                var (dx, dy) = (x2 - x1, y2 - y1);
-                var gcd = Gcd(dx, dy);
-                var (a, b) = (dx / gcd, dy / gcd);
-
-                if (a < 0 || (a == 0 && b < 0))
-                {
-                    (a, b) = (-a, -b);
-                }
-
-                var c = b * x1 - a * y1;
-                var length = dx * dx + dy * dy;
-
-                result += CountThenIncrement(lookupSlope, (a, b)) - CountThenIncrement(lookupLine, (a, b, c));
-                same += CountThenIncrement(lookupSlopeLength, (a, b, length)) -
-                    CountThenIncrement(lookupLineLength, (a, b, c, length));
+                var (counted, duplicate) = CountPair(points, i, j, lookups);
+                result += counted;
+                same += duplicate;
             }
         }
 
         return (int)(result - same / 2);
     }
 
-    private static int CountThenIncrement<TKey>(HashMap<TKey, int> lookup, TKey key)
+    // One ordered pair of points (j, i): canonicalize the segment's direction and
+    // length into the four lookup keys, then report the two running counts this pair
+    // moves - `Counted` for "same slope, a different line", `Duplicate` for the
+    // parallelogram tally that is halved once the scan ends.
+    private static (long Counted, long Duplicate) CountPair(
+        int[][] points,
+        int i,
+        int j,
+        (HashMap<(int A, int B), int> LookupSlope,
+            HashMap<(int A, int B, int C), int> LookupLine,
+            HashMap<(int A, int B, int Length), int> LookupSlopeLength,
+            HashMap<(int A, int B, int C, int Length), int> LookupLineLength) lookups)
     {
-        lookup.TryGetValue(key, out var count);
-        lookup.Set(key, count + 1);
+        var first = (X: points[i][0], Y: points[i][1]);
+        var second = (X: points[j][0], Y: points[j][1]);
+        var dx = second.X - first.X;
+        var dy = second.Y - first.Y;
+        var gcd = Gcd(dx, dy);
+        var (a, b) = (dx / gcd, dy / gcd);
 
-        return count;
+        if (IsInOppositeHalfPlane(a, b))
+        {
+            (a, b) = (-a, -b);
+        }
+
+        var c = b * first.X - a * first.Y;
+        var length = dx * dx + dy * dy;
+
+        var counted = CountThenIncrement(lookups.LookupSlope, (a, b)) - CountThenIncrement(lookups.LookupLine, (a, b, c));
+        var duplicate = CountThenIncrement(lookups.LookupSlopeLength, (a, b, length)) -
+            CountThenIncrement(lookups.LookupLineLength, (a, b, c, length));
+
+        return (counted, duplicate);
     }
 
     private static int Gcd(int a, int b)
@@ -134,5 +160,19 @@ internal static class CountNumberOfTrapezoidsIISolution
         }
 
         return Math.Abs(a);
+    }
+
+    // Canonical directions point the positive-x way: a > 0, or a == 0 with
+    // b > 0. A direction in the opposite half is negated to match, so the two
+    // orientations of one slope collapse onto a single key.
+    private static bool IsInOppositeHalfPlane(int a, int b)
+        => a < 0 || (a == 0 && b < 0);
+
+    private static int CountThenIncrement<TKey>(HashMap<TKey, int> lookup, TKey key)
+    {
+        lookup.TryGetValue(key, out var count);
+        lookup.Set(key, count + 1);
+
+        return count;
     }
 }

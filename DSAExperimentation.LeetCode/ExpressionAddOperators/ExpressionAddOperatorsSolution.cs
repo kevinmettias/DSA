@@ -17,66 +17,8 @@ internal static class ExpressionAddOperatorsSolution
     public static List<string> AddOperatorsByBacktracking(string num, int target)
     {
         var results = new List<string>();
-        Backtrack(num, target, 0, 0, 0, string.Empty, results);
+        Backtrack(new ExprProblem(num, target), new ExprState(0, 0, 0, string.Empty), results);
         return results;
-    }
-
-    private static void Backtrack(
-        string num, int target, int position, long value, long lastOperand, string expression, List<string> results)
-    {
-        if (position == num.Length)
-        {
-            if (value == target)
-            {
-                results.Add(expression);
-            }
-
-            return;
-        }
-
-        for (var length = 1; position + length <= num.Length; length++)
-        {
-            var operand = num.Substring(position, length);
-            if (length > 1 && operand[0] == '0')
-            {
-                // A longer operand starting here would carry the same leading zero.
-                break;
-            }
-
-            BacktrackForOperand(num, target, position, value, lastOperand, expression, operand, results);
-        }
-    }
-
-    private static void BacktrackForOperand(
-        string num,
-        int target,
-        int position,
-        long value,
-        long lastOperand,
-        string expression,
-        string operand,
-        List<string> results)
-    {
-        var operandValue = long.Parse(operand);
-        var nextPosition = position + operand.Length;
-
-        if (position == 0)
-        {
-            // The first operand has no operator in front of it.
-            Backtrack(num, target, nextPosition, operandValue, operandValue, operand, results);
-            return;
-        }
-
-        Backtrack(num, target, nextPosition, value + operandValue, operandValue, expression + "+" + operand, results);
-        Backtrack(num, target, nextPosition, value - operandValue, -operandValue, expression + "-" + operand, results);
-        Backtrack(
-            num,
-            target,
-            nextPosition,
-            value - lastOperand + (lastOperand * operandValue),
-            lastOperand * operandValue,
-            expression + "*" + operand,
-            results);
     }
 
     // DepthFirstSearch.Traverse (Algorithms.Traversal.DepthFirst) is already "collect
@@ -130,17 +72,74 @@ internal static class ExpressionAddOperatorsSolution
             yield break;
         }
 
-        yield return new ExprState(nextPosition, state.Value + operandValue, operandValue, state.Expression + "+" + operand);
-        yield return new ExprState(nextPosition, state.Value - operandValue, -operandValue, state.Expression + "-" + operand);
+        yield return new ExprState(nextPosition, state.Value + operandValue, operandValue, $"{state.Expression}+{operand}");
+        yield return new ExprState(nextPosition, state.Value - operandValue, -operandValue, $"{state.Expression}-{operand}");
         yield return new ExprState(
             nextPosition,
             state.Value - state.LastOperand + (state.LastOperand * operandValue),
             state.LastOperand * operandValue,
-            state.Expression + "*" + operand);
+            $"{state.Expression}*{operand}");
+    }
+
+    private static void Backtrack(ExprProblem problem, ExprState state, List<string> results)
+    {
+        if (state.Position == problem.Num.Length)
+        {
+            if (state.Value == problem.Target)
+            {
+                results.Add(state.Expression);
+            }
+
+            return;
+        }
+
+        for (var length = 1; state.Position + length <= problem.Num.Length; length++)
+        {
+            var operand = problem.Num.Substring(state.Position, length);
+            if (length > 1 && operand[0] == '0')
+            {
+                // A longer operand starting here would carry the same leading zero.
+                break;
+            }
+
+            BacktrackForOperand(problem, state, operand, results);
+        }
+    }
+
+    private static void BacktrackForOperand(
+        ExprProblem problem, ExprState state, string operand, List<string> results)
+    {
+        var operandValue = long.Parse(operand);
+        var nextPosition = state.Position + operand.Length;
+
+        if (state.Position == 0)
+        {
+            // The first operand has no operator in front of it.
+            Backtrack(problem, new ExprState(nextPosition, operandValue, operandValue, operand), results);
+            return;
+        }
+
+        Backtrack(problem, new ExprState(
+            nextPosition, state.Value + operandValue, operandValue, $"{state.Expression}+{operand}"), results);
+        Backtrack(problem, new ExprState(
+            nextPosition, state.Value - operandValue, -operandValue, $"{state.Expression}-{operand}"), results);
+        Backtrack(
+            problem,
+            new ExprState(
+                nextPosition,
+                state.Value - state.LastOperand + (state.LastOperand * operandValue),
+                state.LastOperand * operandValue,
+                $"{state.Expression}*{operand}"),
+            results);
     }
 
     // Expression carries the full path so far: it guarantees every node is distinct,
     // so Traverse's visited-set guard never merges two different operand/operator
     // choices and this stays a true full enumeration.
     private readonly record struct ExprState(int Position, long Value, long LastOperand, string Expression);
+
+    // The two values that never change as the search descends - the digit string being
+    // split and the value the expression has to reach. ExprState above is where the
+    // search currently stands; this is the problem it is walking.
+    private readonly record struct ExprProblem(string Num, int Target);
 }

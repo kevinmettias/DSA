@@ -16,13 +16,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MultiplyStringsBenchmarks
 {
     private const int DecimalBase = 10;
-    private const int LeadingDigitRange = 9; // random.Next(9) => 1..9, avoiding a leading zero
+    private const int LeadingDigitRange = 9; private string _num1 = "";
+
+    private string _num2 = "";
+    // random.Next(9) => 1..9, avoiding a leading zero
 
     [Params(5, 9)]
-    public int Digits;
-
-    private string _num1 = null!;
-    private string _num2 = null!;
+    public int Digits { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,12 +31,6 @@ public class MultiplyStringsBenchmarks
         _num1 = GenerateDigits(random, Digits);
         _num2 = GenerateDigits(random, Digits);
     }
-
-    [Benchmark(Baseline = true)]
-    public string LongConversion() => MultiplyStringsSolution.MultiplyByLongConversion(_num1, _num2);
-
-    [Benchmark]
-    public string StackDigitByDigit() => MultiplyStringsSolution.MultiplyByDigitStack(_num1, _num2);
 
     private static string GenerateDigits(Random random, int digits)
     {
@@ -50,4 +44,10 @@ public class MultiplyStringsBenchmarks
 
         return new string(chars);
     }
+
+    [Benchmark(Baseline = true)]
+    public string LongConversion() => MultiplyStringsSolution.MultiplyByLongConversion(_num1, _num2);
+
+    [Benchmark]
+    public string StackDigitByDigit() => MultiplyStringsSolution.MultiplyByDigitStack(_num1, _num2);
 }

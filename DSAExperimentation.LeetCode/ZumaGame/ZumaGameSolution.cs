@@ -18,10 +18,105 @@ internal static class ZumaGameSolution
     // many balls as the best solution found so far". Deliberately written without
     // this repo's primitives - it is the arm the BFS strategy below has to justify
     // itself against.
-    public static int FindMinStepByBruteForceDfs(string board, string hand)
+    public static int FindMinStepByBruteForceDfs(BallBoard board, BallHand hand)
     {
-        var best = SearchMinSteps(new DfsSearchState(board, hand, 0, int.MaxValue));
+        var best = SearchMinSteps(new DfsSearchState(board.Text, hand.Text, 0, int.MaxValue));
         return best == int.MaxValue ? LeetCodeAnswer.None : best;
+    }
+
+    // This repo's own Queue<string> (BFS frontier) + Set<string> (visited-state
+    // dedup) searching level by level, so the first level whose board empties out
+    // holds the minimum number of balls needed - the exact
+    // RemoveInvalidParentheses/LC301 shape.
+    public static int FindMinStepByQueueBfsDedup(BallBoard board, BallHand hand)
+    {
+        var (visited, queue) = InitializeSearch(board, hand);
+
+        return RunLevelOrderSearch(queue, visited);
+    }
+
+    private static (Set<string> Visited, RepoQueue Queue) InitializeSearch(BallBoard board, BallHand hand)
+    {
+        var visited = new Set<string>();
+        var queue = new RepoQueue();
+        var start = board.Text + StateSeparator + SortChars(hand.Text);
+        visited.TryAdd(start);
+        queue.Enqueue(start);
+
+        return (visited, queue);
+    }
+
+    private static string SortChars(string s)
+    {
+        var chars = s.ToCharArray();
+        Array.Sort(chars);
+        return new string(chars);
+    }
+
+    private static int RunLevelOrderSearch(RepoQueue queue, Set<string> visited)
+    {
+        var moves = 0;
+
+        while (queue.Count > 0)
+        {
+            var levelSize = queue.Count;
+
+            for (var i = 0; i < levelSize; i++)
+            {
+                if (ProcessNextState(queue, visited))
+                {
+                    return moves;
+                }
+            }
+
+            moves++;
+        }
+
+        return LeetCodeAnswer.None;
+    }
+
+    // Dequeues one (board, remaining-hand) state; returns true when the board is
+    // already empty (the search is done), otherwise expands it into every reachable
+    // next state and enqueues the not-yet-visited ones.
+    private static bool ProcessNextState(RepoQueue queue, Set<string> visited)
+    {
+        queue.TryDequeue(out var state);
+        var separator = state.IndexOf(StateSeparator);
+        var currentBoard = new BallBoard(state[..separator]);
+        var currentHand = new BallHand(state[(separator + 1)..]);
+
+        if (currentBoard.Text.Length == 0)
+        {
+            return true;
+        }
+
+        ExpandState(currentBoard, currentHand, queue, visited);
+        return false;
+    }
+
+    private static void ExpandState(
+        BallBoard currentBoard, BallHand currentHand, RepoQueue queue, Set<string> visited)
+    {
+        for (var pos = 0; pos <= currentBoard.Text.Length; pos++)
+        {
+            for (var h = 0; h < currentHand.Text.Length; h++)
+            {
+                if (h > 0 && currentHand.Text[h] == currentHand.Text[h - 1])
+                {
+                    continue;
+                }
+
+                var placed = currentBoard.Text.Insert(pos, currentHand.Text[h].ToString());
+                var nextBoard = Collapse(placed);
+                var nextHand = currentHand.Text.Remove(h, 1);
+                var next = nextBoard + StateSeparator + nextHand;
+
+                if (visited.TryAdd(next))
+                {
+                    queue.Enqueue(next);
+                }
+            }
+        }
     }
 
     private static int SearchMinSteps(DfsSearchState state)
@@ -57,104 +152,9 @@ internal static class ZumaGameSolution
         return SearchMinSteps(state with { Board = nextBoard, Hand = nextHand, Used = state.Used + 1 });
     }
 
-    private readonly record struct DfsSearchState(string Board, string Hand, int Used, int Best);
-
-    // This repo's own Queue<string> (BFS frontier) + Set<string> (visited-state
-    // dedup) searching level by level, so the first level whose board empties out
-    // holds the minimum number of balls needed - the exact
-    // RemoveInvalidParentheses/LC301 shape.
-    public static int FindMinStepByQueueBfsDedup(string board, string hand)
-    {
-        var (visited, queue) = InitializeSearch(board, hand);
-
-        return RunLevelOrderSearch(queue, visited);
-    }
-
-    private static (Set<string> Visited, RepoQueue Queue) InitializeSearch(string board, string hand)
-    {
-        var visited = new Set<string>();
-        var queue = new RepoQueue();
-        var start = board + StateSeparator + SortChars(hand);
-        visited.TryAdd(start);
-        queue.Enqueue(start);
-
-        return (visited, queue);
-    }
-
-    private static int RunLevelOrderSearch(RepoQueue queue, Set<string> visited)
-    {
-        var moves = 0;
-
-        while (queue.Count > 0)
-        {
-            var levelSize = queue.Count;
-
-            for (var i = 0; i < levelSize; i++)
-            {
-                if (ProcessNextState(queue, visited))
-                {
-                    return moves;
-                }
-            }
-
-            moves++;
-        }
-
-        return LeetCodeAnswer.None;
-    }
-
-    // Dequeues one (board, remaining-hand) state; returns true when the board is
-    // already empty (the search is done), otherwise expands it into every reachable
-    // next state and enqueues the not-yet-visited ones.
-    private static bool ProcessNextState(RepoQueue queue, Set<string> visited)
-    {
-        queue.TryDequeue(out var state);
-        var separator = state.IndexOf(StateSeparator);
-        var currentBoard = state[..separator];
-        var currentHand = state[(separator + 1)..];
-
-        if (currentBoard.Length == 0)
-        {
-            return true;
-        }
-
-        ExpandState(currentBoard, currentHand, queue, visited);
-        return false;
-    }
-
-    private static void ExpandState(string currentBoard, string currentHand, RepoQueue queue, Set<string> visited)
-    {
-        for (var pos = 0; pos <= currentBoard.Length; pos++)
-        {
-            for (var h = 0; h < currentHand.Length; h++)
-            {
-                if (h > 0 && currentHand[h] == currentHand[h - 1])
-                {
-                    continue;
-                }
-
-                var placed = currentBoard.Insert(pos, currentHand[h].ToString());
-                var nextBoard = Collapse(placed);
-                var nextHand = currentHand.Remove(h, 1);
-                var next = nextBoard + StateSeparator + nextHand;
-
-                if (visited.TryAdd(next))
-                {
-                    queue.Enqueue(next);
-                }
-            }
-        }
-    }
-
-    private static string SortChars(string s)
-    {
-        var chars = s.ToCharArray();
-        Array.Sort(chars);
-        return new string(chars);
-    }
-
     private static string Collapse(string board)
     {
+        // Stops at the first cascade pass that changes nothing: no run of 3+ remains and the stable board is returned.
         while (true)
         {
             var next = CollapseOnePass(board);
@@ -192,4 +192,6 @@ internal static class ZumaGameSolution
 
         return builder.ToString();
     }
+
+    private readonly record struct DfsSearchState(string Board, string Hand, int Used, int Best);
 }

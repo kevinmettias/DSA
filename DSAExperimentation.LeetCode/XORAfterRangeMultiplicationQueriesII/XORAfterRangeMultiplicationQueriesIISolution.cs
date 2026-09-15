@@ -52,53 +52,94 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
         var threshold = (int)Math.Sqrt(n) + 1;
         var buckets = new Dictionary<(int Stride, int Residue), long[]>();
 
+        ApplyQueries(values, queries, buckets, threshold);
+        SweepBuckets(values, buckets);
+
+        return XorAll(values);
+    }
+
+    // Sends every query to the arm its stride selects: one above the threshold walks
+    // directly, since it touches at most n/k <= threshold indices; a smaller one is
+    // marked into the difference array of its (stride, residue) bucket instead.
+    private static void ApplyQueries(
+        long[] values, int[][] queries, Dictionary<(int Stride, int Residue), long[]> buckets, int threshold)
+    {
+        var n = values.Length;
+
         foreach (var query in queries)
         {
             var (l, r, k, v) = (query[0], query[1], query[2], query[3]);
 
             if (k > threshold)
             {
-                for (var idx = l; idx <= r; idx += k)
-                {
-                    values[idx] = values[idx] * v % ModularArithmetic.Modulo;
-                }
-
+                ApplyStridedWalk(values, (L: l, R: r, K: k, V: v));
                 continue;
             }
 
-            MarkBucket(buckets, n, l, r, k, v);
+            MarkBucket(buckets, n, (L: l, R: r, K: k, V: v));
         }
+    }
 
+    // Multiplies every k-th index in [l, r] by v - Part I's strided walk, used here only
+    // for the strides large enough to make it cheap.
+    private static void ApplyStridedWalk(long[] values, (int L, int R, int K, int V) query)
+    {
+        for (var idx = query.L; idx <= query.R; idx += query.K)
+        {
+            values[idx] = values[idx] * query.V % ModularArithmetic.Modulo;
+        }
+    }
+
+    // Applies every bucket's multiplicative difference array to the values it covers.
+    private static void SweepBuckets(long[] values, Dictionary<(int Stride, int Residue), long[]> buckets)
+    {
         foreach (var ((stride, residue), diff) in buckets)
         {
             SweepBucket(values, diff, stride, residue);
         }
+    }
 
-        return XorAll(values);
+    // l, r, k and v are the query itself - the same four values LeetCode hands over
+    // together and the same four the walk arm above unpacks - so they arrive as that
+    // one query rather than as four independent ints. n is not part of the query: it
+    // is the array length the bucket's compressed coordinates are sized against.
+    private static void MarkBucket(
+        Dictionary<(int, int), long[]> buckets, int n, (int L, int R, int K, int V) query)
+    {
+        var residue = query.L % query.K;
+        var diff = ResolveBucket(buckets, n, query.K, residue);
+
+        MarkQueryRange(diff, query, residue);
     }
 
     // A bucket's diff array has one slot per compressed position (0..bucketLength -
     // 1) plus one trailing sentinel slot, so a cancel mark at posR + 1 always lands
-    // in bounds even when posR is the bucket's last position.
-    private static void MarkBucket(
-        Dictionary<(int, int), long[]> buckets, int n, int l, int r, int k, int v)
+    // in bounds even when posR is the bucket's last position. A bucket is created the
+    // first time a query lands in it, filled at the multiplicative identity.
+    private static long[] ResolveBucket(
+        Dictionary<(int, int), long[]> buckets, int n, int stride, int residue)
     {
-        var residue = l % k;
-        var key = (k, residue);
-
-        if (!buckets.TryGetValue(key, out var diff))
+        if (!buckets.TryGetValue((stride, residue), out var diff))
         {
-            var bucketLength = (n - residue + k - 1) / k;
+            var bucketLength = (n - residue + stride - 1) / stride;
             diff = new long[bucketLength + 1];
             Array.Fill(diff, 1L);
-            buckets[key] = diff;
+            buckets[(stride, residue)] = diff;
         }
 
-        var posL = (l - residue) / k;
-        var posR = (r - residue) / k;
+        return diff;
+    }
 
-        diff[posL] = diff[posL] * v % ModularArithmetic.Modulo;
-        diff[posR + 1] = diff[posR + 1] * ModularArithmetic.Inverse(v) % ModularArithmetic.Modulo;
+    // The query's own two multiplicative marks in its bucket's diff array: one at L's
+    // compressed position carrying v, and a cancelling one just past R's carrying v's
+    // modular inverse, so the mark's effect stops at R.
+    private static void MarkQueryRange(long[] diff, (int L, int R, int K, int V) query, int residue)
+    {
+        var posL = (query.L - residue) / query.K;
+        var posR = (query.R - residue) / query.K;
+
+        diff[posL] = diff[posL] * query.V % ModularArithmetic.Modulo;
+        diff[posR + 1] = diff[posR + 1] * ModularArithmetic.Inverse(query.V) % ModularArithmetic.Modulo;
     }
 
     private static void SweepBucket(long[] values, long[] diff, int stride, int residue)

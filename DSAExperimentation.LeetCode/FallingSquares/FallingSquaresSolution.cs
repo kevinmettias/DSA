@@ -39,7 +39,7 @@ internal static class FallingSquaresSolution
             var otherLeft = positions[j][0];
             var otherRight = otherLeft + positions[j][1];
 
-            if (left < otherRight && otherLeft < right && heights[j] > heightBelow)
+            if (FootprintsOverlap(left, right, otherLeft, otherRight) && heights[j] > heightBelow)
             {
                 heightBelow = heights[j];
             }
@@ -48,6 +48,11 @@ internal static class FallingSquaresSolution
         heights[i] = heightBelow + positions[i][1];
         return Math.Max(overallMax, heights[i]);
     }
+
+    // Two half-open footprints [left, right) share ground when each one starts before the
+    // other ends.
+    private static bool FootprintsOverlap(int left, int right, int otherLeft, int otherRight) =>
+        left < otherRight && otherLeft < right;
 
     // Coordinate-compresses every square's footprint onto a dense leaf-index range,
     // then tracks the current stack height over that range with this repo's own

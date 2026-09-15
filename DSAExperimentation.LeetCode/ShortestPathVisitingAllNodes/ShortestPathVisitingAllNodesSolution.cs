@@ -52,34 +52,34 @@ internal static class ShortestPathVisitingAllNodesSolution
     {
         while (queue.Count > 0)
         {
-            var (node, mask, steps) = queue.Dequeue();
+            var state = queue.Dequeue();
 
-            if (mask == fullMask)
+            if (state.Mask == fullMask)
             {
-                return steps;
+                return state.Steps;
             }
 
-            EnqueueNeighborStates(graph, node, mask, steps, queue, visited);
+            EnqueueNeighborStates(graph, state, queue, visited);
         }
 
         return LeetCodeAnswer.None;
     }
 
+    // The (node, mask, steps) triple is the queue's own element type - one state of the
+    // search - so it is handed over whole rather than taken apart and rebuilt here.
     private static void EnqueueNeighborStates(
         int[][] graph,
-        int node,
-        int mask,
-        int steps,
+        (int Node, int Mask, int Steps) state,
         Queue<(int Node, int Mask, int Steps)> queue,
         HashSet<(int Node, int Mask)> visited)
     {
-        foreach (var neighbor in graph[node])
+        foreach (var neighbor in graph[state.Node])
         {
-            var nextMask = mask | (1 << neighbor);
+            var nextMask = state.Mask | (1 << neighbor);
 
             if (visited.Add((neighbor, nextMask)))
             {
-                queue.Enqueue((neighbor, nextMask, steps + 1));
+                queue.Enqueue((neighbor, nextMask, state.Steps + 1));
             }
         }
     }

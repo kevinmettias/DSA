@@ -96,6 +96,17 @@ internal static class MaximumSumQueriesSolution
     private static (int Nums1, int Rank, long Sum)[] BuildPairsDescendingByNums1(
         int[] nums1, int[] nums2, int[] distinctNums2)
     {
+        var pairs = BuildRankedPairs(nums1, nums2, distinctNums2);
+        SortPairsByNums1Descending(pairs);
+
+        return pairs;
+    }
+
+    // Each index as the (nums1, compressed nums2 rank, nums1 + nums2) triple the sweep
+    // admits, before the descending-nums1 order that pass needs.
+    private static (int Nums1, int Rank, long Sum)[] BuildRankedPairs(
+        int[] nums1, int[] nums2, int[] distinctNums2)
+    {
         var pairs = new (int Nums1, int Rank, long Sum)[nums1.Length];
         var ranks = new ArraySequence<int>(distinctNums2);
 
@@ -105,16 +116,29 @@ internal static class MaximumSumQueriesSolution
             pairs[j] = (nums1[j], rank, (long)nums1[j] + nums2[j]);
         }
 
+        return pairs;
+    }
+
+    private static void SortPairsByNums1Descending((int Nums1, int Rank, long Sum)[] pairs)
+    {
         var byNums1Descending = Comparer<(int Nums1, int Rank, long Sum)>.Create((a, b) => b.Nums1.CompareTo(a.Nums1));
         var sequence = new ArrayIndexedSequence<(int Nums1, int Rank, long Sum)>(pairs);
 
         MergeSort.Sort<(int Nums1, int Rank, long Sum), ArrayIndexedSequence<(int Nums1, int Rank, long Sum)>>(
             sequence, byNums1Descending);
-
-        return pairs;
     }
 
     private static (int X, int Y, int OriginalIndex)[] BuildQueriesDescendingByX(int[][] queries)
+    {
+        var sorted = BuildIndexedQueries(queries);
+        SortQueriesByXDescending(sorted);
+
+        return sorted;
+    }
+
+    // Each query as the (x, y, original position) triple, before the descending-x order
+    // the sweep visits them in.
+    private static (int X, int Y, int OriginalIndex)[] BuildIndexedQueries(int[][] queries)
     {
         var sorted = new (int X, int Y, int OriginalIndex)[queries.Length];
 
@@ -123,13 +147,16 @@ internal static class MaximumSumQueriesSolution
             sorted[i] = (queries[i][0], queries[i][1], i);
         }
 
+        return sorted;
+    }
+
+    private static void SortQueriesByXDescending((int X, int Y, int OriginalIndex)[] sorted)
+    {
         var byXDescending = Comparer<(int X, int Y, int OriginalIndex)>.Create((a, b) => b.X.CompareTo(a.X));
         var sequence = new ArrayIndexedSequence<(int X, int Y, int OriginalIndex)>(sorted);
 
         MergeSort.Sort<(int X, int Y, int OriginalIndex), ArrayIndexedSequence<(int X, int Y, int OriginalIndex)>>(
             sequence, byXDescending);
-
-        return sorted;
     }
 
     private static int AdmitPairsUpTo(
@@ -138,7 +165,9 @@ internal static class MaximumSumQueriesSolution
         while (pairIndex < pairs.Length && pairs[pairIndex].Nums1 >= x)
         {
             var (_, rank, sum) = pairs[pairIndex];
-            tree.Update(rank, Math.Max(tree.Query(rank, rank), sum));
+            var current = tree.Query(rank, rank);
+            var updated = Math.Max(current, sum);
+            tree.Update(rank, updated);
             pairIndex++;
         }
 

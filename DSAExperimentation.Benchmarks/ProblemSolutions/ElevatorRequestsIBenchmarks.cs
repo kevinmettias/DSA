@@ -14,11 +14,11 @@ public class ElevatorRequestsIBenchmarks
 {
     private const int Seed = 4020;
 
-    [Params(100, 5_000)]
-    public int RequestCount;
-
     private int _floorCount;
-    private int[] _requests = null!;
+
+    private int[] _requests = [];
+    [Params(100, 5_000)]
+    public int RequestCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

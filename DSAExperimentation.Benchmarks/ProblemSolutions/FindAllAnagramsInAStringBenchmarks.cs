@@ -12,24 +12,24 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindAllAnagramsInAStringBenchmarks
 {
     private const string Pattern = "aeiou";
+    private const string Alphabet = "abcdefghijklmnopqrstuvwxyz";
 
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 438;
 
-    [Params(2_000, 20_000)]
-    public int Length;
+    private string _s = "";
 
-    private string _s = null!;
+    [Params(2_000, 20_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        const string alphabet = "abcdefghijklmnopqrstuvwxyz";
         var chars = new char[Length];
         for (var i = 0; i < Length; i++)
         {
-            chars[i] = alphabet[random.Next(alphabet.Length)];
+            chars[i] = Alphabet[random.Next(Alphabet.Length)];
         }
 
         _s = new string(chars);
@@ -37,9 +37,11 @@ public class FindAllAnagramsInAStringBenchmarks
 
     [Benchmark(Baseline = true)]
     public List<int> PerWindowFrequencyRebuild() =>
-        FindAllAnagramsInAStringSolution.FindAnagramIndicesByBruteForceRebuild(_s, Pattern);
+        FindAllAnagramsInAStringSolution.FindAnagramIndicesByBruteForceRebuild(
+            new ScannedText(_s), new AnagramPattern(Pattern));
 
     [Benchmark]
     public List<int> SlidingWindowFrequencyMap() =>
-        FindAllAnagramsInAStringSolution.FindAnagramIndicesBySlidingWindow(_s, Pattern);
+        FindAllAnagramsInAStringSolution.FindAnagramIndicesBySlidingWindow(
+            new ScannedText(_s), new AnagramPattern(Pattern));
 }

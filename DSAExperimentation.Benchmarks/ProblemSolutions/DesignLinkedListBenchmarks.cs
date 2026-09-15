@@ -20,7 +20,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DesignLinkedListBenchmarks
 {
     [Params(5_000, 50_000)]
-    public int Calls;
+    public int Calls { get; set; }
 
     [Benchmark(Baseline = true)]
     public int ArrayListAddAtHead() => Replay(DesignLinkedListSolution.CreateByArrayList());

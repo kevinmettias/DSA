@@ -32,6 +32,57 @@ internal static class CrackingTheSafeSolution
         return state.Answer.ToString();
     }
 
+    // This repo's generic Backtrack.TrySearch engine, closed over a shared mutable
+    // state carrying the same StringBuilder answer plus a Set<string> of passwords
+    // already covered that the specialized walk above carries as a BCL HashSet.
+    public static string CrackSafeByBacktrackEngine(int n, int k)
+    {
+        var state = new EngineState(n, k);
+        string? answer = null;
+
+        var steps = new BacktrackingSteps<EngineState, int>(
+            IsSolution: s => s.Visited.Count == s.Total,
+            Candidates: CandidateDigits,
+            Choose: ChooseDigit,
+            Unchoose: UnchooseDigit,
+            OnSolution: s =>
+            {
+                answer = s.Answer.ToString();
+                return true;
+            });
+
+        Backtrack.TrySearch(state, steps);
+
+        return answer!;
+    }
+
+    private static void ChooseDigit(EngineState state, int digit)
+    {
+        var nextPassword = NextPassword(state, digit);
+        state.Visited.TryAdd(nextPassword);
+        state.Answer.Append((char)('0' + digit));
+    }
+
+    private static void UnchooseDigit(EngineState state, int digit)
+    {
+        state.Visited.TryRemove(CurrentSuffix(state));
+        state.Answer.Length -= 1;
+    }
+
+    private static string CurrentSuffix(EngineState state) => Suffix(state, state.N);
+
+    private static IEnumerable<int> CandidateDigits(EngineState state)
+    {
+        for (var digit = 0; digit < state.K; digit++)
+        {
+            var nextPassword = NextPassword(state, digit);
+            if (!state.Visited.Has(nextPassword))
+            {
+                yield return digit;
+            }
+        }
+    }
+
     private static bool Search(SpecializedState state)
     {
         if (state.Visited.Count == state.Total)
@@ -70,65 +121,20 @@ internal static class CrackingTheSafeSolution
         return false;
     }
 
-    // This repo's generic Backtrack.TrySearch engine, closed over a shared mutable
-    // state carrying the same StringBuilder answer plus a Set<string> of passwords
-    // already covered that the specialized walk above carries as a BCL HashSet.
-    public static string CrackSafeByBacktrackEngine(int n, int k)
-    {
-        var state = new EngineState(n, k);
-        string? answer = null;
-
-        var steps = new BacktrackingSteps<EngineState, int>(
-            IsSolution: s => s.Visited.Count == s.Total,
-            Candidates: CandidateDigits,
-            Choose: ChooseDigit,
-            Unchoose: UnchooseDigit,
-            OnSolution: s =>
-            {
-                answer = s.Answer.ToString();
-                return true;
-            });
-
-        Backtrack.TrySearch(state, steps);
-
-        return answer!;
-    }
-
-    private static void ChooseDigit(EngineState state, int digit)
-    {
-        var nextPassword = NextPassword(state, digit);
-        state.Visited.TryAdd(nextPassword);
-        state.Answer.Append((char)('0' + digit));
-    }
-
-    private static void UnchooseDigit(EngineState state, int digit)
-    {
-        state.Visited.TryRemove(CurrentSuffix(state));
-        state.Answer.Length -= 1;
-    }
-
-    private static IEnumerable<int> CandidateDigits(EngineState state)
-    {
-        for (var digit = 0; digit < state.K; digit++)
-        {
-            var nextPassword = NextPassword(state, digit);
-            if (!state.Visited.Has(nextPassword))
-            {
-                yield return digit;
-            }
-        }
-    }
-
     private static string NextPassword(EngineState state, int digit) =>
         Suffix(state, state.N - 1) + (char)('0' + digit);
-
-    private static string CurrentSuffix(EngineState state) => Suffix(state, state.N);
 
     private static string Suffix(EngineState state, int length) =>
         state.Answer.ToString(state.Answer.Length - length, length);
 
-    private sealed class EngineState
+    private sealed record EngineState
     {
+        public int N { get; }
+
+        public int K { get; }
+        public int Total { get; }
+        public StringBuilder Answer { get; }
+        public Set<string> Visited { get; }
         public EngineState(int n, int k)
         {
             N = n;
@@ -138,12 +144,6 @@ internal static class CrackingTheSafeSolution
             Visited = new Set<string>();
             Visited.TryAdd(new string('0', n));
         }
-
-        public int N { get; }
-        public int K { get; }
-        public int Total { get; }
-        public StringBuilder Answer { get; }
-        public Set<string> Visited { get; }
     }
 
     private sealed record SpecializedState(int N, int K, StringBuilder Answer, HashSet<string> Visited)

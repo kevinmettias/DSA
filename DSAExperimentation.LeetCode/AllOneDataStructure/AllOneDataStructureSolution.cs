@@ -121,20 +121,45 @@ internal static class AllOneDataStructureSolution
 
         public void Inc(string key)
         {
-            var hasExisting = _keyNode.TryGetValue(key, out var keyEntryNode);
-            keyEntryNode = ResolveIncKeyEntryNode(key, hasExisting, keyEntryNode);
+            var presence = _keyNode.TryGetValue(key, out var keyEntryNode)
+                ? KeyPresence.Present
+                : KeyPresence.Absent;
+            keyEntryNode = ResolveIncKeyEntryNode(key, presence, keyEntryNode);
 
-            var anchor = hasExisting ? keyEntryNode.Value.CurrentBucket! : _head;
-            var newCount = (hasExisting ? anchor.Value.Count : 0) + 1;
+            var anchor = presence == KeyPresence.Present ? CurrentBucketOf(keyEntryNode) : _head;
+            var newCount = (presence == KeyPresence.Present ? anchor.Value.Count : 0) + 1;
 
             var newBucketNode = FindOrInsertIncBucket(anchor, newCount);
 
-            if (hasExisting)
+            if (presence == KeyPresence.Present)
             {
                 DetachFromBucket(anchor, keyEntryNode);
             }
 
             AttachToBucket(key, keyEntryNode, newBucketNode);
+        }
+
+        private static DoublyLinkedListNode<KeyEntry> ResolveIncKeyEntryNode(
+            string key, KeyPresence presence, DoublyLinkedListNode<KeyEntry>? keyEntryNode)
+        {
+            if (presence == KeyPresence.Present)
+            {
+                return keyEntryNode!;
+            }
+
+            return new DoublyLinkedListNode<KeyEntry> { Value = new KeyEntry(key) };
+        }
+
+        // The bucket node the existing key entry currently sits in.
+        private static DoublyLinkedListNode<Bucket> CurrentBucketOf(DoublyLinkedListNode<KeyEntry> keyEntryNode)
+            => keyEntryNode.Value.CurrentBucket!;
+
+        private DoublyLinkedListNode<Bucket> FindOrInsertIncBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
+        {
+            var candidate = anchor.Next!;
+            return candidate != _tail && candidate.Value.Count == newCount
+                ? candidate
+                : InsertBucketAfter(anchor, newCount);
         }
 
         public void Dec(string key)
@@ -161,26 +186,22 @@ internal static class AllOneDataStructureSolution
             AttachToBucket(key, keyEntryNode, newBucketNode);
         }
 
-        public string GetMaxKey() => _tail.Previous == _head ? "" : _tail.Previous!.Value.PeekAnyKey();
-
-        public string GetMinKey() => _head.Next == _tail ? "" : _head.Next!.Value.PeekAnyKey();
-
-        private static DoublyLinkedListNode<KeyEntry> ResolveIncKeyEntryNode(
-            string key, bool hasExisting, DoublyLinkedListNode<KeyEntry>? keyEntryNode)
-            => hasExisting ? keyEntryNode! : new DoublyLinkedListNode<KeyEntry> { Value = new KeyEntry(key) };
-
-        private DoublyLinkedListNode<Bucket> FindOrInsertIncBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
-        {
-            var candidate = anchor.Next!;
-            return candidate != _tail && candidate.Value.Count == newCount
-                ? candidate
-                : InsertBucketAfter(anchor, newCount);
-        }
-
         private DoublyLinkedListNode<Bucket>? FindOrInsertDecBucket(DoublyLinkedListNode<Bucket> anchor, int newCount)
             => newCount == 0
                 ? null
-                : anchor != _head && anchor.Value.Count == newCount ? anchor : InsertBucketAfter(anchor, newCount);
+                : ReuseOrInsertBucket(anchor, newCount);
+
+        // Reuses the anchor bucket when it already stands at this count, and otherwise
+        // splices a fresh one in after it.
+        private DoublyLinkedListNode<Bucket> ReuseOrInsertBucket(
+            DoublyLinkedListNode<Bucket> anchor, int newCount)
+            => anchor != _head && anchor.Value.Count == newCount
+                ? anchor
+                : InsertBucketAfter(anchor, newCount);
+
+        public string GetMaxKey() => _tail.Previous == _head ? "" : _tail.Previous!.Value.PeekAnyKey();
+
+        public string GetMinKey() => _head.Next == _tail ? "" : _head.Next!.Value.PeekAnyKey();
 
         private static void DetachFromBucket(
             DoublyLinkedListNode<Bucket> bucketNode, DoublyLinkedListNode<KeyEntry> keyEntryNode)
@@ -264,6 +285,18 @@ internal static class AllOneDataStructureSolution
             }
 
             public string PeekAnyKey() => _keysHead.Next == _keysTail ? "" : _keysHead.Next!.Value.Key;
+        }
+
+        // Whether the key being incremented is already in the map, which is the state
+        // that decides both how the inc resolves its entry node and which bucket it
+        // moves out of - named so the call site says which one it is, not `true`.
+        private enum KeyPresence
+        {
+            // The key is already in the map, so its existing node and bucket are reused.
+            Present,
+
+            // The key is new, so a fresh entry node is minted and there is no old bucket.
+            Absent,
         }
     }
 }

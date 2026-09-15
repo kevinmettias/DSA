@@ -15,10 +15,10 @@ public class SortAnArrayBenchmarks
     // LC problem number, reused as the Random seed for reproducible benchmark input.
     private const int RandomSeed = 912;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = SortAnArrayWorkloads.BuildValues(Length, RandomSeed);

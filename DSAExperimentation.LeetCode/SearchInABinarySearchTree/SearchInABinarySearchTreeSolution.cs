@@ -29,18 +29,25 @@ internal static class SearchInABinarySearchTreeSolution
                 return node;
             }
 
-            if (node.Left is not null)
-            {
-                stack.Push(node.Left);
-            }
-
-            if (node.Right is not null)
-            {
-                stack.Push(node.Right);
-            }
+            PushChildren(stack, node);
         }
 
         return null;
+    }
+
+    // Pushes whichever of the node's children exist, so the walk reaches the whole
+    // subtree below it.
+    private static void PushChildren(Stack<BinaryTreeNode<int>> stack, BinaryTreeNode<int> node)
+    {
+        if (node.Left is not null)
+        {
+            stack.Push(node.Left);
+        }
+
+        if (node.Right is not null)
+        {
+            stack.Push(node.Right);
+        }
     }
 
     // Exploit the BST invariant: compare against the current node and descend

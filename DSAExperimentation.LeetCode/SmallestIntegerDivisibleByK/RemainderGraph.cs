@@ -13,15 +13,15 @@ internal sealed class RemainderGraph
 {
     private const int DecimalDigitBase = 10;
 
+    public RemainderNode Start { get; }
+
+    public RemainderNode Zero { get; }
+
     private RemainderGraph(RemainderNode start, RemainderNode zero)
     {
         Start = start;
         Zero = zero;
     }
-
-    public RemainderNode Start { get; }
-
-    public RemainderNode Zero { get; }
 
     public static RemainderGraph Build(int k)
     {

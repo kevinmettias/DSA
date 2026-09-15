@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SmallestPalindromicRearrangementIBenchmarks
 {
-    private const int RandomSeed = 3517; // LeetCode problem number
+    private const int RandomSeed = 3517; private string _s = "";
+
+    // LeetCode problem number
 
     [Params(200, 100_000)]
-    public int Length;
-
-    private string _s = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -15,9 +15,9 @@ namespace DSAExperimentation.LeetCode.CountSubIslands;
 // the input survives.
 internal static class CountSubIslandsSolution
 {
-    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(1, 0), (-1, 0), (0, 1), (0, -1)];
-
     private const int Land = 1;
+
+    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(1, 0), (-1, 0), (0, 1), (0, -1)];
 
     // The textbook answer: a hand-rolled recursive flood fill that carries the
     // "still covered by grid1?" flag along with it, so the sub-island test happens
@@ -33,15 +33,7 @@ internal static class CountSubIslandsSolution
         {
             for (var col = 0; col < remaining[row].Length; col++)
             {
-                if (remaining[row][col] != Land)
-                {
-                    continue;
-                }
-
-                var isSubIsland = true;
-                Flood(grid1, remaining, row, col, ref isSubIsland);
-
-                if (isSubIsland)
+                if (CountsAsSubIsland(grid1, remaining, row, col))
                 {
                     count++;
                 }
@@ -51,24 +43,20 @@ internal static class CountSubIslandsSolution
         return count;
     }
 
-    private static void Flood(int[][] grid1, int[][] remaining, int row, int col, ref bool isSubIsland)
+    // One cell's worth of the scan: skip water, otherwise flood the island it belongs to
+    // and report what the flood learned. The flood zeroes `remaining` as it goes, so a
+    // cell already walked can never seed a second, truncated island.
+    private static bool CountsAsSubIsland(int[][] grid1, int[][] remaining, int row, int col)
     {
-        if (!IsLand(remaining, row, col))
+        if (remaining[row][col] != Land)
         {
-            return;
+            return false;
         }
 
-        remaining[row][col] = 0;
+        var coverage = Coverage.Covered;
+        Flood((grid1, remaining), (row, col), ref coverage);
 
-        if (grid1[row][col] != Land)
-        {
-            isSubIsland = false;
-        }
-
-        Flood(grid1, remaining, row + 1, col, ref isSubIsland);
-        Flood(grid1, remaining, row - 1, col, ref isSubIsland);
-        Flood(grid1, remaining, row, col + 1, ref isSubIsland);
-        Flood(grid1, remaining, row, col - 1, ref isSubIsland);
+        return coverage == Coverage.Covered;
     }
 
     // DepthFirstSearch.Traverse (Algorithms.Traversal.DepthFirst) is already
@@ -89,15 +77,7 @@ internal static class CountSubIslandsSolution
         {
             for (var col = 0; col < remaining[row].Length; col++)
             {
-                if (remaining[row][col] != Land)
-                {
-                    continue;
-                }
-
-                var island = DepthFirstSearch.Traverse<(int Row, int Col)>(
-                    (row, col), cell => LandNeighbors(remaining, cell));
-
-                if (ClearIslandAndCheckCoverage(grid1, remaining, island))
+                if (CountsAsSubIslandByTraversal(grid1, remaining, row, col))
                 {
                     count++;
                 }
@@ -105,6 +85,35 @@ internal static class CountSubIslandsSolution
         }
 
         return count;
+    }
+
+    // The same one-cell step as CountsAsSubIsland, with the walk handed to the traversal
+    // primitive and the grid1 coverage test deferred to a pass over the cells it collected.
+    private static bool CountsAsSubIslandByTraversal(int[][] grid1, int[][] remaining, int row, int col)
+    {
+        if (remaining[row][col] != Land)
+        {
+            return false;
+        }
+
+        var island = DepthFirstSearch.Traverse<(int Row, int Col)>(
+            (row, col), cell => LandNeighbors(remaining, cell));
+
+        return ClearIslandAndCheckCoverage(grid1, remaining, island);
+    }
+
+    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] remaining, (int Row, int Col) cell)
+    {
+        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        {
+            var row = cell.Row + deltaRow;
+            var col = cell.Col + deltaCol;
+
+            if (IsLand(remaining, row, col))
+            {
+                yield return (row, col);
+            }
+        }
     }
 
     // Runs after the traversal, never during it: the walk reads `remaining` lazily
@@ -127,18 +136,38 @@ internal static class CountSubIslandsSolution
         return isSubIsland;
     }
 
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] remaining, (int Row, int Col) cell)
+    // The walk consults two grids at once - the reference grid it is testing against
+    // and the working copy it zeroes as it goes - so they travel as the pair the
+    // strategy comment above already calls them. Its answer for the component it is
+    // walking is the enum rather than a bare flag: Covered until the first cell that
+    // is water in grid1, Disqualified from then on.
+    private static void Flood(
+        (int[][] Grid1, int[][] Remaining) grids, (int Row, int Col) cell, ref Coverage coverage)
     {
-        foreach (var (deltaRow, deltaCol) in Orthogonal)
+        if (!IsLand(grids.Remaining, cell.Row, cell.Col))
         {
-            var row = cell.Row + deltaRow;
-            var col = cell.Col + deltaCol;
-
-            if (IsLand(remaining, row, col))
-            {
-                yield return (row, col);
-            }
+            return;
         }
+
+        grids.Remaining[cell.Row][cell.Col] = 0;
+
+        if (grids.Grid1[cell.Row][cell.Col] != Land)
+        {
+            coverage = Coverage.Disqualified;
+        }
+
+        Flood(grids, (cell.Row + 1, cell.Col), ref coverage);
+        Flood(grids, (cell.Row - 1, cell.Col), ref coverage);
+        Flood(grids, (cell.Row, cell.Col + 1), ref coverage);
+        Flood(grids, (cell.Row, cell.Col - 1), ref coverage);
+    }
+
+    // What the flood has learned about the component it is walking, named where a
+    // rewritten `true`/`false` at the call site said it only by position.
+    private enum Coverage
+    {
+        Covered,
+        Disqualified,
     }
 
     private static bool IsLand(int[][] grid, int row, int col)

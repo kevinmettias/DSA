@@ -8,17 +8,22 @@ namespace DSAExperimentation.LeetCode.SeparateSquaresII;
 // union of squares' area is (covered x-length) * (band height) since every square
 // active in a band spans it fully. The two strategies differ only in how the
 // covered x-length of a band's active squares is computed - that one step is
-// pulled out as a delegate so the sweep bookkeeping itself (which this problem
-// contributes, not either primitive) is written once.
+// pulled out behind a strategy type so the sweep bookkeeping itself (which this
+// problem contributes, not either primitive) is written once.
 internal static class SeparateSquaresIISolution
 {
+    // Both coverage arms are stateless, so one instance each serves every call and the
+    // benchmark arms that measure these two sweeps allocate nothing to pick one.
+    private static readonly ICoveredXLength ListMergeCoverage = new CoveredXLengthByListMerge();
+    private static readonly ICoveredXLength IntervalSetCoverage = new CoveredXLengthByIntervalSet();
+
     // The textbook arm: covered x-length via a hand-sorted, hand-merged BCL List -
     // deliberately not this repo's own IntervalSet, so it is what the composed arm
     // below has to justify itself against.
     public static double MinYByEventSweep(int[][] squares) => MinYByEventSweep(ParseSquares(squares));
 
     public static double MinYByEventSweep(IReadOnlyList<Square> squares) =>
-        Sweep(squares, CoveredXLengthByListMerge);
+        Sweep(squares, ListMergeCoverage);
 
     // This repo's own IntervalSet<long> already IS "add an interval, keep the set
     // merged" - covered x-length is just the sum of its merged intervals' lengths,
@@ -26,9 +31,18 @@ internal static class SeparateSquaresIISolution
     public static double MinYByIntervalSetSweep(int[][] squares) => MinYByIntervalSetSweep(ParseSquares(squares));
 
     public static double MinYByIntervalSetSweep(IReadOnlyList<Square> squares) =>
-        Sweep(squares, CoveredXLengthByIntervalSet);
+        Sweep(squares, IntervalSetCoverage);
 
-    private static double Sweep(IReadOnlyList<Square> squares, Func<List<Square>, long> coveredXLength)
+    // The one question the two arms answer differently: how much of the band's x-axis
+    // its active squares cover between them. Both of its inputs are named here, and what
+    // the answer is NOT - the sum of the squares' own widths - has somewhere to be
+    // stated: squares that overlap x-wise must contribute their union once, not twice.
+    private interface ICoveredXLength
+    {
+        long CoveredBy(List<Square> active);
+    }
+
+    private static double Sweep(IReadOnlyList<Square> squares, ICoveredXLength coveredXLength)
     {
         var breakpoints = CollectSortedYBreakpoints(squares);
         var addAt = squares.ToLookup(square => square.Y);
@@ -44,17 +58,23 @@ internal static class SeparateSquaresIISolution
 
             active.AddRange(addAt[y0]);
 
-            var width = coveredXLength(active);
+            var width = coveredXLength.CoveredBy(active);
             bands.Add((y0, y1, width));
             totalArea += width * (y1 - y0);
-
-            foreach (var ending in removeAt[y1])
-            {
-                active.Remove(ending);
-            }
+            RemoveEndingSquares(active, removeAt[y1]);
         }
 
         return FindSplitLine(bands, totalArea);
+    }
+
+    // A square stops contributing to every band at or above the y it ends on, so
+    // each band closes by retiring the squares that end at its upper boundary.
+    private static void RemoveEndingSquares(List<Square> active, IEnumerable<Square> ending)
+    {
+        foreach (var square in ending)
+        {
+            active.Remove(square);
+        }
     }
 
     // Bands are area-monotonic (width*height >= 0), so the split line lies in the
@@ -68,35 +88,57 @@ internal static class SeparateSquaresIISolution
         var half = totalArea / 2.0;
         var cumulative = 0L;
 
-        foreach (var (y0, y1, width) in bands)
+        foreach (var band in bands)
         {
-            var remaining = half - cumulative;
+            var split = SplitWithinBand(band, half - cumulative);
 
-            if (remaining <= 0)
+            if (split.HasValue)
             {
-                return y0;
+                return split.Value;
             }
 
-            var bandArea = width * (y1 - y0);
-
-            if (cumulative + bandArea >= half)
-            {
-                return y0 + remaining / width;
-            }
-
-            cumulative += bandArea;
+            cumulative += band.Width * (band.Y1 - band.Y0);
         }
 
         return bands.Count > 0 ? bands[^1].Y1 : 0;
     }
 
-    private static long CoveredXLengthByListMerge(List<Square> active)
+    // The split line inside one band, or null when the running total has not yet
+    // reached half and the band is merely consumed whole.
+    private static double? SplitWithinBand((long Y0, long Y1, long Width) band, double remaining)
     {
-        var intervals = active
-            .Select(square => (Start: square.X, End: square.X + square.L))
-            .OrderBy(interval => interval.Start)
-            .ToList();
+        if (remaining <= 0)
+        {
+            return band.Y0;
+        }
 
+        var bandArea = band.Width * (band.Y1 - band.Y0);
+
+        if (bandArea >= remaining)
+        {
+            return band.Y0 + (remaining / band.Width);
+        }
+
+        return null;
+    }
+
+    private sealed class CoveredXLengthByListMerge : ICoveredXLength
+    {
+        public long CoveredBy(List<Square> active)
+        {
+            var intervals = active
+                .Select(square => (Start: square.X, End: square.X + square.L))
+                .OrderBy(interval => interval.Start)
+                .ToList();
+
+            return MergedLengthOf(intervals);
+        }
+    }
+
+    // The total length of the merged intervals: the running [mergedStart, mergedEnd)
+    // span is closed and counted whenever the next interval starts past its end.
+    private static long MergedLengthOf(List<(long Start, long End)> intervals)
+    {
         var total = 0L;
         var mergedEnd = long.MinValue;
         var mergedStart = long.MinValue;
@@ -119,24 +161,27 @@ internal static class SeparateSquaresIISolution
         return total;
     }
 
-    private static long CoveredXLengthByIntervalSet(List<Square> active)
+    private sealed class CoveredXLengthByIntervalSet : ICoveredXLength
     {
-        var xIntervals = new IntervalSet<long>();
-
-        foreach (var square in active)
+        public long CoveredBy(List<Square> active)
         {
-            xIntervals.Add(square.X, square.X + square.L);
+            var xIntervals = new IntervalSet<long>();
+
+            foreach (var square in active)
+            {
+                xIntervals.Add(square.X, square.X + square.L);
+            }
+
+            var total = 0L;
+
+            for (var i = 0; i < xIntervals.Count; i++)
+            {
+                var (start, end) = xIntervals.Get(i);
+                total += end - start;
+            }
+
+            return total;
         }
-
-        var total = 0L;
-
-        for (var i = 0; i < xIntervals.Count; i++)
-        {
-            var (start, end) = xIntervals.Get(i);
-            total += end - start;
-        }
-
-        return total;
     }
 
     private static List<long> CollectSortedYBreakpoints(IReadOnlyList<Square> squares)

@@ -8,28 +8,16 @@ public sealed class BinaryTreeChildrenTests
         new(value) { Left = left, Right = right };
 
     [Fact]
-    public void Count_Leaf_IsZero()
-    {
-        Assert.Equal(0, new BinaryTreeChildren<int>(Node(1)).Count);
-    }
+    public void Count_Leaf_IsZero() => Assert.Equal(0, new BinaryTreeChildren<int>(Node(1)).Count);
 
     [Fact]
-    public void Count_OnlyALeftChild_IsOne()
-    {
-        Assert.Equal(1, new BinaryTreeChildren<int>(Node(1, left: Node(2))).Count);
-    }
+    public void Count_OnlyALeftChild_IsOne() => Assert.Equal(1, new BinaryTreeChildren<int>(Node(1, left: Node(2))).Count);
 
     [Fact]
-    public void Count_OnlyARightChild_IsOne()
-    {
-        Assert.Equal(1, new BinaryTreeChildren<int>(Node(1, right: Node(3))).Count);
-    }
+    public void Count_OnlyARightChild_IsOne() => Assert.Equal(1, new BinaryTreeChildren<int>(Node(1, right: Node(3))).Count);
 
     [Fact]
-    public void Count_BothChildren_IsTwo()
-    {
-        Assert.Equal(2, new BinaryTreeChildren<int>(Node(1, Node(2), Node(3))).Count);
-    }
+    public void Count_BothChildren_IsTwo() => Assert.Equal(2, new BinaryTreeChildren<int>(Node(1, Node(2), Node(3))).Count);
 
     [Fact]
     public void Get_BothChildren_YieldsLeftThenRight()
@@ -58,8 +46,5 @@ public sealed class BinaryTreeChildrenTests
     }
 
     [Fact]
-    public void Get_Leaf_Throws()
-    {
-        Assert.Throws<IndexOutOfRangeException>(() => new BinaryTreeChildren<int>(Node(1)).Get(0));
-    }
+    public void Get_Leaf_Throws() => Assert.Throws<IndexOutOfRangeException>(() => new BinaryTreeChildren<int>(Node(1)).Get(0));
 }

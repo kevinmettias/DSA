@@ -22,11 +22,11 @@ public class ImplementMagicDictionaryBenchmarks
 
     private const int AlphabetSize = 26;
 
-    [Params(10_000, 30_000)]
-    public int DictionarySize;
+    private string[] _dictionary = [];
 
-    private string[] _dictionary = null!;
-    private string[] _searchWords = null!;
+    private string[] _searchWords = [];
+    [Params(10_000, 30_000)]
+    public int DictionarySize { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -34,6 +34,17 @@ public class ImplementMagicDictionaryBenchmarks
         var random = new Random(RandomSeed);
         _dictionary = Enumerable.Range(0, DictionarySize).Select(_ => RandomWord(random)).Distinct().ToArray();
         _searchWords = _dictionary.Select(word => OneCharacterAway(word, random)).ToArray();
+    }
+
+    private static string RandomWord(Random random)
+        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+
+    private static string OneCharacterAway(string word, Random random)
+    {
+        var characters = word.ToCharArray();
+        var position = random.Next(word.Length);
+        characters[position] = (char)('a' + ((characters[position] - 'a' + 1) % AlphabetSize));
+        return new string(characters);
     }
 
     [Benchmark(Baseline = true)]
@@ -57,16 +68,5 @@ public class ImplementMagicDictionaryBenchmarks
         }
 
         return matches;
-    }
-
-    private static string RandomWord(Random random)
-        => new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
-
-    private static string OneCharacterAway(string word, Random random)
-    {
-        var characters = word.ToCharArray();
-        var position = random.Next(word.Length);
-        characters[position] = (char)('a' + ((characters[position] - 'a' + 1) % AlphabetSize));
-        return new string(characters);
     }
 }

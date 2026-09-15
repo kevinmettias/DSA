@@ -17,21 +17,35 @@ internal static class WildcardMatchingSolution
     // text character rather than branching recursively. Deliberately written
     // without this repo's primitives - the arm the composed solution below has to
     // justify itself against.
-    public static bool IsMatchByGreedyTwoPointer(string text, string pattern)
+    public static bool IsMatchByGreedyTwoPointer(MatchedText text, WildcardPattern pattern)
+    {
+        var (matched, p) = ScanGreedily((Text: text.Text, Pattern: pattern.Text));
+        if (!matched)
+        {
+            return false;
+        }
+
+        return IsOnlyStarsRemaining(pattern.Text, p);
+    }
+
+    // The scan itself: walk the text remembering the most recent '*' and the text
+    // position it last matched, so a mismatch can retry that star against one more
+    // text character rather than branching. Reports whether the text was consumed,
+    // together with the pattern position the walk stopped at.
+    private static (bool Matched, int Pattern) ScanGreedily((string Text, string Pattern) input)
     {
         var s = 0;
         var p = 0;
         var star = -1;
         var match = 0;
-
-        while (s < text.Length)
+        while (s < input.Text.Length)
         {
-            if (p < pattern.Length && (pattern[p] == '?' || pattern[p] == text[s]))
+            if (MatchesOneCharacter(input.Pattern, p, input.Text, s))
             {
                 s++;
                 p++;
             }
-            else if (p < pattern.Length && pattern[p] == '*')
+            else if (p < input.Pattern.Length && input.Pattern[p] == '*')
             {
                 star = p++;
                 match = s;
@@ -43,10 +57,23 @@ internal static class WildcardMatchingSolution
             }
             else
             {
-                return false;
+                return (false, p);
             }
         }
 
+        return (true, p);
+    }
+
+    // The pattern's current character matches the text's current one when the
+    // pattern still has a character there and it is either '?' or that same
+    // character.
+    private static bool MatchesOneCharacter(string pattern, int p, string text, int s)
+        => p < pattern.Length && (pattern[p] == '?' || pattern[p] == text[s]);
+
+    // With the text consumed, the pattern may only be finished off by stars - any
+    // other character left over would have nothing left to match.
+    private static bool IsOnlyStarsRemaining(string pattern, int p)
+    {
         while (p < pattern.Length && pattern[p] == '*')
         {
             p++;
@@ -59,25 +86,43 @@ internal static class WildcardMatchingSolution
     // character (advance the text and retry the same pattern position); anything
     // else must match exactly. Composed from this repo's own Memoizer so every
     // (text, pattern) position pair is solved once.
-    public static bool IsMatchByMemoizedDp(string text, string pattern)
-    {
-        return Memoizer.Memoize<(int Text, int Pattern), bool>((0, 0), MatchFrom);
+    public static bool IsMatchByMemoizedDp(MatchedText text, WildcardPattern pattern) =>
+        Memoizer.Memoize<(int Text, int Pattern), bool>((0, 0), new MatchFromEveryPosition(text, pattern));
 
-        bool MatchFrom((int Text, int Pattern) state, Func<(int Text, int Pattern), bool> match)
+    // The recurrence, named: at each (text, pattern) position the remaining pattern
+    // either consumes the text character under it or, being a '*', is allowed to
+    // consume none at all. The two strings being matched belong to the caller and
+    // never vary during a run, so they travel in as constructor state.
+    private sealed class MatchFromEveryPosition(MatchedText text, WildcardPattern pattern)
+        : IRecurrence<(int Text, int Pattern), bool>
+    {
+        /// <inheritdoc/>
+        public bool Replay((int Text, int Pattern) state, IRecurrence<(int Text, int Pattern), bool> rest)
         {
             var (i, j) = state;
 
-            if (j == pattern.Length)
+            if (j == pattern.Text.Length)
             {
-                return i == text.Length;
+                return i == text.Text.Length;
             }
 
-            if (pattern[j] == '*')
+            if (pattern.Text[j] == '*')
             {
-                return match((i, j + 1)) || (i < text.Length && match((i + 1, j)));
+                return rest.Replay((i, j + 1), rest)
+                    || (i < text.Text.Length && rest.Replay((i + 1, j), rest));
             }
 
-            return i < text.Length && (pattern[j] == '?' || pattern[j] == text[i]) && match((i + 1, j + 1));
+            return i < text.Text.Length
+                && (pattern.Text[j] == '?' || pattern.Text[j] == text.Text[i])
+                && rest.Replay((i + 1, j + 1), rest);
         }
     }
+
+    // The two sides of a wildcard match, named for what each is in this problem rather
+    // than left as two adjacent `string` positions a caller could hand over the wrong
+    // way round with the compiler none the wiser: `text` is the string being matched in
+    // full, `pattern` the wildcard expression it must satisfy.
+    internal readonly record struct MatchedText(string Text);
+
+    internal readonly record struct WildcardPattern(string Text);
 }

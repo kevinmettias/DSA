@@ -14,10 +14,10 @@ public class NumberOfProvincesBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(50, 300)]
-    public int CityCount;
+    private int[][] _isConnected = [];
 
-    private int[][] _isConnected = null!;
+    [Params(50, 300)]
+    public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup() => _isConnected = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, seed: RandomSeed);

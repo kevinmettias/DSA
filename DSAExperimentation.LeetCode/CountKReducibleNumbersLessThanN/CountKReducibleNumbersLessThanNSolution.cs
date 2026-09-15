@@ -63,9 +63,9 @@ internal static class CountKReducibleNumbersLessThanNSolution
     public static int CountKReducibleNumbersByPopcountCombinatorics(string s, int k)
     {
         var length = s.Length;
-        var (factorial, inverseFactorial) = BuildFactorialTable(length);
+        var table = BuildFactorialTable(length);
         var steps = BuildReductionSteps(length);
-        var countByPopcount = CountNumbersByPopcount(s, factorial, inverseFactorial);
+        var countByPopcount = CountNumbersByPopcount(s, table);
         var answer = 0L;
 
         for (var c = 1; c <= length; c++)
@@ -78,55 +78,6 @@ internal static class CountKReducibleNumbersLessThanNSolution
 
         return (int)answer;
     }
-
-    // steps[v] is how many popcount applications reduce the small integer v to
-    // 1. popcount(v) < v for every v >= 2, so a single bottom-up pass already
-    // sees each value's dependency before it is needed.
-    private static int[] BuildReductionSteps(int maxValue)
-    {
-        var steps = new int[maxValue + 1];
-
-        for (var v = 2; v <= maxValue; v++)
-        {
-            steps[v] = 1 + steps[BitOperations.PopCount((uint)v)];
-        }
-
-        return steps;
-    }
-
-    private static long[] CountNumbersByPopcount(string s, long[] factorial, long[] inverseFactorial)
-    {
-        var length = s.Length;
-        var counts = new long[length + 1];
-        var onesInPrefix = 0;
-
-        for (var i = 0; i < length; i++)
-        {
-            if (s[i] == '1')
-            {
-                AccumulateSuffixChoices(counts, onesInPrefix, length - 1 - i, factorial, inverseFactorial);
-                onesInPrefix++;
-            }
-        }
-
-        return counts;
-    }
-
-    // At a '1' bit forced to 0, every combination of the `remainingBits` lower
-    // bits is a valid number less than n with that many extra set bits.
-    private static void AccumulateSuffixChoices(
-        long[] counts, int onesInPrefix, int remainingBits, long[] factorial, long[] inverseFactorial)
-    {
-        for (var onesInSuffix = 0; onesInSuffix <= remainingBits; onesInSuffix++)
-        {
-            var popcount = onesInPrefix + onesInSuffix;
-            var ways = BinomialCoefficient(remainingBits, onesInSuffix, factorial, inverseFactorial);
-            counts[popcount] = (counts[popcount] + ways) % ModularArithmetic.Modulo;
-        }
-    }
-
-    private static long BinomialCoefficient(int n, int r, long[] factorial, long[] inverseFactorial) =>
-        factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo * inverseFactorial[n - r] % ModularArithmetic.Modulo;
 
     private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
     {
@@ -148,4 +99,56 @@ internal static class CountKReducibleNumbersLessThanNSolution
 
         return (factorial, inverseFactorial);
     }
+
+    // steps[v] is how many popcount applications reduce the small integer v to
+    // 1. popcount(v) < v for every v >= 2, so a single bottom-up pass already
+    // sees each value's dependency before it is needed.
+    private static int[] BuildReductionSteps(int maxValue)
+    {
+        var steps = new int[maxValue + 1];
+
+        for (var v = 2; v <= maxValue; v++)
+        {
+            steps[v] = 1 + steps[BitOperations.PopCount((uint)v)];
+        }
+
+        return steps;
+    }
+
+    private static long[] CountNumbersByPopcount(string s, (long[] Factorial, long[] InverseFactorial) table)
+    {
+        var length = s.Length;
+        var counts = new long[length + 1];
+        var onesInPrefix = 0;
+
+        for (var i = 0; i < length; i++)
+        {
+            if (s[i] == '1')
+            {
+                AccumulateSuffixChoices(counts, onesInPrefix, length - 1 - i, table);
+                onesInPrefix++;
+            }
+        }
+
+        return counts;
+    }
+
+    // At a '1' bit forced to 0, every combination of the `remainingBits` lower
+    // bits is a valid number less than n with that many extra set bits.
+    private static void AccumulateSuffixChoices(
+        long[] counts, int onesInPrefix, int remainingBits, (long[] Factorial, long[] InverseFactorial) table)
+    {
+        for (var onesInSuffix = 0; onesInSuffix <= remainingBits; onesInSuffix++)
+        {
+            var popcount = onesInPrefix + onesInSuffix;
+            var ways = BinomialCoefficient(remainingBits, onesInSuffix, table);
+            counts[popcount] = (counts[popcount] + ways) % ModularArithmetic.Modulo;
+        }
+    }
+
+    // Every coefficient needs both halves of the table, so they arrive as the one
+    // pair BuildFactorialTable already returns rather than as two parallel arrays.
+    private static long BinomialCoefficient(int n, int r, (long[] Factorial, long[] InverseFactorial) table) =>
+        table.Factorial[n] * table.InverseFactorial[r] % ModularArithmetic.Modulo
+            * table.InverseFactorial[n - r] % ModularArithmetic.Modulo;
 }

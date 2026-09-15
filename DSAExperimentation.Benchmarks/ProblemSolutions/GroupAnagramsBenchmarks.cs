@@ -15,16 +15,18 @@ public class GroupAnagramsBenchmarks
     private const string FirstAnagramWord = "eat";
     private const string SecondAnagramWord = "tea";
 
-    private string[] _values = null!;
+    private string[] _values = [];
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
         => _values = Enumerable.Range(0, Length)
-            .Select(i => i % SourceWordCount == 0 ? FirstAnagramWord : SecondAnagramWord)
+            .Select(i => IsFirstWord(i) ? FirstAnagramWord : SecondAnagramWord)
             .ToArray();
+
+    private static bool IsFirstWord(int i) => i % SourceWordCount == 0;
 
     [Benchmark(Baseline = true)]
     public int DictionaryGroup() => GroupAnagramsSolution.GroupByDictionary(_values).Count;

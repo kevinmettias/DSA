@@ -51,43 +51,61 @@ internal static class SwimInRisingWaterSolution
             return false;
         }
 
-        var visited = new bool[n, n];
-        var queue = new Queue<(int Row, int Col)>();
-        queue.Enqueue((0, 0));
-        visited[0, 0] = true;
+        var walk = new FloodWalk(new bool[n, n], new Queue<(int Row, int Col)>());
+        walk.Queue.Enqueue((0, 0));
+        walk.Visited[0, 0] = true;
 
-        while (queue.Count > 0)
+        return FloodReachesCorner(grid, time, walk);
+    }
+
+    // Spread the flood from the cells already queued, reporting whether the
+    // bottom-right corner is reached before the queue empties.
+    private static bool FloodReachesCorner(int[][] grid, int time, FloodWalk walk)
+    {
+        var n = grid.Length;
+
+        while (walk.Queue.Count > 0)
         {
-            var (row, col) = queue.Dequeue();
+            var cell = walk.Queue.Dequeue();
 
-            if (row == n - 1 && col == n - 1)
+            if (cell.Row == n - 1 && cell.Col == n - 1)
             {
                 return true;
             }
 
-            EnqueueReachableNeighbors(grid, row, col, time, n, visited, queue);
+            EnqueueReachableNeighbors(grid, cell, time, walk);
         }
 
         return false;
     }
 
-    private static void EnqueueReachableNeighbors(
-        int[][] grid, int row, int col, int time, int n, bool[,] visited, Queue<(int Row, int Col)> queue)
+    // The cell being expanded arrives as one argument rather than as a row and a column,
+    // and the flood's own reached and pending sets as the one walk every step of the
+    // flood both reads and writes; the grid's size is read off the grid rather than
+    // passed in alongside it.
+    private static void EnqueueReachableNeighbors(int[][] grid, (int Row, int Col) cell, int time, FloodWalk walk)
     {
+        var n = grid.Length;
+
         foreach (var (dr, dc) in Directions)
         {
-            var nr = row + dr;
-            var nc = col + dc;
+            var nr = cell.Row + dr;
+            var nc = cell.Col + dc;
 
-            if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc] || grid[nr][nc] > time)
+            if (IsOutsideGrid(nr, nc, n) || IsClosedToTheFlood((nr, nc), grid, time, walk.Visited))
             {
                 continue;
             }
 
-            visited[nr, nc] = true;
-            queue.Enqueue((nr, nc));
+            walk.Visited[nr, nc] = true;
+            walk.Queue.Enqueue((nr, nc));
         }
     }
+
+    // A neighbour the flood has already reached, or whose cell the water has not yet
+    // risen to at this time, cannot be entered now.
+    private static bool IsClosedToTheFlood((int Row, int Col) cell, int[][] grid, int time, bool[,] visited)
+        => visited[cell.Row, cell.Col] || grid[cell.Row][cell.Col] > time;
 
     // Every cell reached is pushed at the max elevation crossed so far; popping
     // the globally cheapest frontier cell first guarantees each cell is first
@@ -102,13 +120,26 @@ internal static class SwimInRisingWaterSolution
         frontier.Push(((0, 0), grid[0][0]));
         visited[0, 0] = true;
 
+        return DrainFrontier(grid, visited, frontier);
+    }
+
+    // The settle-once drain itself: pop the cheapest entry, and either the
+    // bottom-right corner's first pop ends the search with its final time, or the
+    // entry relaxes its unvisited neighbours at the max elevation crossed so far.
+    private static int DrainFrontier(
+        int[][] grid,
+        bool[,] visited,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> frontier)
+    {
+        var n = grid.Length;
+
         while (frontier.TryPop(out var entry))
         {
             var (row, col) = entry.Node;
-            var time = entry.Priority;
 
             if (row == n - 1 && col == n - 1)
             {
+                var time = entry.Priority;
                 return time;
             }
 
@@ -135,7 +166,7 @@ internal static class SwimInRisingWaterSolution
             var nr = row + dr;
             var nc = col + dc;
 
-            if (nr < 0 || nr >= n || nc < 0 || nc >= n || visited[nr, nc])
+            if (IsOutsideGrid(nr, nc, n) || visited[nr, nc])
             {
                 continue;
             }
@@ -144,4 +175,14 @@ internal static class SwimInRisingWaterSolution
             frontier.Push(((nr, nc), Math.Max(time, grid[nr][nc])));
         }
     }
+
+    // Off the grid on any of its four edges - there is no cell to swim into.
+    // Shared by both arms' neighbour scans, so it sits last.
+    private static bool IsOutsideGrid(int row, int col, int size)
+        => row < 0 || row >= size || col < 0 || col >= size;
+
+    // The reached set and the pending set of one flood-fill scan at a candidate
+    // time - the pair every step of the flood both reads and writes, so it travels
+    // as one argument rather than as two.
+    private readonly record struct FloodWalk(bool[,] Visited, Queue<(int Row, int Col)> Queue);
 }

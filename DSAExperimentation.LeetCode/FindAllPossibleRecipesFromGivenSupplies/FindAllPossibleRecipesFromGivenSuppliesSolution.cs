@@ -23,8 +23,7 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
     public static List<string> FindAllRecipesByFixedPointSweep(
         string[] recipes, string[][] ingredients, string[] supplies)
     {
-        var available = new HashSet<string>(supplies);
-        var made = new bool[recipes.Length];
+        var state = (Available: new HashSet<string>(supplies), Made: new bool[recipes.Length]);
         var result = new List<string>();
         var progress = true;
 
@@ -34,7 +33,7 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
 
             for (var i = 0; i < recipes.Length; i++)
             {
-                if (!TryMakeRecipe(i, recipes, ingredients, available, made))
+                if (!TryMakeRecipe(i, recipes, ingredients, state))
                 {
                     continue;
                 }
@@ -47,16 +46,19 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
         return result;
     }
 
+    // The sweep's two mutable halves - everything currently on hand and the recipes
+    // actually made - are created together and updated together, so they arrive as
+    // the one piece of state this pass mutates.
     private static bool TryMakeRecipe(
-        int i, string[] recipes, string[][] ingredients, HashSet<string> available, bool[] made)
+        int i, string[] recipes, string[][] ingredients, (HashSet<string> Available, bool[] Made) state)
     {
-        if (made[i] || !AllIngredientsAvailable(ingredients[i], available))
+        if (state.Made[i] || !AllIngredientsAvailable(ingredients[i], state.Available))
         {
             return false;
         }
 
-        made[i] = true;
-        available.Add(recipes[i]);
+        state.Made[i] = true;
+        state.Available.Add(recipes[i]);
         return true;
     }
 
@@ -88,13 +90,24 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
     public static List<string> FindAllRecipesByKahnsAlgorithm(
         string[] recipes, string[][] ingredients, string[] supplies)
     {
+        var graph = BuildDependencyGraph(recipes, ingredients, supplies);
+        var frontier = BuildInitialFrontier(graph);
+
+        return DrainFrontier(recipes, frontier, graph);
+    }
+
+    // The recipe-depends-on-recipe graph: which recipe each ingredient unblocks, how
+    // many unmet prerequisites each recipe still waits on, and which recipes name an
+    // ingredient nothing can supply. The three arranged together are the one structure
+    // the frontier sweep below reads, so they are built together.
+    private static RecipeGraph BuildDependencyGraph(
+        string[] recipes, string[][] ingredients, string[] supplies)
+    {
         var lookup = BuildSupplyLookup(recipes, supplies);
         var graph = CreateEmptyGraph(recipes.Length);
         PopulateDependencyGraph(recipes, ingredients, lookup, graph);
 
-        var frontier = BuildInitialFrontier(graph);
-
-        return DrainFrontier(recipes, frontier, graph);
+        return graph;
     }
 
     private readonly record struct SupplyLookup(HashMap<string, int> RecipeIndex, Set<string> Available);

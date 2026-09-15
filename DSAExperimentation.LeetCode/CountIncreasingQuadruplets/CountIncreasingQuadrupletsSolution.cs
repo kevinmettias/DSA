@@ -28,19 +28,36 @@ internal static class CountIncreasingQuadrupletsSolution
             {
                 for (var k = j + 1; k < n; k++)
                 {
-                    for (var l = k + 1; l < n; l++)
-                    {
-                        if (nums[i] < nums[k] && nums[k] < nums[j] && nums[j] < nums[l])
-                        {
-                            count++;
-                        }
-                    }
+                    count += CountQuadrupletsWithFirstThree(nums, i, j, k);
                 }
             }
         }
 
         return count;
     }
+
+    // The fourth index l > k: the triple (i, j, k) must already be the inverted
+    // inner pair and nums[l] must rise above nums[j]. Lifted out of the brute-force
+    // scan above, which is then only three loops deep.
+    private static long CountQuadrupletsWithFirstThree(int[] nums, int i, int j, int k)
+    {
+        var count = 0L;
+
+        for (var l = k + 1; l < nums.Length; l++)
+        {
+            if (IsInvertedInnerPair(nums, i, j, k) && nums[j] < nums[l])
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    // The inversion the statement pivots on: nums[i] < nums[k] < nums[j], the pair
+    // (j, k) inverting with nums[i] resting below the pivot.
+    private static bool IsInvertedInnerPair(int[] nums, int i, int j, int k)
+        => nums[i] < nums[k] && HasInvertedPivotPair(nums, j, k);
 
     // Sweep k from the right. The first factor needs no structure at all: its
     // threshold nums[k] is fixed for the whole inner j-loop, so a running counter
@@ -61,24 +78,42 @@ internal static class CountIncreasingQuadrupletsSolution
 
         for (var k = n - 1; k >= 0; k--)
         {
-            var leftSmallerCount = 0;
-
-            for (var j = 0; j < k; j++)
-            {
-                if (nums[j] > nums[k])
-                {
-                    var rightGreaterCount = nums[j] == n ? 0 : suffixGreaterCounts.Query(nums[j], n - 1);
-                    total += (long)leftSmallerCount * rightGreaterCount;
-                }
-                else
-                {
-                    leftSmallerCount++;
-                }
-            }
-
+            total += CountPivotPairsAt(nums, k, suffixGreaterCounts);
             suffixGreaterCounts.Add(nums[k] - 1, 1);
         }
 
         return total;
     }
+
+    // Every j < k inverting with nums[k] contributes the j's seen so far below
+    // nums[k] times the suffix values above nums[j] admitted by the Fenwick tree.
+    private static long CountPivotPairsAt(
+        int[] nums, int k, FenwickTree<int, SumOperation<int>> suffixGreaterCounts)
+    {
+        var n = nums.Length;
+        var leftSmallerCount = 0;
+        var pairTotal = 0L;
+
+        for (var j = 0; j < k; j++)
+        {
+            if (HasInvertedPivotPair(nums, j, k))
+            {
+                // nums is a permutation of 1..n, so a value of n has nothing above it
+                // in the suffix.
+                var isLargestValue = nums[j] == n;
+                var rightGreaterCount = isLargestValue ? 0 : suffixGreaterCounts.Query(nums[j], n - 1);
+                pairTotal += (long)leftSmallerCount * rightGreaterCount;
+            }
+            else
+            {
+                leftSmallerCount++;
+            }
+        }
+
+        return pairTotal;
+    }
+
+    // The middle pair inverts: j sits before k but holds the larger value. Both
+    // arms pivot on exactly this test, so it is stated once.
+    private static bool HasInvertedPivotPair(int[] nums, int j, int k) => nums[j] > nums[k];
 }

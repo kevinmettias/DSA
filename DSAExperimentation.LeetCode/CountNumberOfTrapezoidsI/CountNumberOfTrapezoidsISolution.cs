@@ -22,20 +22,37 @@ internal static class CountNumberOfTrapezoidsISolution
         {
             for (var b = a + 1; b < n; b++)
             {
-                for (var c = b + 1; c < n; c++)
-                {
-                    for (var d = c + 1; d < n; d++)
-                    {
-                        if (IsHorizontalTrapezoid(points[a][1], points[b][1], points[c][1], points[d][1]))
-                        {
-                            count++;
-                        }
-                    }
-                }
+                count += CountTrapezoidsWithInitialPair(points, a, b);
             }
         }
 
         return (int)(count % ModularArithmetic.Modulo);
+    }
+
+    // The completions of one fixed first pair: every 4-subset whose two lowest
+    // indices are firstIndex and secondIndex is finished by a pair (c, d) drawn
+    // from the points after secondIndex, and contributes exactly when those four
+    // y-coordinates split into two same-y pairs. It is a method of its own rather
+    // than the tail of the scan above because the four-index enumeration and the
+    // test want four levels of control flow between them, one past the
+    // nesting-depth cap.
+    private static long CountTrapezoidsWithInitialPair(int[][] points, int firstIndex, int secondIndex)
+    {
+        var count = 0L;
+
+        for (var c = secondIndex + 1; c < points.Length; c++)
+        {
+            for (var d = c + 1; d < points.Length; d++)
+            {
+                if (IsHorizontalTrapezoid(
+                    points[firstIndex][1], points[secondIndex][1], points[c][1], points[d][1]))
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
     }
 
     private static bool IsHorizontalTrapezoid(int y1, int y2, int y3, int y4) =>
@@ -54,6 +71,16 @@ internal static class CountNumberOfTrapezoidsISolution
     // reduced mod 1e9+7.
     public static int CountTrapezoidsByHorizontalPairCounting(int[][] points)
     {
+        var countsByY = BuildCountsByY(points);
+        var pairCount = CountPairsAcrossGroups(countsByY);
+
+        return (int)pairCount;
+    }
+
+    // How many points share each y-coordinate: a group of count points on one line
+    // offers C(count, 2) horizontal segments to pair with another group's.
+    private static HashMap<int, long> BuildCountsByY(int[][] points)
+    {
         var countsByY = new HashMap<int, long>();
 
         foreach (var point in points)
@@ -62,6 +89,14 @@ internal static class CountNumberOfTrapezoidsISolution
             countsByY.Set(point[1], count + 1);
         }
 
+        return countsByY;
+    }
+
+    // Every unordered pair of segments drawn from two DIFFERENT y groups, which is the
+    // (sum^2 - sum-of-squares) / 2 above: the two running totals are reduced mod 1e9+7
+    // as they accumulate, so the halving goes through the multiplicative inverse too.
+    private static long CountPairsAcrossGroups(HashMap<int, long> countsByY)
+    {
         var sum = 0L;
         var sumOfSquares = 0L;
 
@@ -76,6 +111,6 @@ internal static class CountNumberOfTrapezoidsISolution
         var diff = (totalSquared - sumOfSquares + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
         var inverseOfTwo = ModularArithmetic.Inverse(2);
 
-        return (int)(diff * inverseOfTwo % ModularArithmetic.Modulo);
+        return diff * inverseOfTwo % ModularArithmetic.Modulo;
     }
 }

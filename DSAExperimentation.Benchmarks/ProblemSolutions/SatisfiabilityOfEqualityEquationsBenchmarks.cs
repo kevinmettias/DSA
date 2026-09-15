@@ -15,10 +15,10 @@ public class SatisfiabilityOfEqualityEquationsBenchmarks
 {
     private const int RandomSeed = 1;
 
-    [Params(100, 500)]
-    public int EquationCount;
+    private string[] _equations = [];
 
-    private string[] _equations = null!;
+    [Params(100, 500)]
+    public int EquationCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

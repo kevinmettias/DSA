@@ -24,40 +24,57 @@ public class CollectCoinsInATreeBenchmarks
     // trimmed away in the first round, forcing real work through both arms.
     private const double CoinProbability = 0.1;
 
-    [Params(200, 4_000)]
-    public int NodeCount;
+    private List<int>[] _adjacency = [];
 
-    private List<int>[] _adjacency = null!;
-    private int[] _coins = null!;
+    private int[] _coins = [];
+    [Params(200, 4_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _adjacency = new List<int>[NodeCount];
+        _adjacency = BuildRandomTree(random, NodeCount);
+        _coins = TossCoins(random, NodeCount);
+    }
 
-        for (var i = 0; i < NodeCount; i++)
+    // A random recursive tree: each node (after the first) attaches to a
+    // uniformly-chosen earlier node, giving a connected, cycle-free graph on
+    // NodeCount vertices with NodeCount-1 edges - the same shape
+    // MinimumHeightTreesBenchmarks.cs generates.
+    private static List<int>[] BuildRandomTree(Random random, int nodeCount)
+    {
+        var adjacency = new List<int>[nodeCount];
+
+        for (var i = 0; i < nodeCount; i++)
         {
-            _adjacency[i] = [];
+            adjacency[i] = [];
         }
 
-        // A random recursive tree: each node (after the first) attaches to a
-        // uniformly-chosen earlier node, giving a connected, cycle-free graph on
-        // NodeCount vertices with NodeCount-1 edges - the same shape
-        // MinimumHeightTreesBenchmarks.cs generates.
-        for (var i = 1; i < NodeCount; i++)
+        for (var i = 1; i < nodeCount; i++)
         {
             var parent = random.Next(i);
-            _adjacency[i].Add(parent);
-            _adjacency[parent].Add(i);
+            adjacency[i].Add(parent);
+            adjacency[parent].Add(i);
         }
 
-        _coins = new int[NodeCount];
+        return adjacency;
+    }
 
-        for (var i = 0; i < NodeCount; i++)
+    // One entry per node, a coin iff the draw falls under CoinProbability - low
+    // enough that most leaves are trimmed away in the first round, forcing real work
+    // through both arms.
+    private static int[] TossCoins(Random random, int nodeCount)
+    {
+        var coins = new int[nodeCount];
+
+        for (var i = 0; i < nodeCount; i++)
         {
-            _coins[i] = random.NextDouble() < CoinProbability ? 1 : 0;
+            var hasCoin = random.NextDouble() < CoinProbability;
+            coins[i] = hasCoin ? 1 : 0;
         }
+
+        return coins;
     }
 
     [Benchmark(Baseline = true)]

@@ -16,10 +16,10 @@ public class LeastOperatorsToExpressNumberBenchmarks
 {
     private const int X = 2;
 
-    [Params(16, 20)]
-    public int TargetBitLength;
-
     private int _target;
+
+    [Params(16, 20)]
+    public int TargetBitLength { get; set; }
 
     [GlobalSetup]
     public void Setup() => _target = (1 << TargetBitLength) - 1;

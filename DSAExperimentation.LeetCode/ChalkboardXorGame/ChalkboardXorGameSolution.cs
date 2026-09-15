@@ -23,6 +23,26 @@ internal static class ChalkboardXorGameSolution
     public static bool AliceWinsByBruteForceRecursion(int[] nums) =>
         CurrentPlayerWinsUnmemoized(FullMask(nums), nums);
 
+    // The same recursion routed through this repo's own Memoizer, keyed on the
+    // remaining-elements bitmask, so each of the O(2^n) subsets is evaluated once no
+    // matter how many erase orders reach it - the same int-bitmask memo state
+    // CanIWinSolution uses for its own used-numbers mask.
+    public static bool AliceWinsByMemoizedRecursion(int[] nums) =>
+        Memoizer.Memoize<int, bool>(FullMask(nums), new CurrentPlayerWinsFromSubset(nums));
+
+    // The closed form the recursion reduces to: the player to move wins iff the
+    // board's xor is already 0, or an even number of elements is on it.
+    public static bool AliceWinsByXorParityFormula(int[] nums)
+    {
+        var xor = 0;
+        foreach (var num in nums)
+        {
+            xor ^= num;
+        }
+
+        return xor == 0 || nums.Length % EvenCountModulus == 0;
+    }
+
     private static bool CurrentPlayerWinsUnmemoized(int mask, int[] nums)
     {
         if (XorOf(mask, nums) == 0)
@@ -48,53 +68,6 @@ internal static class ChalkboardXorGameSolution
         return false;
     }
 
-    // The same recursion routed through this repo's own Memoizer, keyed on the
-    // remaining-elements bitmask, so each of the O(2^n) subsets is evaluated once no
-    // matter how many erase orders reach it - the same int-bitmask memo state
-    // CanIWinSolution uses for its own used-numbers mask.
-    public static bool AliceWinsByMemoizedRecursion(int[] nums) =>
-        Memoizer.Memoize<int, bool>(
-            FullMask(nums),
-            (mask, currentPlayerWins) => CurrentPlayerWinsMemoized(mask, nums, currentPlayerWins));
-
-    private static bool CurrentPlayerWinsMemoized(int mask, int[] nums, Func<int, bool> currentPlayerWins)
-    {
-        if (XorOf(mask, nums) == 0)
-        {
-            return true;
-        }
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            var bit = 1 << i;
-            if ((mask & bit) == 0)
-            {
-                continue;
-            }
-
-            var remaining = mask & ~bit;
-            if (XorOf(remaining, nums) != 0 && !currentPlayerWins(remaining))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // The closed form the recursion reduces to: the player to move wins iff the
-    // board's xor is already 0, or an even number of elements is on it.
-    public static bool AliceWinsByXorParityFormula(int[] nums)
-    {
-        var xor = 0;
-        foreach (var num in nums)
-        {
-            xor ^= num;
-        }
-
-        return xor == 0 || nums.Length % EvenCountModulus == 0;
-    }
-
     private static int FullMask(int[] nums) => (1 << nums.Length) - 1;
 
     private static int XorOf(int mask, int[] nums)
@@ -109,5 +82,37 @@ internal static class ChalkboardXorGameSolution
         }
 
         return result;
+    }
+
+    // The recurrence, named: one position of the game, where the player to move loses
+    // at a xor of 0 and otherwise wins as soon as some erase leaves the opponent a
+    // position this same rule reports as lost. The board's numbers are the whole of
+    // what the rule needs from its caller, so they are the constructor's only input.
+    private sealed class CurrentPlayerWinsFromSubset(int[] nums) : IRecurrence<int, bool>
+    {
+        public bool Replay(int mask, IRecurrence<int, bool> rest)
+        {
+            if (XorOf(mask, nums) == 0)
+            {
+                return true;
+            }
+
+            for (var i = 0; i < nums.Length; i++)
+            {
+                var bit = 1 << i;
+                if ((mask & bit) == 0)
+                {
+                    continue;
+                }
+
+                var remaining = mask & ~bit;
+                if (XorOf(remaining, nums) != 0 && !rest.Replay(remaining, rest))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

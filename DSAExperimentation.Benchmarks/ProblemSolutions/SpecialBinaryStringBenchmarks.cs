@@ -13,10 +13,10 @@ public class SpecialBinaryStringBenchmarks
 {
     private const int RandomSeed = 761;
 
-    [Params(50, 200)]
-    public int PairCount;
+    private string _input = "";
 
-    private string _input = null!;
+    [Params(50, 200)]
+    public int PairCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -34,7 +34,8 @@ public sealed class LeetCodeProblemTests
     public void Strategy_OnRegisteredCase_ProducesExpectedAnswer(
         string titleSlug, string strategyName, string caseName)
     {
-        var outcome = LeetCodeProblemRegistry.Get(titleSlug).RunCase(strategyName, caseName);
+        var outcome = LeetCodeProblemRegistry.Get(titleSlug).RunCase(
+            new StrategyName(strategyName), new CaseName(caseName));
 
         Assert.True(outcome.Matched, $"{titleSlug}/{strategyName}/{caseName}: {outcome.FailureReason}");
     }

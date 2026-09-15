@@ -23,6 +23,14 @@ internal static class SmallestSubtreeWithAllTheDeepestNodesSolution
     public static BinaryTreeNode<int>? SubtreeWithAllDeepestByRecursion(BinaryTreeNode<int>? root)
         => DeepestSubtree(root).Node;
 
+    // This repo's own bottom-up fold: one TreeFold pass over BinaryTreeNode<int>
+    // closed over DeepestSubtreeAlgebra, which carries the same recurrence as data.
+    public static BinaryTreeNode<int>? SubtreeWithAllDeepestByTreeFold(BinaryTreeNode<int>? root)
+        => TreeFold.Fold<
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
+            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
+            DeepestSubtreeAlgebra, (int Depth, BinaryTreeNode<int>? Node)>(root).Node;
+
     private static (int Depth, BinaryTreeNode<int>? Node) DeepestSubtree(BinaryTreeNode<int>? node)
     {
         if (node is null)
@@ -45,12 +53,4 @@ internal static class SmallestSubtreeWithAllTheDeepestNodesSolution
 
         return (left.Depth + 1, node);
     }
-
-    // This repo's own bottom-up fold: one TreeFold pass over BinaryTreeNode<int>
-    // closed over DeepestSubtreeAlgebra, which carries the same recurrence as data.
-    public static BinaryTreeNode<int>? SubtreeWithAllDeepestByTreeFold(BinaryTreeNode<int>? root)
-        => TreeFold.Fold<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            DeepestSubtreeAlgebra, (int Depth, BinaryTreeNode<int>? Node)>(root).Node;
 }

@@ -27,11 +27,11 @@ public class IsGraphBipartiteBenchmarks
     // Extra cross-only edges added per node for density.
     private const int DensityEdgesPerNode = 2;
 
-    [Params(200, 5_000)]
-    public int NodeCount;
+    private int[][] _adjacency = [];
 
-    private int[][] _adjacency = null!;
     private BipartiteGraph _graph = null!;
+    [Params(200, 5_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -66,17 +66,14 @@ public class IsGraphBipartiteBenchmarks
             for (var e = 0; e < DensityEdgesPerNode; e++)
             {
                 var inA = i < half;
-                var target = inA ? half + random.Next(NodeCount - half) : random.Next(half);
+                var target = inA ? RandomBNode(random, half) : random.Next(half);
                 edges.Add((i, target));
             }
         }
     }
 
-    [Benchmark(Baseline = true)]
-    public bool ColorArrayDfs() => IsGraphBipartiteSolution.IsBipartiteByColorArrayDfs(_adjacency);
-
-    [Benchmark]
-    public bool BipartiteCheckBfs() => IsGraphBipartiteSolution.IsBipartiteByBipartiteCheck(_graph);
+    // A random node on the B side: the B nodes are the upper half of the range.
+    private int RandomBNode(Random random, int half) => half + random.Next(NodeCount - half);
 
     private static int[][] BuildAdjacency(int nodeCount, List<(int From, int To)> edges)
     {
@@ -90,4 +87,10 @@ public class IsGraphBipartiteBenchmarks
 
         return adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
     }
+
+    [Benchmark(Baseline = true)]
+    public bool ColorArrayDfs() => IsGraphBipartiteSolution.IsBipartiteByColorArrayDfs(_adjacency);
+
+    [Benchmark]
+    public bool BipartiteCheckBfs() => IsGraphBipartiteSolution.IsBipartiteByBipartiteCheck(_graph);
 }

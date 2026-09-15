@@ -85,29 +85,6 @@ internal static class GCDSortOfAnArraySolution
         return true;
     }
 
-    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
-
-    private static int Find(int[] parent, int id)
-    {
-        while (parent[id] != id)
-        {
-            id = parent[id];
-        }
-
-        return id;
-    }
-
-    private static void Union(int[] parent, int first, int second)
-    {
-        var firstRoot = Find(parent, first);
-        var secondRoot = Find(parent, second);
-
-        if (firstRoot != secondRoot)
-        {
-            parent[firstRoot] = secondRoot;
-        }
-    }
-
     // This repo's DisjointSet, unioned value<->prime factor so no two values are ever
     // compared, with the comparison copy produced by this repo's own MergeSort.
     public static bool CanBeSortedByPrimeFactorDisjointSet(int[] nums)
@@ -141,14 +118,6 @@ internal static class GCDSortOfAnArraySolution
         return components;
     }
 
-    private static int[] SortedCopy(int[] nums)
-    {
-        var sorted = (int[])nums.Clone();
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
-
-        return sorted;
-    }
-
     private static IEnumerable<int> PrimeFactors(int value)
     {
         for (var factor = SmallestPrimeFactor; factor * factor <= value; factor++)
@@ -169,6 +138,37 @@ internal static class GCDSortOfAnArraySolution
         if (value > 1)
         {
             yield return value;
+        }
+    }
+
+    private static int[] SortedCopy(int[] nums)
+    {
+        var sorted = (int[])nums.Clone();
+        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));
+
+        return sorted;
+    }
+
+    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
+
+    private static int Find(int[] parent, int id)
+    {
+        while (parent[id] != id)
+        {
+            id = parent[id];
+        }
+
+        return id;
+    }
+
+    private static void Union(int[] parent, int first, int second)
+    {
+        var firstRoot = Find(parent, first);
+        var secondRoot = Find(parent, second);
+
+        if (firstRoot != secondRoot)
+        {
+            parent[firstRoot] = secondRoot;
         }
     }
 }

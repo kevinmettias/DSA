@@ -10,10 +10,10 @@ public class PlusOneBenchmarks
 {
     private const int MaxDigitValue = 9; // base-10 digit ceiling; also the worst-case seed that forces a full carry cascade
 
-    private int[] _digits = null!;
+    private int[] _digits = [];
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _digits = Enumerable.Repeat(MaxDigitValue, Length).ToArray();

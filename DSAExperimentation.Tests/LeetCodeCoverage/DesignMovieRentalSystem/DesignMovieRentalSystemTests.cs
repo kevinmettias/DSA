@@ -119,26 +119,15 @@ public sealed class DesignMovieRentalSystemTests
 // One call in a movie rental script: which method to invoke and with what
 // arguments. Pure dispatch, built through the named factories below so a script
 // reads like the LeetCode call sequence it replays.
-public readonly record struct MovieRentalOp
+public readonly record struct MovieRentalOp(MovieRentalOp.OpKind kind, int shop, int movie)
 {
-    private readonly Kind _kind;
-    private readonly int _shop;
-    private readonly int _movie;
+    public static MovieRentalOp Search(int movie) => new(OpKind.Search, 0, movie);
 
-    private MovieRentalOp(Kind kind, int shop, int movie)
-    {
-        _kind = kind;
-        _shop = shop;
-        _movie = movie;
-    }
+    public static MovieRentalOp Rent(int shop, int movie) => new(OpKind.Rent, shop, movie);
 
-    public static MovieRentalOp Search(int movie) => new(Kind.Search, 0, movie);
+    public static MovieRentalOp Drop(int shop, int movie) => new(OpKind.Drop, shop, movie);
 
-    public static MovieRentalOp Rent(int shop, int movie) => new(Kind.Rent, shop, movie);
-
-    public static MovieRentalOp Drop(int shop, int movie) => new(Kind.Drop, shop, movie);
-
-    public static MovieRentalOp Report() => new(Kind.Report, 0, 0);
+    public static MovieRentalOp Report() => new(OpKind.Report, 0, 0);
 
     // No rows for the two void calls, one row of shop ids for search(), one row per
     // rented pair for report() - so a script runner can assert one expected value
@@ -147,22 +136,22 @@ public readonly record struct MovieRentalOp
     // RunScript ever calls Apply.
     internal int[][] Apply(IMovieRentingSystem system)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Search:
-                return [[.. system.Search(_movie)]];
-            case Kind.Rent:
-                system.Rent(_shop, _movie);
+            case OpKind.Search:
+                return [[.. system.Search(movie)]];
+            case OpKind.Rent:
+                system.Rent(shop, movie);
                 return [];
-            case Kind.Drop:
-                system.Drop(_shop, _movie);
+            case OpKind.Drop:
+                system.Drop(shop, movie);
                 return [];
             default:
                 return [.. system.Report().Select(pair => pair.ToArray())];
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Search,
         Rent,

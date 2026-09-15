@@ -54,9 +54,7 @@ internal static class NumberOfFlowersInFullBloomSolution
     public static int[] FullBloomFlowersBySortedBounds(int[][] flowers, int[] persons)
     {
         var (starts, ends) = ExtractStartsAndEnds(flowers);
-
-        SortTimes(starts);
-        SortTimes(ends);
+        SortEndpoints(starts, ends);
 
         var startSequence = new ArraySequence<int>(starts);
         var endSequence = new ArraySequence<int>(ends);
@@ -78,10 +76,15 @@ internal static class NumberOfFlowersInFullBloomSolution
         return (starts, ends);
     }
 
-    private static void SortTimes(int[] times)
+    // Both endpoint arrays are sorted once here, which is what lets each person be
+    // answered by two bisections instead of a re-scan.
+    private static void SortEndpoints(int[] starts, int[] ends)
     {
-        MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(times));
+        SortTimes(starts);
+        SortTimes(ends);
     }
+
+    private static void SortTimes(int[] times) => MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(times));
 
     private static int[] CountBloomsPerPerson(
         int[] persons, ArraySequence<int> startSequence, ArraySequence<int> endSequence)

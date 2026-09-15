@@ -11,11 +11,11 @@ public class MinimumOperationsToMakeArrayEqualToTargetBenchmarks
 {
     private const int Seed = 3229;
 
-    [Params(100, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
-    private int[] _target = null!;
+    private int[] _target = [];
+    [Params(100, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => (_nums, _target) = ArrayEqualToTargetWorkloads.BuildArrays(Length, Seed);

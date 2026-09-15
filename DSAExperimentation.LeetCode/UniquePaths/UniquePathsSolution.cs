@@ -34,29 +34,37 @@ internal static class UniquePathsSolution
     // Memoizer caches the grid recurrence from each cell to the bottom-right
     // destination, so the exponential branching of "right or down" collapses to
     // one evaluation per cell.
-    public static int CountPathsByMemoizedRecurrence(int m, int n)
-    {
-        return Memoizer.Memoize<(int Row, int Col), int>((0, 0), WaysFrom);
+    public static int CountPathsByMemoizedRecurrence(int m, int n) =>
+        Memoizer.Memoize<(int Row, int Col), int>((0, 0), new PathsFromCellToCorner(m, n));
 
-        int WaysFrom((int Row, int Col) state, Func<(int Row, int Col), int> ways)
+    // The recurrence, named: the destination cell is itself one path, and any other
+    // cell adds up the paths from the neighbours it can still step to. The grid's
+    // shape belongs to the caller and never varies during a run, so the two
+    // dimensions travel in as constructor state rather than being re-supplied at
+    // every level.
+    private sealed class PathsFromCellToCorner(int rows, int columns)
+        : IRecurrence<(int Row, int Col), int>
+    {
+        /// <inheritdoc/>
+        public int Replay((int Row, int Col) state, IRecurrence<(int Row, int Col), int> rest)
         {
             var (row, col) = state;
 
-            if (row == m - 1 && col == n - 1)
+            if (row == rows - 1 && col == columns - 1)
             {
                 return 1;
             }
 
             var total = 0;
 
-            if (row + 1 < m)
+            if (row + 1 < rows)
             {
-                total += ways((row + 1, col));
+                total += rest.Replay((row + 1, col), rest);
             }
 
-            if (col + 1 < n)
+            if (col + 1 < columns)
             {
-                total += ways((row, col + 1));
+                total += rest.Replay((row, col + 1), rest);
             }
 
             return total;

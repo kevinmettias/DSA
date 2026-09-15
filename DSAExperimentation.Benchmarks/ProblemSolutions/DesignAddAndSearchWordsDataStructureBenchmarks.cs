@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure.DesignAddAndSearchWordsDataStructureSolution;
+using DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -15,11 +15,11 @@ public class DesignAddAndSearchWordsDataStructureBenchmarks
     private const int Seed = 211;
     private const int WordLength = 8;
 
-    [Params(200, 2_000)]
-    public int WordCount;
+    private string[] _wordsToAdd = [];
 
-    private string[] _wordsToAdd = null!;
-    private string[] _searches = null!;
+    private string[] _searches = [];
+    [Params(200, 2_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -29,16 +29,44 @@ public class DesignAddAndSearchWordsDataStructureBenchmarks
         _searches = BuildSearches(_wordsToAdd, random);
     }
 
+    private static string RandomWord(Random random) =>
+        new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(26))).ToArray());
+
+    // Half exact lookups against words actually added (a mix of hits and
+    // misses depending on duplicates), half single-position wildcards over
+    // those same words - the two query shapes each strategy's Search has to
+    // answer differently, since a Trie fast path only helps the former.
+    private static string[] BuildSearches(string[] words, Random random)
+    {
+        var searches = new string[words.Length];
+
+        for (var i = 0; i < words.Length; i++)
+        {
+            var word = words[random.Next(words.Length)];
+            var isExactLookup = i % 2 == 0;
+            searches[i] = isExactLookup ? word : WithWildcard(word, random);
+        }
+
+        return searches;
+    }
+
+    private static string WithWildcard(string word, Random random)
+    {
+        var chars = word.ToCharArray();
+        chars[random.Next(chars.Length)] = '.';
+        return new string(chars);
+    }
+
     [Benchmark(Baseline = true)]
-    public int LinearScan() => Replay(new WordDictionaryByLinearScan());
+    public int LinearScan() => Replay(new DesignAddAndSearchWordsDataStructureSolution.WordDictionaryByLinearScan());
 
     [Benchmark]
-    public int Trie() => Replay(new WordDictionaryByTrie());
+    public int Trie() => Replay(new DesignAddAndSearchWordsDataStructureSolution.WordDictionaryByTrie());
 
     // Counts matches rather than discarding each Search result, so the JIT
     // can't eliminate the replay as dead code - the same "return the real
     // answer, not a weaker proxy" shape DesignSpreadsheetBenchmarks follows.
-    private int Replay(IWordDictionaryStrategy dictionary)
+    private int Replay(DesignAddAndSearchWordsDataStructureSolution.IWordDictionaryStrategy dictionary)
     {
         foreach (var word in _wordsToAdd)
         {
@@ -56,32 +84,5 @@ public class DesignAddAndSearchWordsDataStructureBenchmarks
         }
 
         return matches;
-    }
-
-    private static string RandomWord(Random random) =>
-        new(Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(26))).ToArray());
-
-    // Half exact lookups against words actually added (a mix of hits and
-    // misses depending on duplicates), half single-position wildcards over
-    // those same words - the two query shapes each strategy's Search has to
-    // answer differently, since a Trie fast path only helps the former.
-    private static string[] BuildSearches(string[] words, Random random)
-    {
-        var searches = new string[words.Length];
-
-        for (var i = 0; i < words.Length; i++)
-        {
-            var word = words[random.Next(words.Length)];
-            searches[i] = i % 2 == 0 ? word : WithWildcard(word, random);
-        }
-
-        return searches;
-    }
-
-    private static string WithWildcard(string word, Random random)
-    {
-        var chars = word.ToCharArray();
-        chars[random.Next(chars.Length)] = '.';
-        return new string(chars);
     }
 }

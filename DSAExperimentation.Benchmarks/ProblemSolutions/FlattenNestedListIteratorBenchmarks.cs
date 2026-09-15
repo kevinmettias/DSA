@@ -13,10 +13,10 @@ public class FlattenNestedListIteratorBenchmarks
 {
     private const int LeavesPerNestedPair = 2;
 
-    [Params(200, 5_000)]
-    public int LeafCount;
+    private List<NestedInteger> _nestedList = new();
 
-    private List<NestedInteger> _nestedList = null!;
+    [Params(200, 5_000)]
+    public int LeafCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

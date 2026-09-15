@@ -8,10 +8,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // to prune, which is a measurement decision rather than a domain one.
 internal static class LockWorkloads
 {
-    // Farthest possible combination from "0000": each wheel needs 5 turns (the max
-    // over +1/-1 mod 10 arithmetic), forcing the full 20-turn BFS radius.
-    public const string FarthestTarget = "5555";
-
     // A random scattering of deadends that almost never disconnects the graph -
     // each node still has 8 candidate edges, so removing a few hundred of 10,000
     // nodes at random leaves it connected with overwhelming probability, keeping
@@ -25,7 +21,8 @@ internal static class LockWorkloads
         {
             var candidate = LockWheels.Combination(random.Next(LockWheels.CombinationSpace));
 
-            if (candidate != OpenTheLockSolution.Start && candidate != FarthestTarget)
+            if (candidate != LockStart.Combination
+                && candidate != LockScenario.FarthestTarget)
             {
                 deadends.Add(candidate);
             }

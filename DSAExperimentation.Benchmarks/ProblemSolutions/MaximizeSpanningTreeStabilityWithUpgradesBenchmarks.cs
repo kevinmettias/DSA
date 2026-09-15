@@ -14,11 +14,11 @@ public class MaximizeSpanningTreeStabilityWithUpgradesBenchmarks
 {
     private const int Seed = 3600;
 
-    [Params(200, 2_000)]
-    public int NodeCount;
-
     private StabilityGraph _graph = null!;
+
     private int _k;
+    [Params(200, 2_000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

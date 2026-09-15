@@ -13,10 +13,10 @@ public class SmallestUniqueSubarrayBenchmarks
     private const int RandomSeed = 3934; // LeetCode problem number
     private const int ValueUpperBound = 50;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

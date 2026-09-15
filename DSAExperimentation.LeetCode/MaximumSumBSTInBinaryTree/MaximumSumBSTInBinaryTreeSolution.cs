@@ -50,13 +50,6 @@ internal static class MaximumSumBSTInBinaryTreeSolution
         }
     }
 
-    private static bool IsValidBst(BinaryTreeNode<int>? node, int? min, int? max)
-        => node is null || ((min is null || node.Value > min) && (max is null || node.Value < max)
-            && IsValidBst(node.Left, min, node.Value) && IsValidBst(node.Right, node.Value, max));
-
-    private static int Sum(BinaryTreeNode<int>? node)
-        => node is null ? 0 : node.Value + Sum(node.Left) + Sum(node.Right);
-
     // One bottom-up post-order pass: each node combines its two already-computed
     // child summaries (IsBst, Min, Max, Sum) into its own, so every subtree is
     // validated and summed exactly once - the same "compute everything a node needs
@@ -89,6 +82,17 @@ internal static class MaximumSumBSTInBinaryTreeSolution
             return new Summary(true, Math.Min(node.Value, left.Min), Math.Max(node.Value, right.Max), sum);
         }
     }
+
+    private static bool IsValidBst(BinaryTreeNode<int>? node, int? min, int? max)
+        => node is null || ((min is null || node.Value > min) && (max is null || node.Value < max)
+            && IsValidBst(node.Left, min, node.Value) && IsValidBst(node.Right, node.Value, max));
+
+    private static int Sum(BinaryTreeNode<int>? node)
+        => node is null ? 0 : NodeSum(node);
+
+    // This node's own value on top of both of its subtree sums.
+    private static int NodeSum(BinaryTreeNode<int> node)
+        => node.Value + Sum(node.Left) + Sum(node.Right);
 
     private readonly record struct Summary(bool IsBst, int Min, int Max, int Sum);
 }

@@ -18,10 +18,10 @@ public class RectangleAreaIIBenchmarks
     private const int CoordinateRangeMultiplier = 2;
     private const int MaxRectangleDimension = 10;
 
-    [Params(20, 300)]
-    public int RectangleCount;
+    private int[][] _rectangles = [];
 
-    private int[][] _rectangles = null!;
+    [Params(20, 300)]
+    public int RectangleCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

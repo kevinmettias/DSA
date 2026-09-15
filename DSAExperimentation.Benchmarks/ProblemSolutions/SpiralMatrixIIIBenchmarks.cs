@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.SpiralMatrixIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,23 +17,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SpiralMatrixIIIBenchmarks
 {
-    private const int CenterDivisor = 2;
-
-    [Params(20, 200)]
-    public int Size;
 
     private int _rows;
+
     private int _cols;
     private int _rStart;
     private int _cStart;
+    [Params(20, 200)]
+    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         _rows = Size;
         _cols = Size;
-        _rStart = Size / CenterDivisor;
-        _cStart = Size / CenterDivisor;
+        _rStart = Size / AlgorithmConstants.HalvingFactor;
+        _cStart = Size / AlgorithmConstants.HalvingFactor;
     }
 
     [Benchmark(Baseline = true)]

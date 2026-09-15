@@ -12,10 +12,10 @@ public class MatchsticksToSquareBenchmarks
 {
     private const int SquareSideCount = 4;
 
-    [Params(6, 8)]
-    public int SticksPerSide;
+    private int[] _matchsticks = [];
 
-    private int[] _matchsticks = null!;
+    [Params(6, 8)]
+    public int SticksPerSide { get; set; }
 
     [GlobalSetup]
     public void Setup()

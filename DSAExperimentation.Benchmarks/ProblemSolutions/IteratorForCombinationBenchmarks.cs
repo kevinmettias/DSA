@@ -16,11 +16,11 @@ public class IteratorForCombinationBenchmarks
 {
     private const int CombinationLengthDivisor = 2;
 
-    [Params(10, 16)]
-    public int CharacterCount;
+    private string _characters = "";
 
-    private string _characters = null!;
     private int _combinationLength;
+    [Params(10, 16)]
+    public int CharacterCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,12 +30,18 @@ public class IteratorForCombinationBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BitmaskEnumeration() =>
-        Drain(IteratorForCombinationSolution.CreateByBitmaskEnumeration(_characters, _combinationLength));
+    public int BitmaskEnumeration()
+    {
+        var iterator = IteratorForCombinationSolution.CreateByBitmaskEnumeration(_characters, _combinationLength);
+        return Drain(iterator);
+    }
 
     [Benchmark]
-    public int BacktrackComposed() =>
-        Drain(IteratorForCombinationSolution.CreateByBacktrackEngine(_characters, _combinationLength));
+    public int BacktrackComposed()
+    {
+        var iterator = IteratorForCombinationSolution.CreateByBacktrackEngine(_characters, _combinationLength);
+        return Drain(iterator);
+    }
 
     private static int Drain(IteratorForCombinationSolution.CombinationIterator iterator)
     {

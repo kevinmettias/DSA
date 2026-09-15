@@ -34,8 +34,11 @@ internal static class TheNumberOfGoodSubsetsSolution
     public static int NumberOfGoodSubsetsByBruteForceRecursion(int[] nums) =>
         NumberOfGoodSubsetsByBruteForceRecursion(GoodSubsetCandidates.Build(nums));
 
-    public static int NumberOfGoodSubsetsByBruteForceRecursion(GoodSubsetCandidates candidates) =>
-        WithOnesDoubling(WaysFrom(candidates, FirstCandidate, NoPrimesUsed), candidates.OnesCount);
+    public static int NumberOfGoodSubsetsByBruteForceRecursion(GoodSubsetCandidates candidates)
+    {
+        var waysWithoutOnes = WaysFrom(candidates, FirstCandidate, NoPrimesUsed);
+        return WithOnesDoubling(waysWithoutOnes, candidates.OnesCount);
+    }
 
     private static long WaysFrom(GoodSubsetCandidates candidates, int index, int usedMask)
     {
@@ -68,27 +71,39 @@ internal static class TheNumberOfGoodSubsetsSolution
     private static long MemoizedWays(GoodSubsetCandidates candidates) =>
         Memoizer.Memoize<(int Index, int UsedMask), long>(
             (FirstCandidate, NoPrimesUsed),
-            (state, waysFor) =>
+            new WaysOverCandidates(candidates));
+
+    // The recurrence, as a named type: skip-or-take over the squarefree candidates for
+    // one (index, usedMask) state. The candidate list it reads arrives through the
+    // primary constructor and the memoized continuation through `rest`, so the recursive
+    // call-back is a method on a named type rather than an anonymous delegate.
+    private sealed class WaysOverCandidates(GoodSubsetCandidates candidates)
+        : IRecurrence<(int Index, int UsedMask), long>
+    {
+        public long Replay(
+            (int Index, int UsedMask) state, IRecurrence<(int Index, int UsedMask), long> rest)
+        {
+            var (index, usedMask) = state;
+
+            if (index == candidates.Count)
             {
-                var (index, usedMask) = state;
+                return usedMask != NoPrimesUsed ? 1L : 0L;
+            }
 
-                if (index == candidates.Count)
-                {
-                    return usedMask != NoPrimesUsed ? 1L : 0L;
-                }
+            var (mask, weight) = candidates.At(index);
+            var skip = rest.Replay((index + 1, usedMask), rest);
 
-                var (mask, weight) = candidates.At(index);
-                var skip = waysFor((index + 1, usedMask));
+            if ((usedMask & mask) != 0 || weight == 0)
+            {
+                return skip;
+            }
 
-                if ((usedMask & mask) != 0 || weight == 0)
-                {
-                    return skip;
-                }
+            var take = weight * rest.Replay((index + 1, usedMask | mask), rest)
+                % ModularArithmetic.Modulo;
 
-                var take = weight * waysFor((index + 1, usedMask | mask)) % ModularArithmetic.Modulo;
-
-                return (skip + take) % ModularArithmetic.Modulo;
-            });
+            return (skip + take) % ModularArithmetic.Modulo;
+        }
+    }
 
     // 2^onesCount, via the 1e9+7 modular exponentiation this repo already declares once
     // - shared by both arms, since the choice being measured is the recursion, not this.

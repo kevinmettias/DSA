@@ -36,10 +36,9 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
             {
                 for (var c = b + 1; c < n; c++)
                 {
-                    for (var d = c + 1; d < n; d++)
-                    {
-                        maxArea = Math.Max(maxArea, RectangleAreaOrNone(points, a, b, c, d));
-                    }
+                    var triple = (points[a], points[b], points[c]);
+                    var area = BestFourthArea(points, triple, c + 1);
+                    maxArea = Math.Max(maxArea, area);
                 }
             }
         }
@@ -47,9 +46,30 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
         return maxArea;
     }
 
-    private static long RectangleAreaOrNone(Point[] points, int a, int b, int c, int d)
+    // The innermost of the scan's four nested loops, lifted out so the three that
+    // pick a, b and c read as a flat sequence: the best area this triple of corners
+    // can complete with any later fourth point.
+    private static long BestFourthArea(Point[] points, (Point P1, Point P2, Point P3) triple, int startIndex)
     {
-        if (!TryAxisAlignedRectangle(points[a], points[b], points[c], points[d], out var box))
+        var maxArea = None;
+
+        for (var fourth = startIndex; fourth < points.Length; fourth++)
+        {
+            var quadruple = (triple.P1, triple.P2, triple.P3, points[fourth]);
+            var area = RectangleAreaOrNone(points, quadruple);
+            maxArea = Math.Max(maxArea, area);
+        }
+
+        return maxArea;
+    }
+
+    // The four candidate points arrive as one argument, never four: the scan picks them
+    // as a corner set, and "are these four a rectangle's corners?" is one question about
+    // the set rather than four independent values that could be transposed.
+    private static long RectangleAreaOrNone(
+        Point[] points, (Point P1, Point P2, Point P3, Point P4) quadruple)
+    {
+        if (!TryAxisAlignedRectangle(quadruple, out var box))
         {
             return None;
         }
@@ -57,8 +77,10 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
         return HasBlockingPoint(points, box) ? None : box.Area;
     }
 
-    private static bool TryAxisAlignedRectangle(Point p1, Point p2, Point p3, Point p4, out Box box)
+    private static bool TryAxisAlignedRectangle(
+        (Point P1, Point P2, Point P3, Point P4) quadruple, out Box box)
     {
+        var (p1, p2, p3, p4) = quadruple;
         var xs = new[] { p1.X, p2.X, p3.X, p4.X }.Distinct().OrderBy(x => x).ToArray();
         var ys = new[] { p1.Y, p2.Y, p3.Y, p4.Y }.Distinct().OrderBy(y => y).ToArray();
 
@@ -84,7 +106,7 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
                 continue;
             }
 
-            if (point.X >= box.MinX && point.X <= box.MaxX && point.Y >= box.MinY && point.Y <= box.MaxY)
+            if (LiesWithinBox(point, box))
             {
                 return true;
             }
@@ -92,6 +114,11 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
 
         return false;
     }
+
+    // A point blocks the box when it lies inside both of the box's spans; sitting
+    // exactly on an edge counts, which is why only the four corners were skipped.
+    private static bool LiesWithinBox(Point point, Box box)
+        => point.X >= box.MinX && point.X <= box.MaxX && point.Y >= box.MinY && point.Y <= box.MaxY;
 
     // Composed: sweep columns (distinct x, ascending) left to right. Within a
     // column, only y-adjacent pairs of points can ever be a rectangle's vertical
@@ -124,6 +151,24 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
             return None;
         }
 
+        var sweep = BuildSweepIndex(sortedPoints);
+
+        var maxArea = None;
+        var columnStart = 0;
+
+        while (columnStart < sortedPoints.Length)
+        {
+            (columnStart, maxArea) = SweepColumn(sortedPoints, sweep, columnStart, maxArea);
+        }
+
+        return maxArea;
+    }
+
+    // The sweep's three running structures: the compressed-y index, the
+    // point-update/range-max tree over it, and the y-intervals still open from an
+    // earlier column. All three are reference types the walk mutates in place.
+    private static SweepIndex BuildSweepIndex(Point[] sortedPoints)
+    {
         var yValues = sortedPoints.Select(p => p.Y).Distinct().OrderBy(y => y).ToArray();
         var yIndex = new Dictionary<int, int>(yValues.Length);
 
@@ -135,42 +180,64 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
         var lastXAtY = new SegmentTree<int, MaxOperation<int>>(
             Enumerable.Repeat(int.MinValue, yValues.Length).ToArray());
         var openEdges = new Dictionary<(int Y1, int Y2), int>();
-        var maxArea = None;
 
-        var columnStart = 0;
+        return new SweepIndex(yIndex, lastXAtY, openEdges);
+    }
 
-        while (columnStart < sortedPoints.Length)
+    // One column of the sweep: the y-adjacent pairs inside it are checked against the
+    // tree, then this column's own points are written into the tree for later columns.
+    // Returns the next column's start, since a pair's x always advances to this one.
+    private static (int ColumnStart, long MaxArea) SweepColumn(
+        Point[] sortedPoints, SweepIndex sweep, int columnStart, long maxArea)
+    {
+        var column = ColumnAt(sortedPoints, columnStart);
+
+        maxArea = CheckColumnPairs(sortedPoints, sweep, column, maxArea);
+
+        for (var i = column.Start; i < column.End; i++)
         {
-            var columnEnd = columnStart;
+            sweep.LastXAtY.Update(sweep.YIndex[sortedPoints[i].Y], column.X);
+        }
 
-            while (columnEnd < sortedPoints.Length && sortedPoints[columnEnd].X == sortedPoints[columnStart].X)
+        return (column.End, maxArea);
+    }
+
+    // One column of the sweep: the run of points that share the x sitting at
+    // `columnStart`, named by where it starts, where it ends, and that shared x.
+    private static (int Start, int End, int X) ColumnAt(Point[] sortedPoints, int columnStart)
+    {
+        var columnEnd = columnStart;
+
+        while (columnEnd < sortedPoints.Length && sortedPoints[columnEnd].X == sortedPoints[columnStart].X)
+        {
+            columnEnd++;
+        }
+
+        return (columnStart, columnEnd, sortedPoints[columnStart].X);
+    }
+
+    // Every y-adjacent pair of points inside one column. A pair that reaches back to a
+    // still-open y-interval wider than that interval's own recorded x re-forms a
+    // rectangle; either way this column becomes the interval's new x.
+    private static long CheckColumnPairs(
+        Point[] sortedPoints,
+        SweepIndex sweep,
+        (int Start, int End, int X) column,
+        long maxArea)
+    {
+        for (var i = column.Start; i < column.End - 1; i++)
+        {
+            var y1 = sortedPoints[i].Y;
+            var y2 = sortedPoints[i + 1].Y;
+            var key = (y1, y2);
+            var mostRecentXInRange = sweep.LastXAtY.Query(sweep.YIndex[y1], sweep.YIndex[y2]);
+
+            if (sweep.OpenEdges.TryGetValue(key, out var xLeft) && mostRecentXInRange <= xLeft)
             {
-                columnEnd++;
+                maxArea = Math.Max(maxArea, (long)(column.X - xLeft) * (y2 - y1));
             }
 
-            var x = sortedPoints[columnStart].X;
-
-            for (var i = columnStart; i < columnEnd - 1; i++)
-            {
-                var y1 = sortedPoints[i].Y;
-                var y2 = sortedPoints[i + 1].Y;
-                var key = (y1, y2);
-                var mostRecentXInRange = lastXAtY.Query(yIndex[y1], yIndex[y2]);
-
-                if (openEdges.TryGetValue(key, out var xLeft) && mostRecentXInRange <= xLeft)
-                {
-                    maxArea = Math.Max(maxArea, (long)(x - xLeft) * (y2 - y1));
-                }
-
-                openEdges[key] = x;
-            }
-
-            for (var i = columnStart; i < columnEnd; i++)
-            {
-                lastXAtY.Update(yIndex[sortedPoints[i].Y], x);
-            }
-
-            columnStart = columnEnd;
+            sweep.OpenEdges[key] = column.X;
         }
 
         return maxArea;
@@ -187,6 +254,11 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
 
         return points;
     }
+
+    private readonly record struct SweepIndex(
+        Dictionary<int, int> YIndex,
+        SegmentTree<int, MaxOperation<int>> LastXAtY,
+        Dictionary<(int Y1, int Y2), int> OpenEdges);
 
     private readonly record struct Box(int MinX, int MaxX, int MinY, int MaxY)
     {

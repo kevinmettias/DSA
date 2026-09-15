@@ -9,13 +9,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DirectionAssignmentsWithExactlyKVisiblePeopleBenchmarks
 {
-    private const int Seed = 3881; // LC problem number
+    private const int Seed = 3881; private int _pos;
+
+    private int _k;
+    // LC problem number
 
     [Params(200, 5_000)]
-    public int PersonCount;
-
-    private int _pos;
-    private int _k;
+    public int PersonCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

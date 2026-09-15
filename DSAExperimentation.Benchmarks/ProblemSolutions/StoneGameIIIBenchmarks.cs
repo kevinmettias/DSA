@@ -27,10 +27,10 @@ public class StoneGameIIIBenchmarks
     private const int MinStoneValue = -50;
     private const int StoneValueUpperBound = 100;
 
-    [Params(20, 24)]
-    public int PileCount;
+    private int[] _stoneValue = [];
 
-    private int[] _stoneValue = null!;
+    [Params(20, 24)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

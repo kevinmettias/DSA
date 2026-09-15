@@ -13,13 +13,13 @@ public class CheckIfAParenthesesStringCanBeValidBenchmarks
 {
     private const char OpenParenthesis = '(';
     private const int BoundaryParenthesisCount = 2; // one leading locked '(' + one trailing locked ')'
-    private const string LockedMarker = "1"; // locked-position digit in the `locked` string
+    private const string LockedMarker = "1"; private string _s = "";
+
+    private string _locked = "";
+    // locked-position digit in the `locked` string
 
     [Params(200, 5_000)]
-    public int Length;
-
-    private string _s = null!;
-    private string _locked = null!;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -30,9 +30,13 @@ public class CheckIfAParenthesesStringCanBeValidBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool ReachableOpenCountDp() =>
-        CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByReachableOpenCountDp(_s, _locked);
+        CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByReachableOpenCountDp(
+            new CheckIfAParenthesesStringCanBeValidSolution.ParenthesisString(_s),
+            new CheckIfAParenthesesStringCanBeValidSolution.LockMask(_locked));
 
     [Benchmark]
     public bool IndexStackSweep() =>
-        CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByIndexStackSweep(_s, _locked);
+        CheckIfAParenthesesStringCanBeValidSolution.CanBeValidByIndexStackSweep(
+            new CheckIfAParenthesesStringCanBeValidSolution.ParenthesisString(_s),
+            new CheckIfAParenthesesStringCanBeValidSolution.LockMask(_locked));
 }

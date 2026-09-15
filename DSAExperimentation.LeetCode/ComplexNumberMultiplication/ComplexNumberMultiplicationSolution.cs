@@ -21,10 +21,7 @@ internal static class ComplexNumberMultiplicationSolution
         var (realA, imaginaryA) = ParseSplit(a);
         var (realB, imaginaryB) = ParseSplit(b);
 
-        var real = (realA * realB) - (imaginaryA * imaginaryB);
-        var imaginary = (realA * imaginaryB) + (imaginaryA * realB);
-
-        return $"{real}+{imaginary}i";
+        return MultiplyAndFormat(realA, imaginaryA, realB, imaginaryB);
     }
 
     private static (int Real, int Imaginary) ParseSplit(string complex)
@@ -40,15 +37,22 @@ internal static class ComplexNumberMultiplicationSolution
         var (realA, imaginaryA) = ParseSpan(a);
         var (realB, imaginaryB) = ParseSpan(b);
 
-        var real = (realA * realB) - (imaginaryA * imaginaryB);
-        var imaginary = (realA * imaginaryB) + (imaginaryA * realB);
-
-        return $"{real}+{imaginary}i";
+        return MultiplyAndFormat(realA, imaginaryA, realB, imaginaryB);
     }
 
     private static (int Real, int Imaginary) ParseSpan(ReadOnlySpan<char> complex)
     {
         var separator = complex.IndexOf('+');
         return (int.Parse(complex[..separator]), int.Parse(complex[(separator + 1)..^1]));
+    }
+
+    // Shared by both strategies: they differ only in parsing, so the product itself
+    // lives once here.
+    private static string MultiplyAndFormat(int realA, int imaginaryA, int realB, int imaginaryB)
+    {
+        var real = (realA * realB) - (imaginaryA * imaginaryB);
+        var imaginary = (realA * imaginaryB) + (imaginaryA * realB);
+
+        return $"{real}+{imaginary}i";
     }
 }

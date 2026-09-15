@@ -77,8 +77,12 @@ internal static class GoodSubsequenceQueriesSolution
     // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for,
     // instantiated twice over (gcd, sum) the same way MinimumStabilityFactorOfArray
     // instantiates it once for LC 3605's window gcds.
-    public static int CountGoodSubseqBySegmentTreeGcd(int[] nums, int p, int[][] queries) =>
-        CountGoodSubseqBySegmentTreeGcd(GoodSubsequenceIndex.Build(nums, p), queries);
+    public static int CountGoodSubseqBySegmentTreeGcd(int[] nums, int p, int[][] queries)
+    {
+        var index = GoodSubsequenceIndex.Build(nums, p);
+
+        return CountGoodSubseqBySegmentTreeGcd(index, queries);
+    }
 
     public static int CountGoodSubseqBySegmentTreeGcd(GoodSubsequenceIndex index, int[][] queries)
     {
@@ -124,27 +128,15 @@ internal static class GoodSubsequenceQueriesSolution
     private static bool ExistsRemovableIndex(int[] divided)
     {
         var n = divided.Length;
-        var prefix = new int[n];
-        var suffix = new int[n];
+        var prefix = new int[n + 1];
+        var suffix = new int[n + 1];
 
-        prefix[0] = divided[0];
-        for (var i = 1; i < n; i++)
-        {
-            prefix[i] = GcdOperation.Combine(prefix[i - 1], divided[i]);
-        }
-
-        suffix[n - 1] = divided[n - 1];
-        for (var i = n - 2; i >= 0; i--)
-        {
-            suffix[i] = GcdOperation.Combine(suffix[i + 1], divided[i]);
-        }
+        BuildPrefixCommonDivisors(prefix, divided);
+        BuildSuffixCommonDivisors(suffix, divided);
 
         for (var i = 0; i < n; i++)
         {
-            var left = i > 0 ? prefix[i - 1] : GcdOperation.Identity;
-            var right = i < n - 1 ? suffix[i + 1] : GcdOperation.Identity;
-
-            if (GcdOperation.Combine(left, right) == 1)
+            if (GcdOperation.Combine(prefix[i], suffix[i + 1]) == 1)
             {
                 return true;
             }
@@ -153,5 +145,42 @@ internal static class GoodSubsequenceQueriesSolution
         return false;
     }
 
-    private static int DivideByP(int value, int p) => value % p == 0 ? value / p : 0;
+    // prefix[k] is the gcd of divided[0..k-1], with the empty prefix's Identity parked at
+    // prefix[0] - so "everything before index i" is simply prefix[i], with no first-index
+    // case for the sweep above to spell out.
+    private static void BuildPrefixCommonDivisors(int[] prefix, int[] divided)
+    {
+        prefix[0] = GcdOperation.Identity;
+
+        for (var i = 0; i < divided.Length; i++)
+        {
+            prefix[i + 1] = GcdOperation.Combine(prefix[i], divided[i]);
+        }
+    }
+
+    // suffix[k] is the gcd of divided[k..n - 1], with the empty suffix's Identity parked at
+    // suffix[n] - so "everything after index i" is simply suffix[i + 1], the mirror of the
+    // prefix above.
+    private static void BuildSuffixCommonDivisors(int[] suffix, int[] divided)
+    {
+        suffix[divided.Length] = GcdOperation.Identity;
+
+        for (var i = divided.Length - 1; i >= 0; i--)
+        {
+            suffix[i] = GcdOperation.Combine(suffix[i + 1], divided[i]);
+        }
+    }
+
+    // Dividing p out of a value that is not a multiple of p is meaningless here: 0 is
+    // already what "this element cannot join a p-divisible subsequence" looks like to the
+    // rescan, the range queries and the removed-index sweep alike.
+    private static int DivideByP(int value, int p)
+    {
+        if (value % p != 0)
+        {
+            return 0;
+        }
+
+        return value / p;
+    }
 }

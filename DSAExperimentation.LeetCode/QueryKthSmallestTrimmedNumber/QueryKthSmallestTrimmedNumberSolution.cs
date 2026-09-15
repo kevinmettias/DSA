@@ -39,6 +39,44 @@ internal static class QueryKthSmallestTrimmedNumberSolution
         return answers;
     }
 
+    private static int SelectionScan(string[] nums, int k, int trim)
+    {
+        var taken = new bool[nums.Length];
+        var answer = -1;
+
+        for (var round = 0; round < k; round++)
+        {
+            answer = TakeSmallestRemaining(nums, taken, trim);
+        }
+
+        return answer;
+    }
+
+    // Marks and returns the untaken index whose trimmed suffix is smallest,
+    // scanning ascending and replacing only on a strictly smaller suffix so the
+    // smaller original index keeps the tie.
+    private static int TakeSmallestRemaining(string[] nums, bool[] taken, int trim)
+    {
+        var bestIndex = -1;
+
+        for (var i = 0; i < nums.Length; i++)
+        {
+            if (taken[i])
+            {
+                continue;
+            }
+
+            if (bestIndex == -1 || CompareTrimmed(nums[i], nums[bestIndex], trim) < 0)
+            {
+                bestIndex = i;
+            }
+        }
+
+        taken[bestIndex] = true;
+
+        return bestIndex;
+    }
+
     // Sort an index array once per query with this repo's own MergeSort over
     // ArrayIndexedSequence<int>, ordered by each index's trimmed suffix, then read off
     // position k directly - O(n log n) per query. MergeSort's merge step is documented
@@ -55,35 +93,6 @@ internal static class QueryKthSmallestTrimmedNumberSolution
         }
 
         return answers;
-    }
-
-    private static int SelectionScan(string[] nums, int k, int trim)
-    {
-        var taken = new bool[nums.Length];
-        var answer = -1;
-
-        for (var round = 0; round < k; round++)
-        {
-            var bestIndex = -1;
-
-            for (var i = 0; i < nums.Length; i++)
-            {
-                if (taken[i])
-                {
-                    continue;
-                }
-
-                if (bestIndex == -1 || CompareTrimmed(nums[i], nums[bestIndex], trim) < 0)
-                {
-                    bestIndex = i;
-                }
-            }
-
-            taken[bestIndex] = true;
-            answer = bestIndex;
-        }
-
-        return answer;
     }
 
     private static int MergeSortedIndex(string[] nums, int k, int trim)

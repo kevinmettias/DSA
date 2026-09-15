@@ -16,10 +16,10 @@ public class MyCalendarIIBenchmarks
     private const int EventWidth = 10;
     private const int Stride = 5;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private (int Start, int End)[] _events = [];
 
-    private (int Start, int End)[] _events = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

@@ -29,12 +29,19 @@ internal static class NthTribonacciNumberSolution
         };
 
     public static int TribonacciByMemoizedTopDown(int n)
-        => Memoizer.Memoize<int, int>(
-            n,
-            (value, trib) => value switch
-            {
-                0 => 0,
-                1 or SecondPriorTermOffset => 1,
-                _ => trib(value - 1) + trib(value - SecondPriorTermOffset) + trib(value - ThirdPriorTermOffset)
-            });
+        => Memoizer.Memoize<int, int>(n, new TribonacciFromPriorTerms());
+
+    // The recurrence, as a named type: each term past the seeds is the sum of the three
+    // terms below it, and the seeds are the whole base case.
+    private sealed class TribonacciFromPriorTerms : IRecurrence<int, int>
+    {
+        public int Replay(int term, IRecurrence<int, int> rest) => term switch
+        {
+            0 => 0,
+            1 or SecondPriorTermOffset => 1,
+            _ => rest.Replay(term - 1, rest)
+                + rest.Replay(term - SecondPriorTermOffset, rest)
+                + rest.Replay(term - ThirdPriorTermOffset, rest)
+        };
+    }
 }

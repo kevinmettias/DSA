@@ -35,19 +35,6 @@ internal static class NumberOfProvincesSolution
         return provinces;
     }
 
-    private static void Visit(int city, int[][] isConnected, bool[] visited)
-    {
-        visited[city] = true;
-
-        for (var next = 0; next < isConnected.Length; next++)
-        {
-            if (isConnected[city][next] == 1 && !visited[next])
-            {
-                Visit(next, isConnected, visited);
-            }
-        }
-    }
-
     // Union every isConnected[i][j] pair into this repo's own DisjointSet, then
     // count distinct roots with this repo's own Set<int> - the same DisjointSet
     // RedundantConnectionTests already uses to detect a cycle-closing edge, just
@@ -76,5 +63,18 @@ internal static class NumberOfProvincesSolution
         }
 
         return roots.Count;
+    }
+
+    private static void Visit(int city, int[][] isConnected, bool[] visited)
+    {
+        visited[city] = true;
+
+        for (var next = 0; next < isConnected.Length; next++)
+        {
+            if (isConnected[city][next] == 1 && !visited[next])
+            {
+                Visit(next, isConnected, visited);
+            }
+        }
     }
 }

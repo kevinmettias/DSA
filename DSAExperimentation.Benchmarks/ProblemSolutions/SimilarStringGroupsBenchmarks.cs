@@ -23,24 +23,24 @@ public class SimilarStringGroupsBenchmarks
     private const int RandomSeed = 839; // LC 839
     private const int WordsPerCluster = 8;
     private const int CoinFlipBound = 2;
+    private const string Alphabet = "abcdefgh";
+
+    private string[] _words = [];
 
     [Params(60, 240)]
-    public int WordCount;
-
-    private string[] _words = null!;
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        const string alphabet = "abcdefgh";
         var clusterCount = Math.Max(1, WordCount / WordsPerCluster);
 
         var clusters = new (char[] Base, int SwapI, int SwapJ)[clusterCount];
 
         for (var c = 0; c < clusterCount; c++)
         {
-            clusters[c] = BuildCluster(alphabet, random);
+            clusters[c] = BuildCluster(Alphabet, random);
         }
 
         _words = new string[WordCount];
@@ -49,19 +49,6 @@ public class SimilarStringGroupsBenchmarks
         {
             _words[w] = BuildWord(clusters, w, clusterCount, random);
         }
-    }
-
-    private static string BuildWord((char[] Base, int SwapI, int SwapJ)[] clusters, int w, int clusterCount, Random random)
-    {
-        var (baseChars, i, j) = clusters[w % clusterCount];
-        var word = (char[])baseChars.Clone();
-
-        if (random.Next(CoinFlipBound) == 0)
-        {
-            (word[i], word[j]) = (word[j], word[i]);
-        }
-
-        return new string(word);
     }
 
     private static (char[] Base, int SwapI, int SwapJ) BuildCluster(string alphabet, Random random)
@@ -87,6 +74,19 @@ public class SimilarStringGroupsBenchmarks
             var j = random.Next(i + 1);
             (chars[i], chars[j]) = (chars[j], chars[i]);
         }
+    }
+
+    private static string BuildWord((char[] Base, int SwapI, int SwapJ)[] clusters, int w, int clusterCount, Random random)
+    {
+        var (baseChars, i, j) = clusters[w % clusterCount];
+        var word = (char[])baseChars.Clone();
+
+        if (random.Next(CoinFlipBound) == 0)
+        {
+            (word[i], word[j]) = (word[j], word[i]);
+        }
+
+        return new string(word);
     }
 
     [Benchmark(Baseline = true)]

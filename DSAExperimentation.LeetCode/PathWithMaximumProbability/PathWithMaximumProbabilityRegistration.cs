@@ -27,11 +27,11 @@ internal sealed class PathWithMaximumProbabilityRegistration : ILeetCodeProblemR
             .Strategy(
                 "ExhaustiveDfs",
                 input => PathWithMaximumProbabilitySolution.MaxProbabilityByExhaustiveDfs(
-                    input.NodeCount, input.Edges, input.SuccessProbabilities, input.Start, input.End))
+                    input.NodeCount, input.Edges, input.SuccessProbabilities, (input.Start, input.End)))
             .Strategy(
                 "Dijkstra",
                 input => PathWithMaximumProbabilitySolution.MaxProbabilityByDijkstra(
-                    input.NodeCount, input.Edges, input.SuccessProbabilities, input.Start, input.End))
+                    input.NodeCount, input.Edges, input.SuccessProbabilities, (input.Start, input.End)))
             .MatchingAnswersWith((actual, expected) => LeetCodeAnswers.WithinTolerance(actual, expected))
             .Case("example-1", (3, [[0, 1], [1, 2], [0, 2]], [0.5, 0.5, 0.2], 0, 2), 0.25)
             .Case("example-2", (3, [[0, 1], [1, 2], [0, 2]], [0.5, 0.5, 0.3], 0, 2), 0.3)
@@ -69,29 +69,30 @@ internal sealed class PathWithMaximumProbabilityRegistration : ILeetCodeProblemR
         int nodeCount)
     {
         var random = new Random(BranchingSeed);
-        var edges = new List<int[]>();
-        var probabilities = new List<double>();
-
-        void AddEdge(int from, int to)
-        {
-            edges.Add([from, to]);
-            probabilities.Add(MinEdgeProbability + (random.NextDouble() * EdgeProbabilityRange));
-        }
+        var graph = (Edges: new List<int[]>(), Probabilities: new List<double>());
 
         for (var node = 1; node < nodeCount; node++)
         {
-            AddEdge(random.Next(node), node);
+            AppendEdge(graph, random, random.Next(node), node);
         }
 
         for (var node = 0; node < nodeCount - 1; node++)
         {
             for (var extra = 0; extra < ExtraEdgesPerNode; extra++)
             {
-                AddEdge(node, random.Next(node + 1, nodeCount));
+                var to = random.Next(node + 1, nodeCount);
+                AppendEdge(graph, random, node, to);
             }
         }
 
-        return (nodeCount, [.. edges], [.. probabilities], 0, nodeCount - 1);
+        return (nodeCount, [.. graph.Edges], [.. graph.Probabilities], 0, nodeCount - 1);
+    }
+
+    private static void AppendEdge(
+        (List<int[]> Edges, List<double> Probabilities) graph, Random random, int from, int to)
+    {
+        graph.Edges.Add([from, to]);
+        graph.Probabilities.Add(MinEdgeProbability + (random.NextDouble() * EdgeProbabilityRange));
     }
 
     private static (int NodeCount, int[][] Edges, double[] SuccessProbabilities, int Start, int End) BuildCycle(

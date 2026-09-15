@@ -66,12 +66,18 @@ internal static class SumOfSubarrayMinimumsSolution
                 pendingIndices.TryPop(out _);
             }
 
-            left[i] = pendingIndices.TryPeek(out var previous) ? i - previous : i + 1;
+            left[i] = pendingIndices.TryPeek(out var previous)
+                ? DistanceToPrevious(i, previous)
+                : DistanceFromStart(i);
             pendingIndices.Push(i);
         }
 
         return left;
     }
+
+    private static int DistanceToPrevious(int index, int previous) => index - previous;
+
+    private static int DistanceFromStart(int index) => index + 1;
 
     // right[i] = the mirror image, stopping at the next smaller-or-equal element
     // rather than the next strictly smaller one, so equal values never both claim
@@ -88,12 +94,18 @@ internal static class SumOfSubarrayMinimumsSolution
                 pendingIndices.TryPop(out _);
             }
 
-            right[i] = pendingIndices.TryPeek(out var next) ? next - i : arr.Length - i;
+            right[i] = pendingIndices.TryPeek(out var next)
+                ? DistanceToNext(i, next)
+                : DistanceToEnd(i, arr.Length);
             pendingIndices.Push(i);
         }
 
         return right;
     }
+
+    private static int DistanceToNext(int index, int next) => next - index;
+
+    private static int DistanceToEnd(int index, int length) => length - index;
 
     private static int SumWeightedContributions(int[] arr, int[] left, int[] right)
     {

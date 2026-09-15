@@ -17,10 +17,10 @@ public class CountIntegersInIntervalsBenchmarks
     // per-call cost bounded instead of dominating the whole benchmark on its own.
     private const int MaxRangeWidth = 20;
 
-    [Params(200, 2_000)]
-    public int OperationCount;
+    private (int Left, int Right)[] _ranges = [];
 
-    private (int Left, int Right)[] _ranges = null!;
+    [Params(200, 2_000)]
+    public int OperationCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

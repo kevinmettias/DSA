@@ -73,7 +73,17 @@ internal static class ShortestUncommonSubstringInAnArraySolution
         }
 
         var automaton = new AhoCorasick(candidates);
-        var occursElsewhere = new bool[candidates.Count];
+        var occursElsewhere = MarkCandidatesFoundElsewhere(automaton, arr, index, candidates.Count);
+
+        return FirstUnmarkedCandidate(candidates, occursElsewhere);
+    }
+
+    // One FindAll pass per other word: it reports every pattern occurring
+    // anywhere in that word, so each match marks its own candidate as failing.
+    private static bool[] MarkCandidatesFoundElsewhere(
+        AhoCorasick automaton, string[] arr, int index, int candidateCount)
+    {
+        var occursElsewhere = new bool[candidateCount];
 
         for (var j = 0; j < arr.Length; j++)
         {
@@ -88,6 +98,13 @@ internal static class ShortestUncommonSubstringInAnArraySolution
             }
         }
 
+        return occursElsewhere;
+    }
+
+    // Candidates are already ranked shortest-first then lexicographically, so the
+    // first one no other word contains is the answer.
+    private static string FirstUnmarkedCandidate(List<string> candidates, bool[] occursElsewhere)
+    {
         for (var c = 0; c < candidates.Count; c++)
         {
             if (!occursElsewhere[c])
@@ -110,7 +127,8 @@ internal static class ShortestUncommonSubstringInAnArraySolution
         {
             for (var length = 1; start + length <= word.Length; length++)
             {
-                substrings.Add(word.Substring(start, length));
+                var substring = word.Substring(start, length);
+                substrings.Add(substring);
             }
         }
 

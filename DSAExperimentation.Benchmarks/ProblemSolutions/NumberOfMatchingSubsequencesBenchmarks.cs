@@ -18,18 +18,18 @@ public class NumberOfMatchingSubsequencesBenchmarks
     // Arbitrary fixed seed for reproducible benchmark input.
     private const int RandomSeed = 1;
 
-    [Params(200, 2_000)]
-    public int WordCount;
+    private string _s = "";
 
-    private string _s = null!;
-    private string[] _words = null!;
+    private string[] _words = [];
+    [Params(200, 2_000)]
+    public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
 
-        _s = MatchingSubsequenceWorkloads.BuildText(random, MatchingSubsequenceWorkloads.TextLength);
+        _s = MatchingSubsequenceWorkloads.BuildText(random, MatchingSubsequenceScenario.TextLength);
         _words = MatchingSubsequenceWorkloads.BuildUnmatchableWords(random, WordCount);
     }
 

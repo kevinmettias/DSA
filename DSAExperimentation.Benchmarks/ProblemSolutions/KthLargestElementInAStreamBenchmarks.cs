@@ -18,22 +18,28 @@ public class KthLargestElementInAStreamBenchmarks
     private const int RandomSeed = 703; // LC problem number
     private const int StreamValueExclusiveBound = 1_000_000;
 
-    [Params(100, 1_000)]
-    public int StreamLength;
+    private int[] _stream = [];
 
-    private int[] _stream = null!;
+    [Params(100, 1_000)]
+    public int StreamLength { get; set; }
 
     [GlobalSetup]
     public void Setup() => _stream = KthLargestElementInAStreamWorkloads.BuildStream(
         StreamLength, RandomSeed, StreamValueExclusiveBound);
 
     [Benchmark(Baseline = true)]
-    public int SortOnEveryAdd() =>
-        Replay(KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(K, []));
+    public int SortOnEveryAdd()
+    {
+        var stream = KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(K, []);
+        return Replay(stream);
+    }
 
     [Benchmark]
-    public int SizeKMinHeap() =>
-        Replay(KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(K, []));
+    public int SizeKMinHeap()
+    {
+        var stream = KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(K, []);
+        return Replay(stream);
+    }
 
     private int Replay(IKthLargestStream stream)
     {

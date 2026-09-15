@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignMovieRentalSystem.DesignMovieRentalSystemSolution;
+using DSAExperimentation.LeetCode.DesignMovieRentalSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -23,11 +23,11 @@ public class DesignMovieRentalSystemBenchmarks
     // LC problem number, reused as the deterministic seed for reproducible benchmarks.
     private const int RandomSeed = 1912;
 
-    [Params(50, 500)]
-    public int ShopsForTargetMovie;
+    private DesignMovieRentalSystemSolution.MovieRentingSystemBySortOnQuery _sortOnQuery = null!;
 
-    private MovieRentingSystemBySortOnQuery _sortOnQuery = null!;
-    private MovieRentingSystemByBinarySearchTree _binarySearchTree = null!;
+    private DesignMovieRentalSystemSolution.MovieRentingSystemByBinarySearchTree _binarySearchTree = null!;
+    [Params(50, 500)]
+    public int ShopsForTargetMovie { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -35,15 +35,9 @@ public class DesignMovieRentalSystemBenchmarks
         var entries = BuildEntries();
         var shopCount = Math.Max(ShopsForTargetMovie, ShopsPerOtherMovie);
 
-        _sortOnQuery = new MovieRentingSystemBySortOnQuery(shopCount, entries);
-        _binarySearchTree = new MovieRentingSystemByBinarySearchTree(shopCount, entries);
+        _sortOnQuery = new DesignMovieRentalSystemSolution.MovieRentingSystemBySortOnQuery(shopCount, entries);
+        _binarySearchTree = new DesignMovieRentalSystemSolution.MovieRentingSystemByBinarySearchTree(shopCount, entries);
     }
-
-    [Benchmark(Baseline = true)]
-    public List<int> SortOnQuery() => _sortOnQuery.Search(TargetMovie);
-
-    [Benchmark]
-    public List<int> BstMaintainedSorted() => _binarySearchTree.Search(TargetMovie);
 
     // The queried movie is stocked by ShopsForTargetMovie shops; nineteen other
     // movies pad the catalogue so the sort-on-query arm has entries to filter out
@@ -68,4 +62,10 @@ public class DesignMovieRentalSystemBenchmarks
 
         return [.. entries];
     }
+
+    [Benchmark(Baseline = true)]
+    public List<int> SortOnQuery() => _sortOnQuery.Search(TargetMovie);
+
+    [Benchmark]
+    public List<int> BstMaintainedSorted() => _binarySearchTree.Search(TargetMovie);
 }

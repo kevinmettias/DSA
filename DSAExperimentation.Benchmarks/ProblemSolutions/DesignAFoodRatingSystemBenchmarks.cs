@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignAFoodRatingSystem.DesignAFoodRatingSystemSolution;
+using DSAExperimentation.LeetCode.DesignAFoodRatingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -21,14 +21,14 @@ public class DesignAFoodRatingSystemBenchmarks
     private const int CuisineDomain = 15;
     private const int MaxRatingExclusive = 100;
 
-    [Params(200, 3_000)]
-    public int Count;
+    private string[] _foods = [];
 
-    private string[] _foods = null!;
-    private string[] _cuisines = null!;
-    private int[] _initialRatings = null!;
-    private int[] _changeRatings = null!;
-    private string[] _queryCuisines = null!;
+    private string[] _cuisines = [];
+    private int[] _initialRatings = [];
+    private int[] _changeRatings = [];
+    private string[] _queryCuisines = [];
+    [Params(200, 3_000)]
+    public int Count { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -42,14 +42,14 @@ public class DesignAFoodRatingSystemBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new FoodRatingsByLinearScan(_foods, _cuisines, _initialRatings));
+    public long LinearScan() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLinearScan(_foods, _cuisines, _initialRatings));
 
     [Benchmark]
-    public long LazyDeletionHeap() => Replay(new FoodRatingsByLazyDeletionHeap(_foods, _cuisines, _initialRatings));
+    public long LazyDeletionHeap() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLazyDeletionHeap(_foods, _cuisines, _initialRatings));
 
     // Sums the length of every reported food name rather than discarding the
     // answer, so the JIT can't eliminate the replay as dead code.
-    private long Replay(IFoodRatingStrategy strategy)
+    private long Replay(DesignAFoodRatingSystemSolution.IFoodRatingStrategy strategy)
     {
         for (var i = 0; i < _foods.Length; i++)
         {

@@ -15,21 +15,40 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 {
     private const int Seed = 3001;
 
-    [Params(1_000, 100_000)]
-    public int BatchSize;
+    // The chessboard the queries are drawn from: 1..8 in both coordinates, so the
+    // random range is expressed as the board the problem fixes rather than as the
+    // exclusive bound 8 happens to imply.
+    private const int BoardSize = 8;
 
-    private (int A, int B, int C, int D, int E, int F)[] _queries = null!;
+    private QueenQuery[] _queries = [];
+
+    [Params(1_000, 100_000)]
+    public int BatchSize { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
-        _queries = new (int, int, int, int, int, int)[BatchSize];
+        _queries = new QueenQuery[BatchSize];
 
         for (var i = 0; i < BatchSize; i++)
         {
             _queries[i] = RandomDistinctSquares(random);
         }
+    }
+
+    private static QueenQuery RandomDistinctSquares(Random random)
+    {
+        var squares = new HashSet<(int Row, int Col)>();
+
+        while (squares.Count < 3)
+        {
+            squares.Add((random.Next(1, BoardSize + 1), random.Next(1, BoardSize + 1)));
+        }
+
+        var picked = squares.ToArray();
+        return new QueenQuery(
+            picked[0].Row, picked[0].Col, picked[1].Row, picked[1].Col, picked[2].Row, picked[2].Col);
     }
 
     [Benchmark(Baseline = true)]
@@ -39,7 +58,8 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 
         foreach (var (a, b, c, d, e, f) in _queries)
         {
-            total += MinimumMovesToCaptureTheQueenSolution.MinMovesByDestinationEnumeration(a, b, c, d, e, f);
+            total += MinimumMovesToCaptureTheQueenSolution.MinMovesByDestinationEnumeration(
+                new ChessSquare(a, b), new ChessSquare(c, d), new ChessSquare(e, f));
         }
 
         return total;
@@ -52,22 +72,10 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 
         foreach (var (a, b, c, d, e, f) in _queries)
         {
-            total += MinimumMovesToCaptureTheQueenSolution.MinMovesByLineOfSight(a, b, c, d, e, f);
+            total += MinimumMovesToCaptureTheQueenSolution.MinMovesByLineOfSight(
+                new ChessSquare(a, b), new ChessSquare(c, d), new ChessSquare(e, f));
         }
 
         return total;
-    }
-
-    private static (int, int, int, int, int, int) RandomDistinctSquares(Random random)
-    {
-        var squares = new HashSet<(int Row, int Col)>();
-
-        while (squares.Count < 3)
-        {
-            squares.Add((random.Next(1, 9), random.Next(1, 9)));
-        }
-
-        var picked = squares.ToArray();
-        return (picked[0].Row, picked[0].Col, picked[1].Row, picked[1].Col, picked[2].Row, picked[2].Col);
     }
 }

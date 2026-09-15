@@ -40,6 +40,18 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
         return digits[0] == digits[1];
     }
 
+    private static int[] ToDigits(string s)
+    {
+        var digits = new int[s.Length];
+
+        for (var i = 0; i < s.Length; i++)
+        {
+            digits[i] = s[i] - '0';
+        }
+
+        return digits;
+    }
+
     public static bool AreEqualByLucasBinomialCoefficients(string s)
     {
         var steps = s.Length - 2;
@@ -56,12 +68,20 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
         return first == second;
     }
 
-    private static int BinomialModTen(int n, int k) => CombineByCrt(BinomialModTwo(n, k), BinomialModFive(n, k));
+    private static int BinomialModTen(int n, int k)
+    {
+        var modTwo = BinomialModTwo(n, k);
+        var modFive = BinomialModFive(n, k);
+
+        return CombineByCrt(modTwo, modFive);
+    }
 
     // Kummer's theorem specialization for p = 2: C(n, k) is odd exactly when
     // adding k and n - k in binary never carries, i.e. every set bit of k is also
     // set in n.
-    private static int BinomialModTwo(int n, int k) => (k & ~n) == 0 ? 1 : 0;
+    private static int BinomialModTwo(int n, int k) => IsBinomialCoefficientOdd(n, k) ? 1 : 0;
+
+    private static bool IsBinomialCoefficientOdd(int n, int k) => (k & ~n) == 0;
 
     // Lucas' theorem for p = 5: split n and k into base-5 digits and multiply the
     // per-digit binomial coefficients mod 5, which is 0 the moment a digit of k
@@ -88,6 +108,17 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
         return result;
     }
 
+    // The unique x in [0, 10) with x mod 2 == modTwo and x mod 5 == modFive:
+    // modFive already has the right value mod 5, so it is the answer whenever its
+    // parity already matches, otherwise modFive + 5 keeps the mod-5 residue and
+    // flips the parity.
+    private static int CombineByCrt(int modTwo, int modFive) =>
+        ParityAlreadyMatches(modFive, modTwo) ? modFive : ParityFlipped(modFive);
+
+    private static bool ParityAlreadyMatches(int modFive, int modTwo) => modFive % ModTwo == modTwo;
+
+    private static int ParityFlipped(int modFive) => modFive + ModFive;
+
     // C(a, b) mod 5 for 0 <= b <= a <= 4 - the only inputs Lucas' theorem ever
     // hands BinomialModFive - built once as Pascal's triangle rows 0..4 mod 5.
     private static int[,] BuildBinomialModFiveTable()
@@ -105,23 +136,5 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
         }
 
         return table;
-    }
-
-    // The unique x in [0, 10) with x mod 2 == modTwo and x mod 5 == modFive:
-    // modFive already has the right value mod 5, so it is the answer whenever its
-    // parity already matches, otherwise modFive + 5 keeps the mod-5 residue and
-    // flips the parity.
-    private static int CombineByCrt(int modTwo, int modFive) => modFive % ModTwo == modTwo ? modFive : modFive + ModFive;
-
-    private static int[] ToDigits(string s)
-    {
-        var digits = new int[s.Length];
-
-        for (var i = 0; i < s.Length; i++)
-        {
-            digits[i] = s[i] - '0';
-        }
-
-        return digits;
     }
 }

@@ -20,13 +20,13 @@ public class MergeInBetweenLinkedListsBenchmarks
     private const int SecondListValueOffset = 1_000_000;
     private const int SpliceStartDivisor = 3;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _list1Values = [];
 
-    private int[] _list1Values = null!;
-    private int[] _list2Values = null!;
+    private int[] _list2Values = [];
     private int _a;
     private int _b;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

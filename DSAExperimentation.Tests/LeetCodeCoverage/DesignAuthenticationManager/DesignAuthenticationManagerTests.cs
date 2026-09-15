@@ -84,46 +84,36 @@ public sealed class DesignAuthenticationManagerTests
 // One call in an AuthenticationManager script: which operation to invoke, on which
 // token, at what time. Pure dispatch, built via the named factories below so a
 // script reads like the LeetCode call sequence it replays.
-public readonly record struct AuthenticationManagerOp
+public readonly record struct AuthenticationManagerOp(
+    AuthenticationManagerOp.OpKind kind, string tokenId, int currentTime)
 {
-    private readonly Kind _kind;
-    private readonly string _tokenId;
-    private readonly int _currentTime;
-
-    private AuthenticationManagerOp(Kind kind, string tokenId, int currentTime)
-    {
-        _kind = kind;
-        _tokenId = tokenId;
-        _currentTime = currentTime;
-    }
-
     public static AuthenticationManagerOp Generate(string tokenId, int currentTime) =>
-        new(Kind.Generate, tokenId, currentTime);
+        new(OpKind.Generate, tokenId, currentTime);
 
     public static AuthenticationManagerOp Renew(string tokenId, int currentTime) =>
-        new(Kind.Renew, tokenId, currentTime);
+        new(OpKind.Renew, tokenId, currentTime);
 
     public static AuthenticationManagerOp CountUnexpiredTokens(int currentTime) =>
-        new(Kind.Count, string.Empty, currentTime);
+        new(OpKind.Count, string.Empty, currentTime);
 
     // null for the two void operations, matching LeetCode's own judge output, so a
     // script runner can assert against one expected value per operation uniformly.
     internal int? Apply(IAuthenticationManager manager)
     {
-        switch (_kind)
+        switch (kind)
         {
-            case Kind.Generate:
-                manager.Generate(_tokenId, _currentTime);
+            case OpKind.Generate:
+                manager.Generate(tokenId, currentTime);
                 return null;
-            case Kind.Renew:
-                manager.Renew(_tokenId, _currentTime);
+            case OpKind.Renew:
+                manager.Renew(tokenId, currentTime);
                 return null;
             default:
-                return manager.CountUnexpiredTokens(_currentTime);
+                return manager.CountUnexpiredTokens(currentTime);
         }
     }
 
-    private enum Kind
+    public enum OpKind
     {
         Generate,
         Renew,

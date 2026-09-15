@@ -13,10 +13,10 @@ public class ShortestUnsortedContinuousSubarrayBenchmarks
     private const int RandomSeed = 581; // LC problem number
     private const int ValueUpperBoundExclusive = 1_000_000;
 
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

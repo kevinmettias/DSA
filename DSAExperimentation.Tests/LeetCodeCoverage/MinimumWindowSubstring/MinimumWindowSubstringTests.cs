@@ -19,11 +19,19 @@ public sealed class MinimumWindowSubstringTests
     [MemberData(nameof(Examples))]
     public void MinWindowByBruteForce_LeetCodeExamples_ReturnsSmallestCoveringSubstring(
         string s, string t, string expected) =>
-        Assert.Equal(expected, MinimumWindowSubstringSolution.MinWindowByBruteForce(s, t));
+        Assert.Equal(
+            expected,
+            MinimumWindowSubstringSolution.MinWindowByBruteForce(
+                new MinimumWindowSubstringSolution.SearchedText(s),
+                new MinimumWindowSubstringSolution.RequiredCharacters(t)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinWindowBySlidingWindowHashMap_LeetCodeExamples_ReturnsSmallestCoveringSubstring(
         string s, string t, string expected) =>
-        Assert.Equal(expected, MinimumWindowSubstringSolution.MinWindowBySlidingWindowHashMap(s, t));
+        Assert.Equal(
+            expected,
+            MinimumWindowSubstringSolution.MinWindowBySlidingWindowHashMap(
+                new MinimumWindowSubstringSolution.SearchedText(s),
+                new MinimumWindowSubstringSolution.RequiredCharacters(t)));
 }

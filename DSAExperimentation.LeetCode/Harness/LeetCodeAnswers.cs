@@ -8,6 +8,9 @@ namespace DSAExperimentation.LeetCode.Harness;
 // to make it is a registration where nobody checked.
 internal static class LeetCodeAnswers
 {
+    // LeetCode's own stated tolerance for its floating-point answers.
+    private const double DefaultTolerance = 1e-5;
+
     // Ordinary value equality. Correct for int/bool/string answers, and WRONG for
     // arrays and lists - use SequenceEqual for those.
     public static bool Exactly<TAnswer>(TAnswer actual, TAnswer expected)
@@ -73,9 +76,6 @@ internal static class LeetCodeAnswers
         return actualRows.Count == expectedRows.Count
             && actualRows.Zip(expectedRows).All(pair => pair.First.SequenceEqual(pair.Second));
     }
-
-    // LeetCode's own stated tolerance for its floating-point answers.
-    public const double DefaultTolerance = 1e-5;
 
     public static bool WithinTolerance(double actual, double expected, double tolerance = DefaultTolerance)
         => Math.Abs(actual - expected) <= tolerance;

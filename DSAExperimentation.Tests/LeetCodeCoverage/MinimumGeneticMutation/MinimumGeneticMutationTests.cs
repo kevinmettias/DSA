@@ -20,11 +20,21 @@ public sealed class MinimumGeneticMutationTests
     [MemberData(nameof(Examples))]
     public void MinMutationByMutationQueue_LeetCodeExamples_ReturnsFewestMutations(
         string startGene, string endGene, string[] bank, int expected) =>
-        Assert.Equal(expected, MinimumGeneticMutationSolution.MinMutationByMutationQueue(startGene, endGene, bank));
+        Assert.Equal(
+            expected,
+            MinimumGeneticMutationSolution.MinMutationByMutationQueue(
+                new MinimumGeneticMutationSolution.StartGene(startGene),
+                new MinimumGeneticMutationSolution.EndGene(endGene),
+                bank));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMutationByReduceGraph_LeetCodeExamples_ReturnsFewestMutations(
         string startGene, string endGene, string[] bank, int expected) =>
-        Assert.Equal(expected, MinimumGeneticMutationSolution.MinMutationByReduceGraph(startGene, endGene, bank));
+        Assert.Equal(
+            expected,
+            MinimumGeneticMutationSolution.MinMutationByReduceGraph(
+                new MinimumGeneticMutationSolution.StartGene(startGene),
+                new MinimumGeneticMutationSolution.EndGene(endGene),
+                bank));
 }

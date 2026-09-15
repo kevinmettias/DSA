@@ -49,7 +49,8 @@ internal sealed class AlternatingRunLedger
         {
             var from = _badEdges.Get(i);
             var to = _badEdges.Get((i + 1) % wallCount);
-            AddRun(CircularGap(from, to));
+            var runLength = CircularGap(from, to);
+            AddRun(runLength);
         }
     }
 
@@ -92,9 +93,6 @@ internal sealed class AlternatingRunLedger
         RefreshEdge(index);
     }
 
-    // Edge i sits between tile i and tile (i+1) mod tileCount.
-    private bool IsBad(int edge) => _tiles[edge] == _tiles[(edge + 1) % _tileCount];
-
     private void RefreshEdge(int edge)
     {
         var isBadNow = IsBad(edge);
@@ -116,6 +114,12 @@ internal sealed class AlternatingRunLedger
         }
     }
 
+    // Edge i sits between tile i and tile (i+1) mod tileCount.
+    private bool IsBad(int edge) => _tiles[edge] == _tiles[(edge + 1) % _tileCount];
+
+    private int LocateInsertionIndex(int edge) =>
+        BinarySearch.LowerBound<int, BadEdgeView>(new BadEdgeView(_badEdges), edge);
+
     // Inserting a new wall splits the one run it used to sit inside into two -
     // except when there was no wall at all, in which case the whole circle
     // (an unstored, implicit run of length tileCount) becomes that split's input.
@@ -132,9 +136,12 @@ internal sealed class AlternatingRunLedger
             var predecessor = _badEdges.Get((insertionIndex - 1 + wallCountBefore) % wallCountBefore);
             var successor = _badEdges.Get(insertionIndex % wallCountBefore);
 
-            RemoveRun(CircularGap(predecessor, successor));
-            AddRun(CircularGap(predecessor, edge));
-            AddRun(CircularGap(edge, successor));
+            var splitRun = CircularGap(predecessor, successor);
+            RemoveRun(splitRun);
+            var headRun = CircularGap(predecessor, edge);
+            AddRun(headRun);
+            var tailRun = CircularGap(edge, successor);
+            AddRun(tailRun);
         }
 
         _badEdges.Insert(insertionIndex, edge);
@@ -153,9 +160,12 @@ internal sealed class AlternatingRunLedger
         var predecessor = _badEdges.Get((edgeIndex - 1 + wallCount) % wallCount);
         var successor = _badEdges.Get((edgeIndex + 1) % wallCount);
 
-        RemoveRun(CircularGap(predecessor, edge));
-        RemoveRun(CircularGap(edge, successor));
-        AddRun(CircularGap(predecessor, successor));
+        var headRun = CircularGap(predecessor, edge);
+        RemoveRun(headRun);
+        var tailRun = CircularGap(edge, successor);
+        RemoveRun(tailRun);
+        var mergedRun = CircularGap(predecessor, successor);
+        AddRun(mergedRun);
 
         _badEdges.RemoveAt(edgeIndex);
     }
@@ -181,9 +191,6 @@ internal sealed class AlternatingRunLedger
 
         return gap == 0 ? _tileCount : gap;
     }
-
-    private int LocateInsertionIndex(int edge) =>
-        BinarySearch.LowerBound<int, BadEdgeView>(new BadEdgeView(_badEdges), edge);
 
     private readonly struct BadEdgeView(DynamicArray<int> badEdges) : IRandomAccessSequence<int>
     {

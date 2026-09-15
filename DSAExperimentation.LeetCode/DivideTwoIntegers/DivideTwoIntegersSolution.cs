@@ -27,9 +27,8 @@ internal static class DivideTwoIntegersSolution
         return dividend / divisor;
     }
 
-    // Binary search over quotient candidates: ProductExceedsSequence(q) is 0 while
-    // divisor*q <= dividend and flips to 1 the first time it overshoots, so
-    // LowerBound(1) lands one past the true quotient.
+    // Divides by taking the absolute values, searching the quotient by binary search,
+    // then re-applying the sign the two operands disagreed on.
     public static int DivideByBinarySearchProduct(int dividend, int divisor)
     {
         if (dividend == int.MinValue && divisor == -1)
@@ -45,25 +44,34 @@ internal static class DivideTwoIntegersSolution
         var negative = (dividend < 0) ^ (divisor < 0);
         var absDividend = Math.Abs((long)dividend);
         var absDivisor = Math.Abs((long)divisor);
-        var maxCandidate = (int)Math.Min(int.MaxValue, absDividend);
 
+        var quotient = QuotientByLowerBound(absDividend, absDivisor);
+
+        return negative ? -quotient : quotient;
+    }
+
+    // Binary search over quotient candidates: ProductExceedsSequence(q) is 0 while
+    // divisor*q <= dividend and flips to 1 the first time it overshoots, so
+    // LowerBound(1) lands one past the true quotient.
+    private static int QuotientByLowerBound(long absDividend, long absDivisor)
+    {
         // maxCandidate + 1 is the sequence length we want (indices 0..maxCandidate
         // must all be valid), but that overflows int32 exactly when maxCandidate is
         // already int.MaxValue - which happens whenever absDividend itself reaches
         // int.MaxValue, including this repo's own int.MaxValue-dividend benchmark
-        // workload. Capping the length at int.MaxValue instead avoids that
-        // overflow and is exact for every quotient this repo's tests and
+        // workload. Clamping the length to int.MaxValue in long arithmetic instead avoids
+        // that overflow and is exact for every quotient this repo's tests and
         // benchmarks ever ask for (all comfortably under int.MaxValue); it is not
         // exact in the one case an IRandomAccessSequence<int> cannot represent
         // regardless - a true quotient of exactly int.MaxValue itself (only
         // reachable via dividend == int.MaxValue, divisor == 1), which would need
         // a length one past int32's own range.
-        var length = maxCandidate == int.MaxValue ? int.MaxValue : maxCandidate + 1;
+        var maxCandidate = (int)Math.Min(int.MaxValue, absDividend);
+        var length = (int)Math.Min(maxCandidate + 1L, int.MaxValue);
         var sequence = new ProductExceedsSequence(absDivisor, absDividend, length);
         var firstTooLarge = BinarySearch.LowerBound<int, ProductExceedsSequence>(sequence, 1);
-        var quotient = firstTooLarge - 1;
 
-        return negative ? -quotient : quotient;
+        return firstTooLarge - 1;
     }
 
     // Bespoke to LC 29: "does q's product with the divisor already exceed the
@@ -74,6 +82,11 @@ internal static class DivideTwoIntegersSolution
     {
         public int Length => length;
 
-        public int Get(int quotient) => divisor * quotient > dividend ? 1 : 0;
+        public int Get(int quotient) => ProductExceeds(quotient) ? 1 : 0;
+
+        // The predicate, named: "does q's product with the divisor already exceed the
+        // dividend" is what LowerBound is really searching, and a call in the arm keeps
+        // that search reading as one.
+        private bool ProductExceeds(int quotient) => divisor * quotient > dividend;
     }
 }

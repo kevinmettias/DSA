@@ -44,7 +44,7 @@ public sealed class MaximumTotalBeautyOfTheGardensTests
         Assert.Equal(
             expected,
             MaximumTotalBeautyOfTheGardensSolution.MaximumBeautyByLinearSearchOnAnswer(
-                flowers, newFlowers, target, full, partial));
+                flowers, newFlowers, target, new BeautyWeights(full, partial)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -53,5 +53,5 @@ public sealed class MaximumTotalBeautyOfTheGardensTests
         Assert.Equal(
             expected,
             MaximumTotalBeautyOfTheGardensSolution.MaximumBeautyBySortAndBinarySearch(
-                flowers, newFlowers, target, full, partial));
+                flowers, newFlowers, target, new BeautyWeights(full, partial)));
 }

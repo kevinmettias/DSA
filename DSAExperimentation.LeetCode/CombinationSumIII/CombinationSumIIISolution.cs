@@ -20,12 +20,67 @@ internal static class CombinationSumIIISolution
     {
         var results = new List<List<int>>();
         var chosen = new List<int>();
-        EnumerateSubsets(MinDigit, k, n, chosen, results);
+        EnumerateSubsets(MinDigit, (k, n), chosen, results);
         return results;
     }
 
-    private static void EnumerateSubsets(int next, int remainingCount, int remainingSum, List<int> chosen, List<List<int>> results)
+    public static List<List<int>> CombinationsByBacktrackEngine(int k, int n)
     {
+        var results = new List<List<int>>();
+        var state = new SearchState();
+
+        Backtrack.Search<SearchState, int>(
+            state,
+            isSolution: s => s.Values.Count == k && s.Sum == n,
+            candidates: s => s.Values.Count == k || s.Sum >= n
+                ? NoCandidates()
+                : CandidatesFor(s, n),
+            choose: ApplyChoice,
+            unchoose: UndoChoice,
+            onSolution: s => results.Add([.. s.Values]));
+
+        return results;
+    }
+
+    // No digit is still admissible: the combination is complete, or its running
+    // sum has already reached the target, which the positive digits can only
+    // overshoot from here.
+    private static IEnumerable<int> NoCandidates() => [];
+
+    // The digits still admissible from a state: the increasing run from its next
+    // digit through 9, keeping only those that leave the running sum at or below
+    // the target.
+    private static IEnumerable<int> CandidatesFor(SearchState state, int targetSum) =>
+        Enumerable.Range(state.Start, MaxDigit - state.Start + 1).Where(v => state.Sum + v <= targetSum);
+
+    // Applies one chosen digit to the running state: remember where the admissible run
+    // started, extend the chosen values, add the digit to the running sum, and move past
+    // it - the four mutations Backtrack.Search's `choose` hook exists to perform.
+    private static void ApplyChoice(SearchState state, int value)
+    {
+        state.Starts.Push(state.Start);
+        state.Values.Add(value);
+        state.Sum += value;
+        state.Start = value + 1;
+    }
+
+    // The exact inverse of ApplyChoice, in reverse order: restore the start of the
+    // admissible run, drop the digit from the running sum, and drop it from the values.
+    private static void UndoChoice(SearchState state, int value)
+    {
+        state.Start = state.Starts.Pop();
+        state.Sum -= value;
+        state.Values.RemoveAt(state.Values.Count - 1);
+    }
+
+    // What is still owed to the target: how many more digits must be chosen and how
+    // much sum they must still supply - the two counts the recursion decrements in
+    // lockstep and tests together at its base case.
+    private static void EnumerateSubsets(
+        int next, (int Count, int Sum) remaining, List<int> chosen, List<List<int>> results)
+    {
+        var (remainingCount, remainingSum) = remaining;
+
         if (remainingCount == 0)
         {
             if (remainingSum == 0)
@@ -39,38 +94,9 @@ internal static class CombinationSumIIISolution
         for (var digit = next; digit <= MaxDigit; digit++)
         {
             chosen.Add(digit);
-            EnumerateSubsets(digit + 1, remainingCount - 1, remainingSum - digit, chosen, results);
+            EnumerateSubsets(digit + 1, (remainingCount - 1, remainingSum - digit), chosen, results);
             chosen.RemoveAt(chosen.Count - 1);
         }
-    }
-
-    public static List<List<int>> CombinationsByBacktrackEngine(int k, int n)
-    {
-        var results = new List<List<int>>();
-        var state = new SearchState();
-
-        Backtrack.Search<SearchState, int>(
-            state,
-            isSolution: s => s.Values.Count == k && s.Sum == n,
-            candidates: s => s.Values.Count == k || s.Sum >= n
-                ? []
-                : Enumerable.Range(s.Start, MaxDigit - s.Start + 1).Where(v => s.Sum + v <= n),
-            choose: (s, v) =>
-            {
-                s.Starts.Push(s.Start);
-                s.Values.Add(v);
-                s.Sum += v;
-                s.Start = v + 1;
-            },
-            unchoose: (s, v) =>
-            {
-                s.Start = s.Starts.Pop();
-                s.Sum -= v;
-                s.Values.RemoveAt(s.Values.Count - 1);
-            },
-            onSolution: s => results.Add([.. s.Values]));
-
-        return results;
     }
 
     private sealed class SearchState

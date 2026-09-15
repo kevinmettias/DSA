@@ -24,11 +24,11 @@ public class MaximumNumberOfPointsFromGridQueriesBenchmarks
     private const int Side = 60;
     private const int ValueBound = 1_000_000;
 
-    [Params(50, 1_000)]
-    public int QueriesCount;
+    private int[][] _grid = [];
 
-    private int[][] _grid = null!;
-    private int[] _queries = null!;
+    private int[] _queries = [];
+    [Params(50, 1_000)]
+    public int QueriesCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

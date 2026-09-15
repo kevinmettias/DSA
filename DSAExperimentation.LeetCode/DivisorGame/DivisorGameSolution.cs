@@ -18,22 +18,29 @@ internal static class DivisorGameSolution
 
     // O(n^2) memoized search: for each state, scan every candidate divisor x and win
     // as soon as one leaves the opponent in a losing state.
-    public static bool AliceWinsByMemoizedRecursion(int n)
-        => Memoizer.Memoize<int, bool>(n, (current, aliceWins) =>
+    public static bool AliceWinsByMemoizedRecursion(int n) =>
+        Memoizer.Memoize<int, bool>(n, new WinFromPosition());
+
+    // The closed form: subtracting 1 always flips parity, and from an odd n every
+    // divisor is odd, so odd positions can only hand back even ones. Alice wins
+    // exactly when n is even.
+    public static bool AliceWinsByParityFormula(int n) => n % ParityDivisor == 0;
+
+    // The recurrence, as a named type: the position is winning as soon as some proper
+    // divisor of it hands the opponent a losing position - the rule as stated.
+    private sealed class WinFromPosition : IRecurrence<int, bool>
+    {
+        public bool Replay(int current, IRecurrence<int, bool> rest)
         {
             for (var x = 1; x < current; x++)
             {
-                if (current % x == 0 && !aliceWins(current - x))
+                if (current % x == 0 && !rest.Replay(current - x, rest))
                 {
                     return true;
                 }
             }
 
             return false;
-        });
-
-    // The closed form: subtracting 1 always flips parity, and from an odd n every
-    // divisor is odd, so odd positions can only hand back even ones. Alice wins
-    // exactly when n is even.
-    public static bool AliceWinsByParityFormula(int n) => n % ParityDivisor == 0;
+        }
+    }
 }

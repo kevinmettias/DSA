@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PowerOfFourBenchmarks
 {
     [Params(1073741824, 1073741823)] // 4^15 (a true power of four) vs. one less (not)
-    public int Value;
+    public int Value { get; set; }
 
     [Benchmark(Baseline = true)]
     public bool DivisionLoop() => PowerOfFourSolution.IsPowerOfFourByDivisionLoop(Value);

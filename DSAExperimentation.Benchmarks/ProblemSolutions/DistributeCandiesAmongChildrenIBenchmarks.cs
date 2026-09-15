@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class DistributeCandiesAmongChildrenIBenchmarks
 {
     [Params(10, 50)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int BruteForce() => DistributeCandiesAmongChildrenISolution.CountWaysByBruteForce(N, N);

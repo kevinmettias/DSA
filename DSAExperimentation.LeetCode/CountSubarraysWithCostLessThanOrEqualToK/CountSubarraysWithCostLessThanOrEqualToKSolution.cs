@@ -60,7 +60,7 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
         {
             PushMax(maxWindow, nums, right);
             PushMin(minWindow, nums, right);
-            left = ShrinkToCost(maxWindow, minWindow, nums, left, right, k);
+            left = ShrinkToCost((maxWindow, minWindow), nums, (left, right), k);
             count += right - left + 1;
         }
 
@@ -87,11 +87,17 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
         minWindow.PushBack(right);
     }
 
+    // The window's two extremes travel together and so do its two bounds: each pair is
+    // one argument, and the shrunk left edge still comes back as the result rather than
+    // as a second out-of-band value.
     private static int ShrinkToCost(
-        Deque<int> maxWindow, Deque<int> minWindow, int[] nums, int left, int right, long k)
+        (Deque<int> MaxWindow, Deque<int> MinWindow) extremes, int[] nums, (int Left, int Right) window, long k)
     {
-        while (maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront) &&
-               (long)(nums[maxFront] - nums[minFront]) * (right - left + 1) > k)
+        var (maxWindow, minWindow) = extremes;
+        var left = window.Left;
+
+        while (TryPeekWindowExtremes(maxWindow, minWindow, out var maxFront, out var minFront) &&
+               WindowCostExceedsBudget(nums[maxFront] - nums[minFront], window.Right - left + 1, k))
         {
             left++;
 
@@ -108,4 +114,21 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
 
         return left;
     }
+
+    // Both ends of the window are recorded at the deques' fronts, and the cost is only
+    // worth asking about once both are there.
+    private static bool TryPeekWindowExtremes(
+        Deque<int> maxWindow, Deque<int> minWindow, out int maxFront, out int minFront)
+    {
+        // Assigned on every path so the short-circuit below is still definite: the
+        // caller only reads minFront when the result is true.
+        minFront = 0;
+
+        return maxWindow.TryPeekFront(out maxFront) && minWindow.TryPeekFront(out minFront);
+    }
+
+    // The problem's cost formula: the gap between the window's largest and smallest
+    // element, times how many elements the window holds.
+    private static bool WindowCostExceedsBudget(int maxMinGap, int windowLength, long costLimit) =>
+        (long)maxMinGap * windowLength > costLimit;
 }

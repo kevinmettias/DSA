@@ -13,12 +13,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TallestBillboardBenchmarks
 {
     private const int RandomSeed = 956; // LC problem number
-    private const int MaxRodLength = 50; // exclusive upper bound passed to Random.Next
+    private const int MaxRodLength = 50; private int[] _rods = [];
+
+    // exclusive upper bound passed to Random.Next
 
     [Params(12, 14)]
-    public int N;
-
-    private int[] _rods = null!;
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

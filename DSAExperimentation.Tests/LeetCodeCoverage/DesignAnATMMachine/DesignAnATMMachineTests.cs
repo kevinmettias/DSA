@@ -88,17 +88,8 @@ public sealed class DesignAnATMMachineTests
 // One call in an ATM script: a bulk deposit or a withdrawal of a given amount.
 // Pure dispatch, built via the named factories below so a script (like Examples
 // above) reads like the LeetCode call sequence it replays.
-public readonly record struct AtmOp
+public readonly record struct AtmOp(long[]? banknotesCount, long amount)
 {
-    private readonly long[]? _banknotesCount;
-    private readonly long _amount;
-
-    private AtmOp(long[]? banknotesCount, long amount)
-    {
-        _banknotesCount = banknotesCount;
-        _amount = amount;
-    }
-
     public static AtmOp Deposit(long[] banknotesCount) => new(banknotesCount, 0);
 
     public static AtmOp Withdraw(long amount) => new(null, amount);
@@ -107,13 +98,13 @@ public readonly record struct AtmOp
     // and the expected sequence reads exactly like the published one.
     internal long[]? Apply(IAtm atm)
     {
-        if (_banknotesCount is not null)
+        if (banknotesCount is not null)
         {
-            atm.Deposit(_banknotesCount);
+            atm.Deposit(banknotesCount);
 
             return null;
         }
 
-        return atm.Withdraw(_amount);
+        return atm.Withdraw(amount);
     }
 }

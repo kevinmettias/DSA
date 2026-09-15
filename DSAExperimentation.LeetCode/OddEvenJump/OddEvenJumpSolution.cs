@@ -64,20 +64,44 @@ internal static class OddEvenJumpSolution
 
         for (var j = i + 1; j < arr.Length; j++)
         {
-            var qualifies = direction == JumpDirection.Odd ? arr[j] >= arr[i] : arr[j] <= arr[i];
+            var qualifies = QualifiesAsJumpTarget(arr[j], arr[i], direction);
 
             if (!qualifies)
             {
                 continue;
             }
 
-            if (best == NoJump || (direction == JumpDirection.Odd ? arr[j] < arr[best] : arr[j] > arr[best]))
+            if (best == NoJump || BeatsCurrentTarget(arr[j], arr[best], direction))
             {
                 best = j;
             }
         }
 
         return best;
+    }
+
+    // Whether j qualifies as a jump target from i under this direction: the nearest
+    // later index holding a value at least i's (odd jumps) or at most i's (even).
+    private static bool QualifiesAsJumpTarget(int candidate, int origin, JumpDirection direction)
+    {
+        if (direction == JumpDirection.Odd)
+        {
+            return candidate >= origin;
+        }
+
+        return candidate <= origin;
+    }
+
+    // Whether j displaces the best target found so far under this direction: a smaller
+    // value than the best one for odd jumps, a larger one for even.
+    private static bool BeatsCurrentTarget(int candidate, int best, JumpDirection direction)
+    {
+        if (direction == JumpDirection.Odd)
+        {
+            return candidate < best;
+        }
+
+        return candidate > best;
     }
 
     // The composed arm: MergeSort over the index order plus one monotonic Stack<int>
@@ -109,8 +133,24 @@ internal static class OddEvenJumpSolution
 
     private static Comparer<int> BuildIndexComparer(int[] arr, JumpDirection direction) =>
         direction == JumpDirection.Odd
-            ? Comparer<int>.Create((a, b) => arr[a] != arr[b] ? arr[a].CompareTo(arr[b]) : a.CompareTo(b))
-            : Comparer<int>.Create((a, b) => arr[a] != arr[b] ? arr[b].CompareTo(arr[a]) : a.CompareTo(b));
+            ? Comparer<int>.Create((a, b) => CompareForOddJump(arr, a, b))
+            : Comparer<int>.Create((a, b) => CompareForEvenJump(arr, a, b));
+
+    // Odd jumps order ascending by value, even jumps descending, both tie-broken toward
+    // the smaller index so the nearer of two equal-valued targets wins.
+    private static int CompareForOddJump(int[] arr, int a, int b)
+    {
+        var valuesDiffer = arr[a] != arr[b];
+
+        return valuesDiffer ? arr[a].CompareTo(arr[b]) : a.CompareTo(b);
+    }
+
+    private static int CompareForEvenJump(int[] arr, int a, int b)
+    {
+        var valuesDiffer = arr[a] != arr[b];
+
+        return valuesDiffer ? arr[b].CompareTo(arr[a]) : a.CompareTo(b);
+    }
 
     private static void FillNextViaStackSweep(int[] indices, int[] next)
     {

@@ -9,12 +9,6 @@ namespace DSAExperimentation.LeetCode.ShortestPathWithAtMostKConsecutiveIdentica
 // RecoveryNetwork both use for their own expanded graphs.
 internal sealed class ConsecutiveRunGraph
 {
-    private ConsecutiveRunGraph(ConsecutiveRunNode[,] states, int k)
-    {
-        States = states;
-        K = k;
-    }
-
     // [nodeId, runLength - 1].
     public ConsecutiveRunNode[,] States { get; }
 
@@ -25,6 +19,12 @@ internal sealed class ConsecutiveRunGraph
     // Every path starts at node 0 with a run of exactly 1 (its own label,
     // counted once).
     public ConsecutiveRunNode Source => States[0, 0];
+
+    private ConsecutiveRunGraph(ConsecutiveRunNode[,] states, int k)
+    {
+        States = states;
+        K = k;
+    }
 
     public static ConsecutiveRunGraph Build(int n, int[][] edges, string labels, int k)
     {
@@ -58,7 +58,7 @@ internal sealed class ConsecutiveRunGraph
 
             for (var run = 1; run <= k; run++)
             {
-                var nextRun = labels[u] == labels[v] ? run + 1 : 1;
+                var nextRun = HasEqualLabels(labels, u, v) ? ExtendedRun(run) : 1;
 
                 if (nextRun > k)
                 {
@@ -69,4 +69,11 @@ internal sealed class ConsecutiveRunGraph
             }
         }
     }
+
+    // Crossing an edge whose endpoints share a label lengthens the trailing run;
+    // any other edge resets it.
+    private static bool HasEqualLabels(string labels, int sourceNode, int targetNode) =>
+        labels[sourceNode] == labels[targetNode];
+
+    private static int ExtendedRun(int run) => run + 1;
 }

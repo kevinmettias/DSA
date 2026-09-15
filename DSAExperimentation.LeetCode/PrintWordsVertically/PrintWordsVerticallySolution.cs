@@ -33,7 +33,8 @@ internal static class PrintWordsVerticallySolution
 
             for (var i = 0; i < words.Count; i++)
             {
-                chars.Add(CharacterAt(words.Get(i), column));
+                var glyph = CharacterAt(words.Get(i), column);
+                chars.Add(glyph);
             }
 
             rows.Add(new string([.. chars]).TrimEnd(Padding));
@@ -57,7 +58,8 @@ internal static class PrintWordsVerticallySolution
 
         for (var column = 0; column < columns; column++)
         {
-            rows.Add(BuildColumn(words, column));
+            var row = BuildColumn(words, column);
+            rows.Add(row);
         }
 
         return rows;
@@ -69,7 +71,8 @@ internal static class PrintWordsVerticallySolution
 
         for (var i = 0; i < words.Count; i++)
         {
-            buffer.Add(CharacterAt(words.Get(i), column));
+            var glyph = CharacterAt(words.Get(i), column);
+            buffer.Add(glyph);
         }
 
         while (buffer.Count > 0 && buffer.Get(buffer.Count - 1) == Padding)
@@ -90,7 +93,10 @@ internal static class PrintWordsVerticallySolution
     // A word that has run out of characters contributes a space to the column,
     // which the trim at the end of the row may or may not survive.
     private static char CharacterAt(string word, int column) =>
-        column < word.Length ? word[column] : Padding;
+        column < word.Length ? CharacterIn(word, column) : Padding;
+
+    // The unguarded read, reached only once the column is known to be inside the word.
+    private static char CharacterIn(string word, int column) => word[column];
 
     // LeetCode hands the sentence in as one space-separated string; every strategy
     // works over the words, so the split is done once here and the prepared-words

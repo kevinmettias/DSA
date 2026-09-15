@@ -16,11 +16,11 @@ public class BuildAMatrixWithConditionsBenchmarks
 {
     private const int MaxFanOut = 3;
 
-    [Params(50, 1_000)]
-    public int K;
+    private List<ValueNode> _rowValues = new();
 
-    private List<ValueNode> _rowValues = null!;
-    private List<ValueNode> _colValues = null!;
+    private List<ValueNode> _colValues = new();
+    [Params(50, 1_000)]
+    public int K { get; set; }
 
     [GlobalSetup]
     public void Setup()

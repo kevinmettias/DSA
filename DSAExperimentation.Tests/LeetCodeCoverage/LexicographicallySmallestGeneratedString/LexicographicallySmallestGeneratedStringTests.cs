@@ -26,12 +26,19 @@ public sealed class LexicographicallySmallestGeneratedStringTests
     [MemberData(nameof(Examples))]
     public void GenerateStringByDirectFill_LeetCodeExamples_ReturnsSmallestGeneratedString(
         string str1, string str2, string expected) =>
-        Assert.Equal(expected, LexicographicallySmallestGeneratedStringSolution.GenerateStringByDirectFill(str1, str2));
+        Assert.Equal(
+            expected,
+            LexicographicallySmallestGeneratedStringSolution.GenerateStringByDirectFill(
+                new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(str1),
+                new LexicographicallySmallestGeneratedStringSolution.TemplateWord(str2)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GenerateStringByZFunctionConsistency_LeetCodeExamples_ReturnsSmallestGeneratedString(
         string str1, string str2, string expected) =>
         Assert.Equal(
-            expected, LexicographicallySmallestGeneratedStringSolution.GenerateStringByZFunctionConsistency(str1, str2));
+            expected,
+            LexicographicallySmallestGeneratedStringSolution.GenerateStringByZFunctionConsistency(
+                new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(str1),
+                new LexicographicallySmallestGeneratedStringSolution.TemplateWord(str2)));
 }

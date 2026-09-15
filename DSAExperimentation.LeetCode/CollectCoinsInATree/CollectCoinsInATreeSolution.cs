@@ -30,8 +30,12 @@ internal static class CollectCoinsInATreeSolution
     // O(n) rounds on a path-shaped tree). Deliberately written without this repo's
     // primitives - it is the arm the queue-driven peel below has to justify itself
     // against.
-    public static int MinEdgesByRescan(int[][] edges, int[] coins) =>
-        MinEdgesByRescan(BuildAdjacency(coins.Length, edges), coins);
+    public static int MinEdgesByRescan(int[][] edges, int[] coins)
+    {
+        var adjacency = BuildAdjacency(coins.Length, edges);
+
+        return MinEdgesByRescan(adjacency, coins);
+    }
 
     public static int MinEdgesByRescan(List<int>[] adjacency, int[] coins)
     {
@@ -52,8 +56,12 @@ internal static class CollectCoinsInATreeSolution
     // shape MinimumHeightTrees uses for its centroid search and TopologicalSort's
     // Kahn's algorithm uses for in-degree - just undirected degree, gated by a coin
     // predicate for this first round only.
-    public static int MinEdgesByLeafQueue(int[][] edges, int[] coins) =>
-        MinEdgesByLeafQueue(BuildAdjacency(coins.Length, edges), coins);
+    public static int MinEdgesByLeafQueue(int[][] edges, int[] coins)
+    {
+        var adjacency = BuildAdjacency(coins.Length, edges);
+
+        return MinEdgesByLeafQueue(adjacency, coins);
+    }
 
     public static int MinEdgesByLeafQueue(List<int>[] adjacency, int[] coins)
     {
@@ -88,7 +96,7 @@ internal static class CollectCoinsInATreeSolution
 
             for (var node = 0; node < trim.Adjacency.Length; node++)
             {
-                if (!trim.Removed[node] && trim.Degree[node] == 1 && coins[node] == 0)
+                if (IsRemovableCoinlessLeaf(trim, coins, node))
                 {
                     RemoveNode(trim, node);
                     removedAny = true;
@@ -97,7 +105,21 @@ internal static class CollectCoinsInATreeSolution
         } while (removedAny);
     }
 
+    // A node still in the tree that carries no coin and has exactly one surviving
+    // neighbour is a dead end: the walk never needs to reach past it.
+    private static bool IsRemovableCoinlessLeaf(LeafTrim trim, int[] coins, int node) =>
+        !trim.Removed[node] && trim.Degree[node] == 1 && coins[node] == 0;
+
     private static void TrimZeroCoinLeavesByQueue(LeafTrim trim, int[] coins)
+    {
+        var queue = SeedZeroCoinLeafQueue(trim, coins);
+
+        PeelZeroCoinLeaves(trim, coins, queue);
+    }
+
+    // Every zero-coin leaf the tree starts with is removed and handed back in the queue
+    // the peel below drains.
+    private static RepoQueue SeedZeroCoinLeafQueue(LeafTrim trim, int[] coins)
     {
         var queue = new RepoQueue();
 
@@ -110,6 +132,13 @@ internal static class CollectCoinsInATreeSolution
             }
         }
 
+        return queue;
+    }
+
+    // Each dequeue drops one neighbour's degree; a neighbour that becomes a coinless
+    // leaf is itself removable, so it joins the frontier exactly once.
+    private static void PeelZeroCoinLeaves(LeafTrim trim, int[] coins, RepoQueue queue)
+    {
         while (queue.TryDequeue(out var node))
         {
             foreach (var neighbor in trim.Adjacency[node])

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FibonacciNumberBenchmarks
 {
     [Params(20, 30)]
-    public int N;
+    public int N { get; set; }
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursion() => FibonacciNumberSolution.FibByNaiveRecursion(N);

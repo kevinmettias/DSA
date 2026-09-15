@@ -10,17 +10,11 @@ namespace DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
 // PositionOf is the inverse permutation: PositionOf[originalIndex] is where that
 // node landed in SortedValues, which is what a query's u/v indices are converted
 // through before anything else happens.
-internal sealed class SortedByValueGraph
+internal sealed class SortedByValueGraph(int[] sortedValues, int[] positionOf)
 {
-    public int[] SortedValues { get; }
+    public int[] SortedValues { get; } = sortedValues;
 
-    public int[] PositionOf { get; }
-
-    private SortedByValueGraph(int[] sortedValues, int[] positionOf)
-    {
-        SortedValues = sortedValues;
-        PositionOf = positionOf;
-    }
+    public int[] PositionOf { get; } = positionOf;
 
     public static SortedByValueGraph Build(int[] nums)
     {

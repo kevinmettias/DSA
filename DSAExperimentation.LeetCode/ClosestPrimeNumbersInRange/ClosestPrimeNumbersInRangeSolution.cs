@@ -108,13 +108,13 @@ internal static class ClosestPrimeNumbersInRangeSolution
     // from it: primes arrive in ascending order, and a later pair replaces the best
     // one only on a strictly smaller gap - which is what makes the smallest first
     // element win a tie.
-    private struct ClosestPairScan()
+    private sealed class ClosestPairScan()
     {
         private int _previousPrime = LeetCodeAnswer.None;
         private int _bestLow = LeetCodeAnswer.None;
         private int _bestHigh = LeetCodeAnswer.None;
 
-        public readonly int[] Pair => [_bestLow, _bestHigh];
+        public int[] Pair => [_bestLow, _bestHigh];
 
         public void Observe(int prime)
         {
@@ -127,7 +127,7 @@ internal static class ClosestPrimeNumbersInRangeSolution
             _previousPrime = prime;
         }
 
-        private readonly bool IsCloserThanBest(int prime)
+        private bool IsCloserThanBest(int prime)
             => _bestLow == LeetCodeAnswer.None || prime - _previousPrime < _bestHigh - _bestLow;
     }
 }

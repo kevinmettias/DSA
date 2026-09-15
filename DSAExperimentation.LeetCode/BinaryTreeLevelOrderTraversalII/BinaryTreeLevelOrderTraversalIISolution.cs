@@ -31,23 +31,7 @@ internal static class BinaryTreeLevelOrderTraversalIISolution
 
         while (queue.Count > 0)
         {
-            var level = new List<int>();
-
-            for (var remaining = queue.Count; remaining > 0; remaining--)
-            {
-                var node = queue.Dequeue();
-                level.Add(node.Value);
-
-                if (node.Left is not null)
-                {
-                    queue.Enqueue(node.Left);
-                }
-
-                if (node.Right is not null)
-                {
-                    queue.Enqueue(node.Right);
-                }
-            }
+            var level = DrainLevel(queue);
 
             levels.Add(level);
         }
@@ -56,18 +40,44 @@ internal static class BinaryTreeLevelOrderTraversalIISolution
         return levels;
     }
 
+    // One level of the walk: the queue's size read before any of that level's
+    // children are enqueued, then exactly that many nodes dequeued - so the children
+    // land behind the rest of the current level rather than in front of it.
+    private static List<int> DrainLevel(Queue<BinaryTreeNode<int>> queue)
+    {
+        var level = new List<int>();
+
+        for (var remaining = queue.Count; remaining > 0; remaining--)
+        {
+            var node = queue.Dequeue();
+            level.Add(node.Value);
+
+            if (node.Left is not null)
+            {
+                queue.Enqueue(node.Left);
+            }
+
+            if (node.Right is not null)
+            {
+                queue.Enqueue(node.Right);
+            }
+        }
+
+        return level;
+    }
+
     // This repo's own level-grouped BFS: LevelGroupedBreadthFirstTraversal already
     // buffers one whole depth before firing, so the only thing this strategy adds
     // is collecting each level's values and reversing the buffered result.
     public static List<List<int>> LevelOrderBottomByLevelGroupedTraversal(BinaryTreeNode<int>? root)
     {
-        LevelHooks.Output.Value = [];
+        LevelHooks.BeginCapture();
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             LevelHooks>(root);
 
-        var levels = LevelHooks.Output.Value!;
+        var levels = LevelHooks.CapturedLevels;
         levels.Reverse();
         return levels;
     }
@@ -77,7 +87,17 @@ internal static class BinaryTreeLevelOrderTraversalIISolution
     // callers would want.
     private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
     {
-        public static readonly AsyncLocal<List<List<int>>> Output = new();
+        // Static because ILevelGroupedHooks is static-abstract - the walk takes the hook as a
+        // type argument and reaches it through the type, so no LevelHooks instance exists that
+        // could own this buffer - and AsyncLocal is what keeps it safe: the list belongs to the
+        // flow that started the Walk, so a traversal on another thread reads its own. Private,
+        // with BeginCapture/CapturedLevels the only way in and out: the buffer exists for this
+        // one caller's start-and-read pair, so nothing outside the hook needs to name it.
+        private static readonly AsyncLocal<List<List<int>>> Output = new();
+
+        public static List<List<int>> CapturedLevels => Output.Value!;
+
+        public static void BeginCapture() => Output.Value = [];
 
         public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
             Output.Value!.Add(level.Select(n => n.Value).ToList());

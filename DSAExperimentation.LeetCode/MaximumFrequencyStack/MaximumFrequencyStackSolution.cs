@@ -89,12 +89,20 @@ internal static class MaximumFrequencyStackSolution
 
         public int Pop()
         {
-            var counts = CountFrequencies(_values);
-            var popIndex = FindMostRecentMaxFrequencyIndex(_values, counts);
+            var popIndex = IndexOfMostRecentMaximumFrequency(_values);
             var popped = _values[popIndex];
             _values.RemoveAt(popIndex);
 
             return popped;
+        }
+
+        // Which entry a pop takes: the most recent one whose value is the most
+        // frequent at this moment.
+        private static int IndexOfMostRecentMaximumFrequency(List<int> values)
+        {
+            var counts = CountFrequencies(values);
+
+            return FindMostRecentMaxFrequencyIndex(values, counts);
         }
 
         private static Dictionary<int, int> CountFrequencies(List<int> values)

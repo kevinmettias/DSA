@@ -33,18 +33,18 @@ internal static class DiagonalTraverseSolution
 
             if (state.GoingUp)
             {
-                AdvanceGoingUp(cols, ref state);
+                AdvanceGoingUp(cols, state);
             }
             else
             {
-                AdvanceGoingDown(rows, ref state);
+                AdvanceGoingDown(rows, state);
             }
         }
 
         return result;
     }
 
-    private static void AdvanceGoingUp(int cols, ref WalkState state)
+    private static void AdvanceGoingUp(int cols, WalkState state)
     {
         if (state.Col == cols - 1)
         {
@@ -63,7 +63,7 @@ internal static class DiagonalTraverseSolution
         }
     }
 
-    private static void AdvanceGoingDown(int rows, ref WalkState state)
+    private static void AdvanceGoingDown(int rows, WalkState state)
     {
         if (state.Row == rows - 1)
         {
@@ -82,11 +82,11 @@ internal static class DiagonalTraverseSolution
         }
     }
 
-    private struct WalkState
+    private sealed class WalkState
     {
-        public int Row;
-        public int Col;
-        public bool GoingUp;
+        public int Row { get; set; }
+        public int Col { get; set; }
+        public bool GoingUp { get; set; }
     }
 
     // Group cells by row+col diagonal index; every OTHER diagonal must come out
@@ -102,20 +102,27 @@ internal static class DiagonalTraverseSolution
 
         for (var diagonal = 0; diagonal <= rows + cols - LastDiagonalIndexOffset; diagonal++)
         {
-            var range = new RowRange(Math.Max(0, diagonal - cols + 1), Math.Min(diagonal, rows - 1));
-            next = WriteDiagonal(matrix, diagonal, range, result, next);
+            next = WriteDiagonal(matrix, diagonal, (result, next));
         }
 
         return result;
     }
 
-    private static int WriteDiagonal(int[][] matrix, int diagonal, RowRange range, int[] result, int next) =>
-        diagonal % ParityDivisor == 0
-            ? WriteReversedDiagonal(matrix, diagonal, range, result, next)
-            : WriteDirectDiagonal(matrix, diagonal, range, result, next);
+    // `output` is the destination buffer together with the write position into it -
+    // the one place a diagonal's values land, and the one thing the walk advances.
+    private static int WriteDiagonal(int[][] matrix, int diagonal, (int[] Result, int Next) output) =>
+        IsReversedDiagonal(diagonal)
+            ? WriteReversedDiagonal(matrix, diagonal, output)
+            : WriteDirectDiagonal(matrix, diagonal, output);
 
-    private static int WriteReversedDiagonal(int[][] matrix, int diagonal, RowRange range, int[] result, int next)
+    // Every other diagonal has to come out reversed, so which order a diagonal is
+    // written in is its parity and nothing else.
+    private static bool IsReversedDiagonal(int diagonal) => diagonal % ParityDivisor == 0;
+
+    private static int WriteReversedDiagonal(int[][] matrix, int diagonal, (int[] Result, int Next) output)
     {
+        var (result, next) = output;
+        var range = RangeOf(matrix, diagonal);
         var reversed = new DiagonalStack();
 
         for (var r = range.Start; r <= range.End; r++)
@@ -131,8 +138,11 @@ internal static class DiagonalTraverseSolution
         return next;
     }
 
-    private static int WriteDirectDiagonal(int[][] matrix, int diagonal, RowRange range, int[] result, int next)
+    private static int WriteDirectDiagonal(int[][] matrix, int diagonal, (int[] Result, int Next) output)
     {
+        var (result, next) = output;
+        var range = RangeOf(matrix, diagonal);
+
         for (var r = range.Start; r <= range.End; r++)
         {
             result[next++] = matrix[r][diagonal - r];
@@ -140,6 +150,11 @@ internal static class DiagonalTraverseSolution
 
         return next;
     }
+
+    // A diagonal's row span is a function of the matrix shape and the diagonal index
+    // alone, so the walkers derive it rather than taking it as a fifth argument.
+    private static RowRange RangeOf(int[][] matrix, int diagonal) =>
+        new(Math.Max(0, diagonal - matrix[0].Length + 1), Math.Min(diagonal, matrix.Length - 1));
 
     private readonly record struct RowRange(int Start, int End);
 }

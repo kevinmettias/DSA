@@ -44,7 +44,8 @@ internal static class NumberOfPairsAfterIncrementSolution
             }
             else
             {
-                results.Add(CountMatchesByScan(nums1, working, query.Tot));
+                var matches = CountMatchesByScan(nums1, working, query.Tot);
+                results.Add(matches);
             }
         }
 
@@ -97,7 +98,8 @@ internal static class NumberOfPairsAfterIncrementSolution
             }
             else
             {
-                results.Add(CountMatchesByFrequencyMap(nums1, tree, query.Tot));
+                var matches = CountMatchesByFrequencyMap(nums1, tree, query.Tot);
+                results.Add(matches);
             }
         }
 
@@ -131,7 +133,8 @@ internal static class NumberOfPairsAfterIncrementSolution
 
         foreach (var query in queries)
         {
-            parsed.Add(query[0] == 1
+            var isIncrement = query[0] == 1;
+            parsed.Add(isIncrement
                 ? PairQuery.Increment(query[1], query[2], query[3])
                 : PairQuery.Count(query[1]));
         }

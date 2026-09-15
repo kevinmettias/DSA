@@ -15,6 +15,22 @@ internal static class PathSumIIISolution
     public static int PathSumByDoubleDfs(BinaryTreeNode<int>? root, int target) =>
         CountFromEveryNode(root, target);
 
+    // A single DFS carrying a running root-to-node sum plus this repo's own
+    // HashMap<long,int> as a tally of ancestor prefix sums - the same
+    // "count matches via a running-sum HashMap" idea TwoSum proves for a flat
+    // array. At each node, the number of downward paths ending here summing to
+    // target equals how many ancestor prefix sums equal (runningSum - target).
+    // Each node's own tally entry is added before descending into its children
+    // and removed again afterward (backtracking), so a sibling subtree never
+    // sees it.
+    public static int PathSumByPrefixSumHashMap(BinaryTreeNode<int>? root, int target)
+    {
+        var prefixSumCounts = new HashMap<long, int>();
+        prefixSumCounts.Set(0, 1);
+
+        return CountPaths(root, 0, target, prefixSumCounts);
+    }
+
     private static int CountFromEveryNode(BinaryTreeNode<int>? node, int target)
     {
         if (node is null)
@@ -40,22 +56,6 @@ internal static class PathSumIIISolution
         return matches
             + CountDownwardFrom(node.Left, runningSum, target)
             + CountDownwardFrom(node.Right, runningSum, target);
-    }
-
-    // A single DFS carrying a running root-to-node sum plus this repo's own
-    // HashMap<long,int> as a tally of ancestor prefix sums - the same
-    // "count matches via a running-sum HashMap" idea TwoSum proves for a flat
-    // array. At each node, the number of downward paths ending here summing to
-    // target equals how many ancestor prefix sums equal (runningSum - target).
-    // Each node's own tally entry is added before descending into its children
-    // and removed again afterward (backtracking), so a sibling subtree never
-    // sees it.
-    public static int PathSumByPrefixSumHashMap(BinaryTreeNode<int>? root, int target)
-    {
-        var prefixSumCounts = new HashMap<long, int>();
-        prefixSumCounts.Set(0, 1);
-
-        return CountPaths(root, 0, target, prefixSumCounts);
     }
 
     private static int CountPaths(BinaryTreeNode<int>? node, long runningSum, int target, HashMap<long, int> prefixSumCounts)

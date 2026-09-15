@@ -22,11 +22,11 @@ public class QueensThatCanAttackTheKingBenchmarks
     private const int BoardCenter = BoardSize / 2;
     private const int RandomSeed = 1222;
 
-    [Params(50, 500)]
-    public int QueensCount;
+    private int[][] _queens = [];
 
-    private int[][] _queens = null!;
     private KingBoard _board;
+    [Params(50, 500)]
+    public int QueensCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

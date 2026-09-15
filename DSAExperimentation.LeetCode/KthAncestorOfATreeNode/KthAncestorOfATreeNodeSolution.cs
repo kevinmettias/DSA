@@ -49,8 +49,10 @@ internal static class KthAncestorOfATreeNodeSolution
     {
         var ancestors = chains.Of(node);
 
-        return k <= ancestors.Length ? ancestors[^k] : LeetCodeAnswer.None;
+        return k <= ancestors.Length ? AncestorAt(ancestors, k) : LeetCodeAnswer.None;
     }
+
+    private static int AncestorAt(int[] ancestors, int k) => ancestors[^k];
 
     // Materializes the child-ward tree TopDownTraversal needs from LeetCode's
     // parent array, then walks it once to fill in every node's root-to-parent

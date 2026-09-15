@@ -14,10 +14,10 @@ public class SumOfSubarrayRangesBenchmarks
     private const int ValueMagnitude = 1_000;
     private const int RandomSeed = 1;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _values = [];
 
-    private int[] _values = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

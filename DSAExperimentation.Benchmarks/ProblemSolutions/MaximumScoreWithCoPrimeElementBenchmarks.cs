@@ -15,10 +15,10 @@ public class MaximumScoreWithCoPrimeElementBenchmarks
     private const int Seed = 3953; // LC problem number
     private const int MaxVal = 500;
 
-    [Params(100, 800)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(100, 800)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

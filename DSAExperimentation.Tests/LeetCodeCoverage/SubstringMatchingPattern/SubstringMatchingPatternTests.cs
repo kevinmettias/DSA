@@ -17,10 +17,15 @@ public sealed class SubstringMatchingPatternTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void HasMatchByBruteForce_LeetCodeExamples_ReturnsWhetherPatternMatches(string s, string p, bool expected) =>
-        Assert.Equal(expected, SubstringMatchingPatternSolution.HasMatchByBruteForce(s, p));
+        Assert.Equal(
+            expected,
+            SubstringMatchingPatternSolution.HasMatchByBruteForce(new SubjectText(s), new WildcardPattern(p)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HasMatchByPrefixFunctionSearch_LeetCodeExamples_ReturnsWhetherPatternMatches(string s, string p, bool expected) =>
-        Assert.Equal(expected, SubstringMatchingPatternSolution.HasMatchByPrefixFunctionSearch(s, p));
+        Assert.Equal(
+            expected,
+            SubstringMatchingPatternSolution.HasMatchByPrefixFunctionSearch(
+                new SubjectText(s), new WildcardPattern(p)));
 }

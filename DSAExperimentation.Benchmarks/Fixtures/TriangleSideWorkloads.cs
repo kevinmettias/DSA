@@ -13,6 +13,7 @@ internal static class TriangleSideWorkloads
     {
         var random = new Random(seed);
 
+        // Stops when the sampled triple satisfies the strict triangle inequality: the two shorter sides sum above the longest.
         while (true)
         {
             var sides = new[]

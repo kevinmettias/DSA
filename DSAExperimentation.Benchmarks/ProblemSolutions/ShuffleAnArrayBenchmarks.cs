@@ -11,10 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ShuffleAnArrayBenchmarks
 {
-    [Params(200, 5_000)]
-    public int Length;
+    private int[] _original = [];
 
-    private int[] _original = null!;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _original = Enumerable.Range(0, Length).ToArray();

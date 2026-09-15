@@ -42,6 +42,9 @@ internal static class FindMinimumInRotatedSortedArraySolution
     {
         public int Length => nums.Length;
 
-        public int Get(int index) => nums[index] <= nums[^1] ? 1 : 0;
+        public int Get(int index) => IsLowSide(index) ? 1 : 0;
+
+        // Whether the element at this index sits on the low side of the rotation.
+        private bool IsLowSide(int index) => nums[index] <= nums[^1];
     }
 }

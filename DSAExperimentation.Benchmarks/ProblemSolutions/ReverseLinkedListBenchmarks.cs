@@ -16,10 +16,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ReverseLinkedListBenchmarks
 {
-    private int[] _values = null!;
+    private int[] _values = [];
 
     [Params(200, 5_000)]
-    public int Length;
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();

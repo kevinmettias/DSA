@@ -17,12 +17,12 @@ public class SnapshotArrayBenchmarks
     private const int IndexCount = 1;
     private const int QueryIndex = 0;
 
-    [Params(200, 5_000)]
-    public int Length;
-
     private SnapshotArraySolution.ISnapshotArray _linearFloorScan = null!;
+
     private SnapshotArraySolution.ISnapshotArray _binarySearchFloor = null!;
     private int _querySnapId;
+    [Params(200, 5_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,12 +31,6 @@ public class SnapshotArrayBenchmarks
         _binarySearchFloor = Seed(SnapshotArraySolution.CreateByBinarySearchFloor(IndexCount));
         _querySnapId = Length + 1;
     }
-
-    [Benchmark(Baseline = true)]
-    public int LinearFloorScan() => _linearFloorScan.Get(QueryIndex, _querySnapId);
-
-    [Benchmark]
-    public int BinarySearchFloor() => _binarySearchFloor.Get(QueryIndex, _querySnapId);
 
     private SnapshotArraySolution.ISnapshotArray Seed(SnapshotArraySolution.ISnapshotArray snapshotArray)
     {
@@ -48,4 +42,10 @@ public class SnapshotArrayBenchmarks
 
         return snapshotArray;
     }
+
+    [Benchmark(Baseline = true)]
+    public int LinearFloorScan() => _linearFloorScan.Get(QueryIndex, _querySnapId);
+
+    [Benchmark]
+    public int BinarySearchFloor() => _binarySearchFloor.Get(QueryIndex, _querySnapId);
 }

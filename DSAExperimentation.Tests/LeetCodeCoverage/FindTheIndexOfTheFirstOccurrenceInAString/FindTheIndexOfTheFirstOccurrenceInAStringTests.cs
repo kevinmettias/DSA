@@ -21,7 +21,9 @@ public sealed class FindTheIndexOfTheFirstOccurrenceInAStringTests
         string haystack, string needle, int expected) =>
         Assert.Equal(
             expected,
-            FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByStringIndexOf(haystack, needle));
+            FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByStringIndexOf(
+                new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Haystack(haystack),
+                new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Needle(needle)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -29,5 +31,7 @@ public sealed class FindTheIndexOfTheFirstOccurrenceInAStringTests
         string haystack, string needle, int expected) =>
         Assert.Equal(
             expected,
-            FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByRollingHash(haystack, needle));
+            FindTheIndexOfTheFirstOccurrenceInAStringSolution.IndexOfByRollingHash(
+                new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Haystack(haystack),
+                new FindTheIndexOfTheFirstOccurrenceInAStringSolution.Needle(needle)));
 }

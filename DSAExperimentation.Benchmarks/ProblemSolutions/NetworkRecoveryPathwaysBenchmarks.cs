@@ -15,12 +15,12 @@ public class NetworkRecoveryPathwaysBenchmarks
 {
     private const int Seed = 3620; // LC problem number
     private const int ExtraEdgesPerNode = 3;
-    private const long Budget = 50_000_000_000L; // generous - keeps most probes feasible
+    private const long Budget = 50_000_000_000L; private RecoveryNetwork _network = null!;
+
+    // generous - keeps most probes feasible
 
     [Params(300, 3000)]
-    public int NodeCount;
-
-    private RecoveryNetwork _network = null!;
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

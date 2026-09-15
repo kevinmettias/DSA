@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.HashMap;
 using DisjointSetOperations = DSAExperimentation.DataStructures.DisjointSet.DisjointSet;
@@ -91,13 +92,15 @@ internal sealed class KeyedDisjointSet<TKey>
 
     public bool HasKey(TKey key) => _index.HasKey(key);
 
-    public bool TryFind(TKey key, out TKey representative)
+    // [MaybeNullWhen(false)] is what lets the absent branch assign `default` rather than
+    // `default!`: it tells the compiler the out-parameter is only meaningfully read when
+    // this returns true, so the contract is declared in the signature instead of being
+    // asserted at the assignment.
+    public bool TryFind(TKey key, [MaybeNullWhen(false)] out TKey representative)
     {
         if (!_index.TryGetValue(key, out var id))
         {
-            // presumption: allow -- representative is only meaningful when this returns
-            // true, the standard TryGetValue/TryParse out-parameter contract this mirrors.
-            representative = default!;
+            representative = default;
             return false;
         }
 

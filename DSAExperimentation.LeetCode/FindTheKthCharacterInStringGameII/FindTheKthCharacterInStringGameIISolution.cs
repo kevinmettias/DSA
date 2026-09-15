@@ -26,28 +26,28 @@ internal static class FindTheKthCharacterInStringGameIISolution
 
             for (var i = 0; i < roundLength; i++)
             {
-                word.Add(operation == 1 ? NextChar(word[i]) : word[i]);
+                word.Add(operation == 1 ? NextChar(word[i]) : CharAt(word, i));
             }
         }
 
         return word[(int)(k - 1)];
     }
 
-    private static char NextChar(char c) => c == 'z' ? 'a' : (char)(c + 1);
+    private static char NextChar(char c) => c == 'z' ? 'a' : ShiftedChar(c);
+
+    // One letter on in the alphabet.
+    private static char ShiftedChar(char c) => (char)(c + 1);
+
+    // The character already sitting at this position of the round's word.
+    private static char CharAt(List<char> word, int index) => word[index];
 
     // Never materializes word. First replays the length word would reach
     // after each operation - frozen once it exceeds k, since position (which
     // only ever shrinks from k) can then never fall in the untouched first
     // half again, so the exact magnitude beyond that point is irrelevant and
     // freezing it is what keeps the running total from overflowing a long
-    // across up to 100 doublings.
-    //
-    // Then walks the operations backward from the final length: at each step
-    // position k either sits in the untouched first half (left alone) or the
-    // appended second half (folded back into the first half's coordinates,
-    // recording one more shift if that round was a +1 shift). What position
-    // finally folds down to is always 1 - the original seed 'a' - after
-    // however many shifts were collected along the way.
+    // across up to 100 doublings. The position is then traced back through
+    // the operations those lengths came from.
     public static char KthCharacterByBackwardTrace(long k, int[] operations)
     {
         var lengths = new long[operations.Length + 1];
@@ -55,9 +55,27 @@ internal static class FindTheKthCharacterInStringGameIISolution
 
         for (var i = 0; i < operations.Length; i++)
         {
-            lengths[i + 1] = lengths[i] > k ? lengths[i] : lengths[i] * 2;
+            var isRoundFrozen = lengths[i] > k;
+            lengths[i + 1] = isRoundFrozen ? LengthAt(lengths, i) : DoubledLengthAt(lengths, i);
         }
 
+        var shift = TraceShiftBackward(k, operations, lengths);
+
+        return (char)('a' + shift % AlphabetSize);
+    }
+
+    // The round's length as it stands, and the same length one doubling on.
+    private static long LengthAt(long[] lengths, int index) => lengths[index];
+
+    private static long DoubledLengthAt(long[] lengths, int index) => lengths[index] * 2;
+
+    // Walks the operations backward from the final length: at each step position k
+    // either sits in the untouched first half (left alone) or the appended second half
+    // (folded back into the first half's coordinates, recording one more shift if that
+    // round was a +1 shift). What position finally folds down to is always 1 - the
+    // original seed 'a' - after however many shifts were collected along the way.
+    private static int TraceShiftBackward(long k, int[] operations, long[] lengths)
+    {
         var position = k;
         var shift = 0;
 
@@ -76,6 +94,6 @@ internal static class FindTheKthCharacterInStringGameIISolution
             }
         }
 
-        return (char)('a' + shift % AlphabetSize);
+        return shift;
     }
 }

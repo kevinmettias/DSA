@@ -17,10 +17,12 @@ namespace DSAExperimentation.LeetCode.LengthOfTheLongestIncreasingPath;
 internal static class LengthOfTheLongestIncreasingPathSolution
 {
     // Textbook O(n^2): memoized DP over every ordered pair, directly on
-    // coordinates[][]. EndingAt(i) recurses only into points with strictly
-    // smaller x, StartingAt(i) only into points with strictly larger x, so
-    // both terminate without needing a topological sort of their own - the
-    // arm the segment-tree strategy below has to beat.
+    // coordinates[][]. LongestChainEndingAt recurses only into points with strictly
+    // smaller x and y, so it terminates without needing a topological sort of its
+    // own; negating every point turns "longest chain starting at i, extending toward
+    // larger x and y" into "longest chain ending at i in the negated plane", which is
+    // how the one helper answers both halves here - the arm the segment-tree strategy
+    // below has to beat.
     public static int MaxPathLengthByBruteForce(int[][] coordinates, int k)
     {
         var n = coordinates.Length;
@@ -29,47 +31,8 @@ internal static class LengthOfTheLongestIncreasingPathSolution
         Array.Fill(endingAt, -1);
         Array.Fill(startingAt, -1);
 
-        return EndingAt(coordinates, endingAt, k) + StartingAt(coordinates, startingAt, k) - 1;
-    }
-
-    private static int EndingAt(int[][] coordinates, int[] memo, int i)
-    {
-        if (memo[i] >= 0)
-        {
-            return memo[i];
-        }
-
-        var best = 0;
-
-        for (var j = 0; j < coordinates.Length; j++)
-        {
-            if (coordinates[j][0] < coordinates[i][0] && coordinates[j][1] < coordinates[i][1])
-            {
-                best = Math.Max(best, EndingAt(coordinates, memo, j));
-            }
-        }
-
-        return memo[i] = best + 1;
-    }
-
-    private static int StartingAt(int[][] coordinates, int[] memo, int i)
-    {
-        if (memo[i] >= 0)
-        {
-            return memo[i];
-        }
-
-        var best = 0;
-
-        for (var j = 0; j < coordinates.Length; j++)
-        {
-            if (coordinates[j][0] > coordinates[i][0] && coordinates[j][1] > coordinates[i][1])
-            {
-                best = Math.Max(best, StartingAt(coordinates, memo, j));
-            }
-        }
-
-        return memo[i] = best + 1;
+        return LongestChainEndingAt(coordinates, endingAt, k)
+            + LongestChainEndingAt(Negate(coordinates), startingAt, k) - 1;
     }
 
     // Composed: ChainLengths below is a coordinate-compressed, x-ascending sweep
@@ -84,14 +47,7 @@ internal static class LengthOfTheLongestIncreasingPathSolution
     public static int MaxPathLengthBySegmentTree(int[][] coordinates, int k)
     {
         var endingAt = ChainLengths(coordinates);
-        var negated = new int[coordinates.Length][];
-
-        for (var i = 0; i < coordinates.Length; i++)
-        {
-            negated[i] = [-coordinates[i][0], -coordinates[i][1]];
-        }
-
-        var startingAt = ChainLengths(negated);
+        var startingAt = ChainLengths(Negate(coordinates));
 
         return endingAt[k] + startingAt[k] - 1;
     }
@@ -105,48 +61,104 @@ internal static class LengthOfTheLongestIncreasingPathSolution
     // there are distinct y-values.
     private static int[] ChainLengths(int[][] points)
     {
-        var n = points.Length;
-        var chain = new int[n];
+        var chain = new int[points.Length];
 
-        if (n == 0)
+        if (chain.Length == 0)
         {
             return chain;
         }
 
-        var sortedY = points.Select(p => (long)p[1]).Distinct().OrderBy(y => y).ToArray();
-        var ySequence = new ArraySequence<long>(sortedY);
-        var tree = new RepoSegmentTree(new int[sortedY.Length]);
-        var order = Enumerable.Range(0, n).OrderBy(i => points[i][0]).ToArray();
+        var ySequence = new ArraySequence<long>(points.Select(p => (long)p[1]).Distinct().OrderBy(y => y).ToArray());
+        var tree = new RepoSegmentTree(new int[ySequence.Length]);
+        var sweep = Enumerable.Range(0, points.Length)
+            .Select(i => (Index: i, X: (long)points[i][0], Rank: BinarySearch.LowerBound(ySequence, (long)points[i][1])))
+            .OrderBy(point => point.X)
+            .ToArray();
 
         var groupStart = 0;
 
-        while (groupStart < n)
+        while (groupStart < sweep.Length)
         {
-            var groupEnd = groupStart;
-
-            while (groupEnd < n && points[order[groupEnd]][0] == points[order[groupStart]][0])
-            {
-                groupEnd++;
-            }
-
-            for (var idx = groupStart; idx < groupEnd; idx++)
-            {
-                var i = order[idx];
-                var rank = BinarySearch.LowerBound(ySequence, (long)points[i][1]);
-                var best = rank > 0 ? tree.Query(0, rank - 1) : 0;
-                chain[i] = best + 1;
-            }
-
-            for (var idx = groupStart; idx < groupEnd; idx++)
-            {
-                var i = order[idx];
-                var rank = BinarySearch.LowerBound(ySequence, (long)points[i][1]);
-                tree.Update(rank, Math.Max(tree.Query(rank, rank), chain[i]));
-            }
-
-            groupStart = groupEnd;
+            groupStart = SweepEqualXGroup(sweep, tree, chain, groupStart);
         }
 
         return chain;
+    }
+
+    // One x-ascending group at a time, returning the start of the next group. The read
+    // pass runs to completion before the write pass begins, which is what keeps two
+    // equal-x points from seeing each other as a valid predecessor.
+    private static int SweepEqualXGroup(
+        (int Index, long X, int Rank)[] sweep, RepoSegmentTree tree, int[] chain, int groupStart)
+    {
+        var groupEnd = groupStart;
+
+        while (groupEnd < sweep.Length && sweep[groupEnd].X == sweep[groupStart].X)
+        {
+            groupEnd++;
+        }
+
+        for (var idx = groupStart; idx < groupEnd; idx++)
+        {
+            var point = sweep[idx];
+            var best = point.Rank > 0 ? tree.Query(0, point.Rank - 1) : 0;
+            chain[point.Index] = best + 1;
+        }
+
+        for (var idx = groupStart; idx < groupEnd; idx++)
+        {
+            WritePointToTree(sweep[idx], tree, chain);
+        }
+
+        return groupEnd;
+    }
+
+    // Write pass: fold one point's chain length into the tree at its own compressed rank.
+    private static void WritePointToTree((int Index, long X, int Rank) point, RepoSegmentTree tree, int[] chain)
+    {
+        var current = tree.Query(point.Rank, point.Rank);
+        var updated = Math.Max(current, chain[point.Index]);
+        tree.Update(point.Rank, updated);
+    }
+
+    // The longest strictly increasing chain that ends at point i, memoized: point j is
+    // a valid predecessor exactly when both of its coordinates sit strictly below point
+    // i's. A caller wanting the chain STARTING at i negates every point first, which
+    // reverses every chain's direction - see Negate.
+    private static int LongestChainEndingAt(int[][] points, int[] memo, int index)
+    {
+        if (memo[index] >= 0)
+        {
+            return memo[index];
+        }
+
+        var best = 0;
+
+        for (var j = 0; j < points.Length; j++)
+        {
+            if (points[j][0] < points[index][0] && points[j][1] < points[index][1])
+            {
+                var candidate = LongestChainEndingAt(points, memo, j);
+                best = Math.Max(best, candidate);
+            }
+        }
+
+        return memo[index] = best + 1;
+    }
+
+    // Negating both coordinates of every point reverses every chain's direction:
+    // "longest chain starting at i" over the original points is "longest chain ending
+    // at i" over the negated ones, so both halves of the answer come from the one
+    // chain helper above rather than from a second, mirrored implementation.
+    private static int[][] Negate(int[][] coordinates)
+    {
+        var negated = new int[coordinates.Length][];
+
+        for (var i = 0; i < coordinates.Length; i++)
+        {
+            negated[i] = [-coordinates[i][0], -coordinates[i][1]];
+        }
+
+        return negated;
     }
 }

@@ -14,12 +14,12 @@ public class RemoveOutermostParenthesesBenchmarks
 {
     private const int MaxDepth = 10;
 
-    private const int RandomSeed = 1021; // LeetCode problem number
+    private const int RandomSeed = 1021; private string _expression = "";
+
+    // LeetCode problem number
 
     [Params(1_000, 20_000)]
-    public int PairCount;
-
-    private string _expression = null!;
+    public int PairCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>

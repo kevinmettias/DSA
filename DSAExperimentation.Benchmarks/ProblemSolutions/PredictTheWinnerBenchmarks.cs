@@ -12,10 +12,10 @@ public class PredictTheWinnerBenchmarks
 {
     private const int MaxScoreValueExclusive = 100;
 
-    [Params(22, 26)]
-    public int N;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(22, 26)]
+    public int N { get; set; }
 
     [GlobalSetup]
     public void Setup()

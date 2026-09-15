@@ -20,10 +20,10 @@ public class StoneGameVBenchmarks
 
     private const int MaxStoneValue = 100;
 
-    [Params(120, 200)]
-    public int PileCount;
+    private int[] _stoneValue = [];
 
-    private int[] _stoneValue = null!;
+    [Params(120, 200)]
+    public int PileCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

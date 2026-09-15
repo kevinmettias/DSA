@@ -14,10 +14,10 @@ public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
     private const int RandomSeed = 1526; // LC 1526
     private const int MaxTargetHeight = 50;
 
-    [Params(200, 2_000)]
-    public int Length;
+    private int[] _target = [];
 
-    private int[] _target = null!;
+    [Params(200, 2_000)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

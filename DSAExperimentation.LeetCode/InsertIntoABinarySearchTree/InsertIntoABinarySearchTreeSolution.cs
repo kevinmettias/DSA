@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
@@ -10,7 +11,6 @@ namespace DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
 // the other strategy's.
 internal static class InsertIntoABinarySearchTreeSolution
 {
-    private const int MidpointDivisor = 2;
 
     // The naive approach many first solutions reach for: collect the existing
     // tree's values via an in-order walk (built fresh from the same values
@@ -20,10 +20,7 @@ internal static class InsertIntoABinarySearchTreeSolution
     // point is contrasting against this repo's own persistent BST below.
     public static BinaryTreeNode<int>? InsertByCollectSortRebuild(IEnumerable<int> existingValues, int newValue)
     {
-        var root = BuildManual(existingValues);
-
-        var sorted = new List<int>();
-        CollectInOrder(root, sorted);
+        var sorted = CollectSortedValues(existingValues);
 
         var insertAt = sorted.BinarySearch(newValue);
         sorted.Insert(insertAt < 0 ? ~insertAt : insertAt, newValue);
@@ -31,20 +28,16 @@ internal static class InsertIntoABinarySearchTreeSolution
         return BuildBalanced(sorted, 0, sorted.Count - 1);
     }
 
-    // This repo's own BinarySearchTree<TValue>.Insert: walks only the O(h)
-    // root-to-empty-slot path and attaches one new leaf, never touching an
-    // unrelated node.
-    public static BinaryTreeNode<int>? InsertByBstInsert(IEnumerable<int> existingValues, int newValue)
+    // Builds the given tree fresh and reads its values back out in sorted order - the
+    // walk is folded into construction, so this is one step rather than two.
+    private static List<int> CollectSortedValues(IEnumerable<int> existingValues)
     {
-        var tree = new BinarySearchTree<int>();
+        var root = BuildManual(existingValues);
 
-        foreach (var value in existingValues)
-        {
-            tree.Insert(value);
-        }
+        var sorted = new List<int>();
+        CollectInOrder(root, sorted);
 
-        tree.Insert(newValue);
-        return tree.Root;
+        return sorted;
     }
 
     private static BinaryTreeNode<int>? BuildManual(IEnumerable<int> values)
@@ -69,6 +62,7 @@ internal static class InsertIntoABinarySearchTreeSolution
     {
         var node = root;
 
+        // Stops when the walk reaches the null child slot the value belongs in, where the new node is linked and the method returns.
         while (true)
         {
             if (value < node.Value)
@@ -94,6 +88,22 @@ internal static class InsertIntoABinarySearchTreeSolution
         }
     }
 
+    // This repo's own BinarySearchTree<TValue>.Insert: walks only the O(h)
+    // root-to-empty-slot path and attaches one new leaf, never touching an
+    // unrelated node.
+    public static BinaryTreeNode<int>? InsertByBstInsert(IEnumerable<int> existingValues, int newValue)
+    {
+        var tree = new BinarySearchTree<int>();
+
+        foreach (var value in existingValues)
+        {
+            tree.Insert(value);
+        }
+
+        tree.Insert(newValue);
+        return tree.Root;
+    }
+
     private static void CollectInOrder(BinaryTreeNode<int>? node, List<int> values)
     {
         if (node is null)
@@ -113,7 +123,7 @@ internal static class InsertIntoABinarySearchTreeSolution
             return null;
         }
 
-        var mid = low + ((high - low) / MidpointDivisor);
+        var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
 
         return new BinaryTreeNode<int>(values[mid])
         {

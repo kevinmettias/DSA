@@ -19,8 +19,12 @@ internal static class LoudAndRichSolution
     // (in-degree 0 means "nobody confirmed richer yet"), then one linear DP pass
     // pushes each person's current best answer onto everyone they are richer
     // than, O(V+E) total.
-    public static int[] QuietestByTopologicalDpPass(int[][] richer, int[] quiet) =>
-        QuietestByTopologicalDpPass(BuildPeople(richer, quiet.Length), quiet);
+    public static int[] QuietestByTopologicalDpPass(int[][] richer, int[] quiet)
+    {
+        var people = BuildPeople(richer, quiet.Length);
+
+        return QuietestByTopologicalDpPass(people, quiet);
+    }
 
     public static int[] QuietestByTopologicalDpPass(List<PersonNode> people, int[] quiet)
     {
@@ -50,8 +54,12 @@ internal static class LoudAndRichSolution
     // O(n * (V+E)) total because a wealthy person sits inside many other
     // people's walks. Deliberately written with a BCL Stack and HashSet - it is
     // the arm the composed solution above has to justify itself against.
-    public static int[] QuietestByPerPersonWalk(int[][] richer, int[] quiet) =>
-        QuietestByPerPersonWalk(BuildPeople(richer, quiet.Length), quiet);
+    public static int[] QuietestByPerPersonWalk(int[][] richer, int[] quiet)
+    {
+        var people = BuildPeople(richer, quiet.Length);
+
+        return QuietestByPerPersonWalk(people, quiet);
+    }
 
     public static int[] QuietestByPerPersonWalk(List<PersonNode> people, int[] quiet)
     {
@@ -71,6 +79,15 @@ internal static class LoudAndRichSolution
         var stack = new Stack<PersonNode>();
         stack.Push(start);
 
+        return WalkRicherForQuietest(start, visited, stack, quiet);
+    }
+
+    // The walk itself: drain the richer-than frontier one person at a time, keeping the
+    // quietest id seen so far. The frontier and its visited set belong to the caller, so a
+    // walk resumes from the person it was asked about instead of re-seeding them.
+    private static int WalkRicherForQuietest(
+        PersonNode start, HashSet<PersonNode> visited, Stack<PersonNode> stack, int[] quiet)
+    {
         var quietest = start.Id;
 
         while (stack.Count > 0)

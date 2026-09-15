@@ -17,12 +17,12 @@ public class SmallestMissingGeneticValueInEachSubtreeBenchmarks
     private const int BaseGeneValue = 2;
     private const int SmallestGeneValue = 1;
 
-    [Params(200, 2000)]
-    public int NodeCount;
+    private int[] _parents = [];
 
-    private int[] _parents = null!;
-    private int[] _nums = null!;
-    private RootedTreeNode[] _nodes = null!;
+    private int[] _nums = [];
+    private RootedTreeNode[] _nodes = [];
+    [Params(200, 2000)]
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()

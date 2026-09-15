@@ -18,10 +18,10 @@ public class MyCalendarIIIBenchmarks
     private const int StartRangeMultiplier = 2;
     private const int MaxBookingDuration = 20;
 
-    [Params(50, 200)]
-    public int Length;
+    private (int Start, int End)[] _bookings = [];
 
-    private (int Start, int End)[] _bookings = null!;
+    [Params(50, 200)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

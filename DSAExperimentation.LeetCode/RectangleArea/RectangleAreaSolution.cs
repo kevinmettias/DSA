@@ -13,44 +13,40 @@ namespace DSAExperimentation.LeetCode.RectangleArea;
 // repo", and there is no input container here for a repo type to occupy.
 internal static class RectangleAreaSolution
 {
-    public static long TotalAreaByClosedFormOverlap(
-        int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
+    public static long TotalAreaByClosedFormOverlap(Rectangle a, Rectangle b)
     {
-        var area1 = (long)(ax2 - ax1) * (ay2 - ay1);
-        var area2 = (long)(bx2 - bx1) * (by2 - by1);
+        var overlapWidth = Math.Max(0, Math.Min(a.X2, b.X2) - Math.Max(a.X1, b.X1));
+        var overlapHeight = Math.Max(0, Math.Min(a.Y2, b.Y2) - Math.Max(a.Y1, b.Y1));
 
-        var overlapWidth = Math.Max(0, Math.Min(ax2, bx2) - Math.Max(ax1, bx1));
-        var overlapHeight = Math.Max(0, Math.Min(ay2, by2) - Math.Max(ay1, by1));
-
-        return area1 + area2 - (long)overlapWidth * overlapHeight;
+        return a.Area + b.Area - (long)overlapWidth * overlapHeight;
     }
 
-    public static long TotalAreaByUnitGridCoverageCount(
-        int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2)
+    public static long TotalAreaByUnitGridCoverageCount(Rectangle a, Rectangle b)
     {
-        var minX = Math.Min(ax1, bx1);
-        var minY = Math.Min(ay1, by1);
-        var maxX = Math.Max(ax2, bx2);
-        var maxY = Math.Max(ay2, by2);
+        var bounds = BoundingRectangle(a, b);
+        var covered = new bool[bounds.Width * bounds.Height];
 
-        var width = maxX - minX;
-        var height = maxY - minY;
-        var covered = new bool[width * height];
-
-        MarkRectangle(covered, width, minX, minY, ax1, ay1, ax2, ay2);
-        MarkRectangle(covered, width, minX, minY, bx1, by1, bx2, by2);
+        MarkRectangle(covered, bounds, a);
+        MarkRectangle(covered, bounds, b);
 
         return CountCovered(covered);
     }
 
-    private static void MarkRectangle(
-        bool[] covered, int width, int minX, int minY, int x1, int y1, int x2, int y2)
+    // The scratch grid is indexed from the corner of the region both rectangles fall
+    // inside, so the cells have to be counted from that corner rather than from zero.
+    private static Rectangle BoundingRectangle(Rectangle a, Rectangle b) =>
+        new(Math.Min(a.X1, b.X1),
+            Math.Min(a.Y1, b.Y1),
+            Math.Max(a.X2, b.X2),
+            Math.Max(a.Y2, b.Y2));
+
+    private static void MarkRectangle(bool[] covered, Rectangle bounds, Rectangle rectangle)
     {
-        for (var y = y1; y < y2; y++)
+        for (var y = rectangle.Y1; y < rectangle.Y2; y++)
         {
-            for (var x = x1; x < x2; x++)
+            for (var x = rectangle.X1; x < rectangle.X2; x++)
             {
-                covered[((y - minY) * width) + (x - minX)] = true;
+                covered[((y - bounds.Y1) * bounds.Width) + (x - bounds.X1)] = true;
             }
         }
     }

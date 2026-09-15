@@ -17,10 +17,10 @@ public class CountSubarraysWithFixedBoundsBenchmarks
     private const int MaxK = 8;
     private const int MaxValueExclusive = 10;
 
-    [Params(20, 100)]
-    public int Length;
+    private int[] _nums = [];
 
-    private int[] _nums = null!;
+    [Params(20, 100)]
+    public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()

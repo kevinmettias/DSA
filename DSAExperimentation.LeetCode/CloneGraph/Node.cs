@@ -5,9 +5,7 @@ namespace DSAExperimentation.LeetCode.CloneGraph;
 // graph can be built at all. Stays local to this problem - nothing else in the
 // catalogue is handed a graph already fully formed, caller-owned and self-
 // referential like this, rather than building one from a domain rule.
-internal sealed class Node(int value)
+internal sealed record Node(int Value)
 {
-    public int Value { get; } = value;
-
     public List<Node> Neighbors { get; } = [];
 }

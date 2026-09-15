@@ -15,9 +15,3 @@ internal readonly record struct PairQuery(PairQueryKind Kind, int Left, int Righ
     public static PairQuery Count(long tot) =>
         new(PairQueryKind.Count, Left: 0, Right: 0, Delta: 0, tot);
 }
-
-internal enum PairQueryKind
-{
-    Increment,
-    Count,
-}

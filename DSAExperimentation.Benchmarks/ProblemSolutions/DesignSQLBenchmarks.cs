@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using static DSAExperimentation.LeetCode.DesignSQL.DesignSQLSolution;
+using DSAExperimentation.LeetCode.DesignSQL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -20,13 +20,13 @@ public class DesignSQLBenchmarks
     private const int ColumnCount = 3;
     private const string TableName = "rows";
 
-    [Params(500, 4_000)]
-    public int RowCount;
+    private string[] _names = [];
 
-    private string[] _names = null!;
-    private int[] _columns = null!;
-    private string[][] _rows = null!;
-    private int[] _deleteIds = null!;
+    private int[] _columns = [];
+    private string[][] _rows = [];
+    private int[] _deleteIds = [];
+    [Params(500, 4_000)]
+    public int RowCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -40,14 +40,14 @@ public class DesignSQLBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ListScanTable() => Replay(new SqlByListScan(_names, _columns));
+    public long ListScanTable() => Replay(new DesignSQLSolution.SqlByListScan(_names, _columns));
 
     [Benchmark]
-    public long HashMapTable() => Replay(new SqlByHashMapTables(_names, _columns));
+    public long HashMapTable() => Replay(new DesignSQLSolution.SqlByHashMapTables(_names, _columns));
 
     // Sums the length of every cell read rather than discarding it, so the JIT
     // cannot eliminate the replay as dead code.
-    private long Replay(ISqlStrategy sql)
+    private long Replay(DesignSQLSolution.ISqlStrategy sql)
     {
         foreach (var row in _rows)
         {

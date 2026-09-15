@@ -16,14 +16,39 @@ internal static class NetworkRecoveryWorkloads
     public static (int[][] Edges, bool[] Online) Build(int nodeCount, int extraEdgesPerNode, int seed)
     {
         var random = new Random(seed);
+        var edges = BuildForwardEdges(nodeCount, extraEdgesPerNode, random);
+        var online = BuildOnlineFlags(nodeCount, random);
+
+        return ([.. edges], online);
+    }
+
+    private static List<int[]> BuildForwardEdges(int nodeCount, int extraEdgesPerNode, Random random)
+    {
         var edges = new List<int[]>();
 
+        AddSpineEdges(edges, nodeCount, random);
+        AddExtraForwardEdges(edges, nodeCount, extraEdgesPerNode, random);
+
+        return edges;
+    }
+
+    // Every node i > 0 gets an edge from some earlier node j < i, so node n-1 is
+    // reachable from node 0 through the graph's own forward edges.
+    private static void AddSpineEdges(List<int[]> edges, int nodeCount, Random random)
+    {
         for (var i = 1; i < nodeCount; i++)
         {
             var from = random.Next(i);
             edges.Add([from, i, random.Next(CostUpperBound)]);
         }
+    }
 
+    // Extra forward-only edges add the density that keeps the binary search's
+    // feasibility probes filtering real edges instead of walking a bare spanning
+    // path; only i < to pairs are added, so the graph stays acyclic.
+    private static void AddExtraForwardEdges(
+        List<int[]> edges, int nodeCount, int extraEdgesPerNode, Random random)
+    {
         for (var i = 0; i < nodeCount; i++)
         {
             for (var e = 0; e < extraEdgesPerNode; e++)
@@ -36,7 +61,12 @@ internal static class NetworkRecoveryWorkloads
                 }
             }
         }
+    }
 
+    // The first and last nodes stay online, so there are always endpoints for a
+    // recovery path to work with.
+    private static bool[] BuildOnlineFlags(int nodeCount, Random random)
+    {
         var online = new bool[nodeCount];
 
         for (var i = 0; i < nodeCount; i++)
@@ -47,6 +77,6 @@ internal static class NetworkRecoveryWorkloads
         online[0] = true;
         online[nodeCount - 1] = true;
 
-        return ([.. edges], online);
+        return online;
     }
 }

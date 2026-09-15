@@ -35,6 +35,37 @@ internal static class TrappingRainWaterIISolution
         }
 
         var water = InitializeWaterLevels(heightMap, rows, cols);
+
+        RelaxToFixedPoint(heightMap, water, rows, cols);
+
+        return SumTrappedWater(heightMap, water, rows, cols);
+    }
+
+    private static int[,] InitializeWaterLevels(int[][] heightMap, int rows, int cols)
+    {
+        var water = new int[rows, cols];
+
+        for (var r = 0; r < rows; r++)
+        {
+            for (var c = 0; c < cols; c++)
+            {
+                water[r, c] = IsBoundary(r, c, rows, cols) ? TerrainHeight(heightMap, r, c) : int.MaxValue;
+            }
+        }
+
+        return water;
+    }
+
+    // A cell's own terrain height - the level a boundary cell seeds the flood at, since
+    // nothing can wall a boundary cell in.
+    private static int TerrainHeight(int[][] heightMap, int row, int col) => heightMap[row][col];
+
+    // Repeat whole-grid relax passes until a pass changes nothing: the fixed point
+    // is reached once every interior cell already equals the lowest wall on its
+    // cheapest way out to the boundary. No priority ordering at all - the
+    // Bellman-Ford shape, against the heap flood fill's Dijkstra shape below.
+    private static void RelaxToFixedPoint(int[][] heightMap, int[,] water, int rows, int cols)
+    {
         var changed = true;
 
         while (changed)
@@ -49,23 +80,6 @@ internal static class TrappingRainWaterIISolution
                 }
             }
         }
-
-        return SumTrappedWater(heightMap, water, rows, cols);
-    }
-
-    private static int[,] InitializeWaterLevels(int[][] heightMap, int rows, int cols)
-    {
-        var water = new int[rows, cols];
-
-        for (var r = 0; r < rows; r++)
-        {
-            for (var c = 0; c < cols; c++)
-            {
-                water[r, c] = IsBoundary(r, c, rows, cols) ? heightMap[r][c] : int.MaxValue;
-            }
-        }
-
-        return water;
     }
 
     private static bool RelaxCell(int[][] heightMap, int r, int c, int[,] water)
@@ -181,10 +195,7 @@ internal static class TrappingRainWaterIISolution
 
     private static int VisitNeighbor((int Row, int Col) neighbor, int height, FloodState state)
     {
-        var rows = state.HeightMap.Length;
-        var cols = state.HeightMap[0].Length;
-
-        if (neighbor.Row < 0 || neighbor.Row >= rows || neighbor.Col < 0 || neighbor.Col >= cols || state.Visited[neighbor.Row, neighbor.Col])
+        if (IsNeighborBlocked(state, neighbor))
         {
             return 0;
         }
@@ -196,18 +207,27 @@ internal static class TrappingRainWaterIISolution
         return Math.Max(0, height - neighborHeight);
     }
 
+    // Whether a neighbor is one the flood has already settled or would fall off the
+    // board - the board's own extent is read here rather than threaded in from above.
+    private static bool IsNeighborBlocked(FloodState state, (int Row, int Col) neighbor)
+    {
+        var rows = state.HeightMap.Length;
+        var cols = state.HeightMap[0].Length;
+
+        return IsOffBoard(neighbor.Row, neighbor.Col, rows, cols)
+            || state.Visited[neighbor.Row, neighbor.Col];
+    }
+
+    // Both coordinates outside the map is one idea, and the flood asks it of every
+    // neighbor before anything else.
+    private static bool IsOffBoard(int row, int col, int rows, int cols)
+        => row < 0 || row >= rows || col < 0 || col >= cols;
+
     private static bool IsBoundary(int r, int c, int rows, int cols)
         => r == 0 || r == rows - 1 || c == 0 || c == cols - 1;
 
-    private sealed class FloodState(
-        int[][] heightMap,
-        bool[,] visited,
-        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> boundary)
-    {
-        public int[][] HeightMap { get; } = heightMap;
-
-        public bool[,] Visited { get; } = visited;
-
-        public Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> Boundary { get; } = boundary;
-    }
+    private sealed record FloodState(
+        int[][] HeightMap,
+        bool[,] Visited,
+        Heap<((int Row, int Col) Node, int Priority), ByPriorityOrder<(int Row, int Col), int>> Boundary);
 }

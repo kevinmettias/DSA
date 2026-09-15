@@ -27,7 +27,7 @@ internal static class ConstructBinaryTreeFromPreorderAndInorderTraversalSolution
     // Tracks how far into preorder the walk has consumed, shared across every
     // recursive call so the root of each subtree is read in preorder's own order:
     // this subtree's root, then its whole left subtree, then its whole right one.
-    private struct PreorderWalk(int[] preorder, HashMap<int, int> inorderIndex)
+    private sealed class PreorderWalk(int[] preorder, HashMap<int, int> inorderIndex)
     {
         private readonly int[] _preorder = preorder;
         private readonly HashMap<int, int> _inorderIndex = inorderIndex;
