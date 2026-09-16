@@ -179,13 +179,13 @@ internal static class RegionsCutBySlashesSolution
     // Unions the current cell's own triangles per its slash character, then unions
     // its East/South triangles with the West/North triangles of its right/below
     // neighbors across the shared edge.
-    private static void UnionCellWithNeighbors(DisjointSet triangles, string[] grid, int r, int c)
+    private static void UnionCellWithNeighbors(DisjointSet triangles, string[] grid, int rowIndex, int columnIndex)
     {
         var size = grid.Length;
-        var baseId = TrianglesPerCell * (r * size + c);
-        UnionWithinCell(triangles, baseId, grid[r][c]);
+        var baseId = TrianglesPerCell * (rowIndex * size + columnIndex);
+        UnionWithinCell(triangles, baseId, grid[rowIndex][columnIndex]);
 
-        UnionWithNeighborCells(triangles, baseId, size, (r, c));
+        UnionWithNeighborCells(triangles, baseId, size, (rowIndex, columnIndex));
     }
 
     private static void UnionWithinCell(DisjointSet triangles, int baseId, char cell)

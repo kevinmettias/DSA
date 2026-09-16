@@ -8,9 +8,9 @@ namespace DSAExperimentation.LeetCode.BoatsToSavePeople;
 //
 // The heaviest remaining person always needs a boat of their own, so pairing them
 // with the lightest person who still fits is never worse than sending them alone -
-// that greedy rule is the whole problem. NumRescueBoatsByRepeatedScan applies it
-// literally, rescanning for the current heaviest and lightest on every boat
-// (O(n^2)). NumRescueBoatsBySortThenTwoPointer sorts the weights ascending with
+// that greedy rule is the whole problem. NumberOfRescueBoatsByRepeatedScan applies
+// it literally, rescanning for the current heaviest and lightest on every boat
+// (O(n^2)). NumberOfRescueBoatsBySortThenTwoPointer sorts the weights ascending with
 // this repo's own MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence
 // (AssignCookies' shape, applied to a single array instead of two) so the same
 // greedy rule becomes one O(n) two-pointer pass.
@@ -23,7 +23,7 @@ internal static class BoatsToSavePeopleSolution
 
     // Deliberately written without this repo's primitives - the baseline the sorted
     // two-pointer pass below has to justify itself against.
-    public static int NumRescueBoatsByRepeatedScan(int[] people, int limit)
+    public static int NumberOfRescueBoatsByRepeatedScan(int[] people, int limit)
     {
         var used = new bool[people.Length];
         var remaining = people.Length;
@@ -84,7 +84,7 @@ internal static class BoatsToSavePeopleSolution
         for (var i = 0; i < weights.Length; i++)
         {
             if (IsLightestCandidate(weights, used, i, lightestIndex)
-                && FitsBesideHeaviest(weights, i, heaviestIndex, limit))
+                && CanFitBesideHeaviest(weights, i, heaviestIndex, limit))
             {
                 lightestIndex = i;
             }
@@ -99,10 +99,10 @@ internal static class BoatsToSavePeopleSolution
         => !used[index] && (bestIndex < 0 || weights[index] < weights[bestIndex]);
 
     // Light enough to ride in the same boat as its heaviest passenger.
-    private static bool FitsBesideHeaviest(int[] weights, int index, int heaviestIndex, int limit)
+    private static bool CanFitBesideHeaviest(int[] weights, int index, int heaviestIndex, int limit)
         => weights[index] + weights[heaviestIndex] <= limit;
 
-    public static int NumRescueBoatsBySortThenTwoPointer(int[] people, int limit)
+    public static int NumberOfRescueBoatsBySortThenTwoPointer(int[] people, int limit)
     {
         var sorted = (int[])people.Clone();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));

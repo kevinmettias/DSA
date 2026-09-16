@@ -5,9 +5,9 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SwappingNodesInALinkedList;
 
 // Harness only. Both strategies are SwappingNodesInALinkedListSolution's - this
 // file pins them to LeetCode's published examples plus the boundary cases the
-// published pair does not reach: k = 1 and k = n (the two ends swap with each
-// other), the single-node list, and the odd-length list where the kth node from
-// each end is the same node, so the swap has to be a no-op rather than a
+// published pair does not reach: kthPosition = 1 and kthPosition = n (the two ends
+// swap with each other), the single-node list, and the odd-length list where the kth
+// node from each end is the same node, so the swap has to be a no-op rather than a
 // self-assignment that corrupts it.
 //
 // The examples are stated as raw values, not as built nodes, because
@@ -30,10 +30,10 @@ public sealed class SwappingNodesInALinkedListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SwapNodesByArrayMaterialize_LeetCodeExamples_SwapsKthFromFrontAndEnd(
-        int[] values, int k, int[] expected)
+        int[] values, int kthPosition, int[] expected)
     {
         var head = BuildList(values);
-        var swapped = SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(head, k);
+        var swapped = SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(head, kthPosition);
         var actual = ToArray(swapped);
 
         Assert.Equal(expected, actual);
@@ -42,10 +42,10 @@ public sealed class SwappingNodesInALinkedListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SwapNodesByTwoPointerWalk_LeetCodeExamples_SwapsKthFromFrontAndEnd(
-        int[] values, int k, int[] expected)
+        int[] values, int kthPosition, int[] expected)
     {
         var head = BuildList(values);
-        var swapped = SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(head, k);
+        var swapped = SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(head, kthPosition);
         var actual = ToArray(swapped);
 
         Assert.Equal(expected, actual);

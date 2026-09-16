@@ -214,11 +214,11 @@ internal static class CollectCoinsInATreeSolution
         return endpoints / 2;
     }
 
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[n];
+        var adjacency = new List<int>[nodeCount];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             adjacency[node] = [];
         }

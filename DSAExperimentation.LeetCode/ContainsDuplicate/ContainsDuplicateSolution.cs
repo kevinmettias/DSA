@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.ContainsDuplicate;
 // value fails to be newly added.
 internal static class ContainsDuplicateSolution
 {
-    public static bool ContainsDuplicateByBruteForce(int[] nums)
+    public static bool HasDuplicateByBruteForce(int[] nums)
     {
         for (var i = 0; i < nums.Length; i++)
         {
@@ -26,7 +26,7 @@ internal static class ContainsDuplicateSolution
         return false;
     }
 
-    public static bool ContainsDuplicateBySetProbe(int[] nums)
+    public static bool HasDuplicateBySetProbe(int[] nums)
     {
         var seen = new Set<int>();
 

@@ -12,12 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class ClosestDivisorsBenchmarks
 {
     [Params(1_000, 100_000)]
-    public int Num { get; set; }
+    public int Number { get; set; }
 
     [Benchmark(Baseline = true)]
-    public (int First, int Second) BruteForce() => ClosestDivisorsSolution.ClosestPairByDivisorScan(Num);
+    public (int First, int Second) BruteForce() => ClosestDivisorsSolution.ClosestPairByDivisorScan(Number);
 
     [Benchmark]
     public (int First, int Second) BinarySearchAnchored() =>
-        ClosestDivisorsSolution.ClosestPairByBinarySearchAnchor(Num);
+        ClosestDivisorsSolution.ClosestPairByBinarySearchAnchor(Number);
 }

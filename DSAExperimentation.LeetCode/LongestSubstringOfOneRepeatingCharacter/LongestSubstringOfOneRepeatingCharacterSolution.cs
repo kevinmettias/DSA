@@ -16,9 +16,10 @@ internal static class LongestSubstringOfOneRepeatingCharacterSolution
     // The textbook answer: a plain char[] mutated in place and rescanned from the
     // start after each update, O(n) per query. Deliberately BCL-only - it is the arm
     // the segment-tree strategy below has to justify itself against.
-    public static int[] LongestRepeatingByLinearRescan(BaseText s, ReplacementCharacters queryCharacters, int[] queryIndices)
+    public static int[] LongestRepeatingByLinearRescan(
+        BaseText baseText, ReplacementCharacters queryCharacters, int[] queryIndices)
     {
-        var chars = s.Text.ToCharArray();
+        var chars = baseText.Text.ToCharArray();
         var lengths = new int[queryCharacters.Text.Length];
 
         for (var i = 0; i < queryCharacters.Text.Length; i++)
@@ -54,27 +55,28 @@ internal static class LongestSubstringOfOneRepeatingCharacterSolution
     // This repo's own SegmentTree keyed by index, each node a RunSegment merged by
     // RunAggregate. Update is O(log n); the query spans exactly the tree's own root
     // range, which SegmentTree.Query answers from the root node without descending.
-    public static int[] LongestRepeatingBySegmentTree(BaseText s, ReplacementCharacters queryCharacters, int[] queryIndices)
+    public static int[] LongestRepeatingBySegmentTree(
+        BaseText baseText, ReplacementCharacters queryCharacters, int[] queryIndices)
     {
-        var tree = new SegmentTree<RunSegment, RunAggregate>(BuildLeaves(s.Text));
+        var tree = new SegmentTree<RunSegment, RunAggregate>(BuildLeaves(baseText.Text));
         var lengths = new int[queryCharacters.Text.Length];
 
         for (var i = 0; i < queryCharacters.Text.Length; i++)
         {
             tree.Update(queryIndices[i], RunSegment.Leaf(queryCharacters.Text[i]));
-            lengths[i] = tree.Query(0, s.Text.Length - 1).MaxLen;
+            lengths[i] = tree.Query(0, baseText.Text.Length - 1).MaxLen;
         }
 
         return lengths;
     }
 
-    private static RunSegment[] BuildLeaves(string s)
+    private static RunSegment[] BuildLeaves(string text)
     {
-        var leaves = new RunSegment[s.Length];
+        var leaves = new RunSegment[text.Length];
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            leaves[i] = RunSegment.Leaf(s[i]);
+            leaves[i] = RunSegment.Leaf(text[i]);
         }
 
         return leaves;

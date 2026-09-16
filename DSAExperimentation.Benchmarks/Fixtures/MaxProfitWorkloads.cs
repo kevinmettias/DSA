@@ -9,14 +9,14 @@ internal static class MaxProfitWorkloads
     private const int EdgeChancePercent = 35;
     private const int MaxScoreExclusive = 100_001; // LC bounds score to [1, 1e5]
 
-    public static (int[][] Edges, int[] Score) Build(int n, int seed)
+    public static (int[][] Edges, int[] Score) Build(int nodeCount, int seed)
     {
         var random = new Random(seed);
         var edges = new List<int[]>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
-            for (var j = i + 1; j < n; j++)
+            for (var j = i + 1; j < nodeCount; j++)
             {
                 if (random.Next(100) < EdgeChancePercent)
                 {
@@ -25,9 +25,9 @@ internal static class MaxProfitWorkloads
             }
         }
 
-        var score = new int[n];
+        var score = new int[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             score[i] = 1 + random.Next(MaxScoreExclusive - 1);
         }

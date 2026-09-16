@@ -54,7 +54,7 @@ internal static class AssignCookiesSolution
 
         for (var j = 0; j < sizes.Length; j++)
         {
-            if (CanBeGivenTo(used, sizes, j, greed) && BeatsBest(sizes, j, bestIndex))
+            if (CanBeGivenTo(used, sizes, j, greed) && IsBetterFit(sizes, j, bestIndex))
             {
                 bestIndex = j;
             }
@@ -69,7 +69,7 @@ internal static class AssignCookiesSolution
         => !used[index] && sizes[index] >= greed;
 
     // The closest fit found so far - no cookie beats none yet.
-    private static bool BeatsBest(int[] sizes, int index, int bestIndex)
+    private static bool IsBetterFit(int[] sizes, int index, int bestIndex)
         => bestIndex < 0 || sizes[index] < sizes[bestIndex];
 
     public static int FindContentChildrenBySortThenTwoPointer(int[] greed, int[] sizes)

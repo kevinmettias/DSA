@@ -18,8 +18,8 @@ internal interface INoveltySet<TSeen>
     // plan carries this factory rather than one set.
     TSeen Fresh();
 
-    // Admits `value` into that group's novelty set and answers whether this was its
-    // first sighting there. A false is a repeated value, and a group holding one is
+    // Tries to admit `value` into that group's novelty set and answers whether this was
+    // its first sighting there. A false is a repeated value, and a group holding one is
     // illegal - so a false is the whole of what makes the candidate group rejectable.
-    bool Admit(TSeen seen, int value);
+    bool TryAdmit(TSeen seen, int value);
 }

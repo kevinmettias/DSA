@@ -41,7 +41,7 @@ internal static class FormArrayByConcatenatingSubarraysOfAnotherArraySolution
     {
         for (var start = from; start + group.Length <= nums.Length; start++)
         {
-            if (MatchesAt(nums, group, start))
+            if (HasMatchAt(nums, group, start))
             {
                 match = start;
                 return true;
@@ -52,7 +52,7 @@ internal static class FormArrayByConcatenatingSubarraysOfAnotherArraySolution
         return false;
     }
 
-    private static bool MatchesAt(int[] nums, int[] group, int start)
+    private static bool HasMatchAt(int[] nums, int[] group, int start)
     {
         for (var i = 0; i < group.Length; i++)
         {

@@ -1,17 +1,17 @@
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
-// Benchmark workload sizing for LC 3244 - queries are carved out of [0, n-1] so that
+// Benchmark workload sizing for LC 3244 - queries are carved out of [0, cityCount - 1] so that
 // any two are either nested or disjoint by construction, satisfying the "II" variant's
 // own non-crossing guarantee rather than filtering random pairs down to the ones that
 // happen to qualify.
 internal static class RoadAdditionQueryWorkloads
 {
-    public static int[][] BuildQueries(int n, int approximateCount, int seed)
+    public static int[][] BuildQueries(int cityCount, int approximateCount, int seed)
     {
         var random = new Random(seed);
         var queries = new List<(int U, int V)>();
 
-        Carve((0, n - 1), approximateCount, queries, random);
+        Carve((0, cityCount - 1), approximateCount, queries, random);
 
         return [.. queries.Select(query => new[] { query.U, query.V })];
     }

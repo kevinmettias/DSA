@@ -28,11 +28,11 @@ internal sealed class ParenthesesState(int pairs)
         }
     }
 
-    public void Choose(char c)
+    public void Choose(char parenthesis)
     {
-        Buffer.Add(c);
+        Buffer.Add(parenthesis);
 
-        if (c == '(')
+        if (parenthesis == '(')
         {
             Opened++;
         }
@@ -42,11 +42,11 @@ internal sealed class ParenthesesState(int pairs)
         }
     }
 
-    public void Unchoose(char c)
+    public void Unchoose(char parenthesis)
     {
         Buffer.RemoveAt(Buffer.Count - 1);
 
-        if (c == '(')
+        if (parenthesis == '(')
         {
             Opened--;
         }

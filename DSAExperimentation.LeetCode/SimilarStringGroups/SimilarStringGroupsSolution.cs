@@ -43,15 +43,15 @@ internal static class SimilarStringGroupsSolution
         return groups.Count;
     }
 
-    private static void MergeIfSimilar(List<HashSet<int>> groups, string[] strs, int i, int j)
+    private static void MergeIfSimilar(List<HashSet<int>> groups, string[] strs, int firstIndex, int secondIndex)
     {
-        if (!IsSimilar(strs[i], strs[j]))
+        if (!IsSimilar(strs[firstIndex], strs[secondIndex]))
         {
             return;
         }
 
-        var groupI = groups.First(g => g.Contains(i));
-        var groupJ = groups.First(g => g.Contains(j));
+        var groupI = groups.First(g => g.Contains(firstIndex));
+        var groupJ = groups.First(g => g.Contains(secondIndex));
 
         if (groupI != groupJ)
         {

@@ -51,10 +51,10 @@ internal static class TimeWindowGraphWorkloads
         }
     }
 
-    private static int[] BuildEdge(int u, int v, Random random)
+    private static int[] BuildEdge(int fromNode, int toNode, Random random)
     {
         var start = random.Next(WindowStartCeilingExclusive);
         var end = start + random.Next(1, WindowLengthCeilingExclusive);
-        return [u, v, start, end];
+        return [fromNode, toNode, start, end];
     }
 }

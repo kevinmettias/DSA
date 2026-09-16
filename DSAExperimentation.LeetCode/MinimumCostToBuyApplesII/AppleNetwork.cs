@@ -1,7 +1,7 @@
 namespace DSAExperimentation.LeetCode.MinimumCostToBuyApplesII;
 
 // The graph LC 3928 poses its query over, built once from LeetCode's raw
-// (n, prices, roads) shape: each undirected road contributes one entry to both
+// (shopCount, prices, roads) shape: each undirected road contributes one entry to both
 // endpoints' ForwardEdges (weight = cost) and both endpoints' ReturnEdges
 // (weight = cost * tax). Both solution strategies below share this same prepared
 // network; only how each one searches it differs.
@@ -17,11 +17,11 @@ internal sealed class AppleNetwork
         Prices = prices;
     }
 
-    public static AppleNetwork Build(int n, int[] prices, int[][] roads)
+    public static AppleNetwork Build(int shopCount, int[] prices, int[][] roads)
     {
-        var nodes = new AppleNode[n];
+        var nodes = new AppleNode[shopCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < shopCount; i++)
         {
             nodes[i] = new AppleNode(i);
         }

@@ -18,9 +18,9 @@ public sealed class MinimumCostToBuyApplesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostsByBruteForceDijkstra_LeetCodeExamples_ReturnsMinimumCostPerShop(
-        int n, int[] prices, int[][] roads, long[] expected)
+        int shopCount, int[] prices, int[][] roads, long[] expected)
     {
-        var actual = MinimumCostToBuyApplesIISolution.MinCostsByBruteForceDijkstra(n, prices, roads);
+        var actual = MinimumCostToBuyApplesIISolution.MinCostsByBruteForceDijkstra(shopCount, prices, roads);
 
         Assert.Equal(expected, actual);
     }
@@ -28,9 +28,9 @@ public sealed class MinimumCostToBuyApplesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostsByReduceGraph_LeetCodeExamples_ReturnsMinimumCostPerShop(
-        int n, int[] prices, int[][] roads, long[] expected)
+        int shopCount, int[] prices, int[][] roads, long[] expected)
     {
-        var actual = MinimumCostToBuyApplesIISolution.MinCostsByReduceGraph(n, prices, roads);
+        var actual = MinimumCostToBuyApplesIISolution.MinCostsByReduceGraph(shopCount, prices, roads);
 
         Assert.Equal(expected, actual);
     }

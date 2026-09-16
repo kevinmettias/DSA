@@ -90,13 +90,14 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
 
     // l, r, k and v are the query itself - the same four values LeetCode hands over
     // together and the same four the walk arm above unpacks - so they arrive as that
-    // one query rather than as four independent ints. n is not part of the query: it
-    // is the array length the bucket's compressed coordinates are sized against.
+    // one query rather than as four independent ints. valueCount is not part of the
+    // query: it is the array length the bucket's compressed coordinates are sized
+    // against.
     private static void MarkBucket(
-        Dictionary<(int, int), long[]> buckets, int n, (int L, int R, int K, int V) query)
+        Dictionary<(int, int), long[]> buckets, int valueCount, (int L, int R, int K, int V) query)
     {
         var residue = query.L % query.K;
-        var diff = ResolveBucket(buckets, n, query.K, residue);
+        var diff = ResolveBucket(buckets, valueCount, query.K, residue);
 
         MarkQueryRange(diff, query, residue);
     }
@@ -106,11 +107,11 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
     // in bounds even when posR is the bucket's last position. A bucket is created the
     // first time a query lands in it, filled at the multiplicative identity.
     private static long[] ResolveBucket(
-        Dictionary<(int, int), long[]> buckets, int n, int stride, int residue)
+        Dictionary<(int, int), long[]> buckets, int valueCount, int stride, int residue)
     {
         if (!buckets.TryGetValue((stride, residue), out var diff))
         {
-            var bucketLength = (n - residue + stride - 1) / stride;
+            var bucketLength = (valueCount - residue + stride - 1) / stride;
             diff = new long[bucketLength + 1];
             Array.Fill(diff, 1L);
             buckets[(stride, residue)] = diff;

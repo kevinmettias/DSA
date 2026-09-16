@@ -76,35 +76,37 @@ public sealed class MergeBSTsToCreateSingleBSTTests
         var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
-        var i = 1;
+        var cursor = 1;
 
-        while (i < levelOrder.Length)
+        while (cursor < levelOrder.Length)
         {
             var current = queue.Dequeue();
-            i = AttachChildren(current, levelOrder, queue, i);
+            cursor = AttachChildren(current, levelOrder, queue, cursor);
         }
 
         return root;
     }
 
+    // Attaches the next level-order entries as the left and then the right child of
+    // the node at the front of the queue, and returns the cursor past them.
     private static int AttachChildren(
-        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
+        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int cursor)
     {
-        if (levelOrder[i] is { } leftValue)
+        if (levelOrder[cursor] is { } leftValue)
         {
             current.Left = new BinaryTreeNode<int>(leftValue);
             queue.Enqueue(current.Left);
         }
 
-        i++;
+        cursor++;
 
-        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+        if (cursor < levelOrder.Length && levelOrder[cursor] is { } rightValue)
         {
             current.Right = new BinaryTreeNode<int>(rightValue);
             queue.Enqueue(current.Right);
         }
 
-        return i + 1;
+        return cursor + 1;
     }
 
     // The same shape back out, so an expected tree reads exactly as LeetCode prints

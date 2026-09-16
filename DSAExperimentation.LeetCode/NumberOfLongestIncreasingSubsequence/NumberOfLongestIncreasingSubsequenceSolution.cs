@@ -50,30 +50,30 @@ internal static class NumberOfLongestIncreasingSubsequenceSolution
         return total;
     }
 
-    private static int ComputeLengthAndCount(int[] nums, int[] length, int[] count, int i)
+    private static int ComputeLengthAndCount(int[] nums, int[] length, int[] count, int index)
     {
-        length[i] = 1;
-        count[i] = 1;
+        length[index] = 1;
+        count[index] = 1;
 
-        for (var j = 0; j < i; j++)
+        for (var j = 0; j < index; j++)
         {
-            if (nums[j] >= nums[i])
+            if (nums[j] >= nums[index])
             {
                 continue;
             }
 
-            if (length[j] + 1 > length[i])
+            if (length[j] + 1 > length[index])
             {
-                length[i] = length[j] + 1;
-                count[i] = count[j];
+                length[index] = length[j] + 1;
+                count[index] = count[j];
             }
-            else if (length[j] + 1 == length[i])
+            else if (length[j] + 1 == length[index])
             {
-                count[i] += count[j];
+                count[index] += count[j];
             }
         }
 
-        return length[i];
+        return length[index];
     }
 
     public static int FindNumberOfLisBySegmentTree(int[] nums)

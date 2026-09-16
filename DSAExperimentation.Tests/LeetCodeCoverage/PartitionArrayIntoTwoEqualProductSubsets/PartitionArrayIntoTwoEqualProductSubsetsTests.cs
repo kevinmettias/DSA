@@ -16,10 +16,10 @@ public sealed class PartitionArrayIntoTwoEqualProductSubsetsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckEqualPartitionsByBitmaskEnumeration_LeetCodeExamples_ReturnsWhetherAnEqualSplitExists(
+    public void CanPartitionEquallyByBitmaskEnumeration_LeetCodeExamples_ReturnsWhetherAnEqualSplitExists(
         ProductSubsetExample example)
     {
-        var actual = PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByBitmaskEnumeration(
+        var actual = PartitionArrayIntoTwoEqualProductSubsetsSolution.CanPartitionEquallyByBitmaskEnumeration(
             example.Nums, example.Target);
 
         Assert.Equal(example.Expected, actual);
@@ -27,10 +27,10 @@ public sealed class PartitionArrayIntoTwoEqualProductSubsetsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckEqualPartitionsByPrunedBacktracking_LeetCodeExamples_ReturnsWhetherAnEqualSplitExists(
+    public void CanPartitionEquallyByPrunedBacktracking_LeetCodeExamples_ReturnsWhetherAnEqualSplitExists(
         ProductSubsetExample example)
     {
-        var actual = PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByPrunedBacktracking(
+        var actual = PartitionArrayIntoTwoEqualProductSubsetsSolution.CanPartitionEquallyByPrunedBacktracking(
             example.Nums, example.Target);
 
         Assert.Equal(example.Expected, actual);

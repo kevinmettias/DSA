@@ -30,35 +30,35 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
     private static int[] Inorder(BinaryTreeNode<int>? root)
     {
         var values = new List<int>();
-        Walk(root, values);
+        WalkInorder(root, values);
         return [.. values];
 
-        static void Walk(BinaryTreeNode<int>? node, List<int> values)
+        static void WalkInorder(BinaryTreeNode<int>? node, List<int> values)
         {
             if (node is null)
             {
                 return;
             }
-            Walk(node.Left, values);
+            WalkInorder(node.Left, values);
             values.Add(node.Value);
-            Walk(node.Right, values);
+            WalkInorder(node.Right, values);
         }
     }
 
     private static int[] Postorder(BinaryTreeNode<int>? root)
     {
         var values = new List<int>();
-        Walk(root, values);
+        WalkPostorder(root, values);
         return [.. values];
 
-        static void Walk(BinaryTreeNode<int>? node, List<int> values)
+        static void WalkPostorder(BinaryTreeNode<int>? node, List<int> values)
         {
             if (node is null)
             {
                 return;
             }
-            Walk(node.Left, values);
-            Walk(node.Right, values);
+            WalkPostorder(node.Left, values);
+            WalkPostorder(node.Right, values);
             values.Add(node.Value);
         }
     }

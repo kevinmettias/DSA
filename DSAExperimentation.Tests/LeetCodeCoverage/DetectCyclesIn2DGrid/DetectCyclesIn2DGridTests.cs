@@ -21,19 +21,19 @@ public sealed class DetectCyclesIn2DGridTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsCycleByParentTrackedDepthFirstSearch_LeetCodeExamples_ReportsWhetherACycleExists(
+    public void HasCycleByParentTrackedDepthFirstSearch_LeetCodeExamples_ReportsWhetherACycleExists(
         CycleGridCase example) =>
         Assert.Equal(
             example.HasCycle,
-            DetectCyclesIn2DGridSolution.ContainsCycleByParentTrackedDepthFirstSearch(example.Grid));
+            DetectCyclesIn2DGridSolution.HasCycleByParentTrackedDepthFirstSearch(example.Grid));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsCycleByDisjointSetEdgeUnion_LeetCodeExamples_ReportsWhetherACycleExists(
+    public void HasCycleByDisjointSetEdgeUnion_LeetCodeExamples_ReportsWhetherACycleExists(
         CycleGridCase example) =>
         Assert.Equal(
             example.HasCycle,
-            DetectCyclesIn2DGridSolution.ContainsCycleByDisjointSetEdgeUnion(example.Grid));
+            DetectCyclesIn2DGridSolution.HasCycleByDisjointSetEdgeUnion(example.Grid));
 
     private static char[][] Grid(params string[] rows) =>
         rows.Select(row => row.ToCharArray()).ToArray();

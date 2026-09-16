@@ -115,5 +115,5 @@ internal static class SumOfSubarrayRangesSolution
 
     // The array's own value at this index, read only where the caller has already
     // established that one exists there.
-    private static int ValueAt(int[] nums, int i) => nums[i];
+    private static int ValueAt(int[] nums, int index) => nums[index];
 }

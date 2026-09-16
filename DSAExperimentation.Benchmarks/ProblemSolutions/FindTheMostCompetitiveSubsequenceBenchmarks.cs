@@ -18,7 +18,7 @@ public class FindTheMostCompetitiveSubsequenceBenchmarks
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _selectionLength;
     [Params(500, 5_000)]
     public int Length { get; set; }
 
@@ -27,14 +27,16 @@ public class FindTheMostCompetitiveSubsequenceBenchmarks
     {
         var random = new Random(WorkloadSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
-        _k = Length / SubsequenceLengthDivisor;
+        _selectionLength = Length / SubsequenceLengthDivisor;
     }
 
     [Benchmark(Baseline = true)]
     public int[] RepeatedFirstDescentRemoval() =>
-        FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByRepeatedRemoval(_nums, _k);
+        FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByRepeatedRemoval(
+            _nums, _selectionLength);
 
     [Benchmark]
     public int[] MonotonicStackSweep() =>
-        FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByMonotonicStack(_nums, _k);
+        FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByMonotonicStack(
+            _nums, _selectionLength);
 }

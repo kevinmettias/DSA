@@ -1,7 +1,7 @@
 namespace DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 
-// One node per remainder mod k. Appending another '1' digit to a repunit with
-// remainder r produces remainder (r*10+1) % k - a single deterministic successor,
+// One node per remainder mod the divisor. Appending another '1' digit to a repunit with
+// remainder r produces remainder (r*10+1) % divisor - a single deterministic successor,
 // so Neighbors always holds exactly one entry, filled in once while the graph is
 // built (LockNode precedent, minus the "up to 8" branching factor).
 //

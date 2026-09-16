@@ -38,14 +38,14 @@ internal static class NumberOfRecentCallsSolution
     }
 
     // Walks the entire recorded history, counting every request that has not yet
-    // aged out of the window ending at t.
-    private static int CountWithinWindow(List<int> history, int t)
+    // aged out of the window ending at timestamp.
+    private static int CountWithinWindow(List<int> history, int timestamp)
     {
         var count = 0;
 
         foreach (var seen in history)
         {
-            if (seen >= t - WindowMilliseconds)
+            if (seen >= timestamp - WindowMilliseconds)
             {
                 count++;
             }
@@ -73,9 +73,9 @@ internal static class NumberOfRecentCallsSolution
 
     // Timestamps arrive in non-decreasing order, so everything older than the window
     // is at the front and leaves in one uninterrupted run.
-    private static void DropExpired(RepoQueue pings, int t)
+    private static void DropExpired(RepoQueue pings, int timestamp)
     {
-        while (pings.TryPeek(out var oldest) && oldest < t - WindowMilliseconds)
+        while (pings.TryPeek(out var oldest) && oldest < timestamp - WindowMilliseconds)
         {
             pings.TryDequeue(out _);
         }

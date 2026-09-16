@@ -35,18 +35,19 @@ public sealed class CountIslandsWithTotalValueDivisibleByKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByFloodFillStack_LeetCodeExamples_ReturnsIslandsWithTotalValueDivisibleByK(
-        int[][] grid, int k, int expected)
+        int[][] grid, int divisor, int expected)
     {
-        var actual = CountIslandsWithTotalValueDivisibleByKSolution.CountByFloodFillStack(grid, k);
+        var actual = CountIslandsWithTotalValueDivisibleByKSolution.CountByFloodFillStack(grid, divisor);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByDepthFirstSearchTraverse_LeetCodeExamples_ReturnsIslandsWithTotalValueDivisibleByK(
-        int[][] grid, int k, int expected)
+        int[][] grid, int divisor, int expected)
     {
-        var actual = CountIslandsWithTotalValueDivisibleByKSolution.CountByDepthFirstSearchTraverse(grid, k);
+        var actual = CountIslandsWithTotalValueDivisibleByKSolution.CountByDepthFirstSearchTraverse(
+            grid, divisor);
         Assert.Equal(expected, actual);
     }
 }

@@ -32,9 +32,9 @@ public sealed class FlowerPlantingWithNoAdjacentTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GardenNoAdjByRawPathRescan_LeetCodeExamples_PlantsAFlowerTypeNoNeighborShares(
-        int n, int[][] paths, int[] expected)
+        int gardenCount, int[][] paths, int[] expected)
     {
-        var flowers = FlowerPlantingWithNoAdjacentSolution.GardenNoAdjByRawPathRescan(n, paths);
+        var flowers = FlowerPlantingWithNoAdjacentSolution.GardenNoAdjByRawPathRescan(gardenCount, paths);
 
         AssertValidPlanting(paths, expected, flowers);
     }
@@ -42,9 +42,9 @@ public sealed class FlowerPlantingWithNoAdjacentTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GardenNoAdjByAdjacencyList_LeetCodeExamples_PlantsAFlowerTypeNoNeighborShares(
-        int n, int[][] paths, int[] expected)
+        int gardenCount, int[][] paths, int[] expected)
     {
-        var flowers = FlowerPlantingWithNoAdjacentSolution.GardenNoAdjByAdjacencyList(n, paths);
+        var flowers = FlowerPlantingWithNoAdjacentSolution.GardenNoAdjByAdjacencyList(gardenCount, paths);
 
         AssertValidPlanting(paths, expected, flowers);
     }

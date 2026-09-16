@@ -112,7 +112,7 @@ internal static class PathWithMinimumEffortSolution
 
     // Off the grid is not a cell at all, and one already reached has nothing new to offer.
     private static bool IsOffGridOrAlreadyReached(EffortGrid grid, ReachWalk reach, int row, int col) =>
-        !grid.Contains(row, col) || reach.Visited[row, col];
+        !grid.HasCell(row, col) || reach.Visited[row, col];
 
     // The step is only worth taking while the height change it costs stays inside the
     // effort the search is currently testing.
@@ -181,7 +181,7 @@ internal static class PathWithMinimumEffortSolution
     {
         var (nr, nc) = NeighborOf(current, direction);
 
-        if (!grid.Contains(nr, nc) || walk.Settled[nr, nc])
+        if (!grid.HasCell(nr, nc) || walk.Settled[nr, nc])
         {
             return;
         }
@@ -205,7 +205,7 @@ internal static class PathWithMinimumEffortSolution
     {
         public static EffortGrid Over(int[][] heights) => new(heights, heights.Length, heights[0].Length);
 
-        public bool Contains(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Cols;
+        public bool HasCell(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Cols;
     }
 
     // A cell just settled by the Dijkstra pass, carrying the bottleneck effort

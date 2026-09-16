@@ -1,8 +1,9 @@
 namespace DSAExperimentation.LeetCode.SpiralMatrixII;
 
-// LeetCode 59. Spiral Matrix II: fill an n x n matrix with 1..n^2 in spiral order.
+// LeetCode 59. Spiral Matrix II: fill a size x size matrix with 1..size^2 in spiral
+// order.
 //
-// Both strategies visit exactly n^2 cells - the gap between them is per-cell
+// Both strategies visit exactly size^2 cells - the gap between them is per-cell
 // overhead, not algorithm class. The direction-vector walk re-derives "have I been
 // here" via a visited set on every step; the boundary-shrinking fill needs no
 // lookup at all, just four fixed index-arithmetic loops per layer. There is no
@@ -15,18 +16,18 @@ internal static class SpiralMatrixIISolution
     // The textbook approach: walk one cell at a time along a direction vector,
     // turning clockwise whenever the next cell would leave the bounds or has
     // already been visited. Written without this repo's primitives - a BCL
-    // HashSet tracks visited cells - since the only input is n; there's no
+    // HashSet tracks visited cells - since the only input is size; there's no
     // caller-supplied container to hand this strategy instead.
-    public static int[][] GenerateMatrixByDirectionVectorWalk(int n)
+    public static int[][] GenerateMatrixByDirectionVectorWalk(int size)
     {
-        var matrix = Enumerable.Range(0, n).Select(_ => new int[n]).ToArray();
+        var matrix = Enumerable.Range(0, size).Select(_ => new int[size]).ToArray();
         var visited = new HashSet<(int Row, int Col)>();
         int[] deltaRow = [0, 1, 0, -1];
         int[] deltaCol = [1, 0, -1, 0];
-        var context = new SpiralWalkContext(matrix, visited, deltaRow, deltaCol, n);
+        var context = new SpiralWalkContext(matrix, visited, deltaRow, deltaCol, size);
         var position = new SpiralPosition(0, 0, 0);
 
-        for (var value = 1; value <= n * n; value++)
+        for (var value = 1; value <= size * size; value++)
         {
             position = StepSpiral(context, position, value);
         }
@@ -36,7 +37,7 @@ internal static class SpiralMatrixIISolution
 
     private static SpiralPosition StepSpiral(SpiralWalkContext context, SpiralPosition position, int value)
     {
-        var (matrix, visited, deltaRow, deltaCol, n) = context;
+        var (matrix, visited, deltaRow, deltaCol, size) = context;
         var (row, col, direction) = position;
 
         matrix[row][col] = value;
@@ -45,7 +46,7 @@ internal static class SpiralMatrixIISolution
         var nextRow = row + deltaRow[direction];
         var nextCol = col + deltaCol[direction];
 
-        if (IsBlocked(visited, nextRow, nextCol, n))
+        if (IsBlocked(visited, nextRow, nextCol, size))
         {
             direction = (direction + 1) % DirectionCount;
             nextRow = row + deltaRow[direction];
@@ -56,16 +57,16 @@ internal static class SpiralMatrixIISolution
     }
 
     // The walk turns whenever the cell ahead is off the board or already filled.
-    private static bool IsBlocked(HashSet<(int Row, int Col)> visited, int row, int col, int n)
-        => row < 0 || row >= n || col < 0 || col >= n || visited.Contains((row, col));
+    private static bool IsBlocked(HashSet<(int Row, int Col)> visited, int row, int col, int size)
+        => row < 0 || row >= size || col < 0 || col >= size || visited.Contains((row, col));
 
     // Boundary-shrinking: fill each ring's top/right/bottom/left edge in turn and
     // shrink the frame afterward. No membership lookup is needed at all.
-    public static int[][] GenerateMatrixByBoundaryShrinking(int n)
+    public static int[][] GenerateMatrixByBoundaryShrinking(int size)
     {
-        var matrix = Enumerable.Range(0, n).Select(_ => new int[n]).ToArray();
+        var matrix = Enumerable.Range(0, size).Select(_ => new int[size]).ToArray();
         var value = 1;
-        var bounds = new SpiralBounds { Top = 0, Bottom = n - 1, Left = 0, Right = n - 1 };
+        var bounds = new SpiralBounds { Top = 0, Bottom = size - 1, Left = 0, Right = size - 1 };
 
         while (bounds.Top <= bounds.Bottom && bounds.Left <= bounds.Right)
         {

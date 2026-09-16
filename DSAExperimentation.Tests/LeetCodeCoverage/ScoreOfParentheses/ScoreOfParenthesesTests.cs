@@ -23,12 +23,12 @@ public sealed class ScoreOfParenthesesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ScoreByNestedDepthScan_LeetCodeExamples_ReturnsBalancedStringScore(
-        string s, int expected) =>
-        Assert.Equal(expected, ScoreOfParenthesesSolution.ScoreByNestedDepthScan(s));
+        string parentheses, int expected) =>
+        Assert.Equal(expected, ScoreOfParenthesesSolution.ScoreByNestedDepthScan(parentheses));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ScoreByMonotonicStackFold_LeetCodeExamples_ReturnsBalancedStringScore(
-        string s, int expected) =>
-        Assert.Equal(expected, ScoreOfParenthesesSolution.ScoreByMonotonicStackFold(s));
+        string parentheses, int expected) =>
+        Assert.Equal(expected, ScoreOfParenthesesSolution.ScoreByMonotonicStackFold(parentheses));
 }

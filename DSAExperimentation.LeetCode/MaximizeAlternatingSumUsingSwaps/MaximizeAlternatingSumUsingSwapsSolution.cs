@@ -35,11 +35,11 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
         return total;
     }
 
-    private static List<int>[] BuildAdjacencyList(int n, int[][] swaps)
+    private static List<int>[] BuildAdjacencyList(int indexCount, int[][] swaps)
     {
-        var neighbors = new List<int>[n];
+        var neighbors = new List<int>[indexCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < indexCount; i++)
         {
             neighbors[i] = [];
         }
@@ -105,9 +105,9 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
         return total;
     }
 
-    private static DisjointSet BuildComponents(int n, int[][] swaps)
+    private static DisjointSet BuildComponents(int indexCount, int[][] swaps)
     {
-        var disjointSet = new DisjointSet(n);
+        var disjointSet = new DisjointSet(indexCount);
 
         foreach (var swap in swaps)
         {
@@ -118,11 +118,11 @@ internal static class MaximizeAlternatingSumUsingSwapsSolution
     }
 
     // Every index listed under its component's root, in index order.
-    private static Dictionary<int, List<int>> GroupIndicesByRoot(DisjointSet disjointSet, int n)
+    private static Dictionary<int, List<int>> GroupIndicesByRoot(DisjointSet disjointSet, int indexCount)
     {
         var componentsByRoot = new Dictionary<int, List<int>>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < indexCount; i++)
         {
             var root = disjointSet.Find(i);
 

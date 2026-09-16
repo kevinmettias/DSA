@@ -18,18 +18,18 @@ internal static class NthTribonacciNumberSolution
 
     // Deliberately written without this repo's primitives: every call re-derives
     // all three predecessors, so the call tree branches three ways at every level.
-    public static int TribonacciByNaiveRecursion(int n)
-        => n switch
+    public static int TribonacciByNaiveRecursion(int termIndex)
+        => termIndex switch
         {
             0 => 0,
             1 or SecondPriorTermOffset => 1,
-            _ => TribonacciByNaiveRecursion(n - 1)
-                + TribonacciByNaiveRecursion(n - SecondPriorTermOffset)
-                + TribonacciByNaiveRecursion(n - ThirdPriorTermOffset)
+            _ => TribonacciByNaiveRecursion(termIndex - 1)
+                + TribonacciByNaiveRecursion(termIndex - SecondPriorTermOffset)
+                + TribonacciByNaiveRecursion(termIndex - ThirdPriorTermOffset)
         };
 
-    public static int TribonacciByMemoizedTopDown(int n)
-        => Memoizer.Memoize<int, int>(n, new TribonacciFromPriorTerms());
+    public static int TribonacciByMemoizedTopDown(int termIndex)
+        => Memoizer.Memoize<int, int>(termIndex, new TribonacciFromPriorTerms());
 
     // The recurrence, as a named type: each term past the seeds is the sum of the three
     // terms below it, and the seeds are the whole base case.

@@ -31,11 +31,13 @@ public sealed class MinimumCutsToDivideACircleTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumberOfCutsBySimulation_LeetCodeExamples_ReturnsExpectedMinimumCuts(int n, int expected) =>
-        Assert.Equal(expected, MinimumCutsToDivideACircleSolution.NumberOfCutsBySimulation(n));
+    public void NumberOfCutsBySimulation_LeetCodeExamples_ReturnsExpectedMinimumCuts(
+        int sliceCount, int expected) =>
+        Assert.Equal(expected, MinimumCutsToDivideACircleSolution.NumberOfCutsBySimulation(sliceCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumberOfCutsByClosedFormParity_LeetCodeExamples_ReturnsExpectedMinimumCuts(int n, int expected) =>
-        Assert.Equal(expected, MinimumCutsToDivideACircleSolution.NumberOfCutsByClosedFormParity(n));
+    public void NumberOfCutsByClosedFormParity_LeetCodeExamples_ReturnsExpectedMinimumCuts(
+        int sliceCount, int expected) =>
+        Assert.Equal(expected, MinimumCutsToDivideACircleSolution.NumberOfCutsByClosedFormParity(sliceCount));
 }

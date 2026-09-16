@@ -17,17 +17,17 @@ public sealed class DistributeCandiesAmongChildrenIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountWaysByBruteForce_LeetCodeExamples_ReturnsDistributionCount(int n, int limit, long expected)
+    public void CountWaysByBruteForce_LeetCodeExamples_ReturnsDistributionCount(int candyCount, int limit, long expected)
     {
-        var actual = DistributeCandiesAmongChildrenIISolution.CountWaysByBruteForce(n, limit);
+        var actual = DistributeCandiesAmongChildrenIISolution.CountWaysByBruteForce(candyCount, limit);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountWaysByInclusionExclusion_LeetCodeExamples_ReturnsDistributionCount(int n, int limit, long expected)
+    public void CountWaysByInclusionExclusion_LeetCodeExamples_ReturnsDistributionCount(int candyCount, int limit, long expected)
     {
-        var actual = DistributeCandiesAmongChildrenIISolution.CountWaysByInclusionExclusion(n, limit);
+        var actual = DistributeCandiesAmongChildrenIISolution.CountWaysByInclusionExclusion(candyCount, limit);
         Assert.Equal(expected, actual);
     }
 }

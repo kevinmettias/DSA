@@ -18,10 +18,10 @@ internal static class QueryKthSmallestTrimmedNumberSolution
     private const int QueryK = 0;
     private const int QueryTrim = 1;
 
-    // k is 1-based in the problem statement; the sorted array is not.
+    // The problem statement's k is 1-based; the sorted array is not.
     private const int FirstRank = 1;
 
-    // The textbook approach before reaching for a sort: k rounds of "scan every remaining
+    // The textbook approach before reaching for a sort: `rank` rounds of "scan every remaining
     // number for the smallest trimmed suffix and take it", O(n*k) per query. Pure BCL - a
     // bool[] of what has already been taken - since this is the baseline the sorted strategy
     // is measured against. Scanning ascending and replacing only on a strictly smaller
@@ -39,12 +39,12 @@ internal static class QueryKthSmallestTrimmedNumberSolution
         return answers;
     }
 
-    private static int SelectionScan(string[] nums, int k, int trim)
+    private static int SelectionScan(string[] nums, int rank, int trim)
     {
         var taken = new bool[nums.Length];
         var answer = -1;
 
-        for (var round = 0; round < k; round++)
+        for (var round = 0; round < rank; round++)
         {
             answer = TakeSmallestRemaining(nums, taken, trim);
         }
@@ -95,14 +95,14 @@ internal static class QueryKthSmallestTrimmedNumberSolution
         return answers;
     }
 
-    private static int MergeSortedIndex(string[] nums, int k, int trim)
+    private static int MergeSortedIndex(string[] nums, int rank, int trim)
     {
         var indices = Enumerable.Range(0, nums.Length).ToArray();
         var comparer = Comparer<int>.Create((a, b) => CompareTrimmed(nums[a], nums[b], trim));
 
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(indices), comparer);
 
-        return indices[k - FirstRank];
+        return indices[rank - FirstRank];
     }
 
     // Compares the last `trim` characters of two equal-length digit strings without

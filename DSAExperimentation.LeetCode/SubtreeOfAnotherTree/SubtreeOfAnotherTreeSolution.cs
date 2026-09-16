@@ -36,10 +36,12 @@ internal static class SubtreeOfAnotherTreeSolution
         return builder.ToString();
     }
 
-    private static bool IsSame(BinaryTreeNode<int>? p, BinaryTreeNode<int>? q)
-        => p is null || q is null
-            ? p is null && q is null
-            : p.Value == q.Value && IsSame(p.Left, q.Left) && IsSame(p.Right, q.Right);
+    private static bool IsSame(BinaryTreeNode<int>? firstNode, BinaryTreeNode<int>? secondNode)
+        => firstNode is null || secondNode is null
+            ? firstNode is null && secondNode is null
+            : firstNode.Value == secondNode.Value
+              && IsSame(firstNode.Left, secondNode.Left)
+              && IsSame(firstNode.Right, secondNode.Right);
 
     private static void AppendPreorder(BinaryTreeNode<int>? node, StringBuilder builder)
     {

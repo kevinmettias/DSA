@@ -129,7 +129,7 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
     private static void TryUnionEdge(
         WeightedEdgeList graph, (DisjointSet Components, SpanningTally Tally) forest, int index, EdgeProbe probe)
     {
-        if (probe.Excludes(index))
+        if (probe.ShouldExclude(index))
         {
             return;
         }
@@ -180,14 +180,14 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
     private static void TryAcceptBfsEdge(
         WeightedEdgeList graph, (List<int>[] Adjacency, SpanningTally Tally) forest, int index, EdgeProbe probe)
     {
-        if (probe.Excludes(index))
+        if (probe.ShouldExclude(index))
         {
             return;
         }
 
         var edge = graph.Edges[index];
 
-        if (!ReachableViaBfs(forest.Adjacency, edge[0], edge[1]))
+        if (!IsReachableViaBfs(forest.Adjacency, edge[0], edge[1]))
         {
             AcceptBfsEdge(forest, edge);
         }
@@ -200,7 +200,7 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
         forest.Tally.Accept(WeightedEdgeList.WeightOf(edge));
     }
 
-    private static bool ReachableViaBfs(List<int>[] adjacency, int start, int target)
+    private static bool IsReachableViaBfs(List<int>[] adjacency, int start, int target)
     {
         if (start == target)
         {
@@ -214,7 +214,7 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
 
         while (queue.Count > 0)
         {
-            if (VisitNeighbors(adjacency, queue, visited, target))
+            if (HasReachedTargetAmongNeighbors(adjacency, queue, visited, target))
             {
                 return true;
             }
@@ -223,7 +223,8 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
         return false;
     }
 
-    private static bool VisitNeighbors(List<int>[] adjacency, Queue<int> queue, bool[] visited, int target)
+    private static bool HasReachedTargetAmongNeighbors(
+        List<int>[] adjacency, Queue<int> queue, bool[] visited, int target)
     {
         foreach (var neighbor in adjacency[queue.Dequeue()])
         {
@@ -254,7 +255,7 @@ internal static class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSol
         // A forced edge is also skipped by the scan, since it is already accepted.
         public static EdgeProbe Forcing(int index) => new(NoEdge, index);
 
-        public bool Excludes(int index) => index == SkipIndex || index == ForceIndex;
+        public bool ShouldExclude(int index) => index == SkipIndex || index == ForceIndex;
     }
 
     // Running weight and edge count of the tree built so far, shared by both strategies'

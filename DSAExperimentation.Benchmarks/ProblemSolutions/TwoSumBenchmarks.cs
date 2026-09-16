@@ -27,8 +27,8 @@ public class TwoSumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() => TwoSumSolution.TryFindIndicesByBruteForce(_values, Target, out _, out _);
+    public bool TryFindIndicesByBruteForce() => TwoSumSolution.TryFindIndicesByBruteForce(_values, Target, out _, out _);
 
     [Benchmark]
-    public bool HashMapOnePass() => TwoSumSolution.TryFindIndicesByHashMap(_values, Target, out _, out _);
+    public bool TryFindIndicesByHashMap() => TwoSumSolution.TryFindIndicesByHashMap(_values, Target, out _, out _);
 }

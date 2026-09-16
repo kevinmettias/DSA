@@ -17,15 +17,19 @@ public sealed class LastRemainingIntegerAfterAlternatingDeletionOperationsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindLastRemainingByListSimulation_LeetCodeExamples_ReturnsSurvivingInteger(long n, long expected) =>
+    public void FindLastRemainingByListSimulation_LeetCodeExamples_ReturnsSurvivingInteger(
+        long startingCount, long expected) =>
         Assert.Equal(
             expected,
-            LastRemainingIntegerAfterAlternatingDeletionOperationsSolution.FindLastRemainingByListSimulation(n));
+            LastRemainingIntegerAfterAlternatingDeletionOperationsSolution.FindLastRemainingByListSimulation(
+                startingCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindLastRemainingByHeadStepSimulation_LeetCodeExamples_ReturnsSurvivingInteger(long n, long expected) =>
+    public void FindLastRemainingByHeadStepSimulation_LeetCodeExamples_ReturnsSurvivingInteger(
+        long startingCount, long expected) =>
         Assert.Equal(
             expected,
-            LastRemainingIntegerAfterAlternatingDeletionOperationsSolution.FindLastRemainingByHeadStepSimulation(n));
+            LastRemainingIntegerAfterAlternatingDeletionOperationsSolution.FindLastRemainingByHeadStepSimulation(
+                startingCount));
 }

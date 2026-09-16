@@ -50,5 +50,5 @@ public class PalindromeLinkedListBenchmarks
     }
 
     [Benchmark]
-    public bool StackReversal() => PalindromeLinkedListSolution.IsPalindromeByStackReversal(_head);
+    public bool IsPalindromeByStackReversal() => PalindromeLinkedListSolution.IsPalindromeByStackReversal(_head);
 }

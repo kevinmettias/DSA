@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
 // may contain duplicates.
 //
 // Duplicates can make the rotation boundary ambiguous (nums[left] == nums[right]
-// doesn't say which side the pivot is on), so SearchByTrimDuplicatesThenBinarySearch
+// doesn't say which side the pivot is on), so HasTargetByTrimDuplicatesThenBinarySearch
 // first trims matching values off the left edge - correct for a presence-only
 // search because trimming nums[left] only ever happens while an equal-valued
 // witness still sits at nums[right], so no value's last remaining occurrence is
@@ -18,15 +18,15 @@ namespace DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
 // PivotSequence/OffsetSequence shape SearchInRotatedSortedArraySolution (LC 33)
 // uses, just offset into the trimmed slice. Worst case (e.g. an all-equal array)
 // still degrades to O(n), matching the well-known result that duplicates rule out
-// a guaranteed O(log n) solution here. SearchByLinearScan is the O(n) arm it has
+// a guaranteed O(log n) solution here. HasTargetByLinearScan is the O(n) arm it has
 // to beat regardless.
 internal static class SearchInRotatedSortedArrayIISolution
 {
     // The textbook O(n) scan. Written without this repo's own BinarySearch - the
-    // arm TrimDuplicatesThenBinarySearch has to beat.
-    public static bool SearchByLinearScan(int[] nums, int target) => Array.IndexOf(nums, target) >= 0;
+    // arm HasTargetByTrimDuplicatesThenBinarySearch has to beat.
+    public static bool HasTargetByLinearScan(int[] nums, int target) => Array.IndexOf(nums, target) >= 0;
 
-    public static bool SearchByTrimDuplicatesThenBinarySearch(int[] nums, int target)
+    public static bool HasTargetByTrimDuplicatesThenBinarySearch(int[] nums, int target)
     {
         if (nums.Length == 0)
         {

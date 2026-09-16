@@ -104,15 +104,15 @@ internal static class LexicographicallyMaximumMEXArraySolution
         return suffixMex;
     }
 
-    // How many times each value in 1..n occurs. A value above n can never be the
-    // MEX of an n-element array, so it is not tracked at all.
-    private static int[] CountValues(int[] nums, int n)
+    // How many times each value in 1..elementCount occurs. A value above the array's
+    // own length can never be the MEX of that array, so it is not tracked at all.
+    private static int[] CountValues(int[] nums, int elementCount)
     {
-        var frequency = new int[n + 1];
+        var frequency = new int[elementCount + 1];
 
         foreach (var value in nums)
         {
-            if (value <= n)
+            if (value <= elementCount)
             {
                 frequency[value]++;
             }

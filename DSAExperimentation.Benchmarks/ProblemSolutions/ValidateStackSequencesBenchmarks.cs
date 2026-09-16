@@ -30,10 +30,10 @@ public class ValidateStackSequencesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BacktrackingSearch() =>
+    public bool IsValidByBacktrackingSearch() =>
         ValidateStackSequencesSolution.IsValidByBacktrackingSearch(_pushed, _popped);
 
     [Benchmark]
-    public bool GreedyStackSweep() =>
+    public bool IsValidByGreedyStackSweep() =>
         ValidateStackSequencesSolution.IsValidByGreedyStackSweep(_pushed, _popped);
 }

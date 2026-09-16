@@ -22,12 +22,12 @@ public sealed class MaximumNestingDepthOfTheParenthesesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDepthByRunningCounter_LeetCodeExamples_ReturnsDeepestNestingLevel(
-        string s, int expected) =>
-        Assert.Equal(expected, MaximumNestingDepthOfTheParenthesesSolution.MaxDepthByRunningCounter(s));
+        string expression, int expected) =>
+        Assert.Equal(expected, MaximumNestingDepthOfTheParenthesesSolution.MaxDepthByRunningCounter(expression));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDepthByOpenerStack_LeetCodeExamples_ReturnsDeepestNestingLevel(
-        string s, int expected) =>
-        Assert.Equal(expected, MaximumNestingDepthOfTheParenthesesSolution.MaxDepthByOpenerStack(s));
+        string expression, int expected) =>
+        Assert.Equal(expected, MaximumNestingDepthOfTheParenthesesSolution.MaxDepthByOpenerStack(expression));
 }

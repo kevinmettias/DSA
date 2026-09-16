@@ -37,14 +37,14 @@ public sealed class DesignAnOrderedStreamTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrderedStreamByListBacked_LeetCodeExamples_ReturnsChunksAsGapsClose(
-        int n, int[] idKeys, string[] values, string[][] expected) =>
-        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(n), idKeys, values, expected);
+        int streamSize, int[] idKeys, string[] values, string[][] expected) =>
+        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(streamSize), idKeys, values, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrderedStreamByDynamicArrayBacked_LeetCodeExamples_ReturnsChunksAsGapsClose(
-        int n, int[] idKeys, string[] values, string[][] expected) =>
-        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(n), idKeys, values, expected);
+        int streamSize, int[] idKeys, string[] values, string[][] expected) =>
+        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(streamSize), idKeys, values, expected);
 
     private static void RunScript(
         DesignAnOrderedStreamSolution.IOrderedStream stream, int[] idKeys, string[] values, string[][] expected)

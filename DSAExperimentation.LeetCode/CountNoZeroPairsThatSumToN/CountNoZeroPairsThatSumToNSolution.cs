@@ -3,15 +3,16 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 namespace DSAExperimentation.LeetCode.CountNoZeroPairsThatSumToN;
 
 // LeetCode 3704. Count No-Zero Pairs That Sum to N: count ordered pairs (a, b) of
-// no-zero-digit positive integers with a + b = n. The naive baseline walks every
-// split a in [1, n) and checks both a and n-a digit by digit - correct but O(n),
-// hopeless once n approaches its 10^15 bound. The composed strategy is a digit DP
-// over n's decimal digits (least-significant first, with one appended guard digit
-// to absorb a final carry): state (position, carry, aliveA, aliveB) tracks whether
-// each number still has more digits left to place, so a shorter no-zero number is
-// just one that "terminates" early and is padded with forced zero digits above
-// that position - the same "arbitrary bespoke recurrence, memoized on a value-tuple
-// state" shape Memoizer already serves for ClimbingStairsII and MinCostClimbingStairs.
+// no-zero-digit positive integers with a + b = targetSum. The naive baseline walks
+// every split a in [1, targetSum), checks a and its partner `targetSum - a` digit by
+// digit, and is correct but O(n) - hopeless once targetSum approaches its 10^15
+// bound. The composed strategy is a digit DP over targetSum's decimal digits
+// (least-significant first, with one appended guard digit to absorb a final carry):
+// state (position, carry, aliveA, aliveB) tracks whether each number still has more
+// digits left to place, so a shorter no-zero number is just one that "terminates"
+// early and is padded with forced zero digits above that position - the same
+// "arbitrary bespoke recurrence, memoized on a value-tuple state" shape Memoizer
+// already serves for ClimbingStairsII and MinCostClimbingStairs.
 internal static class CountNoZeroPairsThatSumToNSolution
 {
     // A digit paired with whether the number it belongs to keeps going afterwards: a
@@ -31,13 +32,13 @@ internal static class CountNoZeroPairsThatSumToNSolution
     // The textbook answer: check every split by trial division on digits, no repo
     // primitive - deliberately written this way, the arm the composed strategy
     // below has to justify itself against.
-    public static long CountPairsByBruteForce(long n)
+    public static long CountPairsByBruteForce(long targetSum)
     {
         long count = 0;
 
-        for (var a = 1L; a < n; a++)
+        for (var a = 1L; a < targetSum; a++)
         {
-            var b = n - a;
+            var b = targetSum - a;
 
             if (HasNoZeroDigit(a) && HasNoZeroDigit(b))
             {
@@ -64,25 +65,25 @@ internal static class CountNoZeroPairsThatSumToNSolution
     }
 
     // This repo's own Memoizer over the digit-DP recurrence described above.
-    public static long CountPairsByMemoizedDigitDp(long n)
+    public static long CountPairsByMemoizedDigitDp(long targetSum)
     {
-        var digits = DigitsWithCarryGuard(n);
+        var digits = DigitsWithCarryGuard(targetSum);
 
         return Memoizer.Memoize<(int Position, int Carry, bool AliveA, bool AliveB), long>(
             (0, 0, true, true), new CountFromState(digits));
     }
 
-    private static int[] DigitsWithCarryGuard(long n)
+    private static int[] DigitsWithCarryGuard(long number)
     {
         var digits = new List<int>();
 
-        while (n > 0)
+        while (number > 0)
         {
-            digits.Add((int)(n % 10));
-            n /= 10;
+            digits.Add((int)(number % 10));
+            number /= 10;
         }
 
-        digits.Add(0); // absorbs a final carry past n's own most significant digit
+        digits.Add(0); // absorbs a final carry past number's own most significant digit
         return [.. digits];
     }
 

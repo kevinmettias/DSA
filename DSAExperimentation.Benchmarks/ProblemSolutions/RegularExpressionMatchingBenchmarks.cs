@@ -28,13 +28,13 @@ public class RegularExpressionMatchingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool Recursive() =>
+    public bool IsMatchByRecursion() =>
         RegularExpressionMatchingSolution.IsMatchByRecursion(
             new RegularExpressionMatchingSolution.SubjectText(_text),
             new RegularExpressionMatchingSolution.RegexPattern(_pattern));
 
     [Benchmark]
-    public bool Memoized() =>
+    public bool IsMatchByMemoization() =>
         RegularExpressionMatchingSolution.IsMatchByMemoization(
             new RegularExpressionMatchingSolution.SubjectText(_text),
             new RegularExpressionMatchingSolution.RegexPattern(_pattern));

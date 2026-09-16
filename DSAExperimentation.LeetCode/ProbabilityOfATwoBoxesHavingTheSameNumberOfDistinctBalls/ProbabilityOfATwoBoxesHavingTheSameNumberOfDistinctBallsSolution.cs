@@ -174,13 +174,13 @@ internal static class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsSo
     // C(n, r) accumulated in double rather than exactly: LC 1467 caps a colour at
     // 6 copies and the total at 48, and the answer it wants is a probability, so
     // the running product never needs more range than a double gives.
-    private static double BinomialCoefficient(int n, int r)
+    private static double BinomialCoefficient(int totalCount, int chosenCount)
     {
         var result = 1.0;
 
-        for (var i = 0; i < r; i++)
+        for (var i = 0; i < chosenCount; i++)
         {
-            result = result * (n - i) / (i + 1);
+            result = result * (totalCount - i) / (i + 1);
         }
 
         return result;

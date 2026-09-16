@@ -25,18 +25,18 @@ public sealed class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinIntegerByListRemoval_LeetCodeExamples_ReturnsSmallestReachableArrangement(
-        string num, int k, string expected)
+        string num, int maxSwaps, string expected)
     {
-        var actual = MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution.MinIntegerByListRemoval(num, k);
+        var actual = MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution.MinIntegerByListRemoval(num, maxSwaps);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinIntegerByFenwickTreeGreedy_LeetCodeExamples_ReturnsSmallestReachableArrangement(
-        string num, int k, string expected)
+        string num, int maxSwaps, string expected)
     {
-        var actual = MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution.MinIntegerByFenwickTreeGreedy(num, k);
+        var actual = MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution.MinIntegerByFenwickTreeGreedy(num, maxSwaps);
         Assert.Equal(expected, actual);
     }
 }

@@ -22,14 +22,14 @@ public sealed class LeetCodeStrategyCoverageTests
     {
         get
         {
-            var data = new TheoryData<string>();
+            var solutionTypeNames = new TheoryData<string>();
 
             foreach (var (solution, _) in Pairs())
             {
-                data.Add(FullNameOf(solution));
+                solutionTypeNames.Add(FullNameOf(solution));
             }
 
-            return data;
+            return solutionTypeNames;
         }
     }
 

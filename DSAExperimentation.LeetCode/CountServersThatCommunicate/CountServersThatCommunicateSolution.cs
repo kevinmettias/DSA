@@ -13,7 +13,7 @@ internal static class CountServersThatCommunicateSolution
 {
     private const int Server = 1;
 
-    // "Communicates" means a second server, not merely a present one.
+    // "IsCommunicating" means a second server, not merely a present one.
     private const int CompanionThreshold = 1;
 
     // The textbook baseline this composition has to justify itself against: every
@@ -31,7 +31,7 @@ internal static class CountServersThatCommunicateSolution
         {
             for (var c = 0; c < grid[0].Length; c++)
             {
-                if (CommunicatesByRescan(grid, r, c))
+                if (IsCommunicatingByRescan(grid, r, c))
                 {
                     communicating++;
                 }
@@ -43,7 +43,7 @@ internal static class CountServersThatCommunicateSolution
 
     // A square announces a communicating server only when it is one and a second
     // server turns up on its row or on its column.
-    private static bool CommunicatesByRescan(int[][] grid, int row, int col) =>
+    private static bool IsCommunicatingByRescan(int[][] grid, int row, int col) =>
         grid[row][col] == Server && (HasCompanionInRow(grid, row) || HasCompanionInColumn(grid, col));
 
     private static bool HasCompanionInRow(int[][] grid, int row)
@@ -84,7 +84,7 @@ internal static class CountServersThatCommunicateSolution
         {
             for (var c = 0; c < grid[0].Length; c++)
             {
-                if (Communicates(grid, r, c, counts))
+                if (IsCommunicating(grid, r, c, counts))
                 {
                     communicating++;
                 }
@@ -119,7 +119,7 @@ internal static class CountServersThatCommunicateSolution
         counts.Set(key, current + 1);
     }
 
-    private static bool Communicates(int[][] grid, int row, int col, ServerCounts counts)
+    private static bool IsCommunicating(int[][] grid, int row, int col, ServerCounts counts)
     {
         if (grid[row][col] != Server)
         {

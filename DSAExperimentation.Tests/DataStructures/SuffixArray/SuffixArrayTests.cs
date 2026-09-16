@@ -107,17 +107,17 @@ public sealed partial class SuffixArrayTests
             indices[i] = i;
         }
 
-        Array.Sort(indices, (a, b) => CompareSuffixes(text, a, b, comparer));
+        Array.Sort(indices, (firstIndex, secondIndex) => CompareSuffixes(text, firstIndex, secondIndex, comparer));
         return indices;
     }
 
-    private static int CompareSuffixes(string text, int a, int b, IComparer<char> comparer)
+    private static int CompareSuffixes(string text, int firstIndex, int secondIndex, IComparer<char> comparer)
     {
-        var length = Math.Min(text.Length - a, text.Length - b);
+        var length = Math.Min(text.Length - firstIndex, text.Length - secondIndex);
 
         for (var offset = 0; offset < length; offset++)
         {
-            var comparison = comparer.Compare(text[a + offset], text[b + offset]);
+            var comparison = comparer.Compare(text[firstIndex + offset], text[secondIndex + offset]);
 
             if (comparison != 0)
             {
@@ -125,14 +125,14 @@ public sealed partial class SuffixArrayTests
             }
         }
 
-        return (text.Length - a).CompareTo(text.Length - b);
+        return (text.Length - firstIndex).CompareTo(text.Length - secondIndex);
     }
 
     private static int BruteForceLongestCommonPrefix(ReadOnlySpan<char> first, ReadOnlySpan<char> second)
     {
         var length = 0;
 
-        while (PrefixesAgreeOneCharacterFurther(first, second, length))
+        while (HasMatchingCharacterAt(first, second, length))
         {
             length++;
         }
@@ -142,7 +142,7 @@ public sealed partial class SuffixArrayTests
 
     // Whether the two spans still agree at `length` - the longest common prefix is the
     // largest length for which this holds.
-    private static bool PrefixesAgreeOneCharacterFurther(ReadOnlySpan<char> first, ReadOnlySpan<char> second, int length)
+    private static bool HasMatchingCharacterAt(ReadOnlySpan<char> first, ReadOnlySpan<char> second, int length)
         => length < first.Length
             && length < second.Length
             && first[length] == second[length];

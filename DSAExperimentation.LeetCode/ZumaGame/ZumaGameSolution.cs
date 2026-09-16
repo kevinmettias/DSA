@@ -46,9 +46,9 @@ internal static class ZumaGameSolution
         return (visited, queue);
     }
 
-    private static string SortChars(string s)
+    private static string SortChars(string text)
     {
-        var chars = s.ToCharArray();
+        var chars = text.ToCharArray();
         Array.Sort(chars);
         return new string(chars);
     }
@@ -63,7 +63,7 @@ internal static class ZumaGameSolution
 
             for (var i = 0; i < levelSize; i++)
             {
-                if (ProcessNextState(queue, visited))
+                if (IsBoardEmptyAfterDequeue(queue, visited))
                 {
                     return moves;
                 }
@@ -78,7 +78,7 @@ internal static class ZumaGameSolution
     // Dequeues one (board, remaining-hand) state; returns true when the board is
     // already empty (the search is done), otherwise expands it into every reachable
     // next state and enqueues the not-yet-visited ones.
-    private static bool ProcessNextState(RepoQueue queue, Set<string> visited)
+    private static bool IsBoardEmptyAfterDequeue(RepoQueue queue, Set<string> visited)
     {
         queue.TryDequeue(out var state);
         var separator = state.IndexOf(StateSeparator);
@@ -144,11 +144,11 @@ internal static class ZumaGameSolution
         return best;
     }
 
-    private static int TryInsertAndRecurse(int pos, int h, DfsSearchState state)
+    private static int TryInsertAndRecurse(int pos, int handIndex, DfsSearchState state)
     {
-        var inserted = state.Board.Insert(pos, state.Hand[h].ToString());
+        var inserted = state.Board.Insert(pos, state.Hand[handIndex].ToString());
         var nextBoard = Collapse(inserted);
-        var nextHand = state.Hand.Remove(h, 1);
+        var nextHand = state.Hand.Remove(handIndex, 1);
         return SearchMinSteps(state with { Board = nextBoard, Hand = nextHand, Used = state.Used + 1 });
     }
 

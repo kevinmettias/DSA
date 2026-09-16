@@ -44,8 +44,10 @@ public class LinkedListComponentsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanPerNode() => LinkedListComponentsSolution.NumComponentsByLinearScan(_head, _nums);
+    public int LinearScanPerNode() =>
+        LinkedListComponentsSolution.CountComponentsByLinearScan(_head, _nums);
 
     [Benchmark]
-    public int SetMembership() => LinkedListComponentsSolution.NumComponentsBySetMembership(_head, _nums);
+    public int SetMembership() =>
+        LinkedListComponentsSolution.CountComponentsBySetMembership(_head, _nums);
 }

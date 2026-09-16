@@ -8,8 +8,8 @@ namespace DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
 // every day j whose people are still actively sharing on day i - from delay days
 // after they learned up to forget - 1 days after - so the recurrence is a
 // contiguous range sum over a window of roughly forget - delay earlier days. The
-// answer sums dp over every day whose people have not forgotten by day n, which
-// is the same range-sum shape against the tail of the array.
+// answer sums dp over every day whose people have not forgotten by the final day,
+// which is the same range-sum shape against the tail of the array.
 //
 // Both strategies run that identical recurrence; they differ only in how the
 // window sum is obtained. SlidingWindowSum re-adds the whole window on every day;
@@ -22,24 +22,24 @@ internal static class NumberOfPeopleAwareOfASecretSolution
     private const int FirstDay = 1;
 
     // The textbook answer: dp in a plain array, re-deriving each day's window sum
-    // from scratch. O(n * windowSize), which is effectively O(n^2) whenever the
-    // window is a fixed fraction of n. Deliberately written with nothing but a
-    // BCL array - it is the arm the Fenwick composition has to justify itself
-    // against.
-    public static long PeopleWithSecretBySlidingWindowSum(int n, int delay, int forget)
+    // from scratch. O(dayCount * windowSize), which is effectively O(dayCount^2)
+    // whenever the window is a fixed fraction of the day count. Deliberately written
+    // with nothing but a BCL array - it is the arm the Fenwick composition has to
+    // justify itself against.
+    public static long PeopleWithSecretBySlidingWindowSum(int dayCount, int delay, int forget)
     {
-        var dp = new long[n];
+        var dp = new long[dayCount];
         dp[0] = 1;
 
-        for (var day = FirstDay + 1; day <= n; day++)
+        for (var day = FirstDay + 1; day <= dayCount; day++)
         {
             dp[day - 1] = NewcomersOnDay(dp, day, delay, forget);
         }
 
-        var finalLow = Math.Max(FirstDay, n - forget + 1);
+        var finalLow = Math.Max(FirstDay, dayCount - forget + 1);
         var total = 0L;
 
-        for (var day = finalLow; day <= n; day++)
+        for (var day = finalLow; day <= dayCount; day++)
         {
             total += dp[day - 1];
         }
@@ -75,12 +75,12 @@ internal static class NumberOfPeopleAwareOfASecretSolution
     // already exactly "point add, prefix/range sum": each day is one Query for the
     // sharing window plus one Add for the newcomers, and the final tail sum is a
     // single Query - O(n log n) overall.
-    public static long PeopleWithSecretByFenwickRangeSum(int n, int delay, int forget)
+    public static long PeopleWithSecretByFenwickRangeSum(int dayCount, int delay, int forget)
     {
-        var dp = new FenwickTree<long, SumOperation<long>>(n);
+        var dp = new FenwickTree<long, SumOperation<long>>(dayCount);
         dp.Add(0, 1);
 
-        for (var day = FirstDay + 1; day <= n; day++)
+        for (var day = FirstDay + 1; day <= dayCount; day++)
         {
             var low = Math.Max(FirstDay, day - forget + 1);
             var high = day - delay;
@@ -92,8 +92,8 @@ internal static class NumberOfPeopleAwareOfASecretSolution
             }
         }
 
-        var finalLow = Math.Max(FirstDay, n - forget + 1);
+        var finalLow = Math.Max(FirstDay, dayCount - forget + 1);
 
-        return dp.Query(finalLow - 1, n - 1) % ModularArithmetic.Modulo;
+        return dp.Query(finalLow - 1, dayCount - 1) % ModularArithmetic.Modulo;
     }
 }

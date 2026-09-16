@@ -31,10 +31,10 @@ internal static class ValidBoomerangSolution
         return areaSquared > Epsilon;
     }
 
-    private static double Distance(int[] p, int[] q)
+    private static double Distance(int[] firstPoint, int[] secondPoint)
     {
-        var dx = p[0] - q[0];
-        var dy = p[1] - q[1];
+        var dx = firstPoint[0] - secondPoint[0];
+        var dy = firstPoint[1] - secondPoint[1];
 
         return Math.Sqrt((dx * dx) + (dy * dy));
     }

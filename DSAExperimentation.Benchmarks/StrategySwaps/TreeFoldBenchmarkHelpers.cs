@@ -6,7 +6,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.Benchmarks.StrategySwaps;
 
-internal static class TreeFoldBenchmarkHelpers
+internal static class TreeFoldBenchmarkFixtures
 {
     public static int Fold<TStrategy>(BinaryTreeNode<int> root)
         where TStrategy : struct, IFoldEvaluationStrategy<BinaryTreeNode<int>>

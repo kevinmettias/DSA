@@ -19,19 +19,19 @@ public sealed class SearchInRotatedSortedArrayIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchByLinearScan_LeetCodeExamples_ReturnsWhetherTargetIsPresent(RotatedSearchExample example)
+    public void HasTargetByLinearScan_LeetCodeExamples_ReturnsWhetherTargetIsPresent(RotatedSearchExample example)
     {
-        var actual = SearchInRotatedSortedArrayIISolution.SearchByLinearScan(example.Nums, example.Target);
+        var actual = SearchInRotatedSortedArrayIISolution.HasTargetByLinearScan(example.Nums, example.Target);
 
         Assert.Equal(example.TargetIsPresent, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchByTrimDuplicatesThenBinarySearch_LeetCodeExamples_ReturnsWhetherTargetIsPresent(
+    public void HasTargetByTrimDuplicatesThenBinarySearch_LeetCodeExamples_ReturnsWhetherTargetIsPresent(
         RotatedSearchExample example)
     {
-        var actual = SearchInRotatedSortedArrayIISolution.SearchByTrimDuplicatesThenBinarySearch(
+        var actual = SearchInRotatedSortedArrayIISolution.HasTargetByTrimDuplicatesThenBinarySearch(
             example.Nums, example.Target);
 
         Assert.Equal(example.TargetIsPresent, actual);

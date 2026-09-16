@@ -5,8 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindConsecutiveIntegersFromADataStreamSolution's, the
 // same classes FindConsecutiveIntegersFromADataStreamTests proves correct - appending
-// every arrival to an unbounded BCL history and rescanning its last k entries on every
-// call (O(n * k)) against this repo's own Deque<int> holding a fixed-size window with
+// every arrival to an unbounded BCL history and rescanning its last K entries on every
+// call (O(n * K)) against this repo's own Deque<int> holding a fixed-size window with
 // an incrementally maintained match count (O(n)). [GlobalSetup] generates the streamed
 // values, so stream generation is charged to setup rather than to the replay each arm
 // measures. `Value` is rare in the stream, so the window almost never gives either arm

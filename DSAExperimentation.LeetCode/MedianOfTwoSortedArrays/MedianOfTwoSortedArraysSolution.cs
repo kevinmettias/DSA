@@ -68,17 +68,19 @@ internal static class MedianOfTwoSortedArraysSolution
         return (i, j);
     }
 
-    private static int LeftOfPartition(int[] nums1, int[] nums2, int i, int j)
+    private static int LeftOfPartition(
+        int[] nums1, int[] nums2, int nums1PartitionIndex, int nums2PartitionIndex)
         => Math.Max(
-            i == 0 ? int.MinValue : ElementBefore(nums1, i),
-            j == 0 ? int.MinValue : ElementBefore(nums2, j));
+            nums1PartitionIndex == 0 ? int.MinValue : ElementBefore(nums1, nums1PartitionIndex),
+            nums2PartitionIndex == 0 ? int.MinValue : ElementBefore(nums2, nums2PartitionIndex));
 
     private static int ElementBefore(int[] values, int index) => values[index - 1];
 
-    private static int RightOfPartition(int[] nums1, int[] nums2, int i, int j)
+    private static int RightOfPartition(
+        int[] nums1, int[] nums2, int nums1PartitionIndex, int nums2PartitionIndex)
         => Math.Min(
-            i == nums1.Length ? int.MaxValue : ElementAt(nums1, i),
-            j == nums2.Length ? int.MaxValue : ElementAt(nums2, j));
+            nums1PartitionIndex == nums1.Length ? int.MaxValue : ElementAt(nums1, nums1PartitionIndex),
+            nums2PartitionIndex == nums2.Length ? int.MaxValue : ElementAt(nums2, nums2PartitionIndex));
 
     private static int ElementAt(int[] values, int index) => values[index];
 }

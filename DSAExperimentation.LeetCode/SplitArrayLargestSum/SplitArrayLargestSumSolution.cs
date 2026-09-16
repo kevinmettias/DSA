@@ -5,8 +5,8 @@ using DSAExperimentation.DataStructures.Sequence;
 namespace DSAExperimentation.LeetCode.SplitArrayLargestSum;
 
 // LeetCode 410. Split Array Largest Sum: "binary search on the answer" - the
-// feasibility of a candidate limit ("can nums be split into <= k contiguous
-// subarrays each summing to at most limit?") is monotone non-decreasing in
+// feasibility of a candidate limit ("can nums be split into <= subarrayCount
+// contiguous subarrays each summing to at most limit?") is monotone non-decreasing in
 // limit, so the minimum feasible limit is the leftmost "true" in an implicit
 // [false...false, true...true] sequence over limit in [max(nums), sum(nums)].
 //
@@ -21,7 +21,7 @@ namespace DSAExperimentation.LeetCode.SplitArrayLargestSum;
 internal static class SplitArrayLargestSumSolution
 {
 
-    public static int MinimizedLargestSumByManualBinarySearch(int[] nums, int k)
+    public static int MinimizedLargestSumByManualBinarySearch(int[] nums, int subarrayCount)
     {
         var low = nums.Max();
         var high = nums.Sum();
@@ -29,7 +29,7 @@ internal static class SplitArrayLargestSumSolution
         while (low < high)
         {
             var mid = low + ((high - low) / AlgorithmConstants.HalvingFactor);
-            if (CanSplitWithinLimit(nums, k, mid))
+            if (CanSplitWithinLimit(nums, subarrayCount, mid))
             {
                 high = mid;
             }
@@ -42,7 +42,7 @@ internal static class SplitArrayLargestSumSolution
         return low;
     }
 
-    private static bool CanSplitWithinLimit(int[] nums, int k, int limit)
+    private static bool CanSplitWithinLimit(int[] nums, int subarrayCount, int limit)
     {
         var subarrays = 1;
         var currentSum = 0;
@@ -58,14 +58,14 @@ internal static class SplitArrayLargestSumSolution
             currentSum += num;
         }
 
-        return subarrays <= k;
+        return subarrays <= subarrayCount;
     }
 
-    public static int MinimizedLargestSumBySequenceLowerBound(int[] nums, int k)
+    public static int MinimizedLargestSumBySequenceLowerBound(int[] nums, int subarrayCount)
     {
         var floor = nums.Max();
         var ceiling = nums.Sum();
-        var sequence = new FeasibleSplitSequence(nums, k, floor, ceiling);
+        var sequence = new FeasibleSplitSequence(nums, subarrayCount, floor, ceiling);
 
         return floor + BinarySearch.LowerBound(sequence, true);
     }

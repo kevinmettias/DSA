@@ -18,7 +18,7 @@ public class MinimumNumberOfOperationsToMakeStringSortedBenchmarks
     private const int RandomSeed = 1830; // LC problem number
     private const int AlphabetSize = 26;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(200, 2_000)]
     public int Length { get; set; }
@@ -27,14 +27,15 @@ public class MinimumNumberOfOperationsToMakeStringSortedBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _text = new string(
+            Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
     }
 
     [Benchmark(Baseline = true)]
     public int LinearFrequencyScan() =>
-        MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFrequencyScan(_s);
+        MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFrequencyScan(_text);
 
     [Benchmark]
     public int FenwickTreeSweep() =>
-        MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFenwickSweep(_s);
+        MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFenwickSweep(_text);
 }

@@ -22,7 +22,7 @@ public sealed partial class ManacherTests
         {
             var k = 1;
 
-            while (OddPalindromeGrowsAt(text, i, k))
+            while (IsOddPalindromeGrowingAt(text, i, k))
             {
                 k++;
             }
@@ -41,7 +41,7 @@ public sealed partial class ManacherTests
         {
             var k = 0;
 
-            while (EvenPalindromeGrowsAt(text, i, k))
+            while (IsEvenPalindromeGrowingAt(text, i, k))
             {
                 k++;
             }
@@ -54,13 +54,13 @@ public sealed partial class ManacherTests
 
     // Whether the odd palindrome centred on a character still grows: the mirrored pair
     // one step further out both exists inside the text and matches.
-    private static bool OddPalindromeGrowsAt(string text, int center, int radius)
+    private static bool IsOddPalindromeGrowingAt(string text, int center, int radius)
         => center - radius >= 0
             && center + radius < text.Length
             && text[center - radius] == text[center + radius];
 
     // The even-radius twin: the mirrored pair straddling the gap before the center.
-    private static bool EvenPalindromeGrowsAt(string text, int center, int radius)
+    private static bool IsEvenPalindromeGrowingAt(string text, int center, int radius)
         => center - radius - 1 >= 0
             && center + radius < text.Length
             && text[center - radius - 1] == text[center + radius];
@@ -89,17 +89,20 @@ public sealed partial class ManacherTests
     public void ComputeOddRadii_Babad_MatchesHandVerifiedValues()
         => Assert.Equal(new[] { 1, 2, 2, 1, 1 }, Manacher.ComputeOddRadii("babad"));
 
-    // "cbbd": hand-verified - the only even palindrome is "bb" at index 2, radius 1.
+    // "cbbd": hand-verified - the only even palindrome it contains is its central pair
+    // "bb", at index 2, radius 1.
     [Fact]
-    public void ComputeEvenRadii_Cbbd_MatchesHandVerifiedValues()
+    public void ComputeEvenRadii_CentralPairOnly_MatchesHandVerifiedValues()
         => Assert.Equal(new[] { 0, 0, 1, 0 }, Manacher.ComputeEvenRadii("cbbd"));
 
     [Fact]
     public void FindLongestPalindromicSubstring_Babad_ReturnsBab()
         => Assert.Equal((0, 3), Manacher.FindLongestPalindromicSubstring("babad"));
 
+    // "cbbd": hand-verified - the longest palindromic substring is that same central
+    // pair "bb", half-open (1, 2).
     [Fact]
-    public void FindLongestPalindromicSubstring_Cbbd_ReturnsBb()
+    public void FindLongestPalindromicSubstring_CentralPairOnly_ReturnsThatPair()
         => Assert.Equal((1, 2), Manacher.FindLongestPalindromicSubstring("cbbd"));
 
     [Fact]

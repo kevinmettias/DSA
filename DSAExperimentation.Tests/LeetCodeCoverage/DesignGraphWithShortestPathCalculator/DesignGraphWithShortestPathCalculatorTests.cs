@@ -75,18 +75,18 @@ public sealed class DesignGraphWithShortestPathCalculatorTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestPathGraphByArrayDijkstra_LeetCodeExamples_MatchesExpectedSequence(
-        int n, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
+        int nodeCount, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
         RunScript(
-            new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra(n, edges),
+            new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra(nodeCount, edges),
             operations,
             expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestPathGraphByHeapDijkstra_LeetCodeExamples_MatchesExpectedSequence(
-        int n, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
+        int nodeCount, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
         RunScript(
-            new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra(n, edges),
+            new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra(nodeCount, edges),
             operations,
             expected);
 

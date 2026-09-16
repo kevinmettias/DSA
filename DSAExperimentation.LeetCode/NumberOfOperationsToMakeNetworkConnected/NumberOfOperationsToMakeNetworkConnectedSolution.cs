@@ -84,7 +84,7 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
             return LeetCodeAnswer.None;
         }
 
-        var components = new DisjointSet(n);
+        var components = new DisjointSet(computerCount);
 
         foreach (var connection in connections)
         {

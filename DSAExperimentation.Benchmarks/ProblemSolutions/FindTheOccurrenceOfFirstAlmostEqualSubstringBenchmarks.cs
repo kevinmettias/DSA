@@ -5,8 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // FindTheOccurrenceOfFirstAlmostEqualSubstringSolution's, the same methods
-// FindTheOccurrenceOfFirstAlmostEqualSubstringTests proves correct. s is all
-// 'a', pattern is all 'a' except its final two characters - every window
+// FindTheOccurrenceOfFirstAlmostEqualSubstringTests proves correct. text is
+// all 'a', pattern is all 'a' except its final two characters - every window
 // mismatches at exactly two positions, both late in the pattern, so the
 // brute force has to scan almost the whole pattern before finding its second
 // mismatch on every one of the O(n) windows (the same "mismatch at the very
@@ -16,7 +16,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheOccurrenceOfFirstAlmostEqualSubstringBenchmarks
 {
-    private string _s = "";
+    private string _text = "";
 
     private string _pattern = "";
     [Params(200, 5_000)]
@@ -26,19 +26,19 @@ public class FindTheOccurrenceOfFirstAlmostEqualSubstringBenchmarks
     public void Setup()
     {
         var patternLength = Math.Max(2, Length / 10);
-        _s = new string('a', Length);
+        _text = new string('a', Length);
         _pattern = $"{new string('a', patternLength - 2)}bb";
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
         FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByBruteForce(
-            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(_s),
+            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(_text),
             new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.MatchPattern(_pattern));
 
     [Benchmark]
     public int ZFunction() =>
         FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.IndexOfFirstAlmostEqualSubstringByZFunction(
-            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(_s),
+            new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.SearchedText(_text),
             new FindTheOccurrenceOfFirstAlmostEqualSubstringSolution.MatchPattern(_pattern));
 }

@@ -133,14 +133,14 @@ internal static class MinimumPossibleMaximumWaitingTimeSolution
 
         var champion = current.Value;
 
-        return Outranks(candidate, champion)
+        return IsBetterOutcome(candidate, champion)
             ? candidate
             : champion;
     }
 
     // The same lexicographic pick, named: more served cars wins outright, and a
     // tie on served count goes to the smaller maximum wait.
-    private static bool Outranks(Outcome candidate, Outcome champion)
+    private static bool IsBetterOutcome(Outcome candidate, Outcome champion)
         => candidate.Served > champion.Served ||
             (candidate.Served == champion.Served && candidate.MaxWait < champion.MaxWait);
 

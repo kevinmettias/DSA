@@ -40,14 +40,16 @@ internal static class MaxPointsOnALineSolution
         return best;
     }
 
-    private static int CountCollinearWithPair(int[][] points, int i, int j)
+    private static int CountCollinearWithPair(int[][] points, int firstIndex, int secondIndex)
     {
         var count = TrivialPointCount;
 
-        for (var k = j + 1; k < points.Length; k++)
+        for (var k = secondIndex + 1; k < points.Length; k++)
         {
-            var cross = (long)(points[j][0] - points[i][0]) * (points[k][1] - points[i][1])
-                      - (long)(points[j][1] - points[i][1]) * (points[k][0] - points[i][0]);
+            var cross = (long)(points[secondIndex][0] - points[firstIndex][0])
+                      * (points[k][1] - points[firstIndex][1])
+                      - (long)(points[secondIndex][1] - points[firstIndex][1])
+                      * (points[k][0] - points[firstIndex][0]);
 
             if (cross == 0)
             {
@@ -142,7 +144,7 @@ internal static class MaxPointsOnALineSolution
         dx /= divisor;
         dy /= divisor;
 
-        if (PointsTheWrongWay(dx, dy))
+        if (IsBackwardFacing(dx, dy))
         {
             dx = -dx;
             dy = -dy;
@@ -153,8 +155,9 @@ internal static class MaxPointsOnALineSolution
 
     // A direction pointing left, or straight down, is the flipped twin of one that
     // does not - the same line, opposite direction - so it is the one negated.
-    private static bool PointsTheWrongWay(int dx, int dy)
+    private static bool IsBackwardFacing(int dx, int dy)
         => dx < 0 || (dx == 0 && dy < 0);
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int firstOperand, int secondOperand) =>
+        secondOperand == 0 ? firstOperand : Gcd(secondOperand, firstOperand % secondOperand);
 }

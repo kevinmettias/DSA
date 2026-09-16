@@ -37,20 +37,20 @@ public sealed class LinkedListComponentsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumComponentsByLinearScan_LeetCodeExamples_ReturnsConnectedComponentCount(
+    public void CountComponentsByLinearScan_LeetCodeExamples_ReturnsConnectedComponentCount(
         int[] values, int[] nums, int expected)
     {
-        var actual = LinkedListComponentsSolution.NumComponentsByLinearScan(BuildList(values), nums);
+        var actual = LinkedListComponentsSolution.CountComponentsByLinearScan(BuildList(values), nums);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumComponentsBySetMembership_LeetCodeExamples_ReturnsConnectedComponentCount(
+    public void CountComponentsBySetMembership_LeetCodeExamples_ReturnsConnectedComponentCount(
         int[] values, int[] nums, int expected)
     {
-        var actual = LinkedListComponentsSolution.NumComponentsBySetMembership(BuildList(values), nums);
+        var actual = LinkedListComponentsSolution.CountComponentsBySetMembership(BuildList(values), nums);
 
         Assert.Equal(expected, actual);
     }

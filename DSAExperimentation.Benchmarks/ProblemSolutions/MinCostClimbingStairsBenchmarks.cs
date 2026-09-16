@@ -4,8 +4,8 @@ using DSAExperimentation.LeetCode.MinCostClimbingStairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are MinCostClimbingStairsSolution's, the same
-// methods MinCostClimbingStairsTests proves correct. NaiveRecursive is kept to
-// modest N since its cost blowup (O(2^n)) is real.
+// methods MinCostClimbingStairsTests proves correct. NaiveRecursive is kept to a
+// modest StepCount since its cost blowup (O(2^n)) is real.
 [MemoryDiagnoser]
 public class MinCostClimbingStairsBenchmarks
 {
@@ -15,13 +15,13 @@ public class MinCostClimbingStairsBenchmarks
     // exclusive upper bound for generated per-step cost
 
     [Params(20, 30)]
-    public int N { get; set; }
+    public int StepCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _cost = Enumerable.Range(0, N).Select(_ => random.Next(1, CostUpperBound)).ToArray();
+        _cost = Enumerable.Range(0, StepCount).Select(_ => random.Next(1, CostUpperBound)).ToArray();
     }
 
     [Benchmark(Baseline = true)]

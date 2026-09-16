@@ -33,8 +33,8 @@ public class LinkedListInBinaryTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool ArraySliceWalk() => LinkedListInBinaryTreeSolution.IsSubPathByArraySliceWalk(_headValues, _root);
+    public bool IsSubPathByArraySliceWalk() => LinkedListInBinaryTreeSolution.IsSubPathByArraySliceWalk(_headValues, _root);
 
     [Benchmark]
-    public bool LinkedNodeWalk() => LinkedListInBinaryTreeSolution.IsSubPathByLinkedNodeWalk(_head, _root);
+    public bool IsSubPathByLinkedNodeWalk() => LinkedListInBinaryTreeSolution.IsSubPathByLinkedNodeWalk(_head, _root);
 }

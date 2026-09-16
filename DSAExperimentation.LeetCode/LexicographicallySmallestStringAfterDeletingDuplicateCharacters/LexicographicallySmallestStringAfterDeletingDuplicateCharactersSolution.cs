@@ -24,16 +24,16 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
     // (a redundant trailing duplicate, which a strict prefix always beats) - and
     // restart the scan after every deletion. Deliberately without this repo's
     // Stack, the arm the single-pass sweep below has to justify itself against.
-    public static string SmallestStringByRepeatedScan(string s)
+    public static string SmallestStringByRepeatedScan(string text)
     {
-        var counts = CountLetters(s);
-        var chars = new List<char>(s);
+        var counts = CountLetters(text);
+        var chars = new List<char>(text);
 
         var deletedSomething = true;
 
         while (deletedSomething)
         {
-            deletedSomething = DeleteFirstRemovableDuplicate(chars, counts);
+            deletedSomething = TryDeleteFirstRemovableDuplicate(chars, counts);
         }
 
         return new string([.. chars]);
@@ -43,7 +43,7 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
     // after every deletion - removing a character shifts everything after it, so a
     // position that was not removable before may be now. Reports whether anything
     // was dropped at all, which is what ends the caller's scan.
-    private static bool DeleteFirstRemovableDuplicate(List<char> chars, int[] counts)
+    private static bool TryDeleteFirstRemovableDuplicate(List<char> chars, int[] counts)
     {
         for (var i = 0; i < chars.Count; i++)
         {
@@ -63,8 +63,9 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
     // A character may be deleted only while a copy of it survives the deletion,
     // and only when it is the last one left or sits immediately before something
     // smaller - a smaller prefix always wins lexicographically.
-    private static bool IsRemovableDuplicate(List<char> chars, int i, int[] counts)
-        => counts[chars[i] - 'a'] > 1 && (i == chars.Count - 1 || chars[i] > chars[i + 1]);
+    private static bool IsRemovableDuplicate(List<char> chars, int position, int[] counts)
+        => counts[chars[position] - 'a'] > 1
+            && (position == chars.Count - 1 || chars[position] > chars[position + 1]);
 
     // Single left-to-right sweep with this repo's own Stack<char>: cnt[c] tracks
     // how many copies of c remain undeleted (in the stack plus the untouched
@@ -72,12 +73,12 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
     // LargestRectangleInHistogramSolution precedent (Stack<int> read via
     // TryPeek/TryPop in a monotonic sweep), applied to characters instead of bar
     // indices.
-    public static string SmallestStringByMonotonicStack(string s)
+    public static string SmallestStringByMonotonicStack(string text)
     {
-        var counts = CountLetters(s);
+        var counts = CountLetters(text);
         var stack = new DupStack();
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             while (stack.TryPeek(out var top) && IsDroppableFor(top, c, counts))
             {
@@ -115,11 +116,11 @@ internal static class LexicographicallySmallestStringAfterDeletingDuplicateChara
         return new string([.. chars]);
     }
 
-    private static int[] CountLetters(string s)
+    private static int[] CountLetters(string text)
     {
         var counts = new int[AlphabetSize];
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             counts[c - 'a']++;
         }

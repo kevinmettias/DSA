@@ -98,7 +98,7 @@ internal static class LastDayWhereYouCanStillCrossSolution
         {
             var next = (Row: cell.Row + deltaRow, Col: cell.Col + deltaCol);
 
-            if (flooding.Contains(next.Row, next.Col) && flooding.IsLand(next.Row, next.Col, day))
+            if (flooding.IsInBounds(next.Row, next.Col) && flooding.IsLand(next.Row, next.Col, day))
             {
                 yield return next;
             }

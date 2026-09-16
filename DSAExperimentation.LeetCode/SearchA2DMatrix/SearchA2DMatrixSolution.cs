@@ -15,11 +15,11 @@ internal static class SearchA2DMatrixSolution
     // The textbook baseline: scan every row for target. Deliberately written
     // without this repo's search primitives - it is the arm the composed
     // solution below has to justify itself against.
-    public static bool SearchMatrixByLinearScan(int[][] matrix, int target) =>
+    public static bool HasTargetByLinearScan(int[][] matrix, int target) =>
         matrix.Any(row => Array.IndexOf(row, target) >= 0);
 
     // MatrixSequence flattens the matrix into one sorted run; BinarySearch.Find
     // is then LeetCode's answer verbatim.
-    public static bool SearchMatrixByBinarySearch(int[][] matrix, int target) =>
+    public static bool HasTargetByBinarySearch(int[][] matrix, int target) =>
         BinarySearch.Find<int, MatrixSequence<int>>(new MatrixSequence<int>(matrix), target) is not null;
 }

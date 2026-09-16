@@ -15,7 +15,7 @@ public sealed class ListEdgesTests
     public void Count_EmptyList_IsZero() => Assert.Equal(0, new ListEdges<TestNode, int>([]).Count);
 
     [Fact]
-    public void Get_ReturnsEachEdgesDataAndTargetTogether()
+    public void Get_ReturnsEachEdgePayloadAndTargetTogether()
     {
         var edges = Edges();
 

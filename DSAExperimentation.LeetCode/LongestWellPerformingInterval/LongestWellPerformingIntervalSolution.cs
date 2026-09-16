@@ -63,7 +63,7 @@ internal static class LongestWellPerformingIntervalSolution
 
         for (var i = 0; i < hours.Length; i++)
         {
-            tracker.ProcessDay(i, hours[i], firstIndexByScore);
+            tracker.AdvanceDay(i, hours[i], firstIndexByScore);
         }
 
         return tracker.Longest;
@@ -77,24 +77,25 @@ internal static class LongestWellPerformingIntervalSolution
 
         public int Longest { get; private set; }
 
-        public void ProcessDay(int i, int hour, HashMap<int, int> firstIndexByScore)
+        public void AdvanceDay(
+            int dayIndex, int hour, HashMap<int, int> firstIndexByScore)
         {
             _score += Tiring(hour);
 
             if (_score > 0)
             {
-                Longest = i + 1;
+                Longest = dayIndex + 1;
                 return;
             }
 
             if (firstIndexByScore.TryGetValue(_score - 1, out var priorIndex))
             {
-                Longest = Math.Max(Longest, i - priorIndex);
+                Longest = Math.Max(Longest, dayIndex - priorIndex);
             }
 
             if (!firstIndexByScore.HasKey(_score))
             {
-                firstIndexByScore.Set(_score, i);
+                firstIndexByScore.Set(_score, dayIndex);
             }
         }
     }

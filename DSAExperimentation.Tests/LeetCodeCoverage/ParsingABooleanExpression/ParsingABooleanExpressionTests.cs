@@ -25,23 +25,26 @@ public sealed class ParsingABooleanExpressionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ParseBoolExprByRecursiveDescent_LeetCodeExamples_EvaluatesToExpectedBoolean(
+    public void IsBoolExprTrueByRecursiveDescent_LeetCodeExamples_EvaluatesToExpectedBoolean(
         ExpressionExample example) =>
         Assert.Equal(
             example.Expected,
-            ParsingABooleanExpressionSolution.ParseBoolExprByRecursiveDescent(example.Expression));
+            ParsingABooleanExpressionSolution.IsBoolExprTrueByRecursiveDescent(
+                example.Expression));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ParseBoolExprByParserStack_LeetCodeExamples_EvaluatesToExpectedBoolean(
+    public void IsBoolExprTrueByParserStack_LeetCodeExamples_EvaluatesToExpectedBoolean(
         ExpressionExample example) =>
         Assert.Equal(
             example.Expected,
-            ParsingABooleanExpressionSolution.ParseBoolExprByParserStack(example.Expression));
+            ParsingABooleanExpressionSolution.IsBoolExprTrueByParserStack(
+                example.Expression));
 
     // One LeetCode example: the expression and the value it evaluates to. The answer
     // is the datum under test, so the row names it rather than leaving a bare `bool`
-    // beside the expression - `ParseBoolExpr("t", true)` does not say whether that
-    // `true` is the expected result or a parse flag.
+    // beside the expression - a bare
+    // `IsBoolExprTrueByRecursiveDescent("t", true)` does not say whether that `true`
+    // is the expected result or a parse flag.
     public readonly record struct ExpressionExample(string Expression, bool Expected);
 }

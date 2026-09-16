@@ -3,15 +3,15 @@ using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.LeetCode.PrimePalindrome;
 
-// LeetCode 866. Prime Palindrome: the smallest integer >= n that is both a
-// palindrome and prime.
+// LeetCode 866. Prime Palindrome: the smallest integer at or above the lower bound
+// that is both a palindrome and prime.
 //
 // Two strategies, differing in what they enumerate:
 //
-// - SequentialScan walks every integer from n upwards and asks each one both
-//   questions. It is the baseline - what you would write without this repo - so its
-//   internals stay BCL (string reversal for the palindrome test, trial division for
-//   primality).
+// - SequentialScan walks every integer from the lower bound upwards and asks each
+//   one both questions. It is the baseline - what you would write without this repo -
+//   so its internals stay BCL (string reversal for the palindrome test, trial
+//   division for primality).
 // - PalindromeGeneration enumerates palindromes directly, building each one from its
 //   first half: digits are collected front-to-back in this repo's own
 //   DynamicArray<int>, then mirrored back onto the same array. Only palindromes are
@@ -29,10 +29,10 @@ internal static class PrimePalindromeSolution
     // odd-length candidates, so these have to be answered before it starts.
     private static readonly long[] SmallPrimePalindromes = [2, 3, 5, 7, 11];
 
-    // Baseline: test every integer from n upwards for both properties.
-    public static long SmallestPrimePalindromeBySequentialScan(int n)
+    // Baseline: test every integer from the lower bound upwards for both properties.
+    public static long SmallestPrimePalindromeBySequentialScan(int lowerBound)
     {
-        var candidate = (long)n;
+        var candidate = (long)lowerBound;
 
         // Stops at the first candidate that is both a palindrome and a prime.
         while (true)
@@ -68,30 +68,31 @@ internal static class PrimePalindromeSolution
 
     // Enumerate palindromes rather than integers, mirroring each candidate's first
     // half back onto itself in a DynamicArray<int>.
-    public static long SmallestPrimePalindromeByPalindromeGeneration(int n)
+    public static long SmallestPrimePalindromeByPalindromeGeneration(int lowerBound)
     {
         foreach (var smallPrime in SmallPrimePalindromes)
         {
-            if (n <= smallPrime)
+            if (lowerBound <= smallPrime)
             {
                 return smallPrime;
             }
         }
 
-        return GeneratePrimePalindrome(n);
+        return GeneratePrimePalindrome(lowerBound);
     }
 
-    private static long GeneratePrimePalindrome(int n)
+    private static long GeneratePrimePalindrome(int lowerBound)
     {
-        var exponent = n.ToString().Length / AlgorithmConstants.HalvingFactor;
+        var exponent = lowerBound.ToString().Length / AlgorithmConstants.HalvingFactor;
         var half = (int)Math.Pow(DecimalBase, exponent);
 
-        // Stops at the first built palindrome >= n that is prime; half only ever grows.
+        // Stops at the first built palindrome >= the lower bound that is prime; half
+        // only ever grows.
         while (true)
         {
             var candidate = BuildOddLengthPalindrome(half);
 
-            if (candidate >= n && IsPrime(candidate))
+            if (candidate >= lowerBound && IsPrime(candidate))
             {
                 return candidate;
             }

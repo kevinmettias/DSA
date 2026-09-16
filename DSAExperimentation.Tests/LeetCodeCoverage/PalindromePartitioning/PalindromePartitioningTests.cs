@@ -16,8 +16,8 @@ public sealed class PalindromePartitioningTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionByBacktracking_LeetCodeExamples_ReturnsEveryPalindromePartition(
-        string s, string[][] expected) =>
-        AssertSamePartitions(expected, PalindromePartitioningSolution.PartitionByBacktracking(s));
+        string text, string[][] expected) =>
+        AssertSamePartitions(expected, PalindromePartitioningSolution.PartitionByBacktracking(text));
 
     private static void AssertSamePartitions(string[][] expected, List<List<string>> actual)
     {

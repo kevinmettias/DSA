@@ -31,8 +31,8 @@ public class RobotBoundedInCircleBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool SwitchStatement() => RobotBoundedInCircleSolution.IsRobotBoundedByDirectionSwitch(_instructions);
+    public bool IsRobotBoundedByDirectionSwitch() => RobotBoundedInCircleSolution.IsRobotBoundedByDirectionSwitch(_instructions);
 
     [Benchmark]
-    public bool HashMapLookup() => RobotBoundedInCircleSolution.IsRobotBoundedByStepDeltaMap(_instructions);
+    public bool IsRobotBoundedByStepDeltaMap() => RobotBoundedInCircleSolution.IsRobotBoundedByStepDeltaMap(_instructions);
 }

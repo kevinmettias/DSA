@@ -25,10 +25,10 @@ public class SatisfiabilityOfEqualityEquationsBenchmarks
         _equations = EqualityEquationWorkloads.BuildEquations(EquationCount, seed: RandomSeed);
 
     [Benchmark(Baseline = true)]
-    public bool AdjacencyListBfs() =>
-        SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByAdjacencyBfs(_equations);
+    public bool IsSatisfiableByAdjacencyBfs() =>
+        SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByAdjacencyBfs(_equations);
 
     [Benchmark]
-    public bool DisjointSetUnionFind() =>
-        SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByDisjointSet(_equations);
+    public bool IsSatisfiableByDisjointSet() =>
+        SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByDisjointSet(_equations);
 }

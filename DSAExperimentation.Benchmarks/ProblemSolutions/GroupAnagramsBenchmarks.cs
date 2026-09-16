@@ -23,10 +23,10 @@ public class GroupAnagramsBenchmarks
     [GlobalSetup]
     public void Setup()
         => _values = Enumerable.Range(0, Length)
-            .Select(i => IsFirstWord(i) ? FirstAnagramWord : SecondAnagramWord)
+            .Select(index => IsFirstWord(index) ? FirstAnagramWord : SecondAnagramWord)
             .ToArray();
 
-    private static bool IsFirstWord(int i) => i % SourceWordCount == 0;
+    private static bool IsFirstWord(int index) => index % SourceWordCount == 0;
 
     [Benchmark(Baseline = true)]
     public int DictionaryGroup() => GroupAnagramsSolution.GroupByDictionary(_values).Count;

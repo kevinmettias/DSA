@@ -19,7 +19,7 @@ public sealed class NumberOfPeopleAwareOfASecretTests
             // Two days, forget the day after sharing starts.
             { 2, 1, 2, 2 },
 
-            // The smallest n LC allows: only person 1 exists, and day 1 is
+            // The smallest day count LC allows: only person 1 exists, and day 1 is
             // inside every forget window, so nobody has forgotten yet.
             { 1, 1, 2, 1 },
 
@@ -39,10 +39,10 @@ public sealed class NumberOfPeopleAwareOfASecretTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PeopleWithSecretBySlidingWindowSum_LeetCodeExamples_ReturnsPeopleStillRemembering(
-        int n, int delay, int forget, long expected)
+        int dayCount, int delay, int forget, long expected)
     {
         var actual =
-            NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretBySlidingWindowSum(n, delay, forget);
+            NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretBySlidingWindowSum(dayCount, delay, forget);
 
         Assert.Equal(expected, actual);
     }
@@ -50,10 +50,10 @@ public sealed class NumberOfPeopleAwareOfASecretTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PeopleWithSecretByFenwickRangeSum_LeetCodeExamples_ReturnsPeopleStillRemembering(
-        int n, int delay, int forget, long expected)
+        int dayCount, int delay, int forget, long expected)
     {
         var actual =
-            NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretByFenwickRangeSum(n, delay, forget);
+            NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretByFenwickRangeSum(dayCount, delay, forget);
 
         Assert.Equal(expected, actual);
     }

@@ -163,7 +163,7 @@ internal static class CountTheNumberOfIdealArraysSolution
                 exponent++;
             }
 
-            product = product * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
+            product = product * BinomialMod(exponent + arrayLength - 1, exponent) % ModularArithmetic.Modulo;
         }
 
         return product;

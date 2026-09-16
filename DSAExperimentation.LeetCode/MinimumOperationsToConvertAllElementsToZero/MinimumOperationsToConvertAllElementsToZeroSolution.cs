@@ -90,7 +90,7 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
                 operations++;
             }
 
-            if (NeedsPushing(stack, value))
+            if (ShouldPush(stack, value))
             {
                 stack.Push(value);
             }
@@ -102,6 +102,6 @@ internal static class MinimumOperationsToConvertAllElementsToZeroSolution
     // A level is pushed only when it needs an operation of its own (it is nonzero) and
     // differs from whatever already sits on top - an empty stack holds nothing to differ
     // from.
-    private static bool NeedsPushing(ValueStack stack, int value) =>
+    private static bool ShouldPush(ValueStack stack, int value) =>
         value != 0 && (!stack.TryPeek(out var top) || top != value);
 }

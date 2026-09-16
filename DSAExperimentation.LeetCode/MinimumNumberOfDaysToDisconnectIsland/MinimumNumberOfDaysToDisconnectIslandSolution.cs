@@ -60,7 +60,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
             {
                 for (var col = 0; col < scan.Cols; col++)
                 {
-                    if (!StartsANewIsland(scan, visited, row, col))
+                    if (!IsNewIslandStart(scan, visited, row, col))
                     {
                         continue;
                     }
@@ -93,7 +93,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
             {
                 for (var col = 0; col < scan.Cols; col++)
                 {
-                    if (!StartsANewIsland(scan, visited, row, col))
+                    if (!IsNewIslandStart(scan, visited, row, col))
                     {
                         continue;
                     }
@@ -134,7 +134,7 @@ internal static class MinimumNumberOfDaysToDisconnectIslandSolution
 
     // Both scans claim a cell as a new island's start only when it is land that is
     // neither already claimed nor the cell the scan is pretending is water.
-    private static bool StartsANewIsland(IslandScan scan, bool[,] visited, int row, int col)
+    private static bool IsNewIslandStart(IslandScan scan, bool[,] visited, int row, int col)
         => scan.Grid[row][col] == Land && !visited[row, col] && (row, col) != scan.Skip;
 
     private static void FloodFill(IslandScan scan, bool[,] visited, (int Row, int Col) cell)

@@ -47,7 +47,7 @@ internal static class MinimumNumberOfWorkSessionsToFinishTheTasksSolution
 
         for (var sub = remaining; sub > 0; sub = (sub - 1) & remaining)
         {
-            if (sessions.FitsInOneSession(sub))
+            if (sessions.CanFitInOneSession(sub))
             {
                 best = Math.Min(best, 1 + SessionsFor(sessions, remaining ^ sub));
             }
@@ -90,7 +90,7 @@ internal static class MinimumNumberOfWorkSessionsToFinishTheTasksSolution
 
             for (var sub = remaining; sub > 0; sub = (sub - 1) & remaining)
             {
-                if (sessions.FitsInOneSession(sub))
+                if (sessions.CanFitInOneSession(sub))
                 {
                     var sessionsAfter = rest.Replay(remaining ^ sub, rest);
                     best = Math.Min(best, sessionsAfter);

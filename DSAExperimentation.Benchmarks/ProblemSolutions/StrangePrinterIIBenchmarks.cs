@@ -36,8 +36,8 @@ public class StrangePrinterIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveRescan() => StrangePrinterIISolution.IsPrintableByNaiveRescan(_colors);
+    public bool IsPrintableByNaiveRescan() => StrangePrinterIISolution.IsPrintableByNaiveRescan(_colors);
 
     [Benchmark]
-    public bool KahnsTopologicalSort() => StrangePrinterIISolution.IsPrintableByKahnsTopologicalSort(_colors);
+    public bool IsPrintableByKahnsTopologicalSort() => StrangePrinterIISolution.IsPrintableByKahnsTopologicalSort(_colors);
 }

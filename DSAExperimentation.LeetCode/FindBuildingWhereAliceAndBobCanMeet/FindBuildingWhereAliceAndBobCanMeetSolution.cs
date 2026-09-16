@@ -4,9 +4,10 @@ namespace DSAExperimentation.LeetCode.FindBuildingWhereAliceAndBobCanMeet;
 
 // LeetCode 2940. Find Building Where Alice and Bob Can Meet: from building i you
 // may only move to a later, taller building j (i < j, heights[i] < heights[j]).
-// Normalizing a query to lo = min(a, b), hi = max(a, b): lo == hi needs no move
-// at all; heights[lo] < heights[hi] lets the person at lo jump straight to hi in
-// one hop; otherwise both need the first index j > hi whose height beats
+// Normalizing a query to lo = min(firstEndpoint, secondEndpoint) and
+// hi = max(firstEndpoint, secondEndpoint): lo == hi needs no move at all;
+// heights[lo] < heights[hi] lets the person at lo jump straight to hi in one
+// hop; otherwise both need the first index j > hi whose height beats
 // heights[lo] (already >= heights[hi] in this branch, so beating it beats
 // heights[hi] too).
 internal static class FindBuildingWhereAliceAndBobCanMeetSolution
@@ -26,10 +27,10 @@ internal static class FindBuildingWhereAliceAndBobCanMeetSolution
         return answers;
     }
 
-    private static int FindMeetingBuildingByBruteForce(int[] heights, int a, int b)
+    private static int FindMeetingBuildingByBruteForce(int[] heights, int firstEndpoint, int secondEndpoint)
     {
-        var lo = Math.Min(a, b);
-        var hi = Math.Max(a, b);
+        var lo = Math.Min(firstEndpoint, secondEndpoint);
+        var hi = Math.Max(firstEndpoint, secondEndpoint);
 
         return MeetingIndexFrom(heights, lo, hi);
     }

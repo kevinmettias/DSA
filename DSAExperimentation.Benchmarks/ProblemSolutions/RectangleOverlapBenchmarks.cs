@@ -29,10 +29,10 @@ public class RectangleOverlapBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool UnitGridIntersectionScan() =>
-        RectangleOverlapSolution.OverlapsByUnitGridIntersectionScan(_rec1, _rec2);
+    public bool IsOverlappingByUnitGridIntersectionScan() =>
+        RectangleOverlapSolution.IsOverlappingByUnitGridIntersectionScan(_rec1, _rec2);
 
     [Benchmark]
-    public bool ClosedFormAxisOverlap() =>
-        RectangleOverlapSolution.OverlapsByClosedFormAxisIntervals(_rec1, _rec2);
+    public bool IsOverlappingByClosedFormAxisIntervals() =>
+        RectangleOverlapSolution.IsOverlappingByClosedFormAxisIntervals(_rec1, _rec2);
 }

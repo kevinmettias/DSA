@@ -6,11 +6,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumScoreOfAGoodSubarraySolution's, the same
 // methods MaximumScoreOfAGoodSubarrayTests proves correct - the O(n^2) baseline
-// that re-scans every window anchored at k against the two monotonic-increasing
-// Stack<int> sweeps that compute each index's nearest-smaller boundaries in one
-// O(n) pass per direction. LeetCode's own input here is already the prepared
-// input, so [GlobalSetup] only sizes and seeds the array; there is no separate
-// hoisted overload to hand it to.
+// that re-scans every window anchored at the required index against the two
+// monotonic-increasing Stack<int> sweeps that compute each index's nearest-smaller
+// boundaries in one O(n) pass per direction. LeetCode's own input here is already
+// the prepared input, so [GlobalSetup] only sizes and seeds the array; there is no
+// separate hoisted overload to hand it to.
 [MemoryDiagnoser]
 public class MaximumScoreOfAGoodSubarrayBenchmarks
 {
@@ -19,7 +19,7 @@ public class MaximumScoreOfAGoodSubarrayBenchmarks
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _requiredIndex;
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -28,14 +28,14 @@ public class MaximumScoreOfAGoodSubarrayBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxNumValue)).ToArray();
-        _k = Length / AlgorithmConstants.HalvingFactor;
+        _requiredIndex = Length / AlgorithmConstants.HalvingFactor;
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForceExpand() =>
-        MaximumScoreOfAGoodSubarraySolution.MaximumScoreByBruteForceExpand(_nums, _k);
+        MaximumScoreOfAGoodSubarraySolution.MaximumScoreByBruteForceExpand(_nums, _requiredIndex);
 
     [Benchmark]
     public int MonotonicStackBoundaries() =>
-        MaximumScoreOfAGoodSubarraySolution.MaximumScoreByMonotonicStackBoundaries(_nums, _k);
+        MaximumScoreOfAGoodSubarraySolution.MaximumScoreByMonotonicStackBoundaries(_nums, _requiredIndex);
 }

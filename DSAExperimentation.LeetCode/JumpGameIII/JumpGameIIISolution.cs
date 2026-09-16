@@ -21,7 +21,7 @@ internal static class JumpGameIIISolution
 
         while (walk.Pending.Count > 0)
         {
-            if (VisitNext(walk))
+            if (HasLandedOnZero(walk))
             {
                 return true;
             }
@@ -30,7 +30,7 @@ internal static class JumpGameIIISolution
         return false;
     }
 
-    private static bool VisitNext(HopWalk walk)
+    private static bool HasLandedOnZero(HopWalk walk)
     {
         var index = walk.Pending.Pop();
 

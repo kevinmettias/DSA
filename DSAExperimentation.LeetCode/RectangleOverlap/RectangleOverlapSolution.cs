@@ -21,7 +21,7 @@ internal static class RectangleOverlapSolution
 
     // Positive-area overlap on each axis independently: the intervals [x1, x2) and
     // [y1, y2) must each overlap strictly, so touching edges report false.
-    public static bool OverlapsByClosedFormAxisIntervals(int[] rec1, int[] rec2) =>
+    public static bool IsOverlappingByClosedFormAxisIntervals(int[] rec1, int[] rec2) =>
         rec1[X1] < rec2[X2] && rec2[X1] < rec1[X2] &&
         rec1[Y1] < rec2[Y2] && rec2[Y1] < rec1[Y2];
 
@@ -30,7 +30,7 @@ internal static class RectangleOverlapSolution
     // cells looking for one already painted. O(width * height) in the bounding box
     // rather than O(1), and it answers the same question - a shared cell exists
     // exactly when the two rectangles share positive area.
-    public static bool OverlapsByUnitGridIntersectionScan(int[] rec1, int[] rec2)
+    public static bool IsOverlappingByUnitGridIntersectionScan(int[] rec1, int[] rec2)
     {
         var minX = Math.Min(rec1[X1], rec2[X1]);
         var minY = Math.Min(rec1[Y1], rec2[Y1]);
@@ -43,7 +43,7 @@ internal static class RectangleOverlapSolution
 
         MarkRectangle(covered, width, (minX, minY), rec1);
 
-        return IntersectsMarkedGrid(covered, width, (minX, minY), rec2);
+        return IsIntersectingMarkedGrid(covered, width, (minX, minY), rec2);
     }
 
     private static void MarkRectangle(bool[] covered, int width, (int X, int Y) origin, int[] rect)
@@ -57,7 +57,7 @@ internal static class RectangleOverlapSolution
         }
     }
 
-    private static bool IntersectsMarkedGrid(bool[] covered, int width, (int X, int Y) origin, int[] rect)
+    private static bool IsIntersectingMarkedGrid(bool[] covered, int width, (int X, int Y) origin, int[] rect)
     {
         for (var y = rect[Y1]; y < rect[Y2]; y++)
         {

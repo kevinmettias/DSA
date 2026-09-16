@@ -2,54 +2,55 @@ using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.LeetCode.MinimumCostToPartitionABinaryString;
 
-// LeetCode 3864. Minimum Cost to Partition a Binary String: s's '1's are
-// "sensitive" elements. A segment of length L with X sensitive elements costs
-// flatCost if X == 0, else L * X * encCost; an even-length segment may instead
-// be split into its two equal halves, at the sum of their own (recursively
-// chosen) costs. Return the minimum achievable total for the whole string.
+// LeetCode 3864. Minimum Cost to Partition a Binary String: the string's '1's
+// are "sensitive" elements. A segment of length L with X sensitive elements
+// costs flatCost if X == 0, else L * X * encCost; an even-length segment may
+// instead be split into its two equal halves, at the sum of their own
+// (recursively chosen) costs. Return the minimum achievable total for the whole
+// string.
 //
 // Because a segment can only ever split into two EQUAL halves, the whole
-// recursion is bounded by s.Length's 2-adic valuation, not by log2(s.Length) -
-// it is exactly a segment-tree-shaped divide and conquer, with no overlapping
-// subproblems to memoize (each (left, right) pair is visited at most once), so
-// both strategies below are plain recursion rather than routed through
-// Memoizer.
+// recursion is bounded by binaryString.Length's 2-adic valuation, not by
+// log2 of its length - it is exactly a segment-tree-shaped divide and conquer,
+// with no overlapping subproblems to memoize (each (left, right) pair is visited
+// at most once), so both strategies below are plain recursion rather than routed
+// through Memoizer.
 //
 // MinCostByFenwickRangeSum is the composed strategy: every recursive call
 // needs "how many sensitive elements sit in [left, right]", which is exactly a
 // range-sum query, so it builds this repo's own
-// DataStructures.FenwickTree.FenwickTree<int, SumOperation<int>> over s once
-// and answers every call's sensitive-count in O(log n) via Query, rather than
-// rescanning the segment. Building that Fenwick tree is real input
-// construction, so per the hoisted-overload convention (see
+// DataStructures.FenwickTree.FenwickTree<int, SumOperation<int>> over
+// binaryString once and answers every call's sensitive-count in O(log n) via
+// Query, rather than rescanning the segment. Building that Fenwick tree is real
+// input construction, so per the hoisted-overload convention (see
 // OpenTheLockSolution) it is charged to a prepared-input overload a benchmark
 // can build once in [GlobalSetup].
 //
 // MinCostByLinearScanRecursion is the textbook baseline this has to justify
 // itself against: the same recursion, but counting sensitive elements with a
-// direct O(length) scan of s every time - deliberately BCL-only (a bare
-// string index loop).
+// direct O(length) scan of the string every time - deliberately BCL-only (a
+// bare string index loop).
 internal static class MinimumCostToPartitionABinaryStringSolution
 {
-    public static long MinCostByLinearScanRecursion(string s, int encCost, int flatCost) =>
+    public static long MinCostByLinearScanRecursion(string binaryString, int encCost, int flatCost) =>
         MinCostOfRange(
-            (Left: 0, Right: s.Length - 1),
+            (Left: 0, Right: binaryString.Length - 1),
             encCost,
             flatCost,
-            new LinearScanSensitiveCount(s));
+            new LinearScanSensitiveCount(binaryString));
 
-    public static long MinCostByFenwickRangeSum(string s, int encCost, int flatCost)
+    public static long MinCostByFenwickRangeSum(string binaryString, int encCost, int flatCost)
     {
-        var sensitive = new int[s.Length];
-        for (var i = 0; i < s.Length; i++)
+        var sensitive = new int[binaryString.Length];
+        for (var i = 0; i < binaryString.Length; i++)
         {
-            var isSensitive = s[i] == '1';
+            var isSensitive = binaryString[i] == '1';
             sensitive[i] = isSensitive ? 1 : 0;
         }
 
         var ones = new FenwickTree<int, SumOperation<int>>(sensitive);
 
-        return MinCostByFenwickRangeSum(ones, s.Length, encCost, flatCost);
+        return MinCostByFenwickRangeSum(ones, binaryString.Length, encCost, flatCost);
     }
 
     public static long MinCostByFenwickRangeSum(
@@ -96,14 +97,14 @@ internal static class MinimumCostToPartitionABinaryStringSolution
 
     // The baseline arm's answer: a direct O(length) scan of the string it was built
     // over, so the whole recursion re-reads the segment every time it needs the count.
-    private sealed class LinearScanSensitiveCount(string s) : ISensitiveCount
+    private sealed class LinearScanSensitiveCount(string binaryString) : ISensitiveCount
     {
         public int CountIn(int left, int right)
         {
             var count = 0;
             for (var i = left; i <= right; i++)
             {
-                if (s[i] == '1')
+                if (binaryString[i] == '1')
                 {
                     count++;
                 }
@@ -114,7 +115,7 @@ internal static class MinimumCostToPartitionABinaryStringSolution
     }
 
     // The composed arm's answer: one range-sum query against this repo's Fenwick tree,
-    // built once over s and then answering every call in O(log n).
+    // built once over binaryString and then answering every call in O(log n).
     private sealed class FenwickRangeSumSensitiveCount(FenwickTree<int, SumOperation<int>> sensitiveCounts)
         : ISensitiveCount
     {

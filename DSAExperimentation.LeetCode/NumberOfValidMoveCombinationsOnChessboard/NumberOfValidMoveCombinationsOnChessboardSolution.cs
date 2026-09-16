@@ -117,7 +117,7 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
 
         for (var other = 0; other < state.Moves.Count; other++)
         {
-            if (MovesCollide(candidateStart, candidate, state.Positions[other], state.Moves[other]))
+            if (HasMoveCollision(candidateStart, candidate, state.Positions[other], state.Moves[other]))
             {
                 return false;
             }
@@ -150,7 +150,7 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         {
             for (var j = i + 1; j < combo.Length; j++)
             {
-                if (MovesCollide(positions[i], combo[i], positions[j], combo[j]))
+                if (HasMoveCollision(positions[i], combo[i], positions[j], combo[j]))
                 {
                     return false;
                 }
@@ -163,13 +163,13 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
     // Two trajectories are compared at every shared time step (both pieces move one
     // square per step, then hold their final square) - the only way two pieces can
     // ever occupy the same cell, per the problem's simultaneous-movement rule.
-    private static bool MovesCollide(int[] firstStart, Move first, int[] secondStart, Move second)
+    private static bool HasMoveCollision(int[] firstStart, Move first, int[] secondStart, Move second)
     {
         var maxTime = Math.Max(first.Distance, second.Distance);
 
-        for (var t = 1; t <= maxTime; t++)
+        for (var timeStep = 1; timeStep <= maxTime; timeStep++)
         {
-            if (PositionAt(firstStart, first, t) == PositionAt(secondStart, second, t))
+            if (PositionAt(firstStart, first, timeStep) == PositionAt(secondStart, second, timeStep))
             {
                 return true;
             }
@@ -178,9 +178,9 @@ internal static class NumberOfValidMoveCombinationsOnChessboardSolution
         return false;
     }
 
-    private static (int Row, int Col) PositionAt(int[] start, Move move, int t)
+    private static (int Row, int Col) PositionAt(int[] start, Move move, int timeStep)
     {
-        var step = Math.Min(t, move.Distance);
+        var step = Math.Min(timeStep, move.Distance);
 
         return (start[0] + (move.DRow * step), start[1] + (move.DCol * step));
     }

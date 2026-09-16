@@ -24,7 +24,7 @@ internal static class MaximumProductOfWordLengthsSolution
         {
             for (var j = i + 1; j < words.Length; j++)
             {
-                if (SharesLetter(words[i], words[j]))
+                if (HasSharedLetter(words[i], words[j]))
                 {
                     continue;
                 }
@@ -36,13 +36,13 @@ internal static class MaximumProductOfWordLengthsSolution
         return best;
     }
 
-    private static bool SharesLetter(string a, string b)
+    private static bool HasSharedLetter(string firstWord, string secondWord)
     {
-        foreach (var x in a)
+        foreach (var firstChar in firstWord)
         {
-            foreach (var y in b)
+            foreach (var secondChar in secondWord)
             {
-                if (x == y)
+                if (firstChar == secondChar)
                 {
                     return true;
                 }

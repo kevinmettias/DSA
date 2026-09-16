@@ -14,5 +14,5 @@ internal sealed class HashSetNovelty : INoveltySet<HashSet<int>>
 
     public HashSet<int> Fresh() => new();
 
-    public bool Admit(HashSet<int> seen, int value) => seen.Add(value);
+    public bool TryAdmit(HashSet<int> seen, int value) => seen.Add(value);
 }

@@ -37,7 +37,7 @@ internal static class QueriesOnNumberOfPointsInsideACircleSolution
 
         foreach (var point in points)
         {
-            if (Covers(query, point))
+            if (IsWithinCircle(query, point))
             {
                 count++;
             }
@@ -75,7 +75,7 @@ internal static class QueriesOnNumberOfPointsInsideACircleSolution
 
         for (var i = low; i < high; i++)
         {
-            if (Covers(query, sortedPoints[i]))
+            if (IsWithinCircle(query, sortedPoints[i]))
             {
                 count++;
             }
@@ -89,7 +89,7 @@ internal static class QueriesOnNumberOfPointsInsideACircleSolution
     // coordinate spread wider than LeetCode's own [-1000, 1000] constraint - which is
     // exactly what the benchmark workload uses to make the x-band prune matter -
     // overflows a 32-bit square.
-    private static bool Covers(int[] query, int[] point)
+    private static bool IsWithinCircle(int[] query, int[] point)
     {
         long dx = point[XIndex] - query[XIndex];
         long dy = point[YIndex] - query[YIndex];

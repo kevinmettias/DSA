@@ -19,10 +19,10 @@ public sealed class ContainsDuplicateIIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsNearbyAlmostDuplicateByBucketedHashMap_LeetCodeExamples_ReturnsExpected(
+    public void HasNearbyAlmostDuplicateByBucketedHashMap_LeetCodeExamples_ReturnsExpected(
         NearbyAlmostDuplicateCase example)
     {
-        var actual = ContainsDuplicateIIISolution.ContainsNearbyAlmostDuplicateByBucketedHashMap(
+        var actual = ContainsDuplicateIIISolution.HasNearbyAlmostDuplicateByBucketedHashMap(
             example.Nums, example.IndexDiff, example.ValueDiff);
 
         Assert.Equal(example.Expected, actual);
@@ -30,10 +30,10 @@ public sealed class ContainsDuplicateIIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsNearbyAlmostDuplicateBySlidingWindowBruteForce_LeetCodeExamples_ReturnsExpected(
+    public void HasNearbyAlmostDuplicateBySlidingWindowBruteForce_LeetCodeExamples_ReturnsExpected(
         NearbyAlmostDuplicateCase example)
     {
-        var actual = ContainsDuplicateIIISolution.ContainsNearbyAlmostDuplicateBySlidingWindowBruteForce(
+        var actual = ContainsDuplicateIIISolution.HasNearbyAlmostDuplicateBySlidingWindowBruteForce(
             example.Nums, example.IndexDiff, example.ValueDiff);
 
         Assert.Equal(example.Expected, actual);

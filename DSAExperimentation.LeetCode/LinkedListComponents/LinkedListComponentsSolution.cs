@@ -16,7 +16,7 @@ internal static class LinkedListComponentsSolution
     // node. Deliberately written without this repo's primitives beyond the input
     // list shape itself (ARCHITECTURE.md section 17.5) - it is the arm the composed
     // solution below has to justify itself against.
-    public static int NumComponentsByLinearScan(SinglyLinkedListNode<int>? head, int[] nums)
+    public static int CountComponentsByLinearScan(SinglyLinkedListNode<int>? head, int[] nums)
     {
         var runs = new ComponentRuns();
 
@@ -31,7 +31,7 @@ internal static class LinkedListComponentsSolution
     // The composed solution: seed this repo's Set<int> (HashMap-backed, the same
     // composition ContainsDuplicate uses) once, then every per-node membership test
     // is O(1) instead of an O(k) scan.
-    public static int NumComponentsBySetMembership(SinglyLinkedListNode<int>? head, int[] nums)
+    public static int CountComponentsBySetMembership(SinglyLinkedListNode<int>? head, int[] nums)
     {
         var present = new Set<int>(nums);
         var runs = new ComponentRuns();

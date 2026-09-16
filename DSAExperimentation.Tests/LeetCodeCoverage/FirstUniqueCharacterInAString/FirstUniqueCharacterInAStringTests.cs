@@ -17,11 +17,11 @@ public sealed class FirstUniqueCharacterInAStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FirstUniqCharByBruteForce_LeetCodeExamples_ReturnsExpectedIndex(string s, int expected) =>
-        Assert.Equal(expected, FirstUniqueCharacterInAStringSolution.FirstUniqCharByBruteForce(s));
+    public void FirstUniqCharByBruteForce_LeetCodeExamples_ReturnsExpectedIndex(string text, int expected) =>
+        Assert.Equal(expected, FirstUniqueCharacterInAStringSolution.FirstUniqCharByBruteForce(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FirstUniqCharByHashMapTwoPass_LeetCodeExamples_ReturnsExpectedIndex(string s, int expected) =>
-        Assert.Equal(expected, FirstUniqueCharacterInAStringSolution.FirstUniqCharByHashMapTwoPass(s));
+    public void FirstUniqCharByHashMapTwoPass_LeetCodeExamples_ReturnsExpectedIndex(string text, int expected) =>
+        Assert.Equal(expected, FirstUniqueCharacterInAStringSolution.FirstUniqCharByHashMapTwoPass(text));
 }

@@ -56,48 +56,48 @@ internal static class MaximumAndSumOfArraySolution
         var best = rest.Replay((slot + 1, usedMask), rest);
         var frame = new SlotFrame(context, slot, usedMask);
 
-        for (var i = 0; i < context.Nums.Length; i++)
+        for (var elementIndex = 0; elementIndex < context.Nums.Length; elementIndex++)
         {
-            best = BestConsideringElement(frame, i, best, rest);
+            best = BestConsideringElement(frame, elementIndex, best, rest);
         }
 
         return best;
     }
 
     private static int BestConsideringElement(
-        SlotFrame frame, int i, int best, IRecurrence<(int Slot, int UsedMask), int> rest)
+        SlotFrame frame, int elementIndex, int best, IRecurrence<(int Slot, int UsedMask), int> rest)
     {
-        var bitI = 1 << i;
+        var elementBit = 1 << elementIndex;
 
-        if ((frame.UsedMask & bitI) != 0)
+        if ((frame.UsedMask & elementBit) != 0)
         {
             return best;
         }
 
-        var withOne = (frame.Slot & frame.Context.Nums[i])
-            + rest.Replay((frame.Slot + 1, frame.UsedMask | bitI), rest);
+        var withOne = (frame.Slot & frame.Context.Nums[elementIndex])
+            + rest.Replay((frame.Slot + 1, frame.UsedMask | elementBit), rest);
         best = Math.Max(best, withOne);
 
-        return BestConsideringPair(frame, i, best, rest);
+        return BestConsideringPair(frame, elementIndex, best, rest);
     }
 
     private static int BestConsideringPair(
-        SlotFrame frame, int i, int best, IRecurrence<(int Slot, int UsedMask), int> rest)
+        SlotFrame frame, int elementIndex, int best, IRecurrence<(int Slot, int UsedMask), int> rest)
     {
         var nums = frame.Context.Nums;
-        var bitI = 1 << i;
+        var elementBit = 1 << elementIndex;
 
-        for (var j = i + 1; j < nums.Length; j++)
+        for (var otherIndex = elementIndex + 1; otherIndex < nums.Length; otherIndex++)
         {
-            var bitJ = 1 << j;
+            var otherElementBit = 1 << otherIndex;
 
-            if ((frame.UsedMask & bitJ) != 0)
+            if ((frame.UsedMask & otherElementBit) != 0)
             {
                 continue;
             }
 
-            var withTwo = (frame.Slot & nums[i]) + (frame.Slot & nums[j])
-                + rest.Replay((frame.Slot + 1, frame.UsedMask | bitI | bitJ), rest);
+            var withTwo = (frame.Slot & nums[elementIndex]) + (frame.Slot & nums[otherIndex])
+                + rest.Replay((frame.Slot + 1, frame.UsedMask | elementBit | otherElementBit), rest);
             best = Math.Max(best, withTwo);
         }
 
@@ -115,46 +115,46 @@ internal static class MaximumAndSumOfArraySolution
         var best = BestFromBruteForce(context, slot + 1, usedMask);
         var frame = new SlotFrame(context, slot, usedMask);
 
-        for (var i = 0; i < context.Nums.Length; i++)
+        for (var elementIndex = 0; elementIndex < context.Nums.Length; elementIndex++)
         {
-            best = BestConsideringElementBruteForce(frame, i, best);
+            best = BestConsideringElementBruteForce(frame, elementIndex, best);
         }
 
         return best;
     }
 
-    private static int BestConsideringElementBruteForce(SlotFrame frame, int i, int best)
+    private static int BestConsideringElementBruteForce(SlotFrame frame, int elementIndex, int best)
     {
-        var bitI = 1 << i;
+        var elementBit = 1 << elementIndex;
 
-        if ((frame.UsedMask & bitI) != 0)
+        if ((frame.UsedMask & elementBit) != 0)
         {
             return best;
         }
 
-        var withOne = (frame.Slot & frame.Context.Nums[i])
-            + BestFromBruteForce(frame.Context, frame.Slot + 1, frame.UsedMask | bitI);
+        var withOne = (frame.Slot & frame.Context.Nums[elementIndex])
+            + BestFromBruteForce(frame.Context, frame.Slot + 1, frame.UsedMask | elementBit);
         best = Math.Max(best, withOne);
 
-        return BestConsideringPairBruteForce(frame, i, best);
+        return BestConsideringPairBruteForce(frame, elementIndex, best);
     }
 
-    private static int BestConsideringPairBruteForce(SlotFrame frame, int i, int best)
+    private static int BestConsideringPairBruteForce(SlotFrame frame, int elementIndex, int best)
     {
         var nums = frame.Context.Nums;
-        var bitI = 1 << i;
+        var elementBit = 1 << elementIndex;
 
-        for (var j = i + 1; j < nums.Length; j++)
+        for (var otherIndex = elementIndex + 1; otherIndex < nums.Length; otherIndex++)
         {
-            var bitJ = 1 << j;
+            var otherElementBit = 1 << otherIndex;
 
-            if ((frame.UsedMask & bitJ) != 0)
+            if ((frame.UsedMask & otherElementBit) != 0)
             {
                 continue;
             }
 
-            var withTwo = (frame.Slot & nums[i]) + (frame.Slot & nums[j])
-                + BestFromBruteForce(frame.Context, frame.Slot + 1, frame.UsedMask | bitI | bitJ);
+            var withTwo = (frame.Slot & nums[elementIndex]) + (frame.Slot & nums[otherIndex])
+                + BestFromBruteForce(frame.Context, frame.Slot + 1, frame.UsedMask | elementBit | otherElementBit);
             best = Math.Max(best, withTwo);
         }
 

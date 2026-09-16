@@ -61,30 +61,30 @@ internal static class RankTransformOfAMatrixSolution
         while (changed)
         {
             changed = false;
-            changed |= RelaxRows(matrix, rows, cols, rank);
-            changed |= RelaxColumns(matrix, rows, cols, rank);
+            changed |= TryRelaxRows(matrix, rows, cols, rank);
+            changed |= TryRelaxColumns(matrix, rows, cols, rank);
         }
     }
 
-    private static bool RelaxRows(int[][] matrix, int rows, int cols, int[][] rank)
+    private static bool TryRelaxRows(int[][] matrix, int rows, int cols, int[][] rank)
     {
         var changed = false;
 
         for (var r = 0; r < rows; r++)
         {
-            changed |= RelaxLine(cols, new MatrixRow(matrix, rank[r], r));
+            changed |= TryRelaxLine(cols, new MatrixRow(matrix, rank[r], r));
         }
 
         return changed;
     }
 
-    private static bool RelaxColumns(int[][] matrix, int rows, int cols, int[][] rank)
+    private static bool TryRelaxColumns(int[][] matrix, int rows, int cols, int[][] rank)
     {
         var changed = false;
 
         for (var c = 0; c < cols; c++)
         {
-            changed |= RelaxLine(rows, new MatrixColumn(matrix, rank, c));
+            changed |= TryRelaxLine(rows, new MatrixColumn(matrix, rank, c));
         }
 
         return changed;
@@ -108,7 +108,7 @@ internal static class RankTransformOfAMatrixSolution
 
         while (index < cells.Length)
         {
-            index = ProcessRankBatch(grid, index);
+            index = AdvancePastRankBatch(grid, index);
         }
 
         return result;
@@ -150,7 +150,7 @@ internal static class RankTransformOfAMatrixSolution
 
     // Advances past the batch of equal-value cells starting at `index`, assigning
     // them ranks as one group, and returns the index where the next batch starts.
-    private static int ProcessRankBatch(RankingGrid grid, int index)
+    private static int AdvancePastRankBatch(RankingGrid grid, int index)
     {
         var end = index;
 
@@ -217,7 +217,7 @@ internal static class RankTransformOfAMatrixSolution
         grid.ColRank[col] = rank;
     }
 
-    // One row or one column of the rank grid, read the two ways RelaxLine needs it:
+    // One row or one column of the rank grid, read the two ways TryRelaxLine needs it:
     // the matrix value at an index, and the rank cell at that index. Which line is
     // being relaxed is fixed for the whole pass, so the row-or-column choice is the
     // only thing an implementation has to know.
@@ -228,7 +228,7 @@ internal static class RankTransformOfAMatrixSolution
         RankCell CellAt(int index);
     }
 
-    private static bool RelaxLine(int count, IRankLine line)
+    private static bool TryRelaxLine(int count, IRankLine line)
     {
         var changed = false;
 
@@ -236,14 +236,14 @@ internal static class RankTransformOfAMatrixSolution
         {
             for (var j = i + 1; j < count; j++)
             {
-                changed |= RelaxPair(line.ValueAt(i), line.ValueAt(j), line.CellAt(i), line.CellAt(j));
+                changed |= TryRelaxPair(line.ValueAt(i), line.ValueAt(j), line.CellAt(i), line.CellAt(j));
             }
         }
 
         return changed;
     }
 
-    private static bool RelaxPair(int valueA, int valueB, RankCell cellA, RankCell cellB)
+    private static bool TryRelaxPair(int valueA, int valueB, RankCell cellA, RankCell cellB)
     {
         if (valueA < valueB && cellA.Rank >= cellB.Rank)
         {

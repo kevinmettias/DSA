@@ -6,11 +6,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are SmallestPalindromicRearrangementISolution's, the
 // same methods SmallestPalindromicRearrangementITests proves correct. Builds a
 // random half and mirrors it so the generated input is always a genuine
-// palindrome, matching LeetCode's own guarantee about s.
+// palindrome, matching LeetCode's own guarantee about text.
 [MemoryDiagnoser]
 public class SmallestPalindromicRearrangementIBenchmarks
 {
-    private const int RandomSeed = 3517; private string _s = "";
+    private const int RandomSeed = 3517; private string _text = "";
 
     // LeetCode problem number
 
@@ -41,12 +41,12 @@ public class SmallestPalindromicRearrangementIBenchmarks
             chars[Length / 2] = (char)('a' + random.Next(26));
         }
 
-        _s = new string(chars);
+        _text = new string(chars);
     }
 
     [Benchmark(Baseline = true)]
-    public string CharArrayReverse() => SmallestPalindromicRearrangementISolution.RearrangeByCharArrayReverse(_s);
+    public string CharArrayReverse() => SmallestPalindromicRearrangementISolution.RearrangeByCharArrayReverse(_text);
 
     [Benchmark]
-    public string CharStack() => SmallestPalindromicRearrangementISolution.RearrangeByCharStack(_s);
+    public string CharStack() => SmallestPalindromicRearrangementISolution.RearrangeByCharStack(_text);
 }

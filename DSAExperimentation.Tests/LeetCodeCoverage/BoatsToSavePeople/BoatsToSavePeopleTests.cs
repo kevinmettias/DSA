@@ -20,20 +20,20 @@ public sealed class BoatsToSavePeopleTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumRescueBoatsByRepeatedScan_LeetCodeExamples_ReturnsFewestBoats(
+    public void NumberOfRescueBoatsByRepeatedScan_LeetCodeExamples_ReturnsFewestBoats(
         int[] people, int limit, int expected)
     {
-        var boats = BoatsToSavePeopleSolution.NumRescueBoatsByRepeatedScan(people, limit);
+        var boats = BoatsToSavePeopleSolution.NumberOfRescueBoatsByRepeatedScan(people, limit);
 
         Assert.Equal(expected, boats);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumRescueBoatsBySortThenTwoPointer_LeetCodeExamples_ReturnsFewestBoats(
+    public void NumberOfRescueBoatsBySortThenTwoPointer_LeetCodeExamples_ReturnsFewestBoats(
         int[] people, int limit, int expected)
     {
-        var boats = BoatsToSavePeopleSolution.NumRescueBoatsBySortThenTwoPointer(people, limit);
+        var boats = BoatsToSavePeopleSolution.NumberOfRescueBoatsBySortThenTwoPointer(people, limit);
 
         Assert.Equal(expected, boats);
     }

@@ -18,13 +18,13 @@ public class ExpressionAddOperatorsBenchmarks
     private const int UnreachableTarget = int.MinValue;
 
     [Params("1234567", "123456789")]
-    public string Num { get; set; } = "";
+    public string Number { get; set; } = "";
 
     [Benchmark(Baseline = true)]
     public int RecursiveBacktrack() =>
-        ExpressionAddOperatorsSolution.AddOperatorsByBacktracking(Num, UnreachableTarget).Count;
+        ExpressionAddOperatorsSolution.AddOperatorsByBacktracking(Number, UnreachableTarget).Count;
 
     [Benchmark]
     public int TraverseComposed() =>
-        ExpressionAddOperatorsSolution.AddOperatorsByDepthFirstSearchTraverse(Num, UnreachableTarget).Count;
+        ExpressionAddOperatorsSolution.AddOperatorsByDepthFirstSearchTraverse(Number, UnreachableTarget).Count;
 }

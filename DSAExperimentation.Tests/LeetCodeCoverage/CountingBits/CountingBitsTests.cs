@@ -3,7 +3,8 @@ using DSAExperimentation.LeetCode.CountingBits;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountingBits;
 
 // Harness only. Both strategies live in CountingBitsSolution - this file just pins
-// them to LeetCode's published examples (plus n = 0, the constraint's lower bound).
+// them to LeetCode's published examples plus the boundary value 0, the constraint's
+// lower bound.
 public sealed class CountingBitsTests
 {
     public static TheoryData<int, int[]> Examples =>
@@ -17,12 +18,12 @@ public sealed class CountingBitsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountBitsByPerNumberLoop_LeetCodeExamples_ReturnsBitCountsForEveryIndex(
-        int n, int[] expected) =>
-        Assert.Equal(expected, CountingBitsSolution.CountBitsByPerNumberLoop(n));
+        int maximumValue, int[] expected) =>
+        Assert.Equal(expected, CountingBitsSolution.CountBitsByPerNumberLoop(maximumValue));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountBitsByMemoizedRecurrence_LeetCodeExamples_ReturnsBitCountsForEveryIndex(
-        int n, int[] expected) =>
-        Assert.Equal(expected, CountingBitsSolution.CountBitsByMemoizedRecurrence(n));
+        int maximumValue, int[] expected) =>
+        Assert.Equal(expected, CountingBitsSolution.CountBitsByMemoizedRecurrence(maximumValue));
 }

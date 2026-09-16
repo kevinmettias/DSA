@@ -38,13 +38,13 @@ internal static class ThreeSumWithMultiplicitySolution
         return (int)(count % ModularArithmetic.Modulo);
     }
 
-    private static long CountThirdIndexMatches(int[] arr, int i, int j, int target)
+    private static long CountThirdIndexMatches(int[] arr, int firstIndex, int secondIndex, int target)
     {
         long count = 0;
 
-        for (var k = j + 1; k < arr.Length; k++)
+        for (var k = secondIndex + 1; k < arr.Length; k++)
         {
-            if (arr[i] + arr[j] + arr[k] == target)
+            if (arr[firstIndex] + arr[secondIndex] + arr[k] == target)
             {
                 count++;
             }

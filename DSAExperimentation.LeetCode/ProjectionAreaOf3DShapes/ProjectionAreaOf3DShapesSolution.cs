@@ -127,14 +127,14 @@ internal static class ProjectionAreaOf3DShapesSolution
 
     // cols is the caller's own grid[0].Length - every row of the projection grid has
     // the same width - so the scan reads it off the grid rather than taking it again.
-    private static RowScanState ScanRow(int[][] grid, int r, int[] colMax, int top)
+    private static RowScanState ScanRow(int[][] grid, int rowIndex, int[] colMax, int top)
     {
         var cols = grid[0].Length;
         var rowState = new RowScanState(top, 0);
 
         for (var c = 0; c < cols; c++)
         {
-            rowState = ScanCell(grid, (Row: r, Col: c), colMax, rowState);
+            rowState = ScanCell(grid, (Row: rowIndex, Col: c), colMax, rowState);
         }
 
         return rowState;

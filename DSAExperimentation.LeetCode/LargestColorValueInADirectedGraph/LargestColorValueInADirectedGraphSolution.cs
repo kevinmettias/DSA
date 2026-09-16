@@ -157,16 +157,16 @@ internal static class LargestColorValueInADirectedGraphSolution
     {
         var marks = nodes.ToDictionary(node => node, _ => Unvisited);
 
-        return nodes.Any(node => marks[node] == Unvisited && ReachesItsOwnAncestor(node, marks));
+        return nodes.Any(node => marks[node] == Unvisited && HasPathToOwnAncestor(node, marks));
     }
 
-    private static bool ReachesItsOwnAncestor(ColorGraphNode node, Dictionary<ColorGraphNode, int> marks)
+    private static bool HasPathToOwnAncestor(ColorGraphNode node, Dictionary<ColorGraphNode, int> marks)
     {
         marks[node] = InProgress;
 
         foreach (var child in node.Successors)
         {
-            if (ClosesCycle(child, marks))
+            if (IsClosingCycle(child, marks))
             {
                 return true;
             }
@@ -178,8 +178,8 @@ internal static class LargestColorValueInADirectedGraphSolution
 
     // A child still in progress on the walk's own path closes a cycle outright; an
     // unvisited child closes one if it can reach back to an ancestor from below.
-    private static bool ClosesCycle(ColorGraphNode child, Dictionary<ColorGraphNode, int> marks)
-        => marks[child] == InProgress || (marks[child] == Unvisited && ReachesItsOwnAncestor(child, marks));
+    private static bool IsClosingCycle(ColorGraphNode child, Dictionary<ColorGraphNode, int> marks)
+        => marks[child] == InProgress || (marks[child] == Unvisited && HasPathToOwnAncestor(child, marks));
 
     private static List<ColorGraphNode> BuildGraph(string colors, int[][] edges)
     {

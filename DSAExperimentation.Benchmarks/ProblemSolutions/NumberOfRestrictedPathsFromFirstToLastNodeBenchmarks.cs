@@ -15,14 +15,15 @@ public class NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks
     private RestrictedPathGraph _graph = null!;
 
     // Kept modest (<=30), same reasoning as FibonacciBenchmarks: NaiveDfs's blowup
-    // here really is O(golden-ratio^N).
+    // here really is O(golden-ratio^StepCount).
     [Params(20, 30)]
-    public int N { get; set; }
+    public int StepCount { get; set; }
 
     [GlobalSetup]
     public void Setup() =>
         _graph = RestrictedPathGraph.Build(
-            RestrictedPathWorkloads.NodeCount(N), RestrictedPathWorkloads.BuildTwoStepEdges(N));
+            RestrictedPathWorkloads.NodeCount(StepCount),
+            RestrictedPathWorkloads.BuildTwoStepEdges(StepCount));
 
     [Benchmark(Baseline = true)]
     public long NaiveDfs() =>

@@ -40,16 +40,16 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
         return count;
     }
 
-    // A valid placement: two distinct points, Alice corning the rectangle's
-    // upper-left and Bob its lower-right, with nothing else inside it.
+    // An ordered pair counts when the two points are distinct, Alice's sits at the
+    // rectangle's upper-left corner, and no third point blocks it.
     private static bool IsValidPlacement(int[][] points, int aliceIndex, int bobIndex)
         => aliceIndex != bobIndex
             && IsUpperLeftOf(points[aliceIndex], points[bobIndex])
-            && NoPointBlocks(points, aliceIndex, bobIndex);
+            && HasNoBlockingPoint(points, aliceIndex, bobIndex);
 
     private static bool IsUpperLeftOf(int[] alice, int[] bob) => alice[0] <= bob[0] && alice[1] >= bob[1];
 
-    private static bool NoPointBlocks(int[][] points, int aliceIndex, int bobIndex)
+    private static bool HasNoBlockingPoint(int[][] points, int aliceIndex, int bobIndex)
     {
         var (aliceX, aliceY) = (points[aliceIndex][0], points[aliceIndex][1]);
         var (bobX, bobY) = (points[bobIndex][0], points[bobIndex][1]);

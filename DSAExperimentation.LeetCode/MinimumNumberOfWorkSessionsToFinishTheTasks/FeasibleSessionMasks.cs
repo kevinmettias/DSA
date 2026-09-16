@@ -36,5 +36,5 @@ internal sealed class FeasibleSessionMasks(bool[] fitsInOneSession, int fullMask
         return new FeasibleSessionMasks(fits, maskCount - 1);
     }
 
-    public bool FitsInOneSession(int mask) => fitsInOneSession[mask];
+    public bool CanFitInOneSession(int mask) => fitsInOneSession[mask];
 }

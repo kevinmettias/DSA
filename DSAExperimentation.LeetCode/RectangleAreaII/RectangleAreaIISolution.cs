@@ -52,13 +52,13 @@ internal static class RectangleAreaIISolution
     }
 
     // The cell asked about is its x-range and its y-range, so it arrives as the two
-    // ranges SpansTheCell already tests a rectangle against.
+    // ranges IsSpanningCell already tests a rectangle against.
     private static bool IsCovered(
         int[][] rectangles, (int Low, int High) xRange, (int Low, int High) yRange)
     {
         foreach (var rectangle in rectangles)
         {
-            if (SpansTheCell(rectangle, xRange, yRange))
+            if (IsSpanningCell(rectangle, xRange, yRange))
             {
                 return true;
             }
@@ -69,7 +69,7 @@ internal static class RectangleAreaIISolution
 
     // A rectangle covers the cell when it reaches across the cell's whole x-range
     // and its whole y-range.
-    private static bool SpansTheCell(int[] rectangle, (int Low, int High) xRange, (int Low, int High) yRange)
+    private static bool IsSpanningCell(int[] rectangle, (int Low, int High) xRange, (int Low, int High) yRange)
         => rectangle[X1] <= xRange.Low && rectangle[X2] >= xRange.High &&
             rectangle[Y1] <= yRange.Low && rectangle[Y2] >= yRange.High;
 

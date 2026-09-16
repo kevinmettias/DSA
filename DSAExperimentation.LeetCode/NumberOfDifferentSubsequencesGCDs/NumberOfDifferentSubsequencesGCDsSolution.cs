@@ -105,5 +105,6 @@ internal static class NumberOfDifferentSubsequencesGCDsSolution
         return false;
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int firstValue, int secondValue) =>
+        secondValue == 0 ? firstValue : Gcd(secondValue, firstValue % secondValue);
 }

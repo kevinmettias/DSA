@@ -32,7 +32,7 @@ internal static class SudokuSolverSolution
     // separate copy-back step is needed. Deliberately written without this
     // repo's primitives - it is the arm the composed engine has to justify
     // itself against.
-    public static bool TrySolveBySpecializedRecursion(char[][] board) => Search(board);
+    public static bool TrySolveBySpecializedRecursion(char[][] board) => TrySolveBoard(board);
 
     // This repo's own choose/explore/unchoose engine, closed over the same
     // board/placement shape the specialized recursion above walks.
@@ -86,7 +86,7 @@ internal static class SudokuSolverSolution
         }
     }
 
-    private static bool Search(char[][] board)
+    private static bool TrySolveBoard(char[][] board)
     {
         var cell = FindEmptyCell(board);
         if (cell is null)
@@ -116,7 +116,7 @@ internal static class SudokuSolverSolution
 
         board[row][col] = digit;
 
-        if (Search(board))
+        if (TrySolveBoard(board))
         {
             return true;
         }

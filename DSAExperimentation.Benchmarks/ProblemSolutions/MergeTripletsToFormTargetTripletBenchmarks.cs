@@ -36,10 +36,10 @@ public class MergeTripletsToFormTargetTripletBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceSubsets() =>
+    public bool CanFormTargetByBruteForceSubsets() =>
         MergeTripletsToFormTargetTripletSolution.CanFormTargetByBruteForceSubsets(_triplets, Target);
 
     [Benchmark]
-    public bool SetTrackedLinearScan() =>
+    public bool CanFormTargetBySetTrackedLinearScan() =>
         MergeTripletsToFormTargetTripletSolution.CanFormTargetBySetTrackedLinearScan(_triplets, Target);
 }

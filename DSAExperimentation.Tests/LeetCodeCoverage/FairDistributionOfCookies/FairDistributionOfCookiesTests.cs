@@ -22,18 +22,18 @@ public sealed class FairDistributionOfCookiesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void DistributeCookiesByRecursiveBacktracking_LeetCodeExamples_ReturnsFairestMaximum(
-        int[] cookies, int k, int expected)
+        int[] cookies, int childCount, int expected)
     {
-        var actual = FairDistributionOfCookiesSolution.DistributeCookiesByRecursiveBacktracking(cookies, k);
+        var actual = FairDistributionOfCookiesSolution.DistributeCookiesByRecursiveBacktracking(cookies, childCount);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DistributeCookiesByBacktrackSearch_LeetCodeExamples_ReturnsFairestMaximum(
-        int[] cookies, int k, int expected)
+        int[] cookies, int childCount, int expected)
     {
-        var actual = FairDistributionOfCookiesSolution.DistributeCookiesByBacktrackSearch(cookies, k);
+        var actual = FairDistributionOfCookiesSolution.DistributeCookiesByBacktrackSearch(cookies, childCount);
         Assert.Equal(expected, actual);
     }
 }

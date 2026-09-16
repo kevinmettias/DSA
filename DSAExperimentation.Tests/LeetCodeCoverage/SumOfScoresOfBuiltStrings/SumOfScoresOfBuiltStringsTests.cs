@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfScoresOfBuiltStrings;
 // answer. "aab" and "banana" are the smallest inputs where it does not.
 public sealed class SumOfScoresOfBuiltStringsTests
 {
-    // (s, sum of every suffix's longest common prefix with s)
+    // (text, sum of every suffix's longest common prefix with text)
     public static TheoryData<string, long> Examples =>
         new()
         {
@@ -48,11 +48,11 @@ public sealed class SumOfScoresOfBuiltStringsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumScoresBySuffixComparison_LeetCodeExamples_ReturnsTotalScore(string s, long expected) =>
-        Assert.Equal(expected, SumOfScoresOfBuiltStringsSolution.SumScoresBySuffixComparison(s));
+    public void SumScoresBySuffixComparison_LeetCodeExamples_ReturnsTotalScore(string text, long expected) =>
+        Assert.Equal(expected, SumOfScoresOfBuiltStringsSolution.SumScoresBySuffixComparison(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumScoresByZFunction_LeetCodeExamples_ReturnsTotalScore(string s, long expected) =>
-        Assert.Equal(expected, SumOfScoresOfBuiltStringsSolution.SumScoresByZFunction(s));
+    public void SumScoresByZFunction_LeetCodeExamples_ReturnsTotalScore(string text, long expected) =>
+        Assert.Equal(expected, SumOfScoresOfBuiltStringsSolution.SumScoresByZFunction(text));
 }

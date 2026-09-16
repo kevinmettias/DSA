@@ -58,9 +58,9 @@ internal static class JumpGameIXSolution
     }
 
     // The frontier a BFS starts from: the start index alone, already marked visited.
-    private static (bool[] Visited, Queue<int> Queue) CreateFrontier(int n, int start)
+    private static (bool[] Visited, Queue<int> Queue) CreateFrontier(int nodeCount, int start)
     {
-        var visited = new bool[n];
+        var visited = new bool[nodeCount];
         var queue = new Queue<int>();
         visited[start] = true;
         queue.Enqueue(start);
@@ -68,8 +68,9 @@ internal static class JumpGameIXSolution
         return (visited, queue);
     }
 
-    private static bool CanJump(int[] nums, int i, int j) =>
-        (j > i && nums[j] < nums[i]) || (j < i && nums[j] > nums[i]);
+    private static bool CanJump(int[] nums, int fromIndex, int toIndex) =>
+        (toIndex > fromIndex && nums[toIndex] < nums[fromIndex])
+        || (toIndex < fromIndex && nums[toIndex] > nums[fromIndex]);
 
     // Composed: union index i with i + 1 wherever the prefix-max/suffix-min split
     // test fails at that boundary, using this repo's DisjointSet - the same
@@ -89,11 +90,11 @@ internal static class JumpGameIXSolution
 
     // A valid split point sits where max(nums[0..i]) <= min(nums[i+1..n-1]); every
     // boundary that is not one joins i to i + 1 in the same component.
-    private static DisjointSet UnionSplitComponents(int n, int[] prefixMax, int[] suffixMin)
+    private static DisjointSet UnionSplitComponents(int nodeCount, int[] prefixMax, int[] suffixMin)
     {
-        var components = new DisjointSet(n);
+        var components = new DisjointSet(nodeCount);
 
-        for (var i = 0; i < n - 1; i++)
+        for (var i = 0; i < nodeCount - 1; i++)
         {
             if (prefixMax[i] > suffixMin[i + 1])
             {

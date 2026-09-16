@@ -49,7 +49,7 @@ public sealed class FlattenAMultilevelDoublyLinkedListTests
     {
         var nodes = ToNodes(head);
 
-        Assert.Equal(expected, nodes.Select(node => node.Val));
+        Assert.Equal(expected, nodes.Select(node => node.Value));
         Assert.All(nodes, node => Assert.Null(node.Child));
 
         for (var i = 1; i < nodes.Count; i++)

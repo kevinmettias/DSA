@@ -3,10 +3,11 @@ using DSAExperimentation.LeetCode.HouseRobberIV;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobberIV;
 
 // Harness only. Both strategies are HouseRobberIVSolution's - this file just pins
-// them to LeetCode's published examples, plus the "k equals the maximum number of
-// non-adjacent houses" boundary the original test carried and three further cases
-// the original arms never reached: a single house, k = 1, and a run where the
-// only k non-adjacent choices all sit at the maximum.
+// them to LeetCode's published examples, plus the "requiredHouseCount equals the
+// maximum number of non-adjacent houses" boundary the original test carried and
+// three further cases the original arms never reached: a single house,
+// requiredHouseCount = 1, and a run where the only requiredHouseCount non-adjacent
+// choices all sit at the maximum.
 public sealed class HouseRobberIVTests
 {
     public static TheoryData<int[], int, int> Examples =>
@@ -24,9 +25,9 @@ public sealed class HouseRobberIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCapabilityByLinearScan_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
-        int[] nums, int k, int expected)
+        int[] nums, int requiredHouseCount, int expected)
     {
-        var actual = HouseRobberIVSolution.MinCapabilityByLinearScan(nums, k);
+        var actual = HouseRobberIVSolution.MinCapabilityByLinearScan(nums, requiredHouseCount);
 
         Assert.Equal(expected, actual);
     }
@@ -34,9 +35,9 @@ public sealed class HouseRobberIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCapabilityBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
-        int[] nums, int k, int expected)
+        int[] nums, int requiredHouseCount, int expected)
     {
-        var actual = HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(nums, k);
+        var actual = HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(nums, requiredHouseCount);
 
         Assert.Equal(expected, actual);
     }

@@ -25,14 +25,16 @@ public sealed class PrimePalindromeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestPrimePalindromeBySequentialScan_LeetCodeExamples_ReturnsSmallestPrimePalindromeAtLeastN(
-        int n,
+        int lowerBound,
         long expected) =>
-        Assert.Equal(expected, PrimePalindromeSolution.SmallestPrimePalindromeBySequentialScan(n));
+        Assert.Equal(
+            expected, PrimePalindromeSolution.SmallestPrimePalindromeBySequentialScan(lowerBound));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestPrimePalindromeByPalindromeGeneration_LeetCodeExamples_ReturnsSmallestPrimePalindromeAtLeastN(
-        int n,
+        int lowerBound,
         long expected) =>
-        Assert.Equal(expected, PrimePalindromeSolution.SmallestPrimePalindromeByPalindromeGeneration(n));
+        Assert.Equal(
+            expected, PrimePalindromeSolution.SmallestPrimePalindromeByPalindromeGeneration(lowerBound));
 }

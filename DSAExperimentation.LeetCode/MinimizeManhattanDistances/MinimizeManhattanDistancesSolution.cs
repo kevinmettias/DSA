@@ -61,7 +61,8 @@ internal static class MinimizeManhattanDistancesSolution
         return maxDistance;
     }
 
-    private static int ManhattanDistance(int[] a, int[] b) => Math.Abs(a[0] - b[0]) + Math.Abs(a[1] - b[1]);
+    private static int ManhattanDistance(int[] firstPoint, int[] secondPoint) =>
+        Math.Abs(firstPoint[0] - secondPoint[0]) + Math.Abs(firstPoint[1] - secondPoint[1]);
 
     // Sorts both transforms with this repo's own MergeSort (over an
     // ArrayIndexedSequence view of the transform arrays), keeping the O(n) "try

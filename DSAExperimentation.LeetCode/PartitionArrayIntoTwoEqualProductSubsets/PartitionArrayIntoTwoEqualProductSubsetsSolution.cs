@@ -18,7 +18,7 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
     // that mask early - required for correctness, not just speed, since nums[i] <=
     // 100 and n <= 12 can otherwise overflow long well before target's 10^15 cap.
     // The arm the pruned backtracking search below has to beat.
-    public static bool CheckEqualPartitionsByBitmaskEnumeration(int[] nums, long target)
+    public static bool CanPartitionEquallyByBitmaskEnumeration(int[] nums, long target)
     {
         var n = nums.Length;
         var fullMask = (1 << n) - 1;
@@ -68,7 +68,7 @@ internal static class PartitionArrayIntoTwoEqualProductSubsetsSolution
     // index in turn: Candidates only offers an assignment whose resulting running
     // product would stay within target, so a branch that has already overshot is
     // never explored at all rather than discovered at the leaf.
-    public static bool CheckEqualPartitionsByPrunedBacktracking(int[] nums, long target)
+    public static bool CanPartitionEquallyByPrunedBacktracking(int[] nums, long target)
     {
         var state = new PartitionState();
 

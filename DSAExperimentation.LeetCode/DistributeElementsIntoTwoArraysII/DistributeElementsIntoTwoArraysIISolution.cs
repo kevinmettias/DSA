@@ -27,7 +27,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
             var greater1 = CountGreater(arr1, value);
             var greater2 = CountGreater(arr2, value);
 
-            if (BelongsToArr1(greater1, greater2, arr1.Count, arr2.Count))
+            if (ShouldGoToFirstArray(greater1, greater2, arr1.Count, arr2.Count))
             {
                 arr1.Add(value);
             }
@@ -91,7 +91,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
 
     // One element lands in whichever array currently holds more elements strictly
     // greater than it, and that array's Fenwick tree records the rank it took.
-    // BelongsToArr1 breaks the remaining ties; the rank is the same
+    // ShouldGoToFirstArray breaks the remaining ties; the rank is the same
     // coordinate-compressed lookup the two greater-counts are read at.
     private static void PlaceByGreaterCount(
         ArraySequence<int> sequence,
@@ -103,7 +103,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
         var greater1 = first.Values.Count - first.Tree.PrefixQuery(rank);
         var greater2 = second.Values.Count - second.Tree.PrefixQuery(rank);
 
-        if (BelongsToArr1(greater1, greater2, first.Values.Count, second.Values.Count))
+        if (ShouldGoToFirstArray(greater1, greater2, first.Values.Count, second.Values.Count))
         {
             first.Values.Add(value);
             first.Tree.Add(rank, 1);
@@ -118,7 +118,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     // A strictly higher greater-count wins; a tie goes to whichever array has
     // fewer elements so far, and a further tie (equal counts, equal lengths)
     // goes to arr1.
-    private static bool BelongsToArr1(int greater1, int greater2, int count1, int count2) =>
+    private static bool ShouldGoToFirstArray(int greater1, int greater2, int count1, int count2) =>
         greater1 > greater2 || (greater1 == greater2 && count1 <= count2);
 
     private static int[] Concatenate(List<int> arr1, List<int> arr2)

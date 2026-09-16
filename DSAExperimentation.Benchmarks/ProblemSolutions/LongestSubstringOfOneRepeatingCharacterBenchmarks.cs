@@ -17,7 +17,7 @@ public class LongestSubstringOfOneRepeatingCharacterBenchmarks
     private const int AlphabetSize = 4; // small alphabet produces long runs, the case both strategies must handle well
     private const int QueryCount = 300;
 
-    private string _s = "";
+    private string _baseText = "";
 
     private string _queryCharacters = "";
     private int[] _queryIndices = [];
@@ -28,7 +28,8 @@ public class LongestSubstringOfOneRepeatingCharacterBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _baseText = new string(
+            Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
 
         var characters = new char[QueryCount];
         _queryIndices = new int[QueryCount];
@@ -45,14 +46,14 @@ public class LongestSubstringOfOneRepeatingCharacterBenchmarks
     [Benchmark(Baseline = true)]
     public int[] LinearRescanAfterEachUpdate() =>
         LongestSubstringOfOneRepeatingCharacterSolution.LongestRepeatingByLinearRescan(
-            new LongestSubstringOfOneRepeatingCharacterSolution.BaseText(_s),
+            new LongestSubstringOfOneRepeatingCharacterSolution.BaseText(_baseText),
             new LongestSubstringOfOneRepeatingCharacterSolution.ReplacementCharacters(_queryCharacters),
             _queryIndices);
 
     [Benchmark]
     public int[] SegmentTreeRunAggregate() =>
         LongestSubstringOfOneRepeatingCharacterSolution.LongestRepeatingBySegmentTree(
-            new LongestSubstringOfOneRepeatingCharacterSolution.BaseText(_s),
+            new LongestSubstringOfOneRepeatingCharacterSolution.BaseText(_baseText),
             new LongestSubstringOfOneRepeatingCharacterSolution.ReplacementCharacters(_queryCharacters),
             _queryIndices);
 }

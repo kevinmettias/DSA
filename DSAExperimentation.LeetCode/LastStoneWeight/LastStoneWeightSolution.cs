@@ -54,10 +54,11 @@ internal static class LastStoneWeightSolution
         return best;
     }
 
-    // The index is in the running unless it is the one being excluded, and it beats
-    // whatever is currently best - with nothing chosen yet counting as beatable.
-    private static bool IsBetterCandidate(List<int> values, int i, int best, int excludeIndex)
-        => i != excludeIndex && (best == -1 || values[i] > values[best]);
+    // The candidate index is in the running unless it is the one being excluded, and
+    // it beats whatever is currently best - with nothing chosen yet counting as
+    // beatable.
+    private static bool IsBetterCandidate(List<int> values, int candidateIndex, int best, int excludeIndex)
+        => candidateIndex != excludeIndex && (best == -1 || values[candidateIndex] > values[best]);
 
     // The one stone the smashes left standing. Only ever asked once the caller has
     // checked the list is not empty - reading it while empty would throw, which is why

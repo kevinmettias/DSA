@@ -16,18 +16,18 @@ public sealed class SubarraySumEqualsKTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForce_LeetCodeExamples_ReturnsExpectedCount(int[] nums, int k, int expected)
+    public void CountByBruteForce_LeetCodeExamples_ReturnsExpectedCount(int[] nums, int targetSum, int expected)
     {
-        var actual = SubarraySumEqualsKSolution.CountByBruteForce(nums, k);
+        var actual = SubarraySumEqualsKSolution.CountByBruteForce(nums, targetSum);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByPrefixSumHashMap_LeetCodeExamples_ReturnsExpectedCount(int[] nums, int k, int expected)
+    public void CountByPrefixSumHashMap_LeetCodeExamples_ReturnsExpectedCount(int[] nums, int targetSum, int expected)
     {
-        var actual = SubarraySumEqualsKSolution.CountByPrefixSumHashMap(nums, k);
+        var actual = SubarraySumEqualsKSolution.CountByPrefixSumHashMap(nums, targetSum);
 
         Assert.Equal(expected, actual);
     }

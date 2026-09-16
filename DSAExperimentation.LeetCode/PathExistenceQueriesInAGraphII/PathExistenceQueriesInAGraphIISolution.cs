@@ -30,7 +30,7 @@ internal static class PathExistenceQueriesInAGraphIISolution
     // Plain BCL Queue/bool[], adjacency discovered by expanding outward from each
     // dequeued node until its value window closes - what you would write without
     // this repo's BinarySearch, no doubling trick.
-    public static int[] MinDistancesByRangeBfs(int n, int[] nums, int maxDiff, int[][] queries)
+    public static int[] MinDistancesByRangeBfs(int nodeCount, int[] nums, int maxDiff, int[][] queries)
     {
         var graph = SortedByValueGraph.Build(nums);
 
@@ -77,7 +77,7 @@ internal static class PathExistenceQueriesInAGraphIISolution
         {
             distance++;
 
-            if (ExpandLevel(sortedValues, maxDiff, (visited, queue), target))
+            if (TryExpandLevelToTarget(sortedValues, maxDiff, (visited, queue), target))
             {
                 return distance;
             }
@@ -89,7 +89,7 @@ internal static class PathExistenceQueriesInAGraphIISolution
     // One BFS level: every unvisited position whose value is within maxDiff of a position
     // dequeued at this level, reported as a hit the moment the target is among them - so the
     // caller's own distance counter is already the hop count for that arrival.
-    private static bool ExpandLevel(
+    private static bool TryExpandLevelToTarget(
         int[] sortedValues, int maxDiff, (bool[] Visited, Queue<int> Queue) frontier, int target)
     {
         for (var levelSize = frontier.Queue.Count; levelSize > 0; levelSize--)
@@ -136,7 +136,7 @@ internal static class PathExistenceQueriesInAGraphIISolution
     // The composed answer: far() via BinarySearch.UpperBound, then a binary-
     // lifting table over far()'s repeated composition, so each query becomes a
     // doubling walk instead of a fresh graph search.
-    public static int[] MinDistancesByBinaryLifting(int n, int[] nums, int maxDiff, int[][] queries)
+    public static int[] MinDistancesByBinaryLifting(int nodeCount, int[] nums, int maxDiff, int[][] queries)
     {
         var graph = SortedByValueGraph.Build(nums);
 
@@ -182,11 +182,11 @@ internal static class PathExistenceQueriesInAGraphIISolution
         return far;
     }
 
-    private static int LevelsFor(int n)
+    private static int LevelsFor(int nodeCount)
     {
         var levels = 1;
 
-        while (1 << levels < n)
+        while (1 << levels < nodeCount)
         {
             levels++;
         }

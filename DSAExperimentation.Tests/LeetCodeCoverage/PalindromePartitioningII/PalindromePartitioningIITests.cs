@@ -17,6 +17,6 @@ public sealed class PalindromePartitioningIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCutByMemoizedSuffixRecurrence_LeetCodeExamples_ReturnsMinimumCuts(
-        string s, int expected) =>
-        Assert.Equal(expected, PalindromePartitioningIISolution.MinCutByMemoizedSuffixRecurrence(s));
+        string text, int expected) =>
+        Assert.Equal(expected, PalindromePartitioningIISolution.MinCutByMemoizedSuffixRecurrence(text));
 }

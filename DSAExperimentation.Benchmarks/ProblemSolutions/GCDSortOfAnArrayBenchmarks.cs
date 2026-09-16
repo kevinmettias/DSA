@@ -32,10 +32,10 @@ public class GCDSortOfAnArrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool PairwiseGcdUnionFind() =>
+    public bool CanBeSortedByPairwiseGcdUnionFind() =>
         GCDSortOfAnArraySolution.CanBeSortedByPairwiseGcdUnionFind(_values);
 
     [Benchmark]
-    public bool DisjointSetByPrimeFactor() =>
+    public bool CanBeSortedByPrimeFactorDisjointSet() =>
         GCDSortOfAnArraySolution.CanBeSortedByPrimeFactorDisjointSet(_values);
 }

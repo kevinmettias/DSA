@@ -15,13 +15,14 @@ internal static class GuessNumberHigherOrLowerIISolution
     // caching - the same (low, high) sub-range recurs across many different choices
     // of guess outside it. Deliberately written without this repo's primitives; it is
     // the arm the memoized strategy below has to justify itself against.
-    public static int GetMoneyAmountByUnmemoizedRecursion(int n) => WorstCaseCostUnmemoized(1, n);
+    public static int GetMoneyAmountByUnmemoizedRecursion(int highestNumber) =>
+        WorstCaseCostUnmemoized(1, highestNumber);
 
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
     // (low, high) bound pair - the same 2-tuple-state shape BurstBalloons already
     // uses for its own interval DP.
-    public static int GetMoneyAmountByMemoizedRecursion(int n) =>
-        Memoizer.Memoize<(int Low, int High), int>((1, n), new WorstCaseGuessCost());
+    public static int GetMoneyAmountByMemoizedRecursion(int highestNumber) =>
+        Memoizer.Memoize<(int Low, int High), int>((1, highestNumber), new WorstCaseGuessCost());
 
     /// <summary>
     /// The recurrence, named: over a (low, high) range the guesser picks a guess

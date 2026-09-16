@@ -17,13 +17,13 @@ internal static class RangeSumQuery2DImmutableSolution
 {
     // The textbook baseline this composition has to justify itself against: no preprocessing at
     // all, just an O(rows*cols) scan of the raw matrix per SumRegion call.
-    public static INumMatrix CreateByBruteForceCellScan(int[][] matrix) => new BruteForceCellScanNumMatrix(matrix);
+    public static INumMatrix CreateByBruteForceCellScan(int[][] matrix) => new BruteForceCellScanMatrix(matrix);
 
     // The composed answer: one FenwickTree per row, built once so each SumRegion call afterward
     // walks only the covered rows and does an O(log cols) query per row.
-    public static INumMatrix CreateByRowFenwickTree(int[][] matrix) => new RowFenwickTreeNumMatrix(matrix);
+    public static INumMatrix CreateByRowFenwickTree(int[][] matrix) => new RowFenwickTreeMatrix(matrix);
 
-    private sealed class BruteForceCellScanNumMatrix(int[][] matrix) : INumMatrix
+    private sealed class BruteForceCellScanMatrix(int[][] matrix) : INumMatrix
     {
         public int SumRegion(int row1, int col1, int row2, int col2)
         {
@@ -41,11 +41,11 @@ internal static class RangeSumQuery2DImmutableSolution
         }
     }
 
-    private sealed class RowFenwickTreeNumMatrix : INumMatrix
+    private sealed class RowFenwickTreeMatrix : INumMatrix
     {
         private readonly FenwickTree<int, SumOperation<int>>[] _rows;
 
-        public RowFenwickTreeNumMatrix(int[][] matrix) =>
+        public RowFenwickTreeMatrix(int[][] matrix) =>
             _rows = matrix.Select(row => new FenwickTree<int, SumOperation<int>>(row)).ToArray();
 
         public int SumRegion(int row1, int col1, int row2, int col2)

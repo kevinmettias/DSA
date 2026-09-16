@@ -21,7 +21,7 @@ public class MinimumAbsoluteDifferenceBetweenElementsWithConstraintBenchmarks
 
     private int[] _nums = [];
 
-    private int _x;
+    private int _minimumIndexDistance;
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -30,16 +30,16 @@ public class MinimumAbsoluteDifferenceBetweenElementsWithConstraintBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _x = Length / 4;
+        _minimumIndexDistance = Length / 4;
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForcePairScan() =>
         MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
-            .MinAbsoluteDifferenceByBruteForcePairScan(_nums, _x);
+            .MinAbsoluteDifferenceByBruteForcePairScan(_nums, _minimumIndexDistance);
 
     [Benchmark]
     public int BstSlidingWindow() =>
         MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
-            .MinAbsoluteDifferenceByBstSlidingWindow(_nums, _x);
+            .MinAbsoluteDifferenceByBstSlidingWindow(_nums, _minimumIndexDistance);
 }

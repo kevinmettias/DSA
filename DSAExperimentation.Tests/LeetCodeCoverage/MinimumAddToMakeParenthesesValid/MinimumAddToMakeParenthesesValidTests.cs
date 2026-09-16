@@ -22,14 +22,14 @@ public sealed class MinimumAddToMakeParenthesesValidTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAddToMakeValidByRunningCounter_LeetCodeExamples_ReturnsInsertionsNeeded(
-        string s,
+        string text,
         int expected) =>
-        Assert.Equal(expected, MinimumAddToMakeParenthesesValidSolution.MinAddToMakeValidByRunningCounter(s));
+        Assert.Equal(expected, MinimumAddToMakeParenthesesValidSolution.MinAddToMakeValidByRunningCounter(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAddToMakeValidByOpenerStack_LeetCodeExamples_ReturnsInsertionsNeeded(
-        string s,
+        string text,
         int expected) =>
-        Assert.Equal(expected, MinimumAddToMakeParenthesesValidSolution.MinAddToMakeValidByOpenerStack(s));
+        Assert.Equal(expected, MinimumAddToMakeParenthesesValidSolution.MinAddToMakeValidByOpenerStack(text));
 }

@@ -11,11 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FillASpecialGridBenchmarks
 {
     [Params(5, 9)]
-    public int N { get; set; }
+    public int LevelCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int[][] RecursiveQuadrants() => FillASpecialGridSolution.SpecialGridByRecursiveQuadrants(N);
+    public int[][] RecursiveQuadrants() => FillASpecialGridSolution.SpecialGridByRecursiveQuadrants(LevelCount);
 
     [Benchmark]
-    public int[][] BitQuadrantDigits() => FillASpecialGridSolution.SpecialGridByBitQuadrantDigits(N);
+    public int[][] BitQuadrantDigits() => FillASpecialGridSolution.SpecialGridByBitQuadrantDigits(LevelCount);
 }

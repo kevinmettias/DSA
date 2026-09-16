@@ -23,7 +23,7 @@ public class InverseCoinChangeBenchmarks
     public void Setup()
     {
         var denominations = BuildDenominations(Length, seed: Seed);
-        _numWays = BuildNumWays(Length, denominations);
+        _numWays = BuildWayCounts(Length, denominations);
     }
 
     private static List<int> BuildDenominations(int length, int seed)
@@ -47,7 +47,7 @@ public class InverseCoinChangeBenchmarks
         return denominations;
     }
 
-    private static int[] BuildNumWays(int length, List<int> denominations)
+    private static int[] BuildWayCounts(int length, List<int> denominations)
     {
         var ways = new int[length + 1];
         ways[0] = 1;

@@ -17,9 +17,9 @@ internal static class MinimumHeightTreesSolution
     // height when rooted there, then keep the nodes achieving the minimum.
     // Deliberately written without this repo's search primitives - it is the arm the
     // leaf-peeling strategy below has to justify itself against.
-    public static List<int> FindRootsByHeightFromEveryNode(int n, int[][] edges)
+    public static List<int> FindRootsByHeightFromEveryNode(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(nodeCount, edges);
         return FindRootsByHeightFromEveryNode(adjacency);
     }
 
@@ -91,9 +91,9 @@ internal static class MinimumHeightTreesSolution
     // RemoveInvalidParenthesesTests.cs uses for its own level-by-level BFS peel. The
     // last layer standing are the roots whose eccentricity - and therefore tree
     // height - is minimal, since they are the tree's own centroid(s).
-    public static List<int> FindRootsByLeafPeeling(int n, int[][] edges)
+    public static List<int> FindRootsByLeafPeeling(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(nodeCount, edges);
         return FindRootsByLeafPeeling(adjacency);
     }
 
@@ -185,10 +185,10 @@ internal static class MinimumHeightTreesSolution
         return roots;
     }
 
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[n];
-        for (var i = 0; i < n; i++)
+        var adjacency = new List<int>[nodeCount];
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }

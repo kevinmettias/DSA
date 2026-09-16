@@ -35,10 +35,10 @@ public class SudokuSolverBenchmarks
     public void Setup() => _puzzle = Puzzle.Select(row => row.ToCharArray()).ToArray();
 
     [Benchmark(Baseline = true)]
-    public bool SpecializedRecursive() => SudokuSolverSolution.TrySolveBySpecializedRecursion(Clone(_puzzle));
+    public bool TrySolveBySpecializedRecursion() => SudokuSolverSolution.TrySolveBySpecializedRecursion(Clone(_puzzle));
 
     [Benchmark]
-    public bool BacktrackEngine() => SudokuSolverSolution.TrySolveByBacktrackEngine(Clone(_puzzle));
+    public bool TrySolveByBacktrackEngine() => SudokuSolverSolution.TrySolveByBacktrackEngine(Clone(_puzzle));
 
     private static char[][] Clone(char[][] board) => board.Select(row => (char[])row.Clone()).ToArray();
 }

@@ -13,14 +13,14 @@ public sealed class DiameterOfBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples()
     {
-        var data = new TheoryData<int?[], int>
+        var examples = new TheoryData<int?[], int>
         {
             { [1, 2, 3, 4, 5], 3 },
             { [1, 2], 1 },
             { [1], 0 },
         };
 
-        return data;
+        return examples;
     }
 
     [Theory]

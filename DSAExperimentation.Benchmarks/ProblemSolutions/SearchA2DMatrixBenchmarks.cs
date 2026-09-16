@@ -24,10 +24,10 @@ public class SearchA2DMatrixBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool LinearScan() =>
-        SearchA2DMatrixSolution.SearchMatrixByLinearScan(_matrix, Size * Size - 1);
+    public bool HasTargetByLinearScan() =>
+        SearchA2DMatrixSolution.HasTargetByLinearScan(_matrix, Size * Size - 1);
 
     [Benchmark]
-    public bool BinarySearchMatrix() =>
-        SearchA2DMatrixSolution.SearchMatrixByBinarySearch(_matrix, Size * Size - 1);
+    public bool HasTargetByBinarySearch() =>
+        SearchA2DMatrixSolution.HasTargetByBinarySearch(_matrix, Size * Size - 1);
 }

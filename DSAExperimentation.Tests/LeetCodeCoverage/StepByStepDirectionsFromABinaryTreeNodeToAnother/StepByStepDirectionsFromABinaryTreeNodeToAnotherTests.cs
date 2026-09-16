@@ -63,11 +63,11 @@ public sealed class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
         var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
-        var i = 1;
+        var cursor = 1;
 
-        while (i < levelOrder.Length)
+        while (cursor < levelOrder.Length)
         {
-            i = AttachNextChildren(levelOrder, queue, i);
+            cursor = AttachNextChildren(levelOrder, queue, cursor);
         }
 
         return root;
@@ -75,26 +75,26 @@ public sealed class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
 
     // Attaches the next level-order entries as the left and then the right child
     // of the node at the front of the queue, and returns the cursor past them.
-    private static int AttachNextChildren(int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
+    private static int AttachNextChildren(int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int cursor)
     {
         var current = queue.Dequeue();
 
-        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
+        if (cursor < levelOrder.Length && levelOrder[cursor] is { } leftValue)
         {
             current.Left = new BinaryTreeNode<int>(leftValue);
             queue.Enqueue(current.Left);
         }
 
-        i++;
+        cursor++;
 
-        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+        if (cursor < levelOrder.Length && levelOrder[cursor] is { } rightValue)
         {
             current.Right = new BinaryTreeNode<int>(rightValue);
             queue.Enqueue(current.Right);
         }
 
-        i++;
+        cursor++;
 
-        return i;
+        return cursor;
     }
 }

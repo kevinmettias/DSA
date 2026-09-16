@@ -23,16 +23,16 @@ internal static class CountGoodNumbersSolution
     private const long EvenIndexDigitChoices = 5;
     private const long OddIndexDigitChoices = 4;
 
-    // Splits the n positions into how many sit at an even index vs. an odd index.
+    // Splits the length into how many positions sit at an even index vs. an odd index.
     private const int PositionParityDivisor = 2;
 
     // The textbook baseline: multiply by the digit-choice count once per position,
     // reducing mod 1e9+7 after each multiplication so nothing overflows.
     // Deliberately written without this repo's primitives - it is the O(n) arm the
     // squaring strategy below has to justify itself against.
-    public static int CountGoodNumbersByRepeatedMultiplication(long n)
+    public static int CountGoodNumbersByRepeatedMultiplication(long length)
     {
-        var (evenPositions, oddPositions) = SplitByIndexParity(n);
+        var (evenPositions, oddPositions) = SplitByIndexParity(length);
         var evenChoices = NaivePower(EvenIndexDigitChoices, evenPositions);
         var oddChoices = NaivePower(OddIndexDigitChoices, oddPositions);
 
@@ -55,9 +55,9 @@ internal static class CountGoodNumbersSolution
     // compensate - Domain.Modular's own exponentiation-by-squaring loop, which folds
     // under the modulus at every multiplication so intermediate values never grow
     // past Modulo^2. O(log n) instead of O(n).
-    public static int CountGoodNumbersByExponentiationBySquaring(long n)
+    public static int CountGoodNumbersByExponentiationBySquaring(long length)
     {
-        var (evenPositions, oddPositions) = SplitByIndexParity(n);
+        var (evenPositions, oddPositions) = SplitByIndexParity(length);
         var evenChoices = ModularArithmetic.Power(EvenIndexDigitChoices, evenPositions);
         var oddChoices = ModularArithmetic.Power(OddIndexDigitChoices, oddPositions);
 
@@ -66,6 +66,6 @@ internal static class CountGoodNumbersSolution
 
     // Index 0 is even, so a length-n string carries ceil(n/2) even-index positions
     // and floor(n/2) odd-index ones.
-    private static (long EvenPositions, long OddPositions) SplitByIndexParity(long n)
-        => ((n + 1) / PositionParityDivisor, n / PositionParityDivisor);
+    private static (long EvenPositions, long OddPositions) SplitByIndexParity(long length)
+        => ((length + 1) / PositionParityDivisor, length / PositionParityDivisor);
 }

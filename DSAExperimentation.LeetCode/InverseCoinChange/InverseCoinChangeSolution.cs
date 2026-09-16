@@ -44,13 +44,14 @@ internal static class InverseCoinChangeSolution
         return denominations.ToArray();
     }
 
-    // LC 518's own unbounded-combinations step - "for i = v..n: ways[i] += ways[i - v]"
-    // - applied once for a newly confirmed denomination.
-    private static void ApplyDenomination(int[] ways, int v, int n)
+    // LC 518's own unbounded-combinations step - "for i = denomination..amountCount:
+    // ways[i] += ways[i - denomination]" - applied once for a newly confirmed
+    // denomination.
+    private static void ApplyDenomination(int[] ways, int denomination, int amountCount)
     {
-        for (var i = v; i <= n; i++)
+        for (var i = denomination; i <= amountCount; i++)
         {
-            ways[i] += ways[i - v];
+            ways[i] += ways[i - denomination];
         }
     }
 

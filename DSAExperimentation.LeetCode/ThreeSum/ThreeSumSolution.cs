@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.ThreeSum;
 // element, which never revisits a triplet in the first place.
 internal static class ThreeSumSolution
 {
-    // Need at least 2 more elements after i for the j/k two-pointer sweep.
+    // Need at least 2 more elements after the first index for the two-pointer sweep.
     private const int RemainingPairSize = 2;
 
     // Index of the third element in a 3-element triplet.
@@ -35,13 +35,13 @@ internal static class ThreeSumSolution
     }
 
     private static void CollectZeroSumTriplets(
-        int[] nums, int i, int j, HashSet<(int First, int Second, int Third)> found)
+        int[] nums, int firstIndex, int secondIndex, HashSet<(int First, int Second, int Third)> found)
     {
-        for (var k = j + 1; k < nums.Length; k++)
+        for (var k = secondIndex + 1; k < nums.Length; k++)
         {
-            if (nums[i] + nums[j] + nums[k] == 0)
+            if (nums[firstIndex] + nums[secondIndex] + nums[k] == 0)
             {
-                int[] triplet = [nums[i], nums[j], nums[k]];
+                int[] triplet = [nums[firstIndex], nums[secondIndex], nums[k]];
                 Array.Sort(triplet);
                 found.Add((triplet[0], triplet[1], triplet[ThirdElementIndex]));
             }
@@ -60,31 +60,32 @@ internal static class ThreeSumSolution
 
         for (var i = 0; i < sorted.Length - RemainingPairSize; i++)
         {
-            ProcessFixedFirst(results, sorted, i);
+            SweepForFixedFirst(results, sorted, i);
         }
 
         return results;
     }
 
-    // The work for one fixed first element `sorted[i]`: skip a duplicate first
-    // element, then sweep the usual two-pointer window over the remainder.
-    private static void ProcessFixedFirst(List<(int First, int Second, int Third)> results, int[] sorted, int i)
+    // The work for one fixed first element `sorted[firstIndex]`: skip a duplicate
+    // first element, then sweep the usual two-pointer window over the remainder.
+    private static void SweepForFixedFirst(
+        List<(int First, int Second, int Third)> results, int[] sorted, int firstIndex)
     {
-        if (i > 0 && sorted[i] == sorted[i - 1])
+        if (firstIndex > 0 && sorted[firstIndex] == sorted[firstIndex - 1])
         {
             return;
         }
 
-        var left = i + 1;
+        var left = firstIndex + 1;
         var right = sorted.Length - 1;
 
         while (left < right)
         {
-            var sum = sorted[i] + sorted[left] + sorted[right];
+            var sum = sorted[firstIndex] + sorted[left] + sorted[right];
 
             if (sum == 0)
             {
-                (left, right) = RecordTripletAndSkipDuplicates(results, sorted, i, (left, right));
+                (left, right) = RecordTripletAndSkipDuplicates(results, sorted, firstIndex, (left, right));
             }
             else if (sum < 0)
             {
@@ -97,14 +98,17 @@ internal static class ThreeSumSolution
         }
     }
 
-    // Records the zero-sum triplet at (i, left, right) then advances past any
-    // duplicate values on both sides, so the caller's two-pointer sweep never
+    // Records the zero-sum triplet at (firstIndex, left, right) then advances past
+    // any duplicate values on both sides, so the caller's two-pointer sweep never
     // reports the same triplet twice.
     private static (int Left, int Right) RecordTripletAndSkipDuplicates(
-        List<(int First, int Second, int Third)> results, int[] sorted, int i, (int Left, int Right) window)
+        List<(int First, int Second, int Third)> results,
+        int[] sorted,
+        int firstIndex,
+        (int Left, int Right) window)
     {
         var (left, right) = window;
-        results.Add((sorted[i], sorted[left], sorted[right]));
+        results.Add((sorted[firstIndex], sorted[left], sorted[right]));
         left++;
         right--;
 

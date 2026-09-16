@@ -43,9 +43,9 @@ internal static class SearchInRotatedSortedArraySolution
     private readonly struct PivotSequence(int[] nums) : IRandomAccessSequence<int>
     {
         public int Length => nums.Length;
-        public int Get(int index) => BelongsToTailRun(index) ? 1 : 0;
+        public int Get(int index) => IsInTailRun(index) ? 1 : 0;
 
-        private bool BelongsToTailRun(int index) => nums[index] <= nums[^1];
+        private bool IsInTailRun(int index) => nums[index] <= nums[^1];
     }
 
     // A plain sorted window [start, start + length) of nums, reindexed from 0

@@ -35,8 +35,8 @@ public class LinkedListCycleBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool VisitedSet() => LinkedListCycleSolution.HasCycleByVisitedSet(_head);
+    public bool HasCycleByVisitedSet() => LinkedListCycleSolution.HasCycleByVisitedSet(_head);
 
     [Benchmark]
-    public bool FloydCycleDetection() => LinkedListCycleSolution.HasCycleByFloydCycleDetection(_head);
+    public bool HasCycleByFloydCycleDetection() => LinkedListCycleSolution.HasCycleByFloydCycleDetection(_head);
 }

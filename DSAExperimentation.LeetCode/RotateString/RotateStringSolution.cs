@@ -6,9 +6,10 @@ namespace DSAExperimentation.LeetCode.RotateString;
 // left-shifts?
 //
 // Both strategies rest on the same observation - every rotation of source is a
-// contiguous window of s+s, so goal is a rotation iff the two are the same length
-// and goal occurs somewhere inside s+s. They differ only in how that occurrence is
-// looked for: a restart-on-mismatch scan, or this repo's KMP failure function.
+// contiguous window of source + source, so goal is a rotation iff the two are the
+// same length and goal occurs somewhere inside source + source. They differ only in
+// how that occurrence is looked for: a restart-on-mismatch scan, or this repo's KMP
+// failure function.
 internal static class RotateStringSolution
 {
     // The textbook answer: double source, then scan every start position, comparing

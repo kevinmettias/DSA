@@ -11,11 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NthTribonacciNumberBenchmarks
 {
     [Params(20, 30)]
-    public int N { get; set; }
+    public int TermIndex { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRecursion() => NthTribonacciNumberSolution.TribonacciByNaiveRecursion(N);
+    public int NaiveRecursion() => NthTribonacciNumberSolution.TribonacciByNaiveRecursion(TermIndex);
 
     [Benchmark]
-    public int MemoizedTopDown() => NthTribonacciNumberSolution.TribonacciByMemoizedTopDown(N);
+    public int MemoizedTopDown() => NthTribonacciNumberSolution.TribonacciByMemoizedTopDown(TermIndex);
 }

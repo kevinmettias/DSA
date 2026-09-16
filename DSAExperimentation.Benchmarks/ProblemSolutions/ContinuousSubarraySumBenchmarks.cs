@@ -32,9 +32,10 @@ public class ContinuousSubarraySumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() => ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByBruteForce(_values, K);
+    public bool HasSubarraySumMultipleOfKByBruteForce() =>
+        ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByBruteForce(_values, K);
 
     [Benchmark]
-    public bool HashMapPrefixRemainder() =>
+    public bool HasSubarraySumMultipleOfKByHashMapPrefixRemainder() =>
         ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByHashMapPrefixRemainder(_values, K);
 }

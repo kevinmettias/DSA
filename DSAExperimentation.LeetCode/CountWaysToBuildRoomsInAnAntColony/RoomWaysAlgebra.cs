@@ -40,11 +40,11 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
         return (size, ways);
     }
 
-    private static long Factorial(long n)
+    private static long Factorial(long value)
     {
         var result = 1L;
 
-        for (var i = 2; i <= n; i++)
+        for (var i = 2; i <= value; i++)
         {
             result = result * i % ModularArithmetic.Modulo;
         }

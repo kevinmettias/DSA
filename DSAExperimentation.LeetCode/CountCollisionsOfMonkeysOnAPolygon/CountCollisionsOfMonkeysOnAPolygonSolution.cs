@@ -2,7 +2,7 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
 
-// LeetCode 2550. Count Collisions of Monkeys on a Polygon: each of the n monkeys
+// LeetCode 2550. Count Collisions of Monkeys on a Polygon: each monkey
 // independently moves to one of its two neighbouring vertices, so there are 2^n
 // configurations in total; the only two that produce no collision at all are
 // "every monkey clockwise" and "every monkey counterclockwise", because any other
@@ -28,10 +28,10 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
     // mod 1e9+7 after each multiplication so nothing overflows. Deliberately
     // written without this repo's primitives - it is the O(n) arm the squaring
     // strategy below has to justify itself against, and at LC 2550's own bound of
-    // n = 1e9 it is the arm that does not finish.
-    public static int NumberOfWaysByRepeatedMultiplication(int n)
+    // 1e9 monkeys it is the arm that does not finish.
+    public static int NumberOfWaysByRepeatedMultiplication(int monkeyCount)
     {
-        var configurations = NaivePower(DirectionChoices, n);
+        var configurations = NaivePower(DirectionChoices, monkeyCount);
 
         return WithoutCollisionFreeConfigurations(configurations);
     }
@@ -52,15 +52,16 @@ internal static class CountCollisionsOfMonkeysOnAPolygonSolution
     // compensate - Domain.Modular's own exponentiation-by-squaring loop, which
     // folds under the modulus at every multiplication so intermediate values never
     // grow past Modulo^2. O(log n) instead of O(n).
-    public static int NumberOfWaysByExponentiationBySquaring(int n)
+    public static int NumberOfWaysByExponentiationBySquaring(int monkeyCount)
     {
-        var configurations = ModularArithmetic.Power(DirectionChoices, n);
+        var configurations = ModularArithmetic.Power(DirectionChoices, monkeyCount);
 
         return WithoutCollisionFreeConfigurations(configurations);
     }
 
     // Subtraction under a modulus can go negative - 2^n mod 1e9+7 is smaller than 2
-    // for some n - so the modulus is added back before the final reduction.
+    // for some monkey counts - so the modulus is added back before the final
+    // reduction.
     private static int WithoutCollisionFreeConfigurations(long configurations) =>
         (int)((configurations - CollisionFreeConfigurations + ModularArithmetic.Modulo) %
             ModularArithmetic.Modulo);

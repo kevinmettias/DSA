@@ -3,12 +3,13 @@ using CompetitiveStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 namespace DSAExperimentation.LeetCode.FindTheMostCompetitiveSubsequence;
 
 // LeetCode 1673. Find the Most Competitive Subsequence: the lexicographically
-// smallest subsequence of nums of length k.
+// smallest subsequence of nums of length selectionLength.
 //
 // Both strategies apply the identical greedy rule - drop an element whenever a
 // strictly smaller one follows it and enough elements remain to still reach
-// length k - and differ only in how many passes that takes: one removal per O(n)
-// scan, or every removal within a single sweep over a monotonic stack.
+// length selectionLength - and differ only in how many passes that takes: one
+// removal per O(n) scan, or every removal within a single sweep over a monotonic
+// stack.
 internal static class FindTheMostCompetitiveSubsequenceSolution
 {
     // The textbook baseline this composition has to justify itself against:
@@ -17,11 +18,12 @@ internal static class FindTheMostCompetitiveSubsequenceSolution
     // non-decreasing. Deliberately a plain BCL List<int> - it is the arm the
     // composed solution below has to beat, and its (n - k) separate scans are
     // exactly what makes it O(n^2).
-    public static int[] MostCompetitiveByRepeatedRemoval(int[] nums, int k)
+    public static int[] MostCompetitiveByRepeatedRemoval(
+        int[] nums, int selectionLength)
     {
         var current = new List<int>(nums);
 
-        while (current.Count > k)
+        while (current.Count > selectionLength)
         {
             current.RemoveAt(FirstDescentIndex(current));
         }
@@ -49,28 +51,29 @@ internal static class FindTheMostCompetitiveSubsequenceSolution
     // monotonic-stack greedy RemoveKDigits applies. Every element is pushed and
     // popped at most once, so the whole removal schedule the baseline rediscovers
     // (n - k) times is settled in a single O(n) pass.
-    public static int[] MostCompetitiveByMonotonicStack(int[] nums, int k)
+    public static int[] MostCompetitiveByMonotonicStack(int[] nums, int selectionLength)
     {
         var stack = new CompetitiveStack();
 
-        BuildCompetitiveStack(stack, nums, k);
+        BuildCompetitiveStack(stack, nums, selectionLength);
 
         return DrainStackToArray(stack);
     }
 
     // Pop any still-poppable, strictly greater element as long as enough elements
-    // remain afterward to still reach length k, then push the current element only
-    // while there is still room left for it.
-    private static void BuildCompetitiveStack(CompetitiveStack stack, int[] nums, int k)
+    // remain afterward to still reach length selectionLength, then push the current
+    // element only while there is still room left for it.
+    private static void BuildCompetitiveStack(
+        CompetitiveStack stack, int[] nums, int selectionLength)
     {
         for (var i = 0; i < nums.Length; i++)
         {
-            while (CanAffordToDropTop(stack, nums[i], nums.Length - i, k))
+            while (CanAffordToDropTop(stack, nums[i], nums.Length - i, selectionLength))
             {
                 stack.TryPop(out _);
             }
 
-            if (stack.Count < k)
+            if (stack.Count < selectionLength)
             {
                 stack.Push(nums[i]);
             }
@@ -79,13 +82,13 @@ internal static class FindTheMostCompetitiveSubsequenceSolution
 
     // The stack is allowed to give up its top: something is there, it is strictly
     // greater than the element arriving, and enough elements remain after the drop
-    // to still reach length k.
+    // to still reach length selectionLength.
     private static bool CanAffordToDropTop(
-        CompetitiveStack stack, int incoming, int remaining, int k)
+        CompetitiveStack stack, int incoming, int remaining, int selectionLength)
         => stack.Count > 0
             && stack.TryPeek(out var top)
             && top > incoming
-            && stack.Count - 1 + remaining >= k;
+            && stack.Count - 1 + remaining >= selectionLength;
 
     // The stack holds the answer in reverse, so it is filled back to front.
     private static int[] DrainStackToArray(CompetitiveStack stack)

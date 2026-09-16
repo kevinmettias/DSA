@@ -28,7 +28,7 @@ internal static class SerializeAndDeserializeBinaryTreeSolution
     {
         var accumulated = "";
 
-        void Visit(BinaryTreeNode<int>? node)
+        void VisitPreorder(BinaryTreeNode<int>? node)
         {
             if (node is null)
             {
@@ -37,11 +37,11 @@ internal static class SerializeAndDeserializeBinaryTreeSolution
             }
 
             accumulated += node.Value + TokenSeparator.ToString();
-            Visit(node.Left);
-            Visit(node.Right);
+            VisitPreorder(node.Left);
+            VisitPreorder(node.Right);
         }
 
-        Visit(root);
+        VisitPreorder(root);
         return accumulated;
     }
 

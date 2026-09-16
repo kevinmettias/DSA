@@ -6,13 +6,13 @@ namespace DSAExperimentation.LeetCode.NumberOf1Bits;
 // runs exactly popcount(n) times instead of inspecting all 32 bit positions.
 internal static class NumberOf1BitsSolution
 {
-    public static int CountByBitClear(uint n)
+    public static int CountByBitClear(uint value)
     {
         var count = 0;
 
-        while (n != 0)
+        while (value != 0)
         {
-            n &= n - 1;
+            value &= value - 1;
             count++;
         }
 

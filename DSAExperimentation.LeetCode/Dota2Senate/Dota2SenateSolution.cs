@@ -38,16 +38,16 @@ internal static class Dota2SenateSolution
     // The two parties' remaining counts are one tally, not two arguments: every path
     // either returns them unchanged or decrements exactly one of them.
     private static (int RemainingRadiant, int RemainingDire) AdvanceCircularRescan(
-        string senate, bool[] banned, int i, (int Radiant, int Dire) remaining)
+        string senate, bool[] banned, int senatorIndex, (int Radiant, int Dire) remaining)
     {
         var (remainingRadiant, remainingDire) = remaining;
 
-        if (banned[i])
+        if (banned[senatorIndex])
         {
             return (remainingRadiant, remainingDire);
         }
 
-        var opponent = NextUnbanned(senate, banned, i, senate[i]);
+        var opponent = NextUnbanned(senate, banned, senatorIndex, senate[senatorIndex]);
         banned[opponent] = true;
 
         if (senate[opponent] == 'R')

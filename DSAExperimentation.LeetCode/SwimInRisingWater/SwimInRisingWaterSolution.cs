@@ -44,23 +44,23 @@ internal static class SwimInRisingWaterSolution
         return lo;
     }
 
-    private static bool CanReachAtTime(int[][] grid, int time, int n)
+    private static bool CanReachAtTime(int[][] grid, int time, int size)
     {
         if (grid[0][0] > time)
         {
             return false;
         }
 
-        var walk = new FloodWalk(new bool[n, n], new Queue<(int Row, int Col)>());
+        var walk = new FloodWalk(new bool[size, size], new Queue<(int Row, int Col)>());
         walk.Queue.Enqueue((0, 0));
         walk.Visited[0, 0] = true;
 
-        return FloodReachesCorner(grid, time, walk);
+        return CanFloodReachCorner(grid, time, walk);
     }
 
     // Spread the flood from the cells already queued, reporting whether the
     // bottom-right corner is reached before the queue empties.
-    private static bool FloodReachesCorner(int[][] grid, int time, FloodWalk walk)
+    private static bool CanFloodReachCorner(int[][] grid, int time, FloodWalk walk)
     {
         var n = grid.Length;
 

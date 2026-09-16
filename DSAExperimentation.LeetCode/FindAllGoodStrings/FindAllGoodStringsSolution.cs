@@ -14,9 +14,9 @@ internal static class FindAllGoodStringsSolution
     // justify itself against, and it pays the full 26^n cost when the bounds span
     // the alphabet.
     public static int CountGoodStringsByEnumeration(
-        int n, LowerBound s1, UpperBound s2, ForbiddenSubstring evil)
+        int stringLength, LowerBound s1, UpperBound s2, ForbiddenSubstring evil)
     {
-        var current = s1.Text[..n].ToCharArray();
+        var current = s1.Text[..stringLength].ToCharArray();
         var count = 0L;
 
         // Stops when the odometer reaches s2: that candidate is tested, counted, and the total then returned.
@@ -61,10 +61,10 @@ internal static class FindAllGoodStringsSolution
     // automaton state never reaches evil.Length, without ever materializing a
     // candidate string.
     public static int CountGoodStringsByAutomatonDigitDp(
-        int n, LowerBound s1, UpperBound s2, ForbiddenSubstring evil)
+        int stringLength, LowerBound s1, UpperBound s2, ForbiddenSubstring evil)
     {
         var failure = PrefixFunctionSearch.ComputeFailureFunction(evil.Text);
-        var bounds = new GoodStringBounds(n, s1.Text, s2.Text, evil.Text, failure);
+        var bounds = new GoodStringBounds(stringLength, s1.Text, s2.Text, evil.Text, failure);
 
         var result = Memoizer.Memoize<(int Position, int Matched, bool TightLow, bool TightHigh), long>(
             (0, 0, true, true), new GoodStringDigitWalk(bounds));
@@ -124,15 +124,19 @@ internal static class FindAllGoodStringsSolution
 
     internal readonly record struct GoodStringBounds(int N, string S1, string S2, string Evil, int[] Failure);
 
-    private static long? ComputeTransitionContribution(GoodStringWalk walk, char c)
+    private static long? ComputeTransitionContribution(GoodStringWalk walk, char candidateLetter)
     {
-        var matched = AdvanceAutomaton(walk.Evil, walk.Failure, walk.State.Matched, c);
+        var matched = AdvanceAutomaton(walk.Evil, walk.Failure, walk.State.Matched, candidateLetter);
         if (matched == walk.Evil.Length)
         {
             return null;
         }
 
-        var next = (walk.State.Position + 1, matched, walk.State.TightLow && c == walk.Low, walk.State.TightHigh && c == walk.High);
+        var next = (
+            walk.State.Position + 1,
+            matched,
+            walk.State.TightLow && candidateLetter == walk.Low,
+            walk.State.TightHigh && candidateLetter == walk.High);
         return walk.Rest.Replay(next, walk.Rest);
     }
 

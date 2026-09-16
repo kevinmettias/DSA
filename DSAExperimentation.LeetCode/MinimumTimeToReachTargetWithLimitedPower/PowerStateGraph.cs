@@ -25,20 +25,20 @@ internal sealed class PowerStateGraph
 
     public PowerStateNode SourceState(int source) => States[source, Power];
 
-    public static PowerStateGraph Build(int n, int[][] edges, int power, int[] cost)
+    public static PowerStateGraph Build(int nodeCount, int[][] edges, int power, int[] cost)
     {
-        var states = BuildStates(n, power);
+        var states = BuildStates(nodeCount, power);
 
         WireEdges(states, edges, power, cost);
 
         return new PowerStateGraph(states, power);
     }
 
-    private static PowerStateNode[,] BuildStates(int n, int power)
+    private static PowerStateNode[,] BuildStates(int nodeCount, int power)
     {
-        var states = new PowerStateNode[n, power + 1];
+        var states = new PowerStateNode[nodeCount, power + 1];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             for (var remaining = 0; remaining <= power; remaining++)
             {

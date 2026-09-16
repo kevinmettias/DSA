@@ -51,11 +51,11 @@ internal static class ReplaceNonCoprimeNumbersInArraySolution
 
         while (mergedAny)
         {
-            mergedAny = MergeFirstNonCoprimePair(list);
+            mergedAny = TryMergeFirstNonCoprimePair(list);
         }
     }
 
-    private static bool MergeFirstNonCoprimePair(List<long> list)
+    private static bool TryMergeFirstNonCoprimePair(List<long> list)
     {
         for (var i = 0; i < list.Count - 1; i++)
         {
@@ -126,5 +126,5 @@ internal static class ReplaceNonCoprimeNumbersInArraySolution
         return result;
     }
 
-    private static long Gcd(long a, long b) => b == 0 ? a : Gcd(b, a % b);
+    private static long Gcd(long first, long second) => second == 0 ? first : Gcd(second, first % second);
 }

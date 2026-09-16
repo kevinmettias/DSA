@@ -27,9 +27,9 @@ internal static class SecondMinimumTimeToReachDestinationSolution
     // The textbook mistake: a List<T> standing in for a queue, RemoveAt(0) on every
     // step. Deliberately written without this repo's primitives - it is the arm the
     // Queue-backed walk below has to justify itself against.
-    public static int SecondMinimumTimeByListFrontier(int n, int[][] edges, int time, int change)
+    public static int SecondMinimumTimeByListFrontier(int intersectionCount, int[][] edges, int time, int change)
     {
-        var network = IntersectionNetwork.Build(n, edges);
+        var network = IntersectionNetwork.Build(intersectionCount, edges);
 
         return SecondMinimumTimeByListFrontier(network, time, change);
     }
@@ -59,9 +59,9 @@ internal static class SecondMinimumTimeToReachDestinationSolution
 
     // The same walk over this repo's own Queue<Element>, whose Deque representation
     // pops the front without shifting anything.
-    public static int SecondMinimumTimeByQueueFrontier(int n, int[][] edges, int time, int change)
+    public static int SecondMinimumTimeByQueueFrontier(int intersectionCount, int[][] edges, int time, int change)
     {
-        var network = IntersectionNetwork.Build(n, edges);
+        var network = IntersectionNetwork.Build(intersectionCount, edges);
 
         return SecondMinimumTimeByQueueFrontier(network, time, change);
     }

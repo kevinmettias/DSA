@@ -12,8 +12,8 @@ public class PowerOfFourBenchmarks
     public int Value { get; set; }
 
     [Benchmark(Baseline = true)]
-    public bool DivisionLoop() => PowerOfFourSolution.IsPowerOfFourByDivisionLoop(Value);
+    public bool IsPowerOfFourByDivisionLoop() => PowerOfFourSolution.IsPowerOfFourByDivisionLoop(Value);
 
     [Benchmark]
-    public bool BinarySearchOverPowers() => PowerOfFourSolution.IsPowerOfFourByBinarySearch(Value);
+    public bool IsPowerOfFourByBinarySearch() => PowerOfFourSolution.IsPowerOfFourByBinarySearch(Value);
 }

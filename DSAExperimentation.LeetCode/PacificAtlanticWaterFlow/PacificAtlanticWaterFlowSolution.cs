@@ -49,7 +49,7 @@ internal static class PacificAtlanticWaterFlowSolution
         var visited = new bool[heights.Length, heights[0].Length];
         var search = new DownhillSearch(heights, visited, ocean);
 
-        return Dfs(startRow, startCol, search);
+        return HasPathToBorder(startRow, startCol, search);
     }
 
     // This repo's own DepthFirstSearch.Traverse, run once per border cell walking
@@ -85,27 +85,27 @@ internal static class PacificAtlanticWaterFlowSolution
             return;
         }
 
-        foreach (var node in DepthFirstSearch.Traverse(start, p => Neighbors(p, heights)))
+        foreach (var node in DepthFirstSearch.Traverse(start, cell => Neighbors(cell, heights)))
         {
             reached.TryAdd(node);
         }
     }
 
-    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) p, int[][] heights)
+    private static IEnumerable<(int Row, int Col)> Neighbors((int Row, int Col) cell, int[][] heights)
     {
         var rows = heights.Length;
         var cols = heights[0].Length;
 
         foreach (var (dRow, dCol) in Directions)
         {
-            var next = (Row: p.Row + dRow, Col: p.Col + dCol);
+            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
             if (!IsInside(next.Row, next.Col, rows, cols))
             {
                 continue;
             }
 
-            if (heights[next.Row][next.Col] < heights[p.Row][p.Col])
+            if (heights[next.Row][next.Col] < heights[cell.Row][cell.Col])
             {
                 continue;
             }
@@ -133,7 +133,7 @@ internal static class PacificAtlanticWaterFlowSolution
         return result;
     }
 
-    private static bool Dfs(int row, int col, DownhillSearch search)
+    private static bool HasPathToBorder(int row, int col, DownhillSearch search)
     {
         if (search.Visited[row, col])
         {
@@ -184,7 +184,7 @@ internal static class PacificAtlanticWaterFlowSolution
             return false;
         }
 
-        return Dfs(nextRow, nextCol, search);
+        return HasPathToBorder(nextRow, nextCol, search);
     }
 
     // A step is open when the cell one move away lies inside the grid, has not been
@@ -218,7 +218,7 @@ internal static class PacificAtlanticWaterFlowSolution
     // The three values every level of the downhill recursion threads: the read-only
     // height grid it walks, the visited marks one walk fills in, and the ocean whose
     // border that walk is trying to reach. They travel together, so they travel as
-    // one value - which is also what keeps Dfs and its two helpers within the
+    // one value - which is also what keeps HasPathToBorder and its two helpers within the
     // parameter-count limit.
     private readonly record struct DownhillSearch(int[][] Heights, bool[,] Visited, Ocean Ocean);
 }

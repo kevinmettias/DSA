@@ -70,7 +70,7 @@ internal static class EscapeALargeMazeSolution
             var nextRow = cell.Row + dRow;
             var nextCol = cell.Col + dCol;
 
-            if (!InBounds(nextRow, nextCol, state.BoardSize))
+            if (!IsInBounds(nextRow, nextCol, state.BoardSize))
             {
                 continue;
             }
@@ -164,10 +164,10 @@ internal static class EscapeALargeMazeSolution
     {
         next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
 
-        return InBounds(next.Row, next.Col, board.Size) && !board.Blocked.Has(next);
+        return IsInBounds(next.Row, next.Col, board.Size) && !board.Blocked.Has(next);
     }
 
-    private static bool InBounds(int row, int col, int boardSize) =>
+    private static bool IsInBounds(int row, int col, int boardSize) =>
         row >= 0 && row < boardSize && col >= 0 && col < boardSize;
 
     private static Set<(int Row, int Col)> BuildBlocked(int[][] blockedCells)

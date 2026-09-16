@@ -6,10 +6,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution's, the same methods
 // SmallestKLengthSubsequenceWithOccurrencesOfALetterTests proves correct.
-// [GlobalSetup] builds the random lowercase string and picks k, so the comparison is
-// between the O(n*k) naive rescan - which restarts the window scan for every one of
-// the k output characters - and the single O(n) monotonic-stack sweep, where each
-// character is pushed once and popped at most once across the whole string.
+// [GlobalSetup] builds the random lowercase string and picks the subsequence length, so
+// the comparison is between the O(n*k) naive rescan - which restarts the window scan for
+// every one of the subsequenceLength output characters - and the single O(n)
+// monotonic-stack sweep, where each character is pushed once and popped at most once
+// across the whole string.
 [MemoryDiagnoser]
 public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
 {
@@ -19,9 +20,9 @@ public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
     private const int SubsequenceLengthDivisor = 2;
     private const int RandomSeed = 1;
 
-    private string _s = "";
+    private string _text = "";
 
-    private int _k;
+    private int _subsequenceLength;
     [Params(500, 5_000)]
     public int Length { get; set; }
 
@@ -39,17 +40,17 @@ public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
         chars[0] = Letter;
         chars[Length - 1] = Letter;
 
-        _s = new string(chars);
-        _k = Length / SubsequenceLengthDivisor;
+        _text = new string(chars);
+        _subsequenceLength = Length / SubsequenceLengthDivisor;
     }
 
     [Benchmark(Baseline = true)]
     public string NaiveWindowRescan() =>
         SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.SmallestSubsequenceByWindowRescan(
-            _s, _k, Letter, Repetition);
+            _text, _subsequenceLength, Letter, Repetition);
 
     [Benchmark]
     public string MonotonicStackSweep() =>
         SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.SmallestSubsequenceByMonotonicStack(
-            _s, _k, Letter, Repetition);
+            _text, _subsequenceLength, Letter, Repetition);
 }

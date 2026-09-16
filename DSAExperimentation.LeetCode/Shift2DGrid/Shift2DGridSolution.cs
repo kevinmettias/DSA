@@ -2,9 +2,9 @@ using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 
 namespace DSAExperimentation.LeetCode.Shift2DGrid;
 
-// LeetCode 1260. Shift 2D Grid: shift every cell k places forward in row-major
-// order, the last cell of the last row wrapping around to the first cell of the
-// first row.
+// LeetCode 1260. Shift 2D Grid: shift every cell shiftCount places forward in
+// row-major order, the last cell of the last row wrapping around to the first cell
+// of the first row.
 //
 // Both strategies see the grid as one flat, circular sequence of rows*cols cells
 // and differ only in how they express the rotation: destination index arithmetic
@@ -16,8 +16,8 @@ internal static class Shift2DGridSolution
     // destination and write it straight into a fresh grid. Deliberately written
     // without this repo's primitives - it is the arm the composed solution below
     // has to justify itself against, and it never touches more than one cell per
-    // cell regardless of k.
-    public static int[][] ShiftGridByIndexArithmetic(int[][] grid, int k)
+    // cell regardless of shiftCount.
+    public static int[][] ShiftGridByIndexArithmetic(int[][] grid, int shiftCount)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
@@ -28,7 +28,7 @@ internal static class Shift2DGridSolution
         {
             for (var c = 0; c < cols; c++)
             {
-                var flatIndex = ((r * cols) + c + k) % total;
+                var flatIndex = ((r * cols) + c + shiftCount) % total;
                 result[flatIndex / cols][flatIndex % cols] = grid[r][c];
             }
         }
@@ -49,17 +49,17 @@ internal static class Shift2DGridSolution
     }
 
     // This repo's own Deque<int>: flatten the grid into it in row-major order,
-    // right-rotate it k mod (rows*cols) times - each step pops the last element and
-    // pushes it to the front, which is exactly one shift - then drain it back out
-    // into the grid shape.
-    public static int[][] ShiftGridByDequeRotation(int[][] grid, int k)
+    // right-rotate it shiftCount mod (rows*cols) times - each step pops the last
+    // element and pushes it to the front, which is exactly one shift - then drain it
+    // back out into the grid shape.
+    public static int[][] ShiftGridByDequeRotation(int[][] grid, int shiftCount)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
         var total = rows * cols;
 
         var deque = Flatten(grid);
-        RotateRight(deque, k % total);
+        RotateRight(deque, shiftCount % total);
 
         return Reshape(deque, rows, cols);
     }

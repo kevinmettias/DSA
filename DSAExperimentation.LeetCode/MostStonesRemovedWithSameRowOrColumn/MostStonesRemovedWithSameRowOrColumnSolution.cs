@@ -35,7 +35,7 @@ internal static class MostStonesRemovedWithSameRowOrColumnSolution
         {
             for (var j = i + 1; j < count; j++)
             {
-                if (SharesRowOrColumn(stones[i], stones[j]))
+                if (HasSharedRowOrColumn(stones[i], stones[j]))
                 {
                     components.Union(i, j);
                 }
@@ -52,7 +52,7 @@ internal static class MostStonesRemovedWithSameRowOrColumnSolution
         return count - roots.Count;
     }
 
-    private static bool SharesRowOrColumn(int[] first, int[] second) =>
+    private static bool HasSharedRowOrColumn(int[] first, int[] second) =>
         first[0] == second[0] || first[1] == second[1];
 
     // Union each stone into its row id and its column id instead of into other stones,

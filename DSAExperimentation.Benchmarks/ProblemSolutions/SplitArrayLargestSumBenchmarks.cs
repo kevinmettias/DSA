@@ -12,8 +12,8 @@ public class SplitArrayLargestSumBenchmarks
     private const int MaxElementValue = 1_000; // exclusive upper bound passed to Random.Next
     private const int KDivisor = 20; private int[] _nums = [];
 
-    private int _k;
-    // number of splits k derived as a fraction of Length
+    private int _subarrayCount;
+    // number of subarrays to split into, derived as a fraction of Length
 
     [Params(200, 5_000)]
     public int Length { get; set; }
@@ -23,12 +23,12 @@ public class SplitArrayLargestSumBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
-        _k = Math.Max(1, Length / KDivisor);
+        _subarrayCount = Math.Max(1, Length / KDivisor);
     }
 
     [Benchmark(Baseline = true)]
-    public int ManualBinarySearch() => SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(_nums, _k);
+    public int ManualBinarySearch() => SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(_nums, _subarrayCount);
 
     [Benchmark]
-    public int SequenceLowerBound() => SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(_nums, _k);
+    public int SequenceLowerBound() => SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(_nums, _subarrayCount);
 }

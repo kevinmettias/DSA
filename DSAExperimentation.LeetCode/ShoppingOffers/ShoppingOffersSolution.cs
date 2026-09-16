@@ -26,7 +26,7 @@ internal static class ShoppingOffersSolution
 
         foreach (var offer in special)
         {
-            if (!Applies(needs, offer))
+            if (!CanApply(needs, offer))
             {
                 continue;
             }
@@ -51,7 +51,7 @@ internal static class ShoppingOffersSolution
         return total;
     }
 
-    private static bool Applies(int[] remaining, int[] offer)
+    private static bool CanApply(int[] remaining, int[] offer)
     {
         for (var i = 0; i < remaining.Length; i++)
         {
@@ -91,7 +91,7 @@ internal static class ShoppingOffersSolution
 
             foreach (var offer in special)
             {
-                if (!Applies(remaining, offer))
+                if (!CanApply(remaining, offer))
                 {
                     continue;
                 }

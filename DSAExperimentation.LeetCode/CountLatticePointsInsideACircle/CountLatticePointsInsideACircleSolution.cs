@@ -59,11 +59,11 @@ internal static class CountLatticePointsInsideACircleSolution
         return box;
     }
 
-    private static bool IsInsideAnyCircle(int[][] circles, int x, int y)
+    private static bool IsInsideAnyCircle(int[][] circles, int pointX, int pointY)
     {
         foreach (var circle in circles)
         {
-            if (Covers(circle, x - circle[CenterXIndex], y - circle[CenterYIndex]))
+            if (IsInsideCircle(circle, pointX - circle[CenterXIndex], pointY - circle[CenterYIndex]))
             {
                 return true;
             }
@@ -97,7 +97,7 @@ internal static class CountLatticePointsInsideACircleSolution
         {
             for (var dy = -radius; dy <= radius; dy++)
             {
-                if (Covers(circle, dx, dy))
+                if (IsInsideCircle(circle, dx, dy))
                 {
                     points.TryAdd((x + dx, y + dy));
                 }
@@ -106,7 +106,7 @@ internal static class CountLatticePointsInsideACircleSolution
     }
 
     // Inclusive: LeetCode counts a point exactly on the circumference as inside.
-    private static bool Covers(int[] circle, int dx, int dy)
+    private static bool IsInsideCircle(int[] circle, int dx, int dy)
         => (dx * dx) + (dy * dy) <= circle[RadiusIndex] * circle[RadiusIndex];
 
     // The smallest axis-aligned box containing every circle. Empty when there are

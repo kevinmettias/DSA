@@ -36,7 +36,7 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
     {
         var visited = new bool[grid.Length, grid[0].Length];
 
-        return Dfs((0, 0), visited, grid);
+        return HasDfsPath((0, 0), visited, grid);
     }
 
     // This repo's own DepthFirstSearch.Traverse over a bespoke successor function -
@@ -56,14 +56,14 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
         {
             var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
 
-            if (OpensBackToward(next, direction, grid))
+            if (HasOpeningBackToward(next, direction, grid))
             {
                 yield return next;
             }
         }
     }
 
-    private static bool Dfs((int Row, int Col) cell, bool[,] visited, int[][] grid)
+    private static bool HasDfsPath((int Row, int Col) cell, bool[,] visited, int[][] grid)
     {
         if (visited[cell.Row, cell.Col])
         {
@@ -98,19 +98,19 @@ internal static class CheckIfThereIsAValidPathInAGridSolution
     {
         var next = (Row: cell.Row + direction.DRow, Col: cell.Col + direction.DCol);
 
-        if (!OpensBackToward(next, direction, grid) || visited[next.Row, next.Col])
+        if (!HasOpeningBackToward(next, direction, grid) || visited[next.Row, next.Col])
         {
             return false;
         }
 
-        return Dfs(next, visited, grid);
+        return HasDfsPath(next, visited, grid);
     }
 
     // The street-compatibility rule both strategies walk: the neighbor must be on
     // the board and must itself open back along the direction it was entered from.
     // Plain array indexing and Array.IndexOf, so sharing it leaves the baseline's
     // textbook character intact (ARCHITECTURE.md section 17.5).
-    private static bool OpensBackToward((int Row, int Col) next, (int DRow, int DCol) direction, int[][] grid)
+    private static bool HasOpeningBackToward((int Row, int Col) next, (int DRow, int DCol) direction, int[][] grid)
     {
         if (!IsOnBoard(next, grid))
         {

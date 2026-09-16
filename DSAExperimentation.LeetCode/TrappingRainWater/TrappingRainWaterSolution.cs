@@ -70,7 +70,7 @@ internal static class TrappingRainWaterSolution
         return water;
     }
 
-    private static int? TryPopAndComputeBoundedWater(RainStack indices, int[] height, int i)
+    private static int? TryPopAndComputeBoundedWater(RainStack indices, int[] height, int barIndex)
     {
         indices.TryPop(out var top);
 
@@ -79,7 +79,7 @@ internal static class TrappingRainWaterSolution
             return null;
         }
 
-        return BoundedWaterAbove(height, top, left, i);
+        return BoundedWaterAbove(height, top, left, barIndex);
     }
 
     // The water a popped bar holds: its floor is the bar itself, its left wall the

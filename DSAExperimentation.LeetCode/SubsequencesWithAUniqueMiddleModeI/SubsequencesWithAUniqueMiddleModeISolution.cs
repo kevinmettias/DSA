@@ -233,7 +233,7 @@ internal static class SubsequencesWithAUniqueMiddleModeISolution
     // other - summed once here (over whichever side has fewer distinct values)
     // rather than per (lx, rx) split.
     private static (long SharedSum, long SharedSumWeightedByRight, long SharedSumWeightedByLeft)
-        SharedNonXMoments(int x, Dictionary<int, int> freqLeft, Dictionary<int, int> freqRight)
+        SharedNonXMoments(int middleValue, Dictionary<int, int> freqLeft, Dictionary<int, int> freqRight)
     {
         var byAscendingCount = ByAscendingCount(freqLeft, freqRight);
         var smallerMapSide = ReferenceEquals(byAscendingCount.Smaller, freqLeft)
@@ -243,7 +243,7 @@ internal static class SubsequencesWithAUniqueMiddleModeISolution
 
         foreach (var (value, smallerCount) in byAscendingCount.Smaller)
         {
-            if (value == x || !byAscendingCount.Larger.TryGetValue(value, out var largerCount))
+            if (value == middleValue || !byAscendingCount.Larger.TryGetValue(value, out var largerCount))
             {
                 continue;
             }

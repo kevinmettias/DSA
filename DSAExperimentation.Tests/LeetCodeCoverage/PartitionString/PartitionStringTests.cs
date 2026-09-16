@@ -17,11 +17,11 @@ public sealed class PartitionStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PartitionByHashSetScan_LeetCodeExamples_ReturnsUniqueSegments(string s, string[] expected) =>
-        Assert.Equal(expected, PartitionStringSolution.PartitionByHashSetScan(s));
+    public void PartitionByHashSetScan_LeetCodeExamples_ReturnsUniqueSegments(string text, string[] expected) =>
+        Assert.Equal(expected, PartitionStringSolution.PartitionByHashSetScan(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PartitionBySetScan_LeetCodeExamples_ReturnsUniqueSegments(string s, string[] expected) =>
-        Assert.Equal(expected, PartitionStringSolution.PartitionBySetScan(s));
+    public void PartitionBySetScan_LeetCodeExamples_ReturnsUniqueSegments(string text, string[] expected) =>
+        Assert.Equal(expected, PartitionStringSolution.PartitionBySetScan(text));
 }

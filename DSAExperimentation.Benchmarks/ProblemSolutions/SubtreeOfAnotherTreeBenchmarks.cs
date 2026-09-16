@@ -30,10 +30,10 @@ public class SubtreeOfAnotherTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool RecursiveCompareAtEveryNode() =>
+    public bool IsSubtreeByRecursiveCompareAtEveryNode() =>
         SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(_root, _subRoot);
 
     [Benchmark]
-    public bool SerializeThenKmpSearch() =>
+    public bool IsSubtreeBySerializeThenKmpSearch() =>
         SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(_root, _subRoot);
 }

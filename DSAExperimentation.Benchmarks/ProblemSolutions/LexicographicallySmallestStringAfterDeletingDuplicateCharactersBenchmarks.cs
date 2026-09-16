@@ -17,7 +17,7 @@ public class LexicographicallySmallestStringAfterDeletingDuplicateCharactersBenc
     private const int RandomSeed = 3816; // LeetCode problem number
     private const int AlphabetSize = 5;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(200, 2_000)]
     public int Length { get; set; }
@@ -33,14 +33,14 @@ public class LexicographicallySmallestStringAfterDeletingDuplicateCharactersBenc
             chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
-        _s = new string(chars);
+        _text = new string(chars);
     }
 
     [Benchmark(Baseline = true)]
     public string RepeatedScan() =>
-        LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution.SmallestStringByRepeatedScan(_s);
+        LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution.SmallestStringByRepeatedScan(_text);
 
     [Benchmark]
     public string MonotonicStack() =>
-        LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution.SmallestStringByMonotonicStack(_s);
+        LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution.SmallestStringByMonotonicStack(_text);
 }

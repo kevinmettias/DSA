@@ -14,11 +14,11 @@ internal sealed class EdgeWeightGraph(List<(int To, int Weight)>[] reversedAdjac
 
     public IReadOnlyList<(int To, int Weight)> NeighborsOf(int node) => reversedAdjacency[node];
 
-    public static EdgeWeightGraph Build(int n, int[][] edges)
+    public static EdgeWeightGraph Build(int nodeCount, int[][] edges)
     {
-        var reversedAdjacency = new List<(int To, int Weight)>[n];
+        var reversedAdjacency = new List<(int To, int Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             reversedAdjacency[i] = [];
         }

@@ -43,10 +43,10 @@ public class CatAndMouseIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool UnmemoizedRecursion() =>
+    public bool CanMouseWinByExhaustiveRecursion() =>
         CatAndMouseIISolution.CanMouseWinByExhaustiveRecursion(_grid, CatJump, MouseJump);
 
     [Benchmark]
-    public bool MemoizedRecursion() =>
+    public bool CanMouseWinByMemoizedRecursion() =>
         CatAndMouseIISolution.CanMouseWinByMemoizedRecursion(_grid, CatJump, MouseJump);
 }

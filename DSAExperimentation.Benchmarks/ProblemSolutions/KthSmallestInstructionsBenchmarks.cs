@@ -14,7 +14,7 @@ public class KthSmallestInstructionsBenchmarks
 {
     private int[] _destination = [];
 
-    private long _k;
+    private long _rank;
     [Params(5, 8)]
     public int Size { get; set; }
 
@@ -22,14 +22,14 @@ public class KthSmallestInstructionsBenchmarks
     public void Setup()
     {
         _destination = KthSmallestInstructionsWorkloads.SquareDestination(Size);
-        _k = KthSmallestInstructionsWorkloads.MedianRank(Size);
+        _rank = KthSmallestInstructionsWorkloads.MedianRank(Size);
     }
 
     [Benchmark(Baseline = true)]
     public string EnumerateAndSort() =>
-        KthSmallestInstructionsSolution.KthSmallestPathByEnumerateAndSort(_destination, _k);
+        KthSmallestInstructionsSolution.KthSmallestPathByEnumerateAndSort(_destination, _rank);
 
     [Benchmark]
     public string MemoizedGreedy() =>
-        KthSmallestInstructionsSolution.KthSmallestPathByMemoizedGreedy(_destination, _k);
+        KthSmallestInstructionsSolution.KthSmallestPathByMemoizedGreedy(_destination, _rank);
 }

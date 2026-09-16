@@ -15,15 +15,15 @@ namespace DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
 internal static class FindKthLargestXorCoordinateValueSolution
 {
     // The textbook answer: materialize every coordinate value, sort the lot, and
-    // index k back from the end. Deliberately written over BCL arrays and
+    // read rank places back from the end. Deliberately written over BCL arrays and
     // Array.Sort - it is the arm the heap below has to justify itself against.
-    public static int KthLargestValueByFullSort(int[][] matrix, int k)
+    public static int KthLargestValueByFullSort(int[][] matrix, int rank)
     {
         var values = PrefixXorValues(matrix);
 
         Array.Sort(values);
 
-        return values[^k];
+        return values[^rank];
     }
 
     private static int[] PrefixXorValues(int[][] matrix)
@@ -43,11 +43,11 @@ internal static class FindKthLargestXorCoordinateValueSolution
         return values;
     }
 
-    // This repo's own Heap<int, MinHeapOrder<int>>, capped at k: the root is the
-    // smallest of the k largest values seen so far, so discarding it whenever the
-    // heap outgrows k leaves the kth largest sitting at the root - exactly the
+    // This repo's own Heap<int, MinHeapOrder<int>>, capped at rank: the root is the
+    // smallest of the rank largest values seen so far, so discarding it whenever the
+    // heap outgrows rank leaves the kth largest sitting at the root - exactly the
     // composition KthLargestElement uses for LC 215.
-    public static int KthLargestValueBySizeKHeap(int[][] matrix, int k)
+    public static int KthLargestValueBySizeKHeap(int[][] matrix, int rank)
     {
         var prefixXor = PrefixXorTable(matrix);
         var heap = new Heap<int, MinHeapOrder<int>>();
@@ -58,7 +58,7 @@ internal static class FindKthLargestXorCoordinateValueSolution
             {
                 heap.Push(prefixXor[r, c]);
 
-                if (heap.Count > k)
+                if (heap.Count > rank)
                 {
                     heap.TryPop(out _);
                 }

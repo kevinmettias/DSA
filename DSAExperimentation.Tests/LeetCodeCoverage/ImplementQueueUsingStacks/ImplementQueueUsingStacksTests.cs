@@ -84,7 +84,7 @@ public sealed class ImplementQueueUsingStacksTests
                 case OpKind.Peek:
                     return queue.Peek();
                 default:
-                    return queue.Empty();
+                    return queue.IsEmpty();
             }
         }
 

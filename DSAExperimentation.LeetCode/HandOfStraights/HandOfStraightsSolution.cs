@@ -31,7 +31,7 @@ internal static class HandOfStraightsSolution
         var counts = BuildBclCounts(hand);
         var sortedHand = BclSortedCopy(hand);
 
-        return ConsumeStraightsByBclDictionary(counts, sortedHand, groupSize);
+        return CanConsumeStraightsByBclDictionary(counts, sortedHand, groupSize);
     }
 
     private static Dictionary<int, int> BuildBclCounts(int[] hand)
@@ -56,7 +56,7 @@ internal static class HandOfStraightsSolution
 
     // Every card that still has copies left must start a group of its own: in
     // ascending order nothing smaller is left to sit beneath it.
-    private static bool ConsumeStraightsByBclDictionary(
+    private static bool CanConsumeStraightsByBclDictionary(
         Dictionary<int, int> counts, int[] sortedHand, int groupSize)
     {
         foreach (var card in sortedHand)
@@ -104,7 +104,7 @@ internal static class HandOfStraightsSolution
         var counts = BuildCounts(hand);
         var sortedHand = SortedCopy(hand);
 
-        return ConsumeStraightsByHashMap(counts, sortedHand, groupSize);
+        return CanConsumeStraightsByHashMap(counts, sortedHand, groupSize);
     }
 
     private static HashMap<int, int> BuildCounts(int[] hand)
@@ -130,7 +130,7 @@ internal static class HandOfStraightsSolution
         return sortedHand;
     }
 
-    private static bool ConsumeStraightsByHashMap(HashMap<int, int> counts, int[] sortedHand, int groupSize)
+    private static bool CanConsumeStraightsByHashMap(HashMap<int, int> counts, int[] sortedHand, int groupSize)
     {
         foreach (var card in sortedHand)
         {

@@ -28,12 +28,16 @@ public sealed class WordBreakIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SentencesByHashSetScan_LeetCodeExamples_ReturnsEverySegmentation(
-        string s, string[] wordDict, string[] expected) =>
-        Assert.Equal(expected.OrderBy(x => x), WordBreakIISolution.SentencesByHashSetScan(s, wordDict).OrderBy(x => x));
+        string source, string[] wordDict, string[] expected) =>
+        Assert.Equal(
+            expected.OrderBy(x => x),
+            WordBreakIISolution.SentencesByHashSetScan(source, wordDict).OrderBy(x => x));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SentencesByTrieMemoized_LeetCodeExamples_ReturnsEverySegmentation(
-        string s, string[] wordDict, string[] expected) =>
-        Assert.Equal(expected.OrderBy(x => x), WordBreakIISolution.SentencesByTrieMemoized(s, wordDict).OrderBy(x => x));
+        string source, string[] wordDict, string[] expected) =>
+        Assert.Equal(
+            expected.OrderBy(x => x),
+            WordBreakIISolution.SentencesByTrieMemoized(source, wordDict).OrderBy(x => x));
 }

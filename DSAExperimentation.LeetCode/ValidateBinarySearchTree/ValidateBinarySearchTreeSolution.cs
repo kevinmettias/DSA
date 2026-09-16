@@ -12,12 +12,12 @@ namespace DSAExperimentation.LeetCode.ValidateBinarySearchTree;
 internal static class ValidateBinarySearchTreeSolution
 {
     public static bool IsValidByBoundsRecursion(BinaryTreeNode<int>? root) =>
-        Validate(root, null, null);
+        IsWithinBounds(root, null, null);
 
-    private static bool Validate(BinaryTreeNode<int>? node, int? min, int? max) =>
+    private static bool IsWithinBounds(BinaryTreeNode<int>? node, int? min, int? max) =>
         node is null ||
         ((min is null || node.Value > min) &&
          (max is null || node.Value < max) &&
-         Validate(node.Left, min, node.Value) &&
-         Validate(node.Right, node.Value, max));
+         IsWithinBounds(node.Left, min, node.Value) &&
+         IsWithinBounds(node.Right, node.Value, max));
 }

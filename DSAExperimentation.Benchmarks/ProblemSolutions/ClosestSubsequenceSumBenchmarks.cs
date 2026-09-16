@@ -28,8 +28,10 @@ public class ClosestSubsequenceSumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceAllSubsets() => ClosestSubsequenceSumSolution.MinAbsDifferenceByBruteForceSubsets(_nums, Goal);
+    public int BruteForceAllSubsets() =>
+        ClosestSubsequenceSumSolution.MinAbsoluteDifferenceByBruteForceSubsets(_nums, Goal);
 
     [Benchmark]
-    public int MeetInTheMiddle() => ClosestSubsequenceSumSolution.MinAbsDifferenceByMeetInTheMiddle(_nums, Goal);
+    public int MeetInTheMiddle() =>
+        ClosestSubsequenceSumSolution.MinAbsoluteDifferenceByMeetInTheMiddle(_nums, Goal);
 }

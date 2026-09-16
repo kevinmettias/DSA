@@ -25,15 +25,17 @@ public sealed class MinimumCostTreeFromLeafValuesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MctFromLeafValuesByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumNodeSum(
+    public void MinimumCostTreeFromLeafValuesByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumNodeSum(
         int[] arr,
         int expected) =>
-        Assert.Equal(expected, MinimumCostTreeFromLeafValuesSolution.MctFromLeafValuesByUnmemoizedRecursion(arr));
+        Assert.Equal(expected, MinimumCostTreeFromLeafValuesSolution
+            .MinimumCostTreeFromLeafValuesByUnmemoizedRecursion(arr));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MctFromLeafValuesByMonotonicStack_LeetCodeExamples_ReturnsMinimumNodeSum(
+    public void MinimumCostTreeFromLeafValuesByMonotonicStack_LeetCodeExamples_ReturnsMinimumNodeSum(
         int[] arr,
         int expected) =>
-        Assert.Equal(expected, MinimumCostTreeFromLeafValuesSolution.MctFromLeafValuesByMonotonicStack(arr));
+        Assert.Equal(expected, MinimumCostTreeFromLeafValuesSolution
+            .MinimumCostTreeFromLeafValuesByMonotonicStack(arr));
 }

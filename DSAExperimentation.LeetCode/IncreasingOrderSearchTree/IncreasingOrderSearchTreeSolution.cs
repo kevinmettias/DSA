@@ -33,18 +33,18 @@ internal static class IncreasingOrderSearchTreeSolution
     public static BinaryTreeNode<int>? IncreasingBstByRecursiveRelink(BinaryTreeNode<int>? root)
     {
         var dummy = new BinaryTreeNode<int>(DummyHeadValue);
-        Visit(root, dummy);
+        VisitAndRelink(root, dummy);
 
         return dummy.Right;
 
-        static BinaryTreeNode<int> Visit(BinaryTreeNode<int>? node, BinaryTreeNode<int> tail)
+        static BinaryTreeNode<int> VisitAndRelink(BinaryTreeNode<int>? node, BinaryTreeNode<int> tail)
         {
             if (node is null)
             {
                 return tail;
             }
 
-            tail = Visit(node.Left, tail);
+            tail = VisitAndRelink(node.Left, tail);
 
             // Read Right before the relink: tail.Right = node overwrites it when
             // node is its own predecessor's right child.
@@ -52,7 +52,7 @@ internal static class IncreasingOrderSearchTreeSolution
             node.Left = null;
             tail.Right = node;
 
-            return Visit(right, node);
+            return VisitAndRelink(right, node);
         }
     }
 

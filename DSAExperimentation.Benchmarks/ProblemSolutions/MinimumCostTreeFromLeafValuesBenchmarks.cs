@@ -30,9 +30,11 @@ public class MinimumCostTreeFromLeafValuesBenchmarks
 
     [Benchmark(Baseline = true)]
     public int UnmemoizedRecursion() =>
-        MinimumCostTreeFromLeafValuesSolution.MctFromLeafValuesByUnmemoizedRecursion(_arr);
+        MinimumCostTreeFromLeafValuesSolution
+            .MinimumCostTreeFromLeafValuesByUnmemoizedRecursion(_arr);
 
     [Benchmark]
     public int MonotonicStack() =>
-        MinimumCostTreeFromLeafValuesSolution.MctFromLeafValuesByMonotonicStack(_arr);
+        MinimumCostTreeFromLeafValuesSolution
+            .MinimumCostTreeFromLeafValuesByMonotonicStack(_arr);
 }

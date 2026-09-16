@@ -99,11 +99,11 @@ internal static class MinimumTimeToReachTargetWithLimitedPowerSolution
         return bestPower < 0 ? NoPath() : TimeAndPower(bestTime, bestPower);
     }
 
-    private static List<(int To, long Weight)>[] BuildAdjacency(int n, int[][] edges)
+    private static List<(int To, long Weight)>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<(int To, long Weight)>[n];
+        var adjacency = new List<(int To, long Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }

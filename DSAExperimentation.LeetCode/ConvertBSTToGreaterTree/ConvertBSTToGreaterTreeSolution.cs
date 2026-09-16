@@ -28,20 +28,20 @@ internal static class ConvertBSTToGreaterTreeSolution
     public static BinaryTreeNode<int>? ConvertByReverseInOrder(BinaryTreeNode<int>? root)
     {
         var runningSum = 0;
-        Visit(root, ref runningSum);
+        VisitReverseInOrder(root, ref runningSum);
         return root;
 
-        static void Visit(BinaryTreeNode<int>? node, ref int runningSum)
+        static void VisitReverseInOrder(BinaryTreeNode<int>? node, ref int runningSum)
         {
             if (node is null)
             {
                 return;
             }
 
-            Visit(node.Right, ref runningSum);
+            VisitReverseInOrder(node.Right, ref runningSum);
             runningSum += node.Value;
             node.Value = runningSum;
-            Visit(node.Left, ref runningSum);
+            VisitReverseInOrder(node.Left, ref runningSum);
         }
     }
 

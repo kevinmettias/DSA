@@ -22,16 +22,16 @@ internal static class ParsingABooleanExpressionSolution
     // The textbook answer: one recursive procedure per sub-expression, leaning on
     // the CLR call stack and nothing else. Deliberately written without this
     // repo's primitives - it is the arm the composed solution has to beat.
-    public static bool ParseBoolExprByRecursiveDescent(string expression)
+    public static bool IsBoolExprTrueByRecursiveDescent(string expression)
     {
         var index = 0;
-        return ParseExpression(expression, ref index);
+        return IsExpressionTrue(expression, ref index);
     }
 
     // The explicit-stack answer: push characters as they are read and collapse the
     // innermost group on every ')', so an expression of any nesting depth costs a
     // single pass and no recursion.
-    public static bool ParseBoolExprByParserStack(string expression)
+    public static bool IsBoolExprTrueByParserStack(string expression)
     {
         var stack = new ParserStack();
 
@@ -61,7 +61,7 @@ internal static class ParsingABooleanExpressionSolution
     {
         var (trueCount, falseCount) = CountOperands(stack);
         var op = ConsumeGroupOperator(stack);
-        return EvaluateOperator(op, trueCount, falseCount) ? TrueToken : FalseToken;
+        return IsOperatorSatisfied(op, trueCount, falseCount) ? TrueToken : FalseToken;
     }
 
     // Pops every operand of the innermost group (down to, but not including, its
@@ -97,15 +97,17 @@ internal static class ParsingABooleanExpressionSolution
 
     // Every operator here is decided by counts alone: '!' is true when its single
     // operand was false, '&' when nothing was false, '|' when anything was true.
-    private static bool EvaluateOperator(char op, int trueCount, int falseCount) => op switch
+    private static bool IsOperatorSatisfied(
+        char op, int trueCount, int falseCount) => op switch
     {
         NotOperator => trueCount == 0,
         AndOperator => falseCount == 0,
         _ => trueCount > 0, // '|'
     };
 
-    // Consumes one sub-expression starting at index, advancing index past it.
-    private static bool ParseExpression(string expression, ref int index)
+    // Consumes one sub-expression starting at index, advancing index past it, and
+    // reports the value it evaluates to.
+    private static bool IsExpressionTrue(string expression, ref int index)
     {
         var c = expression[index];
 
@@ -118,27 +120,29 @@ internal static class ParsingABooleanExpressionSolution
         index += OperatorAndParenLength;
 
         return c == NotOperator
-            ? ParseNot(expression, ref index)
-            : ParseOperands(expression, c, ref index);
+            ? IsNegationTrue(expression, ref index)
+            : IsOperandGroupTrue(expression, c, ref index);
     }
 
-    // Consumes the single operand of a unary '!' and its closing ')'.
-    private static bool ParseNot(string expression, ref int index)
+    // Consumes the single operand of a unary '!' and its closing ')' and reports
+    // its negated value.
+    private static bool IsNegationTrue(string expression, ref int index)
     {
-        var value = ParseExpression(expression, ref index);
+        var value = IsExpressionTrue(expression, ref index);
         index++; // consume ')'
         return !value;
     }
 
     // Consumes the comma-separated operands of an n-ary '&'/'|' up to its closing
-    // ')', folding them with the operator as they are parsed.
-    private static bool ParseOperands(string expression, char op, ref int index)
+    // ')', folding them with the operator as they are parsed and reporting the
+    // folded value.
+    private static bool IsOperandGroupTrue(string expression, char op, ref int index)
     {
         var result = op == AndOperator;
 
         while (expression[index] != ')')
         {
-            var operand = ParseExpression(expression, ref index);
+            var operand = IsExpressionTrue(expression, ref index);
             result = op == AndOperator ? result && operand : result || operand;
 
             if (expression[index] == ',')

@@ -1,9 +1,9 @@
 namespace DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockUsingStrategy;
 
 // LeetCode 3652. Best Time to Buy and Sell Stock using Strategy: profit is
-// sum(strategy[i] * prices[i]). At most one length-k window may be overwritten to
-// "hold" for its first half and "sell" for its second half. Return the best
-// achievable profit.
+// sum(strategy[i] * prices[i]). At most one window of `windowSize` consecutive days
+// may be overwritten to "hold" for its first half and "sell" for its second half.
+// Return the best achievable profit.
 //
 // Every window is scored by how much overwriting it would change the total: delta(j)
 // = (sum of prices over the window's sell half) - (the window's own original
@@ -18,15 +18,15 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
     // Textbook baseline: for every one of the n - k + 1 candidate windows, sum both
     // halves from scratch. O(n * k) - the arm the composed strategy below has to
     // justify itself against.
-    public static long MaxProfitByBruteForceWindowSum(int[] prices, int[] strategy, int k)
+    public static long MaxProfitByBruteForceWindowSum(int[] prices, int[] strategy, int windowSize)
     {
         var baseProfit = BaseProfit(prices, strategy);
         var bestDelta = 0L;
-        var half = k / 2;
+        var half = windowSize / 2;
 
-        for (var start = 0; start + k <= prices.Length; start++)
+        for (var start = 0; start + windowSize <= prices.Length; start++)
         {
-            var delta = WindowDelta((prices, strategy), (start, k), half);
+            var delta = WindowDelta((prices, strategy), (start, windowSize), half);
             bestDelta = Math.Max(bestDelta, delta);
         }
 
@@ -36,14 +36,15 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
     // What overwriting one window with "hold then sell" would do to the total: the price sum
     // over its sell half, less the strategy*price contribution the window already had. Both
     // halves are recomputed from scratch, which is the arm the sliding version below avoids.
-    private static long WindowDelta((int[] Prices, int[] Strategy) market, (int Start, int K) window, int half)
+    private static long WindowDelta(
+        (int[] Prices, int[] Strategy) market, (int Start, int WindowSize) window, int half)
     {
         var (prices, strategy) = market;
-        var (start, k) = window;
+        var (start, windowSize) = window;
         var original = 0L;
         var sellHalf = 0L;
 
-        for (var offset = 0; offset < k; offset++)
+        for (var offset = 0; offset < windowSize; offset++)
         {
             original += (long)strategy[start + offset] * prices[start + offset];
 
@@ -58,18 +59,19 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
 
     // Same delta, computed with two running window sums that each move by exactly
     // one price as the window slides one step right - the original-contribution sum
-    // drops prices[start] and adds prices[start + k], the sell-half sum drops
-    // prices[start + half] and adds prices[start + k]. O(n) total instead of O(n * k).
-    public static long MaxProfitBySlidingWindowSum(int[] prices, int[] strategy, int k)
+    // drops prices[start] and adds prices[start + windowSize], the sell-half sum drops
+    // prices[start + half] and adds prices[start + windowSize]. O(n) total instead of O(n * k).
+    public static long MaxProfitBySlidingWindowSum(int[] prices, int[] strategy, int windowSize)
     {
         var baseProfit = BaseProfit(prices, strategy);
-        var half = k / 2;
-        var (original, sellHalf) = InitialWindowSums((prices, strategy), k, half);
+        var half = windowSize / 2;
+        var (original, sellHalf) = InitialWindowSums((prices, strategy), windowSize, half);
         var bestDelta = Math.Max(0L, sellHalf - original);
 
-        for (var start = 1; start + k <= prices.Length; start++)
+        for (var start = 1; start + windowSize <= prices.Length; start++)
         {
-            (original, sellHalf) = SlideWindow((prices, strategy), (start, k), half, (original, sellHalf));
+            (original, sellHalf) = SlideWindow(
+                (prices, strategy), (start, windowSize), half, (original, sellHalf));
             bestDelta = Math.Max(bestDelta, sellHalf - original);
         }
 
@@ -79,13 +81,13 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
     // The first window's two sums, computed from scratch: its strategy*price contribution
     // over the whole window, and the price sum over its second half alone.
     private static (long Original, long SellHalf) InitialWindowSums(
-        (int[] Prices, int[] Strategy) market, int k, int half)
+        (int[] Prices, int[] Strategy) market, int windowSize, int half)
     {
         var (prices, strategy) = market;
         var original = 0L;
         var sellHalf = 0L;
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < windowSize; i++)
         {
             original += (long)strategy[i] * prices[i];
 
@@ -101,13 +103,16 @@ internal static class BestTimeToBuyAndSellStockUsingStrategySolution
     // Carry both running sums one step right: the original-contribution sum drops the price
     // leaving the window and adds the one entering it, and the sell-half sum does the same.
     private static (long Original, long SellHalf) SlideWindow(
-        (int[] Prices, int[] Strategy) market, (int Start, int K) window, int half, (long Original, long SellHalf) running)
+        (int[] Prices, int[] Strategy) market,
+        (int Start, int WindowSize) window,
+        int half,
+        (long Original, long SellHalf) running)
     {
         var (prices, strategy) = market;
-        var (start, k) = window;
+        var (start, windowSize) = window;
         var (original, sellHalf) = running;
         var leaving = start - 1;
-        var entering = start + k - 1;
+        var entering = start + windowSize - 1;
         var leavingHalf = start + half - 1;
 
         original += (long)strategy[entering] * prices[entering] - (long)strategy[leaving] * prices[leaving];

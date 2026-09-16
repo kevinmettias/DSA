@@ -41,8 +41,8 @@ public class FrogJumpBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool RecursiveBruteForce() => FrogJumpSolution.CanCrossByRecursiveBruteForce(_stones);
+    public bool CanCrossByRecursiveBruteForce() => FrogJumpSolution.CanCrossByRecursiveBruteForce(_stones);
 
     [Benchmark]
-    public bool HashMapDynamicProgramming() => FrogJumpSolution.CanCrossByHashMapDynamicProgramming(_stones);
+    public bool CanCrossByHashMapDynamicProgramming() => FrogJumpSolution.CanCrossByHashMapDynamicProgramming(_stones);
 }

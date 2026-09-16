@@ -44,7 +44,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
     {
         foreach (var direction in directions)
         {
-            if (RayReachesTarget(from, blocker, target, direction))
+            if (IsTargetOnRay(from, blocker, target, direction))
             {
                 return true;
             }
@@ -55,7 +55,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
 
     // One ray outward from the piece, stepping until the board edge or the blocking
     // piece stops it: does it stand on the target before either of those happens?
-    private static bool RayReachesTarget(
+    private static bool IsTargetOnRay(
         ChessSquare from, ChessSquare blocker, ChessSquare target, (int DeltaRow, int DeltaCol) direction)
     {
         var row = from.Row + direction.DeltaRow;
@@ -108,7 +108,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
             return false;
         }
 
-        return PathIsClear(piece, blocker, queen, offset);
+        return IsPathClear(piece, blocker, queen, offset);
     }
 
     // Whether a queen this far away sits on the line the piece slides along: a
@@ -128,7 +128,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
     // left is whether the other piece stands strictly between them: step the one
     // segment from the piece toward the queen, and stop at the first thing that is not
     // the queen herself.
-    private static bool PathIsClear(
+    private static bool IsPathClear(
         ChessSquare piece, ChessSquare blocker, ChessSquare queen, (int DeltaRow, int DeltaCol) offset)
     {
         var (deltaRow, deltaCol) = offset;

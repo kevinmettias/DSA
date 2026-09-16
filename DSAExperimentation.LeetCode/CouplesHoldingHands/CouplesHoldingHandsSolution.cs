@@ -37,7 +37,7 @@ internal static class CouplesHoldingHandsSolution
 
         for (var seat = 0; seat < n; seat += SeatsPerCouple)
         {
-            if (SwapPartnerIntoPlace(seats, position, seat))
+            if (TrySwapPartnerIntoPlace(seats, position, seat))
             {
                 swaps++;
             }
@@ -46,7 +46,9 @@ internal static class CouplesHoldingHandsSolution
         return swaps;
     }
 
-    private static bool SwapPartnerIntoPlace(int[] row, int[] position, int seat)
+    // Attempts the one swap this seat needs and reports whether it happened: a seat
+    // whose partner already sits beside it changes nothing and answers false.
+    private static bool TrySwapPartnerIntoPlace(int[] row, int[] position, int seat)
     {
         var first = row[seat];
         var isFirstOfCouple = first % SeatsPerCouple == 0;

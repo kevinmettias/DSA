@@ -19,11 +19,11 @@ public sealed class IntegerReplacementTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinStepsByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumStepCount(int n, int expected)
-        => Assert.Equal(expected, IntegerReplacementSolution.MinStepsByUnmemoizedRecursion(n));
+    public void MinStepsByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumStepCount(int startValue, int expected)
+        => Assert.Equal(expected, IntegerReplacementSolution.MinStepsByUnmemoizedRecursion(startValue));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinStepsByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumStepCount(int n, int expected)
-        => Assert.Equal(expected, IntegerReplacementSolution.MinStepsByMemoizedRecurrence(n));
+    public void MinStepsByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumStepCount(int startValue, int expected)
+        => Assert.Equal(expected, IntegerReplacementSolution.MinStepsByMemoizedRecurrence(startValue));
 }

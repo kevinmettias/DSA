@@ -30,12 +30,13 @@ internal static class FindTheLengthOfTheLongestCommonPrefixSolution
         return best;
     }
 
-    private static int SharedPrefixLength(string a, string b)
+    // How many leading digits the two digit strings share.
+    private static int SharedPrefixLength(string firstDigits, string secondDigits)
     {
-        var max = Math.Min(a.Length, b.Length);
+        var max = Math.Min(firstDigits.Length, secondDigits.Length);
         var length = 0;
 
-        while (length < max && a[length] == b[length])
+        while (length < max && firstDigits[length] == secondDigits[length])
         {
             length++;
         }

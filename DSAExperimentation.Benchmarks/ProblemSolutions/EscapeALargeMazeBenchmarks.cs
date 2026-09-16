@@ -55,10 +55,10 @@ public class EscapeALargeMazeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool FullBoardFloodFill() =>
+    public bool CanEscapeByFullBoardFloodFill() =>
         EscapeALargeMazeSolution.CanEscapeByFullBoardFloodFill(_blockedCells, _source, _target, BoardSize);
 
     [Benchmark]
-    public bool CappedTraversalWithSetPrimitive() =>
+    public bool CanEscapeByCappedTraversal() =>
         EscapeALargeMazeSolution.CanEscapeByCappedTraversal(_blocked, _source, _target, BoardSize);
 }

@@ -28,8 +28,8 @@ public class JumpGameBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool ForwardReachabilityDP() => JumpGameSolution.CanJumpByForwardReachabilityDp(_values);
+    public bool CanJumpByForwardReachabilityDp() => JumpGameSolution.CanJumpByForwardReachabilityDp(_values);
 
     [Benchmark]
-    public bool GreedyFarthestReach() => JumpGameSolution.CanJumpByGreedyFarthestReach(_values);
+    public bool CanJumpByGreedyFarthestReach() => JumpGameSolution.CanJumpByGreedyFarthestReach(_values);
 }

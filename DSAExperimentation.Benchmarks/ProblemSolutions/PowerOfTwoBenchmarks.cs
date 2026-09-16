@@ -13,8 +13,8 @@ public class PowerOfTwoBenchmarks
     private const int Value = 999_999_937; // a large prime, far from any power of two
 
     [Benchmark(Baseline = true)]
-    public bool RepeatedDivision() => PowerOfTwoSolution.IsPowerOfTwoByRepeatedDivision(Value);
+    public bool IsPowerOfTwoByRepeatedDivision() => PowerOfTwoSolution.IsPowerOfTwoByRepeatedDivision(Value);
 
     [Benchmark]
-    public bool BitTrick() => PowerOfTwoSolution.IsPowerOfTwoByBitTrick(Value);
+    public bool IsPowerOfTwoByBitTrick() => PowerOfTwoSolution.IsPowerOfTwoByBitTrick(Value);
 }

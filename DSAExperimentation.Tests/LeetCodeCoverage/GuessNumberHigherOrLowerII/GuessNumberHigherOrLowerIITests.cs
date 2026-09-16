@@ -18,12 +18,12 @@ public sealed class GuessNumberHigherOrLowerIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetMoneyAmountByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumGuaranteedMoney(
-        int n, int expected) =>
-        Assert.Equal(expected, GuessNumberHigherOrLowerIISolution.GetMoneyAmountByUnmemoizedRecursion(n));
+        int highestNumber, int expected) =>
+        Assert.Equal(expected, GuessNumberHigherOrLowerIISolution.GetMoneyAmountByUnmemoizedRecursion(highestNumber));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetMoneyAmountByMemoizedRecursion_LeetCodeExamples_ReturnsMinimumGuaranteedMoney(
-        int n, int expected) =>
-        Assert.Equal(expected, GuessNumberHigherOrLowerIISolution.GetMoneyAmountByMemoizedRecursion(n));
+        int highestNumber, int expected) =>
+        Assert.Equal(expected, GuessNumberHigherOrLowerIISolution.GetMoneyAmountByMemoizedRecursion(highestNumber));
 }

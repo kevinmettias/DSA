@@ -16,11 +16,17 @@ public sealed class FindTheKthCharacterInStringGameITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void KthCharacterBySimulation_LeetCodeExamples_ReturnsKthCharacter(int k, char expected) =>
-        Assert.Equal(expected, FindTheKthCharacterInStringGameISolution.KthCharacterBySimulation(k));
+    public void KthCharacterBySimulation_LeetCodeExamples_ReturnsKthCharacter(
+        int kthPosition, char expected) =>
+        Assert.Equal(
+            expected,
+            FindTheKthCharacterInStringGameISolution.KthCharacterBySimulation(kthPosition));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void KthCharacterByBitCount_LeetCodeExamples_ReturnsKthCharacter(int k, char expected) =>
-        Assert.Equal(expected, FindTheKthCharacterInStringGameISolution.KthCharacterByBitCount(k));
+    public void KthCharacterByBitCount_LeetCodeExamples_ReturnsKthCharacter(
+        int kthPosition, char expected) =>
+        Assert.Equal(
+            expected,
+            FindTheKthCharacterInStringGameISolution.KthCharacterByBitCount(kthPosition));
 }

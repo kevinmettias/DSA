@@ -16,6 +16,6 @@ public sealed class NumberOf1BitsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBitClear_LeetCodeExamples_ReturnsSetBitCount(uint n, int expected) =>
-        Assert.Equal(expected, NumberOf1BitsSolution.CountByBitClear(n));
+    public void CountByBitClear_LeetCodeExamples_ReturnsSetBitCount(uint value, int expected) =>
+        Assert.Equal(expected, NumberOf1BitsSolution.CountByBitClear(value));
 }

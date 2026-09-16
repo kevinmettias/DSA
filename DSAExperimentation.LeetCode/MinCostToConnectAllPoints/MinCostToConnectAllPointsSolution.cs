@@ -140,6 +140,6 @@ internal static class MinCostToConnectAllPointsSolution
         return nodes;
     }
 
-    private static int ManhattanDistance(int[] a, int[] b) =>
-        Math.Abs(a[0] - b[0]) + Math.Abs(a[1] - b[1]);
+    private static int ManhattanDistance(int[] firstPoint, int[] secondPoint) =>
+        Math.Abs(firstPoint[0] - secondPoint[0]) + Math.Abs(firstPoint[1] - secondPoint[1]);
 }

@@ -54,13 +54,13 @@ internal static class TheSkylineProblemSolution
         return criticalX;
     }
 
-    private static int MaxHeightAt(int[][] buildings, int x)
+    private static int MaxHeightAt(int[][] buildings, int xCoordinate)
     {
         var currentHeight = 0;
 
         foreach (var building in buildings)
         {
-            if (RaisesSkylineAt(building, x, currentHeight))
+            if (IsSkylineRaisedAt(building, xCoordinate, currentHeight))
             {
                 currentHeight = building[HeightIndex];
             }
@@ -69,10 +69,10 @@ internal static class TheSkylineProblemSolution
         return currentHeight;
     }
 
-    // A building only raises the skyline at x while x lies inside its span and it
-    // stands taller than the best height found so far.
-    private static bool RaisesSkylineAt(int[] building, int x, int currentHeight)
-        => building[0] <= x && x < building[1] && building[HeightIndex] > currentHeight;
+    // A building only raises the skyline at xCoordinate while that coordinate lies
+    // inside its span and it stands taller than the best height found so far.
+    private static bool IsSkylineRaisedAt(int[] building, int xCoordinate, int currentHeight)
+        => building[0] <= xCoordinate && xCoordinate < building[1] && building[HeightIndex] > currentHeight;
 
     // This repo's own Heap<int, MaxHeapOrder<int>> as the active-height
     // frontier during the sweep, with lazy deletion via a
@@ -88,7 +88,7 @@ internal static class TheSkylineProblemSolution
 
         while (i < events.Count)
         {
-            i = ProcessNextXCoordinate(events, i, state);
+            i = ApplyEventsAtNextXCoordinate(events, i, state);
         }
 
         return state.Result;
@@ -109,14 +109,15 @@ internal static class TheSkylineProblemSolution
         return events;
     }
 
-    private static int ProcessNextXCoordinate(List<(int X, int Height)> events, int i, SweepState state)
+    private static int ApplyEventsAtNextXCoordinate(
+        List<(int X, int Height)> events, int startIndex, SweepState state)
     {
-        var x = events[i].X;
+        var x = events[startIndex].X;
 
-        while (i < events.Count && events[i].X == x)
+        while (startIndex < events.Count && events[startIndex].X == x)
         {
-            ApplyEvent(events[i].Height, state.Heap, state.PendingRemovals);
-            i++;
+            ApplyEvent(events[startIndex].Height, state.Heap, state.PendingRemovals);
+            startIndex++;
         }
 
         DiscardRemovedTops(state.Heap, state.PendingRemovals);
@@ -128,7 +129,7 @@ internal static class TheSkylineProblemSolution
             state.PreviousHeight = currentHeight;
         }
 
-        return i;
+        return startIndex;
     }
 
     private static void ApplyEvent(int height, Heap<int, MaxHeapOrder<int>> heap, HashMap<int, int> pendingRemovals)

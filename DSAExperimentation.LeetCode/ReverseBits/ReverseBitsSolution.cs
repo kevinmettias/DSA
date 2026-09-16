@@ -11,14 +11,14 @@ internal static class ReverseBitsSolution
 {
     private const int BitWidth = 32;
 
-    public static uint ReverseByBitShift(uint n)
+    public static uint ReverseByBitShift(uint value)
     {
         var reversed = 0u;
 
         for (var i = 0; i < BitWidth; i++)
         {
-            reversed = (reversed << 1) | (n & 1);
-            n >>= 1;
+            reversed = (reversed << 1) | (value & 1);
+            value >>= 1;
         }
 
         return reversed;

@@ -15,17 +15,17 @@ internal static class RangeSumQueryMutableSolution
 {
     // The textbook baseline this composition has to justify itself against: a raw array, O(1)
     // writes on Update, an O(n) rescan on every SumRange.
-    public static INumArray CreateByArrayRescan(int[] nums) => new ArrayRescanNumArray(nums);
+    public static INumArray CreateByArrayRescan(int[] nums) => new ArrayRescanRangeSum(nums);
 
     // The composed answer: one SegmentTree built once (O(n)), so every Update/SumRange afterward is
     // O(log n) instead of an O(n) rescan.
-    public static INumArray CreateBySegmentTreeQuery(int[] nums) => new SegmentTreeNumArray(nums);
+    public static INumArray CreateBySegmentTreeQuery(int[] nums) => new SegmentTreeRangeSum(nums);
 
-    private sealed class ArrayRescanNumArray : INumArray
+    private sealed class ArrayRescanRangeSum : INumArray
     {
         private readonly int[] _nums;
 
-        public ArrayRescanNumArray(int[] nums) => _nums = (int[])nums.Clone();
+        public ArrayRescanRangeSum(int[] nums) => _nums = (int[])nums.Clone();
 
         public void Update(int index, int val) => _nums[index] = val;
 
@@ -42,11 +42,11 @@ internal static class RangeSumQueryMutableSolution
         }
     }
 
-    private sealed class SegmentTreeNumArray : INumArray
+    private sealed class SegmentTreeRangeSum : INumArray
     {
         private readonly SegmentTree<int, SumOperation<int>> _tree;
 
-        public SegmentTreeNumArray(int[] nums) => _tree = new SegmentTree<int, SumOperation<int>>(nums);
+        public SegmentTreeRangeSum(int[] nums) => _tree = new SegmentTree<int, SumOperation<int>>(nums);
 
         public void Update(int index, int val) => _tree.Update(index, val);
 

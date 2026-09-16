@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ElevatorRequestsISolution's - open-coded
 // Math.Abs against Algorithms.ShortestPaths' ManhattanHeuristic witness,
 // applied purely for its distance computation on a one-column grid rather
-// than an actual search. LC 4020 caps n and requests.Length at 100; this
+// than an actual search. LC 4020 caps floorCount and requests.Length at 100; this
 // scales past that ceiling only to confirm neither arm regresses, since both
 // are the same O(m) walk.
 [MemoryDiagnoser]

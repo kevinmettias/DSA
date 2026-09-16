@@ -75,7 +75,7 @@ internal static class PalindromePairsSolution
 
         var prefixMatch = FindComplementIndex(indexOf, prefix);
 
-        if (LeavesPalindromicRightSide(entry.Word, cut, suffix) && IsAnotherWord(prefixMatch, entry.Index))
+        if (HasPalindromicRightSide(entry.Word, cut, suffix) && IsAnotherWord(prefixMatch, entry.Index))
         {
             pairs.Add((entry.Index, prefixMatch));
         }
@@ -94,22 +94,22 @@ internal static class PalindromePairsSolution
     }
 
     // A pair needs two distinct words, so the complement found must be another one.
-    private static bool IsAnotherWord(int matchIndex, int i)
-        => matchIndex >= 0 && matchIndex != i;
+    private static bool IsAnotherWord(int matchIndex, int wordIndex)
+        => matchIndex >= 0 && matchIndex != wordIndex;
 
     // The cut leaves a right-hand side, and that side already reads as a palindrome,
     // so a reversed complement on the left completes the pair.
-    private static bool LeavesPalindromicRightSide(string word, int cut, string suffix)
+    private static bool HasPalindromicRightSide(string word, int cut, string suffix)
         => cut != word.Length && IsPalindrome(suffix);
 
-    private static bool IsPalindrome(string s)
+    private static bool IsPalindrome(string text)
     {
         var left = 0;
-        var right = s.Length - 1;
+        var right = text.Length - 1;
 
         while (left < right)
         {
-            if (s[left++] != s[right--])
+            if (text[left++] != text[right--])
             {
                 return false;
             }
@@ -118,9 +118,9 @@ internal static class PalindromePairsSolution
         return true;
     }
 
-    private static string Reverse(string s)
+    private static string Reverse(string text)
     {
-        var chars = s.ToCharArray();
+        var chars = text.ToCharArray();
         Array.Reverse(chars);
         return new string(chars);
     }

@@ -18,7 +18,7 @@ public class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKBenchmarks
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _minimumDistance;
     [Params(2_000, 20_000)]
     public int Length { get; set; }
 
@@ -27,14 +27,16 @@ public class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
-        _k = Math.Max(1, Length / 10);
+        _minimumDistance = Math.Max(1, Length / 10);
     }
 
     [Benchmark(Baseline = true)]
     public long BruteForce() =>
-        MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution.MaxAlternatingSumByBruteForce(_nums, _k);
+        MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution.MaxAlternatingSumByBruteForce(
+            _nums, _minimumDistance);
 
     [Benchmark]
     public long SegmentTreeSweep() =>
-        MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution.MaxAlternatingSumBySegmentTree(_nums, _k);
+        MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution.MaxAlternatingSumBySegmentTree(
+            _nums, _minimumDistance);
 }

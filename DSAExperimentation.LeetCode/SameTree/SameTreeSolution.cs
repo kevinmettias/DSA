@@ -13,10 +13,10 @@ namespace DSAExperimentation.LeetCode.SameTree;
 // and deleting the redundant second arm.
 internal static class SameTreeSolution
 {
-    public static bool IsSameByRecursiveCompare(BinaryTreeNode<int>? p, BinaryTreeNode<int>? q) =>
-        p is null || q is null
-            ? p is null && q is null
-            : p.Value == q.Value &&
-              IsSameByRecursiveCompare(p.Left, q.Left) &&
-              IsSameByRecursiveCompare(p.Right, q.Right);
+    public static bool IsSameByRecursiveCompare(BinaryTreeNode<int>? firstTree, BinaryTreeNode<int>? secondTree) =>
+        firstTree is null || secondTree is null
+            ? firstTree is null && secondTree is null
+            : firstTree.Value == secondTree.Value &&
+              IsSameByRecursiveCompare(firstTree.Left, secondTree.Left) &&
+              IsSameByRecursiveCompare(firstTree.Right, secondTree.Right);
 }

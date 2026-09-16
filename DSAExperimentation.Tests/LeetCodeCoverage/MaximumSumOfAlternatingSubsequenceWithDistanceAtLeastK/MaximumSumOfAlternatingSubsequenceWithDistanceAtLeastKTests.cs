@@ -19,10 +19,10 @@ public sealed class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxAlternatingSumByBruteForce_LeetCodeExamples_ReturnsMaximumAlternatingSum(
-        int[] nums, int k, long expected)
+        int[] nums, int minimumDistance, long expected)
     {
         var actual = MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution
-            .MaxAlternatingSumByBruteForce(nums, k);
+            .MaxAlternatingSumByBruteForce(nums, minimumDistance);
 
         Assert.Equal(expected, actual);
     }
@@ -30,10 +30,10 @@ public sealed class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxAlternatingSumBySegmentTree_LeetCodeExamples_ReturnsMaximumAlternatingSum(
-        int[] nums, int k, long expected)
+        int[] nums, int minimumDistance, long expected)
     {
         var actual = MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution
-            .MaxAlternatingSumBySegmentTree(nums, k);
+            .MaxAlternatingSumBySegmentTree(nums, minimumDistance);
 
         Assert.Equal(expected, actual);
     }

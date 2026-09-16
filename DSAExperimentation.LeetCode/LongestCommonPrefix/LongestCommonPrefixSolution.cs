@@ -55,9 +55,9 @@ internal static class LongestCommonPrefixSolution
     {
         public int Length => maxLength + 1;
 
-        public int Get(int length) => AllSharePrefix(length) ? 0 : 1;
+        public int Get(int length) => IsPrefixSharedByAll(length) ? 0 : 1;
 
-        private bool AllSharePrefix(int length)
+        private bool IsPrefixSharedByAll(int length)
         {
             var firstSpan = values[0].AsSpan(0, length);
 

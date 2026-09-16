@@ -35,8 +35,8 @@ public class PathSumBenchmarks
     };
 
     [Benchmark(Baseline = true)]
-    public bool RecursivePathSum() => PathSumSolution.HasPathSumByRecursion(_root, PathSumExampleTree.TargetSum);
+    public bool HasPathSumByRecursion() => PathSumSolution.HasPathSumByRecursion(_root, PathSumExampleTree.TargetSum);
 
     [Benchmark]
-    public bool AllRootToLeafPathsSum() => PathSumSolution.HasPathSumByPathEnumeration(_root, PathSumExampleTree.TargetSum);
+    public bool HasPathSumByPathEnumeration() => PathSumSolution.HasPathSumByPathEnumeration(_root, PathSumExampleTree.TargetSum);
 }

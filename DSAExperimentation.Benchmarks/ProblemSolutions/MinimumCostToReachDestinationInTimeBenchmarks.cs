@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Dijkstra - so construction is charged to [GlobalSetup] rather than to the search
 // being measured.
 //
-// N is the last city, so the map has N + 1 of them. The sizes are smaller than the
-// pre-migration ones (20 and 30) because the baseline changed: it used to walk a
-// one-way chain of its own, and now walks LeetCode's genuinely two-way roads, which
-// branch four ways instead of two. That is the arm's real cost, and 14 already puts
-// it in the millions of calls.
+// LastCity is the last city index, so the map holds LastCity + 1 cities. The sizes are
+// smaller than the pre-migration ones (20 and 30) because the baseline changed: it used
+// to walk a one-way chain of its own, and now walks LeetCode's genuinely two-way roads,
+// which branch four ways instead of two. That is the arm's real cost, and 14 already
+// puts it in the millions of calls.
 [MemoryDiagnoser]
 public class MinimumCostToReachDestinationInTimeBenchmarks
 {
@@ -27,15 +27,15 @@ public class MinimumCostToReachDestinationInTimeBenchmarks
     private TimeCityGraph _graph = null!;
     private int _maxTime;
     [Params(10, 14)]
-    public int N { get; set; }
+    public int LastCity { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var edges = TimedRoadWorkloads.BuildStepChain(N);
-        var passingFees = TimedRoadWorkloads.BuildCyclingFees(N);
+        var edges = TimedRoadWorkloads.BuildStepChain(LastCity);
+        var passingFees = TimedRoadWorkloads.BuildCyclingFees(LastCity);
 
-        _maxTime = TimedRoadWorkloads.BudgetFor(N);
+        _maxTime = TimedRoadWorkloads.BudgetFor(LastCity);
         _roads = RoadNetwork.Build(edges, passingFees);
         _graph = TimeCityGraph.Build(_maxTime, edges, passingFees);
     }

@@ -9,11 +9,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class EliminationGameBenchmarks
 {
     [Params(10_000, 1_000_000)]
-    public int N { get; set; }
+    public int NumberCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int ListSimulation() => EliminationGameSolution.LastRemainingByListSimulation(N);
+    public int ListSimulation() => EliminationGameSolution.LastRemainingByListSimulation(NumberCount);
 
     [Benchmark]
-    public int HeadStepArithmetic() => EliminationGameSolution.LastRemainingByHeadStepArithmetic(N);
+    public int HeadStepArithmetic() => EliminationGameSolution.LastRemainingByHeadStepArithmetic(NumberCount);
 }

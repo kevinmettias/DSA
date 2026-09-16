@@ -40,7 +40,7 @@ internal static class FindTheScoreDifferenceInAGameSolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            if (!marked[i] && BeatsCurrentSmallest(nums, i, best))
+            if (!marked[i] && IsNewSmallest(nums, i, best))
             {
                 best = i;
             }
@@ -51,7 +51,7 @@ internal static class FindTheScoreDifferenceInAGameSolution
 
     // The first candidate found starts the search; after that a value has to be strictly
     // smaller to take the title.
-    private static bool BeatsCurrentSmallest(int[] nums, int index, int bestIndex) =>
+    private static bool IsNewSmallest(int[] nums, int index, int bestIndex) =>
         bestIndex < 0 || nums[index] < nums[bestIndex];
 
     // Composed: push every (value, index) pair into this repo's Heap once -

@@ -11,7 +11,7 @@ internal static class SubarraySumEqualsKSolution
 {
     // Baseline: the textbook O(n^2) double loop over every (start, end) pair. BCL
     // only internally - no repo container beyond the caller-supplied array.
-    public static int CountByBruteForce(int[] nums, int k)
+    public static int CountByBruteForce(int[] nums, int targetSum)
     {
         var count = 0;
 
@@ -21,7 +21,7 @@ internal static class SubarraySumEqualsKSolution
             for (var end = start; end < nums.Length; end++)
             {
                 sum += nums[end];
-                if (sum == k)
+                if (sum == targetSum)
                 {
                     count++;
                 }
@@ -31,7 +31,7 @@ internal static class SubarraySumEqualsKSolution
         return count;
     }
 
-    public static int CountByPrefixSumHashMap(int[] nums, int k)
+    public static int CountByPrefixSumHashMap(int[] nums, int targetSum)
     {
         var countByPrefixSum = new HashMap<int, int>();
         countByPrefixSum.Set(0, 1);
@@ -43,7 +43,7 @@ internal static class SubarraySumEqualsKSolution
         {
             prefixSum += num;
 
-            if (countByPrefixSum.TryGetValue(prefixSum - k, out var matches))
+            if (countByPrefixSum.TryGetValue(prefixSum - targetSum, out var matches))
             {
                 count += matches;
             }

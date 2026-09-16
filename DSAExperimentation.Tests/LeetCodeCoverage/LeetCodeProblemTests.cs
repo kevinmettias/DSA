@@ -20,15 +20,15 @@ public sealed class LeetCodeProblemTests
     {
         get
         {
-            var data = new TheoryData<ArmIdentity>();
+            var caseArms = new TheoryData<ArmIdentity>();
 
             foreach (var arm in LeetCodeProblemRegistry.CaseArms())
             {
-                data.Add(new ArmIdentity(
+                caseArms.Add(new ArmIdentity(
                     TitleSlug: arm.TitleSlug, StrategyName: arm.StrategyName, CaseName: arm.EntryName));
             }
 
-            return data;
+            return caseArms;
         }
     }
 

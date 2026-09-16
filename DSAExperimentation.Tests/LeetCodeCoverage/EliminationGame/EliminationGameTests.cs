@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EliminationGame;
 
 // Harness only. Both strategies live in EliminationGameSolution. One test method
 // per strategy over one shared set of examples - LeetCode's own two published cases
-// (n=1, n=9) plus the larger n values the pre-migration test cross-validated the
+// (1 and 9) plus the larger counts the pre-migration test cross-validated the
 // closed-form arithmetic against a list simulation for - so a failure names the
 // strategy that broke.
 public sealed class EliminationGameTests
@@ -25,11 +25,11 @@ public sealed class EliminationGameTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LastRemainingByHeadStepArithmetic_Examples_ReturnsSurvivingNumber(int n, int expected) =>
-        Assert.Equal(expected, EliminationGameSolution.LastRemainingByHeadStepArithmetic(n));
+    public void LastRemainingByHeadStepArithmetic_Examples_ReturnsSurvivingNumber(int numberCount, int expected) =>
+        Assert.Equal(expected, EliminationGameSolution.LastRemainingByHeadStepArithmetic(numberCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LastRemainingByListSimulation_Examples_ReturnsSurvivingNumber(int n, int expected) =>
-        Assert.Equal(expected, EliminationGameSolution.LastRemainingByListSimulation(n));
+    public void LastRemainingByListSimulation_Examples_ReturnsSurvivingNumber(int numberCount, int expected) =>
+        Assert.Equal(expected, EliminationGameSolution.LastRemainingByListSimulation(numberCount));
 }

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodNumbers;
 // repeated-multiplication arm that used to live untested as the benchmark baseline,
 // and the exponentiation-by-squaring arm - pinned here to LeetCode's published
 // examples plus the two smallest lengths that separate the even-index and
-// odd-index digit alphabets (n = 2 is 5 * 4, n = 3 is 5^2 * 4).
+// odd-index digit alphabets (length = 2 is 5 * 4, length = 3 is 5^2 * 4).
 public sealed class CountGoodNumbersTests
 {
     public static TheoryData<long, int> Examples =>
@@ -23,12 +23,12 @@ public sealed class CountGoodNumbersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodNumbersByRepeatedMultiplication_LeetCodeExamples_ReturnsExpectedCount(
-        long n, int expected) =>
-        Assert.Equal(expected, CountGoodNumbersSolution.CountGoodNumbersByRepeatedMultiplication(n));
+        long length, int expected) =>
+        Assert.Equal(expected, CountGoodNumbersSolution.CountGoodNumbersByRepeatedMultiplication(length));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodNumbersByExponentiationBySquaring_LeetCodeExamples_ReturnsExpectedCount(
-        long n, int expected) =>
-        Assert.Equal(expected, CountGoodNumbersSolution.CountGoodNumbersByExponentiationBySquaring(n));
+        long length, int expected) =>
+        Assert.Equal(expected, CountGoodNumbersSolution.CountGoodNumbersByExponentiationBySquaring(length));
 }

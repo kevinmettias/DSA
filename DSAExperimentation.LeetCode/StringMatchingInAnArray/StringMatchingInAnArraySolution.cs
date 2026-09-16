@@ -24,7 +24,7 @@ internal static class StringMatchingInAnArraySolution
         {
             for (var j = 0; j < words.Length; j++)
             {
-                if (j != i && ContainsNaive(new Haystack(words[j]), new Needle(words[i])))
+                if (j != i && HasNaiveContainment(new Haystack(words[j]), new Needle(words[i])))
                 {
                     contained.Add(words[i]);
                     break;
@@ -35,11 +35,11 @@ internal static class StringMatchingInAnArraySolution
         return contained;
     }
 
-    private static bool ContainsNaive(Haystack text, Needle pattern)
+    private static bool HasNaiveContainment(Haystack text, Needle pattern)
     {
         for (var start = 0; start + pattern.Text.Length <= text.Text.Length; start++)
         {
-            if (MatchesAt(text, pattern, start))
+            if (IsMatchAt(text, pattern, start))
             {
                 return true;
             }
@@ -48,7 +48,7 @@ internal static class StringMatchingInAnArraySolution
         return false;
     }
 
-    private static bool MatchesAt(Haystack text, Needle pattern, int start)
+    private static bool IsMatchAt(Haystack text, Needle pattern, int start)
     {
         for (var offset = 0; offset < pattern.Text.Length; offset++)
         {

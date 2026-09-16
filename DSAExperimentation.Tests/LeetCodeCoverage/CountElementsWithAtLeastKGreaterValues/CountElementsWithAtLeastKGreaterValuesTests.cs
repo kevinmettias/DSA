@@ -15,17 +15,21 @@ public sealed class CountElementsWithAtLeastKGreaterValuesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountQualifiedByBruteForce_LeetCodeExamples_ReturnsQualifiedCount(int[] nums, int k, int expected)
+    public void CountQualifiedByBruteForce_LeetCodeExamples_ReturnsQualifiedCount(
+        int[] nums, int requiredGreaterCount, int expected)
     {
-        var actual = CountElementsWithAtLeastKGreaterValuesSolution.CountQualifiedByBruteForce(nums, k);
+        var actual = CountElementsWithAtLeastKGreaterValuesSolution.CountQualifiedByBruteForce(
+            nums, requiredGreaterCount);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountQualifiedBySortedUpperBound_LeetCodeExamples_ReturnsQualifiedCount(int[] nums, int k, int expected)
+    public void CountQualifiedBySortedUpperBound_LeetCodeExamples_ReturnsQualifiedCount(
+        int[] nums, int requiredGreaterCount, int expected)
     {
-        var actual = CountElementsWithAtLeastKGreaterValuesSolution.CountQualifiedBySortedUpperBound(nums, k);
+        var actual = CountElementsWithAtLeastKGreaterValuesSolution.CountQualifiedBySortedUpperBound(
+            nums, requiredGreaterCount);
         Assert.Equal(expected, actual);
     }
 }

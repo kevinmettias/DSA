@@ -36,13 +36,13 @@ internal static class CountNumberOfTeamsSolution
         return teams;
     }
 
-    private static int CountTeamsWithMiddle(int[] rating, int i, int j)
+    private static int CountTeamsWithMiddle(int[] rating, int leftIndex, int middleIndex)
     {
         var teams = 0;
 
-        for (var k = j + 1; k < rating.Length; k++)
+        for (var k = middleIndex + 1; k < rating.Length; k++)
         {
-            if (FormsRankOrderedTeam(rating[i], rating[j], rating[k]))
+            if (IsRankOrderedTeam(rating[leftIndex], rating[middleIndex], rating[k]))
             {
                 teams++;
             }
@@ -52,8 +52,8 @@ internal static class CountNumberOfTeamsSolution
     }
 
     // The three ratings run strictly one way - all rising or all falling - which is what
-    // makes i, j, k a team.
-    private static bool FormsRankOrderedTeam(int first, int middle, int last) =>
+    // makes the left, middle and right soldier of a triple a team.
+    private static bool IsRankOrderedTeam(int first, int middle, int last) =>
         (first < middle && middle < last) || (first > middle && middle > last);
 
     // Each of the four counts comes from a coordinate-compressed sweep: rank a

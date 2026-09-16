@@ -14,7 +14,7 @@ public sealed partial class KthSmallestElementInABSTTests
     [Fact]
     public void KthSmallest_FirstRank_ReturnsMinimumValue()
     {
-        // [3,1,4,null,2], k = 1 -> 1
+        // [3,1,4,null,2], rank = 1 -> 1
         var root = new BinaryTreeNode<int>(3) { Left = new(1) { Right = new(2) }, Right = new(4) };
 
         var actual = KthSmallest(root, 1);
@@ -24,7 +24,7 @@ public sealed partial class KthSmallestElementInABSTTests
     [Fact]
     public void KthSmallest_ThirdRankInLargerTree_ReturnsInOrderValue()
     {
-        // [5,3,6,2,4,null,null,1], k = 3 -> 3
+        // [5,3,6,2,4,null,null,1], rank = 3 -> 3
         var root = new BinaryTreeNode<int>(5)
         {
             Left = new(3) { Left = new(2) { Left = new(1) }, Right = new(4) },
@@ -35,18 +35,18 @@ public sealed partial class KthSmallestElementInABSTTests
         Assert.Equal(3, actual);
     }
 
-    private static int KthSmallest(BinaryTreeNode<int> root, int k)
+    private static int KthSmallest(BinaryTreeNode<int> root, int rank)
     {
-        State.Remaining.Value = k;
+        State.Remaining.Value = rank;
         State.Result.Value = null;
 
         InOrderTraversal.Walk<int, RankHooks>(root);
 
-        // Both Facts above pass a k no larger than their tree's node count, so the walk
-        // reaches the kth visit and RankHooks sets Result before returning.
+        // Both Facts above pass a rank no larger than their tree's node count, so the walk
+        // reaches that rank and RankHooks sets Result before returning.
         return State.Result.Value
             ?? throw new InvalidOperationException(
-                $"the tree has fewer than {k} nodes, so the in-order walk never reached rank {k}");
+                $"the tree has fewer than {rank} nodes, so the in-order walk never reached rank {rank}");
     }
 
     private readonly struct RankHooks : IInOrderHooks<int>

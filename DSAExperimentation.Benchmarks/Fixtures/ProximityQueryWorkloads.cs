@@ -10,13 +10,13 @@ internal static class ProximityQueryWorkloads
     private const int SmallGapExclusive = MaxDiff + 1; // guarantees some within-maxDiff gaps
     private const int LargeGapExtra = 50; // pushes well past maxDiff, breaking the chain
 
-    public static (int[] Nums, int MaxDiff) BuildNums(int n, int seed)
+    public static (int[] Nums, int MaxDiff) BuildNums(int valueCount, int seed)
     {
         var random = new Random(seed);
-        var nums = new int[n];
+        var nums = new int[valueCount];
         var value = 0;
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < valueCount; i++)
         {
             nums[i] = value;
             var isLargeJump = random.Next(4) == 0;
@@ -30,14 +30,14 @@ internal static class ProximityQueryWorkloads
     // The jump that ends a component: maxDiff plus enough extra to clear it outright.
     private static int ChainBreakingGap() => MaxDiff + LargeGapExtra;
 
-    public static int[][] BuildQueries(int n, int queryCount, int seed)
+    public static int[][] BuildQueries(int valueCount, int queryCount, int seed)
     {
         var random = new Random(seed);
         var queries = new int[queryCount][];
 
         for (var i = 0; i < queryCount; i++)
         {
-            queries[i] = [random.Next(n), random.Next(n)];
+            queries[i] = [random.Next(valueCount), random.Next(valueCount)];
         }
 
         return queries;

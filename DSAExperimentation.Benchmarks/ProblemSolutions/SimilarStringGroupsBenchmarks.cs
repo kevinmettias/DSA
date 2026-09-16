@@ -76,9 +76,10 @@ public class SimilarStringGroupsBenchmarks
         }
     }
 
-    private static string BuildWord((char[] Base, int SwapI, int SwapJ)[] clusters, int w, int clusterCount, Random random)
+    private static string BuildWord(
+        (char[] Base, int SwapI, int SwapJ)[] clusters, int wordIndex, int clusterCount, Random random)
     {
-        var (baseChars, i, j) = clusters[w % clusterCount];
+        var (baseChars, i, j) = clusters[wordIndex % clusterCount];
         var word = (char[])baseChars.Clone();
 
         if (random.Next(CoinFlipBound) == 0)

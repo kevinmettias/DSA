@@ -58,10 +58,10 @@ internal static class MaximumStrongPairXORIISolution
         return best;
     }
 
-    private static bool IsStrongPair(int x, int y)
+    private static bool IsStrongPair(int firstValue, int secondValue)
     {
-        var small = Math.Min(x, y);
-        var large = Math.Max(x, y);
+        var small = Math.Min(firstValue, secondValue);
+        var large = Math.Max(firstValue, secondValue);
 
         return large - small <= small;
     }

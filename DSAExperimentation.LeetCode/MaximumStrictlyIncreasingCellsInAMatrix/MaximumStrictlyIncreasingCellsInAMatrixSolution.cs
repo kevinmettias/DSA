@@ -64,7 +64,7 @@ internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
 
         while (index < cells.Length)
         {
-            index = ProcessBatch(cells, index, rowBest, colBest);
+            index = AdvanceEqualValueBatch(cells, index, rowBest, colBest);
         }
 
         return Math.Max(rowBest.Max(), colBest.Max());
@@ -96,7 +96,7 @@ internal static class MaximumStrictlyIncreasingCellsInAMatrixSolution
     // Advances past the batch of equal-value cells starting at `index`, computing each
     // cell's dp value from rowBest/colBest as they stood before the batch, then folding
     // the whole batch's results back in. Returns the index where the next batch starts.
-    private static int ProcessBatch((int Value, int Row, int Col)[] cells, int index, int[] rowBest, int[] colBest)
+    private static int AdvanceEqualValueBatch((int Value, int Row, int Col)[] cells, int index, int[] rowBest, int[] colBest)
     {
         var end = FindBatchEnd(cells, index);
         var batch = cells.AsSpan(index, end - index);

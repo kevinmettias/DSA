@@ -2,7 +2,7 @@ using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.SmallestPalindromicRearrangementI;
 
-// LeetCode 3517. Smallest Palindromic Rearrangement I: s is already a palindrome;
+// LeetCode 3517. Smallest Palindromic Rearrangement I: text is already a palindrome;
 // return its lexicographically smallest palindromic permutation. Every letter's
 // count is even except at most one (the middle letter, on odd length) - halving
 // each count and laying the halves out in ascending letter order gives the
@@ -16,9 +16,9 @@ internal static class SmallestPalindromicRearrangementISolution
 {
     private const int AlphabetSize = 26;
 
-    public static string RearrangeByCharArrayReverse(string s)
+    public static string RearrangeByCharArrayReverse(string text)
     {
-        var counts = CountLowercaseLetters(s);
+        var counts = CountLowercaseLetters(text);
         var left = BuildAscendingHalf(counts);
         var middle = MiddleLetter(counts);
 
@@ -32,9 +32,9 @@ internal static class SmallestPalindromicRearrangementISolution
         return left + middle + new string(right);
     }
 
-    public static string RearrangeByCharStack(string s)
+    public static string RearrangeByCharStack(string text)
     {
-        var counts = CountLowercaseLetters(s);
+        var counts = CountLowercaseLetters(text);
         var left = BuildAscendingHalf(counts);
         var middle = MiddleLetter(counts);
 
@@ -55,11 +55,11 @@ internal static class SmallestPalindromicRearrangementISolution
         return left + middle + new string(right);
     }
 
-    private static int[] CountLowercaseLetters(string s)
+    private static int[] CountLowercaseLetters(string text)
     {
         var counts = new int[AlphabetSize];
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             counts[c - 'a']++;
         }

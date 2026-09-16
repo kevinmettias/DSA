@@ -89,8 +89,8 @@ public class IsGraphBipartiteBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool ColorArrayDfs() => IsGraphBipartiteSolution.IsBipartiteByColorArrayDfs(_adjacency);
+    public bool IsBipartiteByColorArrayDfs() => IsGraphBipartiteSolution.IsBipartiteByColorArrayDfs(_adjacency);
 
     [Benchmark]
-    public bool BipartiteCheckBfs() => IsGraphBipartiteSolution.IsBipartiteByBipartiteCheck(_graph);
+    public bool IsBipartiteByBipartiteCheck() => IsGraphBipartiteSolution.IsBipartiteByBipartiteCheck(_graph);
 }

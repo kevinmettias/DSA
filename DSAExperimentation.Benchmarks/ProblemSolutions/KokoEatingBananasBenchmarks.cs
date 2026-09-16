@@ -19,7 +19,7 @@ public class KokoEatingBananasBenchmarks
 
     private int[] _piles = [];
 
-    private int _h;
+    private int _hourBudget;
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -28,14 +28,14 @@ public class KokoEatingBananasBenchmarks
     {
         var random = new Random(RandomSeed);
         _piles = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxPileSizeExclusive)).ToArray();
-        _h = Length * HoursPerBanana;
+        _hourBudget = Length * HoursPerBanana;
     }
 
     [Benchmark(Baseline = true)]
     public int ManualBinarySearch() =>
-        KokoEatingBananasSolution.MinEatingSpeedByManualBisection(_piles, _h);
+        KokoEatingBananasSolution.MinEatingSpeedByManualBisection(_piles, _hourBudget);
 
     [Benchmark]
     public int SequenceLowerBound() =>
-        KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(_piles, _h);
+        KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(_piles, _hourBudget);
 }

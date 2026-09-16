@@ -34,5 +34,5 @@ internal sealed class FloodSchedule(int[,] floodDay)
 
     public bool IsLand(int row, int col, int day) => floodDay[row, col] > day;
 
-    public bool Contains(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Cols;
+    public bool IsInBounds(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Cols;
 }

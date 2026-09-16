@@ -23,8 +23,8 @@ public class MergeInBetweenLinkedListsBenchmarks
     private int[] _list1Values = [];
 
     private int[] _list2Values = [];
-    private int _a;
-    private int _b;
+    private int _fromIndex;
+    private int _toIndex;
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -33,19 +33,19 @@ public class MergeInBetweenLinkedListsBenchmarks
     {
         _list1Values = Enumerable.Range(0, Length).ToArray();
         _list2Values = Enumerable.Range(SecondListValueOffset, SecondListLength).ToArray();
-        _a = Length / SpliceStartDivisor;
-        _b = _a + SecondListLength - 1;
+        _fromIndex = Length / SpliceStartDivisor;
+        _toIndex = _fromIndex + SecondListLength - 1;
     }
 
     [Benchmark(Baseline = true)]
     public object ArraySpliceRebuild() =>
         MergeInBetweenLinkedListsSolution.MergeInBetweenByArrayRebuild(
-            BuildList(_list1Values), _a, _b, BuildList(_list2Values));
+            BuildList(_list1Values), _fromIndex, _toIndex, BuildList(_list2Values));
 
     [Benchmark]
     public object LinkedListSplice() =>
         MergeInBetweenLinkedListsSolution.MergeInBetweenByPointerSplice(
-            BuildList(_list1Values), _a, _b, BuildList(_list2Values));
+            BuildList(_list1Values), _fromIndex, _toIndex, BuildList(_list2Values));
 
     private static SinglyLinkedListNode<int> BuildList(int[] values)
     {

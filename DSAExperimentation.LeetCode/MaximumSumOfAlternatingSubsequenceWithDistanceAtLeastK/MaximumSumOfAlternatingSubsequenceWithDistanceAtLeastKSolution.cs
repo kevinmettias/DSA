@@ -22,14 +22,14 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
 {
     // Textbook O(n^2): for each i, scan every eligible earlier j directly. The
     // arm the segment-tree sweep below has to beat.
-    public static long MaxAlternatingSumByBruteForce(int[] nums, int k)
+    public static long MaxAlternatingSumByBruteForce(int[] nums, int minimumDistance)
     {
         var state = (Nums: nums, PeakEnd: new long[nums.Length], ValleyEnd: new long[nums.Length]);
         var answer = long.MinValue;
 
         for (var i = 0; i < nums.Length; i++)
         {
-            var extensions = BestExtensionsBefore(state, i, i - k);
+            var extensions = BestExtensionsBefore(state, i, i - minimumDistance);
             answer = CommitChainsAt(state, i, extensions, answer);
         }
 
@@ -72,15 +72,16 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // "< nums[i]" to extend into a peak), the other holding peakEnd (queried by
     // "> nums[i]" to extend into a valley). The distance constraint is enforced by
     // delaying insertion: index j is only written into either tree once the sweep
-    // reaches i = j + k, so a query at i can never see a predecessor closer than k.
-    public static long MaxAlternatingSumBySegmentTree(int[] nums, int k)
+    // reaches i = j + k, so a query at i can never see a predecessor closer than
+    // minimumDistance.
+    public static long MaxAlternatingSumBySegmentTree(int[] nums, int minimumDistance)
     {
         var sortedDistinct = nums.Distinct().OrderBy(value => value).ToArray();
         var sequence = new ArraySequence<int>(sortedDistinct);
         var trees = (PeakByValley: BuildRankedTree(sortedDistinct.Length), ValleyByPeak: BuildRankedTree(sortedDistinct.Length));
         var state = (Nums: nums, PeakEnd: new long[nums.Length], ValleyEnd: new long[nums.Length]);
 
-        return SweepByValueRank(k, sequence, trees, state);
+        return SweepByValueRank(minimumDistance, sequence, trees, state);
     }
 
     private static RepoSegmentTree BuildRankedTree(int rankCount)
@@ -94,7 +95,7 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
     // predecessor the distance constraint has just freed, then extending the two
     // chains at i out of the trees.
     private static long SweepByValueRank(
-        int k,
+        int minimumDistance,
         ArraySequence<int> sequence,
         (RepoSegmentTree PeakByValley, RepoSegmentTree ValleyByPeak) trees,
         (int[] Nums, long[] PeakEnd, long[] ValleyEnd) state)
@@ -104,7 +105,7 @@ internal static class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolu
 
         for (var i = 0; i < state.Nums.Length; i++)
         {
-            while (activated <= i - k)
+            while (activated <= i - minimumDistance)
             {
                 RaisePredecessor(state, activated, sequence, trees);
                 activated++;

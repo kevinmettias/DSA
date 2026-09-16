@@ -63,7 +63,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
 
         for (var node = 0; node < adjacency.Length; node++)
         {
-            if (Visit(adjacency, node, state, doubledMask))
+            if (HasCycleFrom(adjacency, node, state, doubledMask))
             {
                 return true;
             }
@@ -75,7 +75,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
     // One step of the three-color DFS: a node already ON the current path closes a
     // cycle, a node already finished cannot, and an unvisited one descends into its
     // non-doubled neighbors before being marked done.
-    private static bool Visit(List<int>[] adjacency, int node, int[] state, int doubledMask)
+    private static bool HasCycleFrom(List<int>[] adjacency, int node, int[] state, int doubledMask)
     {
         if (state[node] != 0)
         {
@@ -88,7 +88,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
         {
             foreach (var next in adjacency[node])
             {
-                if ((doubledMask & (1 << next)) == 0 && Visit(adjacency, next, state, doubledMask))
+                if ((doubledMask & (1 << next)) == 0 && HasCycleFrom(adjacency, next, state, doubledMask))
                 {
                     return true;
                 }

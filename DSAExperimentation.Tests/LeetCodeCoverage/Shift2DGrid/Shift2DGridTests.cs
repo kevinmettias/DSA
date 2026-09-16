@@ -3,8 +3,8 @@ using DSAExperimentation.LeetCode.Shift2DGrid;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.Shift2DGrid;
 
 // Harness only: both strategies live in Shift2DGridSolution and are asserted
-// against the same examples - including the degenerate shifts (k = 0 and a whole
-// number of cycles) and the single-row/single-column grids, where a row-major
+// against the same examples - including the degenerate shifts (shiftCount = 0 and a
+// whole number of cycles) and the single-row/single-column grids, where a row-major
 // rotation is easiest to get wrong.
 public sealed class Shift2DGridTests
 {
@@ -25,7 +25,7 @@ public sealed class Shift2DGridTests
             // LeetCode example 3: a full cycle is the identity.
             { [[1, 2, 3], [4, 5, 6], [7, 8, 9]], 9, [[1, 2, 3], [4, 5, 6], [7, 8, 9]] },
 
-            // k larger than the cell count wraps around: 6 mod 4 = 2.
+            // shiftCount larger than the cell count wraps around: 6 mod 4 = 2.
             { [[1, 2], [3, 4]], 6, [[3, 4], [1, 2]] },
 
             // No shift at all.
@@ -42,10 +42,10 @@ public sealed class Shift2DGridTests
     [MemberData(nameof(Examples))]
     public void ShiftGridByIndexArithmetic_LeetCodeExamples_ShiftsCellsInRowMajorOrder(
         int[][] grid,
-        int k,
+        int shiftCount,
         int[][] expected)
     {
-        var actual = Shift2DGridSolution.ShiftGridByIndexArithmetic(grid, k);
+        var actual = Shift2DGridSolution.ShiftGridByIndexArithmetic(grid, shiftCount);
 
         Assert.Equal(expected, actual);
     }
@@ -54,10 +54,10 @@ public sealed class Shift2DGridTests
     [MemberData(nameof(Examples))]
     public void ShiftGridByDequeRotation_LeetCodeExamples_ShiftsCellsInRowMajorOrder(
         int[][] grid,
-        int k,
+        int shiftCount,
         int[][] expected)
     {
-        var actual = Shift2DGridSolution.ShiftGridByDequeRotation(grid, k);
+        var actual = Shift2DGridSolution.ShiftGridByDequeRotation(grid, shiftCount);
 
         Assert.Equal(expected, actual);
     }

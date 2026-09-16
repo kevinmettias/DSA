@@ -153,7 +153,7 @@ internal static class DesignTwitterSolution
 
             while (feed.Count < FeedSize && heap.TryPop(out var top))
             {
-                ProcessFeedEntry(heap, sources, top, feed);
+                PublishFeedEntry(heap, sources, top, feed);
             }
 
             return feed;
@@ -201,7 +201,7 @@ internal static class DesignTwitterSolution
             return heap;
         }
 
-        private static void ProcessFeedEntry(
+        private static void PublishFeedEntry(
             Heap<(int Time, int TweetId, int SourceIndex, int Position), MaxHeapOrder<(int, int, int, int)>> heap,
             List<DynamicArray<(int Time, int TweetId)>> sources,
             (int Time, int TweetId, int SourceIndex, int Position) top,

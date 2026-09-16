@@ -28,7 +28,7 @@ internal static class MatchsticksToSquareSolution
         var sorted = SortedDescending(matchsticks);
         var buckets = new int[SquareSideCount];
 
-        return SearchByNaiveBacktracking(sorted, buckets, side, 0);
+        return CanPlaceAllMatchsticks(sorted, buckets, side, 0);
     }
 
     // This repo's own Backtrack.TrySearch (the NQueens/SudokuSolver precedent),
@@ -58,7 +58,7 @@ internal static class MatchsticksToSquareSolution
     private static IEnumerable<int> AvailableBuckets(BucketState state) =>
         Enumerable.Range(0, SquareSideCount).Where(state.CanPlace);
 
-    private static bool SearchByNaiveBacktracking(int[] sorted, int[] buckets, int side, int index)
+    private static bool CanPlaceAllMatchsticks(int[] sorted, int[] buckets, int side, int index)
     {
         if (index == sorted.Length)
         {
@@ -89,7 +89,7 @@ internal static class MatchsticksToSquareSolution
 
         buckets[bucket] += sorted[index];
 
-        if (SearchByNaiveBacktracking(sorted, buckets, side, index + 1))
+        if (CanPlaceAllMatchsticks(sorted, buckets, side, index + 1))
         {
             return true;
         }

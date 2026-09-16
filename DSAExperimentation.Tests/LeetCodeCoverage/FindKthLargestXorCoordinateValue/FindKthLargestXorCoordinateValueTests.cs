@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindKthLargestXorCoordinateV
 
 // Harness only. Both selection strategies are
 // FindKthLargestXorCoordinateValueSolution's; this file pins them to all four of
-// LeetCode's published examples - including k == 4, the rank the original coverage
+// LeetCode's published examples - including rank == 4, the rank the original coverage
 // omitted, whose answer is the 0 that the corner cancellation produces - plus two
 // degenerate shapes where one dimension is a single cell.
 public sealed class FindKthLargestXorCoordinateValueTests
@@ -25,9 +25,9 @@ public sealed class FindKthLargestXorCoordinateValueTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthLargestValueByFullSort_LeetCodeExamples_ReturnsCorrectRank(
-        int[][] matrix, int k, int expected)
+        int[][] matrix, int rank, int expected)
     {
-        var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(matrix, k);
+        var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(matrix, rank);
 
         Assert.Equal(expected, actual);
     }
@@ -35,9 +35,9 @@ public sealed class FindKthLargestXorCoordinateValueTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthLargestValueBySizeKHeap_LeetCodeExamples_ReturnsCorrectRank(
-        int[][] matrix, int k, int expected)
+        int[][] matrix, int rank, int expected)
     {
-        var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(matrix, k);
+        var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(matrix, rank);
 
         Assert.Equal(expected, actual);
     }

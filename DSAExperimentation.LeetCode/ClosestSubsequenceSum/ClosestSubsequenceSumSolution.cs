@@ -11,11 +11,11 @@ namespace DSAExperimentation.LeetCode.ClosestSubsequenceSum;
 //
 // Both strategies enumerate subset sums; they differ in how many they have to touch:
 //
-// - MinAbsDifferenceByBruteForceSubsets walks all 2^n subset masks of the whole
+// - MinAbsoluteDifferenceByBruteForceSubsets walks all 2^n subset masks of the whole
 //   array. This is the "what you would write without this repo" arm, deliberately
 //   plain BCL bit twiddling - it was previously only the benchmark's unasserted
 //   baseline, and its 1 << n mask range is what limits it to small n.
-// - MinAbsDifferenceByMeetInTheMiddle splits the array in half and enumerates each
+// - MinAbsoluteDifferenceByMeetInTheMiddle splits the array in half and enumerates each
 //   half's 2^(n/2) subset sums with Backtrack.Search (the Subsets precedent), sorts
 //   one half with MergeSort over an ArrayIndexedSequence, and pairs each sum from the
 //   other half with its closest partner via BinarySearch.LowerBound - 2*2^(n/2) work
@@ -27,7 +27,7 @@ internal static class ClosestSubsequenceSumSolution
 {
     private const int Taken = 1;
 
-    public static int MinAbsDifferenceByBruteForceSubsets(int[] nums, int goal)
+    public static int MinAbsoluteDifferenceByBruteForceSubsets(int[] nums, int goal)
     {
         var best = int.MaxValue;
 
@@ -54,7 +54,7 @@ internal static class ClosestSubsequenceSumSolution
         return sum;
     }
 
-    public static int MinAbsDifferenceByMeetInTheMiddle(int[] nums, int goal)
+    public static int MinAbsoluteDifferenceByMeetInTheMiddle(int[] nums, int goal)
     {
         var mid = nums.Length / AlgorithmConstants.HalvingFactor;
         var leftSums = SubsetSums(nums[..mid]);

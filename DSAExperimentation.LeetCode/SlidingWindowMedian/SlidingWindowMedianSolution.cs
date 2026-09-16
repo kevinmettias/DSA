@@ -4,34 +4,34 @@ using DSAExperimentation.DataStructures.Heap;
 namespace DSAExperimentation.LeetCode.SlidingWindowMedian;
 
 // LeetCode 480. Sliding Window Median: return the median of every contiguous
-// window of size k as nums slides across the array.
+// window of size windowSize as nums slides across the array.
 internal static class SlidingWindowMedianSolution
 {
     private const int MedianAverageDivisor = 2;
 
-    // The O(n*k log k) baseline most people reach for first: copy each k-sized
+    // The O(n*k log k) baseline most people reach for first: copy each windowSize-sized
     // window and Array.Sort it from scratch. Deliberately written without this
     // repo's primitives, the arm the two-heap strategy below has to justify
     // itself against.
-    public static double[] MedianSlidingWindowBySortEachWindow(int[] nums, int k)
+    public static double[] MedianSlidingWindowBySortEachWindow(int[] nums, int windowSize)
     {
-        var result = new double[nums.Length - k + 1];
-        var window = new int[k];
+        var result = new double[nums.Length - windowSize + 1];
+        var window = new int[windowSize];
 
-        for (var start = 0; start <= nums.Length - k; start++)
+        for (var start = 0; start <= nums.Length - windowSize; start++)
         {
-            Array.Copy(nums, start, window, 0, k);
+            Array.Copy(nums, start, window, 0, windowSize);
             Array.Sort(window);
-            result[start] = MedianOfSorted(window, k);
+            result[start] = MedianOfSorted(window, windowSize);
         }
 
         return result;
     }
 
-    private static double MedianOfSorted(int[] sortedWindow, int k)
+    private static double MedianOfSorted(int[] sortedWindow, int windowSize)
     {
-        var mid = k / MedianAverageDivisor;
-        var isEvenSize = k % MedianAverageDivisor == 0;
+        var mid = windowSize / MedianAverageDivisor;
+        var isEvenSize = windowSize % MedianAverageDivisor == 0;
 
         return isEvenSize
             ? Mean(sortedWindow[mid - 1], sortedWindow[mid])
@@ -50,19 +50,19 @@ internal static class SlidingWindowMedianSolution
     // removal) so a value leaving the window is only actually popped once it
     // resurfaces to a heap's own root, instead of requiring an O(k) scan to
     // remove it from the middle of either heap. O(n log k) overall.
-    public static double[] MedianSlidingWindowByTwoHeapsLazyDeletion(int[] nums, int k)
+    public static double[] MedianSlidingWindowByTwoHeapsLazyDeletion(int[] nums, int windowSize)
     {
-        var result = new double[nums.Length - k + 1];
+        var result = new double[nums.Length - windowSize + 1];
         var window = new TwoHeapWindow();
 
         for (var i = 0; i < nums.Length; i++)
         {
             window.Insert(nums[i]);
 
-            if (i >= k - 1)
+            if (i >= windowSize - 1)
             {
-                result[i - k + 1] = window.Median();
-                window.Erase(nums[i - k + 1]);
+                result[i - windowSize + 1] = window.Median();
+                window.Erase(nums[i - windowSize + 1]);
             }
         }
 

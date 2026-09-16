@@ -64,9 +64,9 @@ internal static class ShortestPathGraphs
     private static int[][] ToJaggedArray(List<int>[] adjacency) =>
         adjacency.Select(neighbors => neighbors.ToArray()).ToArray();
 
-    private static void AddEdge(List<int>[] adjacency, int a, int b)
+    private static void AddEdge(List<int>[] adjacency, int firstNode, int secondNode)
     {
-        adjacency[a].Add(b);
-        adjacency[b].Add(a);
+        adjacency[firstNode].Add(secondNode);
+        adjacency[secondNode].Add(firstNode);
     }
 }

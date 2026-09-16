@@ -44,13 +44,13 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         return best;
     }
 
-    private static int CountConflicts(int[] nums, int v)
+    private static int CountConflicts(int[] nums, int candidateValue)
     {
         var bad = 0;
 
         foreach (var value in nums)
         {
-            if (Gcd(value, v) != 1)
+            if (Gcd(value, candidateValue) != 1)
             {
                 bad++;
             }
@@ -143,9 +143,9 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         return divisorCount;
     }
 
-    private static int CoprimeCount(int v, int[] smallestPrimeFactor, int[] divisorCount)
+    private static int CoprimeCount(int candidateValue, int[] smallestPrimeFactor, int[] divisorCount)
     {
-        var primes = DistinctPrimeFactors(v, smallestPrimeFactor);
+        var primes = DistinctPrimeFactors(candidateValue, smallestPrimeFactor);
         var subsetCount = 1 << primes.Count;
         var total = 0;
 
@@ -157,18 +157,18 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         return total;
     }
 
-    private static List<int> DistinctPrimeFactors(int v, int[] smallestPrimeFactor)
+    private static List<int> DistinctPrimeFactors(int candidateValue, int[] smallestPrimeFactor)
     {
         var primes = new List<int>();
 
-        while (v > 1)
+        while (candidateValue > 1)
         {
-            var prime = smallestPrimeFactor[v];
+            var prime = smallestPrimeFactor[candidateValue];
             primes.Add(prime);
 
-            while (v % prime == 0)
+            while (candidateValue % prime == 0)
             {
-                v /= prime;
+                candidateValue /= prime;
             }
         }
 
@@ -211,5 +211,6 @@ internal static class MaximumScoreWithCoPrimeElementSolution
     // is excluded from the cost rather than paid for.
     private static int ConflictsExcludingOwnSeat(int conflicts) => conflicts - 1;
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int firstOperand, int secondOperand) =>
+        secondOperand == 0 ? firstOperand : Gcd(secondOperand, firstOperand % secondOperand);
 }

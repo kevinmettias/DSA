@@ -122,13 +122,15 @@ internal static class MaximumAreaRectangleWithPointConstraintsISolution
         return maxArea;
     }
 
-    // The area of the rectangle that diagonal (i, j) completes, or None when it is not
-    // a usable rectangle: a diagonal has to span both axes, both remaining corners have
-    // to be given points, and no other point may sit inside the box or on its border.
-    private static long DiagonalAreaOrNone(int[][] points, Set<(int X, int Y)> corners, int i, int j)
+    // The area of the rectangle that the diagonal (firstPointIndex, secondPointIndex)
+    // completes, or None when it is not a usable rectangle: a diagonal has to span both
+    // axes, both remaining corners have to be given points, and no other point may sit
+    // inside the box or on its border.
+    private static long DiagonalAreaOrNone(
+        int[][] points, Set<(int X, int Y)> corners, int firstPointIndex, int secondPointIndex)
     {
-        var (x1, y1) = (points[i][0], points[i][1]);
-        var (x2, y2) = (points[j][0], points[j][1]);
+        var (x1, y1) = (points[firstPointIndex][0], points[firstPointIndex][1]);
+        var (x2, y2) = (points[secondPointIndex][0], points[secondPointIndex][1]);
 
         if (x1 == x2 || y1 == y2)
         {
@@ -137,10 +139,10 @@ internal static class MaximumAreaRectangleWithPointConstraintsISolution
 
         // The rectangle with (x1,y1) and (x2,y2) as opposite corners always has its
         // other two corners at (x1,y2) and (x2,y1) - checked on the RAW coordinates,
-        // not min/max-normalized ones, because (i,j) can land on either diagonal of
-        // the eventual box. Normalizing first and always checking
-        // (minX,maxY)/(maxX,minY) is wrong whenever (i,j) themselves are that
-        // anti-diagonal: it would just re-confirm i and j exist.
+        // not min/max-normalized ones, because the chosen pair can land on either
+        // diagonal of the eventual box. Normalizing first and always checking
+        // (minX,maxY)/(maxX,minY) is wrong whenever that pair is itself the
+        // anti-diagonal: it would just re-confirm both endpoints exist.
         if (!corners.Has((x1, y2)) || !corners.Has((x2, y1)))
         {
             return None;

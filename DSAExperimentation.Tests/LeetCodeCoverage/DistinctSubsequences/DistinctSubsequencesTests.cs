@@ -19,10 +19,10 @@ public sealed class DistinctSubsequencesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumDistinctByMemoizedRecursion_LeetCodeExamples_ReturnsCount(
+    public void CountDistinctSubsequencesByMemoizedRecursion_LeetCodeExamples_ReturnsCount(
         SubsequenceExample example)
     {
-        var count = DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(
+        var count = DistinctSubsequencesSolution.CountDistinctSubsequencesByMemoizedRecursion(
             new SourceText(example.Source),
             new TargetPattern(example.Target));
 
