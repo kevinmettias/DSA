@@ -3,18 +3,18 @@ using RepoDeque = DSAExperimentation.DataStructures.Deque.Deque<int>;
 namespace DSAExperimentation.LeetCode.ConstrainedSubsequenceSum;
 
 // LeetCode 1425. Constrained Subsequence Sum: the largest sum of a non-empty
-// subsequence of nums in which consecutive chosen indices are at most k apart.
+// subsequence of nums in which consecutive chosen indices are at most maxGap apart.
 //
 // Both strategies run the same recurrence - best[i] = nums[i] + max(0, the largest
-// best value in the trailing window [i-k, i-1]), answer = max best - and differ only
-// in how that trailing window maximum is obtained: rescanning the window at every
-// position, or maintaining it in a monotonic deque.
+// best value in the trailing window [i - maxGap, i - 1]), answer = max best - and
+// differ only in how that trailing window maximum is obtained: rescanning the window
+// at every position, or maintaining it in a monotonic deque.
 internal static class ConstrainedSubsequenceSumSolution
 {
-    // The textbook answer: at each position, walk the k preceding best values looking
-    // for the largest one. O(n*k), BCL array only - the arm the deque strategy has to
-    // justify itself against.
-    public static int MaxSumByWindowRescan(int[] nums, int k)
+    // The textbook answer: at each position, walk the maxGap preceding best values
+    // looking for the largest one. O(n*k), BCL array only - the arm the deque strategy
+    // has to justify itself against.
+    public static int MaxSumByWindowRescan(int[] nums, int maxGap)
     {
         var bestSums = new int[nums.Length];
         var answer = int.MinValue;
@@ -23,7 +23,7 @@ internal static class ConstrainedSubsequenceSumSolution
         {
             var windowMaximum = 0;
 
-            for (var j = Math.Max(0, i - k); j < i; j++)
+            for (var j = Math.Max(0, i - maxGap); j < i; j++)
             {
                 windowMaximum = Math.Max(windowMaximum, bestSums[j]);
             }
@@ -41,9 +41,9 @@ internal static class ConstrainedSubsequenceSumSolution
     // compared are computed by the same loop that maintains the window rather than
     // read from a fixed input array. Every index is pushed and popped at most once,
     // so the whole walk is O(n) instead of O(n*k).
-    public static int MaxSumByMonotonicDeque(int[] nums, int k)
+    public static int MaxSumByMonotonicDeque(int[] nums, int maxGap)
     {
-        var window = new BestSumWindow(nums, k);
+        var window = new BestSumWindow(nums, maxGap);
         var answer = int.MinValue;
 
         for (var i = 0; i < nums.Length; i++)
@@ -55,7 +55,7 @@ internal static class ConstrainedSubsequenceSumSolution
         return answer;
     }
 
-    private sealed class BestSumWindow(int[] nums, int k)
+    private sealed class BestSumWindow(int[] nums, int maxGap)
     {
         private readonly int[] _bestSums = new int[nums.Length];
         private readonly RepoDeque _indices = new();
@@ -73,11 +73,11 @@ internal static class ConstrainedSubsequenceSumSolution
             return value;
         }
 
-        // The front index leaves the window once it is further than k behind the
+        // The front index leaves the window once it is further than maxGap behind the
         // current one; at most one expires per step, because the index advances by one.
         private void DropExpiredFront(int index)
         {
-            if (_indices.TryPeekFront(out var frontIndex) && frontIndex < index - k)
+            if (_indices.TryPeekFront(out var frontIndex) && frontIndex < index - maxGap)
             {
                 _indices.TryPopFront(out _);
             }

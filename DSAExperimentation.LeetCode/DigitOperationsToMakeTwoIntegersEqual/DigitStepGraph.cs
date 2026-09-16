@@ -61,7 +61,7 @@ internal sealed class DigitStepGraph
     // Every digit +-1 mutation that keeps the same digit count: the general
     // "not 9" / "not 0" rule LC 3377 states, plus the one extra restriction
     // that a leading digit may not fall from 1 to 0 (that would drop a digit
-    // entirely, changing n's digit count). Primality is the caller's job -
+    // entirely, changing startValue's digit count). Primality is the caller's job -
     // BuildNodes filters it when wiring a graph, and
     // DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByBruteForceDijkstra
     // filters it neighbor by neighbor.
@@ -94,13 +94,13 @@ internal sealed class DigitStepGraph
     }
 
     // Any digit may step down except a 0, and the leading digit may not fall from 1
-    // to 0 - that mutation would drop a digit and change n's digit count.
+    // to 0 - that mutation would drop a digit and change startValue's digit count.
     private static bool CanDecrementDigit(int index, int digit) =>
         digit > 0 && !(index == 0 && digit == 1);
 
     // LC 3377's own primality law: values as small as this repo ever builds
-    // (n, m < 10^4) make trial division up to sqrt(value) the natural check -
-    // no sieve is worth the extra state for a graph this size.
+    // (startValue, targetValue < 10^4) make trial division up to sqrt(value) the
+    // natural check - no sieve is worth the extra state for a graph this size.
     public static bool IsPrime(int value)
     {
         if (value < 2)

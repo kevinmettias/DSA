@@ -23,7 +23,7 @@ internal sealed class RotateImageRegistration : ILeetCodeProblemRegistration
         => LeetCodeProblem.For<Func<int[][]>, int[][]>("rotate-image")
             .Strategy("ArrayReverse", input => Rotated(ArrayReverseRotation, input()))
             .Strategy("StackReverse", input => Rotated(StackReverseRotation, input()))
-            .MatchingAnswersWith(LeetCodeAnswers.SequenceOfSequencesEqual<int>)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSequenceOfSequencesEqual<int>)
             .Case(
                 "example-1",
                 () => [[1, 2, 3], [4, 5, 6], [7, 8, 9]],

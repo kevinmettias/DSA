@@ -15,16 +15,16 @@ namespace DSAExperimentation.LeetCode.NumberOfDigitOne;
 // seen (higherDigits), the digit itself, and the remainder still to come.
 internal static class NumberOfDigitOneSolution
 {
-    // Base of the positional numeral system both strategies decompose n into.
+    // Base of the positional numeral system both strategies decompose upperBound into.
     private const int DecimalBase = 10;
 
     // The textbook baseline this composition has to justify itself against:
     // a plain nested loop, nothing from this repo.
-    public static long CountDigitOneByBruteForceScan(int n)
+    public static long CountDigitOneByBruteForceScan(int upperBound)
     {
         long count = 0;
 
-        for (var number = 1; number <= n; number++)
+        for (var number = 1; number <= upperBound; number++)
         {
             for (var remaining = number; remaining > 0; remaining /= DecimalBase)
             {
@@ -38,33 +38,33 @@ internal static class NumberOfDigitOneSolution
         return count;
     }
 
-    public static long CountDigitOneByDigitPositionTally(int n)
+    public static long CountDigitOneByDigitPositionTally(int upperBound)
     {
-        if (n <= 0)
+        if (upperBound <= 0)
         {
             return 0;
         }
 
-        var digits = DigitsMostSignificantFirst(n);
+        var digits = DigitsMostSignificantFirst(upperBound);
         var placeValue = HighestPlaceValue(digits.Count);
         long count = 0;
         var higherDigits = 0L;
 
         while (digits.TryPop(out var digit))
         {
-            count += AccumulateDigitOnes(digit, n, ref placeValue, ref higherDigits);
+            count += AccumulateDigitOnes(digit, upperBound, ref placeValue, ref higherDigits);
         }
 
         return count;
     }
 
-    // Pushes n's decimal digits onto this repo's own Stack<int> least significant
-    // first, so popping them yields the most significant digit first.
-    private static DigitStack DigitsMostSignificantFirst(int n)
+    // Pushes upperBound's decimal digits onto this repo's own Stack<int> least
+    // significant first, so popping them yields the most significant digit first.
+    private static DigitStack DigitsMostSignificantFirst(int upperBound)
     {
         var digits = new DigitStack();
 
-        for (var remaining = n; remaining > 0; remaining /= DecimalBase)
+        for (var remaining = upperBound; remaining > 0; remaining /= DecimalBase)
         {
             digits.Push(remaining % DecimalBase);
         }
@@ -90,9 +90,9 @@ internal static class NumberOfDigitOneSolution
     // placeValue and higherDigits to the next (more significant) digit
     // position - the self-contained per-digit step of the place-value tally
     // above.
-    private static long AccumulateDigitOnes(int digit, long n, ref long placeValue, ref long higherDigits)
+    private static long AccumulateDigitOnes(int digit, long upperBound, ref long placeValue, ref long higherDigits)
     {
-        var lowerRemainder = n % placeValue;
+        var lowerRemainder = upperBound % placeValue;
         var delta = digit switch
         {
             0 => higherDigits * placeValue,

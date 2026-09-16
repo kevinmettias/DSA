@@ -17,9 +17,9 @@ public sealed class CombinationSumIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CombinationsByBruteForce_LeetCodeExamples_ReturnsExpectedCombinations(
-        int k, int n, int[][] expected)
+        int combinationSize, int targetSum, int[][] expected)
     {
-        var actual = CombinationSumIIISolution.CombinationsByBruteForce(k, n);
+        var actual = CombinationSumIIISolution.CombinationsByBruteForce(combinationSize, targetSum);
 
         AssertSameCombinations(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class CombinationSumIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CombinationsByBacktrackEngine_LeetCodeExamples_ReturnsExpectedCombinations(
-        int k, int n, int[][] expected)
+        int combinationSize, int targetSum, int[][] expected)
     {
-        var actual = CombinationSumIIISolution.CombinationsByBacktrackEngine(k, n);
+        var actual = CombinationSumIIISolution.CombinationsByBacktrackEngine(combinationSize, targetSum);
 
         AssertSameCombinations(expected, actual);
     }

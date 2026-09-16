@@ -23,10 +23,10 @@ internal static class BuildAMatrixWithConditionsSolution
     // This repo's own Kahn's algorithm, once per axis. TrySort's false-on-cycle
     // result is LeetCode's empty-matrix answer one-for-one.
     public static int[][] BuildMatrixByKahnsTopologicalSort(
-        int k, int[][] rowConditions, int[][] colConditions)
+        int valueCount, int[][] rowConditions, int[][] colConditions)
     {
-        var rowValues = BuildValues(k, rowConditions);
-        var colValues = BuildValues(k, colConditions);
+        var rowValues = BuildValues(valueCount, rowConditions);
+        var colValues = BuildValues(valueCount, colConditions);
 
         return BuildMatrixByKahnsTopologicalSort(rowValues, colValues);
     }
@@ -56,10 +56,10 @@ internal static class BuildAMatrixWithConditionsSolution
     // tracking a frontier queue. Deliberately written without this repo's
     // TopologicalSort - it is the arm the composed strategy above has to justify
     // itself against.
-    public static int[][] BuildMatrixByNaiveRescan(int k, int[][] rowConditions, int[][] colConditions)
+    public static int[][] BuildMatrixByNaiveRescan(int valueCount, int[][] rowConditions, int[][] colConditions)
     {
-        var rowValues = BuildValues(k, rowConditions);
-        var colValues = BuildValues(k, colConditions);
+        var rowValues = BuildValues(valueCount, rowConditions);
+        var colValues = BuildValues(valueCount, colConditions);
 
         return BuildMatrixByNaiveRescan(rowValues, colValues);
     }
@@ -144,11 +144,11 @@ internal static class BuildAMatrixWithConditionsSolution
 
     // LeetCode's own input shape: conditions[i] = [a, b] means a must be placed
     // before b on this axis, i.e. an edge from a to b.
-    private static List<ValueNode> BuildValues(int k, int[][] conditions)
+    private static List<ValueNode> BuildValues(int valueCount, int[][] conditions)
     {
-        var values = new List<ValueNode>(k);
+        var values = new List<ValueNode>(valueCount);
 
-        for (var id = 1; id <= k; id++)
+        for (var id = 1; id <= valueCount; id++)
         {
             values.Add(new ValueNode(id));
         }

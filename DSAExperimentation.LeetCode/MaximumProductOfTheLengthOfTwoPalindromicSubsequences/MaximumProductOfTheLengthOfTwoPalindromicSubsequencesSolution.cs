@@ -3,8 +3,8 @@ using DSAExperimentation.Algorithms.Backtracking;
 namespace DSAExperimentation.LeetCode.MaximumProductOfTheLengthOfTwoPalindromicSubsequences;
 
 // LeetCode 2002. Maximum Product of the Length of Two Palindromic Subsequences: pick two
-// disjoint subsequences of s that both read as palindromes and maximize the product of
-// their lengths. LeetCode caps s.Length at 12, so the intended solution genuinely is the
+// disjoint subsequences of text that both read as palindromes and maximize the product of
+// their lengths. LeetCode caps text.Length at 12, so the intended solution genuinely is the
 // 2^n subsequence space rather than a shortcut around a smarter algorithm.
 //
 // Both strategies enumerate that same space, keep every subsequence that is a palindrome
@@ -27,14 +27,14 @@ namespace DSAExperimentation.LeetCode.MaximumProductOfTheLengthOfTwoPalindromicS
 internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution
 {
     // The naive arm: enumerate every non-empty index bitmask directly.
-    public static int MaxProductByBitmaskScan(string s)
+    public static int MaxProductByBitmaskScan(string text)
     {
-        var totalMasks = 1 << s.Length;
+        var totalMasks = 1 << text.Length;
         var palindromes = new List<(int Mask, int Length)>();
 
         for (var mask = 1; mask < totalMasks; mask++)
         {
-            if (!IsPalindromicMask(s, mask))
+            if (!IsPalindromicMask(text, mask))
             {
                 continue;
             }
@@ -45,11 +45,11 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolut
         return BestDisjointProduct(palindromes);
     }
 
-    private static bool IsPalindromicMask(string s, int mask)
+    private static bool IsPalindromicMask(string text, int mask)
     {
         var indices = new List<int>();
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
             if ((mask & (1 << i)) != 0)
             {
@@ -57,7 +57,7 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolut
             }
         }
 
-        return IsPalindromicSubsequence(s, indices);
+        return IsPalindromicSubsequence(text, indices);
     }
 
     private static int BitCount(int mask)
@@ -74,7 +74,7 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolut
     }
 
     // This repo's own choose/explore/unchoose walk over the same 2^n space.
-    public static int MaxProductByBacktrack(string s)
+    public static int MaxProductByBacktrack(string text)
     {
         var palindromes = new List<(int Mask, int Length)>();
         var state = new SubsequenceState();
@@ -82,21 +82,22 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolut
         Backtrack.Search<SubsequenceState, int>(
             state,
             isSolution: static _ => true,
-            candidates: st => Enumerable.Range(st.NextIndex, s.Length - st.NextIndex),
+            candidates: st => Enumerable.Range(st.NextIndex, text.Length - st.NextIndex),
             choose: (st, index) =>
             {
                 st.Indices.Add(index);
                 st.NextIndex = index + 1;
             },
             unchoose: (st, _) => st.Indices.RemoveAt(st.Indices.Count - 1),
-            onSolution: st => RecordIfPalindromic(s, st, palindromes));
+            onSolution: st => RecordIfPalindromic(text, st, palindromes));
 
         return BestDisjointProduct(palindromes);
     }
 
-    private static void RecordIfPalindromic(string s, SubsequenceState state, List<(int Mask, int Length)> palindromes)
+    private static void RecordIfPalindromic(
+        string text, SubsequenceState state, List<(int Mask, int Length)> palindromes)
     {
-        if (state.Indices.Count == 0 || !IsPalindromicSubsequence(s, state.Indices))
+        if (state.Indices.Count == 0 || !IsPalindromicSubsequence(text, state.Indices))
         {
             return;
         }
@@ -129,14 +130,14 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolut
         return best;
     }
 
-    private static bool IsPalindromicSubsequence(string s, List<int> indices)
+    private static bool IsPalindromicSubsequence(string text, List<int> indices)
     {
         var left = 0;
         var right = indices.Count - 1;
 
         while (left < right)
         {
-            if (s[indices[left]] != s[indices[right]])
+            if (text[indices[left]] != text[indices[right]])
             {
                 return false;
             }

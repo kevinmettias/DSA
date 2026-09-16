@@ -18,16 +18,16 @@ namespace DSAExperimentation.LeetCode.ShortestSubarrayWithSumAtLeastK;
 internal static class ShortestSubarrayWithSumAtLeastKSolution
 {
     // The textbook answer: build the prefix sums, then for every start scan forward
-    // for the first end that reaches k. Deliberately written with nothing but BCL
+    // for the first end that reaches targetSum. Deliberately written with nothing but BCL
     // arrays - it is the arm the composed strategy below has to justify itself against.
-    public static int ShortestSubarrayByBruteForcePrefixScan(int[] nums, int k)
+    public static int ShortestSubarrayByBruteForcePrefixScan(int[] nums, int targetSum)
     {
         var prefix = BuildPrefixSums(nums);
         var best = NoWindow(nums.Length);
 
         for (var start = 0; start < prefix.Length; start++)
         {
-            var candidate = ShortestWindowFrom(prefix, start, k);
+            var candidate = ShortestWindowFrom(prefix, start, targetSum);
 
             best = Math.Min(best, candidate);
         }
@@ -35,13 +35,13 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
         return ReportLength(best, nums.Length);
     }
 
-    // The first end that reaches k is also the shortest one from this start, so the
+    // The first end that reaches targetSum is also the shortest one from this start, so the
     // inner scan stops there rather than running to the end of the array.
-    private static int ShortestWindowFrom(long[] prefix, int start, int k)
+    private static int ShortestWindowFrom(long[] prefix, int start, int targetSum)
     {
         for (var end = start + 1; end < prefix.Length; end++)
         {
-            if (prefix[end] - prefix[start] >= k)
+            if (prefix[end] - prefix[start] >= targetSum)
             {
                 return end - start;
             }
@@ -55,7 +55,7 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
     // index can pair with it more cheaply), and the back is popped while it holds a
     // prefix no smaller than the current one (a larger, earlier prefix can never beat
     // the current index as a window start).
-    public static int ShortestSubarrayByMonotonicDeque(int[] nums, int k)
+    public static int ShortestSubarrayByMonotonicDeque(int[] nums, int targetSum)
     {
         var prefix = BuildPrefixSums(nums);
         var best = NoWindow(nums.Length);
@@ -63,7 +63,7 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
 
         for (var i = 0; i < prefix.Length; i++)
         {
-            var candidate = ClaimReachableStarts(prefix, window, i, k);
+            var candidate = ClaimReachableStarts(prefix, window, i, targetSum);
 
             best = Math.Min(best, candidate);
             DropDominatedStarts(prefix, window, i);
@@ -73,22 +73,22 @@ internal static class ShortestSubarrayWithSumAtLeastKSolution
         return ReportLength(best, nums.Length);
     }
 
-    private static int ClaimReachableStarts(long[] prefix, RepoDeque window, int i, int k)
+    private static int ClaimReachableStarts(long[] prefix, RepoDeque window, int endIndex, int targetSum)
     {
         var best = NoWindow(prefix.Length - 1);
 
-        while (window.TryPeekFront(out var frontIndex) && prefix[i] - prefix[frontIndex] >= k)
+        while (window.TryPeekFront(out var frontIndex) && prefix[endIndex] - prefix[frontIndex] >= targetSum)
         {
-            best = Math.Min(best, i - frontIndex);
+            best = Math.Min(best, endIndex - frontIndex);
             window.TryPopFront(out _);
         }
 
         return best;
     }
 
-    private static void DropDominatedStarts(long[] prefix, RepoDeque window, int i)
+    private static void DropDominatedStarts(long[] prefix, RepoDeque window, int endIndex)
     {
-        while (window.TryPeekBack(out var backIndex) && prefix[backIndex] >= prefix[i])
+        while (window.TryPeekBack(out var backIndex) && prefix[backIndex] >= prefix[endIndex])
         {
             window.TryPopBack(out _);
         }

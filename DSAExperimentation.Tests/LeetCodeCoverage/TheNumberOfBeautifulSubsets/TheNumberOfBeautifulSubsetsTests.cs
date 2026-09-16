@@ -35,9 +35,9 @@ public sealed class TheNumberOfBeautifulSubsetsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountBeautifulSubsetsByBitmask_LeetCodeExamples_ReturnsExpectedCount(
-        int[] nums, int k, int expected)
+        int[] nums, int difference, int expected)
     {
-        var actual = TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByBitmask(nums, k);
+        var actual = TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByBitmask(nums, difference);
 
         Assert.Equal(expected, actual);
     }
@@ -45,9 +45,9 @@ public sealed class TheNumberOfBeautifulSubsetsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountBeautifulSubsetsByPrunedBacktracking_LeetCodeExamples_ReturnsExpectedCount(
-        int[] nums, int k, int expected)
+        int[] nums, int difference, int expected)
     {
-        var actual = TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByPrunedBacktracking(nums, k);
+        var actual = TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByPrunedBacktracking(nums, difference);
 
         Assert.Equal(expected, actual);
     }

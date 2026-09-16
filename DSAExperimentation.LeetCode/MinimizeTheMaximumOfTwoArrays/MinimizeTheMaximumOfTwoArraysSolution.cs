@@ -75,7 +75,8 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
             && eligibleEither >= first.UniqueCount + (long)second.UniqueCount;
     }
 
-    private static long Lcm(int a, int b) => (long)a / Gcd(a, b) * b;
+    private static long Lcm(int firstDivisor, int secondDivisor)
+        => (long)firstDivisor / Gcd(firstDivisor, secondDivisor) * secondDivisor;
 
     // This repo's own BinarySearch.LowerBound over the feasibility sequence: the
     // candidate maximums are never materialized, each probe just recomputes the
@@ -88,7 +89,10 @@ internal static class MinimizeTheMaximumOfTwoArraysSolution
         return SmallestMaximum + BinarySearch.LowerBound<bool, FeasibleMaximumSequence>(sequence, true);
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int firstDivisor, int secondDivisor)
+        => secondDivisor == 0
+            ? firstDivisor
+            : Gcd(secondDivisor, firstDivisor % secondDivisor);
 
     // Get(index) is "maximum index + 1 fills both arrays" - false up to the answer
     // and true from there on, the monotonicity BinarySearch.LowerBound assumes but

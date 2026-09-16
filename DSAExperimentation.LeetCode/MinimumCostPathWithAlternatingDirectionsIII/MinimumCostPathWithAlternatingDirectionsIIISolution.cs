@@ -26,7 +26,7 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
 {
     private const long StartEntranceCost = 1; // (0 + 1) * (0 + 1), always.
 
-    public static long MinCostByBclDijkstra(int m, int n, int[][] penalty)
+    public static long MinCostByBclDijkstra(int rowCount, int columnCount, int[][] penalty)
     {
         var start = (Row: 0, Col: 0, NextActionIsOdd: true);
         var distances = new Dictionary<(int Row, int Col, bool NextActionIsOdd), long> { [start] = 0 };
@@ -43,7 +43,7 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
             RelaxBcl(state, distance, penalty, (distances, frontier));
         }
 
-        return StartEntranceCost + BestArrival(distances, m, n);
+        return StartEntranceCost + BestArrival(distances, rowCount, columnCount);
     }
 
     // One settled state's two kinds of relaxation: staying put, which always costs
@@ -101,15 +101,15 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
         => row >= 0 && row < rows && col >= 0 && col < cols;
 
     private static long BestArrival(
-        Dictionary<(int Row, int Col, bool NextActionIsOdd), long> distances, int m, int n)
+        Dictionary<(int Row, int Col, bool NextActionIsOdd), long> distances, int rowCount, int columnCount)
     {
-        var viaOdd = distances.GetValueOrDefault((m - 1, n - 1, true), long.MaxValue);
-        var viaEven = distances.GetValueOrDefault((m - 1, n - 1, false), long.MaxValue);
+        var viaOdd = distances.GetValueOrDefault((rowCount - 1, columnCount - 1, true), long.MaxValue);
+        var viaEven = distances.GetValueOrDefault((rowCount - 1, columnCount - 1, false), long.MaxValue);
 
         return Math.Min(viaOdd, viaEven);
     }
 
-    public static long MinCostByStateDijkstra(int m, int n, int[][] penalty)
+    public static long MinCostByStateDijkstra(int rowCount, int columnCount, int[][] penalty)
     {
         var source = new AlternatingGridNode(0, 0, NextActionIsOdd: true, penalty);
 
@@ -117,9 +117,9 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
             AlternatingGridNode, AlternatingGridTopology, ListEdges<AlternatingGridNode, long>, long>(source);
 
         var viaOdd = distances.GetValueOrDefault(
-            source with { Row = m - 1, Col = n - 1, NextActionIsOdd = true }, long.MaxValue);
+            source with { Row = rowCount - 1, Col = columnCount - 1, NextActionIsOdd = true }, long.MaxValue);
         var viaEven = distances.GetValueOrDefault(
-            source with { Row = m - 1, Col = n - 1, NextActionIsOdd = false }, long.MaxValue);
+            source with { Row = rowCount - 1, Col = columnCount - 1, NextActionIsOdd = false }, long.MaxValue);
 
         return StartEntranceCost + Math.Min(viaOdd, viaEven);
     }

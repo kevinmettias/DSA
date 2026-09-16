@@ -4,15 +4,16 @@ namespace DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
 
 // LeetCode 2073. Time Needed to Buy Tickets: everyone in a line buys one ticket
 // per second and immediately rejoins the back of the line if they still want more.
-// Report the second at which person k buys their last ticket and leaves.
+// Report the second at which person targetPerson buys their last ticket and leaves.
 //
 // The two strategies attack it from opposite ends. One replays the line move by
-// move; the other observes that person i only ever gets min(tickets[i], tickets[k])
-// turns - one fewer when they stand behind k, because k's final purchase stops the
-// clock before their next turn comes round.
+// move; the other observes that person i only ever gets
+// min(tickets[i], tickets[targetPerson]) turns - one fewer when they stand behind
+// targetPerson, because targetPerson's final purchase stops the clock before their
+// next turn comes round.
 internal static class TimeNeededToBuyTicketsSolution
 {
-    // Person k's own turn is what ends the day, so nobody standing behind them
+    // targetPerson's own turn is what ends the day, so nobody standing behind them
     // reaches their last possible turn.
     private const int TurnsLostBehindK = 1;
 
@@ -22,7 +23,7 @@ internal static class TimeNeededToBuyTicketsSolution
     // back if they still want more - the "rotate to the back, re-enqueue
     // immediately" idiom FindTheWinnerOfTheCircularGame already establishes for this
     // Queue<T>. Costs one turn of work per ticket actually sold.
-    public static int TimeRequiredToBuyByQueueSimulation(int[] tickets, int k)
+    public static int TimeRequiredToBuyByQueueSimulation(int[] tickets, int targetPerson)
     {
         var line = new RepoQueue();
 
@@ -37,7 +38,7 @@ internal static class TimeNeededToBuyTicketsSolution
         {
             time++;
 
-            if (!ServeOneTicket(person, k, line))
+            if (!TryServeOneTicket(person, targetPerson, line))
             {
                 break;
             }
@@ -47,13 +48,13 @@ internal static class TimeNeededToBuyTicketsSolution
     }
 
     // Sells one ticket to `person`; re-enqueues them at the back if they still want
-    // more. Returns false once person k has bought their last ticket, the signal to
-    // stop the simulation.
-    private static bool ServeOneTicket((int Index, int Remaining) person, int k, RepoQueue line)
+    // more. Returns false once targetPerson has bought their last ticket, the signal
+    // to stop the simulation.
+    private static bool TryServeOneTicket((int Index, int Remaining) person, int targetPerson, RepoQueue line)
     {
         var remaining = person.Remaining - 1;
 
-        if (remaining == 0 && person.Index == k)
+        if (remaining == 0 && person.Index == targetPerson)
         {
             return false;
         }
@@ -67,24 +68,24 @@ internal static class TimeNeededToBuyTicketsSolution
     }
 
     // The O(n) closed form, reading the answer off the ticket counts without ever
-    // modelling the line: person k buys tickets[k] tickets, so everyone at or ahead
-    // of k contributes min(tickets[i], tickets[k]) seconds and everyone behind them
-    // one fewer. Plain arithmetic over the input array - the arm the simulation has
-    // to justify itself against.
-    public static int TimeRequiredToBuyByClosedFormSum(int[] tickets, int k)
+    // modelling the line: targetPerson buys tickets[targetPerson] tickets, so everyone
+    // at or ahead of targetPerson contributes min(tickets[i], tickets[targetPerson])
+    // seconds and everyone behind them one fewer. Plain arithmetic over the input
+    // array - the arm the simulation has to justify itself against.
+    public static int TimeRequiredToBuyByClosedFormSum(int[] tickets, int targetPerson)
     {
-        var target = tickets[k];
+        var target = tickets[targetPerson];
         var time = 0;
 
         for (var index = 0; index < tickets.Length; index++)
         {
-            var turns = index <= k ? target : TurnsBehindK(target);
+            var turns = index <= targetPerson ? target : TurnsBehindK(target);
             time += Math.Min(tickets[index], turns);
         }
 
         return time;
     }
 
-    // Everyone behind person k loses that last turn, once k has bought out.
+    // Everyone behind targetPerson loses that last turn, once targetPerson has bought out.
     private static int TurnsBehindK(int target) => target - TurnsLostBehindK;
 }

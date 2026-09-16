@@ -24,11 +24,11 @@ internal static class DesignATextEditorSolution
     {
         void AddText(string text);
 
-        int DeleteText(int k);
+        int DeleteText(int maxDeletions);
 
-        string CursorLeft(int k);
+        string CursorLeft(int maxSteps);
 
-        string CursorRight(int k);
+        string CursorRight(int maxSteps);
     }
 
     // The textbook baseline this composition has to justify itself against: a BCL
@@ -47,25 +47,25 @@ internal static class DesignATextEditorSolution
             _cursor += text.Length;
         }
 
-        public int DeleteText(int k)
+        public int DeleteText(int maxDeletions)
         {
-            var deleted = Math.Min(k, _cursor);
+            var deleted = Math.Min(maxDeletions, _cursor);
             _buffer.RemoveRange(_cursor - deleted, deleted);
             _cursor -= deleted;
 
             return deleted;
         }
 
-        public string CursorLeft(int k)
+        public string CursorLeft(int maxSteps)
         {
-            _cursor = Math.Max(0, _cursor - k);
+            _cursor = Math.Max(0, _cursor - maxSteps);
 
             return LastCharactersBeforeCursor();
         }
 
-        public string CursorRight(int k)
+        public string CursorRight(int maxSteps)
         {
-            _cursor = Math.Min(_buffer.Count, _cursor + k);
+            _cursor = Math.Min(_buffer.Count, _cursor + maxSteps);
 
             return LastCharactersBeforeCursor();
         }
@@ -98,11 +98,11 @@ internal static class DesignATextEditorSolution
             }
         }
 
-        public int DeleteText(int k)
+        public int DeleteText(int maxDeletions)
         {
             var deleted = 0;
 
-            while (deleted < k && _left.TryPop(out _))
+            while (deleted < maxDeletions && _left.TryPop(out _))
             {
                 deleted++;
             }
@@ -110,11 +110,11 @@ internal static class DesignATextEditorSolution
             return deleted;
         }
 
-        public string CursorLeft(int k)
+        public string CursorLeft(int maxSteps)
         {
             var moved = 0;
 
-            while (moved < k && _left.TryPop(out var c))
+            while (moved < maxSteps && _left.TryPop(out var c))
             {
                 _right.Push(c);
                 moved++;
@@ -123,11 +123,11 @@ internal static class DesignATextEditorSolution
             return LastCharactersBeforeCursor();
         }
 
-        public string CursorRight(int k)
+        public string CursorRight(int maxSteps)
         {
             var moved = 0;
 
-            while (moved < k && _right.TryPop(out var c))
+            while (moved < maxSteps && _right.TryPop(out var c))
             {
                 _left.Push(c);
                 moved++;

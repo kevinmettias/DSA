@@ -17,17 +17,17 @@ internal static class SumOfTwoIntegersSolution
     // no-arithmetic-operator constraint by construction, which is exactly why it
     // is the thing GetSumByBitwiseCarryLoop is measured against rather than a
     // valid submission on its own.
-    public static int GetSumByBuiltInAddition(int a, int b) => a + b;
+    public static int GetSumByBuiltInAddition(int firstAddend, int secondAddend) => firstAddend + secondAddend;
 
-    public static int GetSumByBitwiseCarryLoop(int a, int b)
+    public static int GetSumByBitwiseCarryLoop(int firstAddend, int secondAddend)
     {
-        while (b != 0)
+        while (secondAddend != 0)
         {
-            var carry = (a & b) << 1;
-            a ^= b;
-            b = carry;
+            var carry = (firstAddend & secondAddend) << 1;
+            firstAddend ^= secondAddend;
+            secondAddend = carry;
         }
 
-        return a;
+        return firstAddend;
     }
 }

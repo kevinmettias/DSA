@@ -38,16 +38,19 @@ internal static class CountNumberOfTrapezoidsIISolution
         return count;
     }
 
-    // The fourth point d > c of a 4-point combination: the split is a trapezoid
-    // when one of its three pairings gives two parallel, non-collinear sides.
-    // Lifted out of the brute-force scan above, which is then only three loops deep.
-    private static int CountTrapezoidsWithFirstThree(int[][] points, int a, int b, int c)
+    // The fourth point (the index after the third) of a 4-point combination: the split
+    // is a trapezoid when one of its three pairings gives two parallel, non-collinear
+    // sides. Lifted out of the brute-force scan above, which is then only three loops
+    // deep.
+    private static int CountTrapezoidsWithFirstThree(
+        int[][] points, int firstIndex, int secondIndex, int thirdIndex)
     {
         var count = 0;
 
-        for (var d = c + 1; d < points.Length; d++)
+        for (var fourthIndex = thirdIndex + 1; fourthIndex < points.Length; fourthIndex++)
         {
-            if (HasParallelSidePair(points[a], points[b], points[c], points[d]))
+            if (HasParallelSidePair(
+                points[firstIndex], points[secondIndex], points[thirdIndex], points[fourthIndex]))
             {
                 count++;
             }
@@ -56,10 +59,11 @@ internal static class CountNumberOfTrapezoidsIISolution
         return count;
     }
 
-    private static bool HasParallelSidePair(int[] p, int[] q, int[] r, int[] s) =>
-        IsParallelNotCollinear(p, q, r, s) ||
-        IsParallelNotCollinear(p, r, q, s) ||
-        IsParallelNotCollinear(p, s, q, r);
+    private static bool HasParallelSidePair(
+        int[] firstPoint, int[] secondPoint, int[] thirdPoint, int[] fourthPoint) =>
+        IsParallelNotCollinear(firstPoint, secondPoint, thirdPoint, fourthPoint) ||
+        IsParallelNotCollinear(firstPoint, thirdPoint, secondPoint, fourthPoint) ||
+        IsParallelNotCollinear(firstPoint, fourthPoint, secondPoint, thirdPoint);
 
     private static bool IsParallelNotCollinear(int[] p1, int[] p2, int[] p3, int[] p4)
     {
@@ -117,21 +121,21 @@ internal static class CountNumberOfTrapezoidsIISolution
         return (int)(result - same / 2);
     }
 
-    // One ordered pair of points (j, i): canonicalize the segment's direction and
-    // length into the four lookup keys, then report the two running counts this pair
-    // moves - `Counted` for "same slope, a different line", `Duplicate` for the
-    // parallelogram tally that is halved once the scan ends.
+    // One ordered pair of points, firstIndex above secondIndex: canonicalize the
+    // segment's direction and length into the four lookup keys, then report the two
+    // running counts this pair moves - `Counted` for "same slope, a different line",
+    // `Duplicate` for the parallelogram tally that is halved once the scan ends.
     private static (long Counted, long Duplicate) CountPair(
         int[][] points,
-        int i,
-        int j,
+        int firstIndex,
+        int secondIndex,
         (HashMap<(int A, int B), int> LookupSlope,
             HashMap<(int A, int B, int C), int> LookupLine,
             HashMap<(int A, int B, int Length), int> LookupSlopeLength,
             HashMap<(int A, int B, int C, int Length), int> LookupLineLength) lookups)
     {
-        var first = (X: points[i][0], Y: points[i][1]);
-        var second = (X: points[j][0], Y: points[j][1]);
+        var first = (X: points[firstIndex][0], Y: points[firstIndex][1]);
+        var second = (X: points[secondIndex][0], Y: points[secondIndex][1]);
         var dx = second.X - first.X;
         var dy = second.Y - first.Y;
         var gcd = Gcd(dx, dy);
@@ -152,21 +156,22 @@ internal static class CountNumberOfTrapezoidsIISolution
         return (counted, duplicate);
     }
 
-    private static int Gcd(int a, int b)
+    private static int Gcd(int left, int right)
     {
-        while (b != 0)
+        while (right != 0)
         {
-            (a, b) = (b, a % b);
+            (left, right) = (right, left % right);
         }
 
-        return Math.Abs(a);
+        return Math.Abs(left);
     }
 
-    // Canonical directions point the positive-x way: a > 0, or a == 0 with
-    // b > 0. A direction in the opposite half is negated to match, so the two
-    // orientations of one slope collapse onto a single key.
-    private static bool IsInOppositeHalfPlane(int a, int b)
-        => a < 0 || (a == 0 && b < 0);
+    // Canonical directions point the positive-x way: directionX > 0, or
+    // directionX == 0 with directionY > 0. A direction in the opposite half is
+    // negated to match, so the two orientations of one slope collapse onto a single
+    // key.
+    private static bool IsInOppositeHalfPlane(int directionX, int directionY)
+        => directionX < 0 || (directionX == 0 && directionY < 0);
 
     private static int CountThenIncrement<TKey>(HashMap<TKey, int> lookup, TKey key)
     {

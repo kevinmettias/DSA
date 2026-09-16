@@ -18,10 +18,11 @@ public sealed class FindTheNumberOfPossibleWaysForAnEventTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfWaysByBruteForceEnumeration_LeetCodeExamples_ReturnsWaysModuloLargePrime(
-        int n, int x, int y, int expected)
+        int performerCount, int stageCount, int maxScore, int expected)
     {
         var actual =
-            FindTheNumberOfPossibleWaysForAnEventSolution.NumberOfWaysByBruteForceEnumeration(n, x, y);
+            FindTheNumberOfPossibleWaysForAnEventSolution.NumberOfWaysByBruteForceEnumeration(
+                performerCount, stageCount, maxScore);
 
         Assert.Equal(expected, actual);
     }
@@ -29,9 +30,10 @@ public sealed class FindTheNumberOfPossibleWaysForAnEventTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfWaysByStagePartitionMemo_LeetCodeExamples_ReturnsWaysModuloLargePrime(
-        int n, int x, int y, int expected)
+        int performerCount, int stageCount, int maxScore, int expected)
     {
-        var actual = FindTheNumberOfPossibleWaysForAnEventSolution.NumberOfWaysByStagePartitionMemo(n, x, y);
+        var actual = FindTheNumberOfPossibleWaysForAnEventSolution.NumberOfWaysByStagePartitionMemo(
+            performerCount, stageCount, maxScore);
 
         Assert.Equal(expected, actual);
     }

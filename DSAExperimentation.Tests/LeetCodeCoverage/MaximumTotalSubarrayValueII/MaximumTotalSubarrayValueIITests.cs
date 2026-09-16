@@ -15,18 +15,20 @@ public sealed class MaximumTotalSubarrayValueIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxTotalValueByBruteForce_LeetCodeExamples_ReturnsMaximumTotalValue(int[] nums, int k, long expected)
+    public void MaxTotalValueByBruteForce_LeetCodeExamples_ReturnsMaximumTotalValue(
+        int[] nums, int topCount, long expected)
     {
-        var actual = MaximumTotalSubarrayValueIISolution.MaxTotalValueByBruteForce(nums, k);
+        var actual = MaximumTotalSubarrayValueIISolution.MaxTotalValueByBruteForce(nums, topCount);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxTotalValueBySegmentTreeHeap_LeetCodeExamples_ReturnsMaximumTotalValue(int[] nums, int k, long expected)
+    public void MaxTotalValueBySegmentTreeHeap_LeetCodeExamples_ReturnsMaximumTotalValue(
+        int[] nums, int topCount, long expected)
     {
-        var actual = MaximumTotalSubarrayValueIISolution.MaxTotalValueBySegmentTreeHeap(nums, k);
+        var actual = MaximumTotalSubarrayValueIISolution.MaxTotalValueBySegmentTreeHeap(nums, topCount);
 
         Assert.Equal(expected, actual);
     }

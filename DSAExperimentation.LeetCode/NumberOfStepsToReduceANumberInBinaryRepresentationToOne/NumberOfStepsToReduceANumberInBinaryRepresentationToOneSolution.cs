@@ -19,9 +19,9 @@ internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSol
     // bit; an odd number is incremented by a full LSB-first binary addition, rebuilding
     // the whole remaining string. Deliberately written with BCL types only - it is the
     // arm the single-pass scan below has to justify itself against.
-    public static int NumStepsByStackAddSimulation(string s)
+    public static int CountStepsByStackAddSimulation(string binaryString)
     {
-        var current = s;
+        var current = binaryString;
         var steps = 0;
 
         while (current != SingleBitOne)
@@ -39,15 +39,15 @@ internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSol
 
     // Increment a binary string, pushing the sum digits least-significant first so that
     // popping yields them most-significant first.
-    private static string AddOne(string a)
+    private static string AddOne(string binaryString)
     {
         var stack = new BitStack();
-        var i = a.Length - 1;
+        var cursorIndex = binaryString.Length - 1;
         var carry = 1;
 
-        while (i >= 0 || carry > 0)
+        while (cursorIndex >= 0 || carry > 0)
         {
-            var sum = carry + (i >= 0 ? NextDigit(a, ref i) : 0);
+            var sum = carry + (cursorIndex >= 0 ? NextDigit(binaryString, ref cursorIndex) : 0);
             stack.Push((char)('0' + (sum % BinaryBase)));
             carry = sum / BinaryBase;
         }
@@ -64,20 +64,20 @@ internal static class NumberOfStepsToReduceANumberInBinaryRepresentationToOneSol
 
     // The digit at the cursor, the read consuming it: the addition walks a
     // least-significant digit first.
-    private static int NextDigit(string a, ref int i) => a[i--] - '0';
+    private static int NextDigit(string binaryString, ref int cursorIndex) => binaryString[cursorIndex--] - '0';
 
     // One right-to-left pass with a running carry. Every digit above the leading bit
     // costs one halving step, plus one more when the digit (with the carry into it) is
     // odd, which also carries into the next digit; a carry surviving the leading bit is
     // the final halving.
-    public static int NumStepsByCarryPropagationScan(string s)
+    public static int CountStepsByCarryPropagationScan(string binaryString)
     {
         var steps = 0;
         var carry = 0;
 
-        for (var i = s.Length - 1; i >= 1; i--)
+        for (var i = binaryString.Length - 1; i >= 1; i--)
         {
-            var digit = (s[i] - '0') + carry;
+            var digit = (binaryString[i] - '0') + carry;
 
             if (digit % BinaryBase == 1)
             {

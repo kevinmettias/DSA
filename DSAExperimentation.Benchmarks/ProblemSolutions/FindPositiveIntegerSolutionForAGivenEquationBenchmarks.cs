@@ -26,7 +26,7 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
     // CustomFunction imposes.
     private static readonly ICustomFunction Sum = new SumFunction();
 
-    private int _z;
+    private int _targetValue;
 
     [Params(300, 1_000)]
     public int Bound { get; set; }
@@ -38,29 +38,29 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
         // every strategy is forced through its full worst-case walk instead of an
         // early-exit on the first/last pair making brute force look artificially
         // competitive.
-        _z = (MaxSumFactor * Bound) - 1;
+        _targetValue = (MaxSumFactor * Bound) - 1;
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForceEveryPair() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBruteForce(Sum, _z, Bound).Count;
+            .FindSolutionsByBruteForce(Sum, _targetValue, Bound).Count;
 
     [Benchmark]
     public int TwoPointer() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByTwoPointer(Sum, _z, Bound).Count;
+            .FindSolutionsByTwoPointer(Sum, _targetValue, Bound).Count;
 
     [Benchmark]
     public int BinarySearchPerRow() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBinarySearchPerRow(Sum, _z, Bound).Count;
+            .FindSolutionsByBinarySearchPerRow(Sum, _targetValue, Bound).Count;
 
     // LeetCode example 1's function_id, f(x, y) = x + y, as a named implementation
     // because the three arms now take an ICustomFunction and C# converts no lambda to an
     // interface - the same thing LeetCode's own CustomFunction object asks of a caller.
     private sealed class SumFunction : ICustomFunction
     {
-        public int Evaluate(int x, int y) => x + y;
+        public int Evaluate(int xValue, int yValue) => xValue + yValue;
     }
 }

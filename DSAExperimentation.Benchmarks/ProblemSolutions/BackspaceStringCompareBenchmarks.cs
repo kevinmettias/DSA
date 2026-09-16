@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each string's keystrokes vs. this repo's own DynamicArray-backed Stack<char>
 // doing exactly the same push-on-letter/pop-on-'#' replay, the same "same
 // algorithm, BCL structure vs. repo structure" contrast OpenTheLockBenchmarks
-// already draws for LC 752. _s and _t are built from the same seed, so both arms
+// already draws for LC 752. _firstText and _secondText are built from the same seed, so both arms
 // are forced through their full replay of both strings instead of short-circuiting
 // on an early character mismatch.
 [MemoryDiagnoser]
@@ -18,17 +18,17 @@ public class BackspaceStringCompareBenchmarks
     private const int BackspaceChanceDenominator = 5;
     private const int AlphabetSize = 26;
 
-    private string _s = "";
+    private string _firstText = "";
 
-    private string _t = "";
+    private string _secondText = "";
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _s = BuildKeystrokes(Length, seed: RandomSeed);
-        _t = BuildKeystrokes(Length, seed: RandomSeed);
+        _firstText = BuildKeystrokes(Length, seed: RandomSeed);
+        _secondText = BuildKeystrokes(Length, seed: RandomSeed);
     }
 
     // ~20% backspaces so the stack genuinely grows and shrinks instead of only ever
@@ -53,8 +53,10 @@ public class BackspaceStringCompareBenchmarks
     private static char RandomLetter(Random random) => (char)('a' + random.Next(AlphabetSize));
 
     [Benchmark(Baseline = true)]
-    public bool BclStack() => BackspaceStringCompareSolution.BackspaceCompareByBclStack(_s, _t);
+    public bool IsTypedTextEqualByBclStack() =>
+        BackspaceStringCompareSolution.IsTypedTextEqualByBclStack(_firstText, _secondText);
 
     [Benchmark]
-    public bool RepoStack() => BackspaceStringCompareSolution.BackspaceCompareByStackReplay(_s, _t);
+    public bool IsTypedTextEqualByStackReplay() =>
+        BackspaceStringCompareSolution.IsTypedTextEqualByStackReplay(_firstText, _secondText);
 }

@@ -21,22 +21,22 @@ internal static class PowerGridMaintenanceSolution
     // grid, removed from directly as stations go offline. Deliberately written
     // without this repo's Heap - the arm the composed solution below has to justify
     // itself against.
-    public static int[] MaintenanceResultsByUnionFindSortedSet(int c, int[][] connections, int[][] queries)
+    public static int[] MaintenanceResultsByUnionFindSortedSet(int stationCount, int[][] connections, int[][] queries)
     {
-        var disjointSet = new DisjointSet(c + 1);
+        var disjointSet = new DisjointSet(stationCount + 1);
 
         foreach (var connection in connections)
         {
             disjointSet.Union(connection[0], connection[1]);
         }
 
-        return MaintenanceResultsByUnionFindSortedSet(c, disjointSet, queries);
+        return MaintenanceResultsByUnionFindSortedSet(stationCount, disjointSet, queries);
     }
 
-    public static int[] MaintenanceResultsByUnionFindSortedSet(int c, DisjointSet disjointSet, int[][] queries)
+    public static int[] MaintenanceResultsByUnionFindSortedSet(int stationCount, DisjointSet disjointSet, int[][] queries)
     {
-        var grids = BuildSortedSetGrids(c, disjointSet);
-        var offline = new bool[c + 1];
+        var grids = BuildSortedSetGrids(stationCount, disjointSet);
+        var offline = new bool[stationCount + 1];
         var results = new List<int>();
 
         foreach (var query in queries)
@@ -57,11 +57,11 @@ internal static class PowerGridMaintenanceSolution
 
     // Groups every station under its grid's root, each grid keeping its station ids
     // ordered so its smallest still-operational one is a Min lookup.
-    private static SortedSet<int>[] BuildSortedSetGrids(int c, DisjointSet disjointSet)
+    private static SortedSet<int>[] BuildSortedSetGrids(int stationCount, DisjointSet disjointSet)
     {
-        var grids = new SortedSet<int>[c + 1];
+        var grids = new SortedSet<int>[stationCount + 1];
 
-        for (var station = 1; station <= c; station++)
+        for (var station = 1; station <= stationCount; station++)
         {
             var root = disjointSet.Find(station);
             (grids[root] ??= []).Add(station);
@@ -70,28 +70,28 @@ internal static class PowerGridMaintenanceSolution
         return grids;
     }
 
-    // Type 2: x goes offline for good, so it leaves its grid's ordered set rather than
-    // lingering there as a stale entry.
+    // Type 2: stationId goes offline for good, so it leaves its grid's ordered set
+    // rather than lingering there as a stale entry.
     private static void TakeOfflineSortedSet(
-        SortedSet<int>[] grids, DisjointSet disjointSet, bool[] offline, int x)
+        SortedSet<int>[] grids, DisjointSet disjointSet, bool[] offline, int stationId)
     {
-        offline[x] = true;
-        grids[disjointSet.Find(x)]!.Remove(x);
+        offline[stationId] = true;
+        grids[disjointSet.Find(stationId)]!.Remove(stationId);
     }
 
-    // Type 1: x's own id while x is still operational, otherwise the smallest id its
-    // grid still has, or the "none remain" sentinel once that grid is empty.
+    // Type 1: the station's own id while it is still operational, otherwise the smallest
+    // id its grid still has, or the "none remain" sentinel once that grid is empty.
     private static int AnswerSortedSetQuery(
         SortedSet<int>[] grids, DisjointSet disjointSet, bool[] offline, int[] query)
     {
-        var x = query[1];
+        var stationId = query[1];
 
-        if (!offline[x])
+        if (!offline[stationId])
         {
-            return x;
+            return stationId;
         }
 
-        var grid = grids[disjointSet.Find(x)]!;
+        var grid = grids[disjointSet.Find(stationId)]!;
         return grid.Count > 0 ? grid.Min : LeetCodeAnswer.None;
     }
 
@@ -99,22 +99,22 @@ internal static class PowerGridMaintenanceSolution
     // ids live in a Heap<int, MinHeapOrder<int>>, popped lazily - a malfunctioning
     // station discovered at the root is discarded for good, since it can never
     // return, but a still-operational one is left in place for the next query.
-    public static int[] MaintenanceResultsByUnionFindHeap(int c, int[][] connections, int[][] queries)
+    public static int[] MaintenanceResultsByUnionFindHeap(int stationCount, int[][] connections, int[][] queries)
     {
-        var disjointSet = new DisjointSet(c + 1);
+        var disjointSet = new DisjointSet(stationCount + 1);
 
         foreach (var connection in connections)
         {
             disjointSet.Union(connection[0], connection[1]);
         }
 
-        return MaintenanceResultsByUnionFindHeap(c, disjointSet, queries);
+        return MaintenanceResultsByUnionFindHeap(stationCount, disjointSet, queries);
     }
 
-    public static int[] MaintenanceResultsByUnionFindHeap(int c, DisjointSet disjointSet, int[][] queries)
+    public static int[] MaintenanceResultsByUnionFindHeap(int stationCount, DisjointSet disjointSet, int[][] queries)
     {
-        var grids = BuildHeapGrids(c, disjointSet);
-        var offline = new bool[c + 1];
+        var grids = BuildHeapGrids(stationCount, disjointSet);
+        var offline = new bool[stationCount + 1];
         var results = new List<int>();
 
         foreach (var query in queries)
@@ -135,11 +135,11 @@ internal static class PowerGridMaintenanceSolution
 
     // Groups every station under its grid's root, each grid keeping a min-heap of its
     // station ids for lazy deletion.
-    private static Heap<int, MinHeapOrder<int>>[] BuildHeapGrids(int c, DisjointSet disjointSet)
+    private static Heap<int, MinHeapOrder<int>>[] BuildHeapGrids(int stationCount, DisjointSet disjointSet)
     {
-        var grids = new Heap<int, MinHeapOrder<int>>[c + 1];
+        var grids = new Heap<int, MinHeapOrder<int>>[stationCount + 1];
 
-        for (var station = 1; station <= c; station++)
+        for (var station = 1; station <= stationCount; station++)
         {
             var root = disjointSet.Find(station);
             (grids[root] ??= new()).Push(station);
@@ -148,21 +148,21 @@ internal static class PowerGridMaintenanceSolution
         return grids;
     }
 
-    // Type 1: x's own id while x is still operational, otherwise pop every stale id off
-    // the front of x's grid until an operational one surfaces - the popped ones are
-    // discarded for good, since a station that went offline never returns - or report
-    // the sentinel once that grid runs out.
+    // Type 1: the station's own id while it is still operational, otherwise pop every
+    // stale id off the front of its grid until an operational one surfaces - the popped
+    // ones are discarded for good, since a station that went offline never returns - or
+    // report the sentinel once that grid runs out.
     private static int AnswerHeapQuery(
         Heap<int, MinHeapOrder<int>>[] grids, DisjointSet disjointSet, bool[] offline, int[] query)
     {
-        var x = query[1];
+        var stationId = query[1];
 
-        if (!offline[x])
+        if (!offline[stationId])
         {
-            return x;
+            return stationId;
         }
 
-        var grid = grids[disjointSet.Find(x)]!;
+        var grid = grids[disjointSet.Find(stationId)]!;
 
         while (grid.TryPeek(out var candidate) && offline[candidate])
         {

@@ -3,16 +3,16 @@ using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.MaximizeTheDistanceBetweenPointsOnASquare;
 
-// LeetCode 3464. Maximize the Distance Between Points on a Square: choose k of the
-// given boundary points so the minimum Manhattan distance between any two chosen
-// points is as large as possible.
+// LeetCode 3464. Maximize the Distance Between Points on a Square: choose
+// `selectionCount` of the given boundary points so the minimum Manhattan distance
+// between any two chosen points is as large as possible.
 //
 // Every point on the square's boundary maps to a single offset in [0, 4*side)
-// walking the perimeter clockwise. k is always at least 4, which pins the answer's
-// upper bound at `side` (two of any four boundary points must share a side or
-// meet at a corner) - and for any two offsets within `side` of each other, that
-// offset difference is exactly their real Manhattan distance, not merely a proxy
-// for it. Since the search below never asks about a gap larger than `side`,
+// walking the perimeter clockwise. selectionCount is always at least 4, which pins
+// the answer's upper bound at `side` (two of any four boundary points must share a
+// side or meet at a corner) - and for any two offsets within `side` of each other,
+// that offset difference is exactly their real Manhattan distance, not merely a
+// proxy for it. Since the search below never asks about a gap larger than `side`,
 // "maximize the minimum pairwise Manhattan distance" reduces to "maximize the
 // minimum circular gap" on the sorted offsets: a textbook binary search on the
 // answer, trying every point as the unwrapped start of the walk so the closing
@@ -24,31 +24,31 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
     // LeetCode's own shape: raw points, mapped and sorted by
     // ToSortedPerimeterPositions before handing off to the hoisted overload below
     // - the step a benchmark charges to [GlobalSetup] instead of the search itself.
-    public static int MaxDistanceByLinearScan(int side, int[][] points, int k)
+    public static int MaxDistanceByLinearScan(int side, int[][] points, int selectionCount)
     {
         var positions = ToSortedPerimeterPositions(side, points);
 
-        return MaxDistanceByLinearScan(side, positions, k);
+        return MaxDistanceByLinearScan(side, positions, selectionCount);
     }
 
     // The textbook arm: the same binary search on the answer, but the inner "find
     // the next point at least `gap` away" step is a plain forward scan - what
     // you'd write without this repo's BinarySearch.
-    public static int MaxDistanceByLinearScan(int side, ArraySequence<long> positions, int k) =>
-        LargestFeasibleGap(side, new LinearScanGapFeasibility(positions, side, k));
+    public static int MaxDistanceByLinearScan(int side, ArraySequence<long> positions, int selectionCount) =>
+        LargestFeasibleGap(side, new LinearScanGapFeasibility(positions, side, selectionCount));
 
-    public static int MaxDistanceBySortedGreedy(int side, int[][] points, int k)
+    public static int MaxDistanceBySortedGreedy(int side, int[][] points, int selectionCount)
     {
         var positions = ToSortedPerimeterPositions(side, points);
 
-        return MaxDistanceBySortedGreedy(side, positions, k);
+        return MaxDistanceBySortedGreedy(side, positions, selectionCount);
     }
 
     // The composed arm: the same binary search on the answer, but each hop to
     // "the next point at least `gap` away" is this repo's own
     // BinarySearch.LowerBound over the sorted offsets instead of a linear scan.
-    public static int MaxDistanceBySortedGreedy(int side, ArraySequence<long> positions, int k) =>
-        LargestFeasibleGap(side, new BinarySearchGapFeasibility(positions, side, k));
+    public static int MaxDistanceBySortedGreedy(int side, ArraySequence<long> positions, int selectionCount) =>
+        LargestFeasibleGap(side, new BinarySearchGapFeasibility(positions, side, selectionCount));
 
     private static int LargestFeasibleGap(int side, IGapFeasibility feasibility)
     {
@@ -72,7 +72,8 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
         return low;
     }
 
-    private static bool IsFeasibleByLinearScan(ArraySequence<long> positions, int side, int k, int gap)
+    private static bool IsFeasibleByLinearScan(
+        ArraySequence<long> positions, int side, int selectionCount, int gap)
     {
         var perimeter = 4L * side;
         var n = positions.Length;
@@ -81,7 +82,7 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
         {
             var end = positions.Get(startIndex) + perimeter - gap;
 
-            if (SelectsKPointsByLinearScan(positions, startIndex, end, (gap, k)))
+            if (CanSelectKPointsByLinearScan(positions, startIndex, end, (gap, selectionCount)))
             {
                 return true;
             }
@@ -91,15 +92,16 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
     }
 
     // One greedy walk from `startIndex` over the sorted offsets: hop to the first
-    // point at least `gap` past the current one, and stop as soon as `k` are placed
-    // or the walk steps past `end`, the far edge of the start's own perimeter window.
-    private static bool SelectsKPointsByLinearScan(
-        ArraySequence<long> positions, int startIndex, long end, (int Gap, int K) target)
+    // point at least `gap` past the current one, and stop as soon as `selectionCount`
+    // points are placed or the walk steps past `end`, the far edge of the start's own
+    // perimeter window.
+    private static bool CanSelectKPointsByLinearScan(
+        ArraySequence<long> positions, int startIndex, long end, (int Gap, int SelectionCount) target)
     {
         var current = positions.Get(startIndex);
         var selected = 1;
 
-        for (var j = startIndex + 1; j < positions.Length && selected < target.K; j++)
+        for (var j = startIndex + 1; j < positions.Length && selected < target.SelectionCount; j++)
         {
             var candidate = positions.Get(j);
 
@@ -117,10 +119,11 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
             selected++;
         }
 
-        return selected >= target.K;
+        return selected >= target.SelectionCount;
     }
 
-    private static bool IsFeasibleByBinarySearch(ArraySequence<long> positions, int side, int k, int gap)
+    private static bool IsFeasibleByBinarySearch(
+        ArraySequence<long> positions, int side, int selectionCount, int gap)
     {
         var perimeter = 4L * side;
         var n = positions.Length;
@@ -129,7 +132,7 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
         {
             var end = positions.Get(startIndex) + perimeter - gap;
 
-            if (SelectsKPointsByBinarySearch(positions, startIndex, end, (gap, k)))
+            if (CanSelectKPointsByBinarySearch(positions, startIndex, end, (gap, selectionCount)))
             {
                 return true;
             }
@@ -140,13 +143,13 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
 
     // The same greedy walk as its linear-scan sibling, but each hop is this repo's
     // BinarySearch.LowerBound over the sorted offsets instead of a forward scan.
-    private static bool SelectsKPointsByBinarySearch(
-        ArraySequence<long> positions, int startIndex, long end, (int Gap, int K) target)
+    private static bool CanSelectKPointsByBinarySearch(
+        ArraySequence<long> positions, int startIndex, long end, (int Gap, int SelectionCount) target)
     {
         var current = positions.Get(startIndex);
         var selected = 1;
 
-        while (selected < target.K)
+        while (selected < target.SelectionCount)
         {
             var nextIndex = BinarySearch.LowerBound(positions, current + target.Gap);
 
@@ -159,7 +162,7 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
             selected++;
         }
 
-        return selected >= target.K;
+        return selected >= target.SelectionCount;
     }
 
     public static ArraySequence<long> ToSortedPerimeterPositions(int side, int[][] points)
@@ -175,42 +178,45 @@ internal static class MaximizeTheDistanceBetweenPointsOnASquareSolution
         return new ArraySequence<long>(positions);
     }
 
-    private static long ToPerimeterPosition(int side, int x, int y)
+    private static long ToPerimeterPosition(int side, int xCoordinate, int yCoordinate)
     {
-        if (x == 0)
+        if (xCoordinate == 0)
         {
-            return y;
+            return yCoordinate;
         }
 
-        if (y == side)
+        if (yCoordinate == side)
         {
-            return side + x;
+            return side + xCoordinate;
         }
 
-        if (x == side)
+        if (xCoordinate == side)
         {
-            return 3L * side - y;
+            return 3L * side - yCoordinate;
         }
 
-        return 4L * side - x;
+        return 4L * side - xCoordinate;
     }
 
-    // What "can k points be placed with every gap at least this large" means to each
-    // arm. The search above asks the same question of both; only the hop inside the
-    // greedy walk differs, and the points, side and k a feasibility answer is about
-    // are held by the arm built for them rather than threaded through every call.
+    // What "can `selectionCount` points be placed with every gap at least this large"
+    // means to each arm. The search above asks the same question of both; only the hop
+    // inside the greedy walk differs, and the points, side and selectionCount a
+    // feasibility answer is about are held by the arm built for them rather than
+    // threaded through every call.
     private interface IGapFeasibility
     {
         bool IsFeasible(int gap);
     }
 
-    private sealed class LinearScanGapFeasibility(ArraySequence<long> positions, int side, int k) : IGapFeasibility
+    private sealed class LinearScanGapFeasibility(
+        ArraySequence<long> positions, int side, int selectionCount) : IGapFeasibility
     {
-        public bool IsFeasible(int gap) => IsFeasibleByLinearScan(positions, side, k, gap);
+        public bool IsFeasible(int gap) => IsFeasibleByLinearScan(positions, side, selectionCount, gap);
     }
 
-    private sealed class BinarySearchGapFeasibility(ArraySequence<long> positions, int side, int k) : IGapFeasibility
+    private sealed class BinarySearchGapFeasibility(
+        ArraySequence<long> positions, int side, int selectionCount) : IGapFeasibility
     {
-        public bool IsFeasible(int gap) => IsFeasibleByBinarySearch(positions, side, k, gap);
+        public bool IsFeasible(int gap) => IsFeasibleByBinarySearch(positions, side, selectionCount, gap);
     }
 }

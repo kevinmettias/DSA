@@ -17,9 +17,9 @@ public sealed class SmallestPalindromicRearrangementIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RearrangeByBacktrackingRank_LeetCodeExamples_ReturnsKthSmallestPalindrome(
-        string s, int k, string expected)
+        string palindrome, int rank, string expected)
     {
-        var actual = SmallestPalindromicRearrangementIISolution.RearrangeByBacktrackingRank(s, k);
+        var actual = SmallestPalindromicRearrangementIISolution.RearrangeByBacktrackingRank(palindrome, rank);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class SmallestPalindromicRearrangementIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RearrangeByCountingGreedy_LeetCodeExamples_ReturnsKthSmallestPalindrome(
-        string s, int k, string expected)
+        string palindrome, int rank, string expected)
     {
-        var actual = SmallestPalindromicRearrangementIISolution.RearrangeByCountingGreedy(s, k);
+        var actual = SmallestPalindromicRearrangementIISolution.RearrangeByCountingGreedy(palindrome, rank);
 
         Assert.Equal(expected, actual);
     }

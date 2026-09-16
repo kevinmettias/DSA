@@ -19,7 +19,7 @@ public class BookingConcertTicketsInGroupsBenchmarks
     private const int RandomSeed = 2286; // LC problem number
     private const int OperationTypeCount = 2;
 
-    private (bool IsGather, int K, int MaxRow)[] _operations = [];
+    private (bool IsGather, int GroupSize, int MaxRow)[] _operations = [];
 
     [Params(200, 2_000)]
     public int RowCount { get; set; }
@@ -28,14 +28,14 @@ public class BookingConcertTicketsInGroupsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _operations = new (bool IsGather, int K, int MaxRow)[OperationCount];
+        _operations = new (bool IsGather, int GroupSize, int MaxRow)[OperationCount];
 
         for (var i = 0; i < OperationCount; i++)
         {
             var isGather = random.Next(OperationTypeCount) == 0;
-            var k = random.Next(1, SeatsPerRow + 1);
+            var groupSize = random.Next(1, SeatsPerRow + 1);
             var maxRow = random.Next(0, RowCount);
-            _operations[i] = (isGather, k, maxRow);
+            _operations[i] = (isGather, groupSize, maxRow);
         }
     }
 
@@ -52,23 +52,25 @@ public class BookingConcertTicketsInGroupsBenchmarks
     {
         var checksum = 0L;
 
-        foreach (var (isGather, k, maxRow) in _operations)
+        foreach (var (isGather, groupSize, maxRow) in _operations)
         {
-            checksum += isGather ? GatherChecksum(strategy, k, maxRow) : ScatterChecksum(strategy, k, maxRow);
+            checksum += isGather ? GatherChecksum(strategy, groupSize, maxRow) : ScatterChecksum(strategy, groupSize, maxRow);
         }
 
         return checksum;
     }
 
-    private static long GatherChecksum(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int k, int maxRow)
+    private static long GatherChecksum(
+        BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int groupSize, int maxRow)
     {
-        var seating = strategy.Gather(k, maxRow);
+        var seating = strategy.Gather(groupSize, maxRow);
 
         return seating.Length == 0 ? 0 : SeatPairSum(seating);
     }
 
     private static long SeatPairSum(int[] seating) => seating[0] + seating[1];
 
-    private static long ScatterChecksum(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int k, int maxRow)
-        => strategy.Scatter(k, maxRow) ? 1 : 0;
+    private static long ScatterChecksum(
+        BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int groupSize, int maxRow)
+        => strategy.Scatter(groupSize, maxRow) ? 1 : 0;
 }

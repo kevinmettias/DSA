@@ -17,19 +17,19 @@ internal static class MinimumNumberOfSwapsToMakeTheStringBalancedSolution
     // Baseline: for every ']' walk backwards over the prefix looking for an unmatched
     // '[', marking it consumed. O(n^2), and deliberately plain BCL throughout - it is
     // what the nearest-unmatched-opener rule looks like written out longhand.
-    public static int MinSwapsByBackwardScan(string s)
+    public static int MinSwapsByBackwardScan(string text)
     {
-        var matched = new bool[s.Length];
+        var matched = new bool[text.Length];
         var unmatchedCloseCount = 0;
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            if (s[i] != ']')
+            if (text[i] != ']')
             {
                 continue;
             }
 
-            if (FindNearestUnmatchedOpener(s, matched, i) is { } opener)
+            if (FindNearestUnmatchedOpener(text, matched, i) is { } opener)
             {
                 matched[opener] = true;
             }
@@ -44,11 +44,11 @@ internal static class MinimumNumberOfSwapsToMakeTheStringBalancedSolution
 
     // The nearest still-unmatched '[' strictly left of beforeIndex, or null when the
     // prefix has none left - the lookup MinSwapsByStack gets for free from LIFO order.
-    private static int? FindNearestUnmatchedOpener(string s, bool[] matched, int beforeIndex)
+    private static int? FindNearestUnmatchedOpener(string text, bool[] matched, int beforeIndex)
     {
         for (var j = beforeIndex - 1; j >= 0; j--)
         {
-            if (s[j] == '[' && !matched[j])
+            if (text[j] == '[' && !matched[j])
             {
                 return j;
             }
@@ -63,12 +63,12 @@ internal static class MinimumNumberOfSwapsToMakeTheStringBalancedSolution
     // counted and a virtual '[' is pushed in its place, standing in for whichever later
     // ']' actually gets swapped with it - which is why the running count is already
     // ceil(unmatchedClosers / 2) rather than the raw closer count.
-    public static int MinSwapsByStack(string s)
+    public static int MinSwapsByStack(string text)
     {
         var open = new RepoCharStack();
         var swaps = 0;
 
-        foreach (var ch in s)
+        foreach (var ch in text)
         {
             if (ch == '[')
             {

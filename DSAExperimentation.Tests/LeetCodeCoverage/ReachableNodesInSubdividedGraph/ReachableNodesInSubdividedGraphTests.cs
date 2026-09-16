@@ -33,10 +33,10 @@ public sealed class ReachableNodesInSubdividedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountReachableNodesByMaterializedBfs_LeetCodeExamples_CountsOriginalAndSubdivisionNodes(
-        int[][] edges, int maxMoves, int n, int expected)
+        int[][] edges, int maxMoves, int nodeCount, int expected)
     {
         var actual = ReachableNodesInSubdividedGraphSolution.CountReachableNodesByMaterializedBfs(
-            edges, maxMoves, n);
+            edges, maxMoves, nodeCount);
 
         Assert.Equal(expected, actual);
     }
@@ -44,10 +44,10 @@ public sealed class ReachableNodesInSubdividedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountReachableNodesByDijkstra_LeetCodeExamples_CountsOriginalAndSubdivisionNodes(
-        int[][] edges, int maxMoves, int n, int expected)
+        int[][] edges, int maxMoves, int nodeCount, int expected)
     {
         var actual = ReachableNodesInSubdividedGraphSolution.CountReachableNodesByDijkstra(
-            edges, maxMoves, n);
+            edges, maxMoves, nodeCount);
 
         Assert.Equal(expected, actual);
     }

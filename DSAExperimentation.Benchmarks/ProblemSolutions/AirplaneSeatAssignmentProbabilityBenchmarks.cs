@@ -11,13 +11,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class AirplaneSeatAssignmentProbabilityBenchmarks
 {
     [Params(100, 1_000)]
-    public int N { get; set; }
+    public int PlaneSize { get; set; }
 
     [Benchmark(Baseline = true)]
     public double MemoizedRecursion()
-        => AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByMemoizedRecursion(N);
+        => AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByMemoizedRecursion(PlaneSize);
 
     [Benchmark]
     public double ClosedForm()
-        => AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByClosedForm(N);
+        => AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByClosedForm(PlaneSize);
 }

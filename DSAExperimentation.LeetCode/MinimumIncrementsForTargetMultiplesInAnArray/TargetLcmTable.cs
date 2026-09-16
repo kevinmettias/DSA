@@ -37,15 +37,16 @@ internal readonly record struct TargetLcmTable(int TargetCount, long[] SubsetLcm
         return lcm;
     }
 
-    private static long Lcm(long a, long b) => a / Gcd(a, b) * b;
+    private static long Lcm(long firstValue, long secondValue)
+        => firstValue / Gcd(firstValue, secondValue) * secondValue;
 
-    private static long Gcd(long a, long b)
+    private static long Gcd(long firstValue, long secondValue)
     {
-        while (b != 0)
+        while (secondValue != 0)
         {
-            (a, b) = (b, a % b);
+            (firstValue, secondValue) = (secondValue, firstValue % secondValue);
         }
 
-        return a;
+        return firstValue;
     }
 }

@@ -6,8 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution's, the same
 // methods CountTheNumberOfArraysWithKMatchingAdjacentElementsTests proves
-// correct. m stays fixed at 2 and k at half of n-1 so the brute-force arm's
-// 2^n enumeration stays finishable while ArrayLength grows.
+// correct. AlphabetSize stays fixed at 2 and the match count at half of the array
+// length, so the brute-force arm's 2^n enumeration stays finishable while
+// ArrayLength grows.
 [MemoryDiagnoser]
 public class CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks
 {

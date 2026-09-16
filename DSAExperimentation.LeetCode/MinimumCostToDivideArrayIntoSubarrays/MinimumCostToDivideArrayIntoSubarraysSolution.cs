@@ -5,20 +5,20 @@ namespace DSAExperimentation.LeetCode.MinimumCostToDivideArrayIntoSubarrays;
 // LeetCode 3500. Minimum Cost to Divide Array Into Subarrays: partition nums
 // (with a parallel cost array) into contiguous subarrays; the i-th subarray
 // (1-indexed, spanning nums[l..r]) costs
-// (nums[0] + ... + nums[r] + k * i) * (cost[l] + ... + cost[r]).
+// (nums[0] + ... + nums[r] + indexMultiplier * i) * (cost[l] + ... + cost[r]).
 // Minimize the total cost over every partition.
 //
-// The k * i term is what makes this harder than a plain partition DP: i is the
+// The indexMultiplier * i term is what makes this harder than a plain partition DP: i is the
 // SEGMENT'S OWN INDEX, which depends on how many segments precede it, so it looks
 // like state would need to track (position, segment count) as a pair. It doesn't:
-// summing k * i * costSum(segment_i) over segments 1..m and swapping the order of
+// summing indexMultiplier * i * costSum(segment_i) over segments 1..m and swapping the order of
 // summation (Σ_i i*x_i = Σ_t Σ_{i>=t} x_i) turns it into Σ_t SuffixCostSum(b_t),
 // one term per segment START position b_t, where SuffixCostSum(b_t) is the TRUE
 // cost sum from b_t to the array's own end - independent of which segment index
-// b_t turns out to be. That makes the k-term additive per segment start, exactly
+// b_t turns out to be. That makes the indexMultiplier-term additive per segment start, exactly
 // like the (nums[0..r]) term is additive per segment end, so state collapses back
 // to plain position: MinCost(index) = min over end >= index of
-// PrefixNumsSum[end] * SegmentCostSum(index, end) + k * SuffixCostSum[index] +
+// PrefixNumsSum[end] * SegmentCostSum(index, end) + indexMultiplier * SuffixCostSum[index] +
 // MinCost(end + 1). Both strategies share this one recurrence (PartitionStep) and
 // differ only in how repeated states get cached - the same "Dictionary memo vs.
 // this repo's Memoizer" contrast MinimumSumOfValuesByDividingArraySolution draws.
@@ -27,17 +27,17 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
     // The textbook form: recursion over a hand-rolled Dictionary memo table, its
     // lookup/store written out at the call site. The arm the repo's own
     // Memoizer-based strategy below has to beat.
-    public static long MinimumCostByDictionaryMemo(int[] nums, int[] cost, int k)
+    public static long MinimumCostByDictionaryMemo(int[] nums, int[] cost, int indexMultiplier)
     {
-        var run = new DictionaryMemoRun(BuildContext(nums, cost, k));
+        var run = new DictionaryMemoRun(BuildContext(nums, cost, indexMultiplier));
 
         return run.Replay(0, run);
     }
 
     // Same recurrence, routed through this repo's own Memoizer so each distinct
     // index is solved once without hand-writing the cache lookup/store around it.
-    public static long MinimumCostByMemoizedPartition(int[] nums, int[] cost, int k) =>
-        Memoizer.Memoize(0, new CostFromSegmentStart(BuildContext(nums, cost, k)));
+    public static long MinimumCostByMemoizedPartition(int[] nums, int[] cost, int indexMultiplier) =>
+        Memoizer.Memoize(0, new CostFromSegmentStart(BuildContext(nums, cost, indexMultiplier)));
 
     // index == nums.Length means every element has been assigned to a segment -
     // 0 more cost to add. Otherwise, try every possible end for the segment
@@ -51,7 +51,7 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
             return 0L;
         }
 
-        var segmentStartTerm = context.K * context.CostSuffixSum[index];
+        var segmentStartTerm = context.IndexMultiplier * context.CostSuffixSum[index];
         var priorCostSum = index == 0 ? 0L : CostBefore(context, index);
         var best = long.MaxValue;
 
@@ -77,11 +77,11 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
         return context.NumsPrefixSum[end] * segmentCostSum + segmentStartTerm;
     }
 
-    private static PartitionContext BuildContext(int[] nums, int[] cost, int k) =>
-        new(nums, k, PrefixSum(nums), PrefixSum(cost), SuffixSum(cost));
+    private static PartitionContext BuildContext(int[] nums, int[] cost, int indexMultiplier) =>
+        new(nums, indexMultiplier, PrefixSum(nums), PrefixSum(cost), SuffixSum(cost));
 
     private readonly record struct PartitionContext(
-        int[] Nums, int K, long[] NumsPrefixSum, long[] CostPrefixSum, long[] CostSuffixSum);
+        int[] Nums, int IndexMultiplier, long[] NumsPrefixSum, long[] CostPrefixSum, long[] CostSuffixSum);
 
     // The next segment's start index is the whole state: everything the step needs about
     // the rest of the array is already in the context the two strategies share.
@@ -95,18 +95,18 @@ internal static class MinimumCostToDivideArrayIntoSubarraysSolution
     // just written out here instead of being supplied by the library.
     private sealed class DictionaryMemoRun(PartitionContext context) : IRecurrence<int, long>
     {
-        private readonly CostFromSegmentStart step = new(context);
-        private readonly Dictionary<int, long> memo = [];
+        private readonly CostFromSegmentStart _step = new(context);
+        private readonly Dictionary<int, long> _memo = [];
 
         public long Replay(int index, IRecurrence<int, long> rest)
         {
-            if (memo.TryGetValue(index, out var cached))
+            if (_memo.TryGetValue(index, out var cached))
             {
                 return cached;
             }
 
-            var result = step.Replay(index, this);
-            memo[index] = result;
+            var result = _step.Replay(index, this);
+            _memo[index] = result;
             return result;
         }
     }

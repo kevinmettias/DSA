@@ -16,7 +16,7 @@ public class MinimumDeletionsToMakeAlternatingSubstringBenchmarks
     private const int RandomSeed = 3777; // LC problem number
     private const int QueryCount = 200;
 
-    private string _s = "";
+    private string _text = "";
 
     private int[][] _queries = [];
     [Params(500, 5_000)]
@@ -34,7 +34,7 @@ public class MinimumDeletionsToMakeAlternatingSubstringBenchmarks
             chars[i] = isA ? 'A' : 'B';
         }
 
-        _s = new string(chars);
+        _text = new string(chars);
         _queries = Enumerable.Range(0, QueryCount).Select(_ => BuildRangeQuery(random, Length)).ToArray();
     }
 
@@ -48,9 +48,9 @@ public class MinimumDeletionsToMakeAlternatingSubstringBenchmarks
 
     [Benchmark(Baseline = true)]
     public int[] DirectScan() =>
-        MinimumDeletionsToMakeAlternatingSubstringSolution.ProcessQueriesByDirectScan(_s, _queries);
+        MinimumDeletionsToMakeAlternatingSubstringSolution.AnswerQueriesByDirectScan(_text, _queries);
 
     [Benchmark]
     public int[] FenwickAdjacency() =>
-        MinimumDeletionsToMakeAlternatingSubstringSolution.ProcessQueriesByFenwickAdjacency(_s, _queries);
+        MinimumDeletionsToMakeAlternatingSubstringSolution.AnswerQueriesByFenwickAdjacency(_text, _queries);
 }

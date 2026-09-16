@@ -11,12 +11,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MaximumSumOfMNonOverlappingSubarraysIIBenchmarks
 {
-    private const int Seed = 3957; private int[] _nums = [];
+    private const int Seed = 3957; // LC problem number
 
-    private int _m;
-    private int _l;
-    private int _r;
-    // LC problem number
+    private int[] _nums = [];
+
+    private int _maxSubarrayCount;
+    private int _minLength;
+    private int _maxLength;
 
     [Params(200, 2_000)]
     public int Length { get; set; }
@@ -26,16 +27,18 @@ public class MaximumSumOfMNonOverlappingSubarraysIIBenchmarks
     {
         var random = new Random(Seed);
         _nums = [.. Enumerable.Range(0, Length).Select(_ => random.Next(-50, 51))];
-        _m = Math.Max(1, Length / 4);
-        _l = 3;
-        _r = 8;
+        _maxSubarrayCount = Math.Max(1, Length / 4);
+        _minLength = 3;
+        _maxLength = 8;
     }
 
     [Benchmark(Baseline = true)]
     public long DynamicProgramming() =>
-        MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByDynamicProgramming(_nums, _m, _l, _r);
+        MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByDynamicProgramming(
+            _nums, _maxSubarrayCount, _minLength, _maxLength);
 
     [Benchmark]
     public long LagrangianRelaxation() =>
-        MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByLagrangianRelaxation(_nums, _m, _l, _r);
+        MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByLagrangianRelaxation(
+            _nums, _maxSubarrayCount, _minLength, _maxLength);
 }

@@ -20,18 +20,18 @@ public sealed class RandomPickWithWeightTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByLinearScan(
-        int[] w, int seed, int[] validIndices, int trials)
+        int[] weights, int seed, int[] validIndices, int trials)
         => AssertPicksAreValid(
-            new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(w, new Random(seed)),
+            new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(weights, new Random(seed)),
             validIndices,
             trials);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByBinarySearchUpperBound(
-        int[] w, int seed, int[] validIndices, int trials)
+        int[] weights, int seed, int[] validIndices, int trials)
         => AssertPicksAreValid(
-            new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(w, new Random(seed)),
+            new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(weights, new Random(seed)),
             validIndices,
             trials);
 

@@ -52,13 +52,13 @@ public sealed class NumberOfEnclavesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumEnclavesByNaiveFloodFill_LeetCodeExamples_ReturnsLandThatCannotReachTheBorder(
+    public void CountEnclavesByNaiveFloodFill_LeetCodeExamples_ReturnsLandThatCannotReachTheBorder(
         int[][] grid, int expected) =>
-        Assert.Equal(expected, NumberOfEnclavesSolution.NumEnclavesByNaiveFloodFill(grid));
+        Assert.Equal(expected, NumberOfEnclavesSolution.CountEnclavesByNaiveFloodFill(grid));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumEnclavesByDepthFirstSearch_LeetCodeExamples_ReturnsLandThatCannotReachTheBorder(
+    public void CountEnclavesByDepthFirstSearch_LeetCodeExamples_ReturnsLandThatCannotReachTheBorder(
         int[][] grid, int expected) =>
-        Assert.Equal(expected, NumberOfEnclavesSolution.NumEnclavesByDepthFirstSearch(grid));
+        Assert.Equal(expected, NumberOfEnclavesSolution.CountEnclavesByDepthFirstSearch(grid));
 }

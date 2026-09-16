@@ -31,8 +31,8 @@ public class StoneGameIXBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool GameTreeMinimax() => StoneGameIXSolution.AliceWinsByGameTreeMinimax(_stones);
+    public bool CanAliceWinByGameTreeMinimax() => StoneGameIXSolution.CanAliceWinByGameTreeMinimax(_stones);
 
     [Benchmark]
-    public bool ClosedFormCounting() => StoneGameIXSolution.AliceWinsByClosedFormCounting(_stones);
+    public bool CanAliceWinByClosedFormCounting() => StoneGameIXSolution.CanAliceWinByClosedFormCounting(_stones);
 }

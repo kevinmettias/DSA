@@ -40,10 +40,10 @@ public class ValidateBinaryTreeNodesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveRootScan() =>
-        ValidateBinaryTreeNodesSolution.ValidateByRootScan(NodeCount, _leftChild, _rightChild);
+    public bool IsValidByRootScan() =>
+        ValidateBinaryTreeNodesSolution.IsValidByRootScan(NodeCount, _leftChild, _rightChild);
 
     [Benchmark]
-    public bool DisjointSetOnePass() =>
-        ValidateBinaryTreeNodesSolution.ValidateByDisjointSet(NodeCount, _leftChild, _rightChild);
+    public bool IsValidByDisjointSet() =>
+        ValidateBinaryTreeNodesSolution.IsValidByDisjointSet(NodeCount, _leftChild, _rightChild);
 }

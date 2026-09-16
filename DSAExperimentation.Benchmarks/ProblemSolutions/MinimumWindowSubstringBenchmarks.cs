@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumWindowSubstringSolution's, the same methods
 // MinimumWindowSubstringTests proves correct. Target is deliberately built from
-// characters absent from _s (same "force the unreachable worst case" trick
+// characters absent from _text (same "force the unreachable worst case" trick
 // TwoSumBenchmarks/LongestSubstringWithoutRepeatingCharactersBenchmarks already
 // use) so neither strategy ever satisfies "missing == 0" and early-exits -
 // BruteForce is forced through every O(n^2) start/end pair instead of breaking out
@@ -17,7 +17,7 @@ public class MinimumWindowSubstringBenchmarks
     private const string Target = "XYZ";
     private const int AlphabetSize = 26;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(200, 5_000)]
     public int Length { get; set; }
@@ -26,16 +26,16 @@ public class MinimumWindowSubstringBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, AlphabetSize))).ToArray());
+        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(0, AlphabetSize))).ToArray());
     }
 
     [Benchmark(Baseline = true)]
     public string BruteForce() => MinimumWindowSubstringSolution.MinWindowByBruteForce(
-        new MinimumWindowSubstringSolution.SearchedText(_s),
+        new MinimumWindowSubstringSolution.SearchedText(_text),
         new MinimumWindowSubstringSolution.RequiredCharacters(Target));
 
     [Benchmark]
     public string SlidingWindowHashMap() => MinimumWindowSubstringSolution.MinWindowBySlidingWindowHashMap(
-        new MinimumWindowSubstringSolution.SearchedText(_s),
+        new MinimumWindowSubstringSolution.SearchedText(_text),
         new MinimumWindowSubstringSolution.RequiredCharacters(Target));
 }

@@ -24,7 +24,7 @@ internal static class WordSearchIISolution
 
         foreach (var word in words)
         {
-            if (ExistsOnBoard(board, word))
+            if (IsWordOnBoard(board, word))
             {
                 found.Add(word);
             }
@@ -33,7 +33,7 @@ internal static class WordSearchIISolution
         return found;
     }
 
-    private static bool ExistsOnBoard(char[][] board, string word)
+    private static bool IsWordOnBoard(char[][] board, string word)
     {
         var used = new bool[board.Length, board[0].Length];
 
@@ -41,7 +41,7 @@ internal static class WordSearchIISolution
         {
             for (var col = 0; col < board[0].Length; col++)
             {
-                if (SearchFromCell(board, word, used, (row, col, 0)))
+                if (CanMatchWordFromCell(board, word, used, (row, col, 0)))
                 {
                     return true;
                 }
@@ -91,7 +91,7 @@ internal static class WordSearchIISolution
     // The walk's own state is which cell it stands on and how much of the word it has
     // matched there; the two advance together on every recursive step, so they are one
     // argument rather than three.
-    private static bool SearchFromCell(char[][] board, string word, bool[,] used, (int Row, int Col, int Index) walk)
+    private static bool CanMatchWordFromCell(char[][] board, string word, bool[,] used, (int Row, int Col, int Index) walk)
     {
         var (row, col, index) = walk;
 
@@ -100,17 +100,17 @@ internal static class WordSearchIISolution
             return true;
         }
 
-        if (IsOutsideBoard(row, col, board) || CannotSupplyLetter((row, col), used, board, word[index]))
+        if (IsOutsideBoard(row, col, board) || IsLetterUnavailable((row, col), used, board, word[index]))
         {
             return false;
         }
 
         used[row, col] = true;
 
-        var matched = SearchFromCell(board, word, used, (row + 1, col, index + 1))
-            || SearchFromCell(board, word, used, (row - 1, col, index + 1))
-            || SearchFromCell(board, word, used, (row, col + 1, index + 1))
-            || SearchFromCell(board, word, used, (row, col - 1, index + 1));
+        var matched = CanMatchWordFromCell(board, word, used, (row + 1, col, index + 1))
+            || CanMatchWordFromCell(board, word, used, (row - 1, col, index + 1))
+            || CanMatchWordFromCell(board, word, used, (row, col + 1, index + 1))
+            || CanMatchWordFromCell(board, word, used, (row, col - 1, index + 1));
 
         used[row, col] = false;
         return matched;
@@ -122,7 +122,7 @@ internal static class WordSearchIISolution
 
     // A cell supplies the word's next letter only once, and only if its own letter
     // is that one.
-    private static bool CannotSupplyLetter((int Row, int Col) cell, bool[,] used, char[][] board, char expected)
+    private static bool IsLetterUnavailable((int Row, int Col) cell, bool[,] used, char[][] board, char expected)
         => used[cell.Row, cell.Col] || board[cell.Row][cell.Col] != expected;
 
     // Bespoke to LC 212: walks the board and a LowercaseTrieNode in lockstep, so a
@@ -145,7 +145,7 @@ internal static class WordSearchIISolution
         {
             foreach (var p in Neighbors())
             {
-                if (InBounds(p) && CanExtendWalk(p))
+                if (IsInBounds(p) && CanExtendWalk(p))
                 {
                     yield return p;
                 }
@@ -166,25 +166,25 @@ internal static class WordSearchIISolution
             yield return (Row, Col - 1);
         }
 
-        private bool InBounds((int Row, int Col) p)
-            => p.Row >= 0 && p.Row < board.Length && p.Col >= 0 && p.Col < board[0].Length;
+        private bool IsInBounds((int Row, int Col) cell)
+            => cell.Row >= 0 && cell.Row < board.Length && cell.Col >= 0 && cell.Col < board[0].Length;
 
         // A neighbour can extend the walk when the walk has not used it yet and the
         // trie has a child for its letter.
-        private bool CanExtendWalk((int Row, int Col) p) =>
-            !_used[p.Row, p.Col] && _node.Children[board[p.Row][p.Col] - 'a'] is not null;
+        private bool CanExtendWalk((int Row, int Col) cell) =>
+            !_used[cell.Row, cell.Col] && _node.Children[board[cell.Row][cell.Col] - 'a'] is not null;
 
-        public void Choose((int Row, int Col) p)
+        public void Choose((int Row, int Col) cell)
         {
             _parents.Push((Row, Col, _node));
-            Row = p.Row;
-            Col = p.Col;
+            Row = cell.Row;
+            Col = cell.Col;
             _used[Row, Col] = true;
             _node = _node.Children[board[Row][Col] - 'a']!;
             _started = true;
         }
 
-        public void Unchoose((int Row, int Col) p)
+        public void Unchoose((int Row, int Col) cell)
         {
             _used[Row, Col] = false;
             (Row, Col, _node) = _parents.Pop();

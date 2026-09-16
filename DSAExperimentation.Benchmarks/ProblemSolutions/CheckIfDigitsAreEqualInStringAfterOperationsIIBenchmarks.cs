@@ -31,10 +31,10 @@ public class CheckIfDigitsAreEqualInStringAfterOperationsIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool AdjacentSumReduction() =>
-        CheckIfDigitsAreEqualInStringAfterOperationsIISolution.AreEqualByAdjacentSumReduction(_digits);
+    public bool IsEqualByAdjacentSumReduction() =>
+        CheckIfDigitsAreEqualInStringAfterOperationsIISolution.IsEqualByAdjacentSumReduction(_digits);
 
     [Benchmark]
-    public bool LucasBinomialCoefficients() =>
-        CheckIfDigitsAreEqualInStringAfterOperationsIISolution.AreEqualByLucasBinomialCoefficients(_digits);
+    public bool IsEqualByLucasBinomialCoefficients() =>
+        CheckIfDigitsAreEqualInStringAfterOperationsIISolution.IsEqualByLucasBinomialCoefficients(_digits);
 }

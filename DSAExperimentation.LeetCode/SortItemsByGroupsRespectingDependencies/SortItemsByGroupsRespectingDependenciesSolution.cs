@@ -26,9 +26,10 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
 
     // This repo's own Kahn's-algorithm TopologicalSort.TrySort, run over the item
     // graph and then over the derived group graph.
-    public static int[] SortItemsByKahnsTopologicalSort(int n, int m, int[] group, int[][] beforeItems)
+    public static int[] SortItemsByKahnsTopologicalSort(
+        int itemCount, int declaredGroupCount, int[] group, int[][] beforeItems)
     {
-        var (items, groups) = BuildGraph(n, m, group, beforeItems);
+        var (items, groups) = BuildGraph(itemCount, declaredGroupCount, group, beforeItems);
 
         return SortItemsByKahnsTopologicalSort(items, groups);
     }
@@ -57,9 +58,10 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
     // looking for the next one with no unresolved prerequisites, rather than tracking
     // a frontier queue. Deliberately written without this repo's TopologicalSort - it
     // is the arm the composed solution above has to justify itself against.
-    public static int[] SortItemsByNaiveRescan(int n, int m, int[] group, int[][] beforeItems)
+    public static int[] SortItemsByNaiveRescan(
+        int itemCount, int declaredGroupCount, int[] group, int[][] beforeItems)
     {
-        var (items, groups) = BuildGraph(n, m, group, beforeItems);
+        var (items, groups) = BuildGraph(itemCount, declaredGroupCount, group, beforeItems);
 
         return SortItemsByNaiveRescan(items, groups);
     }
@@ -77,8 +79,8 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
         return Combine(itemOrder, groupOrder, groups.Count);
     }
 
-    private static List<T> NaiveRescanOrder<T>(List<T> nodes, Func<T, List<T>> children)
-        where T : class
+    private static List<TNode> NaiveRescanOrder<TNode>(List<TNode> nodes, Func<TNode, List<TNode>> children)
+        where TNode : class
     {
         var inDegree = nodes.ToDictionary(node => node, _ => 0);
 
@@ -90,8 +92,8 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
             }
         }
 
-        var remaining = new List<T>(nodes);
-        var order = new List<T>(nodes.Count);
+        var remaining = new List<TNode>(nodes);
+        var order = new List<TNode>(nodes.Count);
 
         while (remaining.Count > 0 && TryTakeNextReadyNode(remaining, order, inDegree, children))
         {
@@ -100,9 +102,9 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
         return order;
     }
 
-    private static bool TryTakeNextReadyNode<T>(
-        List<T> remaining, List<T> order, Dictionary<T, int> inDegree, Func<T, List<T>> children)
-        where T : class
+    private static bool TryTakeNextReadyNode<TNode>(
+        List<TNode> remaining, List<TNode> order, Dictionary<TNode, int> inDegree, Func<TNode, List<TNode>> children)
+        where TNode : class
     {
         var next = remaining.FirstOrDefault(node => inDegree[node] == 0);
 
@@ -169,10 +171,10 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
     }
 
     private static (List<ItemNode> Items, List<GroupNode> Groups) BuildGraph(
-        int n, int m, int[] group, int[][] beforeItems)
+        int itemCount, int declaredGroupCount, int[] group, int[][] beforeItems)
     {
-        var (groupIds, groupCount) = AssignSingletonGroups(n, m, group);
-        var items = Enumerable.Range(0, n).Select(id => new ItemNode(id, groupIds[id])).ToList();
+        var (groupIds, groupCount) = AssignSingletonGroups(itemCount, declaredGroupCount, group);
+        var items = Enumerable.Range(0, itemCount).Select(id => new ItemNode(id, groupIds[id])).ToList();
         var groups = Enumerable.Range(0, groupCount).Select(id => new GroupNode(id)).ToList();
 
         AddEdges(items, groups, groupIds, beforeItems);
@@ -182,12 +184,13 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
 
     // Each ungrouped item becomes its own group, so an item that belongs to nobody is
     // trivially contiguous and the group level needs no special case for it.
-    private static (int[] GroupIds, int GroupCount) AssignSingletonGroups(int n, int m, int[] group)
+    private static (int[] GroupIds, int GroupCount) AssignSingletonGroups(
+        int itemCount, int declaredGroupCount, int[] group)
     {
         var groupIds = (int[])group.Clone();
-        var groupCount = m;
+        var groupCount = declaredGroupCount;
 
-        for (var item = 0; item < n; item++)
+        for (var item = 0; item < itemCount; item++)
         {
             if (groupIds[item] == Ungrouped)
             {

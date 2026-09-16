@@ -72,17 +72,17 @@ internal static class MultiplyStringsSolution
         return PopAllIntoString(stack);
     }
 
-    private static string AddDecimalStrings(string a, string b)
+    private static string AddDecimalStrings(string firstOperand, string secondOperand)
     {
         var stack = new DecimalStack();
-        var i = a.Length - 1;
-        var j = b.Length - 1;
+        var i = firstOperand.Length - 1;
+        var j = secondOperand.Length - 1;
         var carry = 0;
 
-        while (StillHasDigitsToAdd(i, j, carry))
+        while (HasDigitsLeftToAdd(i, j, carry))
         {
-            var digitA = NextDigit(a, ref i);
-            var digitB = NextDigit(b, ref j);
+            var digitA = NextDigit(firstOperand, ref i);
+            var digitB = NextDigit(secondOperand, ref j);
             carry = AccumulateDigit(stack, digitA, digitB, carry);
         }
 
@@ -91,17 +91,17 @@ internal static class MultiplyStringsSolution
 
     // More to add while either operand still has an unread digit, or a carry is
     // still waiting to be placed.
-    private static bool StillHasDigitsToAdd(int i, int j, int carry)
-        => i >= 0 || j >= 0 || carry > 0;
+    private static bool HasDigitsLeftToAdd(int leftIndex, int rightIndex, int carry)
+        => leftIndex >= 0 || rightIndex >= 0 || carry > 0;
 
-    private static int NextDigit(string s, ref int index)
+    private static int NextDigit(string operand, ref int index)
     {
         if (index < 0)
         {
             return 0;
         }
 
-        return s[index--] - '0';
+        return operand[index--] - '0';
     }
 
     private static int AccumulateDigit(DecimalStack stack, int digitA, int digitB, int carry)

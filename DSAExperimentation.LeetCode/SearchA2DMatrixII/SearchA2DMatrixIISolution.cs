@@ -16,7 +16,7 @@ internal static class SearchA2DMatrixIISolution
     // The textbook baseline: check every cell. Deliberately written without
     // this repo's primitives - it is the arm the other two strategies
     // justify themselves against.
-    public static bool SearchMatrixByFullScan(int[][] matrix, int target)
+    public static bool HasTargetByFullScan(int[][] matrix, int target)
     {
         foreach (var row in matrix)
         {
@@ -35,7 +35,7 @@ internal static class SearchA2DMatrixIISolution
     // Each row is independently sorted ascending, so this repo's own
     // BinarySearch.Find over an ArraySequence<int> witness finds a target
     // within one row in O(log cols) - O(rows * log cols) overall.
-    public static bool SearchMatrixByPerRowBinarySearch(int[][] matrix, int target)
+    public static bool HasTargetByPerRowBinarySearch(int[][] matrix, int target)
     {
         foreach (var row in matrix)
         {
@@ -53,7 +53,7 @@ internal static class SearchA2DMatrixIISolution
     // corner, step left when the current value is too big (eliminating that
     // column - everything below it in this column is even bigger), step
     // down when it's too small (eliminating that row).
-    public static bool SearchMatrixByStaircaseSearch(int[][] matrix, int target)
+    public static bool HasTargetByStaircaseSearch(int[][] matrix, int target)
     {
         if (matrix.Length == 0)
         {

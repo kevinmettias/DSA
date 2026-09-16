@@ -5,22 +5,22 @@ namespace DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
 // shifted to its cyclic successor (z wraps to a). Return the k-th character
 // (1-indexed) once word is long enough to have one.
 //
-// k <= 500, so the naive simulation is already fast - both strategies are
-// here to record the closed form the doubling structure hides, not because
-// the brute force needs replacing.
+// kthPosition <= 500, so the naive simulation is already fast - both
+// strategies are here to record the closed form the doubling structure
+// hides, not because the brute force needs replacing.
 internal static class FindTheKthCharacterInStringGameISolution
 {
     private const int AlphabetSize = 26;
 
     // The textbook answer: build the actual string one round at a time -
     // shift every existing character and append the shifted copy - until it
-    // reaches position k. Deliberately written without this repo's
+    // reaches kthPosition. Deliberately written without this repo's
     // primitives; the arm the closed form below has to agree with.
-    public static char KthCharacterBySimulation(int k)
+    public static char KthCharacterBySimulation(int kthPosition)
     {
         var word = new List<char> { 'a' };
 
-        while (word.Count < k)
+        while (word.Count < kthPosition)
         {
             var roundLength = word.Count;
 
@@ -30,13 +30,14 @@ internal static class FindTheKthCharacterInStringGameISolution
             }
         }
 
-        return word[k - 1];
+        return word[kthPosition - 1];
     }
 
-    private static char NextChar(char c) => c == 'z' ? 'a' : Shifted(c);
+    private static char NextChar(char character) =>
+        character == 'z' ? 'a' : Shifted(character);
 
     // The shift by one, before the wrap: 'a' -> 'b' through 'y' -> 'z'.
-    private static char Shifted(char c) => (char)(c + 1);
+    private static char Shifted(char character) => (char)(character + 1);
 
     // Every round is "append a +1-shifted copy of the whole word so far", so
     // reaching position p (0-indexed) by repeated halving visits exactly the
@@ -44,9 +45,10 @@ internal static class FindTheKthCharacterInStringGameISolution
     // one where p fell in the shifted half rather than the untouched one. The
     // total shift applied to the seed 'a' is therefore popcount(p) mod the
     // alphabet size.
-    public static char KthCharacterByBitCount(int k)
+    public static char KthCharacterByBitCount(int kthPosition)
     {
-        var shift = System.Numerics.BitOperations.PopCount((uint)(k - 1));
+        var shift = System.Numerics.BitOperations.PopCount(
+            (uint)(kthPosition - 1));
         return (char)('a' + shift % AlphabetSize);
     }
 }

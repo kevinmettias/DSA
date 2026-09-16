@@ -11,11 +11,11 @@ internal sealed class FlightNetwork
 
     private FlightNetwork(List<(int To, int Price)>[] departures) => _departures = departures;
 
-    public static FlightNetwork Build(int n, int[][] flights)
+    public static FlightNetwork Build(int cityCount, int[][] flights)
     {
-        var departures = new List<(int To, int Price)>[n];
+        var departures = new List<(int To, int Price)>[cityCount];
 
-        for (var city = 0; city < n; city++)
+        for (var city = 0; city < cityCount; city++)
         {
             departures[city] = [];
         }

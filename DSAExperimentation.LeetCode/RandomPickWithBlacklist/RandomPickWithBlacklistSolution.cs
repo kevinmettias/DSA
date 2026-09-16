@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.RandomPickWithBlacklist;
 
-// LeetCode 710. Random Pick with Blacklist: pick a uniformly random int in [0, n)
+// LeetCode 710. Random Pick with Blacklist: pick a uniformly random int in [0, rangeSize)
 // that is never one of the given blacklisted numbers, across repeated Pick() calls.
 //
 // This is a design problem - a stateful object built once, then Pick() called many
@@ -13,22 +13,22 @@ namespace DSAExperimentation.LeetCode.RandomPickWithBlacklist;
 //
 // CreateBySetHashMapRemap is the standard O(B) remap solution: a Set<int> (blacklist
 // membership, used only while scanning for remap targets) plus a HashMap<int,int>
-// (every blacklisted number below the whitelist boundary M = N - blacklist.Length
-// remapped, once, to a whitelisted number >= M) - built entirely up front so every
-// Pick() afterward is a single random draw plus one O(1)-expected lookup, never a
+// (every blacklisted number below the whitelist boundary rangeSize - blacklist.Length
+// remapped, once, to a whitelisted number at or above it) - built entirely up front so
+// every Pick() afterward is a single random draw plus one O(1)-expected lookup, never a
 // per-call rescan of the blacklist the way rejection sampling needs.
 //
 // CreateByRejectionSampling is the textbook baseline this composition has to justify
-// itself against: redraw from [0, n) until landing outside the blacklist, using a BCL
-// HashSet<int> for membership. Its expected retries per pick grow with how much of
-// [0, n) is blacklisted, which the remap solution avoids entirely by construction.
+// itself against: redraw from [0, rangeSize) until landing outside the blacklist, using
+// a BCL HashSet<int> for membership. Its expected retries per pick grow with how much of
+// [0, rangeSize) is blacklisted, which the remap solution avoids entirely by construction.
 internal static class RandomPickWithBlacklistSolution
 {
-    public static IRandomPick CreateByRejectionSampling(int n, int[] blacklist, int seed) =>
-        new RejectionSamplingRandomPick(n, blacklist, seed);
+    public static IRandomPick CreateByRejectionSampling(int rangeSize, int[] blacklist, int seed) =>
+        new RejectionSamplingRandomPick(rangeSize, blacklist, seed);
 
-    public static IRandomPick CreateBySetHashMapRemap(int n, int[] blacklist, int seed) =>
-        new SetHashMapRemapRandomPick(n, blacklist, seed);
+    public static IRandomPick CreateBySetHashMapRemap(int rangeSize, int[] blacklist, int seed) =>
+        new SetHashMapRemapRandomPick(rangeSize, blacklist, seed);
 
     internal interface IRandomPick
     {
@@ -39,11 +39,11 @@ internal static class RandomPickWithBlacklistSolution
     {
         private readonly HashSet<int> _blacklisted;
         private readonly Random _random;
-        private readonly int _n;
+        private readonly int _rangeSize;
 
-        public RejectionSamplingRandomPick(int n, int[] blacklist, int seed)
+        public RejectionSamplingRandomPick(int rangeSize, int[] blacklist, int seed)
         {
-            _n = n;
+            _rangeSize = rangeSize;
             _blacklisted = new HashSet<int>(blacklist);
             _random = new Random(seed);
         }
@@ -53,7 +53,7 @@ internal static class RandomPickWithBlacklistSolution
             int candidate;
             do
             {
-                candidate = _random.Next(_n);
+                candidate = _random.Next(_rangeSize);
             }
             while (_blacklisted.Contains(candidate));
 
@@ -67,10 +67,10 @@ internal static class RandomPickWithBlacklistSolution
         private readonly Random _random;
         private readonly int _whitelistBound;
 
-        public SetHashMapRemapRandomPick(int n, int[] blacklist, int seed)
+        public SetHashMapRemapRandomPick(int rangeSize, int[] blacklist, int seed)
         {
             _random = new Random(seed);
-            _whitelistBound = n - blacklist.Length;
+            _whitelistBound = rangeSize - blacklist.Length;
 
             var blacklistedSet = new Set<int>();
             foreach (var value in blacklist)

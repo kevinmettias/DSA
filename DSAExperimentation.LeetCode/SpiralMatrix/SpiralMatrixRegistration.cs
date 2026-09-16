@@ -17,7 +17,7 @@ internal sealed class SpiralMatrixRegistration : ILeetCodeProblemRegistration
         return LeetCodeProblem.For<int[][], IList<int>>("spiral-matrix")
             .Strategy("VisitedGridWalk", SpiralMatrixSolution.SpiralOrderByVisitedGridWalk)
             .Strategy("BoundaryPointerShrink", SpiralMatrixSolution.SpiralOrderByBoundaryPointerShrink)
-            .MatchingAnswersWith(LeetCodeAnswers.SequenceEqual)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSequenceEqual)
             .Case("example-1", [[1, 2, 3], [4, 5, 6], [7, 8, 9]], [1, 2, 3, 6, 9, 8, 7, 4, 5])
             .Case(
                 "example-2",

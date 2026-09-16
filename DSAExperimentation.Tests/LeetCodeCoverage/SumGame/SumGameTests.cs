@@ -41,21 +41,21 @@ public sealed class SumGameTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByBruteForceRecursion_LeetCodeExamples_ReturnsOptimalPlayOutcome(
+    public void CanAliceWinByBruteForceRecursion_LeetCodeExamples_ReturnsOptimalPlayOutcome(
         SumGameExample example) =>
-        Assert.Equal(example.AliceWins, SumGameSolution.AliceWinsByBruteForceRecursion(example.Num));
+        Assert.Equal(example.AliceWins, SumGameSolution.CanAliceWinByBruteForceRecursion(example.Num));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_ReturnsOptimalPlayOutcome(
+    public void CanAliceWinByMemoizedRecursion_LeetCodeExamples_ReturnsOptimalPlayOutcome(
         SumGameExample example) =>
-        Assert.Equal(example.AliceWins, SumGameSolution.AliceWinsByMemoizedRecursion(example.Num));
+        Assert.Equal(example.AliceWins, SumGameSolution.CanAliceWinByMemoizedRecursion(example.Num));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByClosedForm_LeetCodeExamples_ReturnsOptimalPlayOutcome(
+    public void CanAliceWinByClosedForm_LeetCodeExamples_ReturnsOptimalPlayOutcome(
         SumGameExample example) =>
-        Assert.Equal(example.AliceWins, SumGameSolution.AliceWinsByClosedForm(example.Num));
+        Assert.Equal(example.AliceWins, SumGameSolution.CanAliceWinByClosedForm(example.Num));
 
     // One LeetCode example: the board, and whether Alice wins optimal play on it.
     // Whether Alice wins is named at the row that states it, so a reader of `Examples`

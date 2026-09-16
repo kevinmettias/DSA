@@ -19,11 +19,11 @@ public sealed class DecodeWaysIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumDecodingsByTabulation_LeetCodeExamples_ReturnsCount(string s, long expected)
-        => Assert.Equal(expected, DecodeWaysIISolution.NumDecodingsByTabulation(s));
+    public void CountDecodingsByTabulation_LeetCodeExamples_ReturnsCount(string digits, long expected)
+        => Assert.Equal(expected, DecodeWaysIISolution.CountDecodingsByTabulation(digits));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumDecodingsByMemoization_LeetCodeExamples_ReturnsCount(string s, long expected)
-        => Assert.Equal(expected, DecodeWaysIISolution.NumDecodingsByMemoization(s));
+    public void CountDecodingsByMemoization_LeetCodeExamples_ReturnsCount(string digits, long expected)
+        => Assert.Equal(expected, DecodeWaysIISolution.CountDecodingsByMemoization(digits));
 }

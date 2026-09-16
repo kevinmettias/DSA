@@ -11,11 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class NumberOfWaysToPaintN3GridBenchmarks
 {
     [Params(1_000, 5_000)]
-    public int N { get; set; }
+    public int RowCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public long Tabulation() => NumberOfWaysToPaintN3GridSolution.NumOfWaysByTabulation(N);
+    public long Tabulation() => NumberOfWaysToPaintN3GridSolution.CountWaysByTabulation(RowCount);
 
     [Benchmark]
-    public long Memoized() => NumberOfWaysToPaintN3GridSolution.NumOfWaysByMemoizedRecurrence(N);
+    public long Memoized() => NumberOfWaysToPaintN3GridSolution.CountWaysByMemoizedRecurrence(RowCount);
 }

@@ -17,18 +17,18 @@ public sealed class MaxSumOfRectangleNoLargerThanKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumSubmatrixByBruteForceWindowScan_LeetCodeExamples_ReturnsLargestSumWithinLimit(
-        int[][] matrix, int k, int expected)
+        int[][] matrix, int sumLimit, int expected)
     {
-        var actual = MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBruteForceWindowScan(matrix, k);
+        var actual = MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBruteForceWindowScan(matrix, sumLimit);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumSubmatrixByBstCeilingScan_LeetCodeExamples_ReturnsLargestSumWithinLimit(
-        int[][] matrix, int k, int expected)
+        int[][] matrix, int sumLimit, int expected)
     {
-        var actual = MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBstCeilingScan(matrix, k);
+        var actual = MaxSumOfRectangleNoLargerThanKSolution.MaxSumSubmatrixByBstCeilingScan(matrix, sumLimit);
         Assert.Equal(expected, actual);
     }
 }

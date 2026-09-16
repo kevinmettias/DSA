@@ -21,9 +21,9 @@ public sealed class NetworkDelayTimeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinutesToReachAllByDijkstra_LeetCodeExamples_ReturnsMaxDistanceFromSource(
-        int[][] times, int n, int k, int expected)
+        int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
-        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByDijkstra(times, n, k);
+        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByDijkstra(times, nodeCount, sourceNodeId);
 
         Assert.Equal(expected, minutes);
     }
@@ -31,9 +31,9 @@ public sealed class NetworkDelayTimeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinutesToReachAllByBellmanFord_LeetCodeExamples_ReturnsMaxDistanceFromSource(
-        int[][] times, int n, int k, int expected)
+        int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
-        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord(times, n, k);
+        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord(times, nodeCount, sourceNodeId);
 
         Assert.Equal(expected, minutes);
     }
@@ -41,9 +41,9 @@ public sealed class NetworkDelayTimeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinutesToReachAllByFloydWarshall_LeetCodeExamples_ReturnsMaxDistanceFromSource(
-        int[][] times, int n, int k, int expected)
+        int[][] times, int nodeCount, int sourceNodeId, int expected)
     {
-        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall(times, n, k);
+        var minutes = NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall(times, nodeCount, sourceNodeId);
 
         Assert.Equal(expected, minutes);
     }

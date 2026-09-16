@@ -17,15 +17,15 @@ internal static class SmallestStringWithSwapsSolution
     // The textbook answer: materialize an adjacency list over the indices and BFS out
     // of each unvisited index to collect its component. Deliberately BCL-only - it is
     // the arm the DisjointSet composition below has to justify itself against.
-    public static string SmallestStringByAdjacencyListBfs(string s, int[][] pairs)
+    public static string SmallestStringByAdjacencyListBfs(string source, int[][] pairs)
     {
-        var adjacency = BuildAdjacencyList(s.Length, pairs);
-        var visited = new bool[s.Length];
-        var result = s.ToCharArray();
+        var adjacency = BuildAdjacencyList(source.Length, pairs);
+        var visited = new bool[source.Length];
+        var result = source.ToCharArray();
 
-        for (var start = 0; start < s.Length; start++)
+        for (var start = 0; start < source.Length; start++)
         {
-            AssignComponentFromStart(start, s, adjacency, new ComponentScan(visited, result));
+            AssignComponentFromStart(start, source, adjacency, new ComponentScan(visited, result));
         }
 
         return new string(result);
@@ -52,7 +52,7 @@ internal static class SmallestStringWithSwapsSolution
     // BFSes out of `start` (unless it was already reached from an earlier component),
     // then writes that component's sorted characters back into the scan's result
     // buffer at the component's own ascending positions.
-    private static void AssignComponentFromStart(int start, string s, List<int>[] adjacency, ComponentScan scan)
+    private static void AssignComponentFromStart(int start, string source, List<int>[] adjacency, ComponentScan scan)
     {
         if (scan.Visited[start])
         {
@@ -61,7 +61,7 @@ internal static class SmallestStringWithSwapsSolution
 
         var component = CollectComponent(start, adjacency, scan.Visited);
         component.Sort();
-        AssignSortedChars(s, scan.Result, component);
+        AssignSortedChars(source, scan.Result, component);
     }
 
     private static List<int> CollectComponent(int start, List<int>[] adjacency, bool[] visited)
@@ -103,15 +103,15 @@ internal static class SmallestStringWithSwapsSolution
     // Union per swap pair and O(a(n)) Find per index, with no adjacency list and no
     // per-component BFS queue allocated at all - one pass groups indices by root and
     // one pass writes each group's sorted characters back.
-    public static string SmallestStringByDisjointSet(string s, int[][] pairs)
+    public static string SmallestStringByDisjointSet(string source, int[][] pairs)
     {
-        var components = BuildComponents(s.Length, pairs);
-        var groups = GroupIndicesByRoot(components, s.Length);
-        var result = s.ToCharArray();
+        var components = BuildComponents(source.Length, pairs);
+        var groups = GroupIndicesByRoot(components, source.Length);
+        var result = source.ToCharArray();
 
         foreach (var indices in groups.Values)
         {
-            AssignSortedChars(s, result, indices);
+            AssignSortedChars(source, result, indices);
         }
 
         return new string(result);
@@ -153,9 +153,9 @@ internal static class SmallestStringWithSwapsSolution
 
     // Writes the lexicographically sorted characters found at `positions` (assumed
     // ascending) back into `result` at those same positions.
-    private static void AssignSortedChars(string s, char[] result, List<int> positions)
+    private static void AssignSortedChars(string source, char[] result, List<int> positions)
     {
-        var sortedChars = positions.Select(position => s[position]).OrderBy(character => character).ToArray();
+        var sortedChars = positions.Select(position => source[position]).OrderBy(character => character).ToArray();
 
         for (var slot = 0; slot < positions.Count; slot++)
         {

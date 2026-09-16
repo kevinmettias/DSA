@@ -21,7 +21,7 @@ internal static class NumberOfEnclavesSolution
     // The textbook answer: a hand-specialized recursive flood fill from every
     // border cell. Deliberately written without this repo's traversal primitive -
     // it is the arm the composed solution below has to justify itself against.
-    public static int NumEnclavesByNaiveFloodFill(int[][] grid)
+    public static int CountEnclavesByNaiveFloodFill(int[][] grid)
     {
         var working = CloneGrid(grid);
         var rows = working.Length;
@@ -39,7 +39,7 @@ internal static class NumberOfEnclavesSolution
     // land component at a time and hands back every cell in it, which is then
     // sunk in place - the same flood-fill composition MaxAreaOfIsland and
     // SurroundedRegions already use for LC 695/130.
-    public static int NumEnclavesByDepthFirstSearch(int[][] grid)
+    public static int CountEnclavesByDepthFirstSearch(int[][] grid)
     {
         var working = CloneGrid(grid);
         var rows = working.Length;
@@ -60,7 +60,7 @@ internal static class NumberOfEnclavesSolution
             return;
         }
 
-        var component = DepthFirstSearch.Traverse((startRow, startCol), p => LandNeighbors(grid, p));
+        var component = DepthFirstSearch.Traverse((startRow, startCol), cell => LandNeighbors(grid, cell));
 
         foreach (var (row, col) in component)
         {
@@ -68,14 +68,14 @@ internal static class NumberOfEnclavesSolution
         }
     }
 
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) p)
+    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
 
         foreach (var (dRow, dCol) in Directions)
         {
-            var next = (Row: p.Row + dRow, Col: p.Col + dCol);
+            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
             if (IsLand(next, rows, cols, grid))
             {

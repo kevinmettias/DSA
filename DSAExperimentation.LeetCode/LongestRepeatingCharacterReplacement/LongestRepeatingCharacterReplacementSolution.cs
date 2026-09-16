@@ -3,8 +3,8 @@ using DSAExperimentation.DataStructures.HashMap;
 namespace DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
 
 // LeetCode 424. Longest Repeating Character Replacement: the length of the
-// longest substring achievable by replacing at most k characters so the whole
-// window shares one letter.
+// longest substring achievable by replacing at most maxReplacements characters so
+// the whole window shares one letter.
 //
 // Both strategies are the same sliding window over "count of the window's most
 // frequent character" - mostFrequentCount is a running historical max, never
@@ -17,38 +17,38 @@ internal static class LongestRepeatingCharacterReplacementSolution
 
     // The textbook answer: re-scan from every start index with a plain int[26]
     // count table (LC's alphabet is uppercase A-Z), extending right until more
-    // than k characters would need replacing. Deliberately written without this
-    // repo's primitives - it is the arm the sliding window below has to justify
-    // itself against.
-    public static int LongestRunByBruteForce(string s, int k)
+    // than maxReplacements characters would need replacing. Deliberately written
+    // without this repo's primitives - it is the arm the sliding window below has
+    // to justify itself against.
+    public static int LongestRunByBruteForce(string text, int maxReplacements)
     {
         var longest = 0;
 
-        for (var start = 0; start < s.Length; start++)
+        for (var start = 0; start < text.Length; start++)
         {
-            var run = LongestRunFromStart(s, start, k);
+            var run = LongestRunFromStart(text, start, maxReplacements);
             longest = Math.Max(longest, run);
         }
 
         return longest;
     }
 
-    // Extends the window from `start` as far right as k replacements allow,
-    // returning the longest window that reaches - the "re-scan from every start
-    // index" half of the brute-force arm.
-    private static int LongestRunFromStart(string s, int start, int k)
+    // Extends the window from `start` as far right as maxReplacements replacements
+    // allow, returning the longest window that reaches - the "re-scan from every
+    // start index" half of the brute-force arm.
+    private static int LongestRunFromStart(string text, int start, int maxReplacements)
     {
         var counts = new int[AlphabetSize];
         var mostFrequentCount = 0;
         var longest = 0;
 
-        for (var end = start; end < s.Length; end++)
+        for (var end = start; end < text.Length; end++)
         {
-            var index = s[end] - 'A';
+            var index = text[end] - 'A';
             counts[index]++;
             mostFrequentCount = Math.Max(mostFrequentCount, counts[index]);
 
-            if (end - start + 1 - mostFrequentCount > k)
+            if (end - start + 1 - mostFrequentCount > maxReplacements)
             {
                 break;
             }
@@ -62,20 +62,20 @@ internal static class LongestRepeatingCharacterReplacementSolution
     // A single O(n) pass: the window's left edge only ever advances forward,
     // tracking per-character counts in this repo's own HashMap<char,int> instead
     // of restarting the count from scratch at every start index.
-    public static int LongestRunBySlidingWindowHashMap(string s, int k)
+    public static int LongestRunBySlidingWindowHashMap(string text, int maxReplacements)
     {
         var counts = new HashMap<char, int>();
         var windowStart = 0;
         var mostFrequentCount = 0;
         var longest = 0;
 
-        for (var windowEnd = 0; windowEnd < s.Length; windowEnd++)
+        for (var windowEnd = 0; windowEnd < text.Length; windowEnd++)
         {
-            mostFrequentCount = AdmitIncoming(counts, s[windowEnd], mostFrequentCount);
+            mostFrequentCount = AdmitIncoming(counts, text[windowEnd], mostFrequentCount);
 
-            if (windowEnd - windowStart + 1 - mostFrequentCount > k)
+            if (windowEnd - windowStart + 1 - mostFrequentCount > maxReplacements)
             {
-                windowStart = EvictOutgoing(counts, s[windowStart], windowStart);
+                windowStart = EvictOutgoing(counts, text[windowStart], windowStart);
             }
 
             longest = Math.Max(longest, windowEnd - windowStart + 1);

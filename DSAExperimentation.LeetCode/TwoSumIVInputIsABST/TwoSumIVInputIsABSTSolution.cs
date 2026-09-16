@@ -14,7 +14,7 @@ internal static class TwoSumIVInputIsABSTSolution
     // The textbook answer: collect every value with a plain traversal, then a
     // nested O(n^2) pair scan. Deliberately BCL-only past the traversal - the arm
     // the one-pass DFS below has to justify itself against.
-    public static bool FindTargetByNestedPairScan(BinaryTreeNode<int>? root, int k)
+    public static bool HasTargetPairByNestedPairScan(BinaryTreeNode<int>? root, int target)
     {
         var values = new List<int>();
         Collect(root, values);
@@ -23,7 +23,7 @@ internal static class TwoSumIVInputIsABSTSolution
         {
             for (var j = i + 1; j < values.Count; j++)
             {
-                if (values[i] + values[j] == k)
+                if (values[i] + values[j] == target)
                 {
                     return true;
                 }
@@ -36,24 +36,24 @@ internal static class TwoSumIVInputIsABSTSolution
     // A single DFS that checks each node's complement against a Set<int> of values
     // already seen - the same one-pass Set/HashMap idiom TwoSum and
     // ContainsDuplicate use, walking tree edges instead of an array index.
-    public static bool FindTargetByDepthFirstSetLookup(BinaryTreeNode<int>? root, int k) =>
-        FindTargetByDepthFirstSetLookup(root, k, new Set<int>());
+    public static bool HasTargetPairByDepthFirstSetLookup(BinaryTreeNode<int>? root, int target) =>
+        HasTargetPairByDepthFirstSetLookup(root, target, new Set<int>());
 
-    private static bool FindTargetByDepthFirstSetLookup(BinaryTreeNode<int>? node, int k, Set<int> seen)
+    private static bool HasTargetPairByDepthFirstSetLookup(BinaryTreeNode<int>? node, int target, Set<int> seen)
     {
         if (node is null)
         {
             return false;
         }
 
-        if (seen.Has(k - node.Value))
+        if (seen.Has(target - node.Value))
         {
             return true;
         }
 
         seen.TryAdd(node.Value);
-        return FindTargetByDepthFirstSetLookup(node.Left, k, seen) ||
-               FindTargetByDepthFirstSetLookup(node.Right, k, seen);
+        return HasTargetPairByDepthFirstSetLookup(node.Left, target, seen) ||
+               HasTargetPairByDepthFirstSetLookup(node.Right, target, seen);
     }
 
     private static void Collect(BinaryTreeNode<int>? node, List<int> values)

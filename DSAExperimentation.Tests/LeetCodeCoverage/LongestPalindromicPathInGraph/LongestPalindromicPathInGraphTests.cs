@@ -17,9 +17,9 @@ public sealed class LongestPalindromicPathInGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPalindromeByBruteForceDfs_LeetCodeExamples_ReturnsLongestPalindromicPathLength(
-        int n, int[][] edges, string label, int expected)
+        int nodeCount, int[][] edges, string label, int expected)
     {
-        var actual = LongestPalindromicPathInGraphSolution.LongestPalindromeByBruteForceDfs(n, edges, label);
+        var actual = LongestPalindromicPathInGraphSolution.LongestPalindromeByBruteForceDfs(nodeCount, edges, label);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class LongestPalindromicPathInGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPalindromeByBitmaskMemo_LeetCodeExamples_ReturnsLongestPalindromicPathLength(
-        int n, int[][] edges, string label, int expected)
+        int nodeCount, int[][] edges, string label, int expected)
     {
-        var actual = LongestPalindromicPathInGraphSolution.LongestPalindromeByBitmaskMemo(n, edges, label);
+        var actual = LongestPalindromicPathInGraphSolution.LongestPalindromeByBitmaskMemo(nodeCount, edges, label);
 
         Assert.Equal(expected, actual);
     }

@@ -16,17 +16,19 @@ public sealed class MaximizeSubarrayGCDScoreTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxScoreByBruteForce_LeetCodeExamples_ReturnsMaximumScore(int[] nums, int k, long expected)
+    public void MaxScoreByBruteForce_LeetCodeExamples_ReturnsMaximumScore(
+        int[] nums, int maxDoubledElements, long expected)
     {
-        var actual = MaximizeSubarrayGCDScoreSolution.MaxScoreByBruteForce(nums, k);
+        var actual = MaximizeSubarrayGCDScoreSolution.MaxScoreByBruteForce(nums, maxDoubledElements);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxScoreByBottleneckGcdScan_LeetCodeExamples_ReturnsMaximumScore(int[] nums, int k, long expected)
+    public void MaxScoreByBottleneckGcdScan_LeetCodeExamples_ReturnsMaximumScore(
+        int[] nums, int maxDoubledElements, long expected)
     {
-        var actual = MaximizeSubarrayGCDScoreSolution.MaxScoreByBottleneckGcdScan(nums, k);
+        var actual = MaximizeSubarrayGCDScoreSolution.MaxScoreByBottleneckGcdScan(nums, maxDoubledElements);
         Assert.Equal(expected, actual);
     }
 }

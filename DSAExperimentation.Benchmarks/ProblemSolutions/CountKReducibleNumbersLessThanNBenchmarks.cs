@@ -18,7 +18,7 @@ public class CountKReducibleNumbersLessThanNBenchmarks
     private const int Seed = 3352; // LC problem number
     private const int K = 3;
 
-    private string _s = "";
+    private string _binaryDigits = "";
 
     [Params(16, 24)]
     public int Length { get; set; }
@@ -36,13 +36,14 @@ public class CountKReducibleNumbersLessThanNBenchmarks
             bits[i] = isZeroBit ? '0' : '1';
         }
 
-        _s = new string(bits);
+        _binaryDigits = new string(bits);
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce() => CountKReducibleNumbersLessThanNSolution.CountKReducibleNumbersByBruteForce(_s, K);
+    public int BruteForce() =>
+        CountKReducibleNumbersLessThanNSolution.CountKReducibleNumbersByBruteForce(_binaryDigits, K);
 
     [Benchmark]
     public int PopcountCombinatorics() =>
-        CountKReducibleNumbersLessThanNSolution.CountKReducibleNumbersByPopcountCombinatorics(_s, K);
+        CountKReducibleNumbersLessThanNSolution.CountKReducibleNumbersByPopcountCombinatorics(_binaryDigits, K);
 }

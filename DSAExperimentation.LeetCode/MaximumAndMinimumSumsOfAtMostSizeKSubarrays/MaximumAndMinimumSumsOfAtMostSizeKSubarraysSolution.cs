@@ -3,24 +3,24 @@ using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 namespace DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubarrays;
 
 // LeetCode 3430. Maximum and Minimum Sums of at Most Size K Subarrays: over
-// every contiguous subarray of length 1..k, sum its maximum plus its minimum.
-// No modulo here (unlike its subsequence sibling, LC 3428) - values and lengths
-// are small enough that the true sum fits a long outright.
+// every contiguous subarray of length 1..maxSubarrayLength, sum its maximum plus
+// its minimum. No modulo here (unlike its subsequence sibling, LC 3428) - values
+// and lengths are small enough that the true sum fits a long outright.
 //
 // Every subarray's extreme is attributed to exactly one of its indices - the
 // leftmost occurrence of that value inside it - by breaking left boundaries
 // strictly and right boundaries non-strictly (the same SumOfSubarrayMinimums/LC
 // 907 tie-break, so duplicate values are neither double- nor under-counted).
 // That index then dominates a contiguous index range; counting only the
-// subarrays inside it whose length is also <=k is closed-form arithmetic, not a
-// walk.
+// subarrays inside it whose length is also <= maxSubarrayLength is closed-form
+// arithmetic, not a walk.
 internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 {
     // The textbook answer: slide the window end forward from every start,
     // tracking the running max/min in O(1) per step - O(n*k) overall, no repo
     // primitives. The baseline SumByMonotonicStackContribution is measured
     // against.
-    public static long SumByBruteForceWindow(int[] nums, int k)
+    public static long SumByBruteForceWindow(int[] nums, int maxSubarrayLength)
     {
         var n = nums.Length;
         var total = 0L;
@@ -29,7 +29,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
         {
             var max = nums[start];
             var min = nums[start];
-            var end = Math.Min(n, start + k);
+            var end = Math.Min(n, start + maxSubarrayLength);
 
             for (var i = start; i < end; i++)
             {
@@ -42,10 +42,11 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
         return total;
     }
 
-    public static long SumByMonotonicStackContribution(int[] nums, int k) =>
-        ExtremeSum(nums, k, Extreme.Maximum) + ExtremeSum(nums, k, Extreme.Minimum);
+    public static long SumByMonotonicStackContribution(int[] nums, int maxSubarrayLength) =>
+        ExtremeSum(nums, maxSubarrayLength, Extreme.Maximum)
+            + ExtremeSum(nums, maxSubarrayLength, Extreme.Minimum);
 
-    private static long ExtremeSum(int[] nums, int k, Extreme extreme)
+    private static long ExtremeSum(int[] nums, int maxSubarrayLength, Extreme extreme)
     {
         var n = nums.Length;
         var left = PreviousDominantIndex(nums, extreme);
@@ -54,7 +55,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
         for (var i = 0; i < n; i++)
         {
-            var count = CountDominatedSubarrays(left[i] + 1, i, right[i] - 1, k);
+            var count = CountDominatedSubarrays(left[i] + 1, i, right[i] - 1, maxSubarrayLength);
             total += (long)nums[i] * count;
         }
 
@@ -74,7 +75,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
         for (var i = 0; i < n; i++)
         {
-            while (stack.TryPeek(out var top) && !Dominates(nums[top], nums[i], extreme, DominanceRule.Strict))
+            while (stack.TryPeek(out var top) && !IsDominantOver(nums[top], nums[i], extreme, DominanceRule.Strict))
             {
                 stack.TryPop(out _);
             }
@@ -98,7 +99,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
 
         for (var i = n - 1; i >= 0; i--)
         {
-            while (stack.TryPeek(out var top) && !Dominates(nums[top], nums[i], extreme, DominanceRule.Inclusive))
+            while (stack.TryPeek(out var top) && !IsDominantOver(nums[top], nums[i], extreme, DominanceRule.Inclusive))
             {
                 stack.TryPop(out _);
             }
@@ -110,17 +111,17 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
         return boundary;
     }
 
-    // Subarrays [s, e] with left <= s <= i <= e <= right and e-s+1 <= k, counted
-    // directly: for each start s the valid ends run from i up to
-    // min(right, s+k-1), a range whose size is either a linear function of s (s
-    // early enough that the length cap binds) or constant (s late enough that
-    // right binds first instead) - summed in closed form over those two pieces
-    // instead of enumerated.
-    private static long CountDominatedSubarrays(int left, int i, int right, int k)
+    // Subarrays [s, e] with left <= s <= dominantIndex <= e <= right and
+    // e-s+1 <= maxSubarrayLength, counted directly: for each start s the valid
+    // ends run from dominantIndex up to min(right, s+maxSubarrayLength-1), a range
+    // whose size is either a linear function of s (s early enough that the length
+    // cap binds) or constant (s late enough that right binds first instead) -
+    // summed in closed form over those two pieces instead of enumerated.
+    private static long CountDominatedSubarrays(int left, int dominantIndex, int right, int maxSubarrayLength)
     {
-        var startLow = Math.Max(left, i - k + 1);
-        var startHigh = i;
-        var pivot = right - k + 1;
+        var startLow = Math.Max(left, dominantIndex - maxSubarrayLength + 1);
+        var startHigh = dominantIndex;
+        var pivot = right - maxSubarrayLength + 1;
         var mid = Math.Min(startHigh, pivot);
         var total = 0L;
 
@@ -128,14 +129,14 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
         {
             var count = mid - startLow + 1;
             var indexSum = (long)(mid + startLow) * count / 2;
-            total += indexSum + (long)(k - i) * count;
+            total += indexSum + (long)(maxSubarrayLength - dominantIndex) * count;
         }
 
         var constantStart = Math.Max(startLow, mid + 1);
 
         if (constantStart <= startHigh)
         {
-            total += (long)(right - i + 1) * (startHigh - constantStart + 1);
+            total += (long)(right - dominantIndex + 1) * (startHigh - constantStart + 1);
         }
 
         return total;
@@ -145,7 +146,7 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution
     // the value counts as beyond it, and DominanceRule says whether landing level
     // with it counts too - only the left boundary is DominanceRule.Strict, which
     // is what gives every duplicate value exactly one owning index.
-    private static bool Dominates(int candidate, int value, Extreme extreme, DominanceRule rule) =>
+    private static bool IsDominantOver(int candidate, int value, Extreme extreme, DominanceRule rule) =>
         (extreme, rule) switch
     {
         (Extreme.Maximum, DominanceRule.Strict) => candidate > value,

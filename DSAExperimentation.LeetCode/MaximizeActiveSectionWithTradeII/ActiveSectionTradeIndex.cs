@@ -3,9 +3,9 @@ using DSAExperimentation.DataStructures.SegmentTree;
 namespace DSAExperimentation.LeetCode.MaximizeActiveSectionWithTradeII;
 
 // The static, per-string index MaxActiveAfterTradeByRangeMaxIndex composes
-// against: the total '1' count in s (constant across every query - s and the
-// query list never change, only which spots a trade touches), every maximal
-// run of '0's in s, a per-position pointer to "the most recent zero-run
+// against: the total '1' count in text (constant across every query - text and
+// the query list never change, only which spots a trade touches), every maximal
+// run of '0's in text, a per-position pointer to "the most recent zero-run
 // starting at or before this position", and a
 // SegmentTree<int, MaxOperation<int>> over the pairwise sum of every two
 // CONSECUTIVE zero-runs' lengths - the score for "sacrifice the single
@@ -20,38 +20,38 @@ namespace DSAExperimentation.LeetCode.MaximizeActiveSectionWithTradeII;
 // it lives in its own LeetCode/ folder rather than Domain/.
 internal sealed class ActiveSectionTradeIndex
 {
-    private readonly string _s;
+    private readonly string _text;
     private readonly (int Start, int Length)[] _zeroRuns;
     private readonly int[] _zeroRunAtOrBefore;
     private readonly SegmentTree<int, MaxOperation<int>>? _adjacentPairMax;
 
     public int ActiveOnes { get; }
 
-    public ActiveSectionTradeIndex(string s)
+    public ActiveSectionTradeIndex(string text)
     {
-        _s = s;
-        ActiveOnes = s.Count(c => c == '1');
+        _text = text;
+        ActiveOnes = text.Count(c => c == '1');
 
-        var (zeroRuns, zeroRunAtOrBefore) = BuildZeroRunIndex(s);
+        var (zeroRuns, zeroRunAtOrBefore) = BuildZeroRunIndex(text);
         _zeroRuns = zeroRuns;
         _zeroRunAtOrBefore = zeroRunAtOrBefore;
 
         _adjacentPairMax = BuildAdjacentPairMax(zeroRuns);
     }
 
-    // Every maximal run of '0's in s, plus a per-position pointer to the most
-    // recent zero-run starting at or before that position (-1 while s has produced
-    // none yet).
-    private static ((int Start, int Length)[] ZeroRuns, int[] RunAtOrBefore) BuildZeroRunIndex(string s)
+    // Every maximal run of '0's in text, plus a per-position pointer to the most
+    // recent zero-run starting at or before that position (-1 while text has
+    // produced none yet).
+    private static ((int Start, int Length)[] ZeroRuns, int[] RunAtOrBefore) BuildZeroRunIndex(string text)
     {
         var zeroRuns = new List<(int Start, int Length)>();
-        var zeroRunAtOrBefore = new int[s.Length];
+        var zeroRunAtOrBefore = new int[text.Length];
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            if (s[i] == '0')
+            if (text[i] == '0')
             {
-                if (i > 0 && s[i - 1] == '0')
+                if (i > 0 && text[i - 1] == '0')
                 {
                     var last = zeroRuns[^1];
                     zeroRuns[^1] = (last.Start, last.Length + 1);
@@ -69,8 +69,8 @@ internal sealed class ActiveSectionTradeIndex
     }
 
     // The score for sacrificing the single one-run between each pair of CONSECUTIVE
-    // zero-runs, as a range-maximum tree over those pairwise sums - or null when s
-    // holds fewer than two runs, leaving no pair to merge.
+    // zero-runs, as a range-maximum tree over those pairwise sums - or null when
+    // text holds fewer than two runs, leaving no pair to merge.
     private static SegmentTree<int, MaxOperation<int>>? BuildAdjacentPairMax((int Start, int Length)[] zeroRuns)
     {
         if (zeroRuns.Length < 2)
@@ -89,7 +89,7 @@ internal sealed class ActiveSectionTradeIndex
     }
 
     // The best achievable active-section count after at most one trade
-    // confined to s[left..right] - active elsewhere in s (a trade never
+    // confined to text[left..right] - active elsewhere in text (a trade never
     // touches anything outside [left, right]) plus the best gain such a
     // trade can achieve there (0 when no trade helps).
     public int BestActiveAfterTrade(int left, int right)
@@ -109,7 +109,7 @@ internal sealed class ActiveSectionTradeIndex
 
     // What the query window sees of the zero-run index: the surviving
     // (query-clipped) tail of the zero-run straddling `left`, and head of the one
-    // straddling `right` - only meaningful when s[left]/s[right] is itself '0',
+    // straddling `right` - only meaningful when text[left]/text[right] is itself '0',
     // guarded at every use. The interior bounds are the zero-run indices fully
     // inside (left, right), neither clipped by the window, so adjacent pairs among
     // them are valid sacrifice-and-merge candidates with no boundary special-casing.
@@ -124,7 +124,7 @@ internal sealed class ActiveSectionTradeIndex
         var rightRemainder = zeroRunAtRight < 0
             ? 0
             : ClippedHeadLength(_zeroRuns[zeroRunAtRight], right);
-        var rightIsZero = _s[right] == '0';
+        var rightIsZero = _text[right] == '0';
 
         return (leftRemainder, rightRemainder, zeroRunAtLeft + 1, zeroRunAtRight - (rightIsZero ? 1 : 0));
     }
@@ -158,20 +158,20 @@ internal sealed class ActiveSectionTradeIndex
     {
         var zeroRunAtLeft = _zeroRunAtOrBefore[left];
         var zeroRunAtRight = _zeroRunAtOrBefore[right];
-        var rightIsOne = _s[right] == '1';
+        var rightIsOne = _text[right] == '1';
         var best = 0;
 
-        if (EndsAreClippedAndAdjacent(_s[left], _s[right], zeroRunAtLeft, zeroRunAtRight))
+        if (HasAdjacentClippedEnds(_text[left], _text[right], zeroRunAtLeft, zeroRunAtRight))
         {
             best = Math.Max(best, leftRemainder + rightRemainder);
         }
 
-        if (_s[left] == '0' && zeroRunAtLeft + 1 < zeroRunAtRight + (rightIsOne ? 1 : 0))
+        if (_text[left] == '0' && zeroRunAtLeft + 1 < zeroRunAtRight + (rightIsOne ? 1 : 0))
         {
             best = Math.Max(best, leftRemainder + _zeroRuns[zeroRunAtLeft + 1].Length);
         }
 
-        if (_s[right] == '0' && zeroRunAtLeft < zeroRunAtRight - 1)
+        if (_text[right] == '0' && zeroRunAtLeft < zeroRunAtRight - 1)
         {
             best = Math.Max(best, rightRemainder + _zeroRuns[zeroRunAtRight - 1].Length);
         }
@@ -181,7 +181,7 @@ internal sealed class ActiveSectionTradeIndex
 
     // Both query ends sit on a '0' and their zero-runs are neighbours, so a single
     // one-run is all that separates the two clipped remainders.
-    private static bool EndsAreClippedAndAdjacent(
+    private static bool HasAdjacentClippedEnds(
         char leftChar, char rightChar, int leftZeroRun, int rightZeroRun) =>
         leftChar == '0' && rightChar == '0' && leftZeroRun + 1 == rightZeroRun;
 }

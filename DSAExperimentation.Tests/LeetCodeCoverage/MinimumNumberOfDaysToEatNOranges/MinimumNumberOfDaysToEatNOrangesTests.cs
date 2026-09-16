@@ -22,11 +22,11 @@ public sealed class MinimumNumberOfDaysToEatNOrangesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinDaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumDayCount(int n, int expected)
-        => Assert.Equal(expected, MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByUnmemoizedRecursion(n));
+    public void MinDaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumDayCount(int orangeCount, int expected)
+        => Assert.Equal(expected, MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByUnmemoizedRecursion(orangeCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinDaysByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumDayCount(int n, int expected)
-        => Assert.Equal(expected, MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByMemoizedRecurrence(n));
+    public void MinDaysByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumDayCount(int orangeCount, int expected)
+        => Assert.Equal(expected, MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByMemoizedRecurrence(orangeCount));
 }

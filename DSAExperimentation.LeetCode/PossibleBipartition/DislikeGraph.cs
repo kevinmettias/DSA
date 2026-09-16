@@ -1,9 +1,9 @@
 namespace DSAExperimentation.LeetCode.PossibleBipartition;
 
-// LC 886's (n, dislikes) input materialized as PersonNode objects. Dislike is
-// mutual, so every listed pair is wired in both directions - which is exactly the
-// symmetric-adjacency precondition Algorithms.Bipartiteness.BipartiteCheck
-// documents.
+// LC 886's (personCount, dislikes) input materialized as PersonNode objects.
+// Dislike is mutual, so every listed pair is wired in both directions - which is
+// exactly the symmetric-adjacency precondition
+// Algorithms.Bipartiteness.BipartiteCheck documents.
 //
 // This exists as a type rather than a bare node list so a benchmark can hoist
 // construction into [GlobalSetup] and hand the prepared graph to the strategy's
@@ -19,12 +19,12 @@ internal sealed class DislikeGraph
 
     // A PersonNode per person id, then both directions of every dislike pair.
     // LeetCodeAdjacency states that layout once for every problem taking an (n, edges)
-    // pair; slot i holding person i is this problem being numbered 1..n, and the
-    // placeholder that numbering leaves at slot 0 is sliced off below.
-    public static DislikeGraph Build(int n, int[][] dislikes)
+    // pair; slot i holding person i is this problem being numbered 1..personCount,
+    // and the placeholder that numbering leaves at slot 0 is sliced off below.
+    public static DislikeGraph Build(int personCount, int[][] dislikes)
     {
         var byId = LeetCodeAdjacency.OneBased<PersonNode>(
-            n, dislikes, id => new PersonNode(id), (person, _, farPerson, _) => person.Dislikes.Add(farPerson));
+            personCount, dislikes, id => new PersonNode(id), (person, _, farPerson, _) => person.Dislikes.Add(farPerson));
 
         return new DislikeGraph(byId[PersonNumbering.First..]);
     }

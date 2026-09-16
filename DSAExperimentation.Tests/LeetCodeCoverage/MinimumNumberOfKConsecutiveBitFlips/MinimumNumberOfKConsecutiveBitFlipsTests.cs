@@ -22,18 +22,18 @@ public sealed class MinimumNumberOfKConsecutiveBitFlipsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinKBitFlipsByInPlaceWindowFlip_LeetCodeExamples_ReturnsMinimumFlipCount(
-        int[] nums, int k, int expected)
+        int[] nums, int windowSize, int expected)
     {
-        var actual = MinimumNumberOfKConsecutiveBitFlipsSolution.MinKBitFlipsByInPlaceWindowFlip(nums, k);
+        var actual = MinimumNumberOfKConsecutiveBitFlipsSolution.MinKBitFlipsByInPlaceWindowFlip(nums, windowSize);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinKBitFlipsByQueueTrackedParity_LeetCodeExamples_ReturnsMinimumFlipCount(
-        int[] nums, int k, int expected)
+        int[] nums, int windowSize, int expected)
     {
-        var actual = MinimumNumberOfKConsecutiveBitFlipsSolution.MinKBitFlipsByQueueTrackedParity(nums, k);
+        var actual = MinimumNumberOfKConsecutiveBitFlipsSolution.MinKBitFlipsByQueueTrackedParity(nums, windowSize);
         Assert.Equal(expected, actual);
     }
 }

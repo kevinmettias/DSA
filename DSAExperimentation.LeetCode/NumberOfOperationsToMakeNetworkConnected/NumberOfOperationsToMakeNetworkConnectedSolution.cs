@@ -10,8 +10,9 @@ namespace DSAExperimentation.LeetCode.NumberOfOperationsToMakeNetworkConnected;
 // report componentCount - 1, since one spare cable buys exactly one merge - and
 // differ only in how the components are counted: a textbook DFS flood fill over a
 // freshly built adjacency list, or this repo's own DisjointSet unioning every
-// connection. Neither can do anything at all when there are fewer than n-1 cables
-// for n computers, which is checked before either counting pass begins.
+// connection. Neither can do anything at all when there are fewer than
+// computerCount - 1 cables for computerCount computers, which is checked before
+// either counting pass begins.
 internal static class NumberOfOperationsToMakeNetworkConnectedSolution
 {
     private const int From = 0;
@@ -21,18 +22,18 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
     // unvisited computer and count how many fills it took. Deliberately written
     // without this repo's primitives - it is the arm the DisjointSet below has to
     // justify itself against.
-    public static int MakeConnectedByDepthFirstFloodFill(int n, int[][] connections)
+    public static int MakeConnectedByDepthFirstFloodFill(int computerCount, int[][] connections)
     {
-        if (!HasEnoughCables(n, connections))
+        if (!HasEnoughCables(computerCount, connections))
         {
             return LeetCodeAnswer.None;
         }
 
-        var adjacency = BuildAdjacency(n, connections);
-        var visited = new bool[n];
+        var adjacency = BuildAdjacency(computerCount, connections);
+        var visited = new bool[computerCount];
         var components = 0;
 
-        for (var computer = 0; computer < n; computer++)
+        for (var computer = 0; computer < computerCount; computer++)
         {
             if (visited[computer])
             {
@@ -46,11 +47,11 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
         return ComponentsToOperations(components);
     }
 
-    private static int[][] BuildAdjacency(int n, int[][] connections)
+    private static int[][] BuildAdjacency(int computerCount, int[][] connections)
     {
-        var neighbors = new List<int>[n];
+        var neighbors = new List<int>[computerCount];
 
-        for (var computer = 0; computer < n; computer++)
+        for (var computer = 0; computer < computerCount; computer++)
         {
             neighbors[computer] = [];
         }
@@ -61,9 +62,9 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
             neighbors[connection[To]].Add(connection[From]);
         }
 
-        var adjacency = new int[n][];
+        var adjacency = new int[computerCount][];
 
-        for (var computer = 0; computer < n; computer++)
+        for (var computer = 0; computer < computerCount; computer++)
         {
             adjacency[computer] = [.. neighbors[computer]];
         }
@@ -73,11 +74,12 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
 
     // This repo's own DisjointSet: every connection is a Union, so the components
     // are already tracked by the time the walk over the connections ends and the
-    // count is just how many distinct roots the n computers report - collected in
-    // this repo's own Set<int>, the same composition NumberOfProvinces uses.
-    public static int MakeConnectedByDisjointSet(int n, int[][] connections)
+    // count is just how many distinct roots the computerCount computers report -
+    // collected in this repo's own Set<int>, the same composition NumberOfProvinces
+    // uses.
+    public static int MakeConnectedByDisjointSet(int computerCount, int[][] connections)
     {
-        if (!HasEnoughCables(n, connections))
+        if (!HasEnoughCables(computerCount, connections))
         {
             return LeetCodeAnswer.None;
         }
@@ -91,7 +93,7 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
 
         var roots = new Set<int>();
 
-        for (var computer = 0; computer < n; computer++)
+        for (var computer = 0; computer < computerCount; computer++)
         {
             roots.TryAdd(components.Find(computer));
         }
@@ -112,10 +114,11 @@ internal static class NumberOfOperationsToMakeNetworkConnectedSolution
         }
     }
 
-    // n computers need at least n-1 cables to be connected at all, however they
-    // are currently arranged - no amount of moving creates a cable.
-    private static bool HasEnoughCables(int n, int[][] connections) =>
-        connections.Length >= n - 1;
+    // computerCount computers need at least computerCount - 1 cables to be
+    // connected at all, however they are currently arranged - no amount of moving
+    // creates a cable.
+    private static bool HasEnoughCables(int computerCount, int[][] connections) =>
+        connections.Length >= computerCount - 1;
 
     // One spare cable merges exactly two components, so joining c components takes
     // c-1 moves - and the cable count above already guarantees the spares exist.

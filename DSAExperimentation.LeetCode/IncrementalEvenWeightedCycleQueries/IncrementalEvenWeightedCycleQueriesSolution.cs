@@ -3,9 +3,9 @@ using DSAExperimentation.DataStructures.DisjointSet;
 namespace DSAExperimentation.LeetCode.IncrementalEvenWeightedCycleQueries;
 
 // LeetCode 3887. Incremental Even-Weighted Cycle Queries: process (u, v, w) edges
-// one at a time into an initially empty n-node graph, keeping an edge only if
-// every cycle in the resulting graph still sums to an even total weight. Return
-// how many edges survive.
+// one at a time into an initially empty graph over nodeCount nodes, keeping an edge
+// only if every cycle in the resulting graph still sums to an even total weight.
+// Return how many edges survive.
 //
 // The textbook parity union-find for this problem needs a disjoint-set that
 // tracks an XOR-to-root value updated during path compression itself - a
@@ -26,9 +26,9 @@ internal static class IncrementalEvenWeightedCycleQueriesSolution
     // incoming edge, whether or not the endpoints could possibly be connected yet
     // - deliberately without this repo's DisjointSet, the arm the pruned strategy
     // below has to justify itself against.
-    public static int CountAddedEdgesByBruteForceBfs(int n, int[][] edges)
+    public static int CountAddedEdgesByBruteForceBfs(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildEmptyAdjacency(n);
+        var adjacency = BuildEmptyAdjacency(nodeCount);
         var addedCount = 0;
 
         foreach (var edge in edges)
@@ -52,10 +52,10 @@ internal static class IncrementalEvenWeightedCycleQueriesSolution
     // safe to add without ever walking the graph. Only a same-component pair -
     // the sole case that can close a cycle - falls back to the same BFS parity
     // walk the baseline always runs.
-    public static int CountAddedEdgesByDisjointSetPrunedBfs(int n, int[][] edges)
+    public static int CountAddedEdgesByDisjointSetPrunedBfs(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildEmptyAdjacency(n);
-        var components = new DisjointSet(n);
+        var adjacency = BuildEmptyAdjacency(nodeCount);
+        var components = new DisjointSet(nodeCount);
         var addedCount = 0;
 
         foreach (var edge in edges)
@@ -151,11 +151,11 @@ internal static class IncrementalEvenWeightedCycleQueriesSolution
         }
     }
 
-    private static List<(int Neighbor, int Weight)>[] BuildEmptyAdjacency(int n)
+    private static List<(int Neighbor, int Weight)>[] BuildEmptyAdjacency(int nodeCount)
     {
-        var adjacency = new List<(int Neighbor, int Weight)>[n];
+        var adjacency = new List<(int Neighbor, int Weight)>[nodeCount];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             adjacency[node] = [];
         }
@@ -163,9 +163,10 @@ internal static class IncrementalEvenWeightedCycleQueriesSolution
         return adjacency;
     }
 
-    private static void AddEdge(List<(int Neighbor, int Weight)>[] adjacency, int u, int v, int w)
+    private static void AddEdge(
+        List<(int Neighbor, int Weight)>[] adjacency, int sourceNode, int targetNode, int weight)
     {
-        adjacency[u].Add((v, w));
-        adjacency[v].Add((u, w));
+        adjacency[sourceNode].Add((targetNode, weight));
+        adjacency[targetNode].Add((sourceNode, weight));
     }
 }

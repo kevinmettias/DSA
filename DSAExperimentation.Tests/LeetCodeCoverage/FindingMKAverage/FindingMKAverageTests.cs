@@ -93,9 +93,9 @@ public sealed class FindingMKAverageTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySortingSlidingWindow_LeetCodeExamples_ReturnsTrimmedWindowMean(
-        int m, int k, MKAverageOp[] operations, int?[] expected)
+        int windowSize, int trimCount, MKAverageOp[] operations, int?[] expected)
     {
-        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(m, k);
+        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(windowSize, trimCount);
 
         RunScript(mkAverage, operations, expected);
     }
@@ -103,9 +103,9 @@ public sealed class FindingMKAverageTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByFenwickOrderStatistics_LeetCodeExamples_ReturnsTrimmedWindowMean(
-        int m, int k, MKAverageOp[] operations, int?[] expected)
+        int windowSize, int trimCount, MKAverageOp[] operations, int?[] expected)
     {
-        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(m, k);
+        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(windowSize, trimCount);
 
         RunScript(mkAverage, operations, expected);
     }

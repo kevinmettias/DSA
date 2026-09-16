@@ -27,36 +27,36 @@ internal static class BasicCalculatorSolution
 
     public static int CalculateByRecursiveDescent(string expression)
     {
-        var i = 0;
-        return EvaluateRecursive(expression, ref i);
+        var position = 0;
+        return EvaluateRecursive(expression, ref position);
     }
 
     public static int CalculateByStackScan(string expression)
     {
         var stack = new RepoStack();
         var state = (Result: 0, Sign: 1);
-        var i = 0;
+        var position = 0;
 
-        while (i < expression.Length)
+        while (position < expression.Length)
         {
-            ProcessToken(expression, stack, ref i, ref state);
+            ApplyToken(expression, stack, ref position, ref state);
         }
 
         return state.Result;
     }
 
-    private static void ProcessToken(string expression, RepoStack stack, ref int i, ref (int Result, int Sign) state)
+    private static void ApplyToken(string expression, RepoStack stack, ref int position, ref (int Result, int Sign) state)
     {
-        var c = expression[i];
+        var c = expression[position];
 
         if (char.IsDigit(c))
         {
-            state.Result += state.Sign * ParseNumber(expression, ref i);
+            state.Result += state.Sign * ParseNumber(expression, ref position);
             return;
         }
 
         ApplyOperatorToken(c, stack, ref state);
-        i++;
+        position++;
     }
 
     private static void ApplyOperatorToken(char token, RepoStack stack, ref (int Result, int Sign) state)
@@ -80,14 +80,14 @@ internal static class BasicCalculatorSolution
         }
     }
 
-    private static int EvaluateRecursive(string expression, ref int i)
+    private static int EvaluateRecursive(string expression, ref int position)
     {
         var result = 0;
         var sign = 1;
 
-        while (i < expression.Length)
+        while (position < expression.Length)
         {
-            if (!TryConsumeToken(expression, ref i, ref result, ref sign))
+            if (!TryConsumeToken(expression, ref position, ref result, ref sign))
             {
                 return result;
             }
@@ -96,14 +96,14 @@ internal static class BasicCalculatorSolution
         return result;
     }
 
-    private static bool TryConsumeToken(string expression, ref int i, ref int result, ref int sign)
+    private static bool TryConsumeToken(string expression, ref int position, ref int result, ref int sign)
     {
-        if (TryConsumeValue(expression, ref i, ref result, ref sign))
+        if (TryConsumeValue(expression, ref position, ref result, ref sign))
         {
             return true;
         }
 
-        var c = expression[i];
+        var c = expression[position];
 
         if (c == ')')
         {
@@ -115,19 +115,19 @@ internal static class BasicCalculatorSolution
             sign = ApplyOperatorSign(c);
         }
 
-        i++;
+        position++;
         return true;
     }
 
     // Digits and parenthesized groups are the two operands this grammar has, and
     // both fold into the running result through the sign currently pending.
-    private static bool TryConsumeValue(string expression, ref int i, ref int result, ref int sign)
+    private static bool TryConsumeValue(string expression, ref int position, ref int result, ref int sign)
     {
-        var c = expression[i];
+        var c = expression[position];
 
         if (char.IsDigit(c))
         {
-            result += sign * ParseNumber(expression, ref i);
+            result += sign * ParseNumber(expression, ref position);
             return true;
         }
 
@@ -136,28 +136,28 @@ internal static class BasicCalculatorSolution
             return false;
         }
 
-        result += sign * ConsumeGroup(expression, ref i);
+        result += sign * ConsumeGroup(expression, ref position);
         return true;
     }
 
-    private static int ConsumeGroup(string expression, ref int i)
+    private static int ConsumeGroup(string expression, ref int position)
     {
-        i++;
-        var value = EvaluateRecursive(expression, ref i);
-        i++;
+        position++;
+        var value = EvaluateRecursive(expression, ref position);
+        position++;
         return value;
     }
 
     private static int ApplyOperatorSign(char token) => token == '+' ? 1 : -1;
 
-    private static int ParseNumber(string expression, ref int i)
+    private static int ParseNumber(string expression, ref int position)
     {
         var number = 0;
 
-        while (i < expression.Length && char.IsDigit(expression[i]))
+        while (position < expression.Length && char.IsDigit(expression[position]))
         {
-            number = number * DecimalBase + (expression[i] - '0');
-            i++;
+            number = number * DecimalBase + (expression[position] - '0');
+            position++;
         }
 
         return number;

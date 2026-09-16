@@ -86,12 +86,12 @@ internal static class LargestTriangleAreaSolution
         return stack;
     }
 
-    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) p)
+    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) point)
     {
         stack.TryPop(out var top);
         stack.TryPeek(out var second);
 
-        if (Cross(second, top, p) <= 0)
+        if (Cross(second, top, point) <= 0)
         {
             return true;
         }
@@ -138,13 +138,13 @@ internal static class LargestTriangleAreaSolution
         return best;
     }
 
-    private static double Area((int X, int Y) a, (int X, int Y) b, (int X, int Y) c)
+    private static double Area((int X, int Y) firstPoint, (int X, int Y) secondPoint, (int X, int Y) thirdPoint)
     {
-        var cross = Cross(a, b, c);
+        var cross = Cross(firstPoint, secondPoint, thirdPoint);
 
         return Math.Abs(cross) / TriangleAreaDivisor;
     }
 
-    private static long Cross((int X, int Y) o, (int X, int Y) a, (int X, int Y) b)
-        => (long)(a.X - o.X) * (b.Y - o.Y) - (long)(a.Y - o.Y) * (b.X - o.X);
+    private static long Cross((int X, int Y) origin, (int X, int Y) firstPoint, (int X, int Y) secondPoint)
+        => (long)(firstPoint.X - origin.X) * (secondPoint.Y - origin.Y) - (long)(firstPoint.Y - origin.Y) * (secondPoint.X - origin.X);
 }

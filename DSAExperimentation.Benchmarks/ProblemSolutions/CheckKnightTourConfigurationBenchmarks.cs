@@ -41,16 +41,16 @@ public class CheckKnightTourConfigurationBenchmarks
     private int[][] _grid = [];
 
     [Params(SmallBoard, 7)]
-    public int N { get; set; }
+    public int BoardSize { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _grid = N == SmallBoard ? FiveByFiveTour : SevenBySevenTour;
+    public void Setup() => _grid = BoardSize == SmallBoard ? FiveByFiveTour : SevenBySevenTour;
 
     [Benchmark(Baseline = true)]
-    public bool RescanBoardPerMove() =>
-        CheckKnightTourConfigurationSolution.CheckValidGridByBoardRescan(_grid);
+    public bool IsValidGridByBoardRescan() =>
+        CheckKnightTourConfigurationSolution.IsValidGridByBoardRescan(_grid);
 
     [Benchmark]
-    public bool SinglePassPositionLookup() =>
-        CheckKnightTourConfigurationSolution.CheckValidGridByPositionLookup(_grid);
+    public bool IsValidGridByPositionLookup() =>
+        CheckKnightTourConfigurationSolution.IsValidGridByPositionLookup(_grid);
 }

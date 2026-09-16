@@ -31,9 +31,9 @@ public class NumberOfSquarefulArraysBenchmarks
 
     [Benchmark(Baseline = true)]
     public int GenerateThenFilter() =>
-        NumberOfSquarefulArraysSolution.NumSquarefulPermsByFullPermutationFilter(_nums);
+        NumberOfSquarefulArraysSolution.CountSquarefulPermsByFullPermutationFilter(_nums);
 
     [Benchmark]
     public int PrunedBacktrack() =>
-        NumberOfSquarefulArraysSolution.NumSquarefulPermsByPrunedBacktracking(_nums);
+        NumberOfSquarefulArraysSolution.CountSquarefulPermsByPrunedBacktracking(_nums);
 }

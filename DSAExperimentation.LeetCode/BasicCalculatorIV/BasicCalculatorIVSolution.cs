@@ -16,7 +16,7 @@ namespace DSAExperimentation.LeetCode.BasicCalculatorIV;
 // variable - and differ only in which collection type carries the running
 // polynomial (a term key -> coefficient map) and how that collection implements
 // add/negate/multiply/single-term construction. That single point of variation is
-// bundled into PolynomialOps<T> and threaded through one shared parser core
+// bundled into PolynomialOps<TPolynomial> and threaded through one shared parser core
 // instead of keeping two structurally identical parsers in sync - the same
 // "same algorithm, repo primitive vs. BCL equivalent" comparison
 // BasicCalculatorSolution's Stack<(int,int)> vs. BCL Stack arms use for LC 224.
@@ -80,20 +80,20 @@ internal static class BasicCalculatorIVSolution
         return degreeA != degreeB ? degreeB.CompareTo(degreeA) : string.CompareOrdinal(keyA, keyB);
     }
 
-    private static string MergeVariables(string a, string b)
+    private static string MergeVariables(string firstKey, string secondKey)
     {
-        if (a.Length == 0)
+        if (firstKey.Length == 0)
         {
-            return b;
+            return secondKey;
         }
 
-        if (b.Length == 0)
+        if (secondKey.Length == 0)
         {
-            return a;
+            return firstKey;
         }
 
-        var parts = new List<string>(a.Split('*'));
-        parts.AddRange(b.Split('*'));
+        var parts = new List<string>(firstKey.Split('*'));
+        parts.AddRange(secondKey.Split('*'));
         parts.Sort(StringComparer.Ordinal);
         return string.Join('*', parts);
     }
@@ -104,14 +104,15 @@ internal static class BasicCalculatorIVSolution
     // polynomial representations differ; Variable already resolves known values
     // (baked into the closure at construction time) so the shared parser core never
     // needs to know about evalvars/evalints itself.
-    private readonly record struct PolynomialOps<T>(
-        Func<T, T, T> Add,
-        Func<T, T> Negate,
-        Func<T, T, T> Multiply,
-        Func<long, T> Constant,
-        Func<string, T> Variable);
+    private readonly record struct PolynomialOps<TPolynomial>(
+        Func<TPolynomial, TPolynomial, TPolynomial> Add,
+        Func<TPolynomial, TPolynomial> Negate,
+        Func<TPolynomial, TPolynomial, TPolynomial> Multiply,
+        Func<long, TPolynomial> Constant,
+        Func<string, TPolynomial> Variable);
 
-    private static T ParseExpressionCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    private static TPolynomial ParseExpressionCore<TPolynomial>(
+        string expr, ref int pos, PolynomialOps<TPolynomial> ops)
     {
         var result = ParseTermCore(expr, ref pos, ops);
 
@@ -130,7 +131,8 @@ internal static class BasicCalculatorIVSolution
     private static bool IsAtAdditiveOperator(string expr, int pos)
         => pos < expr.Length && (expr[pos] == '+' || expr[pos] == '-');
 
-    private static T ParseTermCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    private static TPolynomial ParseTermCore<TPolynomial>(
+        string expr, ref int pos, PolynomialOps<TPolynomial> ops)
     {
         var result = ParseFactorCore(expr, ref pos, ops);
 
@@ -146,7 +148,8 @@ internal static class BasicCalculatorIVSolution
 
     // The grammar's own three cases of `factor := '(' expression ')' | number |
     // variable`: a parenthesized sub-expression, a numeric literal, or a name.
-    private static T ParseFactorCore<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    private static TPolynomial ParseFactorCore<TPolynomial>(
+        string expr, ref int pos, PolynomialOps<TPolynomial> ops)
     {
         if (expr[pos] == '(')
         {
@@ -163,7 +166,8 @@ internal static class BasicCalculatorIVSolution
 
     // A parenthesized factor: step past the '(' , parse the whole expression inside
     // it (recursing back up to the sum rule), and step past the ')' that closed it.
-    private static T ParseParenthesized<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    private static TPolynomial ParseParenthesized<TPolynomial>(
+        string expr, ref int pos, PolynomialOps<TPolynomial> ops)
     {
         pos++;
         var inner = ParseExpressionCore(expr, ref pos, ops);
@@ -172,7 +176,8 @@ internal static class BasicCalculatorIVSolution
     }
 
     // A numeric factor: consume its digits and evaluate them as a constant term.
-    private static T ParseNumber<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    private static TPolynomial ParseNumber<TPolynomial>(
+        string expr, ref int pos, PolynomialOps<TPolynomial> ops)
     {
         var start = pos;
 
@@ -186,7 +191,8 @@ internal static class BasicCalculatorIVSolution
 
     // A variable factor: consume its letters and resolve the name through the ops -
     // a known variable becoming its value, an unknown one staying symbolic.
-    private static T ParseVariable<T>(string expr, ref int pos, PolynomialOps<T> ops)
+    private static TPolynomial ParseVariable<TPolynomial>(
+        string expr, ref int pos, PolynomialOps<TPolynomial> ops)
     {
         var start = pos;
 
@@ -221,11 +227,12 @@ internal static class BasicCalculatorIVSolution
             ? new Dictionary<string, long> { [string.Empty] = value }
             : new Dictionary<string, long> { [name] = 1L });
 
-    private static Dictionary<string, long> AddDict(Dictionary<string, long> a, Dictionary<string, long> b)
+    private static Dictionary<string, long> AddDict(
+        Dictionary<string, long> leftPolynomial, Dictionary<string, long> rightPolynomial)
     {
-        var result = new Dictionary<string, long>(a);
+        var result = new Dictionary<string, long>(leftPolynomial);
 
-        foreach (var (key, value) in b)
+        foreach (var (key, value) in rightPolynomial)
         {
             result[key] = result.GetValueOrDefault(key) + value;
         }
@@ -233,11 +240,11 @@ internal static class BasicCalculatorIVSolution
         return result;
     }
 
-    private static Dictionary<string, long> NegateDict(Dictionary<string, long> a)
+    private static Dictionary<string, long> NegateDict(Dictionary<string, long> polynomial)
     {
         var result = new Dictionary<string, long>();
 
-        foreach (var (key, value) in a)
+        foreach (var (key, value) in polynomial)
         {
             result[key] = -value;
         }
@@ -245,13 +252,14 @@ internal static class BasicCalculatorIVSolution
         return result;
     }
 
-    private static Dictionary<string, long> MultiplyDict(Dictionary<string, long> a, Dictionary<string, long> b)
+    private static Dictionary<string, long> MultiplyDict(
+        Dictionary<string, long> leftPolynomial, Dictionary<string, long> rightPolynomial)
     {
         var result = new Dictionary<string, long>();
 
-        foreach (var (keyA, coeffA) in a)
+        foreach (var (keyA, coeffA) in leftPolynomial)
         {
-            foreach (var (keyB, coeffB) in b)
+            foreach (var (keyB, coeffB) in rightPolynomial)
             {
                 var mergedKey = MergeVariables(keyA, keyB);
                 result[mergedKey] = result.GetValueOrDefault(mergedKey) + (coeffA * coeffB);
@@ -304,19 +312,20 @@ internal static class BasicCalculatorIVSolution
         return single;
     }
 
-    private static HashMap<string, long> AddHashMap(HashMap<string, long> a, HashMap<string, long> b)
+    private static HashMap<string, long> AddHashMap(
+        HashMap<string, long> leftPolynomial, HashMap<string, long> rightPolynomial)
     {
         var result = new HashMap<string, long>();
 
-        foreach (var key in a.Keys)
+        foreach (var key in leftPolynomial.Keys)
         {
-            a.TryGetValue(key, out var value);
+            leftPolynomial.TryGetValue(key, out var value);
             result.Set(key, value);
         }
 
-        foreach (var key in b.Keys)
+        foreach (var key in rightPolynomial.Keys)
         {
-            b.TryGetValue(key, out var value);
+            rightPolynomial.TryGetValue(key, out var value);
             result.TryGetValue(key, out var existing);
             result.Set(key, existing + value);
         }
@@ -324,30 +333,31 @@ internal static class BasicCalculatorIVSolution
         return result;
     }
 
-    private static HashMap<string, long> NegateHashMap(HashMap<string, long> a)
+    private static HashMap<string, long> NegateHashMap(HashMap<string, long> polynomial)
     {
         var result = new HashMap<string, long>();
 
-        foreach (var key in a.Keys)
+        foreach (var key in polynomial.Keys)
         {
-            a.TryGetValue(key, out var value);
+            polynomial.TryGetValue(key, out var value);
             result.Set(key, -value);
         }
 
         return result;
     }
 
-    private static HashMap<string, long> MultiplyHashMap(HashMap<string, long> a, HashMap<string, long> b)
+    private static HashMap<string, long> MultiplyHashMap(
+        HashMap<string, long> leftPolynomial, HashMap<string, long> rightPolynomial)
     {
         var result = new HashMap<string, long>();
 
-        foreach (var keyA in a.Keys)
+        foreach (var keyA in leftPolynomial.Keys)
         {
-            a.TryGetValue(keyA, out var coeffA);
+            leftPolynomial.TryGetValue(keyA, out var coeffA);
 
-            foreach (var keyB in b.Keys)
+            foreach (var keyB in rightPolynomial.Keys)
             {
-                b.TryGetValue(keyB, out var coeffB);
+                rightPolynomial.TryGetValue(keyB, out var coeffB);
                 var mergedKey = MergeVariables(keyA, keyB);
                 result.TryGetValue(mergedKey, out var existing);
                 result.Set(mergedKey, existing + (coeffA * coeffB));

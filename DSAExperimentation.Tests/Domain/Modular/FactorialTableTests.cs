@@ -10,19 +10,19 @@ public sealed class FactorialTableTests
     [InlineData(2, 2)]
     [InlineData(5, 120)]
     [InlineData(10, 3_628_800)]
-    public void Factorial_MatchesOrdinaryFactorial(int n, long expected) =>
-        Assert.Equal(expected, FactorialTable.Build(n).Factorial(n));
+    public void Factorial_MatchesOrdinaryFactorial(int argument, long expected) =>
+        Assert.Equal(expected, FactorialTable.Build(argument).Factorial(argument));
 
     [Theory]
     [InlineData(0)]
     [InlineData(1)]
     [InlineData(7)]
     [InlineData(1_000)]
-    public void InverseFactorial_MultipliedByItsFactorial_IsOne(int n)
+    public void InverseFactorial_MultipliedByItsFactorial_IsOne(int argument)
     {
-        var table = FactorialTable.Build(n);
+        var table = FactorialTable.Build(argument);
 
-        Assert.Equal(1, table.Factorial(n) * table.InverseFactorial(n) % ModularArithmetic.Modulo);
+        Assert.Equal(1, table.Factorial(argument) * table.InverseFactorial(argument) % ModularArithmetic.Modulo);
     }
 
     [Fact]
@@ -44,16 +44,16 @@ public sealed class FactorialTableTests
     [InlineData(4, 4, 1)]
     [InlineData(0, 0, 1)]
     [InlineData(20, 10, 184_756)]
-    public void Choose_MatchesKnownBinomialCoefficients(int n, int r, long expected) =>
-        Assert.Equal(expected, FactorialTable.Build(n).Choose(n, r));
+    public void Choose_MatchesKnownBinomialCoefficients(int totalCount, int chosenCount, long expected) =>
+        Assert.Equal(expected, FactorialTable.Build(totalCount).Choose(totalCount, chosenCount));
 
     [Theory]
     [InlineData(4, 5)]
     [InlineData(4, -1)]
     [InlineData(-1, 0)]
     [InlineData(0, 1)]
-    public void Choose_OutsideTheBinomialRange_IsZero(int n, int r) =>
-        Assert.Equal(0, FactorialTable.Build(4).Choose(n, r));
+    public void Choose_OutsideTheBinomialRange_IsZero(int totalCount, int chosenCount) =>
+        Assert.Equal(0, FactorialTable.Build(4).Choose(totalCount, chosenCount));
 
     [Fact]
     public void Choose_IsTheFactorialOverTheTwoInverseFactorials()

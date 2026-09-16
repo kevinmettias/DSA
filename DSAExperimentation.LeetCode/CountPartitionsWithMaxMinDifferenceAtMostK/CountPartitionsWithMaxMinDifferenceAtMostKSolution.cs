@@ -16,9 +16,9 @@ namespace DSAExperimentation.LeetCode.CountPartitionsWithMaxMinDifferenceAtMostK
 internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 {
     // dp[r] = sum of dp[l-1] over every l in [1, r] whose segment [l, r] has
-    // max - min <= k, found by rescanning backward from r and shrinking on the
-    // first violation - O(n) per r, O(n^2) overall.
-    public static int CountPartitionsByBruteForce(int[] nums, int k)
+    // max - min at most maxDifference, found by rescanning backward from r and
+    // shrinking on the first violation - O(n) per r, O(n^2) overall.
+    public static int CountPartitionsByBruteForce(int[] nums, int maxDifference)
     {
         var n = nums.Length;
         var dp = new long[n + 1];
@@ -26,27 +26,27 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 
         for (var r = 1; r <= n; r++)
         {
-            dp[r] = SumValidStarts(nums, k, r, dp);
+            dp[r] = SumValidStarts(nums, maxDifference, r, dp);
         }
 
         return (int)dp[n];
     }
 
     // The sum of dp[l-1] over every l in [1, r] whose segment [l, r] has
-    // max - min <= k, found by extending the window one element at a time
-    // backwards from r and stopping at the first violation.
-    private static long SumValidStarts(int[] nums, int k, int r, long[] dp)
+    // max - min at most maxDifference, found by extending the window one element
+    // at a time backwards from r and stopping at the first violation.
+    private static long SumValidStarts(int[] nums, int maxDifference, int rightEnd, long[] dp)
     {
-        var windowMax = nums[r - 1];
-        var windowMin = nums[r - 1];
+        var windowMax = nums[rightEnd - 1];
+        var windowMin = nums[rightEnd - 1];
         var sum = 0L;
 
-        for (var l = r; l >= 1; l--)
+        for (var l = rightEnd; l >= 1; l--)
         {
             windowMax = Math.Max(windowMax, nums[l - 1]);
             windowMin = Math.Min(windowMin, nums[l - 1]);
 
-            if (windowMax - windowMin > k)
+            if (windowMax - windowMin > maxDifference)
             {
                 break;
             }
@@ -63,7 +63,7 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
     // [left, r-1]" in O(1), and left only ever moves forward, so the whole sweep is
     // O(n) amortized. A running prefix sum turns "sum of dp[l-1] over a range" into
     // one subtraction instead of a rescan.
-    public static int CountPartitionsBySlidingWindowDeque(int[] nums, int k)
+    public static int CountPartitionsBySlidingWindowDeque(int[] nums, int maxDifference)
     {
         var n = nums.Length;
         var dp = new long[n + 1];
@@ -76,7 +76,7 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
 
         for (var r = 1; r <= n; r++)
         {
-            left = AdvanceLeft((nums, k), r - 1, left, deques);
+            left = AdvanceLeft((nums, maxDifference), r - 1, left, deques);
 
             var lower = PrefixSumBefore(prefixSum, left);
             dp[r] = ((prefixSum[r - 1] - lower) % ModularArithmetic.Modulo + ModularArithmetic.Modulo)
@@ -87,45 +87,46 @@ internal static class CountPartitionsWithMaxMinDifferenceAtMostKSolution
         return (int)dp[n];
     }
 
-    // Brings index i into both monotonic deques, then advances left past every window
-    // whose max - min still exceeds k, returning the advanced left.
+    // Brings the element at `index` into both monotonic deques, then advances left past
+    // every window whose max - min still exceeds `maxDifference`, returning the advanced
+    // left.
     private static int AdvanceLeft(
-        (int[] Nums, int K) problem, int i, int left, (MonotonicDeque Max, MonotonicDeque Min) deques)
+        (int[] Nums, int MaxDifference) problem, int index, int left, (MonotonicDeque Max, MonotonicDeque Min) deques)
     {
-        PushMax(deques.Max, problem.Nums, i);
-        PushMin(deques.Min, problem.Nums, i);
+        PushMax(deques.Max, problem.Nums, index);
+        PushMin(deques.Min, problem.Nums, index);
 
-        return ShrinkToValidWindow(deques, problem.Nums, problem.K, left);
+        return ShrinkToValidWindow(deques, problem.Nums, problem.MaxDifference, left);
     }
 
-    private static void PushMax(MonotonicDeque maxDeque, int[] nums, int i)
+    private static void PushMax(MonotonicDeque maxDeque, int[] nums, int index)
     {
-        while (maxDeque.TryPeekBack(out var backIndex) && nums[backIndex] <= nums[i])
+        while (maxDeque.TryPeekBack(out var backIndex) && nums[backIndex] <= nums[index])
         {
             maxDeque.TryPopBack(out _);
         }
 
-        maxDeque.PushBack(i);
+        maxDeque.PushBack(index);
     }
 
-    private static void PushMin(MonotonicDeque minDeque, int[] nums, int i)
+    private static void PushMin(MonotonicDeque minDeque, int[] nums, int index)
     {
-        while (minDeque.TryPeekBack(out var backIndex) && nums[backIndex] >= nums[i])
+        while (minDeque.TryPeekBack(out var backIndex) && nums[backIndex] >= nums[index])
         {
             minDeque.TryPopBack(out _);
         }
 
-        minDeque.PushBack(i);
+        minDeque.PushBack(index);
     }
 
     // The running max and running min deques travel together everywhere in this file -
     // AdvanceLeft already hands them over as one `deques` - so the shrink takes that
     // same pair rather than splitting it back into two parameters.
     private static int ShrinkToValidWindow(
-        (MonotonicDeque Max, MonotonicDeque Min) deques, int[] nums, int k, int left)
+        (MonotonicDeque Max, MonotonicDeque Min) deques, int[] nums, int maxDifference, int left)
     {
         while (TryGetFrontSpan(deques.Max, deques.Min, out var frontMax, out var frontMin) &&
-               nums[frontMax] - nums[frontMin] > k)
+               nums[frontMax] - nums[frontMin] > maxDifference)
         {
             if (frontMax == left)
             {

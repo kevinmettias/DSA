@@ -15,18 +15,18 @@ public sealed class VowelsGameInAStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DoesAliceWinByGameSearch_LeetCodeExamples_ReturnsWhetherAliceWins(GameCase example)
+    public void CanAliceWinByGameSearch_LeetCodeExamples_ReturnsWhetherAliceWins(GameCase example)
     {
-        var aliceWins = VowelsGameInAStringSolution.DoesAliceWinByGameSearch(example.S);
+        var aliceWins = VowelsGameInAStringSolution.CanAliceWinByGameSearch(example.S);
 
         Assert.Equal(example.Expected, aliceWins);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DoesAliceWinByVowelExistence_LeetCodeExamples_ReturnsWhetherAliceWins(GameCase example)
+    public void CanAliceWinByVowelExistence_LeetCodeExamples_ReturnsWhetherAliceWins(GameCase example)
     {
-        var aliceWins = VowelsGameInAStringSolution.DoesAliceWinByVowelExistence(example.S);
+        var aliceWins = VowelsGameInAStringSolution.CanAliceWinByVowelExistence(example.S);
 
         Assert.Equal(example.Expected, aliceWins);
     }

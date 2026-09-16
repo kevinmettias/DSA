@@ -16,11 +16,11 @@ public sealed class RemoveInvalidParenthesesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RemoveByQueueBfs_LeetCodeExamples_ReturnsAllMinimalValidResults(string s, string[] expected) =>
-        Assert.Equal(expected.Order(), RemoveInvalidParenthesesSolution.RemoveByQueueBfs(s).Order());
+    public void RemoveByQueueBfs_LeetCodeExamples_ReturnsAllMinimalValidResults(string text, string[] expected) =>
+        Assert.Equal(expected.Order(), RemoveInvalidParenthesesSolution.RemoveByQueueBfs(text).Order());
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RemoveByBruteForceAllSubsets_LeetCodeExamples_ReturnsAllMinimalValidResults(string s, string[] expected) =>
-        Assert.Equal(expected.Order(), RemoveInvalidParenthesesSolution.RemoveByBruteForceAllSubsets(s).Order());
+    public void RemoveByBruteForceAllSubsets_LeetCodeExamples_ReturnsAllMinimalValidResults(string text, string[] expected) =>
+        Assert.Equal(expected.Order(), RemoveInvalidParenthesesSolution.RemoveByBruteForceAllSubsets(text).Order());
 }

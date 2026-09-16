@@ -51,22 +51,22 @@ internal static class CountAlmostEqualPairsIISolution
         return count;
     }
 
-    private static bool IsWithinSwapBudgetBruteForce(string a, string b)
+    private static bool IsWithinSwapBudgetBruteForce(string firstNumber, string secondNumber)
     {
-        if (a == b)
+        if (firstNumber == secondNumber)
         {
             return true;
         }
 
-        var width = a.Length;
+        var width = firstNumber.Length;
 
         for (var i1 = 0; i1 < width; i1++)
         {
             for (var j1 = i1 + 1; j1 < width; j1++)
             {
-                var afterOneSwap = Swapped(a, i1, j1);
+                var afterOneSwap = Swapped(firstNumber, i1, j1);
 
-                if (afterOneSwap == b || IsOneSwapFrom(afterOneSwap, b))
+                if (afterOneSwap == secondNumber || IsOneSwapFrom(afterOneSwap, secondNumber))
                 {
                     return true;
                 }
@@ -94,10 +94,10 @@ internal static class CountAlmostEqualPairsIISolution
         return false;
     }
 
-    private static string Swapped(string s, int i, int j)
+    private static string Swapped(string value, int firstIndex, int secondIndex)
     {
-        var chars = s.ToCharArray();
-        (chars[i], chars[j]) = (chars[j], chars[i]);
+        var chars = value.ToCharArray();
+        (chars[firstIndex], chars[secondIndex]) = (chars[secondIndex], chars[firstIndex]);
         return new string(chars);
     }
 
@@ -121,9 +121,9 @@ internal static class CountAlmostEqualPairsIISolution
         return count;
     }
 
-    private static bool IsWithinSwapBudgetBacktrack(string a, string b)
+    private static bool IsWithinSwapBudgetBacktrack(string firstNumber, string secondNumber)
     {
-        var state = new SwapBudgetState(a.ToCharArray(), b.ToCharArray(), SwapBudget);
+        var state = new SwapBudgetState(firstNumber.ToCharArray(), secondNumber.ToCharArray(), SwapBudget);
 
         return Backtrack.TrySearch<SwapBudgetState, (int I, int J)>(
             state,

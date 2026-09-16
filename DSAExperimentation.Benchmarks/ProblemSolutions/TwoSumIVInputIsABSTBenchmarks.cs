@@ -42,10 +42,10 @@ public class TwoSumIVInputIsABSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool CollectThenNestedPairScan() =>
-        TwoSumIVInputIsABSTSolution.FindTargetByNestedPairScan(_tree.Root, Target);
+    public bool HasTargetPairByNestedPairScan() =>
+        TwoSumIVInputIsABSTSolution.HasTargetPairByNestedPairScan(_tree.Root, Target);
 
     [Benchmark]
-    public bool DepthFirstSetLookup() =>
-        TwoSumIVInputIsABSTSolution.FindTargetByDepthFirstSetLookup(_tree.Root, Target);
+    public bool HasTargetPairByDepthFirstSetLookup() =>
+        TwoSumIVInputIsABSTSolution.HasTargetPairByDepthFirstSetLookup(_tree.Root, Target);
 }

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConcatenatedDivisibilitySolution's, the same
 // methods ConcatenatedDivisibilityTests proves correct. No hoisted overload is
-// needed - nums/k are already the cheap, plain-array shape [GlobalSetup] would
+// needed - nums/divisor are already the cheap, plain-array shape [GlobalSetup] would
 // produce either way, the same reasoning MedianOfTwoSortedArraysBenchmarks
 // applies to its own nums1/nums2.
 //
@@ -21,7 +21,7 @@ public class ConcatenatedDivisibilityBenchmarks
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _divisor;
     [Params(6, 9)]
     public int NumberCount { get; set; }
 
@@ -30,12 +30,14 @@ public class ConcatenatedDivisibilityBenchmarks
     {
         var random = new Random(Seed + NumberCount);
         _nums = [.. Enumerable.Range(0, NumberCount).Select(_ => random.Next(1, 100_000))];
-        _k = random.Next(1, 101);
+        _divisor = random.Next(1, 101);
     }
 
     [Benchmark(Baseline = true)]
-    public IList<int> Backtracking() => ConcatenatedDivisibilitySolution.SmallestPermutationByBacktracking(_nums, _k);
+    public IList<int> Backtracking() =>
+        ConcatenatedDivisibilitySolution.SmallestPermutationByBacktracking(_nums, _divisor);
 
     [Benchmark]
-    public IList<int> BitmaskMemo() => ConcatenatedDivisibilitySolution.SmallestPermutationByBitmaskMemo(_nums, _k);
+    public IList<int> BitmaskMemo() =>
+        ConcatenatedDivisibilitySolution.SmallestPermutationByBitmaskMemo(_nums, _divisor);
 }

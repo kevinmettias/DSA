@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.Harness;
 // The handful of answer-equality rules LeetCode problems actually use, written
 // once. These are named helpers a registration passes to MatchingAnswersWith
 // explicitly - NOT a default it inherits by saying nothing. That distinction is
-// the point: picking SetEqual over SequenceEqual is a statement about the
+// the point: picking IsSetEqual over IsSequenceEqual is a statement about the
 // problem ("return the answer in any order"), and a registration that never had
 // to make it is a registration where nobody checked.
 internal static class LeetCodeAnswers
@@ -12,15 +12,15 @@ internal static class LeetCodeAnswers
     private const double DefaultTolerance = 1e-5;
 
     // Ordinary value equality. Correct for int/bool/string answers, and WRONG for
-    // arrays and lists - use SequenceEqual for those.
-    public static bool Exactly<TAnswer>(TAnswer actual, TAnswer expected)
+    // arrays and lists - use IsSequenceEqual for those.
+    public static bool IsExactlyEqual<TAnswer>(TAnswer actual, TAnswer expected)
         => EqualityComparer<TAnswer>.Default.Equals(actual, expected);
 
-    public static bool SequenceEqual<TItem>(IEnumerable<TItem> actual, IEnumerable<TItem> expected)
+    public static bool IsSequenceEqual<TItem>(IEnumerable<TItem> actual, IEnumerable<TItem> expected)
         => actual.SequenceEqual(expected);
 
     // For "you may return the answer in any order": same multiset, any sequence.
-    public static bool SetEqual<TItem>(IEnumerable<TItem> actual, IEnumerable<TItem> expected)
+    public static bool IsSetEqual<TItem>(IEnumerable<TItem> actual, IEnumerable<TItem> expected)
         where TItem : IComparable<TItem>
         => actual.Order().SequenceEqual(expected.Order());
 
@@ -30,7 +30,7 @@ internal static class LeetCodeAnswers
     // out because the mirror image (ordered rows, unordered contents) is a real
     // shape too, and picking the wrong one passes on LeetCode's own examples
     // whenever the example happens to be symmetric.
-    public static bool RowSetEqual<TItem>(
+    public static bool IsRowSetEqual<TItem>(
         IEnumerable<IEnumerable<TItem>> actual, IEnumerable<IEnumerable<TItem>> expected)
         where TItem : IComparable<TItem>
     {
@@ -67,7 +67,7 @@ internal static class LeetCodeAnswers
         return leftRow.Count.CompareTo(rightRow.Count);
     }
 
-    public static bool SequenceOfSequencesEqual<TItem>(
+    public static bool IsSequenceOfSequencesEqual<TItem>(
         IEnumerable<IEnumerable<TItem>> actual, IEnumerable<IEnumerable<TItem>> expected)
     {
         var actualRows = actual.ToList();
@@ -77,6 +77,6 @@ internal static class LeetCodeAnswers
             && actualRows.Zip(expectedRows).All(pair => pair.First.SequenceEqual(pair.Second));
     }
 
-    public static bool WithinTolerance(double actual, double expected, double tolerance = DefaultTolerance)
+    public static bool IsWithinTolerance(double actual, double expected, double tolerance = DefaultTolerance)
         => Math.Abs(actual - expected) <= tolerance;
 }

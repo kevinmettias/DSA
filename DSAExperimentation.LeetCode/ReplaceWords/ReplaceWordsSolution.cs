@@ -32,7 +32,7 @@ internal static class ReplaceWordsSolution
 
         foreach (var root in dictionary)
         {
-            if (BeatsTheBestRoot(new SentenceWord(word), new DictionaryRoot(root), best))
+            if (IsBetterRootThanBest(new SentenceWord(word), new DictionaryRoot(root), best))
             {
                 best = root;
             }
@@ -43,7 +43,7 @@ internal static class ReplaceWordsSolution
 
     // A root wins over the best one found so far when the word starts with it and
     // it is either the first match or shorter than everything matched yet.
-    private static bool BeatsTheBestRoot(SentenceWord word, DictionaryRoot root, string? best)
+    private static bool IsBetterRootThanBest(SentenceWord word, DictionaryRoot root, string? best)
         => word.Text.StartsWith(root.Text, StringComparison.Ordinal)
             && (best is null || root.Text.Length < best.Length);
 

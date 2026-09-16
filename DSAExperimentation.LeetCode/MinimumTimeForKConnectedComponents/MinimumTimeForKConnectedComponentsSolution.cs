@@ -3,12 +3,13 @@ using DSAExperimentation.DataStructures.DisjointSet;
 namespace DSAExperimentation.LeetCode.MinimumTimeForKConnectedComponents;
 
 // LeetCode 3608. Minimum Time for K Connected Components: removing every edge with
-// time <= t only ever loses edges as t grows, so the component count is monotone
-// non-decreasing in t. Reading that the other way round - adding edges back in
-// DEscending time order, starting from n isolated components - the answer is the
-// time of whichever union first drops the running component count below k, since
-// that is exactly the point where keeping only strictly-larger-time edges no longer
-// reaches k components on its own.
+// time <= timeThreshold only ever loses edges as timeThreshold grows, so the component
+// count is monotone non-decreasing in timeThreshold. Reading that the other way round -
+// adding edges back in DEscending time order, starting from nodeCount isolated
+// components - the answer is the time of whichever union first drops the running
+// component count below requiredComponents, since that is exactly the point where
+// keeping only strictly-larger-time edges no longer reaches requiredComponents
+// components on its own.
 //
 // Both strategies compute the same monotone predicate; they differ only in how they
 // search it: probing candidate times one at a time with a fresh union-find rebuilt
@@ -20,7 +21,7 @@ internal static class MinimumTimeForKConnectedComponentsSolution
     // distinct edge times plus 0 - rebuilding a plain BCL union-find array from
     // scratch on every probe. Deliberately written without this repo's DisjointSet -
     // the arm the composed solution below has to justify itself against.
-    public static int MinTimeByBinarySearchUnionFind(int n, int[][] edges, int k)
+    public static int MinTimeByBinarySearchUnionFind(int nodeCount, int[][] edges, int requiredComponents)
     {
         var candidates = new List<int> { 0 };
         candidates.AddRange(edges.Select(edge => edge[2]));
@@ -33,7 +34,7 @@ internal static class MinimumTimeForKConnectedComponentsSolution
         {
             var mid = low + (high - low) / 2;
 
-            if (ComponentsKeepingEdgesAfter(n, edges, candidates[mid]) >= k)
+            if (ComponentsKeepingEdgesAfter(nodeCount, edges, candidates[mid]) >= requiredComponents)
             {
                 high = mid;
             }
@@ -46,20 +47,20 @@ internal static class MinimumTimeForKConnectedComponentsSolution
         return candidates[low];
     }
 
-    private static int ComponentsKeepingEdgesAfter(int n, int[][] edges, int t)
+    private static int ComponentsKeepingEdgesAfter(int nodeCount, int[][] edges, int timeThreshold)
     {
-        var parent = new int[n];
+        var parent = new int[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             parent[i] = i;
         }
 
-        var components = n;
+        var components = nodeCount;
 
         foreach (var edge in edges)
         {
-            if (TryUnionKeptEdge(parent, edge, t))
+            if (TryUnionKeptEdge(parent, edge, timeThreshold))
             {
                 components--;
             }
@@ -68,12 +69,12 @@ internal static class MinimumTimeForKConnectedComponentsSolution
         return components;
     }
 
-    // One edge of the rebuild: an edge already gone at time `t` joins nothing, and
-    // neither does one whose endpoints already share a component; otherwise the two
-    // components it connects become one.
-    private static bool TryUnionKeptEdge(int[] parent, int[] edge, int t)
+    // One edge of the rebuild: an edge already gone at time `timeThreshold` joins
+    // nothing, and neither does one whose endpoints already share a component;
+    // otherwise the two components it connects become one.
+    private static bool TryUnionKeptEdge(int[] parent, int[] edge, int timeThreshold)
     {
-        if (edge[2] <= t)
+        if (edge[2] <= timeThreshold)
         {
             return false;
         }
@@ -91,24 +92,24 @@ internal static class MinimumTimeForKConnectedComponentsSolution
         return true;
     }
 
-    private static int Find(int[] parent, int x)
+    private static int Find(int[] parent, int nodeIndex)
     {
-        while (parent[x] != x)
+        while (parent[nodeIndex] != nodeIndex)
         {
-            parent[x] = parent[parent[x]];
-            x = parent[x];
+            parent[nodeIndex] = parent[parent[nodeIndex]];
+            nodeIndex = parent[nodeIndex];
         }
 
-        return x;
+        return nodeIndex;
     }
 
     // This repo's own DisjointSet, fed edges in descending time order: the component
-    // count starts at n and only ever falls as edges are unioned back in, so the
-    // answer is the time of whichever union first drops it below k.
-    public static int MinTimeByDescendingUnionFind(int n, int[][] edges, int k)
+    // count starts at nodeCount and only ever falls as edges are unioned back in, so
+    // the answer is the time of whichever union first drops it below requiredComponents.
+    public static int MinTimeByDescendingUnionFind(int nodeCount, int[][] edges, int requiredComponents)
     {
-        var disjointSet = new DisjointSet(n);
-        var components = n;
+        var disjointSet = new DisjointSet(nodeCount);
+        var components = nodeCount;
 
         foreach (var edge in edges.OrderByDescending(edge => edge[2]))
         {
@@ -120,7 +121,7 @@ internal static class MinimumTimeForKConnectedComponentsSolution
             disjointSet.Union(edge[0], edge[1]);
             components--;
 
-            if (components < k)
+            if (components < requiredComponents)
             {
                 return edge[2];
             }

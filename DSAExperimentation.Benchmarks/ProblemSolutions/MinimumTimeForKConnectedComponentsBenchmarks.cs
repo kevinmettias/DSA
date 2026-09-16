@@ -13,7 +13,7 @@ public class MinimumTimeForKConnectedComponentsBenchmarks
 
     private int[][] _edges = [];
 
-    private int _k;
+    private int _requiredComponents;
     [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
@@ -21,14 +21,16 @@ public class MinimumTimeForKConnectedComponentsBenchmarks
     public void Setup()
     {
         _edges = KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed);
-        _k = Math.Max(1, NodeCount / 2);
+        _requiredComponents = Math.Max(1, NodeCount / 2);
     }
 
     [Benchmark(Baseline = true)]
     public int BinarySearchUnionFind() =>
-        MinimumTimeForKConnectedComponentsSolution.MinTimeByBinarySearchUnionFind(NodeCount, _edges, _k);
+        MinimumTimeForKConnectedComponentsSolution.MinTimeByBinarySearchUnionFind(
+            NodeCount, _edges, _requiredComponents);
 
     [Benchmark]
     public int DescendingUnionFind() =>
-        MinimumTimeForKConnectedComponentsSolution.MinTimeByDescendingUnionFind(NodeCount, _edges, _k);
+        MinimumTimeForKConnectedComponentsSolution.MinTimeByDescendingUnionFind(
+            NodeCount, _edges, _requiredComponents);
 }

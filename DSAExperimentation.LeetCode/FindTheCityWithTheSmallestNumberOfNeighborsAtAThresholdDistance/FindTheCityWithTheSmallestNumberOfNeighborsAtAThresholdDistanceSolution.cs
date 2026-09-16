@@ -4,7 +4,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistance;
 
 // LeetCode 1334. Find the City With the Smallest Number of Neighbors at a
-// Threshold Distance: given n cities joined by weighted, undirected roads,
+// Threshold Distance: given cityCount cities joined by weighted, undirected roads,
 // report the city that can reach the fewest other cities within
 // distanceThreshold, breaking ties in favour of the largest city id.
 //
@@ -24,9 +24,9 @@ internal static class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDis
     // rewrite (ARCHITECTURE.md 17.5) - what it exists to show is that reaching
     // for the repo's *single-source* primitive on an all-pairs question is the
     // wrong tool, which only means anything if it really is that primitive.
-    public static int FindCityByDijkstraPerSource(int n, int[][] edges, int distanceThreshold)
+    public static int FindCityByDijkstraPerSource(int cityCount, int[][] edges, int distanceThreshold)
     {
-        var graph = CityGraph.Build(n, edges);
+        var graph = CityGraph.Build(cityCount, edges);
 
         return FindCityByDijkstraPerSource(graph, distanceThreshold);
     }
@@ -61,14 +61,14 @@ internal static class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDis
 
     // AllPairsShortestPaths.TryComputeDistances (Floyd-Warshall) is already
     // exactly "every pair's distance", which is what this problem asks for
-    // n times over, so one call replaces the n searches above and every city's
-    // count is then a lookup. Unreachable pairs are absent from the map rather
+    // cityCount times over, so one call replaces the cityCount searches above and
+    // every city's count is then a lookup. Unreachable pairs are absent from the map rather
     // than carrying a sentinel, so a missing entry simply fails the threshold
     // test. The bool result reports a negative cycle, which non-negative road
     // lengths make impossible here.
-    public static int FindCityByFloydWarshall(int n, int[][] edges, int distanceThreshold)
+    public static int FindCityByFloydWarshall(int cityCount, int[][] edges, int distanceThreshold)
     {
-        var graph = CityGraph.Build(n, edges);
+        var graph = CityGraph.Build(cityCount, edges);
 
         return FindCityByFloydWarshall(graph, distanceThreshold);
     }

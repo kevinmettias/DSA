@@ -23,11 +23,11 @@ public sealed class NumberOfWaysToReorderArrayToGetSameBSTTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumOfWaysByListSplitting_LeetCodeExamples_ReturnsOtherOrderCount(int[] nums, int expected) =>
-        Assert.Equal(expected, NumberOfWaysToReorderArrayToGetSameBSTSolution.NumOfWaysByListSplitting(nums));
+    public void CountWaysByListSplitting_LeetCodeExamples_ReturnsOtherOrderCount(int[] nums, int expected) =>
+        Assert.Equal(expected, NumberOfWaysToReorderArrayToGetSameBSTSolution.CountWaysByListSplitting(nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumOfWaysByTreeFold_LeetCodeExamples_ReturnsOtherOrderCount(int[] nums, int expected) =>
-        Assert.Equal(expected, NumberOfWaysToReorderArrayToGetSameBSTSolution.NumOfWaysByTreeFold(nums));
+    public void CountWaysByTreeFold_LeetCodeExamples_ReturnsOtherOrderCount(int[] nums, int expected) =>
+        Assert.Equal(expected, NumberOfWaysToReorderArrayToGetSameBSTSolution.CountWaysByTreeFold(nums));
 }

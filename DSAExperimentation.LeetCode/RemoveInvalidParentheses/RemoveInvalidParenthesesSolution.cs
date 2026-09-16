@@ -4,8 +4,8 @@ using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.RemoveInvalidParentheses;
 
-// LeetCode 301. Remove Invalid Parentheses: report every string reachable from s
-// by removing the minimum number of parentheses that makes it valid.
+// LeetCode 301. Remove Invalid Parentheses: report every string reachable from the
+// input text by removing the minimum number of parentheses that makes it valid.
 //
 // RemoveByBruteForceAllSubsets is the textbook answer most people reach for
 // first - enumerate every one of the 2^n character subsets and keep the valid
@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.RemoveInvalidParentheses;
 // explores more removals than necessary.
 internal static class RemoveInvalidParenthesesSolution
 {
-    // Enumerates every subset of s's characters, keeping the valid ones of
+    // Enumerates every subset of text's characters, keeping the valid ones of
     // maximum length. Deliberately written without this repo's primitives - it
     // is the arm the composed BFS below has to justify itself against.
     //
@@ -25,15 +25,15 @@ internal static class RemoveInvalidParenthesesSolution
     // winning length as an int, never the strings themselves - promoted here to
     // LeetCode's real answer shape (every result at that length) since nothing
     // about the enumeration changes to do so.
-    public static List<string> RemoveByBruteForceAllSubsets(string s)
+    public static List<string> RemoveByBruteForceAllSubsets(string text)
     {
         var maxLength = -1;
         var results = new List<string>();
-        var totalMasks = 1 << s.Length;
+        var totalMasks = 1 << text.Length;
 
         for (var mask = 0; mask < totalMasks; mask++)
         {
-            maxLength = ConsiderSubset(s, mask, maxLength, results);
+            maxLength = ConsiderSubset(text, mask, maxLength, results);
         }
 
         return results;
@@ -43,9 +43,9 @@ internal static class RemoveInvalidParenthesesSolution
     // a longer one replaces everything collected at a shorter length, an equal
     // one is added only if this exact string is not already in there. Returns the
     // - possibly raised - best length, which is the only state the caller keeps.
-    private static int ConsiderSubset(string s, int mask, int maxLength, List<string> results)
+    private static int ConsiderSubset(string text, int mask, int maxLength, List<string> results)
     {
-        var chars = BuildSubset(s, mask);
+        var chars = BuildSubset(text, mask);
 
         if (chars.Count < maxLength || !IsValidSubset(chars))
         {
@@ -70,15 +70,15 @@ internal static class RemoveInvalidParenthesesSolution
 
     // The subset mask selects only the bits that stand for a kept character, so
     // the kept characters come out in their original order.
-    private static List<char> BuildSubset(string s, int mask)
+    private static List<char> BuildSubset(string text, int mask)
     {
         var chars = new List<char>();
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
             if ((mask & (1 << i)) != 0)
             {
-                chars.Add(s[i]);
+                chars.Add(text[i]);
             }
         }
 
@@ -109,16 +109,16 @@ internal static class RemoveInvalidParenthesesSolution
         return balance == 0;
     }
 
-    public static List<string> RemoveByQueueBfs(string s)
+    public static List<string> RemoveByQueueBfs(string text)
     {
         var visited = new Set<string>();
         var queue = new RepoQueue();
-        visited.TryAdd(s);
-        queue.Enqueue(s);
+        visited.TryAdd(text);
+        queue.Enqueue(text);
 
         while (queue.Count > 0)
         {
-            var validAtThisLevel = ProcessLevel(queue, visited);
+            var validAtThisLevel = CollectValidCandidatesAtLevel(queue, visited);
 
             if (validAtThisLevel.Count > 0)
             {
@@ -129,7 +129,7 @@ internal static class RemoveInvalidParenthesesSolution
         return [];
     }
 
-    private static List<string> ProcessLevel(RepoQueue queue, Set<string> visited)
+    private static List<string> CollectValidCandidatesAtLevel(RepoQueue queue, Set<string> visited)
     {
         var levelSize = queue.Count;
         var validAtThisLevel = new List<string>();
@@ -137,13 +137,16 @@ internal static class RemoveInvalidParenthesesSolution
         for (var i = 0; i < levelSize; i++)
         {
             queue.TryDequeue(out var candidate);
-            ProcessCandidate(candidate, queue, visited, validAtThisLevel);
+            RecordOrExpandCandidate(candidate, queue, visited, validAtThisLevel);
         }
 
         return validAtThisLevel;
     }
 
-    private static void ProcessCandidate(string candidate, RepoQueue queue, Set<string> visited, List<string> validAtThisLevel)
+    // A candidate that already reads as valid is one of this level's answers; any
+    // other is expanded into every string one removal shorter, and each of those is
+    // queued only the first time it is seen.
+    private static void RecordOrExpandCandidate(string candidate, RepoQueue queue, Set<string> visited, List<string> validAtThisLevel)
     {
         if (IsValid(candidate))
         {
@@ -167,11 +170,11 @@ internal static class RemoveInvalidParenthesesSolution
         }
     }
 
-    private static bool IsValid(string s)
+    private static bool IsValid(string text)
     {
         var openers = new RepoStack();
 
-        foreach (var ch in s)
+        foreach (var ch in text)
         {
             if (ch == '(')
             {

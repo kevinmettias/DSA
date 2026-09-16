@@ -10,9 +10,9 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ParallelCoursesII;
 public sealed class ParallelCoursesIITests
 {
     // Cases both arms are checked at. The unmemoized arm re-explores a
-    // completed-course mask once per semester order that reaches it (n = 11 with no
-    // prerequisites already costs ~9.7e8 calls), so the shared set stops at n = 8
-    // and the memoized arm gets the larger case below.
+    // completed-course mask once per semester order that reaches it (courseCount = 11
+    // with no prerequisites already costs ~9.7e8 calls), so the shared set stops at
+    // courseCount = 8 and the memoized arm gets the larger case below.
     public static TheoryData<int, int[][], int, int> Examples =>
         new()
         {
@@ -36,9 +36,10 @@ public sealed class ParallelCoursesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinNumberOfSemestersByBruteForceRecursion_LeetCodeExamples_ReturnsFewestSemesters(
-        int n, int[][] relations, int k, int expected)
+        int courseCount, int[][] relations, int maxPerSemester, int expected)
     {
-        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(n, relations, k);
+        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(
+            courseCount, relations, maxPerSemester);
 
         Assert.Equal(expected, semesters);
     }
@@ -46,9 +47,10 @@ public sealed class ParallelCoursesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinNumberOfSemestersByMemoizedRecursion_LeetCodeExamples_ReturnsFewestSemesters(
-        int n, int[][] relations, int k, int expected)
+        int courseCount, int[][] relations, int maxPerSemester, int expected)
     {
-        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k);
+        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(
+            courseCount, relations, maxPerSemester);
 
         Assert.Equal(expected, semesters);
     }
@@ -56,9 +58,10 @@ public sealed class ParallelCoursesIITests
     [Theory]
     [MemberData(nameof(LargeExamples))]
     public void MinNumberOfSemestersByMemoizedRecursion_LargeCourseCounts_ReturnsFewestSemesters(
-        int n, int[][] relations, int k, int expected)
+        int courseCount, int[][] relations, int maxPerSemester, int expected)
     {
-        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k);
+        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(
+            courseCount, relations, maxPerSemester);
 
         Assert.Equal(expected, semesters);
     }

@@ -19,7 +19,7 @@ public class MatchSubstringAfterReplacementBenchmarks
     private const int MappingCount = 200;
     private const int DistinctOldCharacters = 20;
 
-    private string _s = "";
+    private string _source = "";
 
     private string _sub = "";
     private (char Old, char New)[] _mappings = [];
@@ -29,7 +29,7 @@ public class MatchSubstringAfterReplacementBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _s = new string('a', SLength);
+        _source = new string('a', SLength);
         _sub = new string('b', SubLength);
         _mappings = Enumerable.Range(0, MappingCount)
             .Select(i => ((char)('c' + i % DistinctOldCharacters), 'a'))
@@ -37,16 +37,16 @@ public class MatchSubstringAfterReplacementBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool LinearScanMappings() =>
+    public bool IsMatchAtByLinearScan() =>
         MatchSubstringAfterReplacementSolution.IsMatchByLinearScan(
-            new MatchSubstringAfterReplacementSolution.SourceText(_s),
+            new MatchSubstringAfterReplacementSolution.SourceText(_source),
             new MatchSubstringAfterReplacementSolution.SubstringPattern(_sub),
             _mappings);
 
     [Benchmark]
-    public bool HashMapSetLookup() =>
+    public bool IsMatchAtByHashMapLookup() =>
         MatchSubstringAfterReplacementSolution.IsMatchByHashMapLookup(
-            new MatchSubstringAfterReplacementSolution.SourceText(_s),
+            new MatchSubstringAfterReplacementSolution.SourceText(_source),
             new MatchSubstringAfterReplacementSolution.SubstringPattern(_sub),
             _mappings);
 }

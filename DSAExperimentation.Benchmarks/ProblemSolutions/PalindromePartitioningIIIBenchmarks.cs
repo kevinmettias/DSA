@@ -15,9 +15,9 @@ public class PalindromePartitioningIIIBenchmarks
     private const int AlphabetSize = 4;
     private const int PartitionDivisor = 2;
 
-    private string _s = "";
+    private string _text = "";
 
-    private int _k;
+    private int _partitionCount;
     [Params(12, 18)]
     public int Length { get; set; }
 
@@ -25,13 +25,13 @@ public class PalindromePartitioningIIIBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _s = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
-        _k = Length / PartitionDivisor;
+        _text = new string(Enumerable.Range(0, Length).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
+        _partitionCount = Length / PartitionDivisor;
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRecursion() => PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(_s, _k);
+    public int NaiveRecursion() => PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(_text, _partitionCount);
 
     [Benchmark]
-    public int MemoizedTopDown() => PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(_s, _k);
+    public int MemoizedTopDown() => PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(_text, _partitionCount);
 }

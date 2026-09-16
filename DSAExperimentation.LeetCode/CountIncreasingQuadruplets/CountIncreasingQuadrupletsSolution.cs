@@ -36,16 +36,18 @@ internal static class CountIncreasingQuadrupletsSolution
         return count;
     }
 
-    // The fourth index l > k: the triple (i, j, k) must already be the inverted
-    // inner pair and nums[l] must rise above nums[j]. Lifted out of the brute-force
-    // scan above, which is then only three loops deep.
-    private static long CountQuadrupletsWithFirstThree(int[] nums, int i, int j, int k)
+    // The fourth index l > pivotIndex: the triple (firstIndex, secondIndex, pivotIndex) must
+    // already be the inverted inner pair and nums[l] must rise above nums[secondIndex].
+    // Lifted out of the brute-force scan above, which is then only three loops deep.
+    private static long CountQuadrupletsWithFirstThree(
+        int[] nums, int firstIndex, int secondIndex, int pivotIndex)
     {
         var count = 0L;
 
-        for (var l = k + 1; l < nums.Length; l++)
+        for (var l = pivotIndex + 1; l < nums.Length; l++)
         {
-            if (IsInvertedInnerPair(nums, i, j, k) && nums[j] < nums[l])
+            if (IsInvertedInnerPair(nums, firstIndex, secondIndex, pivotIndex)
+                && nums[secondIndex] < nums[l])
             {
                 count++;
             }
@@ -54,14 +56,15 @@ internal static class CountIncreasingQuadrupletsSolution
         return count;
     }
 
-    // The inversion the statement pivots on: nums[i] < nums[k] < nums[j], the pair
-    // (j, k) inverting with nums[i] resting below the pivot.
-    private static bool IsInvertedInnerPair(int[] nums, int i, int j, int k)
-        => nums[i] < nums[k] && HasInvertedPivotPair(nums, j, k);
+    // The inversion the statement pivots on: nums[firstIndex] < nums[pivotIndex] < nums[secondIndex],
+    // the pair (secondIndex, pivotIndex) inverting with nums[firstIndex] resting below the pivot.
+    private static bool IsInvertedInnerPair(
+        int[] nums, int firstIndex, int secondIndex, int pivotIndex)
+        => nums[firstIndex] < nums[pivotIndex] && HasInvertedPivotPair(nums, secondIndex, pivotIndex);
 
-    // Sweep k from the right. The first factor needs no structure at all: its
-    // threshold nums[k] is fixed for the whole inner j-loop, so a running counter
-    // of the j's already passed with nums[j] < nums[k] is exact. The second factor
+    // Sweep the pivot index from the right. The first factor needs no structure at all: its
+    // threshold nums[pivotIndex] is fixed for the whole inner j-loop, so a running counter
+    // of the j's already passed with nums[j] < nums[pivotIndex] is exact. The second factor
     // is a rank query over the suffix, which is what this repo's own
     // FenwickTree<int, SumOperation<int>> - a Binary Indexed Tree of the values
     // already admitted from the right - answers in O(log n): value v is stored at
@@ -69,7 +72,7 @@ internal static class CountIncreasingQuadrupletsSolution
     // greater than nums[j] (and nums[j] == n has nothing above it). O(n^2 log n),
     // the same "Fenwick tree of counts swept alongside a value-rank query" shape
     // LC 2426 and LC 315 use, here swept right to left because the query side
-    // (l > k) is a suffix rather than a prefix.
+    // (l > pivotIndex) is a suffix rather than a prefix.
     public static long CountQuadrupletsByFenwickTreeSweep(int[] nums)
     {
         var n = nums.Length;
@@ -85,18 +88,18 @@ internal static class CountIncreasingQuadrupletsSolution
         return total;
     }
 
-    // Every j < k inverting with nums[k] contributes the j's seen so far below
-    // nums[k] times the suffix values above nums[j] admitted by the Fenwick tree.
+    // Every j < pivotIndex inverting with nums[pivotIndex] contributes the j's seen so far
+    // below nums[pivotIndex] times the suffix values above nums[j] admitted by the Fenwick tree.
     private static long CountPivotPairsAt(
-        int[] nums, int k, FenwickTree<int, SumOperation<int>> suffixGreaterCounts)
+        int[] nums, int pivotIndex, FenwickTree<int, SumOperation<int>> suffixGreaterCounts)
     {
         var n = nums.Length;
         var leftSmallerCount = 0;
         var pairTotal = 0L;
 
-        for (var j = 0; j < k; j++)
+        for (var j = 0; j < pivotIndex; j++)
         {
-            if (HasInvertedPivotPair(nums, j, k))
+            if (HasInvertedPivotPair(nums, j, pivotIndex))
             {
                 // nums is a permutation of 1..n, so a value of n has nothing above it
                 // in the suffix.
@@ -113,7 +116,8 @@ internal static class CountIncreasingQuadrupletsSolution
         return pairTotal;
     }
 
-    // The middle pair inverts: j sits before k but holds the larger value. Both
-    // arms pivot on exactly this test, so it is stated once.
-    private static bool HasInvertedPivotPair(int[] nums, int j, int k) => nums[j] > nums[k];
+    // The middle pair inverts: secondIndex sits before pivotIndex but holds the larger value.
+    // Both arms pivot on exactly this test, so it is stated once.
+    private static bool HasInvertedPivotPair(int[] nums, int secondIndex, int pivotIndex)
+        => nums[secondIndex] > nums[pivotIndex];
 }

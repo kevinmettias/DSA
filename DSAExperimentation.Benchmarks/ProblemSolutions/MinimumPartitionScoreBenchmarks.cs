@@ -4,9 +4,9 @@ using DSAExperimentation.LeetCode.MinimumPartitionScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumPartitionScoreSolution's, the same
-// methods MinimumPartitionScoreTests proves correct. K is fixed at a quarter
-// of Length so the recursion always has real partitioning choices at every
-// depth, not a nearly-forced split. Length stays modest: both arms are
+// methods MinimumPartitionScoreTests proves correct. GroupCount is fixed at a
+// quarter of Length so the recursion always has real partitioning choices at
+// every depth, not a nearly-forced split. Length stays modest: both arms are
 // O(Length^2 * k) recursions over every candidate group boundary, and this
 // is the axis whose state count they pay for.
 [MemoryDiagnoser]
@@ -17,7 +17,7 @@ public class MinimumPartitionScoreBenchmarks
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _groupCount;
     [Params(12, 20)]
     public int Length { get; set; }
 
@@ -26,12 +26,14 @@ public class MinimumPartitionScoreBenchmarks
     {
         var random = new Random(Seed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _k = Math.Max(1, Length / 4);
+        _groupCount = Math.Max(1, Length / 4);
     }
 
     [Benchmark(Baseline = true)]
-    public long DictionaryMemo() => MinimumPartitionScoreSolution.MinPartitionScoreByDictionaryMemo(_nums, _k);
+    public long DictionaryMemo() =>
+        MinimumPartitionScoreSolution.MinPartitionScoreByDictionaryMemo(_nums, _groupCount);
 
     [Benchmark]
-    public long MemoizedPartition() => MinimumPartitionScoreSolution.MinPartitionScoreByMemoizedPartition(_nums, _k);
+    public long MemoizedPartition() =>
+        MinimumPartitionScoreSolution.MinPartitionScoreByMemoizedPartition(_nums, _groupCount);
 }

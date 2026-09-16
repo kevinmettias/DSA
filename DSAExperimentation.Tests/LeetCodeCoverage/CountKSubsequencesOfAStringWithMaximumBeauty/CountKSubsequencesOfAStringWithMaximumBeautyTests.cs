@@ -18,17 +18,17 @@ public sealed class CountKSubsequencesOfAStringWithMaximumBeautyTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForceCombinations_LeetCodeExamples_ReturnsMaxBeautyCount(string s, int k, long expected)
+    public void CountByBruteForceCombinations_LeetCodeExamples_ReturnsMaxBeautyCount(string text, int subsequenceLength, long expected)
     {
-        var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(s, k);
+        var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(text, subsequenceLength);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByGroupedFrequencyProduct_LeetCodeExamples_ReturnsMaxBeautyCount(string s, int k, long expected)
+    public void CountByGroupedFrequencyProduct_LeetCodeExamples_ReturnsMaxBeautyCount(string text, int subsequenceLength, long expected)
     {
-        var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(s, k);
+        var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(text, subsequenceLength);
         Assert.Equal(expected, actual);
     }
 
@@ -36,10 +36,10 @@ public sealed class CountKSubsequencesOfAStringWithMaximumBeautyTests
     [InlineData("aaaabbbbccccdddd", 3)]
     [InlineData("thequickbrownfoxjumpsoverthelazydog", 5)]
     [InlineData("zzzzyyyyxxxx", 2)]
-    public void BothStrategies_RandomizedInputs_Agree(string s, int k)
+    public void BothStrategies_RandomizedInputs_Agree(string text, int subsequenceLength)
     {
-        var bruteForce = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(s, k);
-        var grouped = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(s, k);
+        var bruteForce = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(text, subsequenceLength);
+        var grouped = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(text, subsequenceLength);
 
         Assert.Equal(bruteForce, grouped);
     }

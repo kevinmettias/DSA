@@ -22,9 +22,9 @@ public sealed class ValidateBinaryTreeNodesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ValidateByDisjointSet_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(TreeNodesExample example)
+    public void IsValidByDisjointSet_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(TreeNodesExample example)
     {
-        var actual = ValidateBinaryTreeNodesSolution.ValidateByDisjointSet(
+        var actual = ValidateBinaryTreeNodesSolution.IsValidByDisjointSet(
             example.N, example.LeftChild, example.RightChild);
 
         Assert.Equal(example.FormsOneTree, actual);
@@ -32,9 +32,9 @@ public sealed class ValidateBinaryTreeNodesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ValidateByRootScan_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(TreeNodesExample example)
+    public void IsValidByRootScan_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(TreeNodesExample example)
     {
-        var actual = ValidateBinaryTreeNodesSolution.ValidateByRootScan(
+        var actual = ValidateBinaryTreeNodesSolution.IsValidByRootScan(
             example.N, example.LeftChild, example.RightChild);
 
         Assert.Equal(example.FormsOneTree, actual);

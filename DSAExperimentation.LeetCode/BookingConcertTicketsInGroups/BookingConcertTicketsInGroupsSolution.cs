@@ -26,9 +26,9 @@ internal static class BookingConcertTicketsInGroupsSolution
     // single row can seat the group); Scatter reports whether the group fit at all.
     internal interface IBookMyShowStrategy
     {
-        int[] Gather(int k, int maxRow);
+        int[] Gather(int groupSize, int maxRow);
 
-        bool Scatter(int k, int maxRow);
+        bool Scatter(int groupSize, int maxRow);
     }
 
     // The textbook answer: one int[] of remaining seats per row, scanned linearly -
@@ -48,14 +48,14 @@ internal static class BookingConcertTicketsInGroupsSolution
             Array.Fill(_available, seatsPerRow);
         }
 
-        public int[] Gather(int k, int maxRow)
+        public int[] Gather(int groupSize, int maxRow)
         {
             for (var row = 0; row <= maxRow; row++)
             {
-                if (_available[row] >= k)
+                if (_available[row] >= groupSize)
                 {
                     var seat = _seatsPerRow - _available[row];
-                    _available[row] -= k;
+                    _available[row] -= groupSize;
 
                     return [row, seat];
                 }
@@ -64,18 +64,18 @@ internal static class BookingConcertTicketsInGroupsSolution
             return [];
         }
 
-        public bool Scatter(int k, int maxRow)
+        public bool Scatter(int groupSize, int maxRow)
         {
-            if (RemainingSeats(maxRow) < k)
+            if (RemainingSeats(maxRow) < groupSize)
             {
                 return false;
             }
 
-            for (var row = 0; row <= maxRow && k > 0; row++)
+            for (var row = 0; row <= maxRow && groupSize > 0; row++)
             {
-                var take = Math.Min(_available[row], k);
+                var take = Math.Min(_available[row], groupSize);
                 _available[row] -= take;
-                k -= take;
+                groupSize -= take;
             }
 
             return true;
@@ -121,9 +121,9 @@ internal static class BookingConcertTicketsInGroupsSolution
             _sumAvailable = new SegmentTree<int, SumOperation<int>>(initial);
         }
 
-        public int[] Gather(int k, int maxRow)
+        public int[] Gather(int groupSize, int maxRow)
         {
-            var row = FindLeftmostRowWithCapacity(fromRow: 0, maxRow, threshold: k);
+            var row = FindLeftmostRowWithCapacity(fromRow: 0, maxRow, threshold: groupSize);
 
             if (row is null)
             {
@@ -132,43 +132,43 @@ internal static class BookingConcertTicketsInGroupsSolution
 
             var available = _maxAvailable.Query(row.Value, row.Value);
             var seat = _seatsPerRow - available;
-            SetAvailable(row.Value, available - k);
+            SetAvailable(row.Value, available - groupSize);
 
             return [row.Value, seat];
         }
 
-        public bool Scatter(int k, int maxRow)
+        public bool Scatter(int groupSize, int maxRow)
         {
-            if (_sumAvailable.Query(0, maxRow) < k)
+            if (_sumAvailable.Query(0, maxRow) < groupSize)
             {
                 return false;
             }
 
             var row = 0;
 
-            while (k > 0)
+            while (groupSize > 0)
             {
-                (row, k) = ScatterStep(row, maxRow, k);
+                (row, groupSize) = ScatterStep(row, maxRow, groupSize);
             }
 
             return true;
         }
 
-        private (int Row, int K) ScatterStep(int row, int maxRow, int k)
+        private (int Row, int GroupSize) ScatterStep(int row, int maxRow, int groupSize)
         {
             row = FindLeftmostRowWithCapacity(row, maxRow, threshold: OneSeat)!.Value;
 
             var available = _maxAvailable.Query(row, row);
-            var take = Math.Min(available, k);
+            var take = Math.Min(available, groupSize);
             SetAvailable(row, available - take);
-            k -= take;
+            groupSize -= take;
 
             if (take == available)
             {
                 row++;
             }
 
-            return (row, k);
+            return (row, groupSize);
         }
 
         private int? FindLeftmostRowWithCapacity(int fromRow, int maxRow, int threshold)

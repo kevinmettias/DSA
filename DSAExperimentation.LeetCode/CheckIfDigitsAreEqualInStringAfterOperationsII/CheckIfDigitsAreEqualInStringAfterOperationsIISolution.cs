@@ -26,60 +26,63 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
     // very reduction LC 3461 asks for at a bound that stays quadratic-friendly, so
     // Part I's own baseline is the one implementation of it rather than a second
     // copy restating the same loop under this file's own modulus name.
-    public static bool AreEqualByAdjacentSumReduction(string s) =>
-        CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(s);
+    public static bool IsEqualByAdjacentSumReduction(string digits) =>
+        CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(digits);
 
-    public static bool AreEqualByLucasBinomialCoefficients(string s)
+    public static bool IsEqualByLucasBinomialCoefficients(string digits)
     {
-        var steps = s.Length - 2;
+        var steps = digits.Length - 2;
         var first = 0;
         var second = 0;
 
         for (var j = 0; j <= steps; j++)
         {
             var coefficient = BinomialModTen(steps, j);
-            first = (first + coefficient * (s[j] - '0')) % Modulo;
-            second = (second + coefficient * (s[j + 1] - '0')) % Modulo;
+            first = (first + coefficient * (digits[j] - '0')) % Modulo;
+            second = (second + coefficient * (digits[j + 1] - '0')) % Modulo;
         }
 
         return first == second;
     }
 
-    private static int BinomialModTen(int n, int k)
+    private static int BinomialModTen(int totalCount, int selectedCount)
     {
-        var modTwo = BinomialModTwo(n, k);
-        var modFive = BinomialModFive(n, k);
+        var modTwo = BinomialModTwo(totalCount, selectedCount);
+        var modFive = BinomialModFive(totalCount, selectedCount);
 
-        return CombineByCrt(modTwo, modFive);
+        return CombineByChineseRemainder(modTwo, modFive);
     }
 
-    // Kummer's theorem specialization for p = 2: C(n, k) is odd exactly when
-    // adding k and n - k in binary never carries, i.e. every set bit of k is also
-    // set in n.
-    private static int BinomialModTwo(int n, int k) => IsBinomialCoefficientOdd(n, k) ? 1 : 0;
+    // Kummer's theorem specialization for p = 2: C(totalCount, selectedCount) is
+    // odd exactly when adding selectedCount and totalCount - selectedCount in
+    // binary never carries, i.e. every set bit of selectedCount is also set in
+    // totalCount.
+    private static int BinomialModTwo(int totalCount, int selectedCount) =>
+        IsBinomialCoefficientOdd(totalCount, selectedCount) ? 1 : 0;
 
-    private static bool IsBinomialCoefficientOdd(int n, int k) => (k & ~n) == 0;
+    private static bool IsBinomialCoefficientOdd(int totalCount, int selectedCount) =>
+        (selectedCount & ~totalCount) == 0;
 
-    // Lucas' theorem for p = 5: split n and k into base-5 digits and multiply the
-    // per-digit binomial coefficients mod 5, which is 0 the moment a digit of k
-    // exceeds the matching digit of n.
-    private static int BinomialModFive(int n, int k)
+    // Lucas' theorem for p = 5: split totalCount and selectedCount into base-5
+    // digits and multiply the per-digit binomial coefficients mod 5, which is 0
+    // the moment a digit of selectedCount exceeds the matching digit of totalCount.
+    private static int BinomialModFive(int totalCount, int selectedCount)
     {
         var result = 1;
 
-        while (k > 0)
+        while (selectedCount > 0)
         {
-            var nDigit = n % ModFive;
-            var kDigit = k % ModFive;
+            var totalDigit = totalCount % ModFive;
+            var selectedDigit = selectedCount % ModFive;
 
-            if (kDigit > nDigit)
+            if (selectedDigit > totalDigit)
             {
                 return 0;
             }
 
-            result = result * BinomialModFiveTable[nDigit, kDigit] % ModFive;
-            n /= ModFive;
-            k /= ModFive;
+            result = result * BinomialModFiveTable[totalDigit, selectedDigit] % ModFive;
+            totalCount /= ModFive;
+            selectedCount /= ModFive;
         }
 
         return result;
@@ -89,10 +92,10 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
     // modFive already has the right value mod 5, so it is the answer whenever its
     // parity already matches, otherwise modFive + 5 keeps the mod-5 residue and
     // flips the parity.
-    private static int CombineByCrt(int modTwo, int modFive) =>
-        ParityAlreadyMatches(modFive, modTwo) ? modFive : ParityFlipped(modFive);
+    private static int CombineByChineseRemainder(int modTwo, int modFive) =>
+        IsParityAlreadyMatched(modFive, modTwo) ? modFive : ParityFlipped(modFive);
 
-    private static bool ParityAlreadyMatches(int modFive, int modTwo) => modFive % ModTwo == modTwo;
+    private static bool IsParityAlreadyMatched(int modFive, int modTwo) => modFive % ModTwo == modTwo;
 
     private static int ParityFlipped(int modFive) => modFive + ModFive;
 

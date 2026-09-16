@@ -25,12 +25,12 @@ public sealed class MaximumDeletionsOnAStringTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxOperationsByNaiveSubstringComparison_LeetCodeExamples_ReturnsExpectedOperationCount(
-        string s, int expected) =>
-        Assert.Equal(expected, MaximumDeletionsOnAStringSolution.MaxOperationsByNaiveSubstringComparison(s));
+        string text, int expected) =>
+        Assert.Equal(expected, MaximumDeletionsOnAStringSolution.MaxOperationsByNaiveSubstringComparison(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxOperationsByRollingHashScreen_LeetCodeExamples_ReturnsExpectedOperationCount(
-        string s, int expected) =>
-        Assert.Equal(expected, MaximumDeletionsOnAStringSolution.MaxOperationsByRollingHashScreen(s));
+        string text, int expected) =>
+        Assert.Equal(expected, MaximumDeletionsOnAStringSolution.MaxOperationsByRollingHashScreen(text));
 }

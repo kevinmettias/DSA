@@ -23,19 +23,19 @@ public sealed class CheckIfItIsAStraightLineTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckStraightLineByBruteForceEveryTriple_LeetCodeExamples_MatchesExpectedAnswer(
+    public void IsStraightLineByBruteForceEveryTriple_LeetCodeExamples_MatchesExpectedAnswer(
         StraightLineCase example) =>
         Assert.Equal(
             example.Expected,
-            CheckIfItIsAStraightLineSolution.CheckStraightLineByBruteForceEveryTriple(example.Coordinates));
+            CheckIfItIsAStraightLineSolution.IsStraightLineByBruteForceEveryTriple(example.Coordinates));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckStraightLineByAnchoredCrossProductScan_LeetCodeExamples_MatchesExpectedAnswer(
+    public void IsStraightLineByAnchoredCrossProductScan_LeetCodeExamples_MatchesExpectedAnswer(
         StraightLineCase example) =>
         Assert.Equal(
             example.Expected,
-            CheckIfItIsAStraightLineSolution.CheckStraightLineByAnchoredCrossProductScan(example.Coordinates));
+            CheckIfItIsAStraightLineSolution.IsStraightLineByAnchoredCrossProductScan(example.Coordinates));
 
     // One LeetCode example: the points under test and whether they are collinear.
     // The expected value is named at every construction site, so a row reads as the

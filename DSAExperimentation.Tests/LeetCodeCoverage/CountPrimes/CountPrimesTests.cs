@@ -19,11 +19,11 @@ public sealed class CountPrimesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountPrimesByTrialDivision_LeetCodeExamples_ReturnsPrimeCount(int n, int expected) =>
-        Assert.Equal(expected, CountPrimesSolution.CountPrimesByTrialDivision(n));
+    public void CountPrimesByTrialDivision_LeetCodeExamples_ReturnsPrimeCount(int limit, int expected) =>
+        Assert.Equal(expected, CountPrimesSolution.CountPrimesByTrialDivision(limit));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountPrimesBySieveOfEratosthenes_LeetCodeExamples_ReturnsPrimeCount(int n, int expected) =>
-        Assert.Equal(expected, CountPrimesSolution.CountPrimesBySieveOfEratosthenes(n));
+    public void CountPrimesBySieveOfEratosthenes_LeetCodeExamples_ReturnsPrimeCount(int limit, int expected) =>
+        Assert.Equal(expected, CountPrimesSolution.CountPrimesBySieveOfEratosthenes(limit));
 }

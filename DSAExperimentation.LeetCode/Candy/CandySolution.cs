@@ -33,26 +33,26 @@ internal static class CandySolution
 
             for (var i = 0; i < ratings.Length; i++)
             {
-                changed |= RelaxNeighbors(ratings, candies, i);
+                changed |= TryRelaxNeighbors(ratings, candies, i);
             }
         } while (changed);
 
         return SumCandies(candies);
     }
 
-    private static bool RelaxNeighbors(int[] ratings, int[] candies, int i)
+    private static bool TryRelaxNeighbors(int[] ratings, int[] candies, int index)
     {
         var changed = false;
 
-        if (IsUnderpaidAgainstLeftNeighbor(ratings, candies, i))
+        if (IsUnderpaidAgainstLeftNeighbor(ratings, candies, index))
         {
-            candies[i] = candies[i - 1] + 1;
+            candies[index] = candies[index - 1] + 1;
             changed = true;
         }
 
-        if (IsUnderpaidAgainstRightNeighbor(ratings, candies, i))
+        if (IsUnderpaidAgainstRightNeighbor(ratings, candies, index))
         {
-            candies[i] = candies[i + 1] + 1;
+            candies[index] = candies[index + 1] + 1;
             changed = true;
         }
 
@@ -60,12 +60,12 @@ internal static class CandySolution
     }
 
     // A child outranks its left neighbor but does not yet hold more candy than it.
-    private static bool IsUnderpaidAgainstLeftNeighbor(int[] ratings, int[] candies, int i) =>
-        i > 0 && ratings[i] > ratings[i - 1] && candies[i] <= candies[i - 1];
+    private static bool IsUnderpaidAgainstLeftNeighbor(int[] ratings, int[] candies, int index) =>
+        index > 0 && ratings[index] > ratings[index - 1] && candies[index] <= candies[index - 1];
 
     // The same violation against the neighbor on the right.
-    private static bool IsUnderpaidAgainstRightNeighbor(int[] ratings, int[] candies, int i) =>
-        i < ratings.Length - 1 && ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1];
+    private static bool IsUnderpaidAgainstRightNeighbor(int[] ratings, int[] candies, int index) =>
+        index < ratings.Length - 1 && ratings[index] > ratings[index + 1] && candies[index] <= candies[index + 1];
 
     // O(n) two-pass slope-constraint approach: a forward pass enforcing "rises
     // must get more candy than their left neighbor," then a backward pass

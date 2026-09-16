@@ -33,16 +33,20 @@ internal static class MaximumStrongPairXORISolution
         return best;
     }
 
-    private static bool IsStrongPair(int x, int y)
+    private static bool IsStrongPair(int firstValue, int secondValue)
     {
-        var (small, large) = x <= y ? SmallestFirst(x, y) : LargestFirst(x, y);
+        var (small, large) = firstValue <= secondValue
+            ? SmallestFirst(firstValue, secondValue)
+            : LargestFirst(firstValue, secondValue);
         return large - small <= small;
     }
 
     // The pair with the smaller value first, or with the larger value first.
-    private static (int Small, int Large) SmallestFirst(int x, int y) => (x, y);
+    private static (int Small, int Large) SmallestFirst(int firstValue, int secondValue) =>
+        (firstValue, secondValue);
 
-    private static (int Small, int Large) LargestFirst(int x, int y) => (y, x);
+    private static (int Small, int Large) LargestFirst(int firstValue, int secondValue) =>
+        (secondValue, firstValue);
 
     // LC 2935's own bound is what makes its class the one implementation of the
     // bucket strategy, so this arm calls it. Nothing narrows: both problems answer

@@ -13,7 +13,7 @@ internal sealed class MergeTwoSortedListsRegistration : ILeetCodeProblemRegistra
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<(int[] First, int[] Second), int[]>("merge-two-sorted-lists")
             .Strategy("DummyHeadSplice", Merge)
-            .MatchingAnswersWith(LeetCodeAnswers.SequenceEqual)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSequenceEqual)
             .Case("example-1", ([1, 2, 4], [1, 3, 4]), [1, 1, 2, 3, 4, 4])
             .Case("example-2", ([], []), [])
             .Case("example-3", ([], [0]), [0])

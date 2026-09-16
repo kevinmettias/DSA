@@ -19,11 +19,11 @@ internal static class MinimumNumberOfVerticesToReachAllNodesSolution
     // points at it. Deliberately written without this repo's primitives - O(V*E) with
     // no auxiliary structure at all - it is the arm the marking pass below has to
     // justify itself against.
-    public static List<int> FindSmallestSetOfVerticesByNestedScan(int n, int[][] edges)
+    public static List<int> FindSmallestSetOfVerticesByNestedScan(int nodeCount, int[][] edges)
     {
         var sources = new List<int>();
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             var hasIncomingEdge = false;
 
@@ -49,7 +49,7 @@ internal static class MinimumNumberOfVerticesToReachAllNodesSolution
     // (HashMap<Element,bool>-backed, per Set.cs's own doc comment) marks every node
     // that has an incoming edge; the answer is everything left over, collected in
     // ascending id order because the node scan runs that way.
-    public static List<int> FindSmallestSetOfVerticesByInDegreeSet(int n, int[][] edges)
+    public static List<int> FindSmallestSetOfVerticesByInDegreeSet(int nodeCount, int[][] edges)
     {
         var hasIncomingEdge = new Set<int>();
 
@@ -60,7 +60,7 @@ internal static class MinimumNumberOfVerticesToReachAllNodesSolution
 
         var sources = new List<int>();
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             if (!hasIncomingEdge.Has(node))
             {

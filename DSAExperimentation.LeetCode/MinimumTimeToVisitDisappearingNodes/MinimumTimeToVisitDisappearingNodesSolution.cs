@@ -19,9 +19,9 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToVisitDisappearingNodes;
 internal static class MinimumTimeToVisitDisappearingNodesSolution
 {
     // Baseline: BCL PriorityQueue<int,int> - "what you'd write without this repo".
-    public static int[] MinimumTimesByDijkstraQueue(int n, int[][] edges, int[] disappear)
+    public static int[] MinimumTimesByDijkstraQueue(int nodeCount, int[][] edges, int[] disappear)
     {
-        var graph = TimedAdjacency.Build(n, edges);
+        var graph = TimedAdjacency.Build(nodeCount, edges);
 
         return MinimumTimesByDijkstraQueue(graph, disappear);
     }
@@ -71,9 +71,9 @@ internal static class MinimumTimeToVisitDisappearingNodesSolution
     // primitive ShortestPath.Dijkstra itself is built from (§7's "prefer an
     // already-existing self-hosted structure over its BCL equivalent"), just with
     // the settle-time deadline check threaded through the relax loop by hand.
-    public static int[] MinimumTimesByPriorityHeap(int n, int[][] edges, int[] disappear)
+    public static int[] MinimumTimesByPriorityHeap(int nodeCount, int[][] edges, int[] disappear)
     {
-        var graph = TimedAdjacency.Build(n, edges);
+        var graph = TimedAdjacency.Build(nodeCount, edges);
 
         return MinimumTimesByPriorityHeap(graph, disappear);
     }
@@ -120,9 +120,9 @@ internal static class MinimumTimeToVisitDisappearingNodesSolution
         }
     }
 
-    private static int[] NewUnreachableDistances(int n)
+    private static int[] NewUnreachableDistances(int nodeCount)
     {
-        var distances = new int[n];
+        var distances = new int[nodeCount];
         Array.Fill(distances, LeetCodeAnswer.None);
         return distances;
     }

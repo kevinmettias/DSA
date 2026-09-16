@@ -46,19 +46,20 @@ internal static class FindTheStringWithLCPSolution
         return IsConsistent(word, lcp) ? new string(word) : string.Empty;
     }
 
-    // Stamps position i's own letter across every j >= i that shares its class, and
-    // reports false once the alphabet is exhausted - no valid word can then exist.
+    // Stamps the letter of the class at `positionIndex` across every later position that
+    // shares it, and reports false once the alphabet is exhausted - no valid word can
+    // then exist.
     private static bool TryStampClassWithLetter(
-        (int[][] Lcp, char[] Word, bool[] Assigned) state, int i, char letter)
+        (int[][] Lcp, char[] Word, bool[] Assigned) state, int positionIndex, char letter)
     {
         if (letter > LastLetter)
         {
             return false;
         }
 
-        for (var j = i; j < state.Lcp.Length; j++)
+        for (var j = positionIndex; j < state.Lcp.Length; j++)
         {
-            if (state.Lcp[i][j] > 0)
+            if (state.Lcp[positionIndex][j] > 0)
             {
                 state.Word[j] = letter;
                 state.Assigned[j] = true;
@@ -157,5 +158,6 @@ internal static class FindTheStringWithLCPSolution
     }
 
     // The characters match, so this pair's lcp is the next pair's, one longer.
-    private static int MatchedLcp(int[,] actual, int i, int j) => actual[i + 1, j + 1] + 1;
+    private static int MatchedLcp(int[,] actual, int firstIndex, int secondIndex) =>
+        actual[firstIndex + 1, secondIndex + 1] + 1;
 }

@@ -35,21 +35,21 @@ internal static class CheckIfItIsAGoodArraySolution
     // equal. Correct, but O(max/min) per pair - a value that is a small multiple
     // of the running gcd forces one subtraction per multiple instead of one
     // division.
-    private static int SubtractionGcd(int a, int b)
+    private static int SubtractionGcd(int firstValue, int secondValue)
     {
-        while (a != b)
+        while (firstValue != secondValue)
         {
-            if (a > b)
+            if (firstValue > secondValue)
             {
-                a -= b;
+                firstValue -= secondValue;
             }
             else
             {
-                b -= a;
+                secondValue -= firstValue;
             }
         }
 
-        return a;
+        return firstValue;
     }
 
     // The modulo form, short-circuiting the moment the running gcd reaches 1 -
@@ -72,5 +72,6 @@ internal static class CheckIfItIsAGoodArraySolution
         return gcd == 1;
     }
 
-    private static int EuclideanGcd(int a, int b) => b == 0 ? a : EuclideanGcd(b, a % b);
+    private static int EuclideanGcd(int firstValue, int secondValue) =>
+        secondValue == 0 ? firstValue : EuclideanGcd(secondValue, firstValue % secondValue);
 }

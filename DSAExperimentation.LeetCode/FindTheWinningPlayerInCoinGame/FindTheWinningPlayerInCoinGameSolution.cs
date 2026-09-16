@@ -1,11 +1,11 @@
 namespace DSAExperimentation.LeetCode.FindTheWinningPlayerInCoinGame;
 
 // LeetCode 3222. Find the Winning Player in Coin Game: each turn a player must
-// pick coins worth exactly 115 from x 75-coins and y 10-coins. 75 + 4*10 = 115
-// is the only combination that sums to 115 within the given constraints (a
-// second 75-coin alone already overshoots), so every turn spends exactly one
-// 75-coin and four 10-coins, and the game is really just counting how many such
-// turns are affordable before either pile runs dry.
+// pick coins worth exactly 115 from a pile of `seventyFiveCoinCount` 75-coins and
+// `tenCoinCount` 10-coins. 75 + 4*10 = 115 is the only combination that sums to 115
+// within the given constraints (a second 75-coin alone already overshoots), so every
+// turn spends exactly one 75-coin and four 10-coins, and the game is really just
+// counting how many such turns are affordable before either pile runs dry.
 internal static class FindTheWinningPlayerInCoinGameSolution
 {
     private const int CoinsPerTurn = 4;
@@ -16,14 +16,14 @@ internal static class FindTheWinningPlayerInCoinGameSolution
     // one 75-coin and four 10-coins per turn until a pile can't cover the next
     // turn. Deliberately written as a direct simulation rather than the derived
     // formula below - the arm the closed form has to agree with.
-    public static string WinningPlayerBySimulation(int x, int y)
+    public static string WinningPlayerBySimulation(int seventyFiveCoinCount, int tenCoinCount)
     {
         var turns = 0;
 
-        while (x >= 1 && y >= CoinsPerTurn)
+        while (seventyFiveCoinCount >= 1 && tenCoinCount >= CoinsPerTurn)
         {
-            x--;
-            y -= CoinsPerTurn;
+            seventyFiveCoinCount--;
+            tenCoinCount -= CoinsPerTurn;
             turns++;
         }
 
@@ -31,11 +31,12 @@ internal static class FindTheWinningPlayerInCoinGameSolution
         return isOddTurnCount ? Alice : Bob;
     }
 
-    // The game ends after exactly min(x, y / 4) turns - whichever pile runs out
-    // first - so the winner is a single parity check with no loop at all.
-    public static string WinningPlayerByTurnParity(int x, int y)
+    // The game ends after exactly min(seventyFiveCoinCount, tenCoinCount / CoinsPerTurn)
+    // turns - whichever pile runs out first - so the winner is a single parity check
+    // with no loop at all.
+    public static string WinningPlayerByTurnParity(int seventyFiveCoinCount, int tenCoinCount)
     {
-        var turns = Math.Min(x, y / CoinsPerTurn);
+        var turns = Math.Min(seventyFiveCoinCount, tenCoinCount / CoinsPerTurn);
         var isOddTurnCount = turns % 2 == 1;
         return isOddTurnCount ? Alice : Bob;
     }

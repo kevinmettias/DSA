@@ -22,10 +22,10 @@ public sealed class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDista
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindCityByDijkstraPerSource_LeetCodeExamples_ReturnsCityWithFewestReachableNeighbors(
-        int n, int[][] edges, int distanceThreshold, int expected)
+        int cityCount, int[][] edges, int distanceThreshold, int expected)
     {
         var actual = FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
-            .FindCityByDijkstraPerSource(n, edges, distanceThreshold);
+            .FindCityByDijkstraPerSource(cityCount, edges, distanceThreshold);
 
         Assert.Equal(expected, actual);
     }
@@ -33,10 +33,10 @@ public sealed class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDista
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindCityByFloydWarshall_LeetCodeExamples_ReturnsCityWithFewestReachableNeighbors(
-        int n, int[][] edges, int distanceThreshold, int expected)
+        int cityCount, int[][] edges, int distanceThreshold, int expected)
     {
         var actual = FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceSolution
-            .FindCityByFloydWarshall(n, edges, distanceThreshold);
+            .FindCityByFloydWarshall(cityCount, edges, distanceThreshold);
 
         Assert.Equal(expected, actual);
     }

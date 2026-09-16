@@ -39,34 +39,34 @@ internal static class AsteroidCollisionSolution
         return [.. current];
     }
 
-    private static bool TryResolveCollisionAt(List<int> current, int i)
+    private static bool TryResolveCollisionAt(List<int> current, int collisionIndex)
     {
-        if (current[i] <= 0 || current[i + 1] >= 0)
+        if (current[collisionIndex] <= 0 || current[collisionIndex + 1] >= 0)
         {
             return false;
         }
 
-        RemoveCollidedAsteroids(current, i);
+        RemoveCollidedAsteroids(current, collisionIndex);
         return true;
     }
 
-    private static void RemoveCollidedAsteroids(List<int> current, int i)
+    private static void RemoveCollidedAsteroids(List<int> current, int collisionIndex)
     {
-        var left = current[i];
-        var right = current[i + 1];
+        var left = current[collisionIndex];
+        var right = current[collisionIndex + 1];
 
         if (left < -right)
         {
-            current.RemoveAt(i);
+            current.RemoveAt(collisionIndex);
         }
         else if (left == -right)
         {
-            current.RemoveAt(i + 1);
-            current.RemoveAt(i);
+            current.RemoveAt(collisionIndex + 1);
+            current.RemoveAt(collisionIndex);
         }
         else
         {
-            current.RemoveAt(i + 1);
+            current.RemoveAt(collisionIndex + 1);
         }
     }
 
@@ -82,7 +82,7 @@ internal static class AsteroidCollisionSolution
 
         foreach (var asteroid in asteroids)
         {
-            ProcessAsteroid(stack, asteroid);
+            ResolveIncomingAsteroid(stack, asteroid);
         }
 
         var result = new int[stack.Count];
@@ -95,28 +95,28 @@ internal static class AsteroidCollisionSolution
         return result;
     }
 
-    private static void ProcessAsteroid(RepoStack stack, int asteroid)
+    private static void ResolveIncomingAsteroid(RepoStack stack, int asteroid)
     {
-        if (SurvivesCollisions(stack, asteroid))
+        if (CanSurviveCollisions(stack, asteroid))
         {
             stack.Push(asteroid);
         }
     }
 
-    private static bool SurvivesCollisions(RepoStack stack, int asteroid)
+    private static bool CanSurviveCollisions(RepoStack stack, int asteroid)
     {
         var alive = true;
 
         while (alive)
         {
-            var (isFacing, top) = IsFacingRightMover(asteroid, stack);
+            var (isFacing, top) = GetMoverFacing(asteroid, stack);
 
             if (!isFacing)
             {
                 break;
             }
 
-            alive = AbsorbTopOfStack(stack, asteroid, top);
+            alive = CanAbsorbTopOfStack(stack, asteroid, top);
         }
 
         return alive;
@@ -125,7 +125,7 @@ internal static class AsteroidCollisionSolution
     // A left-moving asteroid is only in play while a right-moving one sits on top of
     // the stack; the peek hands that top back to the loop. Nothing reads it when the
     // answer is false, so it starts at zero.
-    private static (bool IsFacing, int Top) IsFacingRightMover(int current, RepoStack stack)
+    private static (bool IsFacing, int Top) GetMoverFacing(int current, RepoStack stack)
     {
         var top = 0;
 
@@ -135,7 +135,7 @@ internal static class AsteroidCollisionSolution
     // The incoming asteroid meets the right-moving one on top of the stack: a smaller
     // top is destroyed and the incoming asteroid keeps travelling, otherwise the
     // incoming asteroid dies - taking an equal-sized top with it.
-    private static bool AbsorbTopOfStack(RepoStack stack, int asteroid, int top)
+    private static bool CanAbsorbTopOfStack(RepoStack stack, int asteroid, int top)
     {
         if (top < -asteroid)
         {

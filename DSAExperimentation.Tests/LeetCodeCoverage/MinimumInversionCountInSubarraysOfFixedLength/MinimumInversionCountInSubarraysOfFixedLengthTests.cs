@@ -18,9 +18,9 @@ public sealed class MinimumInversionCountInSubarraysOfFixedLengthTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinInversionCountByBruteForce_LeetCodeExamples_ReturnsMinimumInversionCount(
-        int[] nums, int k, long expected)
+        int[] nums, int windowLength, long expected)
     {
-        var actual = MinimumInversionCountInSubarraysOfFixedLengthSolution.MinInversionCountByBruteForce(nums, k);
+        var actual = MinimumInversionCountInSubarraysOfFixedLengthSolution.MinInversionCountByBruteForce(nums, windowLength);
 
         Assert.Equal(expected, actual);
     }
@@ -28,9 +28,9 @@ public sealed class MinimumInversionCountInSubarraysOfFixedLengthTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinInversionCountBySlidingWindowFenwick_LeetCodeExamples_ReturnsMinimumInversionCount(
-        int[] nums, int k, long expected)
+        int[] nums, int windowLength, long expected)
     {
-        var actual = MinimumInversionCountInSubarraysOfFixedLengthSolution.MinInversionCountBySlidingWindowFenwick(nums, k);
+        var actual = MinimumInversionCountInSubarraysOfFixedLengthSolution.MinInversionCountBySlidingWindowFenwick(nums, windowLength);
 
         Assert.Equal(expected, actual);
     }

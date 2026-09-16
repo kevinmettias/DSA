@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNo
 
 // LeetCode 2920's per-node choice, folded bottom-up: at halving level h (how many
 // ancestors already chose to halve on the way down to this node), either collect
-// normally - coins[node] >> h, minus the flat cost k, plus every child folded at
+// normally - coins[node] >> h, minus the flat cost, plus every child folded at
 // the SAME level h - or halve here too - coins[node] >> (h + 1), plus every child
 // folded at level h + 1, with no cost. Combine returns the whole per-level table at
 // once (index h is dp(node, h)) so a parent can read any level its own Combine
@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNo
 // further-halved contribution - the same "once it can't move the answer, stop
 // tracking it more finely" reasoning RoomWaysPrecomputedFactorialAlgebra's own
 // Prepare(n) table bound uses, just against a value magnitude instead of a tree size.
-// Coins/k are external per-node data a static-abstract algebra cannot carry as
+// Coins/cost are external per-node data a static-abstract algebra cannot carry as
 // instance state, so Prepare stashes them the same way
 // RoomWaysPrecomputedFactorialAlgebra.Prepare stashes its factorial table before
 // folding begins - in an AsyncLocal, so the stash belongs to the calling flow and a
@@ -26,11 +26,11 @@ internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]
 {
     private static readonly AsyncLocal<CoinInputs> Inputs = new();
 
-    private readonly record struct CoinInputs(long[] Coins, long K);
+    private readonly record struct CoinInputs(long[] Coins, long Cost);
 
     public static long[] Empty => new long[HalvingDepth.Max + 1];
 
-    public static void Prepare(int[] coins, int k)
+    public static void Prepare(int[] coins, int cost)
     {
         var stored = new long[coins.Length];
         for (var i = 0; i < coins.Length; i++)
@@ -38,7 +38,7 @@ internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]
             stored[i] = coins[i];
         }
 
-        Inputs.Value = new CoinInputs(stored, k);
+        Inputs.Value = new CoinInputs(stored, cost);
     }
 
     public static long[] Combine(RootedTreeNode node, IReadOnlyList<long[]> children)
@@ -49,7 +49,7 @@ internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]
 
         for (var h = 0; h <= HalvingDepth.Max; h++)
         {
-            result[h] = BestLevelValue(coins, inputs.K, h, children);
+            result[h] = BestLevelValue(coins, inputs.Cost, h, children);
         }
 
         return result;

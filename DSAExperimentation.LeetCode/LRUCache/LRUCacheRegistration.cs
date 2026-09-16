@@ -41,7 +41,7 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
         => LeetCodeProblem.For<(int Capacity, IReadOnlyList<LeetCodeOperation> Script), List<int?>>("lru-cache")
             .Strategy("LruCachePrimitive", input => Replay(LruCachePrimitive, input))
             .Strategy("DictionaryLinkedList", input => Replay(DictionaryLinkedList, input))
-            .MatchingAnswersWith(LeetCodeAnswers.SequenceEqual)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSequenceEqual)
             .Case(
                 "example-1",
                 (2,

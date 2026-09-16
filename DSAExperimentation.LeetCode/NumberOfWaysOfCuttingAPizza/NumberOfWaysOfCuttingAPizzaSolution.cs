@@ -3,9 +3,9 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 
-// LeetCode 1444. Number of Ways of Cutting a Pizza: count the ways to make k - 1
-// horizontal/vertical cuts so that every one of the k pieces holds at least one
-// apple, modulo 1e9+7.
+// LeetCode 1444. Number of Ways of Cutting a Pizza: count the ways to make
+// pieceCount - 1 horizontal/vertical cuts so that every one of the pieceCount
+// pieces holds at least one apple, modulo 1e9+7.
 //
 // A cut always keeps the bottom-right remainder, so the whole problem is a
 // recurrence over (Row, Col, RemainingCuts) - the top-left corner of what is left
@@ -31,25 +31,25 @@ internal static class NumberOfWaysOfCuttingAPizzaSolution
     // different earlier cut sequences. Deliberately written without this repo's
     // primitives; it is the arm the composed strategy below has to justify itself
     // against.
-    public static int CountWaysByUnmemoizedRecursion(string[] pizza, int k) =>
-        CountWaysByUnmemoizedRecursion(new AppleGrid(pizza), k);
+    public static int CountWaysByUnmemoizedRecursion(string[] pizza, int pieceCount) =>
+        CountWaysByUnmemoizedRecursion(new AppleGrid(pizza), pieceCount);
 
-    public static int CountWaysByUnmemoizedRecursion(AppleGrid apples, int k)
+    public static int CountWaysByUnmemoizedRecursion(AppleGrid apples, int pieceCount)
     {
         var ways = new PizzaCutWays(apples);
 
-        return ways.Replay((0, 0, k - 1), ways);
+        return ways.Replay((0, 0, pieceCount - 1), ways);
     }
 
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed by the
     // (Row, Col, RemainingCuts) triple - collapsing the exponential walk above to
-    // the Rows * Cols * k distinct states.
-    public static int CountWaysByMemoizedRecursion(string[] pizza, int k) =>
-        CountWaysByMemoizedRecursion(new AppleGrid(pizza), k);
+    // the Rows * Cols * pieceCount distinct states.
+    public static int CountWaysByMemoizedRecursion(string[] pizza, int pieceCount) =>
+        CountWaysByMemoizedRecursion(new AppleGrid(pizza), pieceCount);
 
-    public static int CountWaysByMemoizedRecursion(AppleGrid apples, int k) =>
+    public static int CountWaysByMemoizedRecursion(AppleGrid apples, int pieceCount) =>
         Memoizer.Memoize<(int Row, int Col, int RemainingCuts), int>(
-            (0, 0, k - 1),
+            (0, 0, pieceCount - 1),
             new PizzaCutWays(apples));
 
     // The recurrence, as a named type. It forwards whatever recursion it is handed

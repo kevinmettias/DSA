@@ -8,64 +8,68 @@ using MaskStack = DSAExperimentation.DataStructures.Stack.Stack<(
 namespace DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
 
 // A tree rooted at node 0, given by LeetCode's own parent-array encoding
-// (parent[0] = -1), with a lowercase letter s[i] written on every node i. For
-// each query [u, v], the characters along the path from u to v (inclusive of
-// both endpoints) may be freely reordered; report whether some reordering forms
-// a palindrome - same as any anagram-of-a-palindrome check, that holds exactly
-// when at most one letter occurs an odd number of times on the path.
+// (parent[0] = -1), with a lowercase letter nodeCharacters[i] written on every
+// node i. For each query [u, v], the characters along the path from u to v
+// (inclusive of both endpoints) may be freely reordered; report whether some
+// reordering forms a palindrome - same as any anagram-of-a-palindrome check,
+// that holds exactly when at most one letter occurs an odd number of times on
+// the path.
 internal static class PalindromicPathQueriesInATreeSolution
 {
     private const int AlphabetSize = 26;
     private const int AtMostOneOddCount = 1;
 
     // The textbook answer: every query re-derives its own LCA and letter counts
-    // straight from the raw parent[]/s[] arrays - nothing shared or precomputed
-    // across queries, and no repo primitives - the arm the bitmask strategy
-    // below has to justify itself against.
-    public static bool[] IsPalindromePathByAncestorWalk(int[] parent, string s, int[][] queries)
+    // straight from the raw parent[]/nodeCharacters[] arrays - nothing shared or
+    // precomputed across queries, and no repo primitives - the arm the bitmask
+    // strategy below has to justify itself against.
+    public static bool[] GetPalindromePathFlagsByAncestorWalk(
+        int[] parent, string nodeCharacters, int[][] queries)
     {
         var answers = new bool[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)
         {
-            answers[i] = IsPathReorderablePalindrome(parent, s, queries[i][0], queries[i][1]);
+            answers[i] = IsPathReorderablePalindrome(
+                parent, nodeCharacters, queries[i][0], queries[i][1]);
         }
 
         return answers;
     }
 
-    private static bool IsPathReorderablePalindrome(int[] parent, string s, int u, int v)
+    private static bool IsPathReorderablePalindrome(
+        int[] parent, string nodeCharacters, int startNode, int endNode)
     {
-        var lca = FindLowestCommonAncestor(parent, u, v);
+        var lca = FindLowestCommonAncestor(parent, startNode, endNode);
         var counts = new int[AlphabetSize];
 
-        for (var node = u; node != lca; node = parent[node])
+        for (var node = startNode; node != lca; node = parent[node])
         {
-            counts[s[node] - 'a']++;
+            counts[nodeCharacters[node] - 'a']++;
         }
 
-        for (var node = v; node != lca; node = parent[node])
+        for (var node = endNode; node != lca; node = parent[node])
         {
-            counts[s[node] - 'a']++;
+            counts[nodeCharacters[node] - 'a']++;
         }
 
-        counts[s[lca] - 'a']++;
+        counts[nodeCharacters[lca] - 'a']++;
 
         return CountOddOccurrences(counts) <= AtMostOneOddCount;
     }
 
-    private static int FindLowestCommonAncestor(int[] parent, int u, int v)
+    private static int FindLowestCommonAncestor(int[] parent, int firstNode, int secondNode)
     {
-        var ancestorsOfU = new HashSet<int>();
+        var ancestorsOfFirstNode = new HashSet<int>();
 
-        for (var node = u; node != -1; node = parent[node])
+        for (var node = firstNode; node != -1; node = parent[node])
         {
-            ancestorsOfU.Add(node);
+            ancestorsOfFirstNode.Add(node);
         }
 
-        var lca = v;
+        var lca = secondNode;
 
-        while (!ancestorsOfU.Contains(lca))
+        while (!ancestorsOfFirstNode.Contains(lca))
         {
             lca = parent[lca];
         }
@@ -94,44 +98,47 @@ internal static class PalindromicPathQueriesInATreeSolution
     // root path (the same "XOR cancels a value crossed an even number of times"
     // trick KthSmallestPathXORSumSolution uses for path XOR sums, just with a
     // 26-bit letter mask standing in for vals[i]). A query's path mask is then
-    // mask[u] XOR mask[v] XOR bit(s[lca]): the lca's own bit sits in BOTH
-    // root-to-u and root-to-v masks so it cancels out entirely, then gets XORed
-    // back in once for the single time it actually sits on the u-v path.
+    // mask[startNode] XOR mask[endNode] XOR bit(nodeCharacters[lca]): the lca's
+    // own bit sits in BOTH root-to-startNode and root-to-endNode masks so it
+    // cancels out entirely, then gets XORed back in once for the single time it
+    // actually sits on the startNode-endNode path.
     // LowestCommonAncestor.Find (Algorithms/Ancestry) supplies the lca itself,
     // reused as-is over RootedTreeTopology rather than hand-rolling a second
     // ancestor search.
-    public static bool[] IsPalindromePathByLcaBitmask(int[] parent, string s, int[][] queries)
+    public static bool[] GetPalindromePathFlagsByLcaBitmask(
+        int[] parent, string nodeCharacters, int[][] queries)
     {
         var nodes = ParentArrayTree.Build(parent);
 
-        return IsPalindromePathByLcaBitmask(nodes, s, queries);
+        return GetPalindromePathFlagsByLcaBitmask(nodes, nodeCharacters, queries);
     }
 
-    public static bool[] IsPalindromePathByLcaBitmask(RootedTreeNode[] nodes, string s, int[][] queries)
+    public static bool[] GetPalindromePathFlagsByLcaBitmask(
+        RootedTreeNode[] nodes, string nodeCharacters, int[][] queries)
     {
-        var mask = ComputeRootToNodeMask(nodes, s);
+        var mask = ComputeRootToNodeMask(nodes, nodeCharacters);
         var answers = new bool[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)
         {
-            var (u, v) = (queries[i][0], queries[i][1]);
+            var (startNode, endNode) = (queries[i][0], queries[i][1]);
             var lca = LowestCommonAncestor.Find<
                 RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
                 NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>>(
-                nodes[0], nodes[u], nodes[v])!;
+                nodes[0], nodes[startNode], nodes[endNode])!;
 
-            var pathMask = mask[u] ^ mask[v] ^ LetterBit(s[lca.Id]);
+            var pathMask = mask[startNode] ^ mask[endNode] ^ LetterBit(nodeCharacters[lca.Id]);
             answers[i] = BitOperations.PopCount((uint)pathMask) <= AtMostOneOddCount;
         }
 
         return answers;
     }
 
-    private static int[] ComputeRootToNodeMask(RootedTreeNode[] nodes, string s)
+    private static int[] ComputeRootToNodeMask(RootedTreeNode[] nodes, string nodeCharacters)
     {
         var mask = new int[nodes.Length];
         var stack = new MaskStack();
-        stack.Push((nodes[0], LetterBit(s[0])));
+        stack.Push((nodes[0], LetterBit(nodeCharacters[0])));
 
         while (stack.TryPop(out var frame))
         {
@@ -139,7 +146,7 @@ internal static class PalindromicPathQueriesInATreeSolution
 
             foreach (var child in frame.Node.Children)
             {
-                stack.Push((child, frame.Mask ^ LetterBit(s[child.Id])));
+                stack.Push((child, frame.Mask ^ LetterBit(nodeCharacters[child.Id])));
             }
         }
 

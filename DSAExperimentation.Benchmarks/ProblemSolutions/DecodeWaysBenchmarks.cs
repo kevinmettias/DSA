@@ -17,8 +17,8 @@ public class DecodeWaysBenchmarks
     public void Setup() => _value = new string('1', Length);
 
     [Benchmark(Baseline = true)]
-    public int Tabulation() => DecodeWaysSolution.NumDecodingsByTabulation(_value);
+    public int Tabulation() => DecodeWaysSolution.CountDecodingsByTabulation(_value);
 
     [Benchmark]
-    public int Memoized() => DecodeWaysSolution.NumDecodingsByMemoization(_value);
+    public int Memoized() => DecodeWaysSolution.CountDecodingsByMemoization(_value);
 }

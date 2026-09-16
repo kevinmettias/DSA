@@ -13,13 +13,13 @@ internal static class ValidParenthesisStringSolution
     // reachable set can grow by one value per character. Deliberately written
     // without this repo's primitives - it is the arm the composed solution below
     // has to justify itself against.
-    public static bool CheckValidStringByReachableOpenCountDp(string s)
+    public static bool IsValidStringByReachableOpenCountDp(string text)
     {
         var reachable = new HashSet<int> { 0 };
 
-        foreach (var c in s)
+        foreach (var symbol in text)
         {
-            reachable = ComputeNextReachable(reachable, c);
+            reachable = ComputeNextReachable(reachable, symbol);
 
             if (reachable.Count == 0)
             {
@@ -30,13 +30,13 @@ internal static class ValidParenthesisStringSolution
         return reachable.Contains(0);
     }
 
-    private static HashSet<int> ComputeNextReachable(HashSet<int> reachable, char c)
+    private static HashSet<int> ComputeNextReachable(HashSet<int> reachable, char symbol)
     {
         var next = new HashSet<int>();
 
         foreach (var openCount in reachable)
         {
-            switch (c)
+            switch (symbol)
             {
                 case '(':
                     AddOpenParenTransition(next, openCount);
@@ -80,20 +80,20 @@ internal static class ValidParenthesisStringSolution
     // paren, falling back to a wildcard; any opens still unmatched afterward are
     // then paired against wildcards positioned after them, greedily from the
     // innermost pair out.
-    public static bool CheckValidStringByTwoIndexStackSweep(string s)
+    public static bool IsValidStringByTwoIndexStackSweep(string text)
     {
         var openIndices = new RepoIndexStack();
         var starIndices = new RepoIndexStack();
 
-        return TryMatchClosingParens(s, openIndices, starIndices) &&
-               AllOpensMatched(openIndices, starIndices);
+        return TryMatchClosingParens(text, openIndices, starIndices) &&
+               IsEveryOpenMatched(openIndices, starIndices);
     }
 
-    private static bool TryMatchClosingParens(string s, RepoIndexStack openIndices, RepoIndexStack starIndices)
+    private static bool TryMatchClosingParens(string text, RepoIndexStack openIndices, RepoIndexStack starIndices)
     {
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            switch (s[i])
+            switch (text[i])
             {
                 case '(':
                     openIndices.Push(i);
@@ -113,7 +113,7 @@ internal static class ValidParenthesisStringSolution
         return true;
     }
 
-    private static bool AllOpensMatched(RepoIndexStack openIndices, RepoIndexStack starIndices)
+    private static bool IsEveryOpenMatched(RepoIndexStack openIndices, RepoIndexStack starIndices)
     {
         while (openIndices.TryPop(out var openIndex))
         {

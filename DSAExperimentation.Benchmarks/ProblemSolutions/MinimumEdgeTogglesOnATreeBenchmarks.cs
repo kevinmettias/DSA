@@ -19,7 +19,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class MinimumEdgeTogglesOnATreeBenchmarks
 {
-    private const int RandomSeed = 3812; private int _n;
+    private const int RandomSeed = 3812; private int _nodeCount;
 
     private int[][] _edges = [];
     private string _start = "";
@@ -34,24 +34,24 @@ public class MinimumEdgeTogglesOnATreeBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _n = NodeCount;
-        _edges = BuildRandomEdges(random, _n);
+        _nodeCount = NodeCount;
+        _edges = BuildRandomEdges(random, _nodeCount);
 
-        var start = RandomBits(random, _n);
+        var start = RandomBits(random, _nodeCount);
         var target = ToggledCopy(start, _edges, random);
 
         _start = new string(start);
         _target = new string(target);
-        _tree = ToggleTree.Build(_n, _edges);
+        _tree = ToggleTree.Build(_nodeCount, _edges);
     }
 
     // One edge [parent, i] per node i > 0, each parent drawn uniformly from the
-    // earlier nodes - a connected, cycle-free graph on n vertices.
-    private static int[][] BuildRandomEdges(Random random, int n)
+    // earlier nodes - a connected, cycle-free graph on nodeCount vertices.
+    private static int[][] BuildRandomEdges(Random random, int nodeCount)
     {
-        var edges = new int[n - 1][];
+        var edges = new int[nodeCount - 1][];
 
-        for (var i = 1; i < n; i++)
+        for (var i = 1; i < nodeCount; i++)
         {
             var parent = random.Next(0, i);
             edges[i - 1] = [parent, i];
@@ -60,12 +60,12 @@ public class MinimumEdgeTogglesOnATreeBenchmarks
         return edges;
     }
 
-    // n independently drawn bits, half '0' and half '1' in expectation.
-    private static char[] RandomBits(Random random, int n)
+    // nodeCount independently drawn bits, half '0' and half '1' in expectation.
+    private static char[] RandomBits(Random random, int nodeCount)
     {
-        var bits = new char[n];
+        var bits = new char[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             var isZero = random.Next(2) == 0;
             bits[i] = isZero ? '0' : '1';
@@ -99,7 +99,7 @@ public class MinimumEdgeTogglesOnATreeBenchmarks
 
     [Benchmark(Baseline = true)]
     public int[] BruteForceDfs() =>
-        MinimumEdgeTogglesOnATreeSolution.MinTogglesByBruteForceDfs(_n, _edges, _start, _target);
+        MinimumEdgeTogglesOnATreeSolution.MinTogglesByBruteForceDfs(_nodeCount, _edges, _start, _target);
 
     [Benchmark]
     public int[] TreeFold() =>

@@ -20,19 +20,19 @@ internal static class ChalkboardXorGameSolution
     // erase ORDER that reaches a given remaining subset re-explores it (O(n!) worst
     // case). Deliberately written without this repo's primitives - it is the arm the
     // other two strategies have to justify themselves against.
-    public static bool AliceWinsByBruteForceRecursion(int[] nums) =>
-        CurrentPlayerWinsUnmemoized(FullMask(nums), nums);
+    public static bool CanAliceWinByBruteForceRecursion(int[] nums) =>
+        CanCurrentPlayerWinUnmemoized(FullMask(nums), nums);
 
     // The same recursion routed through this repo's own Memoizer, keyed on the
     // remaining-elements bitmask, so each of the O(2^n) subsets is evaluated once no
     // matter how many erase orders reach it - the same int-bitmask memo state
     // CanIWinSolution uses for its own used-numbers mask.
-    public static bool AliceWinsByMemoizedRecursion(int[] nums) =>
+    public static bool CanAliceWinByMemoizedRecursion(int[] nums) =>
         Memoizer.Memoize<int, bool>(FullMask(nums), new CurrentPlayerWinsFromSubset(nums));
 
     // The closed form the recursion reduces to: the player to move wins iff the
     // board's xor is already 0, or an even number of elements is on it.
-    public static bool AliceWinsByXorParityFormula(int[] nums)
+    public static bool CanAliceWinByXorParityFormula(int[] nums)
     {
         var xor = 0;
         foreach (var num in nums)
@@ -43,7 +43,7 @@ internal static class ChalkboardXorGameSolution
         return xor == 0 || nums.Length % EvenCountModulus == 0;
     }
 
-    private static bool CurrentPlayerWinsUnmemoized(int mask, int[] nums)
+    private static bool CanCurrentPlayerWinUnmemoized(int mask, int[] nums)
     {
         if (XorOf(mask, nums) == 0)
         {
@@ -59,7 +59,7 @@ internal static class ChalkboardXorGameSolution
             }
 
             var remaining = mask & ~bit;
-            if (XorOf(remaining, nums) != 0 && !CurrentPlayerWinsUnmemoized(remaining, nums))
+            if (XorOf(remaining, nums) != 0 && !CanCurrentPlayerWinUnmemoized(remaining, nums))
             {
                 return true;
             }

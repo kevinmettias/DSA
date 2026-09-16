@@ -50,10 +50,10 @@ public sealed class RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void WinnerOfGameByGameSimulation_LeetCodeExamples_ReturnsWhetherAliceWins(
+    public void CanAliceWinByGameSimulation_LeetCodeExamples_ReturnsWhetherAliceWins(
         ColoredPiecesCase example)
     {
-        var actual = RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.WinnerOfGameByGameSimulation(
+        var actual = RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.CanAliceWinByGameSimulation(
             example.Colors);
 
         Assert.Equal(example.AliceWins, actual);
@@ -61,10 +61,10 @@ public sealed class RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void WinnerOfGameByRunLengthCounting_LeetCodeExamples_ReturnsWhetherAliceWins(
+    public void CanAliceWinByRunLengthCounting_LeetCodeExamples_ReturnsWhetherAliceWins(
         ColoredPiecesCase example)
     {
-        var actual = RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.WinnerOfGameByRunLengthCounting(
+        var actual = RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.CanAliceWinByRunLengthCounting(
             example.Colors);
 
         Assert.Equal(example.AliceWins, actual);

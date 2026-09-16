@@ -20,9 +20,9 @@ public sealed class ConstrainedSubsequenceSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumByWindowRescan_LeetCodeExamples_ReturnsMaximumConstrainedSubsequenceSum(
-        int[] nums, int k, int expected)
+        int[] nums, int maxGap, int expected)
     {
-        var actual = ConstrainedSubsequenceSumSolution.MaxSumByWindowRescan(nums, k);
+        var actual = ConstrainedSubsequenceSumSolution.MaxSumByWindowRescan(nums, maxGap);
 
         Assert.Equal(expected, actual);
     }
@@ -30,9 +30,9 @@ public sealed class ConstrainedSubsequenceSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumByMonotonicDeque_LeetCodeExamples_ReturnsMaximumConstrainedSubsequenceSum(
-        int[] nums, int k, int expected)
+        int[] nums, int maxGap, int expected)
     {
-        var actual = ConstrainedSubsequenceSumSolution.MaxSumByMonotonicDeque(nums, k);
+        var actual = ConstrainedSubsequenceSumSolution.MaxSumByMonotonicDeque(nums, maxGap);
 
         Assert.Equal(expected, actual);
     }

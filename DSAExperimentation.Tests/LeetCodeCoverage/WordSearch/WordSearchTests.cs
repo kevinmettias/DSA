@@ -19,18 +19,18 @@ public sealed class WordSearchTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ExistByBruteForceDfs_LeetCodeExamples_ReturnsWhetherWordCanBeTraced(WordCase example)
+    public void CanTraceWordByBruteForceDfs_LeetCodeExamples_ReturnsWhetherWordCanBeTraced(WordCase example)
     {
-        var actual = WordSearchSolution.ExistByBruteForceDfs(Board, example.Word);
+        var actual = WordSearchSolution.CanTraceWordByBruteForceDfs(Board, example.Word);
 
         Assert.Equal(example.Expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ExistByBacktrack_LeetCodeExamples_ReturnsWhetherWordCanBeTraced(WordCase example)
+    public void CanTraceWordByBacktrack_LeetCodeExamples_ReturnsWhetherWordCanBeTraced(WordCase example)
     {
-        var actual = WordSearchSolution.ExistByBacktrack(Board, example.Word);
+        var actual = WordSearchSolution.CanTraceWordByBacktrack(Board, example.Word);
 
         Assert.Equal(example.Expected, actual);
     }

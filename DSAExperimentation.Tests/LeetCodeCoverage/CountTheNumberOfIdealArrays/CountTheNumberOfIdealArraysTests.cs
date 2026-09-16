@@ -23,18 +23,19 @@ public sealed class CountTheNumberOfIdealArraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void IdealArraysByTrialDivision_LeetCodeExamples_ReturnsExpectedCount(
-        int n, int maxValue, int expected)
+        int arrayLength, int maxValue, int expected)
     {
-        var actual = CountTheNumberOfIdealArraysSolution.IdealArraysByTrialDivision(n, maxValue);
+        var actual = CountTheNumberOfIdealArraysSolution.IdealArraysByTrialDivision(arrayLength, maxValue);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IdealArraysBySmallestPrimeFactorSieve_LeetCodeExamples_ReturnsExpectedCount(
-        int n, int maxValue, int expected)
+        int arrayLength, int maxValue, int expected)
     {
-        var actual = CountTheNumberOfIdealArraysSolution.IdealArraysBySmallestPrimeFactorSieve(n, maxValue);
+        var actual = CountTheNumberOfIdealArraysSolution.IdealArraysBySmallestPrimeFactorSieve(
+            arrayLength, maxValue);
         Assert.Equal(expected, actual);
     }
 }

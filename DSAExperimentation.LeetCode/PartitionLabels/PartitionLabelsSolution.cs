@@ -18,27 +18,27 @@ internal static class PartitionLabelsSolution
     // contains - O(n) per lookup, O(n^2) worst case. Written without this
     // repo's primitives - the arm the one-pass strategy below has to justify
     // itself against.
-    public static List<int> PartitionLabelSizesByBruteForceRescan(string s)
+    public static List<int> PartitionLabelSizesByBruteForceRescan(string text)
     {
         var sizes = new List<int>();
         var start = 0;
 
-        while (start < s.Length)
+        while (start < text.Length)
         {
-            start = ExtendPartitionFromStart(s, start, sizes);
+            start = ExtendPartitionFromStart(text, start, sizes);
         }
 
         return sizes;
     }
 
-    private static int ExtendPartitionFromStart(string s, int start, List<int> sizes)
+    private static int ExtendPartitionFromStart(string text, int start, List<int> sizes)
     {
         var end = start;
         var i = start;
 
         while (i <= end)
         {
-            var last = LastIndexOf(s, s[i]);
+            var last = LastIndexOf(text, text[i]);
 
             if (last > end)
             {
@@ -52,11 +52,11 @@ internal static class PartitionLabelsSolution
         return end + 1;
     }
 
-    private static int LastIndexOf(string s, char target)
+    private static int LastIndexOf(string text, char target)
     {
-        for (var j = s.Length - 1; j >= 0; j--)
+        for (var j = text.Length - 1; j >= 0; j--)
         {
-            if (s[j] == target)
+            if (text[j] == target)
             {
                 return j;
             }
@@ -68,22 +68,22 @@ internal static class PartitionLabelsSolution
     // Every letter's last occurrence is recorded once, up front, in this repo's
     // own HashMap<char,int>; the scan then only ever grows the partition's end
     // to the furthest last occurrence already known, one lookup per character.
-    public static List<int> PartitionLabelSizesByHashMapOnePass(string s)
+    public static List<int> PartitionLabelSizesByHashMapOnePass(string text)
     {
         var lastIndex = new HashMap<char, int>();
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            lastIndex.Set(s[i], i);
+            lastIndex.Set(text[i], i);
         }
 
         var sizes = new List<int>();
         var start = 0;
         var end = 0;
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            lastIndex.TryGetValue(s[i], out var furthest);
+            lastIndex.TryGetValue(text[i], out var furthest);
             end = Math.Max(end, furthest);
             start = ClosePartitionIfComplete(end, i, start, sizes);
         }
@@ -91,14 +91,14 @@ internal static class PartitionLabelsSolution
         return sizes;
     }
 
-    private static int ClosePartitionIfComplete(int end, int i, int start, List<int> sizes)
+    private static int ClosePartitionIfComplete(int end, int index, int start, List<int> sizes)
     {
-        if (i != end)
+        if (index != end)
         {
             return start;
         }
 
         sizes.Add(end - start + 1);
-        return i + 1;
+        return index + 1;
     }
 }

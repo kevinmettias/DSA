@@ -23,9 +23,9 @@ public sealed class JumpGameVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxIndicesVisitedByMemoizedDfs_LeetCodeExamples_ReturnsExpectedCount(
-        int[] arr, int d, int expected)
+        int[] arr, int maxJumpDistance, int expected)
     {
-        var actual = JumpGameVSolution.MaxIndicesVisitedByMemoizedDfs(arr, d);
+        var actual = JumpGameVSolution.MaxIndicesVisitedByMemoizedDfs(arr, maxJumpDistance);
 
         Assert.Equal(expected, actual);
     }
@@ -33,9 +33,9 @@ public sealed class JumpGameVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxIndicesVisitedByTopologicalSort_LeetCodeExamples_ReturnsExpectedCount(
-        int[] arr, int d, int expected)
+        int[] arr, int maxJumpDistance, int expected)
     {
-        var actual = JumpGameVSolution.MaxIndicesVisitedByTopologicalSort(arr, d);
+        var actual = JumpGameVSolution.MaxIndicesVisitedByTopologicalSort(arr, maxJumpDistance);
 
         Assert.Equal(expected, actual);
     }

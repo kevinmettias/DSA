@@ -21,7 +21,7 @@ public class CheckIfDfsStringsArePalindromesBenchmarks
 
     private RootedTreeNode[] _nodes = [];
 
-    private string _s = "";
+    private string _nodeCharacters = "";
     [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
@@ -29,7 +29,7 @@ public class CheckIfDfsStringsArePalindromesBenchmarks
     public void Setup()
     {
         _nodes = BuildChainTree(NodeCount);
-        _s = BuildRandomString(NodeCount);
+        _nodeCharacters = BuildRandomString(NodeCount);
     }
 
     // The chain's parent array: parent[i] = i - 1, so every node's subtree is
@@ -64,9 +64,9 @@ public class CheckIfDfsStringsArePalindromesBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool[] BruteForce() =>
-        CheckIfDfsStringsArePalindromesSolution.IsPalindromeByBruteForce(_nodes, _s);
+        CheckIfDfsStringsArePalindromesSolution.GetPalindromeFlagsByBruteForce(_nodes, _nodeCharacters);
 
     [Benchmark]
     public bool[] EulerTourRollingHash() =>
-        CheckIfDfsStringsArePalindromesSolution.IsPalindromeByEulerTourRollingHash(_nodes, _s);
+        CheckIfDfsStringsArePalindromesSolution.GetPalindromeFlagsByEulerTourRollingHash(_nodes, _nodeCharacters);
 }

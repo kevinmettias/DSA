@@ -17,7 +17,7 @@ public class ShortestPathInAWeightedTreeBenchmarks
     private const int RandomSeed = 3515; // LeetCode problem number
     private const int MaxWeight = 10_000;
 
-    private int _n;
+    private int _nodeCount;
 
     private int[][] _edges = [];
     private int[][] _queries = [];
@@ -28,9 +28,9 @@ public class ShortestPathInAWeightedTreeBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _n = NodeCount;
-        _edges = BuildEdges(_n, random);
-        _queries = BuildQueries(_n, _edges, random);
+        _nodeCount = NodeCount;
+        _edges = BuildEdges(_nodeCount, random);
+        _queries = BuildQueries(_nodeCount, _edges, random);
     }
 
     // Each node i > 0 attaches to a uniformly random earlier node, so node i + 1 is
@@ -72,9 +72,9 @@ public class ShortestPathInAWeightedTreeBenchmarks
 
     [Benchmark(Baseline = true)]
     public int[] BruteForceBfs() =>
-        ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByBruteForceBfs(_n, _edges, _queries);
+        ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByBruteForceBfs(_nodeCount, _edges, _queries);
 
     [Benchmark]
     public int[] EulerFenwick() =>
-        ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByEulerFenwick(_n, _edges, _queries);
+        ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByEulerFenwick(_nodeCount, _edges, _queries);
 }

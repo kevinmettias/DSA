@@ -31,13 +31,13 @@ internal static class MaximumSumQueriesSolution
         return results;
     }
 
-    private static int BestSumForQuery(int[] nums1, int[] nums2, int x, int y)
+    private static int BestSumForQuery(int[] nums1, int[] nums2, int minimumNums1, int minimumNums2)
     {
         var best = LeetCodeAnswer.None;
 
         for (var j = 0; j < nums1.Length; j++)
         {
-            if (nums1[j] >= x && nums2[j] >= y)
+            if (nums1[j] >= minimumNums1 && nums2[j] >= minimumNums2)
             {
                 best = Math.Max(best, nums1[j] + nums2[j]);
             }
@@ -160,9 +160,9 @@ internal static class MaximumSumQueriesSolution
     }
 
     private static int AdmitPairsUpTo(
-        (int Nums1, int Rank, long Sum)[] pairs, int pairIndex, int x, RepoSegmentTree tree)
+        (int Nums1, int Rank, long Sum)[] pairs, int pairIndex, int minimumNums1, RepoSegmentTree tree)
     {
-        while (pairIndex < pairs.Length && pairs[pairIndex].Nums1 >= x)
+        while (pairIndex < pairs.Length && pairs[pairIndex].Nums1 >= minimumNums1)
         {
             var (_, rank, sum) = pairs[pairIndex];
             var current = tree.Query(rank, rank);
@@ -174,9 +174,9 @@ internal static class MaximumSumQueriesSolution
         return pairIndex;
     }
 
-    private static int BestSumAtLeast(RepoSegmentTree tree, int[] distinctNums2, int y)
+    private static int BestSumAtLeast(RepoSegmentTree tree, int[] distinctNums2, int minimumNums2)
     {
-        var lowerRank = BinarySearch.LowerBound(new ArraySequence<int>(distinctNums2), y);
+        var lowerRank = BinarySearch.LowerBound(new ArraySequence<int>(distinctNums2), minimumNums2);
 
         if (lowerRank >= distinctNums2.Length)
         {

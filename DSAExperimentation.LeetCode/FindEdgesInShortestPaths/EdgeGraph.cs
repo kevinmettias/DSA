@@ -1,9 +1,10 @@
 namespace DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
 
-// The full n-node weighted graph, built once from LeetCode's own edges array -
-// the domain model, not an answer to any one query about it (BranchNetwork's
-// own framing for LC 2959). Edges is kept alongside Nodes so the solution can
-// walk the input's own edge order when it builds the per-edge answer array,
+// The full weighted graph over nodeCount nodes, built once from LeetCode's own
+// edges array - the domain model, not an answer to any one query about it
+// (BranchNetwork's own framing for LC 2959). Edges is kept alongside Nodes so the
+// solution can walk the input's own edge order when it builds the per-edge answer
+// array, without a second pass over the raw input.
 // without a second pass over the raw input.
 internal sealed class EdgeGraph
 {
@@ -17,11 +18,11 @@ internal sealed class EdgeGraph
         Edges = edges;
     }
 
-    public static EdgeGraph Build(int n, int[][] edges)
+    public static EdgeGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = new EdgeGraphNode[n];
+        var nodes = new EdgeGraphNode[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             nodes[i] = new EdgeGraphNode(i);
         }

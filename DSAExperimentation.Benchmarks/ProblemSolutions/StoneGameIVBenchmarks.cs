@@ -18,8 +18,10 @@ public class StoneGameIVBenchmarks
     public int StoneCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public bool UnmemoizedRecursion() => StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(StoneCount);
+    public bool CanAliceWinByUnmemoizedRecursion() =>
+        StoneGameIVSolution.CanAliceWinByUnmemoizedRecursion(StoneCount);
 
     [Benchmark]
-    public bool MemoizedRecursion() => StoneGameIVSolution.AliceWinsByMemoizedRecursion(StoneCount);
+    public bool CanAliceWinByMemoizedRecursion() =>
+        StoneGameIVSolution.CanAliceWinByMemoizedRecursion(StoneCount);
 }

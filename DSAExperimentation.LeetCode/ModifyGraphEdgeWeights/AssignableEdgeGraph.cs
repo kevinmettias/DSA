@@ -17,19 +17,19 @@ internal sealed class AssignableEdgeGraph(
 
     public (int From, int To) Endpoints(int edgeIndex) => (slots[edgeIndex].From, slots[edgeIndex].To);
 
-    public static AssignableEdgeGraph Build(int n, int[][] edges)
+    public static AssignableEdgeGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = CreateNodes(n);
+        var nodes = CreateNodes(nodeCount);
         var slots = LinkEdges(nodes, edges);
 
         return new AssignableEdgeGraph(nodes, slots);
     }
 
-    private static AssignableEdgeNode[] CreateNodes(int n)
+    private static AssignableEdgeNode[] CreateNodes(int nodeCount)
     {
-        var nodes = new AssignableEdgeNode[n];
+        var nodes = new AssignableEdgeNode[nodeCount];
 
-        for (var id = 0; id < n; id++)
+        for (var id = 0; id < nodeCount; id++)
         {
             nodes[id] = new AssignableEdgeNode(id);
         }

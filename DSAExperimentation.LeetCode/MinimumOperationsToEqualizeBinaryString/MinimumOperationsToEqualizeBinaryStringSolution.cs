@@ -4,8 +4,8 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.MinimumOperationsToEqualizeBinaryString;
 
 // LeetCode 3666. Minimum Operations to Equalize Binary String: each operation
-// flips exactly k of the string's indices; find the fewest operations to reach all
-// '1's, or -1 if that is unreachable.
+// flips exactly flipCount of the string's indices; find the fewest operations to
+// reach all '1's, or -1 if that is unreachable.
 //
 // Only the current zero-count matters, not which indices are zero - so the puzzle
 // is a shortest-path query on EqualizeStateGraph's zero-count graph (see its own
@@ -17,28 +17,28 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
     // zero-count on the fly via EqualizeStateGraph's pure range arithmetic and
     // never materializing the graph - the arm the composed solution below has to
     // justify itself against.
-    public static int MinOperationsByMutationQueue(string s, int k)
+    public static int MinOperationsByMutationQueue(string binary, int flipCount)
     {
-        var n = s.Length;
-        var zeroCount = CountZeros(s);
+        var stringLength = binary.Length;
+        var zeroCount = CountZeros(binary);
 
         if (zeroCount == 0)
         {
             return 0;
         }
 
-        var visited = new bool[n + 1];
+        var visited = new bool[stringLength + 1];
         var queue = new Queue<(int ZeroCount, int Ops)>();
         visited[zeroCount] = true;
         queue.Enqueue((zeroCount, 0));
 
-        return ShortestPathLength(queue, visited, n, k);
+        return ShortestPathLength(queue, visited, stringLength, flipCount);
     }
 
     // The BFS itself: expand the frontier one flip at a time until the all-ones state
     // surfaces, or report unreachable once the frontier empties.
     private static int ShortestPathLength(
-        Queue<(int ZeroCount, int Ops)> queue, bool[] visited, int n, int k)
+        Queue<(int ZeroCount, int Ops)> queue, bool[] visited, int stringLength, int flipCount)
     {
         while (queue.Count > 0)
         {
@@ -49,7 +49,7 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
                 return ops;
             }
 
-            foreach (var reachable in EqualizeStateGraph.ReachableZeroCounts(currentZeroCount, n, k))
+            foreach (var reachable in EqualizeStateGraph.ReachableZeroCounts(currentZeroCount, stringLength, flipCount))
             {
                 if (!visited[reachable])
                 {
@@ -62,11 +62,11 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
         return LeetCodeAnswer.None;
     }
 
-    private static int CountZeros(string s)
+    private static int CountZeros(string binary)
     {
         var zeroCount = 0;
 
-        foreach (var c in s)
+        foreach (var c in binary)
         {
             if (c == '0')
             {
@@ -81,11 +81,11 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
     // DistanceMapReduceAlgebra is already exactly "distance from a root to every
     // node", so the puzzle reduces to one lookup in the result - the same
     // composition OpenTheLockSolution uses for LC 752.
-    public static int MinOperationsByReduceGraph(string s, int k)
+    public static int MinOperationsByReduceGraph(string binary, int flipCount)
     {
-        var n = s.Length;
-        var zeroCount = CountZeros(s);
-        var graph = EqualizeStateGraph.Build(n, k);
+        var stringLength = binary.Length;
+        var zeroCount = CountZeros(binary);
+        var graph = EqualizeStateGraph.Build(stringLength, flipCount);
 
         return MinOperationsByReduceGraph(graph, zeroCount);
     }

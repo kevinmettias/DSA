@@ -52,13 +52,13 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 
     [Benchmark(Baseline = true)]
     public int BreadthFirstReachabilityCheck() =>
-        RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumEdgesToRemoveByFloodFill(
+        RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumberOfEdgesToRemoveByFloodFill(
             NodeCount,
             _edges);
 
     [Benchmark]
     public int DisjointSetUnionFind() =>
-        RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumEdgesToRemoveByDisjointSet(
+        RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumberOfEdgesToRemoveByDisjointSet(
             NodeCount,
             _edges);
 }

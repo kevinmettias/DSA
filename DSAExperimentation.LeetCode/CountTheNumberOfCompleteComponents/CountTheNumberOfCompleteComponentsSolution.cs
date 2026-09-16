@@ -3,8 +3,8 @@ using DSAExperimentation.DataStructures.DisjointSet;
 namespace DSAExperimentation.LeetCode.CountTheNumberOfCompleteComponents;
 
 // LeetCode 2685. Count the Number of Complete Components: in an undirected graph
-// of n nodes, count the connected components in which every pair of nodes is
-// directly connected.
+// of nodeCount nodes, count the connected components in which every pair of nodes
+// is directly connected.
 //
 // Both strategies rest on the same restatement - a component of k nodes is
 // complete exactly when it holds k*(k-1)/2 edges - and differ only in how they
@@ -17,13 +17,13 @@ internal static class CountTheNumberOfCompleteComponentsSolution
     // check completeness the way the problem states it - every unordered pair of
     // the component's nodes must appear in the other's adjacency set, an O(k^2)
     // scan per component. Deliberately all BCL (ARCHITECTURE.md 17.5).
-    public static int CountCompleteComponentsByAdjacencySetScan(int n, int[][] edges)
+    public static int CountCompleteComponentsByAdjacencySetScan(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
-        var visited = new bool[n];
+        var adjacency = BuildAdjacency(nodeCount, edges);
+        var visited = new bool[nodeCount];
         var complete = 0;
 
-        for (var start = 0; start < n; start++)
+        for (var start = 0; start < nodeCount; start++)
         {
             if (visited[start])
             {
@@ -41,11 +41,11 @@ internal static class CountTheNumberOfCompleteComponentsSolution
         return complete;
     }
 
-    private static List<HashSet<int>> BuildAdjacency(int n, int[][] edges)
+    private static List<HashSet<int>> BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<HashSet<int>>(n);
+        var adjacency = new List<HashSet<int>>(nodeCount);
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency.Add([]);
         }
@@ -105,40 +105,42 @@ internal static class CountTheNumberOfCompleteComponentsSolution
     // every edge once, tally each root's nodes and edges in two linear sweeps,
     // and compare the two counts. The k*(k-1)/2 identity replaces every pairwise
     // membership test with one multiplication per component.
-    public static int CountCompleteComponentsByDisjointSetTally(int n, int[][] edges)
+    public static int CountCompleteComponentsByDisjointSetTally(int nodeCount, int[][] edges)
     {
-        var components = new DisjointSet(n);
+        var components = new DisjointSet(nodeCount);
 
         foreach (var edge in edges)
         {
             components.Union(edge[0], edge[1]);
         }
 
-        var nodeCount = new int[n];
-        var edgeCount = new int[n];
+        var nodesPerComponent = new int[nodeCount];
+        var edgesPerComponent = new int[nodeCount];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
-            nodeCount[components.Find(node)]++;
+            nodesPerComponent[components.Find(node)]++;
         }
 
         foreach (var edge in edges)
         {
-            edgeCount[components.Find(edge[0])]++;
+            edgesPerComponent[components.Find(edge[0])]++;
         }
 
-        return CountCompleteRoots(components, nodeCount, edgeCount);
+        return CountCompleteRoots(components, nodesPerComponent, edgesPerComponent);
     }
 
     // Only a root carries its component's tallies, so every other node is skipped
     // rather than double-counted.
-    private static int CountCompleteRoots(DisjointSet components, int[] nodeCount, int[] edgeCount)
+    private static int CountCompleteRoots(
+        DisjointSet components, int[] nodesPerComponent, int[] edgesPerComponent)
     {
         var complete = 0;
 
         for (var node = 0; node < components.Count; node++)
         {
-            if (components.Find(node) == node && edgeCount[node] == nodeCount[node] * (nodeCount[node] - 1) / 2)
+            if (components.Find(node) == node
+                && edgesPerComponent[node] == nodesPerComponent[node] * (nodesPerComponent[node] - 1) / 2)
             {
                 complete++;
             }

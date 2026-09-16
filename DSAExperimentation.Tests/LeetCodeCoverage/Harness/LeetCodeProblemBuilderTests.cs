@@ -52,7 +52,7 @@ public sealed class LeetCodeProblemBuilderTests
     {
         var builder = LeetCodeProblem.For<int, int>(Slug)
             .Strategy("Correct", value => value * 2)
-            .MatchingAnswersWith(LeetCodeAnswers.Exactly);
+            .MatchingAnswersWith(LeetCodeAnswers.IsExactlyEqual);
 
         Assert.Throws<InvalidOperationException>(builder.Build);
     }
@@ -72,7 +72,7 @@ public sealed class LeetCodeProblemBuilderTests
     {
         var builder = LeetCodeProblem.For<int, int>(Slug)
             .Case("two", 2, 4)
-            .MatchingAnswersWith(LeetCodeAnswers.Exactly);
+            .MatchingAnswersWith(LeetCodeAnswers.IsExactlyEqual);
 
         Assert.Throws<InvalidOperationException>(builder.Build);
     }
@@ -95,7 +95,7 @@ public sealed class LeetCodeProblemBuilderTests
         => LeetCodeProblem.For<int, int>(Slug)
             .Strategy("Correct", value => value * 2)
             .Strategy("OffByOne", value => (value * 2) + 1)
-            .MatchingAnswersWith(LeetCodeAnswers.Exactly)
+            .MatchingAnswersWith(LeetCodeAnswers.IsExactlyEqual)
             .Case("two", 2, 4)
             .Case("three", 3, 6)
             .Workload("big", 1_000, "Correct")

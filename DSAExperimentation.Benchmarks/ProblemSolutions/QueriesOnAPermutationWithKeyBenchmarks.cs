@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods QueriesOnAPermutationWithKeyTests proves correct - the move-to-front
 // simulation over a BCL List<int> vs. over this repo's own DynamicArray<int>,
 // both O(Queries * M). The query stream is a fixed-seed random draw over
-// [1..M], built in [GlobalSetup] so only the simulation is measured.
+// [1..PermutationSize], built in [GlobalSetup] so only the simulation is measured.
 [MemoryDiagnoser]
 public class QueriesOnAPermutationWithKeyBenchmarks
 {
@@ -17,20 +17,21 @@ public class QueriesOnAPermutationWithKeyBenchmarks
     private int[] _queries = [];
 
     [Params(200, 1_000)]
-    public int M { get; set; }
+    public int PermutationSize { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
-        _queries = Enumerable.Range(0, M).Select(_ => random.Next(FirstPermutationValue, M + 1)).ToArray();
+        _queries = Enumerable.Range(0, PermutationSize)
+            .Select(_ => random.Next(FirstPermutationValue, PermutationSize + 1)).ToArray();
     }
 
     [Benchmark(Baseline = true)]
     public List<int> ListMoveToFront() =>
-        QueriesOnAPermutationWithKeySolution.ProcessQueriesByListMoveToFront(_queries, M);
+        QueriesOnAPermutationWithKeySolution.AnswerQueriesByListMoveToFront(_queries, PermutationSize);
 
     [Benchmark]
     public List<int> DynamicArrayMoveToFront() =>
-        QueriesOnAPermutationWithKeySolution.ProcessQueriesByDynamicArrayMoveToFront(_queries, M);
+        QueriesOnAPermutationWithKeySolution.AnswerQueriesByDynamicArrayMoveToFront(_queries, PermutationSize);
 }

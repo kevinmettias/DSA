@@ -11,19 +11,22 @@ public sealed class KDivisibleElementsSubarraysTests
     public static TheoryData<int[], int, int, int> Examples =>
         new()
         {
-            // LeetCode example 1: [2,3,3,2,2] with k = 2, p = 2. Sixteen candidate
-            // subarrays survive the divisible-count bound, eleven of them distinct.
+            // LeetCode example 1: [2,3,3,2,2] with maxDivisibleCount = 2, divisor = 2.
+            // Sixteen candidate subarrays survive the divisible-count bound, eleven of
+            // them distinct.
             { [2, 3, 3, 2, 2], 2, 2, 11 },
 
-            // LeetCode example 2: every element is divisible by 1 and k covers the
-            // whole array, so all 4+3+2+1 subarrays qualify and none repeat.
+            // LeetCode example 2: every element is divisible by 1 and maxDivisibleCount
+            // covers the whole array, so all 4+3+2+1 subarrays qualify and none repeat.
             { [1, 2, 3, 4], 4, 1, 10 },
 
-            // k = 0 with every element divisible by p: no subarray qualifies at all.
+            // maxDivisibleCount = 0 with every element divisible by divisor: no subarray
+            // qualifies at all.
             { [2, 2, 2], 0, 2, 0 },
 
-            // The mirror of the previous case: nothing is divisible, so k = 0 admits
-            // everything and only distinctness thins the six candidates down to five.
+            // The mirror of the previous case: nothing is divisible, so
+            // maxDivisibleCount = 0 admits everything and only distinctness thins the six
+            // candidates down to five.
             { [1, 3, 1], 0, 2, 5 },
 
             // Deduplication carries the whole answer here - nine candidates, three
@@ -41,9 +44,9 @@ public sealed class KDivisibleElementsSubarraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountDistinctByHashSetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
-        int[] nums, int k, int p, int expected)
+        int[] nums, int maxDivisibleCount, int divisor, int expected)
     {
-        var actual = KDivisibleElementsSubarraysSolution.CountDistinctByHashSetDedupe(nums, k, p);
+        var actual = KDivisibleElementsSubarraysSolution.CountDistinctByHashSetDedupe(nums, maxDivisibleCount, divisor);
 
         Assert.Equal(expected, actual);
     }
@@ -51,9 +54,9 @@ public sealed class KDivisibleElementsSubarraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountDistinctBySetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
-        int[] nums, int k, int p, int expected)
+        int[] nums, int maxDivisibleCount, int divisor, int expected)
     {
-        var actual = KDivisibleElementsSubarraysSolution.CountDistinctBySetDedupe(nums, k, p);
+        var actual = KDivisibleElementsSubarraysSolution.CountDistinctBySetDedupe(nums, maxDivisibleCount, divisor);
 
         Assert.Equal(expected, actual);
     }

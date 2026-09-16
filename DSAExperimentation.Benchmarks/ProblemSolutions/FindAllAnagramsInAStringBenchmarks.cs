@@ -17,7 +17,7 @@ public class FindAllAnagramsInAStringBenchmarks
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 438;
 
-    private string _s = "";
+    private string _scannedText = "";
 
     [Params(2_000, 20_000)]
     public int Length { get; set; }
@@ -32,16 +32,16 @@ public class FindAllAnagramsInAStringBenchmarks
             chars[i] = Alphabet[random.Next(Alphabet.Length)];
         }
 
-        _s = new string(chars);
+        _scannedText = new string(chars);
     }
 
     [Benchmark(Baseline = true)]
     public List<int> PerWindowFrequencyRebuild() =>
         FindAllAnagramsInAStringSolution.FindAnagramIndicesByBruteForceRebuild(
-            new ScannedText(_s), new AnagramPattern(Pattern));
+            new ScannedText(_scannedText), new AnagramPattern(Pattern));
 
     [Benchmark]
     public List<int> SlidingWindowFrequencyMap() =>
         FindAllAnagramsInAStringSolution.FindAnagramIndicesBySlidingWindow(
-            new ScannedText(_s), new AnagramPattern(Pattern));
+            new ScannedText(_scannedText), new AnagramPattern(Pattern));
 }

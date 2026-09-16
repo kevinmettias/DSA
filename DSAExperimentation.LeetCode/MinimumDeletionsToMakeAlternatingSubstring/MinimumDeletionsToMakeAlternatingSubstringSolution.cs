@@ -21,9 +21,9 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
     // The textbook approach: mutate the character array in place on a flip,
     // re-scan the affected range on a query. O(1) per flip, O(r - l) per
     // query - the arm the Fenwick range-sum strategy below has to beat.
-    public static int[] ProcessQueriesByDirectScan(string s, int[][] queries)
+    public static int[] AnswerQueriesByDirectScan(string text, int[][] queries)
     {
-        var chars = s.ToCharArray();
+        var chars = text.ToCharArray();
         var answers = new List<int>();
 
         foreach (var query in queries)
@@ -60,9 +60,9 @@ internal static class MinimumDeletionsToMakeAlternatingSubstringSolution
     // Each flip touches at most the two edges adjacent to the flipped index,
     // so every query - flip or range - is a single O(log n) Fenwick
     // operation, for O((n + q) log n) overall.
-    public static int[] ProcessQueriesByFenwickAdjacency(string s, int[][] queries)
+    public static int[] AnswerQueriesByFenwickAdjacency(string text, int[][] queries)
     {
-        var chars = s.ToCharArray();
+        var chars = text.ToCharArray();
         var tree = new FenwickTree<int, SumOperation<int>>(BuildAdjacentEqualEdges(chars));
         var answers = new List<int>();
 

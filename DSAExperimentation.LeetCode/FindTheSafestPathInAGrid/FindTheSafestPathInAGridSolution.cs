@@ -49,7 +49,7 @@ internal static class FindTheSafestPathInAGridSolution
     // every still-unreached neighbour a distance one greater than its own.
     private static void SpreadSafenessByBclBfs(
         int[][] safeness,
-        int n,
+        int gridSize,
         System.Collections.Generic.Queue<(int Row, int Col)> queue)
     {
         while (queue.Count > 0)
@@ -60,7 +60,7 @@ internal static class FindTheSafestPathInAGridSolution
             {
                 var (nextRow, nextCol) = (row + dRow, col + dCol);
 
-                if (IsOutsideGrid(nextRow, nextCol, n) || safeness[nextRow][nextCol] != -1)
+                if (IsOutsideGrid(nextRow, nextCol, gridSize) || safeness[nextRow][nextCol] != -1)
                 {
                     continue;
                 }
@@ -71,15 +71,15 @@ internal static class FindTheSafestPathInAGridSolution
         }
     }
 
-    private static int BinarySearchMaxThreshold(int[][] safeness, int n)
+    private static int BinarySearchMaxThreshold(int[][] safeness, int gridSize)
     {
-        var high = MaxSafeness(safeness, n);
+        var high = MaxSafeness(safeness, gridSize);
         var low = 0;
         var answer = 0;
 
         while (low <= high)
         {
-            (low, high, answer) = NarrowThresholdRange(safeness, n, (low, high, answer));
+            (low, high, answer) = NarrowThresholdRange(safeness, gridSize, (low, high, answer));
         }
 
         return answer;
@@ -125,25 +125,25 @@ internal static class FindTheSafestPathInAGridSolution
         return (low, high, answer);
     }
 
-    private static bool IsReachableAtThresholdByBclBfs(int[][] safeness, int n, int threshold)
+    private static bool IsReachableAtThresholdByBclBfs(int[][] safeness, int gridSize, int threshold)
     {
-        if (safeness[0][0] < threshold || safeness[n - 1][n - 1] < threshold)
+        if (safeness[0][0] < threshold || safeness[gridSize - 1][gridSize - 1] < threshold)
         {
             return false;
         }
 
-        var reached = new bool[n, n];
+        var reached = new bool[gridSize, gridSize];
         reached[0, 0] = true;
-        SpreadReachableCellsByBclBfs(safeness, n, threshold, reached);
+        SpreadReachableCellsByBclBfs(safeness, gridSize, threshold, reached);
 
-        return reached[n - 1, n - 1];
+        return reached[gridSize - 1, gridSize - 1];
     }
 
     // Flood-fill from (0,0) through every cell whose safeness still meets the
     // threshold; the caller reads the corner it cares about off the result.
     private static void SpreadReachableCellsByBclBfs(
         int[][] safeness,
-        int n,
+        int gridSize,
         int threshold,
         bool[,] reached)
     {
@@ -158,7 +158,7 @@ internal static class FindTheSafestPathInAGridSolution
             {
                 var (nextRow, nextCol) = (row + dRow, col + dCol);
 
-                if (IsEnteredOrOutsideGrid(nextRow, nextCol, n, reached)
+                if (IsEnteredOrOutsideGrid(nextRow, nextCol, gridSize, reached)
                     || safeness[nextRow][nextCol] < threshold)
                 {
                     continue;
@@ -225,7 +225,7 @@ internal static class FindTheSafestPathInAGridSolution
 
     // The same multi-source BFS as SpreadSafenessByBclBfs, over this repo's own
     // Queue<T> instead of the BCL one.
-    private static void SpreadSafenessByRepoQueue(int[][] safeness, int n, RepoCellQueue frontier)
+    private static void SpreadSafenessByRepoQueue(int[][] safeness, int gridSize, RepoCellQueue frontier)
     {
         while (frontier.TryDequeue(out var cell))
         {
@@ -233,7 +233,7 @@ internal static class FindTheSafestPathInAGridSolution
             {
                 var (nextRow, nextCol) = (cell.Row + dRow, cell.Col + dCol);
 
-                if (IsOutsideGrid(nextRow, nextCol, n) || safeness[nextRow][nextCol] != -1)
+                if (IsOutsideGrid(nextRow, nextCol, gridSize) || safeness[nextRow][nextCol] != -1)
                 {
                     continue;
                 }
@@ -244,13 +244,13 @@ internal static class FindTheSafestPathInAGridSolution
         }
     }
 
-    private static bool[,] AllPassable(int n)
+    private static bool[,] AllPassable(int gridSize)
     {
-        var passable = new bool[n, n];
+        var passable = new bool[gridSize, gridSize];
 
-        for (var r = 0; r < n; r++)
+        for (var r = 0; r < gridSize; r++)
         {
-            for (var c = 0; c < n; c++)
+            for (var c = 0; c < gridSize; c++)
             {
                 passable[r, c] = true;
             }

@@ -26,18 +26,20 @@ public sealed class KthSymbolInGrammarTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void KthGrammarByRowExpansion_LeetCodeExamples_ReturnsExpectedSymbol(int n, int k, int expected)
+    public void KthGrammarByRowExpansion_LeetCodeExamples_ReturnsExpectedSymbol(
+        int rowNumber, int symbolIndex, int expected)
     {
-        var actual = KthSymbolInGrammarSolution.KthGrammarByRowExpansion(n, k);
+        var actual = KthSymbolInGrammarSolution.KthGrammarByRowExpansion(rowNumber, symbolIndex);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void KthGrammarByRecursiveHalving_LeetCodeExamples_ReturnsExpectedSymbol(int n, int k, int expected)
+    public void KthGrammarByRecursiveHalving_LeetCodeExamples_ReturnsExpectedSymbol(
+        int rowNumber, int symbolIndex, int expected)
     {
-        var actual = KthSymbolInGrammarSolution.KthGrammarByRecursiveHalving(n, k);
+        var actual = KthSymbolInGrammarSolution.KthGrammarByRecursiveHalving(rowNumber, symbolIndex);
 
         Assert.Equal(expected, actual);
     }

@@ -34,7 +34,7 @@ internal static class LongestCommonSuffixQueriesSolution
         {
             var suffixLength = CommonSuffixLength(wordsContainer[i], query);
 
-            if (BeatsBestMatch(
+            if (IsCandidateBetterMatch(
                 suffixLength,
                 bestSuffixLength,
                 new CandidateWord(wordsContainer[i]),
@@ -53,17 +53,18 @@ internal static class LongestCommonSuffixQueriesSolution
     // problem's own tie-break. The two words are NOT interchangeable here: only the
     // candidate's length is ever compared against the incumbent's, so the pair is
     // named for which is which rather than left as two adjacent `string` positions.
-    private static bool BeatsBestMatch(int suffixLength, int bestSuffixLength, CandidateWord candidate, BestWord best)
+    private static bool IsCandidateBetterMatch(
+        int suffixLength, int bestSuffixLength, CandidateWord candidate, BestWord best)
         => suffixLength > bestSuffixLength ||
             (suffixLength == bestSuffixLength && candidate.Text.Length < best.Text.Length);
 
-    private static int CommonSuffixLength(string a, string b)
+    private static int CommonSuffixLength(string containerWord, string queryWord)
     {
-        var left = new SuffixCursor(a, a.Length - 1);
-        var right = new SuffixCursor(b, b.Length - 1);
+        var left = new SuffixCursor(containerWord, containerWord.Length - 1);
+        var right = new SuffixCursor(queryWord, queryWord.Length - 1);
         var length = 0;
 
-        while (SharesCharacterAt(left, right))
+        while (HasCommonCharacterAt(left, right))
         {
             length++;
             left = left with { Index = left.Index - 1 };
@@ -78,7 +79,7 @@ internal static class LongestCommonSuffixQueriesSolution
     // travels with the position being read in it - a position only means anything
     // against its own word - so the comparison takes one cursor per side rather than
     // a bare index and a bare word a caller could pair up wrongly.
-    private static bool SharesCharacterAt(SuffixCursor left, SuffixCursor right)
+    private static bool HasCommonCharacterAt(SuffixCursor left, SuffixCursor right)
         => left.Index >= 0 && right.Index >= 0 && left.Text[left.Index] == right.Text[right.Index];
 
     // Trie<int>.Set only ever marks the FINAL node of the key it is given - there is

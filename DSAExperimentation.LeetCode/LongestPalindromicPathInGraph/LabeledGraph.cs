@@ -13,9 +13,9 @@ internal sealed class LabeledGraph(int nodeCount, string label, int[] neighborMa
 
     public int[] NeighborMask { get; } = neighborMask;
 
-    public static LabeledGraph Build(int n, int[][] edges, string label)
+    public static LabeledGraph Build(int nodeCount, int[][] edges, string label)
     {
-        var neighborMask = new int[n];
+        var neighborMask = new int[nodeCount];
 
         foreach (var edge in edges)
         {
@@ -24,6 +24,6 @@ internal sealed class LabeledGraph(int nodeCount, string label, int[] neighborMa
             neighborMask[v] |= 1 << u;
         }
 
-        return new LabeledGraph(n, label, neighborMask);
+        return new LabeledGraph(nodeCount, label, neighborMask);
     }
 }

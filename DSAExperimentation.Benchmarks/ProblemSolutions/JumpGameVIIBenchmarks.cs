@@ -21,7 +21,7 @@ public class JumpGameVIIBenchmarks
     private const int MinJump = 1;
     private const int MaxJump = 2;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(28, 32)]
     public int StringLength { get; set; }
@@ -32,14 +32,14 @@ public class JumpGameVIIBenchmarks
         var chars = new char[StringLength];
         Array.Fill(chars, '0');
         chars[StringLength - 1] = '1';
-        _s = new string(chars);
+        _text = new string(chars);
     }
 
     [Benchmark(Baseline = true)]
-    public bool UnmemoizedRecursiveSearch() =>
-        JumpGameVIISolution.CanReachByUnmemoizedRecursion(_s, MinJump, MaxJump);
+    public bool CanReachByUnmemoizedRecursion() =>
+        JumpGameVIISolution.CanReachByUnmemoizedRecursion(_text, MinJump, MaxJump);
 
     [Benchmark]
-    public bool VisitedTrackingTraversal() =>
-        JumpGameVIISolution.CanReachByVisitedTrackingTraversal(_s, MinJump, MaxJump);
+    public bool CanReachByVisitedTrackingTraversal() =>
+        JumpGameVIISolution.CanReachByVisitedTrackingTraversal(_text, MinJump, MaxJump);
 }

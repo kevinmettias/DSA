@@ -23,21 +23,21 @@ internal sealed class RestrictedPathGraph
 
     private RestrictedPathGraph(RestrictedPathNode first) => First = first;
 
-    public static RestrictedPathGraph Build(int n, int[][] edges)
+    public static RestrictedPathGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = BuildNodes(n, edges);
+        var nodes = BuildNodes(nodeCount, edges);
 
         AssignDistancesFromLastNode(nodes);
 
         return new RestrictedPathGraph(nodes[0]);
     }
 
-    // LeetCode labels the nodes 1..n; slot i holds node i + 1.
-    private static RestrictedPathNode[] BuildNodes(int n, int[][] edges)
+    // LeetCode labels the nodes 1..nodeCount; the node labelled id sits at slot id - 1.
+    private static RestrictedPathNode[] BuildNodes(int nodeCount, int[][] edges)
     {
-        var nodes = new RestrictedPathNode[n];
+        var nodes = new RestrictedPathNode[nodeCount];
 
-        for (var id = 1; id <= n; id++)
+        for (var id = 1; id <= nodeCount; id++)
         {
             nodes[id - 1] = new RestrictedPathNode(id);
         }

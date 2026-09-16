@@ -4,14 +4,14 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfIdealArrays;
 
-// LeetCode 2338. Count the Number of Ideal Arrays: count the length-n arrays whose
-// every value is in [1, maxValue] and where each element divides the next, modulo
-// 1e9+7.
+// LeetCode 2338. Count the Number of Ideal Arrays: count the arrays of length
+// arrayLength whose every value is in [1, maxValue] and where each element divides
+// the next, modulo 1e9+7.
 //
 // arr[i] | arr[i+1] forces arr to be non-decreasing, so an ideal array is pinned down
 // by its LAST value V (<= maxValue) plus, independently per prime factor of V, a
-// non-decreasing sequence of exponents across the n slots ending at that prime's
-// exponent in V - the classic stars-and-bars count C(n - 1 + e, e) per prime,
+// non-decreasing sequence of exponents across the arrayLength slots ending at that
+// prime's exponent in V - the classic stars-and-bars count C(n - 1 + e, e) per prime,
 // multiplied across V's distinct primes and summed over every V from 1 to maxValue.
 // That is the same per-prime stars-and-bars product
 // CountWaysToMakeArrayWithProductSolution computes for LC 1735, reshaped from "per
@@ -38,37 +38,37 @@ internal static class CountTheNumberOfIdealArraysSolution
     // The textbook answer: factor each value from scratch by trial division, sharing
     // nothing between values. Deliberately written over BCL scalars only - it is the
     // arm the sieve below has to justify itself against.
-    public static int IdealArraysByTrialDivision(int n, int maxValue)
+    public static int IdealArraysByTrialDivision(int arrayLength, int maxValue)
     {
         var total = 0L;
 
         for (var value = 1; value <= maxValue; value++)
         {
-            total = (total + CountEndingAtByTrialDivision(value, n)) % ModularArithmetic.Modulo;
+            total = (total + CountEndingAtByTrialDivision(value, arrayLength)) % ModularArithmetic.Modulo;
         }
 
         return (int)total;
     }
 
-    private static long CountEndingAtByTrialDivision(int value, int n)
+    private static long CountEndingAtByTrialDivision(int value, int arrayLength)
     {
         var remaining = value;
         var product = 1L;
 
         for (var factor = SmallestPrime; (long)factor * factor <= remaining; factor++)
         {
-            product = ApplyTrialDivisionFactor(factor, n, ref remaining, product);
+            product = ApplyTrialDivisionFactor(factor, arrayLength, ref remaining, product);
         }
 
         if (remaining > 1)
         {
-            product = product * BinomialMod(n, LeftoverPrimeExponent) % ModularArithmetic.Modulo;
+            product = product * BinomialMod(arrayLength, LeftoverPrimeExponent) % ModularArithmetic.Modulo;
         }
 
         return product;
     }
 
-    private static long ApplyTrialDivisionFactor(int factor, int n, ref int remaining, long product)
+    private static long ApplyTrialDivisionFactor(int factor, int arrayLength, ref int remaining, long product)
     {
         if (remaining % factor != 0)
         {
@@ -82,21 +82,22 @@ internal static class CountTheNumberOfIdealArraysSolution
             exponent++;
         }
 
-        return product * BinomialMod(exponent + n - 1, exponent) % ModularArithmetic.Modulo;
+        return product * BinomialMod(exponent + arrayLength - 1, exponent) % ModularArithmetic.Modulo;
     }
 
     // Build one smallest-prime-factor table over maxValue, using this repo's own
     // DynamicArray<int> as the sieve buffer - the same Sieve-of-Eratosthenes
     // composite-marking pattern CountWaysToMakeArrayWithProduct establishes for LC
     // 1735 - so every value afterwards factors in O(log value).
-    public static int IdealArraysBySmallestPrimeFactorSieve(int n, int maxValue)
+    public static int IdealArraysBySmallestPrimeFactorSieve(int arrayLength, int maxValue)
     {
         var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(maxValue);
         var total = 0L;
 
         for (var value = 1; value <= maxValue; value++)
         {
-            total = (total + CountEndingAtBySieve(value, n, smallestPrimeFactor)) % ModularArithmetic.Modulo;
+            total = (total + CountEndingAtBySieve(value, arrayLength, smallestPrimeFactor))
+                % ModularArithmetic.Modulo;
         }
 
         return (int)total;
@@ -146,7 +147,7 @@ internal static class CountTheNumberOfIdealArraysSolution
         }
     }
 
-    private static long CountEndingAtBySieve(int value, int n, DynamicArray<int> smallestPrimeFactor)
+    private static long CountEndingAtBySieve(int value, int arrayLength, DynamicArray<int> smallestPrimeFactor)
     {
         var remaining = value;
         var product = 1L;
@@ -168,16 +169,16 @@ internal static class CountTheNumberOfIdealArraysSolution
         return product;
     }
 
-    private static long BinomialMod(int total, int r)
+    private static long BinomialMod(int total, int chooseCount)
     {
         BigInteger numerator = 1;
-        for (var i = 0; i < r; i++)
+        for (var i = 0; i < chooseCount; i++)
         {
             numerator *= total - i;
         }
 
         BigInteger denominator = 1;
-        for (var i = FactorialStartMultiplier; i <= r; i++)
+        for (var i = FactorialStartMultiplier; i <= chooseCount; i++)
         {
             denominator *= i;
         }

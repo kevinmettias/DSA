@@ -17,23 +17,23 @@ public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
     private List<int>[] _adjacency = [];
 
     [Params(10, 14)]
-    public int N { get; set; }
+    public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _adjacency = new List<int>[N];
+        _adjacency = new List<int>[CityCount];
 
-        for (var i = 0; i < N; i++)
+        for (var i = 0; i < CityCount; i++)
         {
             _adjacency[i] = [];
         }
 
         // A random recursive tree: each city after the first attaches to a
         // uniformly-chosen earlier city, giving a connected, cycle-free graph on
-        // N cities with N-1 edges.
-        for (var i = 1; i < N; i++)
+        // CityCount cities with CityCount - 1 edges.
+        for (var i = 1; i < CityCount; i++)
         {
             var parent = random.Next(i);
             _adjacency[i].Add(parent);

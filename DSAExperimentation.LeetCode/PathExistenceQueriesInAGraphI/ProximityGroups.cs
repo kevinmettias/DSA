@@ -12,11 +12,11 @@ namespace DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphI;
 // components the full all-pairs graph would.
 internal static class ProximityGroups
 {
-    public static DisjointSet Build(int n, int[] nums, int maxDiff)
+    public static DisjointSet Build(int nodeCount, int[] nums, int maxDiff)
     {
-        var groups = new DisjointSet(n);
+        var groups = new DisjointSet(nodeCount);
 
-        for (var i = 1; i < n; i++)
+        for (var i = 1; i < nodeCount; i++)
         {
             if (nums[i] - nums[i - 1] <= maxDiff)
             {

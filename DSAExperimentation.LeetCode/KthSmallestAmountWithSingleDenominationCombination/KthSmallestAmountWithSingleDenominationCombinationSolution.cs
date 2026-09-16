@@ -8,24 +8,24 @@ namespace DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCom
 // union of coins.Length arithmetic progressions.
 //
 // Both strategies enumerate that union correctly; they differ in whether they
-// walk it value-by-value (cost bounded by k) or ask "how many achievable
-// amounts are <= x?" directly via inclusion-exclusion and binary search on x
-// - the only shape that stays fast once k reaches LeetCode's full 2*10^9,
-// since the achievable amount itself can then exceed Int32 range.
+// walk it value-by-value (cost bounded by rank) or ask "how many achievable
+// amounts are <= limit?" directly via inclusion-exclusion and binary search on
+// limit - the only shape that stays fast once rank reaches LeetCode's full
+// 2*10^9, since the achievable amount itself can then exceed Int32 range.
 internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
 {
     // The textbook k-way merge: this repo's own Heap<Element,TOrder> as a
     // priority queue over (amount, coinIndex), always popping the smallest
     // pending multiple and pushing that coin's next one. Duplicate amounts
     // (two coins landing on the same multiple) are collapsed by only
-    // counting a popped amount once. O(k log coins.Length) - correct for
-    // every input, but the arm the search strategy below has to beat once k
-    // grows large.
-    public static long KthSmallestAmountByHeapMerge(int[] coins, long k)
+    // counting a popped amount once. O(rank log coins.Length) - correct for
+    // every input, but the arm the search strategy below has to beat once
+    // rank grows large.
+    public static long KthSmallestAmountByHeapMerge(int[] coins, long rank)
     {
         var frontier = SeedFrontier(coins);
 
-        return PopUntilKth(frontier, coins, k);
+        return PopUntilKth(frontier, coins, rank);
     }
 
     // Every denomination's own first multiple: the frontier the k-way merge starts from.
@@ -72,25 +72,24 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
         return LeetCodeAnswer.None;
     }
 
-    // "How many achievable amounts are <= x?" is monotone in x, and is exactly
-    // inclusion-exclusion over every non-empty subset of coins: a subset's
-    // multiples of ALL its coins are exactly its multiples of lcm(subset),
-    // added back for an odd-sized subset and subtracted for an even one so
-    // every amount is counted exactly once regardless of how many coins
-    // divide it. Binary searching that predicate for its smallest true finds
-    // the k-th amount directly in O(log(k * min(coins)) * 2^coins.Length),
-    // independent of k itself - coins.Length <= 15 keeps that subset walk
-    // small.
-    public static long KthSmallestAmountByInclusionExclusionSearch(int[] coins, long k)
+    // "How many achievable amounts are <= limit?" is monotone in limit, and is
+    // exactly inclusion-exclusion over every non-empty subset of coins: a subset's
+    // multiples of ALL its coins are exactly its multiples of lcm(subset), added
+    // back for an odd-sized subset and subtracted for an even one so every amount is
+    // counted exactly once regardless of how many coins divide it. Binary searching
+    // that predicate for its smallest true finds the answer - the k-th smallest
+    // achievable amount - directly in O(log(rank * min(coins)) * 2^coins.Length),
+    // independent of rank itself; coins.Length <= 15 keeps that subset walk small.
+    public static long KthSmallestAmountByInclusionExclusionSearch(int[] coins, long rank)
     {
         var low = 1L;
-        var high = k * coins.Min();
+        var high = rank * coins.Min();
 
         while (low < high)
         {
             var mid = low + ((high - low) / 2);
 
-            if (CountAchievableAtMost(mid, coins) >= k)
+            if (CountAchievableAtMost(mid, coins) >= rank)
             {
                 high = mid;
             }
@@ -103,14 +102,14 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
         return low;
     }
 
-    private static long CountAchievableAtMost(long x, int[] coins)
+    private static long CountAchievableAtMost(long limit, int[] coins)
     {
         var subsetCount = 1 << coins.Length;
         var total = 0L;
 
         for (var mask = 1; mask < subsetCount; mask++)
         {
-            total += SubsetContribution(mask, coins, x);
+            total += SubsetContribution(mask, coins, limit);
         }
 
         return total;
@@ -146,15 +145,16 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
         return subsetSizeIsOdd ? multiplesOfLcm : -multiplesOfLcm;
     }
 
-    private static long Lcm(long a, long b) => a / Gcd(a, b) * b;
+    private static long Lcm(long firstNumber, long secondNumber) =>
+        firstNumber / Gcd(firstNumber, secondNumber) * secondNumber;
 
-    private static long Gcd(long a, long b)
+    private static long Gcd(long firstNumber, long secondNumber)
     {
-        while (b != 0)
+        while (secondNumber != 0)
         {
-            (a, b) = (b, a % b);
+            (firstNumber, secondNumber) = (secondNumber, firstNumber % secondNumber);
         }
 
-        return a;
+        return firstNumber;
     }
 }

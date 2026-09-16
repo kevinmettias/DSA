@@ -23,23 +23,27 @@ internal static class CountValidSequencesSolution
     // own numerator and denominator from scratch and divides by one modular
     // inverse - correct on its own, but O(k) of work per call with no reuse
     // across the two coefficients this problem always needs.
-    public static int CountByDirectBinomial(int n, int k)
+    public static int CountByDirectBinomial(int targetSum, int length)
     {
-        var total = ChooseDirect(n - 1, k - 1);
-        var odd = HasAllOddSequences(n, k) ? ChooseDirect((n + k) / 2 - 1, k - 1) : 0;
+        var total = ChooseDirect(targetSum - 1, length - 1);
+        var odd = HasAllOddSequences(targetSum, length)
+            ? ChooseDirect((targetSum + length) / 2 - 1, length - 1)
+            : 0;
 
         return Difference(total, odd);
     }
 
-    // The composed arm: FactorialTable.Build(n) does the same O(n) factorial work
-    // once, up front, so both nCr lookups below are O(1).
-    public static int CountByPrecomputedFactorials(int n, int k) =>
-        CountByPrecomputedFactorials(FactorialTable.Build(n), n, k);
+    // The composed arm: FactorialTable.Build(targetSum) does the same O(n) factorial
+    // work once, up front, so both nCr lookups below are O(1).
+    public static int CountByPrecomputedFactorials(int targetSum, int length) =>
+        CountByPrecomputedFactorials(FactorialTable.Build(targetSum), targetSum, length);
 
-    public static int CountByPrecomputedFactorials(FactorialTable table, int n, int k)
+    public static int CountByPrecomputedFactorials(FactorialTable table, int targetSum, int length)
     {
-        var total = table.Choose(n - 1, k - 1);
-        var odd = HasAllOddSequences(n, k) ? table.Choose((n + k) / 2 - 1, k - 1) : 0;
+        var total = table.Choose(targetSum - 1, length - 1);
+        var odd = HasAllOddSequences(targetSum, length)
+            ? table.Choose((targetSum + length) / 2 - 1, length - 1)
+            : 0;
 
         return Difference(total, odd);
     }
@@ -52,24 +56,25 @@ internal static class CountValidSequencesSolution
     // whole number of positive y_i.
     private static bool HasAllOddSequences(int targetSum, int length) => (targetSum + length) % 2 == 0;
 
-    // nCr is zero whenever n or r is negative, or r overshoots n.
-    private static bool IsOutsideBinomialRange(int n, int r)
-        => n < 0 || r < 0 || r > n;
+    // nCr is zero whenever itemCount or chooseCount is negative, or chooseCount
+    // overshoots itemCount.
+    private static bool IsOutsideBinomialRange(int itemCount, int chooseCount)
+        => itemCount < 0 || chooseCount < 0 || chooseCount > itemCount;
 
-    private static long ChooseDirect(int n, int r)
+    private static long ChooseDirect(int itemCount, int chooseCount)
     {
-        if (IsOutsideBinomialRange(n, r))
+        if (IsOutsideBinomialRange(itemCount, chooseCount))
         {
             return 0;
         }
 
-        r = Math.Min(r, n - r);
+        chooseCount = Math.Min(chooseCount, itemCount - chooseCount);
         var numerator = 1L;
         var denominator = 1L;
 
-        for (var i = 0; i < r; i++)
+        for (var i = 0; i < chooseCount; i++)
         {
-            numerator = numerator * (n - i) % ModularArithmetic.Modulo;
+            numerator = numerator * (itemCount - i) % ModularArithmetic.Modulo;
             denominator = denominator * (i + 1) % ModularArithmetic.Modulo;
         }
 

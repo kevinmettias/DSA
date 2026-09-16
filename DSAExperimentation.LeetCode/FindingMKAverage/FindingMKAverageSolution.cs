@@ -22,7 +22,8 @@ namespace DSAExperimentation.LeetCode.FindingMKAverage;
 // one of sums), so the trimmed mean is two order-statistic queries instead of a sort.
 internal static class FindingMKAverageSolution
 {
-    // Both ends are trimmed by k, so a window of m keeps m - 2k elements.
+    // Both ends are trimmed by the same count, so a window of windowSize keeps
+    // windowSize - (TrimmedEnds * trimCount) elements.
     private const int TrimmedEnds = 2;
 
     // LC 1825 constrains every streamed value to 1 <= num <= 10^5, which is what
@@ -36,13 +37,16 @@ internal static class FindingMKAverageSolution
     // every query, with the trimmed range summed by index. Deliberately written
     // without this repo's primitives - it is the arm the composed strategy has to
     // beat.
-    public static IMKAverage CreateBySortingSlidingWindow(int m, int k) => new SortingSlidingWindowMKAverage(m, k);
+    public static IMKAverage CreateBySortingSlidingWindow(int windowSize, int trimCount) =>
+        new SortingSlidingWindowMKAverage(windowSize, trimCount);
 
     // This repo's own answer: Queue<int> evicts the oldest element, and the two
     // Fenwick trees answer "sum of the smallest t elements currently in the window"
-    // in O(log maxValue) - so the MK average is SumOfSmallest(m - k) minus
-    // SumOfSmallest(k), with the largest-k side never handled separately at all.
-    public static IMKAverage CreateByFenwickOrderStatistics(int m, int k) => new FenwickOrderStatisticsMKAverage(m, k);
+    // in O(log maxValue) - so the MK average is SumOfSmallest(windowSize - trimCount)
+    // minus SumOfSmallest(trimCount), with the largest-trimCount side never handled
+    // separately at all.
+    public static IMKAverage CreateByFenwickOrderStatistics(int windowSize, int trimCount) =>
+        new FenwickOrderStatisticsMKAverage(windowSize, trimCount);
 
     // LeetCode's MKAverage class: the two operations its call script invokes.
     internal interface IMKAverage
@@ -54,22 +58,22 @@ internal static class FindingMKAverageSolution
 
     private sealed class SortingSlidingWindowMKAverage : IMKAverage
     {
-        private readonly int _m;
-        private readonly int _k;
+        private readonly int _windowSize;
+        private readonly int _trimCount;
         private readonly List<int> _window;
 
-        public SortingSlidingWindowMKAverage(int m, int k)
+        public SortingSlidingWindowMKAverage(int windowSize, int trimCount)
         {
-            _m = m;
-            _k = k;
-            _window = new List<int>(m);
+            _windowSize = windowSize;
+            _trimCount = trimCount;
+            _window = new List<int>(windowSize);
         }
 
         public void AddElement(int num)
         {
             _window.Add(num);
 
-            if (_window.Count > _m)
+            if (_window.Count > _windowSize)
             {
                 _window.RemoveAt(0);
             }
@@ -77,7 +81,7 @@ internal static class FindingMKAverageSolution
 
         public int CalculateMKAverage()
         {
-            if (_window.Count < _m)
+            if (_window.Count < _windowSize)
             {
                 return WindowNotFull;
             }
@@ -85,16 +89,16 @@ internal static class FindingMKAverageSolution
             var sorted = _window.OrderBy(value => value).ToArray();
             var sum = 0L;
 
-            for (var i = _k; i < _m - _k; i++)
+            for (var i = _trimCount; i < _windowSize - _trimCount; i++)
             {
                 sum += sorted[i];
             }
 
-            return (int)(sum / (_m - (TrimmedEnds * _k)));
+            return (int)(sum / (_windowSize - (TrimmedEnds * _trimCount)));
         }
     }
 
-    private sealed class FenwickOrderStatisticsMKAverage(int m, int k) : IMKAverage
+    private sealed class FenwickOrderStatisticsMKAverage(int windowSize, int trimCount) : IMKAverage
     {
         private readonly RepoQueue _window = new();
         private readonly FenwickTree<int, SumOperation<int>> _counts = new(MaxElementValue);
@@ -106,7 +110,7 @@ internal static class FindingMKAverageSolution
             _counts.Add(num - 1, 1);
             _sums.Add(num - 1, num);
 
-            if (_window.Count > m && _window.TryDequeue(out var evicted))
+            if (_window.Count > windowSize && _window.TryDequeue(out var evicted))
             {
                 _counts.Add(evicted - 1, -1);
                 _sums.Add(evicted - 1, -evicted);
@@ -115,15 +119,15 @@ internal static class FindingMKAverageSolution
 
         public int CalculateMKAverage()
         {
-            if (_window.Count < m)
+            if (_window.Count < windowSize)
             {
                 return WindowNotFull;
             }
 
-            var smallSum = SumOfSmallest(k);
-            var midPlusSmallSum = SumOfSmallest(m - k);
+            var smallSum = SumOfSmallest(trimCount);
+            var midPlusSmallSum = SumOfSmallest(windowSize - trimCount);
 
-            return (int)((midPlusSmallSum - smallSum) / (m - (TrimmedEnds * k)));
+            return (int)((midPlusSmallSum - smallSum) / (windowSize - (TrimmedEnds * trimCount)));
         }
 
         // The count tree's own PrefixQuery is monotonic in the value index, which is

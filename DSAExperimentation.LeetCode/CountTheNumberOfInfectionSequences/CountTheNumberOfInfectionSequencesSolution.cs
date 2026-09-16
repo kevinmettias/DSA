@@ -2,8 +2,8 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 
-// LeetCode 2954. Count the Number of Infection Sequences: n children stand in a
-// line, sick lists the ones already infected (sorted, at least one, not all).
+// LeetCode 2954. Count the Number of Infection Sequences: childCount children
+// stand in a line, sick lists the ones already infected (sorted, at least one, not all).
 // Every second exactly one susceptible child adjacent to an already-infected one
 // becomes infected; the answer is the number of distinct orders the remaining
 // children can end up infected in, modulo 1e9+7.
@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 // infected from their one infected end, so each has exactly one possible internal
 // order. A run strictly between two sick children can be infected from either
 // end at every step but the last, giving 2^(length-1) possible internal orders.
-// The n - sick.Length infection moves overall then interleave across every run
+// The childCount - sick.Length infection moves overall then interleave across every run
 // (edge runs included) by a multinomial coefficient - the same
 // "(size-1)! / product(part sizes!)" shape RoomWaysAlgebra folds bottom-up over a
 // tree, computed here directly over the runs of a line instead.
@@ -24,9 +24,9 @@ internal static class CountTheNumberOfInfectionSequencesSolution
     // to the current infected set, recurse, then undo - and count the completed
     // sequences. Correct but combinatorial in the run lengths, which is exactly
     // what the closed-form strategy below has to be measured against.
-    public static long CountSequencesByBruteForceSimulation(int n, int[] sick)
+    public static long CountSequencesByBruteForceSimulation(int childCount, int[] sick)
     {
-        var infected = new bool[n];
+        var infected = new bool[childCount];
 
         foreach (var index in sick)
         {
@@ -41,9 +41,9 @@ internal static class CountTheNumberOfInfectionSequencesSolution
     // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial read
     // their coefficients from - turns the whole answer into O(n) more work with
     // no recursion or enumeration.
-    public static long CountSequencesByGapCombinatorics(int n, int[] sick)
+    public static long CountSequencesByGapCombinatorics(int childCount, int[] sick)
     {
-        var (runLengths, interiorRunLengths, totalMoves) = MeasureRuns(n, sick);
+        var (runLengths, interiorRunLengths, totalMoves) = MeasureRuns(childCount, sick);
         var table = FactorialTable.Build(totalMoves);
 
         var answer = table.Factorial(totalMoves);
@@ -61,7 +61,8 @@ internal static class CountTheNumberOfInfectionSequencesSolution
         return answer;
     }
 
-    private static (List<int> RunLengths, List<int> InteriorRunLengths, int TotalMoves) MeasureRuns(int n, int[] sick)
+    private static (List<int> RunLengths, List<int> InteriorRunLengths, int TotalMoves) MeasureRuns(
+        int childCount, int[] sick)
     {
         var runLengths = new List<int> { sick[0] };
         var interiorRunLengths = new List<int>();
@@ -77,9 +78,9 @@ internal static class CountTheNumberOfInfectionSequencesSolution
             }
         }
 
-        runLengths.Add(n - 1 - sick[^1]);
+        runLengths.Add(childCount - 1 - sick[^1]);
 
-        return (runLengths, interiorRunLengths, n - sick.Length);
+        return (runLengths, interiorRunLengths, childCount - sick.Length);
     }
 
     private static long CountCompletions(bool[] infected)

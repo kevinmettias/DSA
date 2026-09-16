@@ -5,15 +5,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAStackWithIncrementOperationSolution's, the
 // same factories DesignAStackWithIncrementOperationTests proves correct. A BCL
-// List<int> whose indexer reaches the bottom min(k, size) slots directly (O(k) per
-// Increment) vs. this repo's own Stack<int>, whose public surface is deliberately
-// LIFO-only (Push/TryPop/TryPeek, no indexer - see Stack.cs's own doc comment), so
-// Increment composes two Stack<int> instances via a full drain-and-rebuild, O(size)
-// per call regardless of k. [GlobalSetup] builds the pushed-value workload so
-// generating it is not charged to the measured replay; both arms then apply the
-// same small, realistic increment window (k = 5) PushCount times, so the gap
-// measured here is the honest, real price of reaching "the bottom k elements"
-// through a strictly LIFO primitive instead of an indexed one.
+// List<int> whose indexer reaches the bottom min(bottomElementCount, size) slots
+// directly (O(bottomElementCount) per Increment) vs. this repo's own Stack<int>,
+// whose public surface is deliberately LIFO-only (Push/TryPop/TryPeek, no indexer -
+// see Stack.cs's own doc comment), so Increment composes two Stack<int> instances via
+// a full drain-and-rebuild, O(size) per call regardless of bottomElementCount.
+// [GlobalSetup] builds the pushed-value workload so generating it is not charged to
+// the measured replay; both arms then apply the same small, realistic increment window
+// (IncrementWindow) PushCount times, so the gap measured here is the honest, real
+// price of reaching "the bottom bottomElementCount elements" through a strictly LIFO
+// primitive instead of an indexed one.
 [MemoryDiagnoser]
 public class DesignAStackWithIncrementOperationBenchmarks
 {

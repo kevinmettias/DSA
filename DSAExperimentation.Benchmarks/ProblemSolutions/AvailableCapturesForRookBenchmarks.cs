@@ -47,9 +47,9 @@ public class AvailableCapturesForRookBenchmarks
 
     [Benchmark(Baseline = true)]
     public int FullBoardScan() =>
-        AvailableCapturesForRookSolution.NumRookCapturesByFullBoardScan(_board, _rook);
+        AvailableCapturesForRookSolution.CountRookCapturesByFullBoardScan(_board, _rook);
 
     [Benchmark]
     public int DirectRayWalk() =>
-        AvailableCapturesForRookSolution.NumRookCapturesByRayWalk(_board, _rook);
+        AvailableCapturesForRookSolution.CountRookCapturesByRayWalk(_board, _rook);
 }

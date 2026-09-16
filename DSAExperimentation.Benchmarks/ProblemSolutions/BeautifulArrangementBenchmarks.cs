@@ -14,11 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class BeautifulArrangementBenchmarks
 {
     [Params(6, 8)]
-    public int N { get; set; }
+    public int Size { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int GenerateThenFilter() => BeautifulArrangementSolution.CountByGenerateThenFilter(N);
+    public int GenerateThenFilter() => BeautifulArrangementSolution.CountByGenerateThenFilter(Size);
 
     [Benchmark]
-    public int PrunedBacktracking() => BeautifulArrangementSolution.CountByPrunedBacktracking(N);
+    public int PrunedBacktracking() => BeautifulArrangementSolution.CountByPrunedBacktracking(Size);
 }

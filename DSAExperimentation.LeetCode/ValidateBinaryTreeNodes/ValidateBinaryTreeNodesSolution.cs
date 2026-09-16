@@ -3,7 +3,8 @@ using DSAExperimentation.DataStructures.DisjointSet;
 namespace DSAExperimentation.LeetCode.ValidateBinaryTreeNodes;
 
 // LeetCode 1361. Validate Binary Tree Nodes: given leftChild[i]/rightChild[i]
-// (-1 for "no child"), decide whether the n nodes form exactly one binary tree.
+// (-1 for "no child"), decide whether the nodeCount nodes form exactly one binary
+// tree.
 //
 // The baseline is the textbook "try every node as the root and re-traverse from
 // scratch" scan; the composed strategy reuses this repo's own DisjointSet the same
@@ -20,11 +21,11 @@ internal static class ValidateBinaryTreeNodesSolution
     // candidate root until one covers every node without revisiting any - O(n) per
     // candidate, O(n^2) overall. Deliberately plain BCL (bool[], Stack<int>); it is
     // the arm the DisjointSet strategy below has to justify itself against.
-    public static bool ValidateByRootScan(int n, int[] leftChild, int[] rightChild)
+    public static bool IsValidByRootScan(int nodeCount, int[] leftChild, int[] rightChild)
     {
-        for (var root = 0; root < n; root++)
+        for (var root = 0; root < nodeCount; root++)
         {
-            if (CoversAllNodesFrom(root, n, leftChild, rightChild))
+            if (HasFullCoverageFrom(root, nodeCount, leftChild, rightChild))
             {
                 return true;
             }
@@ -33,9 +34,9 @@ internal static class ValidateBinaryTreeNodesSolution
         return false;
     }
 
-    private static bool CoversAllNodesFrom(int root, int n, int[] leftChild, int[] rightChild)
+    private static bool HasFullCoverageFrom(int root, int nodeCount, int[] leftChild, int[] rightChild)
     {
-        var visited = new bool[n];
+        var visited = new bool[nodeCount];
         var stack = new Stack<int>();
         stack.Push(root);
         visited[root] = true;
@@ -52,7 +53,7 @@ internal static class ValidateBinaryTreeNodesSolution
             }
         }
 
-        return visitedCount == n;
+        return visitedCount == nodeCount;
     }
 
     private static bool TryVisitChild(int child, bool[] visited, Stack<int> stack, ref int visitedCount)
@@ -77,12 +78,12 @@ internal static class ValidateBinaryTreeNodesSolution
     // One O(n * alpha(n)) pass over the declared edges: DisjointSet answers "would
     // this edge close a cycle?", a parent flag answers "does this child already have
     // a parent?", and the two end conditions answer "is what is left a single tree?".
-    public static bool ValidateByDisjointSet(int n, int[] leftChild, int[] rightChild)
+    public static bool IsValidByDisjointSet(int nodeCount, int[] leftChild, int[] rightChild)
     {
-        var hasParent = new bool[n];
-        var components = new DisjointSet(n);
+        var hasParent = new bool[nodeCount];
+        var components = new DisjointSet(nodeCount);
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             if (!TryLinkChild(node, leftChild[node], hasParent, components) ||
                 !TryLinkChild(node, rightChild[node], hasParent, components))
@@ -91,7 +92,7 @@ internal static class ValidateBinaryTreeNodesSolution
             }
         }
 
-        return HasExactlyOneRoot(hasParent) && AllNodesShareOneComponent(components, n);
+        return HasExactlyOneRoot(hasParent) && HasAllNodesInOneComponent(components, nodeCount);
     }
 
     private static bool TryLinkChild(int node, int child, bool[] hasParent, DisjointSet components)
@@ -114,9 +115,9 @@ internal static class ValidateBinaryTreeNodesSolution
 
     private static bool HasExactlyOneRoot(bool[] hasParent) => hasParent.Count(parented => !parented) == 1;
 
-    private static bool AllNodesShareOneComponent(DisjointSet components, int n)
+    private static bool HasAllNodesInOneComponent(DisjointSet components, int nodeCount)
     {
-        for (var node = 1; node < n; node++)
+        for (var node = 1; node < nodeCount; node++)
         {
             if (!components.IsConnected(0, node))
             {

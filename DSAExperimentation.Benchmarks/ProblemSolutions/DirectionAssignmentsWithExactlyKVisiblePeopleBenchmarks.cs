@@ -11,7 +11,7 @@ public class DirectionAssignmentsWithExactlyKVisiblePeopleBenchmarks
 {
     private const int Seed = 3881; private int _pos;
 
-    private int _k;
+    private int _visibleCount;
     // LC problem number
 
     [Params(200, 5_000)]
@@ -22,14 +22,14 @@ public class DirectionAssignmentsWithExactlyKVisiblePeopleBenchmarks
     {
         var random = new Random(Seed);
         _pos = random.Next(0, PersonCount);
-        _k = random.Next(0, PersonCount);
+        _visibleCount = random.Next(0, PersonCount);
     }
 
     [Benchmark(Baseline = true)]
     public int PascalConvolution() =>
-        DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByPascalConvolution(PersonCount, _pos, _k);
+        DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByPascalConvolution(PersonCount, _pos, _visibleCount);
 
     [Benchmark]
     public int VandermondeIdentity() =>
-        DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByVandermondeIdentity(PersonCount, _pos, _k);
+        DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByVandermondeIdentity(PersonCount, _pos, _visibleCount);
 }

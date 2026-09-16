@@ -25,10 +25,10 @@ public class CheckIfDigitsAreEqualInStringAfterOperationsIBenchmarks
     public void Setup() => _digits = DigitStringWorkloads.BuildDigits(Length, seed: DigitSeed);
 
     [Benchmark(Baseline = true)]
-    public bool AdjacentSumReduction() =>
-        CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(_digits);
+    public bool IsEqualByAdjacentSumReduction() =>
+        CheckIfDigitsAreEqualInStringAfterOperationsISolution.IsEqualByAdjacentSumReduction(_digits);
 
     [Benchmark]
-    public bool PascalRowCoefficients() =>
-        CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByPascalRowCoefficients(_digits);
+    public bool IsEqualByPascalRowCoefficients() =>
+        CheckIfDigitsAreEqualInStringAfterOperationsISolution.IsEqualByPascalRowCoefficients(_digits);
 }

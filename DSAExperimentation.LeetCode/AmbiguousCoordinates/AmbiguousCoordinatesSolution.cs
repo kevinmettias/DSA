@@ -42,18 +42,18 @@ internal static class AmbiguousCoordinatesSolution
     // The baseline: rebuild every dotted candidate into a fresh string and validate
     // it by re-scanning the finished string. Deliberately written the way you would
     // without this repo - the arm the sliced strategy has to justify itself against.
-    public static List<string> FindCoordinatesByRebuildAndRescan(string s)
+    public static List<string> FindCoordinatesByRebuildAndRescan(string wrappedDigits)
     {
-        var digits = DigitRun(s);
+        var digits = DigitRun(wrappedDigits);
 
         return Combine(digits, RebuiltAndRescanned);
     }
 
     // Slice each half directly out of the digit run and check only the two boundary
     // characters - no rebuilt string, no re-scan.
-    public static List<string> FindCoordinatesBySliceAndCheck(string s)
+    public static List<string> FindCoordinatesBySliceAndCheck(string wrappedDigits)
     {
-        var digits = DigitRun(s);
+        var digits = DigitRun(wrappedDigits);
 
         return Combine(digits, SlicedAndChecked);
     }
@@ -61,7 +61,7 @@ internal static class AmbiguousCoordinatesSolution
     private static bool IsValidWhole(string digits) => digits == Zero || digits[0] != ZeroDigit;
 
     // Everything between the parentheses LeetCode wraps the input in.
-    private static string DigitRun(string s) => s[1..^1];
+    private static string DigitRun(string wrappedDigits) => wrappedDigits[1..^1];
 
     private static List<string> Combine(string digits, IDecimalForms decimalForms)
     {

@@ -4,15 +4,15 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.CheapestFlightsWithinKStops;
 
 // LeetCode 787. Cheapest Flights Within K Stops: the cheapest price from src to
-// dst using at most K intermediate stops, or -1 when no such itinerary exists.
+// dst using at most maxStops intermediate stops, or -1 when no such itinerary exists.
 //
-// Dijkstra has no "at most this many edges" parameter, so the K-stop limit is
+// Dijkstra has no "at most this many edges" parameter, so the maxStops limit is
 // expressed as graph shape instead of algorithm logic - FlightStateGraph's layered
 // (city, edgesUsed) state space - and ShortestPath.Dijkstra runs over that
 // expanded graph completely unmodified. Flight prices are non-negative, exactly
 // Dijkstra's own precondition. FindCheapestPriceByNaiveDfs is the textbook
-// alternative it has to justify itself against: every path with at most K+1 edges,
-// unmemoized and exponential in K.
+// alternative it has to justify itself against: every path with at most
+// maxStops + 1 edges, unmemoized and exponential in maxStops.
 internal static class CheapestFlightsWithinKStopsSolution
 {
     // The textbook answer: recurse over every itinerary with edges to spare,
@@ -20,19 +20,19 @@ internal static class CheapestFlightsWithinKStopsSolution
     // repo's primitives - only the adjacency container it is handed is a repo
     // type (ARCHITECTURE.md section 17.5).
     public static int FindCheapestPriceByNaiveDfs(
-        int n, int[][] flights, (int Source, int Destination) endpoints, int k)
+        int cityCount, int[][] flights, (int Source, int Destination) endpoints, int maxStops)
     {
-        var network = FlightNetwork.Build(n, flights);
+        var network = FlightNetwork.Build(cityCount, flights);
 
-        return FindCheapestPriceByNaiveDfs(network, endpoints.Source, endpoints.Destination, k);
+        return FindCheapestPriceByNaiveDfs(network, endpoints.Source, endpoints.Destination, maxStops);
     }
 
-    public static int FindCheapestPriceByNaiveDfs(FlightNetwork network, int src, int dst, int k)
+    public static int FindCheapestPriceByNaiveDfs(FlightNetwork network, int src, int dst, int maxStops)
     {
         var best = int.MaxValue;
 
-        // "At most K stops" is "at most K+1 edges" - that is the DFS's depth budget.
-        Explore(new FlightSearch(network, dst), (City: src, EdgesLeft: k + 1, CostSoFar: 0), ref best);
+        // "At most maxStops stops" is "at most maxStops + 1 edges" - that is the DFS's depth budget.
+        Explore(new FlightSearch(network, dst), (City: src, EdgesLeft: maxStops + 1, CostSoFar: 0), ref best);
 
         return best == int.MaxValue ? LeetCodeAnswer.None : best;
     }
@@ -74,9 +74,9 @@ internal static class CheapestFlightsWithinKStopsSolution
     // is the cheapest arrival at dst in any layer, since finishing early is always
     // allowed.
     public static int FindCheapestPriceByDijkstraOverStopLayers(
-        int n, int[][] flights, (int Source, int Destination) endpoints, int k)
+        int cityCount, int[][] flights, (int Source, int Destination) endpoints, int maxStops)
     {
-        var graph = FlightStateGraph.Build(n, flights, k);
+        var graph = FlightStateGraph.Build(cityCount, flights, maxStops);
 
         return FindCheapestPriceByDijkstraOverStopLayers(graph, endpoints.Source, endpoints.Destination);
     }

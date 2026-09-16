@@ -26,9 +26,9 @@ public class LongestDuplicateSubstringBenchmarks
 
     [Benchmark(Baseline = true)]
     public string AllSuffixPairsBruteForce() =>
-        LongestDuplicateSubstringSolution.LongestDupSubstringByAllSuffixPairs(_text);
+        LongestDuplicateSubstringSolution.LongestDuplicateSubstringByAllSuffixPairs(_text);
 
     [Benchmark]
     public string SuffixArrayLongestCommonPrefix() =>
-        LongestDuplicateSubstringSolution.LongestDupSubstringBySuffixArray(_text);
+        LongestDuplicateSubstringSolution.LongestDuplicateSubstringBySuffixArray(_text);
 }

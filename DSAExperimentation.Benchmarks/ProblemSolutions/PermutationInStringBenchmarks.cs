@@ -23,12 +23,12 @@ public class PermutationInStringBenchmarks
         _s2 = PermutationInStringWorkloads.BuildHaystack(Length, seed: RandomSeed);
 
     [Benchmark(Baseline = true)]
-    public bool PerWindowFrequencyRebuild() =>
-        PermutationInStringSolution.CheckInclusionByPerWindowRebuild(
+    public bool HasPermutationByPerWindowRebuild() =>
+        PermutationInStringSolution.HasPermutationByPerWindowRebuild(
             new PermutationPattern(Pattern), new SearchedText(_s2));
 
     [Benchmark]
-    public bool SlidingWindowFrequencyMap() =>
-        PermutationInStringSolution.CheckInclusionBySlidingWindow(
+    public bool HasPermutationBySlidingWindow() =>
+        PermutationInStringSolution.HasPermutationBySlidingWindow(
             new PermutationPattern(Pattern), new SearchedText(_s2));
 }

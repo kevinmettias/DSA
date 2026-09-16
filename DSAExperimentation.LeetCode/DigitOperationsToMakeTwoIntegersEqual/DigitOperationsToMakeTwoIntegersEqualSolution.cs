@@ -3,12 +3,12 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.DigitOperationsToMakeTwoIntegersEqual;
 
-// LeetCode 3377. Digit Operations to Make Two Integers Equal: n's cost to
-// become m is the sum of every value n passes through (n itself included),
-// moving one digit by +-1 per step, while n must never be prime and must
-// never change digit count. That is a shortest-path query - "the cost of an
-// edge is the value you land on" - over DigitStepGraph, the non-prime
-// digit-mutation graph.
+// LeetCode 3377. Digit Operations to Make Two Integers Equal: startValue's cost
+// to become targetValue is the sum of every value it passes through (startValue
+// itself included), moving one digit by +-1 per step, while the value must never
+// be prime and must never change digit count. That is a shortest-path query -
+// "the cost of an edge is the value you land on" - over DigitStepGraph, the
+// non-prime digit-mutation graph.
 internal static class DigitOperationsToMakeTwoIntegersEqualSolution
 {
     // The textbook priority-queue Dijkstra: BCL PriorityQueue + Dictionary,
@@ -18,28 +18,28 @@ internal static class DigitOperationsToMakeTwoIntegersEqualSolution
     // the problem's digit-move and primality rules, the same "reuse the
     // domain's own neighbor rule, keep only the search engine textbook" split
     // OpenTheLockSolution's MinTurnsByMutationQueue makes with LockGraph.
-    public static int MinOperationsByBruteForceDijkstra(int n, int m)
+    public static int MinOperationsByBruteForceDijkstra(int startValue, int targetValue)
     {
-        if (DigitStepGraph.IsPrime(n) || DigitStepGraph.IsPrime(m))
+        if (DigitStepGraph.IsPrime(startValue) || DigitStepGraph.IsPrime(targetValue))
         {
             return LeetCodeAnswer.None;
         }
 
-        var best = new Dictionary<int, int> { [n] = n };
+        var best = new Dictionary<int, int> { [startValue] = startValue };
         var queue = new PriorityQueue<int, int>();
-        queue.Enqueue(n, n);
+        queue.Enqueue(startValue, startValue);
 
-        return CostByMutationQueue(m, best, queue);
+        return CostByMutationQueue(targetValue, best, queue);
     }
 
     // The search itself: settle the nearest unsettled value, then relax its digit
     // mutations. A stale queue entry - one whose recorded cost has since been beaten -
     // is dropped rather than re-expanded.
-    private static int CostByMutationQueue(int m, Dictionary<int, int> best, PriorityQueue<int, int> queue)
+    private static int CostByMutationQueue(int targetValue, Dictionary<int, int> best, PriorityQueue<int, int> queue)
     {
         while (queue.TryDequeue(out var current, out var cost))
         {
-            if (current == m)
+            if (current == targetValue)
             {
                 return cost;
             }
@@ -76,15 +76,17 @@ internal static class DigitOperationsToMakeTwoIntegersEqualSolution
 
     // This repo's own Dijkstra: ShortestPath.Dijkstra over DigitStepNode via
     // DigitStepTopology gives every reachable value's distance-in-value-sum
-    // from n in one call; adding n itself back in (the source's own value,
-    // which Dijkstra's Distances[source] = Zero convention never charges)
-    // gives LC 3377's own cost definition.
-    public static int MinOperationsByDijkstraOverDigitGraph(int n, int m) =>
-        MinOperationsByDijkstraOverDigitGraph(DigitStepGraph.Build(n.ToString().Length), n, m);
+    // from startValue in one call; adding startValue itself back in (the source's
+    // own value, which Dijkstra's Distances[source] = Zero convention never
+    // charges) gives LC 3377's own cost definition.
+    public static int MinOperationsByDijkstraOverDigitGraph(int startValue, int targetValue) =>
+        MinOperationsByDijkstraOverDigitGraph(
+            DigitStepGraph.Build(startValue.ToString().Length), startValue, targetValue);
 
-    public static int MinOperationsByDijkstraOverDigitGraph(DigitStepGraph graph, int n, int m)
+    public static int MinOperationsByDijkstraOverDigitGraph(DigitStepGraph graph, int startValue, int targetValue)
     {
-        if (!graph.Nodes.TryGetValue(n, out var startNode) || !graph.Nodes.TryGetValue(m, out var targetNode))
+        if (!graph.Nodes.TryGetValue(startValue, out var startNode)
+            || !graph.Nodes.TryGetValue(targetValue, out var targetNode))
         {
             return LeetCodeAnswer.None;
         }
@@ -92,7 +94,9 @@ internal static class DigitOperationsToMakeTwoIntegersEqualSolution
         var distances = ShortestPath
             .Dijkstra<DigitStepNode, DigitStepTopology, ListEdges<DigitStepNode, int>, int>(startNode);
 
-        return distances.TryGetValue(targetNode, out var distance) ? CostIncludingSource(n, distance) : LeetCodeAnswer.None;
+        return distances.TryGetValue(targetNode, out var distance)
+            ? CostIncludingSource(startValue, distance)
+            : LeetCodeAnswer.None;
     }
 
     // The source node's own value is never charged by Dijkstra's Distances[source] = Zero

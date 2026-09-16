@@ -2,8 +2,9 @@ using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.MinimumWindowSubstring;
 
-// LeetCode 76. Minimum Window Substring: the smallest substring of s that contains
-// every character of t (respecting multiplicity), or "" if no such window exists.
+// LeetCode 76. Minimum Window Substring: the smallest substring of the searched
+// text that contains every required character (respecting multiplicity), or "" if no
+// such window exists.
 //
 // Both strategies track each needed character's remaining count and expand a
 // window's right edge until every count is covered, then shrink from the left for
@@ -17,14 +18,14 @@ namespace DSAExperimentation.LeetCode.MinimumWindowSubstring;
 internal static class MinimumWindowSubstringSolution
 {
     // The textbook O(|s|^2) restart-from-every-start scan.
-    public static string MinWindowByBruteForce(SearchedText s, RequiredCharacters t)
+    public static string MinWindowByBruteForce(SearchedText searchedText, RequiredCharacters requiredCharacters)
     {
         var bestStart = 0;
         var bestLength = int.MaxValue;
 
-        for (var start = 0; start < s.Text.Length; start++)
+        for (var start = 0; start < searchedText.Text.Length; start++)
         {
-            var length = ShortestWindowFrom(s, t, start);
+            var length = ShortestWindowFrom(searchedText, requiredCharacters, start);
 
             if (length < bestLength)
             {
@@ -33,17 +34,20 @@ internal static class MinimumWindowSubstringSolution
             }
         }
 
-        return bestLength == int.MaxValue ? string.Empty : s.Text.Substring(bestStart, bestLength);
+        return bestLength == int.MaxValue
+            ? string.Empty
+            : searchedText.Text.Substring(bestStart, bestLength);
     }
 
-    private static int ShortestWindowFrom(SearchedText s, RequiredCharacters t, int start)
+    private static int ShortestWindowFrom(
+        SearchedText searchedText, RequiredCharacters requiredCharacters, int start)
     {
-        var need = BuildNeedCounts(t.Text);
-        var missing = t.Text.Length;
+        var need = BuildNeedCounts(requiredCharacters.Text);
+        var missing = requiredCharacters.Text.Length;
 
-        for (var end = start; end < s.Text.Length; end++)
+        for (var end = start; end < searchedText.Text.Length; end++)
         {
-            missing = ConsumeCharacter(need, s.Text[end], missing);
+            missing = ConsumeCharacter(need, searchedText.Text[end], missing);
 
             if (missing == 0)
             {
@@ -54,11 +58,11 @@ internal static class MinimumWindowSubstringSolution
         return int.MaxValue;
     }
 
-    private static Dictionary<char, int> BuildNeedCounts(string t)
+    private static Dictionary<char, int> BuildNeedCounts(string requiredText)
     {
         var need = new Dictionary<char, int>();
 
-        foreach (var ch in t)
+        foreach (var ch in requiredText)
         {
             need[ch] = need.GetValueOrDefault(ch) + 1;
         }
@@ -83,24 +87,28 @@ internal static class MinimumWindowSubstringSolution
     // A single O(|s| + |t|) pass tracking each needed character's remaining count in
     // this repo's own HashMap<char,int>, sliding the window's right edge forward and
     // only ever shrinking from the left once every needed character is covered.
-    public static string MinWindowBySlidingWindowHashMap(SearchedText s, RequiredCharacters t)
+    public static string MinWindowBySlidingWindowHashMap(
+        SearchedText searchedText, RequiredCharacters requiredCharacters)
     {
-        var need = BuildNeedHashMap(t.Text);
-        var state = new WindowState(Left: 0, BestStart: 0, BestLength: int.MaxValue, Missing: t.Text.Length);
+        var need = BuildNeedHashMap(requiredCharacters.Text);
+        var state = new WindowState(
+            Left: 0, BestStart: 0, BestLength: int.MaxValue, Missing: requiredCharacters.Text.Length);
 
-        for (var right = 0; right < s.Text.Length; right++)
+        for (var right = 0; right < searchedText.Text.Length; right++)
         {
-            state = AdvanceRight(s.Text, need, right, state);
+            state = AdvanceRight(searchedText.Text, need, right, state);
         }
 
-        return state.BestLength == int.MaxValue ? string.Empty : s.Text.Substring(state.BestStart, state.BestLength);
+        return state.BestLength == int.MaxValue
+            ? string.Empty
+            : searchedText.Text.Substring(state.BestStart, state.BestLength);
     }
 
-    private static HashMap<char, int> BuildNeedHashMap(string t)
+    private static HashMap<char, int> BuildNeedHashMap(string requiredText)
     {
         var need = new HashMap<char, int>();
 
-        foreach (var ch in t)
+        foreach (var ch in requiredText)
         {
             need.TryGetValue(ch, out var count);
             need.Set(ch, count + 1);
@@ -113,11 +121,11 @@ internal static class MinimumWindowSubstringSolution
     // window found so far, and how many needed characters are still missing.
     private readonly record struct WindowState(int Left, int BestStart, int BestLength, int Missing);
 
-    // Absorbs s[right] into the window, then shrinks from the left for as long as
+    // Absorbs text[right] into the window, then shrinks from the left for as long as
     // every needed character is still covered.
-    private static WindowState AdvanceRight(string s, HashMap<char, int> need, int right, WindowState state)
+    private static WindowState AdvanceRight(string text, HashMap<char, int> need, int right, WindowState state)
     {
-        var incoming = s[right];
+        var incoming = text[right];
         if (need.TryGetValue(incoming, out var remaining))
         {
             need.Set(incoming, remaining - 1);
@@ -129,7 +137,7 @@ internal static class MinimumWindowSubstringSolution
 
         while (state.Missing == 0)
         {
-            state = ShrinkWindow(s, need, right, state);
+            state = ShrinkWindow(text, need, right, state);
         }
 
         return state;
@@ -138,10 +146,10 @@ internal static class MinimumWindowSubstringSolution
     // One "shrink" step once every needed character is covered: records the window
     // if it beats the best found so far, then drops the leftmost character, freeing
     // it back into `need` and marking it missing again if it's now under-covered.
-    private static WindowState ShrinkWindow(string s, HashMap<char, int> need, int right, WindowState state)
+    private static WindowState ShrinkWindow(string text, HashMap<char, int> need, int right, WindowState state)
     {
         var (bestStart, bestLength) = UpdateBest(state.Left, right, state.BestStart, state.BestLength);
-        var missing = ReleaseOutgoing(s, need, state.Left, state.Missing);
+        var missing = ReleaseOutgoing(text, need, state.Left, state.Missing);
 
         return new WindowState(state.Left + 1, bestStart, bestLength, missing);
     }
@@ -159,9 +167,9 @@ internal static class MinimumWindowSubstringSolution
 
     // Frees the leftmost character back into `need`; if it's now under-covered
     // (its need count crosses back above zero), the window is missing it again.
-    private static int ReleaseOutgoing(string s, HashMap<char, int> need, int left, int missing)
+    private static int ReleaseOutgoing(string text, HashMap<char, int> need, int left, int missing)
     {
-        var outgoing = s[left];
+        var outgoing = text[left];
         if (need.TryGetValue(outgoing, out var freed))
         {
             need.Set(outgoing, freed + 1);
@@ -176,8 +184,9 @@ internal static class MinimumWindowSubstringSolution
 
     // The two ends of a minimum-window search, named for what they are in this problem
     // rather than left as two adjacent `string` positions a caller could hand over the
-    // wrong way round with the compiler none the wiser. `s` is the text a window is cut
-    // from; `t` is the characters that window has to cover.
+    // wrong way round with the compiler none the wiser. `searchedText` is the text a
+    // window is cut from; `requiredCharacters` is the characters that window has to
+    // cover.
     internal readonly record struct SearchedText(string Text);
 
     internal readonly record struct RequiredCharacters(string Text);

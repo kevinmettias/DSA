@@ -7,10 +7,12 @@ using RepoProfitStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.MaximumEleganceOfAKLengthSubsequence;
 
-// LeetCode 2813. Maximum Elegance of a K-Length Subsequence: choose exactly k
-// items (profit, category) to maximize sum(profit) + distinctCategoryCount^2.
-// Sort by profit descending and greedily take the first k (the best possible
-// profit sum); any item beyond the first k whose category is NEW can only help
+// LeetCode 2813. Maximum Elegance of a K-Length Subsequence: choose exactly
+// subsequenceLength items (profit, category) to maximize
+// sum(profit) + distinctCategoryCount^2.
+// Sort by profit descending and greedily take the first subsequenceLength (the
+// best possible profit sum); any item beyond the first subsequenceLength whose
+// category is NEW can only help
 // by swapping in for the SMALLEST-profit item already taken from a category
 // that's already represented twice - exactly a LIFO stack of "replaceable"
 // duplicate profits, since items are scanned in descending-profit order, so the
@@ -28,34 +30,35 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
     // Baseline: BCL OrderByDescending, System.Collections.Generic.Stack<int> for
     // duplicate profits, HashSet<int> for seen categories - "what you'd write
     // without this repo".
-    public static long MaximumEleganceByBcl(int[][] items, int k)
+    public static long MaximumEleganceByBcl(int[][] items, int subsequenceLength)
     {
         var sorted = items
             .Select(item => (Profit: item[0], Category: item[1]))
             .OrderByDescending(item => item.Profit)
             .ToArray();
 
-        var (total, seen, duplicates) = TakeFirstKWithBclSets(sorted, k);
+        var (total, seen, duplicates) = TakeFirstKWithBclSets(sorted, subsequenceLength);
         var best = total + ((long)seen.Count * seen.Count);
 
-        (total, best) = SwapInNewCategoriesWithBclSets(sorted, k, (total, best), (seen, duplicates));
+        (total, best) = SwapInNewCategoriesWithBclSets(
+            sorted, subsequenceLength, (total, best), (seen, duplicates));
 
         return best;
     }
 
-    // The opening phase of the greedy: take the k highest-profit items outright -
-    // the best possible profit sum - remembering every category already
-    // represented and stacking the profit of each duplicate category as a
+    // The opening phase of the greedy: take the subsequenceLength highest-profit
+    // items outright - the best possible profit sum - remembering every category
+    // already represented and stacking the profit of each duplicate category as a
     // candidate to swap back out.
     private static (long Total, HashSet<int> Seen, BclProfitStack Duplicates) TakeFirstKWithBclSets(
         (int Profit, int Category)[] sorted,
-        int k)
+        int subsequenceLength)
     {
         long total = 0;
         var seen = new HashSet<int>();
         var duplicates = new BclProfitStack();
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < subsequenceLength; i++)
         {
             total += sorted[i].Profit;
 
@@ -73,11 +76,11 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
     // profit sum falls only by that duplicate while distinct categories go up.
     private static (long Total, long Best) SwapInNewCategoriesWithBclSets(
         (int Profit, int Category)[] sorted,
-        int k,
+        int subsequenceLength,
         (long Total, long Best) running,
         (HashSet<int> Seen, BclProfitStack Duplicates) taken)
     {
-        for (var i = k; i < sorted.Length; i++)
+        for (var i = subsequenceLength; i < sorted.Length; i++)
         {
             if (taken.Duplicates.Count == 0)
             {
@@ -102,14 +105,15 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
     // TheNumberOfWeakCharactersInTheGameTests uses), seen categories tracked
     // with this repo's Set<int>, replaceable duplicate profits tracked with this
     // repo's own Stack<int>.
-    public static long MaximumEleganceByRepoPrimitives(int[][] items, int k)
+    public static long MaximumEleganceByRepoPrimitives(int[][] items, int subsequenceLength)
     {
         var sorted = SortByProfitDescending(items);
 
-        var (total, seen, duplicates) = TakeFirstKWithRepoPrimitives(sorted, k);
+        var (total, seen, duplicates) = TakeFirstKWithRepoPrimitives(sorted, subsequenceLength);
         var best = total + ((long)seen.Count * seen.Count);
 
-        (total, best) = SwapInNewCategoriesWithRepoPrimitives(sorted, k, (total, best), (seen, duplicates));
+        (total, best) = SwapInNewCategoriesWithRepoPrimitives(
+            sorted, subsequenceLength, (total, best), (seen, duplicates));
 
         return best;
     }
@@ -127,13 +131,13 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
 
     private static (long Total, Set<int> Seen, RepoProfitStack Duplicates) TakeFirstKWithRepoPrimitives(
         (int Profit, int Category)[] sorted,
-        int k)
+        int subsequenceLength)
     {
         long total = 0;
         var seen = new Set<int>();
         var duplicates = new RepoProfitStack();
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < subsequenceLength; i++)
         {
             total += sorted[i].Profit;
 
@@ -148,11 +152,11 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
 
     private static (long Total, long Best) SwapInNewCategoriesWithRepoPrimitives(
         (int Profit, int Category)[] sorted,
-        int k,
+        int subsequenceLength,
         (long Total, long Best) running,
         (Set<int> Seen, RepoProfitStack Duplicates) taken)
     {
-        for (var i = k; i < sorted.Length; i++)
+        for (var i = subsequenceLength; i < sorted.Length; i++)
         {
             if (taken.Duplicates.Count == 0)
             {

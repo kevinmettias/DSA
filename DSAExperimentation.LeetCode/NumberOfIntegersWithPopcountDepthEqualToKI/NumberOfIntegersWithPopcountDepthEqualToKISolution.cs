@@ -3,22 +3,22 @@ using System.Numerics;
 namespace DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI;
 
 // LeetCode 3621. Number of Integers With Popcount-Depth Equal to K I:
-// repeatedly replacing x with its own popcount eventually reaches 1; the
-// popcount-depth of x is how many replacements that takes. Count x in [1, n]
-// whose popcount-depth is exactly k. Both strategies answer the same question
-// with the same signature (TwoSumSolution precedent).
+// repeatedly replacing a value with its own popcount eventually reaches 1; the
+// popcount-depth of that value is how many replacements it takes. Count the values
+// in [1, upperBound] whose popcount-depth is exactly desiredDepth. Both strategies
+// answer the same question with the same signature (TwoSumSolution precedent).
 internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
 {
-    // Textbook baseline: simulate every x in [1, n] directly. Correct, but O(n)
-    // - unusable at the real problem's n up to 10^15 - the arm the
-    // combinatorial strategy below has to beat.
-    public static long PopcountDepthByBruteForce(long n, int k)
+    // Textbook baseline: simulate every value in [1, upperBound] directly. Correct,
+    // but linear in upperBound - unusable at the real problem's upperBound up to
+    // 10^15 - the arm the combinatorial strategy below has to beat.
+    public static long PopcountDepthByBruteForce(long upperBound, int desiredDepth)
     {
         var count = 0L;
 
-        for (var x = 1L; x <= n; x++)
+        for (var candidate = 1L; candidate <= upperBound; candidate++)
         {
-            if (Depth(x) == k)
+            if (Depth(candidate) == desiredDepth)
             {
                 count++;
             }
@@ -27,13 +27,13 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
         return count;
     }
 
-    private static int Depth(long x)
+    private static int Depth(long value)
     {
         var depth = 0;
 
-        while (x != 1)
+        while (value != 1)
         {
-            x = BitOperations.PopCount((ulong)x);
+            value = BitOperations.PopCount((ulong)value);
             depth++;
         }
 
@@ -50,18 +50,18 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
     // 1 + depth(popcount(1)) = 1 + depth(1) = 1, which is wrong for x = 1
     // itself (its true depth is 0 by definition), so it is excluded from
     // whichever popcount-1 bucket the formula would otherwise sweep it into.
-    public static long PopcountDepthByPopcountCombinatorics(long n, int k)
+    public static long PopcountDepthByPopcountCombinatorics(long upperBound, int desiredDepth)
     {
-        if (k == 0)
+        if (desiredDepth == 0)
         {
-            return 1; // Only x = 1; LC's own constraint keeps n >= 1.
+            return 1; // Only x = 1; LC's own constraint keeps upperBound >= 1.
         }
 
-        var binary = Convert.ToString(n, 2);
+        var binary = Convert.ToString(upperBound, 2);
         var length = binary.Length;
         var depthByPopcount = BuildDepthByPopcount(length);
         var countByPopcount = CountNumbersByPopcount(binary);
-        var targetDepth = k - 1;
+        var targetDepth = desiredDepth - 1;
         var total = 0L;
 
         for (var c = 1; c <= length; c++)
@@ -88,14 +88,15 @@ internal static class NumberOfIntegersWithPopcountDepthEqualToKISolution
         return depth;
     }
 
-    // Classic binary digit-DP: for every '1' bit of n, fix it to 0 and freely
+    // Classic binary digit-DP: for every '1' bit of binary, fix it to 0 and freely
     // choose every lower bit, weighting each choice of how many of those free
     // bits are set by the binomial coefficient C(remaining bits, ones needed)
     // (Pascal's triangle - no modulus is involved here, unlike
     // CountKReducibleNumbersLessThanNSolution's factorial/inverse-factorial
-    // table, since n <= 10^15 keeps every count well within a long). n itself
-    // is then folded in as the one value the "fix a 1-bit to 0" sweep never
-    // visits - its popcount is exactly the number of 1 bits the sweep counted.
+    // table, since the input number never exceeds 10^15 here, which keeps every
+    // count well within a long). The number binary spells out is then folded in as
+    // the one value the "fix a 1-bit to 0" sweep never visits - its popcount is
+    // exactly the number of 1 bits the sweep counted.
     private static long[] CountNumbersByPopcount(string binary)
     {
         var length = binary.Length;

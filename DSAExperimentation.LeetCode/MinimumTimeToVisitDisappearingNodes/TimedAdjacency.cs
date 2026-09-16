@@ -8,11 +8,11 @@ internal sealed class TimedAdjacency
 
     private TimedAdjacency(List<(int Neighbor, int Weight)>[] neighbors) => Neighbors = neighbors;
 
-    public static TimedAdjacency Build(int n, int[][] edges)
+    public static TimedAdjacency Build(int nodeCount, int[][] edges)
     {
-        var neighbors = new List<(int Neighbor, int Weight)>[n];
+        var neighbors = new List<(int Neighbor, int Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             neighbors[i] = [];
         }

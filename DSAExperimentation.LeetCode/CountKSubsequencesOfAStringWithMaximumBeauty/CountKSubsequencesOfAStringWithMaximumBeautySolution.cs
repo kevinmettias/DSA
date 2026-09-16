@@ -6,32 +6,33 @@ using DSAExperimentation.Domain.Modular;
 namespace DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
 
 // LeetCode 2842. Count K-Subsequences of a String With Maximum Beauty: a
-// k-subsequence is a length-k subsequence whose characters are pairwise
+// k-subsequence is a subsequence of subsequenceLength characters, all pairwise
 // distinct; its beauty is the sum, over its own characters, of how many times
-// each occurs in s. Since every subsequence with the SAME set of k distinct
+// each occurs in text. Since every subsequence drawing on the SAME set of chosen
 // characters has the same beauty (the set alone determines the sum), the
-// question reduces to: pick the k-character SET maximizing summed frequency,
-// then count how many actual index-subsequences realize any set achieving that
-// maximum - freq(c) index choices per chosen character c, summed over every
-// maximizing set.
+// question reduces to: pick the set of subsequenceLength distinct characters
+// maximizing summed frequency, then count how many actual index-subsequences
+// realize any set achieving that maximum - freq(c) index choices per chosen
+// character c, summed over every maximizing set.
 //
-// CountByBruteForceCombinations enumerates every size-k subset of s's distinct
-// characters via Backtrack (the same "choose index > last chosen" combination
-// walk CombinationSum/Subsets already use) and tracks the max summed frequency
-// and the modular count of subsets achieving it directly - correct but O(C(26,
-// k)) in the worst case, the baseline the grouped approach has to beat.
+// CountByBruteForceCombinations enumerates every subset of text's distinct
+// characters of size subsequenceLength via Backtrack (the same "choose index >
+// last chosen" combination walk CombinationSum/Subsets already use) and tracks
+// the max summed frequency and the modular count of subsets achieving it
+// directly - correct but O(C(26, k)) in the worst case, the baseline the grouped
+// approach has to beat.
 //
 // CountByGroupedFrequencyProduct sorts each distinct character's own frequency
 // descending via MergeSort/ArrayIndexedSequence<int> (same composition
 // MaximumEleganceOfAKLengthSubsequenceSolution already uses) then walks groups
-// of equal frequency from the top: a group entirely inside the top k is forced
-// into every maximizing set (multiply in freq^groupSize), and the one boundary
-// group that only PARTIALLY fits contributes C(groupSize, remaining) *
-// freq^remaining - choose which `remaining` of its tied characters join, and
-// each character in that chosen set is picked in freq(c) different actual
-// index-positions. ModularArithmetic.Power computes freq^exponent and
-// nCr(n, r) below reuses ModularArithmetic.Inverse for the modular Fermat
-// inverse, the same factorial+inverse combination
+// of equal frequency from the top: a group entirely inside the top
+// subsequenceLength is forced into every maximizing set (multiply in
+// freq^groupSize), and the one boundary group that only PARTIALLY fits
+// contributes C(groupSize, remaining) * freq^remaining - choose which `remaining`
+// of its tied characters join, and each character in that chosen set is picked in
+// freq(c) different actual index-positions. ModularArithmetic.Power computes
+// freq^exponent and nCr(n, r) below reuses ModularArithmetic.Inverse for the
+// modular Fermat inverse, the same factorial+inverse combination
 // RoomWaysAlgebra.Factorial/ModularArithmetic.Inverse already prove out for a
 // different counting problem - recomputed per call rather than a shared
 // Domain-level nCr helper since n <= 26 here (one distinct-letter alphabet),
@@ -41,12 +42,12 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 {
     private const int AlphabetSize = 26;
 
-    public static long CountByBruteForceCombinations(string s, int k)
+    public static long CountByBruteForceCombinations(string text, int subsequenceLength)
     {
-        var frequency = BuildFrequency(s);
+        var frequency = BuildFrequency(text);
         var chars = DistinctCharIndices(frequency);
 
-        if (chars.Count < k)
+        if (chars.Count < subsequenceLength)
         {
             return 0;
         }
@@ -56,8 +57,8 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
 
         Backtrack.Search<ComboState, int>(
             state,
-            st => st.Chosen.Count == k,
-            st => CandidateIndices(st, chars.Count, k),
+            st => st.Chosen.Count == subsequenceLength,
+            st => CandidateIndices(st, chars.Count, subsequenceLength),
             (st, index) => st.Chosen.Add(index),
             (st, _) => st.Chosen.RemoveAt(st.Chosen.Count - 1),
             st => best = FoldChosenSubset(best, st, frequency, chars));
@@ -65,9 +66,9 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return best.Count;
     }
 
-    private static IEnumerable<int> CandidateIndices(ComboState state, int charCount, int k)
+    private static IEnumerable<int> CandidateIndices(ComboState state, int charCount, int subsequenceLength)
     {
-        if (state.Chosen.Count == k)
+        if (state.Chosen.Count == subsequenceLength)
         {
             return [];
         }
@@ -107,12 +108,12 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return best;
     }
 
-    public static long CountByGroupedFrequencyProduct(string s, int k)
+    public static long CountByGroupedFrequencyProduct(string text, int subsequenceLength)
     {
-        var frequency = BuildFrequency(s);
+        var frequency = BuildFrequency(text);
         var chars = DistinctCharIndices(frequency);
 
-        if (chars.Count < k)
+        if (chars.Count < subsequenceLength)
         {
             return 0;
         }
@@ -122,7 +123,7 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(values), descending);
 
         var product = 1L;
-        var remaining = k;
+        var remaining = subsequenceLength;
         var index = 0;
 
         while (remaining > 0)
@@ -136,7 +137,8 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
     // Consume one group of equal frequency from the top: `remaining` of its characters
     // join the chosen set (all of them when the group fits entirely), each contributing
     // freq choices of index and each set of `remaining` counted by nCr(groupSize, taken).
-    // Returns the cursor past the group, what is left of k, and the updated product.
+    // Returns the cursor past the group, what is left of subsequenceLength, and the
+    // updated product.
     private static (int Index, int Remaining, long Product) TakeTopFrequencyGroup(
         int[] values, int index, int remaining, long product)
     {
@@ -156,23 +158,23 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return (index, remaining - taken, product);
     }
 
-    private static long Combinations(int n, int r)
+    private static long Combinations(int itemCount, int chooseCount)
     {
-        if (r == 0 || r == n)
+        if (chooseCount == 0 || chooseCount == itemCount)
         {
             return 1;
         }
 
         var numerator = 1L;
 
-        for (var i = 0; i < r; i++)
+        for (var i = 0; i < chooseCount; i++)
         {
-            numerator = numerator * (n - i) % ModularArithmetic.Modulo;
+            numerator = numerator * (itemCount - i) % ModularArithmetic.Modulo;
         }
 
         var denominator = 1L;
 
-        for (var i = 2; i <= r; i++)
+        for (var i = 2; i <= chooseCount; i++)
         {
             denominator = denominator * i % ModularArithmetic.Modulo;
         }
@@ -180,11 +182,11 @@ internal static class CountKSubsequencesOfAStringWithMaximumBeautySolution
         return numerator * ModularArithmetic.Inverse(denominator) % ModularArithmetic.Modulo;
     }
 
-    private static int[] BuildFrequency(string s)
+    private static int[] BuildFrequency(string text)
     {
         var frequency = new int[AlphabetSize];
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             frequency[c - 'a']++;
         }

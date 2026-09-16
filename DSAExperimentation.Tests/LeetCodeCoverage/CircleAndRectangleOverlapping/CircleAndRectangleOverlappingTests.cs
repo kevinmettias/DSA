@@ -20,10 +20,10 @@ public sealed class CircleAndRectangleOverlappingTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckOverlapByClampedDistance_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
+    public void HasOverlapByClampedDistance_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
         OverlapCase example)
     {
-        var overlaps = CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
+        var overlaps = CircleAndRectangleOverlappingSolution.HasOverlapByClampedDistance(
             new Circle(example.Radius, example.XCenter, example.YCenter),
             new Rectangle(example.X1, example.Y1, example.X2, example.Y2));
 
@@ -32,10 +32,10 @@ public sealed class CircleAndRectangleOverlappingTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckOverlapByLatticePointScan_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
+    public void HasOverlapByLatticePointScan_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
         OverlapCase example)
     {
-        var overlaps = CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
+        var overlaps = CircleAndRectangleOverlappingSolution.HasOverlapByLatticePointScan(
             new Circle(example.Radius, example.XCenter, example.YCenter),
             new Rectangle(example.X1, example.Y1, example.X2, example.Y2));
 

@@ -13,9 +13,9 @@ internal static class GuessNumberHigherOrLowerSolution
     // The textbook baseline: probe every candidate from 1 upward until guess() reports
     // a match - O(n) worst case. Deliberately BCL-only; the oracle check is the only
     // thing either strategy is allowed to know about the input's shape.
-    public static int GuessNumberByLinearScan(int n, int pick)
+    public static int GuessNumberByLinearScan(int upperBound, int pick)
     {
-        for (var candidate = 1; candidate <= n; candidate++)
+        for (var candidate = 1; candidate <= upperBound; candidate++)
         {
             if (Guess(candidate, pick) == 0)
             {
@@ -29,12 +29,13 @@ internal static class GuessNumberHigherOrLowerSolution
     private static int Guess(int candidate, int pick) => pick.CompareTo(candidate);
 
     // This repo's own BinarySearch.Find over a virtual sequence of the candidates
-    // 1..n - the sequence is never materialized, n can be as large as 2^31 - 1 without
-    // allocating anything - routed through guess() via a custom IComparer, finding pick
-    // in O(log n) probes instead of an O(n) linear scan.
-    public static int GuessNumberByBinarySearch(int n, int pick)
+    // 1..upperBound - the sequence is never materialized, upperBound can be as large as
+    // 2^31 - 1 without allocating anything - routed through guess() via a custom
+    // IComparer, finding pick in O(log upperBound) probes instead of an O(upperBound)
+    // linear scan.
+    public static int GuessNumberByBinarySearch(int upperBound, int pick)
     {
-        var sequence = new NumberLineSequence(n);
+        var sequence = new NumberLineSequence(upperBound);
         var comparer = new GuessComparer(pick);
 
         return BinarySearch.Find<int, NumberLineSequence>(sequence, target: 0, comparer)!.Value + 1;

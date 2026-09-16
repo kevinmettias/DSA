@@ -3,10 +3,11 @@ using DSAExperimentation.DataStructures.Set;
 namespace DSAExperimentation.LeetCode.KDivisibleElementsSubarrays;
 
 // LeetCode 2261. K Divisible Elements Subarrays: count the DISTINCT non-empty
-// subarrays holding at most k elements divisible by p. n <= 200, so every
-// (start, end) pair can be enumerated directly - extend each start while the running
-// count of divisible elements stays within k, and break the moment it does not,
-// because every longer subarray from that start violates the bound too.
+// subarrays holding at most maxDivisibleCount elements divisible by divisor. n <= 200,
+// so every (start, end) pair can be enumerated directly - extend each start while the
+// running count of divisible elements stays within maxDivisibleCount, and break the
+// moment it does not, because every longer subarray from that start violates the bound
+// too.
 //
 // Enumeration is therefore identical in both strategies; the only thing they differ
 // in is how distinctness is decided. Each candidate is keyed by its own elements
@@ -18,22 +19,22 @@ internal static class KDivisibleElementsSubarraysSolution
     // The textbook answer: same candidate enumeration, signatures deduped in a BCL
     // HashSet. Deliberately written with nothing from this repo - it is the arm the
     // Set-backed strategy below has to justify itself against.
-    public static int CountDistinctByHashSetDedupe(int[] nums, int k, int p)
+    public static int CountDistinctByHashSetDedupe(int[] nums, int maxDivisibleCount, int divisor)
     {
         var distinctSubarrays = new HashSet<string>();
 
-        RecordSubarraySignatures(nums, k, p, new HashSetSignatureRecorder(distinctSubarrays));
+        RecordSubarraySignatures(nums, maxDivisibleCount, divisor, new HashSetSignatureRecorder(distinctSubarrays));
 
         return distinctSubarrays.Count;
     }
 
     // Same enumeration, deduped through this repo's own Set<string>: membership is
     // exactly "is this signature already present", which is Set's whole contract.
-    public static int CountDistinctBySetDedupe(int[] nums, int k, int p)
+    public static int CountDistinctBySetDedupe(int[] nums, int maxDivisibleCount, int divisor)
     {
         var distinctSubarrays = new Set<string>();
 
-        RecordSubarraySignatures(nums, k, p, new SetSignatureRecorder(distinctSubarrays));
+        RecordSubarraySignatures(nums, maxDivisibleCount, divisor, new SetSignatureRecorder(distinctSubarrays));
 
         return distinctSubarrays.Count;
     }

@@ -3,9 +3,10 @@ using DSAExperimentation.LeetCode.NthMagicalNumber;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NthMagicalNumber;
 
 // Harness only: both strategies live in NthMagicalNumberSolution and are asserted
-// against the same examples - LeetCode's two published ones, the case where b is a
-// multiple of a (inclusion-exclusion subtracts the whole overlap), a coprime pair
-// that interleaves both sequences, and the (a, b) pair the benchmark measures.
+// against the same examples - LeetCode's two published ones, the case where the
+// second factor is a multiple of the first (inclusion-exclusion subtracts the whole
+// overlap), a coprime pair that interleaves both sequences, and the factor pair the
+// benchmark measures.
 public sealed class NthMagicalNumberTests
 {
     public static TheoryData<int, int, int, int> Examples =>
@@ -22,9 +23,9 @@ public sealed class NthMagicalNumberTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NthMagicalNumberByCountScan_LeetCodeExamples_ReturnsNthMultipleOfEitherFactor(
-        int n, int a, int b, int expected)
+        int rank, int firstFactor, int secondFactor, int expected)
     {
-        var actual = NthMagicalNumberSolution.NthMagicalNumberByCountScan(n, a, b);
+        var actual = NthMagicalNumberSolution.NthMagicalNumberByCountScan(rank, firstFactor, secondFactor);
 
         Assert.Equal(expected, actual);
     }
@@ -32,9 +33,9 @@ public sealed class NthMagicalNumberTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NthMagicalNumberByBinarySearch_LeetCodeExamples_ReturnsNthMultipleOfEitherFactor(
-        int n, int a, int b, int expected)
+        int rank, int firstFactor, int secondFactor, int expected)
     {
-        var actual = NthMagicalNumberSolution.NthMagicalNumberByBinarySearch(n, a, b);
+        var actual = NthMagicalNumberSolution.NthMagicalNumberByBinarySearch(rank, firstFactor, secondFactor);
 
         Assert.Equal(expected, actual);
     }

@@ -16,9 +16,9 @@ internal static class BeautifulArrangementSolution
     // regardless of how early it violates the rule. Deliberately written without
     // this repo's primitives; the arm the pruned backtracking strategy below has
     // to justify itself against.
-    public static int CountByGenerateThenFilter(int n)
+    public static int CountByGenerateThenFilter(int size)
     {
-        var arrangement = new ArrangementState(n, new bool[n], new int[n]);
+        var arrangement = new ArrangementState(size, new bool[size], new int[size]);
 
         return Generate(arrangement, 0);
     }
@@ -28,23 +28,23 @@ internal static class BeautifulArrangementSolution
     // into Candidates so an illegal value is never placed and the branch is
     // pruned immediately instead of discovered n steps later, once a full
     // permutation has already been built.
-    public static int CountByPrunedBacktracking(int n)
+    public static int CountByPrunedBacktracking(int size)
     {
         var count = 0;
-        var state = new State(n);
+        var state = new State(size);
 
         Backtrack.Search<State, int>(
             state,
-            s => s.Values.Count == n,
+            s => s.Values.Count == size,
             s =>
             {
-                if (s.Values.Count == n)
+                if (s.Values.Count == size)
                 {
                     return [];
                 }
 
                 var position = s.Values.Count + 1;
-                return Enumerable.Range(1, n).Where(v => !s.Used[v - 1] && (v % position == 0 || position % v == 0));
+                return Enumerable.Range(1, size).Where(v => !s.Used[v - 1] && (v % position == 0 || position % v == 0));
             },
             (s, v) => { s.Used[v - 1] = true; s.Values.Add(v); },
             (s, v) => { s.Used[v - 1] = false; s.Values.RemoveAt(s.Values.Count - 1); },
@@ -73,12 +73,12 @@ internal static class BeautifulArrangementSolution
         return count;
     }
 
-    private static int PlaceAndRecurse(ArrangementState arrangement, int depth, int v)
+    private static int PlaceAndRecurse(ArrangementState arrangement, int depth, int value)
     {
-        arrangement.Used[v - 1] = true;
-        arrangement.Values[depth] = v;
+        arrangement.Used[value - 1] = true;
+        arrangement.Values[depth] = value;
         var count = Generate(arrangement, depth + 1);
-        arrangement.Used[v - 1] = false;
+        arrangement.Used[value - 1] = false;
 
         return count;
     }

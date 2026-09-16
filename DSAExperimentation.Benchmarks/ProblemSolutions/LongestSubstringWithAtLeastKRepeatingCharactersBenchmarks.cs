@@ -14,19 +14,19 @@ public class LongestSubstringWithAtLeastKRepeatingCharactersBenchmarks
     private const int Seed = 395;
     private const int K = 3;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _s = LongestSubstringWithAtLeastKRepeatingCharactersWorkloads.BuildString(Length, Seed);
+    public void Setup() => _text = LongestSubstringWithAtLeastKRepeatingCharactersWorkloads.BuildString(Length, Seed);
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
-        LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByBruteForce(_s, K);
+        LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByBruteForce(_text, K);
 
     [Benchmark]
     public int DivideAndConquerHashMap() =>
-        LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByDivideAndConquer(_s, K);
+        LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByDivideAndConquer(_text, K);
 }

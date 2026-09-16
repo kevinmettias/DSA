@@ -2,18 +2,18 @@ using DSAExperimentation.DataStructures.SinglyLinkedList;
 
 namespace DSAExperimentation.LeetCode.SpiralMatrixIV;
 
-// LeetCode 2326. Spiral Matrix IV: lay a singly linked list's values into an
-// m x n matrix along the clockwise spiral path, leaving every cell the list never
-// reaches at -1.
+// LeetCode 2326. Spiral Matrix IV: lay a singly linked list's values into a
+// rowCount x columnCount matrix along the clockwise spiral path, leaving every cell
+// the list never reaches at -1.
 //
 // Both strategies walk this repo's own SinglyLinkedListNode<int> exactly once
 // (AddTwoNumbersSolution's precedent for the primitive); what differs is how the
 // spiral path itself is decided. DirectionArray is the common direction-vector
 // approach - turn whenever the next cell is out of bounds or already filled -
-// which needs a second m x n bool matrix purely to answer "have I been here" and
-// a bounds/visited check on every single cell. BoundaryShrink instead pulls one
-// of four cursors in after each side is walked, so a turn is decided once per
-// side rather than once per cell, with no allocation beyond the answer itself.
+// which needs a second rowCount x columnCount bool matrix purely to answer "have I
+// been here" and a bounds/visited check on every single cell. BoundaryShrink instead
+// pulls one of four cursors in after each side is walked, so a turn is decided once
+// per side rather than once per cell, with no allocation beyond the answer itself.
 internal static class SpiralMatrixIVSolution
 {
     // LeetCode's filler for a cell the list runs out before reaching. Not
@@ -25,10 +25,10 @@ internal static class SpiralMatrixIVSolution
     // right whenever the next step would leave the grid or revisit a cell.
     // Deliberately written with nothing but BCL arrays - it is the arm
     // BoundaryShrink has to justify itself against.
-    public static int[][] SpiralMatrixByDirectionArray(int m, int n, SinglyLinkedListNode<int>? head)
+    public static int[][] SpiralMatrixByDirectionArray(int rowCount, int columnCount, SinglyLinkedListNode<int>? head)
     {
-        var matrix = EmptyMatrix(m, n);
-        var visited = new bool[m, n];
+        var matrix = EmptyMatrix(rowCount, columnCount);
+        var visited = new bool[rowCount, columnCount];
         (int DeltaRow, int DeltaColumn)[] directions = [(0, 1), (1, 0), (0, -1), (-1, 0)];
         int row = 0, column = 0, direction = 0;
 
@@ -36,7 +36,8 @@ internal static class SpiralMatrixIVSolution
         {
             matrix[row][column] = node.Value;
             visited[row, column] = true;
-            (row, column, direction) = NextSpiralStep((row, column, direction), (visited, directions, m, n));
+            (row, column, direction) =
+                NextSpiralStep((row, column, direction), (visited, directions, rowCount, columnCount));
         }
 
         return matrix;
@@ -65,7 +66,7 @@ internal static class SpiralMatrixIVSolution
         return (nextRow, nextColumn, direction);
     }
 
-    // Both coordinates have to land inside the m x n matrix.
+    // Both coordinates have to land inside the rowCount x columnCount matrix.
     private static bool IsOutsideGrid(int row, int column, int rows, int columns) =>
         row < 0 || row >= rows || column < 0 || column >= columns;
 
@@ -73,13 +74,13 @@ internal static class SpiralMatrixIVSolution
     // full and then its cursor is pulled in, so the walk never asks whether a
     // cell was already written. Running out of list simply stops every loop
     // where it stands, leaving the rest of the matrix at EmptyCell.
-    public static int[][] SpiralMatrixByBoundaryShrink(int m, int n, SinglyLinkedListNode<int>? head)
+    public static int[][] SpiralMatrixByBoundaryShrink(int rowCount, int columnCount, SinglyLinkedListNode<int>? head)
     {
-        var matrix = EmptyMatrix(m, n);
+        var matrix = EmptyMatrix(rowCount, columnCount);
         var node = head;
-        var bounds = (Top: 0, Bottom: m - 1, Left: 0, Right: n - 1);
+        var bounds = (Top: 0, Bottom: rowCount - 1, Left: 0, Right: columnCount - 1);
 
-        while (StillHasUnwrittenCells(bounds.Top, bounds.Bottom, bounds.Left, bounds.Right) && node is not null)
+        while (HasUnwrittenCells(bounds.Top, bounds.Bottom, bounds.Left, bounds.Right) && node is not null)
         {
             (bounds, node) = ShrinkOneRing(matrix, node, bounds);
         }
@@ -89,7 +90,7 @@ internal static class SpiralMatrixIVSolution
 
     // The shrunken rectangle still has cells to write while both of its pairs of cursors
     // have not crossed.
-    private static bool StillHasUnwrittenCells(int top, int bottom, int left, int right) =>
+    private static bool HasUnwrittenCells(int top, int bottom, int left, int right) =>
         top <= bottom && left <= right;
 
     // Walk the current rectangle's four sides in order, pulling each cursor in after
@@ -142,13 +143,13 @@ internal static class SpiralMatrixIVSolution
 
     // Both strategies start from the same all-empty matrix, so the fill lives
     // here rather than being written out twice and drifting.
-    private static int[][] EmptyMatrix(int m, int n)
+    private static int[][] EmptyMatrix(int rowCount, int columnCount)
     {
-        var matrix = new int[m][];
+        var matrix = new int[rowCount][];
 
-        for (var row = 0; row < m; row++)
+        for (var row = 0; row < rowCount; row++)
         {
-            matrix[row] = new int[n];
+            matrix[row] = new int[columnCount];
             Array.Fill(matrix[row], EmptyCell);
         }
 

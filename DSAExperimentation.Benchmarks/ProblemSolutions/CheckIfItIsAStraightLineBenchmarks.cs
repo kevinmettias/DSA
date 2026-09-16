@@ -21,10 +21,10 @@ public class CheckIfItIsAStraightLineBenchmarks
     public void Setup() => _coordinates = Enumerable.Range(0, Length).Select(i => new[] { i, i }).ToArray();
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceEveryTriple()
-        => CheckIfItIsAStraightLineSolution.CheckStraightLineByBruteForceEveryTriple(_coordinates);
+    public bool IsStraightLineByBruteForceEveryTriple()
+        => CheckIfItIsAStraightLineSolution.IsStraightLineByBruteForceEveryTriple(_coordinates);
 
     [Benchmark]
-    public bool AnchoredCrossProductScan()
-        => CheckIfItIsAStraightLineSolution.CheckStraightLineByAnchoredCrossProductScan(_coordinates);
+    public bool IsStraightLineByAnchoredCrossProductScan()
+        => CheckIfItIsAStraightLineSolution.IsStraightLineByAnchoredCrossProductScan(_coordinates);
 }

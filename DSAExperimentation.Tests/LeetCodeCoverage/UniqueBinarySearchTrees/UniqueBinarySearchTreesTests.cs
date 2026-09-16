@@ -15,11 +15,11 @@ public sealed class UniqueBinarySearchTreesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumTreesByTabulation_LeetCodeExamples_ReturnsCatalanCount(int n, int expected) =>
-        Assert.Equal(expected, UniqueBinarySearchTreesSolution.NumTreesByTabulation(n));
+    public void CountTreesByTabulation_LeetCodeExamples_ReturnsCatalanCount(int nodeCount, int expected) =>
+        Assert.Equal(expected, UniqueBinarySearchTreesSolution.CountTreesByTabulation(nodeCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumTreesByMemoizedCatalan_LeetCodeExamples_ReturnsCatalanCount(int n, int expected) =>
-        Assert.Equal(expected, UniqueBinarySearchTreesSolution.NumTreesByMemoizedCatalan(n));
+    public void CountTreesByMemoizedCatalan_LeetCodeExamples_ReturnsCatalanCount(int nodeCount, int expected) =>
+        Assert.Equal(expected, UniqueBinarySearchTreesSolution.CountTreesByMemoizedCatalan(nodeCount));
 }

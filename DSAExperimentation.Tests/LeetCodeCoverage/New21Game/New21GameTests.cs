@@ -14,26 +14,26 @@ public sealed class New21GameTests
     public static TheoryData<int, int, int, double> Examples =>
         new()
         {
-            // LeetCode's first example: n = 10, k = 1, maxPts = 10 -> 1.0
+            // LeetCode's first example: limit = 10, stopAt = 1, maxPts = 10 -> 1.0
             { 10, 1, 10, 1.0 },
-            // LeetCode's second example: n = 6, k = 1, maxPts = 10 -> 0.6
+            // LeetCode's second example: limit = 6, stopAt = 1, maxPts = 10 -> 0.6
             { 6, 1, 10, 0.6 },
-            // LeetCode's third example: n = 21, k = 17, maxPts = 10 -> 0.73278
+            // LeetCode's third example: limit = 21, stopAt = 17, maxPts = 10 -> 0.73278
             { 21, 17, 10, 0.73278 },
-            // k = 0: Alice stops before drawing at all, at a total of 0 <= n
+            // stopAt = 0: Alice stops before drawing at all, at a total of 0 <= limit
             { 5, 0, 3, 1.0 },
             // A single winning draw out of maxPts equally likely ones
             { 1, 1, 10, 0.1 },
-            // maxPts = 1: every draw adds exactly one, so the final total is k
+            // maxPts = 1: every draw adds exactly one, so the final total is stopAt
             { 21, 17, 1, 1.0 },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ProbabilityByUnmemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(
-        int n, int k, int maxPts, double expected)
+        int limit, int stopAt, int maxPts, double expected)
     {
-        var actual = New21GameSolution.ProbabilityByUnmemoizedRecursion(n, k, maxPts);
+        var actual = New21GameSolution.ProbabilityByUnmemoizedRecursion(limit, stopAt, maxPts);
 
         Assert.Equal(expected, actual, ProbabilityPrecision);
     }
@@ -41,9 +41,9 @@ public sealed class New21GameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ProbabilityByMemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(
-        int n, int k, int maxPts, double expected)
+        int limit, int stopAt, int maxPts, double expected)
     {
-        var actual = New21GameSolution.ProbabilityByMemoizedRecursion(n, k, maxPts);
+        var actual = New21GameSolution.ProbabilityByMemoizedRecursion(limit, stopAt, maxPts);
 
         Assert.Equal(expected, actual, ProbabilityPrecision);
     }

@@ -42,7 +42,7 @@ internal static class LexicographicallySmallestGeneratedStringSolution
                 continue;
             }
 
-            if (!WriteWindow(word, fixedByT, i, str2.Text))
+            if (!TryWriteWindow(word, fixedByT, i, str2.Text))
             {
                 return string.Empty;
             }
@@ -53,7 +53,7 @@ internal static class LexicographicallySmallestGeneratedStringSolution
 
     // Write str2 across the window starting at `start`, reporting false as soon as a
     // position an earlier 'T' already fixed disagrees with str2 there.
-    private static bool WriteWindow(char[] word, bool[] fixedByT, int start, string str2)
+    private static bool TryWriteWindow(char[] word, bool[] fixedByT, int start, string str2)
     {
         for (var j = 0; j < str2.Length; j++)
         {
@@ -89,7 +89,7 @@ internal static class LexicographicallySmallestGeneratedStringSolution
 
         foreach (var i in TPositions(str1.Text))
         {
-            if (ConflictsWithPreviousWindow(i, lastT, selfOverlap, str2.Text))
+            if (HasConflictWithPreviousWindow(i, lastT, selfOverlap, str2.Text))
             {
                 return string.Empty;
             }
@@ -117,14 +117,15 @@ internal static class LexicographicallySmallestGeneratedStringSolution
     // Whether this 'T' window contradicts the previous one: str2 shifted by their gap
     // must agree with itself across the whole overlap, which selfOverlap[gap] reports
     // in one lookup. The first window overlaps nothing.
-    private static bool ConflictsWithPreviousWindow(int i, int lastT, int[] selfOverlap, string str2)
+    private static bool HasConflictWithPreviousWindow(
+        int windowStart, int lastT, int[] selfOverlap, string str2)
     {
         if (lastT < 0)
         {
             return false;
         }
 
-        var gap = i - lastT;
+        var gap = windowStart - lastT;
 
         return gap < str2.Length && selfOverlap[gap] < str2.Length - gap;
     }
@@ -140,9 +141,9 @@ internal static class LexicographicallySmallestGeneratedStringSolution
         }
     }
 
-    private static char[] Seed(int n, int m)
+    private static char[] Seed(int patternLength, int templateLength)
     {
-        var word = new char[n + m - 1];
+        var word = new char[patternLength + templateLength - 1];
         Array.Fill(word, DefaultChar);
         return word;
     }
@@ -152,7 +153,7 @@ internal static class LexicographicallySmallestGeneratedStringSolution
     {
         for (var i = 0; i < str1.Text.Length; i++)
         {
-            if (str1.Text[i] != 'F' || !MatchesPattern(word, i, str2.Text))
+            if (str1.Text[i] != 'F' || !IsPatternMatch(word, i, str2.Text))
             {
                 continue;
             }
@@ -166,7 +167,7 @@ internal static class LexicographicallySmallestGeneratedStringSolution
         return new string(word);
     }
 
-    private static bool MatchesPattern(char[] word, int start, string str2)
+    private static bool IsPatternMatch(char[] word, int start, string str2)
     {
         for (var j = 0; j < str2.Length; j++)
         {

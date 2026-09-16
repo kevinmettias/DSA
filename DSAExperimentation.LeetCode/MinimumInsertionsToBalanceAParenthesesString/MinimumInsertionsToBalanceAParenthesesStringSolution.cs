@@ -18,22 +18,22 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
     // Baseline: BCL-only running counter of closers still owed by the openers seen
     // so far. An odd count means the previous opener has been half-closed by a lone
     // ')', which is repaired by inserting the missing closer on the spot.
-    public static int MinInsertionsByRunningCounter(string s)
+    public static int MinInsertionsByRunningCounter(string text)
     {
         var needed = 0;
         var insertions = 0;
 
-        foreach (var bracket in s)
+        foreach (var bracket in text)
         {
             needed = bracket == '('
-                ? ProcessOpener(needed, ref insertions)
-                : ProcessCloser(needed, ref insertions);
+                ? ApplyOpener(needed, ref insertions)
+                : ApplyCloser(needed, ref insertions);
         }
 
         return insertions + needed;
     }
 
-    private static int ProcessOpener(int needed, ref int insertions)
+    private static int ApplyOpener(int needed, ref int insertions)
     {
         needed += ClosersPerOpener;
 
@@ -46,7 +46,7 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
         return needed;
     }
 
-    private static int ProcessCloser(int needed, ref int insertions)
+    private static int ApplyCloser(int needed, ref int insertions)
     {
         needed--;
 
@@ -61,9 +61,9 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
 
     // Every unmatched opener is pushed onto Stack<char>, so the count left standing
     // at the end says directly how many openers still owe two closers each.
-    public static int MinInsertionsByOpenerStack(string s)
+    public static int MinInsertionsByOpenerStack(string text)
     {
-        var scanner = new ParenScanner(s);
+        var scanner = new ParenScanner(text);
 
         while (scanner.HasNext)
         {
@@ -75,12 +75,12 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
 
     // Consumes the string one balanced unit at a time: a ')' followed by a second
     // ')' closes an opener outright, otherwise the missing closer is inserted first.
-    private sealed class ParenScanner(string s)
+    private sealed class ParenScanner(string text)
     {
         private readonly OpenerStack _openers = new();
-        private int _i;
+        private int _index;
 
-        public bool HasNext => _i < s.Length;
+        public bool HasNext => _index < text.Length;
 
         public int Insertions { get; private set; }
 
@@ -88,14 +88,14 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
 
         public void Advance()
         {
-            if (s[_i] == '(')
+            if (text[_index] == '(')
             {
-                _openers.Push(s[_i]);
-                _i++;
+                _openers.Push(text[_index]);
+                _index++;
                 return;
             }
 
-            var hasAdjacentCloser = _i + 1 < s.Length && s[_i + 1] == ')';
+            var hasAdjacentCloser = _index + 1 < text.Length && text[_index + 1] == ')';
 
             if (!hasAdjacentCloser)
             {
@@ -107,7 +107,7 @@ internal static class MinimumInsertionsToBalanceAParenthesesStringSolution
                 Insertions++;
             }
 
-            _i += hasAdjacentCloser ? ClosersPerOpener : 1;
+            _index += hasAdjacentCloser ? ClosersPerOpener : 1;
         }
     }
 }

@@ -20,9 +20,9 @@ public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
     private const int FourDigitLowest = 1_000;
     private const int FourDigitHighest = 9_999;
 
-    private int _n;
+    private int _startValue;
 
-    private int _m;
+    private int _targetValue;
     private DigitStepGraph _graph = null!;
     [Params(2, 4)]
     public int DigitCount { get; set; }
@@ -30,11 +30,11 @@ public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        (_n, _m) = Endpoints(DigitCount);
+        (_startValue, _targetValue) = Endpoints(DigitCount);
         _graph = DigitStepGraph.Build(DigitCount);
     }
 
-    private static (int N, int M) Endpoints(int digitCount) => digitCount switch
+    private static (int StartValue, int TargetValue) Endpoints(int digitCount) => digitCount switch
     {
         2 => (TwoDigitLowest, TwoDigitHighest),
         4 => (FourDigitLowest, FourDigitHighest),
@@ -43,9 +43,9 @@ public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
 
     [Benchmark(Baseline = true)]
     public int BruteForceDijkstra() =>
-        DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByBruteForceDijkstra(_n, _m);
+        DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByBruteForceDijkstra(_startValue, _targetValue);
 
     [Benchmark]
     public int DijkstraOverDigitGraph() =>
-        DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByDijkstraOverDigitGraph(_graph, _n, _m);
+        DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByDijkstraOverDigitGraph(_graph, _startValue, _targetValue);
 }

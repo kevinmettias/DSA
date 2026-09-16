@@ -35,11 +35,11 @@ public class DesignHashMapBenchmarks
     }
 
     // The hit/miss split the probe keys above are built from.
-    private bool IsHit(int i) => i % AlternatingModulus == 0;
+    private bool IsHit(int index) => index % AlternatingModulus == 0;
 
-    private int ExistingKeyAt(int i) => _keys[i];
+    private int ExistingKeyAt(int index) => _keys[index];
 
-    private int AbsentKeyAt(int i) => Length + i;
+    private int AbsentKeyAt(int index) => Length + index;
 
     [Benchmark(Baseline = true)]
     public int LinearScanList() => Replay(new DesignHashMapSolution.MyHashMapByLinearScanList());

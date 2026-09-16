@@ -1,21 +1,22 @@
 namespace DSAExperimentation.LeetCode.MinimumCostPathWithEdgeReversals;
 
-// The full n-node augmented digraph, built once from LeetCode's own edges array -
-// the domain model, not an answer to any one query about it (EdgeGraph's own framing
-// for LC 3123). Every input edge (u, v, w) contributes both a forward hop u -> v at
-// cost w and a reversed hop v -> u at cost 2w, so the puzzle's per-node switch is
-// already folded into the graph's shape by the time a search runs over it.
+// The augmented digraph over the whole input node set, built once from LeetCode's
+// own edges array - the domain model, not an answer to any one query about it
+// (EdgeGraph's own framing for LC 3123). Every input edge (u, v, w) contributes
+// both a forward hop u -> v at cost w and a reversed hop v -> u at cost 2w, so the
+// puzzle's per-node switch is already folded into the graph's shape by the time a
+// search runs over it.
 internal sealed class ReversalGraph
 {
     public ReversalGraphNode[] Nodes { get; }
 
     private ReversalGraph(ReversalGraphNode[] nodes) => Nodes = nodes;
 
-    public static ReversalGraph Build(int n, int[][] edges)
+    public static ReversalGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = new ReversalGraphNode[n];
+        var nodes = new ReversalGraphNode[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             nodes[i] = new ReversalGraphNode(i);
         }

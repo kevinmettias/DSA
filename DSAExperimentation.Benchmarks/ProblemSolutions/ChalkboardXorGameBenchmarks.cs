@@ -30,11 +30,14 @@ public class ChalkboardXorGameBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceRecursion() => ChalkboardXorGameSolution.AliceWinsByBruteForceRecursion(_nums);
+    public bool CanAliceWinByBruteForceRecursion() =>
+        ChalkboardXorGameSolution.CanAliceWinByBruteForceRecursion(_nums);
 
     [Benchmark]
-    public bool MemoizedRecursion() => ChalkboardXorGameSolution.AliceWinsByMemoizedRecursion(_nums);
+    public bool CanAliceWinByMemoizedRecursion() =>
+        ChalkboardXorGameSolution.CanAliceWinByMemoizedRecursion(_nums);
 
     [Benchmark]
-    public bool ClosedFormFormula() => ChalkboardXorGameSolution.AliceWinsByXorParityFormula(_nums);
+    public bool CanAliceWinByXorParityFormula() =>
+        ChalkboardXorGameSolution.CanAliceWinByXorParityFormula(_nums);
 }

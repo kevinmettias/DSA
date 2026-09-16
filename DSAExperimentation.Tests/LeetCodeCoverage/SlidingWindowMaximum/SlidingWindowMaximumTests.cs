@@ -16,9 +16,9 @@ public sealed class SlidingWindowMaximumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSlidingWindowByBruteForceRescan_LeetCodeExamples_ReturnsPerWindowMaximums(
-        int[] nums, int k, int[] expected)
+        int[] nums, int windowSize, int[] expected)
     {
-        var actual = SlidingWindowMaximumSolution.MaxSlidingWindowByBruteForceRescan(nums, k);
+        var actual = SlidingWindowMaximumSolution.MaxSlidingWindowByBruteForceRescan(nums, windowSize);
 
         Assert.Equal(expected, actual);
     }
@@ -26,9 +26,9 @@ public sealed class SlidingWindowMaximumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSlidingWindowByMonotonicDeque_LeetCodeExamples_ReturnsPerWindowMaximums(
-        int[] nums, int k, int[] expected)
+        int[] nums, int windowSize, int[] expected)
     {
-        var actual = SlidingWindowMaximumSolution.MaxSlidingWindowByMonotonicDeque(nums, k);
+        var actual = SlidingWindowMaximumSolution.MaxSlidingWindowByMonotonicDeque(nums, windowSize);
 
         Assert.Equal(expected, actual);
     }

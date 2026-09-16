@@ -96,15 +96,15 @@ internal static class FindTheMinimumCostArrayPermutationSolution
     // smallest such candidate is what makes the reconstructed permutation
     // lexicographically smallest among every permutation achieving the minimum score.
     private static int[] ReconstructPermutation(
-        IRecurrence<(int Mask, int Last), long> completion, int n, int[] nums)
+        IRecurrence<(int Mask, int Last), long> completion, int nodeCount, int[] nums)
     {
-        var permutation = new int[n];
+        var permutation = new int[nodeCount];
         var visited = 1;
         var current = 0;
 
-        for (var position = 1; position < n; position++)
+        for (var position = 1; position < nodeCount; position++)
         {
-            var candidate = SmallestCandidateAchieving((visited, current), completion, n, nums);
+            var candidate = SmallestCandidateAchieving((visited, current), completion, nodeCount, nums);
 
             if (candidate is null)
             {
@@ -122,12 +122,12 @@ internal static class FindTheMinimumCostArrayPermutationSolution
     // The smallest unvisited candidate whose edge cost plus its own completion cost
     // equals the state's own optimum, or null when no candidate does.
     private static int? SmallestCandidateAchieving(
-        (int Mask, int Last) state, IRecurrence<(int Mask, int Last), long> completion, int n, int[] nums)
+        (int Mask, int Last) state, IRecurrence<(int Mask, int Last), long> completion, int nodeCount, int[] nums)
     {
         var (mask, last) = state;
         var target = Memoizer.Memoize(state, completion);
 
-        for (var candidate = 1; candidate < n; candidate++)
+        for (var candidate = 1; candidate < nodeCount; candidate++)
         {
             if ((mask & (1 << candidate)) != 0)
             {
@@ -153,7 +153,7 @@ internal static class FindTheMinimumCostArrayPermutationSolution
         {
             var score = Score(perm, nums);
 
-            if (BeatsBestSoFar(score, best.Score, perm, best.Perm!))
+            if (IsBetterThanBestSoFar(score, best.Score, perm, best.Perm!))
             {
                 best = ((int[])perm.Clone(), score);
             }
@@ -171,7 +171,7 @@ internal static class FindTheMinimumCostArrayPermutationSolution
 
     // A candidate permutation beats the best one found so far when it scores lower, or
     // ties on score and reads smaller.
-    private static bool BeatsBestSoFar(long score, long bestScore, int[] candidate, int[] best) =>
+    private static bool IsBetterThanBestSoFar(long score, long bestScore, int[] candidate, int[] best) =>
         score < bestScore || (score == bestScore && IsLexicographicallySmaller(candidate, best));
 
     private static long Score(int[] perm, int[] nums)

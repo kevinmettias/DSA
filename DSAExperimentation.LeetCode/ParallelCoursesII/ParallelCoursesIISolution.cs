@@ -3,16 +3,17 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.ParallelCoursesII;
 
-// LeetCode 1494. Parallel Courses II: the fewest semesters needed to take all n
-// courses, where a course may only be taken once every one of its prerequisites
-// has been taken and at most k courses may be taken in any one semester.
+// LeetCode 1494. Parallel Courses II: the fewest semesters needed to take every one
+// of `courseCount` courses, where a course may only be taken once every one of its
+// prerequisites has been taken and at most `maxPerSemester` courses may be taken in
+// any one semester.
 //
 // Both strategies are the same bitmask recursion over "which courses are already
 // completed" (one bit per course): at each state "ready" is every not-yet-taken
-// course whose prerequisites are all completed, every subset of at most k ready
-// courses is a candidate next semester, and the recurrence picks whichever subset
-// leads to the fewest remaining semesters. Submask enumeration
-// (`subset = (subset - 1) & ready`) walks those candidates.
+// course whose prerequisites are all completed, every subset of at most
+// `maxPerSemester` ready courses is a candidate next semester, and the recurrence
+// picks whichever subset leads to the fewest remaining semesters. Submask
+// enumeration (`subset = (subset - 1) & ready`) walks those candidates.
 //
 // They differ only in whether the recursion remembers states it has already
 // solved: MinNumberOfSemestersByBruteForceRecursion re-explores a completed-course
@@ -25,9 +26,10 @@ internal static class ParallelCoursesIISolution
     // state reachable by many different semester orders is re-solved once per
     // order. It is the arm the memoized strategy below has to justify itself
     // against.
-    public static int MinNumberOfSemestersByBruteForceRecursion(int n, int[][] relations, int k)
+    public static int MinNumberOfSemestersByBruteForceRecursion(
+        int courseCount, int[][] relations, int maxPerSemester)
     {
-        var courses = BuildCourseLoad(n, relations, k);
+        var courses = BuildCourseLoad(courseCount, relations, maxPerSemester);
         var semesters = new SemestersFrom(courses);
 
         return semesters.Replay(0, semesters);
@@ -36,9 +38,10 @@ internal static class ParallelCoursesIISolution
     // This repo's own Memoizer, keyed on the completed-course bitmask - the same
     // shape CanIWin and PartitionToKEqualSumSubsets use, an int bitmask as the memo
     // state rather than a bare counter.
-    public static int MinNumberOfSemestersByMemoizedRecursion(int n, int[][] relations, int k)
+    public static int MinNumberOfSemestersByMemoizedRecursion(
+        int courseCount, int[][] relations, int maxPerSemester)
     {
-        var courses = BuildCourseLoad(n, relations, k);
+        var courses = BuildCourseLoad(courseCount, relations, maxPerSemester);
 
         return Memoizer.Memoize<int, int>(0, new SemestersFrom(courses));
     }
@@ -48,9 +51,9 @@ internal static class ParallelCoursesIISolution
     // changes at every step.
     private readonly record struct CourseLoad(int[] PrerequisiteMasks, int FullMask, int MaxPerSemester);
 
-    private static CourseLoad BuildCourseLoad(int n, int[][] relations, int k)
+    private static CourseLoad BuildCourseLoad(int courseCount, int[][] relations, int maxPerSemester)
     {
-        var prerequisiteMasks = new int[n];
+        var prerequisiteMasks = new int[courseCount];
 
         foreach (var relation in relations)
         {
@@ -58,7 +61,7 @@ internal static class ParallelCoursesIISolution
             prerequisiteMasks[next] |= 1 << (relation[0] - 1);
         }
 
-        return new CourseLoad(prerequisiteMasks, (1 << n) - 1, k);
+        return new CourseLoad(prerequisiteMasks, (1 << courseCount) - 1, maxPerSemester);
     }
 
     // One step of the recurrence, named and used by both strategies, so the only

@@ -76,9 +76,9 @@ public class PalindromicPathQueriesInATreeBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool[] AncestorWalk() =>
-        PalindromicPathQueriesInATreeSolution.IsPalindromePathByAncestorWalk(_parent, _labels, _queries);
+        PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByAncestorWalk(_parent, _labels, _queries);
 
     [Benchmark]
     public bool[] LcaBitmask() =>
-        PalindromicPathQueriesInATreeSolution.IsPalindromePathByLcaBitmask(_nodes, _labels, _queries);
+        PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByLcaBitmask(_nodes, _labels, _queries);
 }

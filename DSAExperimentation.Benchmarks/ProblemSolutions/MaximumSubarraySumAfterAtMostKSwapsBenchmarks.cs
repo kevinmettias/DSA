@@ -13,7 +13,7 @@ public class MaximumSubarraySumAfterAtMostKSwapsBenchmarks
 {
     private const int Seed = 3962; private int[] _nums = [];
 
-    private int _k;
+    private int _swapBudget;
     // LC problem number
 
     [Params(30, 120)]
@@ -24,13 +24,13 @@ public class MaximumSubarraySumAfterAtMostKSwapsBenchmarks
     {
         var random = new Random(Seed);
         _nums = [.. Enumerable.Range(0, Length).Select(_ => random.Next(-1000, 1001))];
-        _k = Math.Max(1, Length / 3);
+        _swapBudget = Math.Max(1, Length / 3);
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForce() => MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByBruteForce(_nums, _k);
+    public long BruteForce() => MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByBruteForce(_nums, _swapBudget);
 
     [Benchmark]
     public long OrderStatisticsFenwick() =>
-        MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByOrderStatisticsFenwick(_nums, _k);
+        MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByOrderStatisticsFenwick(_nums, _swapBudget);
 }

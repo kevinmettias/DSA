@@ -2,9 +2,9 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.PalindromePartitioningIII;
 
-// LeetCode 1278. Palindrome Partitioning III: split s into exactly k non-empty
-// contiguous substrings and change the fewest characters so every piece is a
-// palindrome.
+// LeetCode 1278. Palindrome Partitioning III: split the text into exactly
+// partitionCount non-empty contiguous substrings and change the fewest characters so
+// every piece is a palindrome.
 //
 // Both strategies explore the same decision tree over the state
 // (Position, PartitionsLeft) - "where the next piece starts, and how many pieces are
@@ -23,16 +23,17 @@ internal static class PalindromePartitioningIIISolution
     // ChangesToPalindrome addition without overflowing before Math.Min discards it.
     private const int Unreachable = int.MaxValue / 2;
 
-    public static int MinChangesByNaiveRecursion(string s, int k) => MinChangesFrom(s, 0, k);
+    public static int MinChangesByNaiveRecursion(string text, int partitionCount) =>
+        MinChangesFrom(text, 0, partitionCount);
 
-    public static int MinChangesByMemoizedRecurrence(string s, int k)
+    public static int MinChangesByMemoizedRecurrence(string text, int partitionCount)
         => Memoizer.Memoize<(int Position, int PartitionsLeft), int>(
-            (0, k),
-            new CheapestSplit(s));
+            (0, partitionCount),
+            new CheapestSplit(text));
 
     // The recurrence itself, named: every candidate next piece is priced by what it
     // costs to repair plus the cheapest split of what is left behind it.
-    private sealed class CheapestSplit(string s) : IRecurrence<(int Position, int PartitionsLeft), int>
+    private sealed class CheapestSplit(string text) : IRecurrence<(int Position, int PartitionsLeft), int>
     {
         public int Replay(
             (int Position, int PartitionsLeft) state, IRecurrence<(int Position, int PartitionsLeft), int> rest)
@@ -41,20 +42,20 @@ internal static class PalindromePartitioningIIISolution
 
             if (partitionsLeft == 0)
             {
-                return position == s.Length ? 0 : Unreachable;
+                return position == text.Length ? 0 : Unreachable;
             }
 
-            if (position == s.Length)
+            if (position == text.Length)
             {
                 return Unreachable;
             }
 
             var best = Unreachable;
-            var lastEnd = s.Length - (partitionsLeft - 1);
+            var lastEnd = text.Length - (partitionsLeft - 1);
 
             for (var end = position + 1; end <= lastEnd; end++)
             {
-                var candidate = PieceChanges(s, position, end) + rest.Replay((end, partitionsLeft - 1), rest);
+                var candidate = PieceChanges(text, position, end) + rest.Replay((end, partitionsLeft - 1), rest);
                 best = Math.Min(best, candidate);
             }
 
@@ -62,43 +63,44 @@ internal static class PalindromePartitioningIIISolution
         }
     }
 
-    // What this candidate piece - s[position..end] - costs to turn into a palindrome.
-    private static int PieceChanges(string s, int position, int end) => ChangesToPalindrome(s, position, end - 1);
+    // What this candidate piece - text[position..end] - costs to turn into a palindrome.
+    private static int PieceChanges(string text, int position, int end) =>
+        ChangesToPalindrome(text, position, end - 1);
 
-    private static int MinChangesFrom(string s, int position, int partitionsLeft)
+    private static int MinChangesFrom(string text, int position, int partitionsLeft)
     {
         if (partitionsLeft == 0)
         {
-            return position == s.Length ? 0 : Unreachable;
+            return position == text.Length ? 0 : Unreachable;
         }
 
-        if (position == s.Length)
+        if (position == text.Length)
         {
             return Unreachable;
         }
 
         var best = Unreachable;
-        var lastEnd = s.Length - (partitionsLeft - 1);
+        var lastEnd = text.Length - (partitionsLeft - 1);
 
         for (var end = position + 1; end <= lastEnd; end++)
         {
-            var candidate = ChangesToPalindrome(s, position, end - 1) +
-                MinChangesFrom(s, end, partitionsLeft - 1);
+            var candidate = ChangesToPalindrome(text, position, end - 1) +
+                MinChangesFrom(text, end, partitionsLeft - 1);
             best = Math.Min(best, candidate);
         }
 
         return best;
     }
 
-    // Characters that must change to make s[l..r] a palindrome: one per mismatched
-    // pair walking inwards from both ends.
-    private static int ChangesToPalindrome(string s, int l, int r)
+    // Characters that must change to make text[leftIndex..rightIndex] a palindrome:
+    // one per mismatched pair walking inwards from both ends.
+    private static int ChangesToPalindrome(string text, int leftIndex, int rightIndex)
     {
         var changes = 0;
 
-        while (l < r)
+        while (leftIndex < rightIndex)
         {
-            if (s[l++] != s[r--])
+            if (text[leftIndex++] != text[rightIndex--])
             {
                 changes++;
             }

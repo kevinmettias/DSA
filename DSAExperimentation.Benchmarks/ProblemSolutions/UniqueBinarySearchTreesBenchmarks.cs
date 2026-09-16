@@ -12,8 +12,8 @@ public class UniqueBinarySearchTreesBenchmarks
     public int Nodes { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int Tabulation() => UniqueBinarySearchTreesSolution.NumTreesByTabulation(Nodes);
+    public int Tabulation() => UniqueBinarySearchTreesSolution.CountTreesByTabulation(Nodes);
 
     [Benchmark]
-    public int MemoizedCatalan() => UniqueBinarySearchTreesSolution.NumTreesByMemoizedCatalan(Nodes);
+    public int MemoizedCatalan() => UniqueBinarySearchTreesSolution.CountTreesByMemoizedCatalan(Nodes);
 }

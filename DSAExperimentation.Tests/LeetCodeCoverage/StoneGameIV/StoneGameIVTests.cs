@@ -27,15 +27,15 @@ public sealed class StoneGameIVTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByUnmemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
+    public void CanAliceWinByUnmemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
         TakeAwaySquaresExample example) =>
-        Assert.Equal(example.AliceWins, StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(example.N));
+        Assert.Equal(example.AliceWins, StoneGameIVSolution.CanAliceWinByUnmemoizedRecursion(example.N));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
+    public void CanAliceWinByMemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
         TakeAwaySquaresExample example) =>
-        Assert.Equal(example.AliceWins, StoneGameIVSolution.AliceWinsByMemoizedRecursion(example.N));
+        Assert.Equal(example.AliceWins, StoneGameIVSolution.CanAliceWinByMemoizedRecursion(example.N));
 
     // Nested because it is only ever used inside this test class and has no
     // independent identity: this harness's own vocabulary for one LeetCode example.

@@ -5,8 +5,8 @@ using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Remaining, 
 namespace DSAExperimentation.LeetCode.TaskScheduler;
 
 // LeetCode 621. Task Scheduler: fewest CPU ticks to run every task at least once,
-// where the same task must wait at least n ticks between occurrences (idle ticks
-// allowed while waiting).
+// where the same task must wait at least `cooldownTicks` ticks between occurrences
+// (idle ticks allowed while waiting).
 internal static class TaskSchedulerSolution
 {
     // Fixed A-Z array width the baseline uses for direct-index frequency/last-used
@@ -14,7 +14,7 @@ internal static class TaskSchedulerSolution
     private const int EnglishAlphabetSize = 26;
 
     // A safely-in-the-past "never used" sentinel, halved to avoid overflow when
-    // computing `time - lastUsed[i]`.
+    // computing `time - lastUsed[candidateIndex]`.
     private const int NeverUsedSentinel = int.MinValue / 2;
 
     // This repo's own HashMap<char,int> (frequency counting) + Heap<int,MaxHeapOrder<int>>
@@ -22,12 +22,12 @@ internal static class TaskSchedulerSolution
     // just-run task until its cooldown expires before it's pushed back onto the
     // heap) - one CPU tick per loop iteration instead of the baseline's O(ticks *
     // 26) rescan every tick.
-    public static int LeastIntervalByCooldownHeap(char[] tasks, int n)
+    public static int LeastIntervalByCooldownHeap(char[] tasks, int cooldownTicks)
     {
         var counts = BuildTaskCounts(tasks);
         var heap = BuildFrequencyHeap(counts);
 
-        return RunCooldownSimulation(heap, n);
+        return RunCooldownSimulation(heap, cooldownTicks);
     }
 
     private static HashMap<char, int> BuildTaskCounts(char[] tasks)
@@ -56,7 +56,7 @@ internal static class TaskSchedulerSolution
         return heap;
     }
 
-    private static int RunCooldownSimulation(Heap<int, MaxHeapOrder<int>> heap, int n)
+    private static int RunCooldownSimulation(Heap<int, MaxHeapOrder<int>> heap, int cooldownTicks)
     {
         var cooldown = new RepoQueue();
         var time = 0;
@@ -64,20 +64,21 @@ internal static class TaskSchedulerSolution
         while (heap.Count > 0 || cooldown.Count > 0)
         {
             time++;
-            AdvanceTick(heap, cooldown, time, n);
+            AdvanceTick(heap, cooldown, time, cooldownTicks);
         }
 
         return time;
     }
 
-    private static void AdvanceTick(Heap<int, MaxHeapOrder<int>> heap, RepoQueue cooldown, int time, int n)
+    private static void AdvanceTick(
+        Heap<int, MaxHeapOrder<int>> heap, RepoQueue cooldown, int time, int cooldownTicks)
     {
         if (heap.TryPop(out var remaining))
         {
             remaining--;
             if (remaining > 0)
             {
-                cooldown.Enqueue((remaining, time + n));
+                cooldown.Enqueue((remaining, time + cooldownTicks));
             }
         }
 
@@ -93,11 +94,11 @@ internal static class TaskSchedulerSolution
     // O(ticks * log distinctTasks). Deliberately written without this repo's
     // primitives - it is the arm the composed solution above has to justify itself
     // against.
-    public static int LeastIntervalByArrayScan(char[] tasks, int n)
+    public static int LeastIntervalByArrayScan(char[] tasks, int cooldownTicks)
     {
         var counts = BuildFrequencyCounts(tasks);
 
-        return SimulateTickByTick(counts, tasks.Length, n);
+        return SimulateTickByTick(counts, tasks.Length, cooldownTicks);
     }
 
     private static int[] BuildFrequencyCounts(char[] tasks)
@@ -112,7 +113,7 @@ internal static class TaskSchedulerSolution
         return counts;
     }
 
-    private static int SimulateTickByTick(int[] counts, int taskCount, int n)
+    private static int SimulateTickByTick(int[] counts, int taskCount, int cooldownTicks)
     {
         var lastUsed = new int[EnglishAlphabetSize];
         Array.Fill(lastUsed, NeverUsedSentinel);
@@ -122,7 +123,7 @@ internal static class TaskSchedulerSolution
 
         while (remaining > 0)
         {
-            var best = FindBestAvailableTask(counts, lastUsed, time, n);
+            var best = FindBestAvailableTask(counts, lastUsed, time, cooldownTicks);
 
             if (best != -1)
             {
@@ -137,16 +138,16 @@ internal static class TaskSchedulerSolution
         return time;
     }
 
-    private static int FindBestAvailableTask(int[] counts, int[] lastUsed, int time, int n)
+    private static int FindBestAvailableTask(int[] counts, int[] lastUsed, int time, int cooldownTicks)
     {
         var best = -1;
 
-        for (var i = 0; i < EnglishAlphabetSize; i++)
+        for (var candidateIndex = 0; candidateIndex < EnglishAlphabetSize; candidateIndex++)
         {
-            if (IsReadyToRun(counts[i], time - lastUsed[i], n)
-                && IsBetterCandidate(counts, i, best))
+            if (IsReadyToRun(counts[candidateIndex], time - lastUsed[candidateIndex], cooldownTicks)
+                && IsBetterCandidate(counts, candidateIndex, best))
             {
-                best = i;
+                best = candidateIndex;
             }
         }
 
@@ -155,11 +156,11 @@ internal static class TaskSchedulerSolution
 
     // A task is ready to run when it still has occurrences left and enough ticks
     // have passed since it last ran.
-    private static bool IsReadyToRun(int remainingCount, int cooldownAge, int cooldown)
-        => remainingCount > 0 && cooldownAge > cooldown;
+    private static bool IsReadyToRun(int remainingCount, int cooldownAge, int cooldownTicks)
+        => remainingCount > 0 && cooldownAge > cooldownTicks;
 
     // Among the ready tasks the one with the most occurrences left wins, and the
     // first ready task wins while none has been chosen yet.
-    private static bool IsBetterCandidate(int[] counts, int i, int best)
-        => best == -1 || counts[i] > counts[best];
+    private static bool IsBetterCandidate(int[] counts, int candidateIndex, int best)
+        => best == -1 || counts[candidateIndex] > counts[best];
 }

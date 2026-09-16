@@ -23,9 +23,9 @@ public sealed class NumberOfOperationsToMakeNetworkConnectedTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MakeConnectedByDepthFirstFloodFill_LeetCodeExamples_ReturnsCablesThatMustMove(
-        int n, int[][] connections, int expected)
+        int computerCount, int[][] connections, int expected)
     {
-        var actual = NumberOfOperationsToMakeNetworkConnectedSolution.MakeConnectedByDepthFirstFloodFill(n, connections);
+        var actual = NumberOfOperationsToMakeNetworkConnectedSolution.MakeConnectedByDepthFirstFloodFill(computerCount, connections);
 
         Assert.Equal(expected, actual);
     }
@@ -33,9 +33,9 @@ public sealed class NumberOfOperationsToMakeNetworkConnectedTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MakeConnectedByDisjointSet_LeetCodeExamples_ReturnsCablesThatMustMove(
-        int n, int[][] connections, int expected)
+        int computerCount, int[][] connections, int expected)
     {
-        var actual = NumberOfOperationsToMakeNetworkConnectedSolution.MakeConnectedByDisjointSet(n, connections);
+        var actual = NumberOfOperationsToMakeNetworkConnectedSolution.MakeConnectedByDisjointSet(computerCount, connections);
 
         Assert.Equal(expected, actual);
     }

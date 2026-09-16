@@ -5,7 +5,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheKthFactorOfN;
 // Harness only. Both strategies live in TheKthFactorOfNSolution - this file pins them
 // to LeetCode's published examples plus the shapes a sqrt-anchored divisor walk has to
 // get right: a perfect square (whose root must be counted exactly once), a prime, the
-// largest divisor of all (n itself), and a k that runs past the end of the divisor list.
+// largest divisor of all (`number` itself), and a `rank` that runs past the end of the
+// divisor list.
 public sealed class TheKthFactorOfNTests
 {
     public static TheoryData<int, int, int> Examples =>
@@ -46,9 +47,9 @@ public sealed class TheKthFactorOfNTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthFactorByFullRangeScan_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(
-        int n, int k, int expected)
+        int number, int rank, int expected)
     {
-        var actual = TheKthFactorOfNSolution.KthFactorByFullRangeScan(n, k);
+        var actual = TheKthFactorOfNSolution.KthFactorByFullRangeScan(number, rank);
 
         Assert.Equal(expected, actual);
     }
@@ -56,9 +57,9 @@ public sealed class TheKthFactorOfNTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthFactorByBinarySearchAnchor_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(
-        int n, int k, int expected)
+        int number, int rank, int expected)
     {
-        var actual = TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(n, k);
+        var actual = TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(number, rank);
 
         Assert.Equal(expected, actual);
     }

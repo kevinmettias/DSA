@@ -27,12 +27,14 @@ internal static class SpecialBinaryStringSolution
     // The textbook answer: the BCL's Array.Sort for each level's sibling pieces.
     // Deliberately written without this repo's primitives - it is the arm the
     // composed strategy below has to justify itself against.
-    public static string MakeLargestSpecialByArraySort(string s) => ArraySortMaximizer.Maximize(s);
+    public static string MakeLargestSpecialByArraySort(string specialString) =>
+        ArraySortMaximizer.Maximize(specialString);
 
     // This repo's own MergeSort.Sort over an ArrayIndexedSequence with a descending
     // comparer, in place of Array.Sort - the same composition
     // RussianDollEnvelopesTests/QueueReconstructionByHeightTests already exercise.
-    public static string MakeLargestSpecialByMergeSort(string s) => MergeSortMaximizer.Maximize(s);
+    public static string MakeLargestSpecialByMergeSort(string specialString) =>
+        MergeSortMaximizer.Maximize(specialString);
 
     // The one question the two arms answer differently: how a special string is
     // maximized - split at its balance-zero points, maximize each piece's interior,
@@ -42,28 +44,28 @@ internal static class SpecialBinaryStringSolution
     // public method happened to start the walk.
     private interface ILargestSpecialString
     {
-        // The maximal rearrangement of `s`, which is `s` itself once it is too short to
-        // hold a pair of sibling pieces to swap.
-        string Maximize(string s);
+        // The maximal rearrangement of `specialString`, which is `specialString` itself
+        // once it is too short to hold a pair of sibling pieces to swap.
+        string Maximize(string specialString);
     }
 
     // The balance-zero split shared by both strategies: a special substring's balance
     // (1 = +1, 0 = -1) returns to zero only at its own close, so each such point marks
     // a maximal top-level piece whose interior gets recursively maximized in place.
-    private static List<string> SplitIntoPieces(string s, ILargestSpecialString maximizer)
+    private static List<string> SplitIntoPieces(string specialString, ILargestSpecialString maximizer)
     {
         var pieces = new List<string>();
         var balance = 0;
         var start = 0;
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < specialString.Length; i++)
         {
-            var isOpening = s[i] == '1';
+            var isOpening = specialString[i] == '1';
             balance += isOpening ? 1 : -1;
 
             if (balance == 0)
             {
-                var interior = s.Substring(start + 1, i - start - 1);
+                var interior = specialString.Substring(start + 1, i - start - 1);
                 pieces.Add($"1{maximizer.Maximize(interior)}0");
                 start = i + 1;
             }
@@ -74,14 +76,14 @@ internal static class SpecialBinaryStringSolution
 
     private sealed class MaximizeByArraySort : ILargestSpecialString
     {
-        public string Maximize(string s)
+        public string Maximize(string specialString)
         {
-            if (s.Length <= MinimalSpecialStringLength)
+            if (specialString.Length <= MinimalSpecialStringLength)
             {
-                return s;
+                return specialString;
             }
 
-            var pieces = SplitIntoPieces(s, this).ToArray();
+            var pieces = SplitIntoPieces(specialString, this).ToArray();
             Array.Sort(pieces, Descending);
 
             return string.Concat(pieces);
@@ -90,14 +92,14 @@ internal static class SpecialBinaryStringSolution
 
     private sealed class MaximizeByMergeSort : ILargestSpecialString
     {
-        public string Maximize(string s)
+        public string Maximize(string specialString)
         {
-            if (s.Length <= MinimalSpecialStringLength)
+            if (specialString.Length <= MinimalSpecialStringLength)
             {
-                return s;
+                return specialString;
             }
 
-            var pieces = SplitIntoPieces(s, this).ToArray();
+            var pieces = SplitIntoPieces(specialString, this).ToArray();
             MergeSort.Sort<string, ArrayIndexedSequence<string>>(new ArrayIndexedSequence<string>(pieces), Descending);
 
             return string.Concat(pieces);

@@ -6,11 +6,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumReverseOperationsSolution's, the same methods
 // MinimumReverseOperationsTests proves correct. BruteForceScan tests every one of the
-// n candidate destinations for each position popped off the BFS frontier (O(n) per
-// pop), while ReduceGraph composes this repo's own Reduce.Graph over
-// ReversalTopology, whose ReversalChildren computes only the O(K) positions actually
-// reachable in one reversal directly from the window arithmetic - so the gap between
-// the two arms widens as K shrinks relative to n.
+// NodeCount candidate destinations for each position popped off the BFS frontier
+// (O(NodeCount) per pop), while ReduceGraph composes this repo's own Reduce.Graph over
+// ReversalTopology, whose ReversalChildren computes only the O(WindowSize) positions
+// actually reachable in one reversal directly from the window arithmetic - so the gap
+// between the two arms widens as WindowSize shrinks relative to NodeCount.
 //
 // The ReduceGraph arm is handed a prepared ReversalBoard so board construction is
 // charged to [GlobalSetup] rather than to the search (#17.4); the scan arm takes

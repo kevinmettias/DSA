@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.DisjointSet;
 
 namespace DSAExperimentation.LeetCode.ProcessRestrictedFriendRequests;
 
-// LeetCode 2076. Process Restricted Friend Requests: n people, a list of pairs who
+// LeetCode 2076. Process Restricted Friend Requests: personCount people, a list of pairs who
 // must never end up in the same friend group (directly or indirectly), and a stream
 // of friend requests processed in order. A request is approved when granting it
 // would not connect a restricted pair; approved requests merge the two groups, and
@@ -17,21 +17,21 @@ internal static class ProcessRestrictedFriendRequestsSolution
     // and re-derive each person's group with a fresh DFS on every request, an
     // O(n + e) walk per request. Deliberately written without this repo's primitives
     // - it is the arm the composed strategy below has to justify itself against.
-    public static bool[] FriendRequestsByReachabilityScan(int n, int[][] restrictions, int[][] requests)
+    public static bool[] FriendRequestsByReachabilityScan(int personCount, int[][] restrictions, int[][] requests)
     {
-        var adjacency = EmptyAdjacency(n);
+        var adjacency = EmptyAdjacency(personCount);
         var approved = ApproveEachRequest(adjacency, restrictions, requests);
 
         return approved;
     }
 
-    // n people, none of them friends yet: the scan rebuilds group membership from
-    // this list on every request, so it starts out empty.
-    private static List<int>[] EmptyAdjacency(int n)
+    // personCount people, none of them friends yet: the scan rebuilds group membership
+    // from this list on every request, so it starts out empty.
+    private static List<int>[] EmptyAdjacency(int personCount)
     {
-        var adjacency = new List<int>[n];
+        var adjacency = new List<int>[personCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < personCount; i++)
         {
             adjacency[i] = [];
         }
@@ -63,7 +63,7 @@ internal static class ProcessRestrictedFriendRequestsSolution
 
         var otherGroup = ReachableSet(adjacency, other);
 
-        if (GroupsWouldViolateRestriction(restrictions, personGroup, otherGroup))
+        if (ShouldRejectMerge(restrictions, personGroup, otherGroup))
         {
             return false;
         }
@@ -95,7 +95,7 @@ internal static class ProcessRestrictedFriendRequestsSolution
         return visited;
     }
 
-    private static bool GroupsWouldViolateRestriction(
+    private static bool ShouldRejectMerge(
         int[][] restrictions, HashSet<int> personGroup, HashSet<int> otherGroup)
     {
         foreach (var restriction in restrictions)
@@ -120,9 +120,9 @@ internal static class ProcessRestrictedFriendRequestsSolution
     // using Find alone - no Union - before committing, so a rejected request never
     // needs to be rolled back, and Find is near O(1) amortized instead of a fresh
     // O(n + e) walk per request.
-    public static bool[] FriendRequestsByDisjointSet(int n, int[][] restrictions, int[][] requests)
+    public static bool[] FriendRequestsByDisjointSet(int personCount, int[][] restrictions, int[][] requests)
     {
-        var friends = new DisjointSet(n);
+        var friends = new DisjointSet(personCount);
         var approved = new bool[requests.Length];
 
         for (var i = 0; i < requests.Length; i++)
@@ -144,7 +144,7 @@ internal static class ProcessRestrictedFriendRequestsSolution
             return true;
         }
 
-        if (RootsWouldViolateRestriction(friends, restrictions, personRoot, otherRoot))
+        if (ShouldRejectUnion(friends, restrictions, personRoot, otherRoot))
         {
             return false;
         }
@@ -156,7 +156,7 @@ internal static class ProcessRestrictedFriendRequestsSolution
     // Merging personRoot's and otherRoot's components newly connects a restricted
     // pair exactly when that pair's two current roots are (personRoot, otherRoot)
     // in either order - checked via Find alone, so a rejected merge never happened.
-    private static bool RootsWouldViolateRestriction(
+    private static bool ShouldRejectUnion(
         DisjointSet friends, int[][] restrictions, int personRoot, int otherRoot)
     {
         foreach (var restriction in restrictions)

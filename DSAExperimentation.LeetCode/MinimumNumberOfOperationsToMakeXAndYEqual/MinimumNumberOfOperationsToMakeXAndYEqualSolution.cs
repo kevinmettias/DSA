@@ -2,45 +2,48 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeXAndYEqual;
 
-// LeetCode 2998. Minimum Number of Operations to Make X and Y Equal: from x, one
-// operation is /11 (if divisible), /5 (if divisible), -1, or +1; find the fewest
-// operations to reach y.
+// LeetCode 2998. Minimum Number of Operations to Make X and Y Equal: from startValue,
+// one operation is /11 (if divisible), /5 (if divisible), -1, or +1; find the fewest
+// operations to reach targetValue.
 //
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
 // each other without either restating the algorithm.
 internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
 {
-    // Headroom above max(x, y) the mutation-queue search is allowed to explore -
-    // generous relative to the +-10 a single "round up to the next multiple of 5
-    // or 11" step ever needs, since every divide only shrinks the value further.
+    // Headroom above Math.Max(startValue, targetValue) the mutation-queue search is
+    // allowed to explore - generous relative to the +-10 a single "round up to the
+    // next multiple of 5 or 11" step ever needs, since every divide only shrinks the
+    // value further.
     private const int SearchPadding = 50;
 
-    // The textbook BFS: BCL Queue + HashSet, generating each of x's (at most) 4
-    // candidate operations on the fly within a bounded range - the arm the
-    // memoized recurrence below has to justify itself against.
-    public static int MinOperationsByMutationQueue(int x, int y)
+    // The textbook BFS: BCL Queue + HashSet, generating each of startValue's (at most)
+    // 4 candidate operations on the fly within a bounded range - the arm the memoized
+    // recurrence below has to justify itself against.
+    public static int MinOperationsByMutationQueue(int startValue, int targetValue)
     {
-        if (x == y)
+        if (startValue == targetValue)
         {
             return 0;
         }
 
-        var bound = Math.Max(x, y) + SearchPadding;
-        var visited = new HashSet<int> { x };
+        var bound = Math.Max(startValue, targetValue) + SearchPadding;
+        var visited = new HashSet<int> { startValue };
         var queue = new Queue<(int Value, int Operations)>();
-        queue.Enqueue((x, 0));
+        queue.Enqueue((startValue, 0));
 
-        return FewestOperationsInFrontier(queue, visited, bound, y)
-            ?? throw new InvalidOperationException("y is unreachable from x within the search bound");
+        return FewestOperationsInFrontier(queue, visited, bound, targetValue)
+            ?? throw new InvalidOperationException(
+                "targetValue is unreachable from startValue within the search bound");
     }
 
     // The BFS itself: every dequeued value's candidate operations are explored, the first
-    // one equal to y ends the search, and a value not yet visited joins the frontier one
-    // operation deeper. Null when the frontier drains first - a case the padding bound
-    // above leaves unreachable, so the caller treats it as a broken precondition.
+    // one equal to targetValue ends the search, and a value not yet visited joins the
+    // frontier one operation deeper. Null when the frontier drains first - a case the
+    // padding bound above leaves unreachable, so the caller treats it as a broken
+    // precondition.
     private static int? FewestOperationsInFrontier(
-        Queue<(int Value, int Operations)> queue, HashSet<int> visited, int bound, int y)
+        Queue<(int Value, int Operations)> queue, HashSet<int> visited, int bound, int targetValue)
     {
         while (queue.Count > 0)
         {
@@ -48,7 +51,7 @@ internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
 
             foreach (var neighbor in CandidateOperations(value, bound))
             {
-                if (neighbor == y)
+                if (neighbor == targetValue)
                 {
                     return operations + 1;
                 }
@@ -86,28 +89,29 @@ internal static class MinimumNumberOfOperationsToMakeXAndYEqualSolution
         }
     }
 
-    // This repo's own Memoizer: the state is just the current value (y is closed
-    // over), and the recurrence at each value tries "walk straight down to y" plus
-    // "round to the nearest multiple of 11 (or 5) from either side, then divide" -
-    // the same tuple/int-state Memoizer.Memoize<TState,TResult> composition
-    // CountTheNumberOfSquareFreeSubsetsSolution.CountByBitmaskMemo and
+    // This repo's own Memoizer: the state is just the current value (targetValue is
+    // closed over), and the recurrence at each value tries "walk straight down to
+    // targetValue" plus "round to the nearest multiple of 11 (or 5) from either side,
+    // then divide" - the same tuple/int-state Memoizer.Memoize<TState,TResult>
+    // composition CountTheNumberOfSquareFreeSubsetsSolution.CountByBitmaskMemo and
     // NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo already prove
     // out for unrelated counting recurrences.
-    public static int MinOperationsByMemoizedReduce(int x, int y) => Memoizer.Memoize(x, new OperationsFromValue(y));
+    public static int MinOperationsByMemoizedReduce(int startValue, int targetValue) =>
+        Memoizer.Memoize(startValue, new OperationsFromValue(targetValue));
 
-    // The recurrence, as a named type, over the value still to work down towards y: walk
-    // straight down to it, or round to a multiple of 11 (or 5) from either side and
-    // divide, whichever costs fewer operations in total.
-    private sealed class OperationsFromValue(int y) : IRecurrence<int, int>
+    // The recurrence, as a named type, over the value still to work down towards
+    // targetValue: walk straight down to it, or round to a multiple of 11 (or 5) from
+    // either side and divide, whichever costs fewer operations in total.
+    private sealed class OperationsFromValue(int targetValue) : IRecurrence<int, int>
     {
         public int Replay(int value, IRecurrence<int, int> rest)
         {
-            if (value <= y)
+            if (value <= targetValue)
             {
-                return y - value;
+                return targetValue - value;
             }
 
-            var best = value - y; // decrement straight down, no divide at all
+            var best = value - targetValue; // decrement straight down, no divide at all
 
             var viaEleven = OperationsViaDivisor(value, 11, rest);
             best = Math.Min(best, viaEleven);

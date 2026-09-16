@@ -3,26 +3,26 @@ using DSAExperimentation.LeetCode.FindKthBitInNthBinaryString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are FindKthBitInNthBinaryStringSolution's. K is fixed at
-// the last bit of S(n) (2^n - 1) so both approaches do a full-depth walk: a complete
-// string build for the baseline, the deepest possible recursion chain for the
+// Harness only: both arms are FindKthBitInNthBinaryStringSolution's. The bit position
+// is fixed at the last bit of S(n) (2^n - 1) so both approaches do a full-depth walk: a
+// complete string build for the baseline, the deepest possible recursion chain for the
 // bisection.
 [MemoryDiagnoser]
 public class FindKthBitInNthBinaryStringBenchmarks
 {
-    private int _k;
+    private int _bitPosition;
 
     [Params(10, 20)]
-    public int N { get; set; }
+    public int StringOrder { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _k = (1 << N) - 1;
+    public void Setup() => _bitPosition = (1 << StringOrder) - 1;
 
     [Benchmark(Baseline = true)]
     public char BruteForceConstruction() =>
-        FindKthBitInNthBinaryStringSolution.FindKthBitByStringConstruction(N, _k);
+        FindKthBitInNthBinaryStringSolution.FindKthBitByStringConstruction(StringOrder, _bitPosition);
 
     [Benchmark]
     public char RecursiveBisection() =>
-        FindKthBitInNthBinaryStringSolution.FindKthBitByRecursiveBisection(N, _k);
+        FindKthBitInNthBinaryStringSolution.FindKthBitByRecursiveBisection(StringOrder, _bitPosition);
 }

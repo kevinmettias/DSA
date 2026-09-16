@@ -16,7 +16,7 @@ internal sealed class StabilityGraph(
 
     public List<(int U, int V, int Strength)> OptionalEdges { get; } = optionalEdges;
 
-    public static StabilityGraph Build(int n, int[][] edges)
+    public static StabilityGraph Build(int nodeCount, int[][] edges)
     {
         var mustEdges = new List<(int U, int V, int Strength)>();
         var optionalEdges = new List<(int U, int V, int Strength)>();
@@ -28,6 +28,6 @@ internal sealed class StabilityGraph(
             bucket.Add((u, v, strength));
         }
 
-        return new StabilityGraph(n, mustEdges, optionalEdges);
+        return new StabilityGraph(nodeCount, mustEdges, optionalEdges);
     }
 }

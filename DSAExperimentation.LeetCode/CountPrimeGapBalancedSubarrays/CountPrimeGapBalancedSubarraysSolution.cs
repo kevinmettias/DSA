@@ -4,20 +4,20 @@ namespace DSAExperimentation.LeetCode.CountPrimeGapBalancedSubarrays;
 
 // LeetCode 3589. Count Prime-Gap Balanced Subarrays: count contiguous subarrays
 // of nums that contain at least two primes, where the gap between the largest
-// and smallest prime inside the subarray is at most k.
+// and smallest prime inside the subarray is at most maxGap.
 internal static class CountPrimeGapBalancedSubarraysSolution
 {
     // Textbook O(n^2): fix the left end, extend the right end one element at a
     // time, tracking the running prime count/min/max directly against every
     // window - the arm the compact-prime two-pointer strategy below has to beat.
-    public static long CountByBruteForce(int[] nums, int k)
+    public static long CountByBruteForce(int[] nums, int maxGap)
     {
         var isPrime = BuildPrimeFlags(nums);
         long total = 0;
 
         for (var left = 0; left < nums.Length; left++)
         {
-            total += CountSubarraysFromLeftAnchor(nums, isPrime, k, left);
+            total += CountSubarraysFromLeftAnchor(nums, isPrime, maxGap, left);
         }
 
         return total;
@@ -25,8 +25,9 @@ internal static class CountPrimeGapBalancedSubarraysSolution
 
     // One fixed left end: walk the right end outwards keeping the window's running
     // prime count and its smallest and largest prime, and count every extension
-    // that holds at least two primes whose gap stays within k.
-    private static long CountSubarraysFromLeftAnchor(int[] nums, bool[] isPrime, int k, int left)
+    // that holds at least two primes whose gap stays within maxGap.
+    private static long CountSubarraysFromLeftAnchor(
+        int[] nums, bool[] isPrime, int maxGap, int left)
     {
         var count = 0;
         var min = int.MaxValue;
@@ -42,7 +43,7 @@ internal static class CountPrimeGapBalancedSubarraysSolution
                 max = Math.Max(max, nums[right]);
             }
 
-            if (count >= 2 && max - min <= k)
+            if (count >= 2 && max - min <= maxGap)
             {
                 total++;
             }
@@ -62,7 +63,7 @@ internal static class CountPrimeGapBalancedSubarraysSolution
     // DataStructures.Deque exists to support - and a prefix sum over each
     // prime's left-side gap width turns "sum over every valid left endpoint"
     // into an O(1) lookup per right endpoint.
-    public static long CountByPrimeWindowDeque(int[] nums, int k)
+    public static long CountByPrimeWindowDeque(int[] nums, int maxGap)
     {
         var isPrime = BuildPrimeFlags(nums);
         var n = nums.Length;
@@ -84,25 +85,26 @@ internal static class CountPrimeGapBalancedSubarraysSolution
             return 0;
         }
 
-        return CountSubarraysOverPrimes(primeValues, primeIndices, n, k);
+        return CountSubarraysOverPrimes(primeValues, primeIndices, n, maxGap);
     }
 
     // The sliding window over the compact prime subsequence, in the two deques
     // that carry the window's running max and min.
-    private static long CountSubarraysOverPrimes(List<int> primeValues, List<int> primeIndices, int n, int k)
+    private static long CountSubarraysOverPrimes(
+        List<int> primeValues, List<int> primeIndices, int arrayLength, int maxGap)
     {
-        var (leftChoices, rightChoices) = BuildChoiceCounts(primeIndices, n);
+        var (leftChoices, rightChoices) = BuildChoiceCounts(primeIndices, arrayLength);
         var prefixLeft = BuildPrefixSums(leftChoices);
         var maxDeque = new Deque<int>();
         var minDeque = new Deque<int>();
         var windowStart = 0;
         long total = 0;
 
-        for (var q = 0; q < primeValues.Count; q++)
+        for (var windowEnd = 0; windowEnd < primeValues.Count; windowEnd++)
         {
-            PushPrimeIntoWindow(maxDeque, minDeque, primeValues, q);
-            windowStart = ShrinkToGapLimit((maxDeque, minDeque), primeValues, k, windowStart);
-            total += CountSubarraysEndingAt(prefixLeft, rightChoices, windowStart, q);
+            PushPrimeIntoWindow(maxDeque, minDeque, primeValues, windowEnd);
+            windowStart = ShrinkToGapLimit((maxDeque, minDeque), primeValues, maxGap, windowStart);
+            total += CountSubarraysEndingAt(prefixLeft, rightChoices, windowStart, windowEnd);
         }
 
         return total;
@@ -112,7 +114,8 @@ internal static class CountPrimeGapBalancedSubarraysSolution
     // leftmost prime in [l, r] (from just past the previous prime up to this
     // prime's own index). rightChoices[i]: the symmetric count for r making
     // primeIndices[i] the rightmost prime.
-    private static (long[] LeftChoices, long[] RightChoices) BuildChoiceCounts(List<int> primeIndices, int n)
+    private static (long[] LeftChoices, long[] RightChoices) BuildChoiceCounts(
+        List<int> primeIndices, int arrayLength)
     {
         var primeCount = primeIndices.Count;
         var leftChoices = new long[primeCount];
@@ -122,7 +125,7 @@ internal static class CountPrimeGapBalancedSubarraysSolution
         {
             var hasNextPrime = i < primeCount - 1;
             var previousPrimeIndex = i > 0 ? PreviousPrimeIndex(primeIndices, i) : -1;
-            var nextPrimeIndex = hasNextPrime ? NextPrimeIndex(primeIndices, i) : n;
+            var nextPrimeIndex = hasNextPrime ? NextPrimeIndex(primeIndices, i) : arrayLength;
             leftChoices[i] = primeIndices[i] - previousPrimeIndex;
             rightChoices[i] = nextPrimeIndex - primeIndices[i];
         }
@@ -152,32 +155,33 @@ internal static class CountPrimeGapBalancedSubarraysSolution
         return prefixLeft;
     }
 
-    // Prime q joins both monotonic deques: each one pops every back index whose
-    // prime no longer holds its extreme, then takes q as the newest candidate.
+    // The prime at windowEnd joins both monotonic deques: each one pops every back
+    // index whose prime no longer holds its extreme, then takes windowEnd as the newest
+    // candidate.
     private static void PushPrimeIntoWindow(
-        Deque<int> maxDeque, Deque<int> minDeque, List<int> primeValues, int q)
+        Deque<int> maxDeque, Deque<int> minDeque, List<int> primeValues, int windowEnd)
     {
-        while (maxDeque.TryPeekBack(out var back) && primeValues[back] <= primeValues[q])
+        while (maxDeque.TryPeekBack(out var back) && primeValues[back] <= primeValues[windowEnd])
         {
             maxDeque.TryPopBack(out _);
         }
 
-        maxDeque.PushBack(q);
+        maxDeque.PushBack(windowEnd);
 
-        while (minDeque.TryPeekBack(out var back) && primeValues[back] >= primeValues[q])
+        while (minDeque.TryPeekBack(out var back) && primeValues[back] >= primeValues[windowEnd])
         {
             minDeque.TryPopBack(out _);
         }
 
-        minDeque.PushBack(q);
+        minDeque.PushBack(windowEnd);
     }
 
-    // Advance the left end until the two deques' fronts sit within k of each
+    // Advance the left end until the two deques' fronts sit within maxGap of each
     // other, dropping whichever front has fallen behind the new start.
     private static int ShrinkToGapLimit(
-        (Deque<int> MaxDeque, Deque<int> MinDeque) deques, List<int> primeValues, int k, int windowStart)
+        (Deque<int> MaxDeque, Deque<int> MinDeque) deques, List<int> primeValues, int maxGap, int windowStart)
     {
-        while (GapExceedsLimit(deques.MaxDeque, deques.MinDeque, primeValues, k))
+        while (IsGapOverLimit(deques.MaxDeque, deques.MinDeque, primeValues, maxGap))
         {
             windowStart++;
 
@@ -197,24 +201,27 @@ internal static class CountPrimeGapBalancedSubarraysSolution
 
     // The window's widest prime gap is over the limit, so its left end has to
     // advance - only decidable while both deques still hold the front index.
-    private static bool GapExceedsLimit(Deque<int> maxDeque, Deque<int> minDeque, List<int> primeValues, int k)
+    private static bool IsGapOverLimit(
+        Deque<int> maxDeque, Deque<int> minDeque, List<int> primeValues, int maxGap)
         => maxDeque.TryPeekFront(out var hi) && minDeque.TryPeekFront(out var lo)
-            && primeValues[hi] - primeValues[lo] > k;
+            && primeValues[hi] - primeValues[lo] > maxGap;
 
-    // How many subarrays ending at prime q the window contributes: the width sum
-    // over the left endpoints still inside it, times the choices of right end
-    // that keep q rightmost. A window that has not yet reached the prime before q
-    // admits none, and the prefix lookup would run off the front.
-    private static long CountSubarraysEndingAt(long[] prefixLeft, long[] rightChoices, int windowStart, int q)
+    // How many subarrays ending at the prime at windowEnd the window contributes: the
+    // width sum over the left endpoints still inside it, times the choices of right end
+    // that keep that prime rightmost. A window that has not yet reached the prime
+    // before windowEnd admits none, and the prefix lookup would run off the front.
+    private static long CountSubarraysEndingAt(
+        long[] prefixLeft, long[] rightChoices, int windowStart, int windowEnd)
     {
-        if (q - 1 < windowStart)
+        if (windowEnd - 1 < windowStart)
         {
             return 0;
         }
 
-        var leftSum = prefixLeft[q - 1] - (windowStart > 0 ? PrefixSumBefore(prefixLeft, windowStart) : 0);
+        var leftSum = prefixLeft[windowEnd - 1] -
+            (windowStart > 0 ? PrefixSumBefore(prefixLeft, windowStart) : 0);
 
-        return leftSum * rightChoices[q];
+        return leftSum * rightChoices[windowEnd];
     }
 
     // The prefix total immediately before a position - the sum of every

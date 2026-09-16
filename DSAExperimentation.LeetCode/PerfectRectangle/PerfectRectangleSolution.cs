@@ -27,20 +27,21 @@ internal static class PerfectRectangleSolution
         {
             for (var j = i + 1; j < rectangles.Length; j++)
             {
-                if (Overlaps(rectangles[i], rectangles[j]))
+                if (IsOverlapping(rectangles[i], rectangles[j]))
                 {
                     return false;
                 }
             }
         }
 
-        return AreaMatchesBoundingBox(rectangles);
+        return HasMatchingBoundingBoxArea(rectangles);
     }
 
-    private static bool Overlaps(int[] a, int[] b)
-        => a[0] < b[X2Index] && b[0] < a[X2Index] && a[1] < b[Y2Index] && b[1] < a[Y2Index];
+    private static bool IsOverlapping(int[] firstRectangle, int[] secondRectangle)
+        => firstRectangle[0] < secondRectangle[X2Index] && secondRectangle[0] < firstRectangle[X2Index]
+            && firstRectangle[1] < secondRectangle[Y2Index] && secondRectangle[1] < firstRectangle[Y2Index];
 
-    private static bool AreaMatchesBoundingBox(int[][] rectangles)
+    private static bool HasMatchingBoundingBoxArea(int[][] rectangles)
     {
         var minX = int.MaxValue;
         var minY = int.MaxValue;

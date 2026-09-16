@@ -20,10 +20,10 @@ public class CheckIfTheRectangleCornerIsReachableBenchmarks
     public void Setup() => _circles = RectangleCornerWorkloads.BuildCircles(CircleCount, Seed);
 
     [Benchmark(Baseline = true)]
-    public bool BoundaryFloodFill() => CheckIfTheRectangleCornerIsReachableSolution.IsReachableByBoundaryFloodFill(
+    public bool IsReachableByBoundaryFloodFill() => CheckIfTheRectangleCornerIsReachableSolution.IsReachableByBoundaryFloodFill(
         RectangleCornerScenario.XCorner, RectangleCornerScenario.YCorner, _circles);
 
     [Benchmark]
-    public bool DisjointSet() => CheckIfTheRectangleCornerIsReachableSolution.IsReachableByDisjointSet(
+    public bool IsReachableByDisjointSet() => CheckIfTheRectangleCornerIsReachableSolution.IsReachableByDisjointSet(
         RectangleCornerScenario.XCorner, RectangleCornerScenario.YCorner, _circles);
 }

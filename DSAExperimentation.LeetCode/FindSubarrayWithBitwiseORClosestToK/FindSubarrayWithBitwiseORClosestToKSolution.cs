@@ -1,7 +1,7 @@
 namespace DSAExperimentation.LeetCode.FindSubarrayWithBitwiseORClosestToK;
 
 // LeetCode 3171. Find Subarray With Bitwise OR Closest to K: over every
-// subarray of nums, minimize |OR(subarray) - k|.
+// subarray of nums, minimize |OR(subarray) - targetOr|.
 //
 // Both strategies answer the same question with the same signature, so the
 // test harness can assert they agree and the benchmark harness can time them
@@ -12,7 +12,7 @@ internal static class FindSubarrayWithBitwiseORClosestToKSolution
     // one element at a time, folding it into a running OR. O(n^2), deliberately
     // BCL-only - the arm the OR-compression sweep below has to justify itself
     // against.
-    public static int MinimumDifferenceByBruteForce(int[] nums, int k)
+    public static int MinimumDifferenceByBruteForce(int[] nums, int targetOr)
     {
         var best = int.MaxValue;
 
@@ -23,7 +23,7 @@ internal static class FindSubarrayWithBitwiseORClosestToKSolution
             for (var end = start; end < nums.Length; end++)
             {
                 runningOr |= nums[end];
-                best = Math.Min(best, Math.Abs(runningOr - k));
+                best = Math.Min(best, Math.Abs(runningOr - targetOr));
             }
         }
 
@@ -41,7 +41,7 @@ internal static class FindSubarrayWithBitwiseORClosestToKSolution
     // list through `| nums[i]` preserves that same superset ordering, which is
     // what lets a single adjacent-duplicate check do the deduplication. O(n
     // log(max value)) overall, the same list-of-distinct-ORs idiom LC 898 uses.
-    public static int MinimumDifferenceByOrCompression(int[] nums, int k)
+    public static int MinimumDifferenceByOrCompression(int[] nums, int targetOr)
     {
         var best = int.MaxValue;
         var endingHere = new List<int>();
@@ -49,7 +49,7 @@ internal static class FindSubarrayWithBitwiseORClosestToKSolution
         foreach (var num in nums)
         {
             endingHere = ExtendWithOrs(endingHere, num);
-            best = MinDifference(best, endingHere, k);
+            best = MinDifference(best, endingHere, targetOr);
         }
 
         return best;
@@ -75,12 +75,12 @@ internal static class FindSubarrayWithBitwiseORClosestToKSolution
         return next;
     }
 
-    // The best |OR value - k| reachable through the subarrays ending here.
-    private static int MinDifference(int best, List<int> endingHere, int k)
+    // The best |OR value - targetOr| reachable through the subarrays ending here.
+    private static int MinDifference(int best, List<int> endingHere, int targetOr)
     {
         foreach (var orValue in endingHere)
         {
-            best = Math.Min(best, Math.Abs(orValue - k));
+            best = Math.Min(best, Math.Abs(orValue - targetOr));
         }
 
         return best;

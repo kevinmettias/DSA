@@ -11,11 +11,11 @@ public class FindTheCountOfGoodIntegersBenchmarks
     private const int K = 6;
 
     [Params(6, 10)]
-    public int N { get; set; }
+    public int DigitCount { get; set; }
 
     [Benchmark(Baseline = true)]
-    public long PalindromeEnumeration() => FindTheCountOfGoodIntegersSolution.CountByPalindromeEnumeration(N, K);
+    public long PalindromeEnumeration() => FindTheCountOfGoodIntegersSolution.CountByPalindromeEnumeration(DigitCount, K);
 
     [Benchmark]
-    public long BacktrackEnumeration() => FindTheCountOfGoodIntegersSolution.CountByBacktrackEnumeration(N, K);
+    public long BacktrackEnumeration() => FindTheCountOfGoodIntegersSolution.CountByBacktrackEnumeration(DigitCount, K);
 }

@@ -14,21 +14,21 @@ internal static class MinimumTimeToBreakLocksISolution
     // hand via plain recursion, summing ceil(strength[i]/x) as x grows -
     // deliberately without this repo's own DP primitive, the arm the
     // composed strategy below has to justify itself against.
-    public static int FindMinimumTimeByPermutationBruteForce(int[] strength, int k)
+    public static int FindMinimumTimeByPermutationBruteForce(int[] strength, int energyStep)
     {
         var used = new bool[strength.Length];
 
-        return SearchPermutations(strength, k, used, brokenCount: 0);
+        return SearchPermutations(strength, energyStep, used, brokenCount: 0);
     }
 
     // This repo's own Memoizer: the DP state is the bitmask of locks already
     // broken (TState : notnull, satisfied for free by int), and the recurrence
     // is a named type - try every still-unbroken lock next, recurse on the
     // smaller remaining set.
-    public static int FindMinimumTimeByBitmaskMemo(int[] strength, int k)
-        => Memoizer.Memoize<int, int>(0, new MinimumMinutesFromMask(strength, k));
+    public static int FindMinimumTimeByBitmaskMemo(int[] strength, int energyStep)
+        => Memoizer.Memoize<int, int>(0, new MinimumMinutesFromMask(strength, energyStep));
 
-    private static int SearchPermutations(int[] strength, int k, bool[] used, int brokenCount)
+    private static int SearchPermutations(int[] strength, int energyStep, bool[] used, int brokenCount)
     {
         if (brokenCount == strength.Length)
         {
@@ -39,7 +39,7 @@ internal static class MinimumTimeToBreakLocksISolution
 
         for (var i = 0; i < strength.Length; i++)
         {
-            var candidate = MinutesBreakingNext(strength, k, (used, brokenCount), i);
+            var candidate = MinutesBreakingNext(strength, energyStep, (used, brokenCount), i);
             best = Math.Min(best, candidate);
         }
 

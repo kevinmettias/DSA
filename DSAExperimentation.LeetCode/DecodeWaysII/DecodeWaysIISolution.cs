@@ -8,39 +8,39 @@ namespace DSAExperimentation.LeetCode.DecodeWaysII;
 // 1e9+7 as LeetCode requires.
 //
 // Both strategies solve the same recurrence - decode(i) = the number of ways to
-// decode s[i..] - and differ only in evaluation order, exactly like DecodeWays:
+// decode digits[i..] - and differ only in evaluation order, exactly like DecodeWays:
 // bottom-up tabulation fills an array from the end backwards, top-down
 // memoization lets this repo's own Memoizer cache the same recurrence written as
 // ordinary recursion.
 internal static class DecodeWaysIISolution
 {
     // The textbook answer: a BCL long[] filled from the end, dp[i] = ways to
-    // decode s[i..]. Deliberately written without this repo's primitives - it is
+    // decode digits[i..]. Deliberately written without this repo's primitives - it is
     // the arm the memoized strategy below has to justify itself against.
-    public static long NumDecodingsByTabulation(string s)
+    public static long CountDecodingsByTabulation(string digits)
     {
-        var dp = new long[s.Length + 1];
-        dp[s.Length] = 1;
+        var dp = new long[digits.Length + 1];
+        dp[digits.Length] = 1;
 
-        for (var i = s.Length - 1; i >= 0; i--)
+        for (var i = digits.Length - 1; i >= 0; i--)
         {
-            if (s[i] == '0')
+            if (digits[i] == '0')
             {
                 continue;
             }
 
-            dp[i] = SingleWays(s[i]) * dp[i + 1] % DecodeWaysIIRecurrence.Mod;
+            dp[i] = SingleWays(digits[i]) * dp[i + 1] % DecodeWaysIIRecurrence.Mod;
 
-            if (i + 1 < s.Length)
+            if (i + 1 < digits.Length)
             {
-                dp[i] = (dp[i] + (PairWays(s[i], s[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % DecodeWaysIIRecurrence.Mod;
+                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % DecodeWaysIIRecurrence.Mod;
             }
         }
 
         return dp[0];
     }
 
-    private static long SingleWays(char c) => c == '*' ? DecodeWaysIIRecurrence.SingleWildcardWays : 1;
+    private static long SingleWays(char symbol) => symbol == '*' ? DecodeWaysIIRecurrence.SingleWildcardWays : 1;
 
     private static long PairWays(char first, char second)
     {
@@ -75,32 +75,32 @@ internal static class DecodeWaysIISolution
     // This repo's own top-down engine: Memoizer.Memoize caches decode(i) the
     // first time each index is reached, so the recurrence reads as ordinary
     // recursion with no hand-rolled cache dictionary.
-    public static long NumDecodingsByMemoization(string s) =>
-        Memoizer.Memoize<int, long>(0, new WildcardWaysFromDecodedIndex(s));
+    public static long CountDecodingsByMemoization(string digits) =>
+        Memoizer.Memoize<int, long>(0, new WildcardWaysFromDecodedIndex(digits));
 
     // The recurrence, as a named type: an index past the end is one way, a leading
     // '0' is none, and otherwise every way of writing the single character here is
     // carried forward from the next index, with every way of pairing it with the
     // following one added from the index after that.
-    private sealed class WildcardWaysFromDecodedIndex(string s) : IRecurrence<int, long>
+    private sealed class WildcardWaysFromDecodedIndex(string digits) : IRecurrence<int, long>
     {
         public long Replay(int index, IRecurrence<int, long> rest)
         {
-            if (index == s.Length)
+            if (index == digits.Length)
             {
                 return 1;
             }
 
-            if (s[index] == '0')
+            if (digits[index] == '0')
             {
                 return 0;
             }
 
-            var total = SingleWays(s[index]) * rest.Replay(index + 1, rest) % DecodeWaysIIRecurrence.Mod;
+            var total = SingleWays(digits[index]) * rest.Replay(index + 1, rest) % DecodeWaysIIRecurrence.Mod;
 
-            if (index + 1 < s.Length)
+            if (index + 1 < digits.Length)
             {
-                var paired = PairWays(s[index], s[index + 1]) * rest.Replay(index + DecodeWaysIIRecurrence.PairLength, rest);
+                var paired = PairWays(digits[index], digits[index + 1]) * rest.Replay(index + DecodeWaysIIRecurrence.PairLength, rest);
                 total = (total + paired) % DecodeWaysIIRecurrence.Mod;
             }
 

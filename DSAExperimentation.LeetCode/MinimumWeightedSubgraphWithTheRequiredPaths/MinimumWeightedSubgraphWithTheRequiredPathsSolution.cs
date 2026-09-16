@@ -25,12 +25,12 @@ internal static class MinimumWeightedSubgraphWithTheRequiredPathsSolution
     // Dijkstra that stops as soon as its target settles, run three times for every
     // candidate meeting vertex - deliberately without this repo's graph engine,
     // the arm the composed strategy below has to justify itself against.
-    public static long MinimumWeightByPerNodeSearch(int n, int[][] edges, PathEndpoints endpoints)
+    public static long MinimumWeightByPerNodeSearch(int nodeCount, int[][] edges, PathEndpoints endpoints)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(nodeCount, edges);
         var best = long.MaxValue;
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             var candidate = MeetingCostAt(adjacency, endpoints, node);
 
@@ -62,11 +62,11 @@ internal static class MinimumWeightedSubgraphWithTheRequiredPathsSolution
     private static bool HasAnUnreachableLeg(long? fromSrc1, long? fromSrc2, long? toDest) =>
         fromSrc1 is null || fromSrc2 is null || toDest is null;
 
-    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int n, int[][] edges)
+    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<(int Neighbor, long Weight)>[n];
+        var adjacency = new List<(int Neighbor, long Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }
@@ -138,9 +138,10 @@ internal static class MinimumWeightedSubgraphWithTheRequiredPathsSolution
     // meeting vertex needs. The reverse-graph trick is what turns O(V) independent
     // searches into O(1) dictionary lookups, the same "search once, answer many
     // queries" composition FindEdgesInShortestPathsSolution uses for LC 3123.
-    public static long MinimumWeightByReverseGraphDijkstra(int n, int[][] edges, PathEndpoints endpoints)
+    public static long MinimumWeightByReverseGraphDijkstra(
+        int nodeCount, int[][] edges, PathEndpoints endpoints)
     {
-        var graph = RequiredPathsGraph.Build(n, edges);
+        var graph = RequiredPathsGraph.Build(nodeCount, edges);
 
         return MinimumWeightByReverseGraphDijkstra(graph, endpoints);
     }

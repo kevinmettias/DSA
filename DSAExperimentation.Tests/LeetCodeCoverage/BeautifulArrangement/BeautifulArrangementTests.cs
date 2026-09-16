@@ -18,11 +18,11 @@ public sealed class BeautifulArrangementTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountArrangements_LeetCodeExamples_ReturnsKnownCountByGenerateThenFilter(int n, int expected)
-        => Assert.Equal(expected, BeautifulArrangementSolution.CountByGenerateThenFilter(n));
+    public void CountArrangements_LeetCodeExamples_ReturnsKnownCountByGenerateThenFilter(int size, int expected)
+        => Assert.Equal(expected, BeautifulArrangementSolution.CountByGenerateThenFilter(size));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountArrangements_LeetCodeExamples_ReturnsKnownCountByPrunedBacktracking(int n, int expected)
-        => Assert.Equal(expected, BeautifulArrangementSolution.CountByPrunedBacktracking(n));
+    public void CountArrangements_LeetCodeExamples_ReturnsKnownCountByPrunedBacktracking(int size, int expected)
+        => Assert.Equal(expected, BeautifulArrangementSolution.CountByPrunedBacktracking(size));
 }

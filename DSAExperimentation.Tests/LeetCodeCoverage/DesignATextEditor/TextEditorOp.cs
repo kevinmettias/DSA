@@ -9,11 +9,11 @@ public readonly record struct TextEditorOp(TextEditorOp.OpKind kind, string text
 {
     public static TextEditorOp AddText(string text) => new(OpKind.AddText, text, 0);
 
-    public static TextEditorOp DeleteText(int k) => new(OpKind.DeleteText, string.Empty, k);
+    public static TextEditorOp DeleteText(int maxDeletions) => new(OpKind.DeleteText, string.Empty, maxDeletions);
 
-    public static TextEditorOp CursorLeft(int k) => new(OpKind.CursorLeft, string.Empty, k);
+    public static TextEditorOp CursorLeft(int maxSteps) => new(OpKind.CursorLeft, string.Empty, maxSteps);
 
-    public static TextEditorOp CursorRight(int k) => new(OpKind.CursorRight, string.Empty, k);
+    public static TextEditorOp CursorRight(int maxSteps) => new(OpKind.CursorRight, string.Empty, maxSteps);
 
     // null for AddText, matching LeetCode's own judge output for a void operation;
     // the deleted count for DeleteText and the reported window for the two cursor

@@ -20,10 +20,10 @@ public sealed class ContainsDuplicateIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsNearbyDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(
+    public void HasNearbyDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(
         NearbyDuplicateCase example)
     {
-        var actual = ContainsDuplicateIISolution.ContainsNearbyDuplicateByBruteForce(
+        var actual = ContainsDuplicateIISolution.HasNearbyDuplicateByBruteForce(
             example.Nums, example.IndexDiff);
 
         Assert.Equal(example.Expected, actual);
@@ -31,10 +31,10 @@ public sealed class ContainsDuplicateIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsNearbyDuplicateByHashMap_LeetCodeExamples_ReturnsExpected(
+    public void HasNearbyDuplicateByHashMap_LeetCodeExamples_ReturnsExpected(
         NearbyDuplicateCase example)
     {
-        var actual = ContainsDuplicateIISolution.ContainsNearbyDuplicateByHashMap(
+        var actual = ContainsDuplicateIISolution.HasNearbyDuplicateByHashMap(
             example.Nums, example.IndexDiff);
 
         Assert.Equal(example.Expected, actual);

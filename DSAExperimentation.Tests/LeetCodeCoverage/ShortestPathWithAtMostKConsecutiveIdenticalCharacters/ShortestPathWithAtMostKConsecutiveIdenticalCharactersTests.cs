@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestPathWithAtMostKConse
 // ShortestPathWithAtMostKConsecutiveIdenticalCharactersSolution's own domain
 // model and both search strategies are its methods - this file just pins them
 // to LeetCode's published examples, including the unreachable case where every
-// path would need three consecutive 'a's but k only allows two.
+// path would need three consecutive 'a's but maxRunLength only allows two.
 public sealed class ShortestPathWithAtMostKConsecutiveIdenticalCharactersTests
 {
     public static TheoryData<ConsecutiveRunExample> Examples =>

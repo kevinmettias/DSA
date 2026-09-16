@@ -53,13 +53,13 @@ internal sealed class PopcountDepthFenwickIndex(
         depthByIndex[index] = newDepth;
     }
 
-    private static int Depth(long x)
+    private static int Depth(long value)
     {
         var depth = 0;
 
-        while (x != 1)
+        while (value != 1)
         {
-            x = BitOperations.PopCount((ulong)x);
+            value = BitOperations.PopCount((ulong)value);
             depth++;
         }
 

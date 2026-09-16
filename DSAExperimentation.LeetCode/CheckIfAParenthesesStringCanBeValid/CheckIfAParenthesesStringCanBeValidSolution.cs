@@ -20,13 +20,13 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
     // sweep below has to beat. Its reachable set can grow with the string, making it
     // O(n^2) where the sweep is O(n). No parity guard is needed: after an odd number
     // of positions every reachable count is odd, so zero cannot survive.
-    public static bool CanBeValidByReachableOpenCountDp(ParenthesisString s, LockMask locked)
+    public static bool CanBeValidByReachableOpenCountDp(ParenthesisString bracketString, LockMask locked)
     {
         var reachable = new HashSet<int> { 0 };
 
-        for (var i = 0; i < s.Text.Length; i++)
+        for (var i = 0; i < bracketString.Text.Length; i++)
         {
-            reachable = ComputeNextReachable(reachable, s.Text[i], locked.Digits[i]);
+            reachable = ComputeNextReachable(reachable, bracketString.Text[i], locked.Digits[i]);
 
             if (reachable.Count == 0)
             {
@@ -37,7 +37,7 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
         return reachable.Contains(0);
     }
 
-    private static HashSet<int> ComputeNextReachable(HashSet<int> reachable, char c, char lockedChar)
+    private static HashSet<int> ComputeNextReachable(HashSet<int> reachable, char currentChar, char lockedChar)
     {
         var next = new HashSet<int>();
 
@@ -47,7 +47,7 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
             {
                 AddFreeTransition(next, openCount);
             }
-            else if (c == OpenParenthesis)
+            else if (currentChar == OpenParenthesis)
             {
                 next.Add(openCount + 1);
             }
@@ -77,9 +77,9 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
     // after them, greedily from the innermost pair out. The length parity check is
     // load-bearing here - without it a lone free position reports valid, because
     // nothing is left on either stack to contradict it.
-    public static bool CanBeValidByIndexStackSweep(ParenthesisString s, LockMask locked)
+    public static bool CanBeValidByIndexStackSweep(ParenthesisString bracketString, LockMask locked)
     {
-        if (s.Text.Length % 2 != 0)
+        if (bracketString.Text.Length % 2 != 0)
         {
             return false;
         }
@@ -87,24 +87,24 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
         var openIndices = new RepoIndexStack();
         var freeIndices = new RepoIndexStack();
 
-        if (!TryMatchClosingParens(s, locked, openIndices, freeIndices))
+        if (!TryMatchClosingParens(bracketString, locked, openIndices, freeIndices))
         {
             return false;
         }
 
-        return AllOpensMatched(openIndices, freeIndices);
+        return IsEveryOpenParenMatched(openIndices, freeIndices);
     }
 
     private static bool TryMatchClosingParens(
-        ParenthesisString s, LockMask locked, RepoIndexStack openIndices, RepoIndexStack freeIndices)
+        ParenthesisString bracketString, LockMask locked, RepoIndexStack openIndices, RepoIndexStack freeIndices)
     {
-        for (var i = 0; i < s.Text.Length; i++)
+        for (var i = 0; i < bracketString.Text.Length; i++)
         {
             if (locked.Digits[i] == FreePosition)
             {
                 freeIndices.Push(i);
             }
-            else if (s.Text[i] == OpenParenthesis)
+            else if (bracketString.Text[i] == OpenParenthesis)
             {
                 openIndices.Push(i);
             }
@@ -117,7 +117,7 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
         return true;
     }
 
-    private static bool AllOpensMatched(RepoIndexStack openIndices, RepoIndexStack freeIndices)
+    private static bool IsEveryOpenParenMatched(RepoIndexStack openIndices, RepoIndexStack freeIndices)
     {
         while (openIndices.TryPop(out var openIndex))
         {
@@ -132,8 +132,9 @@ internal static class CheckIfAParenthesesStringCanBeValidSolution
 
     // LC 2116's two operands, named for the roles they play here rather than left as two
     // adjacent `string` positions a caller could hand over the wrong way round with the
-    // compiler none the wiser. `s` is the bracket string itself; `locked` is the
-    // per-position lock digit string that decides which characters may still move. The
+    // compiler none the wiser. `ParenthesisString.Text` is the bracket string itself;
+    // `LockMask.Digits` is the per-position lock digit string that decides which
+    // characters may still move. The
     // two hold different alphabets, so a swap is a silently wrong answer rather than a
     // different question.
     internal readonly record struct ParenthesisString(string Text);

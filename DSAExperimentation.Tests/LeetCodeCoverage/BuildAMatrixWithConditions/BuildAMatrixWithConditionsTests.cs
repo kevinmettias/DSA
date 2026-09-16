@@ -73,13 +73,13 @@ public sealed class BuildAMatrixWithConditionsTests
         }
     }
 
-    private static void AssertPlacesEveryValueExactlyOnce(int[][] matrix, int k)
+    private static void AssertPlacesEveryValueExactlyOnce(int[][] matrix, int valueCount)
     {
-        var expectedValues = Enumerable.Range(1, k);
+        var expectedValues = Enumerable.Range(1, valueCount);
         var placedValues = matrix.SelectMany(row => row).Where(value => value != 0).Order();
 
-        Assert.Equal(k, matrix.Length);
-        Assert.All(matrix, row => Assert.Equal(k, row.Length));
+        Assert.Equal(valueCount, matrix.Length);
+        Assert.All(matrix, row => Assert.Equal(valueCount, row.Length));
         Assert.Equal(expectedValues, placedValues);
     }
 

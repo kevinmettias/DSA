@@ -21,9 +21,9 @@ public sealed class NumberOfWaysOfCuttingAPizzaTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountWaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsWaysEveryPieceKeepsAnApple(
-        string[] pizza, int k, int expected)
+        string[] pizza, int pieceCount, int expected)
     {
-        var actual = NumberOfWaysOfCuttingAPizzaSolution.CountWaysByUnmemoizedRecursion(pizza, k);
+        var actual = NumberOfWaysOfCuttingAPizzaSolution.CountWaysByUnmemoizedRecursion(pizza, pieceCount);
 
         Assert.Equal(expected, actual);
     }
@@ -31,9 +31,9 @@ public sealed class NumberOfWaysOfCuttingAPizzaTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountWaysByMemoizedRecursion_LeetCodeExamples_ReturnsWaysEveryPieceKeepsAnApple(
-        string[] pizza, int k, int expected)
+        string[] pizza, int pieceCount, int expected)
     {
-        var actual = NumberOfWaysOfCuttingAPizzaSolution.CountWaysByMemoizedRecursion(pizza, k);
+        var actual = NumberOfWaysOfCuttingAPizzaSolution.CountWaysByMemoizedRecursion(pizza, pieceCount);
 
         Assert.Equal(expected, actual);
     }

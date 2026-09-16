@@ -4,42 +4,45 @@ using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.LeetCode.PermutationSequence;
 
-// LeetCode 60. Permutation Sequence: the k-th (1-indexed) permutation of "123...n".
+// LeetCode 60. Permutation Sequence: the permutation sitting at a given 1-indexed
+// rank in the lexicographic order of the digits 1..digitCount.
 //
 // GetPermutationByBacktrackEnumeration is the textbook brute force: enumerate every
 // permutation in lexicographic order via this repo's own generic Backtrack.TrySearch,
-// stopping the instant the k-th is found - O(n!) worst case, every permutation before
-// the target gets materialized. GetPermutationByFactoradicSelection is the clever
-// O(n^2) approach: the factorial number system picks each digit directly out of a
-// shrinking pool, over this repo's own DynamicArray<int> - Get(index) reads the next
-// digit, RemoveAt(index) shrinks the pool, both operations the classic algorithm
-// already needs.
+// stopping the instant the requested permutation is found - O(n!) worst case, every
+// permutation before the target gets materialized. GetPermutationByFactoradicSelection
+// is the clever O(n^2) approach: the factorial number system picks each digit directly
+// out of a shrinking pool, over this repo's own DynamicArray<int> - Get(index) reads
+// the next digit, RemoveAt(index) shrinks the pool, both operations the classic
+// algorithm already needs.
 internal static class PermutationSequenceSolution
 {
-    public static string GetPermutationByBacktrackEnumeration(int n, int k)
+    public static string GetPermutationByBacktrackEnumeration(int digitCount, int rank)
     {
-        var progress = new SequenceSearchProgress(k);
-        var state = new PermutationState(n);
-        var steps = BuildSteps(n, progress);
+        var progress = new SequenceSearchProgress(rank);
+        var state = new PermutationState(digitCount);
+        var steps = BuildSteps(digitCount, progress);
 
         Backtrack.TrySearch<PermutationState, int>(state, steps);
 
         return progress.Found;
     }
 
-    private static BacktrackingSteps<PermutationState, int> BuildSteps(int n, SequenceSearchProgress progress) => new(
-        IsSolution: s => s.Values.Count == n,
-        Candidates: s => s.Values.Count == n ? Array.Empty<int>() : UnusedDigits(n, s),
+    private static BacktrackingSteps<PermutationState, int> BuildSteps(int digitCount, SequenceSearchProgress progress) => new(
+        IsSolution: s => s.Values.Count == digitCount,
+        Candidates: s => s.Values.Count == digitCount ? Array.Empty<int>() : UnusedDigits(digitCount, s),
         Choose: (s, d) => { s.Used[d - 1] = true; s.Values.Add(d); },
         Unchoose: (s, d) => { s.Used[d - 1] = false; s.Values.RemoveAt(s.Values.Count - 1); },
-        OnSolution: s => OnSolutionFound(s, progress));
+        OnSolution: s => ShouldStopSearch(s, progress));
 
     // Every digit not yet placed - a lazy pipeline the engine re-reads per MoveNext,
     // which is what lets it observe Unchoose restoring a digit to the pool.
     private static IEnumerable<int> UnusedDigits(int digitCount, PermutationState state)
         => Enumerable.Range(1, digitCount).Where(d => !state.Used[d - 1]);
 
-    private static bool OnSolutionFound(PermutationState state, SequenceSearchProgress progress)
+    // Records the permutation the moment the walk reaches the requested rank, and
+    // answers whether the whole search should stop there.
+    private static bool ShouldStopSearch(PermutationState state, SequenceSearchProgress progress)
     {
         progress.Count++;
         if (progress.Count != progress.Target)
@@ -51,32 +54,32 @@ internal static class PermutationSequenceSolution
         return true;
     }
 
-    public static string GetPermutationByFactoradicSelection(int n, int k)
+    public static string GetPermutationByFactoradicSelection(int digitCount, int rank)
     {
         var digits = new DynamicArray<int>();
-        for (var d = 1; d <= n; d++)
+        for (var d = 1; d <= digitCount; d++)
         {
             digits.Add(d);
         }
 
-        var factorial = BuildFactorialTable(n);
+        var factorial = BuildFactorialTable(digitCount);
 
-        k--;
+        rank--;
         var result = new StringBuilder();
-        for (var remaining = n; remaining >= 1; remaining--)
+        for (var remaining = digitCount; remaining >= 1; remaining--)
         {
-            var digit = NextDigit(digits, factorial, remaining, ref k);
+            var digit = NextDigit(digits, factorial, remaining, ref rank);
             result.Append(digit);
         }
 
         return result.ToString();
     }
 
-    private static int[] BuildFactorialTable(int n)
+    private static int[] BuildFactorialTable(int digitCount)
     {
-        var factorial = new int[n + 1];
+        var factorial = new int[digitCount + 1];
         factorial[0] = 1;
-        for (var i = 1; i <= n; i++)
+        for (var i = 1; i <= digitCount; i++)
         {
             factorial[i] = factorial[i - 1] * i;
         }
@@ -84,10 +87,10 @@ internal static class PermutationSequenceSolution
         return factorial;
     }
 
-    private static int NextDigit(DynamicArray<int> digits, int[] factorial, int remaining, ref int k)
+    private static int NextDigit(DynamicArray<int> digits, int[] factorial, int remaining, ref int rank)
     {
-        var index = k / factorial[remaining - 1];
-        k %= factorial[remaining - 1];
+        var index = rank / factorial[remaining - 1];
+        rank %= factorial[remaining - 1];
         return TakeDigitAt(digits, index);
     }
 

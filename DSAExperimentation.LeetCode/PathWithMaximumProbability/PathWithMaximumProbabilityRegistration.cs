@@ -32,7 +32,7 @@ internal sealed class PathWithMaximumProbabilityRegistration : ILeetCodeProblemR
                 "Dijkstra",
                 input => PathWithMaximumProbabilitySolution.MaxProbabilityByDijkstra(
                     input.NodeCount, input.Edges, input.SuccessProbabilities, (input.Start, input.End)))
-            .MatchingAnswersWith((actual, expected) => LeetCodeAnswers.WithinTolerance(actual, expected))
+            .MatchingAnswersWith((actual, expected) => LeetCodeAnswers.IsWithinTolerance(actual, expected))
             .Case("example-1", (3, [[0, 1], [1, 2], [0, 2]], [0.5, 0.5, 0.2], 0, 2), 0.25)
             .Case("example-2", (3, [[0, 1], [1, 2], [0, 2]], [0.5, 0.5, 0.3], 0, 2), 0.3)
             .Case("example-3-no-path-exists", (3, [[0, 1]], [0.5], 0, 2), 0.0)

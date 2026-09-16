@@ -58,20 +58,20 @@ internal static class OddEvenJumpSolution
         return next;
     }
 
-    private static int FindNextIndex(int[] arr, int i, JumpDirection direction)
+    private static int FindNextIndex(int[] arr, int index, JumpDirection direction)
     {
         var best = NoJump;
 
-        for (var j = i + 1; j < arr.Length; j++)
+        for (var j = index + 1; j < arr.Length; j++)
         {
-            var qualifies = QualifiesAsJumpTarget(arr[j], arr[i], direction);
+            var isTarget = IsJumpTargetFor(arr[j], arr[index], direction);
 
-            if (!qualifies)
+            if (!isTarget)
             {
                 continue;
             }
 
-            if (best == NoJump || BeatsCurrentTarget(arr[j], arr[best], direction))
+            if (best == NoJump || IsBetterJumpTarget(arr[j], arr[best], direction))
             {
                 best = j;
             }
@@ -80,9 +80,9 @@ internal static class OddEvenJumpSolution
         return best;
     }
 
-    // Whether j qualifies as a jump target from i under this direction: the nearest
-    // later index holding a value at least i's (odd jumps) or at most i's (even).
-    private static bool QualifiesAsJumpTarget(int candidate, int origin, JumpDirection direction)
+    // Whether candidate is a jump target for origin under this direction: a later
+    // index holding a value at least origin's (odd jumps) or at most origin's (even).
+    private static bool IsJumpTargetFor(int candidate, int origin, JumpDirection direction)
     {
         if (direction == JumpDirection.Odd)
         {
@@ -92,9 +92,9 @@ internal static class OddEvenJumpSolution
         return candidate <= origin;
     }
 
-    // Whether j displaces the best target found so far under this direction: a smaller
-    // value than the best one for odd jumps, a larger one for even.
-    private static bool BeatsCurrentTarget(int candidate, int best, JumpDirection direction)
+    // Whether candidate displaces the best target found so far under this direction: a
+    // smaller value than the best one for odd jumps, a larger one for even.
+    private static bool IsBetterJumpTarget(int candidate, int best, JumpDirection direction)
     {
         if (direction == JumpDirection.Odd)
         {
@@ -138,18 +138,18 @@ internal static class OddEvenJumpSolution
 
     // Odd jumps order ascending by value, even jumps descending, both tie-broken toward
     // the smaller index so the nearer of two equal-valued targets wins.
-    private static int CompareForOddJump(int[] arr, int a, int b)
+    private static int CompareForOddJump(int[] arr, int leftIndex, int rightIndex)
     {
-        var valuesDiffer = arr[a] != arr[b];
+        var valuesDiffer = arr[leftIndex] != arr[rightIndex];
 
-        return valuesDiffer ? arr[a].CompareTo(arr[b]) : a.CompareTo(b);
+        return valuesDiffer ? arr[leftIndex].CompareTo(arr[rightIndex]) : leftIndex.CompareTo(rightIndex);
     }
 
-    private static int CompareForEvenJump(int[] arr, int a, int b)
+    private static int CompareForEvenJump(int[] arr, int leftIndex, int rightIndex)
     {
-        var valuesDiffer = arr[a] != arr[b];
+        var valuesDiffer = arr[leftIndex] != arr[rightIndex];
 
-        return valuesDiffer ? arr[b].CompareTo(arr[a]) : a.CompareTo(b);
+        return valuesDiffer ? arr[rightIndex].CompareTo(arr[leftIndex]) : leftIndex.CompareTo(rightIndex);
     }
 
     private static void FillNextViaStackSweep(int[] indices, int[] next)
@@ -184,11 +184,11 @@ internal static class OddEvenJumpSolution
         return CountTrue(reachability.Odd);
     }
 
-    private static Reachability InitializeReachability(int n)
+    private static Reachability InitializeReachability(int length)
     {
-        var odd = new bool[n];
-        var even = new bool[n];
-        odd[n - 1] = even[n - 1] = true;
+        var odd = new bool[length];
+        var even = new bool[length];
+        odd[length - 1] = even[length - 1] = true;
 
         return new Reachability(odd, even);
     }
@@ -224,9 +224,9 @@ internal static class OddEvenJumpSolution
         return count;
     }
 
-    private static int[] InitializeNext(int n)
+    private static int[] InitializeNext(int length)
     {
-        var next = new int[n];
+        var next = new int[length];
         Array.Fill(next, NoJump);
 
         return next;

@@ -26,13 +26,15 @@ public sealed class DivisorGameTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(DivisorGameCase example) =>
-        Assert.Equal(example.AliceWins, DivisorGameSolution.AliceWinsByMemoizedRecursion(example.N));
+    public void CanAliceWinByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(
+        DivisorGameCase example) =>
+        Assert.Equal(example.AliceWins, DivisorGameSolution.CanAliceWinByMemoizedRecursion(example.N));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByParityFormula_LeetCodeExamples_MatchesExpectedOutcome(DivisorGameCase example) =>
-        Assert.Equal(example.AliceWins, DivisorGameSolution.AliceWinsByParityFormula(example.N));
+    public void CanAliceWinByParityFormula_LeetCodeExamples_MatchesExpectedOutcome(
+        DivisorGameCase example) =>
+        Assert.Equal(example.AliceWins, DivisorGameSolution.CanAliceWinByParityFormula(example.N));
 
     // One LeetCode example: the starting n and whether Alice wins it. The expected value
     // is named at every construction site, so a row reads as the case it is rather than

@@ -4,25 +4,25 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
 
-// LeetCode 3352. Count K-Reducible Numbers Less Than N: s is n written in binary
-// (length L, no leading zeros); x is k-reducible when repeatedly replacing it
+// LeetCode 3352. Count K-Reducible Numbers Less Than N: binaryDigits is n written
+// in binary (length L, no leading zeros); x is k-reducible when repeatedly replacing it
 // with its own popcount reaches 1 within k applications. Both strategies answer
 // the same question with the same signature (TwoSumSolution precedent).
 internal static class CountKReducibleNumbersLessThanNSolution
 {
     // Textbook baseline: parse n and simulate the popcount chain for every x in
-    // [1, n), counting how many settle to 1 within k steps. Correct, but the
-    // range [1, n) is itself exponential in s.Length (n can be a 800-bit
-    // number), so this only ever runs on small s - the arm the combinatorial
-    // strategy below has to beat.
-    public static int CountKReducibleNumbersByBruteForce(string s, int k)
+    // [1, n), counting how many settle to 1 within maxSteps steps. Correct, but
+    // the range [1, n) is itself exponential in binaryDigits.Length (n can be an
+    // 800-bit number), so this only ever runs on small binaryDigits - the arm the
+    // combinatorial strategy below has to beat.
+    public static int CountKReducibleNumbersByBruteForce(string binaryDigits, int maxSteps)
     {
-        var n = Convert.ToInt64(s, 2);
+        var n = Convert.ToInt64(binaryDigits, 2);
         var count = 0L;
 
         for (var x = 1L; x < n; x++)
         {
-            if (StepsToOne(x) <= k)
+            if (StepsToOne(x) <= maxSteps)
             {
                 count++;
             }
@@ -31,13 +31,13 @@ internal static class CountKReducibleNumbersLessThanNSolution
         return (int)(count % ModularArithmetic.Modulo);
     }
 
-    private static int StepsToOne(long x)
+    private static int StepsToOne(long value)
     {
         var steps = 0;
 
-        while (x != 1)
+        while (value != 1)
         {
-            x = BitOperations.PopCount((ulong)x);
+            value = BitOperations.PopCount((ulong)value);
             steps++;
         }
 
@@ -51,26 +51,27 @@ internal static class CountKReducibleNumbersLessThanNSolution
     // folds the popcount chain bottom-up for every value up to L (BitOperations'
     // own popcount, the same BCL primitive the baseline uses), and
     // `CountNumbersByPopcount` is the classic binary digit-DP count - for each
-    // '1' bit s sets, fix it to 0 and freely choose every lower bit, weighting
-    // each choice of how many of those free bits are set by the binomial
-    // coefficient C(remaining bits, ones needed) (Domain.Modular's shared
-    // FactorialTable, the same table CountBalancedPermutationsSolution and
-    // RoomWaysPrecomputedFactorialAlgebra read their coefficients from). k >= 1
-    // always (LC's own constraint), so x = 1 itself
+    // '1' bit binaryDigits sets, fix it to 0 and freely choose every lower bit,
+    // weighting each choice of how many of those free bits are set by the
+    // binomial coefficient C(remaining bits, ones needed) (Domain.Modular's
+    // shared FactorialTable, the same table CountBalancedPermutationsSolution and
+    // RoomWaysPrecomputedFactorialAlgebra read their coefficients from).
+    // maxSteps >= 1 always (LC's own constraint), so x = 1 itself
     // (0 operations needed) never needs separating from the rest of its
-    // popcount-1 bucket (1 operation needed): both are <= k regardless, so a
-    // uniform "1 + steps[c] <= k" test decides the whole bucket correctly.
-    public static int CountKReducibleNumbersByPopcountCombinatorics(string s, int k)
+    // popcount-1 bucket (1 operation needed): both are <= maxSteps regardless,
+    // so a uniform "1 + steps[c] <= maxSteps" test decides the whole bucket
+    // correctly.
+    public static int CountKReducibleNumbersByPopcountCombinatorics(string binaryDigits, int maxSteps)
     {
-        var length = s.Length;
+        var length = binaryDigits.Length;
         var table = FactorialTable.Build(length);
         var steps = BuildReductionSteps(length);
-        var countByPopcount = CountNumbersByPopcount(s, table);
+        var countByPopcount = CountNumbersByPopcount(binaryDigits, table);
         var answer = 0L;
 
         for (var c = 1; c <= length; c++)
         {
-            if (1 + steps[c] <= k)
+            if (1 + steps[c] <= maxSteps)
             {
                 answer = (answer + countByPopcount[c]) % ModularArithmetic.Modulo;
             }
@@ -94,15 +95,15 @@ internal static class CountKReducibleNumbersLessThanNSolution
         return steps;
     }
 
-    private static long[] CountNumbersByPopcount(string s, FactorialTable table)
+    private static long[] CountNumbersByPopcount(string binaryDigits, FactorialTable table)
     {
-        var length = s.Length;
+        var length = binaryDigits.Length;
         var counts = new long[length + 1];
         var onesInPrefix = 0;
 
         for (var i = 0; i < length; i++)
         {
-            if (s[i] == '1')
+            if (binaryDigits[i] == '1')
             {
                 AccumulateSuffixChoices(counts, onesInPrefix, length - 1 - i, table);
                 onesInPrefix++;

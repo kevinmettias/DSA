@@ -19,14 +19,14 @@ internal static class BackspaceStringCompareSolution
     // ToArray + Array.Reverse to read the surviving text back out in typing
     // order. Deliberately written without this repo's primitives - it is the
     // arm the composed strategy below has to justify itself against.
-    public static bool BackspaceCompareByBclStack(string s, string t) =>
-        ProcessByBclStack(s) == ProcessByBclStack(t);
+    public static bool IsTypedTextEqualByBclStack(string firstText, string secondText) =>
+        ApplyBackspacesByBclStack(firstText) == ApplyBackspacesByBclStack(secondText);
 
-    private static string ProcessByBclStack(string input)
+    private static string ApplyBackspacesByBclStack(string keystrokes)
     {
         var stack = new Stack<char>();
 
-        foreach (var character in input)
+        foreach (var character in keystrokes)
         {
             if (character == Backspace)
             {
@@ -51,14 +51,14 @@ internal static class BackspaceStringCompareSolution
     // anything to pop", so the empty-text backspace LeetCode calls a no-op needs
     // no guard of its own, and the surviving text is unwound straight into a
     // right-sized buffer filled back-to-front.
-    public static bool BackspaceCompareByStackReplay(string s, string t) =>
-        ProcessByStackReplay(s) == ProcessByStackReplay(t);
+    public static bool IsTypedTextEqualByStackReplay(string firstText, string secondText) =>
+        ApplyBackspacesByStackReplay(firstText) == ApplyBackspacesByStackReplay(secondText);
 
-    private static string ProcessByStackReplay(string input)
+    private static string ApplyBackspacesByStackReplay(string keystrokes)
     {
         var stack = new RepoCharStack();
 
-        foreach (var character in input)
+        foreach (var character in keystrokes)
         {
             if (character == Backspace)
             {

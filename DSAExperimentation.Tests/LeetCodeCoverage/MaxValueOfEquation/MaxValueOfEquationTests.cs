@@ -23,18 +23,18 @@ public sealed class MaxValueOfEquationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMaxValueOfEquationByAllPairsScan_LeetCodeExamples_ReturnsMaximumInWindowPairValue(
-        int[][] points, int k, int expected)
+        int[][] points, int maxDistance, int expected)
     {
-        var actual = MaxValueOfEquationSolution.FindMaxValueOfEquationByAllPairsScan(points, k);
+        var actual = MaxValueOfEquationSolution.FindMaxValueOfEquationByAllPairsScan(points, maxDistance);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMaxValueOfEquationByMonotonicDeque_LeetCodeExamples_ReturnsMaximumInWindowPairValue(
-        int[][] points, int k, int expected)
+        int[][] points, int maxDistance, int expected)
     {
-        var actual = MaxValueOfEquationSolution.FindMaxValueOfEquationByMonotonicDeque(points, k);
+        var actual = MaxValueOfEquationSolution.FindMaxValueOfEquationByMonotonicDeque(points, maxDistance);
         Assert.Equal(expected, actual);
     }
 }

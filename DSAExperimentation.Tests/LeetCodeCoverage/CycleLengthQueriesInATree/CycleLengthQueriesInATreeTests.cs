@@ -17,7 +17,7 @@ public sealed class CycleLengthQueriesInATreeTests
             // doubles that edge into a two-node cycle.
             { 2, new[] { new[] { 1, 2 } }, [2] },
 
-            // n=2 (nodes 1,2,3): adding edge 2-3 closes the triangle 2-1-3-2.
+            // treeLevels=2 (nodes 1,2,3): adding edge 2-3 closes the triangle 2-1-3-2.
             { 2, new[] { new[] { 2, 3 } }, [3] },
 
             // Root to a leaf (1-3-7-1) and two siblings (4-2-5-4), in one call, so
@@ -36,18 +36,20 @@ public sealed class CycleLengthQueriesInATreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CycleLengthQueriesByAncestorDictionary_LeetCodeExamples_ReturnsPerQueryCycleLengths(
-        int n, int[][] queries, int[] expected)
+        int treeLevels, int[][] queries, int[] expected)
     {
-        var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByAncestorDictionary(n, queries);
+        var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByAncestorDictionary(
+            treeLevels, queries);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CycleLengthQueriesByParentIndexWalk_LeetCodeExamples_ReturnsPerQueryCycleLengths(
-        int n, int[][] queries, int[] expected)
+        int treeLevels, int[][] queries, int[] expected)
     {
-        var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByParentIndexWalk(n, queries);
+        var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByParentIndexWalk(
+            treeLevels, queries);
         Assert.Equal(expected, actual);
     }
 }

@@ -17,18 +17,20 @@ public sealed class SuperPowTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SuperPowByRepeatedMultiplication_LeetCodeExamples_ReturnsModularPower(int a, int[] b, int expected)
+    public void SuperPowByRepeatedMultiplication_LeetCodeExamples_ReturnsModularPower(
+        int baseValue, int[] exponentDigits, int expected)
     {
-        var actual = SuperPowSolution.SuperPowByRepeatedMultiplication(a, b);
+        var actual = SuperPowSolution.SuperPowByRepeatedMultiplication(baseValue, exponentDigits);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SuperPowByHornerSquaring_LeetCodeExamples_ReturnsModularPower(int a, int[] b, int expected)
+    public void SuperPowByHornerSquaring_LeetCodeExamples_ReturnsModularPower(
+        int baseValue, int[] exponentDigits, int expected)
     {
-        var actual = SuperPowSolution.SuperPowByHornerSquaring(a, b);
+        var actual = SuperPowSolution.SuperPowByHornerSquaring(baseValue, exponentDigits);
 
         Assert.Equal(expected, actual);
     }

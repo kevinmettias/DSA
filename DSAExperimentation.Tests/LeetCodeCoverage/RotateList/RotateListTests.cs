@@ -18,9 +18,9 @@ public sealed class RotateListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateRightByArrayRebuild_LeetCodeExamples_RotatesList(
-        int[] values, int k, int[] expected)
+        int[] values, int rotationCount, int[] expected)
     {
-        var rotated = RotateListSolution.RotateRightByArrayRebuild(BuildList(values), k);
+        var rotated = RotateListSolution.RotateRightByArrayRebuild(BuildList(values), rotationCount);
         var actual = ToArray(rotated);
 
         Assert.Equal(expected, actual);
@@ -29,9 +29,9 @@ public sealed class RotateListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateRightByPointerRewire_LeetCodeExamples_RotatesList(
-        int[] values, int k, int[] expected)
+        int[] values, int rotationCount, int[] expected)
     {
-        var rotated = RotateListSolution.RotateRightByPointerRewire(BuildList(values), k);
+        var rotated = RotateListSolution.RotateRightByPointerRewire(BuildList(values), rotationCount);
         var actual = ToArray(rotated);
 
         Assert.Equal(expected, actual);

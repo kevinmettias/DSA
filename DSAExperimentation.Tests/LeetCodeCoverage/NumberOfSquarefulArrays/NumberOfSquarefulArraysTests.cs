@@ -22,13 +22,13 @@ public sealed class NumberOfSquarefulArraysTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumSquarefulPermsByFullPermutationFilter_LeetCodeExamples_ReturnsDistinctSquarefulArrangementCount(
+    public void CountSquarefulPermsByFullPermutationFilter_LeetCodeExamples_ReturnsDistinctSquarefulArrangementCount(
         int[] nums, int expected) =>
-        Assert.Equal(expected, NumberOfSquarefulArraysSolution.NumSquarefulPermsByFullPermutationFilter(nums));
+        Assert.Equal(expected, NumberOfSquarefulArraysSolution.CountSquarefulPermsByFullPermutationFilter(nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumSquarefulPermsByPrunedBacktracking_LeetCodeExamples_ReturnsDistinctSquarefulArrangementCount(
+    public void CountSquarefulPermsByPrunedBacktracking_LeetCodeExamples_ReturnsDistinctSquarefulArrangementCount(
         int[] nums, int expected) =>
-        Assert.Equal(expected, NumberOfSquarefulArraysSolution.NumSquarefulPermsByPrunedBacktracking(nums));
+        Assert.Equal(expected, NumberOfSquarefulArraysSolution.CountSquarefulPermsByPrunedBacktracking(nums));
 }

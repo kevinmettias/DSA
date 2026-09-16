@@ -40,8 +40,8 @@ public class NumberOfEnclavesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRecursiveFloodFill() => NumberOfEnclavesSolution.NumEnclavesByNaiveFloodFill(_grid);
+    public int NaiveRecursiveFloodFill() => NumberOfEnclavesSolution.CountEnclavesByNaiveFloodFill(_grid);
 
     [Benchmark]
-    public int DepthFirstSearchTraversal() => NumberOfEnclavesSolution.NumEnclavesByDepthFirstSearch(_grid);
+    public int DepthFirstSearchTraversal() => NumberOfEnclavesSolution.CountEnclavesByDepthFirstSearch(_grid);
 }

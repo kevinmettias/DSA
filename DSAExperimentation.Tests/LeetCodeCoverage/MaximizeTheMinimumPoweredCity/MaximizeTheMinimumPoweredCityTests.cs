@@ -36,9 +36,10 @@ public sealed class MaximizeTheMinimumPoweredCityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPowerByDescendingLinearScan_LeetCodeExamples_ReturnsMaximizedMinimumPower(
-        int[] stations, int r, int k, long expected)
+        int[] stations, int radius, int extraStations, long expected)
     {
-        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerByDescendingLinearScan(stations, r, k);
+        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerByDescendingLinearScan(
+            stations, radius, extraStations);
 
         Assert.Equal(expected, actual);
     }
@@ -46,9 +47,10 @@ public sealed class MaximizeTheMinimumPoweredCityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPowerBySequenceLowerBound_LeetCodeExamples_ReturnsMaximizedMinimumPower(
-        int[] stations, int r, int k, long expected)
+        int[] stations, int radius, int extraStations, long expected)
     {
-        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerBySequenceLowerBound(stations, r, k);
+        var actual = MaximizeTheMinimumPoweredCitySolution.MaxPowerBySequenceLowerBound(
+            stations, radius, extraStations);
 
         Assert.Equal(expected, actual);
     }

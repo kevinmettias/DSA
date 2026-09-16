@@ -16,9 +16,9 @@ public class CountKSubsequencesOfAStringWithMaximumBeautyBenchmarks
     private const int AlphabetPoolSize = 5;
     private const int Seed = 2842;
 
-    private string _s = string.Empty;
+    private string _text = string.Empty;
 
-    private int _k;
+    private int _subsequenceLength;
     [Params(5_000, 50_000)]
     public int Length { get; set; }
 
@@ -33,13 +33,13 @@ public class CountKSubsequencesOfAStringWithMaximumBeautyBenchmarks
             chars[i] = (char)('a' + random.Next(AlphabetPoolSize));
         }
 
-        _s = new string(chars);
-        _k = AlphabetPoolSize - 1;
+        _text = new string(chars);
+        _subsequenceLength = AlphabetPoolSize - 1;
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceCombinations() => CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(_s, _k);
+    public long BruteForceCombinations() => CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(_text, _subsequenceLength);
 
     [Benchmark]
-    public long GroupedFrequencyProduct() => CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(_s, _k);
+    public long GroupedFrequencyProduct() => CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(_text, _subsequenceLength);
 }

@@ -44,18 +44,18 @@ public sealed class CountValidPathsInATreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountValidPathsByPerPairPathWalk_LeetCodeExamples_ReturnsExpectedCount(
-        int n, int[][] edges, long expected)
+        int nodeCount, int[][] edges, long expected)
     {
-        var paths = CountValidPathsInATreeSolution.CountValidPathsByPerPairPathWalk(n, edges);
+        var paths = CountValidPathsInATreeSolution.CountValidPathsByPerPairPathWalk(nodeCount, edges);
         Assert.Equal(expected, paths);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountValidPathsByDisjointSetBlobs_LeetCodeExamples_ReturnsExpectedCount(
-        int n, int[][] edges, long expected)
+        int nodeCount, int[][] edges, long expected)
     {
-        var paths = CountValidPathsInATreeSolution.CountValidPathsByDisjointSetBlobs(n, edges);
+        var paths = CountValidPathsInATreeSolution.CountValidPathsByDisjointSetBlobs(nodeCount, edges);
         Assert.Equal(expected, paths);
     }
 }

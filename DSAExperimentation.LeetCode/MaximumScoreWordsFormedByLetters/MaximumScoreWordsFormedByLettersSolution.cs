@@ -30,7 +30,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         var wordCounts = words.Select(LetterCounts).ToArray();
         var wordScores = words.Select(word => WordScore(word, score)).ToArray();
 
-        return SearchByInclusion(0, remaining, 0, new WordData(wordCounts, wordScores));
+        return SearchByInclusion(0, remaining, 0, new WordInventory(wordCounts, wordScores));
     }
 
     private static int WordScore(string word, int[] score)
@@ -84,7 +84,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         return [false];
     }
 
-    private static int SearchByInclusion(int index, int[] remaining, int currentScore, WordData words)
+    private static int SearchByInclusion(int index, int[] remaining, int currentScore, WordInventory words)
     {
         if (index == words.Scores.Length)
         {
@@ -94,7 +94,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         var skipped = SearchByInclusion(index + 1, remaining, currentScore, words);
         var counts = words.Counts[index];
 
-        if (!Fits(counts, remaining))
+        if (!CanFit(counts, remaining))
         {
             return skipped;
         }
@@ -106,7 +106,8 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         return Math.Max(skipped, included);
     }
 
-    private static bool Fits(int[] counts, int[] remaining)
+    // Whether one word's own letter counts all fit inside what the shared pool has left.
+    private static bool CanFit(int[] counts, int[] remaining)
     {
         for (var c = 0; c < AlphabetSize; c++)
         {
@@ -141,7 +142,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
         return counts;
     }
 
-    private readonly record struct WordData(int[][] Counts, int[] Scores);
+    private readonly record struct WordInventory(int[][] Counts, int[] Scores);
 
     // One word index plus the shared, mutated letter budget. Unchoose is Choose's
     // exact inverse, which is what lets Candidates re-read CanInclude lazily.
@@ -155,7 +156,7 @@ internal static class MaximumScoreWordsFormedByLettersSolution
 
         public int CurrentScore { get; private set; }
 
-        public bool CanInclude => Fits(_wordCounts[Index], _available);
+        public bool CanInclude => CanFit(_wordCounts[Index], _available);
 
         public WordChoiceState(string[] words, int[] score, int[] available)
         {

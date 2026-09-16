@@ -17,7 +17,8 @@ public class SumGameBenchmarks
 
     // Kept modest: branching is 10 digits per remaining blank, so the unmemoized
     // tree is already O(10^(2 * BlanksPerSide)) - 4 and 6 total blanks keep
-    // BruteForceRecursion in the thousands-to-millions of calls, not billions.
+    // CanAliceWinByBruteForceRecursion in the thousands-to-millions of calls, not
+    // billions.
     [Params(2, 3)]
     public int BlanksPerSide { get; set; }
 
@@ -25,11 +26,11 @@ public class SumGameBenchmarks
     public void Setup() => _board = new SumGameState(BlanksPerSide, BlanksPerSide, SumDifference: 0);
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceRecursion() => SumGameSolution.AliceWinsByBruteForceRecursion(_board);
+    public bool CanAliceWinByBruteForceRecursion() => SumGameSolution.CanAliceWinByBruteForceRecursion(_board);
 
     [Benchmark]
-    public bool MemoizedRecursion() => SumGameSolution.AliceWinsByMemoizedRecursion(_board);
+    public bool CanAliceWinByMemoizedRecursion() => SumGameSolution.CanAliceWinByMemoizedRecursion(_board);
 
     [Benchmark]
-    public bool ClosedFormFormula() => SumGameSolution.AliceWinsByClosedForm(_board);
+    public bool CanAliceWinByClosedForm() => SumGameSolution.CanAliceWinByClosedForm(_board);
 }

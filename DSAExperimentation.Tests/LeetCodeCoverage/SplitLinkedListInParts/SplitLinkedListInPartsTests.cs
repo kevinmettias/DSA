@@ -4,8 +4,8 @@ using DSAExperimentation.LeetCode.SplitLinkedListInParts;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SplitLinkedListInParts;
 
 // Harness only. Both strategies are SplitLinkedListInPartsSolution's - this file
-// just pins them to LeetCode's published examples, including the case where k
-// exceeds the list length and trailing parts must be null.
+// just pins them to LeetCode's published examples, including the case where
+// partCount exceeds the list length and trailing parts must be null.
 public sealed class SplitLinkedListInPartsTests
 {
     public static TheoryData<int[], int, int[]?[]> Examples =>
@@ -18,10 +18,10 @@ public sealed class SplitLinkedListInPartsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SplitListToPartsByArrayRebuild_LeetCodeExamples_SplitsEvenlyWithEarlyPartsAbsorbingRemainder(
-        int[] values, int k, int[]?[] expected)
+        int[] values, int partCount, int[]?[] expected)
     {
         var head = Build(values);
-        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(head, k);
+        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(head, partCount);
 
         AssertParts(parts, expected);
     }
@@ -29,10 +29,10 @@ public sealed class SplitLinkedListInPartsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SplitListToPartsByInPlaceRewire_LeetCodeExamples_SplitsEvenlyWithEarlyPartsAbsorbingRemainder(
-        int[] values, int k, int[]?[] expected)
+        int[] values, int partCount, int[]?[] expected)
     {
         var head = Build(values);
-        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(head, k);
+        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(head, partCount);
 
         AssertParts(parts, expected);
     }

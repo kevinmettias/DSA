@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReverseNodesInKGroup;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseNodesInKGroup;
 
 // Harness only. Both strategies are ReverseNodesInKGroupSolution's - this file
-// pins them to LeetCode's published examples, including k = 1 (a no-op) and a
+// pins them to LeetCode's published examples, including groupSize = 1 (a no-op) and a
 // single-node list (always a short final group).
 public sealed class ReverseNodesInKGroupTests
 {
@@ -20,9 +20,9 @@ public sealed class ReverseNodesInKGroupTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReverseKGroupByPointerReversal_LeetCodeExamples_ReversesOnlyCompleteGroups(
-        int[] values, int k, int[] expected)
+        int[] values, int groupSize, int[] expected)
     {
-        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(BuildList(values), k);
+        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(BuildList(values), groupSize);
         var actual = ToArray(reversed);
 
         Assert.Equal(expected, actual);
@@ -31,9 +31,9 @@ public sealed class ReverseNodesInKGroupTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReverseKGroupByArrayReverse_LeetCodeExamples_ReversesOnlyCompleteGroups(
-        int[] values, int k, int[] expected)
+        int[] values, int groupSize, int[] expected)
     {
-        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(BuildList(values), k);
+        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(BuildList(values), groupSize);
         var actual = ToArray(reversed);
 
         Assert.Equal(expected, actual);

@@ -2,10 +2,11 @@ using MaxDigitsStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.CreateMaximumNumber;
 
-// LeetCode 321. Create Maximum Number: for every valid split of k digits between
-// the two arrays, pull the largest length-i (resp. length-(k-i)) subsequence out of
-// each, greedily merge the two subsequences preserving each one's relative order,
-// and keep the lexicographically largest merged result across every split.
+// LeetCode 321. Create Maximum Number: for every valid split of the digit count
+// between the two arrays, pull the largest length-i (resp. length-(digitCount - i))
+// subsequence out of each, greedily merge the two subsequences preserving each
+// one's relative order, and keep the lexicographically largest merged result
+// across every split.
 //
 // The two strategies share that split/merge orchestration - it is identical either
 // way - and differ only in how "largest subsequence of length L" is pulled out of a
@@ -19,11 +20,11 @@ internal static class CreateMaximumNumberSolution
     private static readonly ILargestSubsequence NaiveScan = new LargestSubsequenceByNaiveScan();
     private static readonly ILargestSubsequence MonotonicStack = new LargestSubsequenceByMonotonicStack();
 
-    public static int[] MaxNumberByNaiveScan(int[] nums1, int[] nums2, int k) =>
-        MaxNumber(nums1, nums2, k, NaiveScan);
+    public static int[] MaxNumberByNaiveScan(int[] nums1, int[] nums2, int digitCount) =>
+        MaxNumber(nums1, nums2, digitCount, NaiveScan);
 
-    public static int[] MaxNumberByMonotonicStack(int[] nums1, int[] nums2, int k) =>
-        MaxNumber(nums1, nums2, k, MonotonicStack);
+    public static int[] MaxNumberByMonotonicStack(int[] nums1, int[] nums2, int digitCount) =>
+        MaxNumber(nums1, nums2, digitCount, MonotonicStack);
 
     // The one question the two strategies answer differently: the largest
     // subsequence of exactly `length` digits that can be pulled out of `digits`
@@ -116,17 +117,17 @@ internal static class CreateMaximumNumberSolution
         return result;
     }
 
-    private static int[] MaxNumber(int[] nums1, int[] nums2, int k, ILargestSubsequence maxSubsequence)
+    private static int[] MaxNumber(int[] nums1, int[] nums2, int digitCount, ILargestSubsequence maxSubsequence)
     {
         var best = Array.Empty<int>();
 
-        var lowI = Math.Max(0, k - nums2.Length);
-        var highI = Math.Min(k, nums1.Length);
+        var lowI = Math.Max(0, digitCount - nums2.Length);
+        var highI = Math.Min(digitCount, nums1.Length);
 
         for (var i = lowI; i <= highI; i++)
         {
             var subsequence1 = maxSubsequence.Take(nums1, i);
-            var subsequence2 = maxSubsequence.Take(nums2, k - i);
+            var subsequence2 = maxSubsequence.Take(nums2, digitCount - i);
             var candidate = MergePreferringLarger(subsequence1, subsequence2);
             if (IsGreaterOrEqual(candidate, 0, best, 0))
             {
@@ -137,17 +138,17 @@ internal static class CreateMaximumNumberSolution
         return best;
     }
 
-    private static int[] MergePreferringLarger(int[] a, int[] b)
+    private static int[] MergePreferringLarger(int[] leftDigits, int[] rightDigits)
     {
-        var merged = new int[a.Length + b.Length];
-        var ai = 0;
-        var bi = 0;
+        var merged = new int[leftDigits.Length + rightDigits.Length];
+        var leftIndex = 0;
+        var rightIndex = 0;
 
         for (var m = 0; m < merged.Length; m++)
         {
-            merged[m] = IsGreaterOrEqual(a, ai, b, bi)
-                ? TakeNext(a, ref ai)
-                : TakeNext(b, ref bi);
+            merged[m] = IsGreaterOrEqual(leftDigits, leftIndex, rightDigits, rightIndex)
+                ? TakeNext(leftDigits, ref leftIndex)
+                : TakeNext(rightDigits, ref rightIndex);
         }
 
         return merged;
@@ -156,24 +157,26 @@ internal static class CreateMaximumNumberSolution
     // Reads the digit at `index` and steps past it: the one-step read a merge makes.
     private static int TakeNext(int[] source, ref int index) => source[index++];
 
-    // Compares a[ai..] against b[bi..] the way "is a's remaining suffix at least as
-    // large" needs to work for both callers: during a merge, when one side's
-    // remaining digits are a prefix of the other's, the longer remaining suffix
-    // wins (there's more of it left to place); the same rule doubles as "candidate
-    // >= best" when bi/ai both start at 0.
-    private static bool IsGreaterOrEqual(int[] a, int ai, int[] b, int bi)
+    // Compares leftDigits[leftIndex..] against rightDigits[rightIndex..] the way "is
+    // the left one's remaining suffix at least as large" needs to work for both
+    // callers: during a merge, when one side's remaining digits are a prefix of the
+    // other's, the longer remaining suffix wins (there's more of it left to place);
+    // the same rule doubles as "candidate >= best" when both cursors start at 0.
+    private static bool IsGreaterOrEqual(int[] leftDigits, int leftIndex, int[] rightDigits, int rightIndex)
     {
-        while (RemainingDigitsAgree(a, ai, b, bi))
+        while (IsNextDigitPairEqual(leftDigits, leftIndex, rightDigits, rightIndex))
         {
-            ai++;
-            bi++;
+            leftIndex++;
+            rightIndex++;
         }
 
-        return bi == b.Length || (ai < a.Length && a[ai] > b[bi]);
+        return rightIndex == rightDigits.Length
+            || (leftIndex < leftDigits.Length && leftDigits[leftIndex] > rightDigits[rightIndex]);
     }
 
     // Both remaining suffixes have a digit left to compare at their cursor, and
     // those digits are the same - so neither side can be called larger yet.
-    private static bool RemainingDigitsAgree(int[] a, int ai, int[] b, int bi)
-        => ai < a.Length && bi < b.Length && a[ai] == b[bi];
+    private static bool IsNextDigitPairEqual(int[] leftDigits, int leftIndex, int[] rightDigits, int rightIndex)
+        => leftIndex < leftDigits.Length && rightIndex < rightDigits.Length
+            && leftDigits[leftIndex] == rightDigits[rightIndex];
 }

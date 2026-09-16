@@ -19,8 +19,8 @@ internal static class PrintWordsVerticallySolution
     // Deliberately written without this repo's primitives (the word container it
     // is handed aside) - it is the arm the DynamicArray walk below has to justify
     // itself against.
-    public static List<string> PrintVerticallyByListTrimEnd(string s) =>
-        PrintVerticallyByListTrimEnd(SplitWords(s));
+    public static List<string> PrintVerticallyByListTrimEnd(string sentence) =>
+        PrintVerticallyByListTrimEnd(SplitWords(sentence));
 
     public static List<string> PrintVerticallyByListTrimEnd(DynamicArray<string> words)
     {
@@ -48,8 +48,8 @@ internal static class PrintWordsVerticallySolution
     // indexed Get (to read the last character) and O(1) removal from the end: the
     // padding is popped off the tail before the row's string exists, so no padded
     // string is ever allocated.
-    public static List<string> PrintVerticallyByDynamicArrayColumns(string s) =>
-        PrintVerticallyByDynamicArrayColumns(SplitWords(s));
+    public static List<string> PrintVerticallyByDynamicArrayColumns(string sentence) =>
+        PrintVerticallyByDynamicArrayColumns(SplitWords(sentence));
 
     public static List<string> PrintVerticallyByDynamicArrayColumns(DynamicArray<string> words)
     {
@@ -101,11 +101,11 @@ internal static class PrintWordsVerticallySolution
     // LeetCode hands the sentence in as one space-separated string; every strategy
     // works over the words, so the split is done once here and the prepared-words
     // overloads let a benchmark hoist it out of the measured method entirely.
-    private static DynamicArray<string> SplitWords(string s)
+    private static DynamicArray<string> SplitWords(string sentence)
     {
         var words = new DynamicArray<string>();
 
-        foreach (var word in s.Split(Padding, StringSplitOptions.RemoveEmptyEntries))
+        foreach (var word in sentence.Split(Padding, StringSplitOptions.RemoveEmptyEntries))
         {
             words.Add(word);
         }

@@ -59,7 +59,7 @@ internal static class AllPairsShortestPaths
         }
     }
 
-    private static void RelaxRow<TWeight>(TWeight[,] matrix, int i, int k, int count)
+    private static void RelaxRow<TWeight>(TWeight[,] matrix, int sourceIndex, int intermediateIndex, int count)
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
     {
         // Guards against TWeight.MaxValue + TWeight.MaxValue, which would otherwise
@@ -68,31 +68,33 @@ internal static class AllPairsShortestPaths
         // "still unreached." Forced purely by the dense matrix needing every cell to
         // hold some value - not a caller-facing precondition the way non-negative
         // weights is for ShortestPath.cs.
-        if (matrix[i, k] == TWeight.MaxValue)
+        if (matrix[sourceIndex, intermediateIndex] == TWeight.MaxValue)
         {
             return;
         }
 
         for (var j = 0; j < count; j++)
         {
-            RelaxCell(matrix, i, k, j);
+            RelaxCell(matrix, sourceIndex, intermediateIndex, j);
         }
     }
 
-    private static void RelaxCell<TWeight>(TWeight[,] matrix, int i, int k, int j)
+    private static void RelaxCell<TWeight>(TWeight[,] matrix, int sourceIndex, int intermediateIndex,
+                                          int destinationIndex)
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
     {
-        if (matrix[k, j] == TWeight.MaxValue)
+        if (matrix[intermediateIndex, destinationIndex] == TWeight.MaxValue)
         {
             return;
         }
 
-        if (!TryAddChecked(matrix[i, k], matrix[k, j], out var candidate))
+        if (!TryAddChecked(matrix[sourceIndex, intermediateIndex],
+                           matrix[intermediateIndex, destinationIndex], out var candidate))
         {
             return;
         }
 
-        UpdateIfShorter(matrix, i, j, candidate);
+        UpdateIfShorter(matrix, sourceIndex, destinationIndex, candidate);
     }
 
     // [MaybeNullWhen(false)] is what lets the overflow branch assign `default` rather than
@@ -123,12 +125,13 @@ internal static class AllPairsShortestPaths
         }
     }
 
-    private static void UpdateIfShorter<TWeight>(TWeight[,] matrix, int i, int j, TWeight candidate)
+    private static void UpdateIfShorter<TWeight>(TWeight[,] matrix, int sourceIndex, int destinationIndex,
+                                                 TWeight candidate)
         where TWeight : INumber<TWeight>, IMinMaxValue<TWeight>
     {
-        if (candidate < matrix[i, j])
+        if (candidate < matrix[sourceIndex, destinationIndex])
         {
-            matrix[i, j] = candidate;
+            matrix[sourceIndex, destinationIndex] = candidate;
         }
     }
 

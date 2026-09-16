@@ -39,14 +39,14 @@ public class ReplaceWordsBenchmarks
             .Distinct()
             .ToArray();
         _sentence = string.Join(' ', Enumerable.Range(0, DictionarySize)
-            .Select(i => UsesDictionaryRoot(i)
+            .Select(i => IsDictionaryRootWord(i)
                 ? PrefixedWord(random)
                 : RandomWord(random, WordLength)));
     }
 
     // Alternates the sentence between "prefixed with a real dictionary root" and
     // "fully random" so half the words exercise each strategy.
-    private static bool UsesDictionaryRoot(int i) => i % AlternationModulus == 0;
+    private static bool IsDictionaryRootWord(int wordIndex) => wordIndex % AlternationModulus == 0;
 
     private string PrefixedWord(Random random) =>
         _dictionary[random.Next(_dictionary.Length)] + RandomWord(random, WordLength - RootLength);

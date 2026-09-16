@@ -13,21 +13,21 @@ namespace DSAExperimentation.LeetCode.LongestPalindromicSubstring;
 // original benchmark arms measured only the winning length, which is promoted here.
 internal static class LongestPalindromicSubstringSolution
 {
-    public static string FindLongestPalindromeByExpandAroundCenter(string s)
+    public static string FindLongestPalindromeByExpandAroundCenter(string text)
     {
         var bestStart = 0;
         var bestLength = 0;
 
-        for (var center = 0; center < s.Length; center++)
+        for (var center = 0; center < text.Length; center++)
         {
-            var (oddStart, oddLength) = ExpandFrom(s, center, center);
+            var (oddStart, oddLength) = ExpandFrom(text, center, center);
 
             if (oddLength > bestLength)
             {
                 (bestStart, bestLength) = (oddStart, oddLength);
             }
 
-            var (evenStart, evenLength) = ExpandFrom(s, center, center + 1);
+            var (evenStart, evenLength) = ExpandFrom(text, center, center + 1);
 
             if (evenLength > bestLength)
             {
@@ -35,12 +35,12 @@ internal static class LongestPalindromicSubstringSolution
             }
         }
 
-        return s.Substring(bestStart, bestLength);
+        return text.Substring(bestStart, bestLength);
     }
 
-    private static (int Start, int Length) ExpandFrom(string s, int left, int right)
+    private static (int Start, int Length) ExpandFrom(string text, int left, int right)
     {
-        while (ExpandsToMatchingPair(s, left, right))
+        while (IsMatchingPair(text, left, right))
         {
             left--;
             right++;
@@ -51,12 +51,12 @@ internal static class LongestPalindromicSubstringSolution
 
     // The walk can keep widening while both ends are still inside the string and
     // the characters they hold are the same.
-    private static bool ExpandsToMatchingPair(string s, int left, int right)
-        => left >= 0 && right < s.Length && s[left] == s[right];
+    private static bool IsMatchingPair(string text, int left, int right)
+        => left >= 0 && right < text.Length && text[left] == text[right];
 
-    public static string FindLongestPalindromeByManacher(string s)
+    public static string FindLongestPalindromeByManacher(string text)
     {
-        var (start, length) = Manacher.FindLongestPalindromicSubstring(s);
-        return s.Substring(start, length);
+        var (start, length) = Manacher.FindLongestPalindromicSubstring(text);
+        return text.Substring(start, length);
     }
 }

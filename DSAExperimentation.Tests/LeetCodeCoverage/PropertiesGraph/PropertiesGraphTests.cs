@@ -18,9 +18,9 @@ public sealed class PropertiesGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfComponentsByBruteForce_LeetCodeExamples_ReturnsComponentCount(
-        int[][] properties, int k, int expected)
+        int[][] properties, int minimumIntersectionCount, int expected)
     {
-        var actual = PropertiesGraphSolution.NumberOfComponentsByBruteForce(properties, k);
+        var actual = PropertiesGraphSolution.NumberOfComponentsByBruteForce(properties, minimumIntersectionCount);
 
         Assert.Equal(expected, actual);
     }
@@ -28,9 +28,9 @@ public sealed class PropertiesGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfComponentsByDisjointSet_LeetCodeExamples_ReturnsComponentCount(
-        int[][] properties, int k, int expected)
+        int[][] properties, int minimumIntersectionCount, int expected)
     {
-        var actual = PropertiesGraphSolution.NumberOfComponentsByDisjointSet(properties, k);
+        var actual = PropertiesGraphSolution.NumberOfComponentsByDisjointSet(properties, minimumIntersectionCount);
 
         Assert.Equal(expected, actual);
     }

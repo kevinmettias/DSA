@@ -7,19 +7,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods NumberOfDistinctRollSequencesTests proves correct - the unmemoized
 // recursion over (day, secondLastRoll, lastRoll), which re-explores every state on
 // each path that reaches it, against the same recurrence routed through this repo's
-// own Memoizer. N stays small enough that the exponential arm still finishes
-// (CanIWinBenchmarks' precedent for bounding a brute-force baseline's input size).
+// own Memoizer. The sequence length stays small enough that the exponential arm
+// still finishes (CanIWinBenchmarks' precedent for bounding a brute-force baseline's
+// input size).
 [MemoryDiagnoser]
 public class NumberOfDistinctRollSequencesBenchmarks
 {
     [Params(6, 10)]
-    public int N { get; set; }
+    public int SequenceLength { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForceRecursion() =>
-        NumberOfDistinctRollSequencesSolution.DistinctSequencesByBruteForceRecursion(N);
+        NumberOfDistinctRollSequencesSolution.DistinctSequencesByBruteForceRecursion(SequenceLength);
 
     [Benchmark]
     public long MemoizedRecursion() =>
-        NumberOfDistinctRollSequencesSolution.DistinctSequencesByMemoizedRecursion(N);
+        NumberOfDistinctRollSequencesSolution.DistinctSequencesByMemoizedRecursion(SequenceLength);
 }

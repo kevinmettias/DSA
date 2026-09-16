@@ -21,22 +21,22 @@ internal static class DecodeStringSolution
     // The textbook answer: recursion depth tracks nesting depth, not input
     // length, so it is written without this repo's Stack<T> - the arm the
     // composed solution below has to justify itself against.
-    public static string DecodeByRecursiveDescent(string s)
+    public static string DecodeByRecursiveDescent(string encoded)
     {
-        var i = 0;
-        return DecodeRecursive(s, ref i).ToString();
+        var position = 0;
+        return DecodeRecursive(encoded, ref position).ToString();
     }
 
     // Push onto both stacks at every '[', pop and fold at every ']' - the
     // same "repo Stack as an explicit parser stack instead of recursion"
     // move BasicCalculatorSolution makes for nested '(' / ')' groups.
-    public static string DecodeByStackScan(string s)
+    public static string DecodeByStackScan(string encoded)
     {
         var state = new ScanState();
 
-        foreach (var c in s)
+        foreach (var character in encoded)
         {
-            ConsumeCharacter(state, c);
+            ConsumeCharacter(state, character);
         }
 
         return state.Current.ToString();
@@ -45,23 +45,23 @@ internal static class DecodeStringSolution
     // One character of the scan: digits build up the pending repeat count, '[' opens a
     // nested scope, ']' folds the finished one back into its enclosing scope, and
     // anything else is literal text for the scope currently being built.
-    private static void ConsumeCharacter(ScanState state, char c)
+    private static void ConsumeCharacter(ScanState state, char character)
     {
-        if (char.IsDigit(c))
+        if (char.IsDigit(character))
         {
-            state.Number = (state.Number * DecimalBase) + (c - '0');
+            state.Number = (state.Number * DecimalBase) + (character - '0');
         }
-        else if (c == '[')
+        else if (character == '[')
         {
             PushGroup(state);
         }
-        else if (c == ']')
+        else if (character == ']')
         {
             PopGroup(state);
         }
         else
         {
-            state.Current.Append(c);
+            state.Current.Append(character);
         }
     }
 
@@ -86,20 +86,20 @@ internal static class DecodeStringSolution
         state.Current = outer;
     }
 
-    private static StringBuilder DecodeRecursive(string s, ref int i)
+    private static StringBuilder DecodeRecursive(string encoded, ref int position)
     {
         var builder = new StringBuilder();
 
-        while (i < s.Length && s[i] != ']')
+        while (position < encoded.Length && encoded[position] != ']')
         {
-            if (char.IsDigit(s[i]))
+            if (char.IsDigit(encoded[position]))
             {
-                AppendRepeatedGroup(s, ref i, builder);
+                AppendRepeatedGroup(encoded, ref position, builder);
             }
             else
             {
-                builder.Append(s[i]);
-                i++;
+                builder.Append(encoded[position]);
+                position++;
             }
         }
 
@@ -109,19 +109,19 @@ internal static class DecodeStringSolution
     // The digit branch from DecodeRecursive's scan loop: parses the repeat
     // count, recurses into the bracketed group, then tiles the decoded inner
     // text that many times onto the caller's builder.
-    private static void AppendRepeatedGroup(string s, ref int i, StringBuilder builder)
+    private static void AppendRepeatedGroup(string encoded, ref int position, StringBuilder builder)
     {
         var number = 0;
 
-        while (char.IsDigit(s[i]))
+        while (char.IsDigit(encoded[position]))
         {
-            number = (number * DecimalBase) + (s[i] - '0');
-            i++;
+            number = (number * DecimalBase) + (encoded[position] - '0');
+            position++;
         }
 
-        i++; // skip '['
-        var inner = DecodeRecursive(s, ref i);
-        i++; // skip ']'
+        position++; // skip '['
+        var inner = DecodeRecursive(encoded, ref position);
+        position++; // skip ']'
 
         for (var r = 0; r < number; r++)
         {

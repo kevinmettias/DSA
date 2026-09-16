@@ -6,8 +6,8 @@ namespace DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters
 
 // LeetCode 2246. Longest Path With Different Adjacent Characters: parent[] describes
 // a tree rooted at node 0 (the same prevRoom[] shape LC 1916 uses, so
-// DataStructures' ParentArrayTree/RootedTreeNode materialize it), s[i] is node i's
-// character, and the answer is the longest node-count path whose every adjacent
+// DataStructures' ParentArrayTree/RootedTreeNode materialize it), labels[i] is node
+// i's character, and the answer is the longest node-count path whose every adjacent
 // pair has a different character.
 //
 // That is exactly TreeMetrics.Diameter's own multi-child "two tallest heights"
@@ -22,8 +22,8 @@ internal static class LongestPathWithDifferentAdjacentCharactersSolution
     // across levels. O(n) work at each of n nodes, O(n^2) overall on a skewed
     // chain. Deliberately plain recursion over BCL lists: it is the arm the fold
     // below has to justify itself against.
-    public static int LongestPathByRecomputedSubtreeWalk(int[] parent, string s)
-        => LongestPathByRecomputedSubtreeWalk(ParentArrayTree.Build(parent)[0], s);
+    public static int LongestPathByRecomputedSubtreeWalk(int[] parent, string labels)
+        => LongestPathByRecomputedSubtreeWalk(ParentArrayTree.Build(parent)[0], labels);
 
     public static int LongestPathByRecomputedSubtreeWalk(RootedTreeNode root, string labels)
         => LongestPathVia(root, labels).Best;
@@ -31,8 +31,8 @@ internal static class LongestPathWithDifferentAdjacentCharactersSolution
     // This repo's own bottom-up pass: TreeFold visits every node once and
     // LongestPathAlgebra folds height and best-path-through-node together, so no
     // subtree is ever walked twice. O(n).
-    public static int LongestPathByTreeFold(int[] parent, string s)
-        => LongestPathByTreeFold(ParentArrayTree.Build(parent)[0], s);
+    public static int LongestPathByTreeFold(int[] parent, string labels)
+        => LongestPathByTreeFold(ParentArrayTree.Build(parent)[0], labels);
 
     public static int LongestPathByTreeFold(RootedTreeNode root, string labels)
     {

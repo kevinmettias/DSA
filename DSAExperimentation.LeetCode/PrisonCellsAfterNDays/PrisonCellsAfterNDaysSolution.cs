@@ -12,8 +12,8 @@ namespace DSAExperimentation.LeetCode.PrisonCellsAfterNDays;
 // and that is what the composed arm exploits: this repo's own HashMap<int,int>
 // records the day each encoded state was first seen (the same "have I seen this
 // key before" role TwoSumSolution uses HashMap for, keyed on a packed state
-// instead of a value), so the walk can skip to N modulo the cycle length rather
-// than stepping through all of N, which LeetCode allows to reach 10^9.
+// instead of a value), so the walk can skip to dayCount modulo the cycle length
+// rather than stepping through all of dayCount, which LeetCode allows to reach 10^9.
 internal static class PrisonCellsAfterNDaysSolution
 {
     private const int CellCount = 8;
@@ -26,11 +26,11 @@ internal static class PrisonCellsAfterNDaysSolution
     // The textbook answer: step one day at a time, all N of them. Deliberately
     // written without this repo's primitives - it is the arm the composed
     // solution below has to justify itself against.
-    public static int[] CellsAfterNDaysByDailySimulation(int[] cells, int n)
+    public static int[] CellsAfterNDaysByDailySimulation(int[] cells, int dayCount)
     {
         var state = Encode(cells);
 
-        for (var day = 0; day < n; day++)
+        for (var day = 0; day < dayCount; day++)
         {
             state = NextState(state);
         }
@@ -40,18 +40,18 @@ internal static class PrisonCellsAfterNDaysSolution
 
     // Record each encoded state against the day it was first seen in this repo's
     // own HashMap<int,int>; the first repeat closes a cycle, and the remaining
-    // days collapse to (n - day) modulo that cycle's length.
-    public static int[] CellsAfterNDaysByCycleDetection(int[] cells, int n)
+    // days collapse to (dayCount - day) modulo that cycle's length.
+    public static int[] CellsAfterNDaysByCycleDetection(int[] cells, int dayCount)
     {
         var seenAtDay = new HashMap<int, int>();
         var state = Encode(cells);
         var day = 0;
 
-        while (day < n)
+        while (day < dayCount)
         {
             if (seenAtDay.TryGetValue(state, out var firstSeenDay))
             {
-                var finalState = JumpToCycleEnd(state, day, firstSeenDay, n);
+                var finalState = JumpToCycleEnd(state, day, firstSeenDay, dayCount);
                 return Decode(finalState);
             }
 
@@ -63,10 +63,10 @@ internal static class PrisonCellsAfterNDaysSolution
         return Decode(state);
     }
 
-    private static int JumpToCycleEnd(int state, int day, int firstSeenDay, int n)
+    private static int JumpToCycleEnd(int state, int day, int firstSeenDay, int dayCount)
     {
         var cycleLength = day - firstSeenDay;
-        var remaining = (n - day) % cycleLength;
+        var remaining = (dayCount - day) % cycleLength;
 
         for (var i = 0; i < remaining; i++)
         {

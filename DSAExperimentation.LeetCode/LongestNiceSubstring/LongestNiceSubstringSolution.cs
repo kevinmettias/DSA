@@ -27,13 +27,13 @@ internal static class LongestNiceSubstringSolution
     // O(n^3) overall. Deliberately written with a BCL bool[] and nothing from
     // this repo - it is the arm the divide-and-conquer strategy below has to
     // justify itself against.
-    public static string FindLongestNiceSubstringByBruteForceSubstrings(string s)
+    public static string FindLongestNiceSubstringByBruteForceSubstrings(string text)
     {
         var best = string.Empty;
 
-        for (var start = 0; start < s.Length; start++)
+        for (var start = 0; start < text.Length; start++)
         {
-            best = LongestNiceRunFrom(s, start, best);
+            best = LongestNiceRunFrom(text, start, best);
         }
 
         return best;
@@ -42,33 +42,33 @@ internal static class LongestNiceSubstringSolution
     // Extends the window from one start position, keeping the incumbent unless a
     // strictly longer nice substring turns up - so ties keep the earlier find,
     // which is the answer LeetCode asks for.
-    private static string LongestNiceRunFrom(string s, int start, string best)
+    private static string LongestNiceRunFrom(string text, int start, string best)
     {
-        for (var end = start; end < s.Length; end++)
+        for (var end = start; end < text.Length; end++)
         {
             var length = end - start + 1;
 
-            if (length > best.Length && IsNice(s, start, end))
+            if (length > best.Length && IsNice(text, start, end))
             {
-                best = s.Substring(start, length);
+                best = text.Substring(start, length);
             }
         }
 
         return best;
     }
 
-    private static bool IsNice(string s, int start, int end)
+    private static bool IsNice(string text, int start, int end)
     {
         var present = new bool[AsciiTableSize];
 
         for (var i = start; i <= end; i++)
         {
-            present[s[i]] = true;
+            present[text[i]] = true;
         }
 
         for (var i = start; i <= end; i++)
         {
-            if (!present[Partner(s[i])])
+            if (!present[Partner(text[i])])
             {
                 return false;
             }
@@ -83,38 +83,38 @@ internal static class LongestNiceSubstringSolution
     // nice. Otherwise no nice substring can ever cross that character - it can
     // never gain its missing partner - so the answer is the longer of the two
     // halves split around it, recursed independently. O(n^2) worst case.
-    public static string FindLongestNiceSubstringByDivideAndConquer(string s)
+    public static string FindLongestNiceSubstringByDivideAndConquer(string text)
     {
-        if (s.Length < MinimumNiceSubstringLength)
+        if (text.Length < MinimumNiceSubstringLength)
         {
             return string.Empty;
         }
 
-        var present = BuildCharacterSet(s);
+        var present = BuildCharacterSet(text);
 
-        return SplitAtMissingPartner(s, present) ?? s;
+        return SplitAtMissingPartner(text, present) ?? text;
     }
 
-    private static Set<char> BuildCharacterSet(string s)
+    private static Set<char> BuildCharacterSet(string text)
     {
         var present = new Set<char>();
 
-        foreach (var c in s)
+        foreach (var character in text)
         {
-            present.TryAdd(c);
+            present.TryAdd(character);
         }
 
         return present;
     }
 
-    // Returns null when every character has its partner, i.e. s is already nice.
-    private static string? SplitAtMissingPartner(string s, Set<char> present)
+    // Returns null when every character has its partner, i.e. text is already nice.
+    private static string? SplitAtMissingPartner(string text, Set<char> present)
     {
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            if (!present.Has(Partner(s[i])))
+            if (!present.Has(Partner(text[i])))
             {
-                return LongerHalf(s, i);
+                return LongerHalf(text, i);
             }
         }
 
@@ -123,14 +123,16 @@ internal static class LongestNiceSubstringSolution
 
     // The left half wins ties, which is what makes the recursion report the
     // earliest longest nice substring rather than an arbitrary one.
-    private static string LongerHalf(string s, int splitIndex)
+    private static string LongerHalf(string text, int splitIndex)
     {
-        var left = FindLongestNiceSubstringByDivideAndConquer(s[..splitIndex]);
-        var right = FindLongestNiceSubstringByDivideAndConquer(s[(splitIndex + 1)..]);
+        var left = FindLongestNiceSubstringByDivideAndConquer(text[..splitIndex]);
+        var right = FindLongestNiceSubstringByDivideAndConquer(text[(splitIndex + 1)..]);
 
         return left.Length >= right.Length ? left : right;
     }
 
-    // The character that has to appear alongside c for c to be satisfied.
-    private static char Partner(char c) => char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c);
+    // The character that has to appear alongside `character` for `character` to be
+    // satisfied.
+    private static char Partner(char character) =>
+        char.IsUpper(character) ? char.ToLower(character) : char.ToUpper(character);
 }

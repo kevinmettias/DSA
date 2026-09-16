@@ -25,27 +25,27 @@ namespace DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 // Deliberately only tractable for small k.
 internal static class SumOfKDigitNumbersInARangeSolution
 {
-    public static long SumOfKDigitNumbersByBruteForceEnumeration(int l, int r, int k) =>
-        BruteForceEnumeration((Low: l, High: r), k, position: 0, valueSoFar: 0);
+    public static long SumOfKDigitNumbersByBruteForceEnumeration(int low, int high, int digitCount) =>
+        BruteForceEnumeration((Low: low, High: high), digitCount, position: 0, valueSoFar: 0);
 
-    public static long SumOfKDigitNumbersByModularRepunit(int l, int r, int k)
+    public static long SumOfKDigitNumbersByModularRepunit(int low, int high, int digitCount)
     {
-        var digitCount = r - l + 1;
-        var digitSum = (l + r) * digitCount / 2;
+        var digitChoices = high - low + 1;
+        var digitSum = (low + high) * digitChoices / 2;
 
-        var repunit = (ModularArithmetic.Power(10, k) - 1) % ModularArithmetic.Modulo
+        var repunit = (ModularArithmetic.Power(10, digitCount) - 1) % ModularArithmetic.Modulo
             * ModularArithmetic.Inverse(9) % ModularArithmetic.Modulo;
-        var combinationsPerDigit = ModularArithmetic.Power(digitCount, k - 1);
+        var combinationsPerDigit = ModularArithmetic.Power(digitChoices, digitCount - 1);
 
         return digitSum * combinationsPerDigit % ModularArithmetic.Modulo * repunit % ModularArithmetic.Modulo;
     }
 
-    // The digits one position may take are a single closed interval: l and r are
-    // chosen together and never mean anything apart, so they travel as one range.
+    // The digits one position may take are a single closed interval: `low` and `high`
+    // are chosen together and never mean anything apart, so they travel as one range.
     private static long BruteForceEnumeration(
-        (int Low, int High) digitRange, int k, int position, long valueSoFar)
+        (int Low, int High) digitRange, int digitCount, int position, long valueSoFar)
     {
-        if (position == k)
+        if (position == digitCount)
         {
             return valueSoFar;
         }
@@ -54,7 +54,7 @@ internal static class SumOfKDigitNumbersInARangeSolution
         for (var digit = digitRange.Low; digit <= digitRange.High; digit++)
         {
             var next = (valueSoFar * 10 + digit) % ModularArithmetic.Modulo;
-            total = (total + BruteForceEnumeration(digitRange, k, position + 1, next))
+            total = (total + BruteForceEnumeration(digitRange, digitCount, position + 1, next))
                 % ModularArithmetic.Modulo;
         }
 

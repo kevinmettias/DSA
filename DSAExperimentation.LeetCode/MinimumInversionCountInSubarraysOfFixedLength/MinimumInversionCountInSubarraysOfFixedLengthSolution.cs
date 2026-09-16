@@ -24,26 +24,26 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
     // The textbook approach: count every window's inversions from scratch
     // with a nested pairwise scan. O(n * k^2) - the arm the sliding-window
     // Fenwick strategy below has to beat.
-    public static long MinInversionCountByBruteForce(int[] nums, int k)
+    public static long MinInversionCountByBruteForce(int[] nums, int windowLength)
     {
         var minInversions = long.MaxValue;
 
-        for (var start = 0; start + k <= nums.Length; start++)
+        for (var start = 0; start + windowLength <= nums.Length; start++)
         {
-            var windowInversions = CountWindowInversions(nums, start, k);
+            var windowInversions = CountWindowInversions(nums, start, windowLength);
             minInversions = Math.Min(minInversions, windowInversions);
         }
 
         return minInversions;
     }
 
-    private static long CountWindowInversions(int[] nums, int start, int k)
+    private static long CountWindowInversions(int[] nums, int start, int windowLength)
     {
         var inversions = 0L;
 
-        for (var i = start; i < start + k; i++)
+        for (var i = start; i < start + windowLength; i++)
         {
-            for (var j = i + 1; j < start + k; j++)
+            for (var j = i + 1; j < start + windowLength; j++)
             {
                 if (nums[i] > nums[j])
                 {
@@ -55,23 +55,23 @@ internal static class MinimumInversionCountInSubarraysOfFixedLengthSolution
         return inversions;
     }
 
-    public static long MinInversionCountBySlidingWindowFenwick(int[] nums, int k)
+    public static long MinInversionCountBySlidingWindowFenwick(int[] nums, int windowLength)
     {
         var (tree, sequence) = BuildRankIndex(nums);
 
         var inversions = 0L;
         var windowCount = 0;
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < windowLength; i++)
         {
             inversions += Insert(tree, sequence, nums[i], windowCount++);
         }
 
         var minInversions = inversions;
 
-        for (var end = k; end < nums.Length; end++)
+        for (var end = windowLength; end < nums.Length; end++)
         {
-            inversions -= Remove(tree, sequence, nums[end - k]);
+            inversions -= Remove(tree, sequence, nums[end - windowLength]);
             windowCount--;
             inversions += Insert(tree, sequence, nums[end], windowCount++);
             minInversions = Math.Min(minInversions, inversions);

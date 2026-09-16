@@ -18,11 +18,17 @@ public sealed class NumberOfStringsWhichCanBeRearrangedToContainSubstringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountRearrangeableStringsByStateDp_LeetCodeExamples_ReturnsCountModulo1e9Plus7(int n, int expected) =>
-        Assert.Equal(expected, NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByStateDp(n));
+    public void CountRearrangeableStringsByStateDp_LeetCodeExamples_ReturnsCountModulo1e9Plus7(
+        int stringLength, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByStateDp(stringLength));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountRearrangeableStringsByInclusionExclusion_LeetCodeExamples_ReturnsCountModulo1e9Plus7(int n, int expected) =>
-        Assert.Equal(expected, NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByInclusionExclusion(n));
+    public void CountRearrangeableStringsByInclusionExclusion_LeetCodeExamples_ReturnsCountModulo1e9Plus7(
+        int stringLength, int expected) =>
+        Assert.Equal(
+            expected,
+            NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByInclusionExclusion(stringLength));
 }

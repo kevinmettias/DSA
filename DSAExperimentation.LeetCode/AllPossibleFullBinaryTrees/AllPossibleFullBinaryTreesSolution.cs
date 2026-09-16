@@ -4,12 +4,12 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 namespace DSAExperimentation.LeetCode.AllPossibleFullBinaryTrees;
 
 // LeetCode 894. All Possible Full Binary Trees: a full binary tree (every node has 0
-// or 2 children) with n nodes splits into a 1-node root plus a left subtree of i
-// nodes and a right subtree of (n-1-i) nodes for every odd i - every combination of a
-// full binary tree generated for i and one generated for (n-1-i) forms one distinct
-// result, built directly out of this repo's own BinaryTreeNode<int>, the same "every
-// combination of a left/right generation" composition UniqueBinarySearchTreesII
-// already uses for LeetCode 95.
+// or 2 children) with nodeCount nodes splits into a 1-node root plus a left subtree of
+// i nodes and a right subtree of (nodeCount-1-i) nodes for every odd i - every
+// combination of a full binary tree generated for i and one generated for
+// (nodeCount-1-i) forms one distinct result, built directly out of this repo's own
+// BinaryTreeNode<int>, the same "every combination of a left/right generation"
+// composition UniqueBinarySearchTreesII already uses for LeetCode 95.
 //
 // The two strategies differ only in whether a repeated node-count subproblem - e.g.
 // 5 is reached both directly and again nested inside larger splits - is regenerated
@@ -26,33 +26,33 @@ internal static class AllPossibleFullBinaryTreesSolution
     // reached from more than one parent call. The recurrence is the same named type
     // the memoized arm uses; here it is handed itself as `rest`, so every sub-count
     // is regenerated from scratch.
-    public static List<BinaryTreeNode<int>?> AllPossibleFbtByPlainRecursion(int n) =>
-        BuildFullBinaryTrees(n, new SplitAtEveryOddLeftCount());
+    public static List<BinaryTreeNode<int>?> AllPossibleFullBinaryTreesByPlainRecursion(int nodeCount) =>
+        BuildFullBinaryTrees(nodeCount, new SplitAtEveryOddLeftCount());
 
     // Shared recurrence body for both strategies: they differ only in whether
     // sub-counts are generated through a cache, so that single point of variation is
     // the `generate` recurrence the sweep hands itself.
     private static List<BinaryTreeNode<int>?> BuildFullBinaryTrees(
-        int n,
+        int nodeCount,
         IRecurrence<int, List<BinaryTreeNode<int>?>> generate)
     {
         var trees = new List<BinaryTreeNode<int>?>();
 
-        if (n % NodeCountParityDivisor == 0)
+        if (nodeCount % NodeCountParityDivisor == 0)
         {
             return trees;
         }
 
-        if (n == 1)
+        if (nodeCount == 1)
         {
             trees.Add(new BinaryTreeNode<int>(0));
             return trees;
         }
 
-        for (var leftCount = 1; leftCount < n; leftCount += NodeCountParityDivisor)
+        for (var leftCount = 1; leftCount < nodeCount; leftCount += NodeCountParityDivisor)
         {
             var lefts = generate.Replay(leftCount, generate);
-            var rights = generate.Replay(n - 1 - leftCount, generate);
+            var rights = generate.Replay(nodeCount - 1 - leftCount, generate);
             AppendSplits(trees, lefts, rights);
         }
 
@@ -76,16 +76,16 @@ internal static class AllPossibleFullBinaryTreesSolution
     // Identical recurrence, driven top-down through Memoizer keyed by the node count,
     // so a count reached from multiple parents is generated once and its subtree
     // objects shared across every caller.
-    public static List<BinaryTreeNode<int>?> AllPossibleFbtByMemoizedNodeCount(int n) =>
-        Memoizer.Memoize<int, List<BinaryTreeNode<int>?>>(n, new SplitAtEveryOddLeftCount());
+    public static List<BinaryTreeNode<int>?> AllPossibleFullBinaryTreesByMemoizedNodeCount(int nodeCount) =>
+        Memoizer.Memoize<int, List<BinaryTreeNode<int>?>>(nodeCount, new SplitAtEveryOddLeftCount());
 
-    // The recurrence, named: a full binary tree of n nodes is a 1-node root plus a
-    // left subtree of every odd count below n and a right subtree making up the rest.
-    // Whether a repeated count is regenerated or shared is the memo run's business,
-    // not the rule's.
+    // The recurrence, named: a full binary tree of nodeCount nodes is a 1-node root
+    // plus a left subtree of every odd count below nodeCount and a right subtree making
+    // up the rest. Whether a repeated count is regenerated or shared is the memo run's
+    // business, not the rule's.
     private sealed class SplitAtEveryOddLeftCount : IRecurrence<int, List<BinaryTreeNode<int>?>>
     {
-        public List<BinaryTreeNode<int>?> Replay(int n, IRecurrence<int, List<BinaryTreeNode<int>?>> rest) =>
-            BuildFullBinaryTrees(n, rest);
+        public List<BinaryTreeNode<int>?> Replay(int nodeCount, IRecurrence<int, List<BinaryTreeNode<int>?>> rest) =>
+            BuildFullBinaryTrees(nodeCount, rest);
     }
 }

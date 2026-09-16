@@ -9,30 +9,30 @@ public sealed class OrderlyQueueTests
     public static TheoryData<string, int, string> Examples =>
         new()
         {
-            // LeetCode example 1: k == 1, so only rotations are reachable.
+            // LeetCode example 1: movablePrefixLength == 1, so only rotations are reachable.
             { "cba", 1, "acb" },
-            // LeetCode example 2: k > 1 reaches every permutation, so s sorted.
+            // LeetCode example 2: movablePrefixLength > 1 reaches every permutation, so text sorted.
             { "baaca", 3, "aaabc" },
             // A single character has one rotation and one permutation.
             { "z", 1, "z" },
-            // k == 1 on a two-character string: "ba" -> "ab".
+            // movablePrefixLength == 1 on a two-character string: "ba" -> "ab".
             { "ba", 1, "ab" },
-            // The same string as example 1, now with k > 1: the full sort wins.
+            // The same string as example 1, now with movablePrefixLength > 1: the full sort wins.
             { "cba", 3, "abc" },
-            // k == 1 where the best rotation is neither first nor last.
+            // movablePrefixLength == 1 where the best rotation is neither first nor last.
             { "bca", 1, "abc" },
             // Repeated characters: every rotation is identical.
             { "aaa", 1, "aaa" },
-            // k == 2 is already the "every permutation" case, not a rotation case.
+            // movablePrefixLength == 2 is already the "every permutation" case, not a rotation case.
             { "dcab", 2, "abcd" },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestStringByBruteForceRotations_LeetCodeExamples_ReturnsSmallestReachableString(
-        string s, int k, string expected)
+        string text, int movablePrefixLength, string expected)
     {
-        var actual = OrderlyQueueSolution.SmallestStringByBruteForceRotations(s, k);
+        var actual = OrderlyQueueSolution.SmallestStringByBruteForceRotations(text, movablePrefixLength);
 
         Assert.Equal(expected, actual);
     }
@@ -40,9 +40,9 @@ public sealed class OrderlyQueueTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestStringBySuffixArray_LeetCodeExamples_ReturnsSmallestReachableString(
-        string s, int k, string expected)
+        string text, int movablePrefixLength, string expected)
     {
-        var actual = OrderlyQueueSolution.SmallestStringBySuffixArray(s, k);
+        var actual = OrderlyQueueSolution.SmallestStringBySuffixArray(text, movablePrefixLength);
 
         Assert.Equal(expected, actual);
     }

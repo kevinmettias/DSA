@@ -17,18 +17,18 @@ public sealed class CountTheNumberOfInfectionSequencesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSequencesByBruteForceSimulation_LeetCodeExamples_ReturnsInfectionSequenceCount(
-        int n, int[] sick, long expected)
+        int childCount, int[] sick, long expected)
     {
-        var actual = CountTheNumberOfInfectionSequencesSolution.CountSequencesByBruteForceSimulation(n, sick);
+        var actual = CountTheNumberOfInfectionSequencesSolution.CountSequencesByBruteForceSimulation(childCount, sick);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSequencesByGapCombinatorics_LeetCodeExamples_ReturnsInfectionSequenceCount(
-        int n, int[] sick, long expected)
+        int childCount, int[] sick, long expected)
     {
-        var actual = CountTheNumberOfInfectionSequencesSolution.CountSequencesByGapCombinatorics(n, sick);
+        var actual = CountTheNumberOfInfectionSequencesSolution.CountSequencesByGapCombinatorics(childCount, sick);
         Assert.Equal(expected, actual);
     }
 }

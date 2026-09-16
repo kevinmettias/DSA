@@ -5,8 +5,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithCostLessTh
 // Harness only. Both strategies are
 // CountSubarraysWithCostLessThanOrEqualToKSolution's - this file just pins them
 // to LeetCode's published examples, including the all-equal array (every
-// subarray costs 0 regardless of length) and the k = 0 case (only single-element
-// subarrays ever qualify).
+// subarray costs 0 regardless of length) and the zero-cost-limit case (only
+// single-element subarrays ever qualify).
 public sealed class CountSubarraysWithCostLessThanOrEqualToKTests
 {
     public static TheoryData<int[], long, long> Examples =>
@@ -19,17 +19,17 @@ public sealed class CountSubarraysWithCostLessThanOrEqualToKTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForce_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long k, long expected)
+    public void CountByBruteForce_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long costLimit, long expected)
     {
-        var actual = CountSubarraysWithCostLessThanOrEqualToKSolution.CountByBruteForce(nums, k);
+        var actual = CountSubarraysWithCostLessThanOrEqualToKSolution.CountByBruteForce(nums, costLimit);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByMonotonicDeques_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long k, long expected)
+    public void CountByMonotonicDeques_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long costLimit, long expected)
     {
-        var actual = CountSubarraysWithCostLessThanOrEqualToKSolution.CountByMonotonicDeques(nums, k);
+        var actual = CountSubarraysWithCostLessThanOrEqualToKSolution.CountByMonotonicDeques(nums, costLimit);
         Assert.Equal(expected, actual);
     }
 }

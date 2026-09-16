@@ -28,9 +28,9 @@ public class NumberOfWaysToReorderArrayToGetSameBSTBenchmarks
 
     [Benchmark(Baseline = true)]
     public int NaiveListSplitting() =>
-        NumberOfWaysToReorderArrayToGetSameBSTSolution.NumOfWaysByListSplitting(_nums);
+        NumberOfWaysToReorderArrayToGetSameBSTSolution.CountWaysByListSplitting(_nums);
 
     [Benchmark]
     public int PrimitiveComposed() =>
-        NumberOfWaysToReorderArrayToGetSameBSTSolution.NumOfWaysByTreeFold(_nums);
+        NumberOfWaysToReorderArrayToGetSameBSTSolution.CountWaysByTreeFold(_nums);
 }

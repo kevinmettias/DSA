@@ -3,9 +3,9 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 namespace DSAExperimentation.LeetCode.MaximizeTheNumberOfPartitionsAfterOperations;
 
 // LeetCode 3003. Maximize the Number of Partitions After Operations: change at
-// most one character of s, then repeatedly strip the longest prefix containing at
-// most k distinct characters as one partition until s is empty. Maximize the
-// resulting partition count.
+// most one character of the text, then repeatedly strip, as one partition, the
+// longest prefix whose distinct-character count is at most distinctLimit, until the
+// text is empty. Maximize the resulting partition count.
 //
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
@@ -27,14 +27,14 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
     // 25 * Length single-character recolorings, and for each candidate string run
     // the greedy O(Length) partition walk directly - the O(Length^2 * 26) arm the
     // bitmask DP below has to beat.
-    public static int MaxPartitionsByBruteForceRecolor(string s, int k)
+    public static int MaxPartitionsByBruteForceRecolor(string text, int distinctLimit)
     {
-        var best = CountPartitions(s, k);
-        var text = (Chars: s.ToCharArray(), Original: s);
+        var best = CountPartitions(text, distinctLimit);
+        var working = (Chars: text.ToCharArray(), Original: text);
 
-        for (var i = 0; i < text.Chars.Length; i++)
+        for (var i = 0; i < working.Chars.Length; i++)
         {
-            var recolored = BestOverRecolorings(text, i, k);
+            var recolored = BestOverRecolorings(working, i, distinctLimit);
 
             best = Math.Max(best, recolored);
         }
@@ -80,31 +80,31 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
     // CountTheNumberOfSquareFreeSubsetsSolution.CountByBitmaskMemo and
     // NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo already prove
     // out for unrelated counting recurrences.
-    public static int MaxPartitionsByBitmaskMemo(string s, int k) =>
+    public static int MaxPartitionsByBitmaskMemo(string text, int distinctLimit) =>
         Memoizer.Memoize<(int Position, int Mask, ChangeAvailability Change), int>(
             (0, 0, ChangeAvailability.Available),
-            new PartitionsFromWindow(s, k));
+            new PartitionsFromWindow(text, distinctLimit));
 
     private static int PartitionsFrom(
         (int Position, int Mask, ChangeAvailability Change) state,
-        string s,
-        int k,
+        string text,
+        int distinctLimit,
         IRecurrence<(int Position, int Mask, ChangeAvailability Change), int> rest)
     {
-        if (state.Position == s.Length)
+        if (state.Position == text.Length)
         {
             return state.Mask == 0 ? 0 : 1;
         }
 
-        var originalLetter = s[state.Position] - 'a';
-        var best = ExtendWith(state, originalLetter, k, rest);
+        var originalLetter = text[state.Position] - 'a';
+        var best = ExtendWith(state, originalLetter, distinctLimit, rest);
 
         if (state.Change == ChangeAvailability.Spent)
         {
             return best;
         }
 
-        var changed = BestOverLetters(state, originalLetter, k, rest);
+        var changed = BestOverLetters(state, originalLetter, distinctLimit, rest);
 
         return Math.Max(best, changed);
     }
@@ -136,13 +136,13 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
         return best;
     }
 
-    private static int CountPartitions(string s, int k)
+    private static int CountPartitions(string text, int distinctLimit)
     {
         var walk = (Partitions: 0, Mask: 0, Distinct: 0);
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
-            walk = ConsumeCharacter(walk, c, k);
+            walk = ConsumeCharacter(walk, c, distinctLimit);
         }
 
         return walk.Mask == 0 ? walk.Partitions : CountWithTrailingRun(walk.Partitions);
@@ -150,7 +150,7 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
 
     // One character appended to the partition walk. A letter already in the mask leaves
     // the walk exactly as it stands; a new letter opens a partition once the current
-    // one already holds k distinct letters, and only then does the mask start over;
+    // one already holds distinctLimit distinct letters, and only then does the mask start over;
     // otherwise it simply joins the partition in progress.
     private static (int Partitions, int Mask, int Distinct) ConsumeCharacter(
         (int Partitions, int Mask, int Distinct) walk, char character, int distinctLimit)
@@ -176,18 +176,19 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
     private static int CountWithTrailingRun(int closedPartitions) => closedPartitions + 1;
 
     // The single step the recursion takes at one position for one candidate letter:
-    // the state it is taken from, the letter appended, and the k it must stay within.
+    // the state it is taken from, the letter appended, and the distinctLimit it must
+    // stay within.
     private static int ExtendWith(
         (int Position, int Mask, ChangeAvailability Change) state,
         int letter,
-        int k,
+        int distinctLimit,
         IRecurrence<(int Position, int Mask, ChangeAvailability Change), int> rest)
     {
         var extended = state.Mask | (1 << letter);
 
         // Adding this letter to the partition in progress is allowed while it still
-        // leaves the partition at or below k distinct characters.
-        var fitsCurrentPartition = System.Numerics.BitOperations.PopCount((uint)extended) <= k;
+        // leaves the partition at or below distinctLimit distinct characters.
+        var fitsCurrentPartition = System.Numerics.BitOperations.PopCount((uint)extended) <= distinctLimit;
 
         return fitsCurrentPartition
             ? rest.Replay((state.Position + 1, extended, state.Change), rest)
@@ -209,13 +210,13 @@ internal static class MaximizeTheNumberOfPartitionsAfterOperationsSolution
     // primary constructor; `rest` is the memo run's own handle on this rule, so every
     // recursive step below is a method call on a named type rather than an anonymous
     // call-back value.
-    private sealed class PartitionsFromWindow(string s, int k)
+    private sealed class PartitionsFromWindow(string text, int distinctLimit)
         : IRecurrence<(int Position, int Mask, ChangeAvailability Change), int>
     {
         /// <inheritdoc/>
         public int Replay(
             (int Position, int Mask, ChangeAvailability Change) state,
             IRecurrence<(int Position, int Mask, ChangeAvailability Change), int> rest)
-            => PartitionsFrom(state, s, k, rest);
+            => PartitionsFrom(state, text, distinctLimit, rest);
     }
 }

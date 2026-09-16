@@ -31,10 +31,10 @@ public class RemoveColoredPiecesIfBothNeighborsAreTheSameColorBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool GameSimulation() =>
-        RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.WinnerOfGameByGameSimulation(_colors);
+    public bool CanAliceWinByGameSimulation() =>
+        RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.CanAliceWinByGameSimulation(_colors);
 
     [Benchmark]
-    public bool RunLengthCounting() =>
-        RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.WinnerOfGameByRunLengthCounting(_colors);
+    public bool CanAliceWinByRunLengthCounting() =>
+        RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution.CanAliceWinByRunLengthCounting(_colors);
 }

@@ -2,14 +2,14 @@ using DSAExperimentation.Algorithms.StringMatching;
 
 namespace DSAExperimentation.LeetCode.RepeatedSubstringPattern;
 
-// LeetCode 459. Repeated Substring Pattern: whether s is built from one or more
-// repetitions of a smaller substring.
+// LeetCode 459. Repeated Substring Pattern: whether text is built from one or
+// more repetitions of a smaller substring.
 //
 // HasRepeatedSubstringPatternByDivisorBruteForce tries every candidate period length
 // that evenly divides n and verifies it by direct comparison (O(n^2) worst case) -
 // the textbook baseline the composed strategy below is measured against.
 // HasRepeatedSubstringPatternByKmpFailureFunction reuses this repo's own
-// PrefixFunctionSearch.ComputeFailureFunction: s repeats exactly when its own longest
+// PrefixFunctionSearch.ComputeFailureFunction: text repeats exactly when its own longest
 // proper-prefix-that-is-also-a-suffix, taken at the last position, is nonzero and
 // evenly divides the string length - the same fact PrefixFunctionSearch's own doc
 // comment calls out beyond FindAll's matching loop.
@@ -17,9 +17,9 @@ internal static class RepeatedSubstringPatternSolution
 {
     private const int MaxPeriodDivisor = 2;
 
-    public static bool HasRepeatedSubstringPatternByDivisorBruteForce(string s)
+    public static bool HasRepeatedSubstringPatternByDivisorBruteForce(string text)
     {
-        var n = s.Length;
+        var n = text.Length;
 
         for (var period = 1; period <= n / MaxPeriodDivisor; period++)
         {
@@ -28,7 +28,7 @@ internal static class RepeatedSubstringPatternSolution
                 continue;
             }
 
-            if (RepeatsWithPeriod(s, period))
+            if (IsRepeatedWithPeriod(text, period))
             {
                 return true;
             }
@@ -37,11 +37,11 @@ internal static class RepeatedSubstringPatternSolution
         return false;
     }
 
-    private static bool RepeatsWithPeriod(string s, int period)
+    private static bool IsRepeatedWithPeriod(string text, int period)
     {
-        for (var i = period; i < s.Length; i++)
+        for (var i = period; i < text.Length; i++)
         {
-            if (s[i] != s[i - period])
+            if (text[i] != text[i - period])
             {
                 return false;
             }
@@ -50,12 +50,12 @@ internal static class RepeatedSubstringPatternSolution
         return true;
     }
 
-    public static bool HasRepeatedSubstringPatternByKmpFailureFunction(string s)
+    public static bool HasRepeatedSubstringPatternByKmpFailureFunction(string text)
     {
-        var failure = PrefixFunctionSearch.ComputeFailureFunction(s);
+        var failure = PrefixFunctionSearch.ComputeFailureFunction(text);
         var longestBorder = failure[^1];
-        var period = s.Length - longestBorder;
+        var period = text.Length - longestBorder;
 
-        return longestBorder != 0 && s.Length % period == 0;
+        return longestBorder != 0 && text.Length % period == 0;
     }
 }

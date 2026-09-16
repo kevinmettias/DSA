@@ -13,18 +13,19 @@ public class IsomorphicStringsBenchmarks
 {
     private const int Seed = 205;
 
-    private string _s = "";
+    private string _source = "";
 
-    private string _t = "";
+    private string _target = "";
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => (_s, _t) = IsomorphicStringWorkloads.BuildIsomorphicPair(Length, Seed);
+    public void Setup() =>
+        (_source, _target) = IsomorphicStringWorkloads.BuildIsomorphicPair(Length, Seed);
 
     [Benchmark(Baseline = true)]
-    public bool Dictionary() => IsomorphicStringsSolution.IsIsomorphicByDictionary(_s, _t);
+    public bool IsIsomorphicByDictionary() => IsomorphicStringsSolution.IsIsomorphicByDictionary(_source, _target);
 
     [Benchmark]
-    public bool HashMap() => IsomorphicStringsSolution.IsIsomorphicByHashMap(_s, _t);
+    public bool IsIsomorphicByHashMap() => IsomorphicStringsSolution.IsIsomorphicByHashMap(_source, _target);
 }

@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.CountSequencesToK;
 // that (index, e2, e3, e5) tuple through this repo's own
 // Algorithms.DynamicProgramming.Memoizer, the same "tuple state through
 // Memoizer.Memoize" shape FindNthSmallestIntegerWithKOneBitsSolution's
-// Binomial helper already uses. If k itself has a prime factor outside
+// Binomial helper already uses. If the target itself has a prime factor outside
 // {2,3,5} no sequence can ever reach it, so the search is skipped entirely
 // via TargetExponents' Reachable flag.
 //
@@ -27,12 +27,12 @@ namespace DSAExperimentation.LeetCode.CountSequencesToK;
 // long range.
 internal static class CountSequencesToKSolution
 {
-    public static long CountSequencesByBruteForceSearch(int[] nums, long k) =>
-        BruteForceSearch(nums, index: 0, rational: (1, 1), k);
+    public static long CountSequencesByBruteForceSearch(int[] nums, long target) =>
+        BruteForceSearch(nums, index: 0, rational: (1, 1), target);
 
-    public static long CountSequencesByPrimeExponentMemo(int[] nums, long k)
+    public static long CountSequencesByPrimeExponentMemo(int[] nums, long target)
     {
-        var (targetE2, targetE3, targetE5, reachable) = TargetExponents(k);
+        var (targetE2, targetE3, targetE5, reachable) = TargetExponents(target);
 
         if (!reachable)
         {
@@ -42,12 +42,12 @@ internal static class CountSequencesToKSolution
         return CountSequencesByMemoSearch(nums, (targetE2, targetE3, targetE5));
     }
 
-    // Strips k down to its 2/3/5 exponents; Reachable is false when what is left
-    // over isn't 1, i.e. k has some other prime factor no sequence could ever
-    // produce.
-    private static (int E2, int E3, int E5, bool Reachable) TargetExponents(long k)
+    // Strips the target down to its 2/3/5 exponents; Reachable is false when what
+    // is left over isn't 1, i.e. the target has some other prime factor no
+    // sequence could ever produce.
+    private static (int E2, int E3, int E5, bool Reachable) TargetExponents(long target)
     {
-        var (after2, e2) = ExtractPrimeFactor(k, 2);
+        var (after2, e2) = ExtractPrimeFactor(target, 2);
         var (after3, e3) = ExtractPrimeFactor(after2, 3);
         var (after5, e5) = ExtractPrimeFactor(after3, 5);
 
@@ -131,19 +131,19 @@ internal static class CountSequencesToKSolution
         => current.E2 == target.E2 && current.E3 == target.E3 && current.E5 == target.E5;
 
     private static long BruteForceSearch(
-        int[] nums, int index, (long Numerator, long Denominator) rational, long k)
+        int[] nums, int index, (long Numerator, long Denominator) rational, long target)
     {
         if (index == nums.Length)
         {
-            var valEqualsK = rational.Numerator % rational.Denominator == 0
-                && rational.Numerator / rational.Denominator == k;
-            return valEqualsK ? 1 : 0;
+            var valEqualsTarget = rational.Numerator % rational.Denominator == 0
+                && rational.Numerator / rational.Denominator == target;
+            return valEqualsTarget ? 1 : 0;
         }
 
         var value = nums[index];
 
-        return BruteForceSearch(nums, index + 1, (rational.Numerator * value, rational.Denominator), k)
-            + BruteForceSearch(nums, index + 1, (rational.Numerator, rational.Denominator * value), k)
-            + BruteForceSearch(nums, index + 1, rational, k);
+        return BruteForceSearch(nums, index + 1, (rational.Numerator * value, rational.Denominator), target)
+            + BruteForceSearch(nums, index + 1, (rational.Numerator, rational.Denominator * value), target)
+            + BruteForceSearch(nums, index + 1, rational, target);
     }
 }

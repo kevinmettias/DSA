@@ -19,18 +19,20 @@ public sealed class CountTheNumberOfArraysWithKMatchingAdjacentElementsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodArraysByBruteForce_LeetCodeExamples_ReturnsGoodArrayCount(
-        int n, int m, int k, long expected)
+        int arrayLength, int maxValue, int matchCount, long expected)
     {
-        var actual = CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution.CountGoodArraysByBruteForce(n, m, k);
+        var actual = CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution.CountGoodArraysByBruteForce(
+            arrayLength, maxValue, matchCount);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodArraysByModularCombinatorics_LeetCodeExamples_ReturnsGoodArrayCount(
-        int n, int m, int k, long expected)
+        int arrayLength, int maxValue, int matchCount, long expected)
     {
-        var actual = CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution.CountGoodArraysByModularCombinatorics(n, m, k);
+        var actual = CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution.CountGoodArraysByModularCombinatorics(
+            arrayLength, maxValue, matchCount);
         Assert.Equal(expected, actual);
     }
 }

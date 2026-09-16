@@ -15,7 +15,7 @@ public class RemoveKDigitsBenchmarks
 
     private string _num = "";
 
-    private int _k;
+    private int _removalCount;
     [Params(500, 5_000)]
     public int Length { get; set; }
 
@@ -31,14 +31,14 @@ public class RemoveKDigitsBenchmarks
         }
 
         _num = new string(digits);
-        _k = Length / RemovalFraction;
+        _removalCount = Length / RemovalFraction;
     }
 
     [Benchmark(Baseline = true)]
     public string RepeatedFirstDescentRemoval() =>
-        RemoveKDigitsSolution.RemoveByRepeatedFirstDescentRemoval(_num, _k);
+        RemoveKDigitsSolution.RemoveByRepeatedFirstDescentRemoval(_num, _removalCount);
 
     [Benchmark]
     public string MonotonicStackSweep() =>
-        RemoveKDigitsSolution.RemoveByMonotonicStackSweep(_num, _k);
+        RemoveKDigitsSolution.RemoveByMonotonicStackSweep(_num, _removalCount);
 }

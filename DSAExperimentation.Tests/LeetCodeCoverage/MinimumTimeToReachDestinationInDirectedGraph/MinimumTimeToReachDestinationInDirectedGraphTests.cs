@@ -19,9 +19,10 @@ public sealed class MinimumTimeToReachDestinationInDirectedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByBclPriorityQueue_LeetCodeExamples_ReturnsEarliestArrivalAtLastNode(
-        int n, int[][] edges, int expected)
+        int vertexCount, int[][] edges, int expected)
     {
-        var actual = MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByBclPriorityQueue(n, edges);
+        var actual =
+            MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByBclPriorityQueue(vertexCount, edges);
 
         Assert.Equal(expected, actual);
     }
@@ -29,9 +30,9 @@ public sealed class MinimumTimeToReachDestinationInDirectedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByHeap_LeetCodeExamples_ReturnsEarliestArrivalAtLastNode(
-        int n, int[][] edges, int expected)
+        int vertexCount, int[][] edges, int expected)
     {
-        var actual = MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByHeap(n, edges);
+        var actual = MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByHeap(vertexCount, edges);
 
         Assert.Equal(expected, actual);
     }

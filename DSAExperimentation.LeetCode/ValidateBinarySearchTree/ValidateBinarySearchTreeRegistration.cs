@@ -14,7 +14,7 @@ internal sealed class ValidateBinarySearchTreeRegistration : ILeetCodeProblemReg
                 "BoundsRecursion",
                 levelOrder => ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(
                     LeetCodeWireFormat.ToBinaryTree(levelOrder)))
-            .MatchingAnswersWith(LeetCodeAnswers.Exactly)
+            .MatchingAnswersWith(LeetCodeAnswers.IsExactlyEqual)
             .Case("example-1", [2, 1, 3], true)
             .Case("example-2", [5, 1, 4, null, null, 3, 6], false)
             .Case("empty-tree", [], true)

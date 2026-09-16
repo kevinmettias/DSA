@@ -22,17 +22,19 @@ public sealed class PalindromePartitioningIVTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckPartitioningByNaiveRecursion_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(
+    public void CanPartitionIntoThreePalindromesByNaiveRecursion_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(
         PartitionExample example) =>
         Assert.Equal(
-            example.Expected, PalindromePartitioningIVSolution.CheckPartitioningByNaiveRecursion(example.Text));
+            example.Expected,
+            PalindromePartitioningIVSolution.CanPartitionIntoThreePalindromesByNaiveRecursion(example.Text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckPartitioningByMemoizedRecurrence_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(
+    public void CanPartitionIntoThreePalindromesByMemoizedRecurrence_LeetCodeExamples_ReturnsWhetherThreeWaySplitExists(
         PartitionExample example) =>
         Assert.Equal(
-            example.Expected, PalindromePartitioningIVSolution.CheckPartitioningByMemoizedRecurrence(example.Text));
+            example.Expected,
+            PalindromePartitioningIVSolution.CanPartitionIntoThreePalindromesByMemoizedRecurrence(example.Text));
 
     // One LeetCode example: the string to cut into three non-empty palindromes, and
     // whether such a cut exists. The answer is the datum under test, so the row names

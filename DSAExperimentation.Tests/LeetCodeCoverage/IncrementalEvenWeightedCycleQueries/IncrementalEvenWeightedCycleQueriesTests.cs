@@ -16,9 +16,10 @@ public sealed class IncrementalEvenWeightedCycleQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountAddedEdgesByBruteForceBfs_LeetCodeExamples_ReturnsAcceptedEdgeCount(
-        int n, int[][] edges, int expected)
+        int nodeCount, int[][] edges, int expected)
     {
-        var actual = IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByBruteForceBfs(n, edges);
+        var actual = IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByBruteForceBfs(
+            nodeCount, edges);
 
         Assert.Equal(expected, actual);
     }
@@ -26,9 +27,10 @@ public sealed class IncrementalEvenWeightedCycleQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountAddedEdgesByDisjointSetPrunedBfs_LeetCodeExamples_ReturnsAcceptedEdgeCount(
-        int n, int[][] edges, int expected)
+        int nodeCount, int[][] edges, int expected)
     {
-        var actual = IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByDisjointSetPrunedBfs(n, edges);
+        var actual = IncrementalEvenWeightedCycleQueriesSolution.CountAddedEdgesByDisjointSetPrunedBfs(
+            nodeCount, edges);
 
         Assert.Equal(expected, actual);
     }

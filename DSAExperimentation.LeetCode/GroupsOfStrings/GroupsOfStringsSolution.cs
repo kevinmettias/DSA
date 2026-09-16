@@ -44,7 +44,7 @@ internal static class GroupsOfStringsSolution
         {
             for (var j = i + 1; j < masks.Length; j++)
             {
-                if (AreConnected(masks.Get(i), masks.Get(j)))
+                if (IsConnected(masks.Get(i), masks.Get(j)))
                 {
                     Union(parent, i, j);
                 }
@@ -54,7 +54,7 @@ internal static class GroupsOfStringsSolution
         return TallyRootSizes(parent);
     }
 
-    private static bool AreConnected(int first, int second)
+    private static bool IsConnected(int first, int second)
     {
         var differingLetters = BitOperations.PopCount((uint)(first ^ second));
 
@@ -155,22 +155,24 @@ internal static class GroupsOfStringsSolution
         return representativeByMask;
     }
 
-    private static void UnionNeighbors(int i, int mask, HashMap<int, int> representativeByMask, DisjointSet components)
+    private static void UnionNeighbors(
+        int wordIndex, int mask, HashMap<int, int> representativeByMask, DisjointSet components)
     {
-        if (representativeByMask.TryGetValue(mask, out var sameMask) && sameMask != i)
+        if (representativeByMask.TryGetValue(mask, out var sameMask) && sameMask != wordIndex)
         {
-            components.Union(i, sameMask);
+            components.Union(wordIndex, sameMask);
         }
 
         var context = new UnionContext(representativeByMask, components);
 
         for (var removedBit = 0; removedBit < AlphabetSize; removedBit++)
         {
-            UnionNeighborsWithoutBit(i, mask, removedBit, context);
+            UnionNeighborsWithoutBit(wordIndex, mask, removedBit, context);
         }
     }
 
-    private static void UnionNeighborsWithoutBit(int i, int mask, int removedBit, UnionContext context)
+    private static void UnionNeighborsWithoutBit(
+        int wordIndex, int mask, int removedBit, UnionContext context)
     {
         if ((mask & (1 << removedBit)) == 0)
         {
@@ -178,22 +180,22 @@ internal static class GroupsOfStringsSolution
         }
 
         var withoutLetter = mask & ~(1 << removedBit);
-        UnionIfPresent(i, withoutLetter, context);
+        UnionIfPresent(wordIndex, withoutLetter, context);
 
         for (var addedBit = 0; addedBit < AlphabetSize; addedBit++)
         {
             if ((mask & (1 << addedBit)) == 0)
             {
-                UnionIfPresent(i, withoutLetter | (1 << addedBit), context);
+                UnionIfPresent(wordIndex, withoutLetter | (1 << addedBit), context);
             }
         }
     }
 
-    private static void UnionIfPresent(int i, int candidateMask, UnionContext context)
+    private static void UnionIfPresent(int wordIndex, int candidateMask, UnionContext context)
     {
         if (context.RepresentativeByMask.TryGetValue(candidateMask, out var other))
         {
-            context.Components.Union(i, other);
+            context.Components.Union(wordIndex, other);
         }
     }
 

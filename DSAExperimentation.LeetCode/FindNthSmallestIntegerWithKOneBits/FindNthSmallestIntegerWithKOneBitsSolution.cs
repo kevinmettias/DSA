@@ -3,21 +3,23 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.FindNthSmallestIntegerWithKOneBits;
 
-// LeetCode 3821. Find Nth Smallest Integer With K One Bits: the n-th smallest
-// (1-indexed) positive integer whose binary representation has exactly k one
-// bits. The answer is guaranteed to be strictly less than 2^50.
+// LeetCode 3821. Find Nth Smallest Integer With K One Bits: among the positive
+// integers whose binary representation has exactly oneBitCount one bits, find
+// the one at the given 1-indexed position. The answer is guaranteed to be
+// strictly less than 2^50.
 //
 // NthSmallestByPopCountScan is the textbook brute force: walk every positive
-// integer in order, counting the ones whose popcount matches k, deliberately
-// BCL-only (System.Numerics.BitOperations) - the arm the composed strategy
-// below has to justify itself against.
+// integer in order, counting the ones whose popcount matches oneBitCount,
+// deliberately BCL-only (System.Numerics.BitOperations) - the arm the composed
+// strategy below has to justify itself against.
 //
 // NthSmallestByMemoizedBinomialSelection is the combinatorial-number-system
-// construction: a k-subset of bit positions has a well-defined rank among all
-// k-subsets ordered by the integer they encode, so the (n-1)-th (0-indexed)
-// rank can be decoded highest-bit-first - at each remaining one-bit count,
-// the largest position c with Binomial(c, onesLeft) <= remaining is this
-// rank's next set bit, exactly the standard "unrank a combination" recipe.
+// construction: a subset of oneBitCount bit positions has a well-defined rank
+// among all such subsets ordered by the integer they encode, so the desired
+// rank - position - 1, counting from zero - can be decoded highest-bit-first:
+// at each remaining one-bit count, the largest bit position c with
+// Binomial(c, onesLeft) <= remaining is this rank's next set bit, exactly the
+// standard "unrank a combination" recipe.
 // Binomial itself is Pascal's addition rule run through this repo's own
 // Memoizer, the same "tuple state through Memoizer.Memoize" shape
 // ClimbingStairsSolution and MinimumSumOfValuesByDividingArraySolution
@@ -29,15 +31,15 @@ internal static class FindNthSmallestIntegerWithKOneBitsSolution
     // high enough without needing to special-case its first iteration.
     private const int MaxBitPosition = 59;
 
-    public static long NthSmallestByPopCountScan(long n, int k)
+    public static long NthSmallestByPopCountScan(long position, int oneBitCount)
     {
         var candidate = 0L;
         var found = 0L;
 
-        while (found < n)
+        while (found < position)
         {
             candidate++;
-            if (BitOperations.PopCount((ulong)candidate) == k)
+            if (BitOperations.PopCount((ulong)candidate) == oneBitCount)
             {
                 found++;
             }
@@ -46,13 +48,13 @@ internal static class FindNthSmallestIntegerWithKOneBitsSolution
         return candidate;
     }
 
-    public static long NthSmallestByMemoizedBinomialSelection(long n, int k)
+    public static long NthSmallestByMemoizedBinomialSelection(long position, int oneBitCount)
     {
-        var remaining = n - 1;
+        var remaining = position - 1;
         var value = 0L;
         var searchFrom = MaxBitPosition;
 
-        for (var onesLeft = k; onesLeft >= 1; onesLeft--)
+        for (var onesLeft = oneBitCount; onesLeft >= 1; onesLeft--)
         {
             while (Binomial(searchFrom, onesLeft) > remaining)
             {

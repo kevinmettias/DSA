@@ -23,12 +23,12 @@ internal static class MinimumEdgeTogglesOnATreeSolution
     // whether the current node still needs its parent edge toggled - deliberately
     // written without this repo's tree/fold primitives, the arm the composed fold
     // below has to justify itself against.
-    public static int[] MinTogglesByBruteForceDfs(int n, int[][] edges, string start, string target)
+    public static int[] MinTogglesByBruteForceDfs(int nodeCount, int[][] edges, string start, string target)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(nodeCount, edges);
 
         var toggled = new List<int>();
-        var rootNeedsToggle = Dfs((0, -1), adjacency, (start, target), toggled);
+        var rootNeedsToggle = HasPendingToggle((0, -1), adjacency, (start, target), toggled);
 
         if (rootNeedsToggle)
         {
@@ -39,10 +39,10 @@ internal static class MinimumEdgeTogglesOnATreeSolution
         return [.. toggled];
     }
 
-    // The BCL adjacency list the textbook arm walks: n empty neighbour lists, then each
+    // The BCL adjacency list the textbook arm walks: nodeCount empty neighbour lists, then each
     // undirected edge appended to both of its endpoints, each side carrying the index it
-    // came from. LeetCodeAdjacency states that layout once for every problem taking an
-    // (n, edges) pair; only the stored per-neighbour pair is this arm's own.
+    // came from. LeetCodeAdjacency states that layout once for every problem taking a
+    // (nodeCount, edges) pair; only the stored per-neighbour pair is this arm's own.
     private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int nodeCount, int[][] edges) =>
         LeetCodeAdjacency.ZeroBased<List<(int To, int EdgeIndex)>>(
             nodeCount, edges, _ => [], (list, farId, _, edgeIndex) => list.Add((farId, edgeIndex)));
@@ -50,7 +50,7 @@ internal static class MinimumEdgeTogglesOnATreeSolution
     // An undirected walk step is the node and the neighbour it came from (the parent
     // is how this DFS excludes that neighbour), and the two colour strings always
     // travel as the one pair of states being reconciled.
-    private static bool Dfs(
+    private static bool HasPendingToggle(
         (int Node, int Parent) step, List<(int To, int EdgeIndex)>[] adjacency,
         (string Start, string Target) colors, List<int> toggled)
     {
@@ -65,7 +65,7 @@ internal static class MinimumEdgeTogglesOnATreeSolution
                 continue;
             }
 
-            if (Dfs((next, node), adjacency, colors, toggled))
+            if (HasPendingToggle((next, node), adjacency, colors, toggled))
             {
                 toggled.Add(edgeIndex);
                 needsToggle = !needsToggle;
@@ -79,9 +79,9 @@ internal static class MinimumEdgeTogglesOnATreeSolution
     // the per-node parent-edge index a plain parent array doesn't carry), and the
     // same bottom-up requirement propagation above is exactly TreeFold's
     // catamorphism over it with EdgeToggleAlgebra.
-    public static int[] MinTogglesByTreeFold(int n, int[][] edges, string start, string target)
+    public static int[] MinTogglesByTreeFold(int nodeCount, int[][] edges, string start, string target)
     {
-        var tree = ToggleTree.Build(n, edges);
+        var tree = ToggleTree.Build(nodeCount, edges);
 
         return MinTogglesByTreeFold(tree, start, target);
     }

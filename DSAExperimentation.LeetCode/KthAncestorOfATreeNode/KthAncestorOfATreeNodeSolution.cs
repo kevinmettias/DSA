@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.KthAncestorOfATreeNode;
 
 // LeetCode 1483. Kth Ancestor of a Tree Node: given a rooted tree as a parent
 // array, answer repeated "what is node's kth ancestor" queries, reporting -1 when
-// the chain runs out before k steps.
+// the chain runs out before the requested number of steps.
 //
 // Every Graph-domain topology contract here (ITreeTopology included) is child-ward
 // only - GetChildren, never GetParent - so the composed strategy cannot walk
@@ -18,13 +18,13 @@ internal static class KthAncestorOfATreeNodeSolution
     private const int NoParent = LeetCodeAnswer.None;
 
     // The textbook baseline this composition has to justify itself against: step
-    // up the raw parent array k times, O(k) per query and no precompute at all.
-    // Deliberately written without this repo's primitives.
-    public static int GetKthAncestorByParentWalk(int[] parent, int node, int k)
+    // up the raw parent array one step at a time, O(k) per query and no precompute
+    // at all. Deliberately written without this repo's primitives.
+    public static int GetKthAncestorByParentWalk(int[] parent, int node, int ancestorSteps)
     {
         var current = node;
 
-        for (var step = 0; step < k; step++)
+        for (var step = 0; step < ancestorSteps; step++)
         {
             if (current == NoParent)
             {
@@ -40,19 +40,19 @@ internal static class KthAncestorOfATreeNodeSolution
     // The composed answer, in LeetCode's own shape: one query against a table this
     // call builds. A caller answering many queries builds the table once with
     // BuildAncestorChains and uses the overload below.
-    public static int GetKthAncestorByAncestorChains(int[] parent, int node, int k) =>
-        GetKthAncestorByAncestorChains(BuildAncestorChains(parent), node, k);
+    public static int GetKthAncestorByAncestorChains(int[] parent, int node, int ancestorSteps) =>
+        GetKthAncestorByAncestorChains(BuildAncestorChains(parent), node, ancestorSteps);
 
     // The hoisted overload (ARCHITECTURE.md §17.4): the chains are already built,
     // so all that is charged here is the O(1) index the precompute bought.
-    public static int GetKthAncestorByAncestorChains(AncestorChains chains, int node, int k)
+    public static int GetKthAncestorByAncestorChains(AncestorChains chains, int node, int ancestorSteps)
     {
         var ancestors = chains.Of(node);
 
-        return k <= ancestors.Length ? AncestorAt(ancestors, k) : LeetCodeAnswer.None;
+        return ancestorSteps <= ancestors.Length ? AncestorAt(ancestors, ancestorSteps) : LeetCodeAnswer.None;
     }
 
-    private static int AncestorAt(int[] ancestors, int k) => ancestors[^k];
+    private static int AncestorAt(int[] ancestors, int ancestorSteps) => ancestors[^ancestorSteps];
 
     // Materializes the child-ward tree TopDownTraversal needs from LeetCode's
     // parent array, then walks it once to fill in every node's root-to-parent

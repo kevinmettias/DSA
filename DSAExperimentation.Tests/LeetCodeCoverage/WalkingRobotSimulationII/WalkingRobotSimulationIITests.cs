@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WalkingRobotSimulationII;
 // Harness only: both strategies live in WalkingRobotSimulationIISolution. LeetCode's
 // own shape here is a stateful object queried across a sequence of calls, so an
 // example is a grid, the Move script run against it, and the position and heading
-// the robot ends on - GetPos and GetDir are pure, so a mid-script checkpoint is
+// the robot ends on - GetPosition and GetDirection are pure, so a mid-script checkpoint is
 // simply another row with the shorter prefix of the same script.
 public sealed class WalkingRobotSimulationIITests
 {
@@ -56,8 +56,8 @@ public sealed class WalkingRobotSimulationIITests
             robot.Move(steps);
         }
 
-        Assert.Equal((example.ExpectedX, example.ExpectedY), robot.GetPos());
-        Assert.Equal(example.ExpectedDirection, robot.GetDir());
+        Assert.Equal((example.ExpectedX, example.ExpectedY), robot.GetPosition());
+        Assert.Equal(example.ExpectedDirection, robot.GetDirection());
     }
 
     // One LeetCode example: the grid, the Move script run against it, and the cell and

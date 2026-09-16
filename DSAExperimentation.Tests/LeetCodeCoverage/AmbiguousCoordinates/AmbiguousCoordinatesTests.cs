@@ -25,16 +25,16 @@ public sealed class AmbiguousCoordinatesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindCoordinatesByRebuildAndRescan_LeetCodeExamples_ReturnsEveryValidPlacement(
-        string s, string[] expected) =>
+        string wrappedDigits, string[] expected) =>
         Assert.Equal(
             new HashSet<string>(expected),
-            new HashSet<string>(AmbiguousCoordinatesSolution.FindCoordinatesByRebuildAndRescan(s)));
+            new HashSet<string>(AmbiguousCoordinatesSolution.FindCoordinatesByRebuildAndRescan(wrappedDigits)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindCoordinatesBySliceAndCheck_LeetCodeExamples_ReturnsEveryValidPlacement(
-        string s, string[] expected) =>
+        string wrappedDigits, string[] expected) =>
         Assert.Equal(
             new HashSet<string>(expected),
-            new HashSet<string>(AmbiguousCoordinatesSolution.FindCoordinatesBySliceAndCheck(s)));
+            new HashSet<string>(AmbiguousCoordinatesSolution.FindCoordinatesBySliceAndCheck(wrappedDigits)));
 }

@@ -10,11 +10,11 @@ internal sealed class TimeWindowAdjacency
 
     private TimeWindowAdjacency(List<(int Neighbor, int Start, int End)>[] neighbors) => Neighbors = neighbors;
 
-    public static TimeWindowAdjacency Build(int n, int[][] edges)
+    public static TimeWindowAdjacency Build(int vertexCount, int[][] edges)
     {
-        var neighbors = new List<(int Neighbor, int Start, int End)>[n];
+        var neighbors = new List<(int Neighbor, int Start, int End)>[vertexCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < vertexCount; i++)
         {
             neighbors[i] = [];
         }

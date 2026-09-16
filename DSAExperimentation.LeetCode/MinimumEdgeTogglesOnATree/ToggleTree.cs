@@ -14,10 +14,10 @@ internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
 {
     private const int NoParentAssignedYet = -2;
 
-    public static ToggleTree Build(int n, int[][] edges)
+    public static ToggleTree Build(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
-        var (parent, parentEdgeIndex) = BuildParentArray(adjacency, n);
+        var adjacency = BuildAdjacency(nodeCount, edges);
+        var (parent, parentEdgeIndex) = BuildParentArray(adjacency, nodeCount);
 
         var nodes = ParentArrayTree.Build(parent);
         return new ToggleTree(nodes[0], parentEdgeIndex);
@@ -26,19 +26,19 @@ internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
     // Both directions of every edge, each side carrying the index it came from: that index
     // is the one thing a bare parent array cannot recover once the BFS has run, and it is
     // what this arm's wiring callback stores beside each neighbour id.
-    // LeetCodeAdjacency states the rest of the layout once for every problem taking an
-    // (n, edges) pair.
-    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int n, int[][] edges) =>
+    // LeetCodeAdjacency states the rest of the layout once for every problem taking a
+    // (nodeCount, edges) pair.
+    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int nodeCount, int[][] edges) =>
         LeetCodeAdjacency.ZeroBased<List<(int To, int EdgeIndex)>>(
-            n, edges, _ => [], (list, farId, _, edgeIndex) => list.Add((farId, edgeIndex)));
+            nodeCount, edges, _ => [], (list, farId, _, edgeIndex) => list.Add((farId, edgeIndex)));
 
     // The BFS-to-parent-array conversion, rooted at 0, returning each node's parent and the
     // edge index that attached it.
     private static (int[] Parent, int[] ParentEdgeIndex) BuildParentArray(
-        List<(int To, int EdgeIndex)>[] adjacency, int n)
+        List<(int To, int EdgeIndex)>[] adjacency, int nodeCount)
     {
-        var parent = new int[n];
-        var parentEdgeIndex = new int[n];
+        var parent = new int[nodeCount];
+        var parentEdgeIndex = new int[nodeCount];
         Array.Fill(parent, NoParentAssignedYet);
         parent[0] = -1;
 

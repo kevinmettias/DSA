@@ -19,9 +19,9 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
 {
     // Baseline: BCL PriorityQueue<int,int> - "what you'd write without this repo"
     // (ARCHITECTURE.md 17.5).
-    public static int MinimumTimeByBclPriorityQueue(int n, int[][] edges)
+    public static int MinimumTimeByBclPriorityQueue(int vertexCount, int[][] edges)
     {
-        var graph = TimeWindowAdjacency.Build(n, edges);
+        var graph = TimeWindowAdjacency.Build(vertexCount, edges);
 
         return MinimumTimeByBclPriorityQueue(graph);
     }
@@ -110,9 +110,9 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
     // Heap<Element,TOrder> ordered by ByPriorityOrder<TNode,TWeight> - the same
     // frontier ShortestPath.Dijkstra/AStar and every other dynamic-relaxation
     // Dijkstra coverage problem in this repo already use.
-    public static int MinimumTimeByHeap(int n, int[][] edges)
+    public static int MinimumTimeByHeap(int vertexCount, int[][] edges)
     {
-        var graph = TimeWindowAdjacency.Build(n, edges);
+        var graph = TimeWindowAdjacency.Build(vertexCount, edges);
 
         return MinimumTimeByHeap(graph);
     }
@@ -210,9 +210,9 @@ internal static class MinimumTimeToReachDestinationInDirectedGraphSolution
         return true;
     }
 
-    private static int[] NewUnreachableTimes(int n)
+    private static int[] NewUnreachableTimes(int vertexCount)
     {
-        var times = new int[n];
+        var times = new int[vertexCount];
         Array.Fill(times, int.MaxValue);
         return times;
     }

@@ -17,18 +17,20 @@ public sealed class MaximumAndMinimumSumsOfAtMostSizeKSubarraysTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumByBruteForceWindow_LeetCodeExamples_ReturnsMaxPlusMinSum(int[] nums, int k, long expected)
+    public void SumByBruteForceWindow_LeetCodeExamples_ReturnsMaxPlusMinSum(
+        int[] nums, int maxSubarrayLength, long expected)
     {
-        var actual = MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution.SumByBruteForceWindow(nums, k);
+        var actual = MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution.SumByBruteForceWindow(nums, maxSubarrayLength);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumByMonotonicStackContribution_LeetCodeExamples_ReturnsMaxPlusMinSum(int[] nums, int k, long expected)
+    public void SumByMonotonicStackContribution_LeetCodeExamples_ReturnsMaxPlusMinSum(
+        int[] nums, int maxSubarrayLength, long expected)
     {
-        var actual = MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution.SumByMonotonicStackContribution(nums, k);
+        var actual = MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution.SumByMonotonicStackContribution(nums, maxSubarrayLength);
 
         Assert.Equal(expected, actual);
     }

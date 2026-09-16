@@ -17,10 +17,10 @@ internal static class UniquePathsSolution
     // Textbook baseline: the closed-form binomial coefficient
     // C(m+n-2, min(m,n)-1), built up incrementally so every intermediate product
     // stays an exact integer (no factorial overflow, no floating point).
-    public static int CountPathsByCombinatorics(int m, int n)
+    public static int CountPathsByCombinatorics(int rowCount, int columnCount)
     {
-        var totalSteps = m + n - 2;
-        var smaller = Math.Min(m, n) - 1;
+        var totalSteps = rowCount + columnCount - 2;
+        var smaller = Math.Min(rowCount, columnCount) - 1;
         long result = 1;
 
         for (var i = 1; i <= smaller; i++)
@@ -34,8 +34,8 @@ internal static class UniquePathsSolution
     // Memoizer caches the grid recurrence from each cell to the bottom-right
     // destination, so the exponential branching of "right or down" collapses to
     // one evaluation per cell.
-    public static int CountPathsByMemoizedRecurrence(int m, int n) =>
-        Memoizer.Memoize<(int Row, int Col), int>((0, 0), new PathsFromCellToCorner(m, n));
+    public static int CountPathsByMemoizedRecurrence(int rowCount, int columnCount) =>
+        Memoizer.Memoize<(int Row, int Col), int>((0, 0), new PathsFromCellToCorner(rowCount, columnCount));
 
     // The recurrence, named: the destination cell is itself one path, and any other
     // cell adds up the paths from the neighbours it can still step to. The grid's

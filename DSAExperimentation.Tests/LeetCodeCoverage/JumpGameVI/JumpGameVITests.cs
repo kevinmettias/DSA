@@ -22,9 +22,9 @@ public sealed class JumpGameVITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxResultByWindowRescan_LeetCodeExamples_ReturnsBestReachableScore(
-        int[] nums, int k, int expected)
+        int[] nums, int jumpLimit, int expected)
     {
-        var actual = JumpGameVISolution.MaxResultByWindowRescan(nums, k);
+        var actual = JumpGameVISolution.MaxResultByWindowRescan(nums, jumpLimit);
 
         Assert.Equal(expected, actual);
     }
@@ -32,9 +32,9 @@ public sealed class JumpGameVITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxResultByMonotonicDeque_LeetCodeExamples_ReturnsBestReachableScore(
-        int[] nums, int k, int expected)
+        int[] nums, int jumpLimit, int expected)
     {
-        var actual = JumpGameVISolution.MaxResultByMonotonicDeque(nums, k);
+        var actual = JumpGameVISolution.MaxResultByMonotonicDeque(nums, jumpLimit);
 
         Assert.Equal(expected, actual);
     }

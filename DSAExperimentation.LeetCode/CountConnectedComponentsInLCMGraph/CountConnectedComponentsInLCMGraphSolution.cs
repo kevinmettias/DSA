@@ -38,7 +38,8 @@ internal static class CountConnectedComponentsInLCMGraphSolution
         return roots.Count;
     }
 
-    private static long Lcm(long a, long b) => a / Gcd(a, b) * b;
+    private static long Lcm(long firstValue, long secondValue) =>
+        firstValue / Gcd(firstValue, secondValue) * secondValue;
 
     // Composed: DisjointSet(threshold + 1) over the VALUE space rather than index
     // space. For a present value x, lcm(x, k*x) is k*x by construction, so
@@ -93,5 +94,6 @@ internal static class CountConnectedComponentsInLCMGraphSolution
         }
     }
 
-    private static long Gcd(long a, long b) => b == 0 ? a : Gcd(b, a % b);
+    private static long Gcd(long firstValue, long secondValue) =>
+        secondValue == 0 ? firstValue : Gcd(secondValue, firstValue % secondValue);
 }

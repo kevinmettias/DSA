@@ -18,9 +18,9 @@ public sealed class KthSmallestInLexicographicalOrderTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindKthNumberByGenerateAndSort_LeetCodeExamples_ReturnsExpectedValue(
-        int n, int k, int expected)
+        int upperBound, int rank, int expected)
     {
-        var actual = KthSmallestInLexicographicalOrderSolution.FindKthNumberByGenerateAndSort(n, k);
+        var actual = KthSmallestInLexicographicalOrderSolution.FindKthNumberByGenerateAndSort(upperBound, rank);
 
         Assert.Equal(expected, actual);
     }
@@ -28,9 +28,9 @@ public sealed class KthSmallestInLexicographicalOrderTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindKthNumberByDepthFirstTraversal_LeetCodeExamples_ReturnsExpectedValue(
-        int n, int k, int expected)
+        int upperBound, int rank, int expected)
     {
-        var actual = KthSmallestInLexicographicalOrderSolution.FindKthNumberByDepthFirstTraversal(n, k);
+        var actual = KthSmallestInLexicographicalOrderSolution.FindKthNumberByDepthFirstTraversal(upperBound, rank);
 
         Assert.Equal(expected, actual);
     }

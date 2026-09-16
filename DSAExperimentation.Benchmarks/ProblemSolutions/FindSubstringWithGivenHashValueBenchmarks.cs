@@ -49,12 +49,12 @@ public class FindSubstringWithGivenHashValueBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() =>
+    public bool TryFindSubstringByWindowRehash() =>
         FindSubstringWithGivenHashValueSolution.TryFindSubstringByWindowRehash(
             _text, Lane, (WindowLength: K, HashValue: UnreachableHashValue), out _);
 
     [Benchmark]
-    public bool RollingHashWindowed() =>
+    public bool TryFindSubstringByRollingHash() =>
         FindSubstringWithGivenHashValueSolution.TryFindSubstringByRollingHash(
             _reversedHash, _text, (WindowLength: K, HashValue: UnreachableHashValue), out _);
 }

@@ -7,9 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // KthSmallestAmountWithSingleDenominationCombinationSolution's, the same
 // methods KthSmallestAmountWithSingleDenominationCombinationTests proves
 // correct. Coins stay fixed (this problem caps coins.Length at 15 regardless
-// of k); K is the axis that grows, so the heap merge's O(k log n) cost is
-// what the inclusion-exclusion search - whose own cost is independent of k -
-// has to be measured against.
+// of rank); Rank is the axis that grows, so the heap merge's
+// O(rank log coins.Length) cost is what the inclusion-exclusion search - whose
+// own cost is independent of rank - has to be measured against.
 [MemoryDiagnoser]
 public class KthSmallestAmountWithSingleDenominationCombinationBenchmarks
 {
@@ -20,7 +20,7 @@ public class KthSmallestAmountWithSingleDenominationCombinationBenchmarks
     private int[] _coins = [];
 
     [Params(200, 5_000)]
-    public int K { get; set; }
+    public int Rank { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -31,10 +31,10 @@ public class KthSmallestAmountWithSingleDenominationCombinationBenchmarks
 
     [Benchmark(Baseline = true)]
     public long HeapMerge() =>
-        KthSmallestAmountWithSingleDenominationCombinationSolution.KthSmallestAmountByHeapMerge(_coins, K);
+        KthSmallestAmountWithSingleDenominationCombinationSolution.KthSmallestAmountByHeapMerge(_coins, Rank);
 
     [Benchmark]
     public long InclusionExclusionSearch() =>
         KthSmallestAmountWithSingleDenominationCombinationSolution.KthSmallestAmountByInclusionExclusionSearch(
-            _coins, K);
+            _coins, Rank);
 }

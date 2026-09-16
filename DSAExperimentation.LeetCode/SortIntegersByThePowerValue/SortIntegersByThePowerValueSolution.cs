@@ -13,14 +13,14 @@ namespace DSAExperimentation.LeetCode.SortIntegersByThePowerValue;
 // with no custom comparer on either side (the KClosestPointsToOrigin precedent).
 internal static class SortIntegersByThePowerValueSolution
 {
-    // Collatz step: even -> divide by CollatzDivisor; odd -> CollatzMultiplier * x + 1.
+    // Collatz step: even -> divide by CollatzDivisor; odd -> CollatzMultiplier * value + 1.
     private const int CollatzDivisor = 2;
     private const int CollatzMultiplier = 3;
 
     // The textbook answer: an O(n^2) insertion sort of the pairs over a plain array,
     // ordered by Comparer<T>.Default - no sorting primitive from this repo at all. It
     // is the arm the composed strategy below has to justify itself against.
-    public static int GetKthByInsertionSort(int lo, int hi, int k)
+    public static int GetKthByInsertionSort(int lo, int hi, int rank)
     {
         var pairs = BuildPowerPairs(lo, hi);
 
@@ -38,19 +38,19 @@ internal static class SortIntegersByThePowerValueSolution
             pairs[j + 1] = current;
         }
 
-        return pairs[k - 1].Value;
+        return pairs[rank - 1].Value;
     }
 
     // This repo's own MergeSort over ArrayIndexedSequence - O(n log n) and stable -
     // the same composition SortAnArray and HeightChecker use.
-    public static int GetKthByMergeSort(int lo, int hi, int k)
+    public static int GetKthByMergeSort(int lo, int hi, int rank)
     {
         var pairs = BuildPowerPairs(lo, hi);
 
         MergeSort.Sort<(int Power, int Value), ArrayIndexedSequence<(int Power, int Value)>>(
             new ArrayIndexedSequence<(int Power, int Value)>(pairs));
 
-        return pairs[k - 1].Value;
+        return pairs[rank - 1].Value;
     }
 
     // Shared by both strategies so the only thing they differ in is the ordering pass.
@@ -68,21 +68,21 @@ internal static class SortIntegersByThePowerValueSolution
         return pairs;
     }
 
-    private static int PowerOf(int x)
+    private static int PowerOf(int value)
     {
         var power = 0;
 
-        while (x != 1)
+        while (value != 1)
         {
-            var dividesEvenly = x % CollatzDivisor == 0;
-            x = dividesEvenly ? DivideByCollatzDivisor(x) : TripleAndIncrement(x);
+            var dividesEvenly = value % CollatzDivisor == 0;
+            value = dividesEvenly ? DivideByCollatzDivisor(value) : TripleAndIncrement(value);
             power++;
         }
 
         return power;
     }
 
-    private static int DivideByCollatzDivisor(int x) => x / CollatzDivisor;
+    private static int DivideByCollatzDivisor(int value) => value / CollatzDivisor;
 
-    private static int TripleAndIncrement(int x) => (CollatzMultiplier * x) + 1;
+    private static int TripleAndIncrement(int value) => (CollatzMultiplier * value) + 1;
 }

@@ -22,11 +22,15 @@ public sealed class MinimumInsertionsToBalanceAParenthesesStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinInsertionsByRunningCounter_LeetCodeExamples_ReturnsMinimumInsertions(string s, int expected) =>
-        Assert.Equal(expected, MinimumInsertionsToBalanceAParenthesesStringSolution.MinInsertionsByRunningCounter(s));
+    public void MinInsertionsByRunningCounter_LeetCodeExamples_ReturnsMinimumInsertions(string text, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumInsertionsToBalanceAParenthesesStringSolution.MinInsertionsByRunningCounter(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinInsertionsByOpenerStack_LeetCodeExamples_ReturnsMinimumInsertions(string s, int expected) =>
-        Assert.Equal(expected, MinimumInsertionsToBalanceAParenthesesStringSolution.MinInsertionsByOpenerStack(s));
+    public void MinInsertionsByOpenerStack_LeetCodeExamples_ReturnsMinimumInsertions(string text, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumInsertionsToBalanceAParenthesesStringSolution.MinInsertionsByOpenerStack(text));
 }

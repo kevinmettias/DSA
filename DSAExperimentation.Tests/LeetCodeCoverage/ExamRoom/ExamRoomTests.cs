@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ExamRoom;
 // Harness only. Both strategies are ExamRoomSolution's - this file just replays
 // LeetCode's published call scripts against each and asserts every Seat() result, so
 // a failure names the strategy that broke. A script entry is either (Seat, 0) or
-// (Leave, p); Seat() results are asserted in order against Expected.
+// (Leave, seatNumber); Seat() results are asserted in order against Expected.
 public sealed class ExamRoomTests
 {
     private const string SeatOperation = "seat";

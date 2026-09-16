@@ -6,46 +6,46 @@ using DSAExperimentation.Domain.Modular;
 namespace DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 
 // LeetCode 3539. Find Sum of Array Product of Magical Sequences: sum, over every
-// length-m sequence of indices into nums whose selected powers of two
-// (2^seq[0] + ... + 2^seq[m-1]) add up to a binary value with exactly k set bits,
-// of the product nums[seq[0]] * ... * nums[seq[m-1]], modulo 1e9+7.
+// sequence of sequenceLength indices into nums whose selected powers of two
+// (2^seq[0] + ... + 2^seq[m-1]) add up to a binary value whose pop count is exactly
+// requiredSetBits, of the product nums[seq[0]] * ... * nums[seq[m-1]], modulo 1e9+7.
 //
 // A sequence is fully described by how many times each index 0..n-1 is chosen
-// (c_0, ..., c_{n-1} summing to m): every ordering of the same multiset contributes
-// the same product, and there are m! / (c_0! * ... * c_{n-1}!) such orderings. Both
-// strategies exploit that - one by enumerating orderings directly and letting equal
-// products naturally sum together, the other by computing the multinomial weight
-// per count-assignment instead of visiting every ordering.
+// (c_0, ..., c_{n-1} summing to sequenceLength): every ordering of the same multiset
+// contributes the same product, and there are m! / (c_0! * ... * c_{n-1}!) such
+// orderings. Both strategies exploit that - one by enumerating orderings directly and
+// letting equal products naturally sum together, the other by computing the
+// multinomial weight per count-assignment instead of visiting every ordering.
 internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 {
-    // Every one of the n^m sequences enumerated directly via this repo's own
-    // Backtrack.Search - one choice per sequence slot, exactly the "Combination
-    // Sum"/"Generate Parentheses"-shaped exhaustive enumeration its own doc comment
-    // names as the intended use. Correct at LeetCode's own tiny examples; the arm
-    // the digit DP below has to justify itself against.
-    public static int SumOfProductsByBacktrackEnumeration(int m, int k, int[] nums)
+    // Every one of the nums.Length^sequenceLength sequences enumerated directly via
+    // this repo's own Backtrack.Search - one choice per sequence slot, exactly the
+    // "Combination Sum"/"Generate Parentheses"-shaped exhaustive enumeration its own
+    // doc comment names as the intended use. Correct at LeetCode's own tiny examples;
+    // the arm the digit DP below has to justify itself against.
+    public static int SumOfProductsByBacktrackEnumeration(int sequenceLength, int requiredSetBits, int[] nums)
     {
         var total = 0L;
         var state = new SequenceState();
 
         Backtrack.Search<SequenceState, int>(
             state,
-            isSolution: s => s.Chosen.Count == m,
-            candidates: s => s.Chosen.Count == m ? Array.Empty<int>() : Enumerable.Range(0, nums.Length),
+            isSolution: s => s.Chosen.Count == sequenceLength,
+            candidates: s => s.Chosen.Count == sequenceLength ? Array.Empty<int>() : Enumerable.Range(0, nums.Length),
             choose: AddChoice,
             unchoose: RemoveChoice,
-            onSolution: s => total = (total + MatchingProduct(s, k, nums)) % ModularArithmetic.Modulo);
+            onSolution: s => total = (total + MatchingProduct(s, requiredSetBits, nums)) % ModularArithmetic.Modulo);
 
         return (int)total;
     }
 
     // What one completed sequence contributes: the product of the values it chose,
-    // or zero when its binary value does not have exactly k set bits. A non-matching
-    // sequence contributes zero, which leaves the running total unchanged - the same
-    // outcome as the guard that used to skip it.
-    private static long MatchingProduct(SequenceState state, int k, int[] nums)
+    // or zero when its binary value does not have exactly requiredSetBits set bits. A
+    // non-matching sequence contributes zero, which leaves the running total unchanged -
+    // the same outcome as the guard that used to skip it.
+    private static long MatchingProduct(SequenceState state, int requiredSetBits, int[] nums)
     {
-        if (BitOperations.PopCount((ulong)state.Sum) != k)
+        if (BitOperations.PopCount((ulong)state.Sum) != requiredSetBits)
         {
             return 0;
         }
@@ -83,41 +83,42 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     }
 
     // A carry-propagating digit DP: sweep bit positions low to high, choosing how
-    // many of the m remaining slots land on each nums index (contributing that many
+    // many of the sequenceLength slots land on each nums index (contributing that many
     // copies of 2^index), letting the running carry absorb what overflows into the
     // next bit - exactly binary addition with a multi-unit digit at each of the
-    // first n positions, continued a few positions past n so the last carry can
-    // fully drain. This repo's own Memoizer turns the recursion into a DP over
-    // (bitPosition, slotsLeft, setBitsNeeded, carry); the weight for a count split
-    // is "choose c of what's left" (the classic telescoping identity for
+    // first nums.Length positions, continued a few positions past nums.Length so the
+    // last carry can fully drain. This repo's own Memoizer turns the recursion into a
+    // DP over (bitPosition, slotsLeft, setBitsNeeded, carry); the weight for a count
+    // split is "choose c of what's left" (the classic telescoping identity for
     // m!/(c_0!...c_{n-1}!)), read from a factorial table built with this repo's own
     // ModularArithmetic.Inverse - the same technique RoomWaysPrecomputedFactorialAlgebra
     // uses for LC 1916, but this problem's own since no other solution shares it.
-    public static int SumOfProductsByCarryDigitDp(int m, int k, int[] nums)
+    public static int SumOfProductsByCarryDigitDp(int sequenceLength, int requiredSetBits, int[] nums)
     {
-        var maxBit = nums.Length + CarryDrainSteps(m);
-        var factorial = BuildFactorial(m);
+        var maxBit = nums.Length + CarryDrainSteps(sequenceLength);
+        var factorial = BuildFactorial(sequenceLength);
         var digits = (
             Nums: nums,
             Factorial: factorial,
             InverseFactorial: BuildInverseFactorial(factorial),
             MaxBit: maxBit);
 
-        var total = Memoizer.Memoize<(int, int, int, int), long>((0, m, k, 0), new CarryDigitSweep(digits));
+        var total = Memoizer.Memoize<(int, int, int, int), long>(
+            (0, sequenceLength, requiredSetBits, 0), new CarryDigitSweep(digits));
 
         return (int)total;
     }
 
-    // How many pure-halving steps a carry as large as m needs to reach zero once no
-    // further slots feed it - m <= 30 drains in at most 5, so a little slack keeps
-    // the bound honest without inflating the state space.
-    private static int CarryDrainSteps(int m)
+    // How many pure-halving steps a carry as large as maxCarry needs to reach zero once
+    // no further slots feed it - a sequence of at most 30 slots drains in at most 5, so
+    // a little slack keeps the bound honest without inflating the state space.
+    private static int CarryDrainSteps(int maxCarry)
     {
         var steps = 1;
 
-        while (m > 0)
+        while (maxCarry > 0)
         {
-            m >>= 1;
+            maxCarry >>= 1;
             steps++;
         }
 
@@ -189,7 +190,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
 
         // What placing `count` further slots at nums[bit] is worth: the multinomial
         // weight of that split times nums[bit]^count, times the sub-count below - or
-        // nothing at all when the carry would push the set-bit count past k.
+        // nothing at all when the carry would push the set-bit count past requiredSetBits.
         private long CountTerm(
             (int Bit, int Remaining, int Need, int Carry) state,
             int count,
@@ -213,6 +214,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
         }
     }
 
-    private static long Choose(long[] factorial, long[] inverseFactorial, int n, int r) =>
-        factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo * inverseFactorial[n - r] % ModularArithmetic.Modulo;
+    private static long Choose(long[] factorial, long[] inverseFactorial, int itemCount, int selectedCount) =>
+        factorial[itemCount] * inverseFactorial[selectedCount] % ModularArithmetic.Modulo
+        * inverseFactorial[itemCount - selectedCount] % ModularArithmetic.Modulo;
 }

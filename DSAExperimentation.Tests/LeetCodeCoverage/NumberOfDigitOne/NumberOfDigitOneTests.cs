@@ -20,11 +20,13 @@ public sealed class NumberOfDigitOneTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountDigitOneByBruteForceScan_LeetCodeExamples_ReturnsOccurrencesOfDigitOne(int n, long expected) =>
-        Assert.Equal(expected, NumberOfDigitOneSolution.CountDigitOneByBruteForceScan(n));
+    public void CountDigitOneByBruteForceScan_LeetCodeExamples_ReturnsOccurrencesOfDigitOne(
+        int upperBound, long expected) =>
+        Assert.Equal(expected, NumberOfDigitOneSolution.CountDigitOneByBruteForceScan(upperBound));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountDigitOneByDigitPositionTally_LeetCodeExamples_ReturnsOccurrencesOfDigitOne(int n, long expected) =>
-        Assert.Equal(expected, NumberOfDigitOneSolution.CountDigitOneByDigitPositionTally(n));
+    public void CountDigitOneByDigitPositionTally_LeetCodeExamples_ReturnsOccurrencesOfDigitOne(
+        int upperBound, long expected) =>
+        Assert.Equal(expected, NumberOfDigitOneSolution.CountDigitOneByDigitPositionTally(upperBound));
 }
