@@ -10,9 +10,12 @@ public sealed partial class KConnectedComponentsWorkloadsTests
     private const int NodeCount = 32;
     private const int Seed = 3608; // LC problem number
     private const int EdgeFieldCount = 3; // U, V, Time
+    private const int TimeFieldIndex = 2;
     private const int FirstTime = 1;
     private const int FewestComponents = 1;
     private const int ComponentCountDivisor = 4;
+    private const int EdgeDensityMultiplier = 2; // the workload caps edges at twice the node count
+    private const int UnorderedPairDivisor = 2; // a complete graph holds n(n-1)/2 distinct edges
 
     [Fact]
     public void BuildEdges_EveryEdge_IsATwoEndpointPairWithAnInRangeTime()
@@ -23,13 +26,13 @@ public sealed partial class KConnectedComponentsWorkloadsTests
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.NotEqual(edge[0], edge[1]));
-        Assert.All(edges, edge => Assert.InRange(edge[2], FirstTime, edges.Length));
+        Assert.All(edges, edge => Assert.InRange(edge[TimeFieldIndex], FirstTime, edges.Length));
     }
 
     [Fact]
     public void BuildEdges_EdgeCount_StaysAtTheDocumentedDensityCap() =>
         Assert.Equal(
-            Math.Min(NodeCount * 2, NodeCount * (NodeCount - 1) / 2),
+            Math.Min(NodeCount * EdgeDensityMultiplier, NodeCount * (NodeCount - 1) / UnorderedPairDivisor),
             KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed).Length);
 
     // The generator rejects a pair already claimed, so no edge may appear twice however its two
@@ -48,7 +51,7 @@ public sealed partial class KConnectedComponentsWorkloadsTests
     {
         var edges = KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed);
 
-        Assert.Equal(Enumerable.Range(FirstTime, edges.Length), edges.Select(edge => edge[2]));
+        Assert.Equal(Enumerable.Range(FirstTime, edges.Length), edges.Select(edge => edge[TimeFieldIndex]));
     }
 
     // How dense this random graph comes out is not fixed by the seed alone in principle, so what is

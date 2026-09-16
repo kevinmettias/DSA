@@ -14,6 +14,10 @@ public sealed partial class ConvertSortedArrayToBinarySearchTreeBenchmarksTests
 {
     private const int SmallestLength = 200;
 
+    // A binary tree gives every node this many children, so one more level holds this many times the
+    // nodes below it - which is what makes a tree of height h hold at most 2^h - 1 nodes.
+    private const int BinaryBranchingFactor = 2;
+
     [Fact]
     public void Setup_SameLength_RebuildsTheSameTree()
     {
@@ -73,7 +77,7 @@ public sealed partial class ConvertSortedArrayToBinarySearchTreeBenchmarksTests
         while (capacity < nodeCount)
         {
             height++;
-            capacity = (capacity * 2) + 1;
+            capacity = (capacity * BinaryBranchingFactor) + 1;
         }
 
         return height;

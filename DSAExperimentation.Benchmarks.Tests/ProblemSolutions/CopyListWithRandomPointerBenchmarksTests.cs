@@ -15,6 +15,9 @@ public sealed partial class CopyListWithRandomPointerBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
 
+    // What the rendering writes where a node's Random resolves to nothing.
+    private const string NullRandomText = "null";
+
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload()
     {
@@ -68,5 +71,5 @@ public sealed partial class CopyListWithRandomPointerBenchmarksTests
     // the only thing two separate clones never share.
     private static string Render(RandomLinkedListNode<int>? clone) =>
         AnswerText.Of(Chain(clone).Select(node =>
-            $"{node.Value}:{(node.Random is null ? "null" : node.Random.Value.ToString())}"));
+            $"{node.Value}:{(node.Random is null ? NullRandomText : node.Random.Value.ToString())}"));
 }

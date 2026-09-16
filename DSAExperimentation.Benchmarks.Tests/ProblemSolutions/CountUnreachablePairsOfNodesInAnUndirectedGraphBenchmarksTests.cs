@@ -18,6 +18,9 @@ public sealed partial class CountUnreachablePairsOfNodesInAnUndirectedGraphBench
 
     private const int ChainNodeCount = 25;
 
+    // C(size, 2) - one unordered pair per two distinct nodes.
+    private const int UnorderedPairDivisor = 2;
+
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameChains()
     {
@@ -55,5 +58,5 @@ public sealed partial class CountUnreachablePairsOfNodesInAnUndirectedGraphBench
     private static long UnreachablePairsAcrossEqualChains(int nodeCount, int chainNodeCount) =>
         PairsWithin(nodeCount) - nodeCount / chainNodeCount * PairsWithin(chainNodeCount);
 
-    private static long PairsWithin(long size) => size * (size - 1) / 2;
+    private static long PairsWithin(long size) => size * (size - 1) / UnorderedPairDivisor;
 }

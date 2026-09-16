@@ -26,6 +26,10 @@ public sealed partial class IncrementalMemoryLeakBenchmarksTests
     private const int FirstStickIndex = 1;
     private const int SecondStickIndex = 2;
 
+    // Seconds 1..crashSecond - 1 give away 1 + 2 + ... + (crashSecond - 1) megabytes, a triangular
+    // number, which is that product over this.
+    private const int TriangularNumberDivisor = 2;
+
     [Fact]
     public void Arithmetic_EqualSticks_AgreesWithHeapSimulation()
     {
@@ -57,6 +61,6 @@ public sealed partial class IncrementalMemoryLeakBenchmarksTests
     {
         long crashSecond = answer[CrashSecondIndex];
 
-        return (crashSecond * (crashSecond - 1) / 2) + answer[FirstStickIndex] + answer[SecondStickIndex];
+        return (crashSecond * (crashSecond - 1) / TriangularNumberDivisor) + answer[FirstStickIndex] + answer[SecondStickIndex];
     }
 }

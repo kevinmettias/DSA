@@ -12,11 +12,14 @@ public sealed partial class StabilityGraphWorkloadsTests
     private const int Seed = 3600; // LC problem number
     private const int Root = 0;
     private const int EdgeFieldCount = 4; // FromNode, ToNode, Strength, MustFlag
+    private const int StrengthFieldIndex = 2;
+    private const int MustFlagFieldIndex = 3;
     private const int MustEdgeFlag = 1;
     private const int OptionalEdgeFlag = 0;
     private const int MinStrength = 1;
     private const int MaxStrength = 99_999; // one below the fixture's own exclusive ceiling of 100_000
     private const int UpgradeBudgetDivisor = 4;
+    private const int ExtraOptionalEdgesPerNode = 2; // mirrors StabilityGraphWorkloads.ExtraOptionalEdgesPerNode
 
     [Fact]
     public void Build_EveryEdge_CarriesTheFourDocumentedFields()
@@ -24,8 +27,8 @@ public sealed partial class StabilityGraphWorkloadsTests
         var (edges, _) = StabilityGraphWorkloads.Build(NodeCount, Seed);
 
         Assert.All(edges, edge => Assert.Equal(EdgeFieldCount, edge.Length));
-        Assert.All(edges, edge => Assert.True(edge[3] == MustEdgeFlag || edge[3] == OptionalEdgeFlag));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinStrength, MaxStrength));
+        Assert.All(edges, edge => Assert.True(edge[MustFlagFieldIndex] == MustEdgeFlag || edge[MustFlagFieldIndex] == OptionalEdgeFlag));
+        Assert.All(edges, edge => Assert.InRange(edge[StrengthFieldIndex], MinStrength, MaxStrength));
         Assert.All(edges, edge => Assert.InRange(edge[0], Root, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], Root, NodeCount - 1));
     }
@@ -36,7 +39,7 @@ public sealed partial class StabilityGraphWorkloadsTests
     public void Build_MustEdges_FormASpanningTreeOverEveryNodeBeyondTheRoot()
     {
         var (edges, _) = StabilityGraphWorkloads.Build(NodeCount, Seed);
-        var mustEdges = edges.Where(edge => edge[3] == MustEdgeFlag).ToList();
+        var mustEdges = edges.Where(edge => edge[MustFlagFieldIndex] == MustEdgeFlag).ToList();
 
         Assert.Equal(NodeCount - 1, mustEdges.Count);
         Assert.All(mustEdges, edge => Assert.True(edge[0] < edge[1]));
@@ -51,7 +54,7 @@ public sealed partial class StabilityGraphWorkloadsTests
     public void Build_OptionalEdges_LeaveTheAlgorithmAChoiceAndNeverAreSelfLoops()
     {
         var (edges, _) = StabilityGraphWorkloads.Build(NodeCount, Seed);
-        var optionalEdges = edges.Where(edge => edge[3] == OptionalEdgeFlag).ToList();
+        var optionalEdges = edges.Where(edge => edge[MustFlagFieldIndex] == OptionalEdgeFlag).ToList();
 
         Assert.NotEmpty(optionalEdges);
         Assert.All(optionalEdges, edge => Assert.NotEqual(edge[0], edge[1]));
@@ -61,9 +64,8 @@ public sealed partial class StabilityGraphWorkloadsTests
     public void Build_NodeCount_ReturnsTheMustEdgesPlusAtMostTwoOptionalEdgesPerNode()
     {
         var (edges, _) = StabilityGraphWorkloads.Build(NodeCount, Seed);
-        var optionalPerNode = 2;
 
-        Assert.InRange(edges.Length, NodeCount - 1, (NodeCount - 1) + (optionalPerNode * NodeCount));
+        Assert.InRange(edges.Length, NodeCount - 1, (NodeCount - 1) + (ExtraOptionalEdgesPerNode * NodeCount));
     }
 
     [Fact]

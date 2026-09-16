@@ -15,6 +15,7 @@ public sealed partial class SpecialBinaryStringWorkloadsTests
     private const char OneBit = '1';
     private const char ZeroBit = '0';
     private const int EmptyDepth = 0;
+    private const string NeverClosesBeforeItOpens = "A special binary string never closes before it opens.";
 
     [Fact]
     public void GenerateSpecial_PairCount_ReturnsTwoCharactersPerPair() =>
@@ -36,7 +37,7 @@ public sealed partial class SpecialBinaryStringWorkloadsTests
         foreach (var bit in SpecialBinaryStringWorkloads.GenerateSpecial(PairCount, new Random(Seed)))
         {
             depth += bit == OneBit ? 1 : -1;
-            Assert.True(depth >= EmptyDepth, "A special binary string never closes before it opens.");
+            Assert.True(depth >= EmptyDepth, NeverClosesBeforeItOpens);
         }
 
         Assert.Equal(EmptyDepth, depth);

@@ -11,7 +11,9 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIWorkloadsTests
     private const int NodeCount = 64;
     private const int QueryCount = 32;
     private const int Seed = 3653; // LC problem number
-    private const int QueryWidth = 4;
+    private const int QueryWidth = 4; // l, r, k, v
+    private const int StrideFieldIndex = 2;
+    private const int MultiplierFieldIndex = 3;
     private const int MaxStartingValue = 1_000_000_000;
     private const int MaxMultiplier = 100_000;
     private const int SmallestValue = 1;
@@ -34,8 +36,8 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIWorkloadsTests
         Assert.All(queries, query => Assert.Equal(QueryWidth, query.Length));
         Assert.All(queries, query => Assert.InRange(query[0], 0, NodeCount - 1));
         Assert.All(queries, query => Assert.InRange(query[1], query[0], NodeCount - 1));
-        Assert.All(queries, query => Assert.InRange(query[2], SmallestValue, NodeCount));
-        Assert.All(queries, query => Assert.InRange(query[3], SmallestValue, MaxMultiplier));
+        Assert.All(queries, query => Assert.InRange(query[StrideFieldIndex], SmallestValue, NodeCount));
+        Assert.All(queries, query => Assert.InRange(query[MultiplierFieldIndex], SmallestValue, MaxMultiplier));
     }
 
     [Fact]

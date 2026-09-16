@@ -11,6 +11,7 @@ public sealed partial class LongestConsecutiveSequenceWorkloadsTests
     private const int Seed = 128; // LC problem number
     private const int LowestValue = 0;
     private const int FewestDistinctValues = 1;
+    private const int ValueRangeDivisor = 2; // the workload draws values from Length / 2, half the array
 
     [Fact]
     public void BuildArray_Length_ReturnsOneValuePerPosition() =>
@@ -20,7 +21,7 @@ public sealed partial class LongestConsecutiveSequenceWorkloadsTests
     public void BuildArray_EveryValue_StaysInsideTheHalvedValueRange()
     {
         var nums = LongestConsecutiveSequenceWorkloads.BuildArray(Length, Seed);
-        var spread = Length / 2;
+        var spread = Length / ValueRangeDivisor;
 
         Assert.All(nums, value => Assert.InRange(value, LowestValue, spread - 1));
     }
@@ -31,7 +32,7 @@ public sealed partial class LongestConsecutiveSequenceWorkloadsTests
     public void BuildArray_DistinctValues_CannotExceedTheHalvedRange()
     {
         var nums = LongestConsecutiveSequenceWorkloads.BuildArray(Length, Seed);
-        var spread = Length / 2;
+        var spread = Length / ValueRangeDivisor;
 
         Assert.True(spread < Length);
         Assert.InRange(nums.Distinct().Count(), FewestDistinctValues, spread);

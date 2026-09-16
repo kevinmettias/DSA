@@ -16,6 +16,7 @@ public sealed partial class PeakQueryWorkloadsTests
     private const int PointUpdateKind = 2;
     private const int SecondFieldIndex = 1;
     private const int ThirdFieldIndex = 2;
+    private const int QueryKindAlternationCycle = 2; // even positions are a type-1 count, odd positions a type-2 update
 
     [Fact]
     public void Build_Length_ReturnsOneValueAndOneQueryPerPosition()
@@ -42,7 +43,7 @@ public sealed partial class PeakQueryWorkloadsTests
 
         Assert.All(
             Enumerable.Range(0, Length),
-            index => AssertQuery(queries[index], index % 2 == 0));
+            index => AssertQuery(queries[index], index % QueryKindAlternationCycle == 0));
     }
 
     [Fact]

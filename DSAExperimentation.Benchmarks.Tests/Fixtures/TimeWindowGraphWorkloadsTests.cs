@@ -10,7 +10,9 @@ public sealed partial class TimeWindowGraphWorkloadsTests
 {
     private const int NodeCount = 32;
     private const int Seed = 3604; // LC problem number
-    private const int EdgeWidth = 4;
+    private const int EdgeWidth = 4; // FromNode, ToNode, WindowStart, WindowEnd
+    private const int WindowStartFieldIndex = 2;
+    private const int WindowEndFieldIndex = 3;
     private const int WindowStartCeilingExclusive = 50;
     private const int WindowLengthCeilingExclusive = 20;
     private const int ShortestWindowLength = 1;
@@ -25,11 +27,11 @@ public sealed partial class TimeWindowGraphWorkloadsTests
         Assert.All(edges, edge => Assert.NotEqual(edge[0], edge[1]));
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
-        Assert.All(edges, edge => Assert.InRange(edge[2], 0, WindowStartCeilingExclusive - 1));
+        Assert.All(edges, edge => Assert.InRange(edge[WindowStartFieldIndex], 0, WindowStartCeilingExclusive - 1));
         Assert.All(
             edges,
             edge => Assert.InRange(
-                edge[3] - edge[2],
+                edge[WindowEndFieldIndex] - edge[WindowStartFieldIndex],
                 ShortestWindowLength,
                 WindowLengthCeilingExclusive - 1));
     }

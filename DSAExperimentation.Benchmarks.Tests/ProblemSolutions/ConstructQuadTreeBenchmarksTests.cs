@@ -21,6 +21,9 @@ public sealed partial class ConstructQuadTreeBenchmarksTests
 {
     private const int SmallestSize = 16;
 
+    // Setup's split is top/bottom, so the two halves of the grid are its row count over this.
+    private const int TopBottomSplitDivisor = 2;
+
     [Fact]
     public void Setup_SameSize_RebuildsTheSameTopBottomSplitGrid()
     {
@@ -54,7 +57,7 @@ public sealed partial class ConstructQuadTreeBenchmarksTests
     {
         var grid = QuadTreeGrid.Allocate(SmallestSize);
 
-        for (var row = SmallestSize / 2; row < SmallestSize; row++)
+        for (var row = SmallestSize / TopBottomSplitDivisor; row < SmallestSize; row++)
         {
             Array.Fill(grid[row], 1);
         }

@@ -14,16 +14,28 @@ public sealed partial class ColumnNameExpressionTests
     private const int ThirtyNames = 30;
     private const int TwoHundredNames = 200;
 
+    // The whole rendering ThirtyNames' build produces, pinned so a wrong carry cannot hide behind a
+    // correct join.
+    private const string ThirtyNameExpression =
+        "a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+aa+ab+ac+ad";
+
+    // LC 770's variable grammar: one or more lowercase letters, nothing else.
+    private const string LowercaseNamePattern = "^[a-z]+$";
+
+    // The name at index SingleLetterAlphabetSize - the first past the single-letter alphabet, where
+    // the base-26 counter carries.
+    private const string FirstTwoLetterName = "aa";
+
     [Fact]
     public void Build_ZeroLength_ReturnsAnEmptyExpression() =>
         Assert.Equal(string.Empty, ColumnNameExpression.Build(0));
 
     // The first 26 names are the alphabet itself; index 26 is where the base-26 counter carries, and
-    // the literal pins the whole rendering so a wrong carry cannot hide behind a correct join.
+    // the constant pins the whole rendering so a wrong carry cannot hide behind a correct join.
     [Fact]
     public void Build_ThirtyNames_JoinsBase26NamesWithPlusInOrder() =>
         Assert.Equal(
-            "a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+aa+ab+ac+ad",
+            ThirtyNameExpression,
             ColumnNameExpression.Build(ThirtyNames));
 
     [Fact]
@@ -33,7 +45,7 @@ public sealed partial class ColumnNameExpressionTests
 
         Assert.Equal(TwoHundredNames, names.Length);
         Assert.Equal(TwoHundredNames, names.Distinct().Count());
-        Assert.All(names, name => Assert.Matches("^[a-z]+$", name));
+        Assert.All(names, name => Assert.Matches(LowercaseNamePattern, name));
     }
 
     // The carry is what index 26 exists to exercise, and the generator promises it keeps producing
@@ -42,6 +54,6 @@ public sealed partial class ColumnNameExpressionTests
     [Fact]
     public void Build_PastTheSingleLetterAlphabet_ContinuesWithTheTwoLetterHandful() =>
         Assert.Equal(
-            "aa",
+            FirstTwoLetterName,
             ColumnNameExpression.Build(SingleLetterAlphabetSize + 1).Split('+')[SingleLetterAlphabetSize]);
 }

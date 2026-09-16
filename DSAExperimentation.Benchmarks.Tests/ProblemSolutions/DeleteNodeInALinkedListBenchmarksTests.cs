@@ -16,6 +16,10 @@ public sealed partial class DeleteNodeInALinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
 
+    // The arm targets the node at the middle of the run: it rebuilds 0..Length-1, whose values equal
+    // their own positions, so the node it splices out is the one holding Length over this.
+    private const int MiddlePositionDivisor = 2;
+
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload()
     {
@@ -34,7 +38,7 @@ public sealed partial class DeleteNodeInALinkedListBenchmarksTests
         BuildHarness().NextValueCopy();
 
         Assert.Equal(
-            Enumerable.Range(0, SmallestLength).Where(value => value != SmallestLength / 2),
+            Enumerable.Range(0, SmallestLength).Where(value => value != SmallestLength / MiddlePositionDivisor),
             Replay());
     }
 
@@ -57,7 +61,7 @@ public sealed partial class DeleteNodeInALinkedListBenchmarksTests
 
         var target = head;
 
-        for (var i = 0; i < SmallestLength / 2; i++)
+        for (var i = 0; i < SmallestLength / MiddlePositionDivisor; i++)
         {
             target = target.Next!;
         }

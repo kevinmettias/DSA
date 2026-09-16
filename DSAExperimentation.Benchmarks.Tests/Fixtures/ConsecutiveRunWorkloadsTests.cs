@@ -11,6 +11,7 @@ public sealed partial class ConsecutiveRunWorkloadsTests
     private const int NodeCount = 16;
     private const int Seed = 3970; // LC problem number
     private const int EdgeFieldCount = 3; // FromNode, ToNode, Weight
+    private const int WeightFieldIndex = 2;
     private const int MinWeight = 1;
     private const int MaxWeight = 9_999;
     private const string Alphabet = "abc";
@@ -23,7 +24,7 @@ public sealed partial class ConsecutiveRunWorkloadsTests
         Assert.All(edges, edge => Assert.Equal(EdgeFieldCount, edge.Length));
         Assert.All(edges, edge => Assert.True(edge[0] < edge[1]));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinWeight, MaxWeight));
+        Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], MinWeight, MaxWeight));
     }
 
     [Fact]

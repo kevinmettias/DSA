@@ -17,6 +17,7 @@ public sealed partial class ScoreOfParenthesesWorkloadsTests
     private const char OpenParen = '(';
     private const char CloseParen = ')';
     private const int ClosedDepth = 0;
+    private const string NeverClosesBeforeItOpens = "A balanced expression never closes before it opens.";
 
     [Fact]
     public void BuildBalanced_PairCount_ReturnsTwoCharactersPerPair() =>
@@ -43,7 +44,7 @@ public sealed partial class ScoreOfParenthesesWorkloadsTests
         foreach (var character in expression)
         {
             depth += character == OpenParen ? 1 : -1;
-            Assert.True(depth >= ClosedDepth, "A balanced expression never closes before it opens.");
+            Assert.True(depth >= ClosedDepth, NeverClosesBeforeItOpens);
         }
 
         Assert.Equal(ClosedDepth, depth);

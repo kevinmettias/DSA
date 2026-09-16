@@ -13,6 +13,7 @@ public sealed partial class RestrictedPathWorkloadsTests
     private const int StepCount = 20;
     private const int OneStepWidth = 1;
     private const int TwoStepWidth = 2;
+    private const int WeightFieldIndex = 2; // FromNode, ToNode, Weight
     private const int FirstNode = 1; // this chain is 1-based, unlike most fixtures in this folder
 
     [Fact]
@@ -23,7 +24,7 @@ public sealed partial class RestrictedPathWorkloadsTests
     public void BuildTwoStepEdges_EveryEdge_WeighsExactlyItsOwnStepDistance() =>
         Assert.All(
             RestrictedPathWorkloads.BuildTwoStepEdges(StepCount),
-            edge => Assert.Equal(edge[1] - edge[0], edge[2]));
+            edge => Assert.Equal(edge[1] - edge[0], edge[WeightFieldIndex]));
 
     // Every layer needs both routes: without the one-step edge the chain breaks, and without the
     // two-step edge there is no second route for the recount to find.
@@ -36,14 +37,14 @@ public sealed partial class RestrictedPathWorkloadsTests
         {
             Assert.Contains(
                 edges,
-                edge => edge[0] == node && edge[1] == node + OneStepWidth && edge[2] == OneStepWidth);
+                edge => edge[0] == node && edge[1] == node + OneStepWidth && edge[WeightFieldIndex] == OneStepWidth);
         }
 
         for (var node = FirstNode; node <= StepCount - OneStepWidth; node++)
         {
             Assert.Contains(
                 edges,
-                edge => edge[0] == node && edge[1] == node + TwoStepWidth && edge[2] == TwoStepWidth);
+                edge => edge[0] == node && edge[1] == node + TwoStepWidth && edge[WeightFieldIndex] == TwoStepWidth);
         }
     }
 

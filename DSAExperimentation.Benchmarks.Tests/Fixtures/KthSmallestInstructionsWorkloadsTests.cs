@@ -9,6 +9,7 @@ public sealed partial class KthSmallestInstructionsWorkloadsTests
 {
     private const int Size = 10;
     private const int DestinationFieldCount = 2; // VerticalSteps, HorizontalSteps
+    private const int TotalStepsMultiplier = 2; // mirrors KthSmallestInstructionsWorkloads.TotalStepsMultiplier
     private const int SmallestSize = 1;
     private const int MedianSequenceDivisor = 2;
     private const long SmallestSizeMedianRank = 1; // C(2, 1) / 2
@@ -47,10 +48,10 @@ public sealed partial class KthSmallestInstructionsWorkloadsTests
 
     private static long CentralBinomialCoefficient(int size)
     {
-        var row = new long[(2 * size) + 1];
+        var row = new long[(TotalStepsMultiplier * size) + 1];
         row[0] = 1;
 
-        for (var step = 0; step < 2 * size; step++)
+        for (var step = 0; step < TotalStepsMultiplier * size; step++)
         {
             for (var column = step + 1; column > 0; column--)
             {

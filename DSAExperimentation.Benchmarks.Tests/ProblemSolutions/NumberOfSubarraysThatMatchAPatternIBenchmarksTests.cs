@@ -17,6 +17,10 @@ public sealed partial class NumberOfSubarraysThatMatchAPatternIBenchmarksTests
 {
     private const int SmallestNumsLength = 20;
 
+    // The fixture's pattern is this share of the nums length: an all-1s pattern that long matches at
+    // every start i with i + patternLength < numsLength.
+    private const int PatternShareDivisor = 2;
+
     [Fact]
     public void Setup_SameParameters_RebuildsTheSameWorkload() =>
         Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
@@ -52,5 +56,5 @@ public sealed partial class NumberOfSubarraysThatMatchAPatternIBenchmarksTests
     // A strictly increasing nums makes every consecutive sign 1, and an all-1s pattern of half the
     // length therefore matches at every start i with i + patternLength < numsLength.
     private static int ExpectedAllMatchingWindowCount(NumberOfSubarraysThatMatchAPatternIBenchmarks harness) =>
-        harness.NumsLength - harness.NumsLength / 2;
+        harness.NumsLength - harness.NumsLength / PatternShareDivisor;
 }

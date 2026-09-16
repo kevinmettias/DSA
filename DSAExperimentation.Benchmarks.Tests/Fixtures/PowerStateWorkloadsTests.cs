@@ -13,7 +13,8 @@ public sealed partial class PowerStateWorkloadsTests
     private const int WeightUpperBound = 1_000_000;
     private const int ExtraEdgesPerNode = 2;
     private const int MaxCost = 3;
-    private const int EdgeFieldCount = 3;
+    private const int EdgeFieldCount = 3; // FromNode, ToNode, Weight
+    private const int WeightFieldIndex = 2;
     private const int FirstNode = 0;
     private const int LastNode = NodeCount - 1;
 
@@ -34,7 +35,7 @@ public sealed partial class PowerStateWorkloadsTests
         Assert.All(edges, edge => Assert.InRange(edge[0], FirstNode, LastNode));
         Assert.All(edges, edge => Assert.InRange(edge[1], FirstNode, LastNode));
         Assert.All(edges, edge => Assert.True(edge[0] < edge[1]));
-        Assert.All(edges, edge => Assert.InRange(edge[2], 1, WeightUpperBound - 1));
+        Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], 1, WeightUpperBound - 1));
     }
 
     [Fact]

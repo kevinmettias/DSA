@@ -10,6 +10,7 @@ public sealed partial class FlightWorkloadsTests
     private const int CityCount = 18;
     private const int Seed = 787; // LC problem number
     private const int FlightFieldCount = 3; // FromCity, ToCity, Price
+    private const int PriceFieldIndex = 2;
     private const int MinFlightPrice = 1;
     private const int FlightPriceUpperBound = 100; // exclusive
     private const int ExtraFlightsPerCity = 2;
@@ -40,7 +41,7 @@ public sealed partial class FlightWorkloadsTests
         Assert.All(flights, flight => Assert.Equal(FlightFieldCount, flight.Length));
         Assert.All(flights, flight => Assert.InRange(flight[0], 0, CityCount - 1));
         Assert.All(flights, flight => Assert.InRange(flight[1], 0, CityCount - 1));
-        Assert.All(flights, flight => Assert.InRange(flight[2], MinFlightPrice, FlightPriceUpperBound - 1));
+        Assert.All(flights, flight => Assert.InRange(flight[PriceFieldIndex], MinFlightPrice, FlightPriceUpperBound - 1));
     }
 
     // The generator writes a city's guaranteed flight as { earlier city, city, price }, and it is
