@@ -19,12 +19,18 @@ public sealed class CountKSubsequencesOfAStringWithMaximumBeautyTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByBruteForceCombinations_LeetCodeExamples_ReturnsMaxBeautyCount(string s, int k, long expected)
-        => Assert.Equal(expected, CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(s, k));
+    {
+        var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByGroupedFrequencyProduct_LeetCodeExamples_ReturnsMaxBeautyCount(string s, int k, long expected)
-        => Assert.Equal(expected, CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(s, k));
+    {
+        var actual = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByGroupedFrequencyProduct(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [InlineData("aaaabbbbccccdddd", 3)]

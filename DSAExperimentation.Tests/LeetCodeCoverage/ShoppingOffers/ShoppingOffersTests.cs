@@ -17,12 +17,20 @@ public sealed class ShoppingOffersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByBruteForce_LeetCodeExamples_PrefersTheCheaperOffer(
-        int[] price, int[][] special, int[] needs, int expected) =>
-        Assert.Equal(expected, ShoppingOffersSolution.MinCostByBruteForce(price, special, needs));
+        int[] price, int[][] special, int[] needs, int expected)
+    {
+        var actual = ShoppingOffersSolution.MinCostByBruteForce(price, special, needs);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByMemoizedDfs_LeetCodeExamples_PrefersTheCheaperOffer(
-        int[] price, int[][] special, int[] needs, int expected) =>
-        Assert.Equal(expected, ShoppingOffersSolution.MinCostByMemoizedDfs(price, special, needs));
+        int[] price, int[][] special, int[] needs, int expected)
+    {
+        var actual = ShoppingOffersSolution.MinCostByMemoizedDfs(price, special, needs);
+
+        Assert.Equal(expected, actual);
+    }
 }

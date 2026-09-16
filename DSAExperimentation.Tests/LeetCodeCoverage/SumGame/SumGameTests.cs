@@ -11,49 +11,54 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumGame;
 // used to live in the benchmark as an unasserted baseline.
 public sealed class SumGameTests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<SumGameExample> Examples =>
         new()
         {
             // LC example 1: no blanks, halves already level, so Bob has won.
-            { "5023", false },
+            { new SumGameExample(Num: "5023", AliceWins: false) },
 
             // LC example 2: two blanks on the right, left is 7 ahead, and Bob can
             // only level a two-blank half by 9.
-            { "25??", true },
+            { new SumGameExample(Num: "25??", AliceWins: true) },
 
             // LC example 3: difference 9 with one blank left and three right -
             // exactly the margin Bob's replies are worth.
-            { "?3295???", false },
+            { new SumGameExample(Num: "?3295???", AliceWins: false) },
 
             // Smallest even board: Alice writes a digit, Bob mirrors it.
-            { "??", false },
+            { new SumGameExample(Num: "??", AliceWins: false) },
 
             // One blank, so Alice moves last and any non-zero digit wins.
-            { "?0", true },
+            { new SumGameExample(Num: "?0", AliceWins: true) },
 
             // Known digits already level and one blank per half: Bob mirrors again.
-            { "9??9", false },
+            { new SumGameExample(Num: "9??9", AliceWins: false) },
 
             // Both blanks on the left, so Bob has to answer on the same half Alice
             // just moved on and can never restore the balance.
-            { "??00", true },
+            { new SumGameExample(Num: "??00", AliceWins: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AliceWinsByBruteForceRecursion_LeetCodeExamples_ReturnsOptimalPlayOutcome(
-        string num, bool expected) =>
-        Assert.Equal(expected, SumGameSolution.AliceWinsByBruteForceRecursion(num));
+        SumGameExample example) =>
+        Assert.Equal(example.AliceWins, SumGameSolution.AliceWinsByBruteForceRecursion(example.Num));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AliceWinsByMemoizedRecursion_LeetCodeExamples_ReturnsOptimalPlayOutcome(
-        string num, bool expected) =>
-        Assert.Equal(expected, SumGameSolution.AliceWinsByMemoizedRecursion(num));
+        SumGameExample example) =>
+        Assert.Equal(example.AliceWins, SumGameSolution.AliceWinsByMemoizedRecursion(example.Num));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AliceWinsByClosedForm_LeetCodeExamples_ReturnsOptimalPlayOutcome(
-        string num, bool expected) =>
-        Assert.Equal(expected, SumGameSolution.AliceWinsByClosedForm(num));
+        SumGameExample example) =>
+        Assert.Equal(example.AliceWins, SumGameSolution.AliceWinsByClosedForm(example.Num));
+
+    // One LeetCode example: the board, and whether Alice wins optimal play on it.
+    // Whether Alice wins is named at the row that states it, so a reader of `Examples`
+    // never has to remember which position `true` sits in.
+    public readonly record struct SumGameExample(string Num, bool AliceWins);
 }

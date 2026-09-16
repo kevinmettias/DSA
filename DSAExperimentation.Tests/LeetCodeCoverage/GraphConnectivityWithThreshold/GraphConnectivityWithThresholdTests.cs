@@ -48,12 +48,21 @@ public sealed class GraphConnectivityWithThresholdTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreConnectedByNaiveUnionFind_LeetCodeExamples_ReportsSharedDivisorConnectivity(
-        int n, int threshold, int[][] queries, bool[] expected) =>
-        Assert.Equal(expected, GraphConnectivityWithThresholdSolution.AreConnectedByNaiveUnionFind(n, threshold, queries));
+        int n, int threshold, int[][] queries, bool[] expected)
+    {
+        var actual =
+            GraphConnectivityWithThresholdSolution.AreConnectedByNaiveUnionFind(n, threshold, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreConnectedByDisjointSet_LeetCodeExamples_ReportsSharedDivisorConnectivity(
-        int n, int threshold, int[][] queries, bool[] expected) =>
-        Assert.Equal(expected, GraphConnectivityWithThresholdSolution.AreConnectedByDisjointSet(n, threshold, queries));
+        int n, int threshold, int[][] queries, bool[] expected)
+    {
+        var actual = GraphConnectivityWithThresholdSolution.AreConnectedByDisjointSet(n, threshold, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

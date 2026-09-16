@@ -18,12 +18,20 @@ public sealed class MinimumCostPathWithAlternatingDirectionsIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByBclDijkstra_LeetCodeExamples_ReturnsMinimumTotalCost(
-        int m, int n, int[][] penalty, long expected) =>
-        Assert.Equal(expected, MinimumCostPathWithAlternatingDirectionsIIISolution.MinCostByBclDijkstra(m, n, penalty));
+        int m, int n, int[][] penalty, long expected)
+    {
+        var actual = MinimumCostPathWithAlternatingDirectionsIIISolution.MinCostByBclDijkstra(m, n, penalty);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByStateDijkstra_LeetCodeExamples_ReturnsMinimumTotalCost(
-        int m, int n, int[][] penalty, long expected) =>
-        Assert.Equal(expected, MinimumCostPathWithAlternatingDirectionsIIISolution.MinCostByStateDijkstra(m, n, penalty));
+        int m, int n, int[][] penalty, long expected)
+    {
+        var actual = MinimumCostPathWithAlternatingDirectionsIIISolution.MinCostByStateDijkstra(m, n, penalty);
+
+        Assert.Equal(expected, actual);
+    }
 }

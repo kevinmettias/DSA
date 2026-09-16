@@ -29,28 +29,41 @@ public sealed class LayeringTests
     private static readonly Regex Reference = new(
         @"^using(?:\s+\w+\s*=)?\s+DSAExperimentation\.(\w+)", RegexOptions.Multiline);
 
-    public static TheoryData<string, string> SourceRoots =>
-        new() { { "DSAExperimentation", "" }, { "DSAExperimentation.LeetCode", "LeetCode" } };
+    public static TheoryData<SourceRoot> SourceRoots =>
+        new()
+        {
+            { new SourceRoot(ProjectDirectory: "DSAExperimentation", FixedTier: "") },
+            { new SourceRoot(ProjectDirectory: "DSAExperimentation.LeetCode", FixedTier: "LeetCode") },
+        };
 
     [Theory]
     [MemberData(nameof(SourceRoots))]
-    public void EveryFile_ReferencesItsOwnTierOrALowerOne(string projectDirectory, string fixedTier)
+    public void EveryFile_ReferencesItsOwnTierOrALowerOne(SourceRoot sourceRoot)
+    {
+        var offences = InversionsUnder(sourceRoot);
+        var report = string.Join(Environment.NewLine, offences);
+
+        Assert.True(offences.Count == 0, report);
+    }
+
+    private static List<string> InversionsUnder(SourceRoot sourceRoot)
     {
         var root = RepositoryFiles.Root();
         var offences = new List<string>();
+        var projectDirectory = Path.Combine(root, sourceRoot.ProjectDirectory);
 
-        foreach (var file in RepositoryFiles.SourceFilesIn(Path.Combine(root, projectDirectory)))
+        foreach (var file in RepositoryFiles.SourceFilesIn(projectDirectory))
         {
             var relative = RepositoryFiles.PathFromRoot(root, file);
-            var tier = fixedTier.Length > 0 ? fixedTier : TierOf(relative, projectDirectory);
+            var tier = TierUnder(sourceRoot, relative);
 
             if (tier is not null)
             {
-                offences.AddRange(InversionsIn(file, relative, tier));
+                offences.AddRange(InversionsIn(new TieredFile(file, relative, tier)));
             }
         }
 
-        Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
+        return offences;
     }
 
     [Fact]
@@ -61,7 +74,8 @@ public sealed class LayeringTests
 
         foreach (var path in AllowedInversions.Keys)
         {
-            var full = Path.Combine(root, "DSAExperimentation", path.Replace('/', Path.DirectorySeparatorChar));
+            var relativePath = path.Replace('/', Path.DirectorySeparatorChar);
+            var full = Path.Combine(root, "DSAExperimentation", relativePath);
 
             Assert.True(File.Exists(full), $"{path} is allow-listed as a deliberate tier inversion but no longer exists.");
         }
@@ -73,28 +87,49 @@ public sealed class LayeringTests
         // The one boundary that IS compiler-enforced: nothing in the framework
         // project may depend on a LeetCode solution, because it cannot see one.
         var root = RepositoryFiles.Root();
+        var frameworkLeetCode = Path.Combine(root, "DSAExperimentation", "LeetCode");
 
         Assert.False(
-            Directory.Exists(Path.Combine(root, "DSAExperimentation", "LeetCode")),
+            Directory.Exists(frameworkLeetCode),
             "LeetCode solutions belong in DSAExperimentation.LeetCode, not the framework project.");
     }
 
-    private static IEnumerable<string> InversionsIn(string file, string relative, string tier)
+    // The tier a file sits in: the source root's own fixed tier where it declares one (a
+    // project whose whole body is a single tier), otherwise the tier folder its path
+    // names directly, and null when the path names no such folder.
+    private static string? TierUnder(SourceRoot sourceRoot, string relative)
     {
-        if (AllowedInversions.ContainsKey(TrimProject(relative)))
+        if (sourceRoot.FixedTier.Length > 0)
+        {
+            return sourceRoot.FixedTier;
+        }
+
+        var segments = relative[(sourceRoot.ProjectDirectory.Length + 1)..].Split('/');
+
+        if (segments.Length <= 1 || !Tiers.Contains(segments[0]))
+        {
+            return null;
+        }
+
+        return segments[0];
+    }
+
+    private static IEnumerable<string> InversionsIn(TieredFile file)
+    {
+        if (AllowedInversions.ContainsKey(TrimProject(file.RelativePath)))
         {
             yield break;
         }
 
-        var rank = Array.IndexOf(Tiers, tier);
+        var rank = Array.IndexOf(Tiers, file.Tier);
 
-        foreach (Match match in Reference.Matches(File.ReadAllText(file)))
+        foreach (Match match in Reference.Matches(File.ReadAllText(file.FullPath)))
         {
             var referencedRank = Array.IndexOf(Tiers, match.Groups[1].Value);
 
             if (referencedRank > rank)
             {
-                yield return $"{relative}: {tier} references {match.Groups[1].Value}, a higher tier.";
+                yield return $"{file.RelativePath}: {file.Tier} references {match.Groups[1].Value}, a higher tier.";
             }
         }
     }
@@ -103,13 +138,22 @@ public sealed class LayeringTests
     {
         var slash = relative.IndexOf('/');
 
-        return slash < 0 ? relative : relative[(slash + 1)..];
+        if (slash < 0)
+        {
+            return relative;
+        }
+
+        return relative[(slash + 1)..];
     }
 
-    private static string? TierOf(string relative, string projectDirectory)
-    {
-        var segments = relative[(projectDirectory.Length + 1)..].Split('/');
+    // One source root the sweep walks: the project directory, and the tier its files are all
+    // in where the whole project is a single tier (empty for a project laid out in tier
+    // folders). The two positions are both `string` and mean different things, so each is
+    // named rather than left interchangeable.
+    public readonly record struct SourceRoot(string ProjectDirectory, string FixedTier);
 
-        return segments.Length > 1 && Tiers.Contains(segments[0]) ? segments[0] : null;
-    }
+    // One source file under a tier project, named three ways: the absolute path to read, the
+    // root-relative path a finding states it by, and the tier its location puts it in. Three
+    // adjacent strings would let a call site transpose them and still compile.
+    public readonly record struct TieredFile(string FullPath, string RelativePath, string Tier);
 }

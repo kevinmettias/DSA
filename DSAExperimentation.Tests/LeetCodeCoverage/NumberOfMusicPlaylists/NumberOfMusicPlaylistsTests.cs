@@ -26,8 +26,12 @@ public sealed class NumberOfMusicPlaylistsTests
         int n,
         int goal,
         int k,
-        long expected) =>
-        Assert.Equal(expected, NumberOfMusicPlaylistsSolution.NumMusicPlaylistsByTabulation(n, goal, k));
+        long expected)
+    {
+        var actual = NumberOfMusicPlaylistsSolution.NumMusicPlaylistsByTabulation(n, goal, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -35,6 +39,10 @@ public sealed class NumberOfMusicPlaylistsTests
         int n,
         int goal,
         int k,
-        long expected) =>
-        Assert.Equal(expected, NumberOfMusicPlaylistsSolution.NumMusicPlaylistsByMemoizedRecurrence(n, goal, k));
+        long expected)
+    {
+        var actual = NumberOfMusicPlaylistsSolution.NumMusicPlaylistsByMemoizedRecurrence(n, goal, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

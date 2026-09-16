@@ -44,12 +44,18 @@ public sealed class CountSubIslandsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByRecursiveFloodFill_LeetCodeExamples_CountsGrid2IslandsFullyCoveredByGrid1(
-        int[][] grid1, int[][] grid2, int expected) =>
-        Assert.Equal(expected, CountSubIslandsSolution.CountByRecursiveFloodFill(grid1, grid2));
+        int[][] grid1, int[][] grid2, int expected)
+    {
+        var actual = CountSubIslandsSolution.CountByRecursiveFloodFill(grid1, grid2);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByDepthFirstSearchTraverse_LeetCodeExamples_CountsGrid2IslandsFullyCoveredByGrid1(
-        int[][] grid1, int[][] grid2, int expected) =>
-        Assert.Equal(expected, CountSubIslandsSolution.CountByDepthFirstSearchTraverse(grid1, grid2));
+        int[][] grid1, int[][] grid2, int expected)
+    {
+        var actual = CountSubIslandsSolution.CountByDepthFirstSearchTraverse(grid1, grid2);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -69,36 +69,38 @@ public sealed class LFUCacheTests
             Assert.Equal(expected[i], operations[i].Apply(cache));
         }
     }
-}
 
-// One call in an LFUCache script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct LFUCacheOp(LFUCacheOp.OpKind kind, int key, int value)
-{
-    public static LFUCacheOp Get(int key) => new(OpKind.Get, key, 0);
-
-    public static LFUCacheOp Put(int key, int value) => new(OpKind.Put, key, value);
-
-    // null for put, the returned value for get (LeetCode's own -1-on-miss
-    // convention, since ICache<TKey,TValue>.TryGetValue's out value is only
-    // meaningful when it returns true) - so a script runner can assert
-    // against one expected value per operation uniformly. Internal, not
-    // public: only this same assembly's test method ever calls Apply.
-    internal int? Apply(ICache<int, int> cache)
+    // One call in an LFUCache script: which method to invoke and with what
+    // arguments. Pure dispatch, built via the named factories below so a script
+    // (like Examples above) reads like the LeetCode call sequence it replays.
+    // Nested here rather than left at file scope so the file declares exactly
+    // one type.
+    public readonly record struct LFUCacheOp(LFUCacheOp.OpKind kind, int key, int value)
     {
-        if (kind == OpKind.Put)
+        public static LFUCacheOp Get(int key) => new(OpKind.Get, key, 0);
+
+        public static LFUCacheOp Put(int key, int value) => new(OpKind.Put, key, value);
+
+        // null for put, the returned value for get (LeetCode's own -1-on-miss
+        // convention, since ICache<TKey,TValue>.TryGetValue's out value is only
+        // meaningful when it returns true) - so a script runner can assert
+        // against one expected value per operation uniformly. Internal, not
+        // public: only this same assembly's test method ever calls Apply.
+        internal int? Apply(ICache<int, int> cache)
         {
-            cache.Set(key, value);
-            return null;
+            if (kind == OpKind.Put)
+            {
+                cache.Set(key, value);
+                return null;
+            }
+
+            return cache.TryGetValue(key, out var cachedValue) ? cachedValue : -1;
         }
 
-        return cache.TryGetValue(key, out var cachedValue) ? cachedValue : -1;
-    }
-
-    public enum OpKind
-    {
-        Get,
-        Put,
+        public enum OpKind
+        {
+            Get,
+            Put,
+        }
     }
 }

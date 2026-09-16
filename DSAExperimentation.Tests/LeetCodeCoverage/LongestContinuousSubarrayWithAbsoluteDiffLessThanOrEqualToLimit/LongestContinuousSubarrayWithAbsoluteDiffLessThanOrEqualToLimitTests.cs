@@ -33,18 +33,22 @@ public sealed class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLi
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestSubarrayByBruteForceWindows_LeetCodeExamples_ReturnsLongestWindowWithinLimit(
-        int[] nums, int limit, int expected) =>
-        Assert.Equal(
-            expected,
-            LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
-                .LongestSubarrayByBruteForceWindows(nums, limit));
+        int[] nums, int limit, int expected)
+    {
+        var actual = LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
+            .LongestSubarrayByBruteForceWindows(nums, limit);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestSubarrayByMonotonicDeques_LeetCodeExamples_ReturnsLongestWindowWithinLimit(
-        int[] nums, int limit, int expected) =>
-        Assert.Equal(
-            expected,
-            LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
-                .LongestSubarrayByMonotonicDeques(nums, limit));
+        int[] nums, int limit, int expected)
+    {
+        var actual = LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution
+            .LongestSubarrayByMonotonicDeques(nums, limit);
+
+        Assert.Equal(expected, actual);
+    }
 }

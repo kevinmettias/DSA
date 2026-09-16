@@ -10,26 +10,32 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StrangePrinterII;
 // test here for the first time.
 public sealed class StrangePrinterIITests
 {
-    public static TheoryData<int[][], bool> Examples =>
+    public static TheoryData<ColorGridExample> Examples =>
         new()
         {
-            { [[1, 1, 1, 1], [1, 2, 2, 1], [1, 2, 2, 1], [1, 1, 1, 1]], true },
-            { [[1, 1, 1, 1], [1, 1, 3, 3], [1, 1, 3, 4], [5, 5, 1, 4]], true },
-            { [[1, 2, 1], [2, 1, 2], [1, 2, 1]], false },
-            { [[1, 2, 1], [2, 1, 2]], false },
-            { [[1]], true },
-            { [[1, 2], [1, 2]], true },
+            new ColorGridExample([[1, 1, 1, 1], [1, 2, 2, 1], [1, 2, 2, 1], [1, 1, 1, 1]], IsPrintable: true),
+            new ColorGridExample([[1, 1, 1, 1], [1, 1, 3, 3], [1, 1, 3, 4], [5, 5, 1, 4]], IsPrintable: true),
+            new ColorGridExample([[1, 2, 1], [2, 1, 2], [1, 2, 1]], IsPrintable: false),
+            new ColorGridExample([[1, 2, 1], [2, 1, 2]], IsPrintable: false),
+            new ColorGridExample([[1]], IsPrintable: true),
+            new ColorGridExample([[1, 2], [1, 2]], IsPrintable: true),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsPrintableByKahnsTopologicalSort_LeetCodeExamples_ReturnsWhetherColorGraphIsAcyclic(
-        int[][] targetGrid, bool expected) =>
-        Assert.Equal(expected, StrangePrinterIISolution.IsPrintableByKahnsTopologicalSort(targetGrid));
+        ColorGridExample example) =>
+        Assert.Equal(example.IsPrintable, StrangePrinterIISolution.IsPrintableByKahnsTopologicalSort(example.TargetGrid));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsPrintableByNaiveRescan_LeetCodeExamples_ReturnsWhetherColorGraphIsAcyclic(
-        int[][] targetGrid, bool expected) =>
-        Assert.Equal(expected, StrangePrinterIISolution.IsPrintableByNaiveRescan(targetGrid));
+        ColorGridExample example) =>
+        Assert.Equal(example.IsPrintable, StrangePrinterIISolution.IsPrintableByNaiveRescan(example.TargetGrid));
+
+    // Nested because it is only ever used inside this test class and has no
+    // independent identity: this harness's own vocabulary for one LeetCode example.
+    // The expected answer is a named field of the case rather than a bare `true` or
+    // `false` sitting in the signature where only its position says what it means.
+    public readonly record struct ColorGridExample(int[][] TargetGrid, bool IsPrintable);
 }

@@ -21,12 +21,20 @@ public sealed class MinimumIncompatibilityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumIncompatibilityByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimalTotalIncompatibility(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, MinimumIncompatibilitySolution.MinimumIncompatibilityByUnmemoizedRecursion(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = MinimumIncompatibilitySolution.MinimumIncompatibilityByUnmemoizedRecursion(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumIncompatibilityByMemoizedRecursion_LeetCodeExamples_ReturnsMinimalTotalIncompatibility(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, MinimumIncompatibilitySolution.MinimumIncompatibilityByMemoizedRecursion(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = MinimumIncompatibilitySolution.MinimumIncompatibilityByMemoizedRecursion(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -20,12 +20,20 @@ public sealed class SplitArrayLargestSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimizedLargestSumByManualBinarySearch_LeetCodeExamples_ReturnsSmallestFeasibleMax(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimizedLargestSumBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleMax(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

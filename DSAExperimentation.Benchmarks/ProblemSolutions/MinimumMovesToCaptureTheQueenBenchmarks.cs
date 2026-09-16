@@ -20,6 +20,9 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
     // exclusive bound 8 happens to imply.
     private const int BoardSize = 8;
 
+    // The queen, the rook and the bishop: every query fixes one square per piece.
+    private const int PieceCount = 3;
+
     private QueenQuery[] _queries = [];
 
     [Params(1_000, 100_000)]
@@ -41,7 +44,7 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
     {
         var squares = new HashSet<(int Row, int Col)>();
 
-        while (squares.Count < 3)
+        while (squares.Count < PieceCount)
         {
             squares.Add((random.Next(1, BoardSize + 1), random.Next(1, BoardSize + 1)));
         }

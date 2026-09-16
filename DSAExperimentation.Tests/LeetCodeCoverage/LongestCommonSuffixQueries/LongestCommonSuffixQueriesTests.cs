@@ -25,12 +25,20 @@ public sealed class LongestCommonSuffixQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindIndicesByBruteForce_LeetCodeExamples_ReturnsLongestCommonSuffixIndices(
-        string[] wordsContainer, string[] wordsQuery, int[] expected) =>
-        Assert.Equal(expected, LongestCommonSuffixQueriesSolution.FindIndicesByBruteForce(wordsContainer, wordsQuery));
+        string[] wordsContainer, string[] wordsQuery, int[] expected)
+    {
+        var actual = LongestCommonSuffixQueriesSolution.FindIndicesByBruteForce(wordsContainer, wordsQuery);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindIndicesByTrie_LeetCodeExamples_ReturnsLongestCommonSuffixIndices(
-        string[] wordsContainer, string[] wordsQuery, int[] expected) =>
-        Assert.Equal(expected, LongestCommonSuffixQueriesSolution.FindIndicesByTrie(wordsContainer, wordsQuery));
+        string[] wordsContainer, string[] wordsQuery, int[] expected)
+    {
+        var actual = LongestCommonSuffixQueriesSolution.FindIndicesByTrie(wordsContainer, wordsQuery);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -11,8 +11,12 @@ public sealed class ModularArithmeticTests
     [InlineData(3, 5, 243)]
     [InlineData(0, 5, 0)]
     [InlineData(1, 1_000_000, 1)]
-    public void Power_SmallCases_MatchesOrdinaryExponentiation(long value, long exponent, long expected) =>
-        Assert.Equal(expected, ModularArithmetic.Power(value, exponent));
+    public void Power_SmallCases_MatchesOrdinaryExponentiation(long value, long exponent, long expected)
+    {
+        var power = ModularArithmetic.Power(value, exponent);
+
+        Assert.Equal(expected, power);
+    }
 
     [Fact]
     public void Power_ResultAlwaysStaysBelowTheModulus() => Assert.True(ModularArithmetic.Power(999_999_999, 12) < ModularArithmetic.Modulo);
@@ -21,14 +25,19 @@ public sealed class ModularArithmeticTests
     public void Power_LargeExponent_DoesNotOverflow()
     {
         // Fermat: a^(p-1) == 1 (mod p) for prime p and a not divisible by p.
-        Assert.Equal(1, ModularArithmetic.Power(7, ModularArithmetic.Modulo - 1));
+        var power = ModularArithmetic.Power(7, ModularArithmetic.Modulo - 1);
+
+        Assert.Equal(1, power);
     }
 
     [Fact]
-    public void Power_ReducesItsBaseModuloFirst() =>
-        Assert.Equal(
-            ModularArithmetic.Power(5, 7),
-            ModularArithmetic.Power(5 + ModularArithmetic.Modulo, 7));
+    public void Power_ReducesItsBaseModuloFirst()
+    {
+        var reduced = ModularArithmetic.Power(5, 7);
+        var unreduced = ModularArithmetic.Power(5 + ModularArithmetic.Modulo, 7);
+
+        Assert.Equal(reduced, unreduced);
+    }
 
     [Theory]
     [InlineData(1)]

@@ -17,12 +17,20 @@ public sealed class MaximumNumberOfMovesToKillAllPawnsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxMovesByBruteForceMinimax_LeetCodeExamples_ReturnsOptimalAlternatingCaptureMoveTotal(
-        int kx, int ky, int[][] positions, int expected) =>
-        Assert.Equal(expected, MaximumNumberOfMovesToKillAllPawnsSolution.MaxMovesByBruteForceMinimax(kx, ky, positions));
+        int kx, int ky, int[][] positions, int expected)
+    {
+        var actual = MaximumNumberOfMovesToKillAllPawnsSolution.MaxMovesByBruteForceMinimax(kx, ky, positions);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxMovesByReduceGraphMinimax_LeetCodeExamples_ReturnsOptimalAlternatingCaptureMoveTotal(
-        int kx, int ky, int[][] positions, int expected) =>
-        Assert.Equal(expected, MaximumNumberOfMovesToKillAllPawnsSolution.MaxMovesByReduceGraphMinimax(kx, ky, positions));
+        int kx, int ky, int[][] positions, int expected)
+    {
+        var actual = MaximumNumberOfMovesToKillAllPawnsSolution.MaxMovesByReduceGraphMinimax(kx, ky, positions);
+
+        Assert.Equal(expected, actual);
+    }
 }

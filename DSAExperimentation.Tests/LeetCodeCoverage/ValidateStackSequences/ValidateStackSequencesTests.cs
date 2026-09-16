@@ -9,27 +9,43 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateStackSequences;
 // unreachable only because of what was buried beneath the first match.
 public sealed class ValidateStackSequencesTests
 {
-    public static TheoryData<int[], int[], bool> Examples =>
+    public static TheoryData<PushPopCase> Examples =>
         new()
         {
-            { [1, 2, 3, 4, 5], [4, 5, 3, 2, 1], true },
-            { [1, 2, 3, 4, 5], [4, 3, 5, 1, 2], false },
-            { [1], [1], true },
-            { [1, 2], [1, 2], true },
-            { [1, 2], [2, 1], true },
-            { [2, 1, 0], [0, 1, 2], true },
-            { [1, 2, 3], [3, 1, 2], false },
+            { new PushPopCase(Pushed: [1, 2, 3, 4, 5], Popped: [4, 5, 3, 2, 1], Expected: true) },
+            { new PushPopCase(Pushed: [1, 2, 3, 4, 5], Popped: [4, 3, 5, 1, 2], Expected: false) },
+            { new PushPopCase(Pushed: [1], Popped: [1], Expected: true) },
+            { new PushPopCase(Pushed: [1, 2], Popped: [1, 2], Expected: true) },
+            { new PushPopCase(Pushed: [1, 2], Popped: [2, 1], Expected: true) },
+            { new PushPopCase(Pushed: [2, 1, 0], Popped: [0, 1, 2], Expected: true) },
+            { new PushPopCase(Pushed: [1, 2, 3], Popped: [3, 1, 2], Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsValidByBacktrackingSearch_LeetCodeExamples_ReportsWhetherSomeInterleavingProducesThePopOrder(
-        int[] pushed, int[] popped, bool expected) =>
-        Assert.Equal(expected, ValidateStackSequencesSolution.IsValidByBacktrackingSearch(pushed, popped));
+        PushPopCase example)
+    {
+        var actual = ValidateStackSequencesSolution.IsValidByBacktrackingSearch(example.Pushed, example.Popped);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsValidByGreedyStackSweep_LeetCodeExamples_ReportsWhetherSomeInterleavingProducesThePopOrder(
-        int[] pushed, int[] popped, bool expected) =>
-        Assert.Equal(expected, ValidateStackSequencesSolution.IsValidByGreedyStackSweep(pushed, popped));
+        PushPopCase example)
+    {
+        var actual = ValidateStackSequencesSolution.IsValidByGreedyStackSweep(example.Pushed, example.Popped);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the pushed order, the popped order, and whether some
+    // interleaving of pushes and pops produces that pop order. The two arrays are the
+    // same type and the relation is not symmetric, so the row names which is which
+    // rather than leaving two interchangeable positions. Nested because it is only ever
+    // used inside this test class - it is this harness's own vocabulary, not a type
+    // another file would import.
+    public readonly record struct PushPopCase(int[] Pushed, int[] Popped, bool Expected);
 }

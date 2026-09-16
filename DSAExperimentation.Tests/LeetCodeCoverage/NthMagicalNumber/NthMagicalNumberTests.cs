@@ -22,12 +22,20 @@ public sealed class NthMagicalNumberTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NthMagicalNumberByCountScan_LeetCodeExamples_ReturnsNthMultipleOfEitherFactor(
-        int n, int a, int b, int expected) =>
-        Assert.Equal(expected, NthMagicalNumberSolution.NthMagicalNumberByCountScan(n, a, b));
+        int n, int a, int b, int expected)
+    {
+        var actual = NthMagicalNumberSolution.NthMagicalNumberByCountScan(n, a, b);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NthMagicalNumberByBinarySearch_LeetCodeExamples_ReturnsNthMultipleOfEitherFactor(
-        int n, int a, int b, int expected) =>
-        Assert.Equal(expected, NthMagicalNumberSolution.NthMagicalNumberByBinarySearch(n, a, b));
+        int n, int a, int b, int expected)
+    {
+        var actual = NthMagicalNumberSolution.NthMagicalNumberByBinarySearch(n, a, b);
+
+        Assert.Equal(expected, actual);
+    }
 }

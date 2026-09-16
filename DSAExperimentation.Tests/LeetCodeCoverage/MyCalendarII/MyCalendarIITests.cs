@@ -36,7 +36,9 @@ public sealed class MyCalendarIITests
         for (var i = 0; i < events.Length; i++)
         {
             var (start, end) = events[i];
-            Assert.Equal(expected[i], calendar.Book(start, end));
+            var accepted = calendar.Book(start, end);
+
+            Assert.Equal(expected[i], accepted);
         }
     }
 }

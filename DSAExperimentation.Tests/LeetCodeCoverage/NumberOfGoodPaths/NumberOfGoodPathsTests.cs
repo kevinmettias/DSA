@@ -46,12 +46,20 @@ public sealed class NumberOfGoodPathsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodPathsByPairwisePathWalk_LeetCodeExamples_CountsEveryGoodPath(
-        int[] vals, int[][] edges, int expected) =>
-        Assert.Equal(expected, NumberOfGoodPathsSolution.CountGoodPathsByPairwisePathWalk(vals, edges));
+        int[] vals, int[][] edges, int expected)
+    {
+        var actual = NumberOfGoodPathsSolution.CountGoodPathsByPairwisePathWalk(vals, edges);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodPathsByDisjointSetSweep_LeetCodeExamples_CountsEveryGoodPath(
-        int[] vals, int[][] edges, int expected) =>
-        Assert.Equal(expected, NumberOfGoodPathsSolution.CountGoodPathsByDisjointSetSweep(vals, edges));
+        int[] vals, int[][] edges, int expected)
+    {
+        var actual = NumberOfGoodPathsSolution.CountGoodPathsByDisjointSetSweep(vals, edges);
+
+        Assert.Equal(expected, actual);
+    }
 }

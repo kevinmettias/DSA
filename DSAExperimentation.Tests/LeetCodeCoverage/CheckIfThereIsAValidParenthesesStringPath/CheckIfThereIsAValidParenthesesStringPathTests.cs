@@ -9,76 +9,87 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfThereIsAValidParenthe
 // walk it is measured against.
 public sealed class CheckIfThereIsAValidParenthesesStringPathTests
 {
-    public static TheoryData<char[,], bool> Examples =>
+    public static TheoryData<ParenthesesGridCase> Examples =>
         new()
         {
             // LeetCode example 1: the accepting path runs along the top row and then
             // straight down the last column, spelling "((()))".
             {
-                new[,]
-                {
-                    { '(', '(', '(' },
-                    { ')', '(', ')' },
-                    { '(', '(', ')' },
-                    { '(', '(', ')' },
-                },
-                true
+                new ParenthesesGridCase(
+                    new[,]
+                    {
+                        { '(', '(', '(' },
+                        { ')', '(', ')' },
+                        { '(', '(', ')' },
+                        { '(', '(', ')' },
+                    },
+                    Expected: true)
             },
 
             // LeetCode example 2: every path starts on ')', so the balance goes
             // negative on the very first cell.
             {
-                new[,]
-                {
-                    { ')', ')' },
-                    { '(', '(' },
-                },
-                false
+                new ParenthesesGridCase(
+                    new[,]
+                    {
+                        { ')', ')' },
+                        { '(', '(' },
+                    },
+                    Expected: false)
             },
 
             // Right-then-down balances here: "(()" down to ")" closes out at zero.
             {
-                new[,]
-                {
-                    { '(', '(', ')' },
-                    { '(', ')', ')' },
-                },
-                true
+                new ParenthesesGridCase(
+                    new[,]
+                    {
+                        { '(', '(', ')' },
+                        { '(', ')', ')' },
+                    },
+                    Expected: true)
             },
 
             // Same shape with a leading ')': the start cell alone is fatal.
             {
-                new[,]
-                {
-                    { ')', '(', ')' },
-                    { '(', ')', ')' },
-                },
-                false
+                new ParenthesesGridCase(
+                    new[,]
+                    {
+                        { ')', '(', ')' },
+                        { '(', ')', ')' },
+                    },
+                    Expected: false)
             },
 
             // One cell can never balance - the path has odd length one.
-            { new[,] { { '(' } }, false },
+            { new ParenthesesGridCase(new[,] { { '(' } }, Expected: false) },
 
             // The smallest accepting grid: a single row spelling "()".
-            { new[,] { { '(', ')' } }, true },
+            { new ParenthesesGridCase(new[,] { { '(', ')' } }, Expected: true) },
 
             // The same two cells reversed, so the only path opens with ')'.
-            { new[,] { { ')', '(' } }, false },
+            { new ParenthesesGridCase(new[,] { { ')', '(' } }, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HasValidPathByUnmemoizedRecursion_LeetCodeExamples_ReportsWhetherABalancedPathExists(
-        char[,] grid, bool expected) =>
+        ParenthesesGridCase example) =>
         Assert.Equal(
-            expected,
-            CheckIfThereIsAValidParenthesesStringPathSolution.HasValidPathByUnmemoizedRecursion(grid));
+            example.Expected,
+            CheckIfThereIsAValidParenthesesStringPathSolution.HasValidPathByUnmemoizedRecursion(example.Grid));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HasValidPathByMemoizedRecursion_LeetCodeExamples_ReportsWhetherABalancedPathExists(
-        char[,] grid, bool expected) =>
+        ParenthesesGridCase example) =>
         Assert.Equal(
-            expected,
-            CheckIfThereIsAValidParenthesesStringPathSolution.HasValidPathByMemoizedRecursion(grid));
+            example.Expected,
+            CheckIfThereIsAValidParenthesesStringPathSolution.HasValidPathByMemoizedRecursion(example.Grid));
+
+    // One LeetCode example: the parenthesis grid and whether a balanced path through
+    // it exists. The expected value is named at every construction site, so a row
+    // reads as the case it is rather than as a bare `true` whose meaning is its
+    // position. Nested because it is only ever used inside this test class - it is
+    // this harness's own vocabulary, not a type another file would import.
+    public readonly record struct ParenthesesGridCase(char[,] Grid, bool Expected);
 }

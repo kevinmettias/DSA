@@ -18,12 +18,20 @@ public sealed class MinimumCostToPartitionABinaryStringTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByLinearScanRecursion_LeetCodeExamples_ReturnsMinimumPartitionCost(
-        string s, int encCost, int flatCost, long expected) =>
-        Assert.Equal(expected, MinimumCostToPartitionABinaryStringSolution.MinCostByLinearScanRecursion(s, encCost, flatCost));
+        string s, int encCost, int flatCost, long expected)
+    {
+        var actual = MinimumCostToPartitionABinaryStringSolution.MinCostByLinearScanRecursion(s, encCost, flatCost);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByFenwickRangeSum_LeetCodeExamples_ReturnsMinimumPartitionCost(
-        string s, int encCost, int flatCost, long expected) =>
-        Assert.Equal(expected, MinimumCostToPartitionABinaryStringSolution.MinCostByFenwickRangeSum(s, encCost, flatCost));
+        string s, int encCost, int flatCost, long expected)
+    {
+        var actual = MinimumCostToPartitionABinaryStringSolution.MinCostByFenwickRangeSum(s, encCost, flatCost);
+
+        Assert.Equal(expected, actual);
+    }
 }

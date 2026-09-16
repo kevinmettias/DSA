@@ -24,12 +24,20 @@ public sealed class HouseRobberIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCapabilityByLinearScan_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, HouseRobberIVSolution.MinCapabilityByLinearScan(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = HouseRobberIVSolution.MinCapabilityByLinearScan(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCapabilityBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleCapability(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

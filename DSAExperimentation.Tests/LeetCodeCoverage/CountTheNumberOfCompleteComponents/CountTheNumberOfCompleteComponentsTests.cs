@@ -25,16 +25,18 @@ public sealed class CountTheNumberOfCompleteComponentsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCompleteComponentsByAdjacencySetScan_LeetCodeExamples_CountsFullyConnectedComponents(
-        int n, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected,
-            CountTheNumberOfCompleteComponentsSolution.CountCompleteComponentsByAdjacencySetScan(n, edges));
+        int n, int[][] edges, int expected)
+    {
+        var actual = CountTheNumberOfCompleteComponentsSolution.CountCompleteComponentsByAdjacencySetScan(n, edges);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCompleteComponentsByDisjointSetTally_LeetCodeExamples_CountsFullyConnectedComponents(
-        int n, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected,
-            CountTheNumberOfCompleteComponentsSolution.CountCompleteComponentsByDisjointSetTally(n, edges));
+        int n, int[][] edges, int expected)
+    {
+        var actual = CountTheNumberOfCompleteComponentsSolution.CountCompleteComponentsByDisjointSetTally(n, edges);
+        Assert.Equal(expected, actual);
+    }
 }

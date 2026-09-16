@@ -32,12 +32,20 @@ public sealed class PrisonCellsAfterNDaysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CellsAfterNDaysByDailySimulation_LeetCodeExamples_ReturnsCellsOnDayN(
-        int[] cells, int n, int[] expected) =>
-        Assert.Equal(expected, PrisonCellsAfterNDaysSolution.CellsAfterNDaysByDailySimulation(cells, n));
+        int[] cells, int n, int[] expected)
+    {
+        var actual = PrisonCellsAfterNDaysSolution.CellsAfterNDaysByDailySimulation(cells, n);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CellsAfterNDaysByCycleDetection_LeetCodeExamples_ReturnsCellsOnDayN(
-        int[] cells, int n, int[] expected) =>
-        Assert.Equal(expected, PrisonCellsAfterNDaysSolution.CellsAfterNDaysByCycleDetection(cells, n));
+        int[] cells, int n, int[] expected)
+    {
+        var actual = PrisonCellsAfterNDaysSolution.CellsAfterNDaysByCycleDetection(cells, n);
+
+        Assert.Equal(expected, actual);
+    }
 }

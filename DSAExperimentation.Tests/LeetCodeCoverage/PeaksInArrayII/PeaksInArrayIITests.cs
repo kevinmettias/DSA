@@ -18,12 +18,20 @@ public sealed class PeaksInArrayIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPeakSubarraysByBruteForce_LeetCodeExamples_ReturnsPeakSubarrayCountPerQuery(
-        int[] nums, int[][] queries, List<long> expected) =>
-        Assert.Equal(expected, PeaksInArrayIISolution.CountPeakSubarraysByBruteForce(nums, queries));
+        int[] nums, int[][] queries, List<long> expected)
+    {
+        var actual = PeaksInArrayIISolution.CountPeakSubarraysByBruteForce(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPeakSubarraysBySegmentTree_LeetCodeExamples_ReturnsPeakSubarrayCountPerQuery(
-        int[] nums, int[][] queries, List<long> expected) =>
-        Assert.Equal(expected, PeaksInArrayIISolution.CountPeakSubarraysBySegmentTree(nums, queries));
+        int[] nums, int[][] queries, List<long> expected)
+    {
+        var actual = PeaksInArrayIISolution.CountPeakSubarraysBySegmentTree(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

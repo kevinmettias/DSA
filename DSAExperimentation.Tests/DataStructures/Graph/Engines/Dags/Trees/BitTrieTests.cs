@@ -14,11 +14,9 @@ public sealed partial class BitTrieTests
     [Fact]
     public void TryMaxXor_EmptyTrie_ReturnsFalse()
     {
-        const int QueryValue = 5;
-
         var trie = new BitTrieOperations();
 
-        var found = trie.TryMaxXor(QueryValue, out var result);
+        var found = trie.TryMaxXor(KnownValues.QueryValue, out var result);
 
         Assert.False(found);
         Assert.Equal(0, result);
@@ -27,23 +25,18 @@ public sealed partial class BitTrieTests
     [Fact]
     public void TryMaxXor_SingleInsertedValue_ReturnsXorAgainstIt()
     {
-        const int InsertedValue = 3;
-        const int QueryValue = 5;
-
         var trie = new BitTrieOperations();
-        trie.Insert(InsertedValue);
+        trie.Insert(KnownValues.InsertedValue);
 
-        var found = trie.TryMaxXor(QueryValue, out var result);
+        var found = trie.TryMaxXor(KnownValues.QueryValue, out var result);
 
         Assert.True(found);
-        Assert.Equal(InsertedValue ^ QueryValue, result);
+        Assert.Equal(KnownValues.InsertedValue ^ KnownValues.QueryValue, result);
     }
 
     [Fact]
     public void TryMaxXor_ClassicExample_FindsMaximumAcrossAllInsertedValues()
     {
-        const int ExpectedMaxXor = 28;
-
         var trie = new BitTrieOperations();
 
         foreach (var value in ClassicExampleValues)
@@ -59,7 +52,7 @@ public sealed partial class BitTrieTests
             best = Math.Max(best, result);
         }
 
-        Assert.Equal(ExpectedMaxXor, best);
+        Assert.Equal(KnownValues.ExpectedMaxXor, best);
     }
 
     [Fact]
@@ -68,42 +61,41 @@ public sealed partial class BitTrieTests
         // 0b0000 and 0b1111: opposite at every one of these 4 bits, so their XOR
         // (0b1111 = 15) beats any pairing with 0b1110 (XOR 1) even though 0b1110
         // is numerically closer to 0b1111 than 0b0000 is.
-        const int NearNeighborValue = 0b1110;
-        const int FullyOppositeQuery = 0b1111;
-
         var trie = new BitTrieOperations();
         trie.Insert(0b0000);
-        trie.Insert(NearNeighborValue);
+        trie.Insert(KnownValues.NearNeighborValue);
 
-        var found = trie.TryMaxXor(FullyOppositeQuery, out var result);
+        var found = trie.TryMaxXor(KnownValues.FullyOppositeQuery, out var result);
 
         Assert.True(found);
-        Assert.Equal(FullyOppositeQuery, result);
+        Assert.Equal(KnownValues.FullyOppositeQuery, result);
     }
 
     [Fact]
     public void Insert_DuplicateValue_IncrementsCountForEachCall()
     {
-        const int DuplicateValue = 7;
-        const int ExpectedCountAfterTwoInserts = 2;
+        var trie = TrieAfterTwoDuplicateInserts();
 
+        Assert.Equal(KnownValues.ExpectedCountAfterTwoInserts, trie.Count);
+    }
+
+    private static BitTrieOperations TrieAfterTwoDuplicateInserts()
+    {
         var trie = new BitTrieOperations();
 
-        trie.Insert(DuplicateValue);
-        trie.Insert(DuplicateValue);
+        trie.Insert(KnownValues.DuplicateValue);
+        trie.Insert(KnownValues.DuplicateValue);
 
-        Assert.Equal(ExpectedCountAfterTwoInserts, trie.Count);
+        return trie;
     }
 
     [Fact]
     public void TryMaxXor_ValueXorWithItself_CanReturnZero()
     {
-        const int Value = 9;
-
         var trie = new BitTrieOperations();
-        trie.Insert(Value);
+        trie.Insert(KnownValues.SelfXorValue);
 
-        var found = trie.TryMaxXor(Value, out var result);
+        var found = trie.TryMaxXor(KnownValues.SelfXorValue, out var result);
 
         Assert.True(found);
         Assert.Equal(0, result);
@@ -127,17 +119,40 @@ public sealed partial class BitTrieTests
     [Fact]
     public void Size_ViaTreeMetrics_CountsEveryNodeAcrossASharedBitPrefixChain()
     {
-        const int ExpectedNodeCount = 34;
-
-        var trie = new BitTrieOperations();
-        trie.Insert(0);
-        trie.Insert(1);
+        var trie = TrieHoldingZeroAndOne();
 
         var size = TreeMetrics.Size<
             BitTrieNode, BitTrieTopology, BitTrieChildren,
             NaturalChildOrder<BitTrieNode, BitTrieChildren>,
             BitTrieChildren>(trie.Root);
 
-        Assert.Equal(ExpectedNodeCount, size);
+        Assert.Equal(KnownValues.ExpectedNodeCount, size);
+    }
+
+    private static BitTrieOperations TrieHoldingZeroAndOne()
+    {
+        var trie = new BitTrieOperations();
+
+        trie.Insert(0);
+        trie.Insert(1);
+
+        return trie;
+    }
+
+    /// <summary>
+    /// The values these tests assert against, named once so a second reader does not
+    /// have to reach into a test body for the number the first one used.
+    /// </summary>
+    private static class KnownValues
+    {
+        public const int QueryValue = 5;
+        public const int InsertedValue = 3;
+        public const int ExpectedMaxXor = 28;
+        public const int NearNeighborValue = 0b1110;
+        public const int FullyOppositeQuery = 0b1111;
+        public const int DuplicateValue = 7;
+        public const int ExpectedCountAfterTwoInserts = 2;
+        public const int SelfXorValue = 9;
+        public const int ExpectedNodeCount = 34;
     }
 }

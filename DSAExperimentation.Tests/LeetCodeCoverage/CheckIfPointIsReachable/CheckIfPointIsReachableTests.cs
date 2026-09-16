@@ -10,30 +10,46 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfPointIsReachable;
 // not one (8, 12), and coprime coordinates (4, 7).
 public sealed class CheckIfPointIsReachableTests
 {
-    public static TheoryData<int, int, bool> Examples =>
+    public static TheoryData<ReachabilityCase> Examples =>
         new()
         {
-            { 6, 9, false },
-            { 4, 7, true },
-            { 1, 1, true },
-            { 2, 2, true },
-            { 12, 18, false },
-            { 3, 3, false },
-            { 5, 10, false },
-            { 8, 12, true },
-            { 2, 3, true },
-            { 16, 24, true },
+            { new ReachabilityCase(6, 9, Expected: false) },
+            { new ReachabilityCase(4, 7, Expected: true) },
+            { new ReachabilityCase(1, 1, Expected: true) },
+            { new ReachabilityCase(2, 2, Expected: true) },
+            { new ReachabilityCase(12, 18, Expected: false) },
+            { new ReachabilityCase(3, 3, Expected: false) },
+            { new ReachabilityCase(5, 10, Expected: false) },
+            { new ReachabilityCase(8, 12, Expected: true) },
+            { new ReachabilityCase(2, 3, Expected: true) },
+            { new ReachabilityCase(16, 24, Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsReachableByBruteForceBfs_LeetCodeExamples_ReturnsWhetherTargetIsReachable(
-        int targetX, int targetY, bool expected) =>
-        Assert.Equal(expected, CheckIfPointIsReachableSolution.IsReachableByBruteForceBfs(targetX, targetY));
+        ReachabilityCase example)
+    {
+        var reachable = CheckIfPointIsReachableSolution.IsReachableByBruteForceBfs(
+            example.TargetX, example.TargetY);
+
+        Assert.Equal(example.Expected, reachable);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsReachableByGcd_LeetCodeExamples_ReturnsWhetherTargetIsReachable(
-        int targetX, int targetY, bool expected) =>
-        Assert.Equal(expected, CheckIfPointIsReachableSolution.IsReachableByGcd(targetX, targetY));
+        ReachabilityCase example)
+    {
+        var reachable = CheckIfPointIsReachableSolution.IsReachableByGcd(example.TargetX, example.TargetY);
+
+        Assert.Equal(example.Expected, reachable);
+    }
+
+    // One LeetCode example: the target coordinates and whether they are reachable.
+    // The expected value is named at every construction site, so a row reads as the
+    // case it is rather than as a bare `true` whose meaning is its position. Nested
+    // because it is only ever used inside this test class - it is this harness's own
+    // vocabulary, not a type another file would import.
+    public readonly record struct ReachabilityCase(int TargetX, int TargetY, bool Expected);
 }

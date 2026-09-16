@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.ImplementRouter.ImplementRouterSolution;
+using DSAExperimentation.LeetCode.ImplementRouter;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementRouter;
 
@@ -43,15 +43,16 @@ public sealed class ImplementRouterTests
     [MemberData(nameof(Examples))]
     public void RouterByLinearScan_LeetCodeExamples_RepliesMatchPublishedOutputs(
         int memoryLimit, RouterOp[] operations, object?[] expected) =>
-        RunScript(new RouterByLinearScan(memoryLimit), operations, expected);
+        RunScript(new ImplementRouterSolution.RouterByLinearScan(memoryLimit), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RouterByBinarySearchIndex_LeetCodeExamples_RepliesMatchPublishedOutputs(
         int memoryLimit, RouterOp[] operations, object?[] expected) =>
-        RunScript(new RouterByBinarySearchIndex(memoryLimit), operations, expected);
+        RunScript(new ImplementRouterSolution.RouterByBinarySearchIndex(memoryLimit), operations, expected);
 
-    private static void RunScript(IRouterStrategy strategy, RouterOp[] operations, object?[] expected)
+    private static void RunScript(
+        ImplementRouterSolution.IRouterStrategy strategy, RouterOp[] operations, object?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
@@ -71,38 +72,5 @@ public sealed class ImplementRouterTests
         {
             Assert.Equal(expected, actual);
         }
-    }
-}
-
-// One call in a Router script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct RouterOp(RouterOp.OpKind kind, int first, int second, int third)
-{
-    public static RouterOp AddPacket(int source, int destination, int timestamp) =>
-        new(OpKind.AddPacket, source, destination, timestamp);
-
-    public static RouterOp ForwardPacket() => new(OpKind.ForwardPacket, 0, 0, 0);
-
-    public static RouterOp GetCount(int destination, int startTime, int endTime) =>
-        new(OpKind.GetCount, destination, startTime, endTime);
-
-    // bool for addPacket, int[] for forwardPacket, int for getCount - boxed
-    // uniformly so a script runner can assert against one expected value per
-    // operation regardless of which method it dispatches to. Internal, not
-    // public: IRouterStrategy is internal to ImplementRouterSolution, and only
-    // this same assembly's RunScript ever calls Apply.
-    internal object? Apply(IRouterStrategy strategy) => kind switch
-    {
-        OpKind.AddPacket => strategy.AddPacket(first, second, third),
-        OpKind.ForwardPacket => strategy.ForwardPacket(),
-        _ => strategy.GetCount(first, second, third),
-    };
-
-    public enum OpKind
-    {
-        AddPacket,
-        ForwardPacket,
-        GetCount,
     }
 }

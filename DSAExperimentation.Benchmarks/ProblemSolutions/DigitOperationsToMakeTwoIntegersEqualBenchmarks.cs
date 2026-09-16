@@ -12,6 +12,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
 {
+    // The widest endpoint pair LC 3377 admits at each digit count - every two-digit
+    // value, every four-digit value - so each rep explores as much of the
+    // digit-mutation graph as the problem's own range allows.
+    private const int TwoDigitLowest = 10;
+    private const int TwoDigitHighest = 99;
+    private const int FourDigitLowest = 1_000;
+    private const int FourDigitHighest = 9_999;
+
     private int _n;
 
     private int _m;
@@ -28,8 +36,8 @@ public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
 
     private static (int N, int M) Endpoints(int digitCount) => digitCount switch
     {
-        2 => (10, 99),
-        4 => (1000, 9999),
+        2 => (TwoDigitLowest, TwoDigitHighest),
+        4 => (FourDigitLowest, FourDigitHighest),
         _ => throw new ArgumentOutOfRangeException(nameof(digitCount)),
     };
 

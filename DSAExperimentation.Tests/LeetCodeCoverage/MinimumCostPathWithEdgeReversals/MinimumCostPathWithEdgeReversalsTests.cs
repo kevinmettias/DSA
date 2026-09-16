@@ -17,20 +17,36 @@ public sealed class MinimumCostPathWithEdgeReversalsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByBruteForceDijkstra_LeetCodeExamples_ReturnsCheapestReversalAwarePath(
-        int n, int[][] edges, int expected) =>
-        Assert.Equal(expected, MinimumCostPathWithEdgeReversalsSolution.MinCostByBruteForceDijkstra(n, edges));
+        int n, int[][] edges, int expected)
+    {
+        var cost = MinimumCostPathWithEdgeReversalsSolution.MinCostByBruteForceDijkstra(n, edges);
+
+        Assert.Equal(expected, cost);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByShortestPathDijkstra_LeetCodeExamples_ReturnsCheapestReversalAwarePath(
-        int n, int[][] edges, int expected) =>
-        Assert.Equal(expected, MinimumCostPathWithEdgeReversalsSolution.MinCostByShortestPathDijkstra(n, edges));
+        int n, int[][] edges, int expected)
+    {
+        var cost = MinimumCostPathWithEdgeReversalsSolution.MinCostByShortestPathDijkstra(n, edges);
+
+        Assert.Equal(expected, cost);
+    }
 
     [Fact]
-    public void MinCostByBruteForceDijkstra_DestinationUnreachable_ReturnsNegativeOne() =>
-        Assert.Equal(-1, MinimumCostPathWithEdgeReversalsSolution.MinCostByBruteForceDijkstra(3, [[0, 1, 5]]));
+    public void MinCostByBruteForceDijkstra_DestinationUnreachable_ReturnsNegativeOne()
+    {
+        var cost = MinimumCostPathWithEdgeReversalsSolution.MinCostByBruteForceDijkstra(3, [[0, 1, 5]]);
+
+        Assert.Equal(-1, cost);
+    }
 
     [Fact]
-    public void MinCostByShortestPathDijkstra_DestinationUnreachable_ReturnsNegativeOne() =>
-        Assert.Equal(-1, MinimumCostPathWithEdgeReversalsSolution.MinCostByShortestPathDijkstra(3, [[0, 1, 5]]));
+    public void MinCostByShortestPathDijkstra_DestinationUnreachable_ReturnsNegativeOne()
+    {
+        var cost = MinimumCostPathWithEdgeReversalsSolution.MinCostByShortestPathDijkstra(3, [[0, 1, 5]]);
+
+        Assert.Equal(-1, cost);
+    }
 }

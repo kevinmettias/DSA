@@ -21,12 +21,20 @@ public sealed class MaximumSumQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumsByBruteForceScan_LeetCodeExamples_ReturnsBestQualifyingSumPerQuery(
-        int[] nums1, int[] nums2, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, MaximumSumQueriesSolution.MaxSumsByBruteForceScan(nums1, nums2, queries));
+        int[] nums1, int[] nums2, int[][] queries, int[] expected)
+    {
+        var actual = MaximumSumQueriesSolution.MaxSumsByBruteForceScan(nums1, nums2, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumsBySweepWithSegmentTree_LeetCodeExamples_ReturnsBestQualifyingSumPerQuery(
-        int[] nums1, int[] nums2, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, MaximumSumQueriesSolution.MaxSumsBySweepWithSegmentTree(nums1, nums2, queries));
+        int[] nums1, int[] nums2, int[][] queries, int[] expected)
+    {
+        var actual = MaximumSumQueriesSolution.MaxSumsBySweepWithSegmentTree(nums1, nums2, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignMemoryAllocator.DesignMemoryAllocatorSolution;
+using DSAExperimentation.LeetCode.DesignMemoryAllocator;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignMemoryAllocator;
 
@@ -83,36 +83,22 @@ public sealed class DesignMemoryAllocatorTests
     [MemberData(nameof(Examples))]
     public void MemoryAllocatorByArrayScan_LeetCodeExamples_MatchesPublishedOutputSequence(
         int n, MemoryAllocatorOp[] operations, int[] expected) =>
-        RunScript(new MemoryAllocatorByArrayScan(n), operations, expected);
+        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByArrayScan(n), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MemoryAllocatorByHashMapIndex_LeetCodeExamples_MatchesPublishedOutputSequence(
         int n, MemoryAllocatorOp[] operations, int[] expected) =>
-        RunScript(new MemoryAllocatorByHashMapIndex(n), operations, expected);
+        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByHashMapIndex(n), operations, expected);
 
-    private static void RunScript(IMemoryAllocatorStrategy allocator, MemoryAllocatorOp[] operations, int[] expected)
+    private static void RunScript(
+        DesignMemoryAllocatorSolution.IMemoryAllocatorStrategy allocator,
+        MemoryAllocatorOp[] operations,
+        int[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(allocator));
         }
     }
-}
-
-// One call in an allocator script: which method to invoke and with what arguments.
-// Pure dispatch, built via the named factories below so a script (like Examples
-// above) reads like the LeetCode call sequence it replays.
-public readonly record struct MemoryAllocatorOp(bool isFree, int size, int memoryId)
-{
-    public static MemoryAllocatorOp Allocate(int size, int memoryId) => new(isFree: false, size, memoryId);
-
-    public static MemoryAllocatorOp Free(int memoryId) => new(isFree: true, size: 0, memoryId);
-
-    // Both allocator calls report an int, so one expected value per operation is
-    // enough and no null placeholder is needed. Internal, not public:
-    // IMemoryAllocatorStrategy is internal to DesignMemoryAllocatorSolution, and
-    // only this same assembly's RunScript ever calls Apply.
-    internal int Apply(IMemoryAllocatorStrategy allocator)
-        => isFree ? allocator.Free(memoryId) : allocator.Allocate(size, memoryId);
 }

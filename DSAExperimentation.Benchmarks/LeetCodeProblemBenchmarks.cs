@@ -43,7 +43,7 @@ public class LeetCodeProblemBenchmarks
         }
 
         _bound = LeetCodeProblemRegistry.Get(parts[0]).BindWorkload(
-            new StrategyName(parts[1]), new WorkloadName(parts[2]));
+            new StrategyName(parts[1]), new WorkloadName(parts[ArmPartCount - 1]));
     }
 
     [Benchmark]

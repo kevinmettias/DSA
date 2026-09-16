@@ -23,12 +23,20 @@ public sealed class ClosestSubsequenceSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAbsDifferenceByBruteForceSubsets_LeetCodeExamples_ReturnsClosestAchievableSum(
-        int[] nums, int goal, int expected) =>
-        Assert.Equal(expected, ClosestSubsequenceSumSolution.MinAbsDifferenceByBruteForceSubsets(nums, goal));
+        int[] nums, int goal, int expected)
+    {
+        var actual = ClosestSubsequenceSumSolution.MinAbsDifferenceByBruteForceSubsets(nums, goal);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAbsDifferenceByMeetInTheMiddle_LeetCodeExamples_ReturnsClosestAchievableSum(
-        int[] nums, int goal, int expected) =>
-        Assert.Equal(expected, ClosestSubsequenceSumSolution.MinAbsDifferenceByMeetInTheMiddle(nums, goal));
+        int[] nums, int goal, int expected)
+    {
+        var actual = ClosestSubsequenceSumSolution.MinAbsDifferenceByMeetInTheMiddle(nums, goal);
+
+        Assert.Equal(expected, actual);
+    }
 }

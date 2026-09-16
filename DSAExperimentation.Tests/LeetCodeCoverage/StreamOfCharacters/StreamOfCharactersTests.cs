@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.StreamOfCharacters.StreamOfCharactersSolution;
+using DSAExperimentation.LeetCode.StreamOfCharacters;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.StreamOfCharacters;
 
@@ -42,15 +42,24 @@ public sealed class StreamOfCharactersTests
     [MemberData(nameof(Examples))]
     public void StreamCheckerBySuffixRescan_LeetCodeExamples_ReportsWhetherAnySuffixSpellsAWord(
         string[] words, string stream, bool[] expected) =>
-        AssertQueryResults(new StreamCheckerBySuffixRescan(words), stream, expected);
+        AssertQueryResults(
+            new StreamOfCharactersSolution.StreamCheckerBySuffixRescan(words),
+            stream,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void StreamCheckerByReversedTrie_LeetCodeExamples_ReportsWhetherAnySuffixSpellsAWord(
         string[] words, string stream, bool[] expected) =>
-        AssertQueryResults(new StreamCheckerByReversedTrie(words), stream, expected);
+        AssertQueryResults(
+            new StreamOfCharactersSolution.StreamCheckerByReversedTrie(words),
+            stream,
+            expected);
 
-    private static void AssertQueryResults(IStreamCheckerStrategy checker, string stream, bool[] expected)
+    private static void AssertQueryResults(
+        StreamOfCharactersSolution.IStreamCheckerStrategy checker,
+        string stream,
+        bool[] expected)
     {
         for (var i = 0; i < stream.Length; i++)
         {

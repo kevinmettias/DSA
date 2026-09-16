@@ -21,16 +21,20 @@ public sealed class ProcessRestrictedFriendRequestsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FriendRequestsByDisjointSet_LeetCodeExamples_ApprovesOnlyRequestsThatKeepRestrictedPairsApart(
-        int n, int[][] restrictions, int[][] requests, bool[] expected) =>
-        Assert.Equal(
-            expected,
-            ProcessRestrictedFriendRequestsSolution.FriendRequestsByDisjointSet(n, restrictions, requests));
+        int n, int[][] restrictions, int[][] requests, bool[] expected)
+    {
+        var actual = ProcessRestrictedFriendRequestsSolution.FriendRequestsByDisjointSet(n, restrictions, requests);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FriendRequestsByReachabilityScan_LeetCodeExamples_ApprovesOnlyRequestsThatKeepRestrictedPairsApart(
-        int n, int[][] restrictions, int[][] requests, bool[] expected) =>
-        Assert.Equal(
-            expected,
-            ProcessRestrictedFriendRequestsSolution.FriendRequestsByReachabilityScan(n, restrictions, requests));
+        int n, int[][] restrictions, int[][] requests, bool[] expected)
+    {
+        var actual = ProcessRestrictedFriendRequestsSolution.FriendRequestsByReachabilityScan(n, restrictions, requests);
+
+        Assert.Equal(expected, actual);
+    }
 }

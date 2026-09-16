@@ -16,11 +16,19 @@ public sealed class FindTheCountOfGoodIntegersTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByPalindromeEnumeration_LeetCodeExamples_ReturnsGoodIntegerCount(int n, int k, long expected) =>
-        Assert.Equal(expected, FindTheCountOfGoodIntegersSolution.CountByPalindromeEnumeration(n, k));
+    public void CountByPalindromeEnumeration_LeetCodeExamples_ReturnsGoodIntegerCount(int n, int k, long expected)
+    {
+        var actual = FindTheCountOfGoodIntegersSolution.CountByPalindromeEnumeration(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBacktrackEnumeration_LeetCodeExamples_ReturnsGoodIntegerCount(int n, int k, long expected) =>
-        Assert.Equal(expected, FindTheCountOfGoodIntegersSolution.CountByBacktrackEnumeration(n, k));
+    public void CountByBacktrackEnumeration_LeetCodeExamples_ReturnsGoodIntegerCount(int n, int k, long expected)
+    {
+        var actual = FindTheCountOfGoodIntegersSolution.CountByBacktrackEnumeration(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

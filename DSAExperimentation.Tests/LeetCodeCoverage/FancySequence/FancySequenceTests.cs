@@ -103,47 +103,48 @@ public sealed class FancySequenceTests
             Assert.Equal(expected[i], operations[i].Apply(fancy));
         }
     }
-}
 
-// One call in a Fancy script: which method to invoke and with what argument. Pure
-// dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays. append/addAll/multAll return
-// null (no value to compare); getIndex returns the actual answer, including -1 for
-// an index that was never appended - the same null-means-"no return value"
-// convention AllOneOp.Apply uses for its own inc/dec split.
-public readonly record struct FancyOp(FancyOp.OpKind kind, int value)
-{
-    public static FancyOp Append(int val) => new(OpKind.Append, val);
-
-    public static FancyOp AddAll(int inc) => new(OpKind.AddAll, inc);
-
-    public static FancyOp MultAll(int m) => new(OpKind.MultAll, m);
-
-    public static FancyOp GetIndex(int idx) => new(OpKind.GetIndex, idx);
-
-    internal int? Apply(FancySequenceSolution.IFancySequence fancy)
+    // One call in a Fancy script: which method to invoke and with what argument. Pure
+    // dispatch, built via the named factories below so a script (like Examples above)
+    // reads like the LeetCode call sequence it replays. append/addAll/multAll return
+    // null (no value to compare); getIndex returns the actual answer, including -1 for
+    // an index that was never appended - the same null-means-"no return value"
+    // convention AllOneOp.Apply uses for its own inc/dec split. Nested here rather than
+    // left at file scope so the file declares exactly one type.
+    public readonly record struct FancyOp(FancyOp.OpKind kind, int value)
     {
-        switch (kind)
+        public static FancyOp Append(int val) => new(OpKind.Append, val);
+
+        public static FancyOp AddAll(int inc) => new(OpKind.AddAll, inc);
+
+        public static FancyOp MultAll(int m) => new(OpKind.MultAll, m);
+
+        public static FancyOp GetIndex(int idx) => new(OpKind.GetIndex, idx);
+
+        internal int? Apply(FancySequenceSolution.IFancySequence fancy)
         {
-            case OpKind.Append:
-                fancy.Append(value);
-                return null;
-            case OpKind.AddAll:
-                fancy.AddAll(value);
-                return null;
-            case OpKind.MultAll:
-                fancy.MultAll(value);
-                return null;
-            default:
-                return fancy.GetIndex(value);
+            switch (kind)
+            {
+                case OpKind.Append:
+                    fancy.Append(value);
+                    return null;
+                case OpKind.AddAll:
+                    fancy.AddAll(value);
+                    return null;
+                case OpKind.MultAll:
+                    fancy.MultAll(value);
+                    return null;
+                default:
+                    return fancy.GetIndex(value);
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Append,
-        AddAll,
-        MultAll,
-        GetIndex,
+        public enum OpKind
+        {
+            Append,
+            AddAll,
+            MultAll,
+            GetIndex,
+        }
     }
 }

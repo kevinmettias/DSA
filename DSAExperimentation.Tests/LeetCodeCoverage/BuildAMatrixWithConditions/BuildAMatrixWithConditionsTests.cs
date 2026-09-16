@@ -15,57 +15,72 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BuildAMatrixWithConditions;
 // before this migration it existed only as a benchmark arm nothing checked.
 public sealed class BuildAMatrixWithConditionsTests
 {
-    public static TheoryData<int, int[][], int[][], bool> Examples =>
+    public static TheoryData<MatrixExample> Examples =>
         new()
         {
-            { 3, [[1, 2], [3, 2]], [[2, 1]], true },
-            { 3, [[1, 2], [2, 3], [3, 1]], [], false },
-            { 2, [], [], true },
-            { 2, [[1, 2]], [[1, 2], [2, 1]], false },
-            { 4, [[1, 2], [2, 3], [3, 4]], [[4, 3], [3, 2], [2, 1]], true },
-            { 5, [[2, 1], [3, 1]], [[1, 4], [5, 1]], true },
+            { new MatrixExample(K: 3, RowConditions: [[1, 2], [3, 2]], ColConditions: [[2, 1]], Satisfiable: true) },
+            { new MatrixExample(K: 3, RowConditions: [[1, 2], [2, 3], [3, 1]], ColConditions: [], Satisfiable: false) },
+            { new MatrixExample(K: 2, RowConditions: [], ColConditions: [], Satisfiable: true) },
+            { new MatrixExample(K: 2, RowConditions: [[1, 2]], ColConditions: [[1, 2], [2, 1]], Satisfiable: false) },
+            {
+                new MatrixExample(
+                    K: 4, RowConditions: [[1, 2], [2, 3], [3, 4]],
+                    ColConditions: [[4, 3], [3, 2], [2, 1]], Satisfiable: true)
+            },
+            { new MatrixExample(K: 5, RowConditions: [[2, 1], [3, 1]], ColConditions: [[1, 4], [5, 1]], Satisfiable: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BuildMatrixByKahnsTopologicalSort_LeetCodeExamples_PlacesEveryValueSatisfyingBothAxes(
-        int k, int[][] rowConditions, int[][] colConditions, bool satisfiable) =>
-        AssertSatisfies(
-            BuildAMatrixWithConditionsSolution.BuildMatrixByKahnsTopologicalSort(k, rowConditions, colConditions),
-            k, rowConditions, colConditions, satisfiable);
+        MatrixExample example)
+    {
+        var matrix = BuildAMatrixWithConditionsSolution.BuildMatrixByKahnsTopologicalSort(
+            example.K, example.RowConditions, example.ColConditions);
+
+        AssertSatisfies(matrix, example);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BuildMatrixByNaiveRescan_LeetCodeExamples_PlacesEveryValueSatisfyingBothAxes(
-        int k, int[][] rowConditions, int[][] colConditions, bool satisfiable) =>
-        AssertSatisfies(
-            BuildAMatrixWithConditionsSolution.BuildMatrixByNaiveRescan(k, rowConditions, colConditions),
-            k, rowConditions, colConditions, satisfiable);
-
-    private static void AssertSatisfies(
-        int[][] matrix, int k, int[][] rowConditions, int[][] colConditions, bool satisfiable)
+        MatrixExample example)
     {
-        if (!satisfiable)
+        var matrix = BuildAMatrixWithConditionsSolution.BuildMatrixByNaiveRescan(
+            example.K, example.RowConditions, example.ColConditions);
+
+        AssertSatisfies(matrix, example);
+    }
+
+    private static void AssertSatisfies(int[][] matrix, MatrixExample example)
+    {
+        if (!example.Satisfiable)
         {
             Assert.Empty(matrix);
             return;
         }
 
-        Assert.Equal(k, matrix.Length);
-        Assert.All(matrix, row => Assert.Equal(k, row.Length));
-        Assert.Equal(
-            Enumerable.Range(1, k),
-            matrix.SelectMany(row => row).Where(value => value != 0).Order());
+        AssertPlacesEveryValueExactlyOnce(matrix, example.K);
 
-        foreach (var condition in rowConditions)
+        foreach (var condition in example.RowConditions)
         {
             Assert.True(FindRow(matrix, condition[0]) < FindRow(matrix, condition[1]));
         }
 
-        foreach (var condition in colConditions)
+        foreach (var condition in example.ColConditions)
         {
             Assert.True(FindColumn(matrix, condition[0]) < FindColumn(matrix, condition[1]));
         }
+    }
+
+    private static void AssertPlacesEveryValueExactlyOnce(int[][] matrix, int k)
+    {
+        var expectedValues = Enumerable.Range(1, k);
+        var placedValues = matrix.SelectMany(row => row).Where(value => value != 0).Order();
+
+        Assert.Equal(k, matrix.Length);
+        Assert.All(matrix, row => Assert.Equal(k, row.Length));
+        Assert.Equal(expectedValues, placedValues);
     }
 
     private static int FindRow(int[][] matrix, int value)
@@ -95,4 +110,13 @@ public sealed class BuildAMatrixWithConditionsTests
 
         throw new InvalidOperationException($"Value {value} not found in matrix.");
     }
+
+    // One LeetCode example: the bound on the values, the conditions each axis must honour,
+    // and whether any matrix satisfies them all. The four travel together into every
+    // assertion, so each is named rather than left as a position in a row of four literals.
+    public readonly record struct MatrixExample(
+        int K,
+        int[][] RowConditions,
+        int[][] ColConditions,
+        bool Satisfiable);
 }

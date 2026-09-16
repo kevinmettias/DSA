@@ -18,14 +18,24 @@ public sealed class SplitLinkedListInPartsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SplitListToPartsByArrayRebuild_LeetCodeExamples_SplitsEvenlyWithEarlyPartsAbsorbingRemainder(
-        int[] values, int k, int[]?[] expected) =>
-        AssertParts(SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Build(values), k), expected);
+        int[] values, int k, int[]?[] expected)
+    {
+        var head = Build(values);
+        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(head, k);
+
+        AssertParts(parts, expected);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SplitListToPartsByInPlaceRewire_LeetCodeExamples_SplitsEvenlyWithEarlyPartsAbsorbingRemainder(
-        int[] values, int k, int[]?[] expected) =>
-        AssertParts(SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Build(values), k), expected);
+        int[] values, int k, int[]?[] expected)
+    {
+        var head = Build(values);
+        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(head, k);
+
+        AssertParts(parts, expected);
+    }
 
     private static void AssertParts(SinglyLinkedListNode<int>?[] parts, int[]?[] expected)
     {

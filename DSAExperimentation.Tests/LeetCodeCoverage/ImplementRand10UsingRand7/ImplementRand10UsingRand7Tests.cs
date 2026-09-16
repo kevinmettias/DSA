@@ -14,6 +14,11 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementRand10UsingRand7;
 // against it would be asserting a property the strategy does not have.
 public sealed class ImplementRand10UsingRand7Tests
 {
+    // The sample size the uniformity test draws. A constant rather than a local: its
+    // scope is a claim about where the value is authoritative, and the tolerance band
+    // the test asserts against is chosen from this magnitude, not from the loop.
+    private const int Trials = 20_000;
+
     private static IRand7 SeededRand7(int seed) => new SeededRandomRand7(new Random(seed));
 
     [Fact]
@@ -34,8 +39,7 @@ public sealed class ImplementRand10UsingRand7Tests
         var rand7 = SeededRand7(seed: 1);
         var counts = new int[11];
 
-        const int trials = 20_000;
-        for (var i = 0; i < trials; i++)
+        for (var i = 0; i < Trials; i++)
         {
             counts[ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(rand7)]++;
         }

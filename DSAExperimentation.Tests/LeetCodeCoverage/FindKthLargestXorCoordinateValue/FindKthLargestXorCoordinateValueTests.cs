@@ -25,12 +25,20 @@ public sealed class FindKthLargestXorCoordinateValueTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthLargestValueByFullSort_LeetCodeExamples_ReturnsCorrectRank(
-        int[][] matrix, int k, int expected) =>
-        Assert.Equal(expected, FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(matrix, k));
+        int[][] matrix, int k, int expected)
+    {
+        var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueByFullSort(matrix, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthLargestValueBySizeKHeap_LeetCodeExamples_ReturnsCorrectRank(
-        int[][] matrix, int k, int expected) =>
-        Assert.Equal(expected, FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(matrix, k));
+        int[][] matrix, int k, int expected)
+    {
+        var actual = FindKthLargestXorCoordinateValueSolution.KthLargestValueBySizeKHeap(matrix, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

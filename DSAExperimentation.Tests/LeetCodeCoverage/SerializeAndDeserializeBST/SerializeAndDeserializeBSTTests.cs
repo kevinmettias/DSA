@@ -58,5 +58,12 @@ public sealed class SerializeAndDeserializeBSTTests
     }
 
     private static int[] PreOrder(BinaryTreeNode<int>? root)
-        => root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    {
+        if (root is null)
+        {
+            return [];
+        }
+
+        return [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    }
 }

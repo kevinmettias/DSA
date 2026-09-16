@@ -5,34 +5,18 @@ namespace DSAExperimentation.Tests.DataStructures.AhoCorasick;
 
 public sealed partial class AhoCorasickTests
 {
-    private const string PatternHe = "he";
-    private const string PatternShe = "she";
-    private const string PatternHis = "his";
-    private const string PatternHers = "hers";
-    private const string Ab = "ab";
-    private const string PatternA = "a";
-    private const string PatternXyz = "xyz";
-    private const string TextAbcdef = "abcdef";
-    private const string PatternAbc = "abc";
-    private const string MixedCaseText = "XAbCX";
-
     [Fact]
     public void FindAll_ClassicExample_FindsAllOverlappingPatternsAcrossSharedText()
     {
-        const string SearchText = "ushers";
-        const int HeEndIndex = 2;
-        const int HersEndIndex = 2;
-        const int HersPatternIndex = 3;
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternHe, Fixtures.PatternShe, Fixtures.PatternHis, Fixtures.PatternHers]);
 
-        var automaton = new AhoCorasickAutomaton([PatternHe, PatternShe, PatternHis, PatternHers]);
-
-        var matches = automaton.FindAll(SearchText);
+        var matches = automaton.FindAll(Fixtures.UshersSearchText);
 
         Assert.Equal(
             [
                 new AhoCorasickMatch(1, 1), // "she"
-                new AhoCorasickMatch(HeEndIndex, 0), // "he"
-                new AhoCorasickMatch(HersEndIndex, HersPatternIndex), // "hers"
+                new AhoCorasickMatch(Fixtures.UshersHeEndIndex, 0), // "he"
+                new AhoCorasickMatch(Fixtures.UshersHersEndIndex, Fixtures.UshersHersPatternIndex), // "hers"
             ],
             matches);
     }
@@ -43,23 +27,16 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_DeepFailureChain_FindsEveryPatternAcrossFallbackHops()
     {
-        const string SearchText = "ahishers";
-        const int HisPatternIndex = 3;
-        const int SheEndIndex = 3;
-        const int HeEndIndex = 4;
-        const int HersEndIndex = 4;
-        const int HersPatternIndex = 2;
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternShe, Fixtures.PatternHe, Fixtures.PatternHers, Fixtures.PatternHis]);
 
-        var automaton = new AhoCorasickAutomaton([PatternShe, PatternHe, PatternHers, PatternHis]);
-
-        var matches = automaton.FindAll(SearchText);
+        var matches = automaton.FindAll(Fixtures.AhishersSearchText);
 
         Assert.Equal(
             [
-                new AhoCorasickMatch(1, HisPatternIndex), // "his"
-                new AhoCorasickMatch(SheEndIndex, 0), // "she"
-                new AhoCorasickMatch(HeEndIndex, 1), // "he"
-                new AhoCorasickMatch(HersEndIndex, HersPatternIndex), // "hers"
+                new AhoCorasickMatch(1, Fixtures.AhishersHisPatternIndex), // "his"
+                new AhoCorasickMatch(Fixtures.AhishersSheEndIndex, 0), // "she"
+                new AhoCorasickMatch(Fixtures.AhishersHeEndIndex, 1), // "he"
+                new AhoCorasickMatch(Fixtures.AhishersHersEndIndex, Fixtures.AhishersHersPatternIndex), // "hers"
             ],
             matches);
     }
@@ -67,9 +44,9 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_DuplicatePatterns_ReportsEachOccurrenceIndependently()
     {
-        var automaton = new AhoCorasickAutomaton([Ab, Ab]);
+        var automaton = new AhoCorasickAutomaton([Fixtures.Ab, Fixtures.Ab]);
 
-        var matches = automaton.FindAll(Ab);
+        var matches = automaton.FindAll(Fixtures.Ab);
 
         Assert.Equal([new AhoCorasickMatch(0, 0), new AhoCorasickMatch(0, 1)], matches);
     }
@@ -80,18 +57,16 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_EmptyPatternMixedWithNonEmpty_MatchesEveryInsertionPointAndStillFindsRealMatches()
     {
-        const string SearchText = "ba";
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternA, string.Empty]);
 
-        var automaton = new AhoCorasickAutomaton([PatternA, string.Empty]);
-
-        var matches = automaton.FindAll(SearchText);
+        var matches = automaton.FindAll(Fixtures.BaSearchText);
 
         Assert.Equal(
             [
                 new AhoCorasickMatch(0, 1), // ""
                 new AhoCorasickMatch(1, 0), // "a"
                 new AhoCorasickMatch(1, 1), // ""
-                new AhoCorasickMatch(SearchText.Length, 1), // ""
+                new AhoCorasickMatch(Fixtures.BaSearchText.Length, 1), // ""
             ],
             matches);
     }
@@ -101,21 +76,19 @@ public sealed partial class AhoCorasickTests
     {
         var automaton = new AhoCorasickAutomaton([string.Empty]);
 
-        var matches = automaton.FindAll(Ab);
+        var matches = automaton.FindAll(Fixtures.Ab);
 
         Assert.Equal(
-            [new AhoCorasickMatch(0, 0), new AhoCorasickMatch(1, 0), new AhoCorasickMatch(Ab.Length, 0)],
+            [new AhoCorasickMatch(0, 0), new AhoCorasickMatch(1, 0), new AhoCorasickMatch(Fixtures.Ab.Length, 0)],
             matches);
     }
 
     [Fact]
     public void FindAll_NoPatterns_ReturnsEmptyList()
     {
-        const string SearchText = "anything";
-
         var automaton = new AhoCorasickAutomaton([]);
 
-        var matches = automaton.FindAll(SearchText);
+        var matches = automaton.FindAll(Fixtures.AnythingSearchText);
 
         Assert.Empty(matches);
     }
@@ -123,9 +96,9 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_PatternAbsent_ReturnsEmptyList()
     {
-        var automaton = new AhoCorasickAutomaton([PatternXyz]);
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternXyz]);
 
-        var matches = automaton.FindAll(TextAbcdef);
+        var matches = automaton.FindAll(Fixtures.TextAbcdef);
 
         Assert.Empty(matches);
     }
@@ -133,7 +106,7 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_EmptyText_ReturnsOnlyInsertionPointZeroMatches()
     {
-        var automaton = new AhoCorasickAutomaton([PatternA, string.Empty]);
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternA, string.Empty]);
 
         var matches = automaton.FindAll(string.Empty);
 
@@ -147,9 +120,9 @@ public sealed partial class AhoCorasickTests
             (left, right) => char.ToUpperInvariant(left) == char.ToUpperInvariant(right),
             value => char.ToUpperInvariant(value).GetHashCode());
 
-        var automaton = new AhoCorasickAutomaton([PatternAbc], caseInsensitive);
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternAbc], caseInsensitive);
 
-        var matches = automaton.FindAll(MixedCaseText);
+        var matches = automaton.FindAll(Fixtures.MixedCaseText);
 
         Assert.Equal([new AhoCorasickMatch(1, 0)], matches);
     }
@@ -157,9 +130,9 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_WithDefaultComparer_IsCaseSensitive()
     {
-        var automaton = new AhoCorasickAutomaton([PatternAbc]);
+        var automaton = new AhoCorasickAutomaton([Fixtures.PatternAbc]);
 
-        var matches = automaton.FindAll(MixedCaseText);
+        var matches = automaton.FindAll(Fixtures.MixedCaseText);
 
         Assert.Empty(matches);
     }
@@ -167,34 +140,70 @@ public sealed partial class AhoCorasickTests
     [Fact]
     public void FindAll_SinglePattern_MatchesPrefixFunctionSearchAcrossVariedInputs()
     {
-        const string TextHelloWorld = "hello world";
-        const string PatternWorld = "world";
-        const string TextAaaa = "aaaa";
-        const string PatternAa = "aa";
-        const string TextAabaab = "aabaab";
-        const string PatternAab = "aab";
-
         (string Text, string Pattern)[] cases =
         [
-            (TextHelloWorld, PatternWorld),
-            (TextAaaa, PatternAa),
-            (TextAabaab, PatternAab),
-            (TextAbcdef, PatternXyz),
+            (Fixtures.HelloWorldText, Fixtures.WorldPattern),
+            (Fixtures.RepeatedPairText, Fixtures.RepeatedPairPattern),
+            (Fixtures.SelfOverlappingText, Fixtures.SelfOverlappingPattern),
+            (Fixtures.TextAbcdef, Fixtures.PatternXyz),
         ];
 
-        foreach (var (text, pattern) in cases)
+        foreach (var searchCase in cases)
         {
-            AssertFindAllMatchesPrefixFunctionSearch(text, pattern);
+            AssertFindAllMatchesPrefixFunctionSearch(searchCase);
         }
     }
 
-    private static void AssertFindAllMatchesPrefixFunctionSearch(string text, string pattern)
+    // The pair travels as one value: passed as two adjacent strings, a transposed call
+    // site would compile and silently search for the text inside the pattern.
+    private static void AssertFindAllMatchesPrefixFunctionSearch((string Text, string Pattern) searchCase)
     {
-        var automaton = new AhoCorasickAutomaton([pattern]);
+        var automaton = new AhoCorasickAutomaton([searchCase.Pattern]);
 
-        var expectedStarts = DSAExperimentation.Algorithms.StringMatching.PrefixFunctionSearch.FindAll(text, pattern);
-        var actualStarts = automaton.FindAll(text).ConvertAll(match => match.Start);
+        var expectedStarts = DSAExperimentation.Algorithms.StringMatching.PrefixFunctionSearch.FindAll(searchCase.Text, searchCase.Pattern);
+        var actualStarts = automaton.FindAll(searchCase.Text).ConvertAll(match => match.Start);
 
         Assert.Equal(expectedStarts, actualStarts);
+    }
+
+    /// <summary>
+    /// The texts and patterns these tests search, and the match indices they expect
+    /// back, named once so a second test does not have to reach into a neighbour's
+    /// body for them.
+    /// </summary>
+    private static class Fixtures
+    {
+        public const string PatternHe = "he";
+        public const string PatternShe = "she";
+        public const string PatternHis = "his";
+        public const string PatternHers = "hers";
+        public const string Ab = "ab";
+        public const string PatternA = "a";
+        public const string PatternXyz = "xyz";
+        public const string TextAbcdef = "abcdef";
+        public const string PatternAbc = "abc";
+        public const string MixedCaseText = "XAbCX";
+
+        public const string UshersSearchText = "ushers";
+        public const int UshersHeEndIndex = 2;
+        public const int UshersHersEndIndex = 2;
+        public const int UshersHersPatternIndex = 3;
+
+        public const string AhishersSearchText = "ahishers";
+        public const int AhishersHisPatternIndex = 3;
+        public const int AhishersSheEndIndex = 3;
+        public const int AhishersHeEndIndex = 4;
+        public const int AhishersHersEndIndex = 4;
+        public const int AhishersHersPatternIndex = 2;
+
+        public const string BaSearchText = "ba";
+        public const string AnythingSearchText = "anything";
+
+        public const string HelloWorldText = "hello world";
+        public const string WorldPattern = "world";
+        public const string RepeatedPairText = "aaaa";
+        public const string RepeatedPairPattern = "aa";
+        public const string SelfOverlappingText = "aabaab";
+        public const string SelfOverlappingPattern = "aab";
     }
 }

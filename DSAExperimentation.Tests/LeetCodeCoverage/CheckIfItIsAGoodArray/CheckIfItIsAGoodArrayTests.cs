@@ -8,28 +8,35 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfItIsAGoodArray;
 // overall gcd is still 1.
 public sealed class CheckIfItIsAGoodArrayTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<GoodArrayCase> Examples =>
         new()
         {
-            { [12, 5, 7, 23], true },
-            { [29, 6, 10], true },
-            { [3, 6], false },
-            { [6, 10, 15], true },
-            { [2, 4, 8], false },
-            { [1], true },
-            { [5], false },
-            { [1, 1], true },
+            { new GoodArrayCase([12, 5, 7, 23], Expected: true) },
+            { new GoodArrayCase([29, 6, 10], Expected: true) },
+            { new GoodArrayCase([3, 6], Expected: false) },
+            { new GoodArrayCase([6, 10, 15], Expected: true) },
+            { new GoodArrayCase([2, 4, 8], Expected: false) },
+            { new GoodArrayCase([1], Expected: true) },
+            { new GoodArrayCase([5], Expected: false) },
+            { new GoodArrayCase([1, 1], Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsGoodArrayBySubtractionGcd_LeetCodeExamples_ReportsWhetherTheArrayGcdIsOne(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, CheckIfItIsAGoodArraySolution.IsGoodArrayBySubtractionGcd(nums));
+        GoodArrayCase example) =>
+        Assert.Equal(example.Expected, CheckIfItIsAGoodArraySolution.IsGoodArrayBySubtractionGcd(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsGoodArrayByEuclideanGcd_LeetCodeExamples_ReportsWhetherTheArrayGcdIsOne(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, CheckIfItIsAGoodArraySolution.IsGoodArrayByEuclideanGcd(nums));
+        GoodArrayCase example) =>
+        Assert.Equal(example.Expected, CheckIfItIsAGoodArraySolution.IsGoodArrayByEuclideanGcd(example.Nums));
+
+    // One LeetCode example: the array under test and whether its overall gcd is one.
+    // The expected value is named at every construction site, so a row reads as the
+    // case it is rather than as a bare `true` whose meaning is its position. Nested
+    // because it is only ever used inside this test class - it is this harness's own
+    // vocabulary, not a type another file would import.
+    public readonly record struct GoodArrayCase(int[] Nums, bool Expected);
 }

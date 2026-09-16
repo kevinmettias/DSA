@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1.InsertDeleteGetRandomO1Solution;
+using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertDeleteGetRandomO1;
 
@@ -51,15 +51,16 @@ public sealed class InsertDeleteGetRandomO1Tests
     [MemberData(nameof(Examples))]
     public void RandomizedSetByListScan_LeetCodeExamples_TracksMembershipCorrectly(
         RandomizedSetOp[] operations, object?[] expected) =>
-        RunScript(new RandomizedSetByListScan(), operations, expected);
+        RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan(), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandomizedSetByHashMapSwapRemove_LeetCodeExamples_TracksMembershipCorrectly(
         RandomizedSetOp[] operations, object?[] expected) =>
-        RunScript(new RandomizedSetByHashMapSwapRemove(), operations, expected);
+        RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove(), operations, expected);
 
-    private static void RunScript(IRandomizedSet set, RandomizedSetOp[] operations, object?[] expected)
+    private static void RunScript(
+        InsertDeleteGetRandomO1Solution.IRandomizedSet set, RandomizedSetOp[] operations, object?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
@@ -80,39 +81,5 @@ public sealed class InsertDeleteGetRandomO1Tests
         {
             Assert.Equal(expected, actual);
         }
-    }
-}
-
-// One call in a RandomizedSet script: which method to invoke and with what argument.
-// Pure dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays.
-public readonly record struct RandomizedSetOp(RandomizedSetOp.OpKind kind, int value)
-{
-    public static RandomizedSetOp Insert(int value) => new(OpKind.Insert, value);
-
-    public static RandomizedSetOp Remove(int value) => new(OpKind.Remove, value);
-
-    public static RandomizedSetOp GetRandom() => new(OpKind.GetRandom, 0);
-
-    public static RandomizedSetOp Count() => new(OpKind.Count, 0);
-
-    // Boxed uniformly so a script runner can assert against one expected value per
-    // operation regardless of which method it dispatches to. Internal, not public:
-    // IRandomizedSet is internal to InsertDeleteGetRandomO1Solution, and only this
-    // same assembly's RunScript ever calls Apply.
-    internal object? Apply(IRandomizedSet set) => kind switch
-    {
-        OpKind.Insert => set.Insert(value),
-        OpKind.Remove => set.Remove(value),
-        OpKind.GetRandom => set.GetRandom(),
-        _ => set.Count,
-    };
-
-    public enum OpKind
-    {
-        Insert,
-        Remove,
-        GetRandom,
-        Count,
     }
 }

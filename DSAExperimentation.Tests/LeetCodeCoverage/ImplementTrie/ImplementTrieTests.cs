@@ -40,38 +40,39 @@ public sealed class ImplementTrieTests
             Assert.Equal(expected[i], operations[i].Apply(trie));
         }
     }
-}
 
-// One call in an Implement-Trie script: which method to invoke and on what word.
-// Built via the named factories below so a script (like Examples above) reads
-// like the LeetCode call sequence it replays.
-public readonly record struct ImplementTrieOp(ImplementTrieOp.OpKind kind, string word)
-{
-    public static ImplementTrieOp Insert(string word) => new(OpKind.Insert, word);
-
-    public static ImplementTrieOp Search(string word) => new(OpKind.Search, word);
-
-    public static ImplementTrieOp StartsWith(string prefix) => new(OpKind.StartsWith, prefix);
-
-    // null for insert (LeetCode's own void return), the boolean result for
-    // search/startsWith - so a script runner can assert against one expected
-    // value per operation uniformly. Internal, not public: only this same
-    // assembly's test method ever calls Apply.
-    internal bool? Apply(Trie<bool> trie)
+    // One call in an Implement-Trie script: which method to invoke and on what word.
+    // Built via the named factories below so a script (like Examples above) reads
+    // like the LeetCode call sequence it replays. Nested here rather than left at
+    // file scope so the file declares exactly one type.
+    public readonly record struct ImplementTrieOp(ImplementTrieOp.OpKind kind, string word)
     {
-        if (kind == OpKind.Insert)
+        public static ImplementTrieOp Insert(string word) => new(OpKind.Insert, word);
+
+        public static ImplementTrieOp Search(string word) => new(OpKind.Search, word);
+
+        public static ImplementTrieOp StartsWith(string prefix) => new(OpKind.StartsWith, prefix);
+
+        // null for insert (LeetCode's own void return), the boolean result for
+        // search/startsWith - so a script runner can assert against one expected
+        // value per operation uniformly. Internal, not public: only this same
+        // assembly's test method ever calls Apply.
+        internal bool? Apply(Trie<bool> trie)
         {
-            trie.Set(word, true);
-            return null;
+            if (kind == OpKind.Insert)
+            {
+                trie.Set(word, true);
+                return null;
+            }
+
+            return kind == OpKind.Search ? trie.HasKey(word) : trie.HasPrefix(word);
         }
 
-        return kind == OpKind.Search ? trie.HasKey(word) : trie.HasPrefix(word);
-    }
-
-    public enum OpKind
-    {
-        Insert,
-        Search,
-        StartsWith,
+        public enum OpKind
+        {
+            Insert,
+            Search,
+            StartsWith,
+        }
     }
 }

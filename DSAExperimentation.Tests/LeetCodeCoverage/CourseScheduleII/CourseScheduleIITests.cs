@@ -10,48 +10,48 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CourseScheduleII;
 // constraints themselves rather than against one fixed expected array.
 public sealed class CourseScheduleIITests
 {
-    public static TheoryData<int, int[][], bool> Examples =>
+    public static TheoryData<CourseOrderExample> Examples =>
         new()
         {
-            { 2, [[1, 0]], true },
-            { 2, [[1, 0], [0, 1]], false },
-            { 4, [[1, 0], [2, 0], [3, 1], [3, 2]], true },
-            { 1, [], true },
+            { new CourseOrderExample(NumCourses: 2, Prerequisites: [[1, 0]], Solvable: true) },
+            { new CourseOrderExample(NumCourses: 2, Prerequisites: [[1, 0], [0, 1]], Solvable: false) },
+            { new CourseOrderExample(NumCourses: 4, Prerequisites: [[1, 0], [2, 0], [3, 1], [3, 2]], Solvable: true) },
+            { new CourseOrderExample(NumCourses: 1, Prerequisites: [], Solvable: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindOrderByKahnsTopologicalSort_LeetCodeExamples_ReturnsValidCompletionOrder(
-        int numCourses, int[][] prerequisites, bool expectedSolvable) =>
-        AssertValidOrder(
-            numCourses,
-            prerequisites,
-            expectedSolvable,
-            CourseScheduleIISolution.FindOrderByKahnsTopologicalSort(numCourses, prerequisites));
+        CourseOrderExample example)
+    {
+        var order = CourseScheduleIISolution.FindOrderByKahnsTopologicalSort(
+            example.NumCourses, example.Prerequisites);
+
+        AssertValidOrder(example, order);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindOrderByNaiveRescan_LeetCodeExamples_ReturnsValidCompletionOrder(
-        int numCourses, int[][] prerequisites, bool expectedSolvable) =>
-        AssertValidOrder(
-            numCourses,
-            prerequisites,
-            expectedSolvable,
-            CourseScheduleIISolution.FindOrderByNaiveRescan(numCourses, prerequisites));
-
-    private static void AssertValidOrder(
-        int numCourses, int[][] prerequisites, bool expectedSolvable, int[] order)
+        CourseOrderExample example)
     {
-        if (!expectedSolvable)
+        var order = CourseScheduleIISolution.FindOrderByNaiveRescan(example.NumCourses, example.Prerequisites);
+
+        AssertValidOrder(example, order);
+    }
+
+    private static void AssertValidOrder(CourseOrderExample example, int[] order)
+    {
+        if (!example.Solvable)
         {
             Assert.Empty(order);
             return;
         }
 
-        Assert.Equal(numCourses, order.Length);
-        Assert.Equal(Enumerable.Range(0, numCourses).ToHashSet(), order.ToHashSet());
+        Assert.Equal(example.NumCourses, order.Length);
+        Assert.Equal(Enumerable.Range(0, example.NumCourses).ToHashSet(), order.ToHashSet());
 
-        foreach (var prerequisite in prerequisites)
+        foreach (var prerequisite in example.Prerequisites)
         {
             var dependent = prerequisite[0];
             var required = prerequisite[1];
@@ -61,4 +61,9 @@ public sealed class CourseScheduleIITests
                 $"course {required} must come before course {dependent} in {string.Join(",", order)}");
         }
     }
+
+    // One LeetCode example: the course count, the prerequisite pairs, and whether a
+    // completion order exists at all. The solvable flag is named at the row that states
+    // it, so a reader of `Examples` never has to remember which position `true` sits in.
+    public readonly record struct CourseOrderExample(int NumCourses, int[][] Prerequisites, bool Solvable);
 }

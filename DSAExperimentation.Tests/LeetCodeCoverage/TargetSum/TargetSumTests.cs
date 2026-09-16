@@ -18,12 +18,20 @@ public sealed class TargetSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void WaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsSignAssignmentCount(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, TargetSumSolution.WaysByUnmemoizedRecursion(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var actual = TargetSumSolution.WaysByUnmemoizedRecursion(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void WaysByMemoizedRecursion_LeetCodeExamples_ReturnsSignAssignmentCount(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, TargetSumSolution.WaysByMemoizedRecursion(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var actual = TargetSumSolution.WaysByMemoizedRecursion(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

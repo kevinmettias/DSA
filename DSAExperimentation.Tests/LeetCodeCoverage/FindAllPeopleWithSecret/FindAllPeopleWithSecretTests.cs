@@ -40,16 +40,20 @@ public sealed class FindAllPeopleWithSecretTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindAllPeopleByRepeatedRelaxation_LeetCodeExamples_ReturnsEveryoneWhoLearnsTheSecret(
-        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindAllPeopleWithSecretSolution.FindAllPeopleByRepeatedRelaxation(peopleCount, meetings, firstPerson));
+        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson, int[] expected)
+    {
+        var actual = FindAllPeopleWithSecretSolution.FindAllPeopleByRepeatedRelaxation(
+            peopleCount, meetings, firstPerson);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindAllPeopleByKeyedDisjointSet_LeetCodeExamples_ReturnsEveryoneWhoLearnsTheSecret(
-        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindAllPeopleWithSecretSolution.FindAllPeopleByKeyedDisjointSet(peopleCount, meetings, firstPerson));
+        int peopleCount, (int First, int Second, int Time)[] meetings, int firstPerson, int[] expected)
+    {
+        var actual = FindAllPeopleWithSecretSolution.FindAllPeopleByKeyedDisjointSet(
+            peopleCount, meetings, firstPerson);
+        Assert.Equal(expected, actual);
+    }
 }

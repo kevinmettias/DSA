@@ -46,17 +46,26 @@ public sealed class SerializeAndDeserializeBinaryTreeTests
 
     private static BinaryTreeNode<int>? BuildTree(int?[] preorder)
     {
+        // The read cursor is the recursion's own state, not this body's, so the local
+        // function names it as a parameter rather than capturing it from the enclosing block.
         var index = 0;
 
-        BinaryTreeNode<int>? Build()
+        return Build(ref index);
+
+        BinaryTreeNode<int>? Build(ref int index)
         {
             var value = preorder[index++];
-            return value is null ? null : new BinaryTreeNode<int>(value.Value) { Left = Build(), Right = Build() };
+            return value is null ? null : new BinaryTreeNode<int>(value.Value) { Left = Build(ref index), Right = Build(ref index) };
         }
-
-        return Build();
     }
 
     private static int[] PreOrder(BinaryTreeNode<int>? root)
-        => root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    {
+        if (root is null)
+        {
+            return [];
+        }
+
+        return [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    }
 }

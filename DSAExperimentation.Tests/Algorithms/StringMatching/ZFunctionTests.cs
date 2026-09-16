@@ -17,20 +17,15 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void Compute_KnownText_ReturnsExpectedZArray()
     {
-        const string Text = "aaabaab";
-        const int RepeatedPrefixLength = 2;
+        var z = ZFunction.Compute(Fixtures.KnownText);
 
-        var z = ZFunction.Compute(Text);
-
-        Assert.Equal([0, RepeatedPrefixLength, 1, 0, RepeatedPrefixLength, 1, 0], z);
+        Assert.Equal([0, Fixtures.RepeatedPrefixLength, 1, 0, Fixtures.RepeatedPrefixLength, 1, 0], z);
     }
 
     [Fact]
     public void Compute_NoRepeatedPrefix_ReturnsAllZeros()
     {
-        const string Text = "abcde";
-
-        var z = ZFunction.Compute(Text);
+        var z = ZFunction.Compute(Fixtures.NoRepeatedPrefixText);
 
         Assert.Equal([0, 0, 0, 0, 0], z);
     }
@@ -38,9 +33,7 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void Compute_EmptyText_ReturnsEmptyArray()
     {
-        const string EmptyText = "";
-
-        var z = ZFunction.Compute(EmptyText);
+        var z = ZFunction.Compute(Fixtures.EmptyText);
 
         Assert.Empty(z);
     }
@@ -48,13 +41,11 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void Compute_MatchesBruteForceLongestCommonPrefix()
     {
-        const string text = "aabaabaaab";
+        var z = ZFunction.Compute(Fixtures.BruteForceText);
 
-        var z = ZFunction.Compute(text);
-
-        for (var i = 1; i < text.Length; i++)
+        for (var i = 1; i < Fixtures.BruteForceText.Length; i++)
         {
-            var bruteForceLength = BruteForceLongestCommonPrefix(text, text.AsSpan(i));
+            var bruteForceLength = BruteForceLongestCommonPrefix(Fixtures.BruteForceText, Fixtures.BruteForceText.AsSpan(i));
             Assert.Equal(bruteForceLength, z[i]);
         }
     }
@@ -62,41 +53,29 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void Compute_WithCaseInsensitiveComparer_TreatsCharsAsEqual()
     {
-        const string Text = "AaAa";
-        const int PrefixMatchAtIndex1 = 3;
-        const int PrefixMatchAtIndex2 = 2;
-
         var caseInsensitive = EqualityComparer<char>.Create(
             (left, right) => char.ToUpperInvariant(left) == char.ToUpperInvariant(right),
             value => char.ToUpperInvariant(value).GetHashCode());
 
-        var z = ZFunction.Compute(Text, caseInsensitive);
+        var z = ZFunction.Compute(Fixtures.MixedCaseText, caseInsensitive);
 
-        Assert.Equal([0, PrefixMatchAtIndex1, PrefixMatchAtIndex2, 1], z);
+        Assert.Equal([0, Fixtures.PrefixMatchAtIndex1, Fixtures.PrefixMatchAtIndex2, 1], z);
     }
 
     [Fact]
     public void FindAll_PatternPresentOnce_ReturnsSingleIndex()
     {
-        const string Text = "hello world";
-        const string Pattern = "world";
-        const int MatchIndex = 6;
+        var matches = ZFunction.FindAll(Fixtures.HelloWorldText, Fixtures.WorldPattern);
 
-        var matches = ZFunction.FindAll(Text, Pattern);
-
-        Assert.Equal([MatchIndex], matches);
+        Assert.Equal([Fixtures.MatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_PatternPresentMultipleTimesOverlapping_ReturnsAllIndices()
     {
-        const string Text = "aaaa";
-        const string Pattern = "aa";
-        const int LastMatchIndex = 2;
+        var matches = ZFunction.FindAll(Fixtures.RepeatedPairText, Fixtures.RepeatedPairPattern);
 
-        var matches = ZFunction.FindAll(Text, Pattern);
-
-        Assert.Equal([0, 1, LastMatchIndex], matches);
+        Assert.Equal([0, 1, Fixtures.LastMatchIndex], matches);
     }
 
     // Regression coverage for the mirror-reuse branch specifically: a self-overlapping pattern
@@ -106,34 +85,23 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_SelfOverlappingPattern_ReturnsAllRealOccurrencesWithNoPhantomMatches()
     {
-        const string Text = "aabaab";
-        const string Pattern = "aab";
-        const int SecondMatchIndex = 3;
+        var matches = ZFunction.FindAll(Fixtures.SelfOverlappingText, Fixtures.SelfOverlappingPattern);
 
-        var matches = ZFunction.FindAll(Text, Pattern);
-
-        Assert.Equal([0, SecondMatchIndex], matches);
+        Assert.Equal([0, Fixtures.SecondMatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_HighlySelfOverlappingPattern_ReturnsAllOverlappingOccurrences()
     {
-        const string Text = "aaaaa";
-        const string Pattern = "aaa";
-        const int LastMatchIndex = 2;
+        var matches = ZFunction.FindAll(Fixtures.TripleRepeatText, Fixtures.TripleRepeatPattern);
 
-        var matches = ZFunction.FindAll(Text, Pattern);
-
-        Assert.Equal([0, 1, LastMatchIndex], matches);
+        Assert.Equal([0, 1, Fixtures.LastMatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_PatternAbsent_ReturnsEmptyList()
     {
-        const string Text = "abcdef";
-        const string Pattern = "xyz";
-
-        var matches = ZFunction.FindAll(Text, Pattern);
+        var matches = ZFunction.FindAll(Fixtures.AbsentText, Fixtures.AbsentPattern);
 
         Assert.Empty(matches);
     }
@@ -141,10 +109,7 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_PatternLongerThanText_ReturnsEmptyList()
     {
-        const string Text = "ab";
-        const string Pattern = "abc";
-
-        var matches = ZFunction.FindAll(Text, Pattern);
+        var matches = ZFunction.FindAll(Fixtures.ShortText, Fixtures.LongerPattern);
 
         Assert.Empty(matches);
     }
@@ -152,39 +117,27 @@ public sealed partial class ZFunctionTests
     [Fact]
     public void FindAll_EmptyPattern_MatchesEveryInsertionPoint()
     {
-        const string Text = "abc";
-        const string EmptyPattern = "";
-        const int ThirdInsertionPoint = 2;
-        const int FourthInsertionPoint = 3;
+        var matches = ZFunction.FindAll(Fixtures.InsertionPointText, Fixtures.EmptyPattern);
 
-        var matches = ZFunction.FindAll(Text, EmptyPattern);
-
-        Assert.Equal([0, 1, ThirdInsertionPoint, FourthInsertionPoint], matches);
+        Assert.Equal([0, 1, Fixtures.ThirdInsertionPoint, Fixtures.FourthInsertionPoint], matches);
     }
 
     [Fact]
     public void FindAll_WithCaseInsensitiveComparer_MatchesRegardlessOfCase()
     {
-        const string Text = "AbcABC";
-        const string Pattern = "abc";
-        const int SecondMatchIndex = 3;
-
         var caseInsensitive = EqualityComparer<char>.Create(
             (left, right) => char.ToUpperInvariant(left) == char.ToUpperInvariant(right),
             value => char.ToUpperInvariant(value).GetHashCode());
 
-        var matches = ZFunction.FindAll(Text, Pattern, caseInsensitive);
+        var matches = ZFunction.FindAll(Fixtures.CaseVariantText, Fixtures.CaseVariantPattern, caseInsensitive);
 
-        Assert.Equal([0, SecondMatchIndex], matches);
+        Assert.Equal([0, Fixtures.SecondMatchIndex], matches);
     }
 
     [Fact]
     public void FindAll_WithDefaultComparer_IsCaseSensitive()
     {
-        const string Text = "AbcABC";
-        const string Pattern = "abc";
-
-        var matches = ZFunction.FindAll(Text, Pattern);
+        var matches = ZFunction.FindAll(Fixtures.CaseVariantText, Fixtures.CaseVariantPattern);
 
         Assert.Empty(matches);
     }
@@ -205,11 +158,58 @@ public sealed partial class ZFunctionTests
     {
         var length = 0;
 
-        while (length < first.Length && length < second.Length && first[length] == second[length])
+        while (CharsMatchAt(first, second, length))
         {
             length++;
         }
 
         return length;
+    }
+
+    private static bool CharsMatchAt(ReadOnlySpan<char> first, ReadOnlySpan<char> second, int index)
+    {
+        if (index >= first.Length || index >= second.Length)
+        {
+            return false;
+        }
+
+        return first[index] == second[index];
+    }
+
+    /// <summary>
+    /// The inputs these tests search through and the indices they expect back, named
+    /// once so a second test does not have to reach into a neighbour's body for them.
+    /// </summary>
+    private static class Fixtures
+    {
+        public const string KnownText = "aaabaab";
+        public const int RepeatedPrefixLength = 2;
+        public const string NoRepeatedPrefixText = "abcde";
+        public const string EmptyText = "";
+        public const string BruteForceText = "aabaabaaab";
+        public const string MixedCaseText = "AaAa";
+        public const int PrefixMatchAtIndex1 = 3;
+        public const int PrefixMatchAtIndex2 = 2;
+        public const string HelloWorldText = "hello world";
+        public const string WorldPattern = "world";
+        public const int MatchIndex = 6;
+        public const string RepeatedPairText = "aaaa";
+        public const string RepeatedPairPattern = "aa";
+        public const int LastMatchIndex = 2;
+        public const string SelfOverlappingText = "aabaab";
+        public const string SelfOverlappingPattern = "aab";
+        public const int SecondMatchIndex = 3;
+        public const string TripleRepeatText = "aaaaa";
+        public const string TripleRepeatPattern = "aaa";
+        public const string AbsentText = "abcdef";
+        public const string AbsentPattern = "xyz";
+        public const string ShortText = "ab";
+        public const string LongerPattern = "abc";
+        public const string InsertionPointText = "abc";
+        public const string EmptyPattern = "";
+        public const int ThirdInsertionPoint = 2;
+        public const int FourthInsertionPoint = 3;
+        public const string CaseVariantText = "AbcABC";
+        public const string CaseVariantPattern = "abc";
     }
 }

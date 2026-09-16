@@ -4,166 +4,97 @@ namespace DSAExperimentation.Tests.DataStructures.LazySegmentTree;
 
 public sealed partial class LazySegmentTreeTests
 {
-    private static readonly int[] RangeAddSumInitialValues = [1, 2, 3, 4, 5, 6, 7, 8];
-    private static readonly int[] RangeAssignMaxInitialValues = [5, 3, 8, 1, 9, 2, 7, 4];
-    private static readonly int[] SmallTreeValues = [1, 2, 3];
-    private static readonly int[] SingleElementTreeValues = [42];
-    private static readonly int[] NoUpdateSentinelInitialValues = [5, 3, 8, 1];
-
-    // Index bounds shared by the tests above: every RangeAddSum/RangeAssignMax
-    // test applies its first update over [1, FirstUpdateRangeEnd] and, where a
-    // second update is layered on top, over [SecondUpdateRangeStart, SecondUpdateRangeEnd].
-    private const int LastIndexOfEightElementTree = 7;
-    private const int FirstUpdateRangeEnd = 4;
-    private const int SecondUpdateRangeStart = 3;
-    private const int SecondUpdateRangeEnd = 6;
-    private const int SecondHalfStart = 5;
-    private const int FirstThreeElementsEnd = 2;
-    private const int IndexBeforeSecondUpdateRange = 2;
-    private const int InvalidRangeLeft = 2;
-
-    private const int FirstUpdateDelta = 10;
-    private const int SecondUpdateDelta = 5;
-    private const int AssignedMaxValue = 100;
-    private const int SecondAssignedValue = 50;
-    private const int ArbitraryUpdateValue = 5;
-
-    private const int ExpectedTotalOfRangeAddSumInitialValues = 36;
-    private const int ExpectedSumAfterFirstUpdate = 54;
-    private const int ExpectedSumOutsideUpdatedRange = 21;
-    private const int ExpectedTotalAfterFirstUpdate = 76;
-    private const int ExpectedOverlapSum = 39;
-    private const int ExpectedSecondOnlySum = 23;
-    private const int ExpectedTotalAfterOverlappingUpdates = 96;
-    private const int ExpectedMaxOfWholeRange = 9;
-    private const int ExpectedMaxOfFirstThreeElements = 8;
-    private const int ExpectedMaxOutsideAssignedRange = 7;
-
     [Fact]
     public void Query_RangeAddSum_FullRange_ReturnsTotalSumBeforeAnyUpdate()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(RangeAddSumInitialValues);
+        var tree = RangeAddSumTree();
 
-        var total = tree.Query(0, LastIndexOfEightElementTree);
-        Assert.Equal(ExpectedTotalOfRangeAddSumInitialValues, total);
+        AssertRangeQuery(tree, 0, Fixtures.LastIndexOfEightElementTree, Fixtures.ExpectedTotalOfRangeAddSumInitialValues);
     }
 
     [Fact]
     public void UpdateRange_RangeAddSum_OnlyAffectsQueriesOverlappingTheUpdatedRange()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(RangeAddSumInitialValues);
+        var tree = RangeAddSumTreeAfterFirstUpdate();
 
-        tree.UpdateRange(1, FirstUpdateRangeEnd, FirstUpdateDelta);
-
-        var beforeUpdatedRange = tree.Query(0, 0);
-        Assert.Equal(1, beforeUpdatedRange);
-
-        var withinUpdatedRange = tree.Query(1, FirstUpdateRangeEnd);
-        Assert.Equal(ExpectedSumAfterFirstUpdate, withinUpdatedRange);
-
-        var outsideUpdatedRange = tree.Query(SecondHalfStart, LastIndexOfEightElementTree);
-        Assert.Equal(ExpectedSumOutsideUpdatedRange, outsideUpdatedRange);
-
-        var fullRangeAfterUpdate = tree.Query(0, LastIndexOfEightElementTree);
-        Assert.Equal(ExpectedTotalAfterFirstUpdate, fullRangeAfterUpdate);
+        AssertRangeQuery(tree, 0, 0, 1);
+        AssertRangeQuery(tree, 1, Fixtures.FirstUpdateRangeEnd, Fixtures.ExpectedSumAfterFirstUpdate);
+        AssertRangeQuery(tree, Fixtures.SecondHalfStart, Fixtures.LastIndexOfEightElementTree, Fixtures.ExpectedSumOutsideUpdatedRange);
+        AssertRangeQuery(tree, 0, Fixtures.LastIndexOfEightElementTree, Fixtures.ExpectedTotalAfterFirstUpdate);
     }
 
     [Fact]
     public void UpdateRange_RangeAddSum_OverlappingUpdates_ComposeAdditively()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(RangeAddSumInitialValues);
+        var tree = RangeAddSumTreeAfterTwoOverlappingUpdates();
 
-        tree.UpdateRange(1, FirstUpdateRangeEnd, FirstUpdateDelta);
-        tree.UpdateRange(SecondUpdateRangeStart, SecondUpdateRangeEnd, SecondUpdateDelta);
-
-        var overlapSum = tree.Query(SecondUpdateRangeStart, FirstUpdateRangeEnd);
-        Assert.Equal(ExpectedOverlapSum, overlapSum);
-
-        var secondOnlySum = tree.Query(SecondHalfStart, SecondUpdateRangeEnd);
-        Assert.Equal(ExpectedSecondOnlySum, secondOnlySum);
-
-        var totalAfterOverlap = tree.Query(0, LastIndexOfEightElementTree);
-        Assert.Equal(ExpectedTotalAfterOverlappingUpdates, totalAfterOverlap);
+        AssertRangeQuery(tree, Fixtures.SecondUpdateRangeStart, Fixtures.FirstUpdateRangeEnd, Fixtures.ExpectedOverlapSum);
+        AssertRangeQuery(tree, Fixtures.SecondHalfStart, Fixtures.SecondUpdateRangeEnd, Fixtures.ExpectedSecondOnlySum);
+        AssertRangeQuery(tree, 0, Fixtures.LastIndexOfEightElementTree, Fixtures.ExpectedTotalAfterOverlappingUpdates);
     }
 
     [Fact]
     public void Query_RangeAssignMax_ReturnsMaxInRangeBeforeAnyUpdate()
     {
-        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(RangeAssignMaxInitialValues);
+        var tree = RangeAssignMaxTree();
 
-        var maxOfWholeRange = tree.Query(0, LastIndexOfEightElementTree);
-        Assert.Equal(ExpectedMaxOfWholeRange, maxOfWholeRange);
-
-        var maxOfFirstThreeElements = tree.Query(0, FirstThreeElementsEnd);
-        Assert.Equal(ExpectedMaxOfFirstThreeElements, maxOfFirstThreeElements);
+        AssertRangeQuery(tree, 0, Fixtures.LastIndexOfEightElementTree, Fixtures.ExpectedMaxOfWholeRange);
+        AssertRangeQuery(tree, 0, Fixtures.FirstThreeElementsEnd, Fixtures.ExpectedMaxOfFirstThreeElements);
     }
 
     [Fact]
     public void UpdateRange_RangeAssignMax_AssignsValueAcrossWholeRange()
     {
-        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(RangeAssignMaxInitialValues);
+        var tree = RangeAssignMaxTreeAfterFirstAssignment();
 
-        tree.UpdateRange(1, FirstUpdateRangeEnd, AssignedMaxValue);
-
-        var withinAssignedRange = tree.Query(1, FirstUpdateRangeEnd);
-        Assert.Equal(AssignedMaxValue, withinAssignedRange);
-
-        var outsideAssignedRange = tree.Query(SecondHalfStart, LastIndexOfEightElementTree);
-        Assert.Equal(ExpectedMaxOutsideAssignedRange, outsideAssignedRange);
-
-        var fullRangeAfterAssign = tree.Query(0, LastIndexOfEightElementTree);
-        Assert.Equal(AssignedMaxValue, fullRangeAfterAssign);
+        AssertRangeQuery(tree, 1, Fixtures.FirstUpdateRangeEnd, Fixtures.AssignedMaxValue);
+        AssertRangeQuery(tree, Fixtures.SecondHalfStart, Fixtures.LastIndexOfEightElementTree, Fixtures.ExpectedMaxOutsideAssignedRange);
+        AssertRangeQuery(tree, 0, Fixtures.LastIndexOfEightElementTree, Fixtures.AssignedMaxValue);
     }
 
     [Fact]
     public void UpdateRange_RangeAssignMax_OverlappingAssignments_NewerAssignmentWins()
     {
-        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(RangeAssignMaxInitialValues);
+        var tree = RangeAssignMaxTreeAfterTwoOverlappingAssignments();
 
-        tree.UpdateRange(1, FirstUpdateRangeEnd, AssignedMaxValue);
-        tree.UpdateRange(SecondUpdateRangeStart, SecondUpdateRangeEnd, SecondAssignedValue);
-
-        var overlapAfterNewerAssignment = tree.Query(SecondUpdateRangeStart, SecondUpdateRangeEnd);
-        Assert.Equal(SecondAssignedValue, overlapAfterNewerAssignment);
-
-        var untouchedByNewerAssignment = tree.Query(1, IndexBeforeSecondUpdateRange);
-        Assert.Equal(AssignedMaxValue, untouchedByNewerAssignment);
-
-        var fullRangeAfterOverlap = tree.Query(0, LastIndexOfEightElementTree);
-        Assert.Equal(AssignedMaxValue, fullRangeAfterOverlap);
+        AssertRangeQuery(tree, Fixtures.SecondUpdateRangeStart, Fixtures.SecondUpdateRangeEnd, Fixtures.SecondAssignedValue);
+        AssertRangeQuery(tree, 1, Fixtures.IndexBeforeSecondUpdateRange, Fixtures.AssignedMaxValue);
+        AssertRangeQuery(tree, 0, Fixtures.LastIndexOfEightElementTree, Fixtures.AssignedMaxValue);
     }
 
     [Fact]
     public void Count_ReflectsConstructorInputLength()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(SmallTreeValues);
+        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(Fixtures.SmallTreeValues);
 
-        Assert.Equal(SmallTreeValues.Length, tree.Count);
+        Assert.Equal(Fixtures.SmallTreeValues.Length, tree.Count);
     }
 
     [Fact]
     public void Query_OutOfRangeRight_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(SmallTreeValues);
+        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(Fixtures.SmallTreeValues);
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, SmallTreeValues.Length));
+        Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, Fixtures.SmallTreeValues.Length));
     }
 
     [Fact]
     public void UpdateRange_LeftGreaterThanRight_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(SmallTreeValues);
+        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(Fixtures.SmallTreeValues);
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => tree.UpdateRange(InvalidRangeLeft, 1, ArbitraryUpdateValue));
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => tree.UpdateRange(Fixtures.InvalidRangeLeft, 1, Fixtures.ArbitraryUpdateValue));
     }
 
     [Fact]
     public void Constructor_SingleElement_QueryReturnsThatElement()
     {
-        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(SingleElementTreeValues);
+        var tree = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(Fixtures.SingleElementTreeValues);
 
         var singleElementQuery = tree.Query(0, 0);
-        Assert.Equal(SingleElementTreeValues[0], singleElementQuery);
+
+        Assert.Equal(Fixtures.SingleElementTreeValues[0], singleElementQuery);
     }
 
     // RangeAssignMaxOperation<int>'s TUpdate is int? with NoUpdate = null; passing that
@@ -173,8 +104,109 @@ public sealed partial class LazySegmentTreeTests
     [Fact]
     public void UpdateRange_RangeAssignMax_NoUpdateSentinel_ThrowsArgumentException()
     {
-        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(NoUpdateSentinelInitialValues);
+        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(Fixtures.NoUpdateSentinelInitialValues);
 
-        Assert.Throws<ArgumentException>(() => tree.UpdateRange(0, NoUpdateSentinelInitialValues.Length - 1, null));
+        Assert.Throws<ArgumentException>(
+            () => tree.UpdateRange(0, Fixtures.NoUpdateSentinelInitialValues.Length - 1, null));
+    }
+
+    // The two configurations this file exercises, each built from the one before it: a test
+    // asks for the state it queries by name instead of repeating the updates that reach it.
+    private static LazySegmentTree<int, int, RangeAddSumOperation<int>> RangeAddSumTree() =>
+        new(Fixtures.RangeAddSumInitialValues);
+
+    private static LazySegmentTree<int, int, RangeAddSumOperation<int>> RangeAddSumTreeAfterFirstUpdate()
+    {
+        var tree = RangeAddSumTree();
+
+        tree.UpdateRange(1, Fixtures.FirstUpdateRangeEnd, Fixtures.FirstUpdateDelta);
+
+        return tree;
+    }
+
+    private static LazySegmentTree<int, int, RangeAddSumOperation<int>> RangeAddSumTreeAfterTwoOverlappingUpdates()
+    {
+        var tree = RangeAddSumTreeAfterFirstUpdate();
+
+        tree.UpdateRange(Fixtures.SecondUpdateRangeStart, Fixtures.SecondUpdateRangeEnd, Fixtures.SecondUpdateDelta);
+
+        return tree;
+    }
+
+    private static LazySegmentTree<int, int?, RangeAssignMaxOperation<int>> RangeAssignMaxTree() =>
+        new(Fixtures.RangeAssignMaxInitialValues);
+
+    private static LazySegmentTree<int, int?, RangeAssignMaxOperation<int>> RangeAssignMaxTreeAfterFirstAssignment()
+    {
+        var tree = RangeAssignMaxTree();
+
+        tree.UpdateRange(1, Fixtures.FirstUpdateRangeEnd, Fixtures.AssignedMaxValue);
+
+        return tree;
+    }
+
+    private static LazySegmentTree<int, int?, RangeAssignMaxOperation<int>> RangeAssignMaxTreeAfterTwoOverlappingAssignments()
+    {
+        var tree = RangeAssignMaxTreeAfterFirstAssignment();
+
+        tree.UpdateRange(Fixtures.SecondUpdateRangeStart, Fixtures.SecondUpdateRangeEnd, Fixtures.SecondAssignedValue);
+
+        return tree;
+    }
+
+    // Both configurations answer a range query the same way, so one assertion covers both:
+    // `expected` is what the tree owes for the range, whatever operation it was built with.
+    private static void AssertRangeQuery<Element, TUpdate, TOperation>(
+        LazySegmentTree<Element, TUpdate, TOperation> tree, int low, int high, Element expected)
+        where TOperation : struct, IRangeUpdateOperation<Element, TUpdate>
+    {
+        var actual = tree.Query(low, high);
+
+        Assert.Equal(expected, actual);
+    }
+
+    /// <summary>
+    /// The values these tests run on and the results that follow from them: the two
+    /// eight-element ranges, the small and single-element trees the bounds tests use,
+    /// and the index bounds and expected values that belong to each. One holder rather
+    /// than thirty-three members loose in the test class, so a reader follows the numbers
+    /// in one place and the tests above read as the call sequences they are.
+    /// </summary>
+    private static class Fixtures
+    {
+        public static readonly int[] RangeAddSumInitialValues = [1, 2, 3, 4, 5, 6, 7, 8];
+        public static readonly int[] RangeAssignMaxInitialValues = [5, 3, 8, 1, 9, 2, 7, 4];
+        public static readonly int[] SmallTreeValues = [1, 2, 3];
+        public static readonly int[] SingleElementTreeValues = [42];
+        public static readonly int[] NoUpdateSentinelInitialValues = [5, 3, 8, 1];
+
+        // Index bounds shared by the tests above: every RangeAddSum/RangeAssignMax
+        // test applies its first update over [1, FirstUpdateRangeEnd] and, where a
+        // second update is layered on top, over [SecondUpdateRangeStart, SecondUpdateRangeEnd].
+        public const int LastIndexOfEightElementTree = 7;
+        public const int FirstUpdateRangeEnd = 4;
+        public const int SecondUpdateRangeStart = 3;
+        public const int SecondUpdateRangeEnd = 6;
+        public const int SecondHalfStart = 5;
+        public const int FirstThreeElementsEnd = 2;
+        public const int IndexBeforeSecondUpdateRange = 2;
+        public const int InvalidRangeLeft = 2;
+
+        public const int FirstUpdateDelta = 10;
+        public const int SecondUpdateDelta = 5;
+        public const int AssignedMaxValue = 100;
+        public const int SecondAssignedValue = 50;
+        public const int ArbitraryUpdateValue = 5;
+
+        public const int ExpectedTotalOfRangeAddSumInitialValues = 36;
+        public const int ExpectedSumAfterFirstUpdate = 54;
+        public const int ExpectedSumOutsideUpdatedRange = 21;
+        public const int ExpectedTotalAfterFirstUpdate = 76;
+        public const int ExpectedOverlapSum = 39;
+        public const int ExpectedSecondOnlySum = 23;
+        public const int ExpectedTotalAfterOverlappingUpdates = 96;
+        public const int ExpectedMaxOfWholeRange = 9;
+        public const int ExpectedMaxOfFirstThreeElements = 8;
+        public const int ExpectedMaxOutsideAssignedRange = 7;
     }
 }

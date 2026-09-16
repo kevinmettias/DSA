@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.GenerateRandomPointInACircle.GenerateRandomPointInACircleSolution;
+using DSAExperimentation.LeetCode.GenerateRandomPointInACircle;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.GenerateRandomPointInACircle;
 
@@ -9,62 +9,73 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GenerateRandomPointInACircle
 // out a constant or narrow draw) rather than one exact value, the same
 // "expected slot carries a candidate set" idea RandomPickIndexTests already
 // uses for Pick.
+//
+// The two strategies are reached through the solution class rather than a
+// `using static`: a wildcard import drops every member in as a bare identifier,
+// so a reader meeting GenerateRandomPointInACircleByClosedFormPolar has nothing
+// on the line telling them whose it is.
 public sealed class GenerateRandomPointInACircleTests
 {
     private const double ContainmentTolerance = 1e-9;
 
-    public static TheoryData<double, double, double, int, int> Examples =>
+    public static TheoryData<RandPointCase> Examples =>
         new()
         {
-            // radius, xCenter, yCenter, trials, minimumDistinctPointsExpected
-            { 10.0, 5.0, -3.0, 500, 1 },
-            { 1.0, 0.0, 0.0, 200, 190 },
-            { 0.0, 4.0, 7.0, 50, 1 },
+            { new RandPointCase(Radius: 10.0, XCenter: 5.0, YCenter: -3.0, Trials: 500, MinimumDistinctPoints: 1) },
+            { new RandPointCase(Radius: 1.0, XCenter: 0.0, YCenter: 0.0, Trials: 200, MinimumDistinctPoints: 190) },
+            { new RandPointCase(Radius: 0.0, XCenter: 4.0, YCenter: 7.0, Trials: 50, MinimumDistinctPoints: 1) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandPoint_LeetCodeExamplesByRejectionSampling_AlwaysLandsWithinTheCircleAndVaries(
-        double radius, double xCenter, double yCenter, int trials, int minimumDistinctPoints)
-        => AssertRandPointBehavesCorrectly(
-            new GenerateRandomPointInACircleByRejectionSampling(radius, xCenter, yCenter),
-            radius, xCenter, yCenter, trials, minimumDistinctPoints);
+        RandPointCase example) =>
+        AssertRandPointBehavesCorrectly(
+            new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByRejectionSampling(
+                example.Radius, example.XCenter, example.YCenter),
+            example);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandPoint_LeetCodeExamplesByClosedFormPolar_AlwaysLandsWithinTheCircleAndVaries(
-        double radius, double xCenter, double yCenter, int trials, int minimumDistinctPoints)
-        => AssertRandPointBehavesCorrectly(
-            new GenerateRandomPointInACircleByClosedFormPolar(radius, xCenter, yCenter),
-            radius, xCenter, yCenter, trials, minimumDistinctPoints);
+        RandPointCase example) =>
+        AssertRandPointBehavesCorrectly(
+            new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(
+                example.Radius, example.XCenter, example.YCenter),
+            example);
 
     private static void AssertRandPointBehavesCorrectly(
-        IRandomPointGenerator generator,
-        double radius,
-        double xCenter,
-        double yCenter,
-        int trials,
-        int minimumDistinctPoints)
+        GenerateRandomPointInACircleSolution.IRandomPointGenerator generator,
+        RandPointCase example)
     {
         var distinct = new HashSet<(double X, double Y)>();
 
-        for (var i = 0; i < trials; i++)
+        for (var i = 0; i < example.Trials; i++)
         {
             var point = generator.RandPoint();
-            var dx = point[0] - xCenter;
-            var dy = point[1] - yCenter;
+            var dx = point[0] - example.XCenter;
+            var dy = point[1] - example.YCenter;
 
-            Assert.True((dx * dx) + (dy * dy) <= (radius * radius) + ContainmentTolerance);
+            Assert.True((dx * dx) + (dy * dy) <= (example.Radius * example.Radius) + ContainmentTolerance);
 
-            if (radius == 0.0)
+            if (example.Radius == 0.0)
             {
-                Assert.Equal(xCenter, point[0]);
-                Assert.Equal(yCenter, point[1]);
+                Assert.Equal(example.XCenter, point[0]);
+                Assert.Equal(example.YCenter, point[1]);
             }
 
             distinct.Add((point[0], point[1]));
         }
 
-        Assert.True(distinct.Count >= minimumDistinctPoints);
+        Assert.True(distinct.Count >= example.MinimumDistinctPoints);
     }
+
+    // One LeetCode example: the circle to draw from, how many draws to replay, and the
+    // fewest distinct points those draws must produce between them. Every value is named
+    // where it is passed, so three adjacent doubles are read as radius, x and y rather
+    // than as three interchangeable positions. Nested because it is only ever used inside
+    // this test class - it is this harness's own vocabulary, not a type another file
+    // would import.
+    public readonly record struct RandPointCase(
+        double Radius, double XCenter, double YCenter, int Trials, int MinimumDistinctPoints);
 }

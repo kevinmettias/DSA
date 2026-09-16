@@ -32,9 +32,14 @@ public class LowestCommonAncestorOfABinaryTreeBenchmarks
 
     private static BinaryTreeNode<int> LeftmostLeaf(BinaryTreeNode<int> node)
     {
-        while (node.Left is not null || node.Right is not null)
+        // Descend while the node has any child, preferring the left one. The loop
+        // condition is a read of the child it is about to take rather than `true`,
+        // so what ends the loop is on the line that starts it.
+        var next = node.Left ?? node.Right;
+        while (next is not null)
         {
-            node = node.Left ?? node.Right!;
+            node = next;
+            next = node.Left ?? node.Right;
         }
 
         return node;
@@ -42,9 +47,11 @@ public class LowestCommonAncestorOfABinaryTreeBenchmarks
 
     private static BinaryTreeNode<int> RightmostLeaf(BinaryTreeNode<int> node)
     {
-        while (node.Left is not null || node.Right is not null)
+        var next = node.Right ?? node.Left;
+        while (next is not null)
         {
-            node = node.Right ?? node.Left!;
+            node = next;
+            next = node.Right ?? node.Left;
         }
 
         return node;

@@ -22,13 +22,20 @@ public sealed class NumberOfIntegersWithPopcountDepthEqualToKITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PopcountDepthByBruteForce_LeetCodeExamples_ReturnsCountWithMatchingPopcountDepth(
-        long n, int k, long expected) =>
-        Assert.Equal(expected, NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByBruteForce(n, k));
+        long n, int k, long expected)
+    {
+        var actual = NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByBruteForce(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PopcountDepthByPopcountCombinatorics_LeetCodeExamples_ReturnsCountWithMatchingPopcountDepth(
-        long n, int k, long expected) =>
-        Assert.Equal(
-            expected, NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByPopcountCombinatorics(n, k));
+        long n, int k, long expected)
+    {
+        var actual = NumberOfIntegersWithPopcountDepthEqualToKISolution.PopcountDepthByPopcountCombinatorics(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

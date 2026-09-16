@@ -20,18 +20,24 @@ public sealed class ReverseNodesInKGroupTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReverseKGroupByPointerReversal_LeetCodeExamples_ReversesOnlyCompleteGroups(
-        int[] values, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(BuildList(values), k)));
+        int[] values, int k, int[] expected)
+    {
+        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(BuildList(values), k);
+        var actual = ToArray(reversed);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReverseKGroupByArrayReverse_LeetCodeExamples_ReversesOnlyCompleteGroups(
-        int[] values, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(BuildList(values), k)));
+        int[] values, int k, int[] expected)
+    {
+        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(BuildList(values), k);
+        var actual = ToArray(reversed);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

@@ -24,16 +24,20 @@ public sealed class LargestColorValueInADirectedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LargestPathValueByKahnsTopologicalSort_LeetCodeExamples_ReturnsLargestColorCountOnAnyPath(
-        string colors, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected,
-            LargestColorValueInADirectedGraphSolution.LargestPathValueByKahnsTopologicalSort(colors, edges));
+        string colors, int[][] edges, int expected)
+    {
+        var actual = LargestColorValueInADirectedGraphSolution.LargestPathValueByKahnsTopologicalSort(colors, edges);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LargestPathValueByRepeatedRelaxation_LeetCodeExamples_ReturnsLargestColorCountOnAnyPath(
-        string colors, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected,
-            LargestColorValueInADirectedGraphSolution.LargestPathValueByRepeatedRelaxation(colors, edges));
+        string colors, int[][] edges, int expected)
+    {
+        var actual = LargestColorValueInADirectedGraphSolution.LargestPathValueByRepeatedRelaxation(colors, edges);
+
+        Assert.Equal(expected, actual);
+    }
 }

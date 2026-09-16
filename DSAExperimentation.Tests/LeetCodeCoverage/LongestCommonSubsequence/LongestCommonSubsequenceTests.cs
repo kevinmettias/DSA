@@ -9,26 +9,37 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestCommonSubsequence;
 // broke.
 public sealed class LongestCommonSubsequenceTests
 {
-    public static TheoryData<string, string, int> Examples =>
+    public static TheoryData<LcsExample> Examples =>
         new()
         {
-            { "abcde", "ace", 3 },
-            { "abc", "abc", 3 },
-            { "abc", "def", 0 },
-            { "abcba", "abcbcba", 5 },
-            { "ezupkr", "ubmrapg", 2 },
-            { "aaaa", "aa", 2 },
+            { new LcsExample(Text1: "abcde", Text2: "ace", Expected: 3) },
+            { new LcsExample(Text1: "abc", Text2: "abc", Expected: 3) },
+            { new LcsExample(Text1: "abc", Text2: "def", Expected: 0) },
+            { new LcsExample(Text1: "abcba", Text2: "abcbcba", Expected: 5) },
+            { new LcsExample(Text1: "ezupkr", Text2: "ubmrapg", Expected: 2) },
+            { new LcsExample(Text1: "aaaa", Text2: "aa", Expected: 2) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LengthByTabulation_LeetCodeExamples_ReturnsLcsLength(
-        string text1, string text2, int expected) =>
-        Assert.Equal(expected, LongestCommonSubsequenceSolution.LengthByTabulation(text1, text2));
+    public void LengthByTabulation_LeetCodeExamples_ReturnsLcsLength(LcsExample example)
+    {
+        var actual = LongestCommonSubsequenceSolution.LengthByTabulation(example.Text1, example.Text2);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LengthByMemoizedSuffixPairDp_LeetCodeExamples_ReturnsLcsLength(
-        string text1, string text2, int expected) =>
-        Assert.Equal(expected, LongestCommonSubsequenceSolution.LengthByMemoizedSuffixPairDp(text1, text2));
+    public void LengthByMemoizedSuffixPairDp_LeetCodeExamples_ReturnsLcsLength(LcsExample example)
+    {
+        var actual = LongestCommonSubsequenceSolution.LengthByMemoizedSuffixPairDp(example.Text1, example.Text2);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One example as one argument. Both texts are strings, so a two-parameter signature
+    // let a row be written with the two swapped and still compile; the fields named at
+    // each row below say which text is which.
+    public readonly record struct LcsExample(string Text1, string Text2, int Expected);
 }

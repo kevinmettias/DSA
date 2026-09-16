@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.RandomPickIndex.RandomPickIndexSolution;
+using DSAExperimentation.LeetCode.RandomPickIndex;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickIndex;
 
@@ -12,43 +12,52 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickIndex;
 // gets returned across many calls.
 public sealed class RandomPickIndexTests
 {
-    public static TheoryData<int[], int, int[], int, bool> Examples =>
+    public static TheoryData<PickExample> Examples =>
         new()
         {
-            { [1, 2, 3, 3, 3], 3, [2, 3, 4], 50, false },
-            { [5, 1, 5, 2, 5, 5], 2, [3], 1, true },
-            { [5, 1, 5, 2, 5, 5], 5, [0, 2, 4, 5], 200, true },
+            { new PickExample(Nums: [1, 2, 3, 3, 3], Target: 3, ValidIndices: [2, 3, 4], Trials: 50, ExpectAllSeen: false) },
+            { new PickExample(Nums: [5, 1, 5, 2, 5, 5], Target: 2, ValidIndices: [3], Trials: 1, ExpectAllSeen: true) },
+            { new PickExample(Nums: [5, 1, 5, 2, 5, 5], Target: 5, ValidIndices: [0, 2, 4, 5], Trials: 200, ExpectAllSeen: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByReservoirSampling(
-        int[] nums, int target, int[] validIndices, int trials, bool expectAllSeen)
+    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByReservoirSampling(PickExample example)
         => AssertPicksAreValid(
-            new RandomPickIndexByReservoirSampling(nums), target, validIndices, trials, expectAllSeen);
+            new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(example.Nums), example);
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByHashMapGrouping(
-        int[] nums, int target, int[] validIndices, int trials, bool expectAllSeen)
+    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByHashMapGrouping(PickExample example)
         => AssertPicksAreValid(
-            new RandomPickIndexByHashMapGrouping(nums), target, validIndices, trials, expectAllSeen);
+            new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(example.Nums), example);
 
     private static void AssertPicksAreValid(
-        IRandomPickIndex solution, int target, int[] validIndices, int trials, bool expectAllSeen)
+        RandomPickIndexSolution.IRandomPickIndex solution, PickExample example)
     {
         var seen = new HashSet<int>();
 
-        for (var i = 0; i < trials; i++)
+        for (var i = 0; i < example.Trials; i++)
         {
-            var picked = solution.Pick(target);
-            Assert.Contains(picked, validIndices);
+            var picked = solution.Pick(example.Target);
+            Assert.Contains(picked, example.ValidIndices);
             seen.Add(picked);
         }
 
-        if (expectAllSeen)
+        if (example.ExpectAllSeen)
         {
-            Assert.Equal(validIndices.OrderBy(index => index), seen.OrderBy(index => index));
+            Assert.Equal(example.ValidIndices.OrderBy(index => index), seen.OrderBy(index => index));
         }
     }
+
+    // One LeetCode example: the array Pick is asked about, the target whose occurrences are
+    // the candidates, the whole candidate set (Pick may return any of them), how many calls
+    // the example replays, and whether those calls must cover every candidate. The five
+    // travel together into every assertion, so each is named rather than left as a position.
+    public readonly record struct PickExample(
+        int[] Nums,
+        int Target,
+        int[] ValidIndices,
+        int Trials,
+        bool ExpectAllSeen);
 }

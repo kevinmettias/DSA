@@ -18,12 +18,18 @@ public sealed class MinimumOperationsToMakeArrayEqualToTargetTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinOperationsByBruteForceSimulation_LeetCodeExamples_ReturnsMinimumOperationCount(
-        int[] nums, int[] target, long expected) =>
-        Assert.Equal(expected, MinimumOperationsToMakeArrayEqualToTargetSolution.MinOperationsByBruteForceSimulation(nums, target));
+        int[] nums, int[] target, long expected)
+    {
+        var actual = MinimumOperationsToMakeArrayEqualToTargetSolution.MinOperationsByBruteForceSimulation(nums, target);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinOperationsByDifferenceScan_LeetCodeExamples_ReturnsMinimumOperationCount(
-        int[] nums, int[] target, long expected) =>
-        Assert.Equal(expected, MinimumOperationsToMakeArrayEqualToTargetSolution.MinOperationsByDifferenceScan(nums, target));
+        int[] nums, int[] target, long expected)
+    {
+        var actual = MinimumOperationsToMakeArrayEqualToTargetSolution.MinOperationsByDifferenceScan(nums, target);
+        Assert.Equal(expected, actual);
+    }
 }

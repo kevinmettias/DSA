@@ -11,34 +11,44 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LexicographicallySmallestGen
 // surrounding 'T's, so it cannot be broken at all ("TFTF"/"aaa").
 public sealed class LexicographicallySmallestGeneratedStringTests
 {
-    public static TheoryData<string, string, string> Examples =>
+    public static TheoryData<GenerationExample> Examples =>
         new()
         {
-            { "TFTF", "ab", "ababa" },
-            { "TFTF", "abc", "" },
-            { "F", "d", "a" },
-            { "TT", "aa", "aaa" },
-            { "TF", "a", "ab" },
-            { "TFTF", "aaa", "" },
+            { new GenerationExample(Constraints: "TFTF", Template: "ab", Expected: "ababa") },
+            { new GenerationExample(Constraints: "TFTF", Template: "abc", Expected: "") },
+            { new GenerationExample(Constraints: "F", Template: "d", Expected: "a") },
+            { new GenerationExample(Constraints: "TT", Template: "aa", Expected: "aaa") },
+            { new GenerationExample(Constraints: "TF", Template: "a", Expected: "ab") },
+            { new GenerationExample(Constraints: "TFTF", Template: "aaa", Expected: "") },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GenerateStringByDirectFill_LeetCodeExamples_ReturnsSmallestGeneratedString(
-        string str1, string str2, string expected) =>
-        Assert.Equal(
-            expected,
-            LexicographicallySmallestGeneratedStringSolution.GenerateStringByDirectFill(
-                new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(str1),
-                new LexicographicallySmallestGeneratedStringSolution.TemplateWord(str2)));
+        GenerationExample example)
+    {
+        var actual = LexicographicallySmallestGeneratedStringSolution.GenerateStringByDirectFill(
+            new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(example.Constraints),
+            new LexicographicallySmallestGeneratedStringSolution.TemplateWord(example.Template));
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GenerateStringByZFunctionConsistency_LeetCodeExamples_ReturnsSmallestGeneratedString(
-        string str1, string str2, string expected) =>
-        Assert.Equal(
-            expected,
-            LexicographicallySmallestGeneratedStringSolution.GenerateStringByZFunctionConsistency(
-                new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(str1),
-                new LexicographicallySmallestGeneratedStringSolution.TemplateWord(str2)));
+        GenerationExample example)
+    {
+        var actual = LexicographicallySmallestGeneratedStringSolution.GenerateStringByZFunctionConsistency(
+            new LexicographicallySmallestGeneratedStringSolution.ConstraintPattern(example.Constraints),
+            new LexicographicallySmallestGeneratedStringSolution.TemplateWord(example.Template));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the 'T'/'F' constraint pattern, the template word, and the
+    // smallest string satisfying both. The solutions already give the two inputs their
+    // own role types (ConstraintPattern, TemplateWord); the row names them for the same
+    // reason, so neither can arrive where the other belongs with the compiler silent.
+    public readonly record struct GenerationExample(string Constraints, string Template, string Expected);
 }

@@ -9,27 +9,40 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GreatestCommonDivisorTravers
 // (30-77-22-35 has no edge between 30 and 77 at all, only the path through 22 and 35).
 public sealed class GreatestCommonDivisorTraversalTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<TraversalExample> Examples =>
         new()
         {
-            { [2, 3, 6], true },
-            { [3, 9, 5], false },
-            { [4, 3, 12, 8], true },
-            { [7], true },
-            { [1], true },
-            { [1, 2, 4], false },
-            { [30, 77, 22, 35], true },
+            { new TraversalExample(Nums: [2, 3, 6], Expected: true) },
+            { new TraversalExample(Nums: [3, 9, 5], Expected: false) },
+            { new TraversalExample(Nums: [4, 3, 12, 8], Expected: true) },
+            { new TraversalExample(Nums: [7], Expected: true) },
+            { new TraversalExample(Nums: [1], Expected: true) },
+            { new TraversalExample(Nums: [1, 2, 4], Expected: false) },
+            { new TraversalExample(Nums: [30, 77, 22, 35], Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanTraverseAllPairsByPairwiseGcd_LeetCodeExamples_ReportsWhetherEveryIndexIsReachable(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, GreatestCommonDivisorTraversalSolution.CanTraverseAllPairsByPairwiseGcd(nums));
+        TraversalExample example)
+    {
+        var actual = GreatestCommonDivisorTraversalSolution.CanTraverseAllPairsByPairwiseGcd(example.Nums);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanTraverseAllPairsByPrimeFactorUnion_LeetCodeExamples_ReportsWhetherEveryIndexIsReachable(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, GreatestCommonDivisorTraversalSolution.CanTraverseAllPairsByPrimeFactorUnion(nums));
+        TraversalExample example)
+    {
+        var actual = GreatestCommonDivisorTraversalSolution.CanTraverseAllPairsByPrimeFactorUnion(example.Nums);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the values to decide about, and whether every index is
+    // reachable. The `bool` is the expected answer rather than a mode, so the row names
+    // it instead of leaving a bare `true` in a position the reader has to decode.
+    public readonly record struct TraversalExample(int[] Nums, bool Expected);
 }

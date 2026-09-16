@@ -33,16 +33,20 @@ public sealed class MaximumNumberOfPointsFromGridQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPointsByFloodFillPerQuery_LeetCodeExamples_ReturnsPerQueryReachableCellCounts(
-        int[][] grid, int[] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfPointsFromGridQueriesSolution.MaxPointsByFloodFillPerQuery(grid, queries));
+        int[][] grid, int[] queries, int[] expected)
+    {
+        var actual = MaximumNumberOfPointsFromGridQueriesSolution.MaxPointsByFloodFillPerQuery(grid, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPointsByMinHeapFrontier_LeetCodeExamples_ReturnsPerQueryReachableCellCounts(
-        int[][] grid, int[] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfPointsFromGridQueriesSolution.MaxPointsByMinHeapFrontier(grid, queries));
+        int[][] grid, int[] queries, int[] expected)
+    {
+        var actual = MaximumNumberOfPointsFromGridQueriesSolution.MaxPointsByMinHeapFrontier(grid, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

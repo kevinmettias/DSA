@@ -110,7 +110,9 @@ public sealed class SnapshotArrayTests
                     Assert.Equal(expected, snapshotArray.Snap());
                     break;
                 default:
-                    Assert.Equal(expected, snapshotArray.Get(index, argument));
+                    var value = snapshotArray.Get(index, argument);
+
+                    Assert.Equal(expected, value);
                     break;
             }
         }

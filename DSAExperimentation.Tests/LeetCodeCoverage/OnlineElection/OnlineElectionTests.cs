@@ -27,12 +27,20 @@ public sealed class OnlineElectionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LeadersByPerQueryRescan_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
-        int[] persons, int[] times, int[] queries, int[] expected) =>
-        Assert.Equal(expected, OnlineElectionSolution.LeadersByPerQueryRescan(persons, times, queries));
+        int[] persons, int[] times, int[] queries, int[] expected)
+    {
+        var actual = OnlineElectionSolution.LeadersByPerQueryRescan(persons, times, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LeadersByPrecomputedBinarySearch_LeetCodeExamples_ReturnsLeaderAtEachQueriedTime(
-        int[] persons, int[] times, int[] queries, int[] expected) =>
-        Assert.Equal(expected, OnlineElectionSolution.LeadersByPrecomputedBinarySearch(persons, times, queries));
+        int[] persons, int[] times, int[] queries, int[] expected)
+    {
+        var actual = OnlineElectionSolution.LeadersByPrecomputedBinarySearch(persons, times, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

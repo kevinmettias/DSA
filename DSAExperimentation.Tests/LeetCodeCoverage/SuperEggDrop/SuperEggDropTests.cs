@@ -25,12 +25,20 @@ public sealed class SuperEggDropTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMovesByLinearScan_LeetCodeExamples_ReturnsMinimumWorstCaseMoves(
-        int eggs, int floors, int expected) =>
-        Assert.Equal(expected, SuperEggDropSolution.MinMovesByLinearScan(eggs, floors));
+        int eggs, int floors, int expected)
+    {
+        var actual = SuperEggDropSolution.MinMovesByLinearScan(eggs, floors);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMovesByBinarySearch_LeetCodeExamples_ReturnsMinimumWorstCaseMoves(
-        int eggs, int floors, int expected) =>
-        Assert.Equal(expected, SuperEggDropSolution.MinMovesByBinarySearch(eggs, floors));
+        int eggs, int floors, int expected)
+    {
+        var actual = SuperEggDropSolution.MinMovesByBinarySearch(eggs, floors);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -21,13 +21,21 @@ public sealed class MaximumIceCreamBarsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxIceCreamBySelectionScan_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected) =>
-        Assert.Equal(expected, MaximumIceCreamBarsSolution.MaxIceCreamBySelectionScan(costs, coins));
+    public void MaxIceCreamBySelectionScan_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected)
+    {
+        var actual = MaximumIceCreamBarsSolution.MaxIceCreamBySelectionScan(costs, coins);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxIceCreamByMergeSortGreedy_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected) =>
-        Assert.Equal(expected, MaximumIceCreamBarsSolution.MaxIceCreamByMergeSortGreedy(costs, coins));
+    public void MaxIceCreamByMergeSortGreedy_LeetCodeExamples_ReturnsAffordableBarCount(int[] costs, int coins, int expected)
+    {
+        var actual = MaximumIceCreamBarsSolution.MaxIceCreamByMergeSortGreedy(costs, coins);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Fact]
     public void MaxIceCreamByMergeSortGreedy_SortingStrategy_DoesNotReorderCallersArray()

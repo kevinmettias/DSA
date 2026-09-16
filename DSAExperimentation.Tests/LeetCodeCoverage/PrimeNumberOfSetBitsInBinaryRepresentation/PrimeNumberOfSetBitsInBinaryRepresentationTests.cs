@@ -17,16 +17,20 @@ public sealed class PrimeNumberOfSetBitsInBinaryRepresentationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPrimeSetBitsByTrialDivision_LeetCodeExamples_ReturnsExpectedCount(
-        int left, int right, int expected) =>
-        Assert.Equal(
-            expected,
-            PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByTrialDivision(left, right));
+        int left, int right, int expected)
+    {
+        var actual = PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByTrialDivision(left, right);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPrimeSetBitsByPrecomputedSet_LeetCodeExamples_ReturnsExpectedCount(
-        int left, int right, int expected) =>
-        Assert.Equal(
-            expected,
-            PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByPrecomputedSet(left, right));
+        int left, int right, int expected)
+    {
+        var actual = PrimeNumberOfSetBitsInBinaryRepresentationSolution.CountPrimeSetBitsByPrecomputedSet(left, right);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -17,11 +17,19 @@ public sealed class FindNthSmallestIntegerWithKOneBitsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NthSmallestByPopCountScan_LeetCodeExamples_ReturnsNthIntegerWithKOneBits(long n, int k, long expected) =>
-        Assert.Equal(expected, FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByPopCountScan(n, k));
+    public void NthSmallestByPopCountScan_LeetCodeExamples_ReturnsNthIntegerWithKOneBits(long n, int k, long expected)
+    {
+        var actual = FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByPopCountScan(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NthSmallestByMemoizedBinomialSelection_LeetCodeExamples_ReturnsNthIntegerWithKOneBits(long n, int k, long expected) =>
-        Assert.Equal(expected, FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByMemoizedBinomialSelection(n, k));
+    public void NthSmallestByMemoizedBinomialSelection_LeetCodeExamples_ReturnsNthIntegerWithKOneBits(long n, int k, long expected)
+    {
+        var actual = FindNthSmallestIntegerWithKOneBitsSolution.NthSmallestByMemoizedBinomialSelection(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

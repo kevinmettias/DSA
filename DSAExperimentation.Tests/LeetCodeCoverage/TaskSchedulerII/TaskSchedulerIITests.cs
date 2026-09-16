@@ -21,9 +21,21 @@ public sealed class TaskSchedulerIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountDaysByBackwardScan_Example_ReturnsDayTheLastTaskLandsOn(int[] tasks, int space, long expected) => Assert.Equal(expected, TaskSchedulerIISolution.CountDaysByBackwardScan(tasks, space));
+    public void CountDaysByBackwardScan_Example_ReturnsDayTheLastTaskLandsOn(
+        int[] tasks, int space, long expected)
+    {
+        var actual = TaskSchedulerIISolution.CountDaysByBackwardScan(tasks, space);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountDaysByHashMapOnePass_Example_ReturnsDayTheLastTaskLandsOn(int[] tasks, int space, long expected) => Assert.Equal(expected, TaskSchedulerIISolution.CountDaysByHashMapOnePass(tasks, space));
+    public void CountDaysByHashMapOnePass_Example_ReturnsDayTheLastTaskLandsOn(
+        int[] tasks, int space, long expected)
+    {
+        var actual = TaskSchedulerIISolution.CountDaysByHashMapOnePass(tasks, space);
+
+        Assert.Equal(expected, actual);
+    }
 }

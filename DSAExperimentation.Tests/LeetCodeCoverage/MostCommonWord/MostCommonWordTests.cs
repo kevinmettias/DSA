@@ -21,12 +21,20 @@ public sealed class MostCommonWordTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostCommonByDictionaryScan_LeetCodeExamples_ReturnsMostFrequentUnbannedWord(
-        string paragraph, string[] banned, string expected) =>
-        Assert.Equal(expected, MostCommonWordSolution.MostCommonByDictionaryScan(paragraph, banned));
+        string paragraph, string[] banned, string expected)
+    {
+        var actual = MostCommonWordSolution.MostCommonByDictionaryScan(paragraph, banned);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostCommonByHashMapTally_LeetCodeExamples_ReturnsMostFrequentUnbannedWord(
-        string paragraph, string[] banned, string expected) =>
-        Assert.Equal(expected, MostCommonWordSolution.MostCommonByHashMapTally(paragraph, banned));
+        string paragraph, string[] banned, string expected)
+    {
+        var actual = MostCommonWordSolution.MostCommonByHashMapTally(paragraph, banned);
+
+        Assert.Equal(expected, actual);
+    }
 }

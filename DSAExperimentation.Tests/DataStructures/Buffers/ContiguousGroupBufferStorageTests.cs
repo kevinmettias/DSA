@@ -40,10 +40,7 @@ public sealed class ContiguousGroupBufferStorageTests
         var storage = Storage();
         storage.AppendToCurrentGroup(1);
 
-        var snapshot = storage.SnapshotCurrentGroup();
-        storage.AppendToCurrentGroup(2);
-
-        Assert.Single(snapshot);
+        AssertSnapshotIsACopy(storage);
     }
 
     [Fact]
@@ -95,5 +92,17 @@ public sealed class ContiguousGroupBufferStorageTests
         Assert.Equal(0, storage.CurrentGroupCount);
         Assert.False(storage.HasCurrentKey);
         Assert.Null(storage.CurrentKey);
+    }
+
+    // The second append happens only AFTER the snapshot was taken: a snapshot that aliased
+    // the live group would report it too, so a single remaining item is the proof that the
+    // snapshot is a copy rather than a view.
+    private static void AssertSnapshotIsACopy(ContiguousGroupBufferStorage<int, string> storage)
+    {
+        var snapshot = storage.SnapshotCurrentGroup();
+
+        storage.AppendToCurrentGroup(2);
+
+        Assert.Single(snapshot);
     }
 }

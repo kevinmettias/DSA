@@ -7,34 +7,57 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathExistenceQueriesInAGraph
 // file just pins them to LeetCode's published examples.
 public sealed class PathExistenceQueriesInAGraphITests
 {
-    public static TheoryData<int, int[], int, int[][], bool[]> Examples =>
+    public static TheoryData<ProximityExample> Examples =>
         new()
         {
             {
-                2, [1, 3], 1,
-                [[0, 0], [0, 1]],
-                [true, false]
+                new ProximityExample(
+                    N: 2,
+                    Nums: [1, 3],
+                    MaxDiff: 1,
+                    Queries: [[0, 0], [0, 1]],
+                    Expected: [true, false])
             },
             {
-                4, [2, 5, 6, 8], 2,
-                [[0, 1], [0, 2], [1, 3], [2, 3]],
-                [false, false, true, true]
+                new ProximityExample(
+                    N: 4,
+                    Nums: [2, 5, 6, 8],
+                    MaxDiff: 2,
+                    Queries: [[0, 1], [0, 2], [1, 3], [2, 3]],
+                    Expected: [false, false, true, true])
             },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PathExistenceQueriesByBruteForceBfs_LeetCodeExamples_ReturnsWhetherEachQueryPairIsConnected(
-        int n, int[] nums, int maxDiff, int[][] queries, bool[] expected) =>
-        Assert.Equal(
-            expected,
-            PathExistenceQueriesInAGraphISolution.PathExistenceQueriesByBruteForceBfs(n, nums, maxDiff, queries));
+        ProximityExample example)
+    {
+        var actual = PathExistenceQueriesInAGraphISolution.PathExistenceQueriesByBruteForceBfs(
+            example.N, example.Nums, example.MaxDiff, example.Queries);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PathExistenceQueriesByDisjointSet_LeetCodeExamples_ReturnsWhetherEachQueryPairIsConnected(
-        int n, int[] nums, int maxDiff, int[][] queries, bool[] expected) =>
-        Assert.Equal(
-            expected,
-            PathExistenceQueriesInAGraphISolution.PathExistenceQueriesByDisjointSet(n, nums, maxDiff, queries));
+        ProximityExample example)
+    {
+        var actual = PathExistenceQueriesInAGraphISolution.PathExistenceQueriesByDisjointSet(
+            example.N, example.Nums, example.MaxDiff, example.Queries);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the vertex count, the values each vertex carries, the
+    // largest gap still counted as adjacent, the query pairs, and each pair's answer.
+    // The count and the gap are both `int`, so the fields name each one rather than
+    // leaving two adjacent positions a caller could swap.
+    public readonly record struct ProximityExample(
+        int N,
+        int[] Nums,
+        int MaxDiff,
+        int[][] Queries,
+        bool[] Expected);
 }

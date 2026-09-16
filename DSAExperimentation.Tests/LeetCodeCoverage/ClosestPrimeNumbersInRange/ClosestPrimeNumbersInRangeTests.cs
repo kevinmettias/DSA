@@ -43,12 +43,20 @@ public sealed class ClosestPrimeNumbersInRangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestPrimesByTrialDivision_LeetCodeExamples_ReturnsClosestPair(
-        int left, int right, int[] expected) =>
-        Assert.Equal(expected, ClosestPrimeNumbersInRangeSolution.ClosestPrimesByTrialDivision(left, right));
+        int left, int right, int[] expected)
+    {
+        var actual = ClosestPrimeNumbersInRangeSolution.ClosestPrimesByTrialDivision(left, right);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestPrimesBySieve_LeetCodeExamples_ReturnsClosestPair(
-        int left, int right, int[] expected) =>
-        Assert.Equal(expected, ClosestPrimeNumbersInRangeSolution.ClosestPrimesBySieve(left, right));
+        int left, int right, int[] expected)
+    {
+        var actual = ClosestPrimeNumbersInRangeSolution.ClosestPrimesBySieve(left, right);
+
+        Assert.Equal(expected, actual);
+    }
 }

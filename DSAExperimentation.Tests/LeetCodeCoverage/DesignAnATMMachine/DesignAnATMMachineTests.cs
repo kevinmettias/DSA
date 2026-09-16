@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignAnATMMachine.DesignAnATMMachineSolution;
+using DSAExperimentation.LeetCode.DesignAnATMMachine;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAnATMMachine;
 
@@ -68,43 +68,19 @@ public sealed class DesignAnATMMachineTests
     [MemberData(nameof(Examples))]
     public void AtmByFiveSlotArray_LeetCodeExamples_MatchesExpectedSequence(
         AtmOp[] operations, long[]?[] expected) =>
-        RunScript(new AtmByFiveSlotArray(), operations, expected);
+        RunScript(new DesignAnATMMachineSolution.AtmByFiveSlotArray(), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AtmByHashMap_LeetCodeExamples_MatchesExpectedSequence(
         AtmOp[] operations, long[]?[] expected) =>
-        RunScript(new AtmByHashMap(), operations, expected);
+        RunScript(new DesignAnATMMachineSolution.AtmByHashMap(), operations, expected);
 
-    private static void RunScript(IAtm atm, AtmOp[] operations, long[]?[] expected)
+    private static void RunScript(DesignAnATMMachineSolution.IAtm atm, AtmOp[] operations, long[]?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(atm));
         }
-    }
-}
-
-// One call in an ATM script: a bulk deposit or a withdrawal of a given amount.
-// Pure dispatch, built via the named factories below so a script (like Examples
-// above) reads like the LeetCode call sequence it replays.
-public readonly record struct AtmOp(long[]? banknotesCount, long amount)
-{
-    public static AtmOp Deposit(long[] banknotesCount) => new(banknotesCount, 0);
-
-    public static AtmOp Withdraw(long amount) => new(null, amount);
-
-    // Deposit returns nothing in LeetCode's judge output, so it reports null here
-    // and the expected sequence reads exactly like the published one.
-    internal long[]? Apply(IAtm atm)
-    {
-        if (banknotesCount is not null)
-        {
-            atm.Deposit(banknotesCount);
-
-            return null;
-        }
-
-        return atm.Withdraw(amount);
     }
 }

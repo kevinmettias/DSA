@@ -8,27 +8,39 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HandOfStraights;
 // across parallel groups rather than stacked into one.
 public sealed class HandOfStraightsTests
 {
-    public static TheoryData<int[], int, bool> Examples =>
+    public static TheoryData<StraightHandExample> Examples =>
         new()
         {
-            { [1, 2, 3, 6, 2, 3, 4, 7, 8], 3, true },
-            { [1, 2, 3, 4, 5], 4, false },
-            { [1, 2, 3, 4, 5, 6], 2, true },
-            { [1, 1, 2, 2, 3, 3], 3, true },
-            { [8, 10, 12], 3, false },
-            { [1], 1, true },
+            { new StraightHandExample(Hand: [1, 2, 3, 6, 2, 3, 4, 7, 8], GroupSize: 3, Expected: true) },
+            { new StraightHandExample(Hand: [1, 2, 3, 4, 5], GroupSize: 4, Expected: false) },
+            { new StraightHandExample(Hand: [1, 2, 3, 4, 5, 6], GroupSize: 2, Expected: true) },
+            { new StraightHandExample(Hand: [1, 1, 2, 2, 3, 3], GroupSize: 3, Expected: true) },
+            { new StraightHandExample(Hand: [8, 10, 12], GroupSize: 3, Expected: false) },
+            { new StraightHandExample(Hand: [1], GroupSize: 1, Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsNStraightHandByBclDictionary_LeetCodeExamples_ReturnsWhetherHandSplitsIntoStraights(
-        int[] hand, int groupSize, bool expected) =>
-        Assert.Equal(expected, HandOfStraightsSolution.IsNStraightHandByBclDictionary(hand, groupSize));
+        StraightHandExample example)
+    {
+        var actual = HandOfStraightsSolution.IsNStraightHandByBclDictionary(example.Hand, example.GroupSize);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsNStraightHandByHashMapMergeSort_LeetCodeExamples_ReturnsWhetherHandSplitsIntoStraights(
-        int[] hand, int groupSize, bool expected) =>
-        Assert.Equal(
-            expected, HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(hand, groupSize));
+        StraightHandExample example)
+    {
+        var actual = HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(example.Hand, example.GroupSize);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the hand, the size each straight must have, and whether the
+    // hand splits into them. The `bool` is the expected answer rather than a mode, so
+    // the row names it instead of leaving a bare `true` in a position to be decoded.
+    public readonly record struct StraightHandExample(int[] Hand, int GroupSize, bool Expected);
 }

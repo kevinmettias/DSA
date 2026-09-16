@@ -16,12 +16,20 @@ public sealed class FindTheNthValueAfterKSecondsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ValueAfterKSecondsByBruteForce_LeetCodeExamples_ReturnsLastValueModuloLargePrime(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, FindTheNthValueAfterKSecondsSolution.ValueAfterKSecondsByBruteForce(n, k));
+        int n, int k, int expected)
+    {
+        var actual = FindTheNthValueAfterKSecondsSolution.ValueAfterKSecondsByBruteForce(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ValueAfterKSecondsByModularBinomial_LeetCodeExamples_ReturnsLastValueModuloLargePrime(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, FindTheNthValueAfterKSecondsSolution.ValueAfterKSecondsByModularBinomial(n, k));
+        int n, int k, int expected)
+    {
+        var actual = FindTheNthValueAfterKSecondsSolution.ValueAfterKSecondsByModularBinomial(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

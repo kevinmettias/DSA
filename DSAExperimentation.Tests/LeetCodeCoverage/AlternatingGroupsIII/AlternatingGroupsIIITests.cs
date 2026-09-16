@@ -19,13 +19,20 @@ public sealed class AlternatingGroupsIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfAlternatingGroupsByBruteForce_LeetCodeExamples_ReturnsAnswersInQueryOrder(
-        int[] colors, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, AlternatingGroupsIIISolution.NumberOfAlternatingGroupsByBruteForce(colors, queries));
+        int[] colors, int[][] queries, int[] expected)
+    {
+        var actual = AlternatingGroupsIIISolution.NumberOfAlternatingGroupsByBruteForce(colors, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfAlternatingGroupsByRunLengthFenwick_LeetCodeExamples_ReturnsAnswersInQueryOrder(
-        int[] colors, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, AlternatingGroupsIIISolution.NumberOfAlternatingGroupsByRunLengthFenwick(colors, queries));
+        int[] colors, int[][] queries, int[] expected)
+    {
+        var actual = AlternatingGroupsIIISolution.NumberOfAlternatingGroupsByRunLengthFenwick(colors, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

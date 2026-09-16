@@ -9,26 +9,37 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GCDSortOfAnArray;
 // one swap across a component boundary that does not exist.
 public sealed class GCDSortOfAnArrayTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<GcdSortCase> Examples =>
         new()
         {
-            { [7, 21, 3], true },
-            { [5, 2, 6, 2], false },
-            { [10, 5, 9, 3, 15], true },
-            { [2], true },
-            { [2, 3, 5], true },
-            { [4, 2, 3], false },
+            { new GcdSortCase([7, 21, 3], CanBeSorted: true) },
+            { new GcdSortCase([5, 2, 6, 2], CanBeSorted: false) },
+            { new GcdSortCase([10, 5, 9, 3, 15], CanBeSorted: true) },
+            { new GcdSortCase([2], CanBeSorted: true) },
+            { new GcdSortCase([2, 3, 5], CanBeSorted: true) },
+            { new GcdSortCase([4, 2, 3], CanBeSorted: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanBeSortedByPairwiseGcdUnionFind_LeetCodeExamples_ReturnsWhetherSwapsCanSortTheArray(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, GCDSortOfAnArraySolution.CanBeSortedByPairwiseGcdUnionFind(nums));
+        GcdSortCase example) =>
+        Assert.Equal(
+            example.CanBeSorted,
+            GCDSortOfAnArraySolution.CanBeSortedByPairwiseGcdUnionFind(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanBeSortedByPrimeFactorDisjointSet_LeetCodeExamples_ReturnsWhetherSwapsCanSortTheArray(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, GCDSortOfAnArraySolution.CanBeSortedByPrimeFactorDisjointSet(nums));
+        GcdSortCase example) =>
+        Assert.Equal(
+            example.CanBeSorted,
+            GCDSortOfAnArraySolution.CanBeSortedByPrimeFactorDisjointSet(example.Nums));
+
+    // One LeetCode example: the array to sort and whether GCD swaps can order it. The
+    // expected value is named at every construction site, so a row reads as the case it
+    // is rather than as a bare `true` whose meaning is its position. Nested because it is
+    // only ever used inside this test class - it is this harness's own vocabulary, not a
+    // type another file would import.
+    public readonly record struct GcdSortCase(int[] Nums, bool CanBeSorted);
 }

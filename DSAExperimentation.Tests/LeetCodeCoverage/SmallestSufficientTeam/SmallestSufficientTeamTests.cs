@@ -35,22 +35,22 @@ public sealed class SmallestSufficientTeamTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestTeamByBruteForceRecursion_LeetCodeExamples_ReturnsMinimalCoveringTeam(
-        string[] reqSkills, string[][] people, int expectedSize) =>
-        AssertIsMinimalSufficientTeam(
-            SmallestSufficientTeamSolution.SmallestTeamByBruteForceRecursion(reqSkills, people),
-            reqSkills,
-            people,
-            expectedSize);
+        string[] reqSkills, string[][] people, int expectedSize)
+    {
+        var team = SmallestSufficientTeamSolution.SmallestTeamByBruteForceRecursion(reqSkills, people);
+
+        AssertIsMinimalSufficientTeam(team, reqSkills, people, expectedSize);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestTeamByMemoizedBitmask_LeetCodeExamples_ReturnsMinimalCoveringTeam(
-        string[] reqSkills, string[][] people, int expectedSize) =>
-        AssertIsMinimalSufficientTeam(
-            SmallestSufficientTeamSolution.SmallestTeamByMemoizedBitmask(reqSkills, people),
-            reqSkills,
-            people,
-            expectedSize);
+        string[] reqSkills, string[][] people, int expectedSize)
+    {
+        var team = SmallestSufficientTeamSolution.SmallestTeamByMemoizedBitmask(reqSkills, people);
+
+        AssertIsMinimalSufficientTeam(team, reqSkills, people, expectedSize);
+    }
 
     private static void AssertIsMinimalSufficientTeam(
         int[] team, string[] reqSkills, string[][] people, int expectedSize)

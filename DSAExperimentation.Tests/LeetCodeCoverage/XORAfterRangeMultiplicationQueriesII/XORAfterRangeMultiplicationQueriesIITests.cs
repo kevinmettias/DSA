@@ -17,14 +17,21 @@ public sealed class XORAfterRangeMultiplicationQueriesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void XorAfterQueriesByStridedWalk_LeetCodeExamples_ReturnsXorOfFinalArray(
-        int[] nums, int[][] queries, int expected) =>
-        Assert.Equal(
-            expected, XORAfterRangeMultiplicationQueriesIISolution.XorAfterQueriesByStridedWalk(nums, queries));
+        int[] nums, int[][] queries, int expected)
+    {
+        var actual = XORAfterRangeMultiplicationQueriesIISolution.XorAfterQueriesByStridedWalk(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void XorAfterQueriesBySqrtDecomposition_LeetCodeExamples_ReturnsXorOfFinalArray(
-        int[] nums, int[][] queries, int expected) =>
-        Assert.Equal(
-            expected, XORAfterRangeMultiplicationQueriesIISolution.XorAfterQueriesBySqrtDecomposition(nums, queries));
+        int[] nums, int[][] queries, int expected)
+    {
+        var actual = XORAfterRangeMultiplicationQueriesIISolution.XorAfterQueriesBySqrtDecomposition(
+            nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

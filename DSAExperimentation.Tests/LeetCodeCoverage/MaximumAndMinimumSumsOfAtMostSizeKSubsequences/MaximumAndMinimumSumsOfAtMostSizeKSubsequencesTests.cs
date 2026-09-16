@@ -18,15 +18,19 @@ public sealed class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumByPascalTriangle_LeetCodeExamples_ReturnsMaxPlusMinSum(int[] nums, int k, long expected) =>
-        Assert.Equal(
-            expected,
-            MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution.SumByPascalTriangle(nums, k));
+    public void SumByPascalTriangle_LeetCodeExamples_ReturnsMaxPlusMinSum(int[] nums, int k, long expected)
+    {
+        var actual = MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution.SumByPascalTriangle(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumByFactorialCombinatorics_LeetCodeExamples_ReturnsMaxPlusMinSum(int[] nums, int k, long expected) =>
-        Assert.Equal(
-            expected,
-            MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution.SumByFactorialCombinatorics(nums, k));
+    public void SumByFactorialCombinatorics_LeetCodeExamples_ReturnsMaxPlusMinSum(int[] nums, int k, long expected)
+    {
+        var actual = MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution.SumByFactorialCombinatorics(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

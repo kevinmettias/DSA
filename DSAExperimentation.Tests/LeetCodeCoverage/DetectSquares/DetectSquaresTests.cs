@@ -80,28 +80,29 @@ public sealed class DetectSquaresTests
             Assert.Equal(expected[i], operations[i].Apply(detector));
         }
     }
-}
 
-// One call in a DetectSquares script: which operation to invoke and at which point.
-// Pure dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays. Add returns null (no answer);
-// Count returns the actual answer - the same null-means-"no return value" convention
-// AllOneOp.Apply uses for its own mutator/query split.
-public readonly record struct DetectSquaresOp(bool isCount, int pointX, int pointY)
-{
-    public static DetectSquaresOp Add(int pointX, int pointY) => new(isCount: false, pointX, pointY);
-
-    public static DetectSquaresOp Count(int pointX, int pointY) => new(isCount: true, pointX, pointY);
-
-    internal int? Apply(DetectSquaresSolution.IDetectSquares detector)
+    // One call in a DetectSquares script: which operation to invoke and at which point.
+    // Pure dispatch, built via the named factories below so a script (like Examples above)
+    // reads like the LeetCode call sequence it replays. Add returns null (no answer);
+    // Count returns the actual answer - the same null-means-"no return value" convention
+    // AllOneOp.Apply uses for its own mutator/query split. Nested here rather than left
+    // at file scope so the file declares exactly one type.
+    public readonly record struct DetectSquaresOp(bool isCount, int pointX, int pointY)
     {
-        if (isCount)
+        public static DetectSquaresOp Add(int pointX, int pointY) => new(isCount: false, pointX, pointY);
+
+        public static DetectSquaresOp Count(int pointX, int pointY) => new(isCount: true, pointX, pointY);
+
+        internal int? Apply(DetectSquaresSolution.IDetectSquares detector)
         {
-            return detector.Count(pointX, pointY);
+            if (isCount)
+            {
+                return detector.Count(pointX, pointY);
+            }
+
+            detector.Add(pointX, pointY);
+
+            return null;
         }
-
-        detector.Add(pointX, pointY);
-
-        return null;
     }
 }

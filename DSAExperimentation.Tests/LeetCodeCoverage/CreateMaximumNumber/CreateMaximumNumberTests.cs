@@ -17,12 +17,18 @@ public sealed class CreateMaximumNumberTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxNumberByNaiveScan_LeetCodeExamples_ReturnsLargestMergedDigits(
-        int[] nums1, int[] nums2, int k, int[] expected) =>
-        Assert.Equal(expected, CreateMaximumNumberSolution.MaxNumberByNaiveScan(nums1, nums2, k));
+        int[] nums1, int[] nums2, int k, int[] expected)
+    {
+        var actual = CreateMaximumNumberSolution.MaxNumberByNaiveScan(nums1, nums2, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxNumberByMonotonicStack_LeetCodeExamples_ReturnsLargestMergedDigits(
-        int[] nums1, int[] nums2, int k, int[] expected) =>
-        Assert.Equal(expected, CreateMaximumNumberSolution.MaxNumberByMonotonicStack(nums1, nums2, k));
+        int[] nums1, int[] nums2, int k, int[] expected)
+    {
+        var actual = CreateMaximumNumberSolution.MaxNumberByMonotonicStack(nums1, nums2, k);
+        Assert.Equal(expected, actual);
+    }
 }

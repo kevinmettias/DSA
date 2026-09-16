@@ -19,14 +19,20 @@ public sealed class NumberOfRestrictedPathsFromFirstToLastNodeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountRestrictedPathsByNaiveDfs_LeetCodeExamples_CountsEveryDistanceDecreasingPath(
-        int n, int[][] edges, long expected) =>
-        Assert.Equal(
-            expected, NumberOfRestrictedPathsFromFirstToLastNodeSolution.CountRestrictedPathsByNaiveDfs(n, edges));
+        int n, int[][] edges, long expected)
+    {
+        var actual = NumberOfRestrictedPathsFromFirstToLastNodeSolution.CountRestrictedPathsByNaiveDfs(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountRestrictedPathsByDagFold_LeetCodeExamples_CountsEveryDistanceDecreasingPath(
-        int n, int[][] edges, long expected) =>
-        Assert.Equal(
-            expected, NumberOfRestrictedPathsFromFirstToLastNodeSolution.CountRestrictedPathsByDagFold(n, edges));
+        int n, int[][] edges, long expected)
+    {
+        var actual = NumberOfRestrictedPathsFromFirstToLastNodeSolution.CountRestrictedPathsByDagFold(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 }

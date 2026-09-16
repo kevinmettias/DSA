@@ -21,12 +21,18 @@ public sealed class DivideTwoIntegersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void DivideByBuiltInDivision_LeetCodeExamples_TruncatesTowardZero(
-        int dividend, int divisor, int expected) =>
-        Assert.Equal(expected, DivideTwoIntegersSolution.DivideByBuiltInDivision(dividend, divisor));
+        int dividend, int divisor, int expected)
+    {
+        var actual = DivideTwoIntegersSolution.DivideByBuiltInDivision(dividend, divisor);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DivideByBinarySearchProduct_LeetCodeExamples_TruncatesTowardZero(
-        int dividend, int divisor, int expected) =>
-        Assert.Equal(expected, DivideTwoIntegersSolution.DivideByBinarySearchProduct(dividend, divisor));
+        int dividend, int divisor, int expected)
+    {
+        var actual = DivideTwoIntegersSolution.DivideByBinarySearchProduct(dividend, divisor);
+        Assert.Equal(expected, actual);
+    }
 }

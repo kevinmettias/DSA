@@ -18,11 +18,17 @@ public sealed class MaximizeTheNumberOfPartitionsAfterOperationsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxPartitionsByBruteForceRecolor_LeetCodeExamples_ReturnsMostPartitions(string s, int k, int expected) =>
-        Assert.Equal(expected, MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBruteForceRecolor(s, k));
+    public void MaxPartitionsByBruteForceRecolor_LeetCodeExamples_ReturnsMostPartitions(string s, int k, int expected)
+    {
+        var actual = MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBruteForceRecolor(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxPartitionsByBitmaskMemo_LeetCodeExamples_ReturnsMostPartitions(string s, int k, int expected) =>
-        Assert.Equal(expected, MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBitmaskMemo(s, k));
+    public void MaxPartitionsByBitmaskMemo_LeetCodeExamples_ReturnsMostPartitions(string s, int k, int expected)
+    {
+        var actual = MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBitmaskMemo(s, k);
+        Assert.Equal(expected, actual);
+    }
 }

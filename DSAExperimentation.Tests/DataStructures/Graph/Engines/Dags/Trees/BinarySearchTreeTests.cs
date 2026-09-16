@@ -24,7 +24,7 @@ public sealed partial class BinarySearchTreeTests
         tree.Insert(5);
         tree.Insert(3);
 
-        Assert.Equal(5, tree.Root!.Value);
+        AssertRootValue(tree, 5);
     }
 
     [Fact]
@@ -129,7 +129,7 @@ public sealed partial class BinarySearchTreeTests
             new[] { 3, 7, 8, 9 },
             RecordingInOrderHooks<int, TwoChildMarker>.Visited.Select(v => v.Value));
         Assert.Equal(4, tree.Count);
-        Assert.Equal(7, tree.Root!.Value);
+        Assert.Equal(7, Assert.IsType<BinaryTreeNode<int>>(tree.Root).Value);
     }
 
     [Fact]
@@ -159,4 +159,13 @@ public sealed partial class BinarySearchTreeTests
     [Fact]
     public void TryDelete_EmptyTree_ReturnsFalse()
         => Assert.False(new BinarySearchTree<int>().TryDelete(1));
+
+    // The first value inserted stays the root: a later insert hangs off it rather than
+    // replacing it.
+    private static void AssertRootValue(BinarySearchTree<int> tree, int expected)
+    {
+        var root = Assert.IsType<BinaryTreeNode<int>>(tree.Root);
+
+        Assert.Equal(expected, root.Value);
+    }
 }

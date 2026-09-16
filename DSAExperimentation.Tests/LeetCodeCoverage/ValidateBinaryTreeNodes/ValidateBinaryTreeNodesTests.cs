@@ -9,26 +9,41 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateBinaryTreeNodes;
 // and a cycle among non-root nodes).
 public sealed class ValidateBinaryTreeNodesTests
 {
-    public static TheoryData<int, int[], int[], bool> Examples =>
+    public static TheoryData<TreeNodesExample> Examples =>
         new()
         {
-            { 4, [1, -1, 3, -1], [2, -1, -1, -1], true },
-            { 4, [1, -1, 3, -1], [-1, -1, -1, -1], false },
-            { 2, [1, 0], [-1, -1], false },
-            { 3, [2, 2, -1], [-1, -1, -1], false },
-            { 3, [1, 2, 0], [-1, -1, -1], false },
-            { 1, [-1], [-1], true },
+            new TreeNodesExample(4, [1, -1, 3, -1], [2, -1, -1, -1], FormsOneTree: true),
+            new TreeNodesExample(4, [1, -1, 3, -1], [-1, -1, -1, -1], FormsOneTree: false),
+            new TreeNodesExample(2, [1, 0], [-1, -1], FormsOneTree: false),
+            new TreeNodesExample(3, [2, 2, -1], [-1, -1, -1], FormsOneTree: false),
+            new TreeNodesExample(3, [1, 2, 0], [-1, -1, -1], FormsOneTree: false),
+            new TreeNodesExample(1, [-1], [-1], FormsOneTree: true),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ValidateByDisjointSet_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(
-        int n, int[] leftChild, int[] rightChild, bool expected) =>
-        Assert.Equal(expected, ValidateBinaryTreeNodesSolution.ValidateByDisjointSet(n, leftChild, rightChild));
+    public void ValidateByDisjointSet_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(TreeNodesExample example)
+    {
+        var actual = ValidateBinaryTreeNodesSolution.ValidateByDisjointSet(
+            example.N, example.LeftChild, example.RightChild);
+
+        Assert.Equal(example.FormsOneTree, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ValidateByRootScan_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(
-        int n, int[] leftChild, int[] rightChild, bool expected) =>
-        Assert.Equal(expected, ValidateBinaryTreeNodesSolution.ValidateByRootScan(n, leftChild, rightChild));
+    public void ValidateByRootScan_LeetCodeExamples_ReturnsWhetherNodesFormOneTree(TreeNodesExample example)
+    {
+        var actual = ValidateBinaryTreeNodesSolution.ValidateByRootScan(
+            example.N, example.LeftChild, example.RightChild);
+
+        Assert.Equal(example.FormsOneTree, actual);
+    }
+
+    // Nested because it is only ever used inside this test class and has no
+    // independent identity: this harness's own vocabulary for one LeetCode example.
+    // The expected answer is a named field of the case rather than a bare `true` or
+    // `false` sitting in the signature where only its position says what it means.
+    public readonly record struct TreeNodesExample(
+        int N, int[] LeftChild, int[] RightChild, bool FormsOneTree);
 }

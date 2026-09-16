@@ -21,14 +21,20 @@ public sealed class SumOfEvenNumbersAfterQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumEvenAfterQueriesByRescan_LeetCodeExamples_ReturnsEvenSumAfterEachQuery(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, SumOfEvenNumbersAfterQueriesSolution.SumEvenAfterQueriesByRescan(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = SumOfEvenNumbersAfterQueriesSolution.SumEvenAfterQueriesByRescan(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumEvenAfterQueriesByRunningEvenSum_LeetCodeExamples_ReturnsEvenSumAfterEachQuery(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            SumOfEvenNumbersAfterQueriesSolution.SumEvenAfterQueriesByRunningEvenSum(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = SumOfEvenNumbersAfterQueriesSolution.SumEvenAfterQueriesByRunningEvenSum(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

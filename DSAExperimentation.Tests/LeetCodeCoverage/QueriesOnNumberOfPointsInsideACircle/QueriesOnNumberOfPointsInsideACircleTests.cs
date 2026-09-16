@@ -42,16 +42,20 @@ public sealed class QueriesOnNumberOfPointsInsideACircleTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPointsByBruteForceScan_LeetCodeExamples_CountsPointsInsideEachCircle(
-        int[][] points, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            QueriesOnNumberOfPointsInsideACircleSolution.CountPointsByBruteForceScan(points, queries));
+        int[][] points, int[][] queries, int[] expected)
+    {
+        var actual = QueriesOnNumberOfPointsInsideACircleSolution.CountPointsByBruteForceScan(points, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPointsBySortedXPruning_LeetCodeExamples_CountsPointsInsideEachCircle(
-        int[][] points, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            QueriesOnNumberOfPointsInsideACircleSolution.CountPointsBySortedXPruning(points, queries));
+        int[][] points, int[][] queries, int[] expected)
+    {
+        var actual = QueriesOnNumberOfPointsInsideACircleSolution.CountPointsBySortedXPruning(points, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

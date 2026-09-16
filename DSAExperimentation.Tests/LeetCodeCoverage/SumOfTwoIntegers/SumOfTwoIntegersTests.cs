@@ -20,12 +20,20 @@ public sealed class SumOfTwoIntegersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetSumByBuiltInAddition_LeetCodeExamples_ReturnsArithmeticSum(
-        int a, int b, int expected) =>
-        Assert.Equal(expected, SumOfTwoIntegersSolution.GetSumByBuiltInAddition(a, b));
+        int a, int b, int expected)
+    {
+        var actual = SumOfTwoIntegersSolution.GetSumByBuiltInAddition(a, b);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetSumByBitwiseCarryLoop_LeetCodeExamples_ReturnsArithmeticSum(
-        int a, int b, int expected) =>
-        Assert.Equal(expected, SumOfTwoIntegersSolution.GetSumByBitwiseCarryLoop(a, b));
+        int a, int b, int expected)
+    {
+        var actual = SumOfTwoIntegersSolution.GetSumByBitwiseCarryLoop(a, b);
+
+        Assert.Equal(expected, actual);
+    }
 }

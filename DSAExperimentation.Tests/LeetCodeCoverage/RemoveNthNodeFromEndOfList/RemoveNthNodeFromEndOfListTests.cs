@@ -19,18 +19,24 @@ public sealed class RemoveNthNodeFromEndOfListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RemoveByArrayRebuild_LeetCodeExamples_RemovesExpectedNode(
-        int[] values, int n, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(RemoveNthNodeFromEndOfListSolution.RemoveByArrayRebuild(BuildList(values), n)));
+        int[] values, int n, int[] expected)
+    {
+        var removed = RemoveNthNodeFromEndOfListSolution.RemoveByArrayRebuild(BuildList(values), n);
+        var actual = ToArray(removed);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RemoveByTwoRunner_LeetCodeExamples_RemovesExpectedNode(
-        int[] values, int n, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(RemoveNthNodeFromEndOfListSolution.RemoveByTwoRunner(BuildList(values), n)));
+        int[] values, int n, int[] expected)
+    {
+        var removed = RemoveNthNodeFromEndOfListSolution.RemoveByTwoRunner(BuildList(values), n);
+        var actual = ToArray(removed);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

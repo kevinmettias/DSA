@@ -13,6 +13,14 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
     private const int MissingValue = -1;
     private const int ScriptSeed = 146;
 
+    // The two operation names the script and the replay must agree on. They are
+    // named once here because the switch in `Apply` below is the only place that
+    // decides what a name means, and a `Case` that spelled one differently from
+    // the switch would be rejected at run time as an unknown operation rather
+    // than at compile time as a typo.
+    private const string Put = "put";
+    private const string Get = "get";
+
     // What choosing a cache implementation means: take the capacity a script supplies
     // and hand back the cache to replay it against. An ICache<int, int> parameter would
     // name one already-built cache; the decision here is which implementation gets
@@ -38,35 +46,35 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
                 "example-1",
                 (2,
                 [
-                    LeetCodeOperation.Of("put", 1, 1),
-                    LeetCodeOperation.Of("put", 2, 2),
-                    LeetCodeOperation.Of("get", 1),
-                    LeetCodeOperation.Of("put", 3, 3),
-                    LeetCodeOperation.Of("get", 2),
-                    LeetCodeOperation.Of("put", 4, 4),
-                    LeetCodeOperation.Of("get", 1),
-                    LeetCodeOperation.Of("get", 3),
-                    LeetCodeOperation.Of("get", 4),
+                    LeetCodeOperation.Of(Put, 1, 1),
+                    LeetCodeOperation.Of(Put, 2, 2),
+                    LeetCodeOperation.Of(Get, 1),
+                    LeetCodeOperation.Of(Put, 3, 3),
+                    LeetCodeOperation.Of(Get, 2),
+                    LeetCodeOperation.Of(Put, 4, 4),
+                    LeetCodeOperation.Of(Get, 1),
+                    LeetCodeOperation.Of(Get, 3),
+                    LeetCodeOperation.Of(Get, 4),
                 ]),
                 [null, null, 1, null, MissingValue, null, MissingValue, 3, 4])
             .Case(
                 "reading-a-key-makes-it-most-recent",
                 (2,
                 [
-                    LeetCodeOperation.Of("put", 1, 1),
-                    LeetCodeOperation.Of("put", 2, 2),
-                    LeetCodeOperation.Of("get", 1),
-                    LeetCodeOperation.Of("put", 3, 3),
-                    LeetCodeOperation.Of("get", 1),
+                    LeetCodeOperation.Of(Put, 1, 1),
+                    LeetCodeOperation.Of(Put, 2, 2),
+                    LeetCodeOperation.Of(Get, 1),
+                    LeetCodeOperation.Of(Put, 3, 3),
+                    LeetCodeOperation.Of(Get, 1),
                 ]),
                 [null, null, 1, null, 1])
             .Case(
                 "overwriting-a-key-does-not-grow-the-cache",
                 (1,
                 [
-                    LeetCodeOperation.Of("put", 1, 1),
-                    LeetCodeOperation.Of("put", 1, 9),
-                    LeetCodeOperation.Of("get", 1),
+                    LeetCodeOperation.Of(Put, 1, 1),
+                    LeetCodeOperation.Of(Put, 1, 9),
+                    LeetCodeOperation.Of(Get, 1),
                 ]),
                 [null, null, 9])
 
@@ -98,10 +106,10 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
     {
         switch (operation.Name)
         {
-            case "put":
+            case Put:
                 cache.Set(operation.Arguments[0], operation.Arguments[1]);
                 return null;
-            case "get":
+            case Get:
                 return cache.TryGetValue(operation.Arguments[0], out var value) ? value : MissingValue;
             default:
                 throw new ArgumentOutOfRangeException(
@@ -117,7 +125,7 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
         for (var key = 0; key < capacity; key++)
         {
             var value = random.Next(0, capacity);
-            var insertion = LeetCodeOperation.Of("put", key, value);
+            var insertion = LeetCodeOperation.Of(Put, key, value);
             script.Add(insertion);
         }
 
@@ -137,12 +145,12 @@ internal sealed class LRUCacheRegistration : ILeetCodeProblemRegistration
         var keyUpperBound = capacity * 2;
 
         var keyToRead = random.Next(0, keyUpperBound);
-        var read = LeetCodeOperation.Of("get", keyToRead);
+        var read = LeetCodeOperation.Of(Get, keyToRead);
         script.Add(read);
 
         var keyToWrite = random.Next(0, keyUpperBound);
         var valueToWrite = random.Next(0, capacity);
-        var write = LeetCodeOperation.Of("put", keyToWrite, valueToWrite);
+        var write = LeetCodeOperation.Of(Put, keyToWrite, valueToWrite);
         script.Add(write);
     }
 

@@ -21,14 +21,22 @@ public sealed class DeleteNodeInABSTTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void DeleteByCollectFilterRebuild_LeetCodeExamples_ReturnsTreeWithKeyRemoved(
-        int[] values, int key, int[] expected) =>
-        Assert.Equal(expected, InOrderValues(DeleteNodeInABSTSolution.DeleteByCollectFilterRebuild(BuildTree(values), key)));
+        int[] values, int key, int[] expected)
+    {
+        var tree = DeleteNodeInABSTSolution.DeleteByCollectFilterRebuild(BuildTree(values), key);
+        var actual = InOrderValues(tree);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DeleteByBinarySearchTreeDelete_LeetCodeExamples_ReturnsTreeWithKeyRemoved(
-        int[] values, int key, int[] expected) =>
-        Assert.Equal(expected, InOrderValues(DeleteNodeInABSTSolution.DeleteByBinarySearchTreeDelete(BuildTree(values), key)));
+        int[] values, int key, int[] expected)
+    {
+        var tree = DeleteNodeInABSTSolution.DeleteByBinarySearchTreeDelete(BuildTree(values), key);
+        var actual = InOrderValues(tree);
+        Assert.Equal(expected, actual);
+    }
 
     private static BinarySearchTree<int> BuildTree(int[] values)
     {
@@ -46,13 +54,21 @@ public sealed class DeleteNodeInABSTTests
     {
         State.Values.Value = [];
         InOrderTraversal.Walk<int, CollectHooks>(tree.Root);
-        return [.. State.Values.Value!];
+        return [.. CollectedValues()];
     }
 
     private readonly struct CollectHooks : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
+        public static void Visit(BinaryTreeNode<int> node, int depth) => CollectedValues().Add(node.Value);
     }
+
+    // InOrderValues stores the list in State.Values on the line before it walks, and
+    // InOrderTraversal.Walk recurses through its hooks inline on that same thread - no
+    // await, no queue - so the AsyncLocal still carries it: InOrderValues reads that
+    // list back, and every Visit the walk makes adds to it.
+    private static List<int> CollectedValues() =>
+        State.Values.Value ?? throw new InvalidOperationException(
+            "State.Values is stored by InOrderValues before it walks, and InOrderTraversal.Walk runs inline on this thread.");
 
     private static class State
     {

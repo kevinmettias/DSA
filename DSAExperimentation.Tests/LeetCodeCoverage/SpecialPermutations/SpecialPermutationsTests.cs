@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.SpecialPermutations.SpecialPermutationsSolution;
+using DSAExperimentation.LeetCode.SpecialPermutations;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SpecialPermutations;
 
@@ -21,10 +21,10 @@ public sealed class SpecialPermutationsTests
     [MemberData(nameof(Examples))]
     public void CountByBruteForceBacktracking_LeetCodeExamples_ReturnsSpecialPermutationCount(
         int[] nums, int expected)
-        => Assert.Equal(expected, CountByBruteForceBacktracking(nums));
+        => Assert.Equal(expected, SpecialPermutationsSolution.CountByBruteForceBacktracking(nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByBitmaskMemo_LeetCodeExamples_ReturnsSpecialPermutationCount(int[] nums, int expected)
-        => Assert.Equal(expected, CountByBitmaskMemo(nums));
+        => Assert.Equal(expected, SpecialPermutationsSolution.CountByBitmaskMemo(nums));
 }

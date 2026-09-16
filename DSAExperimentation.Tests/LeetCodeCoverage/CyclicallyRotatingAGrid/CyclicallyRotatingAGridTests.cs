@@ -26,12 +26,18 @@ public sealed class CyclicallyRotatingAGridTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateGridByStepwiseQueue_LeetCodeExamples_RotatesEveryRingCounterClockwise(
-        int[][] grid, int k, int[][] expected) =>
-        Assert.Equal(expected, CyclicallyRotatingAGridSolution.RotateGridByStepwiseQueue(grid, k));
+        int[][] grid, int k, int[][] expected)
+    {
+        var rotated = CyclicallyRotatingAGridSolution.RotateGridByStepwiseQueue(grid, k);
+        Assert.Equal(expected, rotated);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateGridByDequeRings_LeetCodeExamples_RotatesEveryRingCounterClockwise(
-        int[][] grid, int k, int[][] expected) =>
-        Assert.Equal(expected, CyclicallyRotatingAGridSolution.RotateGridByDequeRings(grid, k));
+        int[][] grid, int k, int[][] expected)
+    {
+        var rotated = CyclicallyRotatingAGridSolution.RotateGridByDequeRings(grid, k);
+        Assert.Equal(expected, rotated);
+    }
 }

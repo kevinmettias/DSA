@@ -17,12 +17,20 @@ public sealed class StickersToSpellWordTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinStickersByNaiveRecursion_LeetCodeExamples_ReturnsFewestStickers(
-        string[] stickers, string target, int expected) =>
-        Assert.Equal(expected, StickersToSpellWordSolution.MinStickersByNaiveRecursion(stickers, target));
+        string[] stickers, string target, int expected)
+    {
+        var actual = StickersToSpellWordSolution.MinStickersByNaiveRecursion(stickers, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinStickersByMemoizedRecursion_LeetCodeExamples_ReturnsFewestStickers(
-        string[] stickers, string target, int expected) =>
-        Assert.Equal(expected, StickersToSpellWordSolution.MinStickersByMemoizedRecursion(stickers, target));
+        string[] stickers, string target, int expected)
+    {
+        var actual = StickersToSpellWordSolution.MinStickersByMemoizedRecursion(stickers, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

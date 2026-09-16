@@ -17,11 +17,19 @@ public sealed class SlidingWindowMedianTests
     [MemberData(nameof(Examples))]
     public void MedianSlidingWindowBySortEachWindow_LeetCodeExamples_ReturnsPerWindowMedians(
         int[] nums, int k, double[] expected)
-        => Assert.Equal(expected, SlidingWindowMedianSolution.MedianSlidingWindowBySortEachWindow(nums, k));
+    {
+        var actual = SlidingWindowMedianSolution.MedianSlidingWindowBySortEachWindow(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MedianSlidingWindowByTwoHeapsLazyDeletion_LeetCodeExamples_ReturnsPerWindowMedians(
         int[] nums, int k, double[] expected)
-        => Assert.Equal(expected, SlidingWindowMedianSolution.MedianSlidingWindowByTwoHeapsLazyDeletion(nums, k));
+    {
+        var actual = SlidingWindowMedianSolution.MedianSlidingWindowByTwoHeapsLazyDeletion(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -50,35 +50,36 @@ public sealed class RangeSumQueryMutableTests
             Assert.Equal(expected[i], operations[i].Apply(numArray));
         }
     }
-}
 
-// One call in a NumArray script: which operation to invoke and with what arguments. Pure
-// dispatch, built via the named factories below so a script (like Examples above) reads like the
-// LeetCode call sequence it replays.
-public readonly record struct NumArrayOp(NumArrayOp.OpKind kind, int a, int b)
-{
-    public static NumArrayOp Update(int index, int val) => new(OpKind.Update, index, val);
-
-    public static NumArrayOp SumRange(int left, int right) => new(OpKind.SumRange, left, right);
-
-    // null for Update, the returned sum for SumRange - so a script runner can assert against one
-    // expected value per operation uniformly. Internal, not public: only this same assembly's
-    // RunScript ever calls Apply.
-    internal int? Apply(INumArray numArray)
+    // One call in a NumArray script: which operation to invoke and with what arguments. Pure
+    // dispatch, built via the named factories below so a script (like Examples above) reads like the
+    // LeetCode call sequence it replays. Nested here rather than left at file scope so the file
+    // declares exactly one type.
+    public readonly record struct NumArrayOp(NumArrayOp.OpKind kind, int a, int b)
     {
-        switch (kind)
+        public static NumArrayOp Update(int index, int val) => new(OpKind.Update, index, val);
+
+        public static NumArrayOp SumRange(int left, int right) => new(OpKind.SumRange, left, right);
+
+        // null for Update, the returned sum for SumRange - so a script runner can assert against one
+        // expected value per operation uniformly. Internal, not public: only this same assembly's
+        // RunScript ever calls Apply.
+        internal int? Apply(INumArray numArray)
         {
-            case OpKind.Update:
-                numArray.Update(a, b);
-                return null;
-            default:
-                return numArray.SumRange(a, b);
+            switch (kind)
+            {
+                case OpKind.Update:
+                    numArray.Update(a, b);
+                    return null;
+                default:
+                    return numArray.SumRange(a, b);
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Update,
-        SumRange,
+        public enum OpKind
+        {
+            Update,
+            SumRange,
+        }
     }
 }

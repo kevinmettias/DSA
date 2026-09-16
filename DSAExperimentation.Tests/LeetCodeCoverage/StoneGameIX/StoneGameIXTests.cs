@@ -14,27 +14,31 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIX;
 // (odd remainder-0 count carried by an imbalance of exactly 3).
 public sealed class StoneGameIXTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<RemainderGameExample> Examples =>
         new()
         {
-            { [2, 1], true },
-            { [2], false },
-            { [5, 1, 2, 4, 3], false },
-            { [1, 1], false },
-            { [3, 3, 3], false },
-            { [1, 1, 2], true },
-            { [3, 1, 1, 1], true },
+            new RemainderGameExample([2, 1], AliceWins: true),
+            new RemainderGameExample([2], AliceWins: false),
+            new RemainderGameExample([5, 1, 2, 4, 3], AliceWins: false),
+            new RemainderGameExample([1, 1], AliceWins: false),
+            new RemainderGameExample([3, 3, 3], AliceWins: false),
+            new RemainderGameExample([1, 1, 2], AliceWins: true),
+            new RemainderGameExample([3, 1, 1, 1], AliceWins: true),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByGameTreeMinimax_LeetCodeExamples_MatchesExpectedOutcome(
-        int[] stones, bool expected) =>
-        Assert.Equal(expected, StoneGameIXSolution.AliceWinsByGameTreeMinimax(stones));
+    public void AliceWinsByGameTreeMinimax_LeetCodeExamples_MatchesExpectedOutcome(RemainderGameExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameIXSolution.AliceWinsByGameTreeMinimax(example.Stones));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByClosedFormCounting_LeetCodeExamples_MatchesExpectedOutcome(
-        int[] stones, bool expected) =>
-        Assert.Equal(expected, StoneGameIXSolution.AliceWinsByClosedFormCounting(stones));
+    public void AliceWinsByClosedFormCounting_LeetCodeExamples_MatchesExpectedOutcome(RemainderGameExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameIXSolution.AliceWinsByClosedFormCounting(example.Stones));
+
+    // Nested because it is only ever used inside this test class and has no
+    // independent identity: this harness's own vocabulary for one LeetCode example.
+    // The expected answer is a named field of the case rather than a bare `true` or
+    // `false` sitting in the signature where only its position says what it means.
+    public readonly record struct RemainderGameExample(int[] Stones, bool AliceWins);
 }

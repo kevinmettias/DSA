@@ -38,14 +38,22 @@ public sealed class LinkedListComponentsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumComponentsByLinearScan_LeetCodeExamples_ReturnsConnectedComponentCount(
-        int[] values, int[] nums, int expected) =>
-        Assert.Equal(expected, LinkedListComponentsSolution.NumComponentsByLinearScan(BuildList(values), nums));
+        int[] values, int[] nums, int expected)
+    {
+        var actual = LinkedListComponentsSolution.NumComponentsByLinearScan(BuildList(values), nums);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumComponentsBySetMembership_LeetCodeExamples_ReturnsConnectedComponentCount(
-        int[] values, int[] nums, int expected) =>
-        Assert.Equal(expected, LinkedListComponentsSolution.NumComponentsBySetMembership(BuildList(values), nums));
+        int[] values, int[] nums, int expected)
+    {
+        var actual = LinkedListComponentsSolution.NumComponentsBySetMembership(BuildList(values), nums);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

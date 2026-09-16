@@ -19,11 +19,17 @@ public sealed class CountSubarraysWithCostLessThanOrEqualToKTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForce_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long k, long expected) =>
-        Assert.Equal(expected, CountSubarraysWithCostLessThanOrEqualToKSolution.CountByBruteForce(nums, k));
+    public void CountByBruteForce_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long k, long expected)
+    {
+        var actual = CountSubarraysWithCostLessThanOrEqualToKSolution.CountByBruteForce(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByMonotonicDeques_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long k, long expected) =>
-        Assert.Equal(expected, CountSubarraysWithCostLessThanOrEqualToKSolution.CountByMonotonicDeques(nums, k));
+    public void CountByMonotonicDeques_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, long k, long expected)
+    {
+        var actual = CountSubarraysWithCostLessThanOrEqualToKSolution.CountByMonotonicDeques(nums, k);
+        Assert.Equal(expected, actual);
+    }
 }

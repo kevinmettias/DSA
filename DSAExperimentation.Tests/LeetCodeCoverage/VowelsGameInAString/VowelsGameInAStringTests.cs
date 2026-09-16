@@ -6,20 +6,33 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.VowelsGameInAString;
 // pins them to LeetCode's published examples.
 public sealed class VowelsGameInAStringTests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<GameCase> Examples =>
         new()
         {
-            { "leetcoder", true },
-            { "bbcd", false },
+            { new GameCase(S: "leetcoder", Expected: true) },
+            { new GameCase(S: "bbcd", Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DoesAliceWinByGameSearch_LeetCodeExamples_ReturnsWhetherAliceWins(string s, bool expected) =>
-        Assert.Equal(expected, VowelsGameInAStringSolution.DoesAliceWinByGameSearch(s));
+    public void DoesAliceWinByGameSearch_LeetCodeExamples_ReturnsWhetherAliceWins(GameCase example)
+    {
+        var aliceWins = VowelsGameInAStringSolution.DoesAliceWinByGameSearch(example.S);
+
+        Assert.Equal(example.Expected, aliceWins);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DoesAliceWinByVowelExistence_LeetCodeExamples_ReturnsWhetherAliceWins(string s, bool expected) =>
-        Assert.Equal(expected, VowelsGameInAStringSolution.DoesAliceWinByVowelExistence(s));
+    public void DoesAliceWinByVowelExistence_LeetCodeExamples_ReturnsWhetherAliceWins(GameCase example)
+    {
+        var aliceWins = VowelsGameInAStringSolution.DoesAliceWinByVowelExistence(example.S);
+
+        Assert.Equal(example.Expected, aliceWins);
+    }
+
+    // One LeetCode example: the starting string, and whether Alice wins the vowel-erasing
+    // game played over it. Nested because it is only ever used inside this test class -
+    // it is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct GameCase(string S, bool Expected);
 }

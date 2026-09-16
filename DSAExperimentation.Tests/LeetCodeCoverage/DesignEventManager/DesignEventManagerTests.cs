@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignEventManager.DesignEventManagerSolution;
+using DSAExperimentation.LeetCode.DesignEventManager;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignEventManager;
 
@@ -40,52 +40,22 @@ public sealed class DesignEventManagerTests
     [MemberData(nameof(Examples))]
     public void EventManagerByLinearScan_LeetCodeExamples_PollsHighestPriorityEventFirst(
         (int EventId, int Priority)[] initialEvents, EventManagerOp[] operations, int?[] expected) =>
-        RunScript(new EventManagerByLinearScan(initialEvents), operations, expected);
+        RunScript(new DesignEventManagerSolution.EventManagerByLinearScan(initialEvents), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void EventManagerByLazyDeletionHeap_LeetCodeExamples_PollsHighestPriorityEventFirst(
         (int EventId, int Priority)[] initialEvents, EventManagerOp[] operations, int?[] expected) =>
-        RunScript(new EventManagerByLazyDeletionHeap(initialEvents), operations, expected);
+        RunScript(new DesignEventManagerSolution.EventManagerByLazyDeletionHeap(initialEvents), operations, expected);
 
-    private static void RunScript(IEventManagerStrategy strategy, EventManagerOp[] operations, int?[] expected)
+    private static void RunScript(
+        DesignEventManagerSolution.IEventManagerStrategy strategy,
+        EventManagerOp[] operations,
+        int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
-    }
-}
-
-// One call in an EventManager script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct EventManagerOp(EventManagerOp.OpKind kind, int eventId, int newPriority)
-{
-    public static EventManagerOp UpdatePriority(int eventId, int newPriority) =>
-        new(OpKind.UpdatePriority, eventId, newPriority);
-
-    public static EventManagerOp PollHighest() => new(OpKind.PollHighest, 0, 0);
-
-    // null for UpdatePriority (void), the polled eventId for PollHighest - so a
-    // script runner can assert against one expected value per operation
-    // uniformly. Internal, not public: IEventManagerStrategy is internal to
-    // DesignEventManagerSolution, and only this same assembly's RunScript ever
-    // calls Apply.
-    internal int? Apply(IEventManagerStrategy strategy)
-    {
-        if (kind == OpKind.UpdatePriority)
-        {
-            strategy.UpdatePriority(eventId, newPriority);
-            return null;
-        }
-
-        return strategy.PollHighest();
-    }
-
-    public enum OpKind
-    {
-        UpdatePriority,
-        PollHighest,
     }
 }

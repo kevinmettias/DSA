@@ -17,12 +17,20 @@ public sealed class MinimumTimeToBreakLocksITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMinimumTimeByPermutationBruteForce_LeetCodeExamples_ReturnsMinimumMinutes(
-        int[] strength, int k, int expected) =>
-        Assert.Equal(expected, MinimumTimeToBreakLocksISolution.FindMinimumTimeByPermutationBruteForce(strength, k));
+        int[] strength, int k, int expected)
+    {
+        var actual = MinimumTimeToBreakLocksISolution.FindMinimumTimeByPermutationBruteForce(strength, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMinimumTimeByBitmaskMemo_LeetCodeExamples_ReturnsMinimumMinutes(
-        int[] strength, int k, int expected) =>
-        Assert.Equal(expected, MinimumTimeToBreakLocksISolution.FindMinimumTimeByBitmaskMemo(strength, k));
+        int[] strength, int k, int expected)
+    {
+        var actual = MinimumTimeToBreakLocksISolution.FindMinimumTimeByBitmaskMemo(strength, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

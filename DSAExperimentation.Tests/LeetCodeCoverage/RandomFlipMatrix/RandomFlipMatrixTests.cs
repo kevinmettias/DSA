@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.RandomFlipMatrix.RandomFlipMatrixSolution;
+using DSAExperimentation.LeetCode.RandomFlipMatrix;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomFlipMatrix;
 
@@ -18,22 +18,31 @@ public sealed class RandomFlipMatrixTests
     [Theory]
     [MemberData(nameof(Dimensions))]
     public void FlipMatrixByListScan_Flip_UntilMatrixFull_VisitsEveryCellExactlyOnce(int rows, int cols) =>
-        AssertFlipsUntilFullVisitEveryCellExactlyOnce(new FlipMatrixByListScan(rows, cols, new Random(1)), rows, cols);
+        AssertFlipsUntilFullVisitEveryCellExactlyOnce(
+            new RandomFlipMatrixSolution.FlipMatrixByListScan(rows, cols, new Random(1)),
+            rows,
+            cols);
 
     [Theory]
     [MemberData(nameof(Dimensions))]
     public void FlipMatrixByHashMapSwapRemove_Flip_UntilMatrixFull_VisitsEveryCellExactlyOnce(int rows, int cols) =>
-        AssertFlipsUntilFullVisitEveryCellExactlyOnce(new FlipMatrixByHashMapSwapRemove(rows, cols, new Random(1)), rows, cols);
+        AssertFlipsUntilFullVisitEveryCellExactlyOnce(
+            new RandomFlipMatrixSolution.FlipMatrixByHashMapSwapRemove(rows, cols, new Random(1)),
+            rows,
+            cols);
 
     [Fact]
     public void FlipMatrixByListScan_Reset_AfterPartialFlips_AllowsFullCoverageAgain() =>
-        AssertResetAfterPartialFlipsAllowsFullCoverageAgain(new FlipMatrixByListScan(2, 2, new Random(2)));
+        AssertResetAfterPartialFlipsAllowsFullCoverageAgain(
+            new RandomFlipMatrixSolution.FlipMatrixByListScan(2, 2, new Random(2)));
 
     [Fact]
     public void FlipMatrixByHashMapSwapRemove_Reset_AfterPartialFlips_AllowsFullCoverageAgain() =>
-        AssertResetAfterPartialFlipsAllowsFullCoverageAgain(new FlipMatrixByHashMapSwapRemove(2, 2, new Random(2)));
+        AssertResetAfterPartialFlipsAllowsFullCoverageAgain(
+            new RandomFlipMatrixSolution.FlipMatrixByHashMapSwapRemove(2, 2, new Random(2)));
 
-    private static void AssertFlipsUntilFullVisitEveryCellExactlyOnce(IFlipMatrix matrix, int rows, int cols)
+    private static void AssertFlipsUntilFullVisitEveryCellExactlyOnce(
+        RandomFlipMatrixSolution.IFlipMatrix matrix, int rows, int cols)
     {
         var seen = new HashSet<(int Row, int Col)>();
 
@@ -49,7 +58,8 @@ public sealed class RandomFlipMatrixTests
         Assert.Equal(rows * cols, seen.Count);
     }
 
-    private static void AssertResetAfterPartialFlipsAllowsFullCoverageAgain(IFlipMatrix matrix)
+    private static void AssertResetAfterPartialFlipsAllowsFullCoverageAgain(
+        RandomFlipMatrixSolution.IFlipMatrix matrix)
     {
         matrix.Flip();
         matrix.Flip();

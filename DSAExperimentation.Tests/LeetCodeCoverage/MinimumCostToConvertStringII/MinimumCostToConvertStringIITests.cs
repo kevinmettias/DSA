@@ -10,41 +10,72 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToConvertStringII
 // requiring two hops through one substring, and an unreachable case.
 public sealed class MinimumCostToConvertStringIITests
 {
-    public static TheoryData<string, string, string[], string[], int[], long> Examples =>
+    public static TheoryData<ConversionExample> Examples =>
         new()
         {
             {
-                "abcd", "acbe",
-                ["a", "b", "c", "c", "e", "d"], ["b", "c", "b", "e", "b", "e"], [2, 5, 5, 1, 2, 20],
-                28
+                new ConversionExample(
+                    Source: "abcd",
+                    Target: "acbe",
+                    Original: ["a", "b", "c", "c", "e", "d"],
+                    Changed: ["b", "c", "b", "e", "b", "e"],
+                    Cost: [2, 5, 5, 1, 2, 20],
+                    Expected: 28)
             },
             {
-                "abcdefgh", "acdeeghh",
-                ["bcd", "fgh", "thh"], ["cde", "thh", "ghh"], [1, 3, 5],
-                9
+                new ConversionExample(
+                    Source: "abcdefgh",
+                    Target: "acdeeghh",
+                    Original: ["bcd", "fgh", "thh"],
+                    Changed: ["cde", "thh", "ghh"],
+                    Cost: [1, 3, 5],
+                    Expected: 9)
             },
             {
-                "abcdefgh", "addddddd",
-                ["bcd", "defgh"], ["ddd", "ddddd"], [100, 1578],
-                -1
+                new ConversionExample(
+                    Source: "abcdefgh",
+                    Target: "addddddd",
+                    Original: ["bcd", "defgh"],
+                    Changed: ["ddd", "ddddd"],
+                    Cost: [100, 1578],
+                    Expected: -1)
             },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByBruteForceFloydWarshall_LeetCodeExamples_ReturnsMinimumConversionCost(
-        string source, string target, string[] original, string[] changed, int[] cost, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostToConvertStringIISolution.MinimumCostByBruteForceFloydWarshall(
-                new SourceText(source), new TargetText(target), (original, changed, cost)));
+        ConversionExample example)
+    {
+        var actual = MinimumCostToConvertStringIISolution.MinimumCostByBruteForceFloydWarshall(
+            new SourceText(example.Source), new TargetText(example.Target),
+            (example.Original, example.Changed, example.Cost));
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByAllPairsShortestPaths_LeetCodeExamples_ReturnsMinimumConversionCost(
-        string source, string target, string[] original, string[] changed, int[] cost, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostToConvertStringIISolution.MinimumCostByAllPairsShortestPaths(
-                new SourceText(source), new TargetText(target), (original, changed, cost)));
+        ConversionExample example)
+    {
+        var actual = MinimumCostToConvertStringIISolution.MinimumCostByAllPairsShortestPaths(
+            new SourceText(example.Source), new TargetText(example.Target),
+            (example.Original, example.Changed, example.Cost));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the conversion asked for, the reachable substring edits
+    // that may serve it, and the cost LeetCode publishes. Named fields rather than
+    // six positional arguments, so `Source` and `Target` - the same `string` type,
+    // and the two whose transposition silently asks the reverse question - state
+    // which role each plays.
+    public readonly record struct ConversionExample(
+        string Source,
+        string Target,
+        string[] Original,
+        string[] Changed,
+        int[] Cost,
+        long Expected);
 }

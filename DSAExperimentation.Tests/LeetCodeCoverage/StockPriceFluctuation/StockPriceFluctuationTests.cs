@@ -98,46 +98,47 @@ public sealed class StockPriceFluctuationTests
             Assert.Equal(expected[i], operations[i].Apply(stockPrice));
         }
     }
-}
 
-// One call in a StockPrice script: which operation to invoke and, for Update, the
-// record to store. Pure dispatch, built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays. Update
-// returns null (no answer); the three queries return the actual answer - the same
-// null-means-no-return-value convention DetectSquaresOp.Apply uses for its own
-// mutator/query split.
-public readonly record struct StockPriceOp(StockPriceOp.StockPriceOpKind kind, int timestamp, int price)
-{
-    public static StockPriceOp Update(int timestamp, int price) =>
-        new(StockPriceOpKind.Update, timestamp, price);
-
-    public static StockPriceOp Current() => new(StockPriceOpKind.Current, timestamp: 0, price: 0);
-
-    public static StockPriceOp Maximum() => new(StockPriceOpKind.Maximum, timestamp: 0, price: 0);
-
-    public static StockPriceOp Minimum() => new(StockPriceOpKind.Minimum, timestamp: 0, price: 0);
-
-    internal int? Apply(StockPriceFluctuationSolution.IStockPrice stockPrice)
+    // One call in a StockPrice script: which operation to invoke and, for Update, the
+    // record to store. Pure dispatch, built via the named factories below so a script
+    // (like Examples above) reads like the LeetCode call sequence it replays. Update
+    // returns null (no answer); the three queries return the actual answer - the same
+    // null-means-no-return-value convention DetectSquaresOp.Apply uses for its own
+    // mutator/query split. Nested here rather than left at file scope so the file
+    // declares exactly one type.
+    public readonly record struct StockPriceOp(StockPriceOp.StockPriceOpKind kind, int timestamp, int price)
     {
-        switch (kind)
+        public static StockPriceOp Update(int timestamp, int price) =>
+            new(StockPriceOpKind.Update, timestamp, price);
+
+        public static StockPriceOp Current() => new(StockPriceOpKind.Current, timestamp: 0, price: 0);
+
+        public static StockPriceOp Maximum() => new(StockPriceOpKind.Maximum, timestamp: 0, price: 0);
+
+        public static StockPriceOp Minimum() => new(StockPriceOpKind.Minimum, timestamp: 0, price: 0);
+
+        internal int? Apply(StockPriceFluctuationSolution.IStockPrice stockPrice)
         {
-            case StockPriceOpKind.Current:
-                return stockPrice.Current();
-            case StockPriceOpKind.Maximum:
-                return stockPrice.Maximum();
-            case StockPriceOpKind.Minimum:
-                return stockPrice.Minimum();
-            default:
-                stockPrice.Update(timestamp, price);
-                return null;
+            switch (kind)
+            {
+                case StockPriceOpKind.Current:
+                    return stockPrice.Current();
+                case StockPriceOpKind.Maximum:
+                    return stockPrice.Maximum();
+                case StockPriceOpKind.Minimum:
+                    return stockPrice.Minimum();
+                default:
+                    stockPrice.Update(timestamp, price);
+                    return null;
+            }
         }
-    }
 
-    public enum StockPriceOpKind
-    {
-        Update,
-        Current,
-        Maximum,
-        Minimum,
+        public enum StockPriceOpKind
+        {
+            Update,
+            Current,
+            Maximum,
+            Minimum,
+        }
     }
 }

@@ -17,11 +17,19 @@ public sealed class AssignCookiesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindContentChildrenByBruteForceScan_LeetCodeExamples_ReturnsContentChildCount(int[] greed, int[] sizes, int expected) =>
-        Assert.Equal(expected, AssignCookiesSolution.FindContentChildrenByBruteForceScan(greed, sizes));
+    public void FindContentChildrenByBruteForceScan_LeetCodeExamples_ReturnsContentChildCount(int[] greed, int[] sizes, int expected)
+    {
+        var actual = AssignCookiesSolution.FindContentChildrenByBruteForceScan(greed, sizes);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindContentChildrenBySortThenTwoPointer_LeetCodeExamples_ReturnsContentChildCount(int[] greed, int[] sizes, int expected) =>
-        Assert.Equal(expected, AssignCookiesSolution.FindContentChildrenBySortThenTwoPointer(greed, sizes));
+    public void FindContentChildrenBySortThenTwoPointer_LeetCodeExamples_ReturnsContentChildCount(int[] greed, int[] sizes, int expected)
+    {
+        var actual = AssignCookiesSolution.FindContentChildrenBySortThenTwoPointer(greed, sizes);
+
+        Assert.Equal(expected, actual);
+    }
 }

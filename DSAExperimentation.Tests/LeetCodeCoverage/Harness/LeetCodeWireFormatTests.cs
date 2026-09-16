@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
@@ -19,15 +20,18 @@ public sealed class LeetCodeWireFormatTests
     [Fact]
     public void ToBinaryTree_OnLeetCodesOwnExample_PlacesEveryNode()
     {
-        var root = LeetCodeWireFormat.ToBinaryTree([3, 9, 20, null, null, 15, 7]);
+        var root = Assert.IsType<BinaryTreeNode<int>>(
+            LeetCodeWireFormat.ToBinaryTree([3, 9, 20, null, null, 15, 7]));
+        var left = Assert.IsType<BinaryTreeNode<int>>(root.Left);
+        var right = Assert.IsType<BinaryTreeNode<int>>(root.Right);
 
-        Assert.Equal(3, root!.Value);
-        Assert.Equal(9, root.Left!.Value);
-        Assert.Equal(20, root.Right!.Value);
-        Assert.Null(root.Left.Left);
-        Assert.Null(root.Left.Right);
-        Assert.Equal(15, root.Right.Left!.Value);
-        Assert.Equal(7, root.Right.Right!.Value);
+        Assert.Equal(3, root.Value);
+        Assert.Equal(9, left.Value);
+        Assert.Equal(20, right.Value);
+        Assert.Null(left.Left);
+        Assert.Null(left.Right);
+        Assert.Equal(15, Assert.IsType<BinaryTreeNode<int>>(right.Left).Value);
+        Assert.Equal(7, Assert.IsType<BinaryTreeNode<int>>(right.Right).Value);
     }
 
     // The case that separates a queue-driven read from a heap-index read: 9's
@@ -36,11 +40,12 @@ public sealed class LeetCodeWireFormatTests
     [Fact]
     public void ToBinaryTree_WhenAnAbsentNodesChildrenAreOmitted_DoesNotShiftLaterNodes()
     {
-        var root = LeetCodeWireFormat.ToBinaryTree([1, null, 2, 3]);
+        var root = Assert.IsType<BinaryTreeNode<int>>(LeetCodeWireFormat.ToBinaryTree([1, null, 2, 3]));
+        var right = Assert.IsType<BinaryTreeNode<int>>(root.Right);
 
-        Assert.Null(root!.Left);
-        Assert.Equal(2, root.Right!.Value);
-        Assert.Equal(3, root.Right.Left!.Value);
+        Assert.Null(root.Left);
+        Assert.Equal(2, right.Value);
+        Assert.Equal(3, Assert.IsType<BinaryTreeNode<int>>(right.Left).Value);
     }
 
     [Fact]

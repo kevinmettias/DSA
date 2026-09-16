@@ -19,12 +19,18 @@ public sealed class MinimumPossibleMaximumWaitingTimeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinWaitByRecursiveSearch_LeetCodeExamples_ReturnsMinimumPossibleMaxWait(
-        int[] demand, int[] fuel, int expected) =>
-        Assert.Equal(expected, MinimumPossibleMaximumWaitingTimeSolution.MinWaitByRecursiveSearch(demand, fuel));
+        int[] demand, int[] fuel, int expected)
+    {
+        var actual = MinimumPossibleMaximumWaitingTimeSolution.MinWaitByRecursiveSearch(demand, fuel);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinWaitByMemoizedSearch_LeetCodeExamples_ReturnsMinimumPossibleMaxWait(
-        int[] demand, int[] fuel, int expected) =>
-        Assert.Equal(expected, MinimumPossibleMaximumWaitingTimeSolution.MinWaitByMemoizedSearch(demand, fuel));
+        int[] demand, int[] fuel, int expected)
+    {
+        var actual = MinimumPossibleMaximumWaitingTimeSolution.MinWaitByMemoizedSearch(demand, fuel);
+        Assert.Equal(expected, actual);
+    }
 }

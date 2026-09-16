@@ -17,14 +17,22 @@ public sealed class KthLargestElementInAStreamTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySizeKMinHeap_LeetCodeExampleSequence_ReturnsRunningKthLargest(
-        int k, int[] nums, int[] adds, int[] expected) =>
-        RunScript(KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(k, nums), adds, expected);
+        int k, int[] nums, int[] adds, int[] expected)
+    {
+        var stream = KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(k, nums);
+
+        RunScript(stream, adds, expected);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySortOnEveryAdd_LeetCodeExampleSequence_ReturnsRunningKthLargest(
-        int k, int[] nums, int[] adds, int[] expected) =>
-        RunScript(KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(k, nums), adds, expected);
+        int k, int[] nums, int[] adds, int[] expected)
+    {
+        var stream = KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(k, nums);
+
+        RunScript(stream, adds, expected);
+    }
 
     private static void RunScript(IKthLargestStream stream, int[] adds, int[] expected)
     {

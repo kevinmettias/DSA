@@ -19,9 +19,19 @@ public sealed class MinimumDeletionsToMakeArrayDivisibleTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinDeletionsByCandidateScan_Example_ReturnsFewestDeletions(int[] nums, int[] numsDivide, int expected) => Assert.Equal(expected, MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByCandidateScan(nums, numsDivide));
+    public void MinDeletionsByCandidateScan_Example_ReturnsFewestDeletions(int[] nums, int[] numsDivide, int expected)
+    {
+        var actual = MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByCandidateScan(nums, numsDivide);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinDeletionsByMergeSort_Example_ReturnsFewestDeletions(int[] nums, int[] numsDivide, int expected) => Assert.Equal(expected, MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByMergeSort(nums, numsDivide));
+    public void MinDeletionsByMergeSort_Example_ReturnsFewestDeletions(int[] nums, int[] numsDivide, int expected)
+    {
+        var actual = MinimumDeletionsToMakeArrayDivisibleSolution.MinDeletionsByMergeSort(nums, numsDivide);
+
+        Assert.Equal(expected, actual);
+    }
 }

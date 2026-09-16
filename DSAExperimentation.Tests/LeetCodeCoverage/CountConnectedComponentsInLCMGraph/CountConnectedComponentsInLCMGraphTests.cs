@@ -17,14 +17,18 @@ public sealed class CountConnectedComponentsInLCMGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountComponentsByPairwiseLcmScan_LeetCodeExamples_ReturnsComponentCount(
-        int[] nums, int threshold, int expected) =>
-        Assert.Equal(
-            expected, CountConnectedComponentsInLCMGraphSolution.CountComponentsByPairwiseLcmScan(nums, threshold));
+        int[] nums, int threshold, int expected)
+    {
+        var actual = CountConnectedComponentsInLCMGraphSolution.CountComponentsByPairwiseLcmScan(nums, threshold);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountComponentsByMultipleUnion_LeetCodeExamples_ReturnsComponentCount(
-        int[] nums, int threshold, int expected) =>
-        Assert.Equal(
-            expected, CountConnectedComponentsInLCMGraphSolution.CountComponentsByMultipleUnion(nums, threshold));
+        int[] nums, int threshold, int expected)
+    {
+        var actual = CountConnectedComponentsInLCMGraphSolution.CountComponentsByMultipleUnion(nums, threshold);
+        Assert.Equal(expected, actual);
+    }
 }

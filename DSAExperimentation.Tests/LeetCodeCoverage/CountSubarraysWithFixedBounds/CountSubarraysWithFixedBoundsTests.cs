@@ -24,16 +24,18 @@ public sealed class CountSubarraysWithFixedBoundsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountFixedBoundSubarraysByRescan_LeetCodeExamples_ReturnsQualifyingSubarrayCount(
-        int[] nums, int minK, int maxK, long expected) =>
-        Assert.Equal(
-            expected,
-            CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysByRescan(nums, minK, maxK));
+        int[] nums, int minK, int maxK, long expected)
+    {
+        var actual = CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysByRescan(nums, minK, maxK);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountFixedBoundSubarraysBySegmentTreeQueries_LeetCodeExamples_ReturnsQualifyingSubarrayCount(
-        int[] nums, int minK, int maxK, long expected) =>
-        Assert.Equal(
-            expected,
-            CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysBySegmentTreeQueries(nums, minK, maxK));
+        int[] nums, int minK, int maxK, long expected)
+    {
+        var actual = CountSubarraysWithFixedBoundsSolution.CountFixedBoundSubarraysBySegmentTreeQueries(nums, minK, maxK);
+        Assert.Equal(expected, actual);
+    }
 }

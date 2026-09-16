@@ -15,12 +15,20 @@ public sealed class BestTimeToBuyAndSellStockIVTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxProfitByBruteForce_LeetCodeExamples_ReturnsBestKTransactions(int k, int[] prices, int expected) =>
-        Assert.Equal(expected, BestTimeToBuyAndSellStockIVSolution.MaxProfitByBruteForce(prices, k));
+    public void MaxProfitByBruteForce_LeetCodeExamples_ReturnsBestKTransactions(int k, int[] prices, int expected)
+    {
+        var actual = BestTimeToBuyAndSellStockIVSolution.MaxProfitByBruteForce(prices, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByTransactionMemoization_LeetCodeExamples_ReturnsBestKTransactions(
-        int k, int[] prices, int expected) =>
-        Assert.Equal(expected, BestTimeToBuyAndSellStockIVSolution.MaxProfitByTransactionMemoization(prices, k));
+        int k, int[] prices, int expected)
+    {
+        var actual = BestTimeToBuyAndSellStockIVSolution.MaxProfitByTransactionMemoization(prices, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

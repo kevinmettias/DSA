@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignSkiplist.DesignSkiplistSolution;
+using DSAExperimentation.LeetCode.DesignSkiplist;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSkiplist;
 
@@ -72,56 +72,59 @@ public sealed class DesignSkiplistTests
     [MemberData(nameof(Examples))]
     public void SkiplistByLinearScanList_LeetCodeExamples_MatchesExpectedResults(
         SkiplistOp[] operations, bool?[] expected) =>
-        RunScript(new SkiplistByLinearScanList(), operations, expected);
+        RunScript(new DesignSkiplistSolution.SkiplistByLinearScanList(), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SkiplistByFenwickFrequencies_LeetCodeExamples_MatchesExpectedResults(
         SkiplistOp[] operations, bool?[] expected) =>
-        RunScript(new SkiplistByFenwickFrequencies(), operations, expected);
+        RunScript(new DesignSkiplistSolution.SkiplistByFenwickFrequencies(), operations, expected);
 
-    private static void RunScript(ISkiplist skiplist, SkiplistOp[] operations, bool?[] expected)
+    private static void RunScript(
+        DesignSkiplistSolution.ISkiplist skiplist, SkiplistOp[] operations, bool?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(skiplist));
         }
     }
-}
 
-// One call in a Skiplist script: which method to invoke and with what value. Pure
-// dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays.
-public readonly record struct SkiplistOp(SkiplistOp.OpKind kind, int value)
-{
-    public static SkiplistOp Add(int num) => new(OpKind.Add, num);
-
-    public static SkiplistOp Search(int target) => new(OpKind.Search, target);
-
-    public static SkiplistOp Erase(int num) => new(OpKind.Erase, num);
-
-    // null for the void Add, the reported bool for Search and Erase - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: ISkiplist is internal to DesignSkiplistSolution, and
-    // only this same assembly's RunScript ever calls Apply.
-    internal bool? Apply(ISkiplist skiplist)
+    // One call in a Skiplist script: which method to invoke and with what value. Pure
+    // dispatch, built via the named factories below so a script (like Examples above)
+    // reads like the LeetCode call sequence it replays. Nested because it is only ever
+    // used inside this test class and has no independent identity: it is this harness's
+    // own vocabulary, not a type another file would import.
+    public readonly record struct SkiplistOp(SkiplistOp.OpKind kind, int value)
     {
-        switch (kind)
+        public static SkiplistOp Add(int num) => new(OpKind.Add, num);
+
+        public static SkiplistOp Search(int target) => new(OpKind.Search, target);
+
+        public static SkiplistOp Erase(int num) => new(OpKind.Erase, num);
+
+        // null for the void Add, the reported bool for Search and Erase - so a script
+        // runner can assert against one expected value per operation uniformly.
+        // Internal, not public: ISkiplist is internal to DesignSkiplistSolution, and
+        // only this same assembly's RunScript ever calls Apply.
+        internal bool? Apply(DesignSkiplistSolution.ISkiplist skiplist)
         {
-            case OpKind.Add:
-                skiplist.Add(value);
-                return null;
-            case OpKind.Search:
-                return skiplist.Search(value);
-            default:
-                return skiplist.Erase(value);
+            switch (kind)
+            {
+                case OpKind.Add:
+                    skiplist.Add(value);
+                    return null;
+                case OpKind.Search:
+                    return skiplist.Search(value);
+                default:
+                    return skiplist.Erase(value);
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Add,
-        Search,
-        Erase,
+        public enum OpKind
+        {
+            Add,
+            Search,
+            Erase,
+        }
     }
 }

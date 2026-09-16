@@ -13,47 +13,88 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubtreeOfAnotherTree;
 public sealed class SubtreeOfAnotherTreeTests
 {
     [Fact]
-    public void IsSubtreeByRecursiveCompareAtEveryNode_MatchingSubtreeExists_ReturnsTrue() =>
-        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(Root(), SubRoot()));
+    public void IsSubtreeByRecursiveCompareAtEveryNode_MatchingSubtreeExists_ReturnsTrue()
+    {
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(Root(), SubRoot());
+
+        Assert.True(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeByRecursiveCompareAtEveryNode_SameShapeDifferentValues_ReturnsFalse() =>
-        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(RootWithExtraLeaf(), SubRoot()));
+    public void IsSubtreeByRecursiveCompareAtEveryNode_SameShapeDifferentValues_ReturnsFalse()
+    {
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(RootWithExtraLeaf(), SubRoot());
+
+        Assert.False(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeByRecursiveCompareAtEveryNode_WholeTreeMatch_ReturnsTrue() =>
-        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(Tree(5), Tree(5)));
+    public void IsSubtreeByRecursiveCompareAtEveryNode_WholeTreeMatch_ReturnsTrue()
+    {
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(Tree(5), Tree(5));
+
+        Assert.True(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeByRecursiveCompareAtEveryNode_SubRootValueNeverAppearsInRoot_ReturnsFalse() =>
-        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(
-            Tree(1, left: Tree(2)), Tree(3)));
+    public void IsSubtreeByRecursiveCompareAtEveryNode_SubRootValueNeverAppearsInRoot_ReturnsFalse()
+    {
+        var wholeTree = Tree(1, left: Tree(2));
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeByRecursiveCompareAtEveryNode(wholeTree, Tree(3));
+
+        Assert.False(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeBySerializeThenKmpSearch_MatchingSubtreeExists_ReturnsTrue() =>
-        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(Root(), SubRoot()));
+    public void IsSubtreeBySerializeThenKmpSearch_MatchingSubtreeExists_ReturnsTrue()
+    {
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(Root(), SubRoot());
+
+        Assert.True(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeBySerializeThenKmpSearch_SameShapeDifferentValues_ReturnsFalse() =>
-        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(RootWithExtraLeaf(), SubRoot()));
+    public void IsSubtreeBySerializeThenKmpSearch_SameShapeDifferentValues_ReturnsFalse()
+    {
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(RootWithExtraLeaf(), SubRoot());
+
+        Assert.False(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeBySerializeThenKmpSearch_WholeTreeMatch_ReturnsTrue() =>
-        Assert.True(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(Tree(5), Tree(5)));
+    public void IsSubtreeBySerializeThenKmpSearch_WholeTreeMatch_ReturnsTrue()
+    {
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(Tree(5), Tree(5));
+
+        Assert.True(isSubtree);
+    }
 
     [Fact]
-    public void IsSubtreeBySerializeThenKmpSearch_SubRootValueNeverAppearsInRoot_ReturnsFalse() =>
-        Assert.False(SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(
-            Tree(1, left: Tree(2)), Tree(3)));
+    public void IsSubtreeBySerializeThenKmpSearch_SubRootValueNeverAppearsInRoot_ReturnsFalse()
+    {
+        var wholeTree = Tree(1, left: Tree(2));
+        var isSubtree = SubtreeOfAnotherTreeSolution.IsSubtreeBySerializeThenKmpSearch(wholeTree, Tree(3));
+
+        Assert.False(isSubtree);
+    }
 
     // 3 -> left: 4(left:1, right:2), right: 5
-    private static BinaryTreeNode<int> Root() =>
-        Tree(3, left: Tree(4, left: Tree(1), right: Tree(2)), right: Tree(5));
+    private static BinaryTreeNode<int> Root()
+    {
+        var leftBranch = Tree(4, left: Tree(1), right: Tree(2));
+
+        return Tree(3, left: leftBranch, right: Tree(5));
+    }
 
     // Same as Root(), but 4's right child (2) carries an extra leaf, so no node's
     // subtree is structurally identical to SubRoot() anymore.
-    private static BinaryTreeNode<int> RootWithExtraLeaf() =>
-        Tree(3, left: Tree(4, left: Tree(1), right: Tree(2, left: Tree(0))), right: Tree(5));
+    private static BinaryTreeNode<int> RootWithExtraLeaf()
+    {
+        var extraLeaf = Tree(2, left: Tree(0));
+        var leftBranch = Tree(4, left: Tree(1), right: extraLeaf);
+
+        return Tree(3, left: leftBranch, right: Tree(5));
+    }
 
     // 4 -> left: 1, right: 2
     private static BinaryTreeNode<int> SubRoot() => Tree(4, left: Tree(1), right: Tree(2));

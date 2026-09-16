@@ -30,12 +30,20 @@ public sealed class CarFleetTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountFleetsByRecomputeMaxEachCar_LeetCodeExamples_ReturnsFleetCount(
-        int target, int[] position, int[] speed, int expected) =>
-        Assert.Equal(expected, CarFleetSolution.CountFleetsByRecomputeMaxEachCar(target, position, speed));
+        int target, int[] position, int[] speed, int expected)
+    {
+        var fleets = CarFleetSolution.CountFleetsByRecomputeMaxEachCar(target, position, speed);
+
+        Assert.Equal(expected, fleets);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountFleetsByMonotonicStackSweep_LeetCodeExamples_ReturnsFleetCount(
-        int target, int[] position, int[] speed, int expected) =>
-        Assert.Equal(expected, CarFleetSolution.CountFleetsByMonotonicStackSweep(target, position, speed));
+        int target, int[] position, int[] speed, int expected)
+    {
+        var fleets = CarFleetSolution.CountFleetsByMonotonicStackSweep(target, position, speed);
+
+        Assert.Equal(expected, fleets);
+    }
 }

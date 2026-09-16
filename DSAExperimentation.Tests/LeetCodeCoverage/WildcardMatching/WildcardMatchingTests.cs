@@ -7,31 +7,43 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WildcardMatching;
 // Memoizer.
 public sealed class WildcardMatchingTests
 {
-    public static TheoryData<string, string, bool> Examples =>
+    public static TheoryData<MatchExample> Examples =>
         new()
         {
-            { "aa", "a", false },
-            { "aa", "*", true },
-            { "cb", "?a", false },
-            { "adceb", "*a*b", true },
-            { "", "", true },
-            { "", "*", true },
-            { "", "a", false },
+            { new MatchExample(Text: "aa", Pattern: "a", Expected: false) },
+            { new MatchExample(Text: "aa", Pattern: "*", Expected: true) },
+            { new MatchExample(Text: "cb", Pattern: "?a", Expected: false) },
+            { new MatchExample(Text: "adceb", Pattern: "*a*b", Expected: true) },
+            { new MatchExample(Text: "", Pattern: "", Expected: true) },
+            { new MatchExample(Text: "", Pattern: "*", Expected: true) },
+            { new MatchExample(Text: "", Pattern: "a", Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsMatchByGreedyTwoPointer_LeetCodeExamples_ReturnsExpected(
-        string text, string pattern, bool expected) =>
-        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByGreedyTwoPointer(
-            new WildcardMatchingSolution.MatchedText(text),
-            new WildcardMatchingSolution.WildcardPattern(pattern)));
+    public void IsMatchByGreedyTwoPointer_LeetCodeExamples_ReturnsExpected(MatchExample example)
+    {
+        var actual = WildcardMatchingSolution.IsMatchByGreedyTwoPointer(
+            new WildcardMatchingSolution.MatchedText(example.Text),
+            new WildcardMatchingSolution.WildcardPattern(example.Pattern));
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsMatchByMemoizedDp_LeetCodeExamples_ReturnsExpected(
-        string text, string pattern, bool expected) =>
-        Assert.Equal(expected, WildcardMatchingSolution.IsMatchByMemoizedDp(
-            new WildcardMatchingSolution.MatchedText(text),
-            new WildcardMatchingSolution.WildcardPattern(pattern)));
+    public void IsMatchByMemoizedDp_LeetCodeExamples_ReturnsExpected(MatchExample example)
+    {
+        var actual = WildcardMatchingSolution.IsMatchByMemoizedDp(
+            new WildcardMatchingSolution.MatchedText(example.Text),
+            new WildcardMatchingSolution.WildcardPattern(example.Pattern));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the subject text, the pattern with its '*' and '?'
+    // wildcards, and whether the pattern matches the whole subject. Text and pattern
+    // are both `string`, so the row names the roles rather than leaving two adjacent
+    // positions a transposition would silently reverse.
+    public readonly record struct MatchExample(string Text, string Pattern, bool Expected);
 }

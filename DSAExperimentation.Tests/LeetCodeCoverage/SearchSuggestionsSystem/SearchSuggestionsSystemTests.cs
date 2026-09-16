@@ -47,12 +47,20 @@ public sealed class SearchSuggestionsSystemTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SuggestedProductsByCatalogScan_LeetCodeExamples_ReturnsUpToThreeSmallestPrefixMatchesPerCharacter(
-        string[] products, string searchWord, string[][] expected) =>
-        Assert.Equal(expected, SearchSuggestionsSystemSolution.SuggestedProductsByCatalogScan(products, searchWord));
+        string[] products, string searchWord, string[][] expected)
+    {
+        var actual = SearchSuggestionsSystemSolution.SuggestedProductsByCatalogScan(products, searchWord);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SuggestedProductsBySortedPrefixSearch_LeetCodeExamples_ReturnsUpToThreeSmallestPrefixMatchesPerCharacter(
-        string[] products, string searchWord, string[][] expected) =>
-        Assert.Equal(expected, SearchSuggestionsSystemSolution.SuggestedProductsBySortedPrefixSearch(products, searchWord));
+        string[] products, string searchWord, string[][] expected)
+    {
+        var actual = SearchSuggestionsSystemSolution.SuggestedProductsBySortedPrefixSearch(products, searchWord);
+
+        Assert.Equal(expected, actual);
+    }
 }

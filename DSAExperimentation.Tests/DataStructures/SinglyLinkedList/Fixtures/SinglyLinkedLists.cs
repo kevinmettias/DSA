@@ -17,12 +17,21 @@ internal static class SinglyLinkedLists
     // 1 -> 2 -> 3 -> 4 -> back to 2 (the tail rejoins mid-list, not the head).
     public static (SinglyLinkedListNode<int> Head, SinglyLinkedListNode<int> CycleStart) WithCycle()
     {
+        var cycleStart = CycleTailRejoiningMidList();
+        var head = new SinglyLinkedListNode<int>(1) { Next = cycleStart };
+
+        return (head, cycleStart);
+    }
+
+    // The ring the head above is prepended to: 2 -> 3 -> 4 -> back to 2.
+    private static SinglyLinkedListNode<int> CycleTailRejoiningMidList()
+    {
         var four = new SinglyLinkedListNode<int>(4);
         var three = new SinglyLinkedListNode<int>(3) { Next = four };
         var two = new SinglyLinkedListNode<int>(2) { Next = three };
         four.Next = two;
-        var head = new SinglyLinkedListNode<int>(1) { Next = two };
-        return (head, two);
+
+        return two;
     }
 
     public static SinglyLinkedListNode<int> SingleNodeSelfCycle()

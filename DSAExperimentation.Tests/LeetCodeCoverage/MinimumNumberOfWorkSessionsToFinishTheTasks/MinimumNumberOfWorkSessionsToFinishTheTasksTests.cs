@@ -27,16 +27,18 @@ public sealed class MinimumNumberOfWorkSessionsToFinishTheTasksTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinSessionsByUnmemoizedRecursion_LeetCodeExamples_ReturnsFewestSessions(
-        int[] tasks, int sessionTime, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumNumberOfWorkSessionsToFinishTheTasksSolution.MinSessionsByUnmemoizedRecursion(tasks, sessionTime));
+        int[] tasks, int sessionTime, int expected)
+    {
+        var actual = MinimumNumberOfWorkSessionsToFinishTheTasksSolution.MinSessionsByUnmemoizedRecursion(tasks, sessionTime);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinSessionsByMemoizedBitmaskDp_LeetCodeExamples_ReturnsFewestSessions(
-        int[] tasks, int sessionTime, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumNumberOfWorkSessionsToFinishTheTasksSolution.MinSessionsByMemoizedBitmaskDp(tasks, sessionTime));
+        int[] tasks, int sessionTime, int expected)
+    {
+        var actual = MinimumNumberOfWorkSessionsToFinishTheTasksSolution.MinSessionsByMemoizedBitmaskDp(tasks, sessionTime);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -7,24 +7,39 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumOfMNonOverlappingS
 // (LC 3956) uses, since Part II states the identical rules at a larger n.
 public sealed class MaximumSumOfMNonOverlappingSubarraysIITests
 {
-    public static TheoryData<int[], int, int, int, long> Examples =>
+    public static TheoryData<SubarraySumExample> Examples =>
         new()
         {
-            { [4, 1, -5, 2], 2, 1, 3, 7 },
-            { [1, 0, 3, 4], 2, 1, 2, 8 },
-            { [-1, 7, -4], 1, 2, 3, 6 },
-            { [-3, -4, -1], 2, 1, 2, -1 },
+            { new SubarraySumExample(Nums: [4, 1, -5, 2], M: 2, L: 1, R: 3, Expected: 7) },
+            { new SubarraySumExample(Nums: [1, 0, 3, 4], M: 2, L: 1, R: 2, Expected: 8) },
+            { new SubarraySumExample(Nums: [-1, 7, -4], M: 1, L: 2, R: 3, Expected: 6) },
+            { new SubarraySumExample(Nums: [-3, -4, -1], M: 2, L: 1, R: 2, Expected: -1) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumSumByDynamicProgramming_LeetCodeExamples_ReturnsBestAtMostMSubarraySum(
-        int[] nums, int m, int l, int r, long expected) =>
-        Assert.Equal(expected, MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByDynamicProgramming(nums, m, l, r));
+        SubarraySumExample example)
+    {
+        var actual = MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByDynamicProgramming(
+            example.Nums, example.M, example.L, example.R);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumSumByLagrangianRelaxation_LeetCodeExamples_ReturnsBestAtMostMSubarraySum(
-        int[] nums, int m, int l, int r, long expected) =>
-        Assert.Equal(expected, MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByLagrangianRelaxation(nums, m, l, r));
+        SubarraySumExample example)
+    {
+        var actual = MaximumSumOfMNonOverlappingSubarraysIISolution.MaximumSumByLagrangianRelaxation(
+            example.Nums, example.M, example.L, example.R);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One example as one argument: the five values that describe a single case. They
+    // travel together - a row IS one case - and passed separately they made a
+    // five-parameter signature that could only be read by counting commas.
+    public readonly record struct SubarraySumExample(int[] Nums, int M, int L, int R, long Expected);
 }

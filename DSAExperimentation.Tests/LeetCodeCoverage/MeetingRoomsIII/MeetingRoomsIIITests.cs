@@ -29,11 +29,19 @@ public sealed class MeetingRoomsIIITests
     [MemberData(nameof(Examples))]
     public void MostBookedByLinearScanFreeAt_LeetCodeExamples_ReturnsBusiestRoom(
         int n, int[][] meetings, int expected)
-        => Assert.Equal(expected, MeetingRoomsIIISolution.MostBookedByLinearScanFreeAt(n, meetings));
+    {
+        var actual = MeetingRoomsIIISolution.MostBookedByLinearScanFreeAt(n, meetings);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostBookedByTwoHeapPool_LeetCodeExamples_ReturnsBusiestRoom(
         int n, int[][] meetings, int expected)
-        => Assert.Equal(expected, MeetingRoomsIIISolution.MostBookedByTwoHeapPool(n, meetings));
+    {
+        var actual = MeetingRoomsIIISolution.MostBookedByTwoHeapPool(n, meetings);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -10,31 +10,36 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ChalkboardXorGame;
 // it existed only as a benchmark arm.
 public sealed class ChalkboardXorGameTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<GameExample> Examples =>
         new()
         {
-            { [1, 1, 2], false },
-            { [0, 1], true },
-            { [1, 2, 3], true },
-            { [0], true },
-            { [2], false },
-            { [1, 2], true },
-            { [3, 3, 3], false },
-            { [1, 2, 3, 4], true },
+            { new GameExample(Nums: [1, 1, 2], AliceWins: false) },
+            { new GameExample(Nums: [0, 1], AliceWins: true) },
+            { new GameExample(Nums: [1, 2, 3], AliceWins: true) },
+            { new GameExample(Nums: [0], AliceWins: true) },
+            { new GameExample(Nums: [2], AliceWins: false) },
+            { new GameExample(Nums: [1, 2], AliceWins: true) },
+            { new GameExample(Nums: [3, 3, 3], AliceWins: false) },
+            { new GameExample(Nums: [1, 2, 3, 4], AliceWins: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByBruteForceRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(int[] nums, bool expected) =>
-        Assert.Equal(expected, ChalkboardXorGameSolution.AliceWinsByBruteForceRecursion(nums));
+    public void AliceWinsByBruteForceRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
+        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.AliceWinsByBruteForceRecursion(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(int[] nums, bool expected) =>
-        Assert.Equal(expected, ChalkboardXorGameSolution.AliceWinsByMemoizedRecursion(nums));
+    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
+        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.AliceWinsByMemoizedRecursion(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByXorParityFormula_LeetCodeExamples_ReturnsWhetherAliceWins(int[] nums, bool expected) =>
-        Assert.Equal(expected, ChalkboardXorGameSolution.AliceWinsByXorParityFormula(nums));
+    public void AliceWinsByXorParityFormula_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
+        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.AliceWinsByXorParityFormula(example.Nums));
+
+    // One LeetCode example: the chalkboard and whether Alice wins from it. The win
+    // flag is named at the row that states it, so a reader of `Examples` never has to
+    // remember which position `false` sits in.
+    public readonly record struct GameExample(int[] Nums, bool AliceWins);
 }

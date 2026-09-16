@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignTaskManager.DesignTaskManagerSolution;
+using DSAExperimentation.LeetCode.DesignTaskManager;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignTaskManager;
 
@@ -31,64 +31,67 @@ public sealed class DesignTaskManagerTests
     [MemberData(nameof(Examples))]
     public void TaskManagerByLinearScan_LeetCodeExample_ExecutesHighestPriorityTaskFirst(
         (int UserId, int TaskId, int Priority)[] initialTasks, TaskManagerOp[] operations, int?[] expected) =>
-        RunScript(new TaskManagerByLinearScan(initialTasks), operations, expected);
+        RunScript(new DesignTaskManagerSolution.TaskManagerByLinearScan(initialTasks), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TaskManagerByLazyDeletionHeap_LeetCodeExample_ExecutesHighestPriorityTaskFirst(
         (int UserId, int TaskId, int Priority)[] initialTasks, TaskManagerOp[] operations, int?[] expected) =>
-        RunScript(new TaskManagerByLazyDeletionHeap(initialTasks), operations, expected);
+        RunScript(new DesignTaskManagerSolution.TaskManagerByLazyDeletionHeap(initialTasks), operations, expected);
 
-    private static void RunScript(ITaskManagerStrategy strategy, TaskManagerOp[] operations, int?[] expected)
+    private static void RunScript(
+        DesignTaskManagerSolution.ITaskManagerStrategy strategy, TaskManagerOp[] operations, int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
     }
-}
 
-// One call in a TaskManager script: which method to invoke and with what arguments.
-// Pure dispatch, built via the named factories below so a script (like Examples
-// above) reads like the LeetCode call sequence it replays.
-public readonly record struct TaskManagerOp(TaskManagerOp.OpKind kind, int userId, int taskId, int value)
-{
-    public static TaskManagerOp Add(int userId, int taskId, int priority) => new(OpKind.Add, userId, taskId, priority);
-
-    public static TaskManagerOp Edit(int taskId, int newPriority) => new(OpKind.Edit, 0, taskId, newPriority);
-
-    public static TaskManagerOp Rmv(int taskId) => new(OpKind.Rmv, 0, taskId, 0);
-
-    public static TaskManagerOp ExecTop() => new(OpKind.ExecTop, 0, 0, 0);
-
-    // null for the three void calls, the executed userId for ExecTop - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: ITaskManagerStrategy is internal to
-    // DesignTaskManagerSolution, and only this same assembly's RunScript ever
-    // calls Apply.
-    internal int? Apply(ITaskManagerStrategy strategy)
+    // One call in a TaskManager script: which method to invoke and with what arguments.
+    // Pure dispatch, built via the named factories below so a script (like Examples
+    // above) reads like the LeetCode call sequence it replays. Nested because it is
+    // only ever used inside this test class and has no independent identity: it is
+    // this harness's own vocabulary, not a type another file would import.
+    public readonly record struct TaskManagerOp(TaskManagerOp.OpKind kind, int userId, int taskId, int value)
     {
-        switch (kind)
+        public static TaskManagerOp Add(int userId, int taskId, int priority) => new(OpKind.Add, userId, taskId, priority);
+
+        public static TaskManagerOp Edit(int taskId, int newPriority) => new(OpKind.Edit, 0, taskId, newPriority);
+
+        public static TaskManagerOp Rmv(int taskId) => new(OpKind.Rmv, 0, taskId, 0);
+
+        public static TaskManagerOp ExecTop() => new(OpKind.ExecTop, 0, 0, 0);
+
+        // null for the three void calls, the executed userId for ExecTop - so a script
+        // runner can assert against one expected value per operation uniformly.
+        // Internal, not public: ITaskManagerStrategy is internal to
+        // DesignTaskManagerSolution, and only this same assembly's RunScript ever
+        // calls Apply.
+        internal int? Apply(DesignTaskManagerSolution.ITaskManagerStrategy strategy)
         {
-            case OpKind.Add:
-                strategy.Add(userId, taskId, value);
-                return null;
-            case OpKind.Edit:
-                strategy.Edit(taskId, value);
-                return null;
-            case OpKind.Rmv:
-                strategy.Rmv(taskId);
-                return null;
-            default:
-                return strategy.ExecTop();
+            switch (kind)
+            {
+                case OpKind.Add:
+                    strategy.Add(userId, taskId, value);
+                    return null;
+                case OpKind.Edit:
+                    strategy.Edit(taskId, value);
+                    return null;
+                case OpKind.Rmv:
+                    strategy.Rmv(taskId);
+                    return null;
+                default:
+                    return strategy.ExecTop();
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Add,
-        Edit,
-        Rmv,
-        ExecTop,
+        public enum OpKind
+        {
+            Add,
+            Edit,
+            Rmv,
+            ExecTop,
+        }
     }
 }

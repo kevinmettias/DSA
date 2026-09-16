@@ -29,8 +29,14 @@ public sealed class ConvertSortedArrayToBinarySearchTreeTests
         Assert.True(IsHeightBalanced(root).IsBalanced);
     }
 
+    // Both arms are values: a call that names the empty walk, and a call that names the
+    // non-empty one. The non-empty arm stays a call rather than a hoisted local because
+    // the condition guards it - a local above the expression would run it every time.
     private static int[] InOrder(BinaryTreeNode<int>? node) =>
-        node is null ? [] : [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
+        node is null ? Array.Empty<int>() : InOrderNonNull(node);
+
+    private static int[] InOrderNonNull(BinaryTreeNode<int> node) =>
+        [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
 
     private static (bool IsBalanced, int Height) IsHeightBalanced(BinaryTreeNode<int>? node)
     {

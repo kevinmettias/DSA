@@ -18,16 +18,22 @@ public sealed class NumberOfPossibleSetsOfClosingBranchesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountClosingSetsByBruteForceFloydWarshall_LeetCodeExamples_ReturnsPossibleClosingSetCount(
-        int n, int[][] roads, int maxDistance, long expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByBruteForceFloydWarshall(n, roads, maxDistance));
+        int n, int[][] roads, int maxDistance, long expected)
+    {
+        var actual =
+            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByBruteForceFloydWarshall(n, roads, maxDistance);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountClosingSetsByAllPairsShortestPaths_LeetCodeExamples_ReturnsPossibleClosingSetCount(
-        int n, int[][] roads, int maxDistance, long expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByAllPairsShortestPaths(n, roads, maxDistance));
+        int n, int[][] roads, int maxDistance, long expected)
+    {
+        var actual =
+            NumberOfPossibleSetsOfClosingBranchesSolution.CountClosingSetsByAllPairsShortestPaths(n, roads, maxDistance);
+
+        Assert.Equal(expected, actual);
+    }
 }

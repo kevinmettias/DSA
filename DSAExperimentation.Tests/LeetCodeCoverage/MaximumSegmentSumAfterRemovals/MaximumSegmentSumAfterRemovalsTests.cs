@@ -28,18 +28,22 @@ public sealed class MaximumSegmentSumAfterRemovalsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumSegmentSumsByRescanAfterEachRemoval_LeetCodeExamples_ReturnsBestSegmentAfterEachRemoval(
-        int[] nums, int[] removeQueries, long[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximumSegmentSumAfterRemovalsSolution.MaximumSegmentSumsByRescanAfterEachRemoval(
-                nums, removeQueries));
+        int[] nums, int[] removeQueries, long[] expected)
+    {
+        var actual =
+            MaximumSegmentSumAfterRemovalsSolution.MaximumSegmentSumsByRescanAfterEachRemoval(nums, removeQueries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumSegmentSumsByReverseTimeDisjointSet_LeetCodeExamples_ReturnsBestSegmentAfterEachRemoval(
-        int[] nums, int[] removeQueries, long[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximumSegmentSumAfterRemovalsSolution.MaximumSegmentSumsByReverseTimeDisjointSet(
-                nums, removeQueries));
+        int[] nums, int[] removeQueries, long[] expected)
+    {
+        var actual =
+            MaximumSegmentSumAfterRemovalsSolution.MaximumSegmentSumsByReverseTimeDisjointSet(nums, removeQueries);
+
+        Assert.Equal(expected, actual);
+    }
 }

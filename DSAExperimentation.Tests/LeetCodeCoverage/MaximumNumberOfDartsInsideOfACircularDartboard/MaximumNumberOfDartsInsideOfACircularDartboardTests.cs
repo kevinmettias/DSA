@@ -41,16 +41,21 @@ public sealed class MaximumNumberOfDartsInsideOfACircularDartboardTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDartsByListCandidates_LeetCodeExamples_ReturnsMostDartsOneCircleCovers(
-        int[][] darts, int radius, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByListCandidates(darts, radius));
+        int[][] darts, int radius, int expected)
+    {
+        var actual = MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByListCandidates(darts, radius);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDartsByDynamicArrayCandidates_LeetCodeExamples_ReturnsMostDartsOneCircleCovers(
-        int[][] darts, int radius, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByDynamicArrayCandidates(darts, radius));
+        int[][] darts, int radius, int expected)
+    {
+        var actual = MaximumNumberOfDartsInsideOfACircularDartboardSolution.MaxDartsByDynamicArrayCandidates(
+            darts, radius);
+
+        Assert.Equal(expected, actual);
+    }
 }

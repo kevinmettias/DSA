@@ -18,11 +18,19 @@ public sealed class PowXnTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PowByRepeatedMultiplication_LeetCodeExamples_ReturnsExpected(double x, int n, double expected) =>
-        Assert.Equal(expected, PowXnSolution.PowByRepeatedMultiplication(x, n), 6);
+    public void PowByRepeatedMultiplication_LeetCodeExamples_ReturnsExpected(double x, int n, double expected)
+    {
+        var actual = PowXnSolution.PowByRepeatedMultiplication(x, n);
+
+        Assert.Equal(expected, actual, 6);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PowByExponentiationBySquaring_LeetCodeExamples_ReturnsExpected(double x, int n, double expected) =>
-        Assert.Equal(expected, PowXnSolution.PowByExponentiationBySquaring(x, n), 6);
+    public void PowByExponentiationBySquaring_LeetCodeExamples_ReturnsExpected(double x, int n, double expected)
+    {
+        var actual = PowXnSolution.PowByExponentiationBySquaring(x, n);
+
+        Assert.Equal(expected, actual, 6);
+    }
 }

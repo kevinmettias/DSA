@@ -18,12 +18,18 @@ public sealed class MinimumSizeSubarraySumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinLengthByBruteForce_LeetCodeExamples_ReturnsShortestWindowLength(
-        int target, int[] nums, int expected) =>
-        Assert.Equal(expected, MinimumSizeSubarraySumSolution.MinLengthByBruteForce(target, nums));
+        int target, int[] nums, int expected)
+    {
+        var actual = MinimumSizeSubarraySumSolution.MinLengthByBruteForce(target, nums);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinLengthByBinarySearchPrefixSum_LeetCodeExamples_ReturnsShortestWindowLength(
-        int target, int[] nums, int expected) =>
-        Assert.Equal(expected, MinimumSizeSubarraySumSolution.MinLengthByBinarySearchPrefixSum(target, nums));
+        int target, int[] nums, int expected)
+    {
+        var actual = MinimumSizeSubarraySumSolution.MinLengthByBinarySearchPrefixSum(target, nums);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -21,12 +21,20 @@ public sealed class FruitsIntoBasketsIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountUnplacedByBruteForce_LeetCodeExamples_ReturnsUnplacedFruitCount(
-        int[] fruits, int[] baskets, int expected) =>
-        Assert.Equal(expected, FruitsIntoBasketsIIISolution.CountUnplacedByBruteForce(fruits, baskets));
+        int[] fruits, int[] baskets, int expected)
+    {
+        var actual = FruitsIntoBasketsIIISolution.CountUnplacedByBruteForce(fruits, baskets);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountUnplacedBySegmentTreeSearch_LeetCodeExamples_ReturnsUnplacedFruitCount(
-        int[] fruits, int[] baskets, int expected) =>
-        Assert.Equal(expected, FruitsIntoBasketsIIISolution.CountUnplacedBySegmentTreeSearch(fruits, baskets));
+        int[] fruits, int[] baskets, int expected)
+    {
+        var actual = FruitsIntoBasketsIIISolution.CountUnplacedBySegmentTreeSearch(fruits, baskets);
+
+        Assert.Equal(expected, actual);
+    }
 }

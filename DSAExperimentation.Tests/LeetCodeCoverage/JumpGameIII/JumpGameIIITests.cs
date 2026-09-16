@@ -10,27 +10,39 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameIII;
 // component.
 public sealed class JumpGameIIITests
 {
-    public static TheoryData<int[], int, bool> Examples =>
+    public static TheoryData<ZeroReachExample> Examples =>
         new()
         {
-            { [4, 2, 3, 0, 3, 1, 2], 5, true },
-            { [4, 2, 3, 0, 3, 1, 2], 0, true },
-            { [4, 2, 3, 0, 3, 1, 2], 6, true },
-            { [3, 0, 2, 1, 2], 2, false },
-            { [0], 0, true },
-            { [1, 2, 0], 0, false },
-            { [1, 1, 1, 1, 1], 2, false },
+            { new ZeroReachExample(Arr: [4, 2, 3, 0, 3, 1, 2], Start: 5, Expected: true) },
+            { new ZeroReachExample(Arr: [4, 2, 3, 0, 3, 1, 2], Start: 0, Expected: true) },
+            { new ZeroReachExample(Arr: [4, 2, 3, 0, 3, 1, 2], Start: 6, Expected: true) },
+            { new ZeroReachExample(Arr: [3, 0, 2, 1, 2], Start: 2, Expected: false) },
+            { new ZeroReachExample(Arr: [0], Start: 0, Expected: true) },
+            { new ZeroReachExample(Arr: [1, 2, 0], Start: 0, Expected: false) },
+            { new ZeroReachExample(Arr: [1, 1, 1, 1, 1], Start: 2, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanReachByStackWalk_LeetCodeExamples_ReturnsWhetherAZeroIsReachable(
-        int[] arr, int start, bool expected) =>
-        Assert.Equal(expected, JumpGameIIISolution.CanReachByStackWalk(arr, start));
+    public void CanReachByStackWalk_LeetCodeExamples_ReturnsWhetherAZeroIsReachable(ZeroReachExample example)
+    {
+        var actual = JumpGameIIISolution.CanReachByStackWalk(example.Arr, example.Start);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanReachByDepthFirstSearch_LeetCodeExamples_ReturnsWhetherAZeroIsReachable(
-        int[] arr, int start, bool expected) =>
-        Assert.Equal(expected, JumpGameIIISolution.CanReachByDepthFirstSearch(arr, start));
+        ZeroReachExample example)
+    {
+        var actual = JumpGameIIISolution.CanReachByDepthFirstSearch(example.Arr, example.Start);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the jump array, the index to start from, and whether a zero
+    // is reachable. The `bool` is the expected answer rather than a mode, so the row
+    // names it instead of leaving a bare `true` in a position the reader has to decode.
+    public readonly record struct ZeroReachExample(int[] Arr, int Start, bool Expected);
 }

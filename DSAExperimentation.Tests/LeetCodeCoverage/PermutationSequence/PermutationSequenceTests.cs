@@ -18,11 +18,19 @@ public sealed class PermutationSequenceTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GetPermutationByBacktrackEnumeration_LeetCodeExamples_ReturnsKthPermutation(int n, int k, string expected) =>
-        Assert.Equal(expected, PermutationSequenceSolution.GetPermutationByBacktrackEnumeration(n, k));
+    public void GetPermutationByBacktrackEnumeration_LeetCodeExamples_ReturnsKthPermutation(int n, int k, string expected)
+    {
+        var actual = PermutationSequenceSolution.GetPermutationByBacktrackEnumeration(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GetPermutationByFactoradicSelection_LeetCodeExamples_ReturnsKthPermutation(int n, int k, string expected) =>
-        Assert.Equal(expected, PermutationSequenceSolution.GetPermutationByFactoradicSelection(n, k));
+    public void GetPermutationByFactoradicSelection_LeetCodeExamples_ReturnsKthPermutation(int n, int k, string expected)
+    {
+        var actual = PermutationSequenceSolution.GetPermutationByFactoradicSelection(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

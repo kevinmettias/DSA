@@ -29,14 +29,22 @@ public sealed class PathSumIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PathSumByDoubleDfs_LeetCodeExamples_ReturnsMatchingPathCount(
-        int?[] values, int target, int expected) =>
-        Assert.Equal(expected, PathSumIIISolution.PathSumByDoubleDfs(BuildTree(values), target));
+        int?[] values, int target, int expected)
+    {
+        var pathCount = PathSumIIISolution.PathSumByDoubleDfs(BuildTree(values), target);
+
+        Assert.Equal(expected, pathCount);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PathSumByPrefixSumHashMap_LeetCodeExamples_ReturnsMatchingPathCount(
-        int?[] values, int target, int expected) =>
-        Assert.Equal(expected, PathSumIIISolution.PathSumByPrefixSumHashMap(BuildTree(values), target));
+        int?[] values, int target, int expected)
+    {
+        var pathCount = PathSumIIISolution.PathSumByPrefixSumHashMap(BuildTree(values), target);
+
+        Assert.Equal(expected, pathCount);
+    }
 
     // LeetCode's level-order array shape: each existing node consumes exactly
     // two subsequent slots for its children, null marking a missing one.
@@ -47,7 +55,7 @@ public sealed class PathSumIIITests
             return null;
         }
 
-        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var root = new BinaryTreeNode<int>(values[0].Value);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
@@ -55,24 +63,31 @@ public sealed class PathSumIIITests
         while (queue.Count > 0 && i < values.Length)
         {
             var node = queue.Dequeue();
-
-            if (values[i] is int leftValue)
-            {
-                node.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(node.Left);
-            }
-
-            i++;
-
-            if (i < values.Length && values[i] is int rightValue)
-            {
-                node.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(node.Right);
-            }
-
-            i++;
+            i = AttachChildren(node, values, i, queue);
         }
 
         return root;
+    }
+
+    // Takes the two slots a dequeued node's children occupy, attaching each one that
+    // exists and queueing it up, and returns the index of the next unattached slot.
+    private static int AttachChildren(
+        BinaryTreeNode<int> node, int?[] values, int i, Queue<BinaryTreeNode<int>> queue)
+    {
+        if (values[i] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        i++;
+
+        if (i < values.Length && values[i] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i + 1;
     }
 }

@@ -20,12 +20,20 @@ public sealed class MaximumGoodSubtreeScoreTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GoodSubtreeScoreSumByBruteForce_LeetCodeExamples_ReturnsSumOfMaxScores(
-        int[] vals, int[] par, int expected) =>
-        Assert.Equal(expected, MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBruteForce(vals, par));
+        int[] vals, int[] par, int expected)
+    {
+        var actual = MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBruteForce(vals, par);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GoodSubtreeScoreSumByBitmaskTreeFold_LeetCodeExamples_ReturnsSumOfMaxScores(
-        int[] vals, int[] par, int expected) =>
-        Assert.Equal(expected, MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBitmaskTreeFold(vals, par));
+        int[] vals, int[] par, int expected)
+    {
+        var actual = MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBitmaskTreeFold(vals, par);
+
+        Assert.Equal(expected, actual);
+    }
 }

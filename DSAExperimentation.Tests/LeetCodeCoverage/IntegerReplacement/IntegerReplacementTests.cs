@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.IntegerReplacement.IntegerReplacementSolution;
+using DSAExperimentation.LeetCode.IntegerReplacement;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.IntegerReplacement;
 
@@ -20,10 +20,10 @@ public sealed class IntegerReplacementTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinStepsByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumStepCount(int n, int expected)
-        => Assert.Equal(expected, MinStepsByUnmemoizedRecursion(n));
+        => Assert.Equal(expected, IntegerReplacementSolution.MinStepsByUnmemoizedRecursion(n));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinStepsByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumStepCount(int n, int expected)
-        => Assert.Equal(expected, MinStepsByMemoizedRecurrence(n));
+        => Assert.Equal(expected, IntegerReplacementSolution.MinStepsByMemoizedRecurrence(n));
 }

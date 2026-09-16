@@ -52,47 +52,49 @@ public sealed class MinStackTests
             Assert.Equal(expected[i], operations[i].Apply(stack));
         }
     }
-}
 
-// One call in a MinStack script: which operation to invoke and with what
-// argument. Pure dispatch, built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct MinStackOp(MinStackOp.OpKind kind, int value)
-{
-    public static MinStackOp Push(int value) => new(OpKind.Push, value);
-
-    public static MinStackOp Pop() => new(OpKind.Pop, 0);
-
-    public static MinStackOp Top() => new(OpKind.Top, 0);
-
-    public static MinStackOp GetMin() => new(OpKind.GetMin, 0);
-
-    // null for push/pop, the returned value for top/getMin - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: only this same assembly's test method ever calls
-    // Apply.
-    internal int? Apply(MinStackSolution.MinStackOperations stack)
+    // One call in a MinStack script: which operation to invoke and with what
+    // argument. Pure dispatch, built via the named factories below so a script
+    // (like Examples above) reads like the LeetCode call sequence it replays.
+    // Nested here rather than left at file scope so the file declares exactly
+    // one type.
+    public readonly record struct MinStackOp(MinStackOp.OpKind kind, int value)
     {
-        switch (kind)
+        public static MinStackOp Push(int value) => new(OpKind.Push, value);
+
+        public static MinStackOp Pop() => new(OpKind.Pop, 0);
+
+        public static MinStackOp Top() => new(OpKind.Top, 0);
+
+        public static MinStackOp GetMin() => new(OpKind.GetMin, 0);
+
+        // null for push/pop, the returned value for top/getMin - so a script
+        // runner can assert against one expected value per operation uniformly.
+        // Internal, not public: only this same assembly's test method ever calls
+        // Apply.
+        internal int? Apply(MinStackSolution.MinStackOperations stack)
         {
-            case OpKind.Push:
-                stack.Push(value);
-                return null;
-            case OpKind.Pop:
-                stack.Pop();
-                return null;
-            case OpKind.Top:
-                return stack.Top();
-            default:
-                return stack.GetMin();
+            switch (kind)
+            {
+                case OpKind.Push:
+                    stack.Push(value);
+                    return null;
+                case OpKind.Pop:
+                    stack.Pop();
+                    return null;
+                case OpKind.Top:
+                    return stack.Top();
+                default:
+                    return stack.GetMin();
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Push,
-        Pop,
-        Top,
-        GetMin,
+        public enum OpKind
+        {
+            Push,
+            Pop,
+            Top,
+            GetMin,
+        }
     }
 }

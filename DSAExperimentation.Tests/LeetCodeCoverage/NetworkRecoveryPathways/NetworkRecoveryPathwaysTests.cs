@@ -35,12 +35,20 @@ public sealed class NetworkRecoveryPathwaysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMaxPathScoreByBruteForceDijkstra_LeetCodeExamples_ReturnsMaximumPathScore(
-        int[][] edges, bool[] online, long k, int expected) =>
-        Assert.Equal(expected, NetworkRecoveryPathwaysSolution.FindMaxPathScoreByBruteForceDijkstra(edges, online, k));
+        int[][] edges, bool[] online, long k, int expected)
+    {
+        var actual = NetworkRecoveryPathwaysSolution.FindMaxPathScoreByBruteForceDijkstra(edges, online, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMaxPathScoreByReduceGraph_LeetCodeExamples_ReturnsMaximumPathScore(
-        int[][] edges, bool[] online, long k, int expected) =>
-        Assert.Equal(expected, NetworkRecoveryPathwaysSolution.FindMaxPathScoreByReduceGraph(edges, online, k));
+        int[][] edges, bool[] online, long k, int expected)
+    {
+        var actual = NetworkRecoveryPathwaysSolution.FindMaxPathScoreByReduceGraph(edges, online, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

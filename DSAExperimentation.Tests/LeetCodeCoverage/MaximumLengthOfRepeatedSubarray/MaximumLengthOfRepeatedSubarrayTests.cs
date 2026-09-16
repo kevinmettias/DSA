@@ -19,13 +19,20 @@ public sealed class MaximumLengthOfRepeatedSubarrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindLengthByBruteForce_LeetCodeExamples_ReturnsLongestRepeatedRun(
-        int[] first, int[] second, int expected) =>
-        Assert.Equal(expected, MaximumLengthOfRepeatedSubarraySolution.FindLengthByBruteForce(first, second));
+        int[] first, int[] second, int expected)
+    {
+        var actual = MaximumLengthOfRepeatedSubarraySolution.FindLengthByBruteForce(first, second);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindLengthByMemoizedSuffixPairDp_LeetCodeExamples_ReturnsLongestRepeatedRun(
-        int[] first, int[] second, int expected) =>
-        Assert.Equal(
-            expected, MaximumLengthOfRepeatedSubarraySolution.FindLengthByMemoizedSuffixPairDp(first, second));
+        int[] first, int[] second, int expected)
+    {
+        var actual = MaximumLengthOfRepeatedSubarraySolution.FindLengthByMemoizedSuffixPairDp(first, second);
+
+        Assert.Equal(expected, actual);
+    }
 }

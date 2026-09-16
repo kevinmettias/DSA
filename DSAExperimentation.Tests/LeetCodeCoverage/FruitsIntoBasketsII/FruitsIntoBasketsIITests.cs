@@ -19,6 +19,10 @@ public sealed class FruitsIntoBasketsIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountUnplacedByBruteForce_LeetCodeExamples_ReturnsUnplacedFruitCount(
-        int[] fruits, int[] baskets, int expected) =>
-        Assert.Equal(expected, FruitsIntoBasketsIISolution.CountUnplacedByBruteForce(fruits, baskets));
+        int[] fruits, int[] baskets, int expected)
+    {
+        var unplaced = FruitsIntoBasketsIISolution.CountUnplacedByBruteForce(fruits, baskets);
+
+        Assert.Equal(expected, unplaced);
+    }
 }

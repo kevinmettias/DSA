@@ -9,10 +9,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OperationsOnTree;
 // than a single argument tuple, the same shape LRUCacheTests uses for its own
 // instance-API problem.
 //
-// LockedDescendantsOf gets its own examples because it is the step the two
-// strategies actually differ in and the one the benchmark measures; before this
-// migration the whole-tree scan existed only as the benchmark's baseline arm, which
-// nothing asserted.
+// LockedDescendantsOf - the step the two strategies actually differ in - has its own
+// examples and its own test class, OperationsOnTreeLockedDescendantsTests.
 public sealed class OperationsOnTreeTests
 {
     public static TheoryData<int[], LockingTreeOp[], bool[]> Examples =>
@@ -91,26 +89,6 @@ public sealed class OperationsOnTreeTests
             },
         };
 
-    public static TheoryData<int[], LockingTreeOp[], int, int[]> DescendantExamples =>
-        new()
-        {
-            // 0 -> 1, 2; 1 -> 3, 4.
-            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(3, 1), LockingTreeOp.Lock(4, 2)], 1, [3, 4] },
-            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(3, 1), LockingTreeOp.Lock(4, 2)], 0, [3, 4] },
-
-            // A locked node is never its own descendant.
-            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(1, 1)], 1, [] },
-
-            // A lock in a sibling subtree is not beneath node 1.
-            { [-1, 0, 0, 1, 1], [LockingTreeOp.Lock(2, 1)], 1, [] },
-
-            // Nothing locked anywhere.
-            { [-1, 0, 0], [], 0, [] },
-
-            // A chain 0 -> 1 -> 2 with only the deepest node locked.
-            { [-1, 0, 1], [LockingTreeOp.Lock(2, 2)], 0, [2] },
-        };
-
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByWholeTreeScan_LeetCodeExamples_MatchesEveryOperationResult(
@@ -123,63 +101,11 @@ public sealed class OperationsOnTreeTests
         int[] parent, LockingTreeOp[] operations, bool[] expected) =>
         AssertScript(OperationsOnTreeSolution.CreateBySubtreeDepthFirstSearch(parent), operations, expected);
 
-    [Theory]
-    [MemberData(nameof(DescendantExamples))]
-    public void CreateByWholeTreeScan_LockedSubtrees_ReturnsLockedDescendantsInAscendingOrder(
-        int[] parent, LockingTreeOp[] setup, int num, int[] expected) =>
-        AssertLockedDescendants(OperationsOnTreeSolution.CreateByWholeTreeScan(parent), setup, num, expected);
-
-    [Theory]
-    [MemberData(nameof(DescendantExamples))]
-    public void CreateBySubtreeDepthFirstSearch_LockedSubtrees_ReturnsLockedDescendantsInAscendingOrder(
-        int[] parent, LockingTreeOp[] setup, int num, int[] expected) =>
-        AssertLockedDescendants(
-            OperationsOnTreeSolution.CreateBySubtreeDepthFirstSearch(parent), setup, num, expected);
-
     private static void AssertScript(LockingTree tree, LockingTreeOp[] operations, bool[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(tree));
         }
-    }
-
-    private static void AssertLockedDescendants(
-        LockingTree tree, LockingTreeOp[] setup, int num, int[] expected)
-    {
-        foreach (var operation in setup)
-        {
-            operation.Apply(tree);
-        }
-
-        Assert.Equal(expected, tree.LockedDescendantsOf(num));
-    }
-}
-
-// One call in an OperationsOnTree script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct LockingTreeOp(LockingTreeOp.OpKind kind, int num, int user)
-{
-    public static LockingTreeOp Lock(int num, int user) => new(OpKind.Lock, num, user);
-
-    public static LockingTreeOp Unlock(int num, int user) => new(OpKind.Unlock, num, user);
-
-    public static LockingTreeOp Upgrade(int num, int user) => new(OpKind.Upgrade, num, user);
-
-    // Internal, not public: only this same assembly's test methods ever call Apply,
-    // and LockingTree itself is internal to the solution tier.
-    internal bool Apply(LockingTree tree) => kind switch
-    {
-        OpKind.Lock => tree.Lock(num, user),
-        OpKind.Unlock => tree.Unlock(num, user),
-        _ => tree.Upgrade(num, user),
-    };
-
-    public enum OpKind
-    {
-        Lock,
-        Unlock,
-        Upgrade,
     }
 }

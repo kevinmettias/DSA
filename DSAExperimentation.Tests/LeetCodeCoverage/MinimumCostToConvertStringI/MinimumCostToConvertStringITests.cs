@@ -11,45 +11,74 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToConvertStringI;
 // in-between value.
 public sealed class MinimumCostToConvertStringITests
 {
-    public static TheoryData<string, string, char[], char[], int[], long> Examples =>
+    public static TheoryData<ConversionExample> Examples =>
         new()
         {
             {
-                "abcd", "acbe",
-                ['a', 'b', 'c', 'c', 'e', 'd'], ['b', 'c', 'b', 'e', 'b', 'e'], [2, 5, 5, 1, 2, 20],
-                28
+                new ConversionExample(
+                    Source: "abcd",
+                    Target: "acbe",
+                    Original: ['a', 'b', 'c', 'c', 'e', 'd'],
+                    Changed: ['b', 'c', 'b', 'e', 'b', 'e'],
+                    Cost: [2, 5, 5, 1, 2, 20],
+                    Expected: 28)
             },
             {
-                "aaaa", "bbbb",
-                ['a', 'c'], ['c', 'b'], [1, 2],
-                12
+                new ConversionExample(
+                    Source: "aaaa",
+                    Target: "bbbb",
+                    Original: ['a', 'c'],
+                    Changed: ['c', 'b'],
+                    Cost: [1, 2],
+                    Expected: 12)
             },
             {
-                "abcd", "abce",
-                ['a'], ['e'], [10000],
-                -1
+                new ConversionExample(
+                    Source: "abcd",
+                    Target: "abce",
+                    Original: ['a'],
+                    Changed: ['e'],
+                    Cost: [10000],
+                    Expected: -1)
             },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByBruteForceFloydWarshall_LeetCodeExamples_ReturnsMinimumConversionCost(
-        string source, string target, char[] original, char[] changed, int[] cost, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostToConvertStringISolution.MinimumCostByBruteForceFloydWarshall(
-                new MinimumCostToConvertStringISolution.SourceText(source),
-                new MinimumCostToConvertStringISolution.TargetText(target),
-                (original, changed, cost)));
+        ConversionExample example)
+    {
+        var actual = MinimumCostToConvertStringISolution.MinimumCostByBruteForceFloydWarshall(
+            new MinimumCostToConvertStringISolution.SourceText(example.Source),
+            new MinimumCostToConvertStringISolution.TargetText(example.Target),
+            (example.Original, example.Changed, example.Cost));
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByAllPairsShortestPaths_LeetCodeExamples_ReturnsMinimumConversionCost(
-        string source, string target, char[] original, char[] changed, int[] cost, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostToConvertStringISolution.MinimumCostByAllPairsShortestPaths(
-                new MinimumCostToConvertStringISolution.SourceText(source),
-                new MinimumCostToConvertStringISolution.TargetText(target),
-                (original, changed, cost)));
+        ConversionExample example)
+    {
+        var actual = MinimumCostToConvertStringISolution.MinimumCostByAllPairsShortestPaths(
+            new MinimumCostToConvertStringISolution.SourceText(example.Source),
+            new MinimumCostToConvertStringISolution.TargetText(example.Target),
+            (example.Original, example.Changed, example.Cost));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the conversion asked for, the reachable character edits
+    // that may serve it, and the cost LeetCode publishes. Named fields rather than
+    // six positional arguments, so `Source` and `Target` - the same `string` type,
+    // and the two whose transposition silently asks the reverse question - state
+    // which role each plays.
+    public readonly record struct ConversionExample(
+        string Source,
+        string Target,
+        char[] Original,
+        char[] Changed,
+        int[] Cost,
+        long Expected);
 }

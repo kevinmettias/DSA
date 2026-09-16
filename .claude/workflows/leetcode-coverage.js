@@ -90,6 +90,16 @@ function buildRoleAndGoal(list) {
 function buildConventions() {
   return (
     `WHERE EACH FILE GOES (ARCHITECTURE.md section 17 is the authority; these are its rules in brief):\n` +
+    buildConventionSolutionPlacement() +
+    buildConventionSharedTiers() +
+    buildConventionHarnesses() +
+    buildConventionReferenceShape()
+  )
+}
+
+// Item 1: the solution class and its own project.
+function buildConventionSolutionPlacement() {
+  return (
     `1. DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs (its OWN project, referencing DSAExperimentation) - an \`internal static class ` +
     `<Name>Solution\` in namespace \`DSAExperimentation.LeetCode.<Name>\`, holding EVERY strategy for ` +
     `the problem as a public static method named \`<Operation>By<Strategy>\` (e.g. AddByBitStack, ` +
@@ -99,7 +109,13 @@ function buildConventions() {
     `taking the prepared input; that overload must take a Domain type or one of this repo's own containers ` +
     `(e.g. Set<string>, which is not IEnumerable, so the overloads can never be ambiguous), never a BCL ` +
     `collection the LeetCode-shaped overload could also bind. A witness type (IFoldAlgebra, ITopology, ...) ` +
-    `used by this problem ALONE also lives in this folder.\n` +
+    `used by this problem ALONE also lives in this folder.\n`
+  )
+}
+
+// Item 2: which tier a shared type goes in, and what already exists.
+function buildConventionSharedTiers() {
+  return (
     `2. Shared building blocks. WHICH TIER a shared type goes in is decided by ARCHITECTURE.md section 2's ` +
     `axes, NOT by how many problems use it - "used by more than one problem" is a sharing test, not a ` +
     `classification test, and getting that wrong is exactly the mistake section 17.6 documents. A ` +
@@ -113,7 +129,13 @@ function buildConventions() {
     `DataStructures/Graph/Engines/Dags/Trees (BinaryTree, tries, RootedTreeNode + ParentArrayTree), ` +
     `Algorithms/ShortestPaths (Dijkstra/AStar plus the Zero/Manhattan/Chebyshev heuristics, and ` +
     `Grids//Hamming/ distance helpers), Algorithms/Reducing, Algorithms/Folding, ` +
-    `Domain/Locks (the 4-wheel lock instance), Domain/Modular (mod 1e9+7).\n` +
+    `Domain/Locks (the 4-wheel lock instance), Domain/Modular (mod 1e9+7).\n`
+  )
+}
+
+// Items 3-4: the test and benchmark harnesses.
+function buildConventionHarnesses() {
+  return (
     `3. DSAExperimentation.Tests/LeetCodeCoverage/<Name>/<Name>Tests.cs - HARNESS ONLY, no algorithm ` +
     `whatsoever. A \`public sealed class <Name>Tests\` with LeetCode's published examples stated ONCE as ` +
     `\`public static TheoryData<...> Examples\`, then ONE \`[Theory] [MemberData(nameof(Examples))]\` ` +
@@ -123,7 +145,13 @@ function buildConventions() {
     `methods that are one-line calls into <Name>Solution, one per strategy, with [Params] input sizes and a ` +
     `[GlobalSetup] that builds the workload. Only workload SIZING/seeding may live in ` +
     `DSAExperimentation.Benchmarks/Fixtures/ (see LockWorkloads, HammingWorkloads, WeightedGridWorkloads); ` +
-    `what it builds FROM is Domain code.\n\n` +
+    `what it builds FROM is Domain code.\n\n`
+  )
+}
+
+// The worked reference pair, plus the warning about the un-migrated majority.
+function buildConventionReferenceShape() {
+  return (
     `Read these as the reference shape before writing anything - they are migrated and correct:\n` +
     `- DSAExperimentation.LeetCode/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads)\n` +
     `- DSAExperimentation.Tests/LeetCodeCoverage/OpenTheLock/OpenTheLockTests.cs\n` +

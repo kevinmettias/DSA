@@ -5,126 +5,121 @@ namespace DSAExperimentation.Tests.DataStructures.FenwickTree;
 public sealed partial class FenwickTreeTests
 {
     private static readonly int[] AscendingFive = [1, 2, 3, 4, 5];
-    private static readonly int[] AscendingThree = [1, 2, 3];
 
     [Fact]
     public void Constructor_FromInitialValues_PrefixQueryMatchesRunningSum()
     {
-        const int PrefixSumThroughIndex1 = 3;
-        const int LastIndex = 4;
-        const int PrefixSumThroughLastIndex = 15;
-
         var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
 
         Assert.Equal(1, tree.PrefixQuery(0));
-        Assert.Equal(PrefixSumThroughIndex1, tree.PrefixQuery(1));
-        Assert.Equal(PrefixSumThroughLastIndex, tree.PrefixQuery(LastIndex));
+        Assert.Equal(Fixtures.PrefixSumThroughIndex1, tree.PrefixQuery(1));
+        Assert.Equal(Fixtures.PrefixSumThroughLastIndex, tree.PrefixQuery(Fixtures.LastIndex));
     }
 
     [Fact]
     public void Query_SumOperation_ReturnsRangeSum()
     {
-        const int RangeEnd = 3;
-        const int SumThroughRangeEnd = 9;
-        const int LastIndex = 4;
-        const int SumOfAllElements = 15;
-        const int MiddleIndex = 2;
-        const int ValueAtMiddleIndex = 3;
-
         var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
 
-        var sumThroughRangeEnd = tree.Query(1, RangeEnd);
-        Assert.Equal(SumThroughRangeEnd, sumThroughRangeEnd);
+        var sumThroughRangeEnd = tree.Query(1, Fixtures.RangeEnd);
+        Assert.Equal(Fixtures.SumThroughRangeEnd, sumThroughRangeEnd);
 
-        var sumOfAllElements = tree.Query(0, LastIndex);
-        Assert.Equal(SumOfAllElements, sumOfAllElements);
+        var sumOfAllElements = tree.Query(0, Fixtures.LastIndex);
+        Assert.Equal(Fixtures.SumOfAllElements, sumOfAllElements);
 
-        var valueAtMiddleIndex = tree.Query(MiddleIndex, MiddleIndex);
-        Assert.Equal(ValueAtMiddleIndex, valueAtMiddleIndex);
+        var valueAtMiddleIndex = tree.Query(Fixtures.MiddleIndex, Fixtures.MiddleIndex);
+        Assert.Equal(Fixtures.ValueAtMiddleIndex, valueAtMiddleIndex);
     }
 
     [Fact]
     public void Add_AppliesDeltaToEveryQueryCoveringThatIndex()
     {
-        const int UpdateIndex = 2;
-        const int UpdateDelta = 10;
-        const int ValueAtUpdateIndex = 13;
-        const int SumOfFirstTwoElements = 3;
-        const int LastIndex = 4;
-        const int SumOfAllElementsAfterUpdate = 25;
-
         var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
 
-        tree.Add(UpdateIndex, UpdateDelta);
+        tree.Add(Fixtures.UpdateIndex, Fixtures.UpdateDelta);
 
-        var valueAtUpdateIndex = tree.Query(UpdateIndex, UpdateIndex);
-        Assert.Equal(ValueAtUpdateIndex, valueAtUpdateIndex);
+        var valueAtUpdateIndex = tree.Query(Fixtures.UpdateIndex, Fixtures.UpdateIndex);
+        Assert.Equal(Fixtures.ValueAtUpdateIndex, valueAtUpdateIndex);
 
         var sumOfFirstTwoElements = tree.Query(0, 1);
-        Assert.Equal(SumOfFirstTwoElements, sumOfFirstTwoElements);
+        Assert.Equal(Fixtures.SumOfFirstTwoElements, sumOfFirstTwoElements);
 
-        var sumOfAllElementsAfterUpdate = tree.Query(0, LastIndex);
-        Assert.Equal(SumOfAllElementsAfterUpdate, sumOfAllElementsAfterUpdate);
+        var sumOfAllElementsAfterUpdate = tree.Query(0, Fixtures.LastIndex);
+        Assert.Equal(Fixtures.SumOfAllElementsAfterUpdate, sumOfAllElementsAfterUpdate);
     }
 
     [Fact]
     public void Query_XorOperation_ReturnsRangeXor()
     {
-        const int FirstThreeRangeEnd = 2;
-        const int XorOfFirstThreeElements = 1 ^ 2 ^ 3;
-        const int LastTwoRangeStart = 3;
-        const int LastTwoRangeEnd = 4;
-        const int XorOfLastTwoElements = 4 ^ 5;
-
         var tree = new FenwickTree<int, XorOperation<int>>(AscendingFive);
 
-        var xorOfFirstThreeElements = tree.Query(0, FirstThreeRangeEnd);
-        Assert.Equal(XorOfFirstThreeElements, xorOfFirstThreeElements);
+        var xorOfFirstThreeElements = tree.Query(0, Fixtures.FirstThreeRangeEnd);
+        Assert.Equal(Fixtures.XorOfFirstThreeElements, xorOfFirstThreeElements);
 
-        var xorOfLastTwoElements = tree.Query(LastTwoRangeStart, LastTwoRangeEnd);
-        Assert.Equal(XorOfLastTwoElements, xorOfLastTwoElements);
+        var xorOfLastTwoElements = tree.Query(Fixtures.LastTwoRangeStart, Fixtures.LastTwoRangeEnd);
+        Assert.Equal(Fixtures.XorOfLastTwoElements, xorOfLastTwoElements);
     }
 
     [Fact]
     public void Constructor_SizeOnly_StartsAtIdentityEverywhere()
     {
-        const int TreeSize = 5;
-        const int LastIndex = 4;
+        var tree = new FenwickTree<int, SumOperation<int>>(Fixtures.SizeOnlyTreeSize);
 
-        var tree = new FenwickTree<int, SumOperation<int>>(TreeSize);
-
-        var sumOfAllElements = tree.Query(0, LastIndex);
+        var sumOfAllElements = tree.Query(0, Fixtures.LastIndex);
         Assert.Equal(0, sumOfAllElements);
     }
 
     [Fact]
     public void Count_ReflectsConstructorSize()
     {
-        const int TreeSize = 7;
+        var tree = new FenwickTree<int, SumOperation<int>>(Fixtures.CountTreeSize);
 
-        var tree = new FenwickTree<int, SumOperation<int>>(TreeSize);
-
-        Assert.Equal(TreeSize, tree.Count);
+        Assert.Equal(Fixtures.CountTreeSize, tree.Count);
     }
 
     [Fact]
     public void Query_OutOfRangeRight_ThrowsArgumentOutOfRangeException()
     {
-        const int OutOfRangeIndex = 3;
+        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
 
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingThree);
-
-        Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, OutOfRangeIndex));
+        Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, Fixtures.OutOfRangeIndex));
     }
 
     [Fact]
     public void Add_IndexOutOfRange_ThrowsArgumentOutOfRangeException()
     {
-        const int OutOfRangeIndex = 3;
-        const int Delta = 10;
+        var tree = new FenwickTree<int, SumOperation<int>>(AscendingFive);
 
-        var tree = new FenwickTree<int, SumOperation<int>>(AscendingThree);
+        Assert.Throws<ArgumentOutOfRangeException>(() => tree.Add(Fixtures.OutOfRangeIndex, Fixtures.Delta));
+    }
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => tree.Add(OutOfRangeIndex, Delta));
+    /// <summary>
+    /// The indices these tests probe and the values they expect back, named once so a
+    /// second test does not have to reach into a neighbour's body for them.
+    /// </summary>
+    private static class Fixtures
+    {
+        public const int PrefixSumThroughIndex1 = 3;
+        public const int LastIndex = 4;
+        public const int PrefixSumThroughLastIndex = 15;
+        public const int RangeEnd = 3;
+        public const int SumThroughRangeEnd = 9;
+        public const int SumOfAllElements = 15;
+        public const int MiddleIndex = 2;
+        public const int ValueAtMiddleIndex = 3;
+        public const int UpdateIndex = 2;
+        public const int UpdateDelta = 10;
+        public const int ValueAtUpdateIndex = 13;
+        public const int SumOfFirstTwoElements = 3;
+        public const int SumOfAllElementsAfterUpdate = 25;
+        public const int FirstThreeRangeEnd = 2;
+        public const int XorOfFirstThreeElements = 1 ^ 2 ^ 3;
+        public const int LastTwoRangeStart = 3;
+        public const int LastTwoRangeEnd = 4;
+        public const int XorOfLastTwoElements = 4 ^ 5;
+        public const int SizeOnlyTreeSize = 5;
+        public const int CountTreeSize = 7;
+        public const int OutOfRangeIndex = 5;
+        public const int Delta = 10;
     }
 }

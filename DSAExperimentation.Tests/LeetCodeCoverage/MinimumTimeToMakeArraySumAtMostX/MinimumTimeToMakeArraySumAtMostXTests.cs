@@ -33,12 +33,20 @@ public sealed class MinimumTimeToMakeArraySumAtMostXTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByDenseTable_LeetCodeExamples_ReturnsFewestSecondsToReachTarget(
-        int[] nums1, int[] nums2, int x, int expected) =>
-        Assert.Equal(expected, MinimumTimeToMakeArraySumAtMostXSolution.MinimumTimeByDenseTable(nums1, nums2, x));
+        int[] nums1, int[] nums2, int x, int expected)
+    {
+        var actual = MinimumTimeToMakeArraySumAtMostXSolution.MinimumTimeByDenseTable(nums1, nums2, x);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByRollingKnapsack_LeetCodeExamples_ReturnsFewestSecondsToReachTarget(
-        int[] nums1, int[] nums2, int x, int expected) =>
-        Assert.Equal(expected, MinimumTimeToMakeArraySumAtMostXSolution.MinimumTimeByRollingKnapsack(nums1, nums2, x));
+        int[] nums1, int[] nums2, int x, int expected)
+    {
+        var actual = MinimumTimeToMakeArraySumAtMostXSolution.MinimumTimeByRollingKnapsack(nums1, nums2, x);
+
+        Assert.Equal(expected, actual);
+    }
 }

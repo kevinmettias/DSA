@@ -31,15 +31,20 @@ public sealed class NumberOfIntegersWithPopcountDepthEqualToKIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PopcountDepthByBruteForce_LeetCodeExamples_ReturnsCountsPerRangeQuery(
-        long[] nums, long[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, NumberOfIntegersWithPopcountDepthEqualToKIISolution.PopcountDepthByBruteForce(nums, queries));
+        long[] nums, long[][] queries, int[] expected)
+    {
+        var actual = NumberOfIntegersWithPopcountDepthEqualToKIISolution.PopcountDepthByBruteForce(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PopcountDepthByFenwickBuckets_LeetCodeExamples_ReturnsCountsPerRangeQuery(
-        long[] nums, long[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfIntegersWithPopcountDepthEqualToKIISolution.PopcountDepthByFenwickBuckets(nums, queries));
+        long[] nums, long[][] queries, int[] expected)
+    {
+        var actual = NumberOfIntegersWithPopcountDepthEqualToKIISolution.PopcountDepthByFenwickBuckets(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

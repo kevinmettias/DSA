@@ -17,12 +17,20 @@ public sealed class FindSubarrayWithBitwiseORClosestToKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumDifferenceByBruteForce_LeetCodeExamples_ReturnsClosestOrDifference(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, FindSubarrayWithBitwiseORClosestToKSolution.MinimumDifferenceByBruteForce(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = FindSubarrayWithBitwiseORClosestToKSolution.MinimumDifferenceByBruteForce(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumDifferenceByOrCompression_LeetCodeExamples_ReturnsClosestOrDifference(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, FindSubarrayWithBitwiseORClosestToKSolution.MinimumDifferenceByOrCompression(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = FindSubarrayWithBitwiseORClosestToKSolution.MinimumDifferenceByOrCompression(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

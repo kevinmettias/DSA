@@ -6,25 +6,34 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RepeatedSubstringPattern;
 // just pins them to LeetCode's published examples.
 public sealed class RepeatedSubstringPatternTests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<RepeatedPatternExample> Examples =>
         new()
         {
-            { "abab", true },
-            { "aba", false },
-            { "abcabcabcabc", true },
-            { "a", false },
-            { "aa", true },
+            new RepeatedPatternExample(Input: "abab", HasRepeatedPattern: true),
+            new RepeatedPatternExample(Input: "aba", HasRepeatedPattern: false),
+            new RepeatedPatternExample(Input: "abcabcabcabc", HasRepeatedPattern: true),
+            new RepeatedPatternExample(Input: "a", HasRepeatedPattern: false),
+            new RepeatedPatternExample(Input: "aa", HasRepeatedPattern: true),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HasRepeatedSubstringPatternByDivisorBruteForce_ClassicExamples_ReturnsExpected(
-        string s, bool expected) =>
-        Assert.Equal(expected, RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByDivisorBruteForce(s));
+        RepeatedPatternExample example) =>
+        Assert.Equal(
+            example.HasRepeatedPattern,
+            RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByDivisorBruteForce(example.Input));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HasRepeatedSubstringPatternByKmpFailureFunction_ClassicExamples_ReturnsExpected(
-        string s, bool expected) =>
-        Assert.Equal(expected, RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByKmpFailureFunction(s));
+        RepeatedPatternExample example) =>
+        Assert.Equal(
+            example.HasRepeatedPattern,
+            RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByKmpFailureFunction(example.Input));
+
+    // One example: the string and whether it is a substring repeated twice or more.
+    // The expectation is named rather than carried by its position, so the row reads
+    // as an assertion instead of as a bare `true`.
+    public readonly record struct RepeatedPatternExample(string Input, bool HasRepeatedPattern);
 }

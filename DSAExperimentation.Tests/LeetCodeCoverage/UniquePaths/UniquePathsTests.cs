@@ -17,12 +17,20 @@ public sealed class UniquePathsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPathsByCombinatorics_LeetCodeExamples_ReturnsExpectedCount(
-        int m, int n, int expected) =>
-        Assert.Equal(expected, UniquePathsSolution.CountPathsByCombinatorics(m, n));
+        int m, int n, int expected)
+    {
+        var actual = UniquePathsSolution.CountPathsByCombinatorics(m, n);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPathsByMemoizedRecurrence_LeetCodeExamples_ReturnsExpectedCount(
-        int m, int n, int expected) =>
-        Assert.Equal(expected, UniquePathsSolution.CountPathsByMemoizedRecurrence(m, n));
+        int m, int n, int expected)
+    {
+        var actual = UniquePathsSolution.CountPathsByMemoizedRecurrence(m, n);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -31,18 +31,24 @@ public sealed class SubarrayWithElementsGreaterThanVaryingThresholdTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ValidSubarraySizeByWindowMinimumScan_LeetCodeExamples_ReturnsAQualifyingSize(
-        int[] nums, int threshold, int[] qualifyingSizes) =>
-        Assert.Contains(
-            SubarrayWithElementsGreaterThanVaryingThresholdSolution.ValidSubarraySizeByWindowMinimumScan(
-                nums, threshold),
-            qualifyingSizes);
+        int[] nums, int threshold, int[] qualifyingSizes)
+    {
+        var size = SubarrayWithElementsGreaterThanVaryingThresholdSolution.ValidSubarraySizeByWindowMinimumScan(
+            nums,
+            threshold);
+
+        Assert.Contains(size, qualifyingSizes);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ValidSubarraySizeByUnionFindOrder_LeetCodeExamples_ReturnsAQualifyingSize(
-        int[] nums, int threshold, int[] qualifyingSizes) =>
-        Assert.Contains(
-            SubarrayWithElementsGreaterThanVaryingThresholdSolution.ValidSubarraySizeByUnionFindOrder(
-                nums, threshold),
-            qualifyingSizes);
+        int[] nums, int threshold, int[] qualifyingSizes)
+    {
+        var size = SubarrayWithElementsGreaterThanVaryingThresholdSolution.ValidSubarraySizeByUnionFindOrder(
+            nums,
+            threshold);
+
+        Assert.Contains(size, qualifyingSizes);
+    }
 }

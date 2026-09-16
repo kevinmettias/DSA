@@ -22,12 +22,20 @@ public sealed class ThreeSumWithMultiplicityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountTripletsByBruteForce_LeetCodeExamples_ReturnsMatchingIndexTripletCount(
-        int[] arr, int target, int expected) =>
-        Assert.Equal(expected, ThreeSumWithMultiplicitySolution.CountTripletsByBruteForce(arr, target));
+        int[] arr, int target, int expected)
+    {
+        var actual = ThreeSumWithMultiplicitySolution.CountTripletsByBruteForce(arr, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountTripletsByMergeSortTwoPointers_LeetCodeExamples_ReturnsMatchingIndexTripletCount(
-        int[] arr, int target, int expected) =>
-        Assert.Equal(expected, ThreeSumWithMultiplicitySolution.CountTripletsByMergeSortTwoPointers(arr, target));
+        int[] arr, int target, int expected)
+    {
+        var actual = ThreeSumWithMultiplicitySolution.CountTripletsByMergeSortTwoPointers(arr, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

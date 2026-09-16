@@ -35,9 +35,10 @@ public sealed class DynamicArrayStorageTests
     public void Add_PastTheInitialCapacity_KeepsEveryElement()
     {
         var storage = Seeded([.. Enumerable.Range(0, 100)]);
+        var expected = Enumerable.Range(0, 100);
 
         Assert.Equal(100, storage.Count);
-        Assert.Equal(Enumerable.Range(0, 100), Contents(storage));
+        Assert.Equal(expected, Contents(storage));
     }
 
     [Fact]

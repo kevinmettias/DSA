@@ -21,12 +21,20 @@ public sealed class FindTheKthLargestIntegerInTheArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthLargestNumberByFullSort_LeetCodeExamples_ReturnsKthLargestByNumericValue(
-        string[] nums, int rank, string expected) =>
-        Assert.Equal(expected, FindTheKthLargestIntegerInTheArraySolution.KthLargestNumberByFullSort(nums, rank));
+        string[] nums, int rank, string expected)
+    {
+        var actual = FindTheKthLargestIntegerInTheArraySolution.KthLargestNumberByFullSort(nums, rank);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthLargestNumberBySizeKMinHeap_LeetCodeExamples_ReturnsKthLargestByNumericValue(
-        string[] nums, int rank, string expected) =>
-        Assert.Equal(expected, FindTheKthLargestIntegerInTheArraySolution.KthLargestNumberBySizeKMinHeap(nums, rank));
+        string[] nums, int rank, string expected)
+    {
+        var actual = FindTheKthLargestIntegerInTheArraySolution.KthLargestNumberBySizeKMinHeap(nums, rank);
+
+        Assert.Equal(expected, actual);
+    }
 }

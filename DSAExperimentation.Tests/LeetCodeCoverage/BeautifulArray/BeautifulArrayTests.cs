@@ -39,7 +39,9 @@ public sealed class BeautifulArrayTests
 
     private static void AssertBeautifulPermutation(int n, int[] actual)
     {
-        Assert.Equal(Enumerable.Range(1, n), actual.OrderBy(value => value));
+        var expected = Enumerable.Range(1, n);
+
+        Assert.Equal(expected, actual.OrderBy(value => value));
         Assert.True(IsBeautiful(actual), $"Not a beautiful array: [{string.Join(", ", actual)}]");
     }
 

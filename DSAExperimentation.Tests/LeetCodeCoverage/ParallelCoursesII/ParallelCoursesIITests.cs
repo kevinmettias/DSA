@@ -36,18 +36,30 @@ public sealed class ParallelCoursesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinNumberOfSemestersByBruteForceRecursion_LeetCodeExamples_ReturnsFewestSemesters(
-        int n, int[][] relations, int k, int expected) =>
-        Assert.Equal(expected, ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(n, relations, k));
+        int n, int[][] relations, int k, int expected)
+    {
+        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(n, relations, k);
+
+        Assert.Equal(expected, semesters);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinNumberOfSemestersByMemoizedRecursion_LeetCodeExamples_ReturnsFewestSemesters(
-        int n, int[][] relations, int k, int expected) =>
-        Assert.Equal(expected, ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k));
+        int n, int[][] relations, int k, int expected)
+    {
+        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k);
+
+        Assert.Equal(expected, semesters);
+    }
 
     [Theory]
     [MemberData(nameof(LargeExamples))]
     public void MinNumberOfSemestersByMemoizedRecursion_LargeCourseCounts_ReturnsFewestSemesters(
-        int n, int[][] relations, int k, int expected) =>
-        Assert.Equal(expected, ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k));
+        int n, int[][] relations, int k, int expected)
+    {
+        var semesters = ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(n, relations, k);
+
+        Assert.Equal(expected, semesters);
+    }
 }

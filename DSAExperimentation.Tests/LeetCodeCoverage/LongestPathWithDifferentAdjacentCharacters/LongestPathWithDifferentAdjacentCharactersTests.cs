@@ -37,16 +37,20 @@ public sealed class LongestPathWithDifferentAdjacentCharactersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPathByRecomputedSubtreeWalk_LeetCodeExamples_ReturnsLongestDifferentLabelPathNodeCount(
-        int[] parent, string s, int expected) =>
-        Assert.Equal(
-            expected,
-            LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByRecomputedSubtreeWalk(parent, s));
+        int[] parent, string s, int expected)
+    {
+        var actual = LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByRecomputedSubtreeWalk(parent, s);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPathByTreeFold_LeetCodeExamples_ReturnsLongestDifferentLabelPathNodeCount(
-        int[] parent, string s, int expected) =>
-        Assert.Equal(
-            expected,
-            LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByTreeFold(parent, s));
+        int[] parent, string s, int expected)
+    {
+        var actual = LongestPathWithDifferentAdjacentCharactersSolution.LongestPathByTreeFold(parent, s);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -40,12 +40,20 @@ public sealed class RelativeSortArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RelativeSortByLinearScanComparer_LeetCodeExamples_RanksByArr2ThenAppendsRemainderAscending(
-        int[] arr1, int[] arr2, int[] expected) =>
-        Assert.Equal(expected, RelativeSortArraySolution.RelativeSortByLinearScanComparer(arr1, arr2));
+        int[] arr1, int[] arr2, int[] expected)
+    {
+        var actual = RelativeSortArraySolution.RelativeSortByLinearScanComparer(arr1, arr2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RelativeSortByHashMapMergeSort_LeetCodeExamples_RanksByArr2ThenAppendsRemainderAscending(
-        int[] arr1, int[] arr2, int[] expected) =>
-        Assert.Equal(expected, RelativeSortArraySolution.RelativeSortByHashMapMergeSort(arr1, arr2));
+        int[] arr1, int[] arr2, int[] expected)
+    {
+        var actual = RelativeSortArraySolution.RelativeSortByHashMapMergeSort(arr1, arr2);
+
+        Assert.Equal(expected, actual);
+    }
 }

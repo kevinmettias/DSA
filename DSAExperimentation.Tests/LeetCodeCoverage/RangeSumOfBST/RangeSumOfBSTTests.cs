@@ -36,14 +36,24 @@ public sealed class RangeSumOfBSTTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RangeSumByFullScan_LeetCodeExamples_SumsValuesInsideRange(
-        int[] values, int low, int high, int expected) =>
-        Assert.Equal(expected, RangeSumOfBSTSolution.RangeSumByFullScan(BuildTree(values), low, high));
+        int[] values, int low, int high, int expected)
+    {
+        var tree = BuildTree(values);
+        var sum = RangeSumOfBSTSolution.RangeSumByFullScan(tree, low, high);
+
+        Assert.Equal(expected, sum);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RangeSumBySearchTreePruning_LeetCodeExamples_SumsValuesInsideRange(
-        int[] values, int low, int high, int expected) =>
-        Assert.Equal(expected, RangeSumOfBSTSolution.RangeSumBySearchTreePruning(BuildTree(values), low, high));
+        int[] values, int low, int high, int expected)
+    {
+        var tree = BuildTree(values);
+        var sum = RangeSumOfBSTSolution.RangeSumBySearchTreePruning(tree, low, high);
+
+        Assert.Equal(expected, sum);
+    }
 
     private static BinaryTreeNode<int>? BuildTree(int[] values)
     {

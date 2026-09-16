@@ -28,16 +28,20 @@ public sealed class TheScoreOfStudentsSolvingMathExpressionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ScoreOfStudentsByUnmemoizedRecursion_LeetCodeExamples_ReturnsTotalScore(
-        string expression, int[] answers, int expected) =>
-        Assert.Equal(
-            expected,
-            TheScoreOfStudentsSolvingMathExpressionSolution.ScoreOfStudentsByUnmemoizedRecursion(expression, answers));
+        string expression, int[] answers, int expected)
+    {
+        var actual = TheScoreOfStudentsSolvingMathExpressionSolution.ScoreOfStudentsByUnmemoizedRecursion(expression, answers);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ScoreOfStudentsByMemoizedIntervals_LeetCodeExamples_ReturnsTotalScore(
-        string expression, int[] answers, int expected) =>
-        Assert.Equal(
-            expected,
-            TheScoreOfStudentsSolvingMathExpressionSolution.ScoreOfStudentsByMemoizedIntervals(expression, answers));
+        string expression, int[] answers, int expected)
+    {
+        var actual = TheScoreOfStudentsSolvingMathExpressionSolution.ScoreOfStudentsByMemoizedIntervals(expression, answers);
+
+        Assert.Equal(expected, actual);
+    }
 }

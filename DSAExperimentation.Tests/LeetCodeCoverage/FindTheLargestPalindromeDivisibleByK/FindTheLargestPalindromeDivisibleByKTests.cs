@@ -17,12 +17,20 @@ public sealed class FindTheLargestPalindromeDivisibleByKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LargestPalindromeByBruteForce_LeetCodeExamples_ReturnsLargestKPalindromicInteger(
-        int n, int k, string expected) =>
-        Assert.Equal(expected, FindTheLargestPalindromeDivisibleByKSolution.LargestPalindromeByBruteForce(n, k));
+        int n, int k, string expected)
+    {
+        var actual = FindTheLargestPalindromeDivisibleByKSolution.LargestPalindromeByBruteForce(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LargestPalindromeByDigitDpMemo_LeetCodeExamples_ReturnsLargestKPalindromicInteger(
-        int n, int k, string expected) =>
-        Assert.Equal(expected, FindTheLargestPalindromeDivisibleByKSolution.LargestPalindromeByDigitDpMemo(n, k));
+        int n, int k, string expected)
+    {
+        var actual = FindTheLargestPalindromeDivisibleByKSolution.LargestPalindromeByDigitDpMemo(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

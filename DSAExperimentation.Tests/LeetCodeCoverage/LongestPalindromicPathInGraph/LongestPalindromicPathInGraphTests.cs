@@ -17,14 +17,20 @@ public sealed class LongestPalindromicPathInGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPalindromeByBruteForceDfs_LeetCodeExamples_ReturnsLongestPalindromicPathLength(
-        int n, int[][] edges, string label, int expected) =>
-        Assert.Equal(
-            expected, LongestPalindromicPathInGraphSolution.LongestPalindromeByBruteForceDfs(n, edges, label));
+        int n, int[][] edges, string label, int expected)
+    {
+        var actual = LongestPalindromicPathInGraphSolution.LongestPalindromeByBruteForceDfs(n, edges, label);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPalindromeByBitmaskMemo_LeetCodeExamples_ReturnsLongestPalindromicPathLength(
-        int n, int[][] edges, string label, int expected) =>
-        Assert.Equal(
-            expected, LongestPalindromicPathInGraphSolution.LongestPalindromeByBitmaskMemo(n, edges, label));
+        int n, int[][] edges, string label, int expected)
+    {
+        var actual = LongestPalindromicPathInGraphSolution.LongestPalindromeByBitmaskMemo(n, edges, label);
+
+        Assert.Equal(expected, actual);
+    }
 }

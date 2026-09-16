@@ -32,16 +32,20 @@ public sealed class MaximumGeneticDifferenceQueryTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxGeneticDifferenceByAncestorWalk_LeetCodeExamples_ReturnsBestXorPerQuery(
-        int[] parents, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximumGeneticDifferenceQuerySolution.MaxGeneticDifferenceByAncestorWalk(parents, queries));
+        int[] parents, int[][] queries, int[] expected)
+    {
+        var actual = MaximumGeneticDifferenceQuerySolution.MaxGeneticDifferenceByAncestorWalk(parents, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxGeneticDifferenceByBitTrieDfs_LeetCodeExamples_ReturnsBestXorPerQuery(
-        int[] parents, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximumGeneticDifferenceQuerySolution.MaxGeneticDifferenceByBitTrieDfs(parents, queries));
+        int[] parents, int[][] queries, int[] expected)
+    {
+        var actual = MaximumGeneticDifferenceQuerySolution.MaxGeneticDifferenceByBitTrieDfs(parents, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

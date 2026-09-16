@@ -18,12 +18,20 @@ public sealed class SortedGcdPairQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerQueriesByBruteForce_LeetCodeExamples_ReturnsSortedGcdAtEachQueryIndex(
-        int[] nums, int[] queries, int[] expected) =>
-        Assert.Equal(expected, SortedGcdPairQueriesSolution.AnswerQueriesByBruteForce(nums, queries));
+        int[] nums, int[] queries, int[] expected)
+    {
+        var actual = SortedGcdPairQueriesSolution.AnswerQueriesByBruteForce(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerQueriesByGcdCountingSieve_LeetCodeExamples_ReturnsSortedGcdAtEachQueryIndex(
-        int[] nums, int[] queries, int[] expected) =>
-        Assert.Equal(expected, SortedGcdPairQueriesSolution.AnswerQueriesByGcdCountingSieve(nums, queries));
+        int[] nums, int[] queries, int[] expected)
+    {
+        var actual = SortedGcdPairQueriesSolution.AnswerQueriesByGcdCountingSieve(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

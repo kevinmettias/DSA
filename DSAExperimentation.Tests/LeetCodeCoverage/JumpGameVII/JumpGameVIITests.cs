@@ -10,37 +10,53 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameVII;
 // reconverging jump chains stay cheap.
 public sealed class JumpGameVIITests
 {
-    public static TheoryData<string, int, int, bool> Examples =>
+    public static TheoryData<JumpWindowExample> Examples =>
         new()
         {
             // LC example 1: 0 -> 3 -> 5.
-            { "011010", 2, 3, true },
+            { new JumpWindowExample(Positions: "011010", MinJump: 2, MaxJump: 3, Expected: true) },
 
             // LC example 2: nothing in the jump window from 0 is a '0'.
-            { "01101110", 2, 3, false },
+            { new JumpWindowExample(Positions: "01101110", MinJump: 2, MaxJump: 3, Expected: false) },
 
             // The last index is reachable in one step, and is the start's only move.
-            { "00", 1, 1, true },
+            { new JumpWindowExample(Positions: "00", MinJump: 1, MaxJump: 1, Expected: true) },
 
             // The last index is a wall, so it can never be landed on.
-            { "0001", 1, 2, false },
+            { new JumpWindowExample(Positions: "0001", MinJump: 1, MaxJump: 2, Expected: false) },
 
             // Every index is open and the window straddles the end.
-            { "0000", 2, 3, true },
+            { new JumpWindowExample(Positions: "0000", MinJump: 2, MaxJump: 3, Expected: true) },
 
             // A wall inside a width-one window cuts the only chain at index 2.
-            { "0010", 1, 1, false },
+            { new JumpWindowExample(Positions: "0010", MinJump: 1, MaxJump: 1, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanReachByUnmemoizedRecursion_LeetCodeExamples_ReportsWhetherTheLastIndexIsReachable(
-        string positions, int minJump, int maxJump, bool expected) =>
-        Assert.Equal(expected, JumpGameVIISolution.CanReachByUnmemoizedRecursion(positions, minJump, maxJump));
+        JumpWindowExample example)
+    {
+        var actual = JumpGameVIISolution.CanReachByUnmemoizedRecursion(
+            example.Positions, example.MinJump, example.MaxJump);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanReachByVisitedTrackingTraversal_LeetCodeExamples_ReportsWhetherTheLastIndexIsReachable(
-        string positions, int minJump, int maxJump, bool expected) =>
-        Assert.Equal(expected, JumpGameVIISolution.CanReachByVisitedTrackingTraversal(positions, minJump, maxJump));
+        JumpWindowExample example)
+    {
+        var actual = JumpGameVIISolution.CanReachByVisitedTrackingTraversal(
+            example.Positions, example.MinJump, example.MaxJump);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the '0'/'1' positions, the jump window's bounds, and whether
+    // the last index can be reached. The `bool` is the expected answer rather than a
+    // mode, so the row names it instead of leaving a bare `true` in a position to decode.
+    public readonly record struct JumpWindowExample(
+        string Positions, int MinJump, int MaxJump, bool Expected);
 }

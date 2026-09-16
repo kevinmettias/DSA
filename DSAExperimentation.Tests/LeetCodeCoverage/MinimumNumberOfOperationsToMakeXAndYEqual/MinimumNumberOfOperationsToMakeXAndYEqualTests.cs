@@ -18,12 +18,17 @@ public sealed class MinimumNumberOfOperationsToMakeXAndYEqualTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinOperationsByMutationQueue_LeetCodeExamples_ReturnsFewestOperations(int x, int y, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfOperationsToMakeXAndYEqualSolution.MinOperationsByMutationQueue(x, y));
+    public void MinOperationsByMutationQueue_LeetCodeExamples_ReturnsFewestOperations(int x, int y, int expected)
+    {
+        var actual = MinimumNumberOfOperationsToMakeXAndYEqualSolution.MinOperationsByMutationQueue(x, y);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinOperationsByMemoizedReduce_LeetCodeExamples_ReturnsFewestOperations(int x, int y, int expected) =>
-        Assert.Equal(
-            expected, MinimumNumberOfOperationsToMakeXAndYEqualSolution.MinOperationsByMemoizedReduce(x, y));
+    public void MinOperationsByMemoizedReduce_LeetCodeExamples_ReturnsFewestOperations(int x, int y, int expected)
+    {
+        var actual = MinimumNumberOfOperationsToMakeXAndYEqualSolution.MinOperationsByMemoizedReduce(x, y);
+        Assert.Equal(expected, actual);
+    }
 }

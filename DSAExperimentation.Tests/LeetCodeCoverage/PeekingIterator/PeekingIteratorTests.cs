@@ -1,5 +1,4 @@
 using DSAExperimentation.LeetCode.PeekingIterator;
-using static DSAExperimentation.LeetCode.PeekingIterator.PeekingIteratorSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PeekingIterator;
 
@@ -39,13 +38,13 @@ public sealed class PeekingIteratorTests
     [MemberData(nameof(Examples))]
     public void CreateByIndexTracked_LeetCodeExamples_InterleavesCorrectly(
         int[] source, PeekOp[] operations, object?[] expected) =>
-        RunScript(CreateByIndexTracked(source), operations, expected);
+        RunScript(PeekingIteratorSolution.CreateByIndexTracked(source), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByQueuePrimitive_LeetCodeExamples_InterleavesCorrectly(
         int[] source, PeekOp[] operations, object?[] expected) =>
-        RunScript(CreateByQueuePrimitive(source), operations, expected);
+        RunScript(PeekingIteratorSolution.CreateByQueuePrimitive(source), operations, expected);
 
     private static void RunScript(IPeekingIterator iterator, PeekOp[] operations, object?[] expected)
     {
@@ -54,44 +53,47 @@ public sealed class PeekingIteratorTests
             Assert.Equal(expected[i], operations[i].Apply(iterator));
         }
     }
-}
 
-// One call in a peeking-iterator script: which operation to invoke. Pure
-// dispatch, built via the named factories below so a script (like Examples
-// above) reads like the LeetCode call sequence it replays.
-public readonly record struct PeekOp
-{
-    private readonly Kind _kind;
-
-    private PeekOp(Kind kind) => _kind = kind;
-
-    public static PeekOp HasNext() => new(Kind.HasNext);
-
-    public static PeekOp Peek() => new(Kind.Peek);
-
-    public static PeekOp Next() => new(Kind.Next);
-
-    // The bool result for hasNext, the int result for peek/next - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: IPeekingIterator is internal, and only this same
-    // assembly's RunScript ever calls Apply.
-    internal object? Apply(IPeekingIterator iterator)
+    // One call in a peeking-iterator script: which operation to invoke. Pure
+    // dispatch, built via the named factories below so a script (like Examples
+    // above) reads like the LeetCode call sequence it replays. Nested because it is
+    // only ever used inside this test class: it is this harness's own vocabulary,
+    // not a type another file would import, and named for the type it belongs to
+    // rather than filed beside it.
+    public readonly record struct PeekOp
     {
-        switch (_kind)
+        private readonly Kind _kind;
+
+        private PeekOp(Kind kind) => _kind = kind;
+
+        public static PeekOp HasNext() => new(Kind.HasNext);
+
+        public static PeekOp Peek() => new(Kind.Peek);
+
+        public static PeekOp Next() => new(Kind.Next);
+
+        // The bool result for hasNext, the int result for peek/next - so a script
+        // runner can assert against one expected value per operation uniformly.
+        // Internal, not public: IPeekingIterator is internal, and only this same
+        // assembly's RunScript ever calls Apply.
+        internal object? Apply(IPeekingIterator iterator)
         {
-            case Kind.HasNext:
-                return iterator.HasNext();
-            case Kind.Peek:
-                return iterator.Peek();
-            default:
-                return iterator.Next();
+            switch (_kind)
+            {
+                case Kind.HasNext:
+                    return iterator.HasNext();
+                case Kind.Peek:
+                    return iterator.Peek();
+                default:
+                    return iterator.Next();
+            }
         }
-    }
 
-    private enum Kind
-    {
-        HasNext,
-        Peek,
-        Next,
+        private enum Kind
+        {
+            HasNext,
+            Peek,
+            Next,
+        }
     }
 }

@@ -27,12 +27,18 @@ public sealed class MaximizeTheDistanceBetweenPointsOnASquareTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDistanceByLinearScan_LeetCodeExamples_ReturnsMaximizedMinimumDistance(
-        int side, int[][] points, int k, int expected) =>
-        Assert.Equal(expected, MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceByLinearScan(side, points, k));
+        int side, int[][] points, int k, int expected)
+    {
+        var actual = MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceByLinearScan(side, points, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDistanceBySortedGreedy_LeetCodeExamples_ReturnsMaximizedMinimumDistance(
-        int side, int[][] points, int k, int expected) =>
-        Assert.Equal(expected, MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceBySortedGreedy(side, points, k));
+        int side, int[][] points, int k, int expected)
+    {
+        var actual = MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceBySortedGreedy(side, points, k);
+        Assert.Equal(expected, actual);
+    }
 }

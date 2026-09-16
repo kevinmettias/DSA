@@ -18,16 +18,20 @@ public sealed class MinimumIncrementsForTargetMultiplesInAnArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinIncrementsByBottomUpBitmaskDp_LeetCodeExamples_ReturnsMinimumIncrements(
-        int[] nums, int[] target, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumIncrementsForTargetMultiplesInAnArraySolution.MinIncrementsByBottomUpBitmaskDp(nums, target));
+        int[] nums, int[] target, long expected)
+    {
+        var actual = MinimumIncrementsForTargetMultiplesInAnArraySolution.MinIncrementsByBottomUpBitmaskDp(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinIncrementsByMemoizedBitmaskDp_LeetCodeExamples_ReturnsMinimumIncrements(
-        int[] nums, int[] target, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumIncrementsForTargetMultiplesInAnArraySolution.MinIncrementsByMemoizedBitmaskDp(nums, target));
+        int[] nums, int[] target, long expected)
+    {
+        var actual = MinimumIncrementsForTargetMultiplesInAnArraySolution.MinIncrementsByMemoizedBitmaskDp(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

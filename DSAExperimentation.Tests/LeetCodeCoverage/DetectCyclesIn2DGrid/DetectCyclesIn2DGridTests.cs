@@ -8,33 +8,40 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DetectCyclesIn2DGrid;
 // baseline - previously benchmark-only - under assertion.
 public sealed class DetectCyclesIn2DGridTests
 {
-    public static TheoryData<char[][], bool> Examples =>
+    public static TheoryData<CycleGridCase> Examples =>
         new()
         {
-            { Grid("aaaa", "abba", "abba", "aaaa"), true },
-            { Grid("ccca", "cdcc", "ccec", "fccc"), true },
-            { Grid("abb", "bzb", "bbb"), false },
-            { Grid("aa", "aa"), true },
-            { Grid("ab", "ba"), false },
-            { Grid("a"), false },
+            { new CycleGridCase(Grid("aaaa", "abba", "abba", "aaaa"), HasCycle: true) },
+            { new CycleGridCase(Grid("ccca", "cdcc", "ccec", "fccc"), HasCycle: true) },
+            { new CycleGridCase(Grid("abb", "bzb", "bbb"), HasCycle: false) },
+            { new CycleGridCase(Grid("aa", "aa"), HasCycle: true) },
+            { new CycleGridCase(Grid("ab", "ba"), HasCycle: false) },
+            { new CycleGridCase(Grid("a"), HasCycle: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ContainsCycleByParentTrackedDepthFirstSearch_LeetCodeExamples_ReportsWhetherACycleExists(
-        char[][] grid, bool expected) =>
+        CycleGridCase example) =>
         Assert.Equal(
-            expected,
-            DetectCyclesIn2DGridSolution.ContainsCycleByParentTrackedDepthFirstSearch(grid));
+            example.HasCycle,
+            DetectCyclesIn2DGridSolution.ContainsCycleByParentTrackedDepthFirstSearch(example.Grid));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ContainsCycleByDisjointSetEdgeUnion_LeetCodeExamples_ReportsWhetherACycleExists(
-        char[][] grid, bool expected) =>
+        CycleGridCase example) =>
         Assert.Equal(
-            expected,
-            DetectCyclesIn2DGridSolution.ContainsCycleByDisjointSetEdgeUnion(grid));
+            example.HasCycle,
+            DetectCyclesIn2DGridSolution.ContainsCycleByDisjointSetEdgeUnion(example.Grid));
 
     private static char[][] Grid(params string[] rows) =>
         rows.Select(row => row.ToCharArray()).ToArray();
+
+    // One LeetCode example: the grid under test and whether a cycle closes in it. The
+    // expected value is named at every construction site, so a row reads as the case
+    // it is rather than as a bare `true` whose meaning is its position. Nested because
+    // it is only ever used inside this test class - it is this harness's own
+    // vocabulary, not a type another file would import.
+    public readonly record struct CycleGridCase(char[][] Grid, bool HasCycle);
 }

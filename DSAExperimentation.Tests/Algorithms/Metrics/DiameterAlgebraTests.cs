@@ -10,10 +10,21 @@ public sealed class DiameterAlgebraTests
     private static HeightDiameterState State(int height, int diameter) => new(height, diameter);
 
     [Fact]
-    public void Empty_IsZeroHeightAndZeroDiameter() => Assert.Equal(State(0, 0), DiameterAlgebra<TestNode>.Empty);
+    public void Empty_IsZeroHeightAndZeroDiameter()
+    {
+        var expected = State(0, 0);
+
+        Assert.Equal(expected, DiameterAlgebra<TestNode>.Empty);
+    }
 
     [Fact]
-    public void Combine_Leaf_IsHeightOneAndDiameterZero() => Assert.Equal(State(1, 0), DiameterAlgebra<TestNode>.Combine(Node, []));
+    public void Combine_Leaf_IsHeightOneAndDiameterZero()
+    {
+        var expected = State(1, 0);
+        var combined = DiameterAlgebra<TestNode>.Combine(Node, []);
+
+        Assert.Equal(expected, combined);
+    }
 
     [Fact]
     public void Combine_HeightIsOneMoreThanTheTallestChild() => Assert.Equal(4, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0), State(1, 0)]).Height);

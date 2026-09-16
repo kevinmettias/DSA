@@ -20,33 +20,39 @@ public sealed class LinkedListInBinaryTreeTests
     // and 6, and that 6 carrying 8 on its right.
     private static readonly int?[] SmallTree = [1, 4, 5, 2, 6, null, null, null, null, null, 8];
 
-    public static TheoryData<int[], int?[], bool> Examples =>
+    public static TheoryData<SubPathExample> Examples =>
         new()
         {
-            { [4, 2, 8], PublishedTree, true },
-            { [1, 4, 2, 6], PublishedTree, true },
-            { [1, 4, 2, 6, 8], PublishedTree, false },
-            { [4, 6, 8], SmallTree, true },
-            { [4, 2, 6], SmallTree, false },
-            { [9], SmallTree, false },
-            { [1], SmallTree, true },
+            { new SubPathExample(HeadValues: [4, 2, 8], TreeValues: PublishedTree, Expected: true) },
+            { new SubPathExample(HeadValues: [1, 4, 2, 6], TreeValues: PublishedTree, Expected: true) },
+            { new SubPathExample(HeadValues: [1, 4, 2, 6, 8], TreeValues: PublishedTree, Expected: false) },
+            { new SubPathExample(HeadValues: [4, 6, 8], TreeValues: SmallTree, Expected: true) },
+            { new SubPathExample(HeadValues: [4, 2, 6], TreeValues: SmallTree, Expected: false) },
+            { new SubPathExample(HeadValues: [9], TreeValues: SmallTree, Expected: false) },
+            { new SubPathExample(HeadValues: [1], TreeValues: SmallTree, Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsSubPathByArraySliceWalk_LeetCodeExamples_ReturnsWhetherADownwardPathMatches(
-        int[] headValues, int?[] treeValues, bool expected) =>
-        Assert.Equal(
-            expected,
-            LinkedListInBinaryTreeSolution.IsSubPathByArraySliceWalk(BuildList(headValues), BuildTree(treeValues)));
+        SubPathExample example)
+    {
+        var matches = LinkedListInBinaryTreeSolution.IsSubPathByArraySliceWalk(
+            BuildList(example.HeadValues), BuildTree(example.TreeValues));
+
+        Assert.Equal(example.Expected, matches);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsSubPathByLinkedNodeWalk_LeetCodeExamples_ReturnsWhetherADownwardPathMatches(
-        int[] headValues, int?[] treeValues, bool expected) =>
-        Assert.Equal(
-            expected,
-            LinkedListInBinaryTreeSolution.IsSubPathByLinkedNodeWalk(BuildList(headValues), BuildTree(treeValues)));
+        SubPathExample example)
+    {
+        var matches = LinkedListInBinaryTreeSolution.IsSubPathByLinkedNodeWalk(
+            BuildList(example.HeadValues), BuildTree(example.TreeValues));
+
+        Assert.Equal(example.Expected, matches);
+    }
 
     private static SinglyLinkedListNode<int> BuildList(int[] values)
     {
@@ -71,7 +77,7 @@ public sealed class LinkedListInBinaryTreeTests
             return null;
         }
 
-        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var root = new BinaryTreeNode<int>(values[0].Value);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
@@ -79,24 +85,36 @@ public sealed class LinkedListInBinaryTreeTests
         while (queue.Count > 0 && i < values.Length)
         {
             var node = queue.Dequeue();
-
-            if (values[i] is int leftValue)
-            {
-                node.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(node.Left);
-            }
-
-            i++;
-
-            if (i < values.Length && values[i] is int rightValue)
-            {
-                node.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(node.Right);
-            }
-
-            i++;
+            i = AttachChildren(node, values, i, queue);
         }
 
         return root;
     }
+
+    // Takes the two slots a dequeued node's children occupy, attaching each one that
+    // exists and queueing it up, and returns the index of the next unattached slot.
+    private static int AttachChildren(
+        BinaryTreeNode<int> node, int?[] values, int i, Queue<BinaryTreeNode<int>> queue)
+    {
+        if (values[i] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        i++;
+
+        if (i < values.Length && values[i] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i + 1;
+    }
+
+    // One example as one argument. The expected answer is a bool, and a bare `true` or
+    // `false` sitting third in a row does not say what it is a verdict on; naming the
+    // field at each row below does.
+    public readonly record struct SubPathExample(int[] HeadValues, int?[] TreeValues, bool Expected);
 }

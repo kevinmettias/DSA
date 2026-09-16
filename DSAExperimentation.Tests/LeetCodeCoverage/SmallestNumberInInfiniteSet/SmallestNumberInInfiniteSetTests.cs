@@ -85,33 +85,34 @@ public sealed class SmallestNumberInInfiniteSetTests
             Assert.Equal(expected[i], operations[i].Apply(set));
         }
     }
-}
 
-// One call in a SmallestInfiniteSet script: which method to invoke and with what
-// argument. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays. AddBack returns
-// null (no value); PopSmallest returns the actual answer - the same null-means-"no
-// return value" convention AllOneOp.Apply uses for its own void/value split.
-public readonly record struct InfiniteSetOp(InfiniteSetOp.OpKind kind, int num)
-{
-    public static InfiniteSetOp Pop() => new(OpKind.Pop, 0);
-
-    public static InfiniteSetOp AddBack(int num) => new(OpKind.AddBack, num);
-
-    internal int? Apply(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
+    // One call in a SmallestInfiniteSet script: which method to invoke and with what
+    // argument. Pure dispatch, built via the named factories below so a script (like
+    // Examples above) reads like the LeetCode call sequence it replays. AddBack returns
+    // null (no value); PopSmallest returns the actual answer - the same null-means-"no
+    // return value" convention AllOneOp.Apply uses for its own void/value split. Nested
+    // here rather than left at file scope so the file declares exactly one type.
+    public readonly record struct InfiniteSetOp(InfiniteSetOp.OpKind kind, int num)
     {
-        if (kind == OpKind.AddBack)
+        public static InfiniteSetOp Pop() => new(OpKind.Pop, 0);
+
+        public static InfiniteSetOp AddBack(int num) => new(OpKind.AddBack, num);
+
+        internal int? Apply(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
         {
-            set.AddBack(num);
-            return null;
+            if (kind == OpKind.AddBack)
+            {
+                set.AddBack(num);
+                return null;
+            }
+
+            return set.PopSmallest();
         }
 
-        return set.PopSmallest();
-    }
-
-    public enum OpKind
-    {
-        Pop,
-        AddBack,
+        public enum OpKind
+        {
+            Pop,
+            AddBack,
+        }
     }
 }

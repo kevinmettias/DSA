@@ -9,34 +9,46 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAWordOccursAsAPrefixO
 // occurs inside words without ever starting one.
 public sealed class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
 {
-    public static TheoryData<string, string, int> Examples =>
+    public static TheoryData<PrefixWordExample> Examples =>
         new()
         {
-            { "i love eating burger", "burg", 4 },
-            { "this problem is an easy problem", "pro", 2 },
-            { "i am tired", "you", -1 },
-            { "i am tired", "tired", 3 },
-            { "burger burg burgers", "burg", 1 },
-            { "hellohello hellohellohello", "ell", -1 },
+            { new PrefixWordExample(Sentence: "i love eating burger", SearchWord: "burg", Expected: 4) },
+            { new PrefixWordExample(Sentence: "this problem is an easy problem", SearchWord: "pro", Expected: 2) },
+            { new PrefixWordExample(Sentence: "i am tired", SearchWord: "you", Expected: -1) },
+            { new PrefixWordExample(Sentence: "i am tired", SearchWord: "tired", Expected: 3) },
+            { new PrefixWordExample(Sentence: "burger burg burgers", SearchWord: "burg", Expected: 1) },
+            { new PrefixWordExample(Sentence: "hellohello hellohellohello", SearchWord: "ell", Expected: -1) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IndexOfPrefixWordByStartsWithScan_LeetCodeExamples_ReturnsFirstMatchingWordPosition(
-        string sentence, string searchWord, int expected) =>
-        Assert.Equal(
-            expected,
+        PrefixWordExample example)
+    {
+        var position =
             CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByStartsWithScan(
-                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SentenceText(sentence),
-                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(searchWord)));
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SentenceText(example.Sentence),
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(example.SearchWord));
+
+        Assert.Equal(example.Expected, position);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IndexOfPrefixWordByTriePerWord_LeetCodeExamples_ReturnsFirstMatchingWordPosition(
-        string sentence, string searchWord, int expected) =>
-        Assert.Equal(
-            expected,
+        PrefixWordExample example)
+    {
+        var position =
             CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.IndexOfPrefixWordByTriePerWord(
-                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SentenceText(sentence),
-                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(searchWord)));
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SentenceText(example.Sentence),
+                new CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution.SearchedPrefix(example.SearchWord));
+
+        Assert.Equal(example.Expected, position);
+    }
+
+    // One LeetCode example: the sentence to search, the prefix to look for, and the
+    // 1-based position of the first word it starts. Both strings are the same type and the
+    // question is not symmetric, so the row names which is which rather than leaving two
+    // interchangeable positions.
+    public readonly record struct PrefixWordExample(string Sentence, string SearchWord, int Expected);
 }

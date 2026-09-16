@@ -1,5 +1,7 @@
 using System.Globalization;
-using static DSAExperimentation.LeetCode.DesignBitset.DesignBitsetSolution;
+using IBitset = DSAExperimentation.LeetCode.DesignBitset.DesignBitsetSolution.IBitset;
+using BitsetByEagerFlip = DSAExperimentation.LeetCode.DesignBitset.DesignBitsetSolution.BitsetByEagerFlip;
+using BitsetByLazyFlag = DSAExperimentation.LeetCode.DesignBitset.DesignBitsetSolution.BitsetByLazyFlag;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignBitset;
 
@@ -129,69 +131,80 @@ public sealed class DesignBitsetTests
             Assert.Equal(expected[i], operations[i].Apply(bitset));
         }
     }
-}
 
-// One call in a Bitset script: which operation to invoke and with what index. Pure
-// dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays.
-public readonly record struct BitsetOp(BitsetOp.OpKind kind, int index)
-{
-    private const string VoidResult = "null";
-    private const string TrueResult = "true";
-    private const string FalseResult = "false";
-
-    public static BitsetOp Fix(int idx) => new(OpKind.Fix, idx);
-
-    public static BitsetOp Unfix(int idx) => new(OpKind.Unfix, idx);
-
-    public static BitsetOp Flip() => new(OpKind.Flip, 0);
-
-    public static BitsetOp All() => new(OpKind.All, 0);
-
-    public static BitsetOp One() => new(OpKind.One, 0);
-
-    public static BitsetOp Count() => new(OpKind.Count, 0);
-
-    public static BitsetOp ToBitString() => new(OpKind.ToBitString, 0);
-
-    // The string LeetCode's own judge output shows for this call, so one expected
-    // value per operation covers the mutators, the two predicates, the count and
-    // the rendering uniformly.
-    internal string Apply(IBitset bitset) => kind switch
+    // One call in a Bitset script: which operation to invoke and with what index. Pure
+    // dispatch, built via the named factories below so a script (like Examples above)
+    // reads like the LeetCode call sequence it replays. Nested, because it is this
+    // harness's own way of stating a script and has no identity outside it.
+    public readonly record struct BitsetOp(BitsetOp.OpKind kind, int index)
     {
-        OpKind.Fix => ApplyVoid(bitset.Fix, index),
-        OpKind.Unfix => ApplyVoid(bitset.Unfix, index),
-        OpKind.Flip => ApplyFlip(bitset),
-        OpKind.All => Rendered(bitset.All()),
-        OpKind.One => Rendered(bitset.One()),
-        OpKind.Count => bitset.Count().ToString(CultureInfo.InvariantCulture),
-        _ => bitset.ToBitString(),
-    };
+        private const string VoidResult = "null";
+        private const string TrueResult = "true";
+        private const string FalseResult = "false";
 
-    private static string ApplyVoid(Action<int> mutate, int index)
-    {
-        mutate(index);
+        public static BitsetOp Fix(int idx) => new(OpKind.Fix, idx);
 
-        return VoidResult;
-    }
+        public static BitsetOp Unfix(int idx) => new(OpKind.Unfix, idx);
 
-    private static string ApplyFlip(IBitset bitset)
-    {
-        bitset.Flip();
+        public static BitsetOp Flip() => new(OpKind.Flip, 0);
 
-        return VoidResult;
-    }
+        public static BitsetOp All() => new(OpKind.All, 0);
 
-    private static string Rendered(bool value) => value ? TrueResult : FalseResult;
+        public static BitsetOp One() => new(OpKind.One, 0);
 
-    public enum OpKind
-    {
-        Fix,
-        Unfix,
-        Flip,
-        All,
-        One,
-        Count,
-        ToBitString,
+        public static BitsetOp Count() => new(OpKind.Count, 0);
+
+        public static BitsetOp ToBitString() => new(OpKind.ToBitString, 0);
+
+        // The string LeetCode's own judge output shows for this call, so one expected
+        // value per operation covers the mutators, the two predicates, the count and
+        // the rendering uniformly.
+        internal string Apply(IBitset bitset) => kind switch
+        {
+            OpKind.Fix => ApplyFix(bitset),
+            OpKind.Unfix => ApplyUnfix(bitset),
+            OpKind.Flip => ApplyFlip(bitset),
+            OpKind.All => Rendered(bitset.All()),
+            OpKind.One => Rendered(bitset.One()),
+            OpKind.Count => bitset.Count().ToString(CultureInfo.InvariantCulture),
+            _ => bitset.ToBitString(),
+        };
+
+        // The two index-taking writes, each named the way ApplyFlip names the flip: the
+        // bare Action<int> this used to hand around said only that an int went somewhere,
+        // never which write of the bitset was being made.
+        private string ApplyFix(IBitset bitset)
+        {
+            bitset.Fix(index);
+
+            return VoidResult;
+        }
+
+        private string ApplyUnfix(IBitset bitset)
+        {
+            bitset.Unfix(index);
+
+            return VoidResult;
+        }
+
+        private static string ApplyFlip(IBitset bitset)
+        {
+            bitset.Flip();
+
+            return VoidResult;
+        }
+
+        private static string Rendered(bool value) => value ? TrueResult : FalseResult;
+
+        public enum OpKind
+        {
+            Fix,
+            Unfix,
+            Flip,
+            All,
+            One,
+            Count,
+            ToBitString,
+        }
     }
 }

@@ -16,12 +16,20 @@ public sealed class PeaksInArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPeaksByBruteForce_LeetCodeExamples_ReturnsPeakCountPerQuery(
-        int[] nums, int[][] queries, List<int> expected) =>
-        Assert.Equal(expected, PeaksInArraySolution.CountPeaksByBruteForce(nums, queries));
+        int[] nums, int[][] queries, List<int> expected)
+    {
+        var actual = PeaksInArraySolution.CountPeaksByBruteForce(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPeaksByFenwickTree_LeetCodeExamples_ReturnsPeakCountPerQuery(
-        int[] nums, int[][] queries, List<int> expected) =>
-        Assert.Equal(expected, PeaksInArraySolution.CountPeaksByFenwickTree(nums, queries));
+        int[] nums, int[][] queries, List<int> expected)
+    {
+        var actual = PeaksInArraySolution.CountPeaksByFenwickTree(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

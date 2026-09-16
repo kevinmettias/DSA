@@ -13,6 +13,9 @@ namespace DSAExperimentation.LeetCode.FrequenciesOfShortestSupersequences;
 // doubling this subset leave an acyclic graph?" is answered.
 internal static class FrequenciesOfShortestSupersequencesSolution
 {
+    // The letters an input word is drawn from, and so the width of a frequency vector.
+    private const int AlphabetSize = 26;
+
     // The textbook arm: a three-color DFS over plain adjacency lists, skipping any
     // node (and any edge touching it) that is in the candidate doubled subset -
     // deliberately no repo primitive here, so it is what the composed arm below has
@@ -215,7 +218,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
 
     private static int[] BuildFrequency(IReadOnlyList<char> letters, int doubledMask)
     {
-        var frequency = new int[26];
+        var frequency = new int[AlphabetSize];
 
         for (var i = 0; i < letters.Count; i++)
         {

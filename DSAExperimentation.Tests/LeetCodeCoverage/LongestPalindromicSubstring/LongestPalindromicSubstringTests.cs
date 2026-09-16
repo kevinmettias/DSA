@@ -6,25 +6,30 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestPalindromicSubstring;
 // file just pins them to LeetCode's published examples.
 public sealed class LongestPalindromicSubstringTests
 {
-    public static TheoryData<string, string> Examples =>
+    public static TheoryData<PalindromeExample> Examples =>
         new()
         {
-            { "babad", "bab" }, // "aba" ties in length
-            { "cbbd", "bb" },
-            { "racecar", "racecar" },
-            { "a", "a" },
-            { "abcd", "a" },
+            { new PalindromeExample(S: "babad", Expected: "bab") }, // "aba" ties in length
+            { new PalindromeExample(S: "cbbd", Expected: "bb") },
+            { new PalindromeExample(S: "racecar", Expected: "racecar") },
+            { new PalindromeExample(S: "a", Expected: "a") },
+            { new PalindromeExample(S: "abcd", Expected: "a") },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindLongestPalindromeByExpandAroundCenter_LeetCodeExamples_ReturnsLongestPalindrome(
-        string s, string expected) =>
-        Assert.Equal(expected, LongestPalindromicSubstringSolution.FindLongestPalindromeByExpandAroundCenter(s));
+        PalindromeExample example) =>
+        Assert.Equal(example.Expected, LongestPalindromicSubstringSolution.FindLongestPalindromeByExpandAroundCenter(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindLongestPalindromeByManacher_LeetCodeExamples_ReturnsLongestPalindrome(
-        string s, string expected) =>
-        Assert.Equal(expected, LongestPalindromicSubstringSolution.FindLongestPalindromeByManacher(s));
+        PalindromeExample example) =>
+        Assert.Equal(example.Expected, LongestPalindromicSubstringSolution.FindLongestPalindromeByManacher(example.S));
+
+    // One example as one argument. The input and the answer are both strings, so a
+    // two-parameter signature let a row be written with the two swapped and still
+    // compile; the fields named at each row below say which is which.
+    public readonly record struct PalindromeExample(string S, string Expected);
 }

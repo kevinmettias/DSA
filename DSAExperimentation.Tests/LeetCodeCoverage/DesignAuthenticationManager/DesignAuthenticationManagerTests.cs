@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignAuthenticationManager.DesignAuthenticationManagerSolution;
+using DSAExperimentation.LeetCode.DesignAuthenticationManager;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAuthenticationManager;
 
@@ -63,60 +63,28 @@ public sealed class DesignAuthenticationManagerTests
     [MemberData(nameof(Examples))]
     public void AuthenticationManagerByLinearScanList_LeetCodeExamples_MatchesExpectedSequence(
         int timeToLive, AuthenticationManagerOp[] operations, int?[] expected) =>
-        RunScript(new AuthenticationManagerByLinearScanList(timeToLive), operations, expected);
+        RunScript(
+            new DesignAuthenticationManagerSolution.AuthenticationManagerByLinearScanList(timeToLive),
+            operations,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AuthenticationManagerByHashMap_LeetCodeExamples_MatchesExpectedSequence(
         int timeToLive, AuthenticationManagerOp[] operations, int?[] expected) =>
-        RunScript(new AuthenticationManagerByHashMap(timeToLive), operations, expected);
+        RunScript(
+            new DesignAuthenticationManagerSolution.AuthenticationManagerByHashMap(timeToLive),
+            operations,
+            expected);
 
     private static void RunScript(
-        IAuthenticationManager manager, AuthenticationManagerOp[] operations, int?[] expected)
+        DesignAuthenticationManagerSolution.IAuthenticationManager manager,
+        AuthenticationManagerOp[] operations,
+        int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(manager));
         }
-    }
-}
-
-// One call in an AuthenticationManager script: which operation to invoke, on which
-// token, at what time. Pure dispatch, built via the named factories below so a
-// script reads like the LeetCode call sequence it replays.
-public readonly record struct AuthenticationManagerOp(
-    AuthenticationManagerOp.OpKind kind, string tokenId, int currentTime)
-{
-    public static AuthenticationManagerOp Generate(string tokenId, int currentTime) =>
-        new(OpKind.Generate, tokenId, currentTime);
-
-    public static AuthenticationManagerOp Renew(string tokenId, int currentTime) =>
-        new(OpKind.Renew, tokenId, currentTime);
-
-    public static AuthenticationManagerOp CountUnexpiredTokens(int currentTime) =>
-        new(OpKind.Count, string.Empty, currentTime);
-
-    // null for the two void operations, matching LeetCode's own judge output, so a
-    // script runner can assert against one expected value per operation uniformly.
-    internal int? Apply(IAuthenticationManager manager)
-    {
-        switch (kind)
-        {
-            case OpKind.Generate:
-                manager.Generate(tokenId, currentTime);
-                return null;
-            case OpKind.Renew:
-                manager.Renew(tokenId, currentTime);
-                return null;
-            default:
-                return manager.CountUnexpiredTokens(currentTime);
-        }
-    }
-
-    public enum OpKind
-    {
-        Generate,
-        Renew,
-        Count,
     }
 }

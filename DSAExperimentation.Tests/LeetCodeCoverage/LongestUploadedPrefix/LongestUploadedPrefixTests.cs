@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.LongestUploadedPrefix.LongestUploadedPrefixSolution;
+using DSAExperimentation.LeetCode.LongestUploadedPrefix;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestUploadedPrefix;
 
@@ -46,15 +46,20 @@ public sealed class LongestUploadedPrefixTests
     [MemberData(nameof(Examples))]
     public void UploadedPrefixByRescanArray_LeetCodeExamples_ReportsLongestPrefixAfterEachUpload(
         UploadScript script, int[] expected) =>
-        AssertScript(new UploadedPrefixByRescanArray(script.VideoCount), script.Uploads, expected);
+        AssertScript(
+            new LongestUploadedPrefixSolution.UploadedPrefixByRescanArray(script.VideoCount),
+            script.Uploads,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void UploadedPrefixBySetFrontier_LeetCodeExamples_ReportsLongestPrefixAfterEachUpload(
         UploadScript script, int[] expected) =>
-        AssertScript(new UploadedPrefixBySetFrontier(), script.Uploads, expected);
+        AssertScript(
+            new LongestUploadedPrefixSolution.UploadedPrefixBySetFrontier(), script.Uploads, expected);
 
-    private static void AssertScript(IUploadedPrefix server, int[] uploads, int[] expected)
+    private static void AssertScript(
+        LongestUploadedPrefixSolution.IUploadedPrefix server, int[] uploads, int[] expected)
     {
         Assert.Equal(expected[0], server.Longest());
 
@@ -65,10 +70,13 @@ public sealed class LongestUploadedPrefixTests
             Assert.Equal(expected[i + 1], server.Longest());
         }
     }
-}
 
-// One LeetCode call script: the stream capacity LUPrefix's constructor was given,
-// and the videos uploaded after it. The two travel together because only one of the
-// strategies takes the capacity - the frontier never allocates per video, so it
-// answers the identical script without being told how many videos exist.
-public readonly record struct UploadScript(int VideoCount, int[] Uploads);
+    // One LeetCode call script: the stream capacity LUPrefix's constructor was given,
+    // and the videos uploaded after it. The two travel together because only one of
+    // the strategies takes the capacity - the frontier never allocates per video, so it
+    // answers the identical script without being told how many videos exist.
+    //
+    // Nested because it is only ever used inside this test class and has no independent
+    // identity: it is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct UploadScript(int VideoCount, int[] Uploads);
+}

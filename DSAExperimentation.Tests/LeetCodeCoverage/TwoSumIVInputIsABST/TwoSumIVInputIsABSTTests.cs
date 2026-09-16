@@ -15,33 +15,37 @@ public sealed class TwoSumIVInputIsABSTTests
     //       3   6
     //      / \   \
     //     2   4   7
-    public static TheoryData<int[], int, bool> Examples =>
+    public static TheoryData<TreePairExample> Examples =>
         new()
         {
-            { [5, 3, 6, 2, 4, 7], 9, true },
-            { [5, 3, 6, 2, 4, 7], 28, false },
-            { [5, 3], 8, true },
-            { [5], 10, false }, // no second node - a value can't pair with itself
+            new TreePairExample([5, 3, 6, 2, 4, 7], 9, HasPair: true),
+            new TreePairExample([5, 3, 6, 2, 4, 7], 28, HasPair: false),
+            new TreePairExample([5, 3], 8, HasPair: true),
+            new TreePairExample([5], 10, HasPair: false), // no second node - a value can't pair with itself
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTargetByNestedPairScan_LeetCodeExamples_ReturnsWhetherAPairSumsToTarget(
-        int[] insertOrder, int k, bool expected)
+        TreePairExample example)
     {
-        var tree = BuildTree(insertOrder);
+        var tree = BuildTree(example.InsertOrder);
 
-        Assert.Equal(expected, TwoSumIVInputIsABSTSolution.FindTargetByNestedPairScan(tree.Root, k));
+        var actual = TwoSumIVInputIsABSTSolution.FindTargetByNestedPairScan(tree.Root, example.Target);
+
+        Assert.Equal(example.HasPair, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTargetByDepthFirstSetLookup_LeetCodeExamples_ReturnsWhetherAPairSumsToTarget(
-        int[] insertOrder, int k, bool expected)
+        TreePairExample example)
     {
-        var tree = BuildTree(insertOrder);
+        var tree = BuildTree(example.InsertOrder);
 
-        Assert.Equal(expected, TwoSumIVInputIsABSTSolution.FindTargetByDepthFirstSetLookup(tree.Root, k));
+        var actual = TwoSumIVInputIsABSTSolution.FindTargetByDepthFirstSetLookup(tree.Root, example.Target);
+
+        Assert.Equal(example.HasPair, actual);
     }
 
     private static BinarySearchTree<int> BuildTree(int[] insertOrder)
@@ -55,4 +59,10 @@ public sealed class TwoSumIVInputIsABSTTests
 
         return tree;
     }
+
+    // Nested because it is only ever used inside this test class and has no
+    // independent identity: this harness's own vocabulary for one LeetCode example.
+    // The expected answer is a named field of the case rather than a bare `true` or
+    // `false` sitting in the signature where only its position says what it means.
+    public readonly record struct TreePairExample(int[] InsertOrder, int Target, bool HasPair);
 }

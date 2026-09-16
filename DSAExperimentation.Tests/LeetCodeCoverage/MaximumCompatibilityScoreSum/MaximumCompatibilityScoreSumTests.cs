@@ -30,16 +30,20 @@ public sealed class MaximumCompatibilityScoreSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxCompatibilitySumByBruteForceRecursion_LeetCodeExamples_ReturnsBestAssignmentScore(
-        int[][] students, int[][] mentors, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumCompatibilityScoreSumSolution.MaxCompatibilitySumByBruteForceRecursion(students, mentors));
+        int[][] students, int[][] mentors, int expected)
+    {
+        var actual = MaximumCompatibilityScoreSumSolution.MaxCompatibilitySumByBruteForceRecursion(students, mentors);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxCompatibilitySumByMemoizedBitmask_LeetCodeExamples_ReturnsBestAssignmentScore(
-        int[][] students, int[][] mentors, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumCompatibilityScoreSumSolution.MaxCompatibilitySumByMemoizedBitmask(students, mentors));
+        int[][] students, int[][] mentors, int expected)
+    {
+        var actual = MaximumCompatibilityScoreSumSolution.MaxCompatibilitySumByMemoizedBitmask(students, mentors);
+
+        Assert.Equal(expected, actual);
+    }
 }

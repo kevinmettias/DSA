@@ -20,12 +20,18 @@ public sealed class CountOfRangeSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByPairwisePrefixScan_LeetCodeExamples_ReturnsRangeSumCount(
-        int[] nums, int lower, int upper, int expected) =>
-        Assert.Equal(expected, CountOfRangeSumSolution.CountByPairwisePrefixScan(nums, lower, upper));
+        int[] nums, int lower, int upper, int expected)
+    {
+        var actual = CountOfRangeSumSolution.CountByPairwisePrefixScan(nums, lower, upper);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByFenwickSweep_LeetCodeExamples_ReturnsRangeSumCount(
-        int[] nums, int lower, int upper, int expected) =>
-        Assert.Equal(expected, CountOfRangeSumSolution.CountByFenwickSweep(nums, lower, upper));
+        int[] nums, int lower, int upper, int expected)
+    {
+        var actual = CountOfRangeSumSolution.CountByFenwickSweep(nums, lower, upper);
+        Assert.Equal(expected, actual);
+    }
 }

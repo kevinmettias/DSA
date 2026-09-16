@@ -22,12 +22,20 @@ public sealed class IncrementalMemoryLeakTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MemoryLeakByArithmetic_LeetCodeExamples_ReturnsCrashSecondAndRemainingMemory(
-        int memory1, int memory2, int[] expected) =>
-        Assert.Equal(expected, IncrementalMemoryLeakSolution.MemoryLeakByArithmetic(memory1, memory2));
+        int memory1, int memory2, int[] expected)
+    {
+        var actual = IncrementalMemoryLeakSolution.MemoryLeakByArithmetic(memory1, memory2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MemoryLeakByMaxHeap_LeetCodeExamples_ReturnsCrashSecondAndRemainingMemory(
-        int memory1, int memory2, int[] expected) =>
-        Assert.Equal(expected, IncrementalMemoryLeakSolution.MemoryLeakByMaxHeap(memory1, memory2));
+        int memory1, int memory2, int[] expected)
+    {
+        var actual = IncrementalMemoryLeakSolution.MemoryLeakByMaxHeap(memory1, memory2);
+
+        Assert.Equal(expected, actual);
+    }
 }

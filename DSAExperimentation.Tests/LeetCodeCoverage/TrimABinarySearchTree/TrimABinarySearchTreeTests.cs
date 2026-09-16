@@ -57,12 +57,20 @@ public sealed class TrimABinarySearchTreeTests
     {
         State.Values.Value = [];
         InOrderTraversal.Walk<int, CollectHooks>(root);
-        return [.. State.Values.Value!];
+        return [.. CurrentValues];
     }
+
+    // InOrderValues installs the list and InOrderTraversal.Walk runs synchronously in
+    // the same execution context - it neither awaits nor queues - so the hooks and the
+    // read-back above always see the list that was installed a line earlier. The
+    // AsyncLocal is what keeps that list off the other test's parallel walk.
+    private static List<int> CurrentValues =>
+        State.Values.Value
+        ?? throw new InvalidOperationException("the walk runs only inside InOrderValues, which installs the list first");
 
     private readonly struct CollectHooks : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
+        public static void Visit(BinaryTreeNode<int> node, int depth) => CurrentValues.Add(node.Value);
     }
 
     private static class State

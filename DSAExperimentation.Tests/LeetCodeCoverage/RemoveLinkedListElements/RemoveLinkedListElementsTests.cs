@@ -20,18 +20,24 @@ public sealed class RemoveLinkedListElementsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RemoveElementsByArrayRebuild_LeetCodeExamples_RemovesMatchingValues(
-        int[] values, int val, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(RemoveLinkedListElementsSolution.RemoveElementsByArrayRebuild(BuildList(values), val)));
+        int[] values, int val, int[] expected)
+    {
+        var removed = RemoveLinkedListElementsSolution.RemoveElementsByArrayRebuild(BuildList(values), val);
+        var actual = ToArray(removed);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RemoveElementsByDummyHeadSplice_LeetCodeExamples_RemovesMatchingValues(
-        int[] values, int val, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(RemoveLinkedListElementsSolution.RemoveElementsByDummyHeadSplice(BuildList(values), val)));
+        int[] values, int val, int[] expected)
+    {
+        var removed = RemoveLinkedListElementsSolution.RemoveElementsByDummyHeadSplice(BuildList(values), val);
+        var actual = ToArray(removed);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

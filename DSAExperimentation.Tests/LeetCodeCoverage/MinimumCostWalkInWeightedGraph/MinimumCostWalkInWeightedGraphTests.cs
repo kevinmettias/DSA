@@ -26,12 +26,20 @@ public sealed class MinimumCostWalkInWeightedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByBruteForceWalk_LeetCodeExamples_ReturnsWalkCosts(
-        int n, int[][] edges, int[][] query, int[] expected) =>
-        Assert.Equal(expected, MinimumCostWalkInWeightedGraphSolution.MinimumCostByBruteForceWalk(n, edges, query));
+        int n, int[][] edges, int[][] query, int[] expected)
+    {
+        var actual = MinimumCostWalkInWeightedGraphSolution.MinimumCostByBruteForceWalk(n, edges, query);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByUnionFind_LeetCodeExamples_ReturnsWalkCosts(
-        int n, int[][] edges, int[][] query, int[] expected) =>
-        Assert.Equal(expected, MinimumCostWalkInWeightedGraphSolution.MinimumCostByUnionFind(n, edges, query));
+        int n, int[][] edges, int[][] query, int[] expected)
+    {
+        var actual = MinimumCostWalkInWeightedGraphSolution.MinimumCostByUnionFind(n, edges, query);
+
+        Assert.Equal(expected, actual);
+    }
 }

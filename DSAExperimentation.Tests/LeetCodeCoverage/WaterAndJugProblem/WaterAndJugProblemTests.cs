@@ -7,31 +7,49 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WaterAndJugProblem;
 // where the target exceeds the combined capacity.
 public sealed class WaterAndJugProblemTests
 {
-    public static TheoryData<int, int, int, bool> Examples =>
+    public static TheoryData<MeasureWaterExample> Examples =>
         new()
         {
-            { 3, 5, 4, true },
-            { 2, 6, 5, false },
-            { 1, 2, 3, true },
-            { 2, 3, 0, true },
-            { 1, 2, 4, false },
+            { new MeasureWaterExample(JugX: 3, JugY: 5, Target: 4, Expected: true) },
+            { new MeasureWaterExample(JugX: 2, JugY: 6, Target: 5, Expected: false) },
+            { new MeasureWaterExample(JugX: 1, JugY: 2, Target: 3, Expected: true) },
+            { new MeasureWaterExample(JugX: 2, JugY: 3, Target: 0, Expected: true) },
+            { new MeasureWaterExample(JugX: 1, JugY: 2, Target: 4, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanMeasureWaterByStackSearch_LeetCodeExamples_MatchesExpectedReachability(
-        int jugX, int jugY, int target, bool expected) =>
-        Assert.Equal(expected, WaterAndJugProblemSolution.CanMeasureWaterByStackSearch(jugX, jugY, target));
+    public void CanMeasureWaterByStackSearch_LeetCodeExamples_MatchesExpectedReachability(MeasureWaterExample example)
+    {
+        var actual = WaterAndJugProblemSolution.CanMeasureWaterByStackSearch(
+            example.JugX, example.JugY, example.Target);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanMeasureWaterByDepthFirstSearch_LeetCodeExamples_MatchesExpectedReachability(
-        int jugX, int jugY, int target, bool expected) =>
-        Assert.Equal(expected, WaterAndJugProblemSolution.CanMeasureWaterByDepthFirstSearch(jugX, jugY, target));
+        MeasureWaterExample example)
+    {
+        var actual = WaterAndJugProblemSolution.CanMeasureWaterByDepthFirstSearch(
+            example.JugX, example.JugY, example.Target);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanMeasureWaterByGcdFormula_LeetCodeExamples_MatchesExpectedReachability(
-        int jugX, int jugY, int target, bool expected) =>
-        Assert.Equal(expected, WaterAndJugProblemSolution.CanMeasureWaterByGcdFormula(jugX, jugY, target));
+    public void CanMeasureWaterByGcdFormula_LeetCodeExamples_MatchesExpectedReachability(MeasureWaterExample example)
+    {
+        var actual = WaterAndJugProblemSolution.CanMeasureWaterByGcdFormula(
+            example.JugX, example.JugY, example.Target);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the two jug capacities, the target volume, and whether it is
+    // reachable. The row names every position - a bare `bool` argument would read as
+    // "true" and say nothing about what is true.
+    public readonly record struct MeasureWaterExample(int JugX, int JugY, int Target, bool Expected);
 }

@@ -16,8 +16,12 @@ public class SlidingPuzzleBenchmarks
 {
     private PuzzleGraph _graph = null!;
 
+    // BenchmarkDotNet injects the [Params] value through this setter before
+    // [GlobalSetup] runs, so the initializer exists only to keep the property
+    // non-nullable without a `null!` promise: an empty board is a value of the
+    // type, and no run ever reads it.
     [Params("123405", "412503")]
-    public string StartState { get; set; } = null!;
+    public string StartState { get; set; } = string.Empty;
 
     [GlobalSetup]
     public void Setup() => _graph = PuzzleGraph.Build();

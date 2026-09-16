@@ -69,7 +69,11 @@ public sealed class MergeBSTsToCreateSingleBSTTests
     // in for a missing child.
     private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
     {
-        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var rootValue = levelOrder[0]
+            ?? throw new InvalidOperationException(
+                "every tree in the examples above starts with its root's value; a null first slot would mean an empty tree.");
+
+        var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
@@ -112,6 +116,15 @@ public sealed class MergeBSTsToCreateSingleBSTTests
             return [];
         }
 
+        var values = CollectLevelOrderValues(root);
+
+        TrimTrailingNulls(values);
+
+        return [.. values];
+    }
+
+    private static List<int?> CollectLevelOrderValues(BinaryTreeNode<int> root)
+    {
         var values = new List<int?>();
         var queue = new Queue<BinaryTreeNode<int>?>();
         queue.Enqueue(root);
@@ -128,11 +141,16 @@ public sealed class MergeBSTsToCreateSingleBSTTests
             }
         }
 
+        return values;
+    }
+
+    // LeetCode trims the trailing nulls of a level-order print, so an expected
+    // array ends at the last real value.
+    private static void TrimTrailingNulls(List<int?> values)
+    {
         while (values.Count > 0 && values[^1] is null)
         {
             values.RemoveAt(values.Count - 1);
         }
-
-        return [.. values];
     }
 }

@@ -57,18 +57,24 @@ public sealed class CheckingExistenceOfEdgeLengthLimitedPathsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void DistanceLimitedPathsExistByPerQueryDfs_LeetCodeExamples_AnswersEachQueryInInputOrder(
-        int n, int[][] edgeList, int[][] queries, bool[] expected) =>
-        Assert.Equal(
-            expected,
+        int n, int[][] edgeList, int[][] queries, bool[] expected)
+    {
+        var answers =
             CheckingExistenceOfEdgeLengthLimitedPathsSolution.DistanceLimitedPathsExistByPerQueryDfs(
-                n, edgeList, queries));
+                n, edgeList, queries);
+
+        Assert.Equal(expected, answers);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DistanceLimitedPathsExistByOfflineDisjointSet_LeetCodeExamples_AnswersEachQueryInInputOrder(
-        int n, int[][] edgeList, int[][] queries, bool[] expected) =>
-        Assert.Equal(
-            expected,
+        int n, int[][] edgeList, int[][] queries, bool[] expected)
+    {
+        var answers =
             CheckingExistenceOfEdgeLengthLimitedPathsSolution.DistanceLimitedPathsExistByOfflineDisjointSet(
-                n, edgeList, queries));
+                n, edgeList, queries);
+
+        Assert.Equal(expected, answers);
+    }
 }

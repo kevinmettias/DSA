@@ -43,17 +43,7 @@ public sealed class LinkedListCycleIITests
             return (null, null);
         }
 
-        var nodes = new SinglyLinkedListNode<int>[values.Length];
-
-        for (var i = 0; i < values.Length; i++)
-        {
-            nodes[i] = new SinglyLinkedListNode<int>(values[i]);
-        }
-
-        for (var i = 0; i < values.Length - 1; i++)
-        {
-            nodes[i].Next = nodes[i + 1];
-        }
+        var nodes = CreateChain(values);
 
         if (pos < 0)
         {
@@ -62,5 +52,24 @@ public sealed class LinkedListCycleIITests
 
         nodes[^1].Next = nodes[pos];
         return (nodes[0], nodes[pos]);
+    }
+
+    // The chain in insertion order: each node links to the one after it, so the
+    // pair (head, tail) is already a walkable list for pos < 0.
+    private static SinglyLinkedListNode<int>[] CreateChain(int[] values)
+    {
+        var nodes = new SinglyLinkedListNode<int>[values.Length];
+
+        for (var i = 0; i < values.Length; i++)
+        {
+            nodes[i] = new SinglyLinkedListNode<int>(values[i]);
+
+            if (i > 0)
+            {
+                nodes[i - 1].Next = nodes[i];
+            }
+        }
+
+        return nodes;
     }
 }

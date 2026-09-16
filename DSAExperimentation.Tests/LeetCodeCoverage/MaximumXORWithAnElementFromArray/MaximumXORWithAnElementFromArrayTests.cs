@@ -21,14 +21,20 @@ public sealed class MaximumXORWithAnElementFromArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximizeXorByLinearScanPerQuery_LeetCodeExamples_ReturnsBestXorUnderEachLimit(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, MaximumXORWithAnElementFromArraySolution.MaximizeXorByLinearScanPerQuery(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = MaximumXORWithAnElementFromArraySolution.MaximizeXorByLinearScanPerQuery(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximizeXorByOfflineBitTrieSweep_LeetCodeExamples_ReturnsBestXorUnderEachLimit(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, MaximumXORWithAnElementFromArraySolution.MaximizeXorByOfflineBitTrieSweep(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = MaximumXORWithAnElementFromArraySolution.MaximizeXorByOfflineBitTrieSweep(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

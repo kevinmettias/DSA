@@ -20,15 +20,20 @@ public sealed class ExpressionAddOperatorsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AddOperatorsByBacktracking_LeetCodeExamples_ReturnsEveryExpressionEvaluatingToTarget(
-        string num, int target, string[] expected) =>
-        AssertSameExpressions(expected, ExpressionAddOperatorsSolution.AddOperatorsByBacktracking(num, target));
+        string num, int target, string[] expected)
+    {
+        var actual = ExpressionAddOperatorsSolution.AddOperatorsByBacktracking(num, target);
+        AssertSameExpressions(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AddOperatorsByDepthFirstSearchTraverse_LeetCodeExamples_ReturnsEveryExpressionEvaluatingToTarget(
-        string num, int target, string[] expected) =>
-        AssertSameExpressions(
-            expected, ExpressionAddOperatorsSolution.AddOperatorsByDepthFirstSearchTraverse(num, target));
+        string num, int target, string[] expected)
+    {
+        var actual = ExpressionAddOperatorsSolution.AddOperatorsByDepthFirstSearchTraverse(num, target);
+        AssertSameExpressions(expected, actual);
+    }
 
     private static void AssertSameExpressions(string[] expected, List<string> actual)
     {

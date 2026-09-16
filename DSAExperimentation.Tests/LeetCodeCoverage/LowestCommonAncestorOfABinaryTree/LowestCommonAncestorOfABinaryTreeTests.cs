@@ -22,14 +22,17 @@ public sealed class LowestCommonAncestorOfABinaryTreeTests
     public void FindLcaByAncestryWalk_LeetCodeExamples_ReturnsTheAncestor(int first, int second, int expected)
     {
         var root = BuildClassicExampleTree();
+        var firstNode = FindNode(root, first);
+        var secondNode = FindNode(root, second);
 
         var lca = LowestCommonAncestorOfABinaryTreeSolution.FindLcaByAncestryWalk(
-            root, FindNode(root, first), FindNode(root, second));
+            root, firstNode, secondNode);
 
-        // presumption: allow -- both queried values come from FindNode walking the
-        // same tree root, so Find always has both nodes reachable and can only
-        // return null when neither is (impossible here).
-        Assert.Equal(expected, lca!.Value);
+        // Both queried values come from FindNode walking this same root, so the
+        // walk below always has both reachable and can return null only when it
+        // has neither - which cannot happen here. IsType asks for that node
+        // instead of promising it, and pins it to the tree's own node type.
+        Assert.Equal(expected, Assert.IsType<BinaryTreeNode<int>>(lca).Value);
     }
 
     private static BinaryTreeNode<int> BuildClassicExampleTree()
@@ -54,8 +57,13 @@ public sealed class LowestCommonAncestorOfABinaryTreeTests
         return new BinaryTreeNode<int>(3) { Left = five, Right = one };
     }
 
+    // Every pair the Examples rows above name is drawn from
+    // BuildClassicExampleTree's tree, so a walk from its root always finds them; a
+    // value absent from the tree could only be a mistake in that TheoryData.
     private static BinaryTreeNode<int> FindNode(BinaryTreeNode<int> root, int value) =>
-        TryFindNode(root, value)!;
+        TryFindNode(root, value)
+        ?? throw new InvalidOperationException(
+            $"the Examples rows name only nodes of the example tree, but {value} is not in it");
 
     private static BinaryTreeNode<int>? TryFindNode(BinaryTreeNode<int>? node, int value)
     {

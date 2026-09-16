@@ -4,52 +4,97 @@ using DSAExperimentation.LeetCode.PathSumII;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PathSumII;
 
 // Harness only. Both strategies are PathSumIISolution's; this file pins them to
-// LeetCode's published examples. BinaryTreeNode<int> is internal, so - as in
-// ValidateBinarySearchTreeTests - it stays out of a public TheoryData/[Theory]
-// signature, and each example is a private factory reused across strategies.
-// Path order isn't part of LeetCode's contract ("return the paths in any order"),
-// so assertions check membership and count rather than a fixed sequence.
+// LeetCode's published examples, given in LeetCode's own level-order-with-null
+// array shape. BinaryTreeNode<int> is internal, so - as in
+// ValidateBinarySearchTreeTests - it stays out of a public TheoryData signature
+// and BuildTree reconstructs it from that array. Path order isn't part of
+// LeetCode's contract ("return the paths in any order"), so assertions check
+// membership and count rather than a fixed sequence.
 public sealed class PathSumIITests
 {
-    [Fact]
-    public void FindPathsByRecursiveBacktrack_ClassicExample_ReturnsBothMatchingPaths() =>
-        AssertMatches([[5, 4, 11, 2], [5, 8, 4, 5]], PathSumIISolution.FindPathsByRecursiveBacktrack(ClassicTree(), 22));
+    public static TheoryData<PathSumExample> Examples =>
+        new()
+        {
+            // [5,4,8,11,null,13,4,7,2,null,null,5,1] - LeetCode's own example 1.
+            {
+                new PathSumExample(
+                    Values: [5, 4, 8, 11, null, 13, 4, 7, 2, null, null, 5, 1],
+                    TargetSum: 22,
+                    Expected: [[5, 4, 11, 2], [5, 8, 4, 5]])
+            },
+            // [1,2,3] - LeetCode's own example 2 (targetSum 5 matches neither leaf path).
+            { new PathSumExample(Values: [1, 2, 3], TargetSum: 5, Expected: []) },
+            // [1,2] - LeetCode's own example 3 (the only leaf path, 1+2 = 3, is not 0).
+            { new PathSumExample(Values: [1, 2], TargetSum: 0, Expected: []) },
+            // A single node that is itself the target sum: the path is just the root.
+            { new PathSumExample(Values: [5], TargetSum: 5, Expected: [[5]]) },
+            { new PathSumExample(Values: [], TargetSum: 0, Expected: []) },
+        };
 
-    [Fact]
-    public void FindPathsByAllRootToLeafPaths_ClassicExample_ReturnsBothMatchingPaths() =>
-        AssertMatches([[5, 4, 11, 2], [5, 8, 4, 5]], PathSumIISolution.FindPathsByAllRootToLeafPaths(ClassicTree(), 22));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindPathsByRecursiveBacktrack_LeetCodeExamples_ReturnsEveryMatchingRootToLeafPath(
+        PathSumExample example)
+    {
+        var paths = PathSumIISolution.FindPathsByRecursiveBacktrack(BuildTree(example.Values), example.TargetSum);
 
-    [Fact]
-    public void FindPathsByRecursiveBacktrack_NoPathSumsToTarget_ReturnsEmptyList() =>
-        Assert.Empty(PathSumIISolution.FindPathsByRecursiveBacktrack(ThreeNodeTree(), 5));
+        AssertMatches(example.Expected, paths);
+    }
 
-    [Fact]
-    public void FindPathsByAllRootToLeafPaths_NoPathSumsToTarget_ReturnsEmptyList() =>
-        Assert.Empty(PathSumIISolution.FindPathsByAllRootToLeafPaths(ThreeNodeTree(), 5));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindPathsByAllRootToLeafPaths_LeetCodeExamples_ReturnsEveryMatchingRootToLeafPath(
+        PathSumExample example)
+    {
+        var paths = PathSumIISolution.FindPathsByAllRootToLeafPaths(BuildTree(example.Values), example.TargetSum);
 
-    [Fact]
-    public void FindPathsByRecursiveBacktrack_SingleBranchWithNoMatch_ReturnsEmptyList() =>
-        Assert.Empty(PathSumIISolution.FindPathsByRecursiveBacktrack(TwoNodeTree(), 0));
+        AssertMatches(example.Expected, paths);
+    }
 
-    [Fact]
-    public void FindPathsByAllRootToLeafPaths_SingleBranchWithNoMatch_ReturnsEmptyList() =>
-        Assert.Empty(PathSumIISolution.FindPathsByAllRootToLeafPaths(TwoNodeTree(), 0));
+    // LeetCode's level-order array shape: each existing node consumes exactly
+    // two subsequent slots for its children, null marking a missing one.
+    private static BinaryTreeNode<int>? BuildTree(int?[] values)
+    {
+        if (values.Length == 0 || values[0] is null)
+        {
+            return null;
+        }
 
-    [Fact]
-    public void FindPathsByRecursiveBacktrack_SingleNodeTreeMatchingTarget_ReturnsSingleNodePath() =>
-        AssertMatches([[5]], PathSumIISolution.FindPathsByRecursiveBacktrack(new BinaryTreeNode<int>(5), 5));
+        var root = new BinaryTreeNode<int>(values[0].Value);
+        var queue = new Queue<BinaryTreeNode<int>>();
+        queue.Enqueue(root);
 
-    [Fact]
-    public void FindPathsByAllRootToLeafPaths_SingleNodeTreeMatchingTarget_ReturnsSingleNodePath() =>
-        AssertMatches([[5]], PathSumIISolution.FindPathsByAllRootToLeafPaths(new BinaryTreeNode<int>(5), 5));
+        var i = 1;
+        while (queue.Count > 0 && i < values.Length)
+        {
+            i = AttachChildren(values, i, queue);
+        }
 
-    [Fact]
-    public void FindPathsByRecursiveBacktrack_EmptyTree_ReturnsEmptyList() =>
-        Assert.Empty(PathSumIISolution.FindPathsByRecursiveBacktrack(null, 0));
+        return root;
+    }
 
-    [Fact]
-    public void FindPathsByAllRootToLeafPaths_EmptyTree_ReturnsEmptyList() =>
-        Assert.Empty(PathSumIISolution.FindPathsByAllRootToLeafPaths(null, 0));
+    // Consumes one slot for each of the dequeued parent's children and returns the
+    // index just past them: a null or absent slot attaches nothing but is still spent.
+    private static int AttachChildren(int?[] values, int i, Queue<BinaryTreeNode<int>> queue)
+    {
+        var node = queue.Dequeue();
+
+        if (values[i] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        i++;
+
+        if (i < values.Length && values[i] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i + 1;
+    }
 
     private static void AssertMatches(int[][] expected, List<List<int>> actual)
     {
@@ -61,16 +106,7 @@ public sealed class PathSumIITests
         }
     }
 
-    // [5,4,8,11,null,13,4,7,2,null,null,5,1] - LeetCode's own example 1.
-    private static BinaryTreeNode<int> ClassicTree() => new(5)
-    {
-        Left = new(4) { Left = new(11) { Left = new(7), Right = new(2) } },
-        Right = new(8) { Left = new(13), Right = new(4) { Left = new(5), Right = new(1) } },
-    };
-
-    // [1,2,3] - LeetCode's own example 2 (targetSum 5 matches neither leaf path).
-    private static BinaryTreeNode<int> ThreeNodeTree() => new(1) { Left = new(2), Right = new(3) };
-
-    // [1,2] - LeetCode's own example 3 (targetSum 0 matches the only leaf path).
-    private static BinaryTreeNode<int> TwoNodeTree() => new(1) { Left = new(2) };
+    // One LeetCode example: the tree in LeetCode's level-order-with-null array
+    // shape, the target sum, and every root-to-leaf path whose values sum to it.
+    public readonly record struct PathSumExample(int?[] Values, int TargetSum, int[][] Expected);
 }

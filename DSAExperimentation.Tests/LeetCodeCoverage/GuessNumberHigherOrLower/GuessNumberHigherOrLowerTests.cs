@@ -16,11 +16,19 @@ public sealed class GuessNumberHigherOrLowerTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GuessNumberByLinearScan_LeetCodeExamples_ReturnsPickedNumber(int n, int pick, int expected) =>
-        Assert.Equal(expected, GuessNumberHigherOrLowerSolution.GuessNumberByLinearScan(n, pick));
+    public void GuessNumberByLinearScan_LeetCodeExamples_ReturnsPickedNumber(int n, int pick, int expected)
+    {
+        var actual = GuessNumberHigherOrLowerSolution.GuessNumberByLinearScan(n, pick);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GuessNumberByBinarySearch_LeetCodeExamples_ReturnsPickedNumber(int n, int pick, int expected) =>
-        Assert.Equal(expected, GuessNumberHigherOrLowerSolution.GuessNumberByBinarySearch(n, pick));
+    public void GuessNumberByBinarySearch_LeetCodeExamples_ReturnsPickedNumber(int n, int pick, int expected)
+    {
+        var actual = GuessNumberHigherOrLowerSolution.GuessNumberByBinarySearch(n, pick);
+
+        Assert.Equal(expected, actual);
+    }
 }

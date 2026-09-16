@@ -49,25 +49,34 @@ public sealed class BinaryTreeLevelOrderTraversalIITests
         var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
-        var i = 1;
 
+        var i = 1;
         while (queue.Count > 0 && i < levelOrder.Length)
         {
-            var node = queue.Dequeue();
-
-            if (i < levelOrder.Length && levelOrder[i++] is int leftValue)
-            {
-                node.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(node.Left);
-            }
-
-            if (i < levelOrder.Length && levelOrder[i++] is int rightValue)
-            {
-                node.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(node.Right);
-            }
+            i = AttachChildren(levelOrder, i, queue);
         }
 
         return root;
+    }
+
+    // Consumes one slot for each of the dequeued parent's children and returns the
+    // index just past them: a null or absent slot attaches nothing but is still spent.
+    private static int AttachChildren(int?[] levelOrder, int i, Queue<BinaryTreeNode<int>> queue)
+    {
+        var node = queue.Dequeue();
+
+        if (i < levelOrder.Length && levelOrder[i++] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        if (i < levelOrder.Length && levelOrder[i++] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i;
     }
 }

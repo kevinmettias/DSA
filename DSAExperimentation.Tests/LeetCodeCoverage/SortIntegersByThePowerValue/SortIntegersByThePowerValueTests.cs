@@ -21,12 +21,20 @@ public sealed class SortIntegersByThePowerValueTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetKthByMergeSort_LeetCodeExamples_ReturnsKthIntegerByPowerValue(
-        int lo, int hi, int k, int expected) =>
-        Assert.Equal(expected, SortIntegersByThePowerValueSolution.GetKthByMergeSort(lo, hi, k));
+        int lo, int hi, int k, int expected)
+    {
+        var actual = SortIntegersByThePowerValueSolution.GetKthByMergeSort(lo, hi, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetKthByInsertionSort_LeetCodeExamples_ReturnsKthIntegerByPowerValue(
-        int lo, int hi, int k, int expected) =>
-        Assert.Equal(expected, SortIntegersByThePowerValueSolution.GetKthByInsertionSort(lo, hi, k));
+        int lo, int hi, int k, int expected)
+    {
+        var actual = SortIntegersByThePowerValueSolution.GetKthByInsertionSort(lo, hi, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

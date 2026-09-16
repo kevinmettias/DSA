@@ -18,12 +18,20 @@ public sealed class ConstructStringWithMinimumCostTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByBruteForceDp_LeetCodeExamples_ReturnsCheapestConstruction(
-        string target, string[] words, int[] costs, int expected) =>
-        Assert.Equal(expected, ConstructStringWithMinimumCostSolution.MinCostByBruteForceDp(target, words, costs));
+        string target, string[] words, int[] costs, int expected)
+    {
+        var actual = ConstructStringWithMinimumCostSolution.MinCostByBruteForceDp(target, words, costs);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByAhoCorasickDp_LeetCodeExamples_ReturnsCheapestConstruction(
-        string target, string[] words, int[] costs, int expected) =>
-        Assert.Equal(expected, ConstructStringWithMinimumCostSolution.MinCostByAhoCorasickDp(target, words, costs));
+        string target, string[] words, int[] costs, int expected)
+    {
+        var actual = ConstructStringWithMinimumCostSolution.MinCostByAhoCorasickDp(target, words, costs);
+
+        Assert.Equal(expected, actual);
+    }
 }

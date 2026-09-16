@@ -38,14 +38,20 @@ public sealed class LeastOperatorsToExpressNumberTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LeastOpsExpressTargetByUnmemoizedRecursion_LeetCodeExamples_ReturnsFewestOperators(
-        int x, int target, int expected) =>
-        Assert.Equal(
-            expected, LeastOperatorsToExpressNumberSolution.LeastOpsExpressTargetByUnmemoizedRecursion(x, target));
+        int x, int target, int expected)
+    {
+        var actual = LeastOperatorsToExpressNumberSolution.LeastOpsExpressTargetByUnmemoizedRecursion(x, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LeastOpsExpressTargetByMemoizedRecursion_LeetCodeExamples_ReturnsFewestOperators(
-        int x, int target, int expected) =>
-        Assert.Equal(
-            expected, LeastOperatorsToExpressNumberSolution.LeastOpsExpressTargetByMemoizedRecursion(x, target));
+        int x, int target, int expected)
+    {
+        var actual = LeastOperatorsToExpressNumberSolution.LeastOpsExpressTargetByMemoizedRecursion(x, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

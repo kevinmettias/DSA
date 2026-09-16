@@ -13,6 +13,10 @@ namespace DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
 // the way RookSquare already does for LC 999.
 internal static class MinimumMovesToCaptureTheQueenSolution
 {
+    // The board is a fixed 8x8 grid of 1-indexed ranks and files, so both coordinates
+    // being within it is one bound check rather than two bare eights.
+    private const int BoardSize = 8;
+
     private static readonly (int DeltaRow, int DeltaCol)[] RookDirections = [(1, 0), (-1, 0), (0, 1), (0, -1)];
     private static readonly (int DeltaRow, int DeltaCol)[] BishopDirections = [(1, 1), (1, -1), (-1, 1), (-1, -1)];
 
@@ -57,7 +61,7 @@ internal static class MinimumMovesToCaptureTheQueenSolution
         var row = from.Row + direction.DeltaRow;
         var col = from.Col + direction.DeltaCol;
 
-        while (row is >= 1 and <= 8 && col is >= 1 and <= 8)
+        while (row is >= 1 and <= BoardSize && col is >= 1 and <= BoardSize)
         {
             if (row == target.Row && col == target.Col)
             {

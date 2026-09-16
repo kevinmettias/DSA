@@ -6,21 +6,30 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PredictTheWinner;
 // them to LeetCode's published examples.
 public sealed class PredictTheWinnerTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<PredictTheWinnerCase> Examples =>
         new()
         {
-            { [1, 5, 2], false },
-            { [1, 5, 233, 7], true },
-            { [1], true },
+            { new PredictTheWinnerCase(Nums: [1, 5, 2], Expected: false) },
+            { new PredictTheWinnerCase(Nums: [1, 5, 233, 7], Expected: true) },
+            { new PredictTheWinnerCase(Nums: [1], Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanWinByUnmemoizedRecursion_LeetCodeExamples_ReturnsWhetherPlayerOneCanWinOrTie(int[] nums, bool expected) =>
-        Assert.Equal(expected, PredictTheWinnerSolution.CanWinByUnmemoizedRecursion(nums));
+    public void CanWinByUnmemoizedRecursion_LeetCodeExamples_ReturnsWhetherPlayerOneCanWinOrTie(
+        PredictTheWinnerCase example) =>
+        Assert.Equal(example.Expected, PredictTheWinnerSolution.CanWinByUnmemoizedRecursion(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanWinByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherPlayerOneCanWinOrTie(int[] nums, bool expected) =>
-        Assert.Equal(expected, PredictTheWinnerSolution.CanWinByMemoizedRecursion(nums));
+    public void CanWinByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherPlayerOneCanWinOrTie(
+        PredictTheWinnerCase example) =>
+        Assert.Equal(example.Expected, PredictTheWinnerSolution.CanWinByMemoizedRecursion(example.Nums));
+
+    // One LeetCode example: the score values and whether player one can win or tie.
+    // The expected value is named at every construction site, so a row reads as the
+    // case it is rather than as a bare `true` whose meaning is its position. Nested
+    // because it is only ever used inside this test class - it is this harness's own
+    // vocabulary, not a type another file would import.
+    public readonly record struct PredictTheWinnerCase(int[] Nums, bool Expected);
 }

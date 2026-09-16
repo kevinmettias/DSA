@@ -48,18 +48,22 @@ public sealed class MinimumAbsoluteDifferenceBetweenElementsWithConstraintTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAbsoluteDifferenceByBruteForcePairScan_LeetCodeExamples_ReturnsSmallestConstrainedGap(
-        int[] nums, int x, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
-                .MinAbsoluteDifferenceByBruteForcePairScan(nums, x));
+        int[] nums, int x, int expected)
+    {
+        var actual = MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
+            .MinAbsoluteDifferenceByBruteForcePairScan(nums, x);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAbsoluteDifferenceByBstSlidingWindow_LeetCodeExamples_ReturnsSmallestConstrainedGap(
-        int[] nums, int x, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
-                .MinAbsoluteDifferenceByBstSlidingWindow(nums, x));
+        int[] nums, int x, int expected)
+    {
+        var actual = MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution
+            .MinAbsoluteDifferenceByBstSlidingWindow(nums, x);
+
+        Assert.Equal(expected, actual);
+    }
 }

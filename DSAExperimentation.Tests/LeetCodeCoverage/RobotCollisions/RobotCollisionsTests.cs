@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.RobotCollisions.RobotCollisionsSolution;
+using DSAExperimentation.LeetCode.RobotCollisions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RobotCollisions;
 
@@ -28,11 +28,19 @@ public sealed class RobotCollisionsTests
     [MemberData(nameof(Examples))]
     public void SurvivorHealthsByRepeatedScan_LeetCodeExamples_ReturnsSurvivingHealthsInInputOrder(
         int[] positions, int[] healths, string directions, int[] expected)
-        => Assert.Equal(expected, SurvivorHealthsByRepeatedScan(positions, healths, directions));
+    {
+        var actual = RobotCollisionsSolution.SurvivorHealthsByRepeatedScan(positions, healths, directions);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SurvivorHealthsByStackSimulation_LeetCodeExamples_ReturnsSurvivingHealthsInInputOrder(
         int[] positions, int[] healths, string directions, int[] expected)
-        => Assert.Equal(expected, SurvivorHealthsByStackSimulation(positions, healths, directions));
+    {
+        var actual = RobotCollisionsSolution.SurvivorHealthsByStackSimulation(positions, healths, directions);
+
+        Assert.Equal(expected, actual);
+    }
 }

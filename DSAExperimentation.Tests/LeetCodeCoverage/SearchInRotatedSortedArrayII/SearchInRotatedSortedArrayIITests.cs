@@ -7,24 +7,38 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchInRotatedSortedArrayII
 // failure names the strategy that broke.
 public sealed class SearchInRotatedSortedArrayIITests
 {
-    public static TheoryData<int[], int, bool> Examples =>
+    public static TheoryData<RotatedSearchExample> Examples =>
         new()
         {
-            { [2, 5, 6, 0, 0, 1, 2], 0, true },
-            { [2, 5, 6, 0, 0, 1, 2], 3, false },
-            { [1, 0, 1, 1, 1], 0, true },
-            { [1, 1, 1, 1, 1], 2, false },
-            { [], 5, false },
+            new RotatedSearchExample(Nums: [2, 5, 6, 0, 0, 1, 2], Target: 0, TargetIsPresent: true),
+            new RotatedSearchExample(Nums: [2, 5, 6, 0, 0, 1, 2], Target: 3, TargetIsPresent: false),
+            new RotatedSearchExample(Nums: [1, 0, 1, 1, 1], Target: 0, TargetIsPresent: true),
+            new RotatedSearchExample(Nums: [1, 1, 1, 1, 1], Target: 2, TargetIsPresent: false),
+            new RotatedSearchExample(Nums: [], Target: 5, TargetIsPresent: false),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchByLinearScan_LeetCodeExamples_ReturnsWhetherTargetIsPresent(int[] nums, int target, bool expected) =>
-        Assert.Equal(expected, SearchInRotatedSortedArrayIISolution.SearchByLinearScan(nums, target));
+    public void SearchByLinearScan_LeetCodeExamples_ReturnsWhetherTargetIsPresent(RotatedSearchExample example)
+    {
+        var actual = SearchInRotatedSortedArrayIISolution.SearchByLinearScan(example.Nums, example.Target);
+
+        Assert.Equal(example.TargetIsPresent, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SearchByTrimDuplicatesThenBinarySearch_LeetCodeExamples_ReturnsWhetherTargetIsPresent(
-        int[] nums, int target, bool expected) =>
-        Assert.Equal(expected, SearchInRotatedSortedArrayIISolution.SearchByTrimDuplicatesThenBinarySearch(nums, target));
+        RotatedSearchExample example)
+    {
+        var actual = SearchInRotatedSortedArrayIISolution.SearchByTrimDuplicatesThenBinarySearch(
+            example.Nums, example.Target);
+
+        Assert.Equal(example.TargetIsPresent, actual);
+    }
+
+    // One LeetCode example: the rotated, possibly duplicated array, the target to
+    // find, and whether the target is present. The expectation is named rather than
+    // carried by its position, so the row reads as an assertion instead of a `true`.
+    public readonly record struct RotatedSearchExample(int[] Nums, int Target, bool TargetIsPresent);
 }

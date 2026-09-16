@@ -29,17 +29,21 @@ public sealed class PaintingAGridWithThreeDifferentColorsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ColorTheGridByBruteForce_LeetCodeExamples_ReturnsColoringCount(
-        int rows, int columns, int expected) =>
-        Assert.Equal(
-            expected,
-            PaintingAGridWithThreeDifferentColorsSolution.ColorTheGridByBruteForce(rows, columns));
+        int rows, int columns, int expected)
+    {
+        var actual = PaintingAGridWithThreeDifferentColorsSolution.ColorTheGridByBruteForce(rows, columns);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ColorTheGridByColumnPatternDynamicProgramming_LeetCodeExamples_ReturnsColoringCount(
-        int rows, int columns, int expected) =>
-        Assert.Equal(
-            expected,
-            PaintingAGridWithThreeDifferentColorsSolution.ColorTheGridByColumnPatternDynamicProgramming(
-                rows, columns));
+        int rows, int columns, int expected)
+    {
+        var actual = PaintingAGridWithThreeDifferentColorsSolution.ColorTheGridByColumnPatternDynamicProgramming(
+            rows, columns);
+
+        Assert.Equal(expected, actual);
+    }
 }

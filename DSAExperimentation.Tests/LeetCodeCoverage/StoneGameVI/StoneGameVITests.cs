@@ -37,12 +37,20 @@ public sealed class StoneGameVITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void WinnerByArraySortGreedy_LeetCodeExamples_ReportsOptimalPlayOutcome(
-        int[] aliceValues, int[] bobValues, int expected) =>
-        Assert.Equal(expected, StoneGameVISolution.WinnerByArraySortGreedy(aliceValues, bobValues));
+        int[] aliceValues, int[] bobValues, int expected)
+    {
+        var actual = StoneGameVISolution.WinnerByArraySortGreedy(aliceValues, bobValues);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void WinnerByMergeSortGreedy_LeetCodeExamples_ReportsOptimalPlayOutcome(
-        int[] aliceValues, int[] bobValues, int expected) =>
-        Assert.Equal(expected, StoneGameVISolution.WinnerByMergeSortGreedy(aliceValues, bobValues));
+        int[] aliceValues, int[] bobValues, int expected)
+    {
+        var actual = StoneGameVISolution.WinnerByMergeSortGreedy(aliceValues, bobValues);
+
+        Assert.Equal(expected, actual);
+    }
 }

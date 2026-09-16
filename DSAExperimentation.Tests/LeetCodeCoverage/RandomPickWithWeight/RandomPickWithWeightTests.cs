@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.RandomPickWithWeight.RandomPickWithWeightSolution;
+using DSAExperimentation.LeetCode.RandomPickWithWeight;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickWithWeight;
 
@@ -21,25 +21,32 @@ public sealed class RandomPickWithWeightTests
     [MemberData(nameof(Examples))]
     public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByLinearScan(
         int[] w, int seed, int[] validIndices, int trials)
-        => AssertPicksAreValid(new RandomPickWithWeightByLinearScan(w, new Random(seed)), validIndices, trials);
+        => AssertPicksAreValid(
+            new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(w, new Random(seed)),
+            validIndices,
+            trials);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByBinarySearchUpperBound(
         int[] w, int seed, int[] validIndices, int trials)
         => AssertPicksAreValid(
-            new RandomPickWithWeightByBinarySearchUpperBound(w, new Random(seed)), validIndices, trials);
+            new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(w, new Random(seed)),
+            validIndices,
+            trials);
 
     [Fact]
     public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOftenByLinearScan()
-        => AssertHeavilyWeightedIndexDominates(new RandomPickWithWeightByLinearScan([1, 999], new Random(3)));
+        => AssertHeavilyWeightedIndexDominates(
+            new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan([1, 999], new Random(3)));
 
     [Fact]
     public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOftenByBinarySearchUpperBound()
         => AssertHeavilyWeightedIndexDominates(
-            new RandomPickWithWeightByBinarySearchUpperBound([1, 999], new Random(3)));
+            new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound([1, 999], new Random(3)));
 
-    private static void AssertPicksAreValid(IRandomPickWithWeight solution, int[] validIndices, int trials)
+    private static void AssertPicksAreValid(
+        RandomPickWithWeightSolution.IRandomPickWithWeight solution, int[] validIndices, int trials)
     {
         for (var i = 0; i < trials; i++)
         {
@@ -47,7 +54,8 @@ public sealed class RandomPickWithWeightTests
         }
     }
 
-    private static void AssertHeavilyWeightedIndexDominates(IRandomPickWithWeight solution)
+    private static void AssertHeavilyWeightedIndexDominates(
+        RandomPickWithWeightSolution.IRandomPickWithWeight solution)
     {
         var heavyIndexHits = 0;
 

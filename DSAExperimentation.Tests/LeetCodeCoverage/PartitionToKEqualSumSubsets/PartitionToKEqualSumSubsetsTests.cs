@@ -6,23 +6,38 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionToKEqualSumSubsets;
 // file just pins them to LeetCode's published examples.
 public sealed class PartitionToKEqualSumSubsetsTests
 {
-    public static TheoryData<int[], int, bool> Examples =>
+    public static TheoryData<KSubsetExample> Examples =>
         new()
         {
-            { [4, 3, 2, 3, 5, 2, 1], 4, true },
-            { [1, 2, 3, 4], 3, false },
-            { [2, 2, 2, 2, 3, 4, 5], 4, false },
+            { new KSubsetExample(Nums: [4, 3, 2, 3, 5, 2, 1], K: 4, Expected: true) },
+            { new KSubsetExample(Nums: [1, 2, 3, 4], K: 3, Expected: false) },
+            { new KSubsetExample(Nums: [2, 2, 2, 2, 3, 4, 5], K: 4, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanPartitionKSubsetsByNaiveBacktracking_LeetCodeExamples_ReturnsWhetherKEqualBucketsExist(
-        int[] nums, int k, bool expected) =>
-        Assert.Equal(expected, PartitionToKEqualSumSubsetsSolution.CanPartitionKSubsetsByNaiveBacktracking(nums, k));
+        KSubsetExample example)
+    {
+        var actual = PartitionToKEqualSumSubsetsSolution.CanPartitionKSubsetsByNaiveBacktracking(
+            example.Nums, example.K);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanPartitionKSubsetsByGenericBacktrack_LeetCodeExamples_ReturnsWhetherKEqualBucketsExist(
-        int[] nums, int k, bool expected) =>
-        Assert.Equal(expected, PartitionToKEqualSumSubsetsSolution.CanPartitionKSubsetsByGenericBacktrack(nums, k));
+        KSubsetExample example)
+    {
+        var actual = PartitionToKEqualSumSubsetsSolution.CanPartitionKSubsetsByGenericBacktrack(
+            example.Nums, example.K);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the numbers, how many equal-sum buckets they have to fill,
+    // and whether that is possible. The answer is the datum under test, so the row
+    // names it rather than leaving a bare `bool` after the bucket count.
+    public readonly record struct KSubsetExample(int[] Nums, int K, bool Expected);
 }

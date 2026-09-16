@@ -56,16 +56,22 @@ public sealed class SpiralMatrixIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SpiralMatrixByDirectionArray_LeetCodeExamples_FillsSpiralPathAndPadsWithNegativeOne(
-        int m, int n, int[] values, int[][] expected) =>
-        Assert.Equal(
-            expected,
-            SpiralMatrixIVSolution.SpiralMatrixByDirectionArray(m, n, LeetCodeWireFormat.ToLinkedList(values)));
+        int m, int n, int[] values, int[][] expected)
+    {
+        var head = LeetCodeWireFormat.ToLinkedList(values);
+        var actual = SpiralMatrixIVSolution.SpiralMatrixByDirectionArray(m, n, head);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SpiralMatrixByBoundaryShrink_LeetCodeExamples_FillsSpiralPathAndPadsWithNegativeOne(
-        int m, int n, int[] values, int[][] expected) =>
-        Assert.Equal(
-            expected,
-            SpiralMatrixIVSolution.SpiralMatrixByBoundaryShrink(m, n, LeetCodeWireFormat.ToLinkedList(values)));
+        int m, int n, int[] values, int[][] expected)
+    {
+        var head = LeetCodeWireFormat.ToLinkedList(values);
+        var actual = SpiralMatrixIVSolution.SpiralMatrixByBoundaryShrink(m, n, head);
+
+        Assert.Equal(expected, actual);
+    }
 }

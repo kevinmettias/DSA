@@ -33,12 +33,20 @@ public sealed class WalkingRobotSimulationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDistanceSquaredByLinearScan_LeetCodeExamples_ReturnsFarthestSquaredDistance(
-        int[] commands, int[][] obstacles, int expected) =>
-        Assert.Equal(expected, WalkingRobotSimulationSolution.MaxDistanceSquaredByLinearScan(commands, obstacles));
+        int[] commands, int[][] obstacles, int expected)
+    {
+        var actual = WalkingRobotSimulationSolution.MaxDistanceSquaredByLinearScan(commands, obstacles);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDistanceSquaredByObstacleSet_LeetCodeExamples_ReturnsFarthestSquaredDistance(
-        int[] commands, int[][] obstacles, int expected) =>
-        Assert.Equal(expected, WalkingRobotSimulationSolution.MaxDistanceSquaredByObstacleSet(commands, obstacles));
+        int[] commands, int[][] obstacles, int expected)
+    {
+        var actual = WalkingRobotSimulationSolution.MaxDistanceSquaredByObstacleSet(commands, obstacles);
+
+        Assert.Equal(expected, actual);
+    }
 }

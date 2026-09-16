@@ -21,12 +21,20 @@ public sealed class SmallestStringWithSwapsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestStringByAdjacencyListBfs_LeetCodeExamples_SortsEachComponentIndependently(
-        string s, int[][] pairs, string expected) =>
-        Assert.Equal(expected, SmallestStringWithSwapsSolution.SmallestStringByAdjacencyListBfs(s, pairs));
+        string s, int[][] pairs, string expected)
+    {
+        var actual = SmallestStringWithSwapsSolution.SmallestStringByAdjacencyListBfs(s, pairs);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestStringByDisjointSet_LeetCodeExamples_SortsEachComponentIndependently(
-        string s, int[][] pairs, string expected) =>
-        Assert.Equal(expected, SmallestStringWithSwapsSolution.SmallestStringByDisjointSet(s, pairs));
+        string s, int[][] pairs, string expected)
+    {
+        var actual = SmallestStringWithSwapsSolution.SmallestStringByDisjointSet(s, pairs);
+
+        Assert.Equal(expected, actual);
+    }
 }

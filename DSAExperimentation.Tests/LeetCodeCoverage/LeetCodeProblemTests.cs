@@ -11,18 +11,21 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage;
 // TheoryData is public and LeetCodeArm is internal (CS0053), the same constraint
 // the per-problem tests already work around by carrying LeetCode's own array
 // shapes. The strings are the arm's own identity, so a failure still reads
-// "two-sum/HashMap/no-pair-sums-to-target".
+// "two-sum/HashMap/no-pair-sums-to-target" - and they travel as one ArmIdentity
+// row rather than as three interchangeable string positions, so a row states which
+// string is the slug, which the strategy and which the case.
 public sealed class LeetCodeProblemTests
 {
-    public static TheoryData<string, string, string> CaseArms
+    public static TheoryData<ArmIdentity> CaseArms
     {
         get
         {
-            var data = new TheoryData<string, string, string>();
+            var data = new TheoryData<ArmIdentity>();
 
             foreach (var arm in LeetCodeProblemRegistry.CaseArms())
             {
-                data.Add(arm.TitleSlug, arm.StrategyName, arm.EntryName);
+                data.Add(new ArmIdentity(
+                    TitleSlug: arm.TitleSlug, StrategyName: arm.StrategyName, CaseName: arm.EntryName));
             }
 
             return data;
@@ -31,13 +34,12 @@ public sealed class LeetCodeProblemTests
 
     [Theory]
     [MemberData(nameof(CaseArms))]
-    public void Strategy_OnRegisteredCase_ProducesExpectedAnswer(
-        string titleSlug, string strategyName, string caseName)
+    public void Strategy_OnRegisteredCase_ProducesExpectedAnswer(ArmIdentity arm)
     {
-        var outcome = LeetCodeProblemRegistry.Get(titleSlug).RunCase(
-            new StrategyName(strategyName), new CaseName(caseName));
+        var outcome = LeetCodeProblemRegistry.Get(arm.TitleSlug).RunCase(
+            new StrategyName(arm.StrategyName), new CaseName(arm.CaseName));
 
-        Assert.True(outcome.Matched, $"{titleSlug}/{strategyName}/{caseName}: {outcome.FailureReason}");
+        Assert.True(outcome.Matched, $"{arm.TitleSlug}/{arm.StrategyName}/{arm.CaseName}: {outcome.FailureReason}");
     }
 
     // A registry that discovers nothing still produces a green run - every theory
@@ -86,16 +88,27 @@ public sealed class LeetCodeProblemTests
 
         // The large workload is the restricted one - at 400 vertices the
         // exhaustive arm would not finish.
-        Assert.Equal(["Dijkstra"], ArmsFor(problem, "cycle-400"));
+        var largeWorkloadArms = ArmsFor(problem, "cycle-400");
+
+        Assert.Equal(["Dijkstra"], largeWorkloadArms);
 
         // The small ones deliberately are NOT restricted: a benchmark that never
         // ran the baseline anywhere would have no comparison left to make, which
         // is the failure the filter must not be allowed to cause.
-        Assert.Equal(["ExhaustiveDfs", "Dijkstra"], ArmsFor(problem, "branching-14"));
+        var smallWorkloadArms = ArmsFor(problem, "branching-14");
+
+        Assert.Equal(["ExhaustiveDfs", "Dijkstra"], smallWorkloadArms);
     }
 
     private static IEnumerable<string> ArmsFor(LeetCodeProblem problem, string workloadName)
         => problem.WorkloadArms
             .Where(arm => arm.EntryName == workloadName)
             .Select(arm => arm.StrategyName);
+
+    // One registered arm: the problem it belongs to, the strategy it names and the case
+    // it runs. All three are strings and only their order would say which is which, so a
+    // row names each position rather than leaving three interchangeable ones. Nested
+    // because it is only ever used inside this test class - it is this harness's own
+    // vocabulary, not a type another file would import.
+    public readonly record struct ArmIdentity(string TitleSlug, string StrategyName, string CaseName);
 }

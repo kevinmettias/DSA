@@ -11,31 +11,44 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FormArrayByConcatenatingSuba
 // private helper), so a failure names the strategy that broke.
 public sealed class FormArrayByConcatenatingSubarraysOfAnotherArrayTests
 {
-    public static TheoryData<int[][], int[], bool> Examples =>
+    public static TheoryData<ConcatenationCase> Examples =>
         new()
         {
-            { [[1, -1, -1], [3, -2, 0]], [1, -1, 0, 1, -1, -1, 3, -2, 0], true },
-            { [[10, -2], [1, 2, 3, 4]], [1, 2, 1, 1, 2, 2, -2, 10], false },
-            { [[10, -2], [1, 2, 3, 4]], [1, 2, 3, 4, 10, -2], false },
-            { [[1, 2, 3], [3, 4]], [7, 7, 1, 2, 3, 4, 7, 7], false },
-            { [[1, 2]], [1, 2], true },
-            { [[1, 2, 3]], [1, 2], false },
-            { [[1, 2], [1, 2]], [1, 2, 1, 2], true },
+            { new ConcatenationCase([[1, -1, -1], [3, -2, 0]], [1, -1, 0, 1, -1, -1, 3, -2, 0], CanForm: true) },
+            { new ConcatenationCase([[10, -2], [1, 2, 3, 4]], [1, 2, 1, 1, 2, 2, -2, 10], CanForm: false) },
+            { new ConcatenationCase([[10, -2], [1, 2, 3, 4]], [1, 2, 3, 4, 10, -2], CanForm: false) },
+            { new ConcatenationCase([[1, 2, 3], [3, 4]], [7, 7, 1, 2, 3, 4, 7, 7], CanForm: false) },
+            { new ConcatenationCase([[1, 2]], [1, 2], CanForm: true) },
+            { new ConcatenationCase([[1, 2, 3]], [1, 2], CanForm: false) },
+            { new ConcatenationCase([[1, 2], [1, 2]], [1, 2, 1, 2], CanForm: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanChooseByNaiveSubarrayScan_LeetCodeExamples_ReportsWhetherGroupsFitDisjointlyInOrder(
-        int[][] groups, int[] nums, bool expected) =>
-        Assert.Equal(
-            expected,
-            FormArrayByConcatenatingSubarraysOfAnotherArraySolution.CanChooseByNaiveSubarrayScan(groups, nums));
+        ConcatenationCase example)
+    {
+        var actual = FormArrayByConcatenatingSubarraysOfAnotherArraySolution.CanChooseByNaiveSubarrayScan(
+            example.Groups, example.Nums);
+
+        Assert.Equal(example.CanForm, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanChooseByCharCompressedKmpSearch_LeetCodeExamples_ReportsWhetherGroupsFitDisjointlyInOrder(
-        int[][] groups, int[] nums, bool expected) =>
-        Assert.Equal(
-            expected,
-            FormArrayByConcatenatingSubarraysOfAnotherArraySolution.CanChooseByCharCompressedKmpSearch(groups, nums));
+        ConcatenationCase example)
+    {
+        var actual = FormArrayByConcatenatingSubarraysOfAnotherArraySolution.CanChooseByCharCompressedKmpSearch(
+            example.Groups, example.Nums);
+
+        Assert.Equal(example.CanForm, actual);
+    }
+
+    // One LeetCode example: the groups to place, the array they must tile, and whether
+    // they do it disjointly and in order. The expected value is named at every
+    // construction site, so a row reads as the case it is rather than as a bare `true`
+    // whose meaning is its position. Nested because it is only ever used inside this test
+    // class - it is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct ConcatenationCase(int[][] Groups, int[] Nums, bool CanForm);
 }

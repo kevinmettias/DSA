@@ -53,18 +53,22 @@ public sealed class QueensThatCanAttackTheKingTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void QueensAttackTheKingByLinearScan_LeetCodeExamples_ReturnsAttackingQueens(
-        int[][] queens, int[] king, int[][] expected) =>
-        AssertSameCoordinates(
-            expected,
-            QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(queens, king));
+        int[][] queens, int[] king, int[][] expected)
+    {
+        var attacking = QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(queens, king);
+
+        AssertSameCoordinates(expected, attacking);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void QueensAttackTheKingBySetLookup_LeetCodeExamples_ReturnsAttackingQueens(
-        int[][] queens, int[] king, int[][] expected) =>
-        AssertSameCoordinates(
-            expected,
-            QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(queens, king));
+        int[][] queens, int[] king, int[][] expected)
+    {
+        var attacking = QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(queens, king);
+
+        AssertSameCoordinates(expected, attacking);
+    }
 
     private static void AssertSameCoordinates(int[][] expected, List<(int Row, int Col)> actual)
     {

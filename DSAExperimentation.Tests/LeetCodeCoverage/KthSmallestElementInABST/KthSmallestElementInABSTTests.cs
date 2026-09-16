@@ -42,7 +42,11 @@ public sealed partial class KthSmallestElementInABSTTests
 
         InOrderTraversal.Walk<int, RankHooks>(root);
 
-        return State.Result.Value!.Value;
+        // Both Facts above pass a k no larger than their tree's node count, so the walk
+        // reaches the kth visit and RankHooks sets Result before returning.
+        return State.Result.Value
+            ?? throw new InvalidOperationException(
+                $"the tree has fewer than {k} nodes, so the in-order walk never reached rank {k}");
     }
 
     private readonly struct RankHooks : IInOrderHooks<int>

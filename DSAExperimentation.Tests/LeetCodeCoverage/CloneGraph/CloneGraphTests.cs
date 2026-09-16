@@ -7,22 +7,38 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CloneGraph;
 // and the same walk composed over this repo's own HashMap (pre-migration, the
 // test's own private helper) - and are asserted against the same graphs, so a
 // disagreement between them fails here rather than surfacing only as a
-// benchmark/test mismatch. Node is internal, so - as in SameTreeTests - it
-// stays out of a public TheoryData/[Theory] signature and is only ever handed
-// to the solution through private helpers.
+// benchmark/test mismatch. Node is internal, so - as in SameTreeTests - it stays
+// out of a public TheoryData/[Theory] signature; a case names its graph in
+// LeetCode's own adjacency-list shape and Build reconstructs it from that.
 public sealed class CloneGraphTests
 {
-    [Fact]
-    public void CloneByDictionaryDfs_TwoConnectedNodes_CreatesDistinctIsomorphicCopy()
+    // LeetCode's adjacency-list shape: entry i names the 1-based values that node
+    // i + 1 is adjacent to, so [[2], [1]] is LeetCode's two-node example and [[]]
+    // is a lone node with no neighbours.
+    public static TheoryData<int[][]> Graphs =>
+        new()
+        {
+            { [[2], [1]] },
+            { [[]] },
+            { [[2, 3], [1, 3], [1, 2]] },
+        };
+
+    [Theory]
+    [MemberData(nameof(Graphs))]
+    public void CloneByDictionaryDfs_LeetCodeExamples_CreatesADistinctIsomorphicCopy(int[][] adjacency)
     {
-        var (first, _) = TwoConnectedNodes();
+        var source = Build(adjacency);
 
-        var clone = CloneGraphSolution.CloneByDictionaryDfs(first)!;
+        AssertDistinctIsomorphicCopy(source, CloneGraphSolution.CloneByDictionaryDfs(source));
+    }
 
-        Assert.NotSame(first, clone);
-        Assert.Equal(1, clone.Value);
-        Assert.Equal(2, clone.Neighbors[0].Value);
-        Assert.Same(clone, clone.Neighbors[0].Neighbors[0]);
+    [Theory]
+    [MemberData(nameof(Graphs))]
+    public void CloneByHashMapDfs_LeetCodeExamples_CreatesADistinctIsomorphicCopy(int[][] adjacency)
+    {
+        var source = Build(adjacency);
+
+        AssertDistinctIsomorphicCopy(source, CloneGraphSolution.CloneByHashMapDfs(source));
     }
 
     [Fact]
@@ -30,92 +46,76 @@ public sealed class CloneGraphTests
         Assert.Null(CloneGraphSolution.CloneByDictionaryDfs(null));
 
     [Fact]
-    public void CloneByDictionaryDfs_SingleNodeNoNeighbors_CreatesDistinctCopyWithNoNeighbors()
-    {
-        var node = SingleNode();
-
-        var clone = CloneGraphSolution.CloneByDictionaryDfs(node)!;
-
-        Assert.NotSame(node, clone);
-        Assert.Equal(1, clone.Value);
-        Assert.Empty(clone.Neighbors);
-    }
-
-    [Fact]
-    public void CloneByDictionaryDfs_TriangleGraph_ClonesSharedNodeOnce()
-    {
-        var clone = CloneGraphSolution.CloneByDictionaryDfs(TriangleGraph())!;
-
-        AssertTriangleClonedSharedNodeOnce(clone);
-    }
-
-    [Fact]
-    public void CloneByHashMapDfs_TwoConnectedNodes_CreatesDistinctIsomorphicCopy()
-    {
-        var (first, _) = TwoConnectedNodes();
-
-        var clone = CloneGraphSolution.CloneByHashMapDfs(first)!;
-
-        Assert.NotSame(first, clone);
-        Assert.Equal(1, clone.Value);
-        Assert.Equal(2, clone.Neighbors[0].Value);
-        Assert.Same(clone, clone.Neighbors[0].Neighbors[0]);
-    }
-
-    [Fact]
     public void CloneByHashMapDfs_NullNode_ReturnsNull() =>
         Assert.Null(CloneGraphSolution.CloneByHashMapDfs(null));
 
-    [Fact]
-    public void CloneByHashMapDfs_SingleNodeNoNeighbors_CreatesDistinctCopyWithNoNeighbors()
+    // A node reached through two different edges (here, node 3 from both 1 and 2)
+    // must still be cloned exactly once - the case both strategies' memoization
+    // exists for - so every source node is walked to its counterpart: a different
+    // object, the same value, the same neighbours in the same order.
+    private static void AssertDistinctIsomorphicCopy(Node source, Node? copy)
     {
-        var node = SingleNode();
+        var clone = Assert.IsType<Node>(copy);
+        var counterparts = new Dictionary<Node, Node>();
 
-        var clone = CloneGraphSolution.CloneByHashMapDfs(node)!;
-
-        Assert.NotSame(node, clone);
-        Assert.Equal(1, clone.Value);
-        Assert.Empty(clone.Neighbors);
+        AssertCorresponds(source, clone, counterparts);
     }
 
-    [Fact]
-    public void CloneByHashMapDfs_TriangleGraph_ClonesSharedNodeOnce()
+    // The counterparts map is both the isomorphism's proof and its visited set: a
+    // source node already seen must come back as the SAME clone, which is what
+    // pins the shared descendant to one copy and what terminates a cyclic graph.
+    // A node seen for the first time is recorded and then checked against its
+    // neighbours.
+    private static void AssertCorresponds(Node source, Node clone, Dictionary<Node, Node> counterparts)
     {
-        var clone = CloneGraphSolution.CloneByHashMapDfs(TriangleGraph())!;
+        AssertDistinctCopyOfTheSameNode(source, clone);
 
-        AssertTriangleClonedSharedNodeOnce(clone);
+        if (counterparts.TryGetValue(source, out var known))
+        {
+            Assert.Same(known, clone);
+            return;
+        }
+
+        counterparts[source] = clone;
+        AssertNeighborsCorrespond(source, clone, counterparts);
     }
 
-    // A node reached through two different edges (here, node 3 from both 1
-    // and 2) must still be cloned exactly once - the case both strategies'
-    // memoization exists for.
-    private static void AssertTriangleClonedSharedNodeOnce(Node cloneA)
+    private static void AssertDistinctCopyOfTheSameNode(Node source, Node clone)
     {
-        var cloneCViaB = cloneA.Neighbors.Single(n => n.Value == 2).Neighbors.Single(n => n.Value == 3);
-        var cloneCViaDirectEdge = cloneA.Neighbors.Single(n => n.Value == 3);
-
-        Assert.Same(cloneCViaDirectEdge, cloneCViaB);
+        Assert.NotSame(source, clone);
+        Assert.Equal(source.Value, clone.Value);
     }
 
-    private static (Node First, Node Second) TwoConnectedNodes()
+    private static void AssertNeighborsCorrespond(Node source, Node clone, Dictionary<Node, Node> counterparts)
     {
-        var first = new Node(1);
-        var second = new Node(2);
-        first.Neighbors.Add(second);
-        second.Neighbors.Add(first);
-        return (first, second);
+        Assert.Equal(source.Neighbors.Count, clone.Neighbors.Count);
+
+        for (var i = 0; i < source.Neighbors.Count; i++)
+        {
+            AssertCorresponds(source.Neighbors[i], clone.Neighbors[i], counterparts);
+        }
     }
 
-    private static Node SingleNode() => new(1);
-
-    private static Node TriangleGraph()
+    // Node i + 1 is constructed first and the edges are wired in a second pass, in
+    // the order the case gave them, so a case states its graph exactly the way
+    // LeetCode publishes it.
+    private static Node Build(int[][] adjacency)
     {
-        var a = new Node(1);
-        var b = new Node(2);
-        var c = new Node(3);
-        a.Neighbors.Add(b); a.Neighbors.Add(c);
-        b.Neighbors.Add(a); b.Neighbors.Add(c);
-        c.Neighbors.Add(a); c.Neighbors.Add(b);
-        return a;
+        var nodes = new Node[adjacency.Length];
+
+        for (var i = 0; i < nodes.Length; i++)
+        {
+            nodes[i] = new Node(i + 1);
+        }
+
+        for (var i = 0; i < adjacency.Length; i++)
+        {
+            foreach (var value in adjacency[i])
+            {
+                nodes[i].Neighbors.Add(nodes[value - 1]);
+            }
+        }
+
+        return nodes[0];
     }
 }

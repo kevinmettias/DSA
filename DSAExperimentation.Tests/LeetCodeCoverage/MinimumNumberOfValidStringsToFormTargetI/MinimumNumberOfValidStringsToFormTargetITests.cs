@@ -18,12 +18,18 @@ public sealed class MinimumNumberOfValidStringsToFormTargetITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinValidStringsByBruteForce_LeetCodeExamples_ReturnsFewestValidStrings(
-        string[] words, string target, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfValidStringsToFormTargetISolution.MinValidStringsByBruteForce(words, target));
+        string[] words, string target, int expected)
+    {
+        var actual = MinimumNumberOfValidStringsToFormTargetISolution.MinValidStringsByBruteForce(words, target);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinValidStringsByZFunctionAcrossWords_LeetCodeExamples_ReturnsFewestValidStrings(
-        string[] words, string target, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfValidStringsToFormTargetISolution.MinValidStringsByZFunctionAcrossWords(words, target));
+        string[] words, string target, int expected)
+    {
+        var actual = MinimumNumberOfValidStringsToFormTargetISolution.MinValidStringsByZFunctionAcrossWords(words, target);
+        Assert.Equal(expected, actual);
+    }
 }

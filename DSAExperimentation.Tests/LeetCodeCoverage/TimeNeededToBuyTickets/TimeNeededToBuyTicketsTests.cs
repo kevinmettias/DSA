@@ -23,12 +23,20 @@ public sealed class TimeNeededToBuyTicketsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void TimeRequiredToBuyByQueueSimulation_LeetCodeExamples_ReturnsSecondPersonKFinishes(
-        int[] tickets, int k, int expected) =>
-        Assert.Equal(expected, TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByQueueSimulation(tickets, k));
+        int[] tickets, int k, int expected)
+    {
+        var actual = TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByQueueSimulation(tickets, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TimeRequiredToBuyByClosedFormSum_LeetCodeExamples_ReturnsSecondPersonKFinishes(
-        int[] tickets, int k, int expected) =>
-        Assert.Equal(expected, TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByClosedFormSum(tickets, k));
+        int[] tickets, int k, int expected)
+    {
+        var actual = TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByClosedFormSum(tickets, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

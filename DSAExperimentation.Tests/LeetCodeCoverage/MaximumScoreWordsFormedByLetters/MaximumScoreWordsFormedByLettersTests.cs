@@ -66,10 +66,12 @@ public sealed class MaximumScoreWordsFormedByLettersTests
         string[] words,
         char[] letters,
         int[] score,
-        int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumScoreWordsFormedByLettersSolution.MaxScoreWordsByNaiveRecursion(words, letters, score));
+        int expected)
+    {
+        var actual = MaximumScoreWordsFormedByLettersSolution.MaxScoreWordsByNaiveRecursion(words, letters, score);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -77,10 +79,12 @@ public sealed class MaximumScoreWordsFormedByLettersTests
         string[] words,
         char[] letters,
         int[] score,
-        int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumScoreWordsFormedByLettersSolution.MaxScoreWordsByBacktrackSearch(words, letters, score));
+        int expected)
+    {
+        var actual = MaximumScoreWordsFormedByLettersSolution.MaxScoreWordsByBacktrackSearch(words, letters, score);
+
+        Assert.Equal(expected, actual);
+    }
 
     // LeetCode states score as a dense 26-entry vector; naming only the non-zero
     // letters keeps the examples above readable.

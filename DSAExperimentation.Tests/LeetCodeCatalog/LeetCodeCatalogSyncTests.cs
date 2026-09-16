@@ -29,6 +29,16 @@ public sealed partial class LeetCodeCatalogSyncTests
 
         Assert.NotEmpty(titleSlugs);
 
+        await RefreshEveryCachedQuestion(titleSlugs);
+
+        Assert.Equal(titleSlugs.Count, LeetCodeQuestionCache.ListCachedTitleSlugs().Count);
+    }
+
+    // The sweep the test is named for, behind a name of its own: the test then reads
+    // as the claim it makes - the set it is given is the set still cached at the end -
+    // rather than as the loop that carries it out.
+    private static async Task RefreshEveryCachedQuestion(IReadOnlyList<string> titleSlugs)
+    {
         using var client = new LeetCodeApiClient();
 
         foreach (var titleSlug in titleSlugs)
@@ -42,7 +52,5 @@ public sealed partial class LeetCodeCatalogSyncTests
             // anything this test could instead observe directly.
             await Task.Delay(BetweenRequests);
         }
-
-        Assert.Equal(titleSlugs.Count, LeetCodeQuestionCache.ListCachedTitleSlugs().Count);
     }
 }

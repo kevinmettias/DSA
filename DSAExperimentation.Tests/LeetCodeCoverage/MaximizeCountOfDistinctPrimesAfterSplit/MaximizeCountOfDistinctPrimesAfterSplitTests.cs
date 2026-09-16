@@ -18,16 +18,20 @@ public sealed class MaximizeCountOfDistinctPrimesAfterSplitTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDistinctPrimeCountsByBruteForce_LeetCodeExamples_ReturnsPerQueryMaxSplitPrimeCounts(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByBruteForce(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByBruteForce(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxDistinctPrimeCountsByPrefixSuffixScan_LeetCodeExamples_ReturnsPerQueryMaxSplitPrimeCounts(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByPrefixSuffixScan(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = MaximizeCountOfDistinctPrimesAfterSplitSolution.MaxDistinctPrimeCountsByPrefixSuffixScan(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

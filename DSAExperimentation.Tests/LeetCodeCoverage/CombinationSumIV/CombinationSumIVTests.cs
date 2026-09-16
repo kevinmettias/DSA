@@ -18,12 +18,20 @@ public sealed class CombinationSumIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCombinationsByTabulation_LeetCodeExamples_ReturnsOrderSensitiveCount(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, CombinationSumIVSolution.CountCombinationsByTabulation(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var actual = CombinationSumIVSolution.CountCombinationsByTabulation(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCombinationsByMemoizedRecursion_LeetCodeExamples_ReturnsOrderSensitiveCount(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, CombinationSumIVSolution.CountCombinationsByMemoizedRecursion(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var actual = CombinationSumIVSolution.CountCombinationsByMemoizedRecursion(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

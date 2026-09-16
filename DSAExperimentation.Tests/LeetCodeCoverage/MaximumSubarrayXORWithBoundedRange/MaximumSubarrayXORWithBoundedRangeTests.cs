@@ -19,13 +19,20 @@ public sealed class MaximumSubarrayXORWithBoundedRangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSubarrayXorByBruteForce_LeetCodeExamples_ReturnsMaxBoundedSubarrayXor(
-        int[] nums, int low, int high, int expected) =>
-        Assert.Equal(expected, MaximumSubarrayXORWithBoundedRangeSolution.MaxSubarrayXorByBruteForce(nums, low, high));
+        int[] nums, int low, int high, int expected)
+    {
+        var actual = MaximumSubarrayXORWithBoundedRangeSolution.MaxSubarrayXorByBruteForce(nums, low, high);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSubarrayXorByBitTrieSegments_LeetCodeExamples_ReturnsMaxBoundedSubarrayXor(
-        int[] nums, int low, int high, int expected) =>
-        Assert.Equal(
-            expected, MaximumSubarrayXORWithBoundedRangeSolution.MaxSubarrayXorByBitTrieSegments(nums, low, high));
+        int[] nums, int low, int high, int expected)
+    {
+        var actual = MaximumSubarrayXORWithBoundedRangeSolution.MaxSubarrayXorByBitTrieSegments(nums, low, high);
+
+        Assert.Equal(expected, actual);
+    }
 }

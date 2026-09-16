@@ -9,51 +9,58 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchInABinarySearchTree;
 // subtree - the whole tree - comes back).
 public sealed class SearchInABinarySearchTreeTests
 {
-    public static TheoryData<int[], int, int?, int?, int?> Examples =>
+    public static TheoryData<SubtreeSearchExample> Examples =>
         new()
         {
-            { [4, 2, 7, 1, 3], 2, 2, 1, 3 },
-            { [4, 2, 7, 1, 3], 5, null, null, null },
-            { [4, 2, 7, 1, 3], 4, 4, 2, 7 },
+            new SubtreeSearchExample(
+                TreeValues: [4, 2, 7, 1, 3], Value: 2, ExpectedValue: 2, ExpectedLeft: 1, ExpectedRight: 3),
+            new SubtreeSearchExample(
+                TreeValues: [4, 2, 7, 1, 3], Value: 5, ExpectedValue: null, ExpectedLeft: null, ExpectedRight: null),
+            new SubtreeSearchExample(
+                TreeValues: [4, 2, 7, 1, 3], Value: 4, ExpectedValue: 4, ExpectedLeft: 2, ExpectedRight: 7),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SearchBstByLinearScan_LeetCodeExamples_ReturnsSubtreeRootedAtValue(
-        int[] treeValues, int val, int? expectedValue, int? expectedLeft, int? expectedRight)
+        SubtreeSearchExample example)
     {
-        var root = BuildTree(treeValues);
+        var root = BuildTree(example.TreeValues);
 
-        var found = SearchInABinarySearchTreeSolution.SearchBstByLinearScan(root, val);
+        var found = SearchInABinarySearchTreeSolution.SearchBstByLinearScan(root, example.Value);
 
-        AssertFound(found, expectedValue, expectedLeft, expectedRight);
+        AssertFound(found, example);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SearchBstByBstDescent_LeetCodeExamples_ReturnsSubtreeRootedAtValue(
-        int[] treeValues, int val, int? expectedValue, int? expectedLeft, int? expectedRight)
+        SubtreeSearchExample example)
     {
-        var root = BuildTree(treeValues);
+        var root = BuildTree(example.TreeValues);
 
-        var found = SearchInABinarySearchTreeSolution.SearchBstByBstDescent(root, val);
+        var found = SearchInABinarySearchTreeSolution.SearchBstByBstDescent(root, example.Value);
 
-        AssertFound(found, expectedValue, expectedLeft, expectedRight);
+        AssertFound(found, example);
     }
 
-    private static void AssertFound(
-        BinaryTreeNode<int>? found, int? expectedValue, int? expectedLeft, int? expectedRight)
+    private static void AssertFound(BinaryTreeNode<int>? found, SubtreeSearchExample example)
     {
-        if (expectedValue is null)
+        if (example.ExpectedValue is null)
         {
             Assert.Null(found);
             return;
         }
 
-        Assert.NotNull(found);
-        Assert.Equal(expectedValue, found!.Value);
-        Assert.Equal(expectedLeft, found.Left?.Value);
-        Assert.Equal(expectedRight, found.Right?.Value);
+        // A non-null ExpectedValue above means this row searches for a value the tree
+        // holds - every example pairs the two - and both strategies return null only
+        // for a value the tree does not hold. IsType asks for that node rather than
+        // promising it, and pins the answer to the tree's own node type while there.
+        var subtree = Assert.IsType<BinaryTreeNode<int>>(found);
+
+        Assert.Equal(example.ExpectedValue, subtree.Value);
+        Assert.Equal(example.ExpectedLeft, subtree.Left?.Value);
+        Assert.Equal(example.ExpectedRight, subtree.Right?.Value);
     }
 
     private static BinaryTreeNode<int> BuildTree(params int[] values)
@@ -65,9 +72,21 @@ public sealed class SearchInABinarySearchTreeTests
             tree.Insert(value);
         }
 
-        // presumption: allow -- every call site in this file passes a non-empty
-        // values array, so at least one Insert above always ran and Root is never
-        // null here.
-        return tree.Root!;
+        // Every call site in this file passes a non-empty values array, so at least
+        // one Insert above always ran and Root is never null here.
+        return tree.Root
+            ?? throw new InvalidOperationException(
+                "every call site passes a non-empty values array, so the first Insert above set Root");
     }
+
+    // One LeetCode example: the values to insert, the value to search for, and the
+    // subtree that must come back - its own value and its two children (all null
+    // when the value is absent). The five travel together as one case, so the
+    // signature carries one parameter rather than five positions.
+    public readonly record struct SubtreeSearchExample(
+        int[] TreeValues,
+        int Value,
+        int? ExpectedValue,
+        int? ExpectedLeft,
+        int? ExpectedRight);
 }

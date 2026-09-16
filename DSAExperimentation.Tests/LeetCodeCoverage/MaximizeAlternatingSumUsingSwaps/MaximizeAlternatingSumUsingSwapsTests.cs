@@ -19,14 +19,20 @@ public sealed class MaximizeAlternatingSumUsingSwapsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumAlternatingSumByComponentBfs_LeetCodeExamples_ReturnsMaximumAlternatingSum(
-        int[] nums, int[][] swaps, long expected) =>
-        Assert.Equal(
-            expected, MaximizeAlternatingSumUsingSwapsSolution.MaximumAlternatingSumByComponentBfs(nums, swaps));
+        int[] nums, int[][] swaps, long expected)
+    {
+        var actual = MaximizeAlternatingSumUsingSwapsSolution.MaximumAlternatingSumByComponentBfs(nums, swaps);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumAlternatingSumByDisjointSet_LeetCodeExamples_ReturnsMaximumAlternatingSum(
-        int[] nums, int[][] swaps, long expected) =>
-        Assert.Equal(
-            expected, MaximizeAlternatingSumUsingSwapsSolution.MaximumAlternatingSumByDisjointSet(nums, swaps));
+        int[] nums, int[][] swaps, long expected)
+    {
+        var actual = MaximizeAlternatingSumUsingSwapsSolution.MaximumAlternatingSumByDisjointSet(nums, swaps);
+
+        Assert.Equal(expected, actual);
+    }
 }

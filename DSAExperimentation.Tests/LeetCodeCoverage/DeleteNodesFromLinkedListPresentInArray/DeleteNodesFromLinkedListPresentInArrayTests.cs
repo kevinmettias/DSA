@@ -19,18 +19,22 @@ public sealed class DeleteNodesFromLinkedListPresentInArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ModifiedListByArrayScan_LeetCodeExamples_RemovesNodesWhoseValueIsInNums(
-        int[] nums, int[] headValues, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListByArrayScan(nums, BuildList(headValues))));
+        int[] nums, int[] headValues, int[] expected)
+    {
+        var list = DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListByArrayScan(nums, BuildList(headValues));
+        var actual = ToArray(list);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ModifiedListBySetFilter_LeetCodeExamples_RemovesNodesWhoseValueIsInNums(
-        int[] nums, int[] headValues, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListBySetFilter(nums, BuildList(headValues))));
+        int[] nums, int[] headValues, int[] expected)
+    {
+        var list = DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListBySetFilter(nums, BuildList(headValues));
+        var actual = ToArray(list);
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

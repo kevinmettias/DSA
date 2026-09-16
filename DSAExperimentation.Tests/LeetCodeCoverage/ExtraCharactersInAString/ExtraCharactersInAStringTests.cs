@@ -24,12 +24,18 @@ public sealed class ExtraCharactersInAStringTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinExtraCharsByHashSetFullScan_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
-        string s, string[] dictionary, int expected) =>
-        Assert.Equal(expected, ExtraCharactersInAStringSolution.MinExtraCharsByHashSetFullScan(s, dictionary));
+        string s, string[] dictionary, int expected)
+    {
+        var actual = ExtraCharactersInAStringSolution.MinExtraCharsByHashSetFullScan(s, dictionary);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinExtraCharsByTriePrunedScan_LeetCodeExamples_ReturnsFewestLeftoverCharacters(
-        string s, string[] dictionary, int expected) =>
-        Assert.Equal(expected, ExtraCharactersInAStringSolution.MinExtraCharsByTriePrunedScan(s, dictionary));
+        string s, string[] dictionary, int expected)
+    {
+        var actual = ExtraCharactersInAStringSolution.MinExtraCharsByTriePrunedScan(s, dictionary);
+        Assert.Equal(expected, actual);
+    }
 }

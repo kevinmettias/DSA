@@ -1,4 +1,6 @@
-using static DSAExperimentation.LeetCode.MapSumPairs.MapSumPairsSolution;
+using IMapSumStrategy = DSAExperimentation.LeetCode.MapSumPairs.MapSumPairsSolution.IMapSumStrategy;
+using MapSumByDictionaryScan = DSAExperimentation.LeetCode.MapSumPairs.MapSumPairsSolution.MapSumByDictionaryScan;
+using MapSumByTrieFold = DSAExperimentation.LeetCode.MapSumPairs.MapSumPairsSolution.MapSumByTrieFold;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MapSumPairs;
 
@@ -8,45 +10,54 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MapSumPairs;
 // publishes, so a failure still names the strategy that broke.
 public sealed class MapSumPairsTests
 {
-    public static TheoryData<string[], int[], string[], int[]> Examples =>
+    public static TheoryData<MapSumExample> Examples =>
         new()
         {
             // insert("apple", 3); sum("ap") == 3
-            { ["apple"], [3], ["ap"], [3] },
+            { new MapSumExample(Keys: ["apple"], Values: [3], Prefixes: ["ap"], Expected: [3]) },
             // insert("apple", 3); insert("app", 2); sum("ap") == 5
-            { ["apple", "app"], [3, 2], ["ap"], [5] },
+            { new MapSumExample(Keys: ["apple", "app"], Values: [3, 2], Prefixes: ["ap"], Expected: [5]) },
             // insert("apple", 3); insert("apple", 10) overrides; sum("apple") == 10
-            { ["apple", "apple"], [3, 10], ["apple"], [10] },
+            { new MapSumExample(Keys: ["apple", "apple"], Values: [3, 10], Prefixes: ["apple"], Expected: [10]) },
             // insert("apple", 3); sum("banana") == 0 - unknown prefix
-            { ["apple"], [3], ["banana"], [0] },
-            // insert("apple", 3); insert("app", 2); insert("banana", 4);
-            // sum("") == 9 - empty prefix sums every inserted value
-            { ["apple", "app", "banana"], [3, 2, 4], [""], [9] },
+            { new MapSumExample(Keys: ["apple"], Values: [3], Prefixes: ["banana"], Expected: [0]) },
+            // apple->3, app->2 and banana->4 inserted, then sum("") == 9 - the
+            // empty prefix sums every inserted value.
+            {
+                new MapSumExample(
+                    Keys: ["apple", "app", "banana"],
+                    Values: [3, 2, 4],
+                    Prefixes: [""],
+                    Expected: [9])
+            },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MapSumByDictionaryScan_LeetCodeExamples_ReturnsExpectedSums(
-        string[] keys, int[] values, string[] prefixes, int[] expected) =>
-        AssertSums(new MapSumByDictionaryScan(), keys, values, prefixes, expected);
+    public void MapSumByDictionaryScan_LeetCodeExamples_ReturnsExpectedSums(MapSumExample example) =>
+        AssertSums(new MapSumByDictionaryScan(), example);
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MapSumByTrieFold_LeetCodeExamples_ReturnsExpectedSums(
-        string[] keys, int[] values, string[] prefixes, int[] expected) =>
-        AssertSums(new MapSumByTrieFold(), keys, values, prefixes, expected);
+    public void MapSumByTrieFold_LeetCodeExamples_ReturnsExpectedSums(MapSumExample example) =>
+        AssertSums(new MapSumByTrieFold(), example);
 
-    private static void AssertSums(
-        IMapSumStrategy mapSum, string[] keys, int[] values, string[] prefixes, int[] expected)
+    private static void AssertSums(IMapSumStrategy mapSum, MapSumExample example)
     {
-        for (var i = 0; i < keys.Length; i++)
+        for (var i = 0; i < example.Keys.Length; i++)
         {
-            mapSum.Insert(keys[i], values[i]);
+            mapSum.Insert(example.Keys[i], example.Values[i]);
         }
 
-        for (var i = 0; i < prefixes.Length; i++)
+        for (var i = 0; i < example.Prefixes.Length; i++)
         {
-            Assert.Equal(expected[i], mapSum.Sum(prefixes[i]));
+            Assert.Equal(example.Expected[i], mapSum.Sum(example.Prefixes[i]));
         }
     }
+
+    // One LeetCode example: the inserts, the prefixes to query afterwards, and the
+    // total each query must return. They travel together at every call site - an
+    // assertion helper that got them apart could line a prefix up with the wrong
+    // total and still compile - so they are one thing with a name.
+    public readonly record struct MapSumExample(string[] Keys, int[] Values, string[] Prefixes, int[] Expected);
 }

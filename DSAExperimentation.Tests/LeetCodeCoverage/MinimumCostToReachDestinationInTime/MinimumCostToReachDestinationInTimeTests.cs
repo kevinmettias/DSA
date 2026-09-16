@@ -58,17 +58,21 @@ public sealed class MinimumCostToReachDestinationInTimeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByNaiveDfs_LeetCodeExamples_ReturnsCheapestFeeSumWithinBudget(
-        int maxTime, int[][] edges, int[] passingFees, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostToReachDestinationInTimeSolution.MinCostByNaiveDfs(maxTime, edges, passingFees));
+        int maxTime, int[][] edges, int[] passingFees, int expected)
+    {
+        var actual = MinimumCostToReachDestinationInTimeSolution.MinCostByNaiveDfs(maxTime, edges, passingFees);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByStateExpandedDijkstra_LeetCodeExamples_ReturnsCheapestFeeSumWithinBudget(
-        int maxTime, int[][] edges, int[] passingFees, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostToReachDestinationInTimeSolution.MinCostByStateExpandedDijkstra(
-                maxTime, edges, passingFees));
+        int maxTime, int[][] edges, int[] passingFees, int expected)
+    {
+        var actual = MinimumCostToReachDestinationInTimeSolution.MinCostByStateExpandedDijkstra(
+            maxTime, edges, passingFees);
+
+        Assert.Equal(expected, actual);
+    }
 }

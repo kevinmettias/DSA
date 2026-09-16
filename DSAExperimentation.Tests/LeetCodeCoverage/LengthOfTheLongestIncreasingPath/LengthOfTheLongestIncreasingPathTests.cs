@@ -16,12 +16,20 @@ public sealed class LengthOfTheLongestIncreasingPathTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPathLengthByBruteForce_LeetCodeExamples_ReturnsLongestIncreasingPathThroughK(
-        int[][] coordinates, int k, int expected) =>
-        Assert.Equal(expected, LengthOfTheLongestIncreasingPathSolution.MaxPathLengthByBruteForce(coordinates, k));
+        int[][] coordinates, int k, int expected)
+    {
+        var actual = LengthOfTheLongestIncreasingPathSolution.MaxPathLengthByBruteForce(coordinates, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPathLengthBySegmentTree_LeetCodeExamples_ReturnsLongestIncreasingPathThroughK(
-        int[][] coordinates, int k, int expected) =>
-        Assert.Equal(expected, LengthOfTheLongestIncreasingPathSolution.MaxPathLengthBySegmentTree(coordinates, k));
+        int[][] coordinates, int k, int expected)
+    {
+        var actual = LengthOfTheLongestIncreasingPathSolution.MaxPathLengthBySegmentTree(coordinates, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

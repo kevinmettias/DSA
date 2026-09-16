@@ -56,12 +56,20 @@ public sealed class ApplyOperationsToMaximizeScoreTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumScoreByLinearBoundaryScan_LeetCodeExamples_ReturnsGreedyProductModulo(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumScoreByStackBoundaryScan_LeetCodeExamples_ReturnsGreedyProductModulo(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

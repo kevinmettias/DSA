@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator.DesignGraphWithShortestPathCalculatorSolution;
+using DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignGraphWithShortestPathCalculator;
 
@@ -76,51 +76,28 @@ public sealed class DesignGraphWithShortestPathCalculatorTests
     [MemberData(nameof(Examples))]
     public void ShortestPathGraphByArrayDijkstra_LeetCodeExamples_MatchesExpectedSequence(
         int n, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
-        RunScript(new ShortestPathGraphByArrayDijkstra(n, edges), operations, expected);
+        RunScript(
+            new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra(n, edges),
+            operations,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestPathGraphByHeapDijkstra_LeetCodeExamples_MatchesExpectedSequence(
         int n, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
-        RunScript(new ShortestPathGraphByHeapDijkstra(n, edges), operations, expected);
+        RunScript(
+            new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra(n, edges),
+            operations,
+            expected);
 
     private static void RunScript(
-        IShortestPathGraph graph, ShortestPathGraphOp[] operations, int?[] expected)
+        DesignGraphWithShortestPathCalculatorSolution.IShortestPathGraph graph,
+        ShortestPathGraphOp[] operations,
+        int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(graph));
         }
-    }
-}
-
-// One call in an LC 2642 script: either an edge to add or a pair of nodes to
-// query. Pure dispatch, built via the named factories below so a script reads
-// like the LeetCode call sequence it replays.
-public readonly record struct ShortestPathGraphOp(ShortestPathGraphOp.OpKind kind, int[] edge, int node1, int node2)
-{
-    public static ShortestPathGraphOp AddEdge(int[] edge) => new(OpKind.AddEdge, edge, 0, 0);
-
-    public static ShortestPathGraphOp ShortestPath(int node1, int node2) => new(OpKind.ShortestPath, [], node1, node2);
-
-    // null for addEdge, matching LeetCode's own judge output for a void
-    // operation; the query's answer otherwise - so a script runner can assert
-    // against one expected value per operation uniformly.
-    internal int? Apply(IShortestPathGraph graph)
-    {
-        if (kind == OpKind.AddEdge)
-        {
-            graph.AddEdge(edge);
-
-            return null;
-        }
-
-        return graph.ShortestPathBetween(node1, node2);
-    }
-
-    public enum OpKind
-    {
-        AddEdge,
-        ShortestPath,
     }
 }

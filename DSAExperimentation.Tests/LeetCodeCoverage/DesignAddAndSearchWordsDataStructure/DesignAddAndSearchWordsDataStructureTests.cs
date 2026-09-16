@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure.DesignAddAndSearchWordsDataStructureSolution;
+using DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAddAndSearchWordsDataStructure;
 
@@ -37,16 +37,27 @@ public sealed class DesignAddAndSearchWordsDataStructureTests
     [MemberData(nameof(Examples))]
     public void WordDictionaryByLinearScan_LeetCodeExamples_MatchesDotWildcardPattern(
         string[] wordsToAdd, string[] searches, bool[] expected) =>
-        AssertSearchResults(new WordDictionaryByLinearScan(), wordsToAdd, searches, expected);
+        AssertSearchResults(
+            new DesignAddAndSearchWordsDataStructureSolution.WordDictionaryByLinearScan(),
+            wordsToAdd,
+            searches,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void WordDictionaryByTrie_LeetCodeExamples_MatchesDotWildcardPattern(
         string[] wordsToAdd, string[] searches, bool[] expected) =>
-        AssertSearchResults(new WordDictionaryByTrie(), wordsToAdd, searches, expected);
+        AssertSearchResults(
+            new DesignAddAndSearchWordsDataStructureSolution.WordDictionaryByTrie(),
+            wordsToAdd,
+            searches,
+            expected);
 
     private static void AssertSearchResults(
-        IWordDictionaryStrategy dictionary, string[] wordsToAdd, string[] searches, bool[] expected)
+        DesignAddAndSearchWordsDataStructureSolution.IWordDictionaryStrategy dictionary,
+        string[] wordsToAdd,
+        string[] searches,
+        bool[] expected)
     {
         foreach (var word in wordsToAdd)
         {

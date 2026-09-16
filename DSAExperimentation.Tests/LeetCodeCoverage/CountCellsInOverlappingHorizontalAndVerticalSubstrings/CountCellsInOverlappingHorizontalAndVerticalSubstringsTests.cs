@@ -43,16 +43,18 @@ public sealed class CountCellsInOverlappingHorizontalAndVerticalSubstringsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCellsByBruteForce_LeetCodeExamples_ReturnsCellsCoveredByBothDirections(
-        char[][] grid, string pattern, int expected) =>
-        Assert.Equal(
-            expected,
-            CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution.CountCellsByBruteForce(grid, pattern));
+        char[][] grid, string pattern, int expected)
+    {
+        var actual = CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution.CountCellsByBruteForce(grid, pattern);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCellsByZFunction_LeetCodeExamples_ReturnsCellsCoveredByBothDirections(
-        char[][] grid, string pattern, int expected) =>
-        Assert.Equal(
-            expected,
-            CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution.CountCellsByZFunction(grid, pattern));
+        char[][] grid, string pattern, int expected)
+    {
+        var actual = CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution.CountCellsByZFunction(grid, pattern);
+        Assert.Equal(expected, actual);
+    }
 }

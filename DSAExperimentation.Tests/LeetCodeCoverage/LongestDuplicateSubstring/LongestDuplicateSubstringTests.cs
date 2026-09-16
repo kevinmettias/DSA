@@ -9,24 +9,31 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestDuplicateSubstring;
 // strategies must agree on the substring and not merely on its length.
 public sealed class LongestDuplicateSubstringTests
 {
-    public static TheoryData<string, string> Examples =>
+    public static TheoryData<DuplicateSubstringExample> Examples =>
         new()
         {
-            { "banana", "ana" },
-            { "abcd", "" },
-            { "aaaaa", "aaaa" },
-            { "abcabc", "abc" },
-            { "aa", "a" },
-            { "a", "" },
+            { new DuplicateSubstringExample(S: "banana", Expected: "ana") },
+            { new DuplicateSubstringExample(S: "abcd", Expected: "") },
+            { new DuplicateSubstringExample(S: "aaaaa", Expected: "aaaa") },
+            { new DuplicateSubstringExample(S: "abcabc", Expected: "abc") },
+            { new DuplicateSubstringExample(S: "aa", Expected: "a") },
+            { new DuplicateSubstringExample(S: "a", Expected: "") },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LongestDupSubstringByAllSuffixPairs_LeetCodeExamples_ReturnsLongestRepeatedSubstring(string s, string expected) =>
-        Assert.Equal(expected, LongestDuplicateSubstringSolution.LongestDupSubstringByAllSuffixPairs(s));
+    public void LongestDupSubstringByAllSuffixPairs_LeetCodeExamples_ReturnsLongestRepeatedSubstring(
+        DuplicateSubstringExample example) =>
+        Assert.Equal(example.Expected, LongestDuplicateSubstringSolution.LongestDupSubstringByAllSuffixPairs(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LongestDupSubstringBySuffixArray_LeetCodeExamples_ReturnsLongestRepeatedSubstring(string s, string expected) =>
-        Assert.Equal(expected, LongestDuplicateSubstringSolution.LongestDupSubstringBySuffixArray(s));
+    public void LongestDupSubstringBySuffixArray_LeetCodeExamples_ReturnsLongestRepeatedSubstring(
+        DuplicateSubstringExample example) =>
+        Assert.Equal(example.Expected, LongestDuplicateSubstringSolution.LongestDupSubstringBySuffixArray(example.S));
+
+    // One example as one argument. The input and the answer are both strings, so a
+    // two-parameter signature let a row be written with the two swapped and still
+    // compile; the fields named at each row below say which is which.
+    public readonly record struct DuplicateSubstringExample(string S, string Expected);
 }

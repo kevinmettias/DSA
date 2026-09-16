@@ -7,25 +7,33 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionEqualSubsetSum;
 // equal split impossible before any subset-sum search runs.
 public sealed class PartitionEqualSubsetSumTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<SubsetSumExample> Examples =>
         new()
         {
-            { new[] { 1, 5, 11, 5 }, true },
-            { new[] { 1, 2, 3, 5 }, false },
-            { new[] { 1, 2, 5 }, false },
-            { new[] { 1 }, false },
-            { new[] { 2, 2 }, true },
+            { new SubsetSumExample(Nums: [1, 5, 11, 5], Expected: true) },
+            { new SubsetSumExample(Nums: [1, 2, 3, 5], Expected: false) },
+            { new SubsetSumExample(Nums: [1, 2, 5], Expected: false) },
+            { new SubsetSumExample(Nums: [1], Expected: false) },
+            { new SubsetSumExample(Nums: [2, 2], Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanPartitionByTabulation_LeetCodeExamples_ReturnsWhetherEqualSplitExists(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, PartitionEqualSubsetSumSolution.CanPartitionByTabulation(nums));
+        SubsetSumExample example) =>
+        Assert.Equal(
+            example.Expected, PartitionEqualSubsetSumSolution.CanPartitionByTabulation(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanPartitionByMemoization_LeetCodeExamples_ReturnsWhetherEqualSplitExists(
-        int[] nums, bool expected) =>
-        Assert.Equal(expected, PartitionEqualSubsetSumSolution.CanPartitionByMemoization(nums));
+        SubsetSumExample example) =>
+        Assert.Equal(
+            example.Expected, PartitionEqualSubsetSumSolution.CanPartitionByMemoization(example.Nums));
+
+    // One LeetCode example: the numbers and whether they split into two subsets of
+    // equal sum. The answer is the datum under test, so the row names it rather than
+    // leaving a bare `bool` beside the array - `CanPartition(nums, true)` does not say
+    // what `true` is.
+    public readonly record struct SubsetSumExample(int[] Nums, bool Expected);
 }

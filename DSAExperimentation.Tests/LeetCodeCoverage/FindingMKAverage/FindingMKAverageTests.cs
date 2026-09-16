@@ -93,14 +93,22 @@ public sealed class FindingMKAverageTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySortingSlidingWindow_LeetCodeExamples_ReturnsTrimmedWindowMean(
-        int m, int k, MKAverageOp[] operations, int?[] expected) =>
-        RunScript(FindingMKAverageSolution.CreateBySortingSlidingWindow(m, k), operations, expected);
+        int m, int k, MKAverageOp[] operations, int?[] expected)
+    {
+        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(m, k);
+
+        RunScript(mkAverage, operations, expected);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByFenwickOrderStatistics_LeetCodeExamples_ReturnsTrimmedWindowMean(
-        int m, int k, MKAverageOp[] operations, int?[] expected) =>
-        RunScript(FindingMKAverageSolution.CreateByFenwickOrderStatistics(m, k), operations, expected);
+        int m, int k, MKAverageOp[] operations, int?[] expected)
+    {
+        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(m, k);
+
+        RunScript(mkAverage, operations, expected);
+    }
 
     private static void RunScript(
         FindingMKAverageSolution.IMKAverage mkAverage, MKAverageOp[] operations, int?[] expected)
@@ -110,28 +118,29 @@ public sealed class FindingMKAverageTests
             Assert.Equal(expected[i], operations[i].Apply(mkAverage));
         }
     }
-}
 
-// One call in an MKAverage script: either an addElement with its value or a
-// calculateMKAverage. Pure dispatch, built via the named factories below so a script
-// reads like the LeetCode call sequence it replays. addElement returns null (no
-// answer to compare); calculateMKAverage returns the actual answer, including -1 for
-// a window that has not filled - the same null-means-"no return value" convention
-// AllOneOp.Apply uses.
-public readonly record struct MKAverageOp(int value, bool isCalculate)
-{
-    public static MKAverageOp AddElement(int num) => new(num, false);
-
-    public static MKAverageOp Calculate() => new(0, true);
-
-    internal int? Apply(FindingMKAverageSolution.IMKAverage mkAverage)
+    // One call in an MKAverage script: either an addElement with its value or a
+    // calculateMKAverage. Pure dispatch, built via the named factories below so a script
+    // reads like the LeetCode call sequence it replays. addElement returns null (no
+    // answer to compare); calculateMKAverage returns the actual answer, including -1 for
+    // a window that has not filled - the same null-means-"no return value" convention
+    // AllOneOp.Apply uses. Nested here rather than left at file scope so the file
+    // declares exactly one type.
+    public readonly record struct MKAverageOp(int value, bool isCalculate)
     {
-        if (isCalculate)
-        {
-            return mkAverage.CalculateMKAverage();
-        }
+        public static MKAverageOp AddElement(int num) => new(num, false);
 
-        mkAverage.AddElement(value);
-        return null;
+        public static MKAverageOp Calculate() => new(0, true);
+
+        internal int? Apply(FindingMKAverageSolution.IMKAverage mkAverage)
+        {
+            if (isCalculate)
+            {
+                return mkAverage.CalculateMKAverage();
+            }
+
+            mkAverage.AddElement(value);
+            return null;
+        }
     }
 }

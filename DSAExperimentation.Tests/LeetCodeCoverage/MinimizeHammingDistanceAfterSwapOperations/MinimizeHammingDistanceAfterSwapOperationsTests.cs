@@ -24,18 +24,24 @@ public sealed class MinimizeHammingDistanceAfterSwapOperationsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumHammingDistanceByAdjacencyListBfs_LeetCodeExamples_SumsEachComponentsShortfall(
-        int[] source, int[] target, int[][] allowedSwaps, int expected) =>
-        Assert.Equal(
-            expected,
+        int[] source, int[] target, int[][] allowedSwaps, int expected)
+    {
+        var actual =
             MinimizeHammingDistanceAfterSwapOperationsSolution.MinimumHammingDistanceByAdjacencyListBfs(
-                source, target, allowedSwaps));
+                source, target, allowedSwaps);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumHammingDistanceByDisjointSet_LeetCodeExamples_SumsEachComponentsShortfall(
-        int[] source, int[] target, int[][] allowedSwaps, int expected) =>
-        Assert.Equal(
-            expected,
+        int[] source, int[] target, int[][] allowedSwaps, int expected)
+    {
+        var actual =
             MinimizeHammingDistanceAfterSwapOperationsSolution.MinimumHammingDistanceByDisjointSet(
-                source, target, allowedSwaps));
+                source, target, allowedSwaps);
+
+        Assert.Equal(expected, actual);
+    }
 }

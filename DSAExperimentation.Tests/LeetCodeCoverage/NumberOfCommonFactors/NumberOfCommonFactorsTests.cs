@@ -32,12 +32,20 @@ public sealed class NumberOfCommonFactorsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCommonFactorsByLinearScan_LeetCodeExamples_ReturnsCommonFactorCount(
-        int first, int second, int expected) =>
-        Assert.Equal(expected, NumberOfCommonFactorsSolution.CountCommonFactorsByLinearScan(first, second));
+        int first, int second, int expected)
+    {
+        var actual = NumberOfCommonFactorsSolution.CountCommonFactorsByLinearScan(first, second);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCommonFactorsByDivisorEnumeration_LeetCodeExamples_ReturnsCommonFactorCount(
-        int first, int second, int expected) =>
-        Assert.Equal(expected, NumberOfCommonFactorsSolution.CountCommonFactorsByDivisorEnumeration(first, second));
+        int first, int second, int expected)
+    {
+        var actual = NumberOfCommonFactorsSolution.CountCommonFactorsByDivisorEnumeration(first, second);
+
+        Assert.Equal(expected, actual);
+    }
 }

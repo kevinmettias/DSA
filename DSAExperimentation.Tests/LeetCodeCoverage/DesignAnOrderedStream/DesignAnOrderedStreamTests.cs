@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignAnOrderedStream.DesignAnOrderedStreamSolution;
+using DSAExperimentation.LeetCode.DesignAnOrderedStream;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAnOrderedStream;
 
@@ -38,20 +38,22 @@ public sealed class DesignAnOrderedStreamTests
     [MemberData(nameof(Examples))]
     public void OrderedStreamByListBacked_LeetCodeExamples_ReturnsChunksAsGapsClose(
         int n, int[] idKeys, string[] values, string[][] expected) =>
-        RunScript(new OrderedStreamByListBacked(n), idKeys, values, expected);
+        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(n), idKeys, values, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrderedStreamByDynamicArrayBacked_LeetCodeExamples_ReturnsChunksAsGapsClose(
         int n, int[] idKeys, string[] values, string[][] expected) =>
-        RunScript(new OrderedStreamByDynamicArrayBacked(n), idKeys, values, expected);
+        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(n), idKeys, values, expected);
 
     private static void RunScript(
-        IOrderedStream stream, int[] idKeys, string[] values, string[][] expected)
+        DesignAnOrderedStreamSolution.IOrderedStream stream, int[] idKeys, string[] values, string[][] expected)
     {
         for (var i = 0; i < idKeys.Length; i++)
         {
-            Assert.Equal(expected[i], stream.Insert(idKeys[i], values[i]));
+            var chunk = stream.Insert(idKeys[i], values[i]);
+
+            Assert.Equal(expected[i], chunk);
         }
     }
 }

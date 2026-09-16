@@ -8,39 +8,48 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RobotBoundedInCircle;
 // between two anonymous arms.
 public sealed class RobotBoundedInCircleTests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<BoundedCircleExample> Examples =>
         new()
         {
             // LeetCode's own three examples.
-            { "GGLLGG", true },
-            { "GG", false },
-            { "GL", true },
+            new BoundedCircleExample(Instructions: "GGLLGG", StaysWithinCircle: true),
+            new BoundedCircleExample(Instructions: "GG", StaysWithinCircle: false),
+            new BoundedCircleExample(Instructions: "GL", StaysWithinCircle: true),
 
             // Back at the origin facing north after one pass - bounded by the
             // first half of the test rather than by a changed facing.
-            { "GRGRGRGR", true },
-            { "RGRGRGRG", true },
+            new BoundedCircleExample(Instructions: "GRGRGRGR", StaysWithinCircle: true),
+            new BoundedCircleExample(Instructions: "RGRGRGRG", StaysWithinCircle: true),
 
             // Displaced but rotated 180 degrees: two passes close the loop.
-            { "GGRR", true },
+            new BoundedCircleExample(Instructions: "GGRR", StaysWithinCircle: true),
 
             // Displaced with the rotations cancelling out - the unbounded case
             // that is not simply "G" repeated.
-            { "GLGLGGLGL", false },
+            new BoundedCircleExample(Instructions: "GLGLGGLGL", StaysWithinCircle: false),
 
             // A pure turn never leaves the origin.
-            { "R", true },
+            new BoundedCircleExample(Instructions: "R", StaysWithinCircle: true),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsRobotBoundedByDirectionSwitch_LeetCodeExamples_ReturnsWhetherPathStaysWithinACircle(
-        string instructions, bool expected) =>
-        Assert.Equal(expected, RobotBoundedInCircleSolution.IsRobotBoundedByDirectionSwitch(instructions));
+        BoundedCircleExample example) =>
+        Assert.Equal(
+            example.StaysWithinCircle,
+            RobotBoundedInCircleSolution.IsRobotBoundedByDirectionSwitch(example.Instructions));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsRobotBoundedByStepDeltaMap_LeetCodeExamples_ReturnsWhetherPathStaysWithinACircle(
-        string instructions, bool expected) =>
-        Assert.Equal(expected, RobotBoundedInCircleSolution.IsRobotBoundedByStepDeltaMap(instructions));
+        BoundedCircleExample example) =>
+        Assert.Equal(
+            example.StaysWithinCircle,
+            RobotBoundedInCircleSolution.IsRobotBoundedByStepDeltaMap(example.Instructions));
+
+    // One example: the instruction sequence and whether the robot stays inside a
+    // circle. The expectation is named rather than carried by its position, so the
+    // row reads as an assertion instead of as a bare `true`.
+    public readonly record struct BoundedCircleExample(string Instructions, bool StaysWithinCircle);
 }

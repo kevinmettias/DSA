@@ -24,12 +24,20 @@ public sealed class CountArrayPairsDivisibleByKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByBruteForce_LeetCodeExamples_ReturnsDivisiblePairCount(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, CountArrayPairsDivisibleByKSolution.CountPairsByBruteForce(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = CountArrayPairsDivisibleByKSolution.CountPairsByBruteForce(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByGcdGroups_LeetCodeExamples_ReturnsDivisiblePairCount(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, CountArrayPairsDivisibleByKSolution.CountPairsByGcdGroups(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = CountArrayPairsDivisibleByKSolution.CountPairsByGcdGroups(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

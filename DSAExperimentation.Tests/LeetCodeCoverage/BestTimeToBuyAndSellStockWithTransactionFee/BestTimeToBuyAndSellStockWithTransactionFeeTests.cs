@@ -18,16 +18,22 @@ public sealed class BestTimeToBuyAndSellStockWithTransactionFeeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByUnmemoizedRecursion_LeetCodeExamples_ReturnsBestProfitAfterFees(
-        int[] prices, int fee, int expected) =>
-        Assert.Equal(
-            expected,
-            BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByUnmemoizedRecursion(prices, fee));
+        int[] prices, int fee, int expected)
+    {
+        var actual = BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByUnmemoizedRecursion(
+            prices, fee);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByMemoizedRecursion_LeetCodeExamples_ReturnsBestProfitAfterFees(
-        int[] prices, int fee, int expected) =>
-        Assert.Equal(
-            expected,
-            BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByMemoizedRecursion(prices, fee));
+        int[] prices, int fee, int expected)
+    {
+        var actual = BestTimeToBuyAndSellStockWithTransactionFeeSolution.MaxProfitByMemoizedRecursion(
+            prices, fee);
+
+        Assert.Equal(expected, actual);
+    }
 }

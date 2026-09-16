@@ -8,6 +8,9 @@ namespace DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 // AllPairsShortestPaths already takes the cheaper one on relax.
 internal sealed class LetterNetwork
 {
+    // One node per lowercase English letter, the alphabet the conversion rules run over.
+    private const int AlphabetSize = 26;
+
     // Index i is the node for letter 'a' + i.
     public LetterNode[] Nodes { get; }
 
@@ -15,7 +18,7 @@ internal sealed class LetterNetwork
 
     public static LetterNetwork Build(char[] original, char[] changed, int[] cost)
     {
-        var nodes = new LetterNode[26];
+        var nodes = new LetterNode[AlphabetSize];
 
         for (var i = 0; i < nodes.Length; i++)
         {

@@ -19,18 +19,24 @@ public sealed class FindValueOfMysteriousFunctionClosestToTargetTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ClosestToTargetByBruteForce_LeetCodeExamples_ReturnsSmallestGap(int[] arr, int target, int expected) =>
-        Assert.Equal(
-            expected,
-            FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByBruteForce(arr, target));
+    public void ClosestToTargetByBruteForce_LeetCodeExamples_ReturnsSmallestGap(int[] arr, int target, int expected)
+    {
+        var actual =
+            FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByBruteForce(arr, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestToTargetByDistinctAndValues_LeetCodeExamples_ReturnsSmallestGap(
         int[] arr,
         int target,
-        int expected) =>
-        Assert.Equal(
-            expected,
-            FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByDistinctAndValues(arr, target));
+        int expected)
+    {
+        var actual =
+            FindValueOfMysteriousFunctionClosestToTargetSolution.ClosestToTargetByDistinctAndValues(arr, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

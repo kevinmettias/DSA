@@ -94,13 +94,31 @@ function buildRoleAndGoal(list) {
 
 function buildProcedure() {
   return (
+    buildProcedureIntake() +
+    buildProcedureAuthoring() +
+    buildProcedureFixturePlacement() +
+    buildProcedureHarnesses()
+  )
+}
+
+// Steps 1-2: is this problem ours to migrate, and what do the existing test and
+// benchmark actually measure?
+function buildProcedureIntake() {
+  return (
     `FOR EACH PROBLEM, in order:\n` +
     `1. If DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs ALREADY EXISTS, this problem is already ` +
     `migrated (another session may have done it). Report status "already" and move on - do NOT rewrite it.\n` +
     `2. Read the existing test and benchmark named in the problem list. Inventory EVERY distinct strategy ` +
     `across BOTH files - the test's private solve helper, and each [Benchmark] method including the ` +
     `baseline. Two arms that answer the same question with different signatures (indices vs bool) are one ` +
-    `strategy each; reconcile them onto LeetCode's actual answer shape.\n` +
+    `strategy each; reconcile them onto LeetCode's actual answer shape.\n`
+  )
+}
+
+// Steps 3-4: the solution class itself, and the overload that keeps input
+// construction out of the measured method.
+function buildProcedureAuthoring() {
+  return (
     `3. Write DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs - \`internal static class <Name>Solution\` ` +
     `in namespace \`DSAExperimentation.LeetCode.<Name>\`, one public static method per strategy named ` +
     `<Operation>By<Strategy> (AddByBitStack, TryFindIndicesByBruteForce, MinTurnsByReduceGraph). The naive ` +
@@ -110,7 +128,13 @@ function buildProcedure() {
     `4. If the benchmark hoists input construction into [GlobalSetup], give the strategy a SECOND overload ` +
     `taking the prepared input, so construction is not charged to the measured method. That overload must ` +
     `take a domain object or a repo container that is NOT IEnumerable (e.g. Set<string>), never a BCL ` +
-    `collection the LeetCode-shaped overload could also bind - otherwise the overloads are ambiguous.\n` +
+    `collection the LeetCode-shaped overload could also bind - otherwise the overloads are ambiguous.\n`
+  )
+}
+
+// Step 5: which tier a carried fixture belongs in.
+function buildProcedureFixturePlacement() {
+  return (
     `5. Relocate any fixture types the pair carried (test Fixtures/ folder, or Benchmarks/Fixtures entries ` +
     `used only by this problem). WHICH TIER is decided by ARCHITECTURE.md section 2's axes, NOT by how many ` +
     `problems use the type:\n` +
@@ -122,7 +146,14 @@ function buildProcedure() {
     `   - a witness used by THIS PROBLEM ALONE (a bespoke IFoldAlgebra, say) -> the LeetCode problem folder.\n` +
     `   BROWSE FOR AN EXISTING TYPE FIRST - DataStructures/Graph/Hamming, /Grids, /Engines/Dags/Trees, ` +
     `Algorithms/ShortestPaths, Domain/Locks, Domain/Modular already cover a lot, and duplicating one of ` +
-    `them is the exact defect this migration exists to remove.\n` +
+    `them is the exact defect this migration exists to remove.\n`
+  )
+}
+
+// Steps 6-8: the two harnesses, and the Section 18 obligation a new shared type
+// brings with it.
+function buildProcedureHarnesses() {
+  return (
     `6. Rewrite the test as a HARNESS ONLY, no algorithm: \`public sealed class <Name>Tests\` with LeetCode's ` +
     `examples stated ONCE as \`public static TheoryData<...> Examples\`, then ONE ` +
     `\`[Theory] [MemberData(nameof(Examples))]\` method PER STRATEGY so a failure names the strategy that ` +

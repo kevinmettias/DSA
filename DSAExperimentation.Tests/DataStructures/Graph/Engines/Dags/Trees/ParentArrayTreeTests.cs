@@ -9,8 +9,10 @@ public sealed class ParentArrayTreeTests
     {
         var nodes = ParentArrayTree.Build([-1, 0, 0, 1]);
 
+        var indices = Enumerable.Range(0, nodes.Length);
+
         Assert.Equal(4, nodes.Length);
-        Assert.All(Enumerable.Range(0, nodes.Length), i => Assert.Equal(i, nodes[i].Id));
+        Assert.All(indices, i => Assert.Equal(i, nodes[i].Id));
     }
 
     [Fact]

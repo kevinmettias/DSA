@@ -16,8 +16,8 @@ public sealed class TopDownWalkTests
         TopDownWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            UnguardedVisit<TestNode>, RecordingPathHooks, PathSoFar>(
-            root, new PathSoFar([root.Name], recorded), depth, new UnguardedVisit<TestNode>());
+            UnguardedVisit<TestNode>, RecordingPathHooks, RecordingPathHooks.PathSoFar>(
+            root, new RecordingPathHooks.PathSoFar([root.Name], recorded), depth, new UnguardedVisit<TestNode>());
 
         return recorded;
     }
@@ -63,8 +63,8 @@ public sealed class TopDownWalkTests
         TopDownWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            TrackedVisitGuard<TestNode>, RecordingPathHooks, PathSoFar>(
-            root, new PathSoFar([root.Name], recorded), 0, new TrackedVisitGuard<TestNode>([root]));
+            TrackedVisitGuard<TestNode>, RecordingPathHooks, RecordingPathHooks.PathSoFar>(
+            root, new RecordingPathHooks.PathSoFar([root.Name], recorded), 0, new TrackedVisitGuard<TestNode>([root]));
 
         Assert.Equal(["A", "A/B", "A/B/C"], recorded.Select(r => r.Item1));
     }
@@ -78,8 +78,8 @@ public sealed class TopDownWalkTests
         TopDownWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             ReverseChildOrder<TestNode, ListChildren<TestNode>>, ReversedChildren<TestNode, ListChildren<TestNode>>,
-            UnguardedVisit<TestNode>, RecordingPathHooks, PathSoFar>(
-            root, new PathSoFar([root.Name], recorded), 0, new UnguardedVisit<TestNode>());
+            UnguardedVisit<TestNode>, RecordingPathHooks, RecordingPathHooks.PathSoFar>(
+            root, new RecordingPathHooks.PathSoFar([root.Name], recorded), 0, new UnguardedVisit<TestNode>());
 
         Assert.Equal(["A", "A/C", "A/B", "A/B/E", "A/B/D"], recorded.Select(r => r.Item1));
     }

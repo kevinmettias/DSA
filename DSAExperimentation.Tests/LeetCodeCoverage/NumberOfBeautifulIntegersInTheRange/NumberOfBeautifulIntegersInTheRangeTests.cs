@@ -18,12 +18,20 @@ public sealed class NumberOfBeautifulIntegersInTheRangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByBruteForce_LeetCodeExamples_ReturnsBeautifulCount(int low, int high, int k, long expected)
-        => Assert.Equal(expected, NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, k));
+    {
+        var actual = NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByDigitDpMemo_LeetCodeExamples_ReturnsBeautifulCount(int low, int high, int k, long expected)
-        => Assert.Equal(expected, NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo(low, high, k));
+    {
+        var actual = NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo(low, high, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [InlineData(1, 1000, 1)]

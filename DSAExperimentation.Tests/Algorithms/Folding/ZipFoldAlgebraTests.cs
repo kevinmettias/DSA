@@ -35,8 +35,11 @@ public sealed class ZipFoldAlgebraTests
 
         var zipped = Combine(children);
 
-        Assert.Equal(SizeAlgebra<TestNode>.Combine(Node, [4, 2]), zipped.A);
-        Assert.Equal(HeightAlgebra<TestNode>.Combine(Node, [2, 3]), zipped.B);
+        var expectedSize = SizeAlgebra<TestNode>.Combine(Node, [4, 2]);
+        var expectedHeight = HeightAlgebra<TestNode>.Combine(Node, [2, 3]);
+
+        Assert.Equal(expectedSize, zipped.A);
+        Assert.Equal(expectedHeight, zipped.B);
     }
 
     [Fact]

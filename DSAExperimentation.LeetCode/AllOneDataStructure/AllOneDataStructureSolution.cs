@@ -32,6 +32,11 @@ namespace DSAExperimentation.LeetCode.AllOneDataStructure;
 // each doing an O(n) full scan.
 internal static class AllOneDataStructureSolution
 {
+    // LC 432's "there is no such key" answer: GetMaxKey/GetMinKey return the empty
+    // string when the structure holds nothing, and no key is ever empty, so "" is
+    // the sentinel both arms answer with rather than a key in its own right.
+    private const string NoKeySentinel = "";
+
     public static IAllOne CreateByBucketedLinkedList() => new BucketedLinkedListAllOne();
 
     public static IAllOne CreateByDictionaryScan() => new DictionaryScanAllOne();
@@ -49,8 +54,6 @@ internal static class AllOneDataStructureSolution
 
     private sealed class DictionaryScanAllOne : IAllOne
     {
-        private const string NoKeySentinel = "";
-
         private readonly Dictionary<string, int> _counts = [];
 
         public void Inc(string key) => _counts[key] = _counts.GetValueOrDefault(key) + 1;
@@ -199,9 +202,11 @@ internal static class AllOneDataStructureSolution
                 ? anchor
                 : InsertBucketAfter(anchor, newCount);
 
-        public string GetMaxKey() => _tail.Previous == _head ? "" : _tail.Previous!.Value.PeekAnyKey();
+        public string GetMaxKey() =>
+            _tail.Previous == _head ? NoKeySentinel : _tail.Previous!.Value.PeekAnyKey();
 
-        public string GetMinKey() => _head.Next == _tail ? "" : _head.Next!.Value.PeekAnyKey();
+        public string GetMinKey() =>
+            _head.Next == _tail ? NoKeySentinel : _head.Next!.Value.PeekAnyKey();
 
         private static void DetachFromBucket(
             DoublyLinkedListNode<Bucket> bucketNode, DoublyLinkedListNode<KeyEntry> keyEntryNode)
@@ -284,7 +289,8 @@ internal static class AllOneDataStructureSolution
                 KeyCount--;
             }
 
-            public string PeekAnyKey() => _keysHead.Next == _keysTail ? "" : _keysHead.Next!.Value.Key;
+            public string PeekAnyKey() =>
+                _keysHead.Next == _keysTail ? NoKeySentinel : _keysHead.Next!.Value.Key;
         }
 
         // Whether the key being incremented is already in the map, which is the state

@@ -14,38 +14,76 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ModifyGraphEdgeWeights;
 // each has been checked by hand to put the shortest distance exactly on target.
 public sealed class ModifyGraphEdgeWeightsTests
 {
-    public static TheoryData<int, int[][], int, int, int, int[][]> Examples =>
+    public static TheoryData<WeightEditExample> Examples =>
         new()
         {
             {
-                5, [[4, 1, -1], [2, 0, -1], [0, 3, -1], [4, 3, -1]], 0, 1, 5,
-                [[4, 1, 3], [2, 0, 1], [0, 3, 1], [4, 3, 1]]
+                new WeightEditExample(
+                    N: 5,
+                    Edges: [[4, 1, -1], [2, 0, -1], [0, 3, -1], [4, 3, -1]],
+                    Source: 0,
+                    Destination: 1,
+                    Target: 5,
+                    Expected: [[4, 1, 3], [2, 0, 1], [0, 3, 1], [4, 3, 1]])
             },
-            { 3, [[0, 1, -1], [0, 2, 5]], 0, 2, 6, [] },
+            { new WeightEditExample(N: 3, Edges: [[0, 1, -1], [0, 2, 5]], Source: 0, Destination: 2, Target: 6, Expected: []) },
             {
-                4, [[1, 0, 4], [1, 2, 3], [2, 3, 5], [0, 3, -1]], 0, 2, 6,
-                [[1, 0, 4], [1, 2, 3], [2, 3, 5], [0, 3, 1]]
+                new WeightEditExample(
+                    N: 4,
+                    Edges: [[1, 0, 4], [1, 2, 3], [2, 3, 5], [0, 3, -1]],
+                    Source: 0,
+                    Destination: 2,
+                    Target: 6,
+                    Expected: [[1, 0, 4], [1, 2, 3], [2, 3, 5], [0, 3, 1]])
             },
-            { 3, [[0, 1, -1], [1, 2, 4]], 0, 2, 10, [[0, 1, 6], [1, 2, 4]] },
-            { 3, [[0, 1, -1], [1, 2, 1]], 0, 2, 2, [[0, 1, 1], [1, 2, 1]] },
-            { 3, [[0, 1, -1], [0, 2, 3]], 0, 2, 2, [] },
+            {
+                new WeightEditExample(
+                    N: 3, Edges: [[0, 1, -1], [1, 2, 4]], Source: 0, Destination: 2, Target: 10,
+                    Expected: [[0, 1, 6], [1, 2, 4]])
+            },
+            {
+                new WeightEditExample(
+                    N: 3, Edges: [[0, 1, -1], [1, 2, 1]], Source: 0, Destination: 2, Target: 2,
+                    Expected: [[0, 1, 1], [1, 2, 1]])
+            },
+            { new WeightEditExample(N: 3, Edges: [[0, 1, -1], [0, 2, 3]], Source: 0, Destination: 2, Target: 2, Expected: []) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ModifyEdgeWeightsByLinearWeightScan_LeetCodeExamples_PutsTheShortestDistanceOnTarget(
-        int n, int[][] edges, int source, int destination, int target, int[][] expected) =>
-        Assert.Equal(
-            expected,
-            ModifyGraphEdgeWeightsSolution.ModifyEdgeWeightsByLinearWeightScan(
-                n, edges, (Source: source, Destination: destination, Target: target)));
+        WeightEditExample example)
+    {
+        var actual = ModifyGraphEdgeWeightsSolution.ModifyEdgeWeightsByLinearWeightScan(
+            example.N,
+            example.Edges,
+            (example.Source, example.Destination, example.Target));
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ModifyEdgeWeightsByHalfDistanceFormula_LeetCodeExamples_PutsTheShortestDistanceOnTarget(
-        int n, int[][] edges, int source, int destination, int target, int[][] expected) =>
-        Assert.Equal(
-            expected,
-            ModifyGraphEdgeWeightsSolution.ModifyEdgeWeightsByHalfDistanceFormula(
-                n, edges, (Source: source, Destination: destination, Target: target)));
+        WeightEditExample example)
+    {
+        var actual = ModifyGraphEdgeWeightsSolution.ModifyEdgeWeightsByHalfDistanceFormula(
+            example.N,
+            example.Edges,
+            (example.Source, example.Destination, example.Target));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the graph with its -1 weights, the query's three vertices,
+    // and the reweighted edge list. The vertices are all `int`, so the fields name
+    // source, destination and target rather than leaving three adjacent positions a
+    // caller could swap.
+    public readonly record struct WeightEditExample(
+        int N,
+        int[][] Edges,
+        int Source,
+        int Destination,
+        int Target,
+        int[][] Expected);
 }

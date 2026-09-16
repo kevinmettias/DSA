@@ -22,12 +22,20 @@ public sealed class NumberOfFlowersInFullBloomTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FullBloomFlowersByPerPersonScan_LeetCodeExamples_ReturnsCountPerPerson(
-        int[][] flowers, int[] persons, int[] expected) =>
-        Assert.Equal(expected, NumberOfFlowersInFullBloomSolution.FullBloomFlowersByPerPersonScan(flowers, persons));
+        int[][] flowers, int[] persons, int[] expected)
+    {
+        var actual = NumberOfFlowersInFullBloomSolution.FullBloomFlowersByPerPersonScan(flowers, persons);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FullBloomFlowersBySortedBounds_LeetCodeExamples_ReturnsCountPerPerson(
-        int[][] flowers, int[] persons, int[] expected) =>
-        Assert.Equal(expected, NumberOfFlowersInFullBloomSolution.FullBloomFlowersBySortedBounds(flowers, persons));
+        int[][] flowers, int[] persons, int[] expected)
+    {
+        var actual = NumberOfFlowersInFullBloomSolution.FullBloomFlowersBySortedBounds(flowers, persons);
+
+        Assert.Equal(expected, actual);
+    }
 }

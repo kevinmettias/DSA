@@ -44,12 +44,20 @@ public sealed class UniqueBinarySearchTreesIITests
 
     private static void AssertSingleLeafTree(List<BinaryTreeNode<int>?> trees)
     {
-        var tree = Assert.Single(trees);
-        Assert.Equal(1, tree!.Value);
+        // For n = 1 the recurrence's only non-inverted branch is (1,1): the nulls it
+        // lists for the inverted (1,0) and (2,1) become that leaf's absent children
+        // rather than a list entry, since AppendCombinations fills the list with the
+        // node it builds. IsType asks for that node instead of promising it is there.
+        var tree = Assert.IsType<BinaryTreeNode<int>>(Assert.Single(trees));
+
+        Assert.Equal(1, tree.Value);
         Assert.Null(tree.Left);
         Assert.Null(tree.Right);
     }
 
     private static int[] InOrder(BinaryTreeNode<int>? node) =>
-        node is null ? [] : [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
+        node is null ? Array.Empty<int>() : SubtreeSequence(node);
+
+    private static int[] SubtreeSequence(BinaryTreeNode<int> node) =>
+        [.. InOrder(node.Left), node.Value, .. InOrder(node.Right)];
 }

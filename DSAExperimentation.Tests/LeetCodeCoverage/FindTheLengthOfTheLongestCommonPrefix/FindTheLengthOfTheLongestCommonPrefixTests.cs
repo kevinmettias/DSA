@@ -17,13 +17,21 @@ public sealed class FindTheLengthOfTheLongestCommonPrefixTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPrefixLengthByBruteForce_LeetCodeExamples_ReturnsLongestSharedDigitPrefix(
-        int[] arr1, int[] arr2, int expected) =>
-        Assert.Equal(
-            expected, FindTheLengthOfTheLongestCommonPrefixSolution.LongestPrefixLengthByBruteForce(arr1, arr2));
+        int[] arr1, int[] arr2, int expected)
+    {
+        var actual =
+            FindTheLengthOfTheLongestCommonPrefixSolution.LongestPrefixLengthByBruteForce(arr1, arr2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestPrefixLengthByTrie_LeetCodeExamples_ReturnsLongestSharedDigitPrefix(
-        int[] arr1, int[] arr2, int expected) =>
-        Assert.Equal(expected, FindTheLengthOfTheLongestCommonPrefixSolution.LongestPrefixLengthByTrie(arr1, arr2));
+        int[] arr1, int[] arr2, int expected)
+    {
+        var actual = FindTheLengthOfTheLongestCommonPrefixSolution.LongestPrefixLengthByTrie(arr1, arr2);
+
+        Assert.Equal(expected, actual);
+    }
 }

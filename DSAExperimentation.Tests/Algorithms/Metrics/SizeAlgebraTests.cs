@@ -11,11 +11,26 @@ public sealed class SizeAlgebraTests
     public void Empty_IsZeroSoAnAbsentSubtreeContributesNothing() => Assert.Equal(0, SizeAlgebra<TestNode>.Empty);
 
     [Fact]
-    public void Combine_Leaf_CountsOnlyItself() => Assert.Equal(1, SizeAlgebra<TestNode>.Combine(Node, []));
+    public void Combine_Leaf_CountsOnlyItself()
+    {
+        var combined = SizeAlgebra<TestNode>.Combine(Node, []);
+
+        Assert.Equal(1, combined);
+    }
 
     [Fact]
-    public void Combine_AddsOneToTheSumOfItsChildrenSizes() => Assert.Equal(1 + 2 + 3, SizeAlgebra<TestNode>.Combine(Node, [2, 3]));
+    public void Combine_AddsOneToTheSumOfItsChildrenSizes()
+    {
+        var combined = SizeAlgebra<TestNode>.Combine(Node, [2, 3]);
+
+        Assert.Equal(1 + 2 + 3, combined);
+    }
 
     [Fact]
-    public void Combine_ManyChildren_SumsThemAll() => Assert.Equal(1 + 1 + 1 + 1, SizeAlgebra<TestNode>.Combine(Node, [1, 1, 1]));
+    public void Combine_ManyChildren_SumsThemAll()
+    {
+        var combined = SizeAlgebra<TestNode>.Combine(Node, [1, 1, 1]);
+
+        Assert.Equal(1 + 1 + 1 + 1, combined);
+    }
 }

@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignSpreadsheet.DesignSpreadsheetSolution;
+using DSAExperimentation.LeetCode.DesignSpreadsheet;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSpreadsheet;
 
@@ -32,58 +32,61 @@ public sealed class DesignSpreadsheetTests
     [MemberData(nameof(Examples))]
     public void SpreadsheetByDictionary_LeetCodeExample_EvaluatesFormulasAgainstStoredCells(
         int rows, SpreadsheetOp[] operations, int?[] expected) =>
-        RunScript(new SpreadsheetByDictionary(rows), operations, expected);
+        RunScript(new DesignSpreadsheetSolution.SpreadsheetByDictionary(rows), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SpreadsheetByHashMap_LeetCodeExample_EvaluatesFormulasAgainstStoredCells(
         int rows, SpreadsheetOp[] operations, int?[] expected) =>
-        RunScript(new SpreadsheetByHashMap(rows), operations, expected);
+        RunScript(new DesignSpreadsheetSolution.SpreadsheetByHashMap(rows), operations, expected);
 
-    private static void RunScript(ISpreadsheetStrategy strategy, SpreadsheetOp[] operations, int?[] expected)
+    private static void RunScript(
+        DesignSpreadsheetSolution.ISpreadsheetStrategy strategy, SpreadsheetOp[] operations, int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
     }
-}
 
-// One call in a Spreadsheet script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct SpreadsheetOp(SpreadsheetOp.OpKind kind, string cellOrFormula, int value)
-{
-    public static SpreadsheetOp SetCell(string cell, int value) => new(OpKind.SetCell, cell, value);
-
-    public static SpreadsheetOp ResetCell(string cell) => new(OpKind.ResetCell, cell, 0);
-
-    public static SpreadsheetOp GetValue(string formula) => new(OpKind.GetValue, formula, 0);
-
-    // null for the two void calls, the computed sum for GetValue - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: ISpreadsheetStrategy is internal to
-    // DesignSpreadsheetSolution, and only this same assembly's RunScript ever
-    // calls Apply.
-    internal int? Apply(ISpreadsheetStrategy strategy)
+    // One call in a Spreadsheet script: which method to invoke and with what
+    // arguments. Pure dispatch, built via the named factories below so a script (like
+    // Examples above) reads like the LeetCode call sequence it replays. Nested because
+    // it is only ever used inside this test class and has no independent identity: it
+    // is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct SpreadsheetOp(SpreadsheetOp.OpKind kind, string cellOrFormula, int value)
     {
-        switch (kind)
+        public static SpreadsheetOp SetCell(string cell, int value) => new(OpKind.SetCell, cell, value);
+
+        public static SpreadsheetOp ResetCell(string cell) => new(OpKind.ResetCell, cell, 0);
+
+        public static SpreadsheetOp GetValue(string formula) => new(OpKind.GetValue, formula, 0);
+
+        // null for the two void calls, the computed sum for GetValue - so a script
+        // runner can assert against one expected value per operation uniformly.
+        // Internal, not public: ISpreadsheetStrategy is internal to
+        // DesignSpreadsheetSolution, and only this same assembly's RunScript ever
+        // calls Apply.
+        internal int? Apply(DesignSpreadsheetSolution.ISpreadsheetStrategy strategy)
         {
-            case OpKind.SetCell:
-                strategy.SetCell(cellOrFormula, value);
-                return null;
-            case OpKind.ResetCell:
-                strategy.ResetCell(cellOrFormula);
-                return null;
-            default:
-                return strategy.GetValue(cellOrFormula);
+            switch (kind)
+            {
+                case OpKind.SetCell:
+                    strategy.SetCell(cellOrFormula, value);
+                    return null;
+                case OpKind.ResetCell:
+                    strategy.ResetCell(cellOrFormula);
+                    return null;
+                default:
+                    return strategy.GetValue(cellOrFormula);
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        SetCell,
-        ResetCell,
-        GetValue,
+        public enum OpKind
+        {
+            SetCell,
+            ResetCell,
+            GetValue,
+        }
     }
 }

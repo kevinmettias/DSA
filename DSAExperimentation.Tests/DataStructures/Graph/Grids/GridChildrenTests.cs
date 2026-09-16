@@ -19,6 +19,16 @@ public sealed class GridChildrenTests
         return new Grid(passable);
     }
 
+    // The top-left corner of an open 3x3 grid. Its up and left neighbours are off-grid, so
+    // only down and right are passable and they take the first two entries of the index
+    // space.
+    private static GridChildren TopLeftCornerChildren()
+    {
+        var grid = Open(3, 3);
+
+        return new GridChildren(new GridNode(0, 0, grid));
+    }
+
     [Fact]
     public void Count_InteriorCell_HasFourNeighbours()
     {
@@ -30,9 +40,9 @@ public sealed class GridChildrenTests
     [Fact]
     public void Count_CornerCell_HasTwoNeighbours()
     {
-        var grid = Open(3, 3);
+        var children = TopLeftCornerChildren();
 
-        Assert.Equal(2, new GridChildren(new GridNode(0, 0, grid)).Count);
+        Assert.Equal(2, children.Count);
     }
 
     [Fact]
@@ -61,8 +71,7 @@ public sealed class GridChildrenTests
     [Fact]
     public void Get_CompactsTheIndexSpaceOverBlockedDirections()
     {
-        var grid = Open(3, 3);
-        var children = new GridChildren(new GridNode(0, 0, grid));
+        var children = TopLeftCornerChildren();
 
         // Up and left are off-grid, so down and right occupy indices 0 and 1.
         Assert.Equal((1, 0), (children.Get(0).Row, children.Get(0).Col));
@@ -72,9 +81,9 @@ public sealed class GridChildrenTests
     [Fact]
     public void Get_PastTheLastPassableNeighbour_Throws()
     {
-        var grid = Open(3, 3);
-        var children = new GridChildren(new GridNode(0, 0, grid));
+        var children = TopLeftCornerChildren();
 
+        // Only down and right are passable here, so index 2 is past the end.
         Assert.Throws<IndexOutOfRangeException>(() => children.Get(2));
     }
 
