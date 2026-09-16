@@ -20,7 +20,7 @@ public sealed partial class AnglesOfATriangleBenchmarksTests
 
     [Fact]
     public void Setup_FixedValidTriangle_RebuildsTheSameAngles() =>
-        Assert.True(AgreeWithinTolerance(BuildHarness().LawOfCosines(), BuildHarness().LawOfCosines()));
+        Assert.True(IsWithinTolerance(BuildHarness().LawOfCosines(), BuildHarness().LawOfCosines()));
 
     [Fact]
     public void LawOfCosines_FixedValidTriangle_AgreesWithAngleSum()
@@ -28,7 +28,7 @@ public sealed partial class AnglesOfATriangleBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(TriangleAngleCount, harness.LawOfCosines().Length);
-        Assert.True(AgreeWithinTolerance(harness.AngleSum(), harness.LawOfCosines()));
+        Assert.True(IsWithinTolerance(harness.AngleSum(), harness.LawOfCosines()));
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public sealed partial class AnglesOfATriangleBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(TriangleAngleCount, harness.AngleSum().Length);
-        Assert.True(AgreeWithinTolerance(harness.LawOfCosines(), harness.AngleSum()));
+        Assert.True(IsWithinTolerance(harness.LawOfCosines(), harness.AngleSum()));
     }
 
     private static AnglesOfATriangleBenchmarks BuildHarness()
@@ -48,7 +48,7 @@ public sealed partial class AnglesOfATriangleBenchmarksTests
         return harness;
     }
 
-    private static bool AgreeWithinTolerance(double[] first, double[] second) =>
+    private static bool IsWithinTolerance(double[] first, double[] second) =>
         first.Length == second.Length
         && first.Zip(second).All(pair => Math.Abs(pair.First - pair.Second) <= RelativeTolerance);
 }

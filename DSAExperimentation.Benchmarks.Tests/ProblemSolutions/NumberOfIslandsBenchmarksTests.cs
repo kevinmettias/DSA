@@ -65,35 +65,39 @@ public sealed partial class NumberOfIslandsBenchmarksTests
     private static void FloodFrom(char[][] grid, bool[][] visited, int startRow, int startCol)
     {
         var frontier = new Queue<(int Row, int Col)>();
+        var walk = new FloodWalk(grid, visited, frontier);
         visited[startRow][startCol] = true;
         frontier.Enqueue((startRow, startCol));
 
         while (frontier.Count > 0)
         {
             var (row, col) = frontier.Dequeue();
-            OfferNeighbor(grid, visited, frontier, row - 1, col);
-            OfferNeighbor(grid, visited, frontier, row + 1, col);
-            OfferNeighbor(grid, visited, frontier, row, col - 1);
-            OfferNeighbor(grid, visited, frontier, row, col + 1);
+            OfferNeighbor(walk, row - 1, col);
+            OfferNeighbor(walk, row + 1, col);
+            OfferNeighbor(walk, row, col - 1);
+            OfferNeighbor(walk, row, col + 1);
         }
     }
 
-    // Queue a neighbour only when it is inside the grid and is unvisited land.
-    private static void OfferNeighbor(
-        char[][] grid, bool[][] visited, Queue<(int Row, int Col)> frontier, int row, int col)
+    // Queue a neighbour only when it is inside the grid and is unvisited land. The three values every
+    // offer shares - the grid, its marks and the frontier - travel together as one walk, so a call
+    // site names only the cell it is offering.
+    private static void OfferNeighbor(FloodWalk walk, int row, int col)
     {
-        if (row < 0 || row >= grid.Length || col < 0 || col >= grid[row].Length)
+        var isOffGrid = row < 0 || row >= walk.Grid.Length || col < 0 || col >= walk.Grid[row].Length;
+
+        if (isOffGrid)
         {
             return;
         }
 
-        if (visited[row][col] || grid[row][col] != Land)
+        if (walk.Visited[row][col] || walk.Grid[row][col] != Land)
         {
             return;
         }
 
-        visited[row][col] = true;
-        frontier.Enqueue((row, col));
+        walk.Visited[row][col] = true;
+        walk.Frontier.Enqueue((row, col));
     }
 
     private static NumberOfIslandsBenchmarks BuildHarness()
@@ -103,4 +107,9 @@ public sealed partial class NumberOfIslandsBenchmarksTests
 
         return harness;
     }
+
+    // One island's flood in progress: the grid, the marks the walk leaves and the frontier it is
+    // draining. Data only - the walk's steps stay as static methods on the test class.
+    private readonly record struct FloodWalk(
+        char[][] Grid, bool[][] Visited, Queue<(int Row, int Col)> Frontier);
 }

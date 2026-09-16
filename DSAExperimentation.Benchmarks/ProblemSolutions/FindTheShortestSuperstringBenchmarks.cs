@@ -46,17 +46,10 @@ public class FindTheShortestSuperstringBenchmarks
     public void Setup()
     {
         var random = new Random(WordSeed);
+        var answerWords = BuildUniqueAnswerWords(WordCount, random);
 
-        _overlaps = WordOverlaps.Build(BuildUniqueAnswerWords(WordCount, random));
+        _overlaps = WordOverlaps.Build(answerWords);
     }
-
-    [Benchmark(Baseline = true)]
-    public string BruteForcePermutations() =>
-        FindTheShortestSuperstringSolution.ShortestSuperstringByPermutations(_overlaps);
-
-    [Benchmark]
-    public string MemoizedBitmaskDp() =>
-        FindTheShortestSuperstringSolution.ShortestSuperstringByMemoizedBitmask(_overlaps);
 
     private static string[] BuildUniqueAnswerWords(int wordCount, Random random)
     {
@@ -74,24 +67,12 @@ public class FindTheShortestSuperstringBenchmarks
 
         while (words.Count < wordCount)
         {
-            words.Add(BuildSuccessorWord(words[^1], random, reservedWindows));
+            var successor = BuildSuccessorWord(words[^1], random, reservedWindows);
+
+            words.Add(successor);
         }
 
         return [.. words];
-    }
-
-    private static string BuildSuccessorWord(
-        string previous, Random random, HashSet<string> reservedWindows)
-    {
-        while (true)
-        {
-            var candidate = TrailingWindow(previous) + NextLetter(random);
-
-            if (reservedWindows.Add(TrailingWindow(candidate)))
-            {
-                return candidate;
-            }
-        }
     }
 
     private static string BuildWord(Random random)
@@ -106,11 +87,36 @@ public class FindTheShortestSuperstringBenchmarks
         return new string(letters);
     }
 
+    // The window a word opens with: the first WordLength - 1 characters.
+    private static string LeadingWindow(string word) => word[..(WordLength - 1)];
+
+    private static string BuildSuccessorWord(
+        string previous, Random random, HashSet<string> reservedWindows)
+    {
+        // Returns on the first letter whose candidate opens a trailing window no word has
+        // claimed yet: Alphabet has four letters against a window of WordLength - 1, so
+        // 256 windows are reachable and at most WordCount + 1 of them are ever reserved.
+        while (true)
+        {
+            var candidate = TrailingWindow(previous) + NextLetter(random);
+
+            if (reservedWindows.Add(TrailingWindow(candidate)))
+            {
+                return candidate;
+            }
+        }
+    }
+
+    [Benchmark(Baseline = true)]
+    public string BruteForcePermutations() =>
+        FindTheShortestSuperstringSolution.ShortestSuperstringByPermutations(_overlaps);
+
+    [Benchmark]
+    public string MemoizedBitmaskDp() =>
+        FindTheShortestSuperstringSolution.ShortestSuperstringByMemoizedBitmask(_overlaps);
+
     private static char NextLetter(Random random) => Alphabet[random.Next(Alphabet.Length)];
 
     // The window a successor word has to repeat: the last WordLength - 1 characters.
     private static string TrailingWindow(string word) => word[(word.Length - WordLength + 1)..];
-
-    // The window a word opens with: the first WordLength - 1 characters.
-    private static string LeadingWindow(string word) => word[..(WordLength - 1)];
 }

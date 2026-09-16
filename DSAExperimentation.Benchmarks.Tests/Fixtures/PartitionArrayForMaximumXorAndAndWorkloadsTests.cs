@@ -28,7 +28,7 @@ public sealed partial class PartitionArrayForMaximumXorAndAndWorkloadsTests
             value => Assert.InRange(value, 1, MaxValue));
 
     [Fact]
-    public void BuildNums_LargerSample_SpansBothHalvesOfTheBandSoTheAndAndXorWalksHaveWorkToDo()
+    public void BuildNums_LargerSample_SpansBothHalvesOfTheThirtyBitBand()
     {
         var nums = PartitionArrayForMaximumXorAndAndWorkloads.BuildNums(StatisticalCount, Seed);
         var half = MaxValue / AlgorithmConstants.HalvingFactor;

@@ -24,7 +24,7 @@ public sealed partial class RemoveBoxesWorkloadsTests
             box => Assert.InRange(box, MinBoxColor, MaxBoxColor));
 
     [Fact]
-    public void BuildBoxes_Boxes_RepeatColorsSoTheRemovalHasRealWorkToDo() =>
+    public void BuildBoxes_Boxes_ContainARepeatedColor() =>
         Assert.Contains(
             RemoveBoxesWorkloads.BuildBoxes(BoxCount, Seed).GroupBy(box => box),
             group => group.Count() > 1);

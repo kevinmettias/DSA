@@ -3669,8 +3669,8 @@
     {
       "check": "check-transposable-parameters",
       "path": "DSAExperimentation.LeetCode/FindTheLengthOfTheLongestCommonPrefix/FindTheLengthOfTheLongestCommonPrefixSolution.cs",
-      "message": "`SharedPrefixLength` takes 2 adjacent `string` parameters (a, b): the call site reads `SharedPrefixLength(a, b)`, so a caller can transpose them and the compiler will not object. Give each position a distinct type.",
-      "reason": "Longest common prefix length is symmetric: the number of leading characters two strings agree on does not depend on which is named first, so a transposed call returns the same value rather than a silently wrong one -- the hazard the rule names cannot occur. One call site, in this file.",
+      "message": "`SharedPrefixLength` takes 2 adjacent `string` parameters",
+      "reason": "Longest common prefix length is symmetric: the number of leading characters two strings agree on does not depend on which is named first, so a transposed call returns the same value rather than a silently wrong one -- the hazard the rule names cannot occur. One call site, in this file. The message is narrowed to the function and its arity rather than its parameter names, so renaming a position cannot silently un-waive the finding.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3685,8 +3685,8 @@
     {
       "check": "check-transposable-parameters",
       "path": "DSAExperimentation.LeetCode/MaximumProductOfWordLengths/MaximumProductOfWordLengthsSolution.cs",
-      "message": "`SharesLetter` takes 2 adjacent `string` parameters (a, b): the call site reads `SharesLetter(a, b)`, so a caller can transpose them and the compiler will not object. Give each position a distinct type.",
-      "reason": "Non-empty letter-set intersection is symmetric: `SharesLetter(a, b)` and `SharesLetter(b, a)` are the same question and return the same answer, so a transposed call cannot be silently wrong. One call site, in this file.",
+      "message": "`HasSharedLetter` takes 2 adjacent `string` parameters",
+      "reason": "Non-empty letter-set intersection is symmetric: `HasSharedLetter(a, b)` and `HasSharedLetter(b, a)` are the same question and return the same answer, so a transposed call cannot be silently wrong. One call site, in this file. The message is narrowed to the function and its arity rather than its parameter names, so renaming a position cannot silently un-waive the finding.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4837,6 +4837,250 @@
       "path": "DSAExperimentation.LeetCode/SplitArrayLargestSum/SplitArrayLargestSumSolution.cs",
       "message": "opens with `Get`, which promises a thing, but returns a boolean",
       "reason": "`Get` here is not this file's to choose: the flagged member is the `IRandomAccessSequence<bool>` implementation of a shared-tier repo primitive, whose declaration is `Element Get(int index)` in `DSAExperimentation/DataStructures/Sequence/IRandomAccessSequence.cs`. It returns a boolean only because the type argument is `bool`; the name describes the operation for every instantiation, and each of these files says so - KokoEatingBananasSolution's own comment reads \"Get(index) is 'speed index + 1 clears every pile within h hours'\". `KokoEatingBananasSolution.FeasibleSpeedSequence` is the shape throughout: a struct implementing the interface so a binary search can treat a predicate as an indexed sequence. Renaming the implementation alone does not compile, and renaming `IRandomAccessSequence<Element>.Get` would edit the shared tier, which reports zero findings across all seven naming checks, and would make the generic contract worse for every other instantiation. Same shape as the Contract_Bound exclusion the check already makes; the C# front end cannot reach it because the declared return type is a generic parameter, not `bool`. The `check-boolean-predicate` finding on this same member is waived on the same grounds.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-public-api-docs",
+      "path": "DSAExperimentation.Benchmarks/**/*Benchmarks.cs",
+      "reason": "Not documentation debt dodged: this is the check's own exemption, one suffix over. check-public-api-docs exempts a type and all its members when the type's name ends in `Test` or `Tests`, and the exemption's stated reason is that 'a test type is a test and not a public contract, so it and its members are exempt'. A BenchmarkDotNet harness is the same kind of thing one suffix along: its public surface exists because a runner outside the assembly must reach it, not because a caller does. Measured rather than assumed, the 5338 findings this covers are 1102 types named `*Benchmarks`, 3160 `[Benchmark]` methods and 1076 `[Params]` properties, and every one of them sits in a file matching this glob - the only public-api-docs findings anywhere else in the repo were two on DSAExperimentation.LeetCode/Harness/IBoundWorkload.cs, and those were given XML docs instead of a waiver. The `public` is not this repo's choice to make: BenchmarkDotNet generates a second assembly that constructs the benchmark type, assigns each `[Params]` property through its setter, and invokes each `[Benchmark]` method, so AddDigitsBenchmarks' `public int Value { get; set; }` and `public int Arithmetic()` are public because the runner cannot see them otherwise - `private`, `internal` or `static` all fail to build a case. Documentation on any of the three would be read by no one: there is no caller outside the runner, and the report names every row by the benchmark method and its class, so a `<summary>` would restate the identifier the harness already prints. What this shape actually needs is what 1075 of the 1102 files already carry - a class-level comment saying the file is a harness whose arms are the solution's, as AddDigitsBenchmarks does ('Harness only: both arms are AddDigitsSolution's, the same methods AddDigitsTests proves correct') - and check-public-api-docs does not ask for it, since a `//` comment is not XML documentation and the check is right to want a machine-readable contract where a contract exists.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-literals",
+      "path": "DSAExperimentation.LeetCode.Tests/**",
+      "reason": "Sibling of the DSAExperimentation.Tests/** entry above, written the same way - measured, not assumed. This project is the repo's newest test tree and holds all 796 of its unsuppressed check-literals findings (DSAExperimentation, DSAExperimentation.LeetCode and DSAExperimentation.Benchmarks each report none once this ledger's own entries for them are set aside), sitting in 17 of its 19 files across 17 problem folders; the two clean files are clean today, and this is the project-shaped glob its sibling already uses. Classified by the line each sits on rather than by taste. 228 are building the operation script a seam test replays - `IntervalOperation.Add(1, 3)`, `RankOperation.Add(\"brazil\", 2)`, `CacheOperation.Put(3, 30)` - where the literal is an argument of a scripted operation and the only name for it would restate that operation's own signature. 302 are the same data one level out, the query array these problems publish (`int[][] queries = [CountWindow(2), CountWindow(3)];`, an opcode-and-range pair per query). 169 are the scenario's payload written as strings: a problem's alphabet, LeetCode 721's own accounts (`[\"John\", \"johnsmith@mail.com\", \"john_newyork@mail.com\"]`), a dictionary's words. 97 sit inside an assertion, where the literal is the answer the case proves - `Assert.Equal(10, MinCostByAutomatonArm(\"abc\", words, costs))` against the `words` and `costs` two lines above, whose sum of cheapest spellings is exactly the asserted 10 - or the operation transcript a replay harness compares against. 157 distinct tokens carry all 796 of them: 37 numeric and 120 string. Naming an assertion's expected value is the shape that is actively harmful rather than merely unnecessary, for the reason the sibling entry gives: `Assert.Equal(20, MinCostByKruskalArm(points))` states the case's answer, and lifting it into a constant makes the test compare a constant with itself. The one family a reader might reach for is the single `precision: 6` at ApplyDiscountEveryNOrders/CashierHashMapCatalogSeamTests.cs:68, and that is already written with xUnit's own parameter name at the call site - the constant it invites would restate `precision` as `DecimalPlaces`, so the name is already there, one character in front of the number.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-nested-call",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "reason": "Every flagged site in this project, measured rather than assumed - and this is the first run of the rule here: the C# front end for `nestedcall` did not exist until recently (its own source records it as GATED, with every `.cs` file answering OUTCOME_UNSUPPORTED before that), so these 333 findings are the whole population and not a residue of earlier work. The rule's entire judgment is a call carrying more than one position handed straight to another call, and in a fixture test that describes two shapes: 187 pass the fixture and the subject's answer into an assertion, and 111 pass the fixture into the harness's answer formatter, `AnswerText.Of(DigitGridWorkloads.BuildGrid(Size, Seed))` (the remaining 35 go into a render or count helper of the same harness - `InOrderValues`, `Values`, `Nodes`, `AnswerSum`, `ExpectedIslandCount`). 74 of the 333 are the two sides of one assertion, the reproducibility pin, `Assert.Equal(AnswerText.Of(X.BuildGrid(Size, Seed)), AnswerText.Of(X.BuildGrid(Size, Seed)))` - and that is the shape where the rule's remedy is not merely unnecessary but wrong: the two sides are deliberately two independent builds of the same input, so a named local is either the same call named twice or one side compared with itself, and the two evaluations have to stay two evaluations because that is the whole content of the test. For the rest the harm the rule names (the value has no name, a debugger has nowhere to stop) is answered by the assertion: xUnit prints the actual value beside the expected one, with the line, at the only moment the value matters, and the intermediate is never read by a later statement - it cannot be, since it sits inside an assertion or a formatter argument. 254 of the 333 sit in an expression-bodied test, the shape this repo's tests use for a one-statement body, so naming the value means rewriting the test as a two-statement block rather than adding a line to it. The rule offers its own escape for exactly this case, `nested-call: allow`, which must carry a reason - and this repository runs the default `safety-only` marker policy, under which that marker is not honoured, so the ledger is the sanctioned route. The one shape where a name does real work was fixed rather than waived, in production code: DSAExperimentation.Benchmarks/ProblemSolutions/FindTheShortestSuperstringBenchmarks.cs now reads `var successor = BuildSuccessorWord(words[^1], random, reservedWindows); words.Add(successor);`.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-nested-call",
+      "path": "DSAExperimentation.Tests/**",
+      "reason": "Same rule, same shape, measured in this tree: 121 findings, every one of them a call carrying more than one position handed to another call, 117 of them the subject's answer going into an assertion (`Assert.Equal(expected, RunScript(AllOneDataStructureSolution.CreateByBucketedLinkedList(), operations))`) and 4 into a harness helper. Measured rather than assumed - this is the first run of the rule against C#, the `nestedcall` front end having been gated before it existed, so these are the population and not a residue. The remedy the rule asks for is a named local, and in these tests it buys nothing for a reason the check cannot see: the intermediate is never read by a later statement because it lives inside the assertion, and its only moment is the failure, where xUnit prints it as the Actual beside the Expected with the line. 102 of the 121 sit in an expression-bodied test, the shape this repo's tests use for a one-statement body, so the remedy is a rewrite of the test rather than a line added to it; 34 are the twin sides of one assertion, where the two expressions are deliberately separate evaluations of the same subject and a name would assert that the two are one. Where a name did real work it was taken rather than waived, in production code: DSAExperimentation.Benchmarks/ProblemSolutions/FindTheShortestSuperstringBenchmarks.cs builds its word list through `var successor = BuildSuccessorWord(words[^1], random, reservedWindows); words.Add(successor);`. The rule's own escape - `nested-call: allow`, which has to state why - is not available here: this repository runs the default `safety-only` marker policy, so the ledger is the sanctioned route.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-nested-call",
+      "path": "DSAExperimentation.LeetCode.Tests/**",
+      "reason": "Same rule and same measurement in this project: 64 findings, every one a call carrying more than one position handed to another call - 59 the subject's answer into an assertion (`Assert.Equal([2], HitBricksByReverseArm(grid, hits))`, `Assert.Equal(expected, Replay(ComposedArm(rowCount, seatsPerRow), script))`) and 5 into a harness helper (`Gather` into `Join` while a transcript line is composed, `GetRange` into the generic `Kruskal` call). Measured rather than assumed: this is the first run of the rule against C#, the `nestedcall` front end having been gated before it existed, so these are the population rather than a residue. The remedy the rule asks for - a named local - does not pay here: the intermediate lives inside an assertion and is read by no later statement, and its one moment is the failure, which is where xUnit prints it as the Actual beside the Expected with the line. 18 of the 64 are the twin sides of one assertion, where the two expressions are deliberately two separate evaluations and a name would assert that they are one. The rule's own escape, `nested-call: allow` with a reason, is not honoured under this repository's default `safety-only` marker policy, so the ledger is the sanctioned route.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "which promises an answer, but returns a value",
+      "reason": "every finding this covers is an xUnit test method in the benchmark tier's own `<Title>BenchmarksTests` companions, named by the repo's own `MemberUnderTest_Scenario_Expectation` convention (ARCHITECTURE 17.9's harness coverage) - `IsTypedTextEqualByBclStack_SameSeedTexts_AgreesWithStackReplay` says 'the member `IsTypedTextEqualByBclStack`, in this scenario, agrees with the stack-replay arm'. Its leading word is the name of the member UNDER TEST - here one `[Benchmark]` arm of the harness above it - and not a promise about the test method's own result, and that is the whole of the false positive: C# `void` projects as RESULT_NONE ('returns nothing at all'), while this rule's two message templates are each hard-coded to name the OPPOSITE of the word they promise - so a `void` name opening with `Is` is reported as 'promises an answer, but returns a value' and one opening with `Get` as 'promises a thing, but returns a boolean'. Neither sentence is true of the method it is printed against; both are the rule correctly noticing that the leading word promises nothing the method returns. Waiving is the only honest reading, because the remedy would trade a false naming report for a real coverage one: 18.2 records that `check-test-coverage` reads this half of the name to decide whether a member is covered, so stripping the arm's name out of the test method to clear this finding would report that arm uncovered - and in this tier the named member is a public `[Benchmark]` arm of the harness being covered. Same argument and the same two message narrowings as the identically-shaped `DSAExperimentation.Tests/**` entries above; the identical shape in production code is renamed rather than waived, and was.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "which promises a thing, but returns a boolean",
+      "reason": "every finding this covers is an xUnit test method in the benchmark tier's own `<Title>BenchmarksTests` companions, named by the repo's own `MemberUnderTest_Scenario_Expectation` convention (ARCHITECTURE 17.9's harness coverage) - `GetEdges_NodeWithNoEdges_PresentsNoEdges` says 'the member `GetEdges`, in this scenario, presents no edges'. Its leading word is the name of the member UNDER TEST - here an accessor on the harness's own graph fixture - and not a promise about the test method's own result, and that is the whole of the false positive: C# `void` projects as RESULT_NONE ('returns nothing at all'), while this rule's two message templates are each hard-coded to name the OPPOSITE of the word they promise - so a `void` name opening with `Get` is reported as 'promises a thing, but returns a boolean' and one opening with `Is` as 'promises an answer, but returns a value'. Neither sentence is true of the method it is printed against; both are the rule correctly noticing that the leading word promises nothing the method returns. Waiving is the only honest reading, because the remedy would trade a false naming report for a real coverage one: 18.2 records that `check-test-coverage` reads this half of the name to decide whether a member is covered, so stripping the member's name out of the test method to clear this finding would report it uncovered. Same argument and the same two message narrowings as the identically-shaped `DSAExperimentation.Tests/**` entries above; the identical shape in production code is renamed rather than waived, and was.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.LeetCode.Tests/**",
+      "message": "which promises a thing, but returns a boolean",
+      "reason": "every finding this covers is an xUnit test method in the LeetCode tier's `*SeamTests` companions - the seam harnesses that replay one operation script against both of a solution's arms - named by the repo's own `MemberUnderTest_Scenario_Expectation` convention. Its leading word is the name of the member UNDER TEST, and in that tier the member under test is the problem's own published operation: `GetBill_*` drives LC 1357's `getBill`, `GetIntervals_*` drives LC 352's `getIntervals`, `Get_*` in LruCacheEvictionSeamTests drives LC 146's `get`, and `Get_*` in TwoHeapRankSeamTests drives LC 2102's `get` through this tier's `IRankTracker` mirror. So the word is LeetCode's, not this repo's, and it also names the load-bearing half of the test method, since the scenario and expectation both talk about that call. The finding itself is false: C# `void` projects as RESULT_NONE ('returns nothing at all'), while this rule's two message templates are each hard-coded to name the OPPOSITE of the word they promise - so a `void` name opening with `Get` is reported as 'promises a thing, but returns a boolean' and one opening with `Is` as 'promises an answer, but returns a value', and neither sentence is true of the method it is printed against. Waiving is the only honest reading, because the remedy would trade a false naming report for a real coverage one: 18.2 records that `check-test-coverage` reads this half of the name to decide whether a member is covered, so renaming the method away from the operation it drives would report that operation uncovered. Four files carry it today - ApplyDiscountEveryNOrders/CashierHashMapCatalogSeamTests.cs, DataStreamAsDisjointIntervals/IntervalSetSummarySeamTests.cs, LRUCache/LruCacheEvictionSeamTests.cs and SequentiallyOrdinalRankTracker/TwoHeapRankSeamTests.cs - and the same argument is the one the `DSAExperimentation.Tests/**` entries above rest on. The identical shape in production code is renamed rather than waived, and was.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "contains vague word `data`",
+      "reason": "data here is LeetCode's own word for the problem, not a description this repo chose: the titles leetcode.com publishes are AllOneDataStructure, DataStreamAsDisjointIntervals, DesignAddAndSearchWordsDataStructure and FindMedianFromDataStream, and 17.3 makes the folder, the solution class, the test class and the benchmark class each mirror that title so a problem can be found by the name it is actually known by. The names this waiver covers are derived from those mirrored types rather than written fresh - the `<Title>BenchmarksTests` companions and FindMedianFromDataStreamWorkloadsTests, the fixture's own harness - so renaming any of them breaks the correspondence the tier exists to keep, and renaming the mirrored type itself breaks the folder/class/test correspondence that makes the catalogue navigable. `words.vague_exempt` is the blunter tool and is refused on the check's own advice ('too blunt ... it would also pardon `DataManager`'), so the waiver names the title-mirroring tree instead. Five classes carry it today - FindMedianFromDataStreamWorkloadsTests, AllOneDataStructureBenchmarksTests, DataStreamAsDisjointIntervalsBenchmarksTests, DesignAddAndSearchWordsDataStructureBenchmarksTests and FindMedianFromDataStreamBenchmarksTests. Every other vague name this repo wrote itself is renamed rather than waived.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "contains vague word `manager`",
+      "reason": "manager here is LeetCode's own word for the problem, not a description this repo chose: the titles leetcode.com publishes are DesignAuthenticationManager, DesignEventManager, DesignTaskManager and SeatReservationManager, and 17.3 makes the folder, the solution class, the test class and the benchmark class each mirror that title so a problem can be found by the name it is actually known by. The names this waiver covers are derived from those mirrored types rather than written fresh - the four `<Title>BenchmarksTests` companions, one per title - so renaming any of them breaks the correspondence the tier exists to keep, and renaming the mirrored type itself breaks the folder/class/test correspondence that makes the catalogue navigable. `words.vague_exempt` is the blunter tool and is refused on the check's own advice ('too blunt ... it would also pardon `DataManager`'), so the waiver names the title-mirroring tree instead. Our own `Process*` methods, and every other vague name this repo wrote itself, are renamed rather than waived.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-naming-clarity",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "contains vague word `process`",
+      "reason": "process here is LeetCode's own word for the problem, not a description this repo chose: the title leetcode.com publishes is ProcessRestrictedFriendRequests, and 17.3 makes the folder, the solution class, the test class and the benchmark class each mirror that title so a problem can be found by the name it is actually known by. The one name this waiver covers is derived from that mirrored type rather than written fresh - ProcessRestrictedFriendRequestsBenchmarksTests, the harness companion for that title's benchmark - so renaming it breaks the correspondence the tier exists to keep, and renaming the mirrored type itself breaks the folder/class/test correspondence that makes the catalogue navigable. `words.vague_exempt` is the blunter tool and is refused on the check's own advice ('too blunt ... it would also pardon `DataManager`'), so the waiver names the title-mirroring tree instead. Every other vague name this repo wrote itself is renamed rather than waived.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.LeetCode.Tests/DataStreamAsDisjointIntervals/**",
+      "message": "uses abbreviation `num`",
+      "reason": "the three flagged methods are `AddNum_ValueBridgingTwoRuns_MatchesFullRebuild`, `AddNum_DuplicateValue_MatchesFullRebuild` and `AddNum_DescendingValues_MatchesFullRebuild`, and `AddNum` is not this repo's word: `ISummaryRanges` is this tier's mirror of LeetCode 352's published `SummaryRanges` API, whose method names are LeetCode's own (`addNum`, `getIntervals`), and 17.3 makes the tier mirror the problem statement. The leading word of each test name is the member under test, so the abbreviation is LeetCode's spelling threaded through the harness - the test calls the same `AddNum` the solution-side waiver above already covers - and renaming it here alone would desync the harness from the interface member it drives. Same class as the ledger's `check-boolean-predicate` waivers for LeetCode-published API names.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-abbreviations",
+      "path": "DSAExperimentation.LeetCode.Tests/RangeSumQueryMutable/**",
+      "message": "class `NumArrayOperation` uses abbreviation `num`",
+      "reason": "`NumArray` is not this repo's word: LeetCode 307 publishes the class as `NumArray`, and `INumArray` here - whose own comment reads 'LeetCode's own NumArray operations, common to both strategies so a harness can hold either behind one type' - is this tier's mirror of that published API, which 17.3 exists to preserve. `NumArrayOperation` is the harness record that names one scripted call against either arm (`NumArrayOperation.Sum(0, 2)`, `.Update(1, 2)`), so it is derived from the mirrored type rather than written fresh, and renaming it alone would leave the harness talking about a different type from the interface it drives. Same class as the ledger's `check-abbreviations` waivers for LeetCode-published API names, and the same argument the `check-naming-clarity` `*Manager*/**` and `*Data*/**` entries make for title-mirrored names.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-boundary-in-loop",
+      "path": "**",
+      "message": "a database call runs inside a loop",
+      "reason": "no file in this repo can produce this finding truthfully: DSA is an algorithms practice library with no database, no ORM and no data-access dependency anywhere in it - the whole repository declares five package references (BenchmarkDotNet, coverlet.collector, Microsoft.NET.Test.Sdk, xunit, xunit.runner.visualstudio), and a scan for SqlConnection, DbConnection, IDbConnection, DbCommand, Npgsql, SqlClient, EntityFramework, DbContext, Dapper, MySql, Sqlite, ConnectionString and OracleConnection over every .cs file finds nothing. What fires here is the check's universal SQL slice, and its front end sets that from the CALLEE NAME ALONE: `csharp_query_methods` (language-kernels/programming/csharp/csharplang/csharp_sql.go) is a flat map of Dapper's own method names - Query, QueryFirst, QuerySingle, QueryMultiple, Execute, ExecuteScalar, ExecuteReader, FromSqlRaw and their Async forms - and `CSharpLanguage.Loop_Calls` sets `Is_Sql: csharp_query_methods[method]` with no receiver check at all, so any in-loop call whose short name is `Query` is reported as a database round trip whatever it is called on. All 33 findings are this repo's own range query: the segment tree, the lazy segment tree, the Fenwick tree, the interval-set and the 2D prefix-sum table each expose a `Query(low, high)` (or the checker/strategy facade over one), and every one of them is O(log n) or O(1) over memory the file already holds - the enclosing loop is the algorithm's outer pass and the query is its inner lookup, which is the structure doing its job rather than a round trip the loop pays for. There is no escape to configure: `boundary_in_loop.calls` only WIDENS what is flagged, so listing nothing keeps this slice, and the rule's own `n-plus-one: allow` marker is unhonoured under this repository's default `safety-only` marker policy - the same reason the nested-call entries above are ledger entries rather than markers. SCOPE: written over `**` because the claim that makes it truthful is about the whole repository being database-free, and it covers the name-collision class rather than `Query` alone, since a future `Execute(...)` in a loop would fire identically; if DSA ever takes a data-access dependency this entry must be retired rather than renewed, and the `expires` date is the backstop. 33 findings across 31 files today - 27 in DSAExperimentation.LeetCode/ (ConstructQuadTree, CountIncreasingQuadruplets, CountSubarraysWithFixedBounds twice, FallingSquares, FindXValueOfArrayII, FruitsIntoBasketsIII, HandlingSumQueriesAfterUpdate, LengthOfTheLongestIncreasingPath, LongestBalancedSubarrayII, LongestIncreasingSubsequenceII twice, LongestSubstringOfOneRepeatingCharacter, MaximumAreaRectangleWithPointConstraintsII, MaximumSumOfSubsequenceWithNonAdjacentElements, MaximumSumQueries, MinimumDeletionsToMakeAlternatingSubstring, MinimumNumberOfCoinsForFruits, MinimumStabilityFactorOfArray, NumberOfLongestIncreasingSubsequence twice, NumberOfPairsAfterIncrement, NumberOfPeopleAwareOfASecret, RangeSumQuery2DImmutable, ReversePairs, ShortestPathInAWeightedTree, SubarraysDistinctElementSumOfSquaresII, ThresholdMajorityQueries), 2 in DSAExperimentation.Benchmarks/ProblemSolutions/ (OnlineMajorityElementInSubarrayBenchmarks, StreamOfCharactersBenchmarks) and 3 in DSAExperimentation.Tests/ (DataStructures/LazySegmentTree/BuildCombineTests, LeetCodeCoverage/OnlineMajorityElementInSubarray/OnlineMajorityElementInSubarrayTests, LeetCodeCoverage/StreamOfCharacters/StreamOfCharactersTests).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-callable-shape",
+      "path": "DSAExperimentation.LeetCode/LeetCodeAdjacency.cs",
+      "message": "is a named callable type",
+      "reason": "The remedy this check ranks first is an interface with a named method, and C# has no lambda-to-interface conversion: `wire` arrives as a lambda at all 8 call sites (GroupAdjacency, CityGraph, GardenNetwork, MinimumEdgeTogglesOnATreeSolution, ToggleTree, BranchNetwork, DislikeAdjacency, DislikeGraph), and a one-method interface cannot be satisfied by one - so the interface would cost a hand-written adapter type in each of those 8 unrelated problem files to express what a delegate already expresses. The declaration is already the check's SECOND-ranked form rather than the third (a named delegate, not a bare `Func`), and it is the one place the contract can be stated: the 7-line comment above it names each parameter (`slot`, `farId`, `farSlot`, `edgeIndex`) and records why both endpoints travel together and why the caller's own edge list is the only place an index can be read from. What it is FOR is also named where a caller meets it: `Build<TSlot>` calls `wire` twice per edge, once from each endpoint, which is what the delegate's shape has to support.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-callable-shape",
+      "path": "DSAExperimentation.LeetCode.Tests/ApplyDiscountEveryNOrders/CashierHashMapCatalogSeamTests.cs",
+      "message": "takes behavior as",
+      "reason": "A test-local catalogue factory rather than a slot in production code: `priceOf` is the only callable in the file and the whole of what `Catalogue` varies along with the product count. Every one of its 5 call sites names it (`Catalogue(products: 12, priceOf: product => product * 7)`), so the reading this rule wants a type to supply - what the callable is FOR - is at the call site in the argument's own name. The remedy would need a strategy type for one lambda in one test file, and C# cannot satisfy an interface with a lambda, so it would replace `priceOf: product => product * 7` with a type declared beside it and instantiated at each site: more surface for a reader of the seam test, and the mapping (a product number to its price) would still live in the body a named argument already introduces.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation/Algorithms/Searching/NearestBoundary.cs",
+      "reason": "check-responsibility-extraction's own doc (shared-prefix-signals-a-hidden-module.md) calls a prefix cluster a review rather than an automatic defect - a strong signal, not proof - and asks whether the shared prefix names a real responsibility before extracting. Both clusters it counts here are this one file's subject: `Smaller...` and `Greater...` are the boundary VALUE RELATIONS the file is named for, and its header records why all four live together - a problem that needs a tie to belong to one of two equal positions asks for the strict relation on one side and the or-equal one on the other, and that asymmetry (not the scan) is what ApplyOperationsToMaximizeScore's (i - left[i]) * (right[i] - i) is built on; all four are here because that pairing is the reason the sweep is worth writing once, and a caller reaching for a fifth is describing a different algorithm. The four share one private Sweep, so extracting `Smaller` and `Greater` into separate files would separate each relation from the sweep that implements all four and from the sibling it is defined against (strict vs or-equal is the difference between two of these methods and nothing else in the file), and dropping the prefix would take the relation's own name off the method a caller reaches for. Same shape as Manacher.cs's entry above: the prefix names the one algorithm's inseparable halves, not a boundary nobody drew.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Benchmarks/Fixtures/SeededSequences.cs",
+      "reason": "The 4 counted declarations are two overload pairs of one operation, and `Shuffled` is the operation's own name rather than a hidden module: each pair is (count, seed) and (count, Random), and the two pairs are the 0-based and 1-based sequences, so the two axes a caller picks independently are handled by arity here instead of by a strategy parameter. The file's own header records why both random forms exist, and it is not an accident of taste: a harness that draws further values after the shuffle (RobotCollisions' healths and directions) must keep ONE stream, because handing it a fresh Random would change every draw after the shuffle and with it the workload a recorded benchmark artifact was measured against - so the Random overload is what makes that possible and the seed overload is the convenience over it. The private helper all four delegate to is `Shuffled(int[] values, Random random)`, the Fisher-Yates pass, so the prefix is already the name of the one algorithm in the file and the public forms are its argument permutations. Splitting the 0-based pair from the 1-based pair would separate a shared shuffle from nothing it shares.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-responsibility-extraction",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs",
+      "message": "`Can` names",
+      "reason": "The shared prefix is another check's requirement and the problem's own word, so it is neither accidental nor extractable. `Can` opens a boolean predicate because the question these arms answer IS yes/no (LC 365 canMeasureWater, LC 464 Can I Win, LC 810 xorGame, LC 1927 sumGame all publish a boolean), and check-boolean-predicate requires exactly that: a bool-returning member whose name does not open with is/has/can/should/try is reported. So renaming these arms to break the cluster makes the sibling check fire, and for LC 365 and LC 464 it would also take the name away from the API LeetCode publishes. The prefix is also the problem's own title for one of them: in CanIWinBenchmarks the third counted declaration is the harness type, named for the problem's published title. The locality the check reads as a hidden module is 17.3's requirement read back: every arm for one problem lives in that problem's one benchmark class, next to the `[Benchmark]` attributes that make the arms comparable (the design-tier half of this same argument is the entry for DSAExperimentation.LeetCode/*/*Solution.cs above).",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-size",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "distinct sections",
+      "reason": "The locality is deliberate, and the rule's own remedy text routes that case here. These are 17.9 companion tests, whose reference answer must be derived independently of the arm under test, and the sections the metric counts are the steps of that one derivation rather than groups that happen to be separated by blank lines. DeleteNodeInALinkedList's Replay follows the arm step for step - its comment says it Mirrors the arm exactly: rebuild the run, target the node at Length/2 and splice it out through the solution the arm calls - so its stanzas are what a reader puts beside the arm's body; splitting them into BuildRun/AdvanceToMiddle/Collect would turn a 31-line mirror into four helpers that have to be reassembled to compare. ImplementQueueUsingStacks' ReferenceFifoSum is one for-loop whose 3-way branch IS the reference simulation (roll, push, pop-and-sum, all sharing the loop variable and the RNG), so each section is a branch of the loop rather than a unit that can be lifted out of it. NumberOfIslands' ExpectedIslandCount is seed-the-mask / count-the-starts / flood / return, with the flood already extracted as FloodFrom(grid, visited, row, col) - the residual section is the two-line preamble and the return.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-size",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "is a self-contained unit",
+      "reason": "The counted block in each of these five files is the body of the reference's own traversal loop: dequeue a node, record it, enqueue its children (FindModeInBinarySearchTree's Nodes, ConstructBinaryTreeFromInorderAndPostorderTraversal's LevelOrderValues), the mask-to-subset expansion inside the enumeration loop (SubsetsII's ExpectedMultisetPowerSet), the frontier drain (SurroundedRegions' ExpectedCapture, SwimInRisingWater's IsJoiningCorners). Each is the algorithm the reference IS, written in plain BCL types (Queue<T>, List<T>, HashSet<T>) rather than through the structures under test, so a bug in the tier cannot be shared by the reference - and naming the loop body would name the algorithm's own step after the algorithm. IsJoiningCorners is the clearest case: its block carries the loop's own early `return true` when the far corner is reached, so it is not self-contained at all - the success condition lives in the loop that tests it. The pieces that ARE separable were already lifted: VisitIfOpen and CaptureUnreachedOpenCells (SurroundedRegions), VisitIfLowEnough (SwimInRisingWater), AnswerText.Of and WorkloadValues (SubsetsII), CountNodes (FindModeInBinarySearchTree) all sit beside these bodies as private static helpers.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-size",
+      "path": "DSAExperimentation.LeetCode/CountNumberOfBalancedPermutations/CountNumberOfBalancedPermutationsSolution.cs",
+      "message": "distinct sections",
+      "reason": "Already decomposed where decomposition is real: every separable step of this digit-count DP is a named member of this problem's own algebra - FactorialTable.Build(num.Length), FoldDigitSplits(counts, evenSlots, half, table), table.Factorial(evenSlots) and table.Factorial(oddSlots), ModularArithmetic.Modulo - so what remains inline is the digit histogram (a 3-statement loop over a local array), the odd-total rejection, the three locals the DP is handed, and the one-expression return. The metric reports 24 lines, which is this check's own Minimum_Body_Lines: at the soft length the rule is a length signal looking for a piece to NAME, and the nameable pieces of this method have already been named elsewhere in the file.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-size",
+      "path": "DSAExperimentation.LeetCode/FindTheLargestAreaOfSquareInsideTwoRectangles/FindTheLargestAreaOfSquareInsideTwoRectanglesSolution.cs",
+      "message": "is a self-contained unit",
+      "reason": "The counted block is the body of the scan over later rectangles, and it is not self-contained: it contains the loop's own early exit (`if (widthBound <= bestSide) { break; }`), which IS the pruning argument the method exists for - the width bound only shrinks as q advances, so once it can no longer beat the best square found so far, neither can any later q. Lifting the block out would move that break out of the loop it governs (leaving a sentinel or a flag to re-test) and would need the pivot rectangle, both corner arrays, the order, the bound and the running best, which is past this same phase's parameter-count limit. What could be named is the width/height/side triple, three one-expression locals each read once; the method is 27 lines with the scan, the bound and the early exit each explained by the comment directly above it.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-function-size",
+      "path": "DSAExperimentation.LeetCode/LongestSubstringOfOneRepeatingCharacter/RunAggregate.cs",
+      "message": "distinct sections",
+      "reason": "One merge's parts, not three responsibilities. Combine is ICombineOperation<RunSegment>'s witness, and the two leading guards are the identity legs that witness owes (`Identity => RunSegment.Empty`, so combining with the empty run must return the other side); the sections after them are the four fields one merge derives and the RunSegment it constructs. The arithmetic that IS separable is already extracted beside it: BridgedPrefixLength and BridgedSuffixLength, each a one-expression helper with its own comment explaining which side's run extends past the boundary. What remains inline is one expression per output field over the two edge characters and the total length, exactly the quantities the file's header records as the whole of what the merged value may depend on (which is also why it is associative), so a further split would name the fields of a single return.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-intrafile-duplication",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "message": "duplicated logic (structural)",
+      "reason": "The concept the remedy asks to encapsulate is already encapsulated, and what the metric matched is the one-line call to it: `BuildHarness()` (see the helper at the bottom of each file), which the second test of a mirrored pair has to call for itself. Sharing one harness across the pair is not available - a harness is a [GlobalSetup] benchmark object whose arms mutate the object they are called on, and 17.9 requires each DIRECTION of an arm comparison to be its own named test so that a failure names the direction that disagreed. Measured: in MatrixCellsInDistanceOrderBenchmarksTests the two bodies are mirror images rather than copies - line 41 reads Assert.Equal(AnswerText.Of(DistancesOf(byGridBfs)), AnswerText.Of(DistancesOf(byFormula))) and its sibling at line 53 swaps the two arguments, and the two local names swap with them; MergeKSortedListsBenchmarksTests is the same pair with the arms FlattenSort and MergeByHeap swapped between the two bodies. Extracting the prologue would remove the call that names which harness the test builds while leaving the mirrored assertions where they are.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-intrafile-duplication",
+      "path": "DSAExperimentation.LeetCode.Tests/CountIntegersInIntervals/IntervalSetCountSeamTests.cs",
+      "message": "duplicated logic (structural)",
+      "reason": "What the metric matched is the shape of a test's own input rather than a reusable unit: its normalization collapses the literals, and every script in this file is an alternation of the seam's two operations (Add, Count, Add, Count...) because that IS the minimum probe of an interval-count arm - the problem publishes two operations, so a script that reads a count after adding ranges is alternating them by construction. The scripts are the test data: the two the metric paired open with the same two operations (a range, then a count) and diverge immediately after, and the reader compares that literal against the test's own name (overlapping and adjacent adds; repeated and single-integer ranges). Hoisting it would replace a literal with a helper whose argument is the whole test, and the count assertions above each script (which are what the test varies) would stay behind.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation.Benchmarks.Tests/**",
+      "reason": "The metric's premise is that a type's methods and fields cluster around state they share, and the classes it reports here are the two kinds of type that have no state to share. The `*Tests` classes are xUnit fixtures: xUnit constructs a fresh instance for every test method and the tier's rule is that no test may depend on another, so every helper and every assertion in one of these classes works over locals it was handed - 'clusters that share no state' is not a finding about the class, it is the property the framework requires. The one non-test type in the glob, AnswerText.cs, is an `internal static class`: a namespace for one operation (`Of` and its overloads) and its set form (`OfUnorderedSet`), all pure functions of their arguments, which is why the metric sees no state - there is none to see. Splitting a `*Tests` class would also break the 1:1 subject-to-test-class correspondence this tier is built on and that check-test-coverage reads (one `XTests` for each harness type, named for its subject), and splitting a static helper would put the tier's one way of rendering an answer into comparable text in two files that every harness calls together.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-class-size",
+      "path": "DSAExperimentation.LeetCode.Tests/**",
+      "reason": "Same fact as the entry for DSAExperimentation.Benchmarks.Tests above: the metric's premise is that a type's methods and fields cluster around state they share, and every class it reports in this project is an xUnit fixture - `sealed partial class ...SeamTests` - where xUnit constructs a fresh instance per test and the tier's rule is that no test depends on another. So each `[Fact]` and each private helper works over locals it was handed, and 'clusters that share no state' describes the framework's contract rather than a hidden responsibility. The class-per-seam naming is what check-test-coverage attributes coverage by (test class plus method name), so splitting one of these would break the correspondence between a seam and the class that proves it.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-bool-parameter",
+      "path": "DSAExperimentation.LeetCode.Tests/**",
+      "reason": "The check's premise is that a bool beside a same-typed position can be transposed by a caller without the compiler objecting, and the 7 sites it reports in this project are all one shape: a test-local `Replay`/`BuildGraph` helper whose bool sits beside a parameter of a DIFFERENT type, measured one by one - `Replay(IntervalOperation[] script, bool useIntervalSet)` (IntervalSetCountSeamTests.cs:127), `Replay(StreamOperation[] script, bool useIntervalSet)` (IntervalSetSummarySeamTests.cs:146), `Replay(RangeOperation[] script, bool useIntervalSet)` (IntervalSetRangeModuleSeamTests.cs:141), `Replay(RankOperation[] script, bool useTwoHeaps)` (TwoHeapRankSeamTests.cs:137), `BuildGraph(int[][] points, bool oneSided)` (KruskalMstSeamTests.cs:167), `Replay(int capacity, CacheOperation[] script, bool usePrimitive)` (LruCacheEvictionSeamTests.cs:132) and `Replay(int[] nums, NumArrayOperation[] script, bool useSegmentTree)` (SegmentTreePointUpdateRangeSumSeamTests.cs:128). An operation array, an int capacity or a point list is never the same type as a bool, so every transposition a caller could write fails to compile and the hazard this rule names cannot occur at any of the 7. The rule's other stated concern, that a position does not name itself, is answered where it arises: every call site in these 7 files passes the flag as a NAMED argument (`Replay(script, useIntervalSet: true)`, `Replay(capacity, script, usePrimitive: false)`, `BuildGraph(points, oneSided: true)`), so the reader is told what the position means at the point of use. Each flag also selects which of two NAMED strategies the helper replays - IntervalSetCountSeamTests' `Replay` branches to `CreateByIntervalSetMerge` or `CreateByHashSetPerInteger` - so the choice is already spelled at both the arm and the call site, and a two-member enum would relabel that same single position without changing the contract. That is the same judgment the ledger already records for PeakGapNode.Leaf (a bool beside a distinct `int`) and for FlipCountOperation's bool positions inside an interface-fixed signature.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-bool-parameter",
+      "path": "DSAExperimentation.Benchmarks.Tests/Fixtures/PeakQueryWorkloadsTests.cs",
+      "reason": "`AssertQuery(int[] query, bool isRangeCount)` (:59) is this project's one site, and it has the LeetCode.Tests shape: the bool's neighbour is an `int[]`, a distinct type, so a transposed call cannot compile. Its only call site (:46) passes `index % QueryKindAlternationCycle == 0` rather than a bare literal, so the call site the check renders as `AssertQuery(query, true)` is not what the source says - the condition states itself. The bool is LeetCode's own two query type codes, which this file already names as RangeCountKind and PointUpdateKind and reads back at :61 and :63, so a two-member enum passed to the helper would be a third spelling of that wire format rather than a name that was missing.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-transposable-parameters",
+      "path": "DSAExperimentation.Benchmarks.Tests/Fixtures/HammingWorkloadsTests.cs",
+      "message": "`DifferingPositions` takes 2 adjacent `string` parameters",
+      "reason": "`DifferingPositions(left, right)` (:66) counts the positions where two equal-length strings differ - Hamming distance, a metric, so d(a, b) == d(b, a) and a transposed call returns the same count rather than a silently wrong one. The hazard the rule names cannot occur for a symmetric count. One call site, at :50 and in this file, comparing consecutive values of the chain the fixture builds, where the count is asserted equal to the one-character mutation the chain promises. This is the same judgment the ledger already records for HammingGraph.IsOneApart and WordsWithinTwoEditsOfDictionary.IsWithinEditBudget. The message is narrowed to the function and its arity rather than its parameter names, so renaming a position cannot silently un-waive the finding.",
+      "owner": "@kmettias",
+      "expires": "2026-11-22"
+    },
+    {
+      "check": "check-folder-organization",
+      "path": "DSAExperimentation.LeetCode.Tests",
+      "reason": "deliberately flat, one-folder-per-LeetCode-problem layout - the same deliberate flatness this ledger already accepts for DSAExperimentation.LeetCode and DSAExperimentation.Tests/LeetCodeCoverage. Each of the 17 subfolders holds exactly one `...SeamTests.cs` and the root holds only the .csproj: the folder names the problem (its external contract, the only name a reader can look it up by) and the file names the internal seam being proved (LruCacheEvictionSeamTests, ReverseTimeUnionSeamTests, TwoHeapRankSeamTests), so the flat list IS the index of which of the 1108 solutions has a named internal structure proven directly rather than through its public answer. This project is the only assembly both DSAExperimentation and DSAExperimentation.LeetCode declare InternalsVisibleTo for, so a folder here is the one place a solution's internals can be reached at all; the 17 folders are not a subsystem this repo owns the shape of, but 17 independent proofs against 17 named, numbered external problems, and grouping them under intermediate categories would be a second hand-maintained taxonomy that can disagree with the tier tree the solutions themselves live in.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     }

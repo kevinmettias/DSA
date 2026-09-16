@@ -37,8 +37,9 @@ public sealed partial class DenseDistanceMatrixTests
         var matrix = DenseDistanceMatrix.BuildInitialMatrix<
             WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(vertices, index);
 
-        Assert.Equal(0, matrix[index[a], index[a]]);
-        Assert.Equal(0, matrix[index[d], index[d]]);
+        // Every vertex's own cell, not a sampled pair: the zero the walk's first refinement
+        // step relies on has to hold for all four rows.
+        Assert.All(vertices, vertex => Assert.Equal(0, matrix[index[vertex], index[vertex]]));
 
         Assert.Equal(1, matrix[index[a], index[b]]);
         Assert.Equal(4, matrix[index[a], index[c]]);

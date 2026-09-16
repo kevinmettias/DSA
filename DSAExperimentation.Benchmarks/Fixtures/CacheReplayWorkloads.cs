@@ -14,6 +14,24 @@ internal static class CacheReplayWorkloads
         var random = new Random(seed);
         var script = new List<Func<ICache<int, int>, int?>>();
 
+        AppendInitialPuts(script, capacity, random);
+
+        var roundKeyUpperBound = capacity * 2;
+
+        for (var round = 0; round < capacity; round++)
+        {
+            AppendGetThenPut(script, capacity, roundKeyUpperBound, random);
+        }
+
+        return script;
+    }
+
+    // The capacity puts that fill the cache exactly before anything is measured: every key
+    // from 0 to capacity - 1 writes once, under a value drawn from the same range, so the
+    // later rounds meet a mix of retained and evicted entries.
+    private static void AppendInitialPuts(
+        List<Func<ICache<int, int>, int?>> script, int capacity, Random random)
+    {
         for (var key = 0; key < capacity; key++)
         {
             var value = random.Next(0, capacity);
@@ -30,15 +48,6 @@ internal static class CacheReplayWorkloads
                 return null;
             });
         }
-
-        var roundKeyUpperBound = capacity * 2;
-
-        for (var round = 0; round < capacity; round++)
-        {
-            AppendGetThenPut(script, capacity, roundKeyUpperBound, random);
-        }
-
-        return script;
     }
 
     // The get/put pair one measured round replays: a get of a key drawn from the wider

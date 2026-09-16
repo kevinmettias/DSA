@@ -70,8 +70,8 @@ public sealed partial class WeightedGridWorkloadsTests
     }
 
     private static int ExpectedDegree(WeightedGridNode node) =>
-        Orthogonal.Count(step => InBounds(node.Row + step.Row, node.Col + step.Col));
+        Orthogonal.Count(step => IsInBounds(node.Row + step.Row, node.Col + step.Col));
 
-    private static bool InBounds(int row, int col) =>
+    private static bool IsInBounds(int row, int col) =>
         row >= GridOrigin && row < Size && col >= GridOrigin && col < Size;
 }

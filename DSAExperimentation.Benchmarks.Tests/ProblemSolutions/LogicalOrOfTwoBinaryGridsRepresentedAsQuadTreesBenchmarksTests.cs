@@ -86,7 +86,7 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBench
     // The arm returns object? rather than the internal QuadTreeNode itself (CS0050), so the tree is
     // read back out of the boxed result before the decode walks it.
     private static int[][] Materialized(object? tree) =>
-        QuadTreeGrid.Materialize((QuadTreeNode)tree!, SmallestSize);
+        QuadTreeGrid.Materialize(Assert.IsType<QuadTreeNode>(tree), SmallestSize);
 
     private static LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks BuildHarness()
     {

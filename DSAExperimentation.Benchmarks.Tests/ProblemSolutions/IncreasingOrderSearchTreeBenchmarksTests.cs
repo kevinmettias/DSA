@@ -69,7 +69,10 @@ public sealed partial class IncreasingOrderSearchTreeBenchmarksTests
             tree.Insert(value);
         }
 
-        return tree.Root!;
+        var root = tree.Root;
+        Assert.NotNull(root);
+
+        return root;
     }
 
     // LC 897's answer read straight off the fixture's documented values, not out of the walk.

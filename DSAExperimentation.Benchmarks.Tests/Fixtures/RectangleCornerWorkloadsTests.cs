@@ -56,7 +56,7 @@ public sealed partial class RectangleCornerWorkloadsTests
         {
             for (var second = first + 1; second < circles.Length; second++)
             {
-                if (Overlap(circles[first], circles[second]))
+                if (IsOverlapping(circles[first], circles[second]))
                 {
                     return true;
                 }
@@ -66,7 +66,7 @@ public sealed partial class RectangleCornerWorkloadsTests
         return false;
     }
 
-    private static bool Overlap(int[] first, int[] second)
+    private static bool IsOverlapping(int[] first, int[] second)
     {
         var dx = first[0] - second[0];
         var dy = first[1] - second[1];

@@ -75,23 +75,23 @@ public sealed partial class SurroundedRegionsBenchmarksTests
     {
         var board = PristineBoard();
         var reached = new bool[SmallestSize, SmallestSize];
-        var frontier = new Queue<(int Row, int Col)>();
+        var reach = new BorderReach(board, reached, new Queue<(int Row, int Col)>());
 
         for (var index = 0; index < SmallestSize; index++)
         {
-            VisitIfOpen(board, reached, frontier, row: 0, col: index);
-            VisitIfOpen(board, reached, frontier, row: SmallestSize - 1, col: index);
-            VisitIfOpen(board, reached, frontier, row: index, col: 0);
-            VisitIfOpen(board, reached, frontier, row: index, col: SmallestSize - 1);
+            VisitIfOpen(reach, row: 0, col: index);
+            VisitIfOpen(reach, row: SmallestSize - 1, col: index);
+            VisitIfOpen(reach, row: index, col: 0);
+            VisitIfOpen(reach, row: index, col: SmallestSize - 1);
         }
 
-        while (frontier.Count > 0)
+        while (reach.Frontier.Count > 0)
         {
-            var (row, col) = frontier.Dequeue();
-            VisitIfOpen(board, reached, frontier, row - 1, col);
-            VisitIfOpen(board, reached, frontier, row + 1, col);
-            VisitIfOpen(board, reached, frontier, row, col - 1);
-            VisitIfOpen(board, reached, frontier, row, col + 1);
+            var (row, col) = reach.Frontier.Dequeue();
+            VisitIfOpen(reach, row - 1, col);
+            VisitIfOpen(reach, row + 1, col);
+            VisitIfOpen(reach, row, col - 1);
+            VisitIfOpen(reach, row, col + 1);
         }
 
         CaptureUnreachedOpenCells(board, reached);
@@ -99,18 +99,20 @@ public sealed partial class SurroundedRegionsBenchmarksTests
         return board;
     }
 
-    private static void VisitIfOpen(
-        char[][] board, bool[,] reached, Queue<(int Row, int Col)> frontier, int row, int col)
+    // The three values every step of the border-reach walk shares - the board being read, the marks
+    // the walk leaves and the frontier it is draining - so a call site names only the cell it visits.
+    private static void VisitIfOpen(BorderReach reach, int row, int col)
     {
         var isOffBoard = row < 0 || row >= SmallestSize || col < 0 || col >= SmallestSize;
+        var cannotBeCaptured = isOffBoard || reach.Reached[row, col] || reach.Board[row][col] != OpenCell;
 
-        if (isOffBoard || reached[row, col] || board[row][col] != OpenCell)
+        if (cannotBeCaptured)
         {
             return;
         }
 
-        reached[row, col] = true;
-        frontier.Enqueue((row, col));
+        reach.Reached[row, col] = true;
+        reach.Frontier.Enqueue((row, col));
     }
 
     private static void CaptureUnreachedOpenCells(char[][] board, bool[,] reached)
@@ -126,4 +128,9 @@ public sealed partial class SurroundedRegionsBenchmarksTests
             }
         }
     }
+
+    // The border-reach walk in progress: the board, the marks it leaves and the frontier it is
+    // draining. Data only - the walk's steps stay as static methods on the test class.
+    private readonly record struct BorderReach(
+        char[][] Board, bool[,] Reached, Queue<(int Row, int Col)> Frontier);
 }

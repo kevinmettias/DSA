@@ -79,15 +79,6 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
         }
     }
 
-    // Applies every bucket's multiplicative difference array to the values it covers.
-    private static void SweepBuckets(long[] values, Dictionary<(int Stride, int Residue), long[]> buckets)
-    {
-        foreach (var ((stride, residue), diff) in buckets)
-        {
-            SweepBucket(values, diff, stride, residue);
-        }
-    }
-
     // l, r, k and v are the query itself - the same four values LeetCode hands over
     // together and the same four the walk arm above unpacks - so they arrive as that
     // one query rather than as four independent ints. valueCount is not part of the
@@ -130,6 +121,15 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
 
         diff[posL] = diff[posL] * query.V % ModularArithmetic.Modulo;
         diff[posR + 1] = diff[posR + 1] * ModularArithmetic.Inverse(query.V) % ModularArithmetic.Modulo;
+    }
+
+    // Applies every bucket's multiplicative difference array to the values it covers.
+    private static void SweepBuckets(long[] values, Dictionary<(int Stride, int Residue), long[]> buckets)
+    {
+        foreach (var ((stride, residue), diff) in buckets)
+        {
+            SweepBucket(values, diff, stride, residue);
+        }
     }
 
     private static void SweepBucket(long[] values, long[] diff, int stride, int residue)

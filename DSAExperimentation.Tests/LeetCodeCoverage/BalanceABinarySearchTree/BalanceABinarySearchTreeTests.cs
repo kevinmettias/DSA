@@ -42,7 +42,10 @@ public sealed partial class BalanceABinarySearchTreeTests
     public void BalanceByInOrderTraversal_LeetCodeExamples_ProducesHeightBalancedBstWithSameValues(
         int?[] levelOrder, int[] expectedSorted)
     {
-        var balanced = BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(LeetCodeWireFormat.ToBinaryTree(levelOrder)!);
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(root);
+
+        var balanced = BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(root);
 
         Assert.Equal(expectedSorted, InOrder(balanced));
         Assert.True(IsHeightBalanced(balanced).IsBalanced);
@@ -53,7 +56,10 @@ public sealed partial class BalanceABinarySearchTreeTests
     public void BalanceByRepeatedKthSmallest_LeetCodeExamples_ProducesHeightBalancedBstWithSameValues(
         int?[] levelOrder, int[] expectedSorted)
     {
-        var balanced = BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(LeetCodeWireFormat.ToBinaryTree(levelOrder)!);
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(root);
+
+        var balanced = BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(root);
 
         Assert.Equal(expectedSorted, InOrder(balanced));
         Assert.True(IsHeightBalanced(balanced).IsBalanced);

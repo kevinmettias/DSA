@@ -77,10 +77,10 @@ public sealed partial class SwimInRisingWaterBenchmarksTests
         var grid = WorkloadGrid();
 
         return Enumerable.Range(0, SmallestSize * SmallestSize)
-            .First(elevation => JoinsCorners(grid, elevation));
+            .First(elevation => IsJoiningCorners(grid, elevation));
     }
 
-    private static bool JoinsCorners(int[][] grid, int elevation)
+    private static bool IsJoiningCorners(int[][] grid, int elevation)
     {
         if (grid[0][0] > elevation || grid[SmallestSize - 1][SmallestSize - 1] > elevation)
         {
@@ -88,39 +88,47 @@ public sealed partial class SwimInRisingWaterBenchmarksTests
         }
 
         var visited = new bool[SmallestSize, SmallestSize];
-        var frontier = new Queue<(int Row, int Col)>();
+        var probe = new FloodProbe(grid, visited, new Queue<(int Row, int Col)>(), elevation);
         visited[0, 0] = true;
-        frontier.Enqueue((0, 0));
+        probe.Frontier.Enqueue((0, 0));
 
-        while (frontier.Count > 0)
+        while (probe.Frontier.Count > 0)
         {
-            var (row, column) = frontier.Dequeue();
+            var (row, column) = probe.Frontier.Dequeue();
 
             if (row == SmallestSize - 1 && column == SmallestSize - 1)
             {
                 return true;
             }
 
-            VisitIfLowEnough(grid, visited, frontier, elevation, row - 1, column);
-            VisitIfLowEnough(grid, visited, frontier, elevation, row + 1, column);
-            VisitIfLowEnough(grid, visited, frontier, elevation, row, column - 1);
-            VisitIfLowEnough(grid, visited, frontier, elevation, row, column + 1);
+            VisitIfLowEnough(probe, row - 1, column);
+            VisitIfLowEnough(probe, row + 1, column);
+            VisitIfLowEnough(probe, row, column - 1);
+            VisitIfLowEnough(probe, row, column + 1);
         }
 
         return false;
     }
 
-    private static void VisitIfLowEnough(
-        int[][] grid, bool[,] visited, Queue<(int Row, int Col)> frontier, int elevation, int row, int column)
+    // The four values every step of one elevation's flood shares - the grid, the marks the flood
+    // leaves, the frontier it is draining and the height it is testing - so a call site names only
+    // the cell it is offering.
+    private static void VisitIfLowEnough(FloodProbe probe, int row, int column)
     {
         var isOffGrid = row < 0 || row >= SmallestSize || column < 0 || column >= SmallestSize;
+        var isUnswimmable = isOffGrid || probe.Visited[row, column] || probe.Grid[row][column] > probe.Elevation;
 
-        if (isOffGrid || visited[row, column] || grid[row][column] > elevation)
+        if (isUnswimmable)
         {
             return;
         }
 
-        visited[row, column] = true;
-        frontier.Enqueue((row, column));
+        probe.Visited[row, column] = true;
+        probe.Frontier.Enqueue((row, column));
     }
+
+    // One elevation's flood in progress: the grid, the marks it leaves, the frontier it is draining
+    // and the height being tested. Data only - the flood's steps stay as static methods on the class.
+    private readonly record struct FloodProbe(
+        int[][] Grid, bool[,] Visited, Queue<(int Row, int Col)> Frontier, int Elevation);
 }

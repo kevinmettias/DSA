@@ -69,19 +69,6 @@ internal static class MinimumNumberOfValidStringsToFormTargetISolution
         return best;
     }
 
-    // Composed: for each word, DSAExperimentation.Algorithms.StringMatching.ZFunction.Compute
-    // over word + a sentinel outside the lowercase alphabet + target gives, in one
-    // O(word.Length + target.Length) pass, the longest common prefix of word and
-    // target[i:] for every i at once - the sentinel can never itself match a
-    // lowercase target character, so the match can never run past word.Length and
-    // "read past" it into target's own content. Folding the max of that array over
-    // every word yields reach[] directly. LC 3292's own 5*10^4 bound is what
-    // requires that reach scan, which makes its class the one implementation of
-    // it; this arm calls through. Nothing narrows - both parts answer an int over
-    // the same signature.
-    public static int MinValidStringsByZFunctionAcrossWords(string[] words, string target) =>
-        MinimumNumberOfValidStringsToFormTargetIISolution.MinValidStringsByZFunctionAcrossWords(words, target);
-
     // Jump Game II over reach[]: currentEnd is the farthest position reachable
     // using the jump count committed so far; farthest is the farthest position
     // reachable using one more jump from anywhere already visited. Advancing
@@ -140,4 +127,17 @@ internal static class MinimumNumberOfValidStringsToFormTargetISolution
 
         return (nextJumps, nextEnd, nextEnd >= targetLength ? nextJumps : null);
     }
+
+    // Composed: for each word, DSAExperimentation.Algorithms.StringMatching.ZFunction.Compute
+    // over word + a sentinel outside the lowercase alphabet + target gives, in one
+    // O(word.Length + target.Length) pass, the longest common prefix of word and
+    // target[i:] for every i at once - the sentinel can never itself match a
+    // lowercase target character, so the match can never run past word.Length and
+    // "read past" it into target's own content. Folding the max of that array over
+    // every word yields reach[] directly. LC 3292's own 5*10^4 bound is what
+    // requires that reach scan, which makes its class the one implementation of
+    // it; this arm calls through. Nothing narrows - both parts answer an int over
+    // the same signature.
+    public static int MinValidStringsByZFunctionAcrossWords(string[] words, string target) =>
+        MinimumNumberOfValidStringsToFormTargetIISolution.MinValidStringsByZFunctionAcrossWords(words, target);
 }

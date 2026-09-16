@@ -63,7 +63,10 @@ public sealed partial class DeleteNodeInALinkedListBenchmarksTests
 
         for (var i = 0; i < SmallestLength / MiddlePositionDivisor; i++)
         {
-            target = target.Next!;
+            var next = target.Next;
+            Assert.NotNull(next);
+
+            target = next;
         }
 
         DeleteNodeInALinkedListSolution.DeleteByNextValueCopy(target);

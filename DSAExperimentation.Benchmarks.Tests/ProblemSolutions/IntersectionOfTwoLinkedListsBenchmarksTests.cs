@@ -62,7 +62,10 @@ public sealed partial class IntersectionOfTwoLinkedListsBenchmarksTests
 
         for (var step = 0; step < index; step++)
         {
-            node = node.Next!;
+            var next = node.Next;
+            Assert.NotNull(next);
+
+            node = next;
         }
 
         return node;
