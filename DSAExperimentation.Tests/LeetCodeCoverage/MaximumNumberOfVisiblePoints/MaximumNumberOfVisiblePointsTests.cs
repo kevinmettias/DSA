@@ -35,16 +35,20 @@ public sealed class MaximumNumberOfVisiblePointsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void VisiblePointsByPairwiseBruteForce_LeetCodeExamples_ReturnsMaximumVisibleCount(
-        int[][] points, int angle, int[] location, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfVisiblePointsSolution.VisiblePointsByPairwiseBruteForce(points, angle, location));
+        int[][] points, int angle, int[] location, int expected)
+    {
+        var actual = MaximumNumberOfVisiblePointsSolution.VisiblePointsByPairwiseBruteForce(points, angle, location);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void VisiblePointsBySortAndSlideWindow_LeetCodeExamples_ReturnsMaximumVisibleCount(
-        int[][] points, int angle, int[] location, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfVisiblePointsSolution.VisiblePointsBySortAndSlideWindow(points, angle, location));
+        int[][] points, int angle, int[] location, int expected)
+    {
+        var actual = MaximumNumberOfVisiblePointsSolution.VisiblePointsBySortAndSlideWindow(points, angle, location);
+
+        Assert.Equal(expected, actual);
+    }
 }

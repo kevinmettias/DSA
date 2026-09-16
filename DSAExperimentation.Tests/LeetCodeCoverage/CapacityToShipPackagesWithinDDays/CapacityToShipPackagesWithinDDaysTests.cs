@@ -39,14 +39,22 @@ public sealed class CapacityToShipPackagesWithinDDaysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShipWithinDaysByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(
-        int[] weights, int days, int expected) =>
-        Assert.Equal(expected, CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysByManualBisection(weights, days));
+        int[] weights, int days, int expected)
+    {
+        var capacity =
+            CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysByManualBisection(weights, days);
+
+        Assert.Equal(expected, capacity);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShipWithinDaysBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleCapacity(
-        int[] weights, int days, int expected) =>
-        Assert.Equal(
-            expected,
-            CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysBySequenceLowerBound(weights, days));
+        int[] weights, int days, int expected)
+    {
+        var capacity =
+            CapacityToShipPackagesWithinDDaysSolution.ShipWithinDaysBySequenceLowerBound(weights, days);
+
+        Assert.Equal(expected, capacity);
+    }
 }

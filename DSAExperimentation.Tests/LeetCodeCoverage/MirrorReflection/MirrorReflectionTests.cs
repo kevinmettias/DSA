@@ -24,12 +24,20 @@ public sealed class MirrorReflectionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReceptorBySimulatedUnfolding_LeetCodeExamples_ReturnsReceptorTheRayHits(
-        int p, int q, int expected) =>
-        Assert.Equal(expected, MirrorReflectionSolution.ReceptorBySimulatedUnfolding(p, q));
+        int p, int q, int expected)
+    {
+        var actual = MirrorReflectionSolution.ReceptorBySimulatedUnfolding(p, q);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReceptorByGcdReduction_LeetCodeExamples_ReturnsReceptorTheRayHits(
-        int p, int q, int expected) =>
-        Assert.Equal(expected, MirrorReflectionSolution.ReceptorByGcdReduction(p, q));
+        int p, int q, int expected)
+    {
+        var actual = MirrorReflectionSolution.ReceptorByGcdReduction(p, q);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -25,18 +25,21 @@ public sealed class CalculateAmountPaidInTaxesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CalculateTaxByBracketArrayWalk_LeetCodeExamples_ReturnsExpectedAmount(
-        int[][] brackets, int income, double expected) =>
-        Assert.Equal(
-            expected,
-            CalculateAmountPaidInTaxesSolution.CalculateTaxByBracketArrayWalk(brackets, income),
-            Precision);
+        int[][] brackets, int income, double expected)
+    {
+        var taxDue = CalculateAmountPaidInTaxesSolution.CalculateTaxByBracketArrayWalk(brackets, income);
+
+        Assert.Equal(expected, taxDue, Precision);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CalculateTaxByRandomAccessSequence_LeetCodeExamples_ReturnsExpectedAmount(
-        int[][] brackets, int income, double expected) =>
-        Assert.Equal(
-            expected,
-            CalculateAmountPaidInTaxesSolution.CalculateTaxByRandomAccessSequence(brackets, income),
-            Precision);
+        int[][] brackets, int income, double expected)
+    {
+        var taxDue =
+            CalculateAmountPaidInTaxesSolution.CalculateTaxByRandomAccessSequence(brackets, income);
+
+        Assert.Equal(expected, taxDue, Precision);
+    }
 }

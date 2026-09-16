@@ -46,14 +46,22 @@ public sealed class KthAncestorOfATreeNodeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetKthAncestorByParentWalk_LeetCodeExamples_ReturnsAncestorOrMinusOne(
-        int[] parent, int node, int k, int expected) =>
-        Assert.Equal(expected, KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(parent, node, k));
+        int[] parent, int node, int k, int expected)
+    {
+        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(parent, node, k);
+
+        Assert.Equal(expected, ancestor);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetKthAncestorByAncestorChains_LeetCodeExamples_ReturnsAncestorOrMinusOne(
-        int[] parent, int node, int k, int expected) =>
-        Assert.Equal(expected, KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(parent, node, k));
+        int[] parent, int node, int k, int expected)
+    {
+        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(parent, node, k);
+
+        Assert.Equal(expected, ancestor);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -61,8 +69,9 @@ public sealed class KthAncestorOfATreeNodeTests
         int[] parent, int node, int k, int expected)
     {
         var chains = KthAncestorOfATreeNodeSolution.BuildAncestorChains(parent);
+        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, k);
 
         Assert.Equal(parent.Length, chains.Count);
-        Assert.Equal(expected, KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, k));
+        Assert.Equal(expected, ancestor);
     }
 }

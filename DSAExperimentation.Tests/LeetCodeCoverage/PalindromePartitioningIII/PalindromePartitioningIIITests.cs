@@ -23,12 +23,20 @@ public sealed class PalindromePartitioningIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinChangesByNaiveRecursion_LeetCodeExamples_ReturnsMinimumCharacterChanges(
-        string s, int k, int expected) =>
-        Assert.Equal(expected, PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(s, k));
+        string s, int k, int expected)
+    {
+        var actual = PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(s, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinChangesByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumCharacterChanges(
-        string s, int k, int expected) =>
-        Assert.Equal(expected, PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(s, k));
+        string s, int k, int expected)
+    {
+        var actual = PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(s, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

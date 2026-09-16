@@ -30,9 +30,7 @@ public sealed class CompleteBinaryTreeInserterTests
         AssertScript(
             CompleteBinaryTreeInserterSolution.CreateByBfsRescan(root),
             root,
-            inserts,
-            expectedParents,
-            expectedLevelOrder);
+            new InsertScript(inserts, expectedParents, expectedLevelOrder));
     }
 
     [Theory]
@@ -45,25 +43,21 @@ public sealed class CompleteBinaryTreeInserterTests
         AssertScript(
             CompleteBinaryTreeInserterSolution.CreateByIncompleteQueue(root),
             root,
-            inserts,
-            expectedParents,
-            expectedLevelOrder);
+            new InsertScript(inserts, expectedParents, expectedLevelOrder));
     }
 
     private static void AssertScript(
         ICompleteBinaryTreeInserter inserter,
         BinaryTreeNode<int> root,
-        int[] inserts,
-        int[] expectedParents,
-        int[] expectedLevelOrder)
+        InsertScript script)
     {
-        for (var i = 0; i < inserts.Length; i++)
+        for (var i = 0; i < script.Inserts.Length; i++)
         {
-            Assert.Equal(expectedParents[i], inserter.Insert(inserts[i]));
+            Assert.Equal(script.ExpectedParents[i], inserter.Insert(script.Inserts[i]));
         }
 
         Assert.Same(root, inserter.Root);
-        Assert.Equal(expectedLevelOrder, LevelOrder(inserter.Root));
+        Assert.Equal(script.ExpectedLevelOrder, LevelOrder(inserter.Root));
     }
 
     // The seed tree is complete, so its level-order values are exactly the array:
@@ -76,11 +70,23 @@ public sealed class CompleteBinaryTreeInserterTests
         {
             var left = (2 * i) + 1;
             var right = left + 1;
-            nodes[i].Left = left < nodes.Length ? nodes[left] : null;
-            nodes[i].Right = right < nodes.Length ? nodes[right] : null;
+            nodes[i].Left = ChildAt(nodes, left);
+            nodes[i].Right = ChildAt(nodes, right);
         }
 
         return nodes[0];
+    }
+
+    // The child at a level-order index, or null when that index is past the end - which
+    // is what makes BuildComplete's 2i+1 / 2i+2 arithmetic terminate at the last node.
+    private static BinaryTreeNode<int>? ChildAt(BinaryTreeNode<int>[] nodes, int index)
+    {
+        if (index >= nodes.Length)
+        {
+            return null;
+        }
+
+        return nodes[index];
     }
 
     // Assertion scaffolding: reads the resulting tree back out in level order so the
@@ -109,4 +115,9 @@ public sealed class CompleteBinaryTreeInserterTests
 
         return values.ToArray();
     }
+
+    // One insert sequence and everything it must produce: the parent each Insert returns,
+    // and the level-order values the tree must show once the sequence has run. The three
+    // travel together at every AssertScript call site, so they are one thing.
+    private readonly record struct InsertScript(int[] Inserts, int[] ExpectedParents, int[] ExpectedLevelOrder);
 }

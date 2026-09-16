@@ -5,28 +5,44 @@ namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
 public sealed class ManhattanHeuristicTests
 {
+    public static TheoryData<EstimateCase> Examples =>
+        new()
+        {
+            { new EstimateCase(Row: 0, Col: 0, TargetRow: 0, TargetCol: 0, Expected: 0) },
+            { new EstimateCase(Row: 0, Col: 0, TargetRow: 0, TargetCol: 3, Expected: 3) },
+            { new EstimateCase(Row: 0, Col: 0, TargetRow: 2, TargetCol: 3, Expected: 5) },
+            { new EstimateCase(Row: 2, Col: 3, TargetRow: 0, TargetCol: 0, Expected: 5) },
+            { new EstimateCase(Row: -1, Col: -1, TargetRow: 1, TargetCol: 1, Expected: 4) },
+        };
+
     [Theory]
-    [InlineData(0, 0, 0, 0, 0)]
-    [InlineData(0, 0, 0, 3, 3)]
-    [InlineData(0, 0, 2, 3, 5)]
-    [InlineData(2, 3, 0, 0, 5)]
-    [InlineData(-1, -1, 1, 1, 4)]
-    public void Estimate_ReturnsTheSumOfTheAxisDistances(
-        int row, int col, int targetRow, int targetCol, int expected) =>
-        Assert.Equal(
-            expected,
-            ManhattanHeuristic.Estimate(new WeightedGridNode(row, col), new WeightedGridNode(targetRow, targetCol)));
+    [MemberData(nameof(Examples))]
+    public void Estimate_ReturnsTheSumOfTheAxisDistances(EstimateCase example)
+    {
+        var distance = ManhattanHeuristic.Estimate(
+            new WeightedGridNode(example.Row, example.Col),
+            new WeightedGridNode(example.TargetRow, example.TargetCol));
+
+        Assert.Equal(example.Expected, distance);
+    }
 
     [Fact]
-    public void Estimate_NullTarget_ReturnsZeroSoAStarDegradesToDijkstra() => Assert.Equal(0, ManhattanHeuristic.Estimate(new WeightedGridNode(5, 5), null));
+    public void Estimate_NullTarget_ReturnsZeroSoAStarDegradesToDijkstra()
+    {
+        var distance = ManhattanHeuristic.Estimate(new WeightedGridNode(5, 5), null);
+
+        Assert.Equal(0, distance);
+    }
 
     [Fact]
     public void Estimate_IsSymmetricInItsTwoNodes()
     {
         var first = new WeightedGridNode(1, 4);
         var second = new WeightedGridNode(6, 2);
+        var forward = ManhattanHeuristic.Estimate(first, second);
+        var backward = ManhattanHeuristic.Estimate(second, first);
 
-        Assert.Equal(ManhattanHeuristic.Estimate(first, second), ManhattanHeuristic.Estimate(second, first));
+        Assert.Equal(forward, backward);
     }
 
     [Fact]
@@ -52,7 +68,13 @@ public sealed class ManhattanHeuristicTests
     public void Estimate_TargetItself_IsZero()
     {
         var target = new WeightedGridNode(2, 7);
+        var distance = ManhattanHeuristic.Estimate(target, target);
 
-        Assert.Equal(0, ManhattanHeuristic.Estimate(target, target));
+        Assert.Equal(0, distance);
     }
+
+    // One grid pair: the two endpoints the estimate is taken between, and the sum of the
+    // two axis distances. Nested because it is only ever used inside this test class - it
+    // is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct EstimateCase(int Row, int Col, int TargetRow, int TargetCol, int Expected);
 }

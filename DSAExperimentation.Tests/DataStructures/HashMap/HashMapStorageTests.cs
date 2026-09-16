@@ -6,6 +6,20 @@ public sealed class HashMapStorageTests
 {
     private static HashMapStorage<string, int> Storage() => new();
 
+    // A storage holding one entry per row, inserted in the order given. Each row is a
+    // (hashCode, key, value) triple with the same positions HashMapStorage.Insert takes.
+    private static HashMapStorage<string, int> StorageHolding(params (int HashCode, string Key, int Value)[] rows)
+    {
+        var storage = Storage();
+
+        foreach (var (hashCode, key, value) in rows)
+        {
+            storage.Insert(hashCode, key, value);
+        }
+
+        return storage;
+    }
+
     [Fact]
     public void Count_NewStorage_IsZero() => Assert.Equal(0, Storage().Count);
 
@@ -48,9 +62,8 @@ public sealed class HashMapStorageTests
     [Fact]
     public void Entry_ReturnsTheStoredHashCodeKeyAndValue()
     {
-        var storage = Storage();
+        var storage = StorageHolding((7, "a", 10));
 
-        storage.Insert(7, "a", 10);
         var entry = storage.Entry(storage.BucketHead(storage.BucketIndexFor(7)));
 
         Assert.Equal(7, entry.HashCode);
@@ -93,12 +106,8 @@ public sealed class HashMapStorageTests
     [Fact]
     public void Insert_ChainsCollidingEntriesInTheSameBucket()
     {
-        var storage = Storage();
-
-        // Two entries whose hash codes land in the same bucket by construction.
-        var bucketCount = 4;
-        storage.Insert(0, "a", 1);
-        storage.Insert(bucketCount, "b", 2);
+        // The buckets start at four, so 0 and 4 collide in the same bucket by construction.
+        var storage = StorageHolding((0, "a", 1), (4, "b", 2));
 
         Assert.Equal(2, storage.Count);
         Assert.Contains("a", storage.SnapshotEntries().Select(e => e.Key));

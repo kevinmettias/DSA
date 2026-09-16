@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.BeautifulArrangement.BeautifulArrangementSolution;
+using DSAExperimentation.LeetCode.BeautifulArrangement;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BeautifulArrangement;
 
@@ -19,10 +19,10 @@ public sealed class BeautifulArrangementTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountArrangements_LeetCodeExamples_ReturnsKnownCountByGenerateThenFilter(int n, int expected)
-        => Assert.Equal(expected, CountByGenerateThenFilter(n));
+        => Assert.Equal(expected, BeautifulArrangementSolution.CountByGenerateThenFilter(n));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountArrangements_LeetCodeExamples_ReturnsKnownCountByPrunedBacktracking(int n, int expected)
-        => Assert.Equal(expected, CountByPrunedBacktracking(n));
+        => Assert.Equal(expected, BeautifulArrangementSolution.CountByPrunedBacktracking(n));
 }

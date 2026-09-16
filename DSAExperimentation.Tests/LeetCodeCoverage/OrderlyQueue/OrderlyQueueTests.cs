@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.OrderlyQueue.OrderlyQueueSolution;
+using DSAExperimentation.LeetCode.OrderlyQueue;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OrderlyQueue;
 
@@ -30,12 +30,20 @@ public sealed class OrderlyQueueTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestStringByBruteForceRotations_LeetCodeExamples_ReturnsSmallestReachableString(
-        string s, int k, string expected) =>
-        Assert.Equal(expected, SmallestStringByBruteForceRotations(s, k));
+        string s, int k, string expected)
+    {
+        var actual = OrderlyQueueSolution.SmallestStringByBruteForceRotations(s, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestStringBySuffixArray_LeetCodeExamples_ReturnsSmallestReachableString(
-        string s, int k, string expected) =>
-        Assert.Equal(expected, SmallestStringBySuffixArray(s, k));
+        string s, int k, string expected)
+    {
+        var actual = OrderlyQueueSolution.SmallestStringBySuffixArray(s, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

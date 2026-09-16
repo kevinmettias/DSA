@@ -14,6 +14,16 @@ namespace DSAExperimentation.LeetCode.MinStack;
 // typed code inside the registration.
 internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
 {
+    // The four operation names the script and the replay must agree on. They are
+    // named once here because the switch in `Apply` below is the only place that
+    // decides what a name means, and a `Case` that spelled one differently from
+    // the switch would be rejected at run time as an unknown operation rather
+    // than at compile time as a typo.
+    private const string Push = "push";
+    private const string Pop = "pop";
+    private const string Top = "top";
+    private const string GetMin = "getMin";
+
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<IReadOnlyList<LeetCodeOperation>, List<int?>>("min-stack")
             .Strategy("StackPrimitive", Replay)
@@ -21,23 +31,23 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
             .Case(
                 "example-1",
                 [
-                    LeetCodeOperation.Of("push", -2),
-                    LeetCodeOperation.Of("push", 0),
-                    LeetCodeOperation.Of("push", -3),
-                    LeetCodeOperation.Of("getMin"),
-                    LeetCodeOperation.Of("pop"),
-                    LeetCodeOperation.Of("top"),
-                    LeetCodeOperation.Of("getMin"),
+                    LeetCodeOperation.Of(Push, -2),
+                    LeetCodeOperation.Of(Push, 0),
+                    LeetCodeOperation.Of(Push, -3),
+                    LeetCodeOperation.Of(GetMin),
+                    LeetCodeOperation.Of(Pop),
+                    LeetCodeOperation.Of(Top),
+                    LeetCodeOperation.Of(GetMin),
                 ],
                 [null, null, null, -3, null, 0, -2])
             .Case(
                 "minimum-restored-after-popping-it",
                 [
-                    LeetCodeOperation.Of("push", 5),
-                    LeetCodeOperation.Of("push", 1),
-                    LeetCodeOperation.Of("getMin"),
-                    LeetCodeOperation.Of("pop"),
-                    LeetCodeOperation.Of("getMin"),
+                    LeetCodeOperation.Of(Push, 5),
+                    LeetCodeOperation.Of(Push, 1),
+                    LeetCodeOperation.Of(GetMin),
+                    LeetCodeOperation.Of(Pop),
+                    LeetCodeOperation.Of(GetMin),
                 ],
                 [null, null, 1, null, 5])
 
@@ -49,15 +59,15 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
             .Case(
                 "duplicate-minimum-survives-one-pop",
                 [
-                    LeetCodeOperation.Of("push", 5),
-                    LeetCodeOperation.Of("push", 5),
-                    LeetCodeOperation.Of("getMin"),
-                    LeetCodeOperation.Of("pop"),
-                    LeetCodeOperation.Of("getMin"),
-                    LeetCodeOperation.Of("push", 3),
-                    LeetCodeOperation.Of("getMin"),
-                    LeetCodeOperation.Of("pop"),
-                    LeetCodeOperation.Of("getMin"),
+                    LeetCodeOperation.Of(Push, 5),
+                    LeetCodeOperation.Of(Push, 5),
+                    LeetCodeOperation.Of(GetMin),
+                    LeetCodeOperation.Of(Pop),
+                    LeetCodeOperation.Of(GetMin),
+                    LeetCodeOperation.Of(Push, 3),
+                    LeetCodeOperation.Of(GetMin),
+                    LeetCodeOperation.Of(Pop),
+                    LeetCodeOperation.Of(GetMin),
                 ],
                 [null, null, 5, null, 5, null, 3, null, 5])
             .Build();
@@ -80,15 +90,15 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
     {
         switch (operation.Name)
         {
-            case "push":
+            case Push:
                 stack.Push(operation.Arguments[0]);
                 return null;
-            case "pop":
+            case Pop:
                 stack.Pop();
                 return null;
-            case "top":
+            case Top:
                 return stack.Top();
-            case "getMin":
+            case GetMin:
                 return stack.GetMin();
             default:
                 throw new ArgumentOutOfRangeException(

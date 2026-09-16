@@ -2,60 +2,46 @@ using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.Suffi
 
 namespace DSAExperimentation.Tests.DataStructures.SuffixArray;
 
+// Harness only. The two published expectations a suffix array exposes - the order of
+// the suffixes and the longest common prefix of each neighbouring pair in that order -
+// are precomputed together in one constructor, so a case carries both and every test
+// reaches the structure through Build rather than constructing its own. The brute-force
+// oracles below recompute each expectation the slow way for the texts no published
+// reference covers.
 public sealed partial class SuffixArrayTests
 {
-    private const string RepeatedAa = "aa";
-    private const string Banana = "banana";
-    private const string Aaaa = "aaaa";
-    private const string Mississippi = "mississippi";
-    private const string Abcabd = "abcabd";
-    private const string Aabaabaaab = "aabaabaaab";
-    private const string Dcba = "dcba";
-    private const string EmptyText = "";
-    private const string SingleCharacterText = "a";
-    private const string MixedCaseText = "BaAb";
+    public static TheoryData<TextExample> Examples =>
+        new()
+        {
+            { new TextExample(Fixtures.RepeatedAa, [1, 0], [1]) },
+            { new TextExample(Fixtures.Banana, Fixtures.BananaSuffixOrder, Fixtures.BananaLcpValues) },
+            { new TextExample(Fixtures.Dcba, Fixtures.DcbaSuffixOrder, [0, 0, 0]) },
+            { new TextExample(Fixtures.EmptyText, [], []) },
+            { new TextExample(Fixtures.SingleCharacterText, [0], []) },
+        };
 
-    private static readonly int[] BananaSuffixOrder = [5, 3, 1, 0, 4, 2];
-    private static readonly int[] BananaLcpValues = [1, 3, 0, 0, 2];
-    private static readonly int[] DcbaSuffixOrder = [3, 2, 1, 0];
-    private static readonly string[] VariedTexts = [Banana, RepeatedAa, Aaaa, Mississippi, Abcabd, Aabaabaaab];
-
-    [Fact]
-    public void Suffixes_RepeatedCharacterText_OrdersShorterSuffixFirst()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Suffixes_OrderEverySuffixAscending(TextExample example)
     {
-        var suffixArray = new SuffixArrayStructure(RepeatedAa);
+        var suffixArray = Build(example.Text);
 
-        Assert.Equal([1, 0], suffixArray.Suffixes);
+        Assert.Equal(example.SuffixOrder, suffixArray.Suffixes);
     }
 
-    [Fact]
-    public void LcpArray_RepeatedCharacterText_ReportsSharedPrefixLength()
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void LcpArray_ReportsTheLongestCommonPrefixOfEachNeighbouringPair(TextExample example)
     {
-        var suffixArray = new SuffixArrayStructure(RepeatedAa);
+        var suffixArray = Build(example.Text);
 
-        Assert.Equal([1], suffixArray.LongestCommonPrefixArray);
-    }
-
-    [Fact]
-    public void Suffixes_Banana_MatchesPublishedReferenceOrder()
-    {
-        var suffixArray = new SuffixArrayStructure(Banana);
-
-        Assert.Equal(BananaSuffixOrder, suffixArray.Suffixes);
-    }
-
-    [Fact]
-    public void LcpArray_Banana_MatchesPublishedReferenceValues()
-    {
-        var suffixArray = new SuffixArrayStructure(Banana);
-
-        Assert.Equal(BananaLcpValues, suffixArray.LongestCommonPrefixArray);
+        Assert.Equal(example.LcpValues, suffixArray.LongestCommonPrefixArray);
     }
 
     [Fact]
     public void Rank_IsInverseOfSuffixes()
     {
-        var suffixArray = new SuffixArrayStructure(Banana);
+        var suffixArray = Build(Fixtures.Banana);
 
         for (var i = 0; i < suffixArray.Suffixes.Length; i++)
         {
@@ -64,43 +50,11 @@ public sealed partial class SuffixArrayTests
     }
 
     [Fact]
-    public void Suffixes_EmptyText_ReturnsEmptyArray()
-    {
-        var suffixArray = new SuffixArrayStructure(EmptyText);
-
-        Assert.Empty(suffixArray.Suffixes);
-    }
-
-    [Fact]
-    public void LcpArray_EmptyText_ReturnsEmptyArray()
-    {
-        var suffixArray = new SuffixArrayStructure(EmptyText);
-
-        Assert.Empty(suffixArray.LongestCommonPrefixArray);
-    }
-
-    [Fact]
-    public void LcpArray_SingleCharacterText_ReturnsEmptyArray()
-    {
-        var suffixArray = new SuffixArrayStructure(SingleCharacterText);
-
-        Assert.Empty(suffixArray.LongestCommonPrefixArray);
-    }
-
-    [Fact]
-    public void Suffixes_AllDistinctCharacters_ReturnsOrdinaryLexicographicOrder()
-    {
-        var suffixArray = new SuffixArrayStructure(Dcba);
-
-        Assert.Equal(DcbaSuffixOrder, suffixArray.Suffixes);
-    }
-
-    [Fact]
     public void Suffixes_MatchesBruteForceSortForVariedInputs()
     {
-        foreach (var text in VariedTexts)
+        foreach (var text in Fixtures.VariedTexts)
         {
-            var suffixArray = new SuffixArrayStructure(text);
+            var suffixArray = Build(text);
             var expected = BruteForceSuffixOrder(text);
 
             Assert.Equal(expected, suffixArray.Suffixes);
@@ -110,9 +64,9 @@ public sealed partial class SuffixArrayTests
     [Fact]
     public void LcpArray_MatchesBruteForceLongestCommonPrefixForVariedInputs()
     {
-        foreach (var text in VariedTexts)
+        foreach (var text in Fixtures.VariedTexts)
         {
-            var suffixArray = new SuffixArrayStructure(text);
+            var suffixArray = Build(text);
 
             for (var i = 0; i < suffixArray.LongestCommonPrefixArray.Length; i++)
             {
@@ -130,11 +84,17 @@ public sealed partial class SuffixArrayTests
         var caseInsensitive = Comparer<char>.Create(
             (left, right) => char.ToUpperInvariant(left).CompareTo(char.ToUpperInvariant(right)));
 
-        var suffixArray = new SuffixArrayStructure(MixedCaseText, caseInsensitive);
-        var expected = BruteForceSuffixOrder(MixedCaseText, caseInsensitive);
+        var suffixArray = Build(Fixtures.MixedCaseText, caseInsensitive);
+        var expected = BruteForceSuffixOrder(Fixtures.MixedCaseText, caseInsensitive);
 
         Assert.Equal(expected, suffixArray.Suffixes);
     }
+
+    // The one place a text becomes a suffix array, so a case chooses a text and a
+    // comparer and gets the same O(1)-indexed structure every test asserts against.
+    private static SuffixArrayStructure Build(string text) => Build(text, Comparer<char>.Default);
+
+    private static SuffixArrayStructure Build(string text, IComparer<char> comparer) => new(text, comparer);
 
     private static int[] BruteForceSuffixOrder(string text) => BruteForceSuffixOrder(text, Comparer<char>.Default);
 
@@ -172,11 +132,44 @@ public sealed partial class SuffixArrayTests
     {
         var length = 0;
 
-        while (length < first.Length && length < second.Length && first[length] == second[length])
+        while (PrefixesAgreeOneCharacterFurther(first, second, length))
         {
             length++;
         }
 
         return length;
     }
+
+    // Whether the two spans still agree at `length` - the longest common prefix is the
+    // largest length for which this holds.
+    private static bool PrefixesAgreeOneCharacterFurther(ReadOnlySpan<char> first, ReadOnlySpan<char> second, int length)
+        => length < first.Length
+            && length < second.Length
+            && first[length] == second[length];
+
+    /// <summary>
+    /// The texts these tests build suffix arrays from, and the orders and LCP values they
+    /// expect back, named once so a second test does not have to reach into a neighbour's
+    /// body for them.
+    /// </summary>
+    private static class Fixtures
+    {
+        public const string RepeatedAa = "aa";
+        public const string Banana = "banana";
+        public const string Aaaa = "aaaa";
+        public const string Mississippi = "mississippi";
+        public const string Abcabd = "abcabd";
+        public const string Aabaabaaab = "aabaabaaab";
+        public const string Dcba = "dcba";
+        public const string EmptyText = "";
+        public const string SingleCharacterText = "a";
+        public const string MixedCaseText = "BaAb";
+
+        public static readonly int[] BananaSuffixOrder = [5, 3, 1, 0, 4, 2];
+        public static readonly int[] BananaLcpValues = [1, 3, 0, 0, 2];
+        public static readonly int[] DcbaSuffixOrder = [3, 2, 1, 0];
+        public static readonly string[] VariedTexts = [Banana, RepeatedAa, Aaaa, Mississippi, Abcabd, Aabaabaaab];
+    }
+
+    public readonly record struct TextExample(string Text, int[] SuffixOrder, int[] LcpValues);
 }

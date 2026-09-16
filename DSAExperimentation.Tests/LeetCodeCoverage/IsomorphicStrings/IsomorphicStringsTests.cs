@@ -8,24 +8,39 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IsomorphicStrings;
 // strategy (and direction) that broke.
 public sealed class IsomorphicStringsTests
 {
-    public static TheoryData<string, string, bool> Examples =>
+    public static TheoryData<IsomorphismCase> Examples =>
         new()
         {
-            { "egg", "add", true },
-            { "foo", "bar", false },
-            { "paper", "title", true },
-            { "badc", "baba", false },
-            { "ab", "aa", false },
-            { "", "", true },
+            { new IsomorphismCase(S: "egg", T: "add", Expected: true) },
+            { new IsomorphismCase(S: "foo", T: "bar", Expected: false) },
+            { new IsomorphismCase(S: "paper", T: "title", Expected: true) },
+            { new IsomorphismCase(S: "badc", T: "baba", Expected: false) },
+            { new IsomorphismCase(S: "ab", T: "aa", Expected: false) },
+            { new IsomorphismCase(S: "", T: "", Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsIsomorphicByDictionary_LeetCodeExamples_ReturnsExpected(string s, string t, bool expected) =>
-        Assert.Equal(expected, IsomorphicStringsSolution.IsIsomorphicByDictionary(s, t));
+    public void IsIsomorphicByDictionary_LeetCodeExamples_ReturnsExpected(IsomorphismCase example)
+    {
+        var actual = IsomorphicStringsSolution.IsIsomorphicByDictionary(example.S, example.T);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsIsomorphicByHashMap_LeetCodeExamples_ReturnsExpected(string s, string t, bool expected) =>
-        Assert.Equal(expected, IsomorphicStringsSolution.IsIsomorphicByHashMap(s, t));
+    public void IsIsomorphicByHashMap_LeetCodeExamples_ReturnsExpected(IsomorphismCase example)
+    {
+        var actual = IsomorphicStringsSolution.IsIsomorphicByHashMap(example.S, example.T);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the two strings to test for a bijection, and whether one
+    // exists. The two strings are the same type and the relation is not symmetric, so
+    // the row names which is which rather than leaving two interchangeable positions.
+    // Nested because it is only ever used inside this test class - it is this harness's
+    // own vocabulary, not a type another file would import.
+    public readonly record struct IsomorphismCase(string S, string T, bool Expected);
 }

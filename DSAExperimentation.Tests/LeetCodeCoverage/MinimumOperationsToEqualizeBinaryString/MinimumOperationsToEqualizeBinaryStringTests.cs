@@ -18,12 +18,18 @@ public sealed class MinimumOperationsToEqualizeBinaryStringTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinOperationsByMutationQueue_LeetCodeExamples_ReturnsFewestFlipsToAllOnes(
-        string s, int k, int expected) =>
-        Assert.Equal(expected, MinimumOperationsToEqualizeBinaryStringSolution.MinOperationsByMutationQueue(s, k));
+        string s, int k, int expected)
+    {
+        var actual = MinimumOperationsToEqualizeBinaryStringSolution.MinOperationsByMutationQueue(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinOperationsByReduceGraph_LeetCodeExamples_ReturnsFewestFlipsToAllOnes(
-        string s, int k, int expected) =>
-        Assert.Equal(expected, MinimumOperationsToEqualizeBinaryStringSolution.MinOperationsByReduceGraph(s, k));
+        string s, int k, int expected)
+    {
+        var actual = MinimumOperationsToEqualizeBinaryStringSolution.MinOperationsByReduceGraph(s, k);
+        Assert.Equal(expected, actual);
+    }
 }

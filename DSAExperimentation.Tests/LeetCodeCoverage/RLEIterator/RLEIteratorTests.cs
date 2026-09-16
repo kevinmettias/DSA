@@ -1,5 +1,4 @@
 using DSAExperimentation.LeetCode.RLEIterator;
-using static DSAExperimentation.LeetCode.RLEIterator.RLEIteratorSolution;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.RLEIterator;
 
@@ -35,13 +34,13 @@ public sealed class RLEIteratorTests
     [MemberData(nameof(Examples))]
     public void CreateByDecompressedArray_LeetCodeExamples_ReturnsExpectedSequence(
         int[] encoding, int[] queries, int[] expected) =>
-        AssertReplay(CreateByDecompressedArray(encoding), queries, expected);
+        AssertReplay(RLEIteratorSolution.CreateByDecompressedArray(encoding), queries, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByRunLengthQueue_LeetCodeExamples_ReturnsExpectedSequence(
         int[] encoding, int[] queries, int[] expected) =>
-        AssertReplay(CreateByRunLengthQueue(encoding), queries, expected);
+        AssertReplay(RLEIteratorSolution.CreateByRunLengthQueue(encoding), queries, expected);
 
     private static void AssertReplay(IRleIterator iterator, int[] queries, int[] expected)
     {

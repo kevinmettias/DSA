@@ -21,18 +21,22 @@ public sealed class MaximumNumberOfRobotsWithinBudgetTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumRobotsByRescanEveryLeftEdge_LeetCodeExamples_ReturnsLongestAffordableRun(
-        int[] chargeTimes, int[] runningCosts, long budget, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfRobotsWithinBudgetSolution.MaximumRobotsByRescanEveryLeftEdge(
-                chargeTimes, runningCosts, budget));
+        int[] chargeTimes, int[] runningCosts, long budget, int expected)
+    {
+        var actual = MaximumNumberOfRobotsWithinBudgetSolution.MaximumRobotsByRescanEveryLeftEdge(
+            chargeTimes, runningCosts, budget);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumRobotsByMonotonicDeque_LeetCodeExamples_ReturnsLongestAffordableRun(
-        int[] chargeTimes, int[] runningCosts, long budget, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfRobotsWithinBudgetSolution.MaximumRobotsByMonotonicDeque(
-                chargeTimes, runningCosts, budget));
+        int[] chargeTimes, int[] runningCosts, long budget, int expected)
+    {
+        var actual = MaximumNumberOfRobotsWithinBudgetSolution.MaximumRobotsByMonotonicDeque(
+            chargeTimes, runningCosts, budget);
+
+        Assert.Equal(expected, actual);
+    }
 }

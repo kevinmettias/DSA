@@ -33,16 +33,21 @@ public sealed class MaximumNumberOfGroupsGettingFreshDonutsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxHappyGroupsByAllPermutations_LeetCodeExamples_ReturnsHappyGroupCount(
-        int batchSize, int[] groups, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfGroupsGettingFreshDonutsSolution.MaxHappyGroupsByAllPermutations(batchSize, groups));
+        int batchSize, int[] groups, int expected)
+    {
+        var actual = MaximumNumberOfGroupsGettingFreshDonutsSolution.MaxHappyGroupsByAllPermutations(batchSize, groups);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxHappyGroupsByMemoizedRecurrence_LeetCodeExamples_ReturnsHappyGroupCount(
-        int batchSize, int[] groups, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumNumberOfGroupsGettingFreshDonutsSolution.MaxHappyGroupsByMemoizedRecurrence(batchSize, groups));
+        int batchSize, int[] groups, int expected)
+    {
+        var actual = MaximumNumberOfGroupsGettingFreshDonutsSolution.MaxHappyGroupsByMemoizedRecurrence(
+            batchSize, groups);
+
+        Assert.Equal(expected, actual);
+    }
 }

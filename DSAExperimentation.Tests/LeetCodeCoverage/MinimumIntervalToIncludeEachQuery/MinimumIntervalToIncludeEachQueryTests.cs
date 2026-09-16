@@ -23,16 +23,20 @@ public sealed class MinimumIntervalToIncludeEachQueryTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinIntervalsByPerQueryScan_LeetCodeExamples_ReturnsSmallestCoveringSizePerQuery(
-        int[][] intervals, int[] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MinimumIntervalToIncludeEachQuerySolution.MinIntervalsByPerQueryScan(intervals, queries));
+        int[][] intervals, int[] queries, int[] expected)
+    {
+        var actual = MinimumIntervalToIncludeEachQuerySolution.MinIntervalsByPerQueryScan(intervals, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinIntervalsByHeapSweep_LeetCodeExamples_ReturnsSmallestCoveringSizePerQuery(
-        int[][] intervals, int[] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MinimumIntervalToIncludeEachQuerySolution.MinIntervalsByHeapSweep(intervals, queries));
+        int[][] intervals, int[] queries, int[] expected)
+    {
+        var actual = MinimumIntervalToIncludeEachQuerySolution.MinIntervalsByHeapSweep(intervals, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

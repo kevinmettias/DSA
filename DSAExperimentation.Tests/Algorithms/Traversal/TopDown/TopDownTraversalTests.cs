@@ -15,7 +15,7 @@ public sealed class TopDownTraversalTests
         TopDownTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingPathHooks, PathSoFar>(root, new PathSoFar([root.Name], recorded));
+            RecordingPathHooks, RecordingPathHooks.PathSoFar>(root, new RecordingPathHooks.PathSoFar([root.Name], recorded));
 
         return recorded;
     }
@@ -71,7 +71,7 @@ public sealed class TopDownTraversalTests
         TopDownTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingPathHooks, PathSoFar>(null, new PathSoFar([], recorded));
+            RecordingPathHooks, RecordingPathHooks.PathSoFar>(null, new RecordingPathHooks.PathSoFar([], recorded));
 
         Assert.Empty(recorded);
     }
@@ -85,7 +85,7 @@ public sealed class TopDownTraversalTests
         TopDownTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingPathHooks, PathSoFar>(root, new PathSoFar([root.Name], recorded));
+            RecordingPathHooks, RecordingPathHooks.PathSoFar>(root, new RecordingPathHooks.PathSoFar([root.Name], recorded));
 
         Assert.Equal(["A", "A/B", "A/B/C"], recorded.Select(r => r.Item1));
     }
@@ -99,7 +99,7 @@ public sealed class TopDownTraversalTests
         TopDownTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingPathHooks, PathSoFar>(root, new PathSoFar([root.Name], recorded));
+            RecordingPathHooks, RecordingPathHooks.PathSoFar>(root, new RecordingPathHooks.PathSoFar([root.Name], recorded));
 
         Assert.Equal(["A", "A/B", "A/B/D", "A/C"], recorded.Select(r => r.Item1));
     }
@@ -112,7 +112,7 @@ public sealed class TopDownTraversalTests
         TopDownTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingPathHooks, PathSoFar>(null, new PathSoFar([], recorded));
+            RecordingPathHooks, RecordingPathHooks.PathSoFar>(null, new RecordingPathHooks.PathSoFar([], recorded));
 
         Assert.Empty(recorded);
     }

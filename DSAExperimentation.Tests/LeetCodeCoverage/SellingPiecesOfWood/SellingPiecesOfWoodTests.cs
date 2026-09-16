@@ -37,16 +37,20 @@ public sealed class SellingPiecesOfWoodTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SellingWoodByUnmemoizedRecursion_LeetCodeExamples_ReturnsMostMoneyEarnable(
-        int boardHeight, int boardWidth, (int Height, int Width, int Price)[] prices, long expected) =>
-        Assert.Equal(
-            expected,
-            SellingPiecesOfWoodSolution.SellingWoodByUnmemoizedRecursion(boardHeight, boardWidth, prices));
+        int boardHeight, int boardWidth, (int Height, int Width, int Price)[] prices, long expected)
+    {
+        var actual = SellingPiecesOfWoodSolution.SellingWoodByUnmemoizedRecursion(boardHeight, boardWidth, prices);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SellingWoodByMemoizedRecursion_LeetCodeExamples_ReturnsMostMoneyEarnable(
-        int boardHeight, int boardWidth, (int Height, int Width, int Price)[] prices, long expected) =>
-        Assert.Equal(
-            expected,
-            SellingPiecesOfWoodSolution.SellingWoodByMemoizedRecursion(boardHeight, boardWidth, prices));
+        int boardHeight, int boardWidth, (int Height, int Width, int Price)[] prices, long expected)
+    {
+        var actual = SellingPiecesOfWoodSolution.SellingWoodByMemoizedRecursion(boardHeight, boardWidth, prices);
+
+        Assert.Equal(expected, actual);
+    }
 }

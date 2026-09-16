@@ -10,46 +10,55 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MatrixCellsInDistanceOrder;
 // tie-free single-row case.
 public sealed class MatrixCellsInDistanceOrderTests
 {
-    // rows, cols, rCenter, cCenter, and the Manhattan distances the returned cells
-    // must have, in order.
-    public static TheoryData<int, int, int, int, int[]> Examples =>
+    public static TheoryData<MatrixExample> Examples =>
         new()
         {
-            { 1, 1, 0, 0, new[] { 0 } },
-            { 1, 2, 0, 0, new[] { 0, 1 } },
-            { 2, 2, 0, 1, new[] { 0, 1, 1, 2 } },
-            { 2, 3, 1, 2, new[] { 0, 1, 1, 2, 2, 3 } },
-            { 3, 3, 1, 1, new[] { 0, 1, 1, 1, 1, 2, 2, 2, 2 } },
+            { new MatrixExample(Rows: 1, Cols: 1, RCenter: 0, CCenter: 0, ExpectedDistances: [0]) },
+            { new MatrixExample(Rows: 1, Cols: 2, RCenter: 0, CCenter: 0, ExpectedDistances: [0, 1]) },
+            { new MatrixExample(Rows: 2, Cols: 2, RCenter: 0, CCenter: 1, ExpectedDistances: [0, 1, 1, 2]) },
+            { new MatrixExample(Rows: 2, Cols: 3, RCenter: 1, CCenter: 2, ExpectedDistances: [0, 1, 1, 2, 2, 3]) },
+            { new MatrixExample(Rows: 3, Cols: 3, RCenter: 1, CCenter: 1, ExpectedDistances: [0, 1, 1, 1, 1, 2, 2, 2, 2]) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AllCellsDistOrderByManhattanFormula_LeetCodeExamples_ReturnsEveryCellInDistanceOrder(
-        int rows, int cols, int rCenter, int cCenter, int[] expectedDistances) =>
-        AssertDistanceOrder(
-            MatrixCellsInDistanceOrderSolution.AllCellsDistOrderByManhattanFormula(rows, cols, rCenter, cCenter),
-            rows, cols, rCenter, cCenter, expectedDistances);
+    public void AllCellsDistOrderByManhattanFormula_LeetCodeExamples_ReturnsEveryCellInDistanceOrder(MatrixExample example)
+    {
+        var result = MatrixCellsInDistanceOrderSolution.AllCellsDistOrderByManhattanFormula(
+            example.Rows, example.Cols, example.RCenter, example.CCenter);
+
+        AssertDistanceOrder(result, example);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AllCellsDistOrderByGridBfs_LeetCodeExamples_ReturnsEveryCellInDistanceOrder(
-        int rows, int cols, int rCenter, int cCenter, int[] expectedDistances) =>
-        AssertDistanceOrder(
-            MatrixCellsInDistanceOrderSolution.AllCellsDistOrderByGridBfs(rows, cols, rCenter, cCenter),
-            rows, cols, rCenter, cCenter, expectedDistances);
-
-    private static void AssertDistanceOrder(
-        int[][] result, int rows, int cols, int rCenter, int cCenter, int[] expectedDistances)
+    public void AllCellsDistOrderByGridBfs_LeetCodeExamples_ReturnsEveryCellInDistanceOrder(MatrixExample example)
     {
-        Assert.Equal(rows * cols, result.Length);
-        Assert.Equal(AllCells(rows, cols), result.OrderBy(cell => cell[0]).ThenBy(cell => cell[1]));
+        var result = MatrixCellsInDistanceOrderSolution.AllCellsDistOrderByGridBfs(
+            example.Rows, example.Cols, example.RCenter, example.CCenter);
+
+        AssertDistanceOrder(result, example);
+    }
+
+    private static void AssertDistanceOrder(int[][] result, MatrixExample example)
+    {
+        var allCells = AllCells(example.Rows, example.Cols);
+
+        Assert.Equal(example.Rows * example.Cols, result.Length);
+        Assert.Equal(allCells, result.OrderBy(cell => cell[0]).ThenBy(cell => cell[1]));
         Assert.Equal(
-            expectedDistances,
-            result.Select(cell => Math.Abs(cell[0] - rCenter) + Math.Abs(cell[1] - cCenter)));
+            example.ExpectedDistances,
+            result.Select(cell => Math.Abs(cell[0] - example.RCenter) + Math.Abs(cell[1] - example.CCenter)));
     }
 
     private static int[][] AllCells(int rows, int cols) =>
         Enumerable.Range(0, rows)
             .SelectMany(row => Enumerable.Range(0, cols).Select(col => new[] { row, col }))
             .ToArray();
+
+    // One LeetCode example: the grid, the center to measure from, and the Manhattan
+    // distances the returned cells must have, in order. The four travel together at
+    // every call site - the assertion helper needs all of them to derive the expected
+    // distances - so they are one thing with a name.
+    public readonly record struct MatrixExample(int Rows, int Cols, int RCenter, int CCenter, int[] ExpectedDistances);
 }

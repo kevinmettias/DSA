@@ -18,12 +18,20 @@ public sealed class TaskSchedulerTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LeastIntervalByCooldownHeap_LeetCodeExamples_ReturnsFewestCpuTicks(
-        char[] tasks, int n, int expected) =>
-        Assert.Equal(expected, TaskSchedulerSolution.LeastIntervalByCooldownHeap(tasks, n));
+        char[] tasks, int n, int expected)
+    {
+        var actual = TaskSchedulerSolution.LeastIntervalByCooldownHeap(tasks, n);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LeastIntervalByArrayScan_LeetCodeExamples_ReturnsFewestCpuTicks(
-        char[] tasks, int n, int expected) =>
-        Assert.Equal(expected, TaskSchedulerSolution.LeastIntervalByArrayScan(tasks, n));
+        char[] tasks, int n, int expected)
+    {
+        var actual = TaskSchedulerSolution.LeastIntervalByArrayScan(tasks, n);
+
+        Assert.Equal(expected, actual);
+    }
 }

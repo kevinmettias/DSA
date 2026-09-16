@@ -20,6 +20,10 @@ public sealed class TwoSumIIInputArrayIsSortedTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void TryFindIndicesByBinarySearch_LeetCodeExamples_ReturnsOneBasedIndices(
-        int[] nums, int target, int[] expected) =>
-        Assert.Equal(expected, TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByBinarySearch(nums, target));
+        int[] nums, int target, int[] expected)
+    {
+        var indices = TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByBinarySearch(nums, target);
+
+        Assert.Equal(expected, indices);
+    }
 }

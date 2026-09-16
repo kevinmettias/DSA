@@ -45,16 +45,18 @@ public sealed class CountGoodTripletsInAnArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodTripletsByPairwiseScan_LeetCodeExamples_ReturnsGoodTripletCount(
-        int[] nums1, int[] nums2, long expected) =>
-        Assert.Equal(
-            expected,
-            CountGoodTripletsInAnArraySolution.CountGoodTripletsByPairwiseScan(nums1, nums2));
+        int[] nums1, int[] nums2, long expected)
+    {
+        var actual = CountGoodTripletsInAnArraySolution.CountGoodTripletsByPairwiseScan(nums1, nums2);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodTripletsByFenwickTreeSweep_LeetCodeExamples_ReturnsGoodTripletCount(
-        int[] nums1, int[] nums2, long expected) =>
-        Assert.Equal(
-            expected,
-            CountGoodTripletsInAnArraySolution.CountGoodTripletsByFenwickTreeSweep(nums1, nums2));
+        int[] nums1, int[] nums2, long expected)
+    {
+        var actual = CountGoodTripletsInAnArraySolution.CountGoodTripletsByFenwickTreeSweep(nums1, nums2);
+        Assert.Equal(expected, actual);
+    }
 }

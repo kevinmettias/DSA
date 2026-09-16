@@ -18,12 +18,20 @@ public sealed class LongestCommonPrefixOfKStringsAfterRemovalTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerByBruteForce_LeetCodeExamples_ReturnsLongestSharedPrefixPerRemoval(
-        string[] words, int k, int[] expected) =>
-        Assert.Equal(expected, LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByBruteForce(words, k));
+        string[] words, int k, int[] expected)
+    {
+        var actual = LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByBruteForce(words, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerByReduceTrie_LeetCodeExamples_ReturnsLongestSharedPrefixPerRemoval(
-        string[] words, int k, int[] expected) =>
-        Assert.Equal(expected, LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByReduceTrie(words, k));
+        string[] words, int k, int[] expected)
+    {
+        var actual = LongestCommonPrefixOfKStringsAfterRemovalSolution.AnswerByReduceTrie(words, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

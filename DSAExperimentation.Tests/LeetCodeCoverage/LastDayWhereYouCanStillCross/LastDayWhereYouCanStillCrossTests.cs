@@ -27,13 +27,20 @@ public sealed class LastDayWhereYouCanStillCrossTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LatestDayToCrossByManualBisection_LeetCodeExamples_ReturnsLastCrossableDay(
-        int row, int col, int[][] cells, int expected) =>
-        Assert.Equal(expected, LastDayWhereYouCanStillCrossSolution.LatestDayToCrossByManualBisection(row, col, cells));
+        int row, int col, int[][] cells, int expected)
+    {
+        var actual = LastDayWhereYouCanStillCrossSolution.LatestDayToCrossByManualBisection(row, col, cells);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LatestDayToCrossBySequenceLowerBound_LeetCodeExamples_ReturnsLastCrossableDay(
-        int row, int col, int[][] cells, int expected) =>
-        Assert.Equal(
-            expected, LastDayWhereYouCanStillCrossSolution.LatestDayToCrossBySequenceLowerBound(row, col, cells));
+        int row, int col, int[][] cells, int expected)
+    {
+        var actual = LastDayWhereYouCanStillCrossSolution.LatestDayToCrossBySequenceLowerBound(row, col, cells);
+
+        Assert.Equal(expected, actual);
+    }
 }

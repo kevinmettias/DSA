@@ -35,15 +35,20 @@ public sealed class MaximumScoreOfAGoodSubarrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumScoreByBruteForceExpand_LeetCodeExamples_ReturnsBestGoodSubarrayScore(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(
-            expected, MaximumScoreOfAGoodSubarraySolution.MaximumScoreByBruteForceExpand(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = MaximumScoreOfAGoodSubarraySolution.MaximumScoreByBruteForceExpand(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumScoreByMonotonicStackBoundaries_LeetCodeExamples_ReturnsBestGoodSubarrayScore(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumScoreOfAGoodSubarraySolution.MaximumScoreByMonotonicStackBoundaries(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = MaximumScoreOfAGoodSubarraySolution.MaximumScoreByMonotonicStackBoundaries(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

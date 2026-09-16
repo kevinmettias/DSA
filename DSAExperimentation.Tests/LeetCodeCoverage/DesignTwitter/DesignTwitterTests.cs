@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignTwitter.DesignTwitterSolution;
+using DSAExperimentation.LeetCode.DesignTwitter;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignTwitter;
 
@@ -57,63 +57,66 @@ public sealed class DesignTwitterTests
     [MemberData(nameof(Examples))]
     public void TwitterByGatherAllAndSort_LeetCodeExamples_ReturnsMostRecentTenAcrossFollowedSources(
         TwitterOp[] operations, List<int>?[] expected) =>
-        RunScript(new TwitterByGatherAllAndSort(), operations, expected);
+        RunScript(new DesignTwitterSolution.TwitterByGatherAllAndSort(), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TwitterByHeapKWayMerge_LeetCodeExamples_ReturnsMostRecentTenAcrossFollowedSources(
         TwitterOp[] operations, List<int>?[] expected) =>
-        RunScript(new TwitterByHeapKWayMerge(), operations, expected);
+        RunScript(new DesignTwitterSolution.TwitterByHeapKWayMerge(), operations, expected);
 
-    private static void RunScript(ITwitterStrategy strategy, TwitterOp[] operations, List<int>?[] expected)
+    private static void RunScript(
+        DesignTwitterSolution.ITwitterStrategy strategy, TwitterOp[] operations, List<int>?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
     }
-}
 
-// One call in a Twitter script: which method to invoke and with what arguments.
-// Pure dispatch, built via the named factories below so a script (like Examples
-// above) reads like the LeetCode call sequence it replays.
-public readonly record struct TwitterOp(TwitterOp.OpKind kind, int a, int b)
-{
-    public static TwitterOp PostTweet(int userId, int tweetId) => new(OpKind.PostTweet, userId, tweetId);
-
-    public static TwitterOp Follow(int followerId, int followeeId) => new(OpKind.Follow, followerId, followeeId);
-
-    public static TwitterOp Unfollow(int followerId, int followeeId) => new(OpKind.Unfollow, followerId, followeeId);
-
-    public static TwitterOp GetNewsFeed(int userId) => new(OpKind.GetNewsFeed, userId, 0);
-
-    // null for the three void calls, the returned feed for GetNewsFeed - so a
-    // script runner can assert against one expected value per operation uniformly.
-    // Internal, not public: ITwitterStrategy is internal to DesignTwitterSolution,
-    // and only this same assembly's RunScript ever calls Apply.
-    internal List<int>? Apply(ITwitterStrategy strategy)
+    // One call in a Twitter script: which method to invoke and with what arguments.
+    // Pure dispatch, built via the named factories below so a script (like Examples
+    // above) reads like the LeetCode call sequence it replays. Nested because it is
+    // only ever used inside this test class and has no independent identity: it is
+    // this harness's own vocabulary, not a type another file would import.
+    public readonly record struct TwitterOp(TwitterOp.OpKind kind, int a, int b)
     {
-        switch (kind)
+        public static TwitterOp PostTweet(int userId, int tweetId) => new(OpKind.PostTweet, userId, tweetId);
+
+        public static TwitterOp Follow(int followerId, int followeeId) => new(OpKind.Follow, followerId, followeeId);
+
+        public static TwitterOp Unfollow(int followerId, int followeeId) => new(OpKind.Unfollow, followerId, followeeId);
+
+        public static TwitterOp GetNewsFeed(int userId) => new(OpKind.GetNewsFeed, userId, 0);
+
+        // null for the three void calls, the returned feed for GetNewsFeed - so a
+        // script runner can assert against one expected value per operation uniformly.
+        // Internal, not public: ITwitterStrategy is internal to DesignTwitterSolution,
+        // and only this same assembly's RunScript ever calls Apply.
+        internal List<int>? Apply(DesignTwitterSolution.ITwitterStrategy strategy)
         {
-            case OpKind.PostTweet:
-                strategy.PostTweet(a, b);
-                return null;
-            case OpKind.Follow:
-                strategy.Follow(a, b);
-                return null;
-            case OpKind.Unfollow:
-                strategy.Unfollow(a, b);
-                return null;
-            default:
-                return strategy.GetNewsFeed(a);
+            switch (kind)
+            {
+                case OpKind.PostTweet:
+                    strategy.PostTweet(a, b);
+                    return null;
+                case OpKind.Follow:
+                    strategy.Follow(a, b);
+                    return null;
+                case OpKind.Unfollow:
+                    strategy.Unfollow(a, b);
+                    return null;
+                default:
+                    return strategy.GetNewsFeed(a);
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        PostTweet,
-        Follow,
-        Unfollow,
-        GetNewsFeed,
+        public enum OpKind
+        {
+            PostTweet,
+            Follow,
+            Unfollow,
+            GetNewsFeed,
+        }
     }
 }

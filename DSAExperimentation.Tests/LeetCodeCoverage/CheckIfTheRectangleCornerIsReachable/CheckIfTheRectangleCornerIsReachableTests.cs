@@ -8,24 +8,43 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfTheRectangleCornerIsR
 // blocks the path once its members are unioned together, not individually.
 public sealed class CheckIfTheRectangleCornerIsReachableTests
 {
-    public static TheoryData<int, int, int[][], bool> Examples =>
+    public static TheoryData<CornerPathCase> Examples =>
         new()
         {
-            { 3, 4, new[] { new[] { 2, 1, 1 } }, true },
-            { 3, 3, new[] { new[] { 1, 1, 2 } }, false },
-            { 3, 3, new[] { new[] { 2, 1, 1 }, new[] { 1, 2, 1 } }, false },
-            { 4, 4, new[] { new[] { 5, 5, 1 } }, true },
+            { new CornerPathCase(3, 4, new[] { new[] { 2, 1, 1 } }, Expected: true) },
+            { new CornerPathCase(3, 3, new[] { new[] { 1, 1, 2 } }, Expected: false) },
+            { new CornerPathCase(3, 3, new[] { new[] { 2, 1, 1 }, new[] { 1, 2, 1 } }, Expected: false) },
+            { new CornerPathCase(4, 4, new[] { new[] { 5, 5, 1 } }, Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsReachableByBoundaryFloodFill_LeetCodeExamples_ReturnsWhetherACornerToCornerPathExists(
-        int xCorner, int yCorner, int[][] circles, bool expected) =>
-        Assert.Equal(expected, CheckIfTheRectangleCornerIsReachableSolution.IsReachableByBoundaryFloodFill(xCorner, yCorner, circles));
+        CornerPathCase example)
+    {
+        var reachable =
+            CheckIfTheRectangleCornerIsReachableSolution.IsReachableByBoundaryFloodFill(
+                example.XCorner, example.YCorner, example.Circles);
+
+        Assert.Equal(example.Expected, reachable);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsReachableByDisjointSet_LeetCodeExamples_ReturnsWhetherACornerToCornerPathExists(
-        int xCorner, int yCorner, int[][] circles, bool expected) =>
-        Assert.Equal(expected, CheckIfTheRectangleCornerIsReachableSolution.IsReachableByDisjointSet(xCorner, yCorner, circles));
+        CornerPathCase example)
+    {
+        var reachable = CheckIfTheRectangleCornerIsReachableSolution.IsReachableByDisjointSet(
+            example.XCorner, example.YCorner, example.Circles);
+
+        Assert.Equal(example.Expected, reachable);
+    }
+
+    // One LeetCode example: the destination corner and the circles that block the
+    // rectangle, plus whether a corner-to-corner path survives them. The expected
+    // value is named at every construction site, so a row reads as the case it is
+    // rather than as a bare `true` whose meaning is its position. Nested because it
+    // is only ever used inside this test class - it is this harness's own vocabulary,
+    // not a type another file would import.
+    public readonly record struct CornerPathCase(int XCorner, int YCorner, int[][] Circles, bool Expected);
 }

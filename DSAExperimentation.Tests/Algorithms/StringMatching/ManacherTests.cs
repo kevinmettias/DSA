@@ -22,7 +22,7 @@ public sealed partial class ManacherTests
         {
             var k = 1;
 
-            while (i - k >= 0 && i + k < text.Length && text[i - k] == text[i + k])
+            while (OddPalindromeGrowsAt(text, i, k))
             {
                 k++;
             }
@@ -41,7 +41,7 @@ public sealed partial class ManacherTests
         {
             var k = 0;
 
-            while (i - k - 1 >= 0 && i + k < text.Length && text[i - k - 1] == text[i + k])
+            while (EvenPalindromeGrowsAt(text, i, k))
             {
                 k++;
             }
@@ -51,6 +51,19 @@ public sealed partial class ManacherTests
 
         return radii;
     }
+
+    // Whether the odd palindrome centred on a character still grows: the mirrored pair
+    // one step further out both exists inside the text and matches.
+    private static bool OddPalindromeGrowsAt(string text, int center, int radius)
+        => center - radius >= 0
+            && center + radius < text.Length
+            && text[center - radius] == text[center + radius];
+
+    // The even-radius twin: the mirrored pair straddling the gap before the center.
+    private static bool EvenPalindromeGrowsAt(string text, int center, int radius)
+        => center - radius - 1 >= 0
+            && center + radius < text.Length
+            && text[center - radius - 1] == text[center + radius];
 
     [Fact]
     public void ComputeOddRadii_MatchesBruteForceExpansionAcrossVariedStrings()

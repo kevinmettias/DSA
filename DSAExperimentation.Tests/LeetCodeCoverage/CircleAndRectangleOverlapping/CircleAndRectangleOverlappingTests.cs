@@ -8,31 +8,48 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CircleAndRectangleOverlappin
 // the rectangle, a tangent circle, and a corner just out of reach.
 public sealed class CircleAndRectangleOverlappingTests
 {
-    public static TheoryData<int, int, int, int, int, int, int, bool> Examples =>
+    public static TheoryData<OverlapCase> Examples =>
         new()
         {
-            { 1, 0, 0, 1, -1, 3, 1, true },
-            { 1, 1, 1, 1, -3, 2, -1, false },
-            { 1, 0, 0, -1, 0, 0, 1, true },
-            { 1, 1, 1, -3, -3, 3, 3, true },
-            { 1, 0, 0, 1, -3, 3, 3, true },
+            { new OverlapCase(Radius: 1, XCenter: 0, YCenter: 0, X1: 1, Y1: -1, X2: 3, Y2: 1, Expected: true) },
+            { new OverlapCase(Radius: 1, XCenter: 1, YCenter: 1, X1: 1, Y1: -3, X2: 2, Y2: -1, Expected: false) },
+            { new OverlapCase(Radius: 1, XCenter: 0, YCenter: 0, X1: -1, Y1: 0, X2: 0, Y2: 1, Expected: true) },
+            { new OverlapCase(Radius: 1, XCenter: 1, YCenter: 1, X1: -3, Y1: -3, X2: 3, Y2: 3, Expected: true) },
+            { new OverlapCase(Radius: 1, XCenter: 0, YCenter: 0, X1: 1, Y1: -3, X2: 3, Y2: 3, Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckOverlapByClampedDistance_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
-        int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2, bool expected) =>
-        Assert.Equal(
-            expected,
-            CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
-                new Circle(radius, xCenter, yCenter), new Rectangle(x1, y1, x2, y2)));
+        OverlapCase example)
+    {
+        var overlaps = CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
+            new Circle(example.Radius, example.XCenter, example.YCenter),
+            new Rectangle(example.X1, example.Y1, example.X2, example.Y2));
+
+        Assert.Equal(example.Expected, overlaps);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckOverlapByLatticePointScan_LeetCodeExamples_ReturnsWhetherShapesShareAPoint(
-        int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2, bool expected) =>
-        Assert.Equal(
-            expected,
-            CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
-                new Circle(radius, xCenter, yCenter), new Rectangle(x1, y1, x2, y2)));
+        OverlapCase example)
+    {
+        var overlaps = CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
+            new Circle(example.Radius, example.XCenter, example.YCenter),
+            new Rectangle(example.X1, example.Y1, example.X2, example.Y2));
+
+        Assert.Equal(example.Expected, overlaps);
+    }
+
+    // One LeetCode example: the circle and the rectangle that either do or do not share a
+    // point, with every number named where it is passed rather than left in a run of eight
+    // that only position separates.
+    //
+    // The row holds the two shapes' numbers rather than the solution's own Circle and
+    // Rectangle, for one reason: both are internal to CircleAndRectangleOverlappingSolution,
+    // and a public row cannot name an internal type (CS0053). The row is the only place the
+    // two shapes are written out in the raw, and it labels each number as it goes.
+    public readonly record struct OverlapCase(
+        int Radius, int XCenter, int YCenter, int X1, int Y1, int X2, int Y2, bool Expected);
 }

@@ -19,12 +19,20 @@ public sealed class MaximumAreaRectangleWithPointConstraintsIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxAreaByQuadrupleScan_LeetCodeExamples_ReturnsLargestUnblockedRectangleArea(
-        int[] xCoord, int[] yCoord, long expected) =>
-        Assert.Equal(expected, MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaByQuadrupleScan(xCoord, yCoord));
+        int[] xCoord, int[] yCoord, long expected)
+    {
+        var actual = MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaByQuadrupleScan(xCoord, yCoord);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxAreaBySweepSegmentTree_LeetCodeExamples_ReturnsLargestUnblockedRectangleArea(
-        int[] xCoord, int[] yCoord, long expected) =>
-        Assert.Equal(expected, MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaBySweepSegmentTree(xCoord, yCoord));
+        int[] xCoord, int[] yCoord, long expected)
+    {
+        var actual = MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaBySweepSegmentTree(xCoord, yCoord);
+
+        Assert.Equal(expected, actual);
+    }
 }

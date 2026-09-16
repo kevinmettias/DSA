@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges.MinimumNumberOfDaysToEatNOrangesSolution;
+using DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfDaysToEatNOranges;
 
@@ -23,10 +23,10 @@ public sealed class MinimumNumberOfDaysToEatNOrangesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinDaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimumDayCount(int n, int expected)
-        => Assert.Equal(expected, MinDaysByUnmemoizedRecursion(n));
+        => Assert.Equal(expected, MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByUnmemoizedRecursion(n));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinDaysByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumDayCount(int n, int expected)
-        => Assert.Equal(expected, MinDaysByMemoizedRecurrence(n));
+        => Assert.Equal(expected, MinimumNumberOfDaysToEatNOrangesSolution.MinDaysByMemoizedRecurrence(n));
 }

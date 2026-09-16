@@ -18,18 +18,24 @@ public sealed class RotateListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateRightByArrayRebuild_LeetCodeExamples_RotatesList(
-        int[] values, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(RotateListSolution.RotateRightByArrayRebuild(BuildList(values), k)));
+        int[] values, int k, int[] expected)
+    {
+        var rotated = RotateListSolution.RotateRightByArrayRebuild(BuildList(values), k);
+        var actual = ToArray(rotated);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateRightByPointerRewire_LeetCodeExamples_RotatesList(
-        int[] values, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(RotateListSolution.RotateRightByPointerRewire(BuildList(values), k)));
+        int[] values, int k, int[] expected)
+    {
+        var rotated = RotateListSolution.RotateRightByPointerRewire(BuildList(values), k);
+        var actual = ToArray(rotated);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

@@ -42,28 +42,34 @@ public sealed class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrByDirectRecursiveMerge_LeetCodeExamples_ReconstructsElementwiseOrOfBothGrids(
-        int[][] grid1, int[][] grid2, int[][] expected) =>
-        AssertReconstructsExpectedGrid(
-            LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByDirectRecursiveMerge(Build(grid1), Build(grid2)),
-            expected);
+        int[][] grid1, int[][] grid2, int[][] expected)
+    {
+        var merged = LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByDirectRecursiveMerge(Build(grid1), Build(grid2));
+
+        AssertReconstructsExpectedGrid(merged, expected);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrByBruteForceGridMaterialize_LeetCodeExamples_ReconstructsElementwiseOrOfBothGrids(
-        int[][] grid1, int[][] grid2, int[][] expected) =>
-        AssertReconstructsExpectedGrid(
-            LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByBruteForceGridMaterialize(
-                Build(grid1), Build(grid2), grid1.Length),
-            expected);
+        int[][] grid1, int[][] grid2, int[][] expected)
+    {
+        var merged = LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByBruteForceGridMaterialize(
+            Build(grid1), Build(grid2), grid1.Length);
+
+        AssertReconstructsExpectedGrid(merged, expected);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrByFenwickGridMaterialize_LeetCodeExamples_ReconstructsElementwiseOrOfBothGrids(
-        int[][] grid1, int[][] grid2, int[][] expected) =>
-        AssertReconstructsExpectedGrid(
-            LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByFenwickGridMaterialize(
-                Build(grid1), Build(grid2), grid1.Length),
-            expected);
+        int[][] grid1, int[][] grid2, int[][] expected)
+    {
+        var merged = LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution.OrByFenwickGridMaterialize(
+            Build(grid1), Build(grid2), grid1.Length);
+
+        AssertReconstructsExpectedGrid(merged, expected);
+    }
 
     private static QuadTreeNode Build(int[][] grid) => ConstructQuadTreeSolution.BuildByBruteForceCellScan(grid);
 
@@ -94,9 +100,17 @@ public sealed class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
         }
 
         var half = region.Size / 2;
-        Fill(node.TopLeft!, grid, new Region(region.Row, region.Col, half));
-        Fill(node.TopRight!, grid, new Region(region.Row, region.Col + half, half));
-        Fill(node.BottomLeft!, grid, new Region(region.Row + half, region.Col, half));
-        Fill(node.BottomRight!, grid, new Region(region.Row + half, region.Col + half, half));
+        Fill(Quadrant(node.TopLeft), grid, new Region(region.Row, region.Col, half));
+        Fill(Quadrant(node.TopRight), grid, new Region(region.Row, region.Col + half, half));
+        Fill(Quadrant(node.BottomLeft), grid, new Region(region.Row + half, region.Col, half));
+        Fill(Quadrant(node.BottomRight), grid, new Region(region.Row + half, region.Col + half, half));
     }
+
+    // A QuadTreeNode carries all four quadrants exactly when it is not a leaf. Every
+    // IsLeaf: false node these cases decode is built by an initializer that fills all
+    // four: ConstructQuadTreeSolution does that for the inputs Build makes, and the
+    // strategy under test does it for the merged tree that comes back.
+    private static QuadTreeNode Quadrant(QuadTreeNode? quadrant) =>
+        quadrant ?? throw new InvalidOperationException(
+            "a non-leaf QuadTreeNode carries all four children, and ConstructQuadTreeSolution builds one only that way.");
 }

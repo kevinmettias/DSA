@@ -133,40 +133,41 @@ public sealed class DesignAStackWithIncrementOperationTests
             Assert.Equal(expected[i], operations[i].Apply(stack));
         }
     }
-}
 
-// One call in a CustomStack script: push a value, pop, or increment the bottom k
-// elements. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays. Push and
-// Increment return null (no return value); Pop returns the popped value - the same
-// null-means-"no return value" convention FreqStackOp.Apply uses.
-public readonly record struct CustomStackOp(CustomStackOp.OpKind kind, int first, int second)
-{
-    public enum OpKind
+    // One call in a CustomStack script: push a value, pop, or increment the bottom k
+    // elements. Pure dispatch, built via the named factories below so a script (like
+    // Examples above) reads like the LeetCode call sequence it replays. Push and
+    // Increment return null (no return value); Pop returns the popped value - the same
+    // null-means-"no return value" convention FreqStackOp.Apply uses. Nested here
+    // rather than left at file scope so the file declares exactly one type.
+    public readonly record struct CustomStackOp(CustomStackOp.OpKind kind, int first, int second)
     {
-        Push,
-        Pop,
-        Increment,
-    }
-
-    public static CustomStackOp Push(int value) => new(OpKind.Push, value, 0);
-
-    public static CustomStackOp Pop() => new(OpKind.Pop, 0, 0);
-
-    public static CustomStackOp Increment(int k, int val) => new(OpKind.Increment, k, val);
-
-    internal int? Apply(DesignAStackWithIncrementOperationSolution.ICustomStack stack)
-    {
-        switch (kind)
+        public enum OpKind
         {
-            case OpKind.Pop:
-                return stack.Pop();
-            case OpKind.Increment:
-                stack.Increment(first, second);
-                return null;
-            default:
-                stack.Push(first);
-                return null;
+            Push,
+            Pop,
+            Increment,
+        }
+
+        public static CustomStackOp Push(int value) => new(OpKind.Push, value, 0);
+
+        public static CustomStackOp Pop() => new(OpKind.Pop, 0, 0);
+
+        public static CustomStackOp Increment(int k, int val) => new(OpKind.Increment, k, val);
+
+        internal int? Apply(DesignAStackWithIncrementOperationSolution.ICustomStack stack)
+        {
+            switch (kind)
+            {
+                case OpKind.Pop:
+                    return stack.Pop();
+                case OpKind.Increment:
+                    stack.Increment(first, second);
+                    return null;
+                default:
+                    stack.Push(first);
+                    return null;
+            }
         }
     }
 }

@@ -19,13 +19,20 @@ public sealed class MinimumTimeToReachDestinationInDirectedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByBclPriorityQueue_LeetCodeExamples_ReturnsEarliestArrivalAtLastNode(
-        int n, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected, MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByBclPriorityQueue(n, edges));
+        int n, int[][] edges, int expected)
+    {
+        var actual = MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByBclPriorityQueue(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByHeap_LeetCodeExamples_ReturnsEarliestArrivalAtLastNode(
-        int n, int[][] edges, int expected) =>
-        Assert.Equal(expected, MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByHeap(n, edges));
+        int n, int[][] edges, int expected)
+    {
+        var actual = MinimumTimeToReachDestinationInDirectedGraphSolution.MinimumTimeByHeap(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 }

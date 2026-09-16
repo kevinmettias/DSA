@@ -18,11 +18,19 @@ public sealed class SearchInRotatedSortedArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SearchByLinearScan_LeetCodeExamples_ReturnsTargetIndexOrMinusOne(int[] nums, int target, int expected)
-        => Assert.Equal(expected, SearchInRotatedSortedArraySolution.SearchByLinearScan(nums, target));
+    {
+        var actual = SearchInRotatedSortedArraySolution.SearchByLinearScan(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SearchByBinarySearchPivotAndSlice_LeetCodeExamples_ReturnsTargetIndexOrMinusOne(
         int[] nums, int target, int expected)
-        => Assert.Equal(expected, SearchInRotatedSortedArraySolution.SearchByBinarySearchPivotAndSlice(nums, target));
+    {
+        var actual = SearchInRotatedSortedArraySolution.SearchByBinarySearchPivotAndSlice(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

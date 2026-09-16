@@ -17,11 +17,19 @@ public sealed class RangeSumQueryImmutableTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumRangeByFenwickTree_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected) =>
-        Assert.Equal(expected, RangeSumQueryImmutableSolution.SumRangeByFenwickTree(nums, left, right));
+    public void SumRangeByFenwickTree_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    {
+        var actual = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(nums, left, right);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SumRangeByBruteForceRescan_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected) =>
-        Assert.Equal(expected, RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(nums, left, right));
+    public void SumRangeByBruteForceRescan_LeetCodeExamples_ReturnsRangeSum(int[] nums, int left, int right, int expected)
+    {
+        var actual = RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(nums, left, right);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -19,11 +19,21 @@ public sealed class GasStationTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanCompleteCircuitByGreedyDebtReset_LeetCodeExamples_ReturnsStartIndex(int[] gas, int[] cost, int expected) =>
-        Assert.Equal(expected, GasStationSolution.CanCompleteCircuitByGreedyDebtReset(gas, cost));
+    public void CanCompleteCircuitByGreedyDebtReset_LeetCodeExamples_ReturnsStartIndex(
+        int[] gas, int[] cost, int expected)
+    {
+        var actual = GasStationSolution.CanCompleteCircuitByGreedyDebtReset(gas, cost);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanCompleteCircuitByBruteForceSimulation_LeetCodeExamples_ReturnsStartIndex(int[] gas, int[] cost, int expected) =>
-        Assert.Equal(expected, GasStationSolution.CanCompleteCircuitByBruteForceSimulation(gas, cost));
+    public void CanCompleteCircuitByBruteForceSimulation_LeetCodeExamples_ReturnsStartIndex(
+        int[] gas, int[] cost, int expected)
+    {
+        var actual = GasStationSolution.CanCompleteCircuitByBruteForceSimulation(gas, cost);
+
+        Assert.Equal(expected, actual);
+    }
 }

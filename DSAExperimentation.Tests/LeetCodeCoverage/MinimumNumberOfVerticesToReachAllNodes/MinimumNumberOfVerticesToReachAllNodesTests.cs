@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes.MinimumNumberOfVerticesToReachAllNodesSolution;
+using DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfVerticesToReachAllNodes;
 
@@ -22,11 +22,19 @@ public sealed class MinimumNumberOfVerticesToReachAllNodesTests
     [MemberData(nameof(Examples))]
     public void FindSmallestSetOfVerticesByNestedScan_LeetCodeExamples_ReturnsEveryZeroInDegreeNode(
         int n, int[][] edges, int[] expected)
-        => Assert.Equal(expected, FindSmallestSetOfVerticesByNestedScan(n, edges));
+    {
+        var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByNestedScan(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindSmallestSetOfVerticesByInDegreeSet_LeetCodeExamples_ReturnsEveryZeroInDegreeNode(
         int n, int[][] edges, int[] expected)
-        => Assert.Equal(expected, FindSmallestSetOfVerticesByInDegreeSet(n, edges));
+    {
+        var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByInDegreeSet(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 }

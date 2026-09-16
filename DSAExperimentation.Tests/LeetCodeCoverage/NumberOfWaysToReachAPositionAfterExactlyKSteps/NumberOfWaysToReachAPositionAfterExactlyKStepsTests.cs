@@ -23,18 +23,22 @@ public sealed class NumberOfWaysToReachAPositionAfterExactlyKStepsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfWaysByUnmemoizedRecursion_LeetCodeExamples_ReturnsStepSequenceCount(
-        int startPos, int endPos, int k, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToReachAPositionAfterExactlyKStepsSolution.NumberOfWaysByUnmemoizedRecursion(
-                startPos, endPos, k));
+        int startPos, int endPos, int k, int expected)
+    {
+        var actual = NumberOfWaysToReachAPositionAfterExactlyKStepsSolution.NumberOfWaysByUnmemoizedRecursion(
+            startPos, endPos, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfWaysByMemoizedRecursion_LeetCodeExamples_ReturnsStepSequenceCount(
-        int startPos, int endPos, int k, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToReachAPositionAfterExactlyKStepsSolution.NumberOfWaysByMemoizedRecursion(
-                startPos, endPos, k));
+        int startPos, int endPos, int k, int expected)
+    {
+        var actual = NumberOfWaysToReachAPositionAfterExactlyKStepsSolution.NumberOfWaysByMemoizedRecursion(
+            startPos, endPos, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -23,16 +23,18 @@ public sealed class CountNumberOfRectanglesContainingEachPointTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountRectanglesByBruteForce_LeetCodeExamples_ReturnsCoveringCountPerPoint(
-        int[][] rectangles, int[][] points, int[] expected) =>
-        Assert.Equal(
-            expected,
-            CountNumberOfRectanglesContainingEachPointSolution.CountRectanglesByBruteForce(rectangles, points));
+        int[][] rectangles, int[][] points, int[] expected)
+    {
+        var actual = CountNumberOfRectanglesContainingEachPointSolution.CountRectanglesByBruteForce(rectangles, points);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountRectanglesByGroupedLowerBound_LeetCodeExamples_ReturnsCoveringCountPerPoint(
-        int[][] rectangles, int[][] points, int[] expected) =>
-        Assert.Equal(
-            expected,
-            CountNumberOfRectanglesContainingEachPointSolution.CountRectanglesByGroupedLowerBound(rectangles, points));
+        int[][] rectangles, int[][] points, int[] expected)
+    {
+        var actual = CountNumberOfRectanglesContainingEachPointSolution.CountRectanglesByGroupedLowerBound(rectangles, points);
+        Assert.Equal(expected, actual);
+    }
 }

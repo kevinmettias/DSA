@@ -25,12 +25,20 @@ public sealed class FindEdgesInShortestPathsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerByBruteForceDijkstra_LeetCodeExamples_FlagsEveryShortestPathEdge(
-        int n, int[][] edges, bool[] expected) =>
-        Assert.Equal(expected, FindEdgesInShortestPathsSolution.AnswerByBruteForceDijkstra(n, edges));
+        int n, int[][] edges, bool[] expected)
+    {
+        var actual = FindEdgesInShortestPathsSolution.AnswerByBruteForceDijkstra(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerByShortestPathDijkstra_LeetCodeExamples_FlagsEveryShortestPathEdge(
-        int n, int[][] edges, bool[] expected) =>
-        Assert.Equal(expected, FindEdgesInShortestPathsSolution.AnswerByShortestPathDijkstra(n, edges));
+        int n, int[][] edges, bool[] expected)
+    {
+        var actual = FindEdgesInShortestPathsSolution.AnswerByShortestPathDijkstra(n, edges);
+
+        Assert.Equal(expected, actual);
+    }
 }

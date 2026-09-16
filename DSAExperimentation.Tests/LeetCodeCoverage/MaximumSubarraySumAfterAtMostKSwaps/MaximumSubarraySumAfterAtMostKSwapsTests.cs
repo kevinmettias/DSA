@@ -18,12 +18,20 @@ public sealed class MaximumSubarraySumAfterAtMostKSwapsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumByBruteForce_LeetCodeExamples_ReturnsBestSubarraySumAfterSwaps(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByBruteForce(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByBruteForce(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumByOrderStatisticsFenwick_LeetCodeExamples_ReturnsBestSubarraySumAfterSwaps(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByOrderStatisticsFenwick(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = MaximumSubarraySumAfterAtMostKSwapsSolution.MaxSumByOrderStatisticsFenwick(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

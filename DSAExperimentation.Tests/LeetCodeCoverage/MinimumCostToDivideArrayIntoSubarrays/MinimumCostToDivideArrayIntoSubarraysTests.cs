@@ -17,14 +17,20 @@ public sealed class MinimumCostToDivideArrayIntoSubarraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByDictionaryMemo_LeetCodeExamples_ReturnsMinimumTotalCost(
-        int[] nums, int[] cost, int k, long expected) =>
-        Assert.Equal(
-            expected, MinimumCostToDivideArrayIntoSubarraysSolution.MinimumCostByDictionaryMemo(nums, cost, k));
+        int[] nums, int[] cost, int k, long expected)
+    {
+        var actual = MinimumCostToDivideArrayIntoSubarraysSolution.MinimumCostByDictionaryMemo(nums, cost, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByMemoizedPartition_LeetCodeExamples_ReturnsMinimumTotalCost(
-        int[] nums, int[] cost, int k, long expected) =>
-        Assert.Equal(
-            expected, MinimumCostToDivideArrayIntoSubarraysSolution.MinimumCostByMemoizedPartition(nums, cost, k));
+        int[] nums, int[] cost, int k, long expected)
+    {
+        var actual = MinimumCostToDivideArrayIntoSubarraysSolution.MinimumCostByMemoizedPartition(nums, cost, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

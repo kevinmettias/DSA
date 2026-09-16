@@ -39,16 +39,21 @@ public sealed class MinimumCostOfAPathWithSpecialRoadsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByArrayScanDijkstra_LeetCodeExamples_ReturnsCheapestRouteCost(
-        int[] start, int[] target, int[][] specialRoads, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostOfAPathWithSpecialRoadsSolution.MinimumCostByArrayScanDijkstra(start, target, specialRoads));
+        int[] start, int[] target, int[][] specialRoads, int expected)
+    {
+        var actual =
+            MinimumCostOfAPathWithSpecialRoadsSolution.MinimumCostByArrayScanDijkstra(start, target, specialRoads);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumCostByHeapDijkstra_LeetCodeExamples_ReturnsCheapestRouteCost(
-        int[] start, int[] target, int[][] specialRoads, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumCostOfAPathWithSpecialRoadsSolution.MinimumCostByHeapDijkstra(start, target, specialRoads));
+        int[] start, int[] target, int[][] specialRoads, int expected)
+    {
+        var actual = MinimumCostOfAPathWithSpecialRoadsSolution.MinimumCostByHeapDijkstra(start, target, specialRoads);
+
+        Assert.Equal(expected, actual);
+    }
 }

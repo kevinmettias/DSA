@@ -30,18 +30,26 @@ public sealed class SwappingNodesInALinkedListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SwapNodesByArrayMaterialize_LeetCodeExamples_SwapsKthFromFrontAndEnd(
-        int[] values, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(BuildList(values), k)));
+        int[] values, int k, int[] expected)
+    {
+        var head = BuildList(values);
+        var swapped = SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(head, k);
+        var actual = ToArray(swapped);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SwapNodesByTwoPointerWalk_LeetCodeExamples_SwapsKthFromFrontAndEnd(
-        int[] values, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(BuildList(values), k)));
+        int[] values, int k, int[] expected)
+    {
+        var head = BuildList(values);
+        var swapped = SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(head, k);
+        var actual = ToArray(swapped);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

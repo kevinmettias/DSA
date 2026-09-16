@@ -23,16 +23,18 @@ public sealed class CountUnreachablePairsOfNodesInAnUndirectedGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByDepthFirstFloodFill_LeetCodeExamples_ReturnsPairsSplitAcrossComponents(
-        int n, int[][] edges, long expected) =>
-        Assert.Equal(
-            expected,
-            CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDepthFirstFloodFill(n, edges));
+        int n, int[][] edges, long expected)
+    {
+        var pairs = CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDepthFirstFloodFill(n, edges);
+        Assert.Equal(expected, pairs);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByDisjointSet_LeetCodeExamples_ReturnsPairsSplitAcrossComponents(
-        int n, int[][] edges, long expected) =>
-        Assert.Equal(
-            expected,
-            CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDisjointSet(n, edges));
+        int n, int[][] edges, long expected)
+    {
+        var pairs = CountUnreachablePairsOfNodesInAnUndirectedGraphSolution.CountPairsByDisjointSet(n, edges);
+        Assert.Equal(expected, pairs);
+    }
 }

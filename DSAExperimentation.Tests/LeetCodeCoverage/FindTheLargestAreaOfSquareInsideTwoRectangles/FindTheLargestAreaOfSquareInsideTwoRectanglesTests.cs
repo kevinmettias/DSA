@@ -19,16 +19,22 @@ public sealed class FindTheLargestAreaOfSquareInsideTwoRectanglesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LargestSquareAreaByBruteForcePairs_LeetCodeExamples_ReturnsLargestFittingSquareArea(
-        int[][] bottomLeft, int[][] topRight, long expected) =>
-        Assert.Equal(
-            expected,
-            FindTheLargestAreaOfSquareInsideTwoRectanglesSolution.LargestSquareAreaByBruteForcePairs(bottomLeft, topRight));
+        int[][] bottomLeft, int[][] topRight, long expected)
+    {
+        var actual = FindTheLargestAreaOfSquareInsideTwoRectanglesSolution.LargestSquareAreaByBruteForcePairs(
+            bottomLeft, topRight);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LargestSquareAreaBySortedPrunedPairs_LeetCodeExamples_ReturnsLargestFittingSquareArea(
-        int[][] bottomLeft, int[][] topRight, long expected) =>
-        Assert.Equal(
-            expected,
-            FindTheLargestAreaOfSquareInsideTwoRectanglesSolution.LargestSquareAreaBySortedPrunedPairs(bottomLeft, topRight));
+        int[][] bottomLeft, int[][] topRight, long expected)
+    {
+        var actual = FindTheLargestAreaOfSquareInsideTwoRectanglesSolution.LargestSquareAreaBySortedPrunedPairs(
+            bottomLeft, topRight);
+
+        Assert.Equal(expected, actual);
+    }
 }

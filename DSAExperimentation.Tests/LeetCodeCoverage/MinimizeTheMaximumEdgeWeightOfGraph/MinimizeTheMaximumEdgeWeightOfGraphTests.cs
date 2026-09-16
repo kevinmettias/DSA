@@ -21,15 +21,22 @@ public sealed class MinimizeTheMaximumEdgeWeightOfGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMaxWeightByBinarySearchBfs_LeetCodeExamples_ReturnsSmallestFeasibleMaxWeight(
-        int n, int[][] edges, int threshold, int expected) =>
-        Assert.Equal(
-            expected, MinimizeTheMaximumEdgeWeightOfGraphSolution.MinMaxWeightByBinarySearchBfs(n, edges, threshold));
+        int n, int[][] edges, int threshold, int expected)
+    {
+        var actual =
+            MinimizeTheMaximumEdgeWeightOfGraphSolution.MinMaxWeightByBinarySearchBfs(n, edges, threshold);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinMaxWeightByReduceGraphBinarySearch_LeetCodeExamples_ReturnsSmallestFeasibleMaxWeight(
-        int n, int[][] edges, int threshold, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimizeTheMaximumEdgeWeightOfGraphSolution.MinMaxWeightByReduceGraphBinarySearch(n, edges, threshold));
+        int n, int[][] edges, int threshold, int expected)
+    {
+        var actual =
+            MinimizeTheMaximumEdgeWeightOfGraphSolution.MinMaxWeightByReduceGraphBinarySearch(n, edges, threshold);
+
+        Assert.Equal(expected, actual);
+    }
 }

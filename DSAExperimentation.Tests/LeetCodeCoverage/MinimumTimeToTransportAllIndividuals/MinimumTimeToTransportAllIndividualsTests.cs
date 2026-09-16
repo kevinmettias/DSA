@@ -19,16 +19,20 @@ public sealed class MinimumTimeToTransportAllIndividualsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTimeByBruteForceDijkstra_LeetCodeExamples_ReturnsMinimumCrossingTime(
-        int[] time, int capacity, double[] mul, double expected) =>
-        Assert.Equal(
-            expected,
-            MinimumTimeToTransportAllIndividualsSolution.MinTimeByBruteForceDijkstra(time, capacity, mul));
+        int[] time, int capacity, double[] mul, double expected)
+    {
+        var actual = MinimumTimeToTransportAllIndividualsSolution.MinTimeByBruteForceDijkstra(time, capacity, mul);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTimeByDijkstraOverTransportGraph_LeetCodeExamples_ReturnsMinimumCrossingTime(
-        int[] time, int capacity, double[] mul, double expected) =>
-        Assert.Equal(
-            expected,
-            MinimumTimeToTransportAllIndividualsSolution.MinTimeByDijkstraOverTransportGraph(time, capacity, mul));
+        int[] time, int capacity, double[] mul, double expected)
+    {
+        var actual = MinimumTimeToTransportAllIndividualsSolution.MinTimeByDijkstraOverTransportGraph(time, capacity, mul);
+
+        Assert.Equal(expected, actual);
+    }
 }

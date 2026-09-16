@@ -26,12 +26,19 @@ public sealed class LongestIncreasingSubsequenceIITests
     [MemberData(nameof(Examples))]
     public void LengthOfLisByDynamicProgramming_LeetCodeExamples_ReturnsLongestConstrainedLength(
         int[] nums, int k, int expected)
-        => Assert.Equal(expected, LongestIncreasingSubsequenceIISolution.LengthOfLisByDynamicProgramming(nums, k));
+    {
+        var actual = LongestIncreasingSubsequenceIISolution.LengthOfLisByDynamicProgramming(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LengthOfLisBySegmentTreeValueWindow_LeetCodeExamples_ReturnsLongestConstrainedLength(
         int[] nums, int k, int expected)
-        => Assert.Equal(
-            expected, LongestIncreasingSubsequenceIISolution.LengthOfLisBySegmentTreeValueWindow(nums, k));
+    {
+        var actual = LongestIncreasingSubsequenceIISolution.LengthOfLisBySegmentTreeValueWindow(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

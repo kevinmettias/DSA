@@ -17,12 +17,20 @@ public sealed class CoinChangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FewestCoinsByTabulation_LeetCodeExamples_ReturnsMinimumCoinCount(
-        int[] coins, int amount, int expected) =>
-        Assert.Equal(expected, CoinChangeSolution.FewestCoinsByTabulation(coins, amount));
+        int[] coins, int amount, int expected)
+    {
+        var actual = CoinChangeSolution.FewestCoinsByTabulation(coins, amount);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FewestCoinsByMemoization_LeetCodeExamples_ReturnsMinimumCoinCount(
-        int[] coins, int amount, int expected) =>
-        Assert.Equal(expected, CoinChangeSolution.FewestCoinsByMemoization(coins, amount));
+        int[] coins, int amount, int expected)
+    {
+        var actual = CoinChangeSolution.FewestCoinsByMemoization(coins, amount);
+
+        Assert.Equal(expected, actual);
+    }
 }

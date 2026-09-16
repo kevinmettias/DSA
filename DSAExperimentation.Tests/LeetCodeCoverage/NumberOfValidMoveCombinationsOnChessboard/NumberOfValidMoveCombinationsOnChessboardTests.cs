@@ -24,18 +24,22 @@ public sealed class NumberOfValidMoveCombinationsOnChessboardTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCombinationsByPrunedBacktracking_LeetCodeExamples_ReturnsCollisionFreeCombinationCount(
-        string[] pieces, int[][] positions, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfValidMoveCombinationsOnChessboardSolution.CountCombinationsByPrunedBacktracking(
-                pieces, positions));
+        string[] pieces, int[][] positions, int expected)
+    {
+        var actual = NumberOfValidMoveCombinationsOnChessboardSolution.CountCombinationsByPrunedBacktracking(
+            pieces, positions);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCombinationsByCartesianProduct_LeetCodeExamples_ReturnsCollisionFreeCombinationCount(
-        string[] pieces, int[][] positions, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfValidMoveCombinationsOnChessboardSolution.CountCombinationsByCartesianProduct(
-                pieces, positions));
+        string[] pieces, int[][] positions, int expected)
+    {
+        var actual = NumberOfValidMoveCombinationsOnChessboardSolution.CountCombinationsByCartesianProduct(
+            pieces, positions);
+
+        Assert.Equal(expected, actual);
+    }
 }

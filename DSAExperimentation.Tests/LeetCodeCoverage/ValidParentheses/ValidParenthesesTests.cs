@@ -6,22 +6,31 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidParentheses;
 // file just pins it to LeetCode's published examples.
 public sealed class ValidParenthesesTests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<BracketCase> Examples =>
         new()
         {
-            { "([{}])", true },
-            { "(]", false },
-            { "((", false },
-            { "()", true },
-            { "()[]{}", true },
-            { "([)]", false },
-            { "", true },
-            { ")", false },
+            { new BracketCase(Brackets: "([{}])", Expected: true) },
+            { new BracketCase(Brackets: "(]", Expected: false) },
+            { new BracketCase(Brackets: "((", Expected: false) },
+            { new BracketCase(Brackets: "()", Expected: true) },
+            { new BracketCase(Brackets: "()[]{}", Expected: true) },
+            { new BracketCase(Brackets: "([)]", Expected: false) },
+            { new BracketCase(Brackets: "", Expected: true) },
+            { new BracketCase(Brackets: ")", Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsValidByBracketStack_LeetCodeExamples_ReturnsWhetherProperlyNested(
-        string brackets, bool expected) =>
-        Assert.Equal(expected, ValidParenthesesSolution.IsValidByBracketStack(brackets));
+    public void IsValidByBracketStack_LeetCodeExamples_ReturnsWhetherProperlyNested(BracketCase example)
+    {
+        var isValid = ValidParenthesesSolution.IsValidByBracketStack(example.Brackets);
+
+        Assert.Equal(example.Expected, isValid);
+    }
+
+    // One LeetCode example: the bracket string, and whether every opening bracket is
+    // closed by its own kind in the right order. Nested because it is only ever used
+    // inside this test class - it is this harness's own vocabulary, not a type another
+    // file would import.
+    public readonly record struct BracketCase(string Brackets, bool Expected);
 }

@@ -17,12 +17,20 @@ public sealed class ConcatenatedDivisibilityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestPermutationByBacktracking_LeetCodeExamples_ReturnsLexicographicallySmallestDivisibleOrder(
-        int[] nums, int k, int[] expected) =>
-        Assert.Equal(expected, ConcatenatedDivisibilitySolution.SmallestPermutationByBacktracking(nums, k));
+        int[] nums, int k, int[] expected)
+    {
+        var actual = ConcatenatedDivisibilitySolution.SmallestPermutationByBacktracking(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestPermutationByBitmaskMemo_LeetCodeExamples_ReturnsLexicographicallySmallestDivisibleOrder(
-        int[] nums, int k, int[] expected) =>
-        Assert.Equal(expected, ConcatenatedDivisibilitySolution.SmallestPermutationByBitmaskMemo(nums, k));
+        int[] nums, int k, int[] expected)
+    {
+        var actual = ConcatenatedDivisibilitySolution.SmallestPermutationByBitmaskMemo(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -20,16 +20,18 @@ public sealed class CountSubtreesWithMaxDistanceBetweenCitiesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSubtreesByAllPairsBfs_LeetCodeExamples_ReturnsSubtreeCountPerMaxDistance(
-        int n, int[][] edges, int[] expected) =>
-        Assert.Equal(
-            expected,
-            CountSubtreesWithMaxDistanceBetweenCitiesSolution.CountSubtreesByAllPairsBfs(n, edges));
+        int n, int[][] edges, int[] expected)
+    {
+        var distances = CountSubtreesWithMaxDistanceBetweenCitiesSolution.CountSubtreesByAllPairsBfs(n, edges);
+        Assert.Equal(expected, distances);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSubtreesByDoubleBfs_LeetCodeExamples_ReturnsSubtreeCountPerMaxDistance(
-        int n, int[][] edges, int[] expected) =>
-        Assert.Equal(
-            expected,
-            CountSubtreesWithMaxDistanceBetweenCitiesSolution.CountSubtreesByDoubleBfs(n, edges));
+        int n, int[][] edges, int[] expected)
+    {
+        var distances = CountSubtreesWithMaxDistanceBetweenCitiesSolution.CountSubtreesByDoubleBfs(n, edges);
+        Assert.Equal(expected, distances);
+    }
 }

@@ -37,8 +37,10 @@ public sealed class EdgeTopologyAsGraphTopologyTests
     [Fact]
     public void GetChildren_NodeWithNoEdges_ReturnsNone()
     {
+        var node = Cell(9, 9);
+
         var children = EdgeTopologyAsGraphTopology<
-            WeightedGridNode, WeightedGridTopology, ListEdges<WeightedGridNode, int>, int>.GetChildren(Cell(9, 9));
+            WeightedGridNode, WeightedGridTopology, ListEdges<WeightedGridNode, int>, int>.GetChildren(node);
 
         Assert.Equal(0, children.Count);
     }

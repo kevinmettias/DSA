@@ -46,12 +46,20 @@ public sealed class TheKthFactorOfNTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthFactorByFullRangeScan_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, TheKthFactorOfNSolution.KthFactorByFullRangeScan(n, k));
+        int n, int k, int expected)
+    {
+        var actual = TheKthFactorOfNSolution.KthFactorByFullRangeScan(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthFactorByBinarySearchAnchor_LeetCodeExamples_ReturnsExpectedFactorOrMinusOne(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(n, k));
+        int n, int k, int expected)
+    {
+        var actual = TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

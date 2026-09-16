@@ -24,12 +24,20 @@ public sealed class KthSmallestPathXORSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthSmallestXorSumByPerQueryWalk_LeetCodeExamples_ReturnsKthDistinctSubtreeXorSum(
-        int[] par, int[] vals, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, KthSmallestPathXORSumSolution.KthSmallestXorSumByPerQueryWalk(par, vals, queries));
+        int[] par, int[] vals, int[][] queries, int[] expected)
+    {
+        var actual = KthSmallestPathXORSumSolution.KthSmallestXorSumByPerQueryWalk(par, vals, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthSmallestXorSumByEulerTourCache_LeetCodeExamples_ReturnsKthDistinctSubtreeXorSum(
-        int[] par, int[] vals, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, KthSmallestPathXORSumSolution.KthSmallestXorSumByEulerTourCache(par, vals, queries));
+        int[] par, int[] vals, int[][] queries, int[] expected)
+    {
+        var actual = KthSmallestPathXORSumSolution.KthSmallestXorSumByEulerTourCache(par, vals, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

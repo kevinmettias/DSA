@@ -16,12 +16,18 @@ public sealed class ElevatorRequestsITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void TotalTimeByInlineAbsoluteDifference_LeetCodeExamples_ReturnsTotalSecondsToServeAllRequests(
-        int n, int[] requests, int expected) =>
-        Assert.Equal(expected, ElevatorRequestsISolution.TotalTimeByInlineAbsoluteDifference(n, requests));
+        int n, int[] requests, int expected)
+    {
+        var actual = ElevatorRequestsISolution.TotalTimeByInlineAbsoluteDifference(n, requests);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TotalTimeByManhattanHeuristic_LeetCodeExamples_ReturnsTotalSecondsToServeAllRequests(
-        int n, int[] requests, int expected) =>
-        Assert.Equal(expected, ElevatorRequestsISolution.TotalTimeByManhattanHeuristic(n, requests));
+        int n, int[] requests, int expected)
+    {
+        var actual = ElevatorRequestsISolution.TotalTimeByManhattanHeuristic(n, requests);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -30,13 +30,20 @@ public sealed class NumberOfPairsAfterIncrementTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByDirectArray_LeetCodeExamples_ReturnsPairCountsPerQuery(
-        int[] nums1, int[] nums2, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, NumberOfPairsAfterIncrementSolution.CountPairsByDirectArray(nums1, nums2, queries));
+        int[] nums1, int[] nums2, int[][] queries, int[] expected)
+    {
+        var actual = NumberOfPairsAfterIncrementSolution.CountPairsByDirectArray(nums1, nums2, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByRangeFenwickTree_LeetCodeExamples_ReturnsPairCountsPerQuery(
-        int[] nums1, int[] nums2, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, NumberOfPairsAfterIncrementSolution.CountPairsByRangeFenwickTree(nums1, nums2, queries));
+        int[] nums1, int[] nums2, int[][] queries, int[] expected)
+    {
+        var actual = NumberOfPairsAfterIncrementSolution.CountPairsByRangeFenwickTree(nums1, nums2, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

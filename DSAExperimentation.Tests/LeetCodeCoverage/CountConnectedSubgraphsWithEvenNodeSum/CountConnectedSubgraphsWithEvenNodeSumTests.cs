@@ -18,16 +18,18 @@ public sealed class CountConnectedSubgraphsWithEvenNodeSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountEvenSumSubgraphsByBruteForceBfs_LeetCodeExamples_ReturnsConnectedEvenSumSubsetCount(
-        int[] nums, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected,
-            CountConnectedSubgraphsWithEvenNodeSumSolution.CountEvenSumSubgraphsByBruteForceBfs(nums, edges));
+        int[] nums, int[][] edges, int expected)
+    {
+        var actual = CountConnectedSubgraphsWithEvenNodeSumSolution.CountEvenSumSubgraphsByBruteForceBfs(nums, edges);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountEvenSumSubgraphsByDisjointSet_LeetCodeExamples_ReturnsConnectedEvenSumSubsetCount(
-        int[] nums, int[][] edges, int expected) =>
-        Assert.Equal(
-            expected,
-            CountConnectedSubgraphsWithEvenNodeSumSolution.CountEvenSumSubgraphsByDisjointSet(nums, edges));
+        int[] nums, int[][] edges, int expected)
+    {
+        var actual = CountConnectedSubgraphsWithEvenNodeSumSolution.CountEvenSumSubgraphsByDisjointSet(nums, edges);
+        Assert.Equal(expected, actual);
+    }
 }

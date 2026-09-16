@@ -99,26 +99,27 @@ public sealed class MaximumFrequencyStackTests
             Assert.Equal(expected[i], operations[i].Apply(freqStack));
         }
     }
-}
 
-// One call in a FreqStack script: push a value, or pop. Pure dispatch, built via the
-// named factories below so a script (like Examples above) reads like the LeetCode call
-// sequence it replays. Push returns null (no return value); Pop returns the popped
-// value - the same null-means-"no return value" convention MinStackOp.Apply uses.
-public readonly record struct FreqStackOp(bool isPush, int value)
-{
-    public static FreqStackOp Push(int value) => new(true, value);
-
-    public static FreqStackOp Pop() => new(false, 0);
-
-    internal int? Apply(MaximumFrequencyStackSolution.IFreqStack freqStack)
+    // One call in a FreqStack script: push a value, or pop. Pure dispatch, built via the
+    // named factories below so a script (like Examples above) reads like the LeetCode call
+    // sequence it replays. Push returns null (no return value); Pop returns the popped
+    // value - the same null-means-"no return value" convention MinStackOp.Apply uses.
+    // Nested here rather than left at file scope so the file declares exactly one type.
+    public readonly record struct FreqStackOp(bool isPush, int value)
     {
-        if (!isPush)
-        {
-            return freqStack.Pop();
-        }
+        public static FreqStackOp Push(int value) => new(true, value);
 
-        freqStack.Push(value);
-        return null;
+        public static FreqStackOp Pop() => new(false, 0);
+
+        internal int? Apply(MaximumFrequencyStackSolution.IFreqStack freqStack)
+        {
+            if (!isPush)
+            {
+                return freqStack.Pop();
+            }
+
+            freqStack.Push(value);
+            return null;
+        }
     }
 }

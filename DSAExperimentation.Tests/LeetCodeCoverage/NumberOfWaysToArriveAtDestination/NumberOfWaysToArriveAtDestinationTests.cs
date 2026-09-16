@@ -29,16 +29,20 @@ public sealed class NumberOfWaysToArriveAtDestinationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountWaysByNaiveDfs_LeetCodeExamples_CountsEveryShortestTimeJourney(
-        int intersectionCount, int[][] roads, long expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToArriveAtDestinationSolution.CountWaysByNaiveDfs(intersectionCount, roads));
+        int intersectionCount, int[][] roads, long expected)
+    {
+        var actual = NumberOfWaysToArriveAtDestinationSolution.CountWaysByNaiveDfs(intersectionCount, roads);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountWaysByDagFold_LeetCodeExamples_CountsEveryShortestTimeJourney(
-        int intersectionCount, int[][] roads, long expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToArriveAtDestinationSolution.CountWaysByDagFold(intersectionCount, roads));
+        int intersectionCount, int[][] roads, long expected)
+    {
+        var actual = NumberOfWaysToArriveAtDestinationSolution.CountWaysByDagFold(intersectionCount, roads);
+
+        Assert.Equal(expected, actual);
+    }
 }

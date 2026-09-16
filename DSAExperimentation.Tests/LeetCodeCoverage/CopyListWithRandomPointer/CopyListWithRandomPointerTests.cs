@@ -48,12 +48,24 @@ public sealed class CopyListWithRandomPointerTests
             nodes[i].Next = nodes[i + 1];
         }
 
-        for (var i = 0; i < nodes.Length; i++)
-        {
-            nodes[i].Random = spec[i].RandomIndex is int index ? nodes[index] : null;
-        }
+        LinkRandomPointers(nodes, spec);
 
         return nodes[0];
+    }
+
+    // Each node's Random is its own spec entry's target, or stays at the null it was
+    // constructed with when the spec records no Random for it - which is why the
+    // absent case needs no assignment of its own.
+    private static void LinkRandomPointers(
+        RandomLinkedListNode<int>[] nodes, (int Value, int? RandomIndex)[] spec)
+    {
+        for (var i = 0; i < nodes.Length; i++)
+        {
+            if (spec[i].RandomIndex is int index)
+            {
+                nodes[i].Random = nodes[index];
+            }
+        }
     }
 
     private static (int Value, int? RandomIndex)[] Flatten(RandomLinkedListNode<int>? head)

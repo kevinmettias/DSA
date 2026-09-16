@@ -7,24 +7,31 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfDigitsAreEqualInStrin
 // strategies to LeetCode's published examples.
 public sealed class CheckIfDigitsAreEqualInStringAfterOperationsITests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<DigitsMatchExample> Examples =>
         new()
         {
-            { "3902", true },
-            { "34789", false },
+            { new DigitsMatchExample(S: "3902", Expected: true) },
+            { new DigitsMatchExample(S: "34789", Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreEqualByAdjacentSumReduction_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
-        string s, bool expected) =>
+        DigitsMatchExample example) =>
         Assert.Equal(
-            expected, CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(s));
+            example.Expected,
+            CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreEqualByPascalRowCoefficients_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
-        string s, bool expected) =>
+        DigitsMatchExample example) =>
         Assert.Equal(
-            expected, CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByPascalRowCoefficients(s));
+            example.Expected,
+            CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByPascalRowCoefficients(example.S));
+
+    // One LeetCode example: the digit string and whether the two final digits match. The
+    // row names both positions - a bare `bool` argument would read as "true" and say
+    // nothing about what is true.
+    public readonly record struct DigitsMatchExample(string S, bool Expected);
 }

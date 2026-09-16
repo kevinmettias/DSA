@@ -18,12 +18,18 @@ public sealed class MaximizeActiveSectionWithTradeIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxActiveAfterTradeByRunScan_LeetCodeExamples_ReturnsBestTradeCountPerQuery(
-        string s, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRunScan(s, queries));
+        string s, int[][] queries, int[] expected)
+    {
+        var actual = MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRunScan(s, queries);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxActiveAfterTradeByRangeMaxIndex_LeetCodeExamples_ReturnsBestTradeCountPerQuery(
-        string s, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRangeMaxIndex(s, queries));
+        string s, int[][] queries, int[] expected)
+    {
+        var actual = MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRangeMaxIndex(s, queries);
+        Assert.Equal(expected, actual);
+    }
 }

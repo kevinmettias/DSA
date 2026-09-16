@@ -19,18 +19,22 @@ public sealed class MakeLexicographicallySmallestArrayBySwappingElementsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LexicographicallySmallestArrayByContiguousGroups_LeetCodeExamples_ReturnsSmallestArray(
-        int[] nums, int limit, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MakeLexicographicallySmallestArrayBySwappingElementsSolution
-                .LexicographicallySmallestArrayByContiguousGroups(nums, limit));
+        int[] nums, int limit, int[] expected)
+    {
+        var actual = MakeLexicographicallySmallestArrayBySwappingElementsSolution
+            .LexicographicallySmallestArrayByContiguousGroups(nums, limit);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LexicographicallySmallestArrayByDisjointSet_LeetCodeExamples_ReturnsSmallestArray(
-        int[] nums, int limit, int[] expected) =>
-        Assert.Equal(
-            expected,
-            MakeLexicographicallySmallestArrayBySwappingElementsSolution
-                .LexicographicallySmallestArrayByDisjointSet(nums, limit));
+        int[] nums, int limit, int[] expected)
+    {
+        var actual = MakeLexicographicallySmallestArrayBySwappingElementsSolution
+            .LexicographicallySmallestArrayByDisjointSet(nums, limit);
+
+        Assert.Equal(expected, actual);
+    }
 }

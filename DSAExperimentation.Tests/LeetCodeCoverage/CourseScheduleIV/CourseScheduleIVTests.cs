@@ -21,18 +21,20 @@ public sealed class CourseScheduleIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckIfPrerequisiteByBreadthFirstSearchPerQuery_LeetCodeExamples_AnswersEveryQuery(
-        int numCourses, int[][] prerequisites, int[][] queries, bool[] expected) =>
-        Assert.Equal(
-            expected,
-            CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
-                numCourses, prerequisites, queries));
+        int numCourses, int[][] prerequisites, int[][] queries, bool[] expected)
+    {
+        var actual = CourseScheduleIVSolution.CheckIfPrerequisiteByBreadthFirstSearchPerQuery(
+            numCourses, prerequisites, queries);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckIfPrerequisiteByFloydWarshall_LeetCodeExamples_AnswersEveryQuery(
-        int numCourses, int[][] prerequisites, int[][] queries, bool[] expected) =>
-        Assert.Equal(
-            expected,
-            CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(
-                numCourses, prerequisites, queries));
+        int numCourses, int[][] prerequisites, int[][] queries, bool[] expected)
+    {
+        var actual = CourseScheduleIVSolution.CheckIfPrerequisiteByFloydWarshall(
+            numCourses, prerequisites, queries);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -17,14 +17,18 @@ public sealed class CountPartitionsWithMaxMinDifferenceAtMostKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPartitionsByBruteForce_LeetCodeExamples_ReturnsValidPartitionCount(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, CountPartitionsWithMaxMinDifferenceAtMostKSolution.CountPartitionsByBruteForce(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = CountPartitionsWithMaxMinDifferenceAtMostKSolution.CountPartitionsByBruteForce(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPartitionsBySlidingWindowDeque_LeetCodeExamples_ReturnsValidPartitionCount(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(
-            expected,
-            CountPartitionsWithMaxMinDifferenceAtMostKSolution.CountPartitionsBySlidingWindowDeque(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = CountPartitionsWithMaxMinDifferenceAtMostKSolution.CountPartitionsBySlidingWindowDeque(nums, k);
+        Assert.Equal(expected, actual);
+    }
 }

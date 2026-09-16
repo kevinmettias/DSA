@@ -32,16 +32,20 @@ public sealed class NumberOfPairsSatisfyingInequalityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByPairwiseScan_LeetCodeExamples_ReturnsSatisfyingPairCount(
-        int[] nums1, int[] nums2, int diff, long expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfPairsSatisfyingInequalitySolution.CountPairsByPairwiseScan(nums1, nums2, diff));
+        int[] nums1, int[] nums2, int diff, long expected)
+    {
+        var actual = NumberOfPairsSatisfyingInequalitySolution.CountPairsByPairwiseScan(nums1, nums2, diff);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByFenwickTreeSweep_LeetCodeExamples_ReturnsSatisfyingPairCount(
-        int[] nums1, int[] nums2, int diff, long expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfPairsSatisfyingInequalitySolution.CountPairsByFenwickTreeSweep(nums1, nums2, diff));
+        int[] nums1, int[] nums2, int diff, long expected)
+    {
+        var actual = NumberOfPairsSatisfyingInequalitySolution.CountPairsByFenwickTreeSweep(nums1, nums2, diff);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -31,16 +31,18 @@ public sealed class MinimumScoreOfAPathBetweenTwoCitiesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinScoreByBreadthFirstFloodFill_LeetCodeExamples_ReturnsMinimumEdgeWeightInCity1Component(
-        int cityCount, int[][] roads, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumScoreOfAPathBetweenTwoCitiesSolution.MinScoreByBreadthFirstFloodFill(cityCount, roads));
+        int cityCount, int[][] roads, int expected)
+    {
+        var actual = MinimumScoreOfAPathBetweenTwoCitiesSolution.MinScoreByBreadthFirstFloodFill(cityCount, roads);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinScoreByDisjointSet_LeetCodeExamples_ReturnsMinimumEdgeWeightInCity1Component(
-        int cityCount, int[][] roads, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumScoreOfAPathBetweenTwoCitiesSolution.MinScoreByDisjointSet(cityCount, roads));
+        int cityCount, int[][] roads, int expected)
+    {
+        var actual = MinimumScoreOfAPathBetweenTwoCitiesSolution.MinScoreByDisjointSet(cityCount, roads);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -33,12 +33,20 @@ public sealed class MaximumAndSumOfArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumAndSumByBruteForceRecursion_LeetCodeExamples_ReturnsMaximumAndSum(
-        int[] nums, int numSlots, int expected) =>
-        Assert.Equal(expected, MaximumAndSumOfArraySolution.MaximumAndSumByBruteForceRecursion(nums, numSlots));
+        int[] nums, int numSlots, int expected)
+    {
+        var actual = MaximumAndSumOfArraySolution.MaximumAndSumByBruteForceRecursion(nums, numSlots);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumAndSumByMemoizedBitmask_LeetCodeExamples_ReturnsMaximumAndSum(
-        int[] nums, int numSlots, int expected) =>
-        Assert.Equal(expected, MaximumAndSumOfArraySolution.MaximumAndSumByMemoizedBitmask(nums, numSlots));
+        int[] nums, int numSlots, int expected)
+    {
+        var actual = MaximumAndSumOfArraySolution.MaximumAndSumByMemoizedBitmask(nums, numSlots);
+
+        Assert.Equal(expected, actual);
+    }
 }

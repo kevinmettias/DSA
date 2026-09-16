@@ -37,24 +37,28 @@ public sealed class AllElementsInTwoBinarySearchTreesTests
     public void GetAllElementsByInOrderMerge_LeetCodeExamples_ReturnsMergedAscendingValues(
         int[] tree1,
         int[] tree2,
-        int[] expected) =>
-        Assert.Equal(
-            expected,
-            AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByInOrderMerge(
-                BuildTree(tree1),
-                BuildTree(tree2)));
+        int[] expected)
+    {
+        var actual = AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByInOrderMerge(
+            BuildTree(tree1),
+            BuildTree(tree2));
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetAllElementsByCollectThenSort_LeetCodeExamples_ReturnsMergedAscendingValues(
         int[] tree1,
         int[] tree2,
-        int[] expected) =>
-        Assert.Equal(
-            expected,
-            AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByCollectThenSort(
-                BuildTree(tree1),
-                BuildTree(tree2)));
+        int[] expected)
+    {
+        var actual = AllElementsInTwoBinarySearchTreesSolution.GetAllElementsByCollectThenSort(
+            BuildTree(tree1),
+            BuildTree(tree2));
+
+        Assert.Equal(expected, actual);
+    }
 
     private static BinaryTreeNode<int>? BuildTree(int[] insertionOrder)
     {

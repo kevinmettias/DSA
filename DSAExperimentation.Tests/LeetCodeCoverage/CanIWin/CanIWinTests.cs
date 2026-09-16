@@ -8,26 +8,38 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CanIWin;
 // test helper and an anonymous benchmark arm.
 public sealed class CanIWinTests
 {
-    public static TheoryData<int, int, bool> Examples =>
+    public static TheoryData<CanWinExample> Examples =>
         new()
         {
-            { 10, 11, false },
-            { 10, 0, true },
-            { 10, 1, true },
-            { 10, 40, false },
-            { 4, 11, false },
-            { 4, 6, true },
+            { new CanWinExample(MaxChoosableInteger: 10, DesiredTotal: 11, Expected: false) },
+            { new CanWinExample(MaxChoosableInteger: 10, DesiredTotal: 0, Expected: true) },
+            { new CanWinExample(MaxChoosableInteger: 10, DesiredTotal: 1, Expected: true) },
+            { new CanWinExample(MaxChoosableInteger: 10, DesiredTotal: 40, Expected: false) },
+            { new CanWinExample(MaxChoosableInteger: 4, DesiredTotal: 11, Expected: false) },
+            { new CanWinExample(MaxChoosableInteger: 4, DesiredTotal: 6, Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanWinByBruteForceRecursion_LeetCodeExamples_MatchesExpectedOutcome(
-        int maxChoosableInteger, int desiredTotal, bool expected) =>
-        Assert.Equal(expected, CanIWinSolution.CanWinByBruteForceRecursion(maxChoosableInteger, desiredTotal));
+    public void CanWinByBruteForceRecursion_LeetCodeExamples_MatchesExpectedOutcome(CanWinExample example)
+    {
+        var canWin = CanIWinSolution.CanWinByBruteForceRecursion(
+            example.MaxChoosableInteger, example.DesiredTotal);
+
+        Assert.Equal(example.Expected, canWin);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanWinByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(
-        int maxChoosableInteger, int desiredTotal, bool expected) =>
-        Assert.Equal(expected, CanIWinSolution.CanWinByMemoizedRecursion(maxChoosableInteger, desiredTotal));
+    public void CanWinByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(CanWinExample example)
+    {
+        var canWin = CanIWinSolution.CanWinByMemoizedRecursion(example.MaxChoosableInteger, example.DesiredTotal);
+
+        Assert.Equal(example.Expected, canWin);
+    }
+
+    // One LeetCode example: the largest choosable integer, the total that decides the
+    // game, and whether the first player wins. The row names every position - a bare
+    // `bool` argument would read as "true" and say nothing about what is true.
+    public readonly record struct CanWinExample(int MaxChoosableInteger, int DesiredTotal, bool Expected);
 }

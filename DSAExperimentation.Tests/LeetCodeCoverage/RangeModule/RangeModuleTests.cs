@@ -67,40 +67,41 @@ public sealed class RangeModuleTests
             Assert.Equal(expected[i], operations[i].Apply(module));
         }
     }
-}
 
-// One call in a RangeModule script: which method to invoke and with what bounds. Pure
-// dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays. Add/Remove return null (no
-// comparable value); Query returns the actual answer - the same null-means-"no return
-// value" convention AllOneOp.Apply uses for its own Inc/Dec split.
-public readonly record struct RangeModuleOp(RangeModuleOp.OpKind kind, int left, int right)
-{
-    public static RangeModuleOp Add(int left, int right) => new(OpKind.Add, left, right);
-
-    public static RangeModuleOp Query(int left, int right) => new(OpKind.Query, left, right);
-
-    public static RangeModuleOp Remove(int left, int right) => new(OpKind.Remove, left, right);
-
-    internal bool? Apply(RangeModuleSolution.IRangeModule module)
+    // One call in a RangeModule script: which method to invoke and with what bounds. Pure
+    // dispatch, built via the named factories below so a script (like Examples above)
+    // reads like the LeetCode call sequence it replays. Add/Remove return null (no
+    // comparable value); Query returns the actual answer - the same null-means-"no return
+    // value" convention AllOneOp.Apply uses for its own Inc/Dec split. Nested here rather
+    // than left at file scope so the file declares exactly one type.
+    public readonly record struct RangeModuleOp(RangeModuleOp.OpKind kind, int left, int right)
     {
-        switch (kind)
+        public static RangeModuleOp Add(int left, int right) => new(OpKind.Add, left, right);
+
+        public static RangeModuleOp Query(int left, int right) => new(OpKind.Query, left, right);
+
+        public static RangeModuleOp Remove(int left, int right) => new(OpKind.Remove, left, right);
+
+        internal bool? Apply(RangeModuleSolution.IRangeModule module)
         {
-            case OpKind.Add:
-                module.AddRange(left, right);
-                return null;
-            case OpKind.Query:
-                return module.QueryRange(left, right);
-            default:
-                module.RemoveRange(left, right);
-                return null;
+            switch (kind)
+            {
+                case OpKind.Add:
+                    module.AddRange(left, right);
+                    return null;
+                case OpKind.Query:
+                    return module.QueryRange(left, right);
+                default:
+                    module.RemoveRange(left, right);
+                    return null;
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Add,
-        Query,
-        Remove,
+        public enum OpKind
+        {
+            Add,
+            Query,
+            Remove,
+        }
     }
 }

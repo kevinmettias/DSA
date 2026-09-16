@@ -6,22 +6,22 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DecodeString;
 // just pins them to LeetCode's published examples.
 public sealed class DecodeStringTests
 {
-    public static TheoryData<string, string> Examples =>
+    public static TheoryData<DecodeCase> Examples =>
         new()
         {
-            { "3[a]2[bc]", "aaabcbc" },
-            { "3[a2[c]]", "accaccacc" },
-            { "2[abc]3[cd]ef", "abcabccdcdcdef" },
-            { "abc", "abc" },
+            { new DecodeCase(Encoded: "3[a]2[bc]", Expected: "aaabcbc") },
+            { new DecodeCase(Encoded: "3[a2[c]]", Expected: "accaccacc") },
+            { new DecodeCase(Encoded: "2[abc]3[cd]ef", Expected: "abcabccdcdcdef") },
+            { new DecodeCase(Encoded: "abc", Expected: "abc") },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DecodeByRecursiveDescent_LeetCodeExamples_ReturnsExpandedString(string encoded, string expected) =>
-        Assert.Equal(expected, DecodeStringSolution.DecodeByRecursiveDescent(encoded));
+    public void DecodeByRecursiveDescent_LeetCodeExamples_ReturnsExpandedString(DecodeCase example) =>
+        Assert.Equal(example.Expected, DecodeStringSolution.DecodeByRecursiveDescent(example.Encoded));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void DecodeByStackScan_LeetCodeExamples_ReturnsExpandedString(string encoded, string expected) =>
-        Assert.Equal(expected, DecodeStringSolution.DecodeByStackScan(encoded));
+    public void DecodeByStackScan_LeetCodeExamples_ReturnsExpandedString(DecodeCase example) =>
+        Assert.Equal(example.Expected, DecodeStringSolution.DecodeByStackScan(example.Encoded));
 }

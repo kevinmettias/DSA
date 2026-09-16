@@ -29,12 +29,20 @@ public sealed class CollectCoinsInATreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinEdgesByRescan_LeetCodeExamples_ReturnsRoundTripEdgeCount(
-        int[][] edges, int[] coins, int expected) =>
-        Assert.Equal(expected, CollectCoinsInATreeSolution.MinEdgesByRescan(edges, coins));
+        int[][] edges, int[] coins, int expected)
+    {
+        var actual = CollectCoinsInATreeSolution.MinEdgesByRescan(edges, coins);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinEdgesByLeafQueue_LeetCodeExamples_ReturnsRoundTripEdgeCount(
-        int[][] edges, int[] coins, int expected) =>
-        Assert.Equal(expected, CollectCoinsInATreeSolution.MinEdgesByLeafQueue(edges, coins));
+        int[][] edges, int[] coins, int expected)
+    {
+        var actual = CollectCoinsInATreeSolution.MinEdgesByLeafQueue(edges, coins);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignANumberContainerSystem.DesignANumberContainerSystemSolution;
+using DSAExperimentation.LeetCode.DesignANumberContainerSystem;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignANumberContainerSystem;
 
@@ -75,45 +75,22 @@ public sealed class DesignANumberContainerSystemTests
     [MemberData(nameof(Examples))]
     public void NumberContainersByLinearScan_LeetCodeExamples_FindsSmallestCurrentlyAssignedIndex(
         NumberContainerOp[] operations, int?[] expected) =>
-        RunScript(new NumberContainersByLinearScan(), operations, expected);
+        RunScript(new DesignANumberContainerSystemSolution.NumberContainersByLinearScan(), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberContainersByLazyDeletionHeap_LeetCodeExamples_FindsSmallestCurrentlyAssignedIndex(
         NumberContainerOp[] operations, int?[] expected) =>
-        RunScript(new NumberContainersByLazyDeletionHeap(), operations, expected);
+        RunScript(new DesignANumberContainerSystemSolution.NumberContainersByLazyDeletionHeap(), operations, expected);
 
-    private static void RunScript(INumberContainerStrategy strategy, NumberContainerOp[] operations, int?[] expected)
+    private static void RunScript(
+        DesignANumberContainerSystemSolution.INumberContainerStrategy strategy,
+        NumberContainerOp[] operations,
+        int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
-    }
-}
-
-// One call in a NumberContainers script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct NumberContainerOp(bool isFind, int index, int number)
-{
-    public static NumberContainerOp Change(int index, int number) => new(isFind: false, index, number);
-
-    public static NumberContainerOp Find(int number) => new(isFind: true, index: 0, number);
-
-    // null for the void Change call, the reported index for Find - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: INumberContainerStrategy is internal to
-    // DesignANumberContainerSystemSolution, and only this same assembly's
-    // RunScript ever calls Apply.
-    internal int? Apply(INumberContainerStrategy strategy)
-    {
-        if (isFind)
-        {
-            return strategy.Find(number);
-        }
-
-        strategy.Change(index, number);
-        return null;
     }
 }

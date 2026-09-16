@@ -80,7 +80,11 @@ public sealed class IncreasingOrderSearchTreeTests
             tree.Insert(value);
         }
 
-        return tree.Root!;
+        // Every example above inserts at least one value, and BinarySearchTree.Insert
+        // gives the tree its Root on the first of them.
+        return tree.Root
+            ?? throw new InvalidOperationException(
+                "every example above inserts at least one value, so the first Insert set Root");
     }
 
     private static int[] RightChain(BinaryTreeNode<int>? root)

@@ -17,12 +17,18 @@ public sealed class CountPrimeGapBalancedSubarraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByBruteForce_LeetCodeExamples_ReturnsPrimeGapBalancedSubarrayCount(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, CountPrimeGapBalancedSubarraysSolution.CountByBruteForce(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = CountPrimeGapBalancedSubarraysSolution.CountByBruteForce(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByPrimeWindowDeque_LeetCodeExamples_ReturnsPrimeGapBalancedSubarrayCount(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, CountPrimeGapBalancedSubarraysSolution.CountByPrimeWindowDeque(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = CountPrimeGapBalancedSubarraysSolution.CountByPrimeWindowDeque(nums, k);
+        Assert.Equal(expected, actual);
+    }
 }

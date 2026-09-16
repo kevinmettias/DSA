@@ -27,16 +27,21 @@ public sealed class FindServersThatHandledMostNumberOfRequestsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void BusiestServersByLinearScanRing_LeetCodeExamples_ReturnsBusiestServers(
-        int k, int[] arrival, int[] load, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindServersThatHandledMostNumberOfRequestsSolution.BusiestServersByLinearScanRing(k, arrival, load));
+        int k, int[] arrival, int[] load, int[] expected)
+    {
+        var actual = FindServersThatHandledMostNumberOfRequestsSolution.BusiestServersByLinearScanRing(k, arrival, load);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BusiestServersByFenwickCeilingAndHeap_LeetCodeExamples_ReturnsBusiestServers(
-        int k, int[] arrival, int[] load, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindServersThatHandledMostNumberOfRequestsSolution.BusiestServersByFenwickCeilingAndHeap(k, arrival, load));
+        int k, int[] arrival, int[] load, int[] expected)
+    {
+        var actual = FindServersThatHandledMostNumberOfRequestsSolution.BusiestServersByFenwickCeilingAndHeap(
+            k, arrival, load);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -23,37 +23,35 @@ public sealed class RandomPointInNonOverlappingRectanglesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PickByLinearScan_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(int[][] rects, int seed) =>
-        AssertEveryPickLandsInsideARectangle(
-            rects, seed, RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan);
+        AssertEveryPickLandsInsideARectangle(rects, seed, new LinearScanPicker());
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PickByBinarySearchUpperBound_LeetCodeExamples_AlwaysLandsInsideSomeRectangle(
         int[][] rects, int seed) =>
-        AssertEveryPickLandsInsideARectangle(
-            rects, seed, RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound);
+        AssertEveryPickLandsInsideARectangle(rects, seed, new BinarySearchPicker());
 
     [Fact]
     public void PickByLinearScan_OneRectangleFarLargerByArea_LandsThereFarMoreOften() =>
-        AssertLargeRectangleDominates(RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan);
+        AssertLargeRectangleDominates(new LinearScanPicker());
 
     [Fact]
     public void PickByBinarySearchUpperBound_OneRectangleFarLargerByArea_LandsThereFarMoreOften() =>
-        AssertLargeRectangleDominates(RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound);
+        AssertLargeRectangleDominates(new BinarySearchPicker());
 
     private static void AssertEveryPickLandsInsideARectangle(
-        int[][] rects, int seed, Func<int[][], Random, int[]> pick)
+        int[][] rects, int seed, IRectanglePicker picker)
     {
         var random = new Random(seed);
 
         for (var i = 0; i < DrawsPerBoundsCheck; i++)
         {
-            var point = pick(rects, random);
+            var point = picker.Pick(rects, random);
             Assert.Contains(rects, rect => IsInside(point, rect));
         }
     }
 
-    private static void AssertLargeRectangleDominates(Func<int[][], Random, int[]> pick)
+    private static void AssertLargeRectangleDominates(IRectanglePicker picker)
     {
         int[][] rects = [[0, 0, 0, 0], [0, 0, 100, 100]];
         var random = new Random(3);
@@ -61,7 +59,7 @@ public sealed class RandomPointInNonOverlappingRectanglesTests
         var largeRectangleHits = 0;
         for (var i = 0; i < DrawsPerAreaWeightingCheck; i++)
         {
-            var point = pick(rects, random);
+            var point = picker.Pick(rects, random);
             if (point[0] != 0 || point[1] != 0)
             {
                 largeRectangleHits++;
@@ -73,4 +71,29 @@ public sealed class RandomPointInNonOverlappingRectanglesTests
 
     private static bool IsInside(int[] point, int[] rect) =>
         point[0] >= rect[0] && point[0] <= rect[2] && point[1] >= rect[1] && point[1] <= rect[3];
+
+    // One drawing strategy: given the rectangles and a source of randomness, return one
+    // point that lies inside one of them. The two shared assertion helpers used to take
+    // the strategy as a bare delegate, which named neither the decision nor its inputs;
+    // this type states in one named method what a picker is and is the place the contract
+    // - always inside a rectangle, weighted by area - is written down. Nested because both
+    // it and its two implementations are only ever used inside this test class.
+    private interface IRectanglePicker
+    {
+        int[] Pick(int[][] rects, Random random);
+    }
+
+    // Uniform-free prefix-area scan: the arm that reaches for the solution's own name.
+    private sealed class LinearScanPicker : IRectanglePicker
+    {
+        public int[] Pick(int[][] rects, Random random) =>
+            RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(rects, random);
+    }
+
+    // The strategy the solution offers as its efficient arm, behind the same name.
+    private sealed class BinarySearchPicker : IRectanglePicker
+    {
+        public int[] Pick(int[][] rects, Random random) =>
+            RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(rects, random);
+    }
 }

@@ -37,16 +37,20 @@ public sealed class NumberOfStudentsUnableToEatLunchTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountStudentsByListSimulation_LeetCodeExamples_ReturnsStudentsLeftWhenTheLineStalls(
-        int[] students, int[] sandwiches, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfStudentsUnableToEatLunchSolution.CountStudentsByListSimulation(students, sandwiches));
+        int[] students, int[] sandwiches, int expected)
+    {
+        var actual = NumberOfStudentsUnableToEatLunchSolution.CountStudentsByListSimulation(students, sandwiches);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountStudentsByQueueStackSimulation_LeetCodeExamples_ReturnsStudentsLeftWhenTheLineStalls(
-        int[] students, int[] sandwiches, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfStudentsUnableToEatLunchSolution.CountStudentsByQueueStackSimulation(students, sandwiches));
+        int[] students, int[] sandwiches, int expected)
+    {
+        var actual = NumberOfStudentsUnableToEatLunchSolution.CountStudentsByQueueStackSimulation(students, sandwiches);
+
+        Assert.Equal(expected, actual);
+    }
 }

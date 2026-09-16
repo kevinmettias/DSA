@@ -17,14 +17,22 @@ public sealed class CombinationSumIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CombinationsByBruteForce_LeetCodeExamples_ReturnsExpectedCombinations(
-        int k, int n, int[][] expected) =>
-        AssertSameCombinations(expected, CombinationSumIIISolution.CombinationsByBruteForce(k, n));
+        int k, int n, int[][] expected)
+    {
+        var actual = CombinationSumIIISolution.CombinationsByBruteForce(k, n);
+
+        AssertSameCombinations(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CombinationsByBacktrackEngine_LeetCodeExamples_ReturnsExpectedCombinations(
-        int k, int n, int[][] expected) =>
-        AssertSameCombinations(expected, CombinationSumIIISolution.CombinationsByBacktrackEngine(k, n));
+        int k, int n, int[][] expected)
+    {
+        var actual = CombinationSumIIISolution.CombinationsByBacktrackEngine(k, n);
+
+        AssertSameCombinations(expected, actual);
+    }
 
     private static void AssertSameCombinations(int[][] expected, List<List<int>> actual)
     {

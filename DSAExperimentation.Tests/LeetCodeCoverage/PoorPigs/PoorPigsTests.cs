@@ -19,12 +19,20 @@ public sealed class PoorPigsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinPigsByLinearRecompute_ClassicExamples_ReturnsMinimumPigCount(
-        int buckets, int minutesToDie, int minutesToTest, int expected) =>
-        Assert.Equal(expected, PoorPigsSolution.MinPigsByLinearRecompute(buckets, minutesToDie, minutesToTest));
+        int buckets, int minutesToDie, int minutesToTest, int expected)
+    {
+        var actual = PoorPigsSolution.MinPigsByLinearRecompute(buckets, minutesToDie, minutesToTest);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinPigsByBinarySearch_ClassicExamples_ReturnsMinimumPigCount(
-        int buckets, int minutesToDie, int minutesToTest, int expected) =>
-        Assert.Equal(expected, PoorPigsSolution.MinPigsByBinarySearch(buckets, minutesToDie, minutesToTest));
+        int buckets, int minutesToDie, int minutesToTest, int expected)
+    {
+        var actual = PoorPigsSolution.MinPigsByBinarySearch(buckets, minutesToDie, minutesToTest);
+
+        Assert.Equal(expected, actual);
+    }
 }

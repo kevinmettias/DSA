@@ -34,12 +34,20 @@ public sealed class PalindromicPathQueriesInATreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsPalindromePathByAncestorWalk_LeetCodeExamples_ReturnsWhetherEachPathReorders(
-        int[] parent, string s, int[][] queries, bool[] expected) =>
-        Assert.Equal(expected, PalindromicPathQueriesInATreeSolution.IsPalindromePathByAncestorWalk(parent, s, queries));
+        int[] parent, string s, int[][] queries, bool[] expected)
+    {
+        var actual = PalindromicPathQueriesInATreeSolution.IsPalindromePathByAncestorWalk(parent, s, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsPalindromePathByLcaBitmask_LeetCodeExamples_ReturnsWhetherEachPathReorders(
-        int[] parent, string s, int[][] queries, bool[] expected) =>
-        Assert.Equal(expected, PalindromicPathQueriesInATreeSolution.IsPalindromePathByLcaBitmask(parent, s, queries));
+        int[] parent, string s, int[][] queries, bool[] expected)
+    {
+        var actual = PalindromicPathQueriesInATreeSolution.IsPalindromePathByLcaBitmask(parent, s, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -18,12 +18,20 @@ public sealed class ShortestDistanceAfterRoadAdditionQueriesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestDistancesByAdjacencyBfs_LeetCodeExamples_ReturnsShortestDistanceAfterEachQuery(
-        int n, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, ShortestDistanceAfterRoadAdditionQueriesIISolution.ShortestDistancesByAdjacencyBfs(n, queries));
+        int n, int[][] queries, int[] expected)
+    {
+        var actual = ShortestDistanceAfterRoadAdditionQueriesIISolution.ShortestDistancesByAdjacencyBfs(n, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestDistancesByIntervalSet_LeetCodeExamples_ReturnsShortestDistanceAfterEachQuery(
-        int n, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, ShortestDistanceAfterRoadAdditionQueriesIISolution.ShortestDistancesByIntervalSet(n, queries));
+        int n, int[][] queries, int[] expected)
+    {
+        var actual = ShortestDistanceAfterRoadAdditionQueriesIISolution.ShortestDistancesByIntervalSet(n, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -9,31 +9,37 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIV;
 // with only the memoized arm under test.
 public sealed class StoneGameIVTests
 {
-    public static TheoryData<int, bool> Examples =>
+    public static TheoryData<TakeAwaySquaresExample> Examples =>
         new()
         {
-            { 1, true },
-            { 2, false },
-            { 3, true },
-            { 4, true },
-            { 5, false },
-            { 6, true },
-            { 7, false },
-            { 8, true },
-            { 9, true },
-            { 10, false },
-            { 17, false },
+            new TakeAwaySquaresExample(1, AliceWins: true),
+            new TakeAwaySquaresExample(2, AliceWins: false),
+            new TakeAwaySquaresExample(3, AliceWins: true),
+            new TakeAwaySquaresExample(4, AliceWins: true),
+            new TakeAwaySquaresExample(5, AliceWins: false),
+            new TakeAwaySquaresExample(6, AliceWins: true),
+            new TakeAwaySquaresExample(7, AliceWins: false),
+            new TakeAwaySquaresExample(8, AliceWins: true),
+            new TakeAwaySquaresExample(9, AliceWins: true),
+            new TakeAwaySquaresExample(10, AliceWins: false),
+            new TakeAwaySquaresExample(17, AliceWins: false),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AliceWinsByUnmemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
-        int n, bool expected) =>
-        Assert.Equal(expected, StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(n));
+        TakeAwaySquaresExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameIVSolution.AliceWinsByUnmemoizedRecursion(example.N));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AliceWinsByMemoizedRecursion_LeetCodeExamplesAndDeeperRecursion_MatchesExpectedOutcome(
-        int n, bool expected) =>
-        Assert.Equal(expected, StoneGameIVSolution.AliceWinsByMemoizedRecursion(n));
+        TakeAwaySquaresExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameIVSolution.AliceWinsByMemoizedRecursion(example.N));
+
+    // Nested because it is only ever used inside this test class and has no
+    // independent identity: this harness's own vocabulary for one LeetCode example.
+    // The expected answer is a named field of the case rather than a bare `true` or
+    // `false` sitting in the signature where only its position says what it means.
+    public readonly record struct TakeAwaySquaresExample(int N, bool AliceWins);
 }

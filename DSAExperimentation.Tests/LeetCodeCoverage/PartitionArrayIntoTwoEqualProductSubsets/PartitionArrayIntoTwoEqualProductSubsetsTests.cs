@@ -7,26 +7,37 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionArrayIntoTwoEqualPr
 // LeetCode's published examples.
 public sealed class PartitionArrayIntoTwoEqualProductSubsetsTests
 {
-    public static TheoryData<int[], long, bool> Examples =>
+    public static TheoryData<ProductSubsetExample> Examples =>
         new()
         {
-            { [3, 1, 6, 8, 4], 24, true },
-            { [2, 5, 3, 7], 15, false },
+            { new ProductSubsetExample(Nums: [3, 1, 6, 8, 4], Target: 24, Expected: true) },
+            { new ProductSubsetExample(Nums: [2, 5, 3, 7], Target: 15, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckEqualPartitionsByBitmaskEnumeration_LeetCodeExamples_ReturnsWhetherAnEqualSplitExists(
-        int[] nums, long target, bool expected) =>
-        Assert.Equal(
-            expected,
-            PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByBitmaskEnumeration(nums, target));
+        ProductSubsetExample example)
+    {
+        var actual = PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByBitmaskEnumeration(
+            example.Nums, example.Target);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckEqualPartitionsByPrunedBacktracking_LeetCodeExamples_ReturnsWhetherAnEqualSplitExists(
-        int[] nums, long target, bool expected) =>
-        Assert.Equal(
-            expected,
-            PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByPrunedBacktracking(nums, target));
+        ProductSubsetExample example)
+    {
+        var actual = PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByPrunedBacktracking(
+            example.Nums, example.Target);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the numbers, the product each of the two subsets has to
+    // reach, and whether such a split exists. The answer is the datum under test, so
+    // the row names it rather than leaving a bare `bool` after the target.
+    public readonly record struct ProductSubsetExample(int[] Nums, long Target, bool Expected);
 }

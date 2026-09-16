@@ -7,22 +7,31 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfDigitsAreEqualInStrin
 // them to LeetCode's published examples.
 public sealed class CheckIfDigitsAreEqualInStringAfterOperationsIITests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<DigitsMatchExample> Examples =>
         new()
         {
-            { "3902", true },
-            { "34789", false },
+            { new DigitsMatchExample(S: "3902", Expected: true) },
+            { new DigitsMatchExample(S: "34789", Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreEqualByAdjacentSumReduction_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
-        string s, bool expected) =>
-        Assert.Equal(expected, CheckIfDigitsAreEqualInStringAfterOperationsIISolution.AreEqualByAdjacentSumReduction(s));
+        DigitsMatchExample example) =>
+        Assert.Equal(
+            example.Expected,
+            CheckIfDigitsAreEqualInStringAfterOperationsIISolution.AreEqualByAdjacentSumReduction(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreEqualByLucasBinomialCoefficients_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
-        string s, bool expected) =>
-        Assert.Equal(expected, CheckIfDigitsAreEqualInStringAfterOperationsIISolution.AreEqualByLucasBinomialCoefficients(s));
+        DigitsMatchExample example) =>
+        Assert.Equal(
+            example.Expected,
+            CheckIfDigitsAreEqualInStringAfterOperationsIISolution.AreEqualByLucasBinomialCoefficients(example.S));
+
+    // One LeetCode example: the digit string and whether the two final digits match. The
+    // row names both positions - a bare `bool` argument would read as "true" and say
+    // nothing about what is true.
+    public readonly record struct DigitsMatchExample(string S, bool Expected);
 }

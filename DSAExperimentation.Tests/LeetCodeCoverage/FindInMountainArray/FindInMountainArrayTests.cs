@@ -34,12 +34,20 @@ public sealed class FindInMountainArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindIndexByLinearScan_LeetCodeExamples_ReturnsSmallestMatchingIndex(
-        int[] mountain, int target, int expected) =>
-        Assert.Equal(expected, FindInMountainArraySolution.FindIndexByLinearScan(mountain, target));
+        int[] mountain, int target, int expected)
+    {
+        var actual = FindInMountainArraySolution.FindIndexByLinearScan(mountain, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindIndexByPeakBisection_LeetCodeExamples_ReturnsSmallestMatchingIndex(
-        int[] mountain, int target, int expected) =>
-        Assert.Equal(expected, FindInMountainArraySolution.FindIndexByPeakBisection(mountain, target));
+        int[] mountain, int target, int expected)
+    {
+        var actual = FindInMountainArraySolution.FindIndexByPeakBisection(mountain, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

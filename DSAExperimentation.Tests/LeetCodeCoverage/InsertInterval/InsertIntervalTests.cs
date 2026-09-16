@@ -18,12 +18,20 @@ public sealed class InsertIntervalTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void InsertByListSortAndMerge_LeetCodeExamples_ReturnsMergedIntervals(
-        (int Start, int End)[] intervals, (int Start, int End) newInterval, (int Start, int End)[] expected) =>
-        Assert.Equal(expected, InsertIntervalSolution.InsertByListSortAndMerge(intervals, newInterval));
+        (int Start, int End)[] intervals, (int Start, int End) newInterval, (int Start, int End)[] expected)
+    {
+        var actual = InsertIntervalSolution.InsertByListSortAndMerge(intervals, newInterval);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void InsertByIntervalSet_LeetCodeExamples_ReturnsMergedIntervals(
-        (int Start, int End)[] intervals, (int Start, int End) newInterval, (int Start, int End)[] expected) =>
-        Assert.Equal(expected, InsertIntervalSolution.InsertByIntervalSet(intervals, newInterval));
+        (int Start, int End)[] intervals, (int Start, int End) newInterval, (int Start, int End)[] expected)
+    {
+        var actual = InsertIntervalSolution.InsertByIntervalSet(intervals, newInterval);
+
+        Assert.Equal(expected, actual);
+    }
 }

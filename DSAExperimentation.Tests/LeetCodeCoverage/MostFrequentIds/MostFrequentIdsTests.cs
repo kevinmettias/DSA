@@ -16,12 +16,20 @@ public sealed class MostFrequentIdsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostFrequentCountsByBruteForce_LeetCodeExamples_ReturnsMaxCountAfterEachStep(
-        int[] nums, int[] freq, long[] expected) =>
-        Assert.Equal(expected, MostFrequentIdsSolution.MostFrequentCountsByBruteForce(nums, freq));
+        int[] nums, int[] freq, long[] expected)
+    {
+        var actual = MostFrequentIdsSolution.MostFrequentCountsByBruteForce(nums, freq);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostFrequentCountsByLazyHeap_LeetCodeExamples_ReturnsMaxCountAfterEachStep(
-        int[] nums, int[] freq, long[] expected) =>
-        Assert.Equal(expected, MostFrequentIdsSolution.MostFrequentCountsByLazyHeap(nums, freq));
+        int[] nums, int[] freq, long[] expected)
+    {
+        var actual = MostFrequentIdsSolution.MostFrequentCountsByLazyHeap(nums, freq);
+
+        Assert.Equal(expected, actual);
+    }
 }

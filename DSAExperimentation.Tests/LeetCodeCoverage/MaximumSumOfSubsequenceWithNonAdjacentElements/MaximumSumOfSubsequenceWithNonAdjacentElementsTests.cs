@@ -17,16 +17,20 @@ public sealed class MaximumSumOfSubsequenceWithNonAdjacentElementsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumSumByRecomputeDP_LeetCodeExamples_ReturnsSumOfAnswersModulo(
-        int[] nums, int[][] queries, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumSumOfSubsequenceWithNonAdjacentElementsSolution.MaximumSumByRecomputeDP(nums, queries));
+        int[] nums, int[][] queries, int expected)
+    {
+        var actual = MaximumSumOfSubsequenceWithNonAdjacentElementsSolution.MaximumSumByRecomputeDP(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumSumBySegmentTreeMerge_LeetCodeExamples_ReturnsSumOfAnswersModulo(
-        int[] nums, int[][] queries, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumSumOfSubsequenceWithNonAdjacentElementsSolution.MaximumSumBySegmentTreeMerge(nums, queries));
+        int[] nums, int[][] queries, int expected)
+    {
+        var actual = MaximumSumOfSubsequenceWithNonAdjacentElementsSolution.MaximumSumBySegmentTreeMerge(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

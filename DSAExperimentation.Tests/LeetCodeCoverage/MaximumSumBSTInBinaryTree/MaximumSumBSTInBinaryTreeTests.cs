@@ -53,7 +53,7 @@ public sealed class MaximumSumBSTInBinaryTreeTests
             return null;
         }
 
-        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var root = new BinaryTreeNode<int>(values[0].Value);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
@@ -61,24 +61,29 @@ public sealed class MaximumSumBSTInBinaryTreeTests
         while (queue.Count > 0 && i < values.Length)
         {
             var node = queue.Dequeue();
-
-            if (values[i] is int leftValue)
-            {
-                node.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(node.Left);
-            }
-
-            i++;
-
-            if (i < values.Length && values[i] is int rightValue)
-            {
-                node.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(node.Right);
-            }
-
-            i++;
+            i = AttachChildren(node, values, queue, i);
         }
 
         return root;
+    }
+
+    private static int AttachChildren(
+        BinaryTreeNode<int> node, int?[] values, Queue<BinaryTreeNode<int>> queue, int i)
+    {
+        if (i < values.Length && values[i] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        i++;
+
+        if (i < values.Length && values[i] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i + 1;
     }
 }

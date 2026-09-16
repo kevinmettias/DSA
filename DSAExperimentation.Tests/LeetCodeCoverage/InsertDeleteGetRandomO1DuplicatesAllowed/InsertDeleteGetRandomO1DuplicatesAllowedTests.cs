@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed.InsertDeleteGetRandomO1DuplicatesAllowedSolution;
+using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertDeleteGetRandomO1DuplicatesAllowed;
 
@@ -58,16 +58,24 @@ public sealed class InsertDeleteGetRandomO1DuplicatesAllowedTests
     [MemberData(nameof(Examples))]
     public void RandomizedCollectionByListScan_LeetCodeExamples_TracksMultiplicitiesCorrectly(
         RandomizedCollectionOp[] operations, object?[] expected) =>
-        RunScript(new RandomizedCollectionByListScan(), operations, expected);
+        RunScript(
+            new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan(),
+            operations,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandomizedCollectionByLinkedOccurrences_LeetCodeExamples_TracksMultiplicitiesCorrectly(
         RandomizedCollectionOp[] operations, object?[] expected) =>
-        RunScript(new RandomizedCollectionByLinkedOccurrences(), operations, expected);
+        RunScript(
+            new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences(),
+            operations,
+            expected);
 
     private static void RunScript(
-        IRandomizedCollection collection, RandomizedCollectionOp[] operations, object?[] expected)
+        InsertDeleteGetRandomO1DuplicatesAllowedSolution.IRandomizedCollection collection,
+        RandomizedCollectionOp[] operations,
+        object?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
@@ -88,40 +96,5 @@ public sealed class InsertDeleteGetRandomO1DuplicatesAllowedTests
         {
             Assert.Equal(expected, actual);
         }
-    }
-}
-
-// One call in a RandomizedCollection script: which method to invoke and with what
-// argument. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the call sequence it replays.
-public readonly record struct RandomizedCollectionOp(RandomizedCollectionOp.OpKind kind, int value)
-{
-    public static RandomizedCollectionOp Insert(int value) => new(OpKind.Insert, value);
-
-    public static RandomizedCollectionOp Remove(int value) => new(OpKind.Remove, value);
-
-    public static RandomizedCollectionOp GetRandom() => new(OpKind.GetRandom, 0);
-
-    public static RandomizedCollectionOp Count() => new(OpKind.Count, 0);
-
-    // Boxed uniformly so a script runner can assert against one expected value per
-    // operation regardless of which method it dispatches to. Internal, not public:
-    // IRandomizedCollection is internal to
-    // InsertDeleteGetRandomO1DuplicatesAllowedSolution, and only this same assembly's
-    // RunScript ever calls Apply.
-    internal object? Apply(IRandomizedCollection collection) => kind switch
-    {
-        OpKind.Insert => collection.Insert(value),
-        OpKind.Remove => collection.Remove(value),
-        OpKind.GetRandom => collection.GetRandom(),
-        _ => collection.Count,
-    };
-
-    public enum OpKind
-    {
-        Insert,
-        Remove,
-        GetRandom,
-        Count,
     }
 }

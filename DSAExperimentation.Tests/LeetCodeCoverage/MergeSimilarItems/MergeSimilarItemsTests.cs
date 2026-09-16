@@ -58,12 +58,20 @@ public sealed class MergeSimilarItemsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MergeByLinearScan_LeetCodeExamples_SumsSharedWeightsAscendingByValue(
-        int[][] items1, int[][] items2, (int Value, int Weight)[] expected) =>
-        Assert.Equal(expected, MergeSimilarItemsSolution.MergeByLinearScan(items1, items2));
+        int[][] items1, int[][] items2, (int Value, int Weight)[] expected)
+    {
+        var actual = MergeSimilarItemsSolution.MergeByLinearScan(items1, items2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MergeByHashMapAndMergeSort_LeetCodeExamples_SumsSharedWeightsAscendingByValue(
-        int[][] items1, int[][] items2, (int Value, int Weight)[] expected) =>
-        Assert.Equal(expected, MergeSimilarItemsSolution.MergeByHashMapAndMergeSort(items1, items2));
+        int[][] items1, int[][] items2, (int Value, int Weight)[] expected)
+    {
+        var actual = MergeSimilarItemsSolution.MergeByHashMapAndMergeSort(items1, items2);
+
+        Assert.Equal(expected, actual);
+    }
 }

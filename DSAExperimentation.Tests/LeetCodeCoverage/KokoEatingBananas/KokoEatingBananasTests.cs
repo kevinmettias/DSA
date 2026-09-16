@@ -34,12 +34,20 @@ public sealed class KokoEatingBananasTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinEatingSpeedByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
-        int[] piles, int h, int expected) =>
-        Assert.Equal(expected, KokoEatingBananasSolution.MinEatingSpeedByManualBisection(piles, h));
+        int[] piles, int h, int expected)
+    {
+        var actual = KokoEatingBananasSolution.MinEatingSpeedByManualBisection(piles, h);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinEatingSpeedBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
-        int[] piles, int h, int expected) =>
-        Assert.Equal(expected, KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(piles, h));
+        int[] piles, int h, int expected)
+    {
+        var actual = KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(piles, h);
+
+        Assert.Equal(expected, actual);
+    }
 }

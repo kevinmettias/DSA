@@ -36,16 +36,22 @@ public sealed class SmallestMissingGeneticValueInEachSubtreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestMissingValuesBySubtreeRescan_LeetCodeExamples_ReturnsEachSubtreesMissingValue(
-        int[] parents, int[] nums, int[] expected) =>
-        Assert.Equal(
-            expected,
-            SmallestMissingGeneticValueInEachSubtreeSolution.SmallestMissingValuesBySubtreeRescan(parents, nums));
+        int[] parents, int[] nums, int[] expected)
+    {
+        var actual = SmallestMissingGeneticValueInEachSubtreeSolution.SmallestMissingValuesBySubtreeRescan(
+            parents, nums);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestMissingValuesByAncestorChain_LeetCodeExamples_ReturnsEachSubtreesMissingValue(
-        int[] parents, int[] nums, int[] expected) =>
-        Assert.Equal(
-            expected,
-            SmallestMissingGeneticValueInEachSubtreeSolution.SmallestMissingValuesByAncestorChain(parents, nums));
+        int[] parents, int[] nums, int[] expected)
+    {
+        var actual = SmallestMissingGeneticValueInEachSubtreeSolution.SmallestMissingValuesByAncestorChain(
+            parents, nums);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -19,12 +19,20 @@ public sealed class BasicCalculatorIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void EvaluateByDictionaryPolynomial_LeetCodeExamples_ReturnsSortedNonZeroTerms(
-        string expression, string[] evalvars, int[] evalints, string[] expected) =>
-        Assert.Equal(expected, BasicCalculatorIVSolution.EvaluateByDictionaryPolynomial(expression, evalvars, evalints));
+        string expression, string[] evalvars, int[] evalints, string[] expected)
+    {
+        var actual = BasicCalculatorIVSolution.EvaluateByDictionaryPolynomial(expression, evalvars, evalints);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void EvaluateByHashMapMergeSort_LeetCodeExamples_ReturnsSortedNonZeroTerms(
-        string expression, string[] evalvars, int[] evalints, string[] expected) =>
-        Assert.Equal(expected, BasicCalculatorIVSolution.EvaluateByHashMapMergeSort(expression, evalvars, evalints));
+        string expression, string[] evalvars, int[] evalints, string[] expected)
+    {
+        var actual = BasicCalculatorIVSolution.EvaluateByHashMapMergeSort(expression, evalvars, evalints);
+
+        Assert.Equal(expected, actual);
+    }
 }

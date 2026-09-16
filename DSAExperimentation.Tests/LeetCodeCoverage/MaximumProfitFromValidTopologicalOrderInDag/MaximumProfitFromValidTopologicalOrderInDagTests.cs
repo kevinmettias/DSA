@@ -18,16 +18,21 @@ public sealed class MaximumProfitFromValidTopologicalOrderInDagTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByBacktracking_LeetCodeExamples_ReturnsMaximumAchievableProfit(
-        int n, int[][] edges, int[] score, long expected) =>
-        Assert.Equal(
-            expected,
-            MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBacktracking(n, edges, score));
+        int n, int[][] edges, int[] score, long expected)
+    {
+        var actual = MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBacktracking(n, edges, score);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByBitmaskMemoization_LeetCodeExamples_ReturnsMaximumAchievableProfit(
-        int n, int[][] edges, int[] score, long expected) =>
-        Assert.Equal(
-            expected,
-            MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBitmaskMemoization(n, edges, score));
+        int n, int[][] edges, int[] score, long expected)
+    {
+        var actual = MaximumProfitFromValidTopologicalOrderInDagSolution.MaxProfitByBitmaskMemoization(
+            n, edges, score);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -39,12 +39,22 @@ public sealed class NumberOfPeopleAwareOfASecretTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PeopleWithSecretBySlidingWindowSum_LeetCodeExamples_ReturnsPeopleStillRemembering(
-        int n, int delay, int forget, long expected) =>
-        Assert.Equal(expected, NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretBySlidingWindowSum(n, delay, forget));
+        int n, int delay, int forget, long expected)
+    {
+        var actual =
+            NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretBySlidingWindowSum(n, delay, forget);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PeopleWithSecretByFenwickRangeSum_LeetCodeExamples_ReturnsPeopleStillRemembering(
-        int n, int delay, int forget, long expected) =>
-        Assert.Equal(expected, NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretByFenwickRangeSum(n, delay, forget));
+        int n, int delay, int forget, long expected)
+    {
+        var actual =
+            NumberOfPeopleAwareOfASecretSolution.PeopleWithSecretByFenwickRangeSum(n, delay, forget);
+
+        Assert.Equal(expected, actual);
+    }
 }

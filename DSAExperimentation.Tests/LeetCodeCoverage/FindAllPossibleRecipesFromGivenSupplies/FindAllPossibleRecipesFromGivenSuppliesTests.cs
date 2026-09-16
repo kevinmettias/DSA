@@ -67,18 +67,20 @@ public sealed class FindAllPossibleRecipesFromGivenSuppliesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindAllRecipesByFixedPointSweep_LeetCodeExamples_ReturnsMakeableRecipes(
-        string[] recipes, string[][] ingredients, string[] supplies, string[] expected) =>
-        Assert.Equal(
-            expected,
-            FindAllPossibleRecipesFromGivenSuppliesSolution.FindAllRecipesByFixedPointSweep(
-                recipes, ingredients, supplies));
+        string[] recipes, string[][] ingredients, string[] supplies, string[] expected)
+    {
+        var actual = FindAllPossibleRecipesFromGivenSuppliesSolution.FindAllRecipesByFixedPointSweep(
+            recipes, ingredients, supplies);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindAllRecipesByKahnsAlgorithm_LeetCodeExamples_ReturnsMakeableRecipes(
-        string[] recipes, string[][] ingredients, string[] supplies, string[] expected) =>
-        Assert.Equal(
-            expected,
-            FindAllPossibleRecipesFromGivenSuppliesSolution.FindAllRecipesByKahnsAlgorithm(
-                recipes, ingredients, supplies));
+        string[] recipes, string[][] ingredients, string[] supplies, string[] expected)
+    {
+        var actual = FindAllPossibleRecipesFromGivenSuppliesSolution.FindAllRecipesByKahnsAlgorithm(
+            recipes, ingredients, supplies);
+        Assert.Equal(expected, actual);
+    }
 }

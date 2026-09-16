@@ -9,34 +9,47 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindBeautifulIndicesInTheGiv
 // the strategy that broke.
 public sealed class FindBeautifulIndicesInTheGivenArrayIITests
 {
-    public static TheoryData<string, string, string, int, int[]> Examples =>
+    public static TheoryData<BeautifulIndicesCase> Examples =>
         new()
         {
-            { "isawsquirrelnearmysquirrelhouseohmy", "my", "squirrel", 15, [16, 33] },
-            { "abcd", "a", "a", 4, [0] },
+            { new BeautifulIndicesCase(S: "isawsquirrelnearmysquirrelhouseohmy", A: "my", B: "squirrel", K: 15, Expected: [16, 33]) },
+            { new BeautifulIndicesCase(S: "abcd", A: "a", B: "a", K: 4, Expected: [0]) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindBeautifulIndicesByBruteForce_LeetCodeExamples_ReturnsSortedBeautifulIndices(
-        string s, string a, string b, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByBruteForce(
-                new FindBeautifulIndicesInTheGivenArrayIISolution.Haystack(s),
-                new FindBeautifulIndicesInTheGivenArrayIISolution.PrefixPattern(a),
-                new FindBeautifulIndicesInTheGivenArrayIISolution.NearbyPattern(b),
-                k));
+        BeautifulIndicesCase example)
+    {
+        var actual = FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByBruteForce(
+            new FindBeautifulIndicesInTheGivenArrayIISolution.Haystack(example.S),
+            new FindBeautifulIndicesInTheGivenArrayIISolution.PrefixPattern(example.A),
+            new FindBeautifulIndicesInTheGivenArrayIISolution.NearbyPattern(example.B),
+            example.K);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindBeautifulIndicesByZFunction_LeetCodeExamples_ReturnsSortedBeautifulIndices(
-        string s, string a, string b, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByZFunction(
-                new FindBeautifulIndicesInTheGivenArrayIISolution.Haystack(s),
-                new FindBeautifulIndicesInTheGivenArrayIISolution.PrefixPattern(a),
-                new FindBeautifulIndicesInTheGivenArrayIISolution.NearbyPattern(b),
-                k));
+        BeautifulIndicesCase example)
+    {
+        var actual = FindBeautifulIndicesInTheGivenArrayIISolution.FindBeautifulIndicesByZFunction(
+            new FindBeautifulIndicesInTheGivenArrayIISolution.Haystack(example.S),
+            new FindBeautifulIndicesInTheGivenArrayIISolution.PrefixPattern(example.A),
+            new FindBeautifulIndicesInTheGivenArrayIISolution.NearbyPattern(example.B),
+            example.K);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One published example: the text to search, the pattern whose occurrences are the
+    // candidates, the pattern each candidate must sit near, how near, and the indices
+    // LeetCode says qualify. The three strings are the same type and none of them is
+    // interchangeable with another, so the row names which is which. Nested because it is
+    // only ever used inside this test class - it is this harness's own vocabulary, not a
+    // type another file would import.
+    public readonly record struct BeautifulIndicesCase(
+        string S, string A, string B, int K, int[] Expected);
 }

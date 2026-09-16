@@ -52,46 +52,48 @@ public sealed class ImplementQueueUsingStacksTests
             Assert.Equal(expected[i], operations[i].Apply(queue));
         }
     }
-}
 
-// One call in a MyQueue script: which operation to invoke and with what
-// argument. Pure dispatch, built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct QueueOp(QueueOp.OpKind kind, int value)
-{
-    public static QueueOp Push(int value) => new(OpKind.Push, value);
-
-    public static QueueOp Pop() => new(OpKind.Pop, 0);
-
-    public static QueueOp Peek() => new(OpKind.Peek, 0);
-
-    public static QueueOp Empty() => new(OpKind.Empty, 0);
-
-    // null for push, the returned value for pop/peek/empty (boxed as its own
-    // type - int or bool - so the harness can assert without forcing every
-    // operation onto one numeric shape). Internal, not public: only this
-    // same assembly's test method ever calls Apply.
-    internal object? Apply(ImplementQueueUsingStacksSolution.TwoStackQueue queue)
+    // One call in a MyQueue script: which operation to invoke and with what
+    // argument. Pure dispatch, built via the named factories below so a script
+    // (like Examples above) reads like the LeetCode call sequence it replays.
+    // Nested here rather than left at file scope so the file declares exactly
+    // one type.
+    public readonly record struct QueueOp(QueueOp.OpKind kind, int value)
     {
-        switch (kind)
+        public static QueueOp Push(int value) => new(OpKind.Push, value);
+
+        public static QueueOp Pop() => new(OpKind.Pop, 0);
+
+        public static QueueOp Peek() => new(OpKind.Peek, 0);
+
+        public static QueueOp Empty() => new(OpKind.Empty, 0);
+
+        // null for push, the returned value for pop/peek/empty (boxed as its own
+        // type - int or bool - so the harness can assert without forcing every
+        // operation onto one numeric shape). Internal, not public: only this
+        // same assembly's test method ever calls Apply.
+        internal object? Apply(ImplementQueueUsingStacksSolution.TwoStackQueue queue)
         {
-            case OpKind.Push:
-                queue.Push(value);
-                return null;
-            case OpKind.Pop:
-                return queue.Pop();
-            case OpKind.Peek:
-                return queue.Peek();
-            default:
-                return queue.Empty();
+            switch (kind)
+            {
+                case OpKind.Push:
+                    queue.Push(value);
+                    return null;
+                case OpKind.Pop:
+                    return queue.Pop();
+                case OpKind.Peek:
+                    return queue.Peek();
+                default:
+                    return queue.Empty();
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Push,
-        Pop,
-        Peek,
-        Empty,
+        public enum OpKind
+        {
+            Push,
+            Pop,
+            Peek,
+            Empty,
+        }
     }
 }

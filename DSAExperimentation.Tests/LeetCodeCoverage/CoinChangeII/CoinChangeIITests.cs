@@ -18,12 +18,20 @@ public sealed class CoinChangeIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCombinationsByTabulation_LeetCodeExamples_ReturnsCombinationCount(
-        int amount, int[] coins, int expected) =>
-        Assert.Equal(expected, CoinChangeIISolution.CountCombinationsByTabulation(amount, coins));
+        int amount, int[] coins, int expected)
+    {
+        var actual = CoinChangeIISolution.CountCombinationsByTabulation(amount, coins);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountCombinationsByMemoizedTopDown_LeetCodeExamples_ReturnsCombinationCount(
-        int amount, int[] coins, int expected) =>
-        Assert.Equal(expected, CoinChangeIISolution.CountCombinationsByMemoizedTopDown(amount, coins));
+        int amount, int[] coins, int expected)
+    {
+        var actual = CoinChangeIISolution.CountCombinationsByMemoizedTopDown(amount, coins);
+
+        Assert.Equal(expected, actual);
+    }
 }

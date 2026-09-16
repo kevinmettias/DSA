@@ -36,14 +36,20 @@ public sealed class NumberOfValidWordsForEachPuzzleTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountValidWordsByMaskComparison_LeetCodeExamples_ReturnsValidWordCountPerPuzzle(
-        string[] words, string[] puzzles, int[] expected) =>
-        Assert.Equal(expected, NumberOfValidWordsForEachPuzzleSolution.CountValidWordsByMaskComparison(words, puzzles));
+        string[] words, string[] puzzles, int[] expected)
+    {
+        var actual = NumberOfValidWordsForEachPuzzleSolution.CountValidWordsByMaskComparison(words, puzzles);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountValidWordsByMaskSubsetEnumeration_LeetCodeExamples_ReturnsValidWordCountPerPuzzle(
-        string[] words, string[] puzzles, int[] expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfValidWordsForEachPuzzleSolution.CountValidWordsByMaskSubsetEnumeration(words, puzzles));
+        string[] words, string[] puzzles, int[] expected)
+    {
+        var actual = NumberOfValidWordsForEachPuzzleSolution.CountValidWordsByMaskSubsetEnumeration(words, puzzles);
+
+        Assert.Equal(expected, actual);
+    }
 }

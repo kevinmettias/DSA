@@ -7,21 +7,26 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromeLinkedList;
 // builds LeetCode's published examples as linked lists and checks the result.
 public sealed class PalindromeLinkedListTests
 {
-    public static TheoryData<int[], bool> Examples =>
+    public static TheoryData<ListCase> Examples =>
         new()
         {
-            { [1, 2, 2, 1], true },
-            { [1, 2], false },
-            { [1], true },
-            { [1, 2, 3, 2, 1], true },
-            { [1, 2, 3, 3, 2, 1], true },
-            { [1, 2, 1, 3], false },
+            { new ListCase(Values: [1, 2, 2, 1], Expected: true) },
+            { new ListCase(Values: [1, 2], Expected: false) },
+            { new ListCase(Values: [1], Expected: true) },
+            { new ListCase(Values: [1, 2, 3, 2, 1], Expected: true) },
+            { new ListCase(Values: [1, 2, 3, 3, 2, 1], Expected: true) },
+            { new ListCase(Values: [1, 2, 1, 3], Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsPalindromeByStackReversal_LeetCodeExamples_ReturnsExpected(int[] values, bool expected) =>
-        Assert.Equal(expected, PalindromeLinkedListSolution.IsPalindromeByStackReversal(BuildList(values)));
+    public void IsPalindromeByStackReversal_LeetCodeExamples_ReturnsExpected(ListCase example)
+    {
+        var head = BuildList(example.Values);
+        var isPalindrome = PalindromeLinkedListSolution.IsPalindromeByStackReversal(head);
+
+        Assert.Equal(example.Expected, isPalindrome);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
@@ -36,4 +41,9 @@ public sealed class PalindromeLinkedListTests
 
         return dummy.Next;
     }
+
+    // One LeetCode example: the values of the list, in order, and whether they read the
+    // same forwards and backwards. Nested because it is only ever used inside this test
+    // class - it is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct ListCase(int[] Values, bool Expected);
 }

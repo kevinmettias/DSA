@@ -17,14 +17,22 @@ public sealed class CombinationSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindCombinationsBySpecializedRecursion_LeetCodeExamples_ReturnsExpectedCombinations(
-        int[] candidates, int target, int[][] expected) =>
-        AssertSameCombinations(expected, CombinationSumSolution.FindCombinationsBySpecializedRecursion(candidates, target));
+        int[] candidates, int target, int[][] expected)
+    {
+        var actual = CombinationSumSolution.FindCombinationsBySpecializedRecursion(candidates, target);
+
+        AssertSameCombinations(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindCombinationsByBacktracking_LeetCodeExamples_ReturnsExpectedCombinations(
-        int[] candidates, int target, int[][] expected) =>
-        AssertSameCombinations(expected, CombinationSumSolution.FindCombinationsByBacktracking(candidates, target));
+        int[] candidates, int target, int[][] expected)
+    {
+        var actual = CombinationSumSolution.FindCombinationsByBacktracking(candidates, target);
+
+        AssertSameCombinations(expected, actual);
+    }
 
     private static void AssertSameCombinations(int[][] expected, List<List<int>> actual)
     {

@@ -26,6 +26,12 @@ public sealed class ConstructBinaryTreeFromPreorderAndInorderTraversalTests
         Assert.Equal(expectedPreorder, PreOrder(root));
     }
 
+    // Both arms are values: a call that names the empty walk, and a call that names the
+    // non-empty one. The non-empty arm stays a call rather than a hoisted local because
+    // the condition guards it - a local above the expression would run it every time.
     private static int[] PreOrder(BinaryTreeNode<int>? root) =>
-        root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+        root is null ? Array.Empty<int>() : PreOrderNonNull(root);
+
+    private static int[] PreOrderNonNull(BinaryTreeNode<int> root) =>
+        [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
 }

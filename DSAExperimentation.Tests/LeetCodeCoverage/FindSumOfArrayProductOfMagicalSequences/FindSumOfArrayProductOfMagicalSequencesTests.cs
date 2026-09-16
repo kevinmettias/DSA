@@ -18,16 +18,20 @@ public sealed class FindSumOfArrayProductOfMagicalSequencesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumOfProductsByBacktrackEnumeration_LeetCodeExamples_ReturnsSumOfProductsModulo1e9Plus7(
-        int m, int k, int[] nums, int expected) =>
-        Assert.Equal(
-            expected,
-            FindSumOfArrayProductOfMagicalSequencesSolution.SumOfProductsByBacktrackEnumeration(m, k, nums));
+        int m, int k, int[] nums, int expected)
+    {
+        var actual = FindSumOfArrayProductOfMagicalSequencesSolution.SumOfProductsByBacktrackEnumeration(m, k, nums);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumOfProductsByCarryDigitDp_LeetCodeExamples_ReturnsSumOfProductsModulo1e9Plus7(
-        int m, int k, int[] nums, int expected) =>
-        Assert.Equal(
-            expected,
-            FindSumOfArrayProductOfMagicalSequencesSolution.SumOfProductsByCarryDigitDp(m, k, nums));
+        int m, int k, int[] nums, int expected)
+    {
+        var actual = FindSumOfArrayProductOfMagicalSequencesSolution.SumOfProductsByCarryDigitDp(m, k, nums);
+
+        Assert.Equal(expected, actual);
+    }
 }

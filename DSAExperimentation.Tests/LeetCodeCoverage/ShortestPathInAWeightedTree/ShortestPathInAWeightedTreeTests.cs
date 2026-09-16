@@ -32,14 +32,20 @@ public sealed class ShortestPathInAWeightedTreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestPathQueriesByBruteForceBfs_LeetCodeExamples_ReturnsDistancesFromRoot(
-        int n, int[][] edges, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByBruteForceBfs(n, edges, queries));
+        int n, int[][] edges, int[][] queries, int[] expected)
+    {
+        var actual = ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByBruteForceBfs(n, edges, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestPathQueriesByEulerFenwick_LeetCodeExamples_ReturnsDistancesFromRoot(
-        int n, int[][] edges, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByEulerFenwick(n, edges, queries));
+        int n, int[][] edges, int[][] queries, int[] expected)
+    {
+        var actual = ShortestPathInAWeightedTreeSolution.ShortestPathQueriesByEulerFenwick(n, edges, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

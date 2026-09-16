@@ -1,4 +1,6 @@
-using static DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution;
+using ISeatManager = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.ISeatManager;
+using SeatManagerByLinearScanArray = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.SeatManagerByLinearScanArray;
+using SeatManagerByReleasedSeatHeap = DSAExperimentation.LeetCode.SeatReservationManager.SeatReservationManagerSolution.SeatManagerByReleasedSeatHeap;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SeatReservationManager;
 
@@ -106,39 +108,41 @@ public sealed class SeatReservationManagerTests
             Assert.Equal(expected[i], operations[i].Apply(manager));
         }
     }
-}
 
-// One LeetCode call script: the seat count its constructor was given, and the calls
-// made after it. The two travel together because only one of the strategies takes
-// the count - the lazy-release heap never allocates per seat, so it answers the
-// identical script without being told how many seats exist.
-public readonly record struct SeatManagerScript(int SeatCount, SeatManagerOp[] Operations);
+    // One LeetCode call script: the seat count its constructor was given, and the calls
+    // made after it. The two travel together because only one of the strategies takes
+    // the count - the lazy-release heap never allocates per seat, so it answers the
+    // identical script without being told how many seats exist. Nested, because it is
+    // this harness's own way of stating a script and has no identity outside it.
+    public readonly record struct SeatManagerScript(int SeatCount, SeatManagerOp[] Operations);
 
-// One call in a SeatManager script: which operation to invoke, and for unreserve,
-// on which seat. Pure dispatch, built via the named factories below so a script
-// reads like the LeetCode call sequence it replays.
-public readonly record struct SeatManagerOp(SeatManagerOp.OpKind kind, int seatNumber)
-{
-    public static SeatManagerOp Reserve() => new(OpKind.Reserve, seatNumber: 0);
-
-    public static SeatManagerOp Unreserve(int seatNumber) => new(OpKind.Unreserve, seatNumber);
-
-    // null for unreserve, matching LeetCode's own judge output, so a script runner
-    // can assert against one expected value per operation uniformly.
-    internal int? Apply(ISeatManager manager)
+    // One call in a SeatManager script: which operation to invoke, and for unreserve,
+    // on which seat. Pure dispatch, built via the named factories below so a script
+    // reads like the LeetCode call sequence it replays. Nested alongside the script it
+    // is a step of.
+    public readonly record struct SeatManagerOp(SeatManagerOp.OpKind kind, int seatNumber)
     {
-        if (kind == OpKind.Reserve)
+        public static SeatManagerOp Reserve() => new(OpKind.Reserve, seatNumber: 0);
+
+        public static SeatManagerOp Unreserve(int seatNumber) => new(OpKind.Unreserve, seatNumber);
+
+        // null for unreserve, matching LeetCode's own judge output, so a script runner
+        // can assert against one expected value per operation uniformly.
+        internal int? Apply(ISeatManager manager)
         {
-            return manager.Reserve();
+            if (kind == OpKind.Reserve)
+            {
+                return manager.Reserve();
+            }
+
+            manager.Unreserve(seatNumber);
+            return null;
         }
 
-        manager.Unreserve(seatNumber);
-        return null;
-    }
-
-    public enum OpKind
-    {
-        Reserve,
-        Unreserve,
+        public enum OpKind
+        {
+            Reserve,
+            Unreserve,
+        }
     }
 }

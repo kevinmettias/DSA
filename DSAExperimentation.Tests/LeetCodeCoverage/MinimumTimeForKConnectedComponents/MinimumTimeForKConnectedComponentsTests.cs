@@ -18,12 +18,20 @@ public sealed class MinimumTimeForKConnectedComponentsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTimeByBinarySearchUnionFind_LeetCodeExamples_ReturnsMinimumRemovalTime(
-        int n, int[][] edges, int k, int expected) =>
-        Assert.Equal(expected, MinimumTimeForKConnectedComponentsSolution.MinTimeByBinarySearchUnionFind(n, edges, k));
+        int n, int[][] edges, int k, int expected)
+    {
+        var actual = MinimumTimeForKConnectedComponentsSolution.MinTimeByBinarySearchUnionFind(n, edges, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTimeByDescendingUnionFind_LeetCodeExamples_ReturnsMinimumRemovalTime(
-        int n, int[][] edges, int k, int expected) =>
-        Assert.Equal(expected, MinimumTimeForKConnectedComponentsSolution.MinTimeByDescendingUnionFind(n, edges, k));
+        int n, int[][] edges, int k, int expected)
+    {
+        var actual = MinimumTimeForKConnectedComponentsSolution.MinTimeByDescendingUnionFind(n, edges, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

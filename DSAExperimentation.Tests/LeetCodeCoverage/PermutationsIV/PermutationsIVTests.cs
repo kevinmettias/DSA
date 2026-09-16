@@ -18,12 +18,20 @@ public sealed class PermutationsIVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthPermutationByBigIntegerRank_LeetCodeExamples_ReturnsKthAlternatingPermutation(
-        int n, long k, int[] expected) =>
-        Assert.Equal(expected, PermutationsIVSolution.KthPermutationByBigIntegerRank(n, k));
+        int n, long k, int[] expected)
+    {
+        var actual = PermutationsIVSolution.KthPermutationByBigIntegerRank(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthPermutationByFenwickOrderStatistics_LeetCodeExamples_ReturnsKthAlternatingPermutation(
-        int n, long k, int[] expected) =>
-        Assert.Equal(expected, PermutationsIVSolution.KthPermutationByFenwickOrderStatistics(n, k));
+        int n, long k, int[] expected)
+    {
+        var actual = PermutationsIVSolution.KthPermutationByFenwickOrderStatistics(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

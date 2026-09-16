@@ -18,10 +18,15 @@ public sealed class MergeTwoSortedListsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MergeByDummyHeadSplice_LeetCodeExamples_ReturnsOneInterleavedSortedList(
-        int[] first, int[] second, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(MergeTwoSortedListsSolution.MergeByDummyHeadSplice(BuildList(first), BuildList(second))));
+        int[] first, int[] second, int[] expected)
+    {
+        var firstList = BuildList(first);
+        var secondList = BuildList(second);
+        var merged = MergeTwoSortedListsSolution.MergeByDummyHeadSplice(firstList, secondList);
+        var actual = ToArray(merged);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

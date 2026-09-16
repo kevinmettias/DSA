@@ -18,12 +18,21 @@ public sealed class CheckIfDfsStringsArePalindromesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsPalindromeByBruteForce_LeetCodeExamples_ReturnsPerNodePalindromeFlags(
-        int[] parent, string s, bool[] expected) =>
-        Assert.Equal(expected, CheckIfDfsStringsArePalindromesSolution.IsPalindromeByBruteForce(parent, s));
+        int[] parent, string s, bool[] expected)
+    {
+        var flags = CheckIfDfsStringsArePalindromesSolution.IsPalindromeByBruteForce(parent, s);
+
+        Assert.Equal(expected, flags);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void IsPalindromeByEulerTourRollingHash_LeetCodeExamples_ReturnsPerNodePalindromeFlags(
-        int[] parent, string s, bool[] expected) =>
-        Assert.Equal(expected, CheckIfDfsStringsArePalindromesSolution.IsPalindromeByEulerTourRollingHash(parent, s));
+        int[] parent, string s, bool[] expected)
+    {
+        var flags =
+            CheckIfDfsStringsArePalindromesSolution.IsPalindromeByEulerTourRollingHash(parent, s);
+
+        Assert.Equal(expected, flags);
+    }
 }

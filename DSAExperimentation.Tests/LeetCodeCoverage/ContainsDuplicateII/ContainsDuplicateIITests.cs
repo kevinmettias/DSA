@@ -7,26 +7,44 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ContainsDuplicateII;
 // names the strategy that broke.
 public sealed class ContainsDuplicateIITests
 {
-    public static TheoryData<int[], int, bool> Examples =>
+    public static TheoryData<NearbyDuplicateCase> Examples =>
         new()
         {
-            { [1, 2, 3, 1], 3, true },
-            { [1, 0, 1, 1], 1, true },
-            { [1, 2, 3, 1, 2, 3], 2, false },
-            { [1, 1], 1, true },
-            { [1, 1], 0, false },
-            { [1], 1, false },
+            { new NearbyDuplicateCase([1, 2, 3, 1], 3, Expected: true) },
+            { new NearbyDuplicateCase([1, 0, 1, 1], 1, Expected: true) },
+            { new NearbyDuplicateCase([1, 2, 3, 1, 2, 3], 2, Expected: false) },
+            { new NearbyDuplicateCase([1, 1], 1, Expected: true) },
+            { new NearbyDuplicateCase([1, 1], 0, Expected: false) },
+            { new NearbyDuplicateCase([1], 1, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ContainsNearbyDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(
-        int[] nums, int k, bool expected) =>
-        Assert.Equal(expected, ContainsDuplicateIISolution.ContainsNearbyDuplicateByBruteForce(nums, k));
+        NearbyDuplicateCase example)
+    {
+        var actual = ContainsDuplicateIISolution.ContainsNearbyDuplicateByBruteForce(
+            example.Nums, example.IndexDiff);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ContainsNearbyDuplicateByHashMap_LeetCodeExamples_ReturnsExpected(
-        int[] nums, int k, bool expected) =>
-        Assert.Equal(expected, ContainsDuplicateIISolution.ContainsNearbyDuplicateByHashMap(nums, k));
+        NearbyDuplicateCase example)
+    {
+        var actual = ContainsDuplicateIISolution.ContainsNearbyDuplicateByHashMap(
+            example.Nums, example.IndexDiff);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the array, the index distance that must separate two equal
+    // values, and whether such a pair exists. The expected value is named at every
+    // construction site, so a row reads as the case it is rather than as a bare `true`
+    // whose meaning is its position. Nested because it is only ever used inside this
+    // test class - it is this harness's own vocabulary, not a type another file would
+    // import.
+    public readonly record struct NearbyDuplicateCase(int[] Nums, int IndexDiff, bool Expected);
 }

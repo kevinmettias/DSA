@@ -31,18 +31,20 @@ public sealed class New21GameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ProbabilityByUnmemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(
-        int n, int k, int maxPts, double expected) =>
-        Assert.Equal(
-            expected,
-            New21GameSolution.ProbabilityByUnmemoizedRecursion(n, k, maxPts),
-            ProbabilityPrecision);
+        int n, int k, int maxPts, double expected)
+    {
+        var actual = New21GameSolution.ProbabilityByUnmemoizedRecursion(n, k, maxPts);
+
+        Assert.Equal(expected, actual, ProbabilityPrecision);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ProbabilityByMemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(
-        int n, int k, int maxPts, double expected) =>
-        Assert.Equal(
-            expected,
-            New21GameSolution.ProbabilityByMemoizedRecursion(n, k, maxPts),
-            ProbabilityPrecision);
+        int n, int k, int maxPts, double expected)
+    {
+        var actual = New21GameSolution.ProbabilityByMemoizedRecursion(n, k, maxPts);
+
+        Assert.Equal(expected, actual, ProbabilityPrecision);
+    }
 }

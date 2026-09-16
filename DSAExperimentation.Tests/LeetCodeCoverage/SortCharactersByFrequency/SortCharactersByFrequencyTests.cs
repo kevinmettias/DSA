@@ -13,28 +13,51 @@ public sealed class SortCharactersByFrequencyTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FrequencySortByDictionaryOrderBy_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s) =>
-        AssertOrderedByDescendingFrequency(s, SortCharactersByFrequencySolution.FrequencySortByDictionaryOrderBy(s));
+    public void FrequencySortByDictionaryOrderBy_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s)
+    {
+        var result = new FrequencySortResult(
+            s, SortCharactersByFrequencySolution.FrequencySortByDictionaryOrderBy(s));
+
+        AssertOrderedByDescendingFrequency(result);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FrequencySortByHashMapHeap_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s) =>
-        AssertOrderedByDescendingFrequency(s, SortCharactersByFrequencySolution.FrequencySortByHashMapHeap(s));
-
-    private static void AssertOrderedByDescendingFrequency(string input, string result)
+    public void FrequencySortByHashMapHeap_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s)
     {
-        Assert.Equal(input.Length, result.Length);
-        Assert.Equal(input.OrderBy(c => c), result.OrderBy(c => c));
+        var result = new FrequencySortResult(
+            s, SortCharactersByFrequencySolution.FrequencySortByHashMapHeap(s));
 
+        AssertOrderedByDescendingFrequency(result);
+    }
+
+    private static void AssertOrderedByDescendingFrequency(FrequencySortResult result)
+    {
+        AssertSameCharacters(result);
+        AssertRunsDescendInLength(result.Sorted);
+    }
+
+    // The arrangement is built from the input's own characters, and nothing else:
+    // same length, same multiset.
+    private static void AssertSameCharacters(FrequencySortResult result)
+    {
+        Assert.Equal(result.Input.Length, result.Sorted.Length);
+        Assert.Equal(result.Input.OrderBy(c => c), result.Sorted.OrderBy(c => c));
+    }
+
+    // The grouping property, read off the result alone: each run of one repeated
+    // character is no longer than the run before it.
+    private static void AssertRunsDescendInLength(string sorted)
+    {
         var previousRunLength = int.MaxValue;
         var index = 0;
 
-        while (index < result.Length)
+        while (index < sorted.Length)
         {
-            var current = result[index];
+            var current = sorted[index];
             var runLength = 0;
 
-            while (index < result.Length && result[index] == current)
+            while (index < sorted.Length && sorted[index] == current)
             {
                 runLength++;
                 index++;
@@ -43,7 +66,14 @@ public sealed class SortCharactersByFrequencyTests
             Assert.True(
                 runLength <= previousRunLength,
                 $"Run of '{current}' (length {runLength}) follows a shorter run (length {previousRunLength}).");
+
             previousRunLength = runLength;
         }
     }
+
+    // Nested because it is only ever used inside this test class and has no
+    // independent identity: this harness's own vocabulary for one checked case,
+    // naming the input text and the arrangement the strategy produced. Passing the
+    // two strings separately would let a caller transpose them silently.
+    public readonly record struct FrequencySortResult(string Input, string Sorted);
 }

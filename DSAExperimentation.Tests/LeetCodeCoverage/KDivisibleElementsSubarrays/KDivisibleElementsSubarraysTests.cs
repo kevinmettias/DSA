@@ -41,12 +41,20 @@ public sealed class KDivisibleElementsSubarraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountDistinctByHashSetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
-        int[] nums, int k, int p, int expected) =>
-        Assert.Equal(expected, KDivisibleElementsSubarraysSolution.CountDistinctByHashSetDedupe(nums, k, p));
+        int[] nums, int k, int p, int expected)
+    {
+        var actual = KDivisibleElementsSubarraysSolution.CountDistinctByHashSetDedupe(nums, k, p);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountDistinctBySetDedupe_LeetCodeExamples_ReturnsDistinctQualifyingSubarrayCount(
-        int[] nums, int k, int p, int expected) =>
-        Assert.Equal(expected, KDivisibleElementsSubarraysSolution.CountDistinctBySetDedupe(nums, k, p));
+        int[] nums, int k, int p, int expected)
+    {
+        var actual = KDivisibleElementsSubarraysSolution.CountDistinctBySetDedupe(nums, k, p);
+
+        Assert.Equal(expected, actual);
+    }
 }

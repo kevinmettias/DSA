@@ -22,12 +22,18 @@ public sealed class MinimumSwapsToMakeSequencesIncreasingTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinSwapByTabulation_LeetCodeExamples_ReturnsMinimumSwapCount(
-        int[] nums1, int[] nums2, int expected) =>
-        Assert.Equal(expected, MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByTabulation(nums1, nums2));
+        int[] nums1, int[] nums2, int expected)
+    {
+        var actual = MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByTabulation(nums1, nums2);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinSwapByMemoizedTwoState_LeetCodeExamples_ReturnsMinimumSwapCount(
-        int[] nums1, int[] nums2, int expected) =>
-        Assert.Equal(expected, MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByMemoizedTwoState(nums1, nums2));
+        int[] nums1, int[] nums2, int expected)
+    {
+        var actual = MinimumSwapsToMakeSequencesIncreasingSolution.MinSwapByMemoizedTwoState(nums1, nums2);
+        Assert.Equal(expected, actual);
+    }
 }

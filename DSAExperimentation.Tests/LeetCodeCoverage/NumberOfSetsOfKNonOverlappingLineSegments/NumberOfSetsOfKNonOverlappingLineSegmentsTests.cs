@@ -27,12 +27,20 @@ public sealed class NumberOfSetsOfKNonOverlappingLineSegmentsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfSetsByTabulation_LeetCodeExamples_ReturnsNonOverlappingSegmentSetCount(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByTabulation(n, k));
+        int n, int k, int expected)
+    {
+        var actual = NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByTabulation(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfSetsByMemoizedPascal_LeetCodeExamples_ReturnsNonOverlappingSegmentSetCount(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByMemoizedPascal(n, k));
+        int n, int k, int expected)
+    {
+        var actual = NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByMemoizedPascal(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

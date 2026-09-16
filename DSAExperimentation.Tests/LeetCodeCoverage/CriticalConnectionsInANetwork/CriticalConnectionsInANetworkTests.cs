@@ -34,20 +34,24 @@ public sealed class CriticalConnectionsInANetworkTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CriticalConnectionsByEdgeRemovalScan_LeetCodeExamples_ReturnsEveryDisconnectingLink(
-        int serverCount, int[][] connections, int[][] expected) =>
-        Assert.Equal(
-            expected,
-            Ordered(CriticalConnectionsInANetworkSolution.CriticalConnectionsByEdgeRemovalScan(
-                serverCount, connections)));
+        int serverCount, int[][] connections, int[][] expected)
+    {
+        var found = CriticalConnectionsInANetworkSolution.CriticalConnectionsByEdgeRemovalScan(
+            serverCount, connections);
+        var ordered = Ordered(found);
+        Assert.Equal(expected, ordered);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CriticalConnectionsByLowLinkSearch_LeetCodeExamples_ReturnsEveryDisconnectingLink(
-        int serverCount, int[][] connections, int[][] expected) =>
-        Assert.Equal(
-            expected,
-            Ordered(CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(
-                serverCount, connections)));
+        int serverCount, int[][] connections, int[][] expected)
+    {
+        var found = CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(
+            serverCount, connections);
+        var ordered = Ordered(found);
+        Assert.Equal(expected, ordered);
+    }
 
     private static int[][] Ordered(int[][] connections) =>
         [.. connections.OrderBy(connection => connection[0]).ThenBy(connection => connection[1])];

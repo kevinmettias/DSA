@@ -82,53 +82,54 @@ public sealed class DesignLinkedListTests
             Assert.Equal(expected[i], operations[i].Apply(list));
         }
     }
-}
 
-// One call in a DesignLinkedList script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays. Get returns the
-// actual value (or -1 on LeetCode's own out-of-bounds convention); every mutator
-// returns null, the same null-means-"no return value" convention LRUCacheOp.Apply
-// uses for its own put/get split.
-public readonly record struct DesignLinkedListOp(DesignLinkedListOp.OpKind kind, int index, int value)
-{
-    public static DesignLinkedListOp Get(int index) => new(OpKind.Get, index, 0);
-
-    public static DesignLinkedListOp AddAtHead(int value) => new(OpKind.AddAtHead, 0, value);
-
-    public static DesignLinkedListOp AddAtTail(int value) => new(OpKind.AddAtTail, 0, value);
-
-    public static DesignLinkedListOp AddAtIndex(int index, int value) => new(OpKind.AddAtIndex, index, value);
-
-    public static DesignLinkedListOp DeleteAtIndex(int index) => new(OpKind.DeleteAtIndex, index, 0);
-
-    internal int? Apply(DesignLinkedListSolution.IMyLinkedList list)
+    // One call in a DesignLinkedList script: which method to invoke and with what
+    // arguments. Pure dispatch, built via the named factories below so a script (like
+    // Examples above) reads like the LeetCode call sequence it replays. Get returns the
+    // actual value (or -1 on LeetCode's own out-of-bounds convention); every mutator
+    // returns null, the same null-means-"no return value" convention LRUCacheOp.Apply
+    // uses for its own put/get split. Nested here rather than left at file scope so
+    // the file declares exactly one type.
+    public readonly record struct DesignLinkedListOp(DesignLinkedListOp.OpKind kind, int index, int value)
     {
-        switch (kind)
+        public static DesignLinkedListOp Get(int index) => new(OpKind.Get, index, 0);
+
+        public static DesignLinkedListOp AddAtHead(int value) => new(OpKind.AddAtHead, 0, value);
+
+        public static DesignLinkedListOp AddAtTail(int value) => new(OpKind.AddAtTail, 0, value);
+
+        public static DesignLinkedListOp AddAtIndex(int index, int value) => new(OpKind.AddAtIndex, index, value);
+
+        public static DesignLinkedListOp DeleteAtIndex(int index) => new(OpKind.DeleteAtIndex, index, 0);
+
+        internal int? Apply(DesignLinkedListSolution.IMyLinkedList list)
         {
-            case OpKind.Get:
-                return list.Get(index);
-            case OpKind.AddAtHead:
-                list.AddAtHead(value);
-                return null;
-            case OpKind.AddAtTail:
-                list.AddAtTail(value);
-                return null;
-            case OpKind.AddAtIndex:
-                list.AddAtIndex(index, value);
-                return null;
-            default:
-                list.DeleteAtIndex(index);
-                return null;
+            switch (kind)
+            {
+                case OpKind.Get:
+                    return list.Get(index);
+                case OpKind.AddAtHead:
+                    list.AddAtHead(value);
+                    return null;
+                case OpKind.AddAtTail:
+                    list.AddAtTail(value);
+                    return null;
+                case OpKind.AddAtIndex:
+                    list.AddAtIndex(index, value);
+                    return null;
+                default:
+                    list.DeleteAtIndex(index);
+                    return null;
+            }
         }
-    }
 
-    public enum OpKind
-    {
-        Get,
-        AddAtHead,
-        AddAtTail,
-        AddAtIndex,
-        DeleteAtIndex,
+        public enum OpKind
+        {
+            Get,
+            AddAtHead,
+            AddAtTail,
+            AddAtIndex,
+            DeleteAtIndex,
+        }
     }
 }

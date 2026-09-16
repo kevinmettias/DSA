@@ -25,14 +25,14 @@ public sealed class MiddleOfTheLinkedListTests
     public void MiddleNodeBySlowFastTwoPointer_LeetCodeExamples_ReturnsMiddleNode(int[] values, int expected) =>
         Assert.Equal(
             expected,
-            MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(BuildList(values))!.Value);
+            MiddleValue(MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(BuildList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MiddleNodeByCountThenWalk_LeetCodeExamples_ReturnsMiddleNode(int[] values, int expected) =>
         Assert.Equal(
             expected,
-            MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(BuildList(values))!.Value);
+            MiddleValue(MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(BuildList(values))));
 
     // The answer is a node, not a value, so the tail beyond it is part of what was
     // returned: asserting the remaining values pins that the strategies hand back
@@ -68,6 +68,12 @@ public sealed class MiddleOfTheLinkedListTests
 
         return head;
     }
+
+    // LC 876 answers null only for an empty list, and BuildList reads values[0] to build
+    // its head, so every row above hands both strategies a list with a middle node.
+    private static int MiddleValue(SinglyLinkedListNode<int>? middle) =>
+        middle?.Value ?? throw new InvalidOperationException(
+            "Every example above is a non-empty list, and the solution returns null only for an empty one.");
 
     private static int[] ToArray(SinglyLinkedListNode<int>? head)
     {

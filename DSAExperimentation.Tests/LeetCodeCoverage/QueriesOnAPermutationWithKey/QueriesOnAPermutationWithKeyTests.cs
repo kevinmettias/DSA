@@ -23,16 +23,22 @@ public sealed class QueriesOnAPermutationWithKeyTests
     public void ProcessQueriesByListMoveToFront_LeetCodeExamples_ReturnsQueriedIndices(
         int[] queries,
         int m,
-        int[] expected) =>
-        Assert.Equal(expected, QueriesOnAPermutationWithKeySolution.ProcessQueriesByListMoveToFront(queries, m));
+        int[] expected)
+    {
+        var actual = QueriesOnAPermutationWithKeySolution.ProcessQueriesByListMoveToFront(queries, m);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ProcessQueriesByDynamicArrayMoveToFront_LeetCodeExamples_ReturnsQueriedIndices(
         int[] queries,
         int m,
-        int[] expected) =>
-        Assert.Equal(
-            expected,
-            QueriesOnAPermutationWithKeySolution.ProcessQueriesByDynamicArrayMoveToFront(queries, m));
+        int[] expected)
+    {
+        var actual = QueriesOnAPermutationWithKeySolution.ProcessQueriesByDynamicArrayMoveToFront(queries, m);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -49,18 +49,22 @@ public sealed class ShortestDistanceToTargetStringInACircularArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestTargetByLinearScan_LeetCodeExamples_ReturnsShortestCircularDistanceOrNegativeOne(
-        string[] words, string target, int startIndex, int expected) =>
-        Assert.Equal(
-            expected,
-            ShortestDistanceToTargetStringInACircularArraySolution.ClosestTargetByLinearScan(
-                words, target, startIndex));
+        string[] words, string target, int startIndex, int expected)
+    {
+        var actual = ShortestDistanceToTargetStringInACircularArraySolution.ClosestTargetByLinearScan(
+            words, target, startIndex);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestTargetByReduceGraph_LeetCodeExamples_ReturnsShortestCircularDistanceOrNegativeOne(
-        string[] words, string target, int startIndex, int expected) =>
-        Assert.Equal(
-            expected,
-            ShortestDistanceToTargetStringInACircularArraySolution.ClosestTargetByReduceGraph(
-                words, target, startIndex));
+        string[] words, string target, int startIndex, int expected)
+    {
+        var actual = ShortestDistanceToTargetStringInACircularArraySolution.ClosestTargetByReduceGraph(
+            words, target, startIndex);
+
+        Assert.Equal(expected, actual);
+    }
 }

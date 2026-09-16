@@ -17,11 +17,17 @@ public sealed class CountSubarraysWithMajorityElementITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForce_LeetCodeExamples_ReturnsMajoritySubarrayCount(int[] nums, int target, int expected) =>
-        Assert.Equal(expected, CountSubarraysWithMajorityElementISolution.CountByBruteForce(nums, target));
+    public void CountByBruteForce_LeetCodeExamples_ReturnsMajoritySubarrayCount(int[] nums, int target, int expected)
+    {
+        var actual = CountSubarraysWithMajorityElementISolution.CountByBruteForce(nums, target);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByFenwickPrefixSum_LeetCodeExamples_ReturnsMajoritySubarrayCount(int[] nums, int target, int expected) =>
-        Assert.Equal(expected, CountSubarraysWithMajorityElementISolution.CountByFenwickPrefixSum(nums, target));
+    public void CountByFenwickPrefixSum_LeetCodeExamples_ReturnsMajoritySubarrayCount(int[] nums, int target, int expected)
+    {
+        var actual = CountSubarraysWithMajorityElementISolution.CountByFenwickPrefixSum(nums, target);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -5,20 +5,34 @@ namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
 public sealed class ChebyshevHeuristicTests
 {
+    public static TheoryData<EstimateCase> Examples =>
+        new()
+        {
+            { new EstimateCase(Row: 0, Col: 0, TargetRow: 0, TargetCol: 0, Expected: 0) },
+            { new EstimateCase(Row: 0, Col: 0, TargetRow: 0, TargetCol: 3, Expected: 3) },
+            { new EstimateCase(Row: 0, Col: 0, TargetRow: 2, TargetCol: 3, Expected: 3) },
+            { new EstimateCase(Row: 1, Col: 1, TargetRow: 3, TargetCol: 4, Expected: 3) },
+            { new EstimateCase(Row: -1, Col: 0, TargetRow: 3, TargetCol: 4, Expected: 4) },
+        };
+
     [Theory]
-    [InlineData(0, 0, 0, 0, 0)]
-    [InlineData(0, 0, 0, 3, 3)]
-    [InlineData(0, 0, 2, 3, 3)]
-    [InlineData(1, 1, 3, 4, 3)]
-    [InlineData(-1, 0, 3, 4, 4)]
-    public void Estimate_ReturnsTheLargerAxisDistanceBecauseADiagonalStepCostsOne(
-        int row, int col, int targetRow, int targetCol, int expected) =>
-        Assert.Equal(
-            expected,
-            ChebyshevHeuristic.Estimate(new WeightedGridNode(row, col), new WeightedGridNode(targetRow, targetCol)));
+    [MemberData(nameof(Examples))]
+    public void Estimate_ReturnsTheLargerAxisDistanceBecauseADiagonalStepCostsOne(EstimateCase example)
+    {
+        var distance = ChebyshevHeuristic.Estimate(
+            new WeightedGridNode(example.Row, example.Col),
+            new WeightedGridNode(example.TargetRow, example.TargetCol));
+
+        Assert.Equal(example.Expected, distance);
+    }
 
     [Fact]
-    public void Estimate_NullTarget_ReturnsZero() => Assert.Equal(0, ChebyshevHeuristic.Estimate(new WeightedGridNode(5, 5), null));
+    public void Estimate_NullTarget_ReturnsZero()
+    {
+        var distance = ChebyshevHeuristic.Estimate(new WeightedGridNode(5, 5), null);
+
+        Assert.Equal(0, distance);
+    }
 
     [Fact]
     public void Estimate_NeverExceedsTheManhattanDistance()
@@ -35,7 +49,14 @@ public sealed class ChebyshevHeuristicTests
     {
         var first = new WeightedGridNode(0, 9);
         var second = new WeightedGridNode(4, 2);
+        var forward = ChebyshevHeuristic.Estimate(first, second);
+        var backward = ChebyshevHeuristic.Estimate(second, first);
 
-        Assert.Equal(ChebyshevHeuristic.Estimate(first, second), ChebyshevHeuristic.Estimate(second, first));
+        Assert.Equal(forward, backward);
     }
+
+    // One grid pair: the two endpoints the estimate is taken between, and the distance the
+    // larger axis alone accounts for. Nested because it is only ever used inside this test
+    // class - it is this harness's own vocabulary, not a type another file would import.
+    public readonly record struct EstimateCase(int Row, int Col, int TargetRow, int TargetCol, int Expected);
 }

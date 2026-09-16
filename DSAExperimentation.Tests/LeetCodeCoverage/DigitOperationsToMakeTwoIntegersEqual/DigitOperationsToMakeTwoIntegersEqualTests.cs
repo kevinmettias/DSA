@@ -19,12 +19,17 @@ public sealed class DigitOperationsToMakeTwoIntegersEqualTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinOperationsByBruteForceDijkstra_LeetCodeExamples_ReturnsMinimumCost(int n, int m, int expected) =>
-        Assert.Equal(expected, DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByBruteForceDijkstra(n, m));
+    public void MinOperationsByBruteForceDijkstra_LeetCodeExamples_ReturnsMinimumCost(int n, int m, int expected)
+    {
+        var actual = DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByBruteForceDijkstra(n, m);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinOperationsByDijkstraOverDigitGraph_LeetCodeExamples_ReturnsMinimumCost(int n, int m, int expected) =>
-        Assert.Equal(
-            expected, DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByDijkstraOverDigitGraph(n, m));
+    public void MinOperationsByDijkstraOverDigitGraph_LeetCodeExamples_ReturnsMinimumCost(int n, int m, int expected)
+    {
+        var actual = DigitOperationsToMakeTwoIntegersEqualSolution.MinOperationsByDijkstraOverDigitGraph(n, m);
+        Assert.Equal(expected, actual);
+    }
 }

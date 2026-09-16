@@ -37,16 +37,18 @@ public sealed class DeliveringBoxesFromStorageToPortsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTripsByWindowRescan_LeetCodeExamples_ReturnsFewestLegs(
-        int[][] boxes, int maxBoxes, int maxWeight, int expected) =>
-        Assert.Equal(
-            expected,
-            DeliveringBoxesFromStorageToPortsSolution.MinTripsByWindowRescan(boxes, maxBoxes, maxWeight));
+        int[][] boxes, int maxBoxes, int maxWeight, int expected)
+    {
+        var actual = DeliveringBoxesFromStorageToPortsSolution.MinTripsByWindowRescan(boxes, maxBoxes, maxWeight);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTripsByMonotonicDeque_LeetCodeExamples_ReturnsFewestLegs(
-        int[][] boxes, int maxBoxes, int maxWeight, int expected) =>
-        Assert.Equal(
-            expected,
-            DeliveringBoxesFromStorageToPortsSolution.MinTripsByMonotonicDeque(boxes, maxBoxes, maxWeight));
+        int[][] boxes, int maxBoxes, int maxWeight, int expected)
+    {
+        var actual = DeliveringBoxesFromStorageToPortsSolution.MinTripsByMonotonicDeque(boxes, maxBoxes, maxWeight);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -19,14 +19,20 @@ public sealed class MaximizeSpanningTreeStabilityWithUpgradesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxStabilityByArrayUnionFind_LeetCodeExamples_ReturnsMaximumAchievableStability(
-        int n, int[][] edges, int k, int expected) =>
-        Assert.Equal(
-            expected, MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByArrayUnionFind(n, edges, k));
+        int n, int[][] edges, int k, int expected)
+    {
+        var actual = MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByArrayUnionFind(n, edges, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxStabilityByDisjointSet_LeetCodeExamples_ReturnsMaximumAchievableStability(
-        int n, int[][] edges, int k, int expected) =>
-        Assert.Equal(
-            expected, MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByDisjointSet(n, edges, k));
+        int n, int[][] edges, int k, int expected)
+    {
+        var actual = MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByDisjointSet(n, edges, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

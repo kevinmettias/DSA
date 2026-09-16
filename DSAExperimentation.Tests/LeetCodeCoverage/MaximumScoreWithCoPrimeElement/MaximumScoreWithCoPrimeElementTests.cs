@@ -16,11 +16,19 @@ public sealed class MaximumScoreWithCoPrimeElementTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaximumScoreByBruteForce_LeetCodeExamples_ReturnsMaximumScore(int[] nums, int maxVal, int expected) =>
-        Assert.Equal(expected, MaximumScoreWithCoPrimeElementSolution.MaximumScoreByBruteForce(nums, maxVal));
+    public void MaximumScoreByBruteForce_LeetCodeExamples_ReturnsMaximumScore(int[] nums, int maxVal, int expected)
+    {
+        var actual = MaximumScoreWithCoPrimeElementSolution.MaximumScoreByBruteForce(nums, maxVal);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaximumScoreByDivisorSieve_LeetCodeExamples_ReturnsMaximumScore(int[] nums, int maxVal, int expected) =>
-        Assert.Equal(expected, MaximumScoreWithCoPrimeElementSolution.MaximumScoreByDivisorSieve(nums, maxVal));
+    public void MaximumScoreByDivisorSieve_LeetCodeExamples_ReturnsMaximumScore(int[] nums, int maxVal, int expected)
+    {
+        var actual = MaximumScoreWithCoPrimeElementSolution.MaximumScoreByDivisorSieve(nums, maxVal);
+
+        Assert.Equal(expected, actual);
+    }
 }

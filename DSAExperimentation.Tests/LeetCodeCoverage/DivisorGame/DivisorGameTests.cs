@@ -9,28 +9,35 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DivisorGame;
 // the recursion under test.
 public sealed class DivisorGameTests
 {
-    public static TheoryData<int, bool> Examples =>
+    public static TheoryData<DivisorGameCase> Examples =>
         new()
         {
-            { 1, false },
-            { 2, true },
-            { 3, false },
-            { 4, true },
-            { 5, false },
-            { 6, true },
-            { 7, false },
-            { 12, true },
-            { 17, false },
-            { 20, true },
+            { new DivisorGameCase(1, AliceWins: false) },
+            { new DivisorGameCase(2, AliceWins: true) },
+            { new DivisorGameCase(3, AliceWins: false) },
+            { new DivisorGameCase(4, AliceWins: true) },
+            { new DivisorGameCase(5, AliceWins: false) },
+            { new DivisorGameCase(6, AliceWins: true) },
+            { new DivisorGameCase(7, AliceWins: false) },
+            { new DivisorGameCase(12, AliceWins: true) },
+            { new DivisorGameCase(17, AliceWins: false) },
+            { new DivisorGameCase(20, AliceWins: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
-        Assert.Equal(expected, DivisorGameSolution.AliceWinsByMemoizedRecursion(n));
+    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(DivisorGameCase example) =>
+        Assert.Equal(example.AliceWins, DivisorGameSolution.AliceWinsByMemoizedRecursion(example.N));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByParityFormula_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
-        Assert.Equal(expected, DivisorGameSolution.AliceWinsByParityFormula(n));
+    public void AliceWinsByParityFormula_LeetCodeExamples_MatchesExpectedOutcome(DivisorGameCase example) =>
+        Assert.Equal(example.AliceWins, DivisorGameSolution.AliceWinsByParityFormula(example.N));
+
+    // One LeetCode example: the starting n and whether Alice wins it. The expected value
+    // is named at every construction site, so a row reads as the case it is rather than
+    // as a bare `true` whose meaning is its position. Nested because it is only ever used
+    // inside this test class - it is this harness's own vocabulary, not a type another
+    // file would import.
+    public readonly record struct DivisorGameCase(int N, bool AliceWins);
 }

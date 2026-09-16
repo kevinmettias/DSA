@@ -61,10 +61,15 @@ public sealed class FindElementsInAContaminatedBinaryTreeTests
     }
 
     // LeetCode's own level-order input shape: a BFS-ordered array with null standing
-    // in for a missing child.
+    // in for a missing child. The shape names the root in slot 0, so an array that
+    // opens with null describes no tree for this helper to build.
     private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
     {
-        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var rootValue = levelOrder[0]
+            ?? throw new InvalidOperationException(
+                "every example above opens with its root, and the level-order shape names the root in slot 0");
+
+        var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
@@ -72,24 +77,29 @@ public sealed class FindElementsInAContaminatedBinaryTreeTests
         while (i < levelOrder.Length)
         {
             var current = queue.Dequeue();
-
-            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
-            {
-                current.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(current.Left);
-            }
-
-            i++;
-
-            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
-            {
-                current.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(current.Right);
-            }
-
-            i++;
+            i = AttachChildren(current, levelOrder, queue, i);
         }
 
         return root;
+    }
+
+    private static int AttachChildren(
+        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
+    {
+        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
+        {
+            current.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(current.Left);
+        }
+
+        i++;
+
+        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+        {
+            current.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(current.Right);
+        }
+
+        return i + 1;
     }
 }

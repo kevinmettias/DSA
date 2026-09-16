@@ -17,16 +17,20 @@ public sealed class ManhattanDistancesOfAllArrangementsOfPiecesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumByBruteForceArrangements_LeetCodeExamples_ReturnsTotalManhattanDistance(
-        int m, int n, int k, long expected) =>
-        Assert.Equal(
-            expected,
-            ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByBruteForceArrangements(m, n, k));
+        int m, int n, int k, long expected)
+    {
+        var actual = ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByBruteForceArrangements(m, n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumByPairwiseDistanceFormula_LeetCodeExamples_ReturnsTotalManhattanDistance(
-        int m, int n, int k, long expected) =>
-        Assert.Equal(
-            expected,
-            ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByPairwiseDistanceFormula(m, n, k));
+        int m, int n, int k, long expected)
+    {
+        var actual = ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByPairwiseDistanceFormula(m, n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

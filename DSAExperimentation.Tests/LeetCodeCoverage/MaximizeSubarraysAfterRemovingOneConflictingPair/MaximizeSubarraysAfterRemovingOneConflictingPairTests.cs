@@ -17,16 +17,22 @@ public sealed class MaximizeSubarraysAfterRemovingOneConflictingPairTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSubarraysByBruteForce_LeetCodeExamples_ReturnsMaximumValidSubarrayCount(
-        int n, int[][] conflictingPairs, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByBruteForce(n, conflictingPairs));
+        int n, int[][] conflictingPairs, int expected)
+    {
+        var actual = MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByBruteForce(
+            n, conflictingPairs);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSubarraysByGroupedBoundSweep_LeetCodeExamples_ReturnsMaximumValidSubarrayCount(
-        int n, int[][] conflictingPairs, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByGroupedBoundSweep(n, conflictingPairs));
+        int n, int[][] conflictingPairs, int expected)
+    {
+        var actual = MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByGroupedBoundSweep(
+            n, conflictingPairs);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -35,16 +35,22 @@ public sealed class WordsWithinTwoEditsOfDictionaryTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMatchingQueriesByBruteForce_LeetCodeExamples_ReturnsQueriesWithinEditBudget(
-        string[] queries, string[] dictionary, string[] expected) =>
-        Assert.Equal(
-            expected,
-            WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(queries, dictionary));
+        string[] queries, string[] dictionary, string[] expected)
+    {
+        var actual = WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByBruteForce(
+            queries, dictionary);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMatchingQueriesByEditBudgetTrie_LeetCodeExamples_ReturnsQueriesWithinEditBudget(
-        string[] queries, string[] dictionary, string[] expected) =>
-        Assert.Equal(
-            expected,
-            WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(queries, dictionary));
+        string[] queries, string[] dictionary, string[] expected)
+    {
+        var actual = WordsWithinTwoEditsOfDictionarySolution.FindMatchingQueriesByEditBudgetTrie(
+            queries, dictionary);
+
+        Assert.Equal(expected, actual);
+    }
 }

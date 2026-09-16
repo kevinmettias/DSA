@@ -21,18 +21,24 @@ public sealed class ReverseLinkedListIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReverseBetweenByArrayRebuild_LeetCodeExamples_ReversesClosedRange(
-        int[] values, int left, int right, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(ReverseLinkedListIISolution.ReverseBetweenByArrayRebuild(BuildList(values), left, right)));
+        int[] values, int left, int right, int[] expected)
+    {
+        var reversed = ReverseLinkedListIISolution.ReverseBetweenByArrayRebuild(BuildList(values), left, right);
+        var actual = ToArray(reversed);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReverseBetweenByHeadInsertion_LeetCodeExamples_ReversesClosedRange(
-        int[] values, int left, int right, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(ReverseLinkedListIISolution.ReverseBetweenByHeadInsertion(BuildList(values), left, right)));
+        int[] values, int left, int right, int[] expected)
+    {
+        var reversed = ReverseLinkedListIISolution.ReverseBetweenByHeadInsertion(BuildList(values), left, right);
+        var actual = ToArray(reversed);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

@@ -45,18 +45,22 @@ public sealed class LockGraphTests
     public void Build_WithNoDeadends_ContainsTheWholeCombinationSpace()
     {
         var graph = LockGraph.Build([]);
+        var hasZeroes = graph.TryGetNode("0000", out _);
+        var hasNines = graph.TryGetNode("9999", out _);
+        var hasFives = graph.TryGetNode("5555", out _);
 
-        Assert.True(graph.TryGetNode("0000", out _));
-        Assert.True(graph.TryGetNode("9999", out _));
-        Assert.True(graph.TryGetNode("5555", out _));
+        Assert.True(hasZeroes);
+        Assert.True(hasNines);
+        Assert.True(hasFives);
     }
 
     [Fact]
     public void Build_GivesEveryLiveCombinationEightNeighbours()
     {
         var graph = LockGraph.Build([]);
+        var found = graph.TryGetNode("1234", out var node);
 
-        Assert.True(graph.TryGetNode("1234", out var node));
+        Assert.True(found);
         Assert.Equal(LockWheels.Count * 2, node.Neighbors.Count);
     }
 
@@ -64,16 +68,18 @@ public sealed class LockGraphTests
     public void Build_OmitsDeadendsEntirely()
     {
         var graph = LockGraph.Build(["0001"]);
+        var found = graph.TryGetNode("0001", out _);
 
-        Assert.False(graph.TryGetNode("0001", out _));
+        Assert.False(found);
     }
 
     [Fact]
     public void Build_NeverWiresAnEdgeIntoADeadend()
     {
         var graph = LockGraph.Build(["0001"]);
+        var found = graph.TryGetNode("0000", out var start);
 
-        Assert.True(graph.TryGetNode("0000", out var start));
+        Assert.True(found);
         Assert.DoesNotContain(start.Neighbors, n => n.Combination == "0001");
         Assert.Equal(LockWheels.Count * 2 - 1, start.Neighbors.Count);
     }
@@ -82,7 +88,8 @@ public sealed class LockGraphTests
     public void TryGetNode_CombinationOutsideTheSpace_ReturnsFalse()
     {
         var graph = LockGraph.Build([]);
+        var found = graph.TryGetNode("nope", out _);
 
-        Assert.False(graph.TryGetNode("nope", out _));
+        Assert.False(found);
     }
 }

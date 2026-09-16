@@ -8,30 +8,39 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAStringContainsAllBin
 // text exactly long enough to hold all 2^k windows, and one far too short to.
 public sealed class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
 {
-    public static TheoryData<string, int, bool> Examples =>
+    public static TheoryData<AllCodesExample> Examples =>
         new()
         {
-            { "00110110", 2, true },
-            { "0110", 1, true },
-            { "0110", 2, false },
-            { "111", 3, false },
-            { "00110", 2, true },
-            { "0000000", 3, false },
+            { new AllCodesExample(S: "00110110", K: 2, Expected: true) },
+            { new AllCodesExample(S: "0110", K: 1, Expected: true) },
+            { new AllCodesExample(S: "0110", K: 2, Expected: false) },
+            { new AllCodesExample(S: "111", K: 3, Expected: false) },
+            { new AllCodesExample(S: "00110", K: 2, Expected: true) },
+            { new AllCodesExample(S: "0000000", K: 3, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void HasAllCodesByCodeSubstringSearch_LeetCodeExamples_ReportsWhetherEveryCodeOccurs(
-        string s, int k, bool expected) =>
-        Assert.Equal(
-            expected,
-            CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesByCodeSubstringSearch(s, k));
+    public void HasAllCodesByCodeSubstringSearch_LeetCodeExamples_ReportsWhetherEveryCodeOccurs(AllCodesExample example)
+    {
+        var allCodesPresent =
+            CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesByCodeSubstringSearch(example.S, example.K);
+
+        Assert.Equal(example.Expected, allCodesPresent);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void HasAllCodesBySlidingBitmask_LeetCodeExamples_ReportsWhetherEveryCodeOccurs(
-        string s, int k, bool expected) =>
-        Assert.Equal(
-            expected,
-            CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesBySlidingBitmask(s, k));
+    public void HasAllCodesBySlidingBitmask_LeetCodeExamples_ReportsWhetherEveryCodeOccurs(AllCodesExample example)
+    {
+        var allCodesPresent =
+            CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesBySlidingBitmask(example.S, example.K);
+
+        Assert.Equal(example.Expected, allCodesPresent);
+    }
+
+    // One LeetCode example: the binary text, the code length, and whether every
+    // length-k code occurs in it. The row names every position - a bare `bool` argument
+    // would read as "true" and say nothing about what is true.
+    public readonly record struct AllCodesExample(string S, int K, bool Expected);
 }

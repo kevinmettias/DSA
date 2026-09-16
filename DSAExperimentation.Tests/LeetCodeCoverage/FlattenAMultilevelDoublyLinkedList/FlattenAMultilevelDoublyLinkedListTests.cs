@@ -77,22 +77,38 @@ public sealed class FlattenAMultilevelDoublyLinkedListTests
 
         for (var levelIndex = 0; levelIndex < levels.Length; levelIndex++)
         {
-            var (parentLevel, parentIndex, values) = levels[levelIndex];
-            var nodes = values.Select(value => new Node(value)).ToList();
-            Link([.. nodes]);
-            levelNodes[levelIndex] = nodes;
-
-            if (parentLevel < 0)
-            {
-                head = nodes[0];
-            }
-            else
-            {
-                levelNodes[parentLevel][parentIndex].Child = nodes[0];
-            }
+            AttachLevel(levels[levelIndex], levelIndex, levelNodes, ref head);
         }
 
-        return head!;
+        // Every Examples row opens with a top level (ParentLevel < 0), and that is the
+        // only branch in AttachLevel that assigns head - so one was always installed.
+        return head
+            ?? throw new InvalidOperationException(
+                "every Examples row opens with a top level (ParentLevel < 0), which is the branch that assigns head");
+    }
+
+    // Consumes one Examples level: materializes its nodes, links them, and wires the level
+    // into the graph - the top level (ParentLevel < 0) installs head, and every other level
+    // hangs off its parent's node as that node's Child.
+    private static void AttachLevel(
+        (int ParentLevel, int ParentIndex, int[] Values) level,
+        int levelIndex,
+        List<Node>[] levelNodes,
+        ref Node? head)
+    {
+        var (parentLevel, parentIndex, values) = level;
+        var nodes = values.Select(value => new Node(value)).ToList();
+        Link([.. nodes]);
+        levelNodes[levelIndex] = nodes;
+
+        if (parentLevel < 0)
+        {
+            head = nodes[0];
+        }
+        else
+        {
+            levelNodes[parentLevel][parentIndex].Child = nodes[0];
+        }
     }
 
     private static void Link(params Node[] nodes)

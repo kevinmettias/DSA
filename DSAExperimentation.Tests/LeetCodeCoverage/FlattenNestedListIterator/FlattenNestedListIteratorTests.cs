@@ -2,39 +2,41 @@ using DSAExperimentation.LeetCode.FlattenNestedListIterator;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FlattenNestedListIterator;
 
-// Harness only: both strategies live in FlattenNestedListIteratorSolution. Each
-// example is its own [Fact] per strategy rather than a [Theory] - NestedInteger is
+// Harness only: both strategies live in FlattenNestedListIteratorSolution and are
+// replayed over the same LeetCode examples, so a disagreement between them fails
+// here rather than surfacing only as a benchmark/test mismatch. NestedInteger is
 // internal, so a List<NestedInteger> cannot appear in a public TheoryData<...>
-// member (CS0053), the same reason BinarySearchTreeIteratorTests uses one [Fact]
-// per tree rather than [Theory].
+// member (CS0053) - the constraint BinarySearchTreeIteratorTests answers with one
+// [Fact] per tree. Here each example is instead named by a nested NestedListShape
+// the theory data carries, and BuildList turns that shape into the structure inside
+// the test.
 public sealed class FlattenNestedListIteratorTests
 {
-    [Fact]
-    public void CreateByLazyStack_ClassicExample_FlattensNestedListInOrder() =>
-        Assert.Equal([1, 1, 2, 1, 1], Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(ClassicExample())));
+    public static TheoryData<NestedListShape, List<int>> Examples =>
+        new()
+        {
+            { NestedListShape.Classic, [1, 1, 2, 1, 1] },
+            { NestedListShape.DeeplyNested, [1, 4, 6] },
+            { NestedListShape.EmptyNestedListsInterspersed, [1, 2] },
+        };
 
-    [Fact]
-    public void CreateByLazyStack_DeeplyNestedList_FlattensEveryDepthInOrder() =>
-        Assert.Equal([1, 4, 6], Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(DeeplyNestedList())));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByLazyStack_LeetCodeExamples_FlattensNestedListInOrder(NestedListShape shape, List<int> expected)
+    {
+        var flattened = Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(BuildList(shape)));
 
-    [Fact]
-    public void CreateByLazyStack_EmptyNestedListsInterspersed_SkipsThemEntirely() =>
-        Assert.Equal(
-            [1, 2], Flatten(FlattenNestedListIteratorSolution.CreateByLazyStack(EmptyNestedListsInterspersed())));
+        Assert.Equal(expected, flattened);
+    }
 
-    [Fact]
-    public void CreateByEagerFlatten_ClassicExample_FlattensNestedListInOrder() =>
-        Assert.Equal(
-            [1, 1, 2, 1, 1], Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(ClassicExample())));
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CreateByEagerFlatten_LeetCodeExamples_FlattensNestedListInOrder(NestedListShape shape, List<int> expected)
+    {
+        var flattened = Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(BuildList(shape)));
 
-    [Fact]
-    public void CreateByEagerFlatten_DeeplyNestedList_FlattensEveryDepthInOrder() =>
-        Assert.Equal([1, 4, 6], Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(DeeplyNestedList())));
-
-    [Fact]
-    public void CreateByEagerFlatten_EmptyNestedListsInterspersed_SkipsThemEntirely() =>
-        Assert.Equal(
-            [1, 2], Flatten(FlattenNestedListIteratorSolution.CreateByEagerFlatten(EmptyNestedListsInterspersed())));
+        Assert.Equal(expected, flattened);
+    }
 
     private static List<int> Flatten(FlattenNestedListIteratorSolution.IFlattenIterator iterator)
     {
@@ -47,6 +49,16 @@ public sealed class FlattenNestedListIteratorTests
 
         return flattened;
     }
+
+    // The three LeetCode examples, keyed by shape. NestedInteger is internal, so the
+    // shape is the public stand-in the theory data can carry and BuildList does the
+    // reconstruction the theories cannot spell out themselves.
+    private static List<NestedInteger> BuildList(NestedListShape shape) => shape switch
+    {
+        NestedListShape.Classic => ClassicExample(),
+        NestedListShape.DeeplyNested => DeeplyNestedList(),
+        _ => EmptyNestedListsInterspersed(),
+    };
 
     // [[1,1],2,[1,1]]
     private static List<NestedInteger> ClassicExample() =>
@@ -72,4 +84,15 @@ public sealed class FlattenNestedListIteratorTests
             NestedInteger.OfInteger(2),
             NestedInteger.OfList(),
         ];
+
+    // Which of LeetCode 341's own nested-list examples a theory row replays, named
+    // rather than spelled out in the theory data: a List<NestedInteger> is internal,
+    // so each example is selected by name and rebuilt by BuildList inside the test.
+    // Public because it appears in the theories' own signatures.
+    public enum NestedListShape
+    {
+        Classic,
+        DeeplyNested,
+        EmptyNestedListsInterspersed,
+    }
 }

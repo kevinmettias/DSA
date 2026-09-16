@@ -17,13 +17,18 @@ public sealed class CountNonDecreasingSubarraysAfterKOperationsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByPrefixMaxBruteForce_LeetCodeExamples_ReturnsCountOfFixableSubarrays(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(expected, CountNonDecreasingSubarraysAfterKOperationsSolution.CountByPrefixMaxBruteForce(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = CountNonDecreasingSubarraysAfterKOperationsSolution.CountByPrefixMaxBruteForce(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByMonotonicDequeWindow_LeetCodeExamples_ReturnsCountOfFixableSubarrays(
-        int[] nums, int k, long expected) =>
-        Assert.Equal(
-            expected, CountNonDecreasingSubarraysAfterKOperationsSolution.CountByMonotonicDequeWindow(nums, k));
+        int[] nums, int k, long expected)
+    {
+        var actual = CountNonDecreasingSubarraysAfterKOperationsSolution.CountByMonotonicDequeWindow(nums, k);
+        Assert.Equal(expected, actual);
+    }
 }

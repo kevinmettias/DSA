@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray.OnlineMajorityElementInSubarraySolution;
+using DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineMajorityElementInSubarray;
 
@@ -48,21 +48,31 @@ public sealed class OnlineMajorityElementInSubarrayTests
     [MemberData(nameof(Examples))]
     public void MajorityCheckerByRangeTally_LeetCodeExamples_ReturnsMajorityOrNegativeOne(
         int[] arr, int[][] queries, int[] expected) =>
-        AssertQueryResults(new MajorityCheckerByRangeTally(arr), queries, expected);
+        AssertQueryResults(
+            new OnlineMajorityElementInSubarraySolution.MajorityCheckerByRangeTally(arr),
+            queries,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MajorityCheckerByPositionIndex_LeetCodeExamples_ReturnsMajorityOrNegativeOne(
         int[] arr, int[][] queries, int[] expected) =>
-        AssertQueryResults(new MajorityCheckerByPositionIndex(arr), queries, expected);
+        AssertQueryResults(
+            new OnlineMajorityElementInSubarraySolution.MajorityCheckerByPositionIndex(arr),
+            queries,
+            expected);
 
-    private static void AssertQueryResults(IMajorityChecker checker, int[][] queries, int[] expected)
+    private static void AssertQueryResults(
+        OnlineMajorityElementInSubarraySolution.IMajorityChecker checker,
+        int[][] queries,
+        int[] expected)
     {
         for (var i = 0; i < queries.Length; i++)
         {
             var query = queries[i];
+            var majority = checker.Query(query[0], query[1], query[2]);
 
-            Assert.Equal(expected[i], checker.Query(query[0], query[1], query[2]));
+            Assert.Equal(expected[i], majority);
         }
     }
 }

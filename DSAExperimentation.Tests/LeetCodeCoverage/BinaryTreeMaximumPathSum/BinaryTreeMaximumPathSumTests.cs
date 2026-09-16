@@ -31,32 +31,39 @@ public sealed class BinaryTreeMaximumPathSumTests
             return null;
         }
 
-        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var root = new BinaryTreeNode<int>(values[0].Value);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
-        var i = 1;
 
+        var i = 1;
         while (queue.Count > 0 && i < values.Length)
         {
-            var node = queue.Dequeue();
-
-            if (values[i] is int leftValue)
-            {
-                node.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(node.Left);
-            }
-
-            i++;
-
-            if (i < values.Length && values[i] is int rightValue)
-            {
-                node.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(node.Right);
-            }
-
-            i++;
+            i = AttachChildren(values, i, queue);
         }
 
         return root;
+    }
+
+    // Consumes one slot for each of the dequeued parent's children and returns the
+    // index just past them: a null or absent slot attaches nothing but is still spent.
+    private static int AttachChildren(int?[] values, int i, Queue<BinaryTreeNode<int>> queue)
+    {
+        var node = queue.Dequeue();
+
+        if (values[i] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        i++;
+
+        if (i < values.Length && values[i] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i + 1;
     }
 }

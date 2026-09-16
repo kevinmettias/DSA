@@ -17,11 +17,17 @@ public sealed class LongestSubstringWithAtLeastKRepeatingCharactersTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LongestByBruteForce_LeetCodeExamples_ReturnsLongestQualifyingLength(string s, int k, int expected) =>
-        Assert.Equal(expected, LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByBruteForce(s, k));
+    public void LongestByBruteForce_LeetCodeExamples_ReturnsLongestQualifyingLength(string s, int k, int expected)
+    {
+        var actual = LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByBruteForce(s, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LongestByDivideAndConquer_LeetCodeExamples_ReturnsLongestQualifyingLength(string s, int k, int expected) =>
-        Assert.Equal(expected, LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByDivideAndConquer(s, k));
+    public void LongestByDivideAndConquer_LeetCodeExamples_ReturnsLongestQualifyingLength(string s, int k, int expected)
+    {
+        var actual = LongestSubstringWithAtLeastKRepeatingCharactersSolution.LongestByDivideAndConquer(s, k);
+        Assert.Equal(expected, actual);
+    }
 }

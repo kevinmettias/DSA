@@ -18,12 +18,20 @@ public sealed class GoodSubsequenceQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodSubseqByBruteForce_LeetCodeExamples_ReturnsQueriesWithAGoodSubsequence(
-        int[] nums, int p, int[][] queries, int expected) =>
-        Assert.Equal(expected, GoodSubsequenceQueriesSolution.CountGoodSubseqByBruteForce(nums, p, queries));
+        int[] nums, int p, int[][] queries, int expected)
+    {
+        var actual = GoodSubsequenceQueriesSolution.CountGoodSubseqByBruteForce(nums, p, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodSubseqBySegmentTreeGcd_LeetCodeExamples_ReturnsQueriesWithAGoodSubsequence(
-        int[] nums, int p, int[][] queries, int expected) =>
-        Assert.Equal(expected, GoodSubsequenceQueriesSolution.CountGoodSubseqBySegmentTreeGcd(nums, p, queries));
+        int[] nums, int p, int[][] queries, int expected)
+    {
+        var actual = GoodSubsequenceQueriesSolution.CountGoodSubseqBySegmentTreeGcd(nums, p, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

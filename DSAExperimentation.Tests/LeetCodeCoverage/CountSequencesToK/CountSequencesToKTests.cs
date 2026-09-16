@@ -18,12 +18,18 @@ public sealed class CountSequencesToKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSequencesByBruteForceSearch_LeetCodeExamples_ReturnsSequenceCount(
-        int[] nums, long k, long expected) =>
-        Assert.Equal(expected, CountSequencesToKSolution.CountSequencesByBruteForceSearch(nums, k));
+        int[] nums, long k, long expected)
+    {
+        var actual = CountSequencesToKSolution.CountSequencesByBruteForceSearch(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSequencesByPrimeExponentMemo_LeetCodeExamples_ReturnsSequenceCount(
-        int[] nums, long k, long expected) =>
-        Assert.Equal(expected, CountSequencesToKSolution.CountSequencesByPrimeExponentMemo(nums, k));
+        int[] nums, long k, long expected)
+    {
+        var actual = CountSequencesToKSolution.CountSequencesByPrimeExponentMemo(nums, k);
+        Assert.Equal(expected, actual);
+    }
 }

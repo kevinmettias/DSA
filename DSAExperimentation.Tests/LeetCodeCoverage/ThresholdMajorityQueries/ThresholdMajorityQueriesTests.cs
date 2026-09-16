@@ -24,12 +24,20 @@ public sealed class ThresholdMajorityQueriesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SubarrayMajorityByBruteForce_LeetCodeExamples_ReturnsHighestFrequencyElementMeetingThreshold(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, ThresholdMajorityQueriesSolution.SubarrayMajorityByBruteForce(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = ThresholdMajorityQueriesSolution.SubarrayMajorityByBruteForce(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SubarrayMajorityByBlockMode_LeetCodeExamples_ReturnsHighestFrequencyElementMeetingThreshold(
-        int[] nums, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, ThresholdMajorityQueriesSolution.SubarrayMajorityByBlockMode(nums, queries));
+        int[] nums, int[][] queries, int[] expected)
+    {
+        var actual = ThresholdMajorityQueriesSolution.SubarrayMajorityByBlockMode(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -23,18 +23,22 @@ public sealed class IteratorForCombinationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByBitmaskEnumeration_LeetCodeExamples_YieldsInLexicographicalOrder(
-        string characters, int combinationLength, string[] expected) =>
-        AssertYields(
-            expected,
-            IteratorForCombinationSolution.CreateByBitmaskEnumeration(characters, combinationLength));
+        string characters, int combinationLength, string[] expected)
+    {
+        var iterator = IteratorForCombinationSolution.CreateByBitmaskEnumeration(characters, combinationLength);
+
+        AssertYields(expected, iterator);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByBacktrackEngine_LeetCodeExamples_YieldsInLexicographicalOrder(
-        string characters, int combinationLength, string[] expected) =>
-        AssertYields(
-            expected,
-            IteratorForCombinationSolution.CreateByBacktrackEngine(characters, combinationLength));
+        string characters, int combinationLength, string[] expected)
+    {
+        var iterator = IteratorForCombinationSolution.CreateByBacktrackEngine(characters, combinationLength);
+
+        AssertYields(expected, iterator);
+    }
 
     private static void AssertYields(
         string[] expected,

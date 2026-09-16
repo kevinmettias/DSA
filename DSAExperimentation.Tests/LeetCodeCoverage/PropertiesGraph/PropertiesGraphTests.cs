@@ -18,12 +18,20 @@ public sealed class PropertiesGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfComponentsByBruteForce_LeetCodeExamples_ReturnsComponentCount(
-        int[][] properties, int k, int expected) =>
-        Assert.Equal(expected, PropertiesGraphSolution.NumberOfComponentsByBruteForce(properties, k));
+        int[][] properties, int k, int expected)
+    {
+        var actual = PropertiesGraphSolution.NumberOfComponentsByBruteForce(properties, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfComponentsByDisjointSet_LeetCodeExamples_ReturnsComponentCount(
-        int[][] properties, int k, int expected) =>
-        Assert.Equal(expected, PropertiesGraphSolution.NumberOfComponentsByDisjointSet(properties, k));
+        int[][] properties, int k, int expected)
+    {
+        var actual = PropertiesGraphSolution.NumberOfComponentsByDisjointSet(properties, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

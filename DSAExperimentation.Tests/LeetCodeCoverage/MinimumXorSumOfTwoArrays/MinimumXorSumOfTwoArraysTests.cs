@@ -27,12 +27,20 @@ public sealed class MinimumXorSumOfTwoArraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumXorSumByBruteForceRecursion_LeetCodeExamples_ReturnsMinimalTotal(
-        int[] nums1, int[] nums2, int expected) =>
-        Assert.Equal(expected, MinimumXorSumOfTwoArraysSolution.MinimumXorSumByBruteForceRecursion(nums1, nums2));
+        int[] nums1, int[] nums2, int expected)
+    {
+        var actual = MinimumXorSumOfTwoArraysSolution.MinimumXorSumByBruteForceRecursion(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumXorSumByMemoizedBitmask_LeetCodeExamples_ReturnsMinimalTotal(
-        int[] nums1, int[] nums2, int expected) =>
-        Assert.Equal(expected, MinimumXorSumOfTwoArraysSolution.MinimumXorSumByMemoizedBitmask(nums1, nums2));
+        int[] nums1, int[] nums2, int expected)
+    {
+        var actual = MinimumXorSumOfTwoArraysSolution.MinimumXorSumByMemoizedBitmask(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 }

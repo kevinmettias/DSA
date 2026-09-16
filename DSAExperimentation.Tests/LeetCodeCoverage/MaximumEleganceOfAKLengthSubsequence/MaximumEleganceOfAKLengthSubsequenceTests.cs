@@ -19,10 +19,18 @@ public sealed class MaximumEleganceOfAKLengthSubsequenceTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumEleganceByBcl_LeetCodeExamples_ReturnsMaxElegance(int[][] items, int k, long expected)
-        => Assert.Equal(expected, MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByBcl(items, k));
+    {
+        var actual = MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByBcl(items, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumEleganceByRepoPrimitives_LeetCodeExamples_ReturnsMaxElegance(int[][] items, int k, long expected)
-        => Assert.Equal(expected, MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByRepoPrimitives(items, k));
+    {
+        var actual = MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByRepoPrimitives(items, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

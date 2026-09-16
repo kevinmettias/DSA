@@ -36,12 +36,18 @@ public sealed class CycleLengthQueriesInATreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CycleLengthQueriesByAncestorDictionary_LeetCodeExamples_ReturnsPerQueryCycleLengths(
-        int n, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, CycleLengthQueriesInATreeSolution.CycleLengthQueriesByAncestorDictionary(n, queries));
+        int n, int[][] queries, int[] expected)
+    {
+        var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByAncestorDictionary(n, queries);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CycleLengthQueriesByParentIndexWalk_LeetCodeExamples_ReturnsPerQueryCycleLengths(
-        int n, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, CycleLengthQueriesInATreeSolution.CycleLengthQueriesByParentIndexWalk(n, queries));
+        int n, int[][] queries, int[] expected)
+    {
+        var actual = CycleLengthQueriesInATreeSolution.CycleLengthQueriesByParentIndexWalk(n, queries);
+        Assert.Equal(expected, actual);
+    }
 }

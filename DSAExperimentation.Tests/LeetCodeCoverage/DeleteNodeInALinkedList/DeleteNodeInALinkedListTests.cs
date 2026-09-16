@@ -49,12 +49,13 @@ public sealed class DeleteNodeInALinkedListTests
     {
         var node = head;
 
+        // Every Examples row's nodeIndex stays below the length of the list BuildList
+        // builds for it, so this walk never steps off the tail.
         for (var i = 0; i < index; i++)
         {
-            // presumption: allow -- every nodeIndex in Examples stays within the
-            // list BuildList just built for it (never the tail), so Next is always
-            // present while this loop still has steps to take.
-            node = node.Next!;
+            node = node.Next
+                ?? throw new InvalidOperationException(
+                    $"every Examples row's nodeIndex is below its list's length, but this walk was asked for index {index}");
         }
 
         return node;

@@ -7,33 +7,41 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ParsingABooleanExpression;
 // and the nested expression LeetCode itself publishes.
 public sealed class ParsingABooleanExpressionTests
 {
-    public static TheoryData<string, bool> Examples =>
+    public static TheoryData<ExpressionExample> Examples =>
         new()
         {
-            { "t", true },
-            { "f", false },
-            { "!(f)", true },
-            { "!(t)", false },
-            { "&(t,f)", false },
-            { "&(t,t,t)", true },
-            { "|(t,f)", true },
-            { "|(f,f,f)", false },
-            { "|(&(t,f,t),!(t))", false },
-            { "&(|(f),t)", false },
-            { "|(!(&(t,f)),f)", true },
+            { new ExpressionExample(Expression: "t", Expected: true) },
+            { new ExpressionExample(Expression: "f", Expected: false) },
+            { new ExpressionExample(Expression: "!(f)", Expected: true) },
+            { new ExpressionExample(Expression: "!(t)", Expected: false) },
+            { new ExpressionExample(Expression: "&(t,f)", Expected: false) },
+            { new ExpressionExample(Expression: "&(t,t,t)", Expected: true) },
+            { new ExpressionExample(Expression: "|(t,f)", Expected: true) },
+            { new ExpressionExample(Expression: "|(f,f,f)", Expected: false) },
+            { new ExpressionExample(Expression: "|(&(t,f,t),!(t))", Expected: false) },
+            { new ExpressionExample(Expression: "&(|(f),t)", Expected: false) },
+            { new ExpressionExample(Expression: "|(!(&(t,f)),f)", Expected: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ParseBoolExprByRecursiveDescent_LeetCodeExamples_EvaluatesToExpectedBoolean(
-        string expression,
-        bool expected) =>
-        Assert.Equal(expected, ParsingABooleanExpressionSolution.ParseBoolExprByRecursiveDescent(expression));
+        ExpressionExample example) =>
+        Assert.Equal(
+            example.Expected,
+            ParsingABooleanExpressionSolution.ParseBoolExprByRecursiveDescent(example.Expression));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ParseBoolExprByParserStack_LeetCodeExamples_EvaluatesToExpectedBoolean(
-        string expression,
-        bool expected) =>
-        Assert.Equal(expected, ParsingABooleanExpressionSolution.ParseBoolExprByParserStack(expression));
+        ExpressionExample example) =>
+        Assert.Equal(
+            example.Expected,
+            ParsingABooleanExpressionSolution.ParseBoolExprByParserStack(example.Expression));
+
+    // One LeetCode example: the expression and the value it evaluates to. The answer
+    // is the datum under test, so the row names it rather than leaving a bare `bool`
+    // beside the expression - `ParseBoolExpr("t", true)` does not say whether that
+    // `true` is the expected result or a parse flag.
+    public readonly record struct ExpressionExample(string Expression, bool Expected);
 }

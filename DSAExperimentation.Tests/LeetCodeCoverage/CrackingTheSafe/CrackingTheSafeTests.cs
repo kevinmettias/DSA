@@ -18,13 +18,21 @@ public sealed class CrackingTheSafeTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CrackSafeByGreedyRecursion_LeetCodeExamples_CoversEveryPassword(int n, int k) =>
-        AssertCoversEveryPassword(CrackingTheSafeSolution.CrackSafeByGreedyRecursion(n, k), n, k);
+    public void CrackSafeByGreedyRecursion_LeetCodeExamples_CoversEveryPassword(int n, int k)
+    {
+        var safe = CrackingTheSafeSolution.CrackSafeByGreedyRecursion(n, k);
+
+        AssertCoversEveryPassword(safe, n, k);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CrackSafeByBacktrackEngine_LeetCodeExamples_CoversEveryPassword(int n, int k) =>
-        AssertCoversEveryPassword(CrackingTheSafeSolution.CrackSafeByBacktrackEngine(n, k), n, k);
+    public void CrackSafeByBacktrackEngine_LeetCodeExamples_CoversEveryPassword(int n, int k)
+    {
+        var safe = CrackingTheSafeSolution.CrackSafeByBacktrackEngine(n, k);
+
+        AssertCoversEveryPassword(safe, n, k);
+    }
 
     private static void AssertCoversEveryPassword(string safe, int n, int k)
     {
@@ -33,7 +41,9 @@ public sealed class CrackingTheSafeTests
 
         for (var password = 0; password < total; password++)
         {
-            Assert.Contains(ToBaseK(password, n, k), safe);
+            var candidate = ToBaseK(password, n, k);
+
+            Assert.Contains(candidate, safe);
         }
     }
 

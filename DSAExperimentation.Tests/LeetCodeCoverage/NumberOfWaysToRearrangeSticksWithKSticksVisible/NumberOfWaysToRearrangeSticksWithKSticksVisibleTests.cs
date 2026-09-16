@@ -47,27 +47,33 @@ public sealed class NumberOfWaysToRearrangeSticksWithKSticksVisibleTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RearrangeSticksByPermutationEnumeration_LeetCodeExamples_CountsArrangementsWithKVisibleSticks(
-        int stickCount, int visibleCount, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
-                .RearrangeSticksByPermutationEnumeration(stickCount, visibleCount));
+        int stickCount, int visibleCount, int expected)
+    {
+        var arrangements = NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
+            .RearrangeSticksByPermutationEnumeration(stickCount, visibleCount);
+
+        Assert.Equal(expected, arrangements);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RearrangeSticksByMemoizedStirling_LeetCodeExamples_CountsArrangementsWithKVisibleSticks(
-        int stickCount, int visibleCount, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
-                .RearrangeSticksByMemoizedStirling(stickCount, visibleCount));
+        int stickCount, int visibleCount, int expected)
+    {
+        var arrangements = NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
+            .RearrangeSticksByMemoizedStirling(stickCount, visibleCount);
+
+        Assert.Equal(expected, arrangements);
+    }
 
     [Theory]
     [MemberData(nameof(LargeExamples))]
     public void RearrangeSticksByMemoizedStirling_TwentySticks_ReducesTheCountModuloOneBillionSeven(
-        int stickCount, int visibleCount, int expected) =>
-        Assert.Equal(
-            expected,
-            NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
-                .RearrangeSticksByMemoizedStirling(stickCount, visibleCount));
+        int stickCount, int visibleCount, int expected)
+    {
+        var arrangements = NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
+            .RearrangeSticksByMemoizedStirling(stickCount, visibleCount);
+
+        Assert.Equal(expected, arrangements);
+    }
 }

@@ -40,9 +40,11 @@ public sealed class AllPathsFromSourceToTargetTests
     private static void AssertSamePaths(int[][] expected, List<List<int>> actual)
     {
         Assert.Equal(expected.Length, actual.Count);
-        Assert.Equal(
-            expected.Select(Describe).OrderBy(path => path, StringComparer.Ordinal),
-            actual.Select(Describe).OrderBy(path => path, StringComparer.Ordinal));
+
+        var expectedPaths = expected.Select(Describe).OrderBy(path => path, StringComparer.Ordinal);
+        var actualPaths = actual.Select(Describe).OrderBy(path => path, StringComparer.Ordinal);
+
+        Assert.Equal(expectedPaths, actualPaths);
     }
 
     private static string Describe(IEnumerable<int> path) => string.Join(",", path);

@@ -20,12 +20,20 @@ public sealed class OpenTheLockTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTurnsByMutationQueue_LeetCodeExamples_ReturnsShortestUnblockedTurnCount(
-        string[] deadends, string target, int expected) =>
-        Assert.Equal(expected, OpenTheLockSolution.MinTurnsByMutationQueue(deadends, target));
+        string[] deadends, string target, int expected)
+    {
+        var actual = OpenTheLockSolution.MinTurnsByMutationQueue(deadends, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinTurnsByReduceGraph_LeetCodeExamples_ReturnsShortestUnblockedTurnCount(
-        string[] deadends, string target, int expected) =>
-        Assert.Equal(expected, OpenTheLockSolution.MinTurnsByReduceGraph(deadends, target));
+        string[] deadends, string target, int expected)
+    {
+        var actual = OpenTheLockSolution.MinTurnsByReduceGraph(deadends, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

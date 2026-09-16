@@ -17,12 +17,20 @@ public sealed class NextGreaterElementITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NextGreaterElementByPerQueryRescan_LeetCodeExamples_ReturnsPerElementAnswers(
-        int[] nums1, int[] nums2, int[] expected) =>
-        Assert.Equal(expected, NextGreaterElementISolution.NextGreaterElementByPerQueryRescan(nums1, nums2));
+        int[] nums1, int[] nums2, int[] expected)
+    {
+        var actual = NextGreaterElementISolution.NextGreaterElementByPerQueryRescan(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NextGreaterElementByMonotonicStackSweep_LeetCodeExamples_ReturnsPerElementAnswers(
-        int[] nums1, int[] nums2, int[] expected) =>
-        Assert.Equal(expected, NextGreaterElementISolution.NextGreaterElementByMonotonicStackSweep(nums1, nums2));
+        int[] nums1, int[] nums2, int[] expected)
+    {
+        var actual = NextGreaterElementISolution.NextGreaterElementByMonotonicStackSweep(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 }

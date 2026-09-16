@@ -9,27 +9,36 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SatisfiabilityOfEqualityEqua
 // once and each strategy gets its own theory so a failure names the arm that broke.
 public sealed class SatisfiabilityOfEqualityEquationsTests
 {
-    public static TheoryData<string[], bool> Examples =>
+    public static TheoryData<EquationsExample> Examples =>
         new()
         {
-            { ["a==b", "b!=a"], false },
-            { ["b==a", "a==b"], true },
-            { ["a==b", "b==c", "a==c"], true },
-            { ["c==c", "b==d", "x!=z"], true },
-            { ["a==b", "b!=c", "c==a"], false },
-            { ["a!=a"], false },
-            { ["a!=b"], true },
+            new EquationsExample(Equations: ["a==b", "b!=a"], IsSatisfiable: false),
+            new EquationsExample(Equations: ["b==a", "a==b"], IsSatisfiable: true),
+            new EquationsExample(Equations: ["a==b", "b==c", "a==c"], IsSatisfiable: true),
+            new EquationsExample(Equations: ["c==c", "b==d", "x!=z"], IsSatisfiable: true),
+            new EquationsExample(Equations: ["a==b", "b!=c", "c==a"], IsSatisfiable: false),
+            new EquationsExample(Equations: ["a!=a"], IsSatisfiable: false),
+            new EquationsExample(Equations: ["a!=b"], IsSatisfiable: true),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void EquationsPossibleByAdjacencyBfs_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
-        string[] equations, bool expected) =>
-        Assert.Equal(expected, SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByAdjacencyBfs(equations));
+        EquationsExample example) =>
+        Assert.Equal(
+            example.IsSatisfiable,
+            SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByAdjacencyBfs(example.Equations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void EquationsPossibleByDisjointSet_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
-        string[] equations, bool expected) =>
-        Assert.Equal(expected, SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByDisjointSet(equations));
+        EquationsExample example) =>
+        Assert.Equal(
+            example.IsSatisfiable,
+            SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByDisjointSet(example.Equations));
+
+    // One example: the equation system and whether it can hold. The expectation is
+    // named rather than carried by its position, so the row reads as an assertion
+    // instead of as a bare `true`.
+    public readonly record struct EquationsExample(string[] Equations, bool IsSatisfiable);
 }

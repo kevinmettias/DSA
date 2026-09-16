@@ -7,40 +7,50 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSum;
 // strategy that broke.
 public sealed class TwoSumTests
 {
-    public static TheoryData<int[], int, bool, int, int> Examples =>
+    public static TheoryData<TwoSumExample> Examples =>
         new()
         {
-            { [2, 7, 11, 15], 9, true, 0, 1 },
-            { [3, 2, 4], 6, true, 1, 2 },
-            { [3, 3], 6, true, 0, 1 },
-            { [1, 2, 3], 100, false, 0, 0 },
+            { new TwoSumExample(Nums: [2, 7, 11, 15], Target: 9, ExpectedFound: true, ExpectedFirst: 0, ExpectedSecond: 1) },
+            { new TwoSumExample(Nums: [3, 2, 4], Target: 6, ExpectedFound: true, ExpectedFirst: 1, ExpectedSecond: 2) },
+            { new TwoSumExample(Nums: [3, 3], Target: 6, ExpectedFound: true, ExpectedFirst: 0, ExpectedSecond: 1) },
+            { new TwoSumExample(Nums: [1, 2, 3], Target: 100, ExpectedFound: false, ExpectedFirst: 0, ExpectedSecond: 0) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TryFindIndicesByBruteForce_LeetCodeExamples_ReturnsMatchingPairIndices(
-        int[] nums, int target, bool expectedFound, int expectedFirst, int expectedSecond)
+    public void TryFindIndicesByBruteForce_LeetCodeExamples_ReturnsMatchingPairIndices(TwoSumExample example)
     {
-        var found = TwoSumSolution.TryFindIndicesByBruteForce(nums, target, out var first, out var second);
+        var found = TwoSumSolution.TryFindIndicesByBruteForce(
+            example.Nums, example.Target, out var first, out var second);
 
-        AssertResult(expectedFound, expectedFirst, expectedSecond, found, first, second);
+        AssertResult((found, first, second), example);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TryFindIndicesByHashMap_LeetCodeExamples_ReturnsMatchingPairIndices(
-        int[] nums, int target, bool expectedFound, int expectedFirst, int expectedSecond)
+    public void TryFindIndicesByHashMap_LeetCodeExamples_ReturnsMatchingPairIndices(TwoSumExample example)
     {
-        var found = TwoSumSolution.TryFindIndicesByHashMap(nums, target, out var first, out var second);
+        var found = TwoSumSolution.TryFindIndicesByHashMap(
+            example.Nums, example.Target, out var first, out var second);
 
-        AssertResult(expectedFound, expectedFirst, expectedSecond, found, first, second);
+        AssertResult((found, first, second), example);
     }
 
-    private static void AssertResult(
-        bool expectedFound, int expectedFirst, int expectedSecond, bool found, int first, int second)
+    private static void AssertResult((bool Found, int First, int Second) actual, TwoSumExample example)
     {
-        Assert.Equal(expectedFound, found);
-        Assert.Equal(expectedFirst, first);
-        Assert.Equal(expectedSecond, second);
+        Assert.Equal(example.ExpectedFound, actual.Found);
+        Assert.Equal(example.ExpectedFirst, actual.First);
+        Assert.Equal(example.ExpectedSecond, actual.Second);
     }
+
+    // One LeetCode example: the array and target the strategy is given, and what it must
+    // answer - whether a pair exists, and the two indices when it does. The five travel
+    // together into every assertion, so each is named rather than left as a position in a
+    // row of five literals.
+    public readonly record struct TwoSumExample(
+        int[] Nums,
+        int Target,
+        bool ExpectedFound,
+        int ExpectedFirst,
+        int ExpectedSecond);
 }

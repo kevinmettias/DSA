@@ -6,25 +6,38 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidSquare;
 // LeetCode's published examples.
 public sealed class ValidSquareTests
 {
-    public static TheoryData<int[], int[], int[], int[], bool> Examples =>
+    public static TheoryData<SquareExample> Examples =>
         new()
         {
-            { [0, 0], [1, 1], [1, 0], [0, 1], true },
-            { [0, 0], [1, 1], [2, 0], [1, -1], true },
-            { [0, 0], [1, 1], [1, 0], [0, 12], false },
-            { [0, 0], [1, 1], [2, 2], [3, 3], false },
-            { [5, 5], [5, 5], [5, 5], [5, 5], false },
+            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [1, 0], P4: [0, 1], Expected: true) },
+            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 0], P4: [1, -1], Expected: true) },
+            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [1, 0], P4: [0, 12], Expected: false) },
+            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 2], P4: [3, 3], Expected: false) },
+            { new SquareExample(P1: [5, 5], P2: [5, 5], P3: [5, 5], P4: [5, 5], Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsValidSquareByMergeSort_LeetCodeExamples_ReturnsWhetherFourPointsFormASquare(
-        int[] p1, int[] p2, int[] p3, int[] p4, bool expected) =>
-        Assert.Equal(expected, ValidSquareSolution.IsValidSquareByMergeSort(p1, p2, p3, p4));
+    public void IsValidSquareByMergeSort_LeetCodeExamples_ReturnsWhetherFourPointsFormASquare(SquareExample example)
+    {
+        var actual = ValidSquareSolution.IsValidSquareByMergeSort(
+            example.P1, example.P2, example.P3, example.P4);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void IsValidSquareByMinMaxScan_LeetCodeExamples_ReturnsWhetherFourPointsFormASquare(
-        int[] p1, int[] p2, int[] p3, int[] p4, bool expected) =>
-        Assert.Equal(expected, ValidSquareSolution.IsValidSquareByMinMaxScan(p1, p2, p3, p4));
+    public void IsValidSquareByMinMaxScan_LeetCodeExamples_ReturnsWhetherFourPointsFormASquare(SquareExample example)
+    {
+        var actual = ValidSquareSolution.IsValidSquareByMinMaxScan(
+            example.P1, example.P2, example.P3, example.P4);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: four points, and whether they form a square. Each corner
+    // is named for the role it plays, so a row cannot be read with two of the four
+    // silently exchanged.
+    public readonly record struct SquareExample(int[] P1, int[] P2, int[] P3, int[] P4, bool Expected);
 }

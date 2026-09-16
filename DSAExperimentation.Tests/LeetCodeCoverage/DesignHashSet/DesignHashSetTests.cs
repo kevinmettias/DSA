@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignHashSet.DesignHashSetSolution;
+using DSAExperimentation.LeetCode.DesignHashSet;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignHashSet;
 
@@ -46,58 +46,19 @@ public sealed class DesignHashSetTests
     [MemberData(nameof(Examples))]
     public void MyHashSetByListScan_LeetCodeExamples_TracksMembershipCorrectly(
         HashSetOp[] operations, bool?[] expected) =>
-        RunScript(new MyHashSetByListScan(), operations, expected);
+        RunScript(new DesignHashSetSolution.MyHashSetByListScan(), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MyHashSetBySetBacked_LeetCodeExamples_TracksMembershipCorrectly(
         HashSetOp[] operations, bool?[] expected) =>
-        RunScript(new MyHashSetBySetBacked(), operations, expected);
+        RunScript(new DesignHashSetSolution.MyHashSetBySetBacked(), operations, expected);
 
-    private static void RunScript(IMyHashSet set, HashSetOp[] operations, bool?[] expected)
+    private static void RunScript(DesignHashSetSolution.IMyHashSet set, HashSetOp[] operations, bool?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(set));
         }
-    }
-}
-
-// One call in a MyHashSet script: which method to invoke and with what key.
-// Pure dispatch, built via the named factories below so a script (like Examples
-// above) reads like the LeetCode call sequence it replays.
-public readonly record struct HashSetOp(HashSetOp.OpKind kind, int key)
-{
-    public static HashSetOp Add(int key) => new(OpKind.Add, key);
-
-    public static HashSetOp Remove(int key) => new(OpKind.Remove, key);
-
-    public static HashSetOp Contains(int key) => new(OpKind.Contains, key);
-
-    // null for the two void calls, the membership result for Contains - so a
-    // script runner can assert against one expected value per operation
-    // uniformly. Internal, not public: IMyHashSet is internal to
-    // DesignHashSetSolution, and only this same assembly's RunScript ever
-    // calls Apply.
-    internal bool? Apply(IMyHashSet set)
-    {
-        switch (kind)
-        {
-            case OpKind.Add:
-                set.Add(key);
-                return null;
-            case OpKind.Remove:
-                set.Remove(key);
-                return null;
-            default:
-                return set.Contains(key);
-        }
-    }
-
-    public enum OpKind
-    {
-        Add,
-        Remove,
-        Contains,
     }
 }

@@ -24,16 +24,18 @@ public sealed class CountingWordsWithAGivenPrefixTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountWordsWithPrefixByStartsWithScan_LeetCodeExamples_ReturnsMatchingWordCount(
-        string[] words, string pref, int expected) =>
-        Assert.Equal(
-            expected,
-            CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByStartsWithScan(words, pref));
+        string[] words, string pref, int expected)
+    {
+        var actual = CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByStartsWithScan(words, pref);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountWordsWithPrefixByTriePerWord_LeetCodeExamples_ReturnsMatchingWordCount(
-        string[] words, string pref, int expected) =>
-        Assert.Equal(
-            expected,
-            CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByTriePerWord(words, pref));
+        string[] words, string pref, int expected)
+    {
+        var actual = CountingWordsWithAGivenPrefixSolution.CountWordsWithPrefixByTriePerWord(words, pref);
+        Assert.Equal(expected, actual);
+    }
 }

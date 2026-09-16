@@ -16,11 +16,20 @@ public sealed class NumberOfSubarraysThatMatchAPatternITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountMatchesByBruteForce_LeetCodeExamples_ReturnsSubarrayCount(int[] nums, int[] pattern, int expected) =>
-        Assert.Equal(expected, NumberOfSubarraysThatMatchAPatternISolution.CountMatchesByBruteForce(nums, pattern));
+    public void CountMatchesByBruteForce_LeetCodeExamples_ReturnsSubarrayCount(int[] nums, int[] pattern, int expected)
+    {
+        var actual = NumberOfSubarraysThatMatchAPatternISolution.CountMatchesByBruteForce(nums, pattern);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountMatchesByPrefixFunctionSearch_LeetCodeExamples_ReturnsSubarrayCount(int[] nums, int[] pattern, int expected) =>
-        Assert.Equal(expected, NumberOfSubarraysThatMatchAPatternISolution.CountMatchesByPrefixFunctionSearch(nums, pattern));
+    public void CountMatchesByPrefixFunctionSearch_LeetCodeExamples_ReturnsSubarrayCount(
+        int[] nums, int[] pattern, int expected)
+    {
+        var actual = NumberOfSubarraysThatMatchAPatternISolution.CountMatchesByPrefixFunctionSearch(nums, pattern);
+
+        Assert.Equal(expected, actual);
+    }
 }

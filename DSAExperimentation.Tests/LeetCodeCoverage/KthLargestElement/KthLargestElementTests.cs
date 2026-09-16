@@ -16,12 +16,20 @@ public sealed class KthLargestElementTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindKthLargestByFullSort_LeetCodeExamples_ReturnsCorrectRank(
-        int[] nums, int rank, int expected) =>
-        Assert.Equal(expected, KthLargestElementSolution.FindKthLargestByFullSort(nums, rank));
+        int[] nums, int rank, int expected)
+    {
+        var actual = KthLargestElementSolution.FindKthLargestByFullSort(nums, rank);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindKthLargestBySizeKMinHeap_LeetCodeExamples_ReturnsCorrectRank(
-        int[] nums, int rank, int expected) =>
-        Assert.Equal(expected, KthLargestElementSolution.FindKthLargestBySizeKMinHeap(nums, rank));
+        int[] nums, int rank, int expected)
+    {
+        var actual = KthLargestElementSolution.FindKthLargestBySizeKMinHeap(nums, rank);
+
+        Assert.Equal(expected, actual);
+    }
 }

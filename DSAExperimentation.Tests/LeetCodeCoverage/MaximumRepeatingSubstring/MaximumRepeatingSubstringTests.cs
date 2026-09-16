@@ -8,34 +8,43 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumRepeatingSubstring;
 // whole sequence is a single repetition of word.
 public sealed class MaximumRepeatingSubstringTests
 {
-    public static TheoryData<string, string, int> Examples =>
+    public static TheoryData<RepeatCountExample> Examples =>
         new()
         {
-            { "ababc", "ab", 2 },
-            { "ababc", "ba", 1 },
-            { "ababc", "ac", 0 },
-            { "aaabaaaabaaabaaaabaaaabaaaabaaaaba", "aaaba", 5 },
-            { "a", "ab", 0 },
-            { "abababab", "ab", 4 },
+            { new RepeatCountExample(Sequence: "ababc", Word: "ab", Expected: 2) },
+            { new RepeatCountExample(Sequence: "ababc", Word: "ba", Expected: 1) },
+            { new RepeatCountExample(Sequence: "ababc", Word: "ac", Expected: 0) },
+            { new RepeatCountExample(Sequence: "aaabaaaabaaabaaaabaaaabaaaabaaaaba", Word: "aaaba", Expected: 5) },
+            { new RepeatCountExample(Sequence: "a", Word: "ab", Expected: 0) },
+            { new RepeatCountExample(Sequence: "abababab", Word: "ab", Expected: 4) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxRepeatingByStringContains_LeetCodeExamples_ReturnsMaximumRepeatCount(
-        string sequence, string word, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumRepeatingSubstringSolution.MaxRepeatingByStringContains(
-                new MaximumRepeatingSubstringSolution.Haystack(sequence),
-                new MaximumRepeatingSubstringSolution.RepeatedWord(word)));
+        RepeatCountExample example)
+    {
+        var actual = MaximumRepeatingSubstringSolution.MaxRepeatingByStringContains(
+            new MaximumRepeatingSubstringSolution.Haystack(example.Sequence),
+            new MaximumRepeatingSubstringSolution.RepeatedWord(example.Word));
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxRepeatingByPrefixFunctionSearch_LeetCodeExamples_ReturnsMaximumRepeatCount(
-        string sequence, string word, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximumRepeatingSubstringSolution.MaxRepeatingByPrefixFunctionSearch(
-                new MaximumRepeatingSubstringSolution.Haystack(sequence),
-                new MaximumRepeatingSubstringSolution.RepeatedWord(word)));
+        RepeatCountExample example)
+    {
+        var actual = MaximumRepeatingSubstringSolution.MaxRepeatingByPrefixFunctionSearch(
+            new MaximumRepeatingSubstringSolution.Haystack(example.Sequence),
+            new MaximumRepeatingSubstringSolution.RepeatedWord(example.Word));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One example as one argument. A sequence and the word counted inside it are both
+    // strings, so a multi-parameter signature let a row be written with the two swapped
+    // and still compile; the fields named at each row below say which is which.
+    public readonly record struct RepeatCountExample(string Sequence, string Word, int Expected);
 }

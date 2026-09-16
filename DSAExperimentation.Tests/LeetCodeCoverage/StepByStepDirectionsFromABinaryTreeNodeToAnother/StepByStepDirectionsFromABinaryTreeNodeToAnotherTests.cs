@@ -56,32 +56,45 @@ public sealed class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
     // standing in for a missing child.
     private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
     {
-        var root = new BinaryTreeNode<int>(levelOrder[0]!.Value);
+        var rootValue = levelOrder[0]
+            ?? throw new InvalidOperationException(
+                "every example above starts with a root value; a null first slot would mean no tree to build.");
+
+        var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
 
         while (i < levelOrder.Length)
         {
-            var current = queue.Dequeue();
-
-            if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
-            {
-                current.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(current.Left);
-            }
-
-            i++;
-
-            if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
-            {
-                current.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(current.Right);
-            }
-
-            i++;
+            i = AttachNextChildren(levelOrder, queue, i);
         }
 
         return root;
+    }
+
+    // Attaches the next level-order entries as the left and then the right child
+    // of the node at the front of the queue, and returns the cursor past them.
+    private static int AttachNextChildren(int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
+    {
+        var current = queue.Dequeue();
+
+        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
+        {
+            current.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(current.Left);
+        }
+
+        i++;
+
+        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
+        {
+            current.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(current.Right);
+        }
+
+        i++;
+
+        return i;
     }
 }

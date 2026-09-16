@@ -18,11 +18,19 @@ public sealed class MinimumTimeToRevertWordToInitialStateIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinTimeByBruteForce_LeetCodeExamples_ReturnsMinimumSeconds(string word, int k, int expected) =>
-        Assert.Equal(expected, MinimumTimeToRevertWordToInitialStateIISolution.MinTimeByBruteForce(word, k));
+    public void MinTimeByBruteForce_LeetCodeExamples_ReturnsMinimumSeconds(string word, int k, int expected)
+    {
+        var actual = MinimumTimeToRevertWordToInitialStateIISolution.MinTimeByBruteForce(word, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinTimeByZFunction_LeetCodeExamples_ReturnsMinimumSeconds(string word, int k, int expected) =>
-        Assert.Equal(expected, MinimumTimeToRevertWordToInitialStateIISolution.MinTimeByZFunction(word, k));
+    public void MinTimeByZFunction_LeetCodeExamples_ReturnsMinimumSeconds(string word, int k, int expected)
+    {
+        var actual = MinimumTimeToRevertWordToInitialStateIISolution.MinTimeByZFunction(word, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

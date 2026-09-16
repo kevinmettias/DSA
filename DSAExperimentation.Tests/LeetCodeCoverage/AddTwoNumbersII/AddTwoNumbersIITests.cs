@@ -19,18 +19,24 @@ public sealed class AddTwoNumbersIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AddByBigInteger_LeetCodeExamples_ReturnsDigitwiseSumInOrder(
-        int[] first, int[] second, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(AddTwoNumbersIISolution.AddByBigInteger(BuildList(first), BuildList(second))));
+        int[] first, int[] second, int[] expected)
+    {
+        var sum = AddTwoNumbersIISolution.AddByBigInteger(BuildList(first), BuildList(second));
+        var actual = ToArray(sum);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AddByTwoStacks_LeetCodeExamples_ReturnsDigitwiseSumInOrder(
-        int[] first, int[] second, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(AddTwoNumbersIISolution.AddByTwoStacks(BuildList(first), BuildList(second))));
+        int[] first, int[] second, int[] expected)
+    {
+        var sum = AddTwoNumbersIISolution.AddByTwoStacks(BuildList(first), BuildList(second));
+        var actual = ToArray(sum);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

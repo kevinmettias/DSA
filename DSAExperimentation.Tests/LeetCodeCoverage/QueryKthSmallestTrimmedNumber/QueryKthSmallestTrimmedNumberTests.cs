@@ -21,10 +21,20 @@ public sealed class QueryKthSmallestTrimmedNumberTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerQueriesBySelectionScan_Example_ReturnsOriginalIndexOfKthSmallestTrimmed(
-        string[] nums, int[][] queries, int[] expected) => Assert.Equal(expected, QueryKthSmallestTrimmedNumberSolution.AnswerQueriesBySelectionScan(nums, queries));
+        string[] nums, int[][] queries, int[] expected)
+    {
+        var actual = QueryKthSmallestTrimmedNumberSolution.AnswerQueriesBySelectionScan(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AnswerQueriesByMergeSort_Example_ReturnsOriginalIndexOfKthSmallestTrimmed(
-        string[] nums, int[][] queries, int[] expected) => Assert.Equal(expected, QueryKthSmallestTrimmedNumberSolution.AnswerQueriesByMergeSort(nums, queries));
+        string[] nums, int[][] queries, int[] expected)
+    {
+        var actual = QueryKthSmallestTrimmedNumberSolution.AnswerQueriesByMergeSort(nums, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

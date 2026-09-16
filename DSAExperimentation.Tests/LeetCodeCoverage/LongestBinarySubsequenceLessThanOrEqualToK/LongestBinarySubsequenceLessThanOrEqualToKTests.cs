@@ -43,16 +43,21 @@ public sealed class LongestBinarySubsequenceLessThanOrEqualToKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestSubsequenceBySubsetEnumeration_LeetCodeExamples_ReturnsLongestAffordableLength(
-        string bits, int maxValue, int expected) =>
-        Assert.Equal(
-            expected,
-            LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceBySubsetEnumeration(bits, maxValue));
+        string bits, int maxValue, int expected)
+    {
+        var actual = LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceBySubsetEnumeration(
+            bits, maxValue);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestSubsequenceByGreedyScan_LeetCodeExamples_ReturnsLongestAffordableLength(
-        string bits, int maxValue, int expected) =>
-        Assert.Equal(
-            expected,
-            LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceByGreedyScan(bits, maxValue));
+        string bits, int maxValue, int expected)
+    {
+        var actual = LongestBinarySubsequenceLessThanOrEqualToKSolution.LongestSubsequenceByGreedyScan(bits, maxValue);
+
+        Assert.Equal(expected, actual);
+    }
 }

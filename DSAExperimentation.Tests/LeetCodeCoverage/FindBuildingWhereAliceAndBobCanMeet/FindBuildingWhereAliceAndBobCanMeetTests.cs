@@ -30,15 +30,20 @@ public sealed class FindBuildingWhereAliceAndBobCanMeetTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMeetingBuildingsByBruteForce_WorkedExamples_ReturnsEarliestMeetingBuildings(
-        int[] heights, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected, FindBuildingWhereAliceAndBobCanMeetSolution.FindMeetingBuildingsByBruteForce(heights, queries));
+        int[] heights, int[][] queries, int[] expected)
+    {
+        var actual = FindBuildingWhereAliceAndBobCanMeetSolution.FindMeetingBuildingsByBruteForce(heights, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMeetingBuildingsByOfflineHeapSweep_WorkedExamples_ReturnsEarliestMeetingBuildings(
-        int[] heights, int[][] queries, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindBuildingWhereAliceAndBobCanMeetSolution.FindMeetingBuildingsByOfflineHeapSweep(heights, queries));
+        int[] heights, int[][] queries, int[] expected)
+    {
+        var actual = FindBuildingWhereAliceAndBobCanMeetSolution.FindMeetingBuildingsByOfflineHeapSweep(heights, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

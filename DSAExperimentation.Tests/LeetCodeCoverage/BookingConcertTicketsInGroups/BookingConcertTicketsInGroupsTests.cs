@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.BookingConcertTicketsInGroups.BookingConcertTicketsInGroupsSolution;
+using DSAExperimentation.LeetCode.BookingConcertTicketsInGroups;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BookingConcertTicketsInGroups;
 
@@ -28,8 +28,8 @@ public sealed class BookingConcertTicketsInGroupsTests
                 [
                     BookMyShowOp.Gather(4, 0, [0, 0]),
                     BookMyShowOp.Gather(2, 0, []),
-                    BookMyShowOp.Scatter(5, 1, true),
-                    BookMyShowOp.Scatter(5, 1, false),
+                    BookMyShowOp.ScatterSeated(5, 1),
+                    BookMyShowOp.ScatterNotSeated(5, 1),
                 ]
             },
             {
@@ -38,7 +38,7 @@ public sealed class BookingConcertTicketsInGroupsTests
             },
             {
                 // Two rows of three seats is six seats; seven never fits.
-                2, 3, [BookMyShowOp.Scatter(7, 1, false)]
+                2, 3, [BookMyShowOp.ScatterNotSeated(7, 1)]
             },
             {
                 // A single row consumed by successive gathers: the reported seat is
@@ -49,8 +49,8 @@ public sealed class BookingConcertTicketsInGroupsTests
                     BookMyShowOp.Gather(2, 0, [0, 0]),
                     BookMyShowOp.Gather(2, 0, [0, 2]),
                     BookMyShowOp.Gather(2, 0, []),
-                    BookMyShowOp.Scatter(1, 0, true),
-                    BookMyShowOp.Scatter(1, 0, false),
+                    BookMyShowOp.ScatterSeated(1, 0),
+                    BookMyShowOp.ScatterNotSeated(1, 0),
                 ]
             },
             {
@@ -58,9 +58,9 @@ public sealed class BookingConcertTicketsInGroupsTests
                 // leaves exactly one free seat, in the last row.
                 3, 2,
                 [
-                    BookMyShowOp.Scatter(5, 2, true),
+                    BookMyShowOp.ScatterSeated(5, 2),
                     BookMyShowOp.Gather(1, 2, [2, 1]),
-                    BookMyShowOp.Scatter(1, 2, false),
+                    BookMyShowOp.ScatterNotSeated(1, 2),
                 ]
             },
             {
@@ -79,44 +79,53 @@ public sealed class BookingConcertTicketsInGroupsTests
     [MemberData(nameof(Examples))]
     public void BookMyShowByRowScan_LeetCodeExamples_SeatsEachGroupInTheLowestQualifyingRow(
         int rowCount, int seatsPerRow, BookMyShowOp[] operations) =>
-        RunScript(new BookMyShowByRowScan(rowCount, seatsPerRow), operations);
+        RunScript(new BookingConcertTicketsInGroupsSolution.BookMyShowByRowScan(rowCount, seatsPerRow), operations);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BookMyShowBySegmentTreeBinarySearch_LeetCodeExamples_SeatsEachGroupInTheLowestQualifyingRow(
         int rowCount, int seatsPerRow, BookMyShowOp[] operations) =>
-        RunScript(new BookMyShowBySegmentTreeBinarySearch(rowCount, seatsPerRow), operations);
+        RunScript(new BookingConcertTicketsInGroupsSolution.BookMyShowBySegmentTreeBinarySearch(rowCount, seatsPerRow), operations);
 
-    private static void RunScript(IBookMyShowStrategy strategy, BookMyShowOp[] operations)
+    private static void RunScript(
+        BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, BookMyShowOp[] operations)
     {
         foreach (var operation in operations)
         {
             operation.AssertAgainst(strategy);
         }
     }
-}
 
-// One call in a BookMyShow script: which method to invoke, with what arguments, and
-// what LeetCode says it answers. Built via the named factories below so a script
-// (like Examples above) reads like the LeetCode call sequence it replays.
-public readonly record struct BookMyShowOp(
-    bool isGather, int k, int maxRow, int[] expectedSeating, bool expectedSeated)
-{
-    public static BookMyShowOp Gather(int k, int maxRow, int[] expected) => new(true, k, maxRow, expected, false);
-
-    public static BookMyShowOp Scatter(int k, int maxRow, bool expected) => new(false, k, maxRow, [], expected);
-
-    // Internal, not public: IBookMyShowStrategy is internal to
-    // BookingConcertTicketsInGroupsSolution, and only this same assembly's
-    // RunScript ever calls this.
-    internal void AssertAgainst(IBookMyShowStrategy strategy)
+    // One call in a BookMyShow script: which method to invoke, with what arguments,
+    // and what LeetCode says it answers. Built via the named factories below so a
+    // script (like Examples above) reads like the LeetCode call sequence it replays,
+    // and so the answer a scatter is asserted against is named by the factory that
+    // chose it rather than by a bare `bool` at the call site.
+    public readonly record struct BookMyShowOp(
+        bool isGather, int k, int maxRow, int[] expectedSeating, bool expectedSeated)
     {
-        if (isGather)
-        {
-            Assert.Equal(expectedSeating, strategy.Gather(k, maxRow));
-            return;
-        }
+        public static BookMyShowOp Gather(int k, int maxRow, int[] expected) => new(true, k, maxRow, expected, false);
 
-        Assert.Equal(expectedSeated, strategy.Scatter(k, maxRow));
+        public static BookMyShowOp ScatterSeated(int k, int maxRow) => new(false, k, maxRow, [], true);
+
+        public static BookMyShowOp ScatterNotSeated(int k, int maxRow) => new(false, k, maxRow, [], false);
+
+        // Internal, not public: IBookMyShowStrategy is internal to
+        // BookingConcertTicketsInGroupsSolution, and only this same assembly's
+        // RunScript ever calls this.
+        internal void AssertAgainst(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy)
+        {
+            if (isGather)
+            {
+                var seating = strategy.Gather(k, maxRow);
+
+                Assert.Equal(expectedSeating, seating);
+                return;
+            }
+
+            var seated = strategy.Scatter(k, maxRow);
+
+            Assert.Equal(expectedSeated, seated);
+        }
     }
 }

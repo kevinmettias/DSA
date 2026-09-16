@@ -38,16 +38,20 @@ public sealed class FindTheMostCompetitiveSubsequenceTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostCompetitiveByRepeatedRemoval_LeetCodeExamples_ReturnsLexicographicallySmallestSubsequence(
-        int[] nums, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByRepeatedRemoval(nums, k));
+        int[] nums, int k, int[] expected)
+    {
+        var actual = FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByRepeatedRemoval(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MostCompetitiveByMonotonicStack_LeetCodeExamples_ReturnsLexicographicallySmallestSubsequence(
-        int[] nums, int k, int[] expected) =>
-        Assert.Equal(
-            expected,
-            FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByMonotonicStack(nums, k));
+        int[] nums, int k, int[] expected)
+    {
+        var actual = FindTheMostCompetitiveSubsequenceSolution.MostCompetitiveByMonotonicStack(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

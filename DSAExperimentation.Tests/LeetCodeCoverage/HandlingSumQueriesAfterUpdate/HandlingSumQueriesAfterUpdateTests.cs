@@ -32,12 +32,20 @@ public sealed class HandlingSumQueriesAfterUpdateTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void HandleQueryByArrayRescan_LeetCodeExamples_ReturnsRunningSumPerReadQuery(
-        int[] nums1, int[] nums2, int[][] queries, long[] expected) =>
-        Assert.Equal(expected, HandlingSumQueriesAfterUpdateSolution.HandleQueryByArrayRescan(nums1, nums2, queries));
+        int[] nums1, int[] nums2, int[][] queries, long[] expected)
+    {
+        var actual = HandlingSumQueriesAfterUpdateSolution.HandleQueryByArrayRescan(nums1, nums2, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HandleQueryByLazySegmentTree_LeetCodeExamples_ReturnsRunningSumPerReadQuery(
-        int[] nums1, int[] nums2, int[][] queries, long[] expected) =>
-        Assert.Equal(expected, HandlingSumQueriesAfterUpdateSolution.HandleQueryByLazySegmentTree(nums1, nums2, queries));
+        int[] nums1, int[] nums2, int[][] queries, long[] expected)
+    {
+        var actual = HandlingSumQueriesAfterUpdateSolution.HandleQueryByLazySegmentTree(nums1, nums2, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

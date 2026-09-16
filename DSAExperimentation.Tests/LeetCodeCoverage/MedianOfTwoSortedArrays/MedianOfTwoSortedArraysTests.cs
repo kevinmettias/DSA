@@ -19,12 +19,20 @@ public sealed class MedianOfTwoSortedArraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMedianByMergeAndSort_LeetCodeExamples_ReturnsMedian(
-        int[] nums1, int[] nums2, double expected) =>
-        Assert.Equal(expected, MedianOfTwoSortedArraysSolution.FindMedianByMergeAndSort(nums1, nums2));
+        int[] nums1, int[] nums2, double expected)
+    {
+        var actual = MedianOfTwoSortedArraysSolution.FindMedianByMergeAndSort(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindMedianByBinarySearchPartition_LeetCodeExamples_ReturnsMedian(
-        int[] nums1, int[] nums2, double expected) =>
-        Assert.Equal(expected, MedianOfTwoSortedArraysSolution.FindMedianByBinarySearchPartition(nums1, nums2));
+        int[] nums1, int[] nums2, double expected)
+    {
+        var actual = MedianOfTwoSortedArraysSolution.FindMedianByBinarySearchPartition(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -16,67 +16,97 @@ public sealed class EscapeALargeMazeTests
     private const int LeetCodeBoardMaxCoordinate = EscapeALargeMazeBoard.Size - 1;
 
     // blocked, source, target, canEscape - on LC 1036's own 10^6 x 10^6 board.
-    public static TheoryData<int[][], int[], int[], bool> Examples =>
+    public static TheoryData<EscapeExample> Examples =>
         new()
         {
             // LC example 1: the source is walled into its corner by two cells.
-            { [[0, 1], [1, 0]], [0, 0], [0, 2], false },
+            { new EscapeExample(Blocked: [[0, 1], [1, 0]], Source: [0, 0], Target: [0, 2], CanEscape: false) },
 
             // LC example 2: nothing blocked, so opposite corners connect.
-            { [], [0, 0], [LeetCodeBoardMaxCoordinate, LeetCodeBoardMaxCoordinate], true },
+            {
+                new EscapeExample(
+                    Blocked: [],
+                    Source: [0, 0],
+                    Target: [LeetCodeBoardMaxCoordinate, LeetCodeBoardMaxCoordinate],
+                    CanEscape: true)
+            },
 
             // A three-cell wall one row below the source with a gap at column 5, so
             // the source slips through into open board rather than being sealed in.
-            { [[1, 3], [1, 4], [1, 6]], [0, 5], [50, 50], true },
+            { new EscapeExample(Blocked: [[1, 3], [1, 4], [1, 6]], Source: [0, 5], Target: [50, 50], CanEscape: true) },
 
             // The far corner is the sealed one this time: the search from the source
             // escapes, and only the second, target-side search rejects the pair.
             {
-                [[LeetCodeBoardMaxCoordinate - 1, LeetCodeBoardMaxCoordinate], [LeetCodeBoardMaxCoordinate, LeetCodeBoardMaxCoordinate - 1]],
-                [0, 0],
-                [LeetCodeBoardMaxCoordinate, LeetCodeBoardMaxCoordinate],
-                false
+                new EscapeExample(
+                    Blocked: [[LeetCodeBoardMaxCoordinate - 1, LeetCodeBoardMaxCoordinate], [LeetCodeBoardMaxCoordinate, LeetCodeBoardMaxCoordinate - 1]],
+                    Source: [0, 0],
+                    Target: [LeetCodeBoardMaxCoordinate, LeetCodeBoardMaxCoordinate],
+                    CanEscape: false)
             },
 
             // One blocked cell can never wall anything off.
-            { [[0, 1]], [0, 0], [5, 5], true },
+            { new EscapeExample(Blocked: [[0, 1]], Source: [0, 0], Target: [5, 5], CanEscape: true) },
         };
 
     // The same scenarios on a board small enough to materialize.
-    public static TheoryData<int[][], int[], int[], bool> ReducedBoardExamples =>
+    public static TheoryData<EscapeExample> ReducedBoardExamples =>
         new()
         {
-            { [[0, 1], [1, 0]], [0, 0], [0, 2], false },
-            { [], [0, 0], [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate], true },
-            { [[1, 3], [1, 4], [1, 6]], [0, 5], [50, 50], true },
+            { new EscapeExample(Blocked: [[0, 1], [1, 0]], Source: [0, 0], Target: [0, 2], CanEscape: false) },
             {
-                [[ReducedBoardMaxCoordinate - 1, ReducedBoardMaxCoordinate], [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate - 1]],
-                [0, 0],
-                [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate],
-                false
+                new EscapeExample(
+                    Blocked: [],
+                    Source: [0, 0],
+                    Target: [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate],
+                    CanEscape: true)
             },
-            { [[0, 1]], [0, 0], [5, 5], true },
+            { new EscapeExample(Blocked: [[1, 3], [1, 4], [1, 6]], Source: [0, 5], Target: [50, 50], CanEscape: true) },
+            {
+                new EscapeExample(
+                    Blocked: [[ReducedBoardMaxCoordinate - 1, ReducedBoardMaxCoordinate], [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate - 1]],
+                    Source: [0, 0],
+                    Target: [ReducedBoardMaxCoordinate, ReducedBoardMaxCoordinate],
+                    CanEscape: false)
+            },
+            { new EscapeExample(Blocked: [[0, 1]], Source: [0, 0], Target: [5, 5], CanEscape: true) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanEscapeByCappedTraversal_LeetCodeExamples_ReturnsWhetherSourceReachesTarget(
-        int[][] blocked, int[] source, int[] target, bool expected) =>
-        Assert.Equal(expected, EscapeALargeMazeSolution.CanEscapeByCappedTraversal(blocked, source, target));
+        EscapeExample example)
+    {
+        var canEscape = EscapeALargeMazeSolution.CanEscapeByCappedTraversal(
+            example.Blocked, example.Source, example.Target);
+
+        Assert.Equal(example.CanEscape, canEscape);
+    }
 
     [Theory]
     [MemberData(nameof(ReducedBoardExamples))]
     public void CanEscapeByCappedTraversal_ReducedBoard_AgreesWithTheFullBoardFloodFill(
-        int[][] blocked, int[] source, int[] target, bool expected) =>
-        Assert.Equal(
-            expected,
-            EscapeALargeMazeSolution.CanEscapeByCappedTraversal(blocked, source, target, ReducedBoardSize));
+        EscapeExample example)
+    {
+        var canEscape = EscapeALargeMazeSolution.CanEscapeByCappedTraversal(
+            example.Blocked, example.Source, example.Target, ReducedBoardSize);
+
+        Assert.Equal(example.CanEscape, canEscape);
+    }
 
     [Theory]
     [MemberData(nameof(ReducedBoardExamples))]
     public void CanEscapeByFullBoardFloodFill_ReducedBoard_ReturnsWhetherSourceReachesTarget(
-        int[][] blocked, int[] source, int[] target, bool expected) =>
-        Assert.Equal(
-            expected,
-            EscapeALargeMazeSolution.CanEscapeByFullBoardFloodFill(blocked, source, target, ReducedBoardSize));
+        EscapeExample example)
+    {
+        var canEscape = EscapeALargeMazeSolution.CanEscapeByFullBoardFloodFill(
+            example.Blocked, example.Source, example.Target, ReducedBoardSize);
+
+        Assert.Equal(example.CanEscape, canEscape);
+    }
+
+    // One scenario on a maze: the blocked cells, the coordinates the search runs between,
+    // and whether it gets there. The escape flag is named at the row that states it, so a
+    // reader of the two example sets never has to remember which position it sits in.
+    public readonly record struct EscapeExample(int[][] Blocked, int[] Source, int[] Target, bool CanEscape);
 }

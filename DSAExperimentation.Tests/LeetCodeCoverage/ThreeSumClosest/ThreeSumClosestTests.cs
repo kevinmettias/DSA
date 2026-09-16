@@ -17,12 +17,20 @@ public sealed class ThreeSumClosestTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestSumByBruteForce_LeetCodeExamples_ReturnsNearestTripletSum(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, ThreeSumClosestSolution.ClosestSumByBruteForce(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var actual = ThreeSumClosestSolution.ClosestSumByBruteForce(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestSumByMergeSortTwoPointers_LeetCodeExamples_ReturnsNearestTripletSum(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, ThreeSumClosestSolution.ClosestSumByMergeSortTwoPointers(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var actual = ThreeSumClosestSolution.ClosestSumByMergeSortTwoPointers(nums, target);
+
+        Assert.Equal(expected, actual);
+    }
 }

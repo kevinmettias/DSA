@@ -32,14 +32,20 @@ public sealed class NumberOfMatchingSubsequencesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumMatchingSubseqByTwoPointerPerWord_LeetCodeExamples_CountsMatchingWords(
-        string s, string[] words, int expected) =>
-        Assert.Equal(
-            expected, NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByTwoPointerPerWord(s, words));
+        string s, string[] words, int expected)
+    {
+        var actual = NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByTwoPointerPerWord(s, words);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumMatchingSubseqByWaitingBuckets_LeetCodeExamples_CountsMatchingWords(
-        string s, string[] words, int expected) =>
-        Assert.Equal(
-            expected, NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByWaitingBuckets(s, words));
+        string s, string[] words, int expected)
+    {
+        var actual = NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByWaitingBuckets(s, words);
+
+        Assert.Equal(expected, actual);
+    }
 }

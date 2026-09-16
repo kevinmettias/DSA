@@ -6,31 +6,20 @@ namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
 public sealed class AllPairsShortestPathsTests
 {
-    private const string NodeLabelA = "A";
-    private const string NodeLabelB = "B";
-    private const string NodeLabelC = "C";
-
     [Fact]
     public void TryComputeDistances_SampleGraph_MatchesDijkstraFromEachSource()
     {
-        const int ExpectedDistanceAtoC = 3;
-        const int ExpectedDistanceAtoD = 4;
-        const int ExpectedDistanceBtoC = 2;
-        const int ExpectedDistanceBtoD = 3;
-
         var (a, b, c, d) = WeightedGraphs.SampleGraph();
 
-        var succeeded = AllPairsShortestPaths.TryComputeDistances<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            [a, b, c, d], out var distances);
+        var succeeded = TryAllPairs([a, b, c, d], out var distances);
 
         Assert.True(succeeded);
         Assert.Equal(0, distances[(a, a)]);
         Assert.Equal(1, distances[(a, b)]);
-        Assert.Equal(ExpectedDistanceAtoC, distances[(a, c)]); // A-B-C = 1+2, cheaper than direct A-C = 4
-        Assert.Equal(ExpectedDistanceAtoD, distances[(a, d)]); // A-B-C-D = 1+2+1
-        Assert.Equal(ExpectedDistanceBtoC, distances[(b, c)]);
-        Assert.Equal(ExpectedDistanceBtoD, distances[(b, d)]); // B-C-D = 2+1, cheaper than direct B-D = 5
+        Assert.Equal(Fixtures.SampleExpectedDistanceAToC, distances[(a, c)]); // A-B-C = 1+2, cheaper than direct A-C = 4
+        Assert.Equal(Fixtures.SampleExpectedDistanceAToD, distances[(a, d)]); // A-B-C-D = 1+2+1
+        Assert.Equal(Fixtures.SampleExpectedDistanceBToC, distances[(b, c)]);
+        Assert.Equal(Fixtures.SampleExpectedDistanceBToD, distances[(b, d)]); // B-C-D = 2+1, cheaper than direct B-D = 5
         Assert.Equal(1, distances[(c, d)]);
     }
 
@@ -39,9 +28,7 @@ public sealed class AllPairsShortestPathsTests
     {
         var (a, b, _, _) = WeightedGraphs.SampleGraph();
 
-        var succeeded = AllPairsShortestPaths.TryComputeDistances<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            [a, b], out var distances);
+        var succeeded = TryAllPairs([a, b], out var distances);
 
         Assert.False(distances.ContainsKey((b, a)));
     }
@@ -51,24 +38,18 @@ public sealed class AllPairsShortestPathsTests
     [Fact]
     public void TryComputeDistances_NegativeEdgeWithoutCycle_ComputesCorrectDistances()
     {
-        const int EdgeWeightAtoB = 4;
-        const int EdgeWeightBtoC = -2;
-        const int ExpectedDistanceAtoC = 2;
+        var a = new WeightedNode(Fixtures.NodeA);
+        var b = new WeightedNode(Fixtures.NodeB);
+        var c = new WeightedNode(Fixtures.NodeC);
+        a.Edges.Add((Fixtures.NegativeEdgeWeightAToB, b));
+        b.Edges.Add((Fixtures.NegativeEdgeWeightBToC, c));
 
-        var a = new WeightedNode(NodeLabelA);
-        var b = new WeightedNode(NodeLabelB);
-        var c = new WeightedNode(NodeLabelC);
-        a.Edges.Add((EdgeWeightAtoB, b));
-        b.Edges.Add((EdgeWeightBtoC, c));
-
-        var succeeded = AllPairsShortestPaths.TryComputeDistances<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            [a, b, c], out var distances);
+        var succeeded = TryAllPairs([a, b, c], out var distances);
 
         Assert.True(succeeded);
         Assert.Equal(0, distances[(a, a)]);
-        Assert.Equal(EdgeWeightAtoB, distances[(a, b)]);
-        Assert.Equal(ExpectedDistanceAtoC, distances[(a, c)]);
+        Assert.Equal(Fixtures.NegativeEdgeWeightAToB, distances[(a, b)]);
+        Assert.Equal(Fixtures.NegativeEdgeExpectedDistanceAToC, distances[(a, c)]);
     }
 
     // Same cycle BellmanFordTests uses (B -> C -> B totalling -2), reachable from A. The
@@ -77,18 +58,14 @@ public sealed class AllPairsShortestPathsTests
     [Fact]
     public void TryComputeDistances_NegativeCycle_ReturnsFalse()
     {
-        const int EdgeWeightCtoB = -3;
-
-        var a = new WeightedNode(NodeLabelA);
-        var b = new WeightedNode(NodeLabelB);
-        var c = new WeightedNode(NodeLabelC);
+        var a = new WeightedNode(Fixtures.NodeA);
+        var b = new WeightedNode(Fixtures.NodeB);
+        var c = new WeightedNode(Fixtures.NodeC);
         a.Edges.Add((1, b));
         b.Edges.Add((1, c));
-        c.Edges.Add((EdgeWeightCtoB, b));
+        c.Edges.Add((Fixtures.NegativeCycleWeightCToB, b));
 
-        var succeeded = AllPairsShortestPaths.TryComputeDistances<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            [a, b, c], out var distances);
+        var succeeded = TryAllPairs([a, b, c], out var distances);
 
         Assert.False(succeeded);
         Assert.True(distances[(b, b)] < 0);
@@ -100,15 +77,13 @@ public sealed class AllPairsShortestPathsTests
     [Fact]
     public void TryComputeDistances_EdgeOutsideGivenVertices_IsSkippedNotThrown()
     {
-        var a = new WeightedNode(NodeLabelA);
-        var b = new WeightedNode(NodeLabelB);
-        var c = new WeightedNode(NodeLabelC);
+        var a = new WeightedNode(Fixtures.NodeA);
+        var b = new WeightedNode(Fixtures.NodeB);
+        var c = new WeightedNode(Fixtures.NodeC);
         a.Edges.Add((1, b));
         a.Edges.Add((1, c));
 
-        var succeeded = AllPairsShortestPaths.TryComputeDistances<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            [a, b], out var distances);
+        var succeeded = TryAllPairs([a, b], out var distances);
 
         Assert.True(succeeded);
         Assert.Equal(1, distances[(a, b)]);
@@ -121,14 +96,12 @@ public sealed class AllPairsShortestPathsTests
     [Fact]
     public void TryComputeDistances_EdgeWeightEqualsReservedSentinel_Throws()
     {
-        var a = new WeightedNode(NodeLabelA);
-        var b = new WeightedNode(NodeLabelB);
+        var a = new WeightedNode(Fixtures.NodeA);
+        var b = new WeightedNode(Fixtures.NodeB);
         a.Edges.Add((int.MaxValue, b));
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            AllPairsShortestPaths.TryComputeDistances<
-                WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-                [a, b], out _));
+            TryAllPairs([a, b], out _));
     }
 
     // A-B and B-C are each representable, but their sum during Refine's relaxation
@@ -139,21 +112,48 @@ public sealed class AllPairsShortestPathsTests
     [Fact]
     public void TryComputeDistances_RelaxationOverflows_PairIsAbsentNotCorrupted()
     {
-        const int LargeNegativeEdgeWeight = -1_500_000_000;
+        var a = new WeightedNode(Fixtures.NodeA);
+        var b = new WeightedNode(Fixtures.NodeB);
+        var c = new WeightedNode(Fixtures.NodeC);
+        a.Edges.Add((Fixtures.RelaxationOverflowEdgeWeight, b));
+        b.Edges.Add((Fixtures.RelaxationOverflowEdgeWeight, c));
 
-        var a = new WeightedNode(NodeLabelA);
-        var b = new WeightedNode(NodeLabelB);
-        var c = new WeightedNode(NodeLabelC);
-        a.Edges.Add((LargeNegativeEdgeWeight, b));
-        b.Edges.Add((LargeNegativeEdgeWeight, c));
-
-        var succeeded = AllPairsShortestPaths.TryComputeDistances<
-            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(
-            [a, b, c], out var distances);
+        var succeeded = TryAllPairs([a, b, c], out var distances);
 
         Assert.True(succeeded);
-        Assert.Equal(LargeNegativeEdgeWeight, distances[(a, b)]);
-        Assert.Equal(LargeNegativeEdgeWeight, distances[(b, c)]);
+        Assert.Equal(Fixtures.RelaxationOverflowEdgeWeight, distances[(a, b)]);
+        Assert.Equal(Fixtures.RelaxationOverflowEdgeWeight, distances[(b, c)]);
         Assert.False(distances.ContainsKey((a, c)));
+    }
+
+    // The eight-type argument list is identical at every call site, so the entry point is
+    // named once here rather than spelled out in each test.
+    private static bool TryAllPairs(
+        WeightedNode[] vertices,
+        out Dictionary<(WeightedNode From, WeightedNode To), int> distances) =>
+        AllPairsShortestPaths.TryComputeDistances<
+            WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>(vertices, out distances);
+
+    /// <summary>
+    /// The node labels, edge weights and expected distances these tests use, named once
+    /// so a second test does not have to reach into a neighbour's body for them.
+    /// </summary>
+    private static class Fixtures
+    {
+        public const string NodeA = "A";
+        public const string NodeB = "B";
+        public const string NodeC = "C";
+
+        public const int SampleExpectedDistanceAToC = 3;
+        public const int SampleExpectedDistanceAToD = 4;
+        public const int SampleExpectedDistanceBToC = 2;
+        public const int SampleExpectedDistanceBToD = 3;
+
+        public const int NegativeEdgeWeightAToB = 4;
+        public const int NegativeEdgeWeightBToC = -2;
+        public const int NegativeEdgeExpectedDistanceAToC = 2;
+        public const int NegativeCycleWeightCToB = -3;
+
+        public const int RelaxationOverflowEdgeWeight = -1_500_000_000;
     }
 }

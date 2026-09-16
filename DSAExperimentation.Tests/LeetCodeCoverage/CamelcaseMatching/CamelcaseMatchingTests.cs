@@ -23,12 +23,20 @@ public sealed class CamelcaseMatchingTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CamelMatchByRegex_LeetCodeExamples_FlagsQueriesThatReduceToPattern(
-        string[] queries, string pattern, bool[] expected) =>
-        Assert.Equal(expected, CamelcaseMatchingSolution.CamelMatchByRegex(queries, pattern));
+        string[] queries, string pattern, bool[] expected)
+    {
+        var matches = CamelcaseMatchingSolution.CamelMatchByRegex(queries, pattern);
+
+        Assert.Equal(expected, matches);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CamelMatchByTwoPointerScan_LeetCodeExamples_FlagsQueriesThatReduceToPattern(
-        string[] queries, string pattern, bool[] expected) =>
-        Assert.Equal(expected, CamelcaseMatchingSolution.CamelMatchByTwoPointerScan(queries, pattern));
+        string[] queries, string pattern, bool[] expected)
+    {
+        var matches = CamelcaseMatchingSolution.CamelMatchByTwoPointerScan(queries, pattern);
+
+        Assert.Equal(expected, matches);
+    }
 }

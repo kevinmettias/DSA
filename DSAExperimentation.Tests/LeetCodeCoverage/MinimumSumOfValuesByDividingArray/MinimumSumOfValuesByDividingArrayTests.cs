@@ -19,15 +19,18 @@ public sealed class MinimumSumOfValuesByDividingArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumValueSumByDictionaryMemo_LeetCodeExamples_ReturnsMinimumLastElementSum(
-        int[] nums, int[] andValues, long expected) =>
-        Assert.Equal(
-            expected, MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByDictionaryMemo(nums, andValues));
+        int[] nums, int[] andValues, long expected)
+    {
+        var actual = MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByDictionaryMemo(nums, andValues);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumValueSumByMemoizedPartition_LeetCodeExamples_ReturnsMinimumLastElementSum(
-        int[] nums, int[] andValues, long expected) =>
-        Assert.Equal(
-            expected,
-            MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByMemoizedPartition(nums, andValues));
+        int[] nums, int[] andValues, long expected)
+    {
+        var actual = MinimumSumOfValuesByDividingArraySolution.MinimumValueSumByMemoizedPartition(nums, andValues);
+        Assert.Equal(expected, actual);
+    }
 }

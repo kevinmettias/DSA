@@ -42,9 +42,23 @@ public sealed class ConstructBinaryTreeFromPreorderAndPostorderTraversalTests
         Assert.Equal(postorder, PostOrder(root));
     }
 
-    private static int[] PreOrder(BinaryTreeNode<int>? root) =>
-        root is null ? [] : [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    private static int[] PreOrder(BinaryTreeNode<int>? root)
+    {
+        if (root is null)
+        {
+            return [];
+        }
 
-    private static int[] PostOrder(BinaryTreeNode<int>? root) =>
-        root is null ? [] : [.. PostOrder(root.Left), .. PostOrder(root.Right), root.Value];
+        return [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+    }
+
+    private static int[] PostOrder(BinaryTreeNode<int>? root)
+    {
+        if (root is null)
+        {
+            return [];
+        }
+
+        return [.. PostOrder(root.Left), .. PostOrder(root.Right), root.Value];
+    }
 }

@@ -103,35 +103,36 @@ public sealed class SequentiallyOrdinalRankTrackerTests
             Assert.Equal(expected[i], operations[i].Apply(tracker));
         }
     }
-}
 
-// One call in a rank-tracker script: which method to invoke and with what
-// arguments. Pure dispatch, built via the named factories below so a script (like
-// Examples above) reads like the LeetCode call sequence it replays. Add returns
-// null (no comparable value); Get returns the actual answer - the same
-// null-means-no-return-value convention LRUCacheOp.Apply uses for its own put/get
-// split.
-public readonly record struct RankTrackerOp(RankTrackerOp.OpKind kind, string name, int score)
-{
-    public static RankTrackerOp Add(string name, int score) => new(OpKind.Add, name, score);
-
-    public static RankTrackerOp Get() => new(OpKind.Get, "", 0);
-
-    // Internal, not public: only this same assembly's test method ever calls Apply.
-    internal string? Apply(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
+    // One call in a rank-tracker script: which method to invoke and with what
+    // arguments. Pure dispatch, built via the named factories below so a script (like
+    // Examples above) reads like the LeetCode call sequence it replays. Add returns
+    // null (no comparable value); Get returns the actual answer - the same
+    // null-means-no-return-value convention LRUCacheOp.Apply uses for its own put/get
+    // split. Nested here rather than left at file scope so the file declares exactly
+    // one type.
+    public readonly record struct RankTrackerOp(RankTrackerOp.OpKind kind, string name, int score)
     {
-        if (kind == OpKind.Add)
+        public static RankTrackerOp Add(string name, int score) => new(OpKind.Add, name, score);
+
+        public static RankTrackerOp Get() => new(OpKind.Get, "", 0);
+
+        // Internal, not public: only this same assembly's test method ever calls Apply.
+        internal string? Apply(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
         {
-            tracker.Add(name, score);
-            return null;
+            if (kind == OpKind.Add)
+            {
+                tracker.Add(name, score);
+                return null;
+            }
+
+            return tracker.Get();
         }
 
-        return tracker.Get();
-    }
-
-    public enum OpKind
-    {
-        Add,
-        Get,
+        public enum OpKind
+        {
+            Add,
+            Get,
+        }
     }
 }

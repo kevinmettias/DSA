@@ -1,5 +1,4 @@
-using static DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream
-    .FindConsecutiveIntegersFromADataStreamSolution;
+using DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindConsecutiveIntegersFromADataStream;
 
@@ -38,15 +37,24 @@ public sealed class FindConsecutiveIntegersFromADataStreamTests
     [MemberData(nameof(Examples))]
     public void DataStreamByHistoryRescan_LeetCodeExamples_ReportsWhetherTheLastKArrivalsAllMatch(
         int value, int k, int[] arrivals, bool[] expected) =>
-        AssertConsecResults(new DataStreamByHistoryRescan(value, k), arrivals, expected);
+        AssertConsecResults(
+            new FindConsecutiveIntegersFromADataStreamSolution.DataStreamByHistoryRescan(value, k),
+            arrivals,
+            expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DataStreamByFixedWindow_LeetCodeExamples_ReportsWhetherTheLastKArrivalsAllMatch(
         int value, int k, int[] arrivals, bool[] expected) =>
-        AssertConsecResults(new DataStreamByFixedWindow(value, k), arrivals, expected);
+        AssertConsecResults(
+            new FindConsecutiveIntegersFromADataStreamSolution.DataStreamByFixedWindow(value, k),
+            arrivals,
+            expected);
 
-    private static void AssertConsecResults(IDataStreamStrategy stream, int[] arrivals, bool[] expected)
+    private static void AssertConsecResults(
+        FindConsecutiveIntegersFromADataStreamSolution.IDataStreamStrategy stream,
+        int[] arrivals,
+        bool[] expected)
     {
         for (var i = 0; i < arrivals.Length; i++)
         {

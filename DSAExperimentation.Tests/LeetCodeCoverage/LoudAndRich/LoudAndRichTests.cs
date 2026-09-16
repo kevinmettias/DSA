@@ -27,12 +27,18 @@ public sealed class LoudAndRichTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void QuietestByTopologicalDpPass_LeetCodeExamples_ReturnsQuietestRicherOrEqualPersonPerPerson(
-        int[][] richer, int[] quiet, int[] expected) =>
-        Assert.Equal(expected, LoudAndRichSolution.QuietestByTopologicalDpPass(richer, quiet));
+        int[][] richer, int[] quiet, int[] expected)
+    {
+        var actual = LoudAndRichSolution.QuietestByTopologicalDpPass(richer, quiet);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void QuietestByPerPersonWalk_LeetCodeExamples_ReturnsQuietestRicherOrEqualPersonPerPerson(
-        int[][] richer, int[] quiet, int[] expected) =>
-        Assert.Equal(expected, LoudAndRichSolution.QuietestByPerPersonWalk(richer, quiet));
+        int[][] richer, int[] quiet, int[] expected)
+    {
+        var actual = LoudAndRichSolution.QuietestByPerPersonWalk(richer, quiet);
+        Assert.Equal(expected, actual);
+    }
 }

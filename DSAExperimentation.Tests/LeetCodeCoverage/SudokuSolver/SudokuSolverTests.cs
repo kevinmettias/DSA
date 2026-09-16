@@ -77,7 +77,9 @@ public sealed class SudokuSolverTests
         {
             for (var boxCol = 0; boxCol < 9; boxCol += 3)
             {
-                AssertIsPermutationOfOneToNine(CollectBox(board, boxRow, boxCol));
+                var box = CollectBox(board, boxRow, boxCol);
+
+                AssertIsPermutationOfOneToNine(box);
             }
         }
     }

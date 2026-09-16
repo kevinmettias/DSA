@@ -35,14 +35,20 @@ public sealed class TheNumberOfBeautifulSubsetsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountBeautifulSubsetsByBitmask_LeetCodeExamples_ReturnsExpectedCount(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByBitmask(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByBitmask(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountBeautifulSubsetsByPrunedBacktracking_LeetCodeExamples_ReturnsExpectedCount(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(
-            expected,
-            TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByPrunedBacktracking(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = TheNumberOfBeautifulSubsetsSolution.CountBeautifulSubsetsByPrunedBacktracking(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -29,16 +29,20 @@ public sealed class MinimumAbsoluteSumDifferenceTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAbsoluteSumDiffByFullRescan_LeetCodeExamples_ReturnsMinimumSum(
-        int[] nums1, int[] nums2, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffByFullRescan(nums1, nums2));
+        int[] nums1, int[] nums2, int expected)
+    {
+        var actual = MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffByFullRescan(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinAbsoluteSumDiffBySortedBinarySearch_LeetCodeExamples_ReturnsMinimumSum(
-        int[] nums1, int[] nums2, int expected) =>
-        Assert.Equal(
-            expected,
-            MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffBySortedBinarySearch(nums1, nums2));
+        int[] nums1, int[] nums2, int expected)
+    {
+        var actual = MinimumAbsoluteSumDifferenceSolution.MinAbsoluteSumDiffBySortedBinarySearch(nums1, nums2);
+
+        Assert.Equal(expected, actual);
+    }
 }

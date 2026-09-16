@@ -1,4 +1,4 @@
-using static DSAExperimentation.LeetCode.DesignSQL.DesignSQLSolution;
+using DSAExperimentation.LeetCode.DesignSQL;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSQL;
 
@@ -98,60 +98,19 @@ public sealed class DesignSQLTests
     [MemberData(nameof(Examples))]
     public void SqlByListScan_LeetCodeExamples_ReadsTheCellOfTheLiveRow(
         string[] names, int[] columns, SqlOp[] operations, string?[] expected) =>
-        RunScript(new SqlByListScan(names, columns), operations, expected);
+        RunScript(new DesignSQLSolution.SqlByListScan(names, columns), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SqlByHashMapTables_LeetCodeExamples_ReadsTheCellOfTheLiveRow(
         string[] names, int[] columns, SqlOp[] operations, string?[] expected) =>
-        RunScript(new SqlByHashMapTables(names, columns), operations, expected);
+        RunScript(new DesignSQLSolution.SqlByHashMapTables(names, columns), operations, expected);
 
-    private static void RunScript(ISqlStrategy strategy, SqlOp[] operations, string?[] expected)
+    private static void RunScript(DesignSQLSolution.ISqlStrategy strategy, SqlOp[] operations, string?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
             Assert.Equal(expected[i], operations[i].Apply(strategy));
         }
-    }
-}
-
-// One call in an SQL script: which method to invoke and with what arguments. Pure
-// dispatch, built via the named factories below so a script (like Examples above)
-// reads like the LeetCode call sequence it replays.
-public readonly record struct SqlOp(SqlOp.SqlCall call, string name, string[] row, int rowId, int columnId)
-{
-    public static SqlOp InsertRow(string name, string[] row)
-        => new(SqlCall.Insert, name, row, rowId: 0, columnId: 0);
-
-    public static SqlOp DeleteRow(string name, int rowId)
-        => new(SqlCall.Delete, name, [], rowId, columnId: 0);
-
-    public static SqlOp SelectCell(string name, int rowId, int columnId)
-        => new(SqlCall.Select, name, [], rowId, columnId);
-
-    // null for the two void calls, the read cell for selectCell - so a script
-    // runner can assert against one expected value per operation uniformly.
-    // Internal, not public: ISqlStrategy is internal to DesignSQLSolution, and only
-    // this same assembly's RunScript ever calls Apply.
-    internal string? Apply(ISqlStrategy strategy)
-    {
-        switch (call)
-        {
-            case SqlCall.Insert:
-                strategy.InsertRow(name, row);
-                return null;
-            case SqlCall.Delete:
-                strategy.DeleteRow(name, rowId);
-                return null;
-            default:
-                return strategy.SelectCell(name, rowId, columnId);
-        }
-    }
-
-    public enum SqlCall
-    {
-        Insert,
-        Delete,
-        Select,
     }
 }

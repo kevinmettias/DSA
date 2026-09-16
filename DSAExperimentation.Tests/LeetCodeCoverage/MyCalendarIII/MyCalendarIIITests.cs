@@ -35,7 +35,9 @@ public sealed class MyCalendarIIITests
         for (var i = 0; i < events.Length; i++)
         {
             var (start, end) = events[i];
-            Assert.Equal(expected[i], calendar.Book(start, end));
+            var maxOverlap = calendar.Book(start, end);
+
+            Assert.Equal(expected[i], maxOverlap);
         }
     }
 }

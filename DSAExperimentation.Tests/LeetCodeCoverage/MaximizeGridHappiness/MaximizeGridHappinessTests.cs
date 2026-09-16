@@ -9,42 +9,52 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeGridHappiness;
 // neighbor never exists) and a full 2x2 of extroverts (every adjacency pays).
 public sealed class MaximizeGridHappinessTests
 {
-    public static TheoryData<int, int, int, int, int> Examples =>
+    public static TheoryData<GridHappinessExample> Examples =>
         new()
         {
-            { 2, 3, 1, 2, 240 },
-            { 3, 1, 2, 1, 260 },
-            { 2, 2, 4, 0, 240 },
+            { new GridHappinessExample(M: 2, N: 3, IntrovertsCount: 1, ExtrovertsCount: 2, Expected: 240) },
+            { new GridHappinessExample(M: 3, N: 1, IntrovertsCount: 2, ExtrovertsCount: 1, Expected: 260) },
+            { new GridHappinessExample(M: 2, N: 2, IntrovertsCount: 4, ExtrovertsCount: 0, Expected: 240) },
 
             // Both pools are empty, so the walk terminates before filling a cell.
-            { 1, 1, 0, 0, 0 },
+            { new GridHappinessExample(M: 1, N: 1, IntrovertsCount: 0, ExtrovertsCount: 0, Expected: 0) },
 
             // One cell and more people than fit: the lone introvert wins it.
-            { 1, 1, 2, 1, 120 },
+            { new GridHappinessExample(M: 1, N: 1, IntrovertsCount: 2, ExtrovertsCount: 1, Expected: 120) },
 
             // A single row, so only the left neighbor can ever exist: two adjacent
             // extroverts are worth more together (40 + 20 each) than apart.
-            { 1, 2, 0, 2, 120 },
+            { new GridHappinessExample(M: 1, N: 2, IntrovertsCount: 0, ExtrovertsCount: 2, Expected: 120) },
 
             // Every cell filled with an extrovert, so all four adjacencies pay.
-            { 2, 2, 0, 4, 320 },
+            { new GridHappinessExample(M: 2, N: 2, IntrovertsCount: 0, ExtrovertsCount: 4, Expected: 320) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetMaxGridHappinessByBruteForceRecursion_LeetCodeExamples_ReturnsMaximumHappiness(
-        int m, int n, int introvertsCount, int extrovertsCount, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximizeGridHappinessSolution.GetMaxGridHappinessByBruteForceRecursion(
-                m, n, introvertsCount, extrovertsCount));
+        GridHappinessExample example)
+    {
+        var actual = MaximizeGridHappinessSolution.GetMaxGridHappinessByBruteForceRecursion(
+            example.M, example.N, example.IntrovertsCount, example.ExtrovertsCount);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetMaxGridHappinessByMemoizedProfileDp_LeetCodeExamples_ReturnsMaximumHappiness(
-        int m, int n, int introvertsCount, int extrovertsCount, int expected) =>
-        Assert.Equal(
-            expected,
-            MaximizeGridHappinessSolution.GetMaxGridHappinessByMemoizedProfileDp(
-                m, n, introvertsCount, extrovertsCount));
+        GridHappinessExample example)
+    {
+        var actual = MaximizeGridHappinessSolution.GetMaxGridHappinessByMemoizedProfileDp(
+            example.M, example.N, example.IntrovertsCount, example.ExtrovertsCount);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One example as one argument: the five values that describe a single case. They
+    // travel together - a row IS one case - and passed separately they made a
+    // five-parameter signature that could only be read by counting commas.
+    public readonly record struct GridHappinessExample(
+        int M, int N, int IntrovertsCount, int ExtrovertsCount, int Expected);
 }

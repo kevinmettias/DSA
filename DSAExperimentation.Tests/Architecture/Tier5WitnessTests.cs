@@ -27,6 +27,10 @@ public sealed class Tier5WitnessTests
     private const string BenchmarkSuffix = "Benchmarks.cs";
     private const string FixturesFolder = "Fixtures";
 
+    // Stands in for the character just outside the list, so a candidate at either
+    // end is compared against a non-identifier character rather than crashing.
+    private const char OutsideList = ' ';
+
     // The contracts a witness implements. Every one of them is a parametrization
     // point of a tier 1 or tier 2 engine, so implementing one IS writing domain
     // code, wherever the file happens to sit.
@@ -62,25 +66,43 @@ public sealed class Tier5WitnessTests
     [Fact]
     public void EveryMigratedProblem_LeavesNoStructuralWitnessInItsHarnesses()
     {
+        var offences = StrandedWitnessesInHarnesses();
+        var report = string.Join(Environment.NewLine, offences);
+
+        Assert.True(offences.Count == 0, report);
+    }
+
+    private static List<string> StrandedWitnessesInHarnesses()
+    {
         var root = RepositoryFiles.Root();
         var offences = new List<string>();
 
         foreach (var (file, relative, problem) in HarnessFiles(root))
         {
+            var solutionDirectory = Path.Combine(root, SolutionTier, problem);
+
             // A problem still waiting its turn keeps the old shape by design. It
             // comes under this rule the moment tier 4 gains its folder, which is
             // also the moment the witness has somewhere to go.
-            if (Directory.Exists(Path.Combine(root, SolutionTier, problem)))
+            if (Directory.Exists(solutionDirectory))
             {
-                offences.AddRange(StrandedWitnessesIn(file, relative, problem));
+                offences.AddRange(StrandedWitnessesIn((file, relative, problem)));
             }
         }
 
-        Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
+        return offences;
     }
 
     [Fact]
     public void SharedBenchmarkFixtures_HoldOnlyWorkloadGeneratorsAndListedStragglers()
+    {
+        var offences = UnlistedWitnessesInSharedFixtures();
+        var report = string.Join(Environment.NewLine, offences);
+
+        Assert.True(offences.Count == 0, report);
+    }
+
+    private static List<string> UnlistedWitnessesInSharedFixtures()
     {
         var root = RepositoryFiles.Root();
         var fixtures = Path.Combine(root, BenchmarksProject, FixturesFolder);
@@ -90,11 +112,13 @@ public sealed class Tier5WitnessTests
         {
             if (!SharedFixtureStragglers.ContainsKey(Path.GetFileName(file)))
             {
-                offences.AddRange(UnlistedWitnessesIn(file, RepositoryFiles.PathFromRoot(root, file)));
+                var relative = RepositoryFiles.PathFromRoot(root, file);
+
+                offences.AddRange(UnlistedWitnessesIn((file, relative)));
             }
         }
 
-        Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
+        return offences;
     }
 
     [Fact]
@@ -106,22 +130,27 @@ public sealed class Tier5WitnessTests
 
         foreach (var (fileName, owner) in SharedFixtureStragglers)
         {
+            var fixturePath = Path.Combine(fixtures, fileName);
+
             Assert.True(
-                File.Exists(Path.Combine(fixtures, fileName)),
+                File.Exists(fixturePath),
                 $"{fileName} is listed as a witness still stranded by {owner}, but it is gone - delete the line.");
         }
     }
 
-    private static IEnumerable<string> StrandedWitnessesIn(string file, string relative, string problem)
-        => WitnessesIn(file)
+    // The three positions travel as one value: they arrive together from HarnessFiles
+    // and mean nothing apart, and spelled as three adjacent strings a transposed call
+    // site would compile and blame the wrong file for the wrong problem.
+    private static IEnumerable<string> StrandedWitnessesIn((string File, string Relative, string Problem) harness)
+        => WitnessesIn(harness.File)
             .Select(witness =>
-                $"{relative}: declares a {witness}, which encodes {problem}'s structure and belongs beside "
-                + "the engine that consumes it, not in a tier 5 harness.");
+                $"{harness.Relative}: declares a {witness}, which encodes {harness.Problem}'s structure and belongs "
+                + "beside the engine that consumes it, not in a tier 5 harness.");
 
-    private static IEnumerable<string> UnlistedWitnessesIn(string file, string relative)
-        => WitnessesIn(file)
+    private static IEnumerable<string> UnlistedWitnessesIn((string File, string Relative) harness)
+        => WitnessesIn(harness.File)
             .Select(witness =>
-                $"{relative}: declares a {witness}. Benchmarks/Fixtures holds workload generators - a seed "
+                $"{harness.Relative}: declares a {witness}. Benchmarks/Fixtures holds workload generators - a seed "
                 + "and a size - not the structure they build.");
 
     // Every harness file that belongs to one identifiable problem: the test folder
@@ -129,6 +158,7 @@ public sealed class Tier5WitnessTests
     private static IEnumerable<(string File, string Relative, string Problem)> HarnessFiles(string root)
     {
         var coverage = Path.Combine(root, TestsProject, "LeetCodeCoverage");
+        var solutions = Path.Combine(root, BenchmarksProject, "ProblemSolutions");
 
         foreach (var file in RepositoryFiles.SourceFilesIn(coverage))
         {
@@ -140,7 +170,7 @@ public sealed class Tier5WitnessTests
             }
         }
 
-        foreach (var file in RepositoryFiles.SourceFilesIn(Path.Combine(root, BenchmarksProject, "ProblemSolutions")))
+        foreach (var file in RepositoryFiles.SourceFilesIn(solutions))
         {
             var name = Path.GetFileName(file);
 
@@ -154,18 +184,17 @@ public sealed class Tier5WitnessTests
     private static IEnumerable<string> WitnessesIn(string file)
         => File.ReadLines(file)
             .Select(BaseListOf)
-            .SelectMany(baseList => StructuralWitnesses.Where(witness => NamesType(baseList, witness)))
+            .SelectMany(baseList => StructuralWitnesses.Where(witness => NamesType((baseList, witness))))
             .Distinct();
 
     // The base list of a type declared on this line, or empty when the line
-    // declares no type. Generic constraints are cut away first: a method whose
-    // `where` clause accepts a witness does not write one.
+    // declares no type.
     private static string BaseListOf(string line)
     {
         var trimmed = line.TrimStart();
         var colon = trimmed.IndexOf(':');
 
-        if (trimmed.StartsWith("//", StringComparison.Ordinal) || colon < 0 || !DeclaresType(trimmed[..colon]))
+        if (DeclaresNoType(trimmed, colon))
         {
             return string.Empty;
         }
@@ -173,31 +202,71 @@ public sealed class Tier5WitnessTests
         var baseList = trimmed[(colon + 1)..];
         var constraint = baseList.IndexOf(" where ", StringComparison.Ordinal);
 
-        return constraint < 0 ? baseList : baseList[..constraint];
+        if (constraint < 0)
+        {
+            return baseList;
+        }
+
+        return WithoutConstraint(baseList, constraint);
     }
+
+    // A comment, a line with no colon, and a line whose head names no type all have
+    // the same answer: there is no base list here to read.
+    private static bool DeclaresNoType(string trimmed, int colon)
+        => trimmed.StartsWith("//", StringComparison.Ordinal)
+            || colon < 0
+            || !DeclaresType(trimmed[..colon]);
+
+    // Generic constraints are cut away before any name inside them is read: a method
+    // whose `where` clause accepts a witness does not write one.
+    private static string WithoutConstraint(string baseList, int constraint)
+        => baseList[..constraint];
 
     private static bool DeclaresType(string head)
         => head.Contains("class ", StringComparison.Ordinal)
             || head.Contains("struct ", StringComparison.Ordinal)
             || head.Contains("record ", StringComparison.Ordinal);
 
-    // Whole-identifier match, so ListChildren is not read as IChildren.
-    private static bool NamesType(string baseList, string witness)
+    // The pair travels as one value: the witness name is compared against the base
+    // list it was found in, and as two adjacent strings a transposed call would
+    // search for the base list inside the name and quietly match nothing.
+    private static bool NamesType((string BaseList, string Witness) candidate)
     {
-        for (var index = baseList.IndexOf(witness, StringComparison.Ordinal);
+        for (var index = candidate.BaseList.IndexOf(candidate.Witness, StringComparison.Ordinal);
             index >= 0;
-            index = baseList.IndexOf(witness, index + 1, StringComparison.Ordinal))
+            index = candidate.BaseList.IndexOf(candidate.Witness, index + 1, StringComparison.Ordinal))
         {
-            var end = index + witness.Length;
+            var end = index + candidate.Witness.Length;
+            var before = CharacterBefore(candidate.BaseList, index);
+            var after = CharacterAfter(candidate.BaseList, end);
 
-            if (!IsIdentifierPart(index == 0 ? ' ' : baseList[index - 1])
-                && !IsIdentifierPart(end >= baseList.Length ? ' ' : baseList[end]))
+            if (!IsIdentifierPart(before) && !IsIdentifierPart(after))
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private static char CharacterBefore(string baseList, int index)
+    {
+        if (index == 0)
+        {
+            return OutsideList;
+        }
+
+        return baseList[index - 1];
+    }
+
+    private static char CharacterAfter(string baseList, int end)
+    {
+        if (end >= baseList.Length)
+        {
+            return OutsideList;
+        }
+
+        return baseList[end];
     }
 
     private static bool IsIdentifierPart(char character)

@@ -17,12 +17,20 @@ public sealed class TopKFrequentWordsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void TopKFrequentByFullSort_LeetCodeExamples_BreaksTiesLexicographically(
-        string[] words, int k, string[] expected) =>
-        Assert.Equal(expected, TopKFrequentWordsSolution.TopKFrequentByFullSort(words, k));
+        string[] words, int k, string[] expected)
+    {
+        var actual = TopKFrequentWordsSolution.TopKFrequentByFullSort(words, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TopKFrequentByMinHeap_LeetCodeExamples_BreaksTiesLexicographically(
-        string[] words, int k, string[] expected) =>
-        Assert.Equal(expected, TopKFrequentWordsSolution.TopKFrequentByMinHeap(words, k));
+        string[] words, int k, string[] expected)
+    {
+        var actual = TopKFrequentWordsSolution.TopKFrequentByMinHeap(words, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -20,12 +20,20 @@ public sealed class HouseRobberVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxAmountByTabulation_LeetCodeExamples_ReturnsBestNonConflictingSum(
-        int[] nums, int[] colors, long expected) =>
-        Assert.Equal(expected, HouseRobberVSolution.MaxAmountByTabulation(nums, colors));
+        int[] nums, int[] colors, long expected)
+    {
+        var actual = HouseRobberVSolution.MaxAmountByTabulation(nums, colors);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxAmountByMemoization_LeetCodeExamples_ReturnsBestNonConflictingSum(
-        int[] nums, int[] colors, long expected) =>
-        Assert.Equal(expected, HouseRobberVSolution.MaxAmountByMemoization(nums, colors));
+        int[] nums, int[] colors, long expected)
+    {
+        var actual = HouseRobberVSolution.MaxAmountByMemoization(nums, colors);
+
+        Assert.Equal(expected, actual);
+    }
 }

@@ -8,21 +8,26 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SolveTheEquation;
 // resulting linear equation.
 public sealed class SolveTheEquationTests
 {
-    public static TheoryData<string, string> Examples => new()
+    public static TheoryData<EquationExample> Examples => new()
     {
-        { "x+5-3+x=6+x-2", "x=2" },
-        { "x=x", "Infinite solutions" },
-        { "2x=x", "x=0" },
-        { "x=x+2", "No solution" },
+        new EquationExample(Equation: "x+5-3+x=6+x-2", Expected: "x=2"),
+        new EquationExample(Equation: "x=x", Expected: "Infinite solutions"),
+        new EquationExample(Equation: "2x=x", Expected: "x=0"),
+        new EquationExample(Equation: "x=x+2", Expected: "No solution"),
     };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SolveBySubstringParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(string equation, string expected)
-        => Assert.Equal(expected, SolveTheEquationSolution.SolveBySubstringParse(equation));
+    public void SolveBySubstringParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(EquationExample example)
+        => Assert.Equal(example.Expected, SolveTheEquationSolution.SolveBySubstringParse(example.Equation));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SolveBySpanParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(string equation, string expected)
-        => Assert.Equal(expected, SolveTheEquationSolution.SolveBySpanParse(equation));
+    public void SolveBySpanParse_LeetCodeAndEdgeCaseExamples_ReturnsExpectedResult(EquationExample example)
+        => Assert.Equal(example.Expected, SolveTheEquationSolution.SolveBySpanParse(example.Equation));
+
+    // One LeetCode example: the equation to solve and the answer it solves to. The
+    // equation and the answer are adjacent strings at the call site, so the bundle
+    // names the input and the expectation rather than leaving them swappable.
+    public readonly record struct EquationExample(string Equation, string Expected);
 }

@@ -24,12 +24,20 @@ public sealed class FindTheWinnerOfTheCircularGameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTheWinnerByListRemoval_LeetCodeExamples_ReturnsTheLastFriendStanding(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByListRemoval(n, k));
+        int n, int k, int expected)
+    {
+        var actual = FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByListRemoval(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTheWinnerByQueueRotation_LeetCodeExamples_ReturnsTheLastFriendStanding(
-        int n, int k, int expected) =>
-        Assert.Equal(expected, FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByQueueRotation(n, k));
+        int n, int k, int expected)
+    {
+        var actual = FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByQueueRotation(n, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

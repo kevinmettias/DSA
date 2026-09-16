@@ -9,54 +9,69 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestKLengthSubsequenceWi
 // benchmark) is asserted here for the first time.
 public sealed class SmallestKLengthSubsequenceWithOccurrencesOfALetterTests
 {
-    public static TheoryData<string, int, char, int, string> Examples =>
+    public static TheoryData<SubsequenceExample> Examples =>
         new()
         {
             // LeetCode's three published examples.
-            { "leet", 3, 'e', 1, "eet" },
-            { "leetcode", 4, 'e', 2, "ecde" },
-            { "bb", 2, 'b', 2, "bb" },
+            new SubsequenceExample(S: "leet", K: 3, Letter: 'e', Repetition: 1, Expected: "eet"),
+            new SubsequenceExample(S: "leetcode", K: 4, Letter: 'e', Repetition: 2, Expected: "ecde"),
+            new SubsequenceExample(S: "bb", K: 2, Letter: 'b', Repetition: 2, Expected: "bb"),
 
             // k equals the whole string, so the answer is s itself even though it is
             // strictly decreasing and the greedy would love to pop every character.
-            { "dcba", 4, 'a', 1, "dcba" },
+            new SubsequenceExample(S: "dcba", K: 4, Letter: 'a', Repetition: 1, Expected: "dcba"),
 
             // The single character taken must be the letter, so the smaller 'a' ahead
             // of it cannot win the slot.
-            { "ba", 1, 'b', 1, "b" },
+            new SubsequenceExample(S: "ba", K: 1, Letter: 'b', Repetition: 1, Expected: "b"),
 
             // The mirror case: 'b' comes first and is larger, but popping it is
             // allowed because the required 'a' is still reachable.
-            { "ba", 1, 'a', 1, "a" },
+            new SubsequenceExample(S: "ba", K: 1, Letter: 'a', Repetition: 1, Expected: "a"),
 
             // Popping the leading 'b' would leave no 'b' behind to satisfy the
             // repetition, so it must stay even though 'a' is smaller.
-            { "baaa", 2, 'b', 1, "ba" },
+            new SubsequenceExample(S: "baaa", K: 2, Letter: 'b', Repetition: 1, Expected: "ba"),
 
             // Repetition is already satisfiable from the tail, so the greedy is free
             // to take the two leading 'a's before the required 'b'.
-            { "aabbaa", 3, 'b', 1, "aab" },
+            new SubsequenceExample(S: "aabbaa", K: 3, Letter: 'b', Repetition: 1, Expected: "aab"),
 
             // Every 'b' but the last two must be dropped to make room for the 'a's,
             // while repetition keeps two of them.
-            { "aaabbb", 3, 'b', 2, "abb" },
+            new SubsequenceExample(S: "aaabbb", K: 3, Letter: 'b', Repetition: 2, Expected: "abb"),
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestSubsequenceByWindowRescan_LeetCodeExamples_ReturnsSmallestFeasibleSubsequence(
-        string s, int k, char letter, int repetition, string expected) =>
-        Assert.Equal(
-            expected,
-            SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.SmallestSubsequenceByWindowRescan(
-                s, k, letter, repetition));
+        SubsequenceExample example)
+    {
+        var actual = SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.SmallestSubsequenceByWindowRescan(
+            example.S, example.K, example.Letter, example.Repetition);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestSubsequenceByMonotonicStack_LeetCodeExamples_ReturnsSmallestFeasibleSubsequence(
-        string s, int k, char letter, int repetition, string expected) =>
-        Assert.Equal(
-            expected,
-            SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.SmallestSubsequenceByMonotonicStack(
-                s, k, letter, repetition));
+        SubsequenceExample example)
+    {
+        var actual = SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution.SmallestSubsequenceByMonotonicStack(
+            example.S, example.K, example.Letter, example.Repetition);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the source string, the subsequence length, the letter
+    // that must occur in it, how many times that letter must occur, and the smallest
+    // feasible subsequence. The five are one case, so the signature carries one
+    // parameter rather than five positions.
+    public readonly record struct SubsequenceExample(
+        string S,
+        int K,
+        char Letter,
+        int Repetition,
+        string Expected);
 }

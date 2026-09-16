@@ -17,11 +17,17 @@ public sealed class MinimumPartitionScoreTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinPartitionScoreByDictionaryMemo_LeetCodeExamples_ReturnsMinimumScore(int[] nums, int k, long expected) =>
-        Assert.Equal(expected, MinimumPartitionScoreSolution.MinPartitionScoreByDictionaryMemo(nums, k));
+    public void MinPartitionScoreByDictionaryMemo_LeetCodeExamples_ReturnsMinimumScore(int[] nums, int k, long expected)
+    {
+        var actual = MinimumPartitionScoreSolution.MinPartitionScoreByDictionaryMemo(nums, k);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinPartitionScoreByMemoizedPartition_LeetCodeExamples_ReturnsMinimumScore(int[] nums, int k, long expected) =>
-        Assert.Equal(expected, MinimumPartitionScoreSolution.MinPartitionScoreByMemoizedPartition(nums, k));
+    public void MinPartitionScoreByMemoizedPartition_LeetCodeExamples_ReturnsMinimumScore(int[] nums, int k, long expected)
+    {
+        var actual = MinimumPartitionScoreSolution.MinPartitionScoreByMemoizedPartition(nums, k);
+        Assert.Equal(expected, actual);
+    }
 }

@@ -18,12 +18,18 @@ public sealed class MinimumStabilityFactorOfArrayTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinStabilityByBruteForceGcdScan_LeetCodeExamples_ReturnsMinimumAchievableStabilityFactor(
-        int[] nums, int maxC, int expected) =>
-        Assert.Equal(expected, MinimumStabilityFactorOfArraySolution.MinStabilityByBruteForceGcdScan(nums, maxC));
+        int[] nums, int maxC, int expected)
+    {
+        var actual = MinimumStabilityFactorOfArraySolution.MinStabilityByBruteForceGcdScan(nums, maxC);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinStabilityBySegmentTreeGcd_LeetCodeExamples_ReturnsMinimumAchievableStabilityFactor(
-        int[] nums, int maxC, int expected) =>
-        Assert.Equal(expected, MinimumStabilityFactorOfArraySolution.MinStabilityBySegmentTreeGcd(nums, maxC));
+        int[] nums, int maxC, int expected)
+    {
+        var actual = MinimumStabilityFactorOfArraySolution.MinStabilityBySegmentTreeGcd(nums, maxC);
+        Assert.Equal(expected, actual);
+    }
 }

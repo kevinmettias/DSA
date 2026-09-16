@@ -74,7 +74,9 @@ public sealed class TimeBasedKeyValueStoreTests
                 continue;
             }
 
-            Assert.Equal(value, store.Get(key, timestamp));
+            var actual = store.Get(key, timestamp);
+
+            Assert.Equal(value, actual);
         }
     }
 }

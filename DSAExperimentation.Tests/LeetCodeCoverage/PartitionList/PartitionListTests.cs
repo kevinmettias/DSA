@@ -18,18 +18,24 @@ public sealed class PartitionListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionByArrayRebuild_LeetCodeExamples_PartitionsList(
-        int[] values, int x, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(PartitionListSolution.PartitionByArrayRebuild(BuildList(values), x)));
+        int[] values, int x, int[] expected)
+    {
+        var partitioned = PartitionListSolution.PartitionByArrayRebuild(BuildList(values), x);
+        var actual = ToArray(partitioned);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionByPointerSplice_LeetCodeExamples_PartitionsList(
-        int[] values, int x, int[] expected) =>
-        Assert.Equal(
-            expected,
-            ToArray(PartitionListSolution.PartitionByPointerSplice(BuildList(values), x)));
+        int[] values, int x, int[] expected)
+    {
+        var partitioned = PartitionListSolution.PartitionByPointerSplice(BuildList(values), x);
+        var actual = ToArray(partitioned);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {

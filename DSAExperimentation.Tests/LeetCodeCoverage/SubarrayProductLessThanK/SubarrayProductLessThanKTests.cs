@@ -17,14 +17,20 @@ public sealed class SubarrayProductLessThanKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumSubarrayProductLessThanKByBruteForce_LeetCodeExamples_ReturnsValidSubarrayCount(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, SubarrayProductLessThanKSolution.NumSubarrayProductLessThanKByBruteForce(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = SubarrayProductLessThanKSolution.NumSubarrayProductLessThanKByBruteForce(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumSubarrayProductLessThanKByLogPrefixLowerBound_LeetCodeExamples_ReturnsValidSubarrayCount(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(
-            expected,
-            SubarrayProductLessThanKSolution.NumSubarrayProductLessThanKByLogPrefixLowerBound(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = SubarrayProductLessThanKSolution.NumSubarrayProductLessThanKByLogPrefixLowerBound(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

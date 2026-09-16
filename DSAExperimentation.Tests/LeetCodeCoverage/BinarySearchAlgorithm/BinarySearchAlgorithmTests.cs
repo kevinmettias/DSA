@@ -16,12 +16,20 @@ public sealed class BinarySearchAlgorithmTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindIndexByLinearScan_LeetCodeExamples_ReturnsIndexOrNegativeOne(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, BinarySearchAlgorithmSolution.FindIndexByLinearScan(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var index = BinarySearchAlgorithmSolution.FindIndexByLinearScan(nums, target);
+
+        Assert.Equal(expected, index);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindIndexByBinarySearch_LeetCodeExamples_ReturnsIndexOrNegativeOne(
-        int[] nums, int target, int expected) =>
-        Assert.Equal(expected, BinarySearchAlgorithmSolution.FindIndexByBinarySearch(nums, target));
+        int[] nums, int target, int expected)
+    {
+        var index = BinarySearchAlgorithmSolution.FindIndexByBinarySearch(nums, target);
+
+        Assert.Equal(expected, index);
+    }
 }

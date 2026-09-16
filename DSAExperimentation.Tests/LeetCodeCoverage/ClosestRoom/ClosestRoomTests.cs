@@ -24,12 +24,20 @@ public sealed class ClosestRoomTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindClosestRoomsByPerQueryScan_LeetCodeExamples_ReturnsClosestBigEnoughRoomIds(
-        int[][] rooms, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, ClosestRoomSolution.FindClosestRoomsByPerQueryScan(rooms, queries));
+        int[][] rooms, int[][] queries, int[] expected)
+    {
+        var actual = ClosestRoomSolution.FindClosestRoomsByPerQueryScan(rooms, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindClosestRoomsBySortedSweep_LeetCodeExamples_ReturnsClosestBigEnoughRoomIds(
-        int[][] rooms, int[][] queries, int[] expected) =>
-        Assert.Equal(expected, ClosestRoomSolution.FindClosestRoomsBySortedSweep(rooms, queries));
+        int[][] rooms, int[][] queries, int[] expected)
+    {
+        var actual = ClosestRoomSolution.FindClosestRoomsBySortedSweep(rooms, queries);
+
+        Assert.Equal(expected, actual);
+    }
 }

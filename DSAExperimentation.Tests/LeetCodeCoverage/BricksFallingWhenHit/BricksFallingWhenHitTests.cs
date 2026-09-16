@@ -24,12 +24,20 @@ public sealed class BricksFallingWhenHitTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void HitBricksByForwardReplayBfs_LeetCodeExamples_ReturnsBricksFallenPerHit(
-        int[][] grid, int[][] hits, int[] expected) =>
-        Assert.Equal(expected, BricksFallingWhenHitSolution.HitBricksByForwardReplayBfs(grid, hits));
+        int[][] grid, int[][] hits, int[] expected)
+    {
+        var bricksFallen = BricksFallingWhenHitSolution.HitBricksByForwardReplayBfs(grid, hits);
+
+        Assert.Equal(expected, bricksFallen);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void HitBricksByReverseTimeDisjointSet_LeetCodeExamples_ReturnsBricksFallenPerHit(
-        int[][] grid, int[][] hits, int[] expected) =>
-        Assert.Equal(expected, BricksFallingWhenHitSolution.HitBricksByReverseTimeDisjointSet(grid, hits));
+        int[][] grid, int[][] hits, int[] expected)
+    {
+        var bricksFallen = BricksFallingWhenHitSolution.HitBricksByReverseTimeDisjointSet(grid, hits);
+
+        Assert.Equal(expected, bricksFallen);
+    }
 }

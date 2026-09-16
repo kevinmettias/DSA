@@ -8,34 +8,39 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfItIsAStraightLine;
 // same question as the anchored one-pass scan, so both run the same example set.
 public sealed class CheckIfItIsAStraightLineTests
 {
-    public static TheoryData<int[][], bool> Examples =>
+    public static TheoryData<StraightLineCase> Examples =>
         new()
         {
-            { [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]], true },
-            { [[1, 1], [2, 2], [3, 4], [4, 5], [5, 6], [7, 7]], false },
-            { [[3, 1], [3, 5], [3, -2]], true },
-            { [[0, 0], [1, 1]], true },
-            { [[-4, 7], [2, 7], [9, 7]], true },
-            { [[0, 0], [-2, 4], [-5, 10]], true },
-            { [[0, 0], [1, 1], [1, 2]], false },
-            { [[1, 1], [2, 2], [3, 3], [4, 5]], false },
+            { new StraightLineCase([[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]], Expected: true) },
+            { new StraightLineCase([[1, 1], [2, 2], [3, 4], [4, 5], [5, 6], [7, 7]], Expected: false) },
+            { new StraightLineCase([[3, 1], [3, 5], [3, -2]], Expected: true) },
+            { new StraightLineCase([[0, 0], [1, 1]], Expected: true) },
+            { new StraightLineCase([[-4, 7], [2, 7], [9, 7]], Expected: true) },
+            { new StraightLineCase([[0, 0], [-2, 4], [-5, 10]], Expected: true) },
+            { new StraightLineCase([[0, 0], [1, 1], [1, 2]], Expected: false) },
+            { new StraightLineCase([[1, 1], [2, 2], [3, 3], [4, 5]], Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckStraightLineByBruteForceEveryTriple_LeetCodeExamples_MatchesExpectedAnswer(
-        int[][] coordinates,
-        bool expected) =>
+        StraightLineCase example) =>
         Assert.Equal(
-            expected,
-            CheckIfItIsAStraightLineSolution.CheckStraightLineByBruteForceEveryTriple(coordinates));
+            example.Expected,
+            CheckIfItIsAStraightLineSolution.CheckStraightLineByBruteForceEveryTriple(example.Coordinates));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CheckStraightLineByAnchoredCrossProductScan_LeetCodeExamples_MatchesExpectedAnswer(
-        int[][] coordinates,
-        bool expected) =>
+        StraightLineCase example) =>
         Assert.Equal(
-            expected,
-            CheckIfItIsAStraightLineSolution.CheckStraightLineByAnchoredCrossProductScan(coordinates));
+            example.Expected,
+            CheckIfItIsAStraightLineSolution.CheckStraightLineByAnchoredCrossProductScan(example.Coordinates));
+
+    // One LeetCode example: the points under test and whether they are collinear.
+    // The expected value is named at every construction site, so a row reads as the
+    // case it is rather than as a bare `true` whose meaning is its position. Nested
+    // because it is only ever used inside this test class - it is this harness's own
+    // vocabulary, not a type another file would import.
+    public readonly record struct StraightLineCase(int[][] Coordinates, bool Expected);
 }

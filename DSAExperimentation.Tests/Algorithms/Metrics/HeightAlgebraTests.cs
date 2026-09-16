@@ -11,14 +11,27 @@ public sealed class HeightAlgebraTests
     public void Empty_IsZero() => Assert.Equal(0, HeightAlgebra<TestNode>.Empty);
 
     [Fact]
-    public void Combine_Leaf_IsOne() => Assert.Equal(1, HeightAlgebra<TestNode>.Combine(Node, []));
+    public void Combine_Leaf_IsOne()
+    {
+        var combined = HeightAlgebra<TestNode>.Combine(Node, []);
+
+        Assert.Equal(1, combined);
+    }
 
     [Fact]
-    public void Combine_TakesTheDeepestChildNotTheSum() => Assert.Equal(1 + 4, HeightAlgebra<TestNode>.Combine(Node, [2, 4, 3]));
+    public void Combine_TakesTheDeepestChildNotTheSum()
+    {
+        var combined = HeightAlgebra<TestNode>.Combine(Node, [2, 4, 3]);
+
+        Assert.Equal(1 + 4, combined);
+    }
 
     [Fact]
-    public void Combine_IsUnaffectedByChildOrder() =>
-        Assert.Equal(
-            HeightAlgebra<TestNode>.Combine(Node, [2, 4, 3]),
-            HeightAlgebra<TestNode>.Combine(Node, [4, 3, 2]));
+    public void Combine_IsUnaffectedByChildOrder()
+    {
+        var leftToRight = HeightAlgebra<TestNode>.Combine(Node, [2, 4, 3]);
+        var rightToLeft = HeightAlgebra<TestNode>.Combine(Node, [4, 3, 2]);
+
+        Assert.Equal(leftToRight, rightToLeft);
+    }
 }

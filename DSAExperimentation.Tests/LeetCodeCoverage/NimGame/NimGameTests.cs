@@ -6,24 +6,30 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NimGame;
 // against the same examples.
 public sealed class NimGameTests
 {
-    public static TheoryData<int, bool> Examples =>
+    public static TheoryData<NimExample> Examples =>
         new()
         {
-            { 1, true },
-            { 2, true },
-            { 3, true },
-            { 4, false },
-            { 7, true },
-            { 8, false },
+            { new NimExample(N: 1, Expected: true) },
+            { new NimExample(N: 2, Expected: true) },
+            { new NimExample(N: 3, Expected: true) },
+            { new NimExample(N: 4, Expected: false) },
+            { new NimExample(N: 7, Expected: true) },
+            { new NimExample(N: 8, Expected: false) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanWinByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
-        Assert.Equal(expected, NimGameSolution.CanWinByMemoizedRecursion(n));
+    public void CanWinByMemoizedRecursion_LeetCodeExamples_MatchesExpectedOutcome(NimExample example) =>
+        Assert.Equal(example.Expected, NimGameSolution.CanWinByMemoizedRecursion(example.N));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CanWinByModuloFormula_LeetCodeExamples_MatchesExpectedOutcome(int n, bool expected) =>
-        Assert.Equal(expected, NimGameSolution.CanWinByModuloFormula(n));
+    public void CanWinByModuloFormula_LeetCodeExamples_MatchesExpectedOutcome(NimExample example) =>
+        Assert.Equal(example.Expected, NimGameSolution.CanWinByModuloFormula(example.N));
+
+    // One LeetCode example: the heap size and whether the player to move wins from it.
+    // The outcome is the datum under test, so the row names it rather than leaving a
+    // bare `bool` next to the heap size where the read is `CanWin(n, true)` - true
+    // meaning what?
+    public readonly record struct NimExample(int N, bool Expected);
 }

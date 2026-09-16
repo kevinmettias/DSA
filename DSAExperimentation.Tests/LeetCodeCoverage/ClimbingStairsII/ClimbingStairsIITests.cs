@@ -17,12 +17,20 @@ public sealed class ClimbingStairsIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByBruteForce_LeetCodeExamples_ReturnsMinimumTotalCost(
-        int n, int[] costs, long expected) =>
-        Assert.Equal(expected, ClimbingStairsIISolution.MinCostByBruteForce(n, costs));
+        int n, int[] costs, long expected)
+    {
+        var minCost = ClimbingStairsIISolution.MinCostByBruteForce(n, costs);
+
+        Assert.Equal(expected, minCost);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumTotalCost(
-        int n, int[] costs, long expected) =>
-        Assert.Equal(expected, ClimbingStairsIISolution.MinCostByMemoizedRecurrence(n, costs));
+        int n, int[] costs, long expected)
+    {
+        var minCost = ClimbingStairsIISolution.MinCostByMemoizedRecurrence(n, costs);
+
+        Assert.Equal(expected, minCost);
+    }
 }

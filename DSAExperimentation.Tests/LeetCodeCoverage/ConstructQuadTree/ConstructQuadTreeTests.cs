@@ -55,11 +55,27 @@ public sealed class ConstructQuadTreeTests
         Assert.Equal(grid, rebuilt);
     }
 
+    // ConstructQuadTreeSolution marks a node IsLeaf false only in the object
+    // initializer that fills all four quadrants from its own recursive builds - in
+    // both strategies, so neither the cell scan nor the Fenwick sum can reach a
+    // non-leaf node with a quadrant missing. Both walks below read those children,
+    // and both ask for them here rather than promising them.
+    private static QuadTreeNode Child(QuadTreeNode? child) =>
+        child ?? throw new InvalidOperationException(
+            "a non-leaf QuadTreeNode carries all four children - the solution sets IsLeaf false only after building them");
+
+    // Both arms are values: 1 for a leaf, and a call naming the sum over a non-leaf's
+    // four quadrants. The non-leaf arm stays a call rather than a hoisted local because
+    // the condition guards it - a local above the expression would ask a leaf for the
+    // four quadrants the solution never builds for one, which Child rejects.
     private static int CountLeaves(QuadTreeNode node) =>
         node.IsLeaf
             ? 1
-            : CountLeaves(node.TopLeft!) + CountLeaves(node.TopRight!) +
-              CountLeaves(node.BottomLeft!) + CountLeaves(node.BottomRight!);
+            : CountQuadrantLeaves(node);
+
+    private static int CountQuadrantLeaves(QuadTreeNode node) =>
+        CountLeaves(Child(node.TopLeft)) + CountLeaves(Child(node.TopRight)) +
+        CountLeaves(Child(node.BottomLeft)) + CountLeaves(Child(node.BottomRight));
 
     private readonly record struct Region(int Row, int Col, int Size);
 
@@ -81,9 +97,9 @@ public sealed class ConstructQuadTreeTests
         }
 
         var half = region.Size / 2;
-        Fill(node.TopLeft!, grid, new Region(region.Row, region.Col, half));
-        Fill(node.TopRight!, grid, new Region(region.Row, region.Col + half, half));
-        Fill(node.BottomLeft!, grid, new Region(region.Row + half, region.Col, half));
-        Fill(node.BottomRight!, grid, new Region(region.Row + half, region.Col + half, half));
+        Fill(Child(node.TopLeft), grid, new Region(region.Row, region.Col, half));
+        Fill(Child(node.TopRight), grid, new Region(region.Row, region.Col + half, half));
+        Fill(Child(node.BottomLeft), grid, new Region(region.Row + half, region.Col, half));
+        Fill(Child(node.BottomRight), grid, new Region(region.Row + half, region.Col + half, half));
     }
 }

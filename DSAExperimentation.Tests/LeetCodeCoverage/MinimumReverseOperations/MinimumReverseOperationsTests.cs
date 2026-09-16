@@ -9,26 +9,45 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumReverseOperations;
 // K = n, where the only window there is splits the array into mirror pairs.
 public sealed class MinimumReverseOperationsTests
 {
-    public static TheoryData<int, int, int[], int, int[]> Examples =>
+    public static TheoryData<ReverseExample> Examples =>
         new()
         {
-            { 4, 0, [1, 2], 4, [0, -1, -1, 1] },
-            { 5, 0, [2, 4], 3, [0, -1, -1, -1, -1] },
-            { 4, 2, [0, 1, 3], 1, [-1, -1, 0, -1] },
-            { 3, 1, [], 1, [-1, 0, -1] },
-            { 4, 0, [], 4, [0, -1, -1, 1] },
-            { 5, 2, [], 2, [2, 1, 0, 1, 2] },
+            { new ReverseExample(N: 4, P: 0, Banned: [1, 2], K: 4, Expected: [0, -1, -1, 1]) },
+            { new ReverseExample(N: 5, P: 0, Banned: [2, 4], K: 3, Expected: [0, -1, -1, -1, -1]) },
+            { new ReverseExample(N: 4, P: 2, Banned: [0, 1, 3], K: 1, Expected: [-1, -1, 0, -1]) },
+            { new ReverseExample(N: 3, P: 1, Banned: [], K: 1, Expected: [-1, 0, -1]) },
+            { new ReverseExample(N: 4, P: 0, Banned: [], K: 4, Expected: [0, -1, -1, 1]) },
+            { new ReverseExample(N: 5, P: 2, Banned: [], K: 2, Expected: [2, 1, 0, 1, 2]) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinOperationsByBruteForceScan_LeetCodeExamples_ReturnsShortestOperationCounts(
-        int n, int p, int[] banned, int k, int[] expected) =>
-        Assert.Equal(expected, MinimumReverseOperationsSolution.MinOperationsByBruteForceScan(n, p, banned, k));
+    public void MinOperationsByBruteForceScan_LeetCodeExamples_ReturnsShortestOperationCounts(ReverseExample example)
+    {
+        var actual = MinimumReverseOperationsSolution.MinOperationsByBruteForceScan(
+            example.N, example.P, example.Banned, example.K);
+
+        Assert.Equal(example.Expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinOperationsByReduceGraph_LeetCodeExamples_ReturnsShortestOperationCounts(
-        int n, int p, int[] banned, int k, int[] expected) =>
-        Assert.Equal(expected, MinimumReverseOperationsSolution.MinOperationsByReduceGraph(n, p, banned, k));
+    public void MinOperationsByReduceGraph_LeetCodeExamples_ReturnsShortestOperationCounts(ReverseExample example)
+    {
+        var actual = MinimumReverseOperationsSolution.MinOperationsByReduceGraph(
+            example.N, example.P, example.Banned, example.K);
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // One LeetCode example: the board length, the start index, the banned indices, the
+    // reversal window, and the shortest operation count to each index. The first four
+    // are all `int`, so the fields name each one rather than leaving a row where the
+    // length, the start and the window size are a transposition apart.
+    public readonly record struct ReverseExample(
+        int N,
+        int P,
+        int[] Banned,
+        int K,
+        int[] Expected);
 }

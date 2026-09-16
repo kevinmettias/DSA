@@ -22,12 +22,20 @@ public sealed class JumpGameVITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxResultByWindowRescan_LeetCodeExamples_ReturnsBestReachableScore(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, JumpGameVISolution.MaxResultByWindowRescan(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = JumpGameVISolution.MaxResultByWindowRescan(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxResultByMonotonicDeque_LeetCodeExamples_ReturnsBestReachableScore(
-        int[] nums, int k, int expected) =>
-        Assert.Equal(expected, JumpGameVISolution.MaxResultByMonotonicDeque(nums, k));
+        int[] nums, int k, int expected)
+    {
+        var actual = JumpGameVISolution.MaxResultByMonotonicDeque(nums, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

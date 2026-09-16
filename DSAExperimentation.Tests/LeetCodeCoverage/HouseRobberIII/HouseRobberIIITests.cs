@@ -36,7 +36,11 @@ public sealed class HouseRobberIIITests
     // guarantees at least one node, so the root is never null.
     private static BinaryTreeNode<int> BuildTree(int?[] values)
     {
-        var root = new BinaryTreeNode<int>(values[0]!.Value);
+        var rootValue = values[0]
+            ?? throw new InvalidOperationException(
+                "LC 337 guarantees at least one node, so no example above has a null root slot.");
+
+        var root = new BinaryTreeNode<int>(rootValue);
         var queue = new Queue<BinaryTreeNode<int>>();
         queue.Enqueue(root);
         var i = 1;
@@ -44,24 +48,29 @@ public sealed class HouseRobberIIITests
         while (queue.Count > 0 && i < values.Length)
         {
             var node = queue.Dequeue();
-
-            if (values[i] is int leftValue)
-            {
-                node.Left = new BinaryTreeNode<int>(leftValue);
-                queue.Enqueue(node.Left);
-            }
-
-            i++;
-
-            if (i < values.Length && values[i] is int rightValue)
-            {
-                node.Right = new BinaryTreeNode<int>(rightValue);
-                queue.Enqueue(node.Right);
-            }
-
-            i++;
+            i = AttachChildren(node, values, queue, i);
         }
 
         return root;
+    }
+
+    private static int AttachChildren(
+        BinaryTreeNode<int> node, int?[] values, Queue<BinaryTreeNode<int>> queue, int i)
+    {
+        if (i < values.Length && values[i] is int leftValue)
+        {
+            node.Left = new BinaryTreeNode<int>(leftValue);
+            queue.Enqueue(node.Left);
+        }
+
+        i++;
+
+        if (i < values.Length && values[i] is int rightValue)
+        {
+            node.Right = new BinaryTreeNode<int>(rightValue);
+            queue.Enqueue(node.Right);
+        }
+
+        return i + 1;
     }
 }

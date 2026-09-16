@@ -25,12 +25,18 @@ public sealed class CountPairsWithXorInARangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByPairwiseScan_LeetCodeExamples_ReturnsPairCountInRange(
-        int[] nums, int low, int high, int expected) =>
-        Assert.Equal(expected, CountPairsWithXorInARangeSolution.CountPairsByPairwiseScan(nums, low, high));
+        int[] nums, int low, int high, int expected)
+    {
+        var actual = CountPairsWithXorInARangeSolution.CountPairsByPairwiseScan(nums, low, high);
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByBitTrieRangeCount_LeetCodeExamples_ReturnsPairCountInRange(
-        int[] nums, int low, int high, int expected) =>
-        Assert.Equal(expected, CountPairsWithXorInARangeSolution.CountPairsByBitTrieRangeCount(nums, low, high));
+        int[] nums, int low, int high, int expected)
+    {
+        var actual = CountPairsWithXorInARangeSolution.CountPairsByBitTrieRangeCount(nums, low, high);
+        Assert.Equal(expected, actual);
+    }
 }

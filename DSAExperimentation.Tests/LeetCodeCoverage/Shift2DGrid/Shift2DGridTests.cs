@@ -43,14 +43,22 @@ public sealed class Shift2DGridTests
     public void ShiftGridByIndexArithmetic_LeetCodeExamples_ShiftsCellsInRowMajorOrder(
         int[][] grid,
         int k,
-        int[][] expected) =>
-        Assert.Equal(expected, Shift2DGridSolution.ShiftGridByIndexArithmetic(grid, k));
+        int[][] expected)
+    {
+        var actual = Shift2DGridSolution.ShiftGridByIndexArithmetic(grid, k);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShiftGridByDequeRotation_LeetCodeExamples_ShiftsCellsInRowMajorOrder(
         int[][] grid,
         int k,
-        int[][] expected) =>
-        Assert.Equal(expected, Shift2DGridSolution.ShiftGridByDequeRotation(grid, k));
+        int[][] expected)
+    {
+        var actual = Shift2DGridSolution.ShiftGridByDequeRotation(grid, k);
+
+        Assert.Equal(expected, actual);
+    }
 }

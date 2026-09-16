@@ -47,24 +47,26 @@ public sealed class ClosestNodesQueriesInABinarySearchTreeTests
     public void ClosestNodesByLinearScan_LeetCodeExamples_ReturnsFloorAndCeilingPerQuery(
         int[] insertionOrder,
         int[] queries,
-        int[][] expected) =>
-        Assert.Equal(
-            expected,
-            ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByLinearScan(
-                BuildTree(insertionOrder),
-                queries));
+        int[][] expected)
+    {
+        var tree = BuildTree(insertionOrder);
+        var actual = ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByLinearScan(tree, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ClosestNodesByInOrderBinarySearch_LeetCodeExamples_ReturnsFloorAndCeilingPerQuery(
         int[] insertionOrder,
         int[] queries,
-        int[][] expected) =>
-        Assert.Equal(
-            expected,
-            ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByInOrderBinarySearch(
-                BuildTree(insertionOrder),
-                queries));
+        int[][] expected)
+    {
+        var tree = BuildTree(insertionOrder);
+        var actual = ClosestNodesQueriesInABinarySearchTreeSolution.ClosestNodesByInOrderBinarySearch(tree, queries);
+
+        Assert.Equal(expected, actual);
+    }
 
     private static BinaryTreeNode<int>? BuildTree(int[] insertionOrder)
     {

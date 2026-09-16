@@ -26,7 +26,7 @@ public sealed class LeetCodeStrategyCoverageTests
 
             foreach (var (solution, _) in Pairs())
             {
-                data.Add(solution.FullName!);
+                data.Add(FullNameOf(solution));
             }
 
             return data;
@@ -37,8 +37,8 @@ public sealed class LeetCodeStrategyCoverageTests
     [MemberData(nameof(RegisteredSolutions))]
     public void Registration_NamesEveryStrategyItsSolutionExposes(string solutionTypeName)
     {
-        var (solution, registration) = Pairs().Single(pair => pair.Solution.FullName == solutionTypeName);
-        var problem = ((ILeetCodeProblemRegistration)Activator.CreateInstance(registration)!).Describe();
+        var (solution, registration) = Pairs().Single(pair => FullNameOf(pair.Solution) == solutionTypeName);
+        var problem = RegistrationOf(registration).Describe();
         var exposed = StrategyNamesOf(solution);
 
         Assert.True(
@@ -66,17 +66,39 @@ public sealed class LeetCodeStrategyCoverageTests
     {
         var registrations = LeetCodeTypes()
             .Where(IsRegistration)
-            .ToDictionary(type => type.Namespace!, type => type, StringComparer.Ordinal);
+            .ToDictionary(NamespaceOf, type => type, StringComparer.Ordinal);
 
         return LeetCodeTypes()
             .Where(IsSolutionClass)
-            .Where(type => registrations.ContainsKey(type.Namespace!))
+            .Where(type => registrations.ContainsKey(NamespaceOf(type)))
             .OrderBy(type => type.FullName, StringComparer.Ordinal)
-            .Select(type => (type, registrations[type.Namespace!]));
+            .Select(type => (type, registrations[NamespaceOf(type)]));
     }
 
     private static IEnumerable<Type> LeetCodeTypes()
         => typeof(LeetCodeProblem).Assembly.GetTypes().Where(type => type.Namespace is not null);
+
+    // The compiler cannot narrow a Type property through the lambda in LeetCodeTypes(),
+    // so the two invariants it already established are stated here. Assembly.GetTypes()
+    // hands back type definitions, and FullName is null only for a bare generic
+    // parameter or a type built out of one, which a definition is not; the namespace
+    // filter above has already dropped every type that carries no namespace.
+    private static string FullNameOf(Type type) =>
+        type.FullName ?? throw new InvalidOperationException(
+            $"{type.Name} has no full name, and a type definition reached from Assembly.GetTypes() always does.");
+
+    private static string NamespaceOf(Type type) =>
+        type.Namespace ?? throw new InvalidOperationException(
+            $"{type.FullName} has no namespace, and LeetCodeTypes() admits only types that do.");
+
+    // IsRegistration admits a type only if it is non-abstract and assignable to
+    // ILeetCodeProblemRegistration, and Activator constructs such a type or throws, so
+    // the instance it returns is a registration. A null here would mean the filter
+    // above started admitting something else.
+    private static ILeetCodeProblemRegistration RegistrationOf(Type registration) =>
+        Activator.CreateInstance(registration) as ILeetCodeProblemRegistration
+        ?? throw new InvalidOperationException(
+            $"{registration.FullName} was paired as a problem registration but is not constructible as one.");
 
     private static bool IsRegistration(Type type)
         => type is { IsAbstract: false, IsInterface: false } && type.IsAssignableTo(typeof(ILeetCodeProblemRegistration));

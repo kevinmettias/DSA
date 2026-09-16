@@ -24,9 +24,11 @@ public sealed class LowestCommonAncestorOfBstTests
     public void FindLcaByAncestryWalk_LeetCodeExamples_ReturnsTheAncestor(int first, int second, int expected)
     {
         var root = BuildClassicExampleTree();
+        var firstNode = FindNode(root, first);
+        var secondNode = FindNode(root, second);
 
         var lca = LowestCommonAncestorOfBstSolution.FindLcaByAncestryWalk(
-            root, FindNode(root, first), FindNode(root, second));
+            root, firstNode, secondNode);
 
         // presumption: allow -- both queried values come from FindNode walking the
         // same tree root, so Find always has both nodes reachable and can only
