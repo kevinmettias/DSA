@@ -227,7 +227,7 @@ internal static class RottingOrangesSolution
             var nextRow = cell.Row + dRow;
             var nextCol = cell.Col + dCol;
 
-            if (IsOutOfBounds(grid.Grid, nextRow, nextCol) || IsUnvisitedFreshOrange(grid, nextRow, nextCol))
+            if (IsOutOfBounds(grid.Grid, nextRow, nextCol) || !IsUnvisitedFreshOrange(grid, nextRow, nextCol))
             {
                 continue;
             }

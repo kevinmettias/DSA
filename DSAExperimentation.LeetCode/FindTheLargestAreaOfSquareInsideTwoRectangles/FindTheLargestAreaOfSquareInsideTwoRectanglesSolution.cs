@@ -76,18 +76,24 @@ internal static class FindTheLargestAreaOfSquareInsideTwoRectanglesSolution
     {
         var (bottomLeft, topRight) = rectangles;
 
+        // pivot is a position in the sorted order, not a rectangle index - the two are
+        // different once the sort has moved anything, and the pivot's own rectangle is
+        // whatever index the order holds there.
+        var pivotRectangle = order[pivot];
+
         for (var q = pivot + 1; q < order.Length; q++)
         {
             var j = order[q];
-            var widthBound = topRight[pivot][0] - bottomLeft[j][0];
+            var widthBound = topRight[pivotRectangle][0] - bottomLeft[j][0];
 
             if (widthBound <= bestSide)
             {
                 break;
             }
 
-            var width = Math.Min(topRight[pivot][0], topRight[j][0]) - bottomLeft[j][0];
-            var height = Math.Min(topRight[pivot][1], topRight[j][1]) - Math.Max(bottomLeft[pivot][1], bottomLeft[j][1]);
+            var width = Math.Min(topRight[pivotRectangle][0], topRight[j][0]) - bottomLeft[j][0];
+            var height = Math.Min(topRight[pivotRectangle][1], topRight[j][1])
+                - Math.Max(bottomLeft[pivotRectangle][1], bottomLeft[j][1]);
             var side = Math.Min(width, height);
 
             bestSide = Math.Max(bestSide, side);
