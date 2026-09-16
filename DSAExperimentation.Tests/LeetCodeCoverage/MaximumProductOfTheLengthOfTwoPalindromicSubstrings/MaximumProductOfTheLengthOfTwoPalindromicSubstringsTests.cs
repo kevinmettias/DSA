@@ -27,16 +27,16 @@ public sealed class MaximumProductOfTheLengthOfTwoPalindromicSubstringsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProductByManacherRadii_LeetCodeAndNestedPalindromeExamples_ReturnsBestSplitProduct(
-        string s, long expected) =>
+        string text, long expected) =>
         Assert.Equal(
             expected,
-            MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolution.MaxProductByManacherRadii(s));
+            MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolution.MaxProductByManacherRadii(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProductByCenterExpansion_LeetCodeAndNestedPalindromeExamples_ReturnsBestSplitProduct(
-        string s, long expected) =>
+        string text, long expected) =>
         Assert.Equal(
             expected,
-            MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolution.MaxProductByCenterExpansion(s));
+            MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolution.MaxProductByCenterExpansion(text));
 }

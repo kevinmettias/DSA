@@ -3,8 +3,8 @@ using DSAExperimentation.LeetCode.NQueens;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NQueens;
 
 // Harness only. Both strategies are NQueensSolution's; this file just pins them to
-// LeetCode's published examples - the solution count for n, plus one board LeetCode
-// itself publishes as a valid placement.
+// LeetCode's published examples - the solution count for boardSize, plus one board
+// LeetCode itself publishes as a valid placement.
 public sealed class NQueensTests
 {
     public static TheoryData<int, int, string[]> Examples =>
@@ -17,9 +17,9 @@ public sealed class NQueensTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SolveByRecursiveDfs_LeetCodeExamples_ReturnsExpectedSolutions(
-        int n, int expectedCount, string[] sampleBoard)
+        int boardSize, int expectedCount, string[] sampleBoard)
     {
-        var solutions = NQueensSolution.SolveByRecursiveDfs(n);
+        var solutions = NQueensSolution.SolveByRecursiveDfs(boardSize);
 
         Assert.Equal(expectedCount, solutions.Count);
         Assert.Contains(solutions, board => board.SequenceEqual(sampleBoard));
@@ -28,9 +28,9 @@ public sealed class NQueensTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SolveByBacktrackEngine_LeetCodeExamples_ReturnsExpectedSolutions(
-        int n, int expectedCount, string[] sampleBoard)
+        int boardSize, int expectedCount, string[] sampleBoard)
     {
-        var solutions = NQueensSolution.SolveByBacktrackEngine(n);
+        var solutions = NQueensSolution.SolveByBacktrackEngine(boardSize);
 
         Assert.Equal(expectedCount, solutions.Count);
         Assert.Contains(solutions, board => board.SequenceEqual(sampleBoard));

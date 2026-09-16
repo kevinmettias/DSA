@@ -24,19 +24,19 @@ public sealed class NumberOfStepsToReduceANumberInBinaryRepresentationToOneTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumStepsByCarryPropagationScan_LeetCodeExamples_ReturnsStepsToReachOne(
-        string s, int expected) =>
+    public void CountStepsByCarryPropagationScan_LeetCodeExamples_ReturnsStepsToReachOne(
+        string binaryString, int expected) =>
         Assert.Equal(
             expected,
             NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
-                .NumStepsByCarryPropagationScan(s));
+                .CountStepsByCarryPropagationScan(binaryString));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumStepsByStackAddSimulation_LeetCodeExamples_ReturnsStepsToReachOne(
-        string s, int expected) =>
+    public void CountStepsByStackAddSimulation_LeetCodeExamples_ReturnsStepsToReachOne(
+        string binaryString, int expected) =>
         Assert.Equal(
             expected,
             NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
-                .NumStepsByStackAddSimulation(s));
+                .CountStepsByStackAddSimulation(binaryString));
 }

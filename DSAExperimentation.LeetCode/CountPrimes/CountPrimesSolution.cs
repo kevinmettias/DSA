@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.LeetCode.CountPrimes;
 
-// LeetCode 204. Count Primes: count the primes strictly less than n.
+// LeetCode 204. Count Primes: count the primes strictly less than `limit`.
 //
 // The two strategies are the classic O(n * sqrt(n)) trial division every
 // candidate is checked against, and the O(n log log n) Sieve of Eratosthenes
@@ -14,11 +14,11 @@ internal static class CountPrimesSolution
     // The textbook answer: test each candidate for a divisor up to its own
     // square root. Deliberately written without this repo's primitives - it
     // is the arm the sieve below has to justify itself against.
-    public static int CountPrimesByTrialDivision(int n)
+    public static int CountPrimesByTrialDivision(int limit)
     {
         var count = 0;
 
-        for (var candidate = SmallestCandidate; candidate < n; candidate++)
+        for (var candidate = SmallestCandidate; candidate < limit; candidate++)
         {
             var isPrime = true;
 
@@ -43,23 +43,23 @@ internal static class CountPrimesSolution
     // Sieve of Eratosthenes over this repo's own DynamicArray<bool> as the
     // composite-tracking array, marking multiples of each newly found prime
     // starting at its square.
-    public static int CountPrimesBySieveOfEratosthenes(int n)
+    public static int CountPrimesBySieveOfEratosthenes(int limit)
     {
-        if (n < SmallestCandidate)
+        if (limit < SmallestCandidate)
         {
             return 0;
         }
 
-        var isComposite = BuildCompositeTracker(n);
-        SieveComposites(isComposite, n);
-        return CountUnmarked(isComposite, n);
+        var isComposite = BuildCompositeTracker(limit);
+        SieveComposites(isComposite, limit);
+        return CountUnmarked(isComposite, limit);
     }
 
-    private static DynamicArray<bool> BuildCompositeTracker(int n)
+    private static DynamicArray<bool> BuildCompositeTracker(int limit)
     {
         var isComposite = new DynamicArray<bool>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < limit; i++)
         {
             isComposite.Add(false);
         }
@@ -67,27 +67,27 @@ internal static class CountPrimesSolution
         return isComposite;
     }
 
-    private static void SieveComposites(DynamicArray<bool> isComposite, int n)
+    private static void SieveComposites(DynamicArray<bool> isComposite, int limit)
     {
-        for (var i = SmallestCandidate; i * i < n; i++)
+        for (var i = SmallestCandidate; i * i < limit; i++)
         {
             if (isComposite.Get(i))
             {
                 continue;
             }
 
-            for (var multiple = i * i; multiple < n; multiple += i)
+            for (var multiple = i * i; multiple < limit; multiple += i)
             {
                 isComposite.Set(multiple, true);
             }
         }
     }
 
-    private static int CountUnmarked(DynamicArray<bool> isComposite, int n)
+    private static int CountUnmarked(DynamicArray<bool> isComposite, int limit)
     {
         var count = 0;
 
-        for (var i = SmallestCandidate; i < n; i++)
+        for (var i = SmallestCandidate; i < limit; i++)
         {
             if (!isComposite.Get(i))
             {

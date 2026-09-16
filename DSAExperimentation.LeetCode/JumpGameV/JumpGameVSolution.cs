@@ -19,14 +19,14 @@ internal static class JumpGameVSolution
     // call tree rooted at each of the n starting indices, never materializing
     // the graph at all. Deliberately written without this repo's primitives -
     // it is the arm the composed strategy below has to justify itself against.
-    public static int MaxIndicesVisitedByMemoizedDfs(int[] arr, int d)
+    public static int MaxIndicesVisitedByMemoizedDfs(int[] arr, int maxJumpDistance)
     {
         var memo = new Dictionary<int, int>();
         var best = 0;
 
         for (var start = 0; start < arr.Length; start++)
         {
-            var longestFromStart = LongestPathFrom(arr, d, start, memo);
+            var longestFromStart = LongestPathFrom(arr, maxJumpDistance, start, memo);
             best = Math.Max(best, longestFromStart);
         }
 
@@ -38,9 +38,9 @@ internal static class JumpGameVSolution
     // a safe processing order, then relax longest-path lengths forward in a
     // single linear pass over that order - no recursion, and every node's value
     // final the first time it is read.
-    public static int MaxIndicesVisitedByTopologicalSort(int[] arr, int d)
+    public static int MaxIndicesVisitedByTopologicalSort(int[] arr, int maxJumpDistance)
     {
-        var nodes = BuildReachabilityDag(arr, d);
+        var nodes = BuildReachabilityDag(arr, maxJumpDistance);
 
         // Every edge drops in value, so the graph is acyclic by construction and
         // TrySort always succeeds here; the discard records that rather than
@@ -53,7 +53,7 @@ internal static class JumpGameVSolution
         return ComputeLongestPaths(ordering).Values.Max();
     }
 
-    private static JumpNode[] BuildReachabilityDag(int[] arr, int d)
+    private static JumpNode[] BuildReachabilityDag(int[] arr, int maxJumpDistance)
     {
         var nodes = new JumpNode[arr.Length];
 
@@ -64,12 +64,12 @@ internal static class JumpGameVSolution
 
         for (var i = 0; i < arr.Length; i++)
         {
-            for (var j = i + 1; j <= Math.Min(arr.Length - 1, i + d) && arr[j] < arr[i]; j++)
+            for (var j = i + 1; j <= Math.Min(arr.Length - 1, i + maxJumpDistance) && arr[j] < arr[i]; j++)
             {
                 nodes[i].ReachableIndices.Add(nodes[j]);
             }
 
-            for (var j = i - 1; j >= Math.Max(0, i - d) && arr[j] < arr[i]; j--)
+            for (var j = i - 1; j >= Math.Max(0, i - maxJumpDistance) && arr[j] < arr[i]; j--)
             {
                 nodes[i].ReachableIndices.Add(nodes[j]);
             }
@@ -103,26 +103,26 @@ internal static class JumpGameVSolution
     // MaxIndicesVisitedByMemoizedDfs' helper, placed last because it recurses:
     // a helper with more than one call site is ordered after every
     // single-caller helper's own subtree, not beside the method it serves.
-    private static int LongestPathFrom(int[] arr, int d, int i, Dictionary<int, int> memo)
+    private static int LongestPathFrom(int[] arr, int maxJumpDistance, int startIndex, Dictionary<int, int> memo)
     {
-        if (memo.TryGetValue(i, out var cached))
+        if (memo.TryGetValue(startIndex, out var cached))
         {
             return cached;
         }
 
         var best = 1;
 
-        for (var j = i + 1; j <= Math.Min(arr.Length - 1, i + d) && arr[j] < arr[i]; j++)
+        for (var j = startIndex + 1; j <= Math.Min(arr.Length - 1, startIndex + maxJumpDistance) && arr[j] < arr[startIndex]; j++)
         {
-            best = Math.Max(best, 1 + LongestPathFrom(arr, d, j, memo));
+            best = Math.Max(best, 1 + LongestPathFrom(arr, maxJumpDistance, j, memo));
         }
 
-        for (var j = i - 1; j >= Math.Max(0, i - d) && arr[j] < arr[i]; j--)
+        for (var j = startIndex - 1; j >= Math.Max(0, startIndex - maxJumpDistance) && arr[j] < arr[startIndex]; j--)
         {
-            best = Math.Max(best, 1 + LongestPathFrom(arr, d, j, memo));
+            best = Math.Max(best, 1 + LongestPathFrom(arr, maxJumpDistance, j, memo));
         }
 
-        memo[i] = best;
+        memo[startIndex] = best;
         return best;
     }
 }

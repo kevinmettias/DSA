@@ -27,7 +27,7 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<IReadOnlyList<LeetCodeOperation>, List<int?>>("min-stack")
             .Strategy("StackPrimitive", Replay)
-            .MatchingAnswersWith(LeetCodeAnswers.SequenceEqual)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSequenceEqual)
             .Case(
                 "example-1",
                 [

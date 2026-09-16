@@ -16,10 +16,10 @@ internal static class PartitionListSolution
     // Textbook baseline: copy the list's values into an array, stably partition the
     // array with LINQ, and rebuild a fresh list from the result. O(Length) extra
     // space, where the splice walk below needs none.
-    public static SinglyLinkedListNode<int>? PartitionByArrayRebuild(SinglyLinkedListNode<int>? head, int x)
+    public static SinglyLinkedListNode<int>? PartitionByArrayRebuild(SinglyLinkedListNode<int>? head, int partitionValue)
     {
         var values = ToArray(head);
-        var partitioned = values.Where(value => value < x).Concat(values.Where(value => value >= x));
+        var partitioned = values.Where(value => value < partitionValue).Concat(values.Where(value => value >= partitionValue));
 
         return BuildList(partitioned);
     }
@@ -41,12 +41,12 @@ internal static class PartitionListSolution
     // The standard walk: thread each node onto a "before" or "after" chain as it is
     // visited, cutting it loose from its old neighbor first, then splice the two
     // chains together. No extra storage; the existing nodes are reused.
-    public static SinglyLinkedListNode<int>? PartitionByPointerSplice(SinglyLinkedListNode<int>? head, int x)
+    public static SinglyLinkedListNode<int>? PartitionByPointerSplice(SinglyLinkedListNode<int>? head, int partitionValue)
     {
         var before = new SinglyLinkedListNode<int>(0);
         var after = new SinglyLinkedListNode<int>(0);
 
-        var (beforeTail, afterTail) = ThreadOntoChains(head, x, (before, after));
+        var (beforeTail, afterTail) = ThreadOntoChains(head, partitionValue, (before, after));
 
         beforeTail.Next = after.Next;
         return before.Next;
@@ -57,7 +57,7 @@ internal static class PartitionListSolution
     // passed in are those tails before any node has been threaded.
     private static (SinglyLinkedListNode<int> BeforeTail, SinglyLinkedListNode<int> AfterTail) ThreadOntoChains(
         SinglyLinkedListNode<int>? head,
-        int x,
+        int partitionValue,
         (SinglyLinkedListNode<int> BeforeTail, SinglyLinkedListNode<int> AfterTail) tails)
     {
         for (var node = head; node is not null;)
@@ -65,7 +65,7 @@ internal static class PartitionListSolution
             var next = node.Next;
             node.Next = null;
 
-            if (node.Value < x)
+            if (node.Value < partitionValue)
             {
                 tails.BeforeTail.Next = node;
                 tails.BeforeTail = node;

@@ -4,9 +4,9 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TimeNeededToBuyTickets;
 
 // Harness only. Both strategies are TimeNeededToBuyTicketsSolution's - this file
 // pins them to LeetCode's published examples plus the cases that separate the
-// closed form from the simulation: k at the front of the line (everyone behind
-// them loses a turn), k wanting a single ticket (everyone behind them contributes
-// nothing at all), and a one-person line.
+// closed form from the simulation: targetPerson at the front of the line (everyone
+// behind them loses a turn), targetPerson wanting a single ticket (everyone behind
+// them contributes nothing at all), and a one-person line.
 public sealed class TimeNeededToBuyTicketsTests
 {
     public static TheoryData<int[], int, int> Examples =>
@@ -23,9 +23,9 @@ public sealed class TimeNeededToBuyTicketsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void TimeRequiredToBuyByQueueSimulation_LeetCodeExamples_ReturnsSecondPersonKFinishes(
-        int[] tickets, int k, int expected)
+        int[] tickets, int targetPerson, int expected)
     {
-        var actual = TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByQueueSimulation(tickets, k);
+        var actual = TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByQueueSimulation(tickets, targetPerson);
 
         Assert.Equal(expected, actual);
     }
@@ -33,9 +33,9 @@ public sealed class TimeNeededToBuyTicketsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void TimeRequiredToBuyByClosedFormSum_LeetCodeExamples_ReturnsSecondPersonKFinishes(
-        int[] tickets, int k, int expected)
+        int[] tickets, int targetPerson, int expected)
     {
-        var actual = TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByClosedFormSum(tickets, k);
+        var actual = TimeNeededToBuyTicketsSolution.TimeRequiredToBuyByClosedFormSum(tickets, targetPerson);
 
         Assert.Equal(expected, actual);
     }

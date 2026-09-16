@@ -18,18 +18,18 @@ public sealed class CountSubarraysWithEvenOddRatioIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByBruteForce_LeetCodeExamples_ReturnsValidSubarrayCount(
-        int[] nums, int a, int b, long expected)
+        int[] nums, int oddWeight, int evenWeight, long expected)
     {
-        var actual = CountSubarraysWithEvenOddRatioIISolution.CountByBruteForce(nums, a, b);
+        var actual = CountSubarraysWithEvenOddRatioIISolution.CountByBruteForce(nums, oddWeight, evenWeight);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByFenwickPrefixSweep_LeetCodeExamples_ReturnsValidSubarrayCount(
-        int[] nums, int a, int b, long expected)
+        int[] nums, int oddWeight, int evenWeight, long expected)
     {
-        var actual = CountSubarraysWithEvenOddRatioIISolution.CountByFenwickPrefixSweep(nums, a, b);
+        var actual = CountSubarraysWithEvenOddRatioIISolution.CountByFenwickPrefixSweep(nums, oddWeight, evenWeight);
         Assert.Equal(expected, actual);
     }
 }

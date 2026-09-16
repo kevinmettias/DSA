@@ -18,18 +18,18 @@ public sealed class DirectionAssignmentsWithExactlyKVisiblePeopleTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountAssignmentsByPascalConvolution_LeetCodeExamples_ReturnsAssignmentCount(
-        int n, int pos, int k, int expected)
+        int personCount, int pos, int visibleCount, int expected)
     {
-        var actual = DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByPascalConvolution(n, pos, k);
+        var actual = DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByPascalConvolution(personCount, pos, visibleCount);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountAssignmentsByVandermondeIdentity_LeetCodeExamples_ReturnsAssignmentCount(
-        int n, int pos, int k, int expected)
+        int personCount, int pos, int visibleCount, int expected)
     {
-        var actual = DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByVandermondeIdentity(n, pos, k);
+        var actual = DirectionAssignmentsWithExactlyKVisiblePeopleSolution.CountAssignmentsByVandermondeIdentity(personCount, pos, visibleCount);
         Assert.Equal(expected, actual);
     }
 }

@@ -3,9 +3,10 @@ using DSAExperimentation.LeetCode.CyclicallyRotatingAGrid;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CyclicallyRotatingAGrid;
 
 // Harness only. Both rotations are CyclicallyRotatingAGridSolution's - LeetCode's
-// two published examples, the odd-sided grid whose centre cell has no ring, a k
-// larger than the ring it turns, a k that is a whole number of ring lengths and so
-// changes nothing, and a non-square grid whose single ring spans both rows.
+// two published examples, the odd-sided grid whose centre cell has no ring, a
+// rotation amount larger than the ring it turns, a rotation amount that is a whole
+// number of ring lengths and so changes nothing, and a non-square grid whose single
+// ring spans both rows.
 public sealed class CyclicallyRotatingAGridTests
 {
     public static TheoryData<int[][], int, int[][]> Examples =>
@@ -26,18 +27,18 @@ public sealed class CyclicallyRotatingAGridTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateGridByStepwiseQueue_LeetCodeExamples_RotatesEveryRingCounterClockwise(
-        int[][] grid, int k, int[][] expected)
+        int[][] grid, int rotationSteps, int[][] expected)
     {
-        var rotated = CyclicallyRotatingAGridSolution.RotateGridByStepwiseQueue(grid, k);
+        var rotated = CyclicallyRotatingAGridSolution.RotateGridByStepwiseQueue(grid, rotationSteps);
         Assert.Equal(expected, rotated);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RotateGridByDequeRings_LeetCodeExamples_RotatesEveryRingCounterClockwise(
-        int[][] grid, int k, int[][] expected)
+        int[][] grid, int rotationSteps, int[][] expected)
     {
-        var rotated = CyclicallyRotatingAGridSolution.RotateGridByDequeRings(grid, k);
+        var rotated = CyclicallyRotatingAGridSolution.RotateGridByDequeRings(grid, rotationSteps);
         Assert.Equal(expected, rotated);
     }
 }

@@ -4,11 +4,12 @@ using DSAExperimentation.LeetCode.SearchA2DMatrixII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are SearchA2DMatrixIISolution's, the same methods
-// SearchA2DMatrixIITests proves correct. FullScan is the textbook O(rows*cols)
-// baseline. PerRowBinarySearch composes this repo's own BinarySearch.Find over an
-// ArraySequence<int> witness per row - O(rows*log(cols)), a genuine repo-primitive
-// fit. StaircaseSearch is the specialized O(rows+cols) corner walk this problem is
-// famous for - it is expected to win, and the point of including it is exactly
+// SearchA2DMatrixIITests proves correct. HasTargetByFullScan is the textbook
+// O(rows*cols) baseline. HasTargetByPerRowBinarySearch composes this repo's own
+// BinarySearch.Find over an ArraySequence<int> witness per row - O(rows*log(cols)),
+// a genuine repo-primitive fit. HasTargetByStaircaseSearch is the specialized
+// O(rows+cols) corner walk this problem is famous for - it is expected to win, and
+// the point of including it is exactly
 // that: showing when the general BinarySearch primitive is not the asymptotically
 // optimal tool, the same lesson FloydWarshall teaches in the shortest-path
 // cluster. Target is fixed below every matrix value so all three are forced
@@ -31,11 +32,13 @@ public class SearchA2DMatrixIIBenchmarks
             .ToArray();
 
     [Benchmark(Baseline = true)]
-    public bool FullScan() => SearchA2DMatrixIISolution.SearchMatrixByFullScan(_matrix, Target);
+    public bool HasTargetByFullScan() => SearchA2DMatrixIISolution.HasTargetByFullScan(_matrix, Target);
 
     [Benchmark]
-    public bool PerRowBinarySearch() => SearchA2DMatrixIISolution.SearchMatrixByPerRowBinarySearch(_matrix, Target);
+    public bool HasTargetByPerRowBinarySearch() =>
+        SearchA2DMatrixIISolution.HasTargetByPerRowBinarySearch(_matrix, Target);
 
     [Benchmark]
-    public bool StaircaseSearch() => SearchA2DMatrixIISolution.SearchMatrixByStaircaseSearch(_matrix, Target);
+    public bool HasTargetByStaircaseSearch() =>
+        SearchA2DMatrixIISolution.HasTargetByStaircaseSearch(_matrix, Target);
 }

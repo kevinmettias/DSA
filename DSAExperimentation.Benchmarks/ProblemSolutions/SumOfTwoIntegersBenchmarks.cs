@@ -13,14 +13,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SumOfTwoIntegersBenchmarks
 {
-    private const int B = 123_456_789;
+    private const int SecondAddend = 123_456_789;
 
     [Params(1_000, 1_000_000)]
-    public int A { get; set; }
+    public int FirstAddend { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int BuiltInAdd() => SumOfTwoIntegersSolution.GetSumByBuiltInAddition(A, B);
+    public int BuiltInAdd() => SumOfTwoIntegersSolution.GetSumByBuiltInAddition(FirstAddend, SecondAddend);
 
     [Benchmark]
-    public int BitwiseCarryLoop() => SumOfTwoIntegersSolution.GetSumByBitwiseCarryLoop(A, B);
+    public int BitwiseCarryLoop() => SumOfTwoIntegersSolution.GetSumByBitwiseCarryLoop(FirstAddend, SecondAddend);
 }

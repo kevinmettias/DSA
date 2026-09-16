@@ -3,9 +3,10 @@ using DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioII;
 namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioI;
 
 // LeetCode 4011. Count Subarrays With Even Odd Ratio I: for a subarray with x
-// even elements and y odd elements, it is valid when y > 0 and x/y <= a/b -
-// compared via the equivalent cross-multiplied integer inequality x*b <= y*a
-// so no floating point ever enters the comparison. n <= 1000 keeps the
+// even elements and y odd elements, it is valid when y > 0 and
+// x/y <= ratioNumerator/ratioDenominator - compared via the equivalent
+// cross-multiplied integer inequality x*ratioDenominator <= y*ratioNumerator so
+// no floating point ever enters the comparison. n <= 1000 keeps the
 // O(n^2) enumeration cheap enough to serve as the textbook baseline here.
 //
 // Rearranged the other way, a*y - b*x >= 0 is a subarray-sum sign question:
@@ -19,7 +20,7 @@ internal static class CountSubarraysWithEvenOddRatioISolution
 {
     // Every subarray scanned directly, extending y one element at a time -
     // O(n^2), BCL only. The arm the Fenwick sweep below has to beat.
-    public static int CountByBruteForce(int[] nums, int a, int b)
+    public static int CountByBruteForce(int[] nums, int ratioNumerator, int ratioDenominator)
     {
         var count = 0L;
 
@@ -32,7 +33,7 @@ internal static class CountSubarraysWithEvenOddRatioISolution
                 odd += nums[right] % 2;
                 var even = right - left + 1 - odd;
 
-                if (odd > 0 && (long)even * b <= (long)odd * a)
+                if (odd > 0 && (long)even * ratioDenominator <= (long)odd * ratioNumerator)
                 {
                     count++;
                 }
@@ -48,6 +49,7 @@ internal static class CountSubarraysWithEvenOddRatioISolution
     // because its bound is the one that needs the count to stay a long. At n <= 1000 the
     // total cannot leave int range, so narrowing that arm is the whole difference between
     // the two problems and a second copy of the loop would buy nothing.
-    public static int CountByFenwickPrefixSweep(int[] nums, int a, int b) =>
-        (int)CountSubarraysWithEvenOddRatioIISolution.CountByFenwickPrefixSweep(nums, a, b);
+    public static int CountByFenwickPrefixSweep(int[] nums, int ratioNumerator, int ratioDenominator) =>
+        (int)CountSubarraysWithEvenOddRatioIISolution.CountByFenwickPrefixSweep(
+            nums, ratioNumerator, ratioDenominator);
 }

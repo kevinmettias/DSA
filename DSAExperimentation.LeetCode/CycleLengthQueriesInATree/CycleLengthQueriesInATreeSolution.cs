@@ -5,11 +5,11 @@ namespace DSAExperimentation.LeetCode.CycleLengthQueriesInATree;
 // LeetCode 2509. Cycle Length Queries in a Tree: node ids 1..2^n-1 pack a complete
 // binary tree exactly the way Heap's own backing array does (parent(id) = id/2,
 // children 2*id and 2*id+1), just 1-indexed here instead of Heap's 0-indexed
-// convention. Adding edge (a, b) to a tree creates exactly one cycle, whose length
-// is 1 + the tree distance between a and b, so every query is a lowest-common-
-// ancestor walk and no tree is ever materialized.
+// convention. Adding edge (firstNodeId, secondNodeId) to a tree creates exactly one
+// cycle, whose length is 1 + the tree distance between the two ids, so every query is
+// a lowest-common-ancestor walk and no tree is ever materialized.
 //
-// n only bounds the id range the queries may use - the walk reads each id's depth
+// treeLevels only bounds the id range the queries may use - the walk reads each id's depth
 // out of the id itself - so neither strategy consults it; it stays on the signature
 // because that is LeetCode's own shape.
 internal static class CycleLengthQueriesInATreeSolution
@@ -27,11 +27,11 @@ internal static class CycleLengthQueriesInATreeSolution
     // Lifting both endpoints one level covers one edge on each side of the path.
     private const int EdgesPerSharedLift = 2;
 
-    // The textbook answer: for each query record every ancestor of a in a freshly
-    // allocated Dictionary keyed by node id, then walk b up until it lands on one of
-    // them. Deliberately BCL-only - a Dictionary per query is what you write without
+    // The textbook answer: for each query record every ancestor of firstNodeId in a
+    // freshly allocated Dictionary keyed by node id, then walk secondNodeId up until
+    // it lands on one of them. Deliberately BCL-only - a Dictionary per query is what you write without
     // this repo, and it is the arm the walk below has to justify itself against.
-    public static int[] CycleLengthQueriesByAncestorDictionary(int n, int[][] queries)
+    public static int[] CycleLengthQueriesByAncestorDictionary(int treeLevels, int[][] queries)
     {
         var lengths = new int[queries.Length];
 
@@ -43,11 +43,11 @@ internal static class CycleLengthQueriesInATreeSolution
         return lengths;
     }
 
-    private static int CycleLengthByAncestorDictionary(int a, int b)
+    private static int CycleLengthByAncestorDictionary(int firstNodeId, int secondNodeId)
     {
         var distanceFromA = new Dictionary<int, int>();
         var depth = 0;
-        var current = a;
+        var current = firstNodeId;
 
         while (current >= RootId)
         {
@@ -57,7 +57,7 @@ internal static class CycleLengthQueriesInATreeSolution
         }
 
         var distanceFromB = 0;
-        current = b;
+        current = secondNodeId;
 
         while (!distanceFromA.ContainsKey(current))
         {
@@ -74,7 +74,7 @@ internal static class CycleLengthQueriesInATreeSolution
     // original), so the whole query is the two-pointer LCA walk - lift the deeper
     // endpoint to the shallower one's depth, then lift both together - touching two
     // ints and allocating nothing per query.
-    public static int[] CycleLengthQueriesByParentIndexWalk(int n, int[][] queries)
+    public static int[] CycleLengthQueriesByParentIndexWalk(int treeLevels, int[][] queries)
     {
         var lengths = new int[queries.Length];
 
@@ -86,10 +86,10 @@ internal static class CycleLengthQueriesInATreeSolution
         return lengths;
     }
 
-    private static int CycleLengthByParentIndexWalk(int a, int b)
+    private static int CycleLengthByParentIndexWalk(int firstNodeId, int secondNodeId)
     {
-        var indexA = a - RootId;
-        var indexB = b - RootId;
+        var indexA = firstNodeId - RootId;
+        var indexB = secondNodeId - RootId;
         var depthA = Depth(indexA);
         var depthB = Depth(indexB);
 

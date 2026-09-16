@@ -17,9 +17,9 @@ namespace DSAExperimentation.LeetCode.SumGame;
 //                         halves level exactly when the known-digit difference
 //                         already equals 9 per pair of blanks he is owed).
 //
-// The two recursive arms share one Resolve body and one named recurrence: they differ
-// only in whether the driver between recursive calls is this repo's Memoizer cache or
-// the call stack itself, which is the whole difference the benchmark measures.
+// The two recursive arms share one CanMoverForceAliceWin body and one named recurrence:
+// they differ only in whether the driver between recursive calls is this repo's Memoizer
+// cache or the call stack itself, which is the whole difference the benchmark measures.
 internal static class SumGameSolution
 {
     private const int MinDigit = 0;
@@ -36,10 +36,10 @@ internal static class SumGameSolution
     // k different fill-in orders is resolved k times. Only the recurrence's shape is
     // shared with the memoized arm below - nothing here caches - because it is the arm
     // the memoized and closed-form arms have to justify themselves against.
-    public static bool AliceWinsByBruteForceRecursion(string num) =>
-        AliceWinsByBruteForceRecursion(SumGameState.Of(num));
+    public static bool CanAliceWinByBruteForceRecursion(string num) =>
+        CanAliceWinByBruteForceRecursion(SumGameState.Of(num));
 
-    public static bool AliceWinsByBruteForceRecursion(SumGameState start)
+    public static bool CanAliceWinByBruteForceRecursion(SumGameState start)
     {
         var recurrence = new AliceWinsFrom(start.TotalBlanks);
 
@@ -50,10 +50,10 @@ internal static class SumGameSolution
     // recurrence reads like ordinary recursion and the cache is the library's
     // problem, exactly the shape NimGame/DivisorGame/ChalkboardXorGame use for
     // their own game-theory recurrences.
-    public static bool AliceWinsByMemoizedRecursion(string num) =>
-        AliceWinsByMemoizedRecursion(SumGameState.Of(num));
+    public static bool CanAliceWinByMemoizedRecursion(string num) =>
+        CanAliceWinByMemoizedRecursion(SumGameState.Of(num));
 
-    public static bool AliceWinsByMemoizedRecursion(SumGameState start) =>
+    public static bool CanAliceWinByMemoizedRecursion(SumGameState start) =>
         Memoizer.Memoize<SumGameState, bool>(start, new AliceWinsFrom(start.TotalBlanks));
 
     // One loop shape covers both quantifiers: on Alice's turn she wants SOME move
@@ -61,7 +61,7 @@ internal static class SumGameSolution
     // is his - so "return isAliceTurn as soon as a branch's outcome equals
     // isAliceTurn, else !isAliceTurn" is OR-for-Alice / AND-for-Bob without two
     // separate loops.
-    private static bool Resolve(
+    private static bool CanMoverForceAliceWin(
         SumGameState state, int totalBlanks, IRecurrence<SumGameState, bool> rest)
     {
         if (state.TotalBlanks == 0)
@@ -84,7 +84,7 @@ internal static class SumGameSolution
     private sealed class AliceWinsFrom(int totalBlanks) : IRecurrence<SumGameState, bool>
     {
         public bool Replay(SumGameState state, IRecurrence<SumGameState, bool> rest)
-            => Resolve(state, totalBlanks, rest);
+            => CanMoverForceAliceWin(state, totalBlanks, rest);
     }
 
     // Whose move it is, together with the recursive call-back that resolves the
@@ -144,9 +144,9 @@ internal static class SumGameSolution
     // the side holding more blanks can shift the difference by exactly 9 per pair
     // of blanks it is owed, and Bob survives precisely when the known digits
     // already sit at that difference.
-    public static bool AliceWinsByClosedForm(string num) => AliceWinsByClosedForm(SumGameState.Of(num));
+    public static bool CanAliceWinByClosedForm(string num) => CanAliceWinByClosedForm(SumGameState.Of(num));
 
-    public static bool AliceWinsByClosedForm(SumGameState state)
+    public static bool CanAliceWinByClosedForm(SumGameState state)
     {
         if (state.TotalBlanks % TurnParityDivisor != 0)
         {

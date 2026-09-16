@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class FindTheKthCharacterInStringGameIIBenchmarks
 {
-    private long _k;
+    private long _targetPosition;
 
     private int[] _operations = [];
     [Params(8, 16)]
@@ -30,14 +30,14 @@ public class FindTheKthCharacterInStringGameIIBenchmarks
             _operations[i] = i % 2;
         }
 
-        _k = 1L << OperationCount;
+        _targetPosition = 1L << OperationCount;
     }
 
     [Benchmark(Baseline = true)]
     public char BruteForceSimulation() =>
-        FindTheKthCharacterInStringGameIISolution.KthCharacterByBruteForceSimulation(_k, _operations);
+        FindTheKthCharacterInStringGameIISolution.KthCharacterByBruteForceSimulation(_targetPosition, _operations);
 
     [Benchmark]
     public char BackwardTrace() =>
-        FindTheKthCharacterInStringGameIISolution.KthCharacterByBackwardTrace(_k, _operations);
+        FindTheKthCharacterInStringGameIISolution.KthCharacterByBackwardTrace(_targetPosition, _operations);
 }

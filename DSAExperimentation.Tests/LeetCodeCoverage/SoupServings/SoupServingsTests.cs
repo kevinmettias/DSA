@@ -3,8 +3,8 @@ using DSAExperimentation.LeetCode.SoupServings;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SoupServings;
 
 // Harness only. Both strategies are SoupServingsSolution's - LeetCode's published
-// examples (plus the empty-pot and single-serving boundaries, and the large-n case
-// the old test asserted) are stated once and replayed against each, so a failure
+// examples (plus the empty-pot and single-serving boundaries, and the large-amount
+// case the old test asserted) are stated once and replayed against each, so a failure
 // names the strategy that broke rather than reporting a disagreement between an
 // anonymous test helper and an anonymous benchmark arm.
 public sealed class SoupServingsTests
@@ -23,11 +23,19 @@ public sealed class SoupServingsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ProbabilityByUnmemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(int n, double expected) =>
-        Assert.Equal(expected, SoupServingsSolution.ProbabilityByUnmemoizedRecursion(n), ProbabilityPrecision);
+    public void ProbabilityByUnmemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(
+        int milliliters, double expected) =>
+        Assert.Equal(
+            expected,
+            SoupServingsSolution.ProbabilityByUnmemoizedRecursion(milliliters),
+            ProbabilityPrecision);
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ProbabilityByMemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(int n, double expected) =>
-        Assert.Equal(expected, SoupServingsSolution.ProbabilityByMemoizedRecursion(n), ProbabilityPrecision);
+    public void ProbabilityByMemoizedRecursion_LeetCodeExamples_ReturnsExpectedProbability(
+        int milliliters, double expected) =>
+        Assert.Equal(
+            expected,
+            SoupServingsSolution.ProbabilityByMemoizedRecursion(milliliters),
+            ProbabilityPrecision);
 }

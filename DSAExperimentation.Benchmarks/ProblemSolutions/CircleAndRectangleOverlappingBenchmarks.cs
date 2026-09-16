@@ -33,12 +33,12 @@ public class CircleAndRectangleOverlappingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool LatticePointScan() =>
-        CircleAndRectangleOverlappingSolution.CheckOverlapByLatticePointScan(
+    public bool HasOverlapByLatticePointScan() =>
+        CircleAndRectangleOverlappingSolution.HasOverlapByLatticePointScan(
             new Circle(_radius, _xCenter, _yCenter), new Rectangle(_x1, _y1, _x2, _y2));
 
     [Benchmark]
-    public bool ClosedFormClampAndDistance() =>
-        CircleAndRectangleOverlappingSolution.CheckOverlapByClampedDistance(
+    public bool HasOverlapByClampedDistance() =>
+        CircleAndRectangleOverlappingSolution.HasOverlapByClampedDistance(
             new Circle(_radius, _xCenter, _yCenter), new Rectangle(_x1, _y1, _x2, _y2));
 }

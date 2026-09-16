@@ -18,9 +18,10 @@ public sealed class SumOfKDigitNumbersInARangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumOfKDigitNumbersByBruteForceEnumeration_LeetCodeExamples_ReturnsSumModulo(
-        int l, int r, int k, long expected)
+        int low, int high, int digitCount, long expected)
     {
-        var actual = SumOfKDigitNumbersInARangeSolution.SumOfKDigitNumbersByBruteForceEnumeration(l, r, k);
+        var actual = SumOfKDigitNumbersInARangeSolution.SumOfKDigitNumbersByBruteForceEnumeration(
+            low, high, digitCount);
 
         Assert.Equal(expected, actual);
     }
@@ -28,9 +29,10 @@ public sealed class SumOfKDigitNumbersInARangeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumOfKDigitNumbersByModularRepunit_LeetCodeExamples_ReturnsSumModulo(
-        int l, int r, int k, long expected)
+        int low, int high, int digitCount, long expected)
     {
-        var actual = SumOfKDigitNumbersInARangeSolution.SumOfKDigitNumbersByModularRepunit(l, r, k);
+        var actual = SumOfKDigitNumbersInARangeSolution.SumOfKDigitNumbersByModularRepunit(
+            low, high, digitCount);
 
         Assert.Equal(expected, actual);
     }

@@ -40,10 +40,10 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindSolutionsByBruteForce_LeetCodeExamples_ReturnsEveryPairSatisfyingTheEquation(
-        object function, int z, (int X, int Y)[] expected)
+        object function, int targetValue, (int X, int Y)[] expected)
     {
         var actual = FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBruteForce((ICustomFunction)function, z);
+            .FindSolutionsByBruteForce((ICustomFunction)function, targetValue);
 
         Assert.Equal(expected, actual);
     }
@@ -51,10 +51,10 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindSolutionsByTwoPointer_LeetCodeExamples_ReturnsEveryPairSatisfyingTheEquation(
-        object function, int z, (int X, int Y)[] expected)
+        object function, int targetValue, (int X, int Y)[] expected)
     {
         var actual = FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByTwoPointer((ICustomFunction)function, z);
+            .FindSolutionsByTwoPointer((ICustomFunction)function, targetValue);
 
         Assert.Equal(expected, actual);
     }
@@ -62,10 +62,10 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindSolutionsByBinarySearchPerRow_LeetCodeExamples_ReturnsEveryPairSatisfyingTheEquation(
-        object function, int z, (int X, int Y)[] expected)
+        object function, int targetValue, (int X, int Y)[] expected)
     {
         var actual = FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBinarySearchPerRow((ICustomFunction)function, z);
+            .FindSolutionsByBinarySearchPerRow((ICustomFunction)function, targetValue);
 
         Assert.Equal(expected, actual);
     }
@@ -73,19 +73,19 @@ public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
     // f(x, y) = x + y, LeetCode's function_id 1.
     private sealed class SumFunction : ICustomFunction
     {
-        public int Evaluate(int x, int y) => x + y;
+        public int Evaluate(int xValue, int yValue) => xValue + yValue;
     }
 
     // f(x, y) = x * y, LeetCode's function_id 2.
     private sealed class ProductFunction : ICustomFunction
     {
-        public int Evaluate(int x, int y) => x * y;
+        public int Evaluate(int xValue, int yValue) => xValue * yValue;
     }
 
     // f(x, y) = 2x + 3y, so a strategy that leaned on anything beyond
     // monotonicity would be caught.
     private sealed class LinearCombinationFunction : ICustomFunction
     {
-        public int Evaluate(int x, int y) => (2 * x) + (3 * y);
+        public int Evaluate(int xValue, int yValue) => (2 * xValue) + (3 * yValue);
     }
 }

@@ -18,9 +18,9 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
     // limit. Deliberately plain BCL - adjacency lists, a Stack<int> and a
     // visited flag array - so the (q * (n + e)) cost is exactly what you would
     // pay writing this without the repo.
-    public static bool[] DistanceLimitedPathsExistByPerQueryDfs(int n, int[][] edgeList, int[][] queries)
+    public static bool[] DistanceLimitedPathsExistByPerQueryDfs(int nodeCount, int[][] edgeList, int[][] queries)
     {
-        var adjacency = BuildAdjacency(n, edgeList);
+        var adjacency = BuildAdjacency(nodeCount, edgeList);
         var results = new bool[queries.Length];
 
         for (var i = 0; i < queries.Length; i++)
@@ -32,11 +32,11 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
         return results;
     }
 
-    private static List<(int To, int Weight)>[] BuildAdjacency(int n, int[][] edgeList)
+    private static List<(int To, int Weight)>[] BuildAdjacency(int nodeCount, int[][] edgeList)
     {
-        var adjacency = new List<(int To, int Weight)>[n];
+        var adjacency = new List<(int To, int Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }
@@ -60,10 +60,10 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
             return true;
         }
 
-        return TraverseForTarget(adjacency, start, query);
+        return HasPathToTarget(adjacency, start, query);
     }
 
-    private static bool TraverseForTarget(List<(int To, int Weight)>[] adjacency, int start, PathQuery query)
+    private static bool HasPathToTarget(List<(int To, int Weight)>[] adjacency, int start, PathQuery query)
     {
         var visited = new bool[adjacency.Length];
         var stack = new Stack<int>();
@@ -74,7 +74,7 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
         {
             var node = stack.Pop();
 
-            if (VisitNeighbors(adjacency[node], query, visited, stack))
+            if (HasTargetNeighbor(adjacency[node], query, visited, stack))
             {
                 return true;
             }
@@ -83,7 +83,7 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
         return false;
     }
 
-    private static bool VisitNeighbors(List<(int To, int Weight)> neighbors, PathQuery query, bool[] visited, Stack<int> stack)
+    private static bool HasTargetNeighbor(List<(int To, int Weight)> neighbors, PathQuery query, bool[] visited, Stack<int> stack)
     {
         foreach (var (to, weight) in neighbors)
         {
@@ -114,12 +114,12 @@ internal static class CheckingExistenceOfEdgeLengthLimitedPathsSolution
     // one, union every edge still strictly below its limit. The edge cursor only
     // ever advances, so the whole edge list is swept once across every query
     // rather than once per query, and each answer is a single IsConnected lookup.
-    public static bool[] DistanceLimitedPathsExistByOfflineDisjointSet(int n, int[][] edgeList, int[][] queries)
+    public static bool[] DistanceLimitedPathsExistByOfflineDisjointSet(int nodeCount, int[][] edgeList, int[][] queries)
     {
         var edgesByWeight = edgeList.OrderBy(edge => edge[2]).ToArray();
         var queryOrder = Enumerable.Range(0, queries.Length).OrderBy(i => queries[i][2]).ToArray();
 
-        var components = new DisjointSet(n);
+        var components = new DisjointSet(nodeCount);
         var results = new bool[queries.Length];
         var edgeIndex = 0;
 

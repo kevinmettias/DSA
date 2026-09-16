@@ -1,18 +1,18 @@
 namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 
 // LeetCode 3901. Good Subsequence Queries: after each update, does nums have a
-// proper (length < n) non-empty subsequence whose gcd is exactly p?
+// proper (length < n) non-empty subsequence whose gcd is exactly modulus?
 //
-// Only elements divisible by p can ever belong to such a subsequence, and a
+// Only elements divisible by modulus can ever belong to such a subsequence, and a
 // subset's gcd is always a multiple of the gcd of any superset drawn from the
 // same elements - so removing elements can only ever raise (never lower) the
-// divisibility of the gcd. That makes the *full* set of p-multiples the unique
-// best candidate: dividing every one of those elements by p, if their combined
-// gcd isn't exactly 1, no smaller subset can do better either, so the answer is
-// no. If it is 1, that full set already witnesses "yes" - unless it happens to
-// be the entire array (every element a multiple of p), in which case the
-// witness itself has length n and is disqualified, and the question becomes
-// whether dropping any single element still leaves a combined gcd of 1.
+// divisibility of the gcd. That makes the *full* set of multiples of modulus the
+// unique best candidate: dividing every one of those elements by modulus, if
+// their combined gcd isn't exactly 1, no smaller subset can do better either, so
+// the answer is no. If it is 1, that full set already witnesses "yes" - unless it
+// happens to be the entire array (every element a multiple of modulus), in which
+// case the witness itself has length n and is disqualified, and the question
+// becomes whether dropping any single element still leaves a combined gcd of 1.
 //
 // Both strategies share that reduction and the same GcdOperation; they differ
 // only in how a query's post-update gcd/multiple-count are obtained - an O(n)
@@ -22,22 +22,22 @@ namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 internal static class GoodSubsequenceQueriesSolution
 {
     // The textbook answer: no persistent structure, every query rescans nums'
-    // p-divided values from scratch in O(n) - "what you'd write without this
+    // modulus-divided values from scratch in O(n) - "what you'd write without this
     // repo" (ARCHITECTURE.md 17.5).
-    public static int CountGoodSubseqByBruteForce(int[] nums, int p, int[][] queries)
+    public static int CountGoodSubseqByBruteForce(int[] nums, int modulus, int[][] queries)
     {
         var divided = new int[nums.Length];
 
         for (var i = 0; i < nums.Length; i++)
         {
-            divided[i] = DivideByP(nums[i], p);
+            divided[i] = DivideByP(nums[i], modulus);
         }
 
         var answer = 0;
 
         foreach (var query in queries)
         {
-            divided[query[0]] = DivideByP(query[1], p);
+            divided[query[0]] = DivideByP(query[1], modulus);
 
             if (HasGoodSubsequenceByScan(divided))
             {
@@ -68,7 +68,7 @@ internal static class GoodSubsequenceQueriesSolution
             return false;
         }
 
-        return multiplesCount < divided.Length || ExistsRemovableIndex(divided);
+        return multiplesCount < divided.Length || HasRemovableIndex(divided);
     }
 
     // Composed: builds a GoodSubsequenceIndex once so every query's full-range
@@ -77,9 +77,9 @@ internal static class GoodSubsequenceQueriesSolution
     // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for,
     // instantiated twice over (gcd, sum) the same way MinimumStabilityFactorOfArray
     // instantiates it once for LC 3605's window gcds.
-    public static int CountGoodSubseqBySegmentTreeGcd(int[] nums, int p, int[][] queries)
+    public static int CountGoodSubseqBySegmentTreeGcd(int[] nums, int modulus, int[][] queries)
     {
-        var index = GoodSubsequenceIndex.Build(nums, p);
+        var index = GoodSubsequenceIndex.Build(nums, modulus);
 
         return CountGoodSubseqBySegmentTreeGcd(index, queries);
     }
@@ -103,29 +103,29 @@ internal static class GoodSubsequenceQueriesSolution
     }
 
     // The O(log n) range queries alone settle every query except the one where
-    // every element is a multiple of p (multiplesCount == n): only then does
-    // "does removing some single element keep the gcd at 1" need asking, and
+    // every element is a multiple of modulus (multiplesCount == length): only then
+    // does "does removing some single element keep the gcd at 1" need asking, and
     // that still requires an O(n) scan over the maintained Divided array - the
     // same fallback the brute-force arm always pays, paid here only on that
     // narrower edge case instead of on every query.
-    private static bool HasGoodSubsequenceByRangeQuery(GoodSubsequenceIndex index, int n)
+    private static bool HasGoodSubsequenceByRangeQuery(GoodSubsequenceIndex index, int length)
     {
-        var multiplesCount = index.MultipleCountTree.Query(0, n - 1);
+        var multiplesCount = index.MultipleCountTree.Query(0, length - 1);
 
-        if (multiplesCount == 0 || index.GcdTree.Query(0, n - 1) != 1)
+        if (multiplesCount == 0 || index.GcdTree.Query(0, length - 1) != 1)
         {
             return false;
         }
 
-        return multiplesCount < n || ExistsRemovableIndex(index.Divided);
+        return multiplesCount < length || HasRemovableIndex(index.Divided);
     }
 
     // Whether some single index can be dropped from divided (every entry already
-    // a multiple of p) while the rest still combine to a gcd of 1: a standard
+    // a multiple of modulus) while the rest still combine to a gcd of 1: a standard
     // prefix/suffix gcd sweep, shared by both strategies exactly the way LC
     // 3605's GcdOperation.Combine is - not itself a second strategy, just the one
     // subroutine both arms need for this one case.
-    private static bool ExistsRemovableIndex(int[] divided)
+    private static bool HasRemovableIndex(int[] divided)
     {
         var n = divided.Length;
         var prefix = new int[n + 1];
@@ -171,16 +171,16 @@ internal static class GoodSubsequenceQueriesSolution
         }
     }
 
-    // Dividing p out of a value that is not a multiple of p is meaningless here: 0 is
-    // already what "this element cannot join a p-divisible subsequence" looks like to the
-    // rescan, the range queries and the removed-index sweep alike.
-    private static int DivideByP(int value, int p)
+    // Dividing the modulus out of a value that is not a multiple of it is meaningless here:
+    // 0 is already what "this element cannot join a modulus-divisible subsequence" looks
+    // like to the rescan, the range queries and the removed-index sweep alike.
+    private static int DivideByP(int value, int modulus)
     {
-        if (value % p != 0)
+        if (value % modulus != 0)
         {
             return 0;
         }
 
-        return value / p;
+        return value / modulus;
     }
 }

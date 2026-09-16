@@ -6,22 +6,22 @@ namespace DSAExperimentation.LeetCode.KClosestPointsToOrigin;
 // answer in any order", so the ROWS are a set - but a row is a point, and [3,3]
 // is not [3,-3]. Sorting inside the rows as well (the obvious reading of "compare
 // nested collections loosely") would accept a wrong answer. This is precisely why
-// LeetCodeAnswers has no default comparison and why RowSetEqual and
-// SequenceOfSequencesEqual are separate, named choices.
+// LeetCodeAnswers has no default comparison and why IsRowSetEqual and
+// IsSequenceOfSequencesEqual are separate, named choices.
 internal sealed class KClosestPointsToOriginRegistration : ILeetCodeProblemRegistration
 {
     public LeetCodeProblem Describe()
     {
-        var thousandPoints = BuildScatteredPoints(count: 1_000, k: 10);
-        var fiftyThousandPoints = BuildScatteredPoints(count: 50_000, k: 10);
-        var twentyThousandPoints = BuildScatteredPoints(count: 20_000, k: 100);
+        var thousandPoints = BuildScatteredPoints(count: 1_000, nearestCount: 10);
+        var fiftyThousandPoints = BuildScatteredPoints(count: 50_000, nearestCount: 10);
+        var twentyThousandPoints = BuildScatteredPoints(count: 20_000, nearestCount: 100);
 
         return LeetCodeProblem.For<(int[][] Points, int K), int[][]>("k-closest-points-to-origin")
             .Strategy("FullSort", input => KClosestPointsToOriginSolution.KClosestByFullSort(input.Points, input.K))
             .Strategy(
                 "SizeKMaxHeap",
                 input => KClosestPointsToOriginSolution.KClosestBySizeKMaxHeap(input.Points, input.K))
-            .MatchingAnswersWith(LeetCodeAnswers.RowSetEqual<int>)
+            .MatchingAnswersWith(LeetCodeAnswers.IsRowSetEqual<int>)
             .Case("example-1", ([[1, 3], [-2, 2]], 1), [[-2, 2]])
             .Case("example-2", ([[3, 3], [5, -1], [-2, 4]], 2), [[3, 3], [-2, 4]])
             .Case("k-covers-every-point", ([[1, 1], [2, 2]], 2), [[1, 1], [2, 2]])
@@ -36,16 +36,16 @@ internal sealed class KClosestPointsToOriginRegistration : ILeetCodeProblemRegis
             .Case("equidistant-points-both-selected", ([[0, 1], [1, 0]], 2), [[0, 1], [1, 0]])
 
             // The two cloud sizes the retired per-problem benchmark swept with
-            // [Params], at its k of 10: the whole claim of the size-k heap is that
-            // it never orders more than k points, so it has to be measured where
-            // n/k is small and where it is large.
+            // [Params], at a nearestCount of 10: the whole claim of the size-k heap is
+            // that it never orders more than nearestCount points, so it has to be
+            // measured where n/nearestCount is small and where it is large.
             .Workload("scattered-1000", thousandPoints)
             .Workload("scattered-50000", fiftyThousandPoints)
             .Workload("scattered-20000", twentyThousandPoints)
             .Build();
     }
 
-    private static (int[][] Points, int K) BuildScatteredPoints(int count, int k)
+    private static (int[][] Points, int K) BuildScatteredPoints(int count, int nearestCount)
     {
         var random = new Random(Seed: 20_000);
         var points = new int[count][];
@@ -55,6 +55,6 @@ internal sealed class KClosestPointsToOriginRegistration : ILeetCodeProblemRegis
             points[index] = [random.Next(-10_000, 10_000), random.Next(-10_000, 10_000)];
         }
 
-        return (points, k);
+        return (points, nearestCount);
     }
 }

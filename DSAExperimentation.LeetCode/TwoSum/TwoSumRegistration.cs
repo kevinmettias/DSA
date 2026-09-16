@@ -38,7 +38,7 @@ internal sealed class TwoSumRegistration : ILeetCodeProblemRegistration
 
             // "You may return the answer in any order" - so the scraped example
             // output is one correct answer, not the only one.
-            .MatchingAnswersWith(LeetCodeAnswers.SetEqual<int>)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSetEqual<int>)
             .Case("example-1", ([2, 7, 11, 15], 9), [0, 1])
             .Case("example-2", ([3, 2, 4], 6), [1, 2])
             .Case("example-3", ([3, 3], 6), [0, 1])

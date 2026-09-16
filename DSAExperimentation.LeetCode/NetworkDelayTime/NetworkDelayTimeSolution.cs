@@ -4,14 +4,15 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
 namespace DSAExperimentation.LeetCode.NetworkDelayTime;
 
-// LeetCode 743. Network Delay Time: minutes for a signal sent from node k to reach
-// every one of n nodes, or -1 if some node is unreachable. That is a direct read of
-// a single-source shortest-path algorithm's own distance map - the longest distance,
-// once every node has one, or "unreachable" the moment one doesn't. All three
-// strategies below answer that same question on the same directed, non-negative-
-// weight graph; ShortestPathAlgorithmBenchmarks (see its own doc comment) exists
-// specifically to compare them, with FloydWarshall expected to lose because it
-// answers the strictly harder all-pairs question.
+// LeetCode 743. Network Delay Time: minutes for a signal sent from the source
+// node to reach every one of the nodeCount nodes, or -1 if some node is
+// unreachable. That is a direct read of a single-source shortest-path
+// algorithm's own distance map - the longest distance, once every node has one,
+// or "unreachable" the moment one doesn't. All three strategies below answer
+// that same question on the same directed, non-negative-weight graph;
+// ShortestPathAlgorithmBenchmarks (see its own doc comment) exists specifically
+// to compare them, with FloydWarshall expected to lose because it answers the
+// strictly harder all-pairs question.
 //
 // Each strategy's prepared-input overload stays generic over TNode/TTopology rather
 // than fixing NetworkNode/NetworkTopology: the reduction ("every node reached? take
@@ -23,9 +24,9 @@ internal static class NetworkDelayTimeSolution
 {
     // The textbook single-source choice for non-negative weights, and the one the
     // other two strategies are compared against.
-    public static int MinutesToReachAllByDijkstra(int[][] times, int n, int k)
+    public static int MinutesToReachAllByDijkstra(int[][] times, int nodeCount, int sourceNodeId)
     {
-        var (vertices, source) = BuildGraph(times, n, k);
+        var (vertices, source) = BuildGraph(times, nodeCount, sourceNodeId);
 
         return MinutesToReachAllByDijkstra<NetworkNode, NetworkTopology>(vertices, source);
     }
@@ -41,9 +42,9 @@ internal static class NetworkDelayTimeSolution
 
     // Correct here precisely because LC 743's weights are guaranteed non-negative, so
     // the extra round Bellman-Ford spends detecting a negative cycle never fires.
-    public static int MinutesToReachAllByBellmanFord(int[][] times, int n, int k)
+    public static int MinutesToReachAllByBellmanFord(int[][] times, int nodeCount, int sourceNodeId)
     {
-        var (vertices, source) = BuildGraph(times, n, k);
+        var (vertices, source) = BuildGraph(times, nodeCount, sourceNodeId);
 
         return MinutesToReachAllByBellmanFord<NetworkNode, NetworkTopology>(vertices, source);
     }
@@ -62,9 +63,9 @@ internal static class NetworkDelayTimeSolution
     // `source` - included as a strategy because it is a genuine way to compute the
     // same answer, not because it is a good one; see ShortestPathAlgorithmBenchmarks
     // for the point of measuring it anyway.
-    public static int MinutesToReachAllByFloydWarshall(int[][] times, int n, int k)
+    public static int MinutesToReachAllByFloydWarshall(int[][] times, int nodeCount, int sourceNodeId)
     {
-        var (vertices, source) = BuildGraph(times, n, k);
+        var (vertices, source) = BuildGraph(times, nodeCount, sourceNodeId);
 
         return MinutesToReachAllByFloydWarshall<NetworkNode, NetworkTopology>(vertices, source);
     }
@@ -95,11 +96,12 @@ internal static class NetworkDelayTimeSolution
         where TNode : class
         => distances.Count == vertices.Count ? distances.Values.Max() : LeetCodeAnswer.None;
 
-    private static (List<NetworkNode> Vertices, NetworkNode Source) BuildGraph(int[][] times, int n, int k)
+    private static (List<NetworkNode> Vertices, NetworkNode Source) BuildGraph(
+        int[][] times, int nodeCount, int sourceNodeId)
     {
         var nodes = new Dictionary<int, NetworkNode>();
 
-        for (var id = 1; id <= n; id++)
+        for (var id = 1; id <= nodeCount; id++)
         {
             nodes[id] = new NetworkNode(id);
         }
@@ -109,6 +111,6 @@ internal static class NetworkDelayTimeSolution
             nodes[edge[0]].Edges.Add((edge[2], nodes[edge[1]]));
         }
 
-        return (nodes.Values.ToList(), nodes[k]);
+        return (nodes.Values.ToList(), nodes[sourceNodeId]);
     }
 }

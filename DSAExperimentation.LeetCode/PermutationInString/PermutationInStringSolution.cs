@@ -15,7 +15,7 @@ internal static class PermutationInStringSolution
     // every window start, O(|s2| * |s1|). Deliberately written without this
     // repo's HashMap - it is the arm the sliding-window strategy below has to
     // justify itself against.
-    public static bool CheckInclusionByPerWindowRebuild(PermutationPattern s1, SearchedText s2)
+    public static bool HasPermutationByPerWindowRebuild(PermutationPattern s1, SearchedText s2)
     {
         if (s1.Text.Length > s2.Text.Length)
         {
@@ -28,7 +28,7 @@ internal static class PermutationInStringSolution
         {
             var slice = s2.Text.Substring(start, s1.Text.Length);
             var window = BuildFrequencyMap(slice);
-            if (FrequenciesEqual(window, target))
+            if (HasEqualFrequencies(window, target))
             {
                 return true;
             }
@@ -50,7 +50,7 @@ internal static class PermutationInStringSolution
         return counts;
     }
 
-    private static bool FrequenciesEqual(Dictionary<char, int> window, Dictionary<char, int> target)
+    private static bool HasEqualFrequencies(Dictionary<char, int> window, Dictionary<char, int> target)
     {
         if (window.Count != target.Count)
         {
@@ -72,7 +72,7 @@ internal static class PermutationInStringSolution
     // as it slides, with a running "matched distinct characters" counter so a
     // full match is a count comparison rather than a per-window walk -
     // O(|s1| + |s2|).
-    public static bool CheckInclusionBySlidingWindow(PermutationPattern s1, SearchedText s2)
+    public static bool HasPermutationBySlidingWindow(PermutationPattern s1, SearchedText s2)
     {
         if (s1.Text.Length > s2.Text.Length)
         {
@@ -86,7 +86,7 @@ internal static class PermutationInStringSolution
 
         for (var i = 0; i < s2.Text.Length; i++)
         {
-            if (SlideWindow(context, s2.Text, i, ref matched))
+            if (HasWindowMatch(context, s2.Text, i, ref matched))
             {
                 return true;
             }
@@ -95,11 +95,11 @@ internal static class PermutationInStringSolution
         return false;
     }
 
-    private static HashMap<char, int> BuildNeedMap(string s)
+    private static HashMap<char, int> BuildNeedMap(string pattern)
     {
         var frequencies = new HashMap<char, int>();
 
-        foreach (var c in s)
+        foreach (var c in pattern)
         {
             frequencies.TryGetValue(c, out var count);
             frequencies.Set(c, count + 1);
@@ -108,16 +108,18 @@ internal static class PermutationInStringSolution
         return frequencies;
     }
 
-    // One step of the fixed-size window: absorbs s2[i], then - once the window
-    // has reached s1's length - checks for a full match and evicts the character
-    // leaving the window. Returns true once the window matches s1 exactly.
-    private static bool SlideWindow(SlidingWindowContext context, string s2, int i, ref int matched)
+    // One step of the fixed-size window: absorbs the character at enteringIndex,
+    // then - once the window has reached s1's length - checks for a full match and
+    // evicts the character leaving the window. Returns true once the window matches
+    // s1 exactly.
+    private static bool HasWindowMatch(
+        SlidingWindowContext context, string s2, int enteringIndex, ref int matched)
     {
         var (s1, need, window) = context;
 
-        AbsorbEnteringChar(need, window, s2[i], ref matched);
+        AbsorbEnteringChar(need, window, s2[enteringIndex], ref matched);
 
-        if (i < s1.Length - 1)
+        if (enteringIndex < s1.Length - 1)
         {
             return false;
         }
@@ -127,7 +129,7 @@ internal static class PermutationInStringSolution
             return true;
         }
 
-        EvictLeavingChar(need, window, s2[i - s1.Length + 1], ref matched);
+        EvictLeavingChar(need, window, s2[enteringIndex - s1.Length + 1], ref matched);
         return false;
     }
 

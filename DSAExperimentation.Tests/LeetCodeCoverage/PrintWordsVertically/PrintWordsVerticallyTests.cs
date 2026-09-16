@@ -19,12 +19,12 @@ public sealed class PrintWordsVerticallyTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PrintVerticallyByListTrimEnd_LeetCodeExamples_ReturnsColumnsWithoutTrailingSpaces(
-        string s, string[] expected) =>
-        Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(s));
+        string sentence, string[] expected) =>
+        Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(sentence));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PrintVerticallyByDynamicArrayColumns_LeetCodeExamples_ReturnsColumnsWithoutTrailingSpaces(
-        string s, string[] expected) =>
-        Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(s));
+        string sentence, string[] expected) =>
+        Assert.Equal(expected, PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(sentence));
 }

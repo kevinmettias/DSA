@@ -17,9 +17,9 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
     // file states that base in two places, so it is named once.
     private const int DecimalDigitModulus = 10;
 
-    public static bool AreEqualByAdjacentSumReduction(string s)
+    public static bool IsEqualByAdjacentSumReduction(string digitString)
     {
-        var digits = ToDigits(s);
+        var digits = ToDigits(digitString);
 
         while (digits.Length > 2)
         {
@@ -39,12 +39,12 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
     // Row k of Pascal's triangle gives the coefficients k reduction steps produce:
     // after k steps, the digit at position i is sum_j C(k, j) * original[i + j] mod
     // 10. With k = s.Length - 2, position 0 and position 1 of that row are exactly
-    // the two digits AreEqualByAdjacentSumReduction ends with - computed here by
+    // the two digits IsEqualByAdjacentSumReduction ends with - computed here by
     // building the coefficient row once instead of materializing every
     // intermediate string.
-    public static bool AreEqualByPascalRowCoefficients(string s)
+    public static bool IsEqualByPascalRowCoefficients(string digitString)
     {
-        var digits = ToDigits(s);
+        var digits = ToDigits(digitString);
         var steps = digits.Length - 2;
         var row = PascalRow(steps);
 
@@ -79,13 +79,13 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
         return sum % DecimalDigitModulus;
     }
 
-    private static int[] ToDigits(string s)
+    private static int[] ToDigits(string digitString)
     {
-        var digits = new int[s.Length];
+        var digits = new int[digitString.Length];
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < digitString.Length; i++)
         {
-            digits[i] = s[i] - '0';
+            digits[i] = digitString[i] - '0';
         }
 
         return digits;

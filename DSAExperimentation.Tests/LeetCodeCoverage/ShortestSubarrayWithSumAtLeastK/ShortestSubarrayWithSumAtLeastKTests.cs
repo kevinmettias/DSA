@@ -24,9 +24,9 @@ public sealed class ShortestSubarrayWithSumAtLeastKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestSubarrayByBruteForcePrefixScan_LeetCodeExamples_ReturnsShortestQualifyingLength(
-        int[] nums, int k, int expected)
+        int[] nums, int targetSum, int expected)
     {
-        var actual = ShortestSubarrayWithSumAtLeastKSolution.ShortestSubarrayByBruteForcePrefixScan(nums, k);
+        var actual = ShortestSubarrayWithSumAtLeastKSolution.ShortestSubarrayByBruteForcePrefixScan(nums, targetSum);
 
         Assert.Equal(expected, actual);
     }
@@ -34,9 +34,9 @@ public sealed class ShortestSubarrayWithSumAtLeastKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestSubarrayByMonotonicDeque_LeetCodeExamples_ReturnsShortestQualifyingLength(
-        int[] nums, int k, int expected)
+        int[] nums, int targetSum, int expected)
     {
-        var actual = ShortestSubarrayWithSumAtLeastKSolution.ShortestSubarrayByMonotonicDeque(nums, k);
+        var actual = ShortestSubarrayWithSumAtLeastKSolution.ShortestSubarrayByMonotonicDeque(nums, targetSum);
 
         Assert.Equal(expected, actual);
     }

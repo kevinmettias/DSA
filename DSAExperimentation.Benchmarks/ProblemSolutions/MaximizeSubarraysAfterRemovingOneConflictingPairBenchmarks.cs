@@ -5,9 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximizeSubarraysAfterRemovingOneConflictingPairSolution's, the same methods
-// MaximizeSubarraysAfterRemovingOneConflictingPairTests proves correct. N is kept
-// small (unlike most other benchmarks in this project) because the baseline is
-// O(n^2 * m^2) by design - it is the naive arm the O(n + m) sweep has to justify
+// MaximizeSubarraysAfterRemovingOneConflictingPairTests proves correct. ValueCount
+// is kept small (unlike most other benchmarks in this project) because the baseline
+// is O(n^2 * m^2) by design - it is the naive arm the O(n + m) sweep has to justify
 // itself against, not a strategy meant to scale.
 [MemoryDiagnoser]
 public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
@@ -17,29 +17,29 @@ public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
     private int[][] _conflictingPairs = [];
 
     [Params(10, 50)]
-    public int N { get; set; }
+    public int ValueCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
-        _conflictingPairs = BuildConflictingPairs(N, random);
+        _conflictingPairs = BuildConflictingPairs(ValueCount, random);
     }
 
-    // One pair per position, both endpoints drawn from [1, n] and never equal -
-    // stays within LC's own conflictingPairs.length <= 2n bound.
-    private static int[][] BuildConflictingPairs(int n, Random random)
+    // One pair per position, both endpoints drawn from [1, valueCount] and never
+    // equal - stays within LC's own bound of at most twice valueCount pairs.
+    private static int[][] BuildConflictingPairs(int valueCount, Random random)
     {
-        var pairs = new int[n][];
+        var pairs = new int[valueCount][];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < valueCount; i++)
         {
-            var a = random.Next(1, n + 1);
+            var a = random.Next(1, valueCount + 1);
             int b;
 
             do
             {
-                b = random.Next(1, n + 1);
+                b = random.Next(1, valueCount + 1);
             }
             while (b == a);
 
@@ -51,9 +51,9 @@ public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
-        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByBruteForce(N, _conflictingPairs);
+        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByBruteForce(ValueCount, _conflictingPairs);
 
     [Benchmark]
     public int GroupedBoundSweep() =>
-        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByGroupedBoundSweep(N, _conflictingPairs);
+        MaximizeSubarraysAfterRemovingOneConflictingPairSolution.MaxSubarraysByGroupedBoundSweep(ValueCount, _conflictingPairs);
 }

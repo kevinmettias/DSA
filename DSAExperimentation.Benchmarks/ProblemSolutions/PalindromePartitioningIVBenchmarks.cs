@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PalindromePartitioningIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromePartitioningIVSolution's, the same methods
-// PalindromePartitioningIVTests proves correct. _s is
+// PalindromePartitioningIVTests proves correct. _text is
 // "a"*BlockSize + "b" + "a"*BlockSize + "c": the trailing "c" forces the third
 // partition to be exactly "c" (it's the only "c" in the string), which leaves
 // "a"*BlockSize + "b" + "a"*BlockSize needing a 2-way palindrome split that provably
@@ -22,17 +22,19 @@ public class PalindromePartitioningIVBenchmarks
     private const string MiddleSeparator = "b";
     private const string UniqueTrailingCharacter = "c";
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(30, 100)]
     public int BlockSize { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _s = new string('a', BlockSize) + MiddleSeparator + new string('a', BlockSize) + UniqueTrailingCharacter;
+    public void Setup() => _text = new string('a', BlockSize) + MiddleSeparator + new string('a', BlockSize) + UniqueTrailingCharacter;
 
     [Benchmark(Baseline = true)]
-    public bool Unmemoized() => PalindromePartitioningIVSolution.CheckPartitioningByNaiveRecursion(_s);
+    public bool CanPartitionIntoThreePalindromesByNaiveRecursion() =>
+        PalindromePartitioningIVSolution.CanPartitionIntoThreePalindromesByNaiveRecursion(_text);
 
     [Benchmark]
-    public bool Memoized() => PalindromePartitioningIVSolution.CheckPartitioningByMemoizedRecurrence(_s);
+    public bool CanPartitionIntoThreePalindromesByMemoizedRecurrence() =>
+        PalindromePartitioningIVSolution.CanPartitionIntoThreePalindromesByMemoizedRecurrence(_text);
 }

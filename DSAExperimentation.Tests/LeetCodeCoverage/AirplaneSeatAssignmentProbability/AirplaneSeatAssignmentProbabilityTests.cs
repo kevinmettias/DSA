@@ -24,20 +24,20 @@ public sealed class AirplaneSeatAssignmentProbabilityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NthPersonGetsNthSeatByMemoizedRecursion_LeetCodeExamples_MatchesExpectedProbability(
-        int n,
+        int planeSize,
         double expected) =>
         Assert.Equal(
             expected,
-            AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByMemoizedRecursion(n),
+            AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByMemoizedRecursion(planeSize),
             precision: 9);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NthPersonGetsNthSeatByClosedForm_LeetCodeExamples_MatchesExpectedProbability(
-        int n,
+        int planeSize,
         double expected) =>
         Assert.Equal(
             expected,
-            AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByClosedForm(n),
+            AirplaneSeatAssignmentProbabilitySolution.NthPersonGetsNthSeatByClosedForm(planeSize),
             precision: 9);
 }

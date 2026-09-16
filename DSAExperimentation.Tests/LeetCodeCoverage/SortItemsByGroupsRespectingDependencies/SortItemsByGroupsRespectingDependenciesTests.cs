@@ -86,9 +86,9 @@ public sealed class SortItemsByGroupsRespectingDependenciesTests
         }
     }
 
-    private static void AssertGroupsAreContiguous(Dictionary<int, int> position, int m, int[] group)
+    private static void AssertGroupsAreContiguous(Dictionary<int, int> position, int groupCount, int[] group)
     {
-        for (var groupId = 0; groupId < m; groupId++)
+        for (var groupId = 0; groupId < groupCount; groupId++)
         {
             var positions = group
                 .Select((assigned, item) => (Assigned: assigned, Item: item))

@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximizeTheDistanceBetweenPointsOnASquareBenchmarks
 {
     private const int Side = 1_000_000;
-    private const int K = 10;
+    private const int SelectionCount = 10;
     private const int RandomSeed = 3464;
 
     private ArraySequence<long> _positions;
@@ -51,11 +51,13 @@ public class MaximizeTheDistanceBetweenPointsOnASquareBenchmarks
 
     [Benchmark(Baseline = true)]
     public int LinearScan() =>
-        MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceByLinearScan(Side, _positions, K);
+        MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceByLinearScan(
+            Side, _positions, SelectionCount);
 
     [Benchmark]
     public int SortedGreedy() =>
-        MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceBySortedGreedy(Side, _positions, K);
+        MaximizeTheDistanceBetweenPointsOnASquareSolution.MaxDistanceBySortedGreedy(
+            Side, _positions, SelectionCount);
 
     // Inverse of the solution's own ToPerimeterPosition mapping, used only to turn
     // a random offset into a boundary point for the workload - the same mapping,

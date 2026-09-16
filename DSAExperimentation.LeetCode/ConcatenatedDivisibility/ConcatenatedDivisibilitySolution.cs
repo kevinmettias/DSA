@@ -5,7 +5,7 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 namespace DSAExperimentation.LeetCode.ConcatenatedDivisibility;
 
 // LeetCode 3533. Concatenated Divisibility: order nums so their decimal
-// concatenation is divisible by k, and among every order that works, return the
+// concatenation is divisible by `divisor`, and among every order that works, return the
 // one that is lexicographically smallest AS A LIST OF INTEGERS (compare 3 vs 12 by
 // value, never by the string "3" vs "12"). Return [] if no order works.
 //
@@ -25,31 +25,32 @@ internal static class ConcatenatedDivisibilitySolution
     // candidate tried smallest-value-first, backtracking the instant a candidate
     // does not lead to a complete divisible concatenation. No mod-arithmetic
     // shortcut - the concatenation is built and parsed as an actual BigInteger,
-    // exactly what "divisible by k" means taken literally.
-    public static IList<int> SmallestPermutationByBacktracking(int[] nums, int k)
+    // exactly what "divisible by `divisor`" means taken literally.
+    public static IList<int> SmallestPermutationByBacktracking(int[] nums, int divisor)
     {
         var order = SortIndicesByValue(nums);
-        var state = new BacktrackState(nums, k, order);
+        var state = new BacktrackState(nums, divisor, order);
 
         // Unchoose runs on every candidate's way back out of TrySearch - including
         // the winning one, since backtracking has no other way to know the search
-        // is done until OnSolution has already returned - so by the time TrySearch
-        // itself returns, state.Path has been unwound back to empty regardless of
-        // outcome. The winning order has to be snapshotted from inside OnSolution,
-        // the only moment it is both complete and still on the board.
+        // is done until TryAcceptSolution has already returned - so by the time
+        // TrySearch itself returns, state.Path has been unwound back to empty
+        // regardless of outcome. The winning order has to be snapshotted from inside
+        // TryAcceptSolution, the only moment it is both complete and still on the
+        // board.
         Backtrack.TrySearch(state, new BacktrackingSteps<BacktrackState, int>(
             IsSolution: s => s.Path.Count == s.Nums.Length,
             Candidates: s => s.Order.Where(i => !s.Used[i]),
             Choose: Choose,
             Unchoose: Unchoose,
-            OnSolution: OnSolution));
+            OnSolution: TryAcceptSolution));
 
         return NumbersOf(state.Result, state.Nums);
     }
 
-    private static bool OnSolution(BacktrackState state)
+    private static bool TryAcceptSolution(BacktrackState state)
     {
-        if (BigInteger.Parse(state.Concatenation) % state.K != 0)
+        if (BigInteger.Parse(state.Concatenation) % state.Divisor != 0)
         {
             return false;
         }
@@ -74,29 +75,29 @@ internal static class ConcatenatedDivisibilitySolution
     }
 
     // reach(mask, remainder) = "is there an order of the numbers left in mask that
-    // carries remainder to 0 mod k" is a bitmask DP; Memoizer turns that
+    // carries remainder to 0 mod `divisor`" is a bitmask DP; Memoizer turns that
     // feasibility recurrence into a *reconstruction* one for free by returning the
     // winning suffix itself (or null) instead of a bool, trying candidates
     // smallest-first so the first non-null result found at the root is already the
     // answer - no separate greedy replay pass needed.
-    public static IList<int> SmallestPermutationByBitmaskMemo(int[] nums, int k)
+    public static IList<int> SmallestPermutationByBitmaskMemo(int[] nums, int divisor)
     {
         var order = SortIndicesByValue(nums);
-        var pow10ModK = BuildPow10ModK(nums, k);
+        var pow10ModDivisor = BuildPow10ModDivisor(nums, divisor);
         var fullMask = (1 << nums.Length) - 1;
 
         var suffix = Memoizer.Memoize<(int Mask, int Remainder), List<int>?>(
-            (fullMask, 0), new BestSuffix((nums, order), (pow10ModK, k)));
+            (fullMask, 0), new BestSuffix((nums, order), (pow10ModDivisor, divisor)));
 
         return NumbersOf(suffix, nums);
     }
 
-    // 10^(decimal digit count of nums[i]), mod k - the factor a running remainder
-    // must be multiplied by to make room for nums[i]'s own digits when it is
-    // appended next.
-    private static int[] BuildPow10ModK(int[] nums, int k)
+    // 10^(decimal digit count of nums[i]), mod `divisor` - the factor a running
+    // remainder must be multiplied by to make room for nums[i]'s own digits when it
+    // is appended next.
+    private static int[] BuildPow10ModDivisor(int[] nums, int divisor)
     {
-        var pow10ModK = new int[nums.Length];
+        var pow10ModDivisor = new int[nums.Length];
 
         for (var i = 0; i < nums.Length; i++)
         {
@@ -105,24 +106,24 @@ internal static class ConcatenatedDivisibilitySolution
 
             for (var d = 0; d < digits; d++)
             {
-                value = value * 10 % k;
+                value = value * 10 % divisor;
             }
 
-            pow10ModK[i] = value;
+            pow10ModDivisor[i] = value;
         }
 
-        return pow10ModK;
+        return pow10ModDivisor;
     }
 
     // The reconstruction rule, named: the winning suffix for a state is the first
     // viable candidate prepended to that candidate's own winning suffix. order is an
-    // ascending permutation of nums' indices and pow10ModK is the place value of each
-    // number mod k, so each pair describes one thing the rule needs whole: the
-    // candidates and the order to offer them in, and the modular arithmetic of
-    // appending one.
+    // ascending permutation of nums' indices and pow10ModDivisor is the place value of
+    // each number mod `divisor`, so each pair describes one thing the rule needs
+    // whole: the candidates and the order to offer them in, and the modular
+    // arithmetic of appending one.
     private sealed class BestSuffix(
         (int[] Nums, int[] Order) candidates,
-        (int[] Pow10ModK, int K) modulus) : IRecurrence<(int Mask, int Remainder), List<int>?>
+        (int[] Pow10ModDivisor, int Divisor) modulus) : IRecurrence<(int Mask, int Remainder), List<int>?>
     {
         public List<int>? Replay(
             (int Mask, int Remainder) state,
@@ -158,7 +159,8 @@ internal static class ConcatenatedDivisibilitySolution
                     continue;
                 }
 
-                var nextRemainder = (state.Remainder * modulus.Pow10ModK[i] + candidates.Nums[i]) % modulus.K;
+                var nextRemainder =
+                    (state.Remainder * modulus.Pow10ModDivisor[i] + candidates.Nums[i]) % modulus.Divisor;
                 var completion = rest.Replay((state.Mask & ~bit, nextRemainder), rest);
 
                 if (completion is not null)
@@ -198,10 +200,10 @@ internal static class ConcatenatedDivisibilitySolution
     // The mutable board Backtrack.TrySearch threads Choose/Unchoose through -
     // Order is fixed for the whole search, Used/Path/Concatenation are what those
     // two steps mutate and restore.
-    private sealed class BacktrackState(int[] nums, int k, int[] order)
+    private sealed class BacktrackState(int[] nums, int divisor, int[] order)
     {
         public int[] Nums { get; } = nums;
-        public int K { get; } = k;
+        public int Divisor { get; } = divisor;
         public int[] Order { get; } = order;
         public bool[] Used { get; } = new bool[nums.Length];
         public List<int> Path { get; } = [];

@@ -27,8 +27,8 @@ public class ContainsDuplicateIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() => ContainsDuplicateIISolution.ContainsNearbyDuplicateByBruteForce(_nums, WindowK);
+    public bool HasNearbyDuplicateByBruteForce() => ContainsDuplicateIISolution.HasNearbyDuplicateByBruteForce(_nums, WindowK);
 
     [Benchmark]
-    public bool HashMapOnePass() => ContainsDuplicateIISolution.ContainsNearbyDuplicateByHashMap(_nums, WindowK);
+    public bool HasNearbyDuplicateByHashMap() => ContainsDuplicateIISolution.HasNearbyDuplicateByHashMap(_nums, WindowK);
 }

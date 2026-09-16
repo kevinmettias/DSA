@@ -25,18 +25,18 @@ public sealed class ChalkboardXorGameTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByBruteForceRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
-        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.AliceWinsByBruteForceRecursion(example.Nums));
+    public void CanAliceWinByBruteForceRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
+        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.CanAliceWinByBruteForceRecursion(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
-        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.AliceWinsByMemoizedRecursion(example.Nums));
+    public void CanAliceWinByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
+        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.CanAliceWinByMemoizedRecursion(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByXorParityFormula_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
-        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.AliceWinsByXorParityFormula(example.Nums));
+    public void CanAliceWinByXorParityFormula_LeetCodeExamples_ReturnsWhetherAliceWins(GameExample example) =>
+        Assert.Equal(example.AliceWins, ChalkboardXorGameSolution.CanAliceWinByXorParityFormula(example.Nums));
 
     // One LeetCode example: the chalkboard and whether Alice wins from it. The win
     // flag is named at the row that states it, so a reader of `Examples` never has to

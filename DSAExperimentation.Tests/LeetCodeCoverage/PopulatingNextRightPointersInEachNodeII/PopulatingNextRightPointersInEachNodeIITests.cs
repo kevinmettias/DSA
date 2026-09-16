@@ -126,20 +126,20 @@ public sealed class PopulatingNextRightPointersInEachNodeIITests
     // threaded through every call.
     private sealed class ExampleTreeBuilder(int?[] values)
     {
-        private readonly Dictionary<int, BinaryTreeNode<int>> byValue = [];
-        private readonly Queue<BinaryTreeNode<int>> pending = new();
+        private readonly Dictionary<int, BinaryTreeNode<int>> _byValue = [];
+        private readonly Queue<BinaryTreeNode<int>> _pending = new();
 
         public ExampleTree Build()
         {
             if (values.Length == 0 || values[0] is null)
             {
-                return new ExampleTree(Root: null, ByValue: byValue);
+                return new ExampleTree(Root: null, ByValue: _byValue);
             }
 
             var root = SeedWithRoot(values[0].Value);
             ConsumeRemainingValues();
 
-            return new ExampleTree(root, byValue);
+            return new ExampleTree(root, _byValue);
         }
 
         // The first present value is the root, and the queue of nodes still waiting for
@@ -147,8 +147,8 @@ public sealed class PopulatingNextRightPointersInEachNodeIITests
         private BinaryTreeNode<int> SeedWithRoot(int rootValue)
         {
             var root = new BinaryTreeNode<int>(rootValue);
-            byValue[root.Value] = root;
-            pending.Enqueue(root);
+            _byValue[root.Value] = root;
+            _pending.Enqueue(root);
 
             return root;
         }
@@ -157,9 +157,9 @@ public sealed class PopulatingNextRightPointersInEachNodeIITests
         {
             var index = 1;
 
-            while (pending.Count > 0 && index < values.Length)
+            while (_pending.Count > 0 && index < values.Length)
             {
-                index = AttachChildren(pending.Dequeue(), index);
+                index = AttachChildren(_pending.Dequeue(), index);
             }
         }
 
@@ -170,8 +170,8 @@ public sealed class PopulatingNextRightPointersInEachNodeIITests
             if (index < values.Length && values[index] is int leftValue)
             {
                 node.Left = new BinaryTreeNode<int>(leftValue);
-                byValue[leftValue] = node.Left;
-                pending.Enqueue(node.Left);
+                _byValue[leftValue] = node.Left;
+                _pending.Enqueue(node.Left);
             }
 
             index++;
@@ -179,8 +179,8 @@ public sealed class PopulatingNextRightPointersInEachNodeIITests
             if (index < values.Length && values[index] is int rightValue)
             {
                 node.Right = new BinaryTreeNode<int>(rightValue);
-                byValue[rightValue] = node.Right;
-                pending.Enqueue(node.Right);
+                _byValue[rightValue] = node.Right;
+                _pending.Enqueue(node.Right);
             }
 
             return index + 1;

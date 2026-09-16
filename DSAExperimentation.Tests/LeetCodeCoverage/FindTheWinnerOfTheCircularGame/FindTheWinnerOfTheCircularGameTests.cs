@@ -4,8 +4,9 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheWinnerOfTheCircularGa
 
 // Harness only. Both simulations live in FindTheWinnerOfTheCircularGameSolution -
 // this file pins them to LeetCode's published examples plus the single-friend
-// circle, k = 1 (nobody is counted past, so the last friend survives), the two-friend
-// circle, and k > n, where the count wraps the circle more than once before landing.
+// circle, stepSize = 1 (nobody is counted past, so the last friend survives), the
+// two-friend circle, and stepSize > friendCount, where the count wraps the circle
+// more than once before landing.
 public sealed class FindTheWinnerOfTheCircularGameTests
 {
     public static TheoryData<int, int, int> Examples =>
@@ -24,9 +25,9 @@ public sealed class FindTheWinnerOfTheCircularGameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTheWinnerByListRemoval_LeetCodeExamples_ReturnsTheLastFriendStanding(
-        int n, int k, int expected)
+        int friendCount, int stepSize, int expected)
     {
-        var actual = FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByListRemoval(n, k);
+        var actual = FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByListRemoval(friendCount, stepSize);
 
         Assert.Equal(expected, actual);
     }
@@ -34,9 +35,9 @@ public sealed class FindTheWinnerOfTheCircularGameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTheWinnerByQueueRotation_LeetCodeExamples_ReturnsTheLastFriendStanding(
-        int n, int k, int expected)
+        int friendCount, int stepSize, int expected)
     {
-        var actual = FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByQueueRotation(n, k);
+        var actual = FindTheWinnerOfTheCircularGameSolution.FindTheWinnerByQueueRotation(friendCount, stepSize);
 
         Assert.Equal(expected, actual);
     }

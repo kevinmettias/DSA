@@ -21,34 +21,34 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
     // The textbook answer: Pascal's triangle, one row at a time, keeping only the
     // k columns the length cap ever needs. No modular inverse, no repo
     // primitive - the baseline SumByFactorialCombinatorics is measured against.
-    public static long SumByPascalTriangle(int[] nums, int k)
+    public static long SumByPascalTriangle(int[] nums, int maxLength)
     {
         var sorted = SortedCopy(nums);
-        var capped = CappedRowSumsByPascalTriangle(sorted.Length, k);
+        var capped = CappedRowSumsByPascalTriangle(sorted.Length, maxLength);
 
         return Combine(sorted, capped);
     }
 
-    private static long[] CappedRowSumsByPascalTriangle(int n, int k)
+    private static long[] CappedRowSumsByPascalTriangle(int elementCount, int maxLength)
     {
-        var capped = new long[n];
-        var row = new long[k];
+        var capped = new long[elementCount];
+        var row = new long[maxLength];
         row[0] = 1;
         capped[0] = 1;
 
-        for (var i = 1; i < n; i++)
+        for (var i = 1; i < elementCount; i++)
         {
-            capped[i] = CappedRowSum(row, i, k);
+            capped[i] = CappedRowSum(row, i, maxLength);
         }
 
         return capped;
     }
 
     // Advances `row` one Pascal step and returns the sum of the entries a subsequence
-    // cap of k can reach there: C(i, 0) through C(i, min(i, k-1)).
-    private static long CappedRowSum(long[] row, int i, int k)
+    // length cap of maxLength can reach there: C(i, 0) through C(i, min(i, k-1)).
+    private static long CappedRowSum(long[] row, int rowIndex, int maxLength)
     {
-        var cap = Math.Min(i, k - 1);
+        var cap = Math.Min(rowIndex, maxLength - 1);
 
         for (var j = cap; j >= 1; j--)
         {
@@ -69,43 +69,44 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
     // C(i,j) lookup against a precomputed factorial/inverse-factorial table -
     // the same reverse-fill trick RoomWaysPrecomputedFactorialAlgebra uses, one
     // Inverse call total instead of one per row.
-    public static long SumByFactorialCombinatorics(int[] nums, int k)
+    public static long SumByFactorialCombinatorics(int[] nums, int maxLength)
     {
         var sorted = SortedCopy(nums);
-        var capped = CappedRowSumsByFactorial(sorted.Length, k);
+        var capped = CappedRowSumsByFactorial(sorted.Length, maxLength);
 
         return Combine(sorted, capped);
     }
 
-    private static long[] CappedRowSumsByFactorial(int n, int k)
+    private static long[] CappedRowSumsByFactorial(int elementCount, int maxLength)
     {
-        var (factorial, inverseFactorial) = FactorialTables(n);
-        var capped = new long[n];
+        var (factorial, inverseFactorial) = FactorialTables(elementCount);
+        var capped = new long[elementCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < elementCount; i++)
         {
-            capped[i] = CappedBinomialRowSum(factorial, inverseFactorial, i, k);
+            capped[i] = CappedBinomialRowSum(factorial, inverseFactorial, i, maxLength);
         }
 
         return capped;
     }
 
-    // Factorials and inverse factorials up to n: one ModularArithmetic.Inverse call
-    // seeds the top entry and every lower one falls out of it.
-    private static (long[] Factorial, long[] InverseFactorial) FactorialTables(int n)
+    // Factorials and inverse factorials up to elementCount: one
+    // ModularArithmetic.Inverse call seeds the top entry and every lower one falls out
+    // of it.
+    private static (long[] Factorial, long[] InverseFactorial) FactorialTables(int elementCount)
     {
-        var factorial = new long[n];
-        var inverseFactorial = new long[n];
+        var factorial = new long[elementCount];
+        var inverseFactorial = new long[elementCount];
         factorial[0] = 1;
 
-        for (var i = 1; i < n; i++)
+        for (var i = 1; i < elementCount; i++)
         {
             factorial[i] = factorial[i - 1] * i % Modulo;
         }
 
-        inverseFactorial[n - 1] = ModularArithmetic.Inverse(factorial[n - 1]);
+        inverseFactorial[elementCount - 1] = ModularArithmetic.Inverse(factorial[elementCount - 1]);
 
-        for (var i = n - 2; i >= 0; i--)
+        for (var i = elementCount - 2; i >= 0; i--)
         {
             inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % Modulo;
         }
@@ -115,14 +116,15 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
     // The factored counterpart of CappedRowSum: the same sum of C(i, 0) through
     // C(i, min(i, k-1)), each term read straight off the tables.
-    private static long CappedBinomialRowSum(long[] factorial, long[] inverseFactorial, int i, int k)
+    private static long CappedBinomialRowSum(
+        long[] factorial, long[] inverseFactorial, int rowIndex, int maxLength)
     {
-        var cap = Math.Min(i, k - 1);
+        var cap = Math.Min(rowIndex, maxLength - 1);
         var sum = 0L;
 
         for (var j = 0; j <= cap; j++)
         {
-            sum = (sum + Binomial(factorial, inverseFactorial, i, j)) % Modulo;
+            sum = (sum + Binomial(factorial, inverseFactorial, rowIndex, j)) % Modulo;
         }
 
         return sum;

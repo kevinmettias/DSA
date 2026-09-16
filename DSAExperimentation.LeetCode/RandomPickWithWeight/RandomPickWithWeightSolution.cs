@@ -10,9 +10,9 @@ namespace DSAExperimentation.LeetCode.RandomPickWithWeight;
 // "every strategy for the problem" (§17.3) takes the form of two classes
 // implementing a shared IRandomPickWithWeight surface, the same shape
 // RandomPickIndexSolution already uses for its own Design-category problem. Both
-// build a cumulative-sum array of w once at construction and draw one uniform
-// integer over the total on every PickIndex call; they differ only in how that
-// draw is turned into an index - a linear scan of the prefix sums, or this
+// build a cumulative-sum array of the weights once at construction and draw one
+// uniform integer over the total on every PickIndex call; they differ only in how
+// that draw is turned into an index - a linear scan of the prefix sums, or this
 // repo's own BinarySearch.UpperBound over an ArraySequence<int> view of the same
 // array, the same prefix-sum-plus-BinarySearch pairing
 // RandomPointInNonOverlappingRectanglesSolution uses for area-weighted sampling.
@@ -33,15 +33,15 @@ internal static class RandomPickWithWeightSolution
         private readonly int[] _prefixSums;
         private readonly Random _random;
 
-        public RandomPickWithWeightByLinearScan(int[] w)
-            : this(w, new Random())
+        public RandomPickWithWeightByLinearScan(int[] weights)
+            : this(weights, new Random())
         {
         }
 
-        public RandomPickWithWeightByLinearScan(int[] w, Random random)
+        public RandomPickWithWeightByLinearScan(int[] weights, Random random)
         {
             _random = random;
-            _prefixSums = BuildPrefixSums(w);
+            _prefixSums = BuildPrefixSums(weights);
         }
 
         public int PickIndex()
@@ -65,15 +65,15 @@ internal static class RandomPickWithWeightSolution
         private readonly int[] _prefixSums;
         private readonly Random _random;
 
-        public RandomPickWithWeightByBinarySearchUpperBound(int[] w)
-            : this(w, new Random())
+        public RandomPickWithWeightByBinarySearchUpperBound(int[] weights)
+            : this(weights, new Random())
         {
         }
 
-        public RandomPickWithWeightByBinarySearchUpperBound(int[] w, Random random)
+        public RandomPickWithWeightByBinarySearchUpperBound(int[] weights, Random random)
         {
             _random = random;
-            _prefixSums = BuildPrefixSums(w);
+            _prefixSums = BuildPrefixSums(weights);
         }
 
         public int PickIndex()
@@ -85,14 +85,14 @@ internal static class RandomPickWithWeightSolution
         }
     }
 
-    private static int[] BuildPrefixSums(int[] w)
+    private static int[] BuildPrefixSums(int[] weights)
     {
-        var prefixSums = new int[w.Length];
+        var prefixSums = new int[weights.Length];
         var running = 0;
 
-        for (var i = 0; i < w.Length; i++)
+        for (var i = 0; i < weights.Length; i++)
         {
-            running += w[i];
+            running += weights[i];
             prefixSums[i] = running;
         }
 

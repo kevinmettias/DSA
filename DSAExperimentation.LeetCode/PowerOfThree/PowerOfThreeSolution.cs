@@ -17,27 +17,27 @@ internal static class PowerOfThreeSolution
     // The textbook approach: repeatedly divide out factors of three, then check
     // whether the survivor is 1. Written without this repo's primitives - the arm
     // the binary search strategy below has to justify itself against.
-    public static bool IsPowerOfThreeByDivisionLoop(int n)
+    public static bool IsPowerOfThreeByDivisionLoop(int value)
     {
-        if (n < 1)
+        if (value < 1)
         {
             return false;
         }
 
-        while (n % PowerBase == 0)
+        while (value % PowerBase == 0)
         {
-            n /= PowerBase;
+            value /= PowerBase;
         }
 
-        return n == 1;
+        return value == 1;
     }
 
     // LeetCode's own shape: build the sorted sequence, then search it.
-    public static bool IsPowerOfThreeByBinarySearch(int n) =>
-        IsPowerOfThreeByBinarySearch(n, new ArraySequence<int>(PowersOfThreeTable.Powers));
+    public static bool IsPowerOfThreeByBinarySearch(int value) =>
+        IsPowerOfThreeByBinarySearch(value, new ArraySequence<int>(PowersOfThreeTable.Powers));
 
     // Prepared-input overload: the caller already wrapped PowersOfThreeTable, so no
     // construction is charged to the measured search.
-    public static bool IsPowerOfThreeByBinarySearch(int n, ArraySequence<int> powersOfThree) =>
-        BinarySearch.Find<int, ArraySequence<int>>(powersOfThree, n) is not null;
+    public static bool IsPowerOfThreeByBinarySearch(int value, ArraySequence<int> powersOfThree) =>
+        BinarySearch.Find<int, ArraySequence<int>>(powersOfThree, value) is not null;
 }

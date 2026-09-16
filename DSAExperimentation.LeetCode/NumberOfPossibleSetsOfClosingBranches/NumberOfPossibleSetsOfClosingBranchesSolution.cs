@@ -3,16 +3,16 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
 namespace DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 
-// LeetCode 2959. Number of Possible Sets of Closing Branches: n branches (n <= 10)
-// connected by weighted roads. A set of branches may be closed if every pair of
-// branches that stays open can still reach each other, using only other open
-// branches, within maxDistance. Count how many sets of branches may be closed.
+// LeetCode 2959. Number of Possible Sets of Closing Branches: branchCount branches
+// (branchCount <= 10) connected by weighted roads. A set of branches may be closed if
+// every pair of branches that stays open can still reach each other, using only other
+// open branches, within maxDistance. Count how many sets of branches may be closed.
 //
 // Closing a set of branches and keeping the complement open is a bijection, so
 // counting valid closing sets is the same as counting valid open sets - every
-// subset of the n branches is tried directly as "the open set". n <= 10 makes
-// both the 2^n subset enumeration and an O(n^3) all-pairs distance pass per
-// subset cheap.
+// subset of the branchCount branches is tried directly as "the open set".
+// branchCount <= 10 makes both the 2^n subset enumeration and an O(n^3) all-pairs
+// distance pass per subset cheap.
 internal static class NumberOfPossibleSetsOfClosingBranchesSolution
 {
     // The sentinel for a pair with no road between them, scaled below
@@ -24,20 +24,20 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // Floyd-Warshall per subset - deliberately without this repo's own
     // AllPairsShortestPaths, the arm the composed strategy below has to justify
     // itself against.
-    public static long CountClosingSetsByBruteForceFloydWarshall(int n, int[][] roads, int maxDistance)
+    public static long CountClosingSetsByBruteForceFloydWarshall(int branchCount, int[][] roads, int maxDistance)
     {
-        var baseDistances = BuildDistanceMatrix(n, roads);
+        var baseDistances = BuildDistanceMatrix(branchCount, roads);
         return CountClosingSetsByBruteForceFloydWarshall(baseDistances, maxDistance);
     }
 
     public static long CountClosingSetsByBruteForceFloydWarshall(long[,] baseDistances, int maxDistance)
     {
-        var n = baseDistances.GetLength(0);
+        var branchCount = baseDistances.GetLength(0);
         var validSets = 0L;
 
-        for (var openMask = 0; openMask < (1 << n); openMask++)
+        for (var openMask = 0; openMask < (1 << branchCount); openMask++)
         {
-            if (IsValidOpenSetByMatrix(baseDistances, n, openMask, maxDistance))
+            if (IsValidOpenSetByMatrix(baseDistances, branchCount, openMask, maxDistance))
             {
                 validSets++;
             }
@@ -49,13 +49,13 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // Public so a benchmark's [GlobalSetup] can build the same prepared matrix
     // this overload's own hoisting builds internally, rather than reimplementing
     // it - the same role LockGraph.Build plays for OpenTheLock's benchmark.
-    public static long[,] BuildDistanceMatrix(int n, int[][] roads)
+    public static long[,] BuildDistanceMatrix(int branchCount, int[][] roads)
     {
-        var distances = new long[n, n];
+        var distances = new long[branchCount, branchCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < branchCount; i++)
         {
-            for (var j = 0; j < n; j++)
+            for (var j = 0; j < branchCount; j++)
             {
                 distances[i, j] = i == j ? 0 : Unreachable;
             }
@@ -71,9 +71,9 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
         return distances;
     }
 
-    private static bool IsValidOpenSetByMatrix(long[,] baseDistances, int n, int openMask, int maxDistance)
+    private static bool IsValidOpenSetByMatrix(long[,] baseDistances, int branchCount, int openMask, int maxDistance)
     {
-        var openBranches = SelectOpenBranches(n, openMask);
+        var openBranches = SelectOpenBranches(branchCount, openMask);
 
         if (openBranches.Count <= 1)
         {
@@ -82,7 +82,7 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
 
         var distances = RestrictAndRefine(baseDistances, openBranches);
 
-        return EveryPairWithinLimit(distances, openBranches.Count, maxDistance);
+        return IsEveryPairWithinLimit(distances, openBranches.Count, maxDistance);
     }
 
     private static long[,] RestrictAndRefine(long[,] baseDistances, List<int> openBranches)
@@ -110,34 +110,34 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
         return distances;
     }
 
-    // Floyd-Warshall over the restricted matrix: relaxing through vertex k only
-    // ever uses a k drawn from the open set, which is what confines routing to
-    // open branches.
+    // Floyd-Warshall over the restricted matrix: relaxing through an intermediate
+    // vertex only ever draws that vertex from the open set, which is what confines
+    // routing to open branches.
     private static void RefineShortestPaths(long[,] distances)
     {
         var size = distances.GetLength(0);
 
-        for (var k = 0; k < size; k++)
+        for (var intermediateIndex = 0; intermediateIndex < size; intermediateIndex++)
         {
-            RelaxThroughIntermediate(distances, k, size);
+            RelaxThroughIntermediate(distances, intermediateIndex, size);
         }
     }
 
-    private static void RelaxThroughIntermediate(long[,] distances, int k, int size)
+    private static void RelaxThroughIntermediate(long[,] distances, int intermediateIndex, int size)
     {
         for (var i = 0; i < size; i++)
         {
             for (var j = 0; j < size; j++)
             {
-                if (distances[i, k] + distances[k, j] < distances[i, j])
+                if (distances[i, intermediateIndex] + distances[intermediateIndex, j] < distances[i, j])
                 {
-                    distances[i, j] = distances[i, k] + distances[k, j];
+                    distances[i, j] = distances[i, intermediateIndex] + distances[intermediateIndex, j];
                 }
             }
         }
     }
 
-    private static bool EveryPairWithinLimit(long[,] distances, int size, int maxDistance)
+    private static bool IsEveryPairWithinLimit(long[,] distances, int size, int maxDistance)
     {
         for (var i = 0; i < size; i++)
         {
@@ -159,18 +159,18 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
     // both drops the closed branches as endpoints and - because Refine only ever
     // uses vertices from that same list as an intermediate - as a routing hop,
     // which is exactly "may only route through other open branches".
-    public static long CountClosingSetsByAllPairsShortestPaths(int n, int[][] roads, int maxDistance)
+    public static long CountClosingSetsByAllPairsShortestPaths(int branchCount, int[][] roads, int maxDistance)
     {
-        var network = BranchNetwork.Build(n, roads);
+        var network = BranchNetwork.Build(branchCount, roads);
         return CountClosingSetsByAllPairsShortestPaths(network, maxDistance);
     }
 
     public static long CountClosingSetsByAllPairsShortestPaths(BranchNetwork network, int maxDistance)
     {
-        var n = network.Nodes.Length;
+        var branchCount = network.Nodes.Length;
         var validSets = 0L;
 
-        for (var openMask = 0; openMask < (1 << n); openMask++)
+        for (var openMask = 0; openMask < (1 << branchCount); openMask++)
         {
             if (IsValidOpenSetByGraph(network, openMask, maxDistance))
             {
@@ -192,14 +192,14 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
         AllPairsShortestPaths.TryComputeDistances<BranchNode, BranchTopology, ListEdges<BranchNode, int>, int>(
             openNodes, out var distances);
 
-        return AllPairsWithinLimit(distances, openNodes, maxDistance);
+        return IsEveryOpenPairWithinLimit(distances, openNodes, maxDistance);
     }
 
     // A pair further apart than maxDistance - or with no route at all among the
     // open set - makes the set invalid, and the missing-key arm is that same
     // refusal: the distance dictionary holds an unreached sentinel rather than
     // dropping the pair.
-    private static bool AllPairsWithinLimit(
+    private static bool IsEveryOpenPairWithinLimit(
         Dictionary<(BranchNode From, BranchNode To), int> distances, List<BranchNode> openNodes, int maxDistance)
     {
         foreach (var from in openNodes)
@@ -221,11 +221,11 @@ internal static class NumberOfPossibleSetsOfClosingBranchesSolution
         return true;
     }
 
-    private static List<int> SelectOpenBranches(int n, int openMask)
+    private static List<int> SelectOpenBranches(int branchCount, int openMask)
     {
         var openBranches = new List<int>();
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < branchCount; i++)
         {
             if ((openMask & (1 << i)) != 0)
             {

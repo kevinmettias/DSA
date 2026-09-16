@@ -9,12 +9,13 @@ namespace DSAExperimentation.LeetCode.KClosestPointsToOrigin;
 // The two strategies differ only in how much of the input they are willing to order:
 //
 //   FullSort is the textbook answer - measure every point, sort all n of them by
-//   distance, take the first k. O(n log n), and it orders n - k points nobody asked
-//   about.
+//   distance, take the first nearestCount. O(n log n), and it orders n - nearestCount
+//   points nobody asked about.
 //
-//   SizeKMaxHeap keeps this repo's own Heap<Element, MaxHeapOrder<Element>> at size k
-//   (the KthLargestElement precedent), evicting its farthest root as soon as a
-//   (k + 1)-th candidate arrives, so only k points are ever ordered. O(n log k).
+//   SizeKMaxHeap keeps this repo's own Heap<Element, MaxHeapOrder<Element>> at
+//   size nearestCount (the KthLargestElement precedent), evicting its farthest root
+//   as soon as a (nearestCount + 1)-th candidate arrives, so only nearestCount points
+//   are ever ordered. O(n log k).
 internal static class KClosestPointsToOriginSolution
 {
     // LeetCode hands each point in as a two-element array.
@@ -22,8 +23,8 @@ internal static class KClosestPointsToOriginSolution
     private const int Y = 1;
 
     // The textbook arm, deliberately all-BCL: pair every point with its squared
-    // distance, Array.Sort the whole thing, take the k smallest.
-    public static int[][] KClosestByFullSort(int[][] points, int k)
+    // distance, Array.Sort the whole thing, keep the nearestCount closest.
+    public static int[][] KClosestByFullSort(int[][] points, int nearestCount)
     {
         var byDistance = new (int Distance, int[] Point)[points.Length];
 
@@ -34,7 +35,7 @@ internal static class KClosestPointsToOriginSolution
 
         Array.Sort(byDistance, (a, b) => a.Distance.CompareTo(b.Distance));
 
-        var take = Math.Min(k, points.Length);
+        var take = Math.Min(nearestCount, points.Length);
         var result = new int[take][];
 
         for (var i = 0; i < take; i++)
@@ -47,9 +48,9 @@ internal static class KClosestPointsToOriginSolution
 
     // The composed arm: a size-k max-heap over (SquaredDistance, X, Y). ValueTuple
     // already compares lexicographically, so MaxHeapOrder orders by distance first
-    // with no comparer plumbing; whenever the heap outgrows k its root is the
-    // farthest point held, and that is exactly the one to drop.
-    public static int[][] KClosestBySizeKMaxHeap(int[][] points, int k)
+    // with no comparer plumbing; whenever the heap outgrows nearestCount its root is
+    // the farthest point held, and that is exactly the one to drop.
+    public static int[][] KClosestBySizeKMaxHeap(int[][] points, int nearestCount)
     {
         var heap = new Heap<(int Distance, int X, int Y), MaxHeapOrder<(int, int, int)>>();
 
@@ -57,7 +58,7 @@ internal static class KClosestPointsToOriginSolution
         {
             heap.Push((SquaredDistance(point), point[X], point[Y]));
 
-            if (heap.Count > k)
+            if (heap.Count > nearestCount)
             {
                 heap.TryPop(out _);
             }

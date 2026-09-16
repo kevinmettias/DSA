@@ -15,9 +15,9 @@ public class AllPossibleFullBinaryTreesBenchmarks
 
     [Benchmark(Baseline = true)]
     public int Naive() =>
-        AllPossibleFullBinaryTreesSolution.AllPossibleFbtByPlainRecursion(Nodes).Count;
+        AllPossibleFullBinaryTreesSolution.AllPossibleFullBinaryTreesByPlainRecursion(Nodes).Count;
 
     [Benchmark]
     public int Memoized() =>
-        AllPossibleFullBinaryTreesSolution.AllPossibleFbtByMemoizedNodeCount(Nodes).Count;
+        AllPossibleFullBinaryTreesSolution.AllPossibleFullBinaryTreesByMemoizedNodeCount(Nodes).Count;
 }

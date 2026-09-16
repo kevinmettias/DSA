@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
 
 // LeetCode 2809. Minimum Time to Make Array Sum At Most x: every second, all of
 // nums1 grows by its nums2 counterpart, and then one index may be zeroed. Return
-// the fewest seconds after which sum(nums1) <= x, or -1 if no schedule reaches it.
+// the fewest seconds after which sum(nums1) <= targetSum, or -1 if no schedule reaches it.
 //
 // The exchange argument both strategies rest on: zeroing index i in time slot j is
 // worth nums1[i] + nums2[i]*j, so an optimal schedule always assigns the smallest
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
 // so far", where the count zeroed doubles as the time slot the next one gets. With
 // reduction[t] the best total saving from zeroing exactly t of the sorted indices,
 // sum1 + t*sum2 - reduction[t] is nums1's total after t seconds, so the answer is
-// the first t at which it drops to x.
+// the first t at which it drops to targetSum.
 //
 // Both strategies run that same O(n^2) recurrence; they differ only in the DP's
 // footprint - a dense table with a row per prefix, or the standard backward
@@ -28,7 +28,7 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
     // row below has to justify itself against, and running the identical
     // recurrence makes it a correctness cross-check rather than a second
     // algorithm.
-    public static int MinimumTimeByDenseTable(int[] nums1, int[] nums2, int x)
+    public static int MinimumTimeByDenseTable(int[] nums1, int[] nums2, int targetSum)
     {
         var n = nums1.Length;
         var pairs = Pairs(nums1, nums2);
@@ -41,23 +41,23 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
             FillRow(dp, pairs[i - 1], i, n);
         }
 
-        return FirstSecondAtOrBelow(nums1, nums2, x, new ReductionByDenseTable(dp, n));
+        return FirstSecondAtOrBelow(nums1, nums2, targetSum, new ReductionByDenseTable(dp, n));
     }
 
-    // Row i of the dense table: either the pair is left alone, keeping row i-1's
-    // value, or it is zeroed in slot j, taking row i-1's j-1 entry plus what
-    // zeroing it in that slot is worth.
-    private static void FillRow(long[,] dp, (int Nums1, int Nums2) pair, int i, int n)
+    // Row rowIndex of the dense table: either the pair is left alone, keeping the
+    // value from the row above, or it is zeroed in slot j, taking that row's j-1
+    // entry plus what zeroing it in that slot is worth.
+    private static void FillRow(long[,] dp, (int Nums1, int Nums2) pair, int rowIndex, int pairCount)
     {
         var (a1, a2) = pair;
 
-        for (var j = 0; j <= n; j++)
+        for (var j = 0; j <= pairCount; j++)
         {
-            dp[i, j] = dp[i - 1, j];
+            dp[rowIndex, j] = dp[rowIndex - 1, j];
 
             if (j >= 1)
             {
-                dp[i, j] = Math.Max(dp[i, j], dp[i - 1, j - 1] + a1 + ((long)a2 * j));
+                dp[rowIndex, j] = Math.Max(dp[rowIndex, j], dp[rowIndex - 1, j - 1] + a1 + ((long)a2 * j));
             }
         }
     }
@@ -67,7 +67,7 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
     // uses - with the table collapsed to a single long[n+1] rolling row by
     // iterating j downwards, so each pair is still used at most once. O(n) extra
     // space instead of O(n^2).
-    public static int MinimumTimeByRollingKnapsack(int[] nums1, int[] nums2, int x)
+    public static int MinimumTimeByRollingKnapsack(int[] nums1, int[] nums2, int targetSum)
     {
         var n = nums1.Length;
         var pairs = Pairs(nums1, nums2);
@@ -85,7 +85,7 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
             }
         }
 
-        return FirstSecondAtOrBelow(nums1, nums2, x, new ReductionByRollingRow(dp));
+        return FirstSecondAtOrBelow(nums1, nums2, targetSum, new ReductionByRollingRow(dp));
     }
 
     private static void SortAscendingByNums2((int Nums1, int Nums2)[] pairs)
@@ -110,14 +110,14 @@ internal static class MinimumTimeToMakeArraySumAtMostXSolution
 
     // After t seconds the untouched entries have each grown t times, so the total
     // is sum1 + t*sum2 less whatever the best t zeroings saved.
-    private static int FirstSecondAtOrBelow(int[] nums1, int[] nums2, int x, IReductionTotals reductionAt)
+    private static int FirstSecondAtOrBelow(int[] nums1, int[] nums2, int targetSum, IReductionTotals reductionAt)
     {
         var sum1 = Total(nums1);
         var sum2 = Total(nums2);
 
         for (var t = 0; t <= nums1.Length; t++)
         {
-            if (sum1 + (sum2 * t) - reductionAt.TotalAt(t) <= x)
+            if (sum1 + (sum2 * t) - reductionAt.TotalAt(t) <= targetSum)
             {
                 return t;
             }

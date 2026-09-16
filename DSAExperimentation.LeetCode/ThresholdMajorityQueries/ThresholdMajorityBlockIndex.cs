@@ -6,7 +6,7 @@ using DSAExperimentation.DataStructures.Sequence;
 namespace DSAExperimentation.LeetCode.ThresholdMajorityQueries;
 
 // A static range-mode index (sqrt decomposition): every query this problem asks
-// reduces to "what's the most frequent element of nums[l..r], and does it clear
+// reduces to "what's the most frequent element of nums[leftIndex..rightIndex], and does it clear
 // threshold" (see ThresholdMajorityQueriesSolution's own comment for why the
 // threshold never changes which element wins). This answers that reduced query,
 // which is why it lives beside the solution rather than in Domain/ - the block-
@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.ThresholdMajorityQueries;
 // data structure.
 //
 // Every value's occurrence positions are kept sorted (built by one left-to-right
-// scan), so an exact frequency in any [l, r] is one BinarySearch.LowerBound and one
+// scan), so an exact frequency in any [leftIndex, rightIndex] is one BinarySearch.LowerBound and one
 // UpperBound apart - the same IRandomAccessSequence composition IntervalSet uses
 // (ARCHITECTURE.md's sanctioned Searching-as-a-client edge).
 internal sealed class ThresholdMajorityBlockIndex(
@@ -91,15 +91,15 @@ internal sealed class ThresholdMajorityBlockIndex(
     }
 
     // The element with frequency >= threshold and the highest frequency (smallest
-    // value on tie) in nums[l..r], or LeetCodeAnswer.None if no element reaches
-    // threshold. Candidates: the mode of whichever full blocks lie entirely inside
-    // [l, r] (its full-range frequency re-verified exactly, since it may also occur
-    // in the boundary), plus every element in the up-to-two partial blocks at the
-    // ends. ThresholdMajorityQueriesSolution's own comment proves these candidates
-    // always include the true answer.
-    public int Query(int l, int r, int threshold)
+    // value on tie) in nums[leftIndex..rightIndex], or LeetCodeAnswer.None if no element
+    // reaches threshold. Candidates: the mode of whichever full blocks lie entirely
+    // inside [leftIndex, rightIndex] (its full-range frequency re-verified exactly,
+    // since it may also occur in the boundary), plus every element in the up-to-two
+    // partial blocks at the ends. ThresholdMajorityQueriesSolution's own comment
+    // proves these candidates always include the true answer.
+    public int Query(int leftIndex, int rightIndex, int threshold)
     {
-        var best = BestCandidateInRange(l, r);
+        var best = BestCandidateInRange(leftIndex, rightIndex);
 
         return best.Freq >= threshold ? best.Value : LeetCodeAnswer.None;
     }
@@ -109,26 +109,26 @@ internal sealed class ThresholdMajorityBlockIndex(
     // entirely inside - its full-range frequency re-verified exactly, since it may
     // also occur in a boundary. A range inside a single block has no full blocks and
     // no boundary split, so its one scan is the whole answer.
-    private (int Value, int Freq) BestCandidateInRange(int l, int r)
+    private (int Value, int Freq) BestCandidateInRange(int leftIndex, int rightIndex)
     {
-        var leftBlock = l / blockSize;
-        var rightBlock = r / blockSize;
+        var leftBlock = leftIndex / blockSize;
+        var rightBlock = rightIndex / blockSize;
         var best = (Value: 0, Freq: 0);
 
         if (leftBlock == rightBlock)
         {
-            return BestInRange(best, l, r, (l, r));
+            return BestInRange(best, leftIndex, rightIndex, (leftIndex, rightIndex));
         }
 
-        var leftBoundaryEnd = Math.Min(r, (((leftBlock + 1) * blockSize) - 1));
-        var rightBoundaryStart = Math.Max(l, rightBlock * blockSize);
-        best = BestInRange(best, l, leftBoundaryEnd, (l, r));
-        best = BestInRange(best, rightBoundaryStart, r, (l, r));
+        var leftBoundaryEnd = Math.Min(rightIndex, (((leftBlock + 1) * blockSize) - 1));
+        var rightBoundaryStart = Math.Max(leftIndex, rightBlock * blockSize);
+        best = BestInRange(best, leftIndex, leftBoundaryEnd, (leftIndex, rightIndex));
+        best = BestInRange(best, rightBoundaryStart, rightIndex, (leftIndex, rightIndex));
 
         if (leftBlock + 1 <= rightBlock - 1)
         {
             var (alignedCandidate, _) = blockMode[leftBlock + 1, rightBlock - 1];
-            best = ConsiderCandidate(best, alignedCandidate, l, r);
+            best = ConsiderCandidate(best, alignedCandidate, leftIndex, rightIndex);
         }
 
         return best;
@@ -137,20 +137,21 @@ internal sealed class ThresholdMajorityBlockIndex(
     // Folds every value in [from, to] into the running best candidate. Frequencies are
     // always measured over the query's own [l, r], not over the slice being folded.
     private (int Value, int Freq) BestInRange(
-        (int Value, int Freq) best, int from, int to, (int L, int R) query)
+        (int Value, int Freq) best, int from, int to, (int LeftIndex, int RightIndex) query)
     {
         for (var i = from; i <= to; i++)
         {
-            best = ConsiderCandidate(best, nums[i], query.L, query.R);
+            best = ConsiderCandidate(best, nums[i], query.LeftIndex, query.RightIndex);
         }
 
         return best;
     }
 
-    private (int Value, int Freq) ConsiderCandidate((int Value, int Freq) best, int value, int l, int r) =>
-        PreferHigherFreqThenSmallerValue(best, (value, FrequencyInRange(value, l, r)));
+    private (int Value, int Freq) ConsiderCandidate(
+        (int Value, int Freq) best, int value, int leftIndex, int rightIndex) =>
+        PreferHigherFreqThenSmallerValue(best, (value, FrequencyInRange(value, leftIndex, rightIndex)));
 
-    private int FrequencyInRange(int value, int l, int r)
+    private int FrequencyInRange(int value, int leftIndex, int rightIndex)
     {
         if (!positions.TryGetValue(value, out var positionList))
         {
@@ -158,20 +159,20 @@ internal sealed class ThresholdMajorityBlockIndex(
         }
 
         var sequence = new DynamicArraySequence<int>(positionList);
-        var lower = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(sequence, l);
-        var upper = BinarySearch.UpperBound<int, DynamicArraySequence<int>>(sequence, r);
+        var lower = BinarySearch.LowerBound<int, DynamicArraySequence<int>>(sequence, leftIndex);
+        var upper = BinarySearch.UpperBound<int, DynamicArraySequence<int>>(sequence, rightIndex);
 
         return upper - lower;
     }
 
     // The better candidate carries the higher frequency, or the smaller value when
     // the two frequencies tie.
-    private static bool BeatsCurrent((int Value, int Freq) current, (int Value, int Freq) candidate) =>
+    private static bool IsBetterCandidate((int Value, int Freq) current, (int Value, int Freq) candidate) =>
         candidate.Freq > current.Freq || (candidate.Freq == current.Freq && candidate.Value < current.Value);
 
     private static (int Value, int Freq) PreferHigherFreqThenSmallerValue(
         (int Value, int Freq) current, (int Value, int Freq) candidate) =>
-        BeatsCurrent(current, candidate)
+        IsBetterCandidate(current, candidate)
             ? candidate
             : current;
 }

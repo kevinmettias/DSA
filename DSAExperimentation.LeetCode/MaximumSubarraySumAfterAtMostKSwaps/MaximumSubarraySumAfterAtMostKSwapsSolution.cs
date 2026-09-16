@@ -12,29 +12,30 @@ namespace DSAExperimentation.LeetCode.MaximumSubarraySumAfterAtMostKSwaps;
 // maximum-subarray answer never depends on the ORDER of values inside the
 // window that realizes it - only on the multiset of values that lands there.
 // So for one fixed candidate window [i, i+w), the question is: with at most
-// min(w, k, n-w) elements exchanged between "inside" and "outside", how much
-// can the window's sum improve? Swapping the window's smallest element for the
-// largest element outside is always at least as good as any other pairing (an
+// min(w, swapBudget, n-w) elements exchanged between "inside" and "outside", how
+// much can the window's sum improve? Swapping the window's smallest element for
+// the largest element outside is always at least as good as any other pairing (an
 // exchange argument: any better outside value for a worse inside one strictly
-// helps), so the best use of exactly s swaps replaces the s smallest inside
-// values with the s largest outside ones:
+// helps), so the best use of exactly swapCount swaps replaces the swapCount
+// smallest inside values with the swapCount largest outside ones:
 //
-//   h(s) = windowSum - sum(s smallest inside) + sum(s largest outside)
+//   h(swapCount) = windowSum - sum(swapCount smallest inside)
+//                             + sum(swapCount largest outside)
 //
-// and the answer for that window is max over s in [0, cap] of h(s). h is
-// concave in s (removing the s-th smallest costs a non-decreasing amount as s
-// grows, and adding the s-th largest gains a non-increasing amount), so its
-// max is found by evaluating h at O(log cap) points via ternary search rather
-// than every s. Both strategies below try every window; they differ only in
-// how "sum of the s smallest/largest present values" is answered as the
-// window slides.
+// and the answer for that window is max over swapCount in [0, cap] of
+// h(swapCount). h is concave in swapCount (removing the swapCount-th smallest
+// costs a non-decreasing amount as swapCount grows, and adding the swapCount-th
+// largest gains a non-increasing amount), so its max is found by evaluating h at
+// O(log cap) points via ternary search rather than at every swapCount. Both
+// strategies below try every window; they differ only in how "sum of the
+// swapCount smallest/largest present values" is answered as the window slides.
 internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
 {
     // Re-sorts the window and its complement from scratch for every one of the
-    // O(n^2) windows, then walks every s in [0, cap] directly instead of
+    // O(n^2) windows, then walks every swapCount in [0, cap] directly instead of
     // ternary-searching for the concave peak - the O(n^3 log n) arm the
     // Fenwick-backed order-statistics strategy below has to beat.
-    public static long MaxSumByBruteForce(int[] nums, int k)
+    public static long MaxSumByBruteForce(int[] nums, int swapBudget)
     {
         var n = nums.Length;
         var best = long.MinValue;
@@ -43,7 +44,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
         {
             for (var end = start; end < n; end++)
             {
-                var windowBest = BestForBruteForceWindow(nums, start, end, k);
+                var windowBest = BestForBruteForceWindow(nums, start, end, swapBudget);
                 best = Math.Max(best, windowBest);
             }
         }
@@ -53,14 +54,14 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
 
     // One window's worth of the brute-force arm: the two pools sorted, then the
     // swap arithmetic.
-    private static long BestForBruteForceWindow(int[] nums, int start, int end, int k)
+    private static long BestForBruteForceWindow(int[] nums, int start, int end, int swapBudget)
     {
         var (window, outside) = WindowAndComplement(nums, start, end);
 
         Array.Sort(window);
         Array.Sort(outside);
 
-        return BestAfterSwaps(window, outside, k);
+        return BestAfterSwaps(window, outside, swapBudget);
     }
 
     // The window's own values and everything outside it, each in array order and
@@ -136,7 +137,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     // indexed by value; here indexed by rank, since every element occupies its
     // own rank exactly once, so no same-value remainder bookkeeping is
     // needed).
-    public static long MaxSumByOrderStatisticsFenwick(int[] nums, int k)
+    public static long MaxSumByOrderStatisticsFenwick(int[] nums, int swapBudget)
     {
         var n = nums.Length;
         var values = ValuesAsLongs(nums);
@@ -145,7 +146,7 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
         var prefix = PrefixSumsOf(values);
         var source = (n, values, prefix, rankByAscendingValue, rankByDescendingValue);
 
-        return BestAcrossWindowLengths(k, source);
+        return BestAcrossWindowLengths(swapBudget, source);
     }
 
     private static long[] ValuesAsLongs(int[] nums)
@@ -162,15 +163,15 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
 
     // rankByValue[position] = where that array position falls in the array
     // sorted by value, ascending or descending. Every rank is occupied by
-    // exactly one position, so it is a bijection on [0, n) regardless of value
-    // ties - the property that lets WindowLedger's Fenwick pairs stay simple
-    // present/absent counts instead of needing per-value remainder math.
-    private static int[] RankPositions(int n, ValueOrder order, int[] nums)
+    // exactly one position, so it is a bijection on [0, elementCount) regardless
+    // of value ties - the property that lets WindowLedger's Fenwick pairs stay
+    // simple present/absent counts instead of needing per-value remainder math.
+    private static int[] RankPositions(int elementCount, ValueOrder order, int[] nums)
     {
-        var positionAtRank = Enumerable.Range(0, n).OrderBy(i => SortKey(nums, i, order)).ToArray();
-        var rank = new int[n];
+        var positionAtRank = Enumerable.Range(0, elementCount).OrderBy(i => SortKey(nums, i, order)).ToArray();
+        var rank = new int[elementCount];
 
-        for (var r = 0; r < n; r++)
+        for (var r = 0; r < elementCount; r++)
         {
             rank[positionAtRank[r]] = r;
         }
@@ -270,24 +271,25 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
     }
 
     // The window is one range - a start and a length chosen together and never
-    // passed apart - and n is prefix.Length - 1, the element count the prefix sums
-    // were built over, so the caller need not say it twice.
+    // passed apart - and elementCount is prefix.Length - 1, the element count the
+    // prefix sums were built over, so the caller need not say it twice.
     private static long BestForWindow(
-        WindowLedger ledger, long[] prefix, (int Start, int Length) window, int k)
+        WindowLedger ledger, long[] prefix, (int Start, int Length) window, int swapBudget)
     {
-        var n = prefix.Length - 1;
+        var elementCount = prefix.Length - 1;
         var windowSum = prefix[window.Start + window.Length] - prefix[window.Start];
-        var outsideCap = Math.Min(k, n - window.Length);
+        var outsideCap = Math.Min(swapBudget, elementCount - window.Length);
         var cap = Math.Min(window.Length, outsideCap);
         var (lo, hi) = NarrowToPeak(cap, windowSum, ledger);
 
         return BestInBracket(lo, hi, windowSum, ledger);
     }
 
-    // h(s), the window sum once s swaps are spent, is concave in s: each further
-    // swap removes a value at least as large as the last and adds one at most as
-    // large as the last. A ternary search therefore brackets its peak into
-    // whichever two-thirds of [low, high] must contain it, three points wide.
+    // h(swapCount), the window sum once swapCount swaps are spent, is concave in
+    // swapCount: each further swap removes a value at least as large as the last
+    // and adds one at most as large as the last. A ternary search therefore
+    // brackets its peak into whichever two-thirds of [low, high] must contain it,
+    // three points wide.
     private static (int Low, int High) NarrowToPeak(int cap, long windowSum, WindowLedger ledger)
     {
         var lo = 0;
@@ -326,9 +328,9 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
         return best;
     }
 
-    // The window sum once s swaps have been spent: the s smallest values inside the
-    // window are swapped for the s largest values outside it, so the sum gains the
-    // difference between the two pools.
+    // The window sum once swapCount swaps have been spent: the swapCount smallest
+    // values inside the window are swapped for the swapCount largest values outside
+    // it, so the sum gains the difference between the two pools.
     private static long SumAfterSwaps(long windowSum, WindowLedger ledger, int swaps)
         => windowSum - ledger.SumOfSmallestInside(swaps) + ledger.SumOfLargestOutside(swaps);
 
@@ -342,14 +344,14 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
 
     // The four running Fenwick trees behind one window length's sweep: counts
     // and sums, each kept twice over - once ranked ascending (inside) and once
-    // ranked descending (outside) - so "s smallest inside" and "s largest
-    // outside" are both answered by the same SumOfSmallestByRank shape.
-    private sealed class WindowLedger(int n)
+    // ranked descending (outside) - so "swapCount smallest inside" and "swapCount
+    // largest outside" are both answered by the same SumOfSmallestByRank shape.
+    private sealed class WindowLedger(int elementCount)
     {
-        private readonly FenwickTree<long, SumOperation<long>> _insideCount = new(n);
-        private readonly FenwickTree<long, SumOperation<long>> _insideSum = new(n);
-        private readonly FenwickTree<long, SumOperation<long>> _outsideCount = new(n);
-        private readonly FenwickTree<long, SumOperation<long>> _outsideSum = new(n);
+        private readonly FenwickTree<long, SumOperation<long>> _insideCount = new(elementCount);
+        private readonly FenwickTree<long, SumOperation<long>> _insideSum = new(elementCount);
+        private readonly FenwickTree<long, SumOperation<long>> _outsideCount = new(elementCount);
+        private readonly FenwickTree<long, SumOperation<long>> _outsideSum = new(elementCount);
 
         public void MarkInside(int position, long value, int[] rankAscending)
         {
@@ -379,24 +381,26 @@ internal static class MaximumSubarraySumAfterAtMostKSwapsSolution
             _insideSum.Add(rankAscending[position], value);
         }
 
-        public long SumOfSmallestInside(int s) => SumOfSmallestByRank(_insideCount, _insideSum, s);
+        public long SumOfSmallestInside(int swapCount) =>
+            SumOfSmallestByRank(_insideCount, _insideSum, swapCount);
 
-        public long SumOfLargestOutside(int s) => SumOfSmallestByRank(_outsideCount, _outsideSum, s);
+        public long SumOfLargestOutside(int swapCount) =>
+            SumOfSmallestByRank(_outsideCount, _outsideSum, swapCount);
 
         // Every rank holds count 0 or 1, so the rank where the cumulative
-        // count first reaches s is exactly the s-th present rank - unlike a
-        // value-indexed Fenwick (FindingMKAverageBenchmarks' SumOfSmallest),
+        // count first reaches swapCount is exactly the swapCount-th present rank -
+        // unlike a value-indexed Fenwick (FindingMKAverageBenchmarks' SumOfSmallest),
         // no partial remainder at the boundary rank is possible.
         private static long SumOfSmallestByRank(
-            FenwickTree<long, SumOperation<long>> count, FenwickTree<long, SumOperation<long>> sum, int s)
+            FenwickTree<long, SumOperation<long>> count, FenwickTree<long, SumOperation<long>> sum, int swapCount)
         {
-            if (s == 0)
+            if (swapCount == 0)
             {
                 return 0;
             }
 
             var sequence = new FenwickPrefixCountSequence(count);
-            var index = BinarySearch.LowerBound<long, FenwickPrefixCountSequence>(sequence, s);
+            var index = BinarySearch.LowerBound<long, FenwickPrefixCountSequence>(sequence, swapCount);
 
             return sum.PrefixQuery(index);
         }

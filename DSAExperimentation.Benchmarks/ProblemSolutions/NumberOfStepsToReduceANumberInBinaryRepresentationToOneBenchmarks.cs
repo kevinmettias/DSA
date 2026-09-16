@@ -33,10 +33,10 @@ public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
     [Benchmark(Baseline = true)]
     public int StackAddSimulation() =>
         NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
-            .NumStepsByStackAddSimulation(_binary);
+            .CountStepsByStackAddSimulation(_binary);
 
     [Benchmark]
     public int CarryPropagationScan() =>
         NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution
-            .NumStepsByCarryPropagationScan(_binary);
+            .CountStepsByCarryPropagationScan(_binary);
 }

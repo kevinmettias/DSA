@@ -24,7 +24,7 @@ internal static class CountSubarraysWithEvenOddRatioIISolution
     // Every subarray scanned directly, extending y one element at a time -
     // O(n^2), BCL only. Only fast enough for LC 4011-sized inputs; kept here
     // purely as a correctness witness for the Fenwick sweep below.
-    public static long CountByBruteForce(int[] nums, int a, int b)
+    public static long CountByBruteForce(int[] nums, int oddWeight, int evenWeight)
     {
         var count = 0L;
 
@@ -37,7 +37,7 @@ internal static class CountSubarraysWithEvenOddRatioIISolution
                 odd += nums[right] % 2;
                 var even = right - left + 1 - odd;
 
-                if (odd > 0 && (long)even * b <= (long)odd * a)
+                if (odd > 0 && (long)even * evenWeight <= (long)odd * oddWeight)
                 {
                     count++;
                 }
@@ -47,14 +47,14 @@ internal static class CountSubarraysWithEvenOddRatioIISolution
         return count;
     }
 
-    // O(n log n): build the +a/-b weighted prefix sums (long throughout - a
-    // single term can reach 1e9 and n reaches 1e5, so the running sum can
-    // reach 1e14), coordinate-compress them, then for each prefix[R] query
+    // O(n log n): build the +oddWeight/-evenWeight weighted prefix sums (long
+    // throughout - a single term can reach 1e9 and n reaches 1e5, so the running
+    // sum can reach 1e14), coordinate-compress them, then for each prefix[R] query
     // the Fenwick tree for how many earlier prefixes already inserted are
     // <= prefix[R] before inserting prefix[R] itself.
-    public static long CountByFenwickPrefixSweep(int[] nums, int a, int b)
+    public static long CountByFenwickPrefixSweep(int[] nums, int oddWeight, int evenWeight)
     {
-        var prefix = WeightedPrefixSums(nums, a, b);
+        var prefix = WeightedPrefixSums(nums, oddWeight, evenWeight);
         var sortedDistinct = prefix.Distinct().Order().ToArray();
         var ranks = new ArraySequence<long>(sortedDistinct);
         var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
@@ -71,14 +71,14 @@ internal static class CountSubarraysWithEvenOddRatioIISolution
         return count;
     }
 
-    private static long[] WeightedPrefixSums(int[] nums, int a, int b)
+    private static long[] WeightedPrefixSums(int[] nums, int oddWeight, int evenWeight)
     {
         var prefix = new long[nums.Length + 1];
 
         for (var i = 0; i < nums.Length; i++)
         {
             var isOdd = nums[i] % 2 != 0;
-            prefix[i + 1] = prefix[i] + (isOdd ? a : -b);
+            prefix[i + 1] = prefix[i] + (isOdd ? oddWeight : -evenWeight);
         }
 
         return prefix;

@@ -18,18 +18,18 @@ public sealed class MinimumOperationsToEqualizeSubarraysTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinOperationsByBruteForce_LeetCodeExamples_ReturnsPerQueryOperationCounts(
-        int[] nums, int k, int[][] queries, long[] expected)
+        int[] nums, int stepSize, int[][] queries, long[] expected)
     {
-        var actual = MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByBruteForce(nums, queries, k);
+        var actual = MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByBruteForce(nums, queries, stepSize);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinOperationsByMergeSortTree_LeetCodeExamples_ReturnsPerQueryOperationCounts(
-        int[] nums, int k, int[][] queries, long[] expected)
+        int[] nums, int stepSize, int[][] queries, long[] expected)
     {
-        var actual = MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByMergeSortTree(nums, queries, k);
+        var actual = MinimumOperationsToEqualizeSubarraysSolution.MinOperationsByMergeSortTree(nums, queries, stepSize);
         Assert.Equal(expected, actual);
     }
 }

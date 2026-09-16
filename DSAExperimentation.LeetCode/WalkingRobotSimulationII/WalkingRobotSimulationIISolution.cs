@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.WalkingRobotSimulationII;
 // LeetCode 2069. Walking Robot Simulation II: a robot starts at (0, 0) facing east
 // on a width x height grid and only ever walks the outer perimeter, turning
 // counterclockwise whenever the next cell would leave the grid. Move(num) walks num
-// cells, GetPos reports where it stands and GetDir which way it faces.
+// cells, GetPosition reports where it stands and GetDirection which way it faces.
 //
 // This is a design problem - LeetCode's own shape is a stateful object with a
 // constructor and three operations, not a single return value - so "every strategy
@@ -37,22 +37,23 @@ internal static class WalkingRobotSimulationIISolution
     {
         void Move(int num);
 
-        (int X, int Y) GetPos();
+        (int X, int Y) GetPosition();
 
-        string GetDir();
+        string GetDirection();
     }
 
     // The textbook baseline this composition has to justify itself against: hold the
-    // cell and the heading, take one step at a time, and turn when the next cell
-    // would fall off the grid. Deliberately BCL-only, and O(num) per Move.
+    // cell - the column and row the robot stands on - and the heading, take one step at
+    // a time, and turn when the next cell would fall off the grid. Deliberately
+    // BCL-only, and O(num) per Move.
     internal sealed class RobotByStepSimulation(int width, int height) : IRobot
     {
         // Counterclockwise from east, so a turn is +1 modulo four.
         private static readonly int[] DeltaX = [1, 0, -1, 0];
         private static readonly int[] DeltaY = [0, 1, 0, -1];
 
-        private int _x;
-        private int _y;
+        private int _columnPosition;
+        private int _rowPosition;
         private int _direction;
 
         public void Move(int num)
@@ -65,25 +66,29 @@ internal static class WalkingRobotSimulationIISolution
 
         private void TakeStep()
         {
-            var nextX = _x + DeltaX[_direction];
-            var nextY = _y + DeltaY[_direction];
+            var nextX = _columnPosition + DeltaX[_direction];
+            var nextY = _rowPosition + DeltaY[_direction];
 
             if (IsOffGrid(nextX, nextY))
             {
                 _direction = (_direction + 1) % DeltaX.Length;
-                nextX = _x + DeltaX[_direction];
-                nextY = _y + DeltaY[_direction];
+                nextX = _columnPosition + DeltaX[_direction];
+                nextY = _rowPosition + DeltaY[_direction];
             }
 
-            _x = nextX;
-            _y = nextY;
+            _columnPosition = nextX;
+            _rowPosition = nextY;
         }
 
-        private bool IsOffGrid(int x, int y) => x < 0 || x >= width || y < 0 || y >= height;
+        private bool IsOffGrid(int columnPosition, int rowPosition) =>
+            columnPosition < 0
+            || columnPosition >= width
+            || rowPosition < 0
+            || rowPosition >= height;
 
-        public (int X, int Y) GetPos() => (_x, _y);
+        public (int X, int Y) GetPosition() => (_columnPosition, _rowPosition);
 
-        public string GetDir() => DirectionNames[_direction];
+        public string GetDirection() => DirectionNames[_direction];
     }
 
     // The O(1)-per-Move answer: the robot's path is a fixed loop of length
@@ -102,7 +107,7 @@ internal static class WalkingRobotSimulationIISolution
 
         public void Move(int num) => _totalSteps += num;
 
-        public (int X, int Y) GetPos()
+        public (int X, int Y) GetPosition()
         {
             var travelled = _totalSteps % _perimeter;
 
@@ -127,7 +132,7 @@ internal static class WalkingRobotSimulationIISolution
         // The origin is the one cell the loop passes through twice over: the robot
         // faces east there before it has moved at all, and south when it has come
         // all the way back round to it.
-        public string GetDir()
+        public string GetDirection()
         {
             if (_totalSteps == 0)
             {
@@ -154,7 +159,7 @@ internal static class WalkingRobotSimulationIISolution
             _ => South,
         };
 
-        // The perimeter walk shared by GetPos and GetDir: which edge the distance
+        // The perimeter walk shared by GetPosition and GetDirection: which edge the distance
         // travelled lands on, and how far along that edge.
         private (Edge Edge, long Offset) Locate(long travelled)
             => travelled <= _maxX ? EdgePoint(Edge.East, travelled) : LocateOnNorthEdge(travelled - _maxX);

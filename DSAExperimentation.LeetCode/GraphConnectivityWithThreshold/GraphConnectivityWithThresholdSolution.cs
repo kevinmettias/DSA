@@ -23,9 +23,9 @@ internal static class GraphConnectivityWithThresholdSolution
     // this repo's primitives - it is the arm the composed solution below has to
     // justify itself against, and a dense sieve is exactly the pattern that lets an
     // uncompressed parent chain degrade toward O(n) per Find.
-    public static bool[] AreConnectedByNaiveUnionFind(int n, int threshold, int[][] queries)
+    public static bool[] AreConnectedByNaiveUnionFind(int cityCount, int threshold, int[][] queries)
     {
-        var parent = BuildNaiveComponents(n, threshold);
+        var parent = BuildNaiveComponents(cityCount, threshold);
 
         return ConnectivityByNaiveFind(parent, queries);
     }
@@ -33,18 +33,18 @@ internal static class GraphConnectivityWithThresholdSolution
     // The bare parent array plus the sieve over it: every divisor above the threshold
     // shares itself with each of its multiples, so unioning the two joins exactly the
     // cities that share a divisor.
-    private static int[] BuildNaiveComponents(int n, int threshold)
+    private static int[] BuildNaiveComponents(int cityCount, int threshold)
     {
-        var parent = new int[n + 1];
+        var parent = new int[cityCount + 1];
 
-        for (var city = 0; city <= n; city++)
+        for (var city = 0; city <= cityCount; city++)
         {
             parent[city] = city;
         }
 
-        for (var divisor = threshold + 1; divisor <= n; divisor++)
+        for (var divisor = threshold + 1; divisor <= cityCount; divisor++)
         {
-            for (var multiple = FirstMultipleFactor * divisor; multiple <= n; multiple += divisor)
+            for (var multiple = FirstMultipleFactor * divisor; multiple <= cityCount; multiple += divisor)
             {
                 Union(parent, divisor, multiple);
             }
@@ -71,24 +71,24 @@ internal static class GraphConnectivityWithThresholdSolution
     // sieve-drives-Union composition NumberOfProvinces and
     // NumberOfOperationsToMakeNetworkConnected use, just with a divisor sieve
     // producing the pairs to Union instead of an explicit edge list. Cities are
-    // already dense integers in [1, n], so they are their own DisjointSet ids; the
-    // set is sized n + 1 so id 0 simply goes unused.
-    public static bool[] AreConnectedByDisjointSet(int n, int threshold, int[][] queries)
+    // already dense integers in [1, cityCount], so they are their own DisjointSet
+    // ids; the set is sized cityCount + 1 so id 0 simply goes unused.
+    public static bool[] AreConnectedByDisjointSet(int cityCount, int threshold, int[][] queries)
     {
-        var components = BuildDisjointSetComponents(n, threshold);
+        var components = BuildDisjointSetComponents(cityCount, threshold);
 
         return ConnectivityByDisjointSet(components, queries);
     }
 
     // The same divisor sieve, driving this repo's DisjointSet instead of a bare parent
     // array.
-    private static DisjointSet BuildDisjointSetComponents(int n, int threshold)
+    private static DisjointSet BuildDisjointSetComponents(int cityCount, int threshold)
     {
-        var components = new DisjointSet(n + 1);
+        var components = new DisjointSet(cityCount + 1);
 
-        for (var divisor = threshold + 1; divisor <= n; divisor++)
+        for (var divisor = threshold + 1; divisor <= cityCount; divisor++)
         {
-            for (var multiple = FirstMultipleFactor * divisor; multiple <= n; multiple += divisor)
+            for (var multiple = FirstMultipleFactor * divisor; multiple <= cityCount; multiple += divisor)
             {
                 components.Union(divisor, multiple);
             }

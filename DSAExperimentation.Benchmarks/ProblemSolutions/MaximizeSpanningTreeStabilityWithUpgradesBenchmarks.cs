@@ -16,23 +16,23 @@ public class MaximizeSpanningTreeStabilityWithUpgradesBenchmarks
 
     private StabilityGraph _graph = null!;
 
-    private int _k;
+    private int _upgrades;
     [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var (edges, k) = StabilityGraphWorkloads.Build(NodeCount, seed: Seed);
+        var (edges, upgrades) = StabilityGraphWorkloads.Build(NodeCount, seed: Seed);
         _graph = StabilityGraph.Build(NodeCount, edges);
-        _k = k;
+        _upgrades = upgrades;
     }
 
     [Benchmark(Baseline = true)]
     public int ArrayUnionFind() =>
-        MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByArrayUnionFind(_graph, _k);
+        MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByArrayUnionFind(_graph, _upgrades);
 
     [Benchmark]
     public int DisjointSet() =>
-        MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByDisjointSet(_graph, _k);
+        MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByDisjointSet(_graph, _upgrades);
 }

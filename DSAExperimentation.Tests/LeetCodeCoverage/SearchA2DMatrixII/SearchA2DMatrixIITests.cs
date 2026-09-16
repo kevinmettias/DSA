@@ -27,27 +27,27 @@ public sealed class SearchA2DMatrixIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchMatrixByFullScan_LeetCodeExamples_ReturnsWhetherTargetExists(MatrixQuery query)
+    public void HasTargetByFullScan_LeetCodeExamples_ReturnsWhetherTargetExists(MatrixQuery query)
     {
-        var actual = SearchA2DMatrixIISolution.SearchMatrixByFullScan(query.Matrix, query.Target);
+        var actual = SearchA2DMatrixIISolution.HasTargetByFullScan(query.Matrix, query.Target);
 
         Assert.Equal(query.Found, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchMatrixByPerRowBinarySearch_LeetCodeExamples_ReturnsWhetherTargetExists(MatrixQuery query)
+    public void HasTargetByPerRowBinarySearch_LeetCodeExamples_ReturnsWhetherTargetExists(MatrixQuery query)
     {
-        var actual = SearchA2DMatrixIISolution.SearchMatrixByPerRowBinarySearch(query.Matrix, query.Target);
+        var actual = SearchA2DMatrixIISolution.HasTargetByPerRowBinarySearch(query.Matrix, query.Target);
 
         Assert.Equal(query.Found, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchMatrixByStaircaseSearch_LeetCodeExamples_ReturnsWhetherTargetExists(MatrixQuery query)
+    public void HasTargetByStaircaseSearch_LeetCodeExamples_ReturnsWhetherTargetExists(MatrixQuery query)
     {
-        var actual = SearchA2DMatrixIISolution.SearchMatrixByStaircaseSearch(query.Matrix, query.Target);
+        var actual = SearchA2DMatrixIISolution.HasTargetByStaircaseSearch(query.Matrix, query.Target);
 
         Assert.Equal(query.Found, actual);
     }

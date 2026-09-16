@@ -5,8 +5,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KClosestPointsToOrigin;
 // Harness only: both strategies live in KClosestPointsToOriginSolution. LeetCode lets
 // the answer come back in any order - the full sort returns nearest-first, the size-k
 // max-heap returns farthest-first as it drains - so every example is asserted as a set
-// of points, and no example is written with a distance tie straddling the k boundary,
-// which would make more than one answer correct.
+// of points, and no example is written with a distance tie straddling the nearestCount
+// boundary, which would make more than one answer correct.
 public sealed class KClosestPointsToOriginTests
 {
     public static TheoryData<int[][], int, int[][]> Examples =>
@@ -23,9 +23,9 @@ public sealed class KClosestPointsToOriginTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KClosestByFullSort_LeetCodeExamples_ReturnsTheKNearestPoints(
-        int[][] points, int k, int[][] expected)
+        int[][] points, int nearestCount, int[][] expected)
     {
-        var nearest = KClosestPointsToOriginSolution.KClosestByFullSort(points, k);
+        var nearest = KClosestPointsToOriginSolution.KClosestByFullSort(points, nearestCount);
 
         Assert.Equal(ToSet(expected), ToSet(nearest));
     }
@@ -33,9 +33,9 @@ public sealed class KClosestPointsToOriginTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KClosestBySizeKMaxHeap_LeetCodeExamples_ReturnsTheKNearestPoints(
-        int[][] points, int k, int[][] expected)
+        int[][] points, int nearestCount, int[][] expected)
     {
-        var nearest = KClosestPointsToOriginSolution.KClosestBySizeKMaxHeap(points, k);
+        var nearest = KClosestPointsToOriginSolution.KClosestBySizeKMaxHeap(points, nearestCount);
 
         Assert.Equal(ToSet(expected), ToSet(nearest));
     }

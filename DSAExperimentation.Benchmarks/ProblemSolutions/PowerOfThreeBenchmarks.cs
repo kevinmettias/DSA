@@ -19,8 +19,8 @@ public class PowerOfThreeBenchmarks
     public void Setup() => _powersOfThree = new ArraySequence<int>(PowersOfThreeTable.Powers);
 
     [Benchmark(Baseline = true)]
-    public bool DivisionLoop() => PowerOfThreeSolution.IsPowerOfThreeByDivisionLoop(Value);
+    public bool IsPowerOfThreeByDivisionLoop() => PowerOfThreeSolution.IsPowerOfThreeByDivisionLoop(Value);
 
     [Benchmark]
-    public bool BinarySearchOverPowers() => PowerOfThreeSolution.IsPowerOfThreeByBinarySearch(Value, _powersOfThree);
+    public bool IsPowerOfThreeByBinarySearch() => PowerOfThreeSolution.IsPowerOfThreeByBinarySearch(Value, _powersOfThree);
 }

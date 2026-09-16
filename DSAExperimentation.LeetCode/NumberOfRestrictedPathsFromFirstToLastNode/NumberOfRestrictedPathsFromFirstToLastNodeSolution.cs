@@ -23,9 +23,9 @@ internal static class NumberOfRestrictedPathsFromFirstToLastNodeSolution
     // where the same node is reached two ways at every layer. Plain recursion over
     // the node's own adjacency list; it is the arm the fold below has to justify
     // itself against.
-    public static long CountRestrictedPathsByNaiveDfs(int n, int[][] edges)
+    public static long CountRestrictedPathsByNaiveDfs(int nodeCount, int[][] edges)
     {
-        var graph = RestrictedPathGraph.Build(n, edges);
+        var graph = RestrictedPathGraph.Build(nodeCount, edges);
 
         return CountRestrictedPathsByNaiveDfs(graph);
     }
@@ -57,9 +57,9 @@ internal static class NumberOfRestrictedPathsFromFirstToLastNodeSolution
     // a strictly-closer neighbor" into an IDagTopology, and DagFold.Fold then visits
     // each distinct node once and reuses its count everywhere it is reached from -
     // one Combine per node instead of one per path prefix.
-    public static long CountRestrictedPathsByDagFold(int n, int[][] edges)
+    public static long CountRestrictedPathsByDagFold(int nodeCount, int[][] edges)
     {
-        var graph = RestrictedPathGraph.Build(n, edges);
+        var graph = RestrictedPathGraph.Build(nodeCount, edges);
 
         return CountRestrictedPathsByDagFold(graph);
     }

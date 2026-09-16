@@ -14,7 +14,7 @@ public class ExtraCharactersInAStringBenchmarks
 {
     private static readonly string[] Dictionary = ["ab", "cd", "ef", "gh", "ij"];
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(300, 1_500)]
     public int Length { get; set; }
@@ -28,14 +28,16 @@ public class ExtraCharactersInAStringBenchmarks
             chars[i] = (char)('k' + i % 5);
         }
 
-        _s = new string(chars);
+        _text = new string(chars);
     }
 
     [Benchmark(Baseline = true)]
     public int HashSetFullScan() =>
-        ExtraCharactersInAStringSolution.MinExtraCharsByHashSetFullScan(_s, Dictionary);
+        ExtraCharactersInAStringSolution.MinExtraCharsByHashSetFullScan(
+            _text, Dictionary);
 
     [Benchmark]
     public int TriePrunedScan() =>
-        ExtraCharactersInAStringSolution.MinExtraCharsByTriePrunedScan(_s, Dictionary);
+        ExtraCharactersInAStringSolution.MinExtraCharsByTriePrunedScan(
+            _text, Dictionary);
 }

@@ -64,6 +64,6 @@ internal static class ApplesWorkloads
         }
     }
 
-    private static int[] BuildRoad(Random random, int u, int v) =>
-        [u, v, random.Next(1, CostUpperBound), random.Next(1, TaxUpperBound + 1)];
+    private static int[] BuildRoad(Random random, int fromShop, int toShop) =>
+        [fromShop, toShop, random.Next(1, CostUpperBound), random.Next(1, TaxUpperBound + 1)];
 }

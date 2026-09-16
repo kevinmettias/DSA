@@ -14,8 +14,8 @@ internal static class WordSearchSolution
 {
     // The textbook answer: a hand-rolled recursive DFS over a BCL bool[,] visited
     // grid, deliberately written without this repo's Backtracking primitive - the
-    // arm ExistByBacktrack has to justify itself against.
-    public static bool ExistByBruteForceDfs(char[][] board, string word)
+    // arm CanTraceWordByBacktrack has to justify itself against.
+    public static bool CanTraceWordByBruteForceDfs(char[][] board, string word)
     {
         var used = new bool[board.Length, board[0].Length];
         var walk = new WordWalk(board, word, used);
@@ -24,7 +24,7 @@ internal static class WordSearchSolution
         {
             for (var col = 0; col < board[0].Length; col++)
             {
-                if (Search((row, col), 0, walk))
+                if (CanTraceRemainingFrom((row, col), 0, walk))
                 {
                     return true;
                 }
@@ -38,13 +38,13 @@ internal static class WordSearchSolution
     // and a coordinate trail so Unchoose can restore exactly what Choose changed,
     // and OnSolution returning true stops the whole search the moment one path
     // spells out the word.
-    public static bool ExistByBacktrack(char[][] board, string word)
+    public static bool CanTraceWordByBacktrack(char[][] board, string word)
     {
         for (var row = 0; row < board.Length; row++)
         {
             for (var col = 0; col < board[0].Length; col++)
             {
-                if (SearchFrom(board, word, row, col))
+                if (CanTraceWordFrom(board, word, row, col))
                 {
                     return true;
                 }
@@ -54,7 +54,7 @@ internal static class WordSearchSolution
         return false;
     }
 
-    private static bool SearchFrom(char[][] board, string word, int row, int col)
+    private static bool CanTraceWordFrom(char[][] board, string word, int row, int col)
     {
         var state = new State(board, word, row, col);
         return Backtrack.TrySearch(state, new BacktrackingSteps<State, (int Row, int Col)>(
@@ -68,7 +68,7 @@ internal static class WordSearchSolution
     // The board, the word and the used-path grid are the same three the whole search
     // runs against, so they travel as one argument; what recurses is only where the
     // path stands and how far along the word it has reached.
-    private static bool Search((int Row, int Col) cell, int index, WordWalk walk)
+    private static bool CanTraceRemainingFrom((int Row, int Col) cell, int index, WordWalk walk)
     {
         if (index == walk.Word.Length)
         {
@@ -83,10 +83,10 @@ internal static class WordSearchSolution
         var (row, col) = cell;
         walk.Used[row, col] = true;
 
-        var found = Search((row + 1, col), index + 1, walk)
-            || Search((row - 1, col), index + 1, walk)
-            || Search((row, col + 1), index + 1, walk)
-            || Search((row, col - 1), index + 1, walk);
+        var found = CanTraceRemainingFrom((row + 1, col), index + 1, walk)
+            || CanTraceRemainingFrom((row - 1, col), index + 1, walk)
+            || CanTraceRemainingFrom((row, col + 1), index + 1, walk)
+            || CanTraceRemainingFrom((row, col - 1), index + 1, walk);
 
         walk.Used[row, col] = false;
         return found;
@@ -135,19 +135,19 @@ internal static class WordSearchSolution
             yield return (Row, Col - 1);
         }
 
-        public void Choose((int Row, int Col) p)
+        public void Choose((int Row, int Col) cell)
         {
             _parents.Push((Row, Col));
-            Row = p.Row;
-            Col = p.Col;
+            Row = cell.Row;
+            Col = cell.Col;
             _used[Row, Col] = true;
             Index++;
         }
 
-        public void Unchoose((int Row, int Col) p)
+        public void Unchoose((int Row, int Col) cell)
         {
             Index--;
-            _used[p.Row, p.Col] = false;
+            _used[cell.Row, cell.Col] = false;
             (Row, Col) = _parents.Pop();
         }
     }

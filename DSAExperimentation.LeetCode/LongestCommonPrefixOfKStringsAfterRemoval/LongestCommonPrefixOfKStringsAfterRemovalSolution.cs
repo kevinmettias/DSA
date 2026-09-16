@@ -5,14 +5,16 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 namespace DSAExperimentation.LeetCode.LongestCommonPrefixOfKStringsAfterRemoval;
 
 // LeetCode 3485. Longest Common Prefix of K Strings After Removal: for every
-// index i, remove words[i] and report the longest prefix shared by at least k of
-// the remaining strings (0 if fewer than k remain).
+// index i, remove words[i] and report the longest prefix shared by at least
+// requiredShareCount of the remaining strings (0 if fewer than requiredShareCount
+// remain).
 //
-// A prefix of length d is "shared by >= k strings" exactly when the trie node at
-// depth d reached by that prefix has SubtreeWordCountAlgebra count >= k. Removing
-// words[i] only ever decrements the count of nodes ON words[i]'s own root-to-leaf
-// path, by exactly 1 each (its own multiplicity contribution) - every other node
-// in the trie is untouched. So the deepest globally-qualifying depth (computed
+// A prefix of length d is "shared by >= requiredShareCount strings" exactly when
+// the trie node at depth d reached by that prefix has SubtreeWordCountAlgebra
+// count >= requiredShareCount. Removing words[i] only ever decrements the count of
+// nodes ON words[i]'s own root-to-leaf path, by exactly 1 each (its own multiplicity
+// contribution) - every other node in the trie is untouched. So the deepest
+// globally-qualifying depth (computed
 // once, before any removal) is still exactly right for any word whose own length
 // is shorter than it; only when a word's path reaches that depth does its removal
 // need checking, and then only by walking that ONE path from the known deepest
@@ -23,30 +25,30 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // The textbook definition, unwound literally: for each removal, and for each
     // candidate length, count how many of the remaining strings share that exact
     // prefix (via a plain Dictionary<string,int>, no trie at all) and keep the
-    // longest length that ever reaches k. O(n * maxLength^2) - the arm the
-    // composed trie strategy below has to beat.
-    public static int[] AnswerByBruteForce(string[] words, int k)
+    // longest length that ever reaches requiredShareCount. O(n * maxLength^2) - the
+    // arm the composed trie strategy below has to beat.
+    public static int[] AnswerByBruteForce(string[] words, int requiredShareCount)
     {
         var answer = new int[words.Length];
 
         for (var i = 0; i < words.Length; i++)
         {
-            answer[i] = LongestSharedPrefixExcluding(words, i, k);
+            answer[i] = LongestSharedPrefixExcluding(words, i, requiredShareCount);
         }
 
         return answer;
     }
 
-    private static int LongestSharedPrefixExcluding(string[] words, int excludeIndex, int k)
+    private static int LongestSharedPrefixExcluding(string[] words, int excludeIndex, int requiredShareCount)
     {
-        if (words.Length - 1 < k)
+        if (words.Length - 1 < requiredShareCount)
         {
             return 0;
         }
 
         var maxLength = LongestRemainingWordLength(words, excludeIndex);
 
-        return LongestQualifyingLength(words, excludeIndex, k, maxLength);
+        return LongestQualifyingLength(words, excludeIndex, requiredShareCount, maxLength);
     }
 
     // The longest word the removal actually leaves behind: the excluded index
@@ -66,16 +68,16 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
         return maxLength;
     }
 
-    // The longest length still shared by k of the remaining words: every candidate
-    // length is scored against the same exclusion, and the longest one that clears k
-    // wins.
-    private static int LongestQualifyingLength(string[] words, int excludeIndex, int k, int maxLength)
+    // The longest length still shared by requiredShareCount of the remaining words:
+    // every candidate length is scored against the same exclusion, and the longest one
+    // that clears requiredShareCount wins.
+    private static int LongestQualifyingLength(string[] words, int excludeIndex, int requiredShareCount, int maxLength)
     {
         var best = 0;
 
         for (var length = 1; length <= maxLength; length++)
         {
-            if (MaxSharedPrefixCount(words, excludeIndex, length) >= k)
+            if (MaxSharedPrefixCount(words, excludeIndex, length) >= requiredShareCount)
             {
                 best = length;
             }
@@ -111,20 +113,20 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // once with the repo's existing DistanceMapReduceAlgebra for per-node depth),
     // then answer every index with an O(word length) walk. O(total input length)
     // overall.
-    public static int[] AnswerByReduceTrie(string[] words, int k)
+    public static int[] AnswerByReduceTrie(string[] words, int requiredShareCount)
     {
         var trie = BuildTrie(words);
 
-        return AnswerByReduceTrie(trie, words, k);
+        return AnswerByReduceTrie(trie, words, requiredShareCount);
     }
 
-    public static int[] AnswerByReduceTrie(LowercaseTrie<int> trie, string[] words, int k)
+    public static int[] AnswerByReduceTrie(LowercaseTrie<int> trie, string[] words, int requiredShareCount)
     {
         var counts = ReduceSubtreeWordCounts(trie);
         var depths = ReduceNodeDepths(trie);
-        var summary = BuildQualificationSummary(counts, depths, words, k);
+        var summary = BuildQualificationSummary(counts, depths, words, requiredShareCount);
 
-        return AnswerEveryWord(trie, words, summary, k);
+        return AnswerEveryWord(trie, words, summary, requiredShareCount);
     }
 
     // Each node's own subtree word count, from this problem's SubtreeWordCountAlgebra.
@@ -147,15 +149,15 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 
     // The reduce pass folded down to the three facts AnswerFor needs, and stopped
     // there: the per-node counts themselves (AnswerFor indexes them by node), how
-    // many depth-d nodes clear k at all, and the deepest depth that does.
+    // many depth-d nodes clear requiredShareCount at all, and the deepest depth that does.
     private static QualificationSummary BuildQualificationSummary(
         Dictionary<LowercaseTrieNode<int>, int> counts,
         Dictionary<LowercaseTrieNode<int>, int> depths,
         string[] words,
-        int k)
+        int requiredShareCount)
     {
         var maxLength = LongestWordLength(words);
-        var qualifyingNodeCount = CountQualifyingNodes(counts, depths, maxLength, k);
+        var qualifyingNodeCount = CountQualifyingNodes(counts, depths, maxLength, requiredShareCount);
         var deepestQualifyingDepth = FindDeepestQualifyingDepth(qualifyingNodeCount);
 
         return new QualificationSummary(counts, qualifyingNodeCount, deepestQualifyingDepth);
@@ -176,18 +178,18 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     }
 
     // qualifyingNodeCount[d] = how many depth-d trie nodes have a prefix
-    // count >= k, BEFORE any removal.
+    // count >= requiredShareCount, BEFORE any removal.
     private static int[] CountQualifyingNodes(
         Dictionary<LowercaseTrieNode<int>, int> counts,
         Dictionary<LowercaseTrieNode<int>, int> depths,
         int maxLength,
-        int k)
+        int requiredShareCount)
     {
         var qualifyingNodeCount = new int[maxLength + 1];
 
         foreach (var (node, count) in counts)
         {
-            if (count >= k)
+            if (count >= requiredShareCount)
             {
                 qualifyingNodeCount[depths[node]]++;
             }
@@ -213,21 +215,21 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
 
     // Every index answered in turn, each in O(word length), all from the one summary.
     private static int[] AnswerEveryWord(
-        LowercaseTrie<int> trie, string[] words, QualificationSummary summary, int k)
+        LowercaseTrie<int> trie, string[] words, QualificationSummary summary, int requiredShareCount)
     {
         var answer = new int[words.Length];
 
         for (var i = 0; i < words.Length; i++)
         {
-            answer[i] = AnswerFor(words[i], trie, summary, k);
+            answer[i] = AnswerFor(words[i], trie, summary, requiredShareCount);
         }
 
         return answer;
     }
 
     // Everything AnswerFor reads off the reduce pass, built once before the per-word
-    // loop: each node's own subtree word count, how many depth-d nodes clear k at
-    // all, and the deepest depth that does.
+    // loop: each node's own subtree word count, how many depth-d nodes clear
+    // requiredShareCount at all, and the deepest depth that does.
     private readonly record struct QualificationSummary(
         Dictionary<LowercaseTrieNode<int>, int> Counts,
         int[] QualifyingNodeCount,
@@ -238,9 +240,10 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     // applies as-is whenever it lies past this word. Only when the word's own
     // path reaches (or exceeds) that depth does it need walking, from
     // deepestQualifyingDepth back toward the root, checking whether the one node
-    // this word's removal can disqualify (its count dropping to exactly k - 1)
-    // was the only thing keeping that depth qualified.
-    private static int AnswerFor(string word, LowercaseTrie<int> trie, QualificationSummary summary, int k)
+    // this word's removal can disqualify (its count dropping to exactly
+    // requiredShareCount - 1) was the only thing keeping that depth qualified.
+    private static int AnswerFor(
+        string word, LowercaseTrie<int> trie, QualificationSummary summary, int requiredShareCount)
     {
         if (summary.DeepestQualifyingDepth > word.Length)
         {
@@ -252,7 +255,7 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
         for (var depth = summary.DeepestQualifyingDepth; depth >= 0; depth--)
         {
             var prefixCount = summary.Counts[path[depth]];
-            var dropped = prefixCount == k ? 1 : 0;
+            var dropped = prefixCount == requiredShareCount ? 1 : 0;
 
             if (summary.QualifyingNodeCount[depth] - dropped > 0)
             {

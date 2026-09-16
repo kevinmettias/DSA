@@ -17,18 +17,20 @@ public sealed class CountSubarraysWithEvenOddRatioITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByBruteForce_LeetCodeExamples_ReturnsValidSubarrayCount(
-        int[] nums, int a, int b, int expected)
+        int[] nums, int ratioNumerator, int ratioDenominator, int expected)
     {
-        var actual = CountSubarraysWithEvenOddRatioISolution.CountByBruteForce(nums, a, b);
+        var actual = CountSubarraysWithEvenOddRatioISolution.CountByBruteForce(
+            nums, ratioNumerator, ratioDenominator);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByFenwickPrefixSweep_LeetCodeExamples_ReturnsValidSubarrayCount(
-        int[] nums, int a, int b, int expected)
+        int[] nums, int ratioNumerator, int ratioDenominator, int expected)
     {
-        var actual = CountSubarraysWithEvenOddRatioISolution.CountByFenwickPrefixSweep(nums, a, b);
+        var actual = CountSubarraysWithEvenOddRatioISolution.CountByFenwickPrefixSweep(
+            nums, ratioNumerator, ratioDenominator);
         Assert.Equal(expected, actual);
     }
 }

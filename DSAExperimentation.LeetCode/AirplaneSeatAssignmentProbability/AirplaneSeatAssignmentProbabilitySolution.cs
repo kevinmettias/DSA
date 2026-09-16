@@ -25,18 +25,19 @@ internal static class AirplaneSeatAssignmentProbabilitySolution
     private const double NonFirstSeatProbability = 0.5;
 
     // The definition: O(n^2) memoized recursion summing every shorter seat count.
-    public static double NthPersonGetsNthSeatByMemoizedRecursion(int n) =>
-        Memoizer.Memoize<int, double>(n, new DisplacedSeatChain());
+    public static double NthPersonGetsNthSeatByMemoizedRecursion(int planeSize) =>
+        Memoizer.Memoize<int, double>(planeSize, new DisplacedSeatChain());
 
     // The closed form: a single passenger always takes their own seat, and for every
     // larger plane the first and last seats are symmetric, so the nth passenger's
     // chance settles at one half.
-    public static double NthPersonGetsNthSeatByClosedForm(int n)
-        => n == 1 ? 1.0 : NonFirstSeatProbability;
+    public static double NthPersonGetsNthSeatByClosedForm(int planeSize)
+        => planeSize == 1 ? 1.0 : NonFirstSeatProbability;
 
     // The recurrence, named: the first passenger's choice of seat reduces a plane of
-    // n to a plane of each shorter size, so the chance of the last passenger keeping
-    // their seat is one over n plus those shorter chances, one per alternative seat.
+    // `planeSize` seats to a plane of each shorter size, so the chance of the last
+    // passenger keeping their seat is one over the plane's size plus those shorter
+    // chances, one per alternative seat.
     private sealed class DisplacedSeatChain : IRecurrence<int, double>
     {
         public double Replay(int planeSize, IRecurrence<int, double> rest)

@@ -3,13 +3,14 @@ using PalindromeStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.SmallestPalindromicRearrangementII;
 
-// LeetCode 3518. Smallest Palindromic Rearrangement II: s is already a palindrome;
-// return its k-th lexicographically smallest palindromic rearrangement (1-indexed),
-// or "" if fewer than k exist. As in Part I, every palindrome is determined by its
-// left half (each letter's count halved, plus an optional odd middle letter)
-// mirrored outward, and lexicographic order of the whole palindrome tracks
-// lexicographic order of that left half exactly - so this reduces to "find the k-th
-// lexicographically smallest arrangement of a multiset" and mirror it.
+// LeetCode 3518. Smallest Palindromic Rearrangement II: palindrome is already a
+// palindrome; return its rank-th lexicographically smallest palindromic
+// rearrangement (1-indexed), or "" if fewer than rank exist. As in Part I, every
+// palindrome is determined by its left half (each letter's count halved, plus an
+// optional odd middle letter) mirrored outward, and lexicographic order of the whole
+// palindrome tracks lexicographic order of that left half exactly - so this reduces
+// to "find the rank-th lexicographically smallest arrangement of a multiset" and
+// mirror it.
 internal static class SmallestPalindromicRearrangementIISolution
 {
     private const int AlphabetSize = 26;
@@ -18,21 +19,22 @@ internal static class SmallestPalindromicRearrangementIISolution
     // "Permutations" as exactly this shape (Search's exhaustive-enumeration case) -
     // here TrySearch's early-stop variant instead, since Candidates already yields
     // letters ascending, so depth-first visits complete arrangements in
-    // lexicographic order and the k-th OnSolution call IS the answer. Deliberately
-    // the slow arm: it walks every arrangement before the k-th one node by node,
-    // exactly what the counting strategy below exists to avoid.
-    public static string RearrangeByBacktrackingRank(string s, int k)
+    // lexicographic order and the rank-th TryCaptureKthArrangement call IS the
+    // answer. Deliberately the slow arm: it walks every arrangement before the
+    // rank-th one node by node, exactly what the counting strategy below exists to
+    // avoid.
+    public static string RearrangeByBacktrackingRank(string palindrome, int rank)
     {
-        var (halfCounts, middle) = SplitCounts(s);
+        var (halfCounts, middle) = SplitCounts(palindrome);
         var halfLength = halfCounts.Sum();
 
-        var state = new RankState(halfCounts, new List<char>(halfLength), k);
+        var state = new RankState(halfCounts, new List<char>(halfLength), rank);
         var steps = new BacktrackingSteps<RankState, int>(
             IsSolution: st => st.Path.Count == halfLength,
             Candidates: Candidates,
             Choose: Choose,
             Unchoose: Unchoose,
-            OnSolution: OnSolution);
+            OnSolution: TryCaptureKthArrangement);
 
         return Backtrack.TrySearch(state, steps)
             ? BuildPalindrome(state.Result!, middle)
@@ -62,12 +64,12 @@ internal static class SmallestPalindromicRearrangementIISolution
         state.Counts[letter]++;
     }
 
-    // Snapshots Path into Result the instant this is the k-th arrangement, rather
+    // Snapshots Path into Result the instant this is the rank-th arrangement, rather
     // than letting the caller read state.Path once TrySearch returns: Backtrack's
     // own TryEachCandidate calls Unchoose unconditionally on the way back out, stop
     // signal or not, so by the time TrySearch's caller sees `true` the path that
     // earned it has already been unwound one Unchoose at a time.
-    private static bool OnSolution(RankState state)
+    private static bool TryCaptureKthArrangement(RankState state)
     {
         state.Remaining--;
 
@@ -97,18 +99,18 @@ internal static class SmallestPalindromicRearrangementIISolution
     // outstanding rank, so it is always an O(halfLength)-bounded integer
     // computation, never the astronomical exact multinomial coefficient a
     // length-10^4 string's half can have.
-    public static string RearrangeByCountingGreedy(string s, int k)
+    public static string RearrangeByCountingGreedy(string palindrome, int rank)
     {
-        var (halfCounts, middle) = SplitCounts(s);
+        var (halfCounts, middle) = SplitCounts(palindrome);
         var halfLength = halfCounts.Sum();
 
-        if (CountArrangementsCapped(halfCounts, k) < k)
+        if (CountArrangementsCapped(halfCounts, rank) < rank)
         {
             return string.Empty;
         }
 
         var left = new char[halfLength];
-        var remainingRank = (long)k;
+        var remainingRank = (long)rank;
 
         for (var position = 0; position < halfLength; position++)
         {
@@ -178,11 +180,11 @@ internal static class SmallestPalindromicRearrangementIISolution
         return arrangements;
     }
 
-    private static (int[] HalfCounts, char? Middle) SplitCounts(string s)
+    private static (int[] HalfCounts, char? Middle) SplitCounts(string palindrome)
     {
         var counts = new int[AlphabetSize];
 
-        foreach (var c in s)
+        foreach (var c in palindrome)
         {
             counts[c - 'a']++;
         }

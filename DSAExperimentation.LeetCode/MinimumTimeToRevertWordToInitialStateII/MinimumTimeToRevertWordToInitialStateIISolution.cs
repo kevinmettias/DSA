@@ -26,15 +26,15 @@ internal static class MinimumTimeToRevertWordToInitialStateIISolution
     // substrings directly. Correct at any scale, but O(n^2/k) worst case -
     // the arm the ZFunction strategy below has to beat, and why it is only
     // benchmarked at a fraction of this problem's own 10^6 bound.
-    public static int MinTimeByBruteForce(string word, int k)
+    public static int MinTimeByBruteForce(string word, int charactersPerSecond)
     {
         var n = word.Length;
 
         for (var t = 1; ; t++)
         {
-            var shift = t * k;
+            var shift = t * charactersPerSecond;
 
-            if (shift >= n || SuffixMatchesPrefix(word, shift))
+            if (shift >= n || IsSuffixMatchingPrefix(word, shift))
             {
                 return t;
             }
@@ -44,7 +44,7 @@ internal static class MinimumTimeToRevertWordToInitialStateIISolution
     // Whether the surviving suffix at `shift` equals word's own prefix of that same
     // length - exactly the refill condition above. Only reached with shift < word's
     // length, so both spans are non-empty.
-    private static bool SuffixMatchesPrefix(string word, int shift)
+    private static bool IsSuffixMatchingPrefix(string word, int shift)
     {
         var suffix = word.AsSpan(shift);
         var prefix = word.AsSpan(0, word.Length - shift);
@@ -58,14 +58,14 @@ internal static class MinimumTimeToRevertWordToInitialStateIISolution
     // one O(n) pass, so the loop over t only has to look each answer up
     // rather than re-comparing substrings. This is the strategy this
     // problem's 10^6 bound actually requires.
-    public static int MinTimeByZFunction(string word, int k)
+    public static int MinTimeByZFunction(string word, int charactersPerSecond)
     {
         var n = word.Length;
         var z = ZFunction.Compute(word);
 
         for (var t = 1; ; t++)
         {
-            var shift = t * k;
+            var shift = t * charactersPerSecond;
 
             if (shift >= n || z[shift] >= n - shift)
             {

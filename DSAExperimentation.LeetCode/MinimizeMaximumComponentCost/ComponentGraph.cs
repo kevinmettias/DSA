@@ -1,7 +1,7 @@
 namespace DSAExperimentation.LeetCode.MinimizeMaximumComponentCost;
 
-// Builds LeetCode's own (n, edges) shape into ComponentNodes wired both ways -
-// the same "materialize once, hand the algorithm a vertex list" role
+// Builds LeetCode's own (nodeCount, edges) shape into ComponentNodes wired both
+// ways - the same "materialize once, hand the algorithm a vertex list" role
 // Domain.Locks.LockGraph.Build plays for OpenTheLock, just for an arbitrary
 // weighted graph instead of a wheel-turn Cayley graph. Kept problem-local
 // (LeetCode/MinimizeMaximumComponentCost, not Domain) per this pass's
@@ -13,11 +13,11 @@ internal sealed class ComponentGraph
 
     private ComponentGraph(IReadOnlyList<ComponentNode> vertices) => Vertices = vertices;
 
-    public static ComponentGraph Build(int n, int[][] edges)
+    public static ComponentGraph Build(int nodeCount, int[][] edges)
     {
-        var vertices = new List<ComponentNode>(n);
+        var vertices = new List<ComponentNode>(nodeCount);
 
-        for (var id = 0; id < n; id++)
+        for (var id = 0; id < nodeCount; id++)
         {
             vertices.Add(new ComponentNode(id));
         }

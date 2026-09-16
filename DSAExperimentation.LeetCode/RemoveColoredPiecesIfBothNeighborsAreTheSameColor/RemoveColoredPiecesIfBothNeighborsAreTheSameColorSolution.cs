@@ -29,7 +29,7 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
     // removable piece and deleting it from a List<char> every turn, O(n^2) overall.
     // Deliberately written without this repo's primitives - it is the arm the
     // counting strategy below has to justify itself against.
-    public static bool WinnerOfGameByGameSimulation(string colors)
+    public static bool CanAliceWinByGameSimulation(string colors)
     {
         var pieces = colors.ToList();
         var aliceTurn = true;
@@ -65,14 +65,14 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
 
     // Only an interior piece of a run can be taken, and only while both of its
     // neighbors still share its color.
-    private static bool IsRemovable(List<char> pieces, int i, char target)
-        => pieces[i] == target && pieces[i - 1] == target && pieces[i + 1] == target;
+    private static bool IsRemovable(List<char> pieces, int index, char target)
+        => pieces[index] == target && pieces[index - 1] == target && pieces[index + 1] == target;
 
     // Group the string into maximal same-color runs with this repo's own
     // ContiguousGroupBuffer - the same primitive ContiguousGroupBufferTests
     // exercises directly - and add max(L - 2, 0) to that color's move budget as each
     // run closes. One O(n) pass, no simulation.
-    public static bool WinnerOfGameByRunLengthCounting(string colors)
+    public static bool CanAliceWinByRunLengthCounting(string colors)
     {
         var budgets = new Dictionary<char, int> { [AliceColor] = 0, [BobColor] = 0 };
 
@@ -87,14 +87,14 @@ internal static class RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution
     {
         var buffer = new ContiguousGroupBuffer<char, char>();
 
-        void Accumulate(IReadOnlyList<char> run, char color) =>
+        void AccumulateRunBudget(IReadOnlyList<char> run, char color) =>
             budgets[color] += Math.Max(0, run.Count - RunEndpointCount);
 
         foreach (var color in colors)
         {
-            buffer.Add(color, color, Accumulate);
+            buffer.Add(color, color, AccumulateRunBudget);
         }
 
-        buffer.Flush(Accumulate);
+        buffer.Flush(AccumulateRunBudget);
     }
 }

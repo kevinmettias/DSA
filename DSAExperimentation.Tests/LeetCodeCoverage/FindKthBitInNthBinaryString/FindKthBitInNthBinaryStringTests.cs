@@ -24,18 +24,20 @@ public sealed class FindKthBitInNthBinaryStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindKthBitByStringConstruction_LeetCodeExamples_ReturnsExpectedBit(int n, int k, char expected)
+    public void FindKthBitByStringConstruction_LeetCodeExamples_ReturnsExpectedBit(
+        int stringOrder, int bitPosition, char expected)
     {
-        var actual = FindKthBitInNthBinaryStringSolution.FindKthBitByStringConstruction(n, k);
+        var actual = FindKthBitInNthBinaryStringSolution.FindKthBitByStringConstruction(stringOrder, bitPosition);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindKthBitByRecursiveBisection_LeetCodeExamples_ReturnsExpectedBit(int n, int k, char expected)
+    public void FindKthBitByRecursiveBisection_LeetCodeExamples_ReturnsExpectedBit(
+        int stringOrder, int bitPosition, char expected)
     {
-        var actual = FindKthBitInNthBinaryStringSolution.FindKthBitByRecursiveBisection(n, k);
+        var actual = FindKthBitInNthBinaryStringSolution.FindKthBitByRecursiveBisection(stringOrder, bitPosition);
 
         Assert.Equal(expected, actual);
     }

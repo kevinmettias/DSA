@@ -47,11 +47,11 @@ internal sealed class BoxDeliverySchedule(int[] portSwitchPrefix, long[] weightP
         => portSwitchPrefix[position - 1] + SwitchesInto(boxes, position);
 
     private static int SwitchesInto(int[][] boxes, int position)
-        => PortChangedInto(boxes, position) ? 1 : 0;
+        => HasPortChangedInto(boxes, position) ? 1 : 0;
 
     // Whether the destination port differs between the box at `position` and the
     // one immediately before it.
-    private static bool PortChangedInto(int[][] boxes, int position)
+    private static bool HasPortChangedInto(int[][] boxes, int position)
         => boxes[position - FirstComparablePosition][PortSlot] != boxes[position - 1][PortSlot];
 
     // The number of times the destination port changes between consecutive boxes

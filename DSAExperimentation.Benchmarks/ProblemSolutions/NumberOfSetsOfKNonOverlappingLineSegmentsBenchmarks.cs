@@ -12,19 +12,19 @@ public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
 {
     private const int PointsToKDivisor = 4;
 
-    private int _k;
+    private int _segmentCount;
 
     [Params(50, 500)]
     public int Points { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _k = Points / PointsToKDivisor;
+    public void Setup() => _segmentCount = Points / PointsToKDivisor;
 
     [Benchmark(Baseline = true)]
     public int Tabulation() =>
-        NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByTabulation(Points, _k);
+        NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByTabulation(Points, _segmentCount);
 
     [Benchmark]
     public int Memoized() =>
-        NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByMemoizedPascal(Points, _k);
+        NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByMemoizedPascal(Points, _segmentCount);
 }

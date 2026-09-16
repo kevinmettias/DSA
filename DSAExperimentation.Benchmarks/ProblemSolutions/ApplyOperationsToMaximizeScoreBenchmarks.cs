@@ -19,7 +19,7 @@ public class ApplyOperationsToMaximizeScoreBenchmarks
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _operationCount;
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -28,14 +28,14 @@ public class ApplyOperationsToMaximizeScoreBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(2, MaxValueExclusive)).ToArray();
-        _k = Length;
+        _operationCount = Length;
     }
 
     [Benchmark(Baseline = true)]
     public long LinearBoundaryScan() =>
-        ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(_nums, _k);
+        ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(_nums, _operationCount);
 
     [Benchmark]
     public long StackBoundaryScan() =>
-        ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(_nums, _k);
+        ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(_nums, _operationCount);
 }

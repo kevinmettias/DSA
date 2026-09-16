@@ -31,8 +31,8 @@ public class CircularArrayLoopBenchmarks
     private static bool IsPositiveSign(Random random) => random.Next(SignChoiceCount) == 0;
 
     [Benchmark(Baseline = true)]
-    public bool HashSetPerStartWalk() => CircularArrayLoopSolution.HasLoopByHashSetWalk(_values);
+    public bool HasLoopByHashSetWalk() => CircularArrayLoopSolution.HasLoopByHashSetWalk(_values);
 
     [Benchmark]
-    public bool LinkedListFloyd() => CircularArrayLoopSolution.HasLoopByLinkedListFloyd(_values);
+    public bool HasLoopByLinkedListFloyd() => CircularArrayLoopSolution.HasLoopByLinkedListFloyd(_values);
 }

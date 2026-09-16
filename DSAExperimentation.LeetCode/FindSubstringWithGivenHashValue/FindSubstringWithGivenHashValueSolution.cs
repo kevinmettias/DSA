@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 // as a private `RollingHashLaneConfig(Power, Modulo)` record.
 //
 // The two strategies differ only in how a window's hash is obtained: recomputed
-// from its k characters every time, or read off a precomputed prefix table in
+// from its characters every time, or read off a precomputed prefix table in
 // O(1).
 //
 // LeetCode guarantees an answer exists, so the "no window matches" branch never
@@ -30,7 +30,7 @@ internal static class FindSubstringWithGivenHashValueSolution
     private static readonly IEqualityComparer<char> LetterValues =
         EqualityComparer<char>.Create((left, right) => left == right, LetterValue);
 
-    // The textbook answer: walk each window's k characters and rebuild its modular
+    // The textbook answer: walk each window's characters and rebuild its modular
     // hash from scratch, O(n * k) overall. Deliberately BCL-only - a bare long
     // accumulator and a running power term - since it is the arm the precomputed
     // strategy below has to justify itself against. Only the (power, modulo) pair
@@ -39,13 +39,13 @@ internal static class FindSubstringWithGivenHashValueSolution
     // window must carry. Neither means anything without the other, so they are
     // passed as the one query they describe.
     public static bool TryFindSubstringByWindowRehash(
-        string s, RollingHashLane lane, (int WindowLength, long HashValue) target, out string substring)
+        string text, RollingHashLane lane, (int WindowLength, long HashValue) target, out string substring)
     {
-        for (var start = 0; start <= s.Length - target.WindowLength; start++)
+        for (var start = 0; start <= text.Length - target.WindowLength; start++)
         {
-            if (WindowHash(s, start, target.WindowLength, lane) == target.HashValue)
+            if (WindowHash(text, start, target.WindowLength, lane) == target.HashValue)
             {
-                substring = s.Substring(start, target.WindowLength);
+                substring = text.Substring(start, target.WindowLength);
                 return true;
             }
         }
@@ -54,14 +54,14 @@ internal static class FindSubstringWithGivenHashValueSolution
         return false;
     }
 
-    private static long WindowHash(string s, int start, int k, RollingHashLane lane)
+    private static long WindowHash(string text, int start, int windowLength, RollingHashLane lane)
     {
         long hash = 0;
         long powerTerm = 1;
 
-        for (var offset = 0; offset < k; offset++)
+        for (var offset = 0; offset < windowLength; offset++)
         {
-            hash = (hash + (LetterValue(s[start + offset]) * powerTerm)) % lane.Modulus;
+            hash = (hash + (LetterValue(text[start + offset]) * powerTerm)) % lane.Modulus;
             powerTerm = powerTerm * lane.Base % lane.Modulus;
         }
 
@@ -88,28 +88,28 @@ internal static class FindSubstringWithGivenHashValueSolution
     // single modulus, not a probabilistic screen, so only the First component is
     // ever compared.
     public static bool TryFindSubstringByRollingHash(
-        string s, RollingHashLane lane, (int WindowLength, long HashValue) target, out string substring)
+        string text, RollingHashLane lane, (int WindowLength, long HashValue) target, out string substring)
     {
-        var reversedHash = BuildReversedWindowHash(s, lane);
+        var reversedHash = BuildReversedWindowHash(text, lane);
 
-        return TryFindSubstringByRollingHash(reversedHash, s, target, out substring);
+        return TryFindSubstringByRollingHash(reversedHash, text, target, out substring);
     }
 
     // The hoisted overload: takes the prefix table already built, so a benchmark's
     // [GlobalSetup] can charge the O(n) construction to setup rather than to the
     // measured window sweep. reversedHash must be the table BuildReversedWindowHash
-    // returns for this same s.
+    // returns for this same text.
     public static bool TryFindSubstringByRollingHash(
-        RollingHash reversedHash, string s, (int WindowLength, long HashValue) target, out string substring)
+        RollingHash reversedHash, string text, (int WindowLength, long HashValue) target, out string substring)
     {
-        var n = s.Length;
+        var n = text.Length;
 
         for (var start = 0; start <= n - target.WindowLength; start++)
         {
             if (reversedHash.Hash(n - start - target.WindowLength, target.WindowLength).First
                 == target.HashValue)
             {
-                substring = s.Substring(start, target.WindowLength);
+                substring = text.Substring(start, target.WindowLength);
                 return true;
             }
         }
@@ -121,9 +121,9 @@ internal static class FindSubstringWithGivenHashValueSolution
     // The prepared input the composed strategy's hoisted overload takes: this
     // text's prefix hash table, over the reversed characters and under LeetCode's
     // own lane.
-    public static RollingHash BuildReversedWindowHash(string s, RollingHashLane lane)
+    public static RollingHash BuildReversedWindowHash(string text, RollingHashLane lane)
     {
-        var reversed = s.ToCharArray();
+        var reversed = text.ToCharArray();
         Array.Reverse(reversed);
 
         return new RollingHash(reversed, LetterValues, lane, lane);

@@ -26,24 +26,24 @@ public sealed class TwoSumIVInputIsABSTTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindTargetByNestedPairScan_LeetCodeExamples_ReturnsWhetherAPairSumsToTarget(
+    public void HasTargetPairByNestedPairScan_LeetCodeExamples_ReturnsWhetherAPairSumsToTarget(
         TreePairExample example)
     {
         var tree = BuildTree(example.InsertOrder);
 
-        var actual = TwoSumIVInputIsABSTSolution.FindTargetByNestedPairScan(tree.Root, example.Target);
+        var actual = TwoSumIVInputIsABSTSolution.HasTargetPairByNestedPairScan(tree.Root, example.Target);
 
         Assert.Equal(example.HasPair, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindTargetByDepthFirstSetLookup_LeetCodeExamples_ReturnsWhetherAPairSumsToTarget(
+    public void HasTargetPairByDepthFirstSetLookup_LeetCodeExamples_ReturnsWhetherAPairSumsToTarget(
         TreePairExample example)
     {
         var tree = BuildTree(example.InsertOrder);
 
-        var actual = TwoSumIVInputIsABSTSolution.FindTargetByDepthFirstSetLookup(tree.Root, example.Target);
+        var actual = TwoSumIVInputIsABSTSolution.HasTargetPairByDepthFirstSetLookup(tree.Root, example.Target);
 
         Assert.Equal(example.HasPair, actual);
     }

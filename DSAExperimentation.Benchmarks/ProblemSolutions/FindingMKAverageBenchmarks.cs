@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FindingMKAverageBenchmarks
 {
     private const int WindowSize = 99;
-    private const int K = 33;
+    private const int TrimCount = 33;
 
     // LC problem number, reused as the deterministic stream seed.
     private const int RandomSeed = 1825;
@@ -33,14 +33,14 @@ public class FindingMKAverageBenchmarks
     [Benchmark(Baseline = true)]
     public long SortingSlidingWindow()
     {
-        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(WindowSize, K);
+        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(WindowSize, TrimCount);
         return Replay(mkAverage);
     }
 
     [Benchmark]
     public long FenwickOrderStatistics()
     {
-        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(WindowSize, K);
+        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(WindowSize, TrimCount);
         return Replay(mkAverage);
     }
 

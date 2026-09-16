@@ -19,9 +19,9 @@ public sealed class LongestRepeatingCharacterReplacementTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestRunByBruteForce_LeetCodeExamples_ReturnsLongestAchievableRun(
-        string s, int k, int expected)
+        string text, int maxReplacements, int expected)
     {
-        var actual = LongestRepeatingCharacterReplacementSolution.LongestRunByBruteForce(s, k);
+        var actual = LongestRepeatingCharacterReplacementSolution.LongestRunByBruteForce(text, maxReplacements);
 
         Assert.Equal(expected, actual);
     }
@@ -29,9 +29,9 @@ public sealed class LongestRepeatingCharacterReplacementTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void LongestRunBySlidingWindowHashMap_LeetCodeExamples_ReturnsLongestAchievableRun(
-        string s, int k, int expected)
+        string text, int maxReplacements, int expected)
     {
-        var actual = LongestRepeatingCharacterReplacementSolution.LongestRunBySlidingWindowHashMap(s, k);
+        var actual = LongestRepeatingCharacterReplacementSolution.LongestRunBySlidingWindowHashMap(text, maxReplacements);
 
         Assert.Equal(expected, actual);
     }

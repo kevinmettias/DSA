@@ -17,18 +17,20 @@ public sealed class NumberOfBeautifulIntegersInTheRangeTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForce_LeetCodeExamples_ReturnsBeautifulCount(int low, int high, int k, long expected)
+    public void CountByBruteForce_LeetCodeExamples_ReturnsBeautifulCount(
+        int low, int high, int divisor, long expected)
     {
-        var actual = NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, k);
+        var actual = NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, divisor);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByDigitDpMemo_LeetCodeExamples_ReturnsBeautifulCount(int low, int high, int k, long expected)
+    public void CountByDigitDpMemo_LeetCodeExamples_ReturnsBeautifulCount(
+        int low, int high, int divisor, long expected)
     {
-        var actual = NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo(low, high, k);
+        var actual = NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo(low, high, divisor);
 
         Assert.Equal(expected, actual);
     }
@@ -37,10 +39,10 @@ public sealed class NumberOfBeautifulIntegersInTheRangeTests
     [InlineData(1, 1000, 1)]
     [InlineData(123, 4567, 7)]
     [InlineData(1, 999_999, 13)]
-    public void BothStrategies_RandomizedRanges_Agree(int low, int high, int k)
+    public void BothStrategies_RandomizedRanges_Agree(int low, int high, int divisor)
     {
-        var bruteForce = NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, k);
-        var digitDp = NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo(low, high, k);
+        var bruteForce = NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, divisor);
+        var digitDp = NumberOfBeautifulIntegersInTheRangeSolution.CountByDigitDpMemo(low, high, divisor);
 
         Assert.Equal(bruteForce, digitDp);
     }

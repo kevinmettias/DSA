@@ -87,10 +87,10 @@ internal sealed class PuzzleGraph
         }
     }
 
-    private static string Swap(string state, int i, int j)
+    private static string Swap(string state, int firstIndex, int secondIndex)
     {
         var chars = state.ToCharArray();
-        (chars[i], chars[j]) = (chars[j], chars[i]);
+        (chars[firstIndex], chars[secondIndex]) = (chars[secondIndex], chars[firstIndex]);
         return new string(chars);
     }
 

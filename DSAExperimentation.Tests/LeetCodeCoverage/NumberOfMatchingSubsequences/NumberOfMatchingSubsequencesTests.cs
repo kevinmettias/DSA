@@ -18,7 +18,7 @@ public sealed class NumberOfMatchingSubsequencesTests
             // LC example 2.
             { "dsahjpjauf", ["ahjpjau", "ja", "ahbwzgqnuk", "tnmlanowax"], 2 },
 
-            // Right characters, wrong order - and a character s never contains.
+            // Right characters, wrong order - and a character searchedText never contains.
             { "abc", ["xyz", "ba"], 0 },
 
             // The same word twice counts twice.
@@ -31,20 +31,20 @@ public sealed class NumberOfMatchingSubsequencesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumMatchingSubseqByTwoPointerPerWord_LeetCodeExamples_CountsMatchingWords(
-        string s, string[] words, int expected)
+    public void CountMatchingSubseqByTwoPointerPerWord_LeetCodeExamples_CountsMatchingWords(
+        string searchedText, string[] words, int expected)
     {
-        var actual = NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByTwoPointerPerWord(s, words);
+        var actual = NumberOfMatchingSubsequencesSolution.CountMatchingSubseqByTwoPointerPerWord(searchedText, words);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumMatchingSubseqByWaitingBuckets_LeetCodeExamples_CountsMatchingWords(
-        string s, string[] words, int expected)
+    public void CountMatchingSubseqByWaitingBuckets_LeetCodeExamples_CountsMatchingWords(
+        string searchedText, string[] words, int expected)
     {
-        var actual = NumberOfMatchingSubsequencesSolution.NumMatchingSubseqByWaitingBuckets(s, words);
+        var actual = NumberOfMatchingSubsequencesSolution.CountMatchingSubseqByWaitingBuckets(searchedText, words);
 
         Assert.Equal(expected, actual);
     }

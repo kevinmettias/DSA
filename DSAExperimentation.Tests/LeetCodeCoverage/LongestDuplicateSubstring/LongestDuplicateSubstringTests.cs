@@ -22,15 +22,15 @@ public sealed class LongestDuplicateSubstringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LongestDupSubstringByAllSuffixPairs_LeetCodeExamples_ReturnsLongestRepeatedSubstring(
+    public void LongestDuplicateSubstringByAllSuffixPairs_LeetCodeExamples_ReturnsLongestRepeatedSubstring(
         DuplicateSubstringExample example) =>
-        Assert.Equal(example.Expected, LongestDuplicateSubstringSolution.LongestDupSubstringByAllSuffixPairs(example.S));
+        Assert.Equal(example.Expected, LongestDuplicateSubstringSolution.LongestDuplicateSubstringByAllSuffixPairs(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LongestDupSubstringBySuffixArray_LeetCodeExamples_ReturnsLongestRepeatedSubstring(
+    public void LongestDuplicateSubstringBySuffixArray_LeetCodeExamples_ReturnsLongestRepeatedSubstring(
         DuplicateSubstringExample example) =>
-        Assert.Equal(example.Expected, LongestDuplicateSubstringSolution.LongestDupSubstringBySuffixArray(example.S));
+        Assert.Equal(example.Expected, LongestDuplicateSubstringSolution.LongestDuplicateSubstringBySuffixArray(example.S));
 
     // One example as one argument. The input and the answer are both strings, so a
     // two-parameter signature let a row be written with the two swapped and still

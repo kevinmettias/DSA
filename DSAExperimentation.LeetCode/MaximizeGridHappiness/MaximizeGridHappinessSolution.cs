@@ -3,15 +3,15 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 namespace DSAExperimentation.LeetCode.MaximizeGridHappiness;
 
 // LeetCode 1659. Maximize Grid Happiness: seat up to introvertsCount introverts and
-// extrovertsCount extroverts (some may be left out) in an m x n grid to maximize
-// total happiness. An introvert starts at 120 and an extrovert at 40; every
-// orthogonally adjacent pair costs the introverts in it 30 each and pays the
+// extrovertsCount extroverts (some may be left out) in a rowCount x columnCount grid
+// to maximize total happiness. An introvert starts at 120 and an extrovert at 40;
+// every orthogonally adjacent pair costs the introverts in it 30 each and pays the
 // extroverts in it 20 each.
 //
 // Filling cells in row-major order means the only neighbors that can already be
 // decided are the cell above and the cell to the left, both of which live in a
-// sliding window of the last n placements - so the state is (Pos, Mask, Introverts,
-// Extroverts), with GridLayout owning the base-3 window encoding.
+// sliding window of the last columnCount placements - so the state is (Pos, Mask,
+// Introverts, Extroverts), with GridLayout owning the base-3 window encoding.
 //
 // Both strategies run that identical recursion; they differ only in whether a state
 // reached by several different placement sequences is recomputed each time or once.
@@ -38,9 +38,9 @@ internal static class MaximizeGridHappinessSolution
     // happens to land on it. Deliberately plain recursion over ints - the arm the
     // memoized strategy below has to justify itself against.
     public static int GetMaxGridHappinessByBruteForceRecursion(
-        int m, int n, int introvertsCount, int extrovertsCount)
+        int rowCount, int columnCount, int introvertsCount, int extrovertsCount)
     {
-        var layout = GridLayout.Build(m, n);
+        var layout = GridLayout.Build(rowCount, columnCount);
         return GetMaxGridHappinessByBruteForceRecursion(layout, introvertsCount, extrovertsCount);
     }
 
@@ -80,9 +80,9 @@ internal static class MaximizeGridHappinessSolution
     // since two independently-exhaustible people pools replace that problem's single
     // per-row choice. Every reachable state is computed exactly once.
     public static int GetMaxGridHappinessByMemoizedProfileDp(
-        int m, int n, int introvertsCount, int extrovertsCount)
+        int rowCount, int columnCount, int introvertsCount, int extrovertsCount)
     {
-        var layout = GridLayout.Build(m, n);
+        var layout = GridLayout.Build(rowCount, columnCount);
         return GetMaxGridHappinessByMemoizedProfileDp(layout, introvertsCount, extrovertsCount);
     }
 

@@ -4,8 +4,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MirrorReflection;
 
 // Harness only. Both strategies are MirrorReflectionSolution's - this file pins
 // them to LeetCode's published examples plus pairs that exercise the GCD reduction
-// itself (non-coprime (p, q), and q = p), including the O(p) unfolding simulation
-// that used to live unasserted in the benchmark.
+// itself (non-coprime (roomSide, rayHeight), and rayHeight = roomSide), including the
+// O(roomSide) unfolding simulation that used to live unasserted in the benchmark.
 public sealed class MirrorReflectionTests
 {
     public static TheoryData<int, int, int> Examples =>
@@ -24,9 +24,9 @@ public sealed class MirrorReflectionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReceptorBySimulatedUnfolding_LeetCodeExamples_ReturnsReceptorTheRayHits(
-        int p, int q, int expected)
+        int roomSide, int rayHeight, int expected)
     {
-        var actual = MirrorReflectionSolution.ReceptorBySimulatedUnfolding(p, q);
+        var actual = MirrorReflectionSolution.ReceptorBySimulatedUnfolding(roomSide, rayHeight);
 
         Assert.Equal(expected, actual);
     }
@@ -34,9 +34,9 @@ public sealed class MirrorReflectionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ReceptorByGcdReduction_LeetCodeExamples_ReturnsReceptorTheRayHits(
-        int p, int q, int expected)
+        int roomSide, int rayHeight, int expected)
     {
-        var actual = MirrorReflectionSolution.ReceptorByGcdReduction(p, q);
+        var actual = MirrorReflectionSolution.ReceptorByGcdReduction(roomSide, rayHeight);
 
         Assert.Equal(expected, actual);
     }

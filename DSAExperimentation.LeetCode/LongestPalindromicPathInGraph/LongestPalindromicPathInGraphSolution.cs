@@ -11,9 +11,9 @@ internal static class LongestPalindromicPathInGraphSolution
     // every simple path and checking the palindrome condition on the path
     // accumulated so far - the arm the memoized strategy below has to justify
     // itself against. Deliberately no repo primitives in its internals.
-    public static int LongestPalindromeByBruteForceDfs(int n, int[][] edges, string label)
+    public static int LongestPalindromeByBruteForceDfs(int nodeCount, int[][] edges, string label)
     {
-        var graph = LabeledGraph.Build(n, edges, label);
+        var graph = LabeledGraph.Build(nodeCount, edges, label);
 
         return LongestPalindromeByBruteForceDfs(graph);
     }
@@ -83,9 +83,9 @@ internal static class LongestPalindromicPathInGraphSolution
     // single shared cache across every center - a lone node (odd-length center)
     // or a same-labeled edge (even-length center) - so no (mask, u, v) triple is
     // explored twice regardless of how many centers reach it.
-    public static int LongestPalindromeByBitmaskMemo(int n, int[][] edges, string label)
+    public static int LongestPalindromeByBitmaskMemo(int nodeCount, int[][] edges, string label)
     {
-        var graph = LabeledGraph.Build(n, edges, label);
+        var graph = LabeledGraph.Build(nodeCount, edges, label);
 
         return LongestPalindromeByBitmaskMemo(graph);
     }

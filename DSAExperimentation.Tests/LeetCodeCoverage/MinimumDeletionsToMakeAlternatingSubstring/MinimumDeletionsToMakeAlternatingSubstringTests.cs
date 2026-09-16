@@ -17,20 +17,20 @@ public sealed class MinimumDeletionsToMakeAlternatingSubstringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ProcessQueriesByDirectScan_LeetCodeExamples_ReturnsDeletionCounts(
-        string s, int[][] queries, int[] expected)
+    public void AnswerQueriesByDirectScan_LeetCodeExamples_ReturnsDeletionCounts(
+        string text, int[][] queries, int[] expected)
     {
-        var actual = MinimumDeletionsToMakeAlternatingSubstringSolution.ProcessQueriesByDirectScan(s, queries);
+        var actual = MinimumDeletionsToMakeAlternatingSubstringSolution.AnswerQueriesByDirectScan(text, queries);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ProcessQueriesByFenwickAdjacency_LeetCodeExamples_ReturnsDeletionCounts(
-        string s, int[][] queries, int[] expected)
+    public void AnswerQueriesByFenwickAdjacency_LeetCodeExamples_ReturnsDeletionCounts(
+        string text, int[][] queries, int[] expected)
     {
-        var actual = MinimumDeletionsToMakeAlternatingSubstringSolution.ProcessQueriesByFenwickAdjacency(s, queries);
+        var actual = MinimumDeletionsToMakeAlternatingSubstringSolution.AnswerQueriesByFenwickAdjacency(text, queries);
 
         Assert.Equal(expected, actual);
     }

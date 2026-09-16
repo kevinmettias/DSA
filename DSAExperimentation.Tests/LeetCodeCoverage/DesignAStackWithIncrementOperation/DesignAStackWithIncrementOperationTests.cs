@@ -134,12 +134,12 @@ public sealed class DesignAStackWithIncrementOperationTests
         }
     }
 
-    // One call in a CustomStack script: push a value, pop, or increment the bottom k
-    // elements. Pure dispatch, built via the named factories below so a script (like
-    // Examples above) reads like the LeetCode call sequence it replays. Push and
-    // Increment return null (no return value); Pop returns the popped value - the same
-    // null-means-"no return value" convention FreqStackOp.Apply uses. Nested here
-    // rather than left at file scope so the file declares exactly one type.
+    // One call in a CustomStack script: push a value, pop, or add to the bottom
+    // bottomElementCount elements. Pure dispatch, built via the named factories below
+    // so a script (like Examples above) reads like the LeetCode call sequence it
+    // replays. Push and Increment return null (no return value); Pop returns the popped
+    // value - the same null-means-"no return value" convention FreqStackOp.Apply uses.
+    // Nested here rather than left at file scope so the file declares exactly one type.
     public readonly record struct CustomStackOp(CustomStackOp.OpKind kind, int first, int second)
     {
         public enum OpKind
@@ -153,7 +153,8 @@ public sealed class DesignAStackWithIncrementOperationTests
 
         public static CustomStackOp Pop() => new(OpKind.Pop, 0, 0);
 
-        public static CustomStackOp Increment(int k, int val) => new(OpKind.Increment, k, val);
+        public static CustomStackOp Increment(int bottomElementCount, int val) =>
+        new(OpKind.Increment, bottomElementCount, val);
 
         internal int? Apply(DesignAStackWithIncrementOperationSolution.ICustomStack stack)
         {

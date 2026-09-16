@@ -21,11 +21,11 @@ public sealed class CountAllValidPickupAndDeliveryOptionsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountOrdersByTabulation_LeetCodeExamples_ReturnsValidSequenceCount(int n, long expected) =>
-        Assert.Equal(expected, CountAllValidPickupAndDeliveryOptionsSolution.CountOrdersByTabulation(n));
+    public void CountOrdersByTabulation_LeetCodeExamples_ReturnsValidSequenceCount(int orderCount, long expected) =>
+        Assert.Equal(expected, CountAllValidPickupAndDeliveryOptionsSolution.CountOrdersByTabulation(orderCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountOrdersByMemoizedRecurrence_LeetCodeExamples_ReturnsValidSequenceCount(int n, long expected) =>
-        Assert.Equal(expected, CountAllValidPickupAndDeliveryOptionsSolution.CountOrdersByMemoizedRecurrence(n));
+    public void CountOrdersByMemoizedRecurrence_LeetCodeExamples_ReturnsValidSequenceCount(int orderCount, long expected) =>
+        Assert.Equal(expected, CountAllValidPickupAndDeliveryOptionsSolution.CountOrdersByMemoizedRecurrence(orderCount));
 }

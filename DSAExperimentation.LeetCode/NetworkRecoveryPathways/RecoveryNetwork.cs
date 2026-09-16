@@ -1,8 +1,8 @@
 namespace DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 
 // The graph LC 3620 actually poses a query over, online-filtered once: any edge
-// touching an offline node can never lie on a valid path (0 and n-1 are always
-// online per the problem's own constraint), so dropping such edges up front is
+// touching an offline node can never lie on a valid path (0 and nodeCount - 1 are
+// always online per the problem's own constraint), so dropping such edges up front is
 // exactly "every intermediate node on the path is online" - the domain model,
 // not an answer to any one query about it (LockGraph's own framing). Both
 // strategies below share this same prepared network; only how each one searches
@@ -24,9 +24,9 @@ internal sealed class RecoveryNetwork(
 
     public RecoveryNode Destination => Nodes[^1];
 
-    public static RecoveryNetwork Build(int n, int[][] edges, bool[] online)
+    public static RecoveryNetwork Build(int nodeCount, int[][] edges, bool[] online)
     {
-        var nodes = BuildNodes(n);
+        var nodes = BuildNodes(nodeCount);
         var onlineEdges = new List<(int From, int To, long Weight)>();
         var maxCost = 0L;
 
@@ -38,11 +38,11 @@ internal sealed class RecoveryNetwork(
         return new RecoveryNetwork(nodes, onlineEdges, maxCost);
     }
 
-    private static RecoveryNode[] BuildNodes(int n)
+    private static RecoveryNode[] BuildNodes(int nodeCount)
     {
-        var nodes = new RecoveryNode[n];
+        var nodes = new RecoveryNode[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             nodes[i] = new RecoveryNode(i);
         }

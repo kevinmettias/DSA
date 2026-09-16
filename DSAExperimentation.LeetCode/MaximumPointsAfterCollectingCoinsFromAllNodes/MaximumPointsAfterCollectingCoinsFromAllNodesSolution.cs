@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNo
 
 // LeetCode 2920. Maximum Points After Collecting Coins From All Nodes: edges[]
 // describes an undirected tree rooted at node 0. At every node you either collect
-// normally - coins[node] >> h, minus a flat cost k, where h counts how many
+// normally - coins[node] >> h, minus a flat cost, where h counts how many
 // ancestors already chose to halve on the way down - or halve here too -
 // coins[node] >> (h + 1), no cost, with h + 1 then flowing into every child.
 // Maximize the total.
@@ -24,11 +24,11 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
     // Dictionary<(node,h),long> keyed lookups, no repo primitive involved beyond
     // the adjacency BFS's own Queue<int>. The arm the tree-fold strategy has to
     // beat.
-    public static long MaxPointsByMemoizedRecursion(int[][] edges, int[] coins, int k)
+    public static long MaxPointsByMemoizedRecursion(int[][] edges, int[] coins, int cost)
     {
         var adjacency = BuildAdjacency(coins.Length, edges);
         var memo = new Dictionary<(int Node, int Halvings), long>();
-        var state = (Adjacency: adjacency, Coins: coins, K: k, Memo: memo);
+        var state = (Adjacency: adjacency, Coins: coins, Cost: cost, Memo: memo);
 
         return Dfs(state, 0, -1, 0);
     }
@@ -40,12 +40,12 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
     // node's Combine produces its whole per-halving-level table in one pass, so no
     // memo table is needed at all: the fold's own post-order visit reaches every
     // node exactly once.
-    public static long MaxPointsByTreeFold(int[][] edges, int[] coins, int k)
+    public static long MaxPointsByTreeFold(int[][] edges, int[] coins, int cost)
     {
         var parent = BuildParentArray(coins.Length, edges);
         var nodes = ParentArrayTree.Build(parent);
 
-        CoinPointsAlgebra.Prepare(coins, k);
+        CoinPointsAlgebra.Prepare(coins, cost);
 
         var table = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
@@ -57,10 +57,10 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
 
     // edges[] is undirected, so a BFS from the root is what turns it into the
     // parent-points-at-child encoding ParentArrayTree.Build expects.
-    private static int[] BuildParentArray(int n, int[][] edges)
+    private static int[] BuildParentArray(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
-        var parent = new int[n];
+        var adjacency = BuildAdjacency(nodeCount, edges);
+        var parent = new int[nodeCount];
         Array.Fill(parent, NoParentAssignedYet);
         parent[0] = -1;
 
@@ -95,7 +95,7 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
     // The memo table, the adjacency and the problem constants travel together,
     // so they are bundled rather than threaded one by one through the recursion.
     private static long Dfs(
-        (List<int>[] Adjacency, int[] Coins, int K, Dictionary<(int Node, int Halvings), long> Memo) state,
+        (List<int>[] Adjacency, int[] Coins, int Cost, Dictionary<(int Node, int Halvings), long> Memo) state,
         int node, int parent, int halvings)
     {
         var cappedHalvings = Math.Min(halvings, HalvingDepth.Max);
@@ -106,7 +106,7 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         }
 
         var nextHalvings = Math.Min(cappedHalvings + 1, HalvingDepth.Max);
-        var take = ((long)state.Coins[node] >> cappedHalvings) - state.K;
+        var take = ((long)state.Coins[node] >> cappedHalvings) - state.Cost;
         var halve = (long)state.Coins[node] >> nextHalvings;
 
         var (takeDelta, halveDelta) = AccumulateChildBranches(state, node, parent, cappedHalvings);
@@ -123,7 +123,7 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
     // are what Dfs adds to its own two candidates. Children are visited in
     // adjacency order so the memo writes land in the same sequence as before.
     private static (long Take, long Halve) AccumulateChildBranches(
-        (List<int>[] Adjacency, int[] Coins, int K, Dictionary<(int Node, int Halvings), long> Memo) state,
+        (List<int>[] Adjacency, int[] Coins, int Cost, Dictionary<(int Node, int Halvings), long> Memo) state,
         int node, int parent, int cappedHalvings)
     {
         var nextHalvings = Math.Min(cappedHalvings + 1, HalvingDepth.Max);
@@ -144,10 +144,10 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         return (take, halve);
     }
 
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[n];
-        for (var i = 0; i < n; i++)
+        var adjacency = new List<int>[nodeCount];
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }

@@ -3,8 +3,8 @@ using DSAExperimentation.LeetCode.PrimeArrangements;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimeArrangements;
 
 // Harness only. Both strategies are PrimeArrangementsSolution's - this file pins
-// them to LeetCode's published examples plus the small-n boundaries where the
-// prime count is zero or one and the factorials collapse to 1.
+// them to LeetCode's published examples plus the small-upperBound boundaries
+// where the prime count is zero or one and the factorials collapse to 1.
 public sealed class PrimeArrangementsTests
 {
     public static TheoryData<int, int> Examples =>
@@ -20,13 +20,13 @@ public sealed class PrimeArrangementsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumPrimeArrangementsByTrialDivision_LeetCodeExamples_ReturnsArrangementCount(
-        int n, int expected) =>
-        Assert.Equal(expected, PrimeArrangementsSolution.NumPrimeArrangementsByTrialDivision(n));
+    public void CountPrimeArrangementsByTrialDivision_LeetCodeExamples_ReturnsArrangementCount(
+        int upperBound, int expected) =>
+        Assert.Equal(expected, PrimeArrangementsSolution.CountPrimeArrangementsByTrialDivision(upperBound));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumPrimeArrangementsBySieveOfEratosthenes_LeetCodeExamples_ReturnsArrangementCount(
-        int n, int expected) =>
-        Assert.Equal(expected, PrimeArrangementsSolution.NumPrimeArrangementsBySieveOfEratosthenes(n));
+    public void CountPrimeArrangementsBySieveOfEratosthenes_LeetCodeExamples_ReturnsArrangementCount(
+        int upperBound, int expected) =>
+        Assert.Equal(expected, PrimeArrangementsSolution.CountPrimeArrangementsBySieveOfEratosthenes(upperBound));
 }

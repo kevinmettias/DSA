@@ -3,12 +3,12 @@ using DSAExperimentation.DataStructures.Trie;
 
 namespace DSAExperimentation.LeetCode.ExtraCharactersInAString;
 
-// LeetCode 2707. Extra Characters in a String: break s into non-overlapping pieces that
-// are all dictionary words and report the fewest characters left over. Both strategies
-// fill the same recurrence - the best from a start position is either "waste this
-// character and continue" or "consume a dictionary word starting here and continue past
-// it" - so what separates them is only how a start position discovers the dictionary
-// words that begin there:
+// LeetCode 2707. Extra Characters in a String: break text into non-overlapping pieces
+// that are all dictionary words and report the fewest characters left over. Both
+// strategies fill the same recurrence - the best from a start position is either
+// "waste this character and continue" or "consume a dictionary word starting here and
+// continue past it" - so what separates them is only how a start position discovers
+// the dictionary words that begin there:
 //
 //   HashSetFullScan is the textbook arm. It walks every end position from start to the
 //   end of the string, cuts the substring out and hashes it against a HashSet<string>,
@@ -28,10 +28,10 @@ internal static class ExtraCharactersInAStringSolution
 {
     // The naive arm: hash every substring against the dictionary. Internals are
     // deliberately all BCL.
-    public static int MinExtraCharsByHashSetFullScan(string s, string[] dictionary)
+    public static int MinExtraCharsByHashSetFullScan(string text, string[] dictionary)
     {
         var words = new HashSet<string>(dictionary);
-        var length = s.Length;
+        var length = text.Length;
         var fewestLeftoverFrom = new int[length + 1];
 
         for (var start = length - 1; start >= 0; start--)
@@ -40,7 +40,7 @@ internal static class ExtraCharactersInAStringSolution
 
             for (var end = start + 1; end <= length; end++)
             {
-                if (words.Contains(s[start..end]))
+                if (words.Contains(text[start..end]))
                 {
                     best = Math.Min(best, fewestLeftoverFrom[end]);
                 }
@@ -54,11 +54,11 @@ internal static class ExtraCharactersInAStringSolution
 
     // This repo's own arm: a Trie<bool> prunes the candidate scan the moment the prefix
     // leaves the dictionary, and Memoizer carries the recurrence over start indices.
-    public static int MinExtraCharsByTriePrunedScan(string s, string[] dictionary)
+    public static int MinExtraCharsByTriePrunedScan(string text, string[] dictionary)
     {
         var words = BuildTrie(dictionary);
 
-        return FewestLeftoverByTrie(s, words);
+        return FewestLeftoverByTrie(text, words);
     }
 
     private static Trie<bool> BuildTrie(string[] dictionary)
@@ -76,18 +76,18 @@ internal static class ExtraCharactersInAStringSolution
     // The recurrence the memoized arm fills, with the trie handed in already built:
     // from a start position the fewest leftover characters are either "waste this one
     // and continue" or the best over the dictionary words that begin here.
-    private static int FewestLeftoverByTrie(string s, Trie<bool> words) =>
-        Memoizer.Memoize<int, int>(0, new FewestLeftoverFromStart(s, words));
+    private static int FewestLeftoverByTrie(string text, Trie<bool> words) =>
+        Memoizer.Memoize<int, int>(0, new FewestLeftoverFromStart(text, words));
 
     // The end positions of the dictionary words that begin at `start`, in ascending
     // order, giving up as soon as the candidate leaves the dictionary: the same
     // Trie<bool> walk, just handed to the recurrence one word at a time so the
     // recurrence itself reads as the two branches it chooses between.
-    private static IEnumerable<int> WordEndsStartingAt(string s, Trie<bool> words, int start)
+    private static IEnumerable<int> WordEndsStartingAt(string text, Trie<bool> words, int start)
     {
-        for (var end = start + 1; end <= s.Length; end++)
+        for (var end = start + 1; end <= text.Length; end++)
         {
-            var piece = s[start..end];
+            var piece = text[start..end];
             if (!words.HasPrefix(piece))
             {
                 yield break;
@@ -103,18 +103,19 @@ internal static class ExtraCharactersInAStringSolution
     // The recurrence, as a named type: from a start position the fewest leftover
     // characters are either this one wasted and the rest continued, or the best over
     // the dictionary words that begin right here.
-    private sealed class FewestLeftoverFromStart(string s, Trie<bool> words) : IRecurrence<int, int>
+    private sealed class FewestLeftoverFromStart(
+        string text, Trie<bool> words) : IRecurrence<int, int>
     {
         public int Replay(int start, IRecurrence<int, int> rest)
         {
-            if (start == s.Length)
+            if (start == text.Length)
             {
                 return 0;
             }
 
             var best = 1 + rest.Replay(start + 1, rest);
 
-            foreach (var end in WordEndsStartingAt(s, words, start))
+            foreach (var end in WordEndsStartingAt(text, words, start))
             {
                 var afterWord = rest.Replay(end, rest);
                 best = Math.Min(best, afterWord);

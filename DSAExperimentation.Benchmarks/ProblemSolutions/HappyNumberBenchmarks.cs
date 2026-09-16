@@ -17,8 +17,8 @@ public class HappyNumberBenchmarks
     private const int UnhappyCycleMember = 4;
 
     [Benchmark(Baseline = true)]
-    public bool VisitedSet() => HappyNumberSolution.IsHappyByVisitedSet(UnhappyCycleMember);
+    public bool IsHappyByVisitedSet() => HappyNumberSolution.IsHappyByVisitedSet(UnhappyCycleMember);
 
     [Benchmark]
-    public bool FloydCycleDetection() => HappyNumberSolution.IsHappyByFloydCycleDetection(UnhappyCycleMember);
+    public bool IsHappyByFloydCycleDetection() => HappyNumberSolution.IsHappyByFloydCycleDetection(UnhappyCycleMember);
 }

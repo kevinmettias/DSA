@@ -27,9 +27,9 @@ public sealed class PowerGridMaintenanceTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaintenanceResultsByUnionFindSortedSet_LeetCodeExamples_ReturnsSmallestOnlineStationPerCheck(
-        int c, int[][] connections, int[][] queries, int[] expected)
+        int stationCount, int[][] connections, int[][] queries, int[] expected)
     {
-        var actual = PowerGridMaintenanceSolution.MaintenanceResultsByUnionFindSortedSet(c, connections, queries);
+        var actual = PowerGridMaintenanceSolution.MaintenanceResultsByUnionFindSortedSet(stationCount, connections, queries);
 
         Assert.Equal(expected, actual);
     }
@@ -37,9 +37,9 @@ public sealed class PowerGridMaintenanceTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaintenanceResultsByUnionFindHeap_LeetCodeExamples_ReturnsSmallestOnlineStationPerCheck(
-        int c, int[][] connections, int[][] queries, int[] expected)
+        int stationCount, int[][] connections, int[][] queries, int[] expected)
     {
-        var actual = PowerGridMaintenanceSolution.MaintenanceResultsByUnionFindHeap(c, connections, queries);
+        var actual = PowerGridMaintenanceSolution.MaintenanceResultsByUnionFindHeap(stationCount, connections, queries);
 
         Assert.Equal(expected, actual);
     }

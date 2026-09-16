@@ -58,7 +58,7 @@ public class FindTheStringWithLCPBenchmarks
         return lcp;
     }
 
-    private static int DiagonalLcp(int[][] lcp, int i, int j) => lcp[i + 1][j + 1];
+    private static int DiagonalLcp(int[][] lcp, int rowIndex, int columnIndex) => lcp[rowIndex + 1][columnIndex + 1];
 
     private static int ExtendedLcp(int diagonal) => diagonal + 1;
 

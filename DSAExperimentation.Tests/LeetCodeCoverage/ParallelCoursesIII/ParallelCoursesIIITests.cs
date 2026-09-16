@@ -22,9 +22,9 @@ public sealed class ParallelCoursesIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByKahnsTopologicalSortDp_LeetCodeExamples_ReturnsCriticalPathLength(
-        int n, int[][] relations, int[] time, int expected)
+        int courseCount, int[][] relations, int[] time, int expected)
     {
-        var actual = ParallelCoursesIIISolution.MinimumTimeByKahnsTopologicalSortDp(n, relations, time);
+        var actual = ParallelCoursesIIISolution.MinimumTimeByKahnsTopologicalSortDp(courseCount, relations, time);
 
         Assert.Equal(expected, actual);
     }
@@ -32,9 +32,9 @@ public sealed class ParallelCoursesIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByRepeatedRelaxation_LeetCodeExamples_ReturnsCriticalPathLength(
-        int n, int[][] relations, int[] time, int expected)
+        int courseCount, int[][] relations, int[] time, int expected)
     {
-        var actual = ParallelCoursesIIISolution.MinimumTimeByRepeatedRelaxation(n, relations, time);
+        var actual = ParallelCoursesIIISolution.MinimumTimeByRepeatedRelaxation(courseCount, relations, time);
 
         Assert.Equal(expected, actual);
     }

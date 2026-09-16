@@ -30,20 +30,20 @@ public sealed class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxNumEdgesToRemoveByFloodFill_LeetCodeExamples_ReturnsRemovableEdgeCount(
-        int n, int[][] edges, int expected)
+    public void MaxNumberOfEdgesToRemoveByFloodFill_LeetCodeExamples_ReturnsRemovableEdgeCount(
+        int nodeCount, int[][] edges, int expected)
     {
-        var actual = RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumEdgesToRemoveByFloodFill(n, edges);
+        var actual = RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumberOfEdgesToRemoveByFloodFill(nodeCount, edges);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxNumEdgesToRemoveByDisjointSet_LeetCodeExamples_ReturnsRemovableEdgeCount(
-        int n, int[][] edges, int expected)
+    public void MaxNumberOfEdgesToRemoveByDisjointSet_LeetCodeExamples_ReturnsRemovableEdgeCount(
+        int nodeCount, int[][] edges, int expected)
     {
-        var actual = RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumEdgesToRemoveByDisjointSet(n, edges);
+        var actual = RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution.MaxNumberOfEdgesToRemoveByDisjointSet(nodeCount, edges);
 
         Assert.Equal(expected, actual);
     }

@@ -8,8 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimizeMaximumComponentCostTests proves correct. The Kruskal arm is
 // handed a pre-built ComponentGraph so node/adjacency construction is charged to
 // [GlobalSetup] rather than to the merge walk being measured; the union-find
-// baseline gets LeetCode's own (n, edges, k) shape directly since sorting is
-// part of the textbook cost it exists to represent, not setup to hoist away.
+// baseline gets LeetCode's own (nodeCount, edges, maxComponents) shape directly since
+// sorting is part of the textbook cost it exists to represent, not setup to hoist away.
 // Edges are reused from EdgeWeightGraphWorkloads (built for LC 3419) rather than
 // a second random-connected-weighted-graph generator, since it already produces
 // exactly this shape: int[][] edges guaranteed connected via a back-edge per

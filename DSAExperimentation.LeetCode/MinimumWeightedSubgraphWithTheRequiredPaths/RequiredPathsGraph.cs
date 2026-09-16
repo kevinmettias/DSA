@@ -19,12 +19,12 @@ internal sealed class RequiredPathsGraph
         Reverse = reverse;
     }
 
-    public static RequiredPathsGraph Build(int n, int[][] edges)
+    public static RequiredPathsGraph Build(int nodeCount, int[][] edges)
     {
-        var forward = new RequiredPathsNode[n];
-        var reverse = new RequiredPathsNode[n];
+        var forward = new RequiredPathsNode[nodeCount];
+        var reverse = new RequiredPathsNode[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             forward[i] = new RequiredPathsNode(i);
             reverse[i] = new RequiredPathsNode(i);

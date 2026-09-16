@@ -10,9 +10,9 @@ internal sealed class PrecedenceMasks
 
     private PrecedenceMasks(int[] masks) => Masks = masks;
 
-    public static PrecedenceMasks Build(int n, int[][] edges)
+    public static PrecedenceMasks Build(int nodeCount, int[][] edges)
     {
-        var masks = new int[n];
+        var masks = new int[nodeCount];
 
         foreach (var edge in edges)
         {

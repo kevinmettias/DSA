@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfMusicPlaylists;
 // Harness only: both strategies live in NumberOfMusicPlaylistsSolution and are
 // asserted against the same examples - LeetCode's three, plus the degenerate
 // single-song playlist and two alternating-playlist cases that pin down the
-// "no replay within k songs" factor.
+// "no replay within replayGap songs" factor.
 public sealed class NumberOfMusicPlaylistsTests
 {
     public static TheoryData<int, int, int, long> Examples =>
@@ -22,26 +22,26 @@ public sealed class NumberOfMusicPlaylistsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumMusicPlaylistsByTabulation_LeetCodeExamples_ReturnsPlaylistCount(
-        int n,
+    public void CountMusicPlaylistsByTabulation_LeetCodeExamples_ReturnsPlaylistCount(
+        int songCount,
         int goal,
-        int k,
+        int replayGap,
         long expected)
     {
-        var actual = NumberOfMusicPlaylistsSolution.NumMusicPlaylistsByTabulation(n, goal, k);
+        var actual = NumberOfMusicPlaylistsSolution.CountMusicPlaylistsByTabulation(songCount, goal, replayGap);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumMusicPlaylistsByMemoizedRecurrence_LeetCodeExamples_ReturnsPlaylistCount(
-        int n,
+    public void CountMusicPlaylistsByMemoizedRecurrence_LeetCodeExamples_ReturnsPlaylistCount(
+        int songCount,
         int goal,
-        int k,
+        int replayGap,
         long expected)
     {
-        var actual = NumberOfMusicPlaylistsSolution.NumMusicPlaylistsByMemoizedRecurrence(n, goal, k);
+        var actual = NumberOfMusicPlaylistsSolution.CountMusicPlaylistsByMemoizedRecurrence(songCount, goal, replayGap);
 
         Assert.Equal(expected, actual);
     }

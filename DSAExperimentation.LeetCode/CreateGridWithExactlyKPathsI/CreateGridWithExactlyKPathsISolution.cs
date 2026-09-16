@@ -35,8 +35,8 @@ internal static class CreateGridWithExactlyKPathsISolution
     // rectangle has - the only question the search below asks of a candidate, and one
     // the two arms answer by different means (simulating the rectangle, or evaluating
     // the closed form). The interface is where the two state that they must agree: the
-    // search compares the answer against k, so a factor-of-two disagreement between
-    // them would silently change which grid gets built.
+    // search compares the answer against targetPathCount, so a factor-of-two
+    // disagreement between them would silently change which grid gets built.
     private interface IRectanglePathCount
     {
         int CountPathsAcross(int rows, int columns);
@@ -51,56 +51,67 @@ internal static class CreateGridWithExactlyKPathsISolution
     // The straightforward arm: a rectangle's path count computed the way most
     // people would reach for first, C(n, r) via Pascal's-triangle-style DP over
     // the candidate rectangle itself rather than a combinatorial identity.
-    public static string[] CreateGridByPathCountDp(int m, int n, int k) => TryBuild(m, n, k, PathCountBySimulation);
+    public static string[] CreateGridByPathCountDp(
+        int gridRowCount, int gridColumnCount, int targetPathCount) =>
+        TryBuild(gridRowCount, gridColumnCount, targetPathCount, PathCountBySimulation);
 
     // The composed arm: the same search, but a rectangle's path count comes from
     // the closed-form binomial coefficient instead of simulating the rectangle.
-    public static string[] CreateGridByBinomialFormula(int m, int n, int k) => TryBuild(m, n, k, PathCountByClosedForm);
+    public static string[] CreateGridByBinomialFormula(
+        int gridRowCount, int gridColumnCount, int targetPathCount) =>
+        TryBuild(gridRowCount, gridColumnCount, targetPathCount, PathCountByClosedForm);
 
-    private static string[] TryBuild(int m, int n, int k, IRectanglePathCount rectanglePathCount)
+    private static string[] TryBuild(
+        int gridRowCount, int gridColumnCount, int targetPathCount,
+        IRectanglePathCount rectanglePathCount)
     {
-        for (var a = 1; a <= m; a++)
+        for (var a = 1; a <= gridRowCount; a++)
         {
-            for (var b = 1; b <= n; b++)
+            for (var b = 1; b <= gridColumnCount; b++)
             {
-                if (rectanglePathCount.CountPathsAcross(a, b) == k)
+                if (rectanglePathCount.CountPathsAcross(a, b) == targetPathCount)
                 {
-                    return BuildRectangleGrid(m, n, a, b);
+                    return BuildRectangleGrid(gridRowCount, gridColumnCount, a, b);
                 }
             }
         }
 
-        return NeedsDoubleChain(m, n, k)
-            ? BuildDoubleChainGrid(m, n)
+        return IsDoubleChainNeeded(gridRowCount, gridColumnCount, targetPathCount)
+            ? BuildDoubleChainGrid(gridRowCount, gridColumnCount)
             : Array.Empty<string>();
     }
 
-    // The one k no a x b rectangle reaches when both sides are shorter than the
-    // double chain's own 3x3 footprint - two chained 2x2 rectangles are what it
-    // takes there.
-    private static bool NeedsDoubleChain(int m, int n, int k)
-        => k == 4 && m >= DoubleChainSide && n >= DoubleChainSide;
+    // The one target path count no a x b rectangle reaches when both sides are
+    // shorter than the double chain's own 3x3 footprint - two chained 2x2
+    // rectangles are what it takes there.
+    private static bool IsDoubleChainNeeded(
+        int gridRowCount, int gridColumnCount, int targetPathCount)
+        => targetPathCount == 4
+            && gridRowCount >= DoubleChainSide
+            && gridColumnCount >= DoubleChainSide;
 
-    private static string[] BuildRectangleGrid(int m, int n, int a, int b)
+    private static string[] BuildRectangleGrid(
+        int gridRowCount, int gridColumnCount, int rectangleRowCount, int rectangleColumnCount)
     {
-        var grid = BlankGrid(m, n);
+        var grid = BlankGrid(gridRowCount, gridColumnCount);
 
-        for (var i = 0; i < a; i++)
+        for (var i = 0; i < rectangleRowCount; i++)
         {
-            for (var j = 0; j < b; j++)
+            for (var j = 0; j < rectangleColumnCount; j++)
             {
                 grid[i][j] = FreeCell;
             }
         }
 
-        FreeCorridorFromCorner(grid, cornerRow: a - 1, cornerCol: b - 1);
+        FreeCorridorFromCorner(
+            grid, cornerRow: rectangleRowCount - 1, cornerCol: rectangleColumnCount - 1);
 
         return ToRows(grid);
     }
 
-    private static string[] BuildDoubleChainGrid(int m, int n)
+    private static string[] BuildDoubleChainGrid(int gridRowCount, int gridColumnCount)
     {
-        var grid = BlankGrid(m, n);
+        var grid = BlankGrid(gridRowCount, gridColumnCount);
 
         foreach (var (row, col) in DoubleChainFreeCells)
         {
@@ -118,27 +129,27 @@ internal static class CreateGridWithExactlyKPathsISolution
     // whatever the rectangle itself already counts.
     private static void FreeCorridorFromCorner(char[][] grid, int cornerRow, int cornerCol)
     {
-        var m = grid.Length;
-        var n = grid[0].Length;
+        var gridRowCount = grid.Length;
+        var gridColumnCount = grid[0].Length;
 
-        for (var j = cornerCol; j < n; j++)
+        for (var j = cornerCol; j < gridColumnCount; j++)
         {
             grid[cornerRow][j] = FreeCell;
         }
 
-        for (var i = cornerRow; i < m; i++)
+        for (var i = cornerRow; i < gridRowCount; i++)
         {
-            grid[i][n - 1] = FreeCell;
+            grid[i][gridColumnCount - 1] = FreeCell;
         }
     }
 
-    private static char[][] BlankGrid(int m, int n)
+    private static char[][] BlankGrid(int gridRowCount, int gridColumnCount)
     {
-        var grid = new char[m][];
+        var grid = new char[gridRowCount][];
 
-        for (var i = 0; i < m; i++)
+        for (var i = 0; i < gridRowCount; i++)
         {
-            grid[i] = new char[n];
+            grid[i] = new char[gridColumnCount];
             Array.Fill(grid[i], ObstacleCell);
         }
 

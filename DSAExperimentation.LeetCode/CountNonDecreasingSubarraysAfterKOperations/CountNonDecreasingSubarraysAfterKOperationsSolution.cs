@@ -24,9 +24,9 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
 {
     // The textbook approach: for every left endpoint, walk right recomputing the
     // running maximum and the accumulated cost from scratch, stopping as soon as
-    // it exceeds k (cost only grows from there). O(n^2) worst case - the arm the
-    // sliding-window strategy has to beat.
-    public static long CountByPrefixMaxBruteForce(int[] nums, int k)
+    // it exceeds maxOperations (cost only grows from there). O(n^2) worst case -
+    // the arm the sliding-window strategy has to beat.
+    public static long CountByPrefixMaxBruteForce(int[] nums, int maxOperations)
     {
         var count = 0L;
 
@@ -40,7 +40,7 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
                 runningMax = Math.Max(runningMax, nums[right]);
                 cost += runningMax - nums[right];
 
-                if (cost > k)
+                if (cost > maxOperations)
                 {
                     break;
                 }
@@ -59,8 +59,8 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
     // the FRONT (the ones nearest `left`, since those are exactly the positions a
     // bigger element prepended in front of them would replace) and the window
     // shrinks by peeling one element at a time off the BACK (nearest `right`)
-    // whenever the total cost still exceeds k.
-    public static long CountByMonotonicDequeWindow(int[] nums, int k)
+    // whenever the total cost still exceeds maxOperations.
+    public static long CountByMonotonicDequeWindow(int[] nums, int maxOperations)
     {
         var window = new Deque<(long Value, long Count)>();
         var count = 0L;
@@ -71,7 +71,7 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
         for (var left = nums.Length - 1; left >= 0; left--)
         {
             (sumOfRunningMax, sumOfValues, right) =
-                ExtendLeft(window, nums, k, (left, right, sumOfRunningMax, sumOfValues));
+                ExtendLeft(window, nums, maxOperations, (left, right, sumOfRunningMax, sumOfValues));
 
             count += right - left + 1;
         }
@@ -80,12 +80,12 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
     }
 
     // Absorb nums[left] as the window's new leftmost element, then peel elements off
-    // the back until the window's cost is back within k. Returns the advanced sums
-    // and the window's new right end.
+    // the back until the window's cost is back within maxOperations. Returns the
+    // advanced sums and the window's new right end.
     private static (long SumOfRunningMax, long SumOfValues, int Right) ExtendLeft(
         Deque<(long Value, long Count)> window,
         int[] nums,
-        long k,
+        long maxOperations,
         (int Left, int Right, long SumOfRunningMax, long SumOfValues) frame)
     {
         var value = (long)nums[frame.Left];
@@ -93,7 +93,7 @@ internal static class CountNonDecreasingSubarraysAfterKOperationsSolution
         var sumOfRunningMax = frame.SumOfRunningMax + MergeIntoFront(window, value);
         var right = frame.Right;
 
-        while (sumOfRunningMax - sumOfValues > k)
+        while (sumOfRunningMax - sumOfValues > maxOperations)
         {
             sumOfRunningMax -= ShrinkBack(window);
             sumOfValues -= nums[right];

@@ -6,9 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ManhattanDistancesOfAllArrangementsOfPiecesSolution's,
 // the same methods ManhattanDistancesOfAllArrangementsOfPiecesTests proves correct.
 // The grid is fixed and small - SumByBruteForceArrangements enumerates C(m*n, k)
-// arrangements outright, so K is the only axis that can move without making the
-// baseline arm impractical. SumByPairwiseDistanceFormula would happily take a
-// grid with m*n in the tens of thousands instead.
+// arrangements outright, so PieceCount is the only axis that can move without
+// making the baseline arm impractical. SumByPairwiseDistanceFormula would happily
+// take a grid with m*n in the tens of thousands instead.
 [MemoryDiagnoser]
 public class ManhattanDistancesOfAllArrangementsOfPiecesBenchmarks
 {
@@ -16,13 +16,15 @@ public class ManhattanDistancesOfAllArrangementsOfPiecesBenchmarks
     private const int Columns = 4;
 
     [Params(2, 4, 6)]
-    public int K { get; set; }
+    public int PieceCount { get; set; }
 
     [Benchmark(Baseline = true)]
     public long BruteForceArrangements() =>
-        ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByBruteForceArrangements(Rows, Columns, K);
+        ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByBruteForceArrangements(
+            Rows, Columns, PieceCount);
 
     [Benchmark]
     public long PairwiseDistanceFormula() =>
-        ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByPairwiseDistanceFormula(Rows, Columns, K);
+        ManhattanDistancesOfAllArrangementsOfPiecesSolution.SumByPairwiseDistanceFormula(
+            Rows, Columns, PieceCount);
 }

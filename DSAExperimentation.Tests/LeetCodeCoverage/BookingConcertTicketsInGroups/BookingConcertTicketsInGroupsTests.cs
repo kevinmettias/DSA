@@ -102,13 +102,16 @@ public sealed class BookingConcertTicketsInGroupsTests
     // and so the answer a scatter is asserted against is named by the factory that
     // chose it rather than by a bare `bool` at the call site.
     public readonly record struct BookMyShowOp(
-        bool isGather, int k, int maxRow, int[] expectedSeating, bool expectedSeated)
+        bool isGather, int groupSize, int maxRow, int[] expectedSeating, bool expectedSeated)
     {
-        public static BookMyShowOp Gather(int k, int maxRow, int[] expected) => new(true, k, maxRow, expected, false);
+        public static BookMyShowOp Gather(int groupSize, int maxRow, int[] expected) =>
+            new(true, groupSize, maxRow, expected, false);
 
-        public static BookMyShowOp ScatterSeated(int k, int maxRow) => new(false, k, maxRow, [], true);
+        public static BookMyShowOp ScatterSeated(int groupSize, int maxRow) =>
+            new(false, groupSize, maxRow, [], true);
 
-        public static BookMyShowOp ScatterNotSeated(int k, int maxRow) => new(false, k, maxRow, [], false);
+        public static BookMyShowOp ScatterNotSeated(int groupSize, int maxRow) =>
+            new(false, groupSize, maxRow, [], false);
 
         // Internal, not public: IBookMyShowStrategy is internal to
         // BookingConcertTicketsInGroupsSolution, and only this same assembly's
@@ -117,13 +120,13 @@ public sealed class BookingConcertTicketsInGroupsTests
         {
             if (isGather)
             {
-                var seating = strategy.Gather(k, maxRow);
+                var seating = strategy.Gather(groupSize, maxRow);
 
                 Assert.Equal(expectedSeating, seating);
                 return;
             }
 
-            var seated = strategy.Scatter(k, maxRow);
+            var seated = strategy.Scatter(groupSize, maxRow);
 
             Assert.Equal(expectedSeated, seated);
         }

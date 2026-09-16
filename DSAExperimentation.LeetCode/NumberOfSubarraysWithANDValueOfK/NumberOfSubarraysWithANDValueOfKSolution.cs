@@ -9,26 +9,26 @@ internal static class NumberOfSubarraysWithANDValueOfKSolution
     // The textbook O(n^2) scan: extend every start index one element at a time,
     // AND-ing as it grows, and count every extension that lands on k. Correct,
     // and the arm the AND-value-compression strategy below has to beat.
-    public static long CountByBruteForce(int[] nums, int k)
+    public static long CountByBruteForce(int[] nums, int targetValue)
     {
         var count = 0L;
 
         for (var start = 0; start < nums.Length; start++)
         {
-            count += CountFrom(nums, start, k);
+            count += CountFrom(nums, start, targetValue);
         }
 
         return count;
     }
 
     // Every subarray that begins at `start`, AND-ed as it grows; each extension
-    // that lands on k counts.
-    private static long CountFrom(int[] nums, int start, int k)
+    // that lands on targetValue counts.
+    private static long CountFrom(int[] nums, int start, int targetValue)
     {
         var count = 0L;
         var andValue = nums[start];
 
-        if (andValue == k)
+        if (andValue == targetValue)
         {
             count++;
         }
@@ -37,7 +37,7 @@ internal static class NumberOfSubarraysWithANDValueOfKSolution
         {
             andValue &= nums[end];
 
-            if (andValue == k)
+            if (andValue == targetValue)
             {
                 count++;
             }
@@ -52,7 +52,7 @@ internal static class NumberOfSubarraysWithANDValueOfKSolution
     // own HashMap<int, long> collapses same-valued subarrays ending at the
     // current index into one (value, count) entry, so each step does O(30) work
     // instead of rescanning every earlier start.
-    public static long CountByAndValueCompression(int[] nums, int k)
+    public static long CountByAndValueCompression(int[] nums, int targetValue)
     {
         var count = 0L;
         var endingHere = new List<(int Value, long Count)>();
@@ -68,7 +68,7 @@ internal static class NumberOfSubarraysWithANDValueOfKSolution
             }
 
             endingHere = ToPairs(next);
-            count += next.TryGetValue(k, out var matches) ? matches : 0;
+            count += next.TryGetValue(targetValue, out var matches) ? matches : 0;
         }
 
         return count;

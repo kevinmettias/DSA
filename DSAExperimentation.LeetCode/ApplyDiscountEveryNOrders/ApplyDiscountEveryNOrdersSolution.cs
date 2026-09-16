@@ -4,9 +4,9 @@ namespace DSAExperimentation.LeetCode.ApplyDiscountEveryNOrders;
 
 // LeetCode 1357. Apply Discount Every n Orders: a Cashier is constructed with a
 // product catalogue (parallel products/prices arrays), a discount percentage and a
-// cadence n. GetBill(product, amount) sums price * amount over the line items and,
-// on every n-th call since construction, knocks the discount percentage off the
-// total.
+// cadence - the interval between discounted calls. GetBill(product, amount) sums
+// price * amount over the line items and, on every call whose customer count is a
+// multiple of that interval, knocks the discount percentage off the total.
 //
 // This is a "design" problem - the published interface is a stateful object replayed
 // across a call script, not a single pure function - so the strategies here are
@@ -24,15 +24,17 @@ internal static class ApplyDiscountEveryNOrdersSolution
     private const double PercentScale = 100.0;
 
     // Real answer: product id -> price in this repo's HashMap, one probe per line item.
-    public static ICashier CreateByHashMapLookup(int n, int discount, int[] products, int[] prices) =>
-        new HashMapLookupCashier(n, discount, products, prices);
+    public static ICashier CreateByHashMapLookup(
+        int discountInterval, int discount, int[] products, int[] prices) =>
+        new HashMapLookupCashier(discountInterval, discount, products, prices);
 
     // The textbook answer: keep the catalogue as the two arrays it arrived in and scan
     // them for each requested product id. Deliberately written without this repo's
     // primitives - it is the arm the composed strategy above has to justify itself
     // against.
-    public static ICashier CreateByLinearCatalogScan(int n, int discount, int[] products, int[] prices) =>
-        new LinearCatalogScanCashier(n, discount, products, prices);
+    public static ICashier CreateByLinearCatalogScan(
+        int discountInterval, int discount, int[] products, int[] prices) =>
+        new LinearCatalogScanCashier(discountInterval, discount, products, prices);
 
     public interface ICashier
     {
@@ -40,14 +42,15 @@ internal static class ApplyDiscountEveryNOrdersSolution
     }
 
     // The cadence half of the problem, shared by both strategies so the only thing
-    // they differ in is the price lookup: count customers, and discount every n-th.
-    // A class, not a struct: the cashier holds one long-lived cadence whose customer
-    // count advances in place, so it has an identity. As a struct the count would
-    // advance on a copy - the same trap check-mutable-struct warns about - and a
-    // `readonly` field of it would freeze the cadence at the first bill.
-    private sealed class DiscountCadence(int n, int discount)
+    // they differ in is the price lookup: count customers, and discount whichever
+    // call's ordinal is a multiple of discountInterval. A class, not a struct: the
+    // cashier holds one long-lived cadence whose customer count advances in place, so
+    // it has an identity. As a struct the count would advance on a copy - the same trap
+    // check-mutable-struct warns about - and a `readonly` field of it would freeze the
+    // cadence at the first bill.
+    private sealed class DiscountCadence(int discountInterval, int discount)
     {
-        private readonly int _n = n;
+        private readonly int _discountInterval = discountInterval;
         private readonly int _discount = discount;
         private int _customerCount;
 
@@ -55,7 +58,7 @@ internal static class ApplyDiscountEveryNOrdersSolution
         {
             _customerCount++;
 
-            var isDiscountDue = _customerCount % _n == 0;
+            var isDiscountDue = _customerCount % _discountInterval == 0;
 
             return isDiscountDue ? DiscountedBill(total) : total;
         }
@@ -70,9 +73,10 @@ internal static class ApplyDiscountEveryNOrdersSolution
         private readonly HashMap<int, int> _priceByProduct = new();
         private readonly DiscountCadence _cadence;
 
-        public HashMapLookupCashier(int n, int discount, int[] products, int[] prices)
+        public HashMapLookupCashier(
+            int discountInterval, int discount, int[] products, int[] prices)
         {
-            _cadence = new DiscountCadence(n, discount);
+            _cadence = new DiscountCadence(discountInterval, discount);
 
             for (var i = 0; i < products.Length; i++)
             {
@@ -96,11 +100,12 @@ internal static class ApplyDiscountEveryNOrdersSolution
         }
     }
 
-    private sealed class LinearCatalogScanCashier(int n, int discount, int[] products, int[] prices) : ICashier
+    private sealed class LinearCatalogScanCashier(
+        int discountInterval, int discount, int[] products, int[] prices) : ICashier
     {
         private readonly int[] _products = products;
         private readonly int[] _prices = prices;
-        private readonly DiscountCadence _cadence = new(n, discount);
+        private readonly DiscountCadence _cadence = new(discountInterval, discount);
 
         public double GetBill(int[] product, int[] amount)
         {

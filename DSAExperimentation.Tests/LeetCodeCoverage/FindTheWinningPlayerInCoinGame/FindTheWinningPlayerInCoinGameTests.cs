@@ -16,9 +16,9 @@ public sealed class FindTheWinningPlayerInCoinGameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void WinningPlayerBySimulation_LeetCodeExamples_ReturnsPlayerWhoTakesTheLastTurn(
-        int x, int y, string expected)
+        int seventyFiveCoinCount, int tenCoinCount, string expected)
     {
-        var actual = FindTheWinningPlayerInCoinGameSolution.WinningPlayerBySimulation(x, y);
+        var actual = FindTheWinningPlayerInCoinGameSolution.WinningPlayerBySimulation(seventyFiveCoinCount, tenCoinCount);
 
         Assert.Equal(expected, actual);
     }
@@ -26,9 +26,9 @@ public sealed class FindTheWinningPlayerInCoinGameTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void WinningPlayerByTurnParity_LeetCodeExamples_ReturnsPlayerWhoTakesTheLastTurn(
-        int x, int y, string expected)
+        int seventyFiveCoinCount, int tenCoinCount, string expected)
     {
-        var actual = FindTheWinningPlayerInCoinGameSolution.WinningPlayerByTurnParity(x, y);
+        var actual = FindTheWinningPlayerInCoinGameSolution.WinningPlayerByTurnParity(seventyFiveCoinCount, tenCoinCount);
 
         Assert.Equal(expected, actual);
     }

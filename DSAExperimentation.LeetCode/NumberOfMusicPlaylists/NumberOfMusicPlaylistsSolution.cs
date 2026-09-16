@@ -4,8 +4,9 @@ using DSAExperimentation.Domain.Modular;
 namespace DSAExperimentation.LeetCode.NumberOfMusicPlaylists;
 
 // LeetCode 920. Number of Music Playlists: count the playlists of exactly goal
-// songs drawn from n distinct songs, where every song is played at least once and
-// a song may only be replayed once at least k other songs have been played since.
+// songs drawn from songCount distinct songs, where every song is played at least once
+// and a song may only be replayed once at least replayGap other songs have been
+// played since.
 //
 // Both strategies solve the same recurrence over the same (length, unique) state -
 // f(length, unique) = playlists of that length using exactly that many distinct
@@ -26,40 +27,40 @@ internal static class NumberOfMusicPlaylistsSolution
     // The textbook answer: a BCL long[,] filled in increasing length order.
     // Deliberately written without this repo's primitives - it is the arm the
     // memoized strategy below has to justify itself against.
-    public static long NumMusicPlaylistsByTabulation(int n, int goal, int k)
+    public static long CountMusicPlaylistsByTabulation(int songCount, int goal, int replayGap)
     {
-        var dp = new long[goal + 1, n + 1];
+        var dp = new long[goal + 1, songCount + 1];
         dp[0, 0] = 1;
 
         for (var length = 1; length <= goal; length++)
         {
-            for (var unique = 1; unique <= n; unique++)
+            for (var unique = 1; unique <= songCount; unique++)
             {
-                var total = dp[length - 1, unique - 1] * (n - unique + 1) % ModularArithmetic.Modulo;
+                var total = dp[length - 1, unique - 1] * (songCount - unique + 1) % ModularArithmetic.Modulo;
 
-                if (unique > k)
+                if (unique > replayGap)
                 {
-                    total = (total + (dp[length - 1, unique] * (unique - k))) % ModularArithmetic.Modulo;
+                    total = (total + (dp[length - 1, unique] * (unique - replayGap))) % ModularArithmetic.Modulo;
                 }
 
                 dp[length, unique] = total;
             }
         }
 
-        return dp[goal, n];
+        return dp[goal, songCount];
     }
 
     // This repo's own top-down engine: Memoizer.Memoize caches each
     // (length, unique) state the first time it is reached, so the recurrence reads
     // as ordinary recursion with no hand-rolled cache dictionary, and only the
-    // states actually reachable from (goal, n) are ever evaluated.
-    public static long NumMusicPlaylistsByMemoizedRecurrence(int n, int goal, int k) =>
-        Memoizer.Memoize<(int Length, int Unique), long>((goal, n), new PlaylistCounts(n, k));
+    // states actually reachable from (goal, songCount) are ever evaluated.
+    public static long CountMusicPlaylistsByMemoizedRecurrence(int songCount, int goal, int replayGap) =>
+        Memoizer.Memoize<(int Length, int Unique), long>((goal, songCount), new PlaylistCounts(songCount, replayGap));
 
     // The recurrence, as a named type: a playlist of a given length drawing on a given
     // number of distinct songs either adds a brand-new song - one of those not yet used -
-    // to a shorter playlist, or replays an old one, any already played except the k most
-    // recent.
+    // to a shorter playlist, or replays an old one, any already played except the replayGap
+    // most recent.
     private sealed class PlaylistCounts(int songCount, int replayGap)
         : IRecurrence<(int Length, int Unique), long>
     {

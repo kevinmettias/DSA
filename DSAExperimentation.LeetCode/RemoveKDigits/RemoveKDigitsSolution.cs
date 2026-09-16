@@ -2,23 +2,24 @@ using DigitStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 
 namespace DSAExperimentation.LeetCode.RemoveKDigits;
 
-// LeetCode 402. Remove K Digits: remove k digits from a non-negative integer string so
-// the digits left behind, in their original order, form the smallest possible number.
+// LeetCode 402. Remove K Digits: drop removalCount of the digits from a non-negative
+// integer string so the digits left behind, in their original order, form the smallest
+// possible number.
 internal static class RemoveKDigitsSolution
 {
     private const string ZeroResult = "0";
 
-    // The naive round-by-round baseline: k separate O(n) scans, each finding and
-    // removing the string's first strictly-descending digit. Deliberately written
+    // The naive round-by-round baseline: removalCount separate O(n) scans, each finding
+    // and removing the string's first strictly-descending digit. Deliberately written
     // without this repo's primitives - it is the arm the composed strategy below has
     // to justify itself against. Removing the first descent one digit at a time is
     // the textbook equivalent of the monotonic-stack greedy, so both strategies
     // produce the same final digit sequence.
-    public static string RemoveByRepeatedFirstDescentRemoval(string num, int k)
+    public static string RemoveByRepeatedFirstDescentRemoval(string num, int removalCount)
     {
         var current = num;
 
-        for (var round = 0; round < k; round++)
+        for (var round = 0; round < removalCount; round++)
         {
             var removeIndex = FindFirstDescentOrLast(current);
             current = current.Remove(removeIndex, 1);
@@ -46,41 +47,41 @@ internal static class RemoveKDigitsSolution
     // still-removable, strictly-greater digit off the top before being pushed
     // itself; any removal budget left once the scan ends comes off the (already
     // non-decreasing) tail.
-    public static string RemoveByMonotonicStackSweep(string num, int k)
+    public static string RemoveByMonotonicStackSweep(string num, int removalCount)
     {
         var stack = new DigitStack();
-        var remaining = PopGreaterDigits(stack, num, k);
+        var remaining = PopGreaterDigits(stack, num, removalCount);
         PopRemainingBudget(stack, remaining);
 
         return ReadSurvivingNumber(stack);
     }
 
-    private static int PopGreaterDigits(DigitStack stack, string num, int k)
+    private static int PopGreaterDigits(DigitStack stack, string num, int removalCount)
     {
         foreach (var digit in num)
         {
-            while (ShouldDropStackTop(stack, digit, k))
+            while (ShouldDropStackTop(stack, digit, removalCount))
             {
                 stack.TryPop(out _);
-                k--;
+                removalCount--;
             }
 
             stack.Push(digit);
         }
 
-        return k;
+        return removalCount;
     }
 
     // The digit on top is dropped while removals are still available and it is strictly
     // greater than the one arriving - giving it up leaves the smaller number behind.
-    private static bool ShouldDropStackTop(DigitStack stack, char digit, int k) =>
-        k > 0 && stack.TryPeek(out var top) && top > digit;
+    private static bool ShouldDropStackTop(DigitStack stack, char digit, int removalCount) =>
+        removalCount > 0 && stack.TryPeek(out var top) && top > digit;
 
-    private static void PopRemainingBudget(DigitStack stack, int k)
+    private static void PopRemainingBudget(DigitStack stack, int removalCount)
     {
-        while (k > 0 && stack.TryPop(out _))
+        while (removalCount > 0 && stack.TryPop(out _))
         {
-            k--;
+            removalCount--;
         }
     }
 

@@ -18,7 +18,7 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
     // growing window. Deliberately written without this repo's primitives - it
     // is the arm the monotonic-deque strategy below has to justify itself
     // against.
-    public static long CountByBruteForce(int[] nums, long k)
+    public static long CountByBruteForce(int[] nums, long costLimit)
     {
         var count = 0L;
 
@@ -32,7 +32,7 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
                 max = Math.Max(max, nums[right]);
                 min = Math.Min(min, nums[right]);
 
-                if ((long)(max - min) * (right - left + 1) <= k)
+                if ((long)(max - min) * (right - left + 1) <= costLimit)
                 {
                     count++;
                 }
@@ -49,7 +49,7 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
     // rescan. Every index is pushed and popped from each deque at most once, so
     // the whole sweep is O(n) amortized even though left never resets between
     // iterations of r.
-    public static long CountByMonotonicDeques(int[] nums, long k)
+    public static long CountByMonotonicDeques(int[] nums, long costLimit)
     {
         var maxWindow = new Deque<int>();
         var minWindow = new Deque<int>();
@@ -60,7 +60,7 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
         {
             PushMax(maxWindow, nums, right);
             PushMin(minWindow, nums, right);
-            left = ShrinkToCost((maxWindow, minWindow), nums, (left, right), k);
+            left = ShrinkToCost((maxWindow, minWindow), nums, (left, right), costLimit);
             count += right - left + 1;
         }
 
@@ -91,13 +91,13 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
     // one argument, and the shrunk left edge still comes back as the result rather than
     // as a second out-of-band value.
     private static int ShrinkToCost(
-        (Deque<int> MaxWindow, Deque<int> MinWindow) extremes, int[] nums, (int Left, int Right) window, long k)
+        (Deque<int> MaxWindow, Deque<int> MinWindow) extremes, int[] nums, (int Left, int Right) window, long costLimit)
     {
         var (maxWindow, minWindow) = extremes;
         var left = window.Left;
 
         while (TryPeekWindowExtremes(maxWindow, minWindow, out var maxFront, out var minFront) &&
-               WindowCostExceedsBudget(nums[maxFront] - nums[minFront], window.Right - left + 1, k))
+               IsWindowCostOverBudget(nums[maxFront] - nums[minFront], window.Right - left + 1, costLimit))
         {
             left++;
 
@@ -129,6 +129,6 @@ internal static class CountSubarraysWithCostLessThanOrEqualToKSolution
 
     // The problem's cost formula: the gap between the window's largest and smallest
     // element, times how many elements the window holds.
-    private static bool WindowCostExceedsBudget(int maxMinGap, int windowLength, long costLimit) =>
+    private static bool IsWindowCostOverBudget(int maxMinGap, int windowLength, long costLimit) =>
         (long)maxMinGap * windowLength > costLimit;
 }

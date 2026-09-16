@@ -6,7 +6,7 @@ namespace DSAExperimentation.LeetCode.CheckIfDfsStringsArePalindromes;
 
 // LeetCode 3327. Check if DFS Strings Are Palindromes: parent[] describes a tree
 // rooted at 0 (DataStructures' own parent-array encoding), and dfs(x) visits x's
-// children in increasing order before appending s[x] - exactly the post-order walk
+// children in increasing order before appending nodeCharacters[x] - exactly the post-order walk
 // ParentArrayTree.Build already sets up, since it appends child i to its parent's
 // list in increasing index order as it scans the array once (CountWaysToBuild
 // RoomsInAnAntColony precedent for reusing this Domain type as-is).
@@ -27,35 +27,35 @@ internal static class CheckIfDfsStringsArePalindromesSolution
     // Textbook baseline: dfs(i) rebuilt from scratch for every node, checked with a
     // plain two-pointer scan - the O(n^2) arm the single-tour RollingHash strategy
     // has to beat.
-    public static bool[] IsPalindromeByBruteForce(int[] parent, string s)
+    public static bool[] GetPalindromeFlagsByBruteForce(int[] parent, string nodeCharacters)
     {
         var nodes = ParentArrayTree.Build(parent);
 
-        return IsPalindromeByBruteForce(nodes, s);
+        return GetPalindromeFlagsByBruteForce(nodes, nodeCharacters);
     }
 
-    public static bool[] IsPalindromeByBruteForce(RootedTreeNode[] nodes, string s)
+    public static bool[] GetPalindromeFlagsByBruteForce(RootedTreeNode[] nodes, string nodeCharacters)
     {
         var answer = new bool[nodes.Length];
 
         for (var i = 0; i < nodes.Length; i++)
         {
             var builder = new StringBuilder();
-            AppendDfsString(nodes[i], s, builder);
+            AppendDfsString(nodes[i], nodeCharacters, builder);
             answer[i] = IsPalindrome(builder);
         }
 
         return answer;
     }
 
-    private static void AppendDfsString(RootedTreeNode node, string s, StringBuilder builder)
+    private static void AppendDfsString(RootedTreeNode node, string nodeCharacters, StringBuilder builder)
     {
         foreach (var child in node.Children)
         {
-            AppendDfsString(child, s, builder);
+            AppendDfsString(child, nodeCharacters, builder);
         }
 
-        builder.Append(s[node.Id]);
+        builder.Append(nodeCharacters[node.Id]);
     }
 
     private static bool IsPalindrome(StringBuilder builder)
@@ -81,14 +81,14 @@ internal static class CheckIfDfsStringsArePalindromesSolution
     // once, recording every node's [start, end) run inside it; RollingHash over
     // that string and RollingHash over its reverse then answer every node's
     // palindrome query in O(1) each.
-    public static bool[] IsPalindromeByEulerTourRollingHash(int[] parent, string s)
+    public static bool[] GetPalindromeFlagsByEulerTourRollingHash(int[] parent, string nodeCharacters)
     {
         var nodes = ParentArrayTree.Build(parent);
 
-        return IsPalindromeByEulerTourRollingHash(nodes, s);
+        return GetPalindromeFlagsByEulerTourRollingHash(nodes, nodeCharacters);
     }
 
-    public static bool[] IsPalindromeByEulerTourRollingHash(RootedTreeNode[] nodes, string s)
+    public static bool[] GetPalindromeFlagsByEulerTourRollingHash(RootedTreeNode[] nodes, string nodeCharacters)
     {
         var n = nodes.Length;
         var tour = new char[n];
@@ -96,7 +96,7 @@ internal static class CheckIfDfsStringsArePalindromesSolution
         var end = new int[n];
         var position = 0;
 
-        BuildTour(nodes[0], s, (Text: tour, Start: start, End: end), ref position);
+        BuildTour(nodes[0], nodeCharacters, (Text: tour, Start: start, End: end), ref position);
 
         var forward = new RollingHash(tour);
         var backward = new RollingHash(ReverseOf(tour));
@@ -122,11 +122,11 @@ internal static class CheckIfDfsStringsArePalindromesSolution
     // characters, and each node's [start, end) run inside them. They are allocated
     // together, filled together, and read together by the queries that follow.
     private static void BuildTour(
-        RootedTreeNode node, string s, (char[] Text, int[] Start, int[] End) tour, ref int position)
+        RootedTreeNode node, string nodeCharacters, (char[] Text, int[] Start, int[] End) tour, ref int position)
     {
         var begin = position;
 
-        AppendSubtreeCharacters(node, s, tour, ref position);
+        AppendSubtreeCharacters(node, nodeCharacters, tour, ref position);
 
         tour.Start[node.Id] = begin;
         tour.End[node.Id] = position;
@@ -136,14 +136,14 @@ internal static class CheckIfDfsStringsArePalindromesSolution
     // whole run ahead of it, node's own character last - leaving the cursor just past
     // them. The character-writing half of the walk above.
     private static void AppendSubtreeCharacters(
-        RootedTreeNode node, string s, (char[] Text, int[] Start, int[] End) tour, ref int position)
+        RootedTreeNode node, string nodeCharacters, (char[] Text, int[] Start, int[] End) tour, ref int position)
     {
         foreach (var child in node.Children)
         {
-            BuildTour(child, s, tour, ref position);
+            BuildTour(child, nodeCharacters, tour, ref position);
         }
 
-        tour.Text[position] = s[node.Id];
+        tour.Text[position] = nodeCharacters[node.Id];
         position++;
     }
 

@@ -13,10 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks
 {
     private const int Alphabet = 6; // small alphabet forces frequent forced cuts, exercising both arms' cut logic
-    private const int K = 3;
+    private const int DistinctLimit = 3;
     private const int Seed = 3003;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(100, 400)]
     public int Length { get; set; }
@@ -32,14 +32,14 @@ public class MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks
             chars[i] = (char)('a' + random.Next(Alphabet));
         }
 
-        _s = new string(chars);
+        _text = new string(chars);
     }
 
     [Benchmark(Baseline = true)]
     public int BruteForceRecolor() =>
-        MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBruteForceRecolor(_s, K);
+        MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBruteForceRecolor(_text, DistinctLimit);
 
     [Benchmark]
     public int BitmaskMemo() =>
-        MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBitmaskMemo(_s, K);
+        MaximizeTheNumberOfPartitionsAfterOperationsSolution.MaxPartitionsByBitmaskMemo(_text, DistinctLimit);
 }

@@ -4,7 +4,7 @@ using DSAExperimentation.DataStructures.Sequence;
 namespace DSAExperimentation.LeetCode.SubarrayProductLessThanK;
 
 // LeetCode 713. Subarray Product Less Than K: count contiguous subarrays whose
-// product of elements is strictly less than k. nums are all positive
+// product of elements is strictly less than the product limit. nums are all positive
 // (1 <= nums[i]), so a running SUM of logs is monotonically non-decreasing - the
 // exact "derived monotonic sequence" shape BinarySearch.LowerBound assumes, the
 // same idiom this repo's LC 209 (Minimum Size Subarray Sum) composition already
@@ -14,12 +14,12 @@ namespace DSAExperimentation.LeetCode.SubarrayProductLessThanK;
 internal static class SubarrayProductLessThanKSolution
 {
     // The textbook O(n^2): for every start index, extend the running product
-    // right until it stops being < k. Deliberately written without this repo's
+    // right until it stops being < productLimit. Deliberately written without this repo's
     // primitives - it is the arm the composed solution below has to justify
     // itself against.
-    public static int NumSubarrayProductLessThanKByBruteForce(int[] nums, int k)
+    public static int CountSubarraysWithProductLessThanKByBruteForce(int[] nums, int productLimit)
     {
-        if (k <= 1)
+        if (productLimit <= 1)
         {
             return 0;
         }
@@ -28,15 +28,15 @@ internal static class SubarrayProductLessThanKSolution
 
         for (var start = 0; start < nums.Length; start++)
         {
-            count += CountEndsFrom(nums, start, k);
+            count += CountEndsFrom(nums, start, productLimit);
         }
 
         return count;
     }
 
-    // Extends the running product right from `start` until it stops being < k;
+    // Extends the running product right from `start` until it stops being < productLimit;
     // every end index before that is one valid subarray.
-    private static int CountEndsFrom(int[] nums, int start, int k)
+    private static int CountEndsFrom(int[] nums, int start, int productLimit)
     {
         var count = 0;
         long product = 1;
@@ -45,7 +45,7 @@ internal static class SubarrayProductLessThanKSolution
         {
             product *= nums[end];
 
-            if (product >= k)
+            if (product >= productLimit)
             {
                 break;
             }
@@ -57,12 +57,12 @@ internal static class SubarrayProductLessThanKSolution
     }
 
     // For each start index i, LowerBound finds the first end index m whose
-    // cumulative log-sum reaches logPrefix[i] + log(k); every end index in
-    // [i+1, m) is a valid subarray (product < k), so m - i - 1 is the count of
+    // cumulative log-sum reaches logPrefix[i] + log(productLimit); every end index in
+    // [i+1, m) is a valid subarray (product < productLimit), so m - i - 1 is the count of
     // valid subarrays starting at i. O(n log n).
-    public static int NumSubarrayProductLessThanKByLogPrefixLowerBound(int[] nums, int k)
+    public static int CountSubarraysWithProductLessThanKByLogPrefixLowerBound(int[] nums, int productLimit)
     {
-        if (k <= 1)
+        if (productLimit <= 1)
         {
             return 0;
         }
@@ -70,11 +70,11 @@ internal static class SubarrayProductLessThanKSolution
         var logPrefix = BuildLogPrefix(nums);
         var sequence = new ArraySequence<double>(logPrefix);
         var count = 0;
-        var logK = Math.Log(k);
+        var logBound = Math.Log(productLimit);
 
         for (var i = 0; i < nums.Length; i++)
         {
-            var target = logPrefix[i] + logK;
+            var target = logPrefix[i] + logBound;
             var end = BinarySearch.LowerBound<double, ArraySequence<double>>(sequence, target);
             count += Math.Max(0, end - i - 1);
         }

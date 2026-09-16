@@ -13,9 +13,9 @@ public class AddStringsBenchmarks
 
     private const int DecimalBase = 10;
 
-    private string _a = "";
+    private string _firstOperand = "";
 
-    private string _b = "";
+    private string _secondOperand = "";
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -23,13 +23,13 @@ public class AddStringsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _a = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalBase))));
-        _b = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalBase))));
+        _firstOperand = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalBase))));
+        _secondOperand = string.Concat(Enumerable.Range(0, Length).Select(_ => (char)('0' + random.Next(DecimalBase))));
     }
 
     [Benchmark(Baseline = true)]
-    public string CharArrayReverse() => AddStringsSolution.AddByCharArrayReverse(_a, _b);
+    public string CharArrayReverse() => AddStringsSolution.AddByCharArrayReverse(_firstOperand, _secondOperand);
 
     [Benchmark]
-    public string StackDigits() => AddStringsSolution.AddByBitStack(_a, _b);
+    public string StackDigits() => AddStringsSolution.AddByBitStack(_firstOperand, _secondOperand);
 }

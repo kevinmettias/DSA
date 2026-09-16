@@ -2,8 +2,8 @@ using DSAExperimentation.DataStructures.SinglyLinkedList;
 
 namespace DSAExperimentation.LeetCode.ReverseNodesInKGroup;
 
-// LeetCode 25. Reverse Nodes in k-Group: reverse every run of k nodes in order,
-// leaving a final short group (fewer than k nodes remaining) untouched.
+// LeetCode 25. Reverse Nodes in k-Group: reverse every run of groupSize nodes in
+// order, leaving a final short group (fewer than groupSize nodes remaining) untouched.
 //
 // The two strategies differ in where the reversal happens - in place on the
 // linked list's own pointers, or by copying every value out to a plain array,
@@ -15,12 +15,12 @@ internal static class ReverseNodesInKGroupSolution
     // next complete group; ReverseOneGroup rewires just that group's pointers and
     // returns the node the previous group should now point at.
     public static SinglyLinkedListNode<int>? ReverseKGroupByPointerReversal(
-        SinglyLinkedListNode<int>? head, int k)
+        SinglyLinkedListNode<int>? head, int groupSize)
     {
         var dummy = new SinglyLinkedListNode<int>(0) { Next = head };
         var groupPrevious = dummy;
 
-        while (TryGetKth(groupPrevious, k, out var kth))
+        while (TryGetKth(groupPrevious, groupSize, out var kth))
         {
             groupPrevious = ReverseOneGroup(groupPrevious, kth);
         }
@@ -29,11 +29,11 @@ internal static class ReverseNodesInKGroupSolution
     }
 
     private static bool TryGetKth(
-        SinglyLinkedListNode<int> groupPrevious, int k, out SinglyLinkedListNode<int> kth)
+        SinglyLinkedListNode<int> groupPrevious, int groupSize, out SinglyLinkedListNode<int> kth)
     {
         SinglyLinkedListNode<int>? node = groupPrevious;
 
-        for (var i = 0; i < k && node is not null; i++)
+        for (var i = 0; i < groupSize && node is not null; i++)
         {
             node = node.Next;
         }
@@ -64,20 +64,20 @@ internal static class ReverseNodesInKGroupSolution
     }
 
     // The textbook alternative: read every value off the list into a plain array,
-    // reverse each complete run of k with the BCL's own Array.Reverse, then
+    // reverse each complete run of groupSize with the BCL's own Array.Reverse, then
     // rebuild the list from the reordered values. Deliberately written without
     // this repo's list-walking helpers beyond the input/output list shape itself -
     // it is the arm the pointer-reversal strategy above has to justify itself
     // against.
     public static SinglyLinkedListNode<int>? ReverseKGroupByArrayReverse(
-        SinglyLinkedListNode<int>? head, int k)
+        SinglyLinkedListNode<int>? head, int groupSize)
     {
         var array = ReadValues(head);
-        var completeGroups = array.Length / k * k;
+        var completeGroups = array.Length / groupSize * groupSize;
 
-        for (var i = 0; i < completeGroups; i += k)
+        for (var i = 0; i < completeGroups; i += groupSize)
         {
-            Array.Reverse(array, i, k);
+            Array.Reverse(array, i, groupSize);
         }
 
         return RebuildFromArray(array);

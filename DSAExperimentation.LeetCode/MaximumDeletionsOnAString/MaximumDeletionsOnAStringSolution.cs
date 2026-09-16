@@ -25,9 +25,9 @@ internal static class MaximumDeletionsOnAStringSolution
     // with ==, paying an O(k) allocation and compare on every candidate whether it
     // matches or not. Deliberately written without this repo's primitives - it is
     // the arm the composed strategy below has to justify itself against.
-    public static int MaxOperationsByNaiveSubstringComparison(string s)
+    public static int MaxOperationsByNaiveSubstringComparison(string text)
     {
-        var n = s.Length;
+        var n = text.Length;
         var dp = new int[n + 1];
 
         for (var i = n - 1; i >= 0; i--)
@@ -36,8 +36,8 @@ internal static class MaximumDeletionsOnAStringSolution
 
             for (var k = 1; i + (RepeatedPrefixHalfCount * k) <= n; k++)
             {
-                var first = s.Substring(i, k);
-                var second = s.Substring(i + k, k);
+                var first = text.Substring(i, k);
+                var second = text.Substring(i + k, k);
 
                 if (first == second)
                 {
@@ -57,45 +57,45 @@ internal static class MaximumDeletionsOnAStringSolution
     // hash match is "probably equal", not "definitely equal", applied here per DP
     // transition instead of per dedup candidate. No substring is ever materialized,
     // so a candidate that fails costs two array lookups instead of two allocations.
-    public static int MaxOperationsByRollingHashScreen(string s)
+    public static int MaxOperationsByRollingHashScreen(string text)
     {
-        var n = s.Length;
-        var hash = new RollingHash(s);
+        var n = text.Length;
+        var hash = new RollingHash(text);
         var dp = new int[n + 1];
 
         for (var i = n - 1; i >= 0; i--)
         {
-            dp[i] = 1 + BestContinuation(s, hash, dp, i);
+            dp[i] = 1 + BestContinuation(text, hash, dp, i);
         }
 
         return dp[0];
     }
 
-    private static int BestContinuation(string s, RollingHash hash, int[] dp, int i)
+    private static int BestContinuation(string text, RollingHash hash, int[] dp, int startIndex)
     {
-        var n = s.Length;
+        var n = text.Length;
         var best = 0;
 
-        for (var k = 1; i + (RepeatedPrefixHalfCount * k) <= n; k++)
+        for (var k = 1; startIndex + (RepeatedPrefixHalfCount * k) <= n; k++)
         {
-            if (IsRepeatedPrefix(s, hash, i, k))
+            if (IsRepeatedPrefix(text, hash, startIndex, k))
             {
-                best = Math.Max(best, dp[i + k]);
+                best = Math.Max(best, dp[startIndex + k]);
             }
         }
 
         return best;
     }
 
-    private static bool IsRepeatedPrefix(string s, RollingHash hash, int start, int halfLength)
+    private static bool IsRepeatedPrefix(string text, RollingHash hash, int start, int halfLength)
     {
         if (hash.Hash(start, halfLength) != hash.Hash(start + halfLength, halfLength))
         {
             return false;
         }
 
-        var firstHalf = s.AsSpan(start, halfLength);
-        var secondHalf = s.AsSpan(start + halfLength, halfLength);
+        var firstHalf = text.AsSpan(start, halfLength);
+        var secondHalf = text.AsSpan(start + halfLength, halfLength);
 
         return firstHalf.SequenceEqual(secondHalf);
     }

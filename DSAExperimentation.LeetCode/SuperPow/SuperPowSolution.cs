@@ -11,21 +11,21 @@ internal static class SuperPowSolution
     private const int HornerDigitBase = 10;
 
     // The textbook baseline: reconstruct the exponent from its digits (Horner's rule),
-    // then multiply by a once per unit of exponent - O(exponent). Deliberately
+    // then multiply by baseValue once per unit of exponent - O(exponent). Deliberately
     // BCL-only, and only survives at benchmark-sized exponents; it is the arm
     // SuperPowByHornerSquaring has to justify itself against, exactly because
     // LeetCode's real 2000-digit exponents make this loop impossible to finish.
-    public static int SuperPowByRepeatedMultiplication(int a, int[] b)
+    public static int SuperPowByRepeatedMultiplication(int baseValue, int[] exponentDigits)
     {
         var exponent = 0L;
 
-        foreach (var digit in b)
+        foreach (var digit in exponentDigits)
         {
             exponent = exponent * HornerDigitBase + digit;
         }
 
         var result = 1L;
-        var baseTerm = a % Modulus;
+        var baseTerm = baseValue % Modulus;
 
         for (var i = 0L; i < exponent; i++)
         {
@@ -39,12 +39,12 @@ internal static class SuperPowSolution
     // (PowXn's squaring loop, folded under Modulus at every multiplication) keeps every
     // intermediate value inside [0, Modulus) and does O(digits * log 10) work total,
     // handling exponents far past any fixed-width integer.
-    public static int SuperPowByHornerSquaring(int a, int[] b)
+    public static int SuperPowByHornerSquaring(int baseValue, int[] exponentDigits)
     {
         var result = 1L;
-        var baseTerm = a % Modulus;
+        var baseTerm = baseValue % Modulus;
 
-        foreach (var digit in b)
+        foreach (var digit in exponentDigits)
         {
             result = ModPow(result, HornerDigitBase) * ModPow(baseTerm, digit) % Modulus;
         }

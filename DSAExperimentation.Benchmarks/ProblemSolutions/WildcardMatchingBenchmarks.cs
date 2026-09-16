@@ -25,12 +25,12 @@ public class WildcardMatchingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool GreedyTwoPointer() => WildcardMatchingSolution.IsMatchByGreedyTwoPointer(
+    public bool IsMatchByGreedyTwoPointer() => WildcardMatchingSolution.IsMatchByGreedyTwoPointer(
         new WildcardMatchingSolution.MatchedText(_text),
         new WildcardMatchingSolution.WildcardPattern(_pattern));
 
     [Benchmark]
-    public bool MemoizedDp() => WildcardMatchingSolution.IsMatchByMemoizedDp(
+    public bool IsMatchByMemoizedDp() => WildcardMatchingSolution.IsMatchByMemoizedDp(
         new WildcardMatchingSolution.MatchedText(_text),
         new WildcardMatchingSolution.WildcardPattern(_pattern));
 }

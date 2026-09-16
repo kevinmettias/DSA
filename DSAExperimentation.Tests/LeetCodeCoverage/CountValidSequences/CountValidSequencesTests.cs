@@ -18,18 +18,18 @@ public sealed class CountValidSequencesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByDirectBinomial_LeetCodeExamples_ReturnsCountOfEvenProductSequences(
-        int n, int k, int expected)
+        int targetSum, int length, int expected)
     {
-        var actual = CountValidSequencesSolution.CountByDirectBinomial(n, k);
+        var actual = CountValidSequencesSolution.CountByDirectBinomial(targetSum, length);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByPrecomputedFactorials_LeetCodeExamples_ReturnsCountOfEvenProductSequences(
-        int n, int k, int expected)
+        int targetSum, int length, int expected)
     {
-        var actual = CountValidSequencesSolution.CountByPrecomputedFactorials(n, k);
+        var actual = CountValidSequencesSolution.CountByPrecomputedFactorials(targetSum, length);
         Assert.Equal(expected, actual);
     }
 }

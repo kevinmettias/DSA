@@ -28,10 +28,10 @@ public class SplitArrayWithSameAverageBenchmarks
         _nums = SplitArrayWithSameAverageWorkloads.BuildValues(Length, seed: RandomSeed);
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceSubsets() =>
+    public bool CanSplitBySubsetMasks() =>
         SplitArrayWithSameAverageSolution.CanSplitBySubsetMasks(_nums);
 
     [Benchmark]
-    public bool MemoizedSubsetSumWithCount() =>
+    public bool CanSplitByMemoizedSubsetSum() =>
         SplitArrayWithSameAverageSolution.CanSplitByMemoizedSubsetSum(_nums);
 }

@@ -58,14 +58,14 @@ internal static class CircularArrayLoopSolution
         var nodes = BuildNodes(nums.Length);
         LinkEdges(nodes, nums);
 
-        return AnyCycle(nodes);
+        return HasAnyCycle(nodes);
     }
 
-    private static SinglyLinkedListNode<int>[] BuildNodes(int n)
+    private static SinglyLinkedListNode<int>[] BuildNodes(int nodeCount)
     {
-        var nodes = new SinglyLinkedListNode<int>[n];
+        var nodes = new SinglyLinkedListNode<int>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             nodes[i] = new SinglyLinkedListNode<int>(i);
         }
@@ -90,7 +90,7 @@ internal static class CircularArrayLoopSolution
         }
     }
 
-    private static bool AnyCycle(SinglyLinkedListNode<int>[] nodes)
+    private static bool HasAnyCycle(SinglyLinkedListNode<int>[] nodes)
     {
         foreach (var node in nodes)
         {

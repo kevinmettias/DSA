@@ -40,7 +40,7 @@ internal static class WildcardMatchingSolution
         var match = 0;
         while (s < input.Text.Length)
         {
-            if (MatchesOneCharacter(input.Pattern, p, input.Text, s))
+            if (IsCharacterMatch(input.Pattern, p, input.Text, s))
             {
                 s++;
                 p++;
@@ -67,19 +67,20 @@ internal static class WildcardMatchingSolution
     // The pattern's current character matches the text's current one when the
     // pattern still has a character there and it is either '?' or that same
     // character.
-    private static bool MatchesOneCharacter(string pattern, int p, string text, int s)
-        => p < pattern.Length && (pattern[p] == '?' || pattern[p] == text[s]);
+    private static bool IsCharacterMatch(string pattern, int patternIndex, string text, int textIndex)
+        => patternIndex < pattern.Length
+            && (pattern[patternIndex] == '?' || pattern[patternIndex] == text[textIndex]);
 
     // With the text consumed, the pattern may only be finished off by stars - any
     // other character left over would have nothing left to match.
-    private static bool IsOnlyStarsRemaining(string pattern, int p)
+    private static bool IsOnlyStarsRemaining(string pattern, int patternIndex)
     {
-        while (p < pattern.Length && pattern[p] == '*')
+        while (patternIndex < pattern.Length && pattern[patternIndex] == '*')
         {
-            p++;
+            patternIndex++;
         }
 
-        return p == pattern.Length;
+        return patternIndex == pattern.Length;
     }
 
     // A '*' either matches zero characters (advance the pattern) or one more text

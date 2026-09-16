@@ -24,22 +24,22 @@ public sealed class BeautifulArrayTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ConstructByPrunedBacktracking_LeetCodeLengths_ReturnsABeautifulPermutation(int n) =>
-        AssertBeautifulPermutation(n, BeautifulArraySolution.ConstructByPrunedBacktracking(n));
+    public void ConstructByPrunedBacktracking_LeetCodeLengths_ReturnsABeautifulPermutation(int length) =>
+        AssertBeautifulPermutation(length, BeautifulArraySolution.ConstructByPrunedBacktracking(length));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ConstructByMemoizedDivideAndConquer_LeetCodeLengths_ReturnsABeautifulPermutation(int n) =>
-        AssertBeautifulPermutation(n, BeautifulArraySolution.ConstructByMemoizedDivideAndConquer(n));
+    public void ConstructByMemoizedDivideAndConquer_LeetCodeLengths_ReturnsABeautifulPermutation(int length) =>
+        AssertBeautifulPermutation(length, BeautifulArraySolution.ConstructByMemoizedDivideAndConquer(length));
 
     [Theory]
     [MemberData(nameof(LargeExamples))]
-    public void ConstructByMemoizedDivideAndConquer_LargeLengths_ReturnsABeautifulPermutation(int n) =>
-        AssertBeautifulPermutation(n, BeautifulArraySolution.ConstructByMemoizedDivideAndConquer(n));
+    public void ConstructByMemoizedDivideAndConquer_LargeLengths_ReturnsABeautifulPermutation(int length) =>
+        AssertBeautifulPermutation(length, BeautifulArraySolution.ConstructByMemoizedDivideAndConquer(length));
 
-    private static void AssertBeautifulPermutation(int n, int[] actual)
+    private static void AssertBeautifulPermutation(int length, int[] actual)
     {
-        var expected = Enumerable.Range(1, n);
+        var expected = Enumerable.Range(1, length);
 
         Assert.Equal(expected, actual.OrderBy(value => value));
         Assert.True(IsBeautiful(actual), $"Not a beautiful array: [{string.Join(", ", actual)}]");
@@ -61,11 +61,11 @@ public sealed class BeautifulArrayTests
         return true;
     }
 
-    private static bool HasAveragingPair(int[] values, int i, int k)
+    private static bool HasAveragingPair(int[] values, int leftIndex, int middleIndex)
     {
-        for (var j = k + 1; j < values.Length; j++)
+        for (var j = middleIndex + 1; j < values.Length; j++)
         {
-            if ((2 * values[k]) == values[i] + values[j])
+            if ((2 * values[middleIndex]) == values[leftIndex] + values[j])
             {
                 return true;
             }

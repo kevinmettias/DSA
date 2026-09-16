@@ -26,9 +26,9 @@ internal static class ModifyGraphEdgeWeightsSolution
     // after every guess until the distance lands on target - O(target) Dijkstra
     // passes per edge, which is what the formula arm below has to beat.
     public static int[][] ModifyEdgeWeightsByLinearWeightScan(
-        int n, int[][] edges, (int Source, int Destination, int Target) query)
+        int nodeCount, int[][] edges, (int Source, int Destination, int Target) query)
     {
-        var graph = AssignableEdgeGraph.Build(n, edges);
+        var graph = AssignableEdgeGraph.Build(nodeCount, edges);
         var search = new WeightSearch(graph, query.Source, query.Destination, query.Target);
 
         if (TrySettleAtFloor(search, out var settled))
@@ -38,7 +38,7 @@ internal static class ModifyGraphEdgeWeightsSolution
 
         for (var index = 0; index < graph.EdgeCount; index++)
         {
-            if (graph.IsAssignable(index) && ScanWeightUpwards(search, index))
+            if (graph.IsAssignable(index) && TryScanWeightUpwards(search, index))
             {
                 return graph.Weights();
             }
@@ -53,7 +53,7 @@ internal static class ModifyGraphEdgeWeightsSolution
     // No useful weight exceeds target either - a path totalling exactly target
     // cannot spend more than target on one of its own positive-weight edges -
     // which is what bounds the loop.
-    private static bool ScanWeightUpwards(WeightSearch search, int edgeIndex)
+    private static bool TryScanWeightUpwards(WeightSearch search, int edgeIndex)
     {
         var stretched = AssignableEdgeWeights.FloorWeight;
 
@@ -82,9 +82,9 @@ internal static class ModifyGraphEdgeWeightsSolution
     // target has left over once the settled distance from source to one end and
     // from destination to the other end are both paid for.
     public static int[][] ModifyEdgeWeightsByHalfDistanceFormula(
-        int n, int[][] edges, (int Source, int Destination, int Target) query)
+        int nodeCount, int[][] edges, (int Source, int Destination, int Target) query)
     {
-        var graph = AssignableEdgeGraph.Build(n, edges);
+        var graph = AssignableEdgeGraph.Build(nodeCount, edges);
         var search = new WeightSearch(graph, query.Source, query.Destination, query.Target);
 
         if (TrySettleAtFloor(search, out var settled))

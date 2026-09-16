@@ -3,15 +3,15 @@ using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.LeetCode.IPO;
 
-// LeetCode 502. IPO: pick up to k projects, greedily maximizing final capital,
-// where a project can only be started once its required capital is affordable.
+// LeetCode 502. IPO: pick up to maxProjects projects, greedily maximizing final
+// capital, where a project can only be started once its required capital is affordable.
 //
 // The composed strategy is the classic two-heap greedy: a min-heap of projects
 // ordered by required capital (this repo's Heap<(int Node, int Priority),
 // ByPriorityOrder<int,int>>, the same (node, priority) projection used for
 // Dijkstra/A* frontiers, here projecting (profit, capital) instead of
 // (node, distance)) unlocks newly-affordable projects into a max-heap of their
-// profits (Heap<int, MaxHeapOrder<int>>). Each of the k rounds moves every
+// profits (Heap<int, MaxHeapOrder<int>>). Each of the maxProjects rounds moves every
 // now-affordable project's profit into the max-heap, then greedily takes the
 // best one, growing capital for the next round. The baseline instead rescans
 // every remaining project each round for the best affordable one.
@@ -20,13 +20,14 @@ internal static class IPOSolution
     // The textbook answer: an O(k*n) linear rescan of every remaining project
     // each round, deliberately written without this repo's primitives - it is
     // the arm the composed two-heap greedy below has to justify itself against.
-    public static int FindMaximizedCapitalByLinearScan(int k, int w, int[] profits, int[] capitals)
+    public static int FindMaximizedCapitalByLinearScan(
+        int maxProjects, int initialCapital, int[] profits, int[] capitals)
     {
         var used = new bool[profits.Length];
 
-        for (var round = 0; round < k; round++)
+        for (var round = 0; round < maxProjects; round++)
         {
-            var bestIndex = FindBestAffordableIndex(used, w, profits, capitals);
+            var bestIndex = FindBestAffordableIndex(used, initialCapital, profits, capitals);
 
             if (bestIndex == -1)
             {
@@ -34,10 +35,10 @@ internal static class IPOSolution
             }
 
             used[bestIndex] = true;
-            w += profits[bestIndex];
+            initialCapital += profits[bestIndex];
         }
 
-        return w;
+        return initialCapital;
     }
 
     private static int FindBestAffordableIndex(bool[] used, int capital, int[] profits, int[] capitals)
@@ -66,24 +67,25 @@ internal static class IPOSolution
 
     // This repo's own two-heap greedy: a min-heap by required capital feeding a
     // max-heap of unlocked profits.
-    public static int FindMaximizedCapitalByTwoHeapGreedy(int k, int w, int[] profits, int[] capitals)
+    public static int FindMaximizedCapitalByTwoHeapGreedy(
+        int maxProjects, int initialCapital, int[] profits, int[] capitals)
     {
         var byCapital = BuildCapitalHeap(profits, capitals);
         var byProfit = new Heap<int, MaxHeapOrder<int>>();
 
-        for (var round = 0; round < k; round++)
+        for (var round = 0; round < maxProjects; round++)
         {
-            UnlockAffordableProjects(byCapital, byProfit, w);
+            UnlockAffordableProjects(byCapital, byProfit, initialCapital);
 
             if (!byProfit.TryPop(out var bestProfit))
             {
                 break;
             }
 
-            w += bestProfit;
+            initialCapital += bestProfit;
         }
 
-        return w;
+        return initialCapital;
     }
 
     private static Heap<(int Node, int Priority), ByPriorityOrder<int, int>> BuildCapitalHeap(int[] profits, int[] capitals)

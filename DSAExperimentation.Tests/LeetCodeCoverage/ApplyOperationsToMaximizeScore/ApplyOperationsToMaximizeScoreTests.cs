@@ -7,8 +7,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ApplyOperationsToMaximizeSco
 // its baseline with nothing asserting it. Beyond LeetCode's two published examples the
 // cases pin what the boundary arithmetic and the greedy have to get right: a single
 // element, values whose prime score is 0 (every nums[i] = 1), score ties that force
-// the leftmost-owner rule, k exactly equal to the subarray count, k larger than it,
-// and a product big enough to wrap the 1e9+7 modulus. Every expectation was computed
+// the leftmost-owner rule, operationCount exactly equal to the subarray count,
+// operationCount larger than it, and a product big enough to wrap the 1e9+7 modulus. Every expectation was computed
 // from the problem statement directly - enumerate all subarrays, take each one's
 // picked element, multiply the k largest - not from either strategy.
 public sealed class ApplyOperationsToMaximizeScoreTests
@@ -37,10 +37,11 @@ public sealed class ApplyOperationsToMaximizeScoreTests
             // Prime score 0 everywhere: the answer is 1 however many operations run.
             { [1, 1, 1], 6, 1L },
 
-            // k equals the subarray count, so every operation is spent.
+            // operationCount equals the subarray count, so every operation is spent.
             { [2, 4, 8, 16], 10, 1048576L },
 
-            // k exceeds the subarray count - the greedy simply runs out of subarrays.
+            // operationCount exceeds the subarray count - the greedy simply runs out of
+            // subarrays.
             { [3, 5], 5, 45L },
 
             // Four equal values: only three of the ten subarrays are ever needed.
@@ -56,9 +57,9 @@ public sealed class ApplyOperationsToMaximizeScoreTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumScoreByLinearBoundaryScan_LeetCodeExamples_ReturnsGreedyProductModulo(
-        int[] nums, int k, long expected)
+        int[] nums, int operationCount, long expected)
     {
-        var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(nums, k);
+        var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByLinearBoundaryScan(nums, operationCount);
 
         Assert.Equal(expected, actual);
     }
@@ -66,9 +67,9 @@ public sealed class ApplyOperationsToMaximizeScoreTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaximumScoreByStackBoundaryScan_LeetCodeExamples_ReturnsGreedyProductModulo(
-        int[] nums, int k, long expected)
+        int[] nums, int operationCount, long expected)
     {
-        var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(nums, k);
+        var actual = ApplyOperationsToMaximizeScoreSolution.MaximumScoreByStackBoundaryScan(nums, operationCount);
 
         Assert.Equal(expected, actual);
     }

@@ -21,11 +21,11 @@ public sealed class MinimumNumberOfSwapsToMakeTheStringBalancedTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinSwapsByBackwardScan_LeetCodeExamples_ReturnsMinimumSwapCount(string s, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByBackwardScan(s));
+    public void MinSwapsByBackwardScan_LeetCodeExamples_ReturnsMinimumSwapCount(string text, int expected) =>
+        Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByBackwardScan(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinSwapsByStack_LeetCodeExamples_ReturnsMinimumSwapCount(string s, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByStack(s));
+    public void MinSwapsByStack_LeetCodeExamples_ReturnsMinimumSwapCount(string text, int expected) =>
+        Assert.Equal(expected, MinimumNumberOfSwapsToMakeTheStringBalancedSolution.MinSwapsByStack(text));
 }

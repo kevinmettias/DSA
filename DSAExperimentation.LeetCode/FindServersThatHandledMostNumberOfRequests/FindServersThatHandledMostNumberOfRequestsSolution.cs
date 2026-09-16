@@ -5,10 +5,10 @@ using DSAExperimentation.DataStructures.Sequence;
 
 namespace DSAExperimentation.LeetCode.FindServersThatHandledMostNumberOfRequests;
 
-// LeetCode 1606. Find Servers That Handled Most Number of Requests: request i
-// prefers server i % k, falls through to the next free server around the ring, and
-// is dropped outright when every server is busy. Report the servers that handled
-// the most requests.
+// LeetCode 1606. Find Servers That Handled Most Number of Requests: each request
+// prefers the server at its own index modulo the server count, falls through to the
+// next free server around the ring, and is dropped outright when every server is
+// busy. Report the servers that handled the most requests.
 //
 // Both strategies simulate the same arrival sequence and differ only in how they
 // answer "smallest free server index at or after `start`, wrapping": a walk around
@@ -18,17 +18,17 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
     // A request that finds no free server is dropped, not queued.
     private const int NoFreeServer = -1;
 
-    // The textbook answer: one `freeAt` timestamp per server, and a walk of up to k
-    // servers around the ring per request - O(n*k), BCL-only, the arm the composed
-    // solution below has to justify itself against.
-    public static int[] BusiestServersByLinearScanRing(int k, int[] arrival, int[] load)
+    // The textbook answer: one `freeAt` timestamp per server, and a walk of up to
+    // serverCount servers around the ring per request - O(n*k), BCL-only, the arm the
+    // composed solution below has to justify itself against.
+    public static int[] BusiestServersByLinearScanRing(int serverCount, int[] arrival, int[] load)
     {
-        var freeAt = new int[k];
-        var handled = new int[k];
+        var freeAt = new int[serverCount];
+        var handled = new int[serverCount];
 
         for (var i = 0; i < arrival.Length; i++)
         {
-            var server = ScanRingForFreeServer(freeAt, k, i % k, arrival[i]);
+            var server = ScanRingForFreeServer(freeAt, serverCount, i % serverCount, arrival[i]);
 
             if (server == NoFreeServer)
             {
@@ -42,11 +42,11 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
         return BusiestServers(handled);
     }
 
-    private static int ScanRingForFreeServer(int[] freeAt, int k, int start, int arrivalTime)
+    private static int ScanRingForFreeServer(int[] freeAt, int serverCount, int start, int arrivalTime)
     {
-        for (var offset = 0; offset < k; offset++)
+        for (var offset = 0; offset < serverCount; offset++)
         {
-            var candidate = (start + offset) % k;
+            var candidate = (start + offset) % serverCount;
 
             if (freeAt[candidate] <= arrivalTime)
             {
@@ -73,13 +73,13 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
     // PrefixQuery(i)) and handing it to this repo's own BinarySearch.LowerBound
     // (CountOfSmallerNumbersAfterSelf/ExamRoom precedent for "wrap a repo structure
     // as a Sequence view, then search it"), instead of a linear scan around the ring.
-    public static int[] BusiestServersByFenwickCeilingAndHeap(int k, int[] arrival, int[] load)
+    public static int[] BusiestServersByFenwickCeilingAndHeap(int serverCount, int[] arrival, int[] load)
     {
-        var pool = new ServerPool(k);
+        var pool = new ServerPool(serverCount);
 
         for (var i = 0; i < arrival.Length; i++)
         {
-            pool.ProcessRequest(i, arrival[i], load[i]);
+            pool.DispatchRequest(i, arrival[i], load[i]);
         }
 
         return BusiestServers(pool.Handled);
@@ -88,9 +88,9 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
     // Smallest available server index >= start, wrapping to [0, start) when nothing
     // is free from start through the end of the ring.
     private static bool TryFindAvailableServer(
-        FenwickTree<int, SumOperation<int>> availability, int k, int start, out int server)
+        FenwickTree<int, SumOperation<int>> availability, int serverCount, int start, out int server)
     {
-        var totalAvailable = availability.PrefixQuery(k - 1);
+        var totalAvailable = availability.PrefixQuery(serverCount - 1);
 
         if (totalAvailable == 0)
         {
@@ -100,7 +100,7 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
 
         var beforeStart = start == 0 ? 0 : availability.PrefixQuery(start - 1);
         var threshold = beforeStart < totalAvailable ? NextRank(beforeStart) : 1;
-        var sequence = new AvailabilityPrefixSequence(availability, k);
+        var sequence = new AvailabilityPrefixSequence(availability, serverCount);
 
         server = BinarySearch.LowerBound(sequence, threshold);
         return true;
@@ -125,14 +125,15 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
         return [.. busiest];
     }
 
-    private sealed class ServerPool(int k)
+    private sealed class ServerPool(int serverCount)
     {
-        private readonly FenwickTree<int, SumOperation<int>> _availability = new(Enumerable.Repeat(1, k).ToArray());
+        private readonly FenwickTree<int, SumOperation<int>> _availability =
+            new(Enumerable.Repeat(1, serverCount).ToArray());
         private readonly Heap<(int End, int Server), MinHeapOrder<(int, int)>> _busy = new();
 
-        public int[] Handled { get; } = new int[k];
+        public int[] Handled { get; } = new int[serverCount];
 
-        public void ProcessRequest(int i, int arrivalTime, int load)
+        public void DispatchRequest(int requestIndex, int arrivalTime, int load)
         {
             while (_busy.TryPeek(out var freed) && freed.End <= arrivalTime)
             {
@@ -140,7 +141,8 @@ internal static class FindServersThatHandledMostNumberOfRequestsSolution
                 _availability.Add(freed.Server, 1);
             }
 
-            if (!TryFindAvailableServer(_availability, k, i % k, out var server))
+            if (!TryFindAvailableServer(
+                _availability, serverCount, requestIndex % serverCount, out var server))
             {
                 return;
             }

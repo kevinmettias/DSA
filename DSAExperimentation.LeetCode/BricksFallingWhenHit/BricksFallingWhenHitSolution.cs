@@ -78,13 +78,13 @@ internal static class BricksFallingWhenHitSolution
 
         while (frontier.Count > 0)
         {
-            count += ProcessFrontierCell(roofGrid, frontier);
+            count += FloodNextBrick(roofGrid, frontier);
         }
 
         return count;
     }
 
-    private static int ProcessFrontierCell(RoofGrid grid, Queue<(int Row, int Col)> frontier)
+    private static int FloodNextBrick(RoofGrid grid, Queue<(int Row, int Col)> frontier)
     {
         var (row, col) = frontier.Dequeue();
 
@@ -126,7 +126,7 @@ internal static class BricksFallingWhenHitSolution
 
         var fallenReversed = new int[hits.Length];
         var hitContext = new HitProcessingContext(hits, grid, fallenReversed);
-        ProcessHitsInReverse(gridState, hitContext);
+        ReplayHitsInReverse(gridState, hitContext);
 
         return fallenReversed;
     }
@@ -186,18 +186,18 @@ internal static class BricksFallingWhenHitSolution
         }
     }
 
-    private static void ProcessHitsInReverse(GridState state, HitProcessingContext context)
+    private static void ReplayHitsInReverse(GridState state, HitProcessingContext context)
     {
         for (var i = context.Hits.Length - 1; i >= 0; i--)
         {
-            ProcessReverseHit(state, context, i);
+            UndoHit(state, context, i);
         }
     }
 
-    private static void ProcessReverseHit(GridState state, HitProcessingContext context, int i)
+    private static void UndoHit(GridState state, HitProcessingContext context, int hitIndex)
     {
-        var row = context.Hits[i][0];
-        var col = context.Hits[i][1];
+        var row = context.Hits[hitIndex][0];
+        var col = context.Hits[hitIndex][1];
 
         if (context.Grid[row][col] == 0)
         {
@@ -210,7 +210,7 @@ internal static class BricksFallingWhenHitSolution
         ConnectToStandingNeighbors(state, row, col);
         var afterSize = state.Size[state.Components.Find(state.Roof)];
 
-        context.FallenReversed[i] = FallenBrickCount(afterSize, beforeSize);
+        context.FallenReversed[hitIndex] = FallenBrickCount(afterSize, beforeSize);
     }
 
     // How many bricks this hit knocked down, read off the roof component's size before

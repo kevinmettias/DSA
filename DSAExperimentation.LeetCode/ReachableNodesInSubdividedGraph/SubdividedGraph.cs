@@ -18,11 +18,11 @@ internal sealed class SubdividedGraph
         Edges = edges;
     }
 
-    public static SubdividedGraph Build(int n, int[][] edges)
+    public static SubdividedGraph Build(int nodeCount, int[][] edges)
     {
-        var nodes = new SubdividedGraphNode[n];
+        var nodes = new SubdividedGraphNode[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             nodes[i] = new SubdividedGraphNode(i);
         }

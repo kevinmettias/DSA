@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeSpanningTreeStabilit
 // Harness only. Both strategies are
 // MaximizeSpanningTreeStabilityWithUpgradesSolution's - this file just pins them
 // to LeetCode's published examples, including the must-edge cycle that makes no
-// spanning tree possible at all regardless of k.
+// spanning tree possible at all regardless of the upgrade budget.
 public sealed class MaximizeSpanningTreeStabilityWithUpgradesTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
@@ -19,9 +19,10 @@ public sealed class MaximizeSpanningTreeStabilityWithUpgradesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxStabilityByArrayUnionFind_LeetCodeExamples_ReturnsMaximumAchievableStability(
-        int n, int[][] edges, int k, int expected)
+        int nodeCount, int[][] edges, int upgrades, int expected)
     {
-        var actual = MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByArrayUnionFind(n, edges, k);
+        var actual = MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByArrayUnionFind(
+            nodeCount, edges, upgrades);
 
         Assert.Equal(expected, actual);
     }
@@ -29,9 +30,10 @@ public sealed class MaximizeSpanningTreeStabilityWithUpgradesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxStabilityByDisjointSet_LeetCodeExamples_ReturnsMaximumAchievableStability(
-        int n, int[][] edges, int k, int expected)
+        int nodeCount, int[][] edges, int upgrades, int expected)
     {
-        var actual = MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByDisjointSet(n, edges, k);
+        var actual = MaximizeSpanningTreeStabilityWithUpgradesSolution.MaxStabilityByDisjointSet(
+            nodeCount, edges, upgrades);
 
         Assert.Equal(expected, actual);
     }

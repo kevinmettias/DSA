@@ -17,12 +17,12 @@ internal static class MinimumAddToMakeParenthesesValidSolution
     // The textbook answer: a pair of running counters, nothing stored.
     // Deliberately written without this repo's primitives - it is the arm the
     // stack strategy below has to justify itself against.
-    public static int MinAddToMakeValidByRunningCounter(string s)
+    public static int MinAddToMakeValidByRunningCounter(string text)
     {
         var openBalance = 0;
         var insertions = 0;
 
-        foreach (var ch in s)
+        foreach (var ch in text)
         {
             if (ch == Opener)
             {
@@ -45,12 +45,12 @@ internal static class MinimumAddToMakeParenthesesValidSolution
     // same composition ValidParenthesesSolution uses: TryPop failing is exactly
     // "this closer has nothing to match", and Count at the end is exactly how many
     // openers are still waiting for one.
-    public static int MinAddToMakeValidByOpenerStack(string s)
+    public static int MinAddToMakeValidByOpenerStack(string text)
     {
         var openers = new OpenerStack();
         var unmatchedClosers = 0;
 
-        foreach (var ch in s)
+        foreach (var ch in text)
         {
             if (ch == Opener)
             {

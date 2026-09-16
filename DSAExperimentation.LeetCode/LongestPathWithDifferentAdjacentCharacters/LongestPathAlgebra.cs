@@ -31,7 +31,7 @@ internal readonly struct LongestPathAlgebra : IFoldAlgebra<RootedTreeNode, PathS
     // largest-child-path values as Combine folds over one node's children.
     private readonly record struct ChildAccumulator(int LargestHeight, int SecondLargestHeight, int LargestChildPath);
 
-    // s[i] is node i's character; ParentArrayTree numbers its nodes by the same
+    // labels[i] is node i's character; ParentArrayTree numbers its nodes by the same
     // index, so one lookup by id is all Combine needs.
     public static void Prepare(string labels) => Labels.Value = labels;
 

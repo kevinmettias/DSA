@@ -30,7 +30,7 @@ internal static class SplitArrayWithSameAverageSolution
 
         for (var mask = 1; mask < (1 << n) - 1; mask++)
         {
-            if (MaskSplitsEvenly(nums, mask, n, total))
+            if (IsSameAverageSplitForMask(nums, mask, n, total))
             {
                 return true;
             }
@@ -41,12 +41,12 @@ internal static class SplitArrayWithSameAverageSolution
 
     // Splits nums by `mask` into the selected subset (bits set) and the rest, and
     // checks whether the selected subset's average equals the whole array's.
-    private static bool MaskSplitsEvenly(int[] nums, int mask, int n, int total)
+    private static bool IsSameAverageSplitForMask(int[] nums, int mask, int elementCount, int total)
     {
         var count = 0;
         var sum = 0;
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < elementCount; i++)
         {
             if ((mask & (1 << i)) != 0)
             {
@@ -55,7 +55,7 @@ internal static class SplitArrayWithSameAverageSolution
             }
         }
 
-        return sum * n == total * count;
+        return sum * elementCount == total * count;
     }
 
     // This repo's own Memoizer over (index, countNeeded, sumNeeded): one candidate
@@ -77,20 +77,20 @@ internal static class SplitArrayWithSameAverageSolution
         return false;
     }
 
-    // For one candidate subset size k, checks whether some size-k subset sums to
-    // the exact target that would make its average equal the whole array's. A
-    // target that is not an integer rules the size out with no search at all.
-    private static bool HasSubsetOfSizeWithTargetSum(int[] nums, int n, int total, int k)
+    // For one candidate subset size `subsetSize`, checks whether some subset of that
+    // size sums to the exact target that would make its average equal the whole
+    // array's. A target that is not an integer rules the size out with no search at all.
+    private static bool HasSubsetOfSizeWithTargetSum(int[] nums, int elementCount, int total, int subsetSize)
     {
-        if (total * k % n != 0)
+        if (total * subsetSize % elementCount != 0)
         {
             return false;
         }
 
-        var targetSum = total * k / n;
+        var targetSum = total * subsetSize / elementCount;
 
         return Memoizer.Memoize<(int Index, int Count, int Sum), bool>(
-            (0, k, targetSum), new SubsetSizeSearch(nums));
+            (0, subsetSize, targetSum), new SubsetSizeSearch(nums));
     }
 
     // The rule, named: a subset of the required size and sum exists when the element at

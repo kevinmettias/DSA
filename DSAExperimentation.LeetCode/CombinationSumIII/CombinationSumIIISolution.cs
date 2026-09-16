@@ -2,39 +2,40 @@ using DSAExperimentation.Algorithms.Backtracking;
 
 namespace DSAExperimentation.LeetCode.CombinationSumIII;
 
-// LeetCode 216. Combination Sum III: choose k distinct digits from 1..9 that sum to
-// n, returned as every valid combination - LeetCode's own answer shape, a
-// List<List<int>>, not merely whether one exists.
+// LeetCode 216. Combination Sum III: choose combinationSize distinct digits from 1..9
+// that sum to targetSum, returned as every valid combination - LeetCode's own answer
+// shape, a List<List<int>>, not merely whether one exists.
 //
-// The two strategies differ in how the k-subset space is pruned: brute force walks
-// every increasing digit sequence of length k and checks the sum only once the
-// sequence is complete; the backtracking strategy uses this repo's Backtrack.Search
-// engine to stop descending the moment a partial sum can no longer reach n, so it
-// never finishes exploring a branch it already knows is too large.
+// The two strategies differ in how the candidate digits are pruned: brute force walks
+// every increasing digit sequence of length combinationSize and checks the sum only
+// once the sequence is complete; the backtracking strategy uses this repo's
+// Backtrack.Search engine to stop descending the moment a partial sum can no longer
+// reach targetSum, so it never finishes exploring a branch it already knows is too
+// large.
 internal static class CombinationSumIIISolution
 {
     private const int MinDigit = 1;
     private const int MaxDigit = 9;
 
-    public static List<List<int>> CombinationsByBruteForce(int k, int n)
+    public static List<List<int>> CombinationsByBruteForce(int combinationSize, int targetSum)
     {
         var results = new List<List<int>>();
         var chosen = new List<int>();
-        EnumerateSubsets(MinDigit, (k, n), chosen, results);
+        EnumerateSubsets(MinDigit, (combinationSize, targetSum), chosen, results);
         return results;
     }
 
-    public static List<List<int>> CombinationsByBacktrackEngine(int k, int n)
+    public static List<List<int>> CombinationsByBacktrackEngine(int combinationSize, int targetSum)
     {
         var results = new List<List<int>>();
         var state = new SearchState();
 
         Backtrack.Search<SearchState, int>(
             state,
-            isSolution: s => s.Values.Count == k && s.Sum == n,
-            candidates: s => s.Values.Count == k || s.Sum >= n
+            isSolution: s => s.Values.Count == combinationSize && s.Sum == targetSum,
+            candidates: s => s.Values.Count == combinationSize || s.Sum >= targetSum
                 ? NoCandidates()
-                : CandidatesFor(s, n),
+                : CandidatesFor(s, targetSum),
             choose: ApplyChoice,
             unchoose: UndoChoice,
             onSolution: s => results.Add([.. s.Values]));

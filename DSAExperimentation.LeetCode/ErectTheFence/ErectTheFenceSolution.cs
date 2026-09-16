@@ -47,18 +47,18 @@ internal static class ErectTheFenceSolution
         return fence.ToList();
     }
 
-    // The ordered pair (i, j) is a candidate hull edge exactly when every other
-    // point lies on one side of the line through it (or on the line itself).
+    // The ordered pair (firstIndex, secondIndex) is a candidate hull edge exactly when
+    // every other point lies on one side of the line through it (or on the line itself).
     private static void AddHullLinePoints(
-        HashSet<(int X, int Y)> fence, (int X, int Y)[] points, int i, int j)
+        HashSet<(int X, int Y)> fence, (int X, int Y)[] points, int firstIndex, int secondIndex)
     {
-        if (i == j)
+        if (firstIndex == secondIndex)
         {
             return;
         }
 
-        var a = points[i];
-        var b = points[j];
+        var a = points[firstIndex];
+        var b = points[secondIndex];
 
         if (IsHullLine(points, a, b))
         {
@@ -66,13 +66,14 @@ internal static class ErectTheFenceSolution
         }
     }
 
-    private static bool IsHullLine((int X, int Y)[] points, (int X, int Y) a, (int X, int Y) b)
+    private static bool IsHullLine(
+        (int X, int Y)[] points, (int X, int Y) lineStart, (int X, int Y) lineEnd)
     {
         var side = 0;
 
         foreach (var c in points)
         {
-            if (!TryUpdateSide(a, b, c, ref side))
+            if (!TryUpdateSide(lineStart, lineEnd, c, ref side))
             {
                 return false;
             }
@@ -81,9 +82,10 @@ internal static class ErectTheFenceSolution
         return true;
     }
 
-    private static bool TryUpdateSide((int X, int Y) a, (int X, int Y) b, (int X, int Y) c, ref int side)
+    private static bool TryUpdateSide(
+        (int X, int Y) lineStart, (int X, int Y) lineEnd, (int X, int Y) testPoint, ref int side)
     {
-        var cross = Cross(a, b, c);
+        var cross = Cross(lineStart, lineEnd, testPoint);
 
         if (cross == 0)
         {
@@ -161,12 +163,12 @@ internal static class ErectTheFenceSolution
         return chain;
     }
 
-    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) p)
+    private static bool TryDiscardTrailingPoint(HullStack stack, (int X, int Y) point)
     {
         stack.TryPop(out var top);
         stack.TryPeek(out var second);
 
-        if (Cross(second, top, p) <= 0)
+        if (Cross(second, top, point) <= 0)
         {
             return true;
         }
@@ -176,22 +178,30 @@ internal static class ErectTheFenceSolution
     }
 
     private static void AddSegmentPoints(
-        HashSet<(int X, int Y)> fence, (int X, int Y)[] points, (int X, int Y) a, (int X, int Y) b)
+        HashSet<(int X, int Y)> fence,
+        (int X, int Y)[] points,
+        (int X, int Y) lineStart,
+        (int X, int Y) lineEnd)
     {
         foreach (var p in points)
         {
-            if (IsOnSegment(a, b, p))
+            if (IsOnSegment(lineStart, lineEnd, p))
             {
                 fence.Add(p);
             }
         }
     }
 
-    private static bool IsOnSegment((int X, int Y) a, (int X, int Y) b, (int X, int Y) p)
-        => Cross(a, b, p) == 0
-            && p.X >= Math.Min(a.X, b.X) && p.X <= Math.Max(a.X, b.X)
-            && p.Y >= Math.Min(a.Y, b.Y) && p.Y <= Math.Max(a.Y, b.Y);
+    private static bool IsOnSegment(
+        (int X, int Y) lineStart, (int X, int Y) lineEnd, (int X, int Y) point)
+        => Cross(lineStart, lineEnd, point) == 0
+            && point.X >= Math.Min(lineStart.X, lineEnd.X)
+            && point.X <= Math.Max(lineStart.X, lineEnd.X)
+            && point.Y >= Math.Min(lineStart.Y, lineEnd.Y)
+            && point.Y <= Math.Max(lineStart.Y, lineEnd.Y);
 
-    private static long Cross((int X, int Y) o, (int X, int Y) a, (int X, int Y) b)
-        => (long)(a.X - o.X) * (b.Y - o.Y) - (long)(a.Y - o.Y) * (b.X - o.X);
+    private static long Cross(
+        (int X, int Y) origin, (int X, int Y) firstPoint, (int X, int Y) secondPoint)
+        => (long)(firstPoint.X - origin.X) * (secondPoint.Y - origin.Y)
+            - (long)(firstPoint.Y - origin.Y) * (secondPoint.X - origin.X);
 }

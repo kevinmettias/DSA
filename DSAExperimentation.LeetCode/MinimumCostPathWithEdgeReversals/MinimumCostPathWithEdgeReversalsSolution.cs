@@ -4,9 +4,9 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.MinimumCostPathWithEdgeReversals;
 
 // LeetCode 3650. Minimum Cost Path with Edge Reversals: a directed weighted graph of
-// n nodes. Each node's switch lets you reverse one of its incoming edges (cost 2w)
-// the instant you arrive, and immediately cross it back the other way. Find the
-// cheapest node 0 -> node n-1 path, or -1 if none exists.
+// nodeCount nodes. Each node's switch lets you reverse one of its incoming edges
+// (cost 2w) the instant you arrive, and immediately cross it back the other way. Find
+// the cheapest path from node 0 to the last node, or -1 if none exists.
 //
 // A shortest *simple* path visits every node at most once, so it can only ever use
 // one node's switch on one of that node's incoming edges - exactly the capacity the
@@ -20,21 +20,21 @@ internal static class MinimumCostPathWithEdgeReversalsSolution
     // over the same forward/reversed edge set, built inline - deliberately without
     // this repo's graph engine, the arm the composed strategy below has to justify
     // itself against.
-    public static int MinCostByBruteForceDijkstra(int n, int[][] edges)
+    public static int MinCostByBruteForceDijkstra(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
-        var dist = SeedDistances(n);
+        var adjacency = BuildAdjacency(nodeCount, edges);
+        var dist = SeedDistances(nodeCount);
 
         RunDijkstra(adjacency, dist);
 
-        return DestinationDistance(dist, n);
+        return DestinationDistance(dist, nodeCount);
     }
 
     // The distance array every arm starts from: node 0 at distance 0, every other node
     // still unreached.
-    private static long[] SeedDistances(int n)
+    private static long[] SeedDistances(int nodeCount)
     {
-        var dist = new long[n];
+        var dist = new long[nodeCount];
         Array.Fill(dist, long.MaxValue);
         dist[0] = 0;
 
@@ -79,19 +79,19 @@ internal static class MinimumCostPathWithEdgeReversalsSolution
     }
 
     // The settled distance to the destination, narrowed to the problem's int answer, or
-    // the problem's "no path" sentinel when node n - 1 was never reached.
-    private static int DestinationDistance(long[] dist, int n)
+    // the problem's "no path" sentinel when node nodeCount - 1 was never reached.
+    private static int DestinationDistance(long[] dist, int nodeCount)
     {
-        var destinationDistance = dist[n - 1];
+        var destinationDistance = dist[nodeCount - 1];
 
         return destinationDistance == long.MaxValue ? LeetCodeAnswer.None : (int)destinationDistance;
     }
 
-    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int n, int[][] edges)
+    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<(int Neighbor, long Weight)>[n];
+        var adjacency = new List<(int Neighbor, long Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }
@@ -109,11 +109,11 @@ internal static class MinimumCostPathWithEdgeReversalsSolution
     // This repo's own Dijkstra: ShortestPath.Dijkstra over ReversalGraphNode via
     // ReversalGraphTopology gives every reachable node's distance from node 0 in one
     // call, so the puzzle reduces to building the augmented graph once and reading
-    // off node n-1's distance - the same composition FindEdgesInShortestPathsSolution
-    // uses for LC 3123's own Dijkstra arm.
-    public static int MinCostByShortestPathDijkstra(int n, int[][] edges)
+    // off the destination node's distance - the same composition
+    // FindEdgesInShortestPathsSolution uses for LC 3123's own Dijkstra arm.
+    public static int MinCostByShortestPathDijkstra(int nodeCount, int[][] edges)
     {
-        var graph = ReversalGraph.Build(n, edges);
+        var graph = ReversalGraph.Build(nodeCount, edges);
         return MinCostByShortestPathDijkstra(graph);
     }
 

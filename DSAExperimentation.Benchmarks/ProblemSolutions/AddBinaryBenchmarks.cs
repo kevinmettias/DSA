@@ -9,22 +9,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class AddBinaryBenchmarks
 {
-    private string _a = "";
+    private string _firstOperand = "";
 
-    private string _b = "";
+    private string _secondOperand = "";
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _a = new string('1', Length);
-        _b = new string('1', Length);
+        _firstOperand = new string('1', Length);
+        _secondOperand = new string('1', Length);
     }
 
     [Benchmark(Baseline = true)]
-    public string CharArrayReverse() => AddBinarySolution.AddByCharArrayReverse(_a, _b);
+    public string CharArrayReverse() => AddBinarySolution.AddByCharArrayReverse(_firstOperand, _secondOperand);
 
     [Benchmark]
-    public string StackBits() => AddBinarySolution.AddByBitStack(_a, _b);
+    public string StackBits() => AddBinarySolution.AddByBitStack(_firstOperand, _secondOperand);
 }

@@ -20,22 +20,22 @@ public class BuildAMatrixWithConditionsBenchmarks
 
     private List<ValueNode> _colValues = new();
     [Params(50, 1_000)]
-    public int K { get; set; }
+    public int ValueCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _rowValues = BuildChainValues(K);
-        _colValues = BuildChainValues(K);
+        _rowValues = BuildChainValues(ValueCount);
+        _colValues = BuildChainValues(ValueCount);
     }
 
-    private static List<ValueNode> BuildChainValues(int k)
+    private static List<ValueNode> BuildChainValues(int valueCount)
     {
-        var values = Enumerable.Range(1, k).Select(id => new ValueNode(id)).ToList();
+        var values = Enumerable.Range(1, valueCount).Select(id => new ValueNode(id)).ToList();
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < valueCount; i++)
         {
-            var fanOut = Math.Min(MaxFanOut, k - 1 - i);
+            var fanOut = Math.Min(MaxFanOut, valueCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
                 values[i].After.Add(values[i + f]);
@@ -45,9 +45,9 @@ public class BuildAMatrixWithConditionsBenchmarks
         return values;
     }
 
-    // Both arms return the built matrix's row count - k when the conditions are
-    // satisfiable, as this workload's are - purely so the full placement is
-    // consumed rather than elided.
+    // Both arms return the built matrix's row count - the value count when the
+    // conditions are satisfiable, as this workload's are - purely so the full
+    // placement is consumed rather than elided.
     [Benchmark(Baseline = true)]
     public int NaiveRescanBothOrders() =>
         BuildAMatrixWithConditionsSolution.BuildMatrixByNaiveRescan(_rowValues, _colValues).Length;

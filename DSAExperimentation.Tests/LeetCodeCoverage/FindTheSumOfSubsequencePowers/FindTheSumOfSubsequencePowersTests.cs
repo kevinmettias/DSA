@@ -19,9 +19,9 @@ public sealed class FindTheSumOfSubsequencePowersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumOfPowersByBruteForce_LeetCodeExamples_ReturnsSumOfPowersModTenToTheNinePlusSeven(
-        int[] nums, int k, int expected)
+        int[] nums, int subsequenceLength, int expected)
     {
-        var actual = FindTheSumOfSubsequencePowersSolution.SumOfPowersByBruteForce(nums, k);
+        var actual = FindTheSumOfSubsequencePowersSolution.SumOfPowersByBruteForce(nums, subsequenceLength);
 
         Assert.Equal(expected, actual);
     }
@@ -29,9 +29,9 @@ public sealed class FindTheSumOfSubsequencePowersTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SumOfPowersByThresholdCounting_LeetCodeExamples_ReturnsSumOfPowersModTenToTheNinePlusSeven(
-        int[] nums, int k, int expected)
+        int[] nums, int subsequenceLength, int expected)
     {
-        var actual = FindTheSumOfSubsequencePowersSolution.SumOfPowersByThresholdCounting(nums, k);
+        var actual = FindTheSumOfSubsequencePowersSolution.SumOfPowersByThresholdCounting(nums, subsequenceLength);
 
         Assert.Equal(expected, actual);
     }

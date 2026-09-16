@@ -15,9 +15,10 @@ public sealed class BestTimeToBuyAndSellStockVTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MaxProfitByBruteForce_LeetCodeExamples_ReturnsMaximumProfit(int[] prices, int k, long expected)
+    public void MaxProfitByBruteForce_LeetCodeExamples_ReturnsMaximumProfit(
+        int[] prices, int transactionBudget, long expected)
     {
-        var actual = BestTimeToBuyAndSellStockVSolution.MaxProfitByBruteForce(prices, k);
+        var actual = BestTimeToBuyAndSellStockVSolution.MaxProfitByBruteForce(prices, transactionBudget);
 
         Assert.Equal(expected, actual);
     }
@@ -25,9 +26,10 @@ public sealed class BestTimeToBuyAndSellStockVTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByTransactionMemoization_LeetCodeExamples_ReturnsMaximumProfit(
-        int[] prices, int k, long expected)
+        int[] prices, int transactionBudget, long expected)
     {
-        var actual = BestTimeToBuyAndSellStockVSolution.MaxProfitByTransactionMemoization(prices, k);
+        var actual = BestTimeToBuyAndSellStockVSolution.MaxProfitByTransactionMemoization(
+            prices, transactionBudget);
 
         Assert.Equal(expected, actual);
     }

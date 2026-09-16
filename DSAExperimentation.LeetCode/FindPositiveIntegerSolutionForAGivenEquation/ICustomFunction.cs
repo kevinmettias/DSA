@@ -10,5 +10,5 @@ internal interface ICustomFunction
     // Evaluates the hidden f at (x, y): strictly increasing in both x and y, pure (the
     // same pair always yields the same value, so a strategy may probe a cell again), and
     // never throwing across the 1..1000 range this problem searches.
-    int Evaluate(int x, int y);
+    int Evaluate(int xValue, int yValue);
 }

@@ -4,9 +4,9 @@ using DSAExperimentation.LeetCode.PredictTheWinner;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PredictTheWinnerSolution's, the same methods
-// PredictTheWinnerTests proves correct. N is kept modest specifically because the
-// un-memoized baseline's blowup is real, the same reasoning FibonacciBenchmarks
-// documents.
+// PredictTheWinnerTests proves correct. The array length is kept modest
+// specifically because the un-memoized baseline's blowup is real, the same
+// reasoning FibonacciBenchmarks documents.
 [MemoryDiagnoser]
 public class PredictTheWinnerBenchmarks
 {
@@ -15,18 +15,20 @@ public class PredictTheWinnerBenchmarks
     private int[] _nums = [];
 
     [Params(22, 26)]
-    public int N { get; set; }
+    public int ArrayLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, N).Select(_ => random.Next(1, MaxScoreValueExclusive)).ToArray();
+        _nums = Enumerable.Range(0, ArrayLength)
+            .Select(_ => random.Next(1, MaxScoreValueExclusive))
+            .ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public bool UnmemoizedRecursion() => PredictTheWinnerSolution.CanWinByUnmemoizedRecursion(_nums);
+    public bool CanWinByUnmemoizedRecursion() => PredictTheWinnerSolution.CanWinByUnmemoizedRecursion(_nums);
 
     [Benchmark]
-    public bool MemoizedRecursion() => PredictTheWinnerSolution.CanWinByMemoizedRecursion(_nums);
+    public bool CanWinByMemoizedRecursion() => PredictTheWinnerSolution.CanWinByMemoizedRecursion(_nums);
 }

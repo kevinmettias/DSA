@@ -4,9 +4,10 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfSetsOfKNonOverlappin
 
 // Harness only. Both strategies are
 // NumberOfSetsOfKNonOverlappingLineSegmentsSolution's - this file just pins them to
-// LeetCode's published examples plus the two boundary shapes the k > n guard
-// exists for: k segments seated in exactly k+1 points by touching, and k segments
-// that cannot be seated at all.
+// LeetCode's published examples plus the two boundary shapes the
+// segmentCount > pointCount guard exists for: segmentCount segments seated in
+// exactly segmentCount+1 points by touching, and segmentCount segments that cannot
+// be seated at all.
 public sealed class NumberOfSetsOfKNonOverlappingLineSegmentsTests
 {
     public static TheoryData<int, int, int> Examples =>
@@ -27,9 +28,9 @@ public sealed class NumberOfSetsOfKNonOverlappingLineSegmentsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfSetsByTabulation_LeetCodeExamples_ReturnsNonOverlappingSegmentSetCount(
-        int n, int k, int expected)
+        int pointCount, int segmentCount, int expected)
     {
-        var actual = NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByTabulation(n, k);
+        var actual = NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByTabulation(pointCount, segmentCount);
 
         Assert.Equal(expected, actual);
     }
@@ -37,9 +38,9 @@ public sealed class NumberOfSetsOfKNonOverlappingLineSegmentsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfSetsByMemoizedPascal_LeetCodeExamples_ReturnsNonOverlappingSegmentSetCount(
-        int n, int k, int expected)
+        int pointCount, int segmentCount, int expected)
     {
-        var actual = NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByMemoizedPascal(n, k);
+        var actual = NumberOfSetsOfKNonOverlappingLineSegmentsSolution.NumberOfSetsByMemoizedPascal(pointCount, segmentCount);
 
         Assert.Equal(expected, actual);
     }

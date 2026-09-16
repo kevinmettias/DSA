@@ -17,9 +17,9 @@ public sealed class KthSmallestAmountWithSingleDenominationCombinationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthSmallestAmountByHeapMerge_LeetCodeExamples_ReturnsKthAchievableAmount(
-        int[] coins, long k, long expected)
+        int[] coins, long rank, long expected)
     {
-        var actual = KthSmallestAmountWithSingleDenominationCombinationSolution.KthSmallestAmountByHeapMerge(coins, k);
+        var actual = KthSmallestAmountWithSingleDenominationCombinationSolution.KthSmallestAmountByHeapMerge(coins, rank);
 
         Assert.Equal(expected, actual);
     }
@@ -27,10 +27,10 @@ public sealed class KthSmallestAmountWithSingleDenominationCombinationTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthSmallestAmountByInclusionExclusionSearch_LeetCodeExamples_ReturnsKthAchievableAmount(
-        int[] coins, long k, long expected)
+        int[] coins, long rank, long expected)
     {
         var actual = KthSmallestAmountWithSingleDenominationCombinationSolution.KthSmallestAmountByInclusionExclusionSearch(
-            coins, k);
+            coins, rank);
 
         Assert.Equal(expected, actual);
     }

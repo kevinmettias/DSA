@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.MaximizeSpanningTreeStabilityWithUpgrades;
 // LeetCode 3600. Maximize Spanning Tree Stability with Upgrades: every must-edge
 // has to appear in the spanning tree at its original strength (it can never be
 // upgraded); every optional edge may be left out, used at its original strength,
-// or upgraded once (doubling it) at a cost of one of the k upgrades. The
+// or upgraded once (doubling it) at a cost of one of the upgrades. The
 // stability of a tree is the minimum strength among its own edges, and the answer
 // is the maximum stability any valid spanning tree can reach.
 //
@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.MaximizeSpanningTreeStabilityWithUpgrades;
 // the-answer shape. Feasible(X) asks: using every must-edge (whose own strength
 // therefore has to already be >= X, since it can neither be dropped nor upgraded)
 // plus as many optional edges as needed at >= X (free if already >= X, else
-// upgraded for one of the k upgrades if doubling clears X), can every node be
+// upgraded for one of the upgrades if doubling clears X), can every node be
 // connected? Free edges are always tried before upgrade-eligible ones - the same
 // matroid property Kruskal itself relies on (MinimumSpanningTree.Kruskal's own doc
 // comment) means the number of upgrade-eligible edges that end up actually
@@ -22,9 +22,9 @@ namespace DSAExperimentation.LeetCode.MaximizeSpanningTreeStabilityWithUpgrades;
 // feasible count.
 //
 // A cycle confined entirely to must-edges is a separate, threshold-independent
-// impossibility: a spanning TREE cannot contain a cycle, no matter how large k is
-// or how low X is allowed to go, so it is checked once up front rather than
-// folded into Feasible.
+// impossibility: a spanning TREE cannot contain a cycle, no matter how large the
+// upgrade budget is or how low X is allowed to go, so it is checked once up front
+// rather than folded into Feasible.
 internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
 {
     // The two questions the binary search probes its answer with, held once per arm
@@ -39,14 +39,14 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
     // Baseline: a hand-rolled int[] union-find (path compression, no union-by-rank)
     // fronting the same binary search - "what you'd write without this repo"
     // (ARCHITECTURE.md 17.5).
-    public static int MaxStabilityByArrayUnionFind(int n, int[][] edges, int k)
+    public static int MaxStabilityByArrayUnionFind(int nodeCount, int[][] edges, int upgrades)
     {
-        var graph = StabilityGraph.Build(n, edges);
-        return MaxStabilityByArrayUnionFind(graph, k);
+        var graph = StabilityGraph.Build(nodeCount, edges);
+        return MaxStabilityByArrayUnionFind(graph, upgrades);
     }
 
-    public static int MaxStabilityByArrayUnionFind(StabilityGraph graph, int k) =>
-        MaxStabilityByBinarySearch(graph, k, ArrayCycleCheck, ArrayFeasibility);
+    public static int MaxStabilityByArrayUnionFind(StabilityGraph graph, int upgrades) =>
+        MaxStabilityByBinarySearch(graph, upgrades, ArrayCycleCheck, ArrayFeasibility);
 
     private static bool HasMustEdgeCycleByArray(StabilityGraph graph)
     {
@@ -54,7 +54,7 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
 
         foreach (var (u, v, _) in graph.MustEdges)
         {
-            if (!UnionByArray(parent, u, v))
+            if (!TryUnionByArray(parent, u, v))
             {
                 return true;
             }
@@ -63,9 +63,9 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         return false;
     }
 
-    private static bool IsFeasibleByArray(StabilityGraph graph, int threshold, int k)
+    private static bool IsFeasibleByArray(StabilityGraph graph, int threshold, int upgrades)
     {
-        if (ExistsBelowThreshold(graph, threshold))
+        if (HasEdgeBelowThreshold(graph, threshold))
         {
             return false;
         }
@@ -73,7 +73,7 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         var parent = NewParents(graph.NodeCount);
         UnionThresholdEdgesByArray(parent, graph, threshold);
 
-        if (UpgradesNeededByArray(parent, graph, threshold) > k)
+        if (UpgradesNeededByArray(parent, graph, threshold) > upgrades)
         {
             return false;
         }
@@ -88,19 +88,19 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
     {
         foreach (var (u, v, _) in graph.MustEdges)
         {
-            UnionByArray(parent, u, v);
+            TryUnionByArray(parent, u, v);
         }
 
         foreach (var (u, v, strength) in graph.OptionalEdges)
         {
             if (strength >= threshold)
             {
-                UnionByArray(parent, u, v);
+                TryUnionByArray(parent, u, v);
             }
         }
     }
 
-    // Spends one of the k upgrades on every eligible optional edge that still joins
+    // Spends one of the upgrades on every eligible optional edge that still joins
     // two components, and reports how many that took.
     private static int UpgradesNeededByArray(int[] parent, StabilityGraph graph, int threshold)
     {
@@ -108,7 +108,7 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
 
         foreach (var (u, v, strength) in graph.OptionalEdges)
         {
-            if (IsUpgradeEligible(strength, threshold) && UnionByArray(parent, u, v))
+            if (IsUpgradeEligible(strength, threshold) && TryUnionByArray(parent, u, v))
             {
                 upgradesUsed++;
             }
@@ -134,11 +134,11 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         return true;
     }
 
-    private static int[] NewParents(int n)
+    private static int[] NewParents(int nodeCount)
     {
-        var parent = new int[n];
+        var parent = new int[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             parent[i] = i;
         }
@@ -157,9 +157,9 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         return node;
     }
 
-    private static bool UnionByArray(int[] parent, int a, int b)
+    private static bool TryUnionByArray(int[] parent, int firstNode, int secondNode)
     {
-        var (rootA, rootB) = (FindByArray(parent, a), FindByArray(parent, b));
+        var (rootA, rootB) = (FindByArray(parent, firstNode), FindByArray(parent, secondNode));
 
         if (rootA == rootB)
         {
@@ -174,14 +174,14 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
     // union-by-rank) fronting the identical binary search - LC's vertices are
     // already the dense [0, n) ids this repo's DisjointSet expects, the same
     // direct-use shape WalkCostComponents documents for LC 3108.
-    public static int MaxStabilityByDisjointSet(int n, int[][] edges, int k)
+    public static int MaxStabilityByDisjointSet(int nodeCount, int[][] edges, int upgrades)
     {
-        var graph = StabilityGraph.Build(n, edges);
-        return MaxStabilityByDisjointSet(graph, k);
+        var graph = StabilityGraph.Build(nodeCount, edges);
+        return MaxStabilityByDisjointSet(graph, upgrades);
     }
 
-    public static int MaxStabilityByDisjointSet(StabilityGraph graph, int k) =>
-        MaxStabilityByBinarySearch(graph, k, DisjointSetCycleCheck, DisjointSetFeasibility);
+    public static int MaxStabilityByDisjointSet(StabilityGraph graph, int upgrades) =>
+        MaxStabilityByBinarySearch(graph, upgrades, DisjointSetCycleCheck, DisjointSetFeasibility);
 
     private static bool HasMustEdgeCycleByDisjointSet(StabilityGraph graph)
     {
@@ -200,9 +200,9 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         return false;
     }
 
-    private static bool IsFeasibleByDisjointSet(StabilityGraph graph, int threshold, int k)
+    private static bool IsFeasibleByDisjointSet(StabilityGraph graph, int threshold, int upgrades)
     {
-        if (ExistsBelowThreshold(graph, threshold))
+        if (HasEdgeBelowThreshold(graph, threshold))
         {
             return false;
         }
@@ -210,7 +210,7 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         var components = new DisjointSetOperations(graph.NodeCount);
         UnionThresholdEdgesByDisjointSet(components, graph, threshold);
 
-        if (UpgradesNeededByDisjointSet(components, graph, threshold) > k)
+        if (UpgradesNeededByDisjointSet(components, graph, threshold) > upgrades)
         {
             return false;
         }
@@ -266,7 +266,7 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
         return true;
     }
 
-    // An optional edge is worth spending one of the k upgrades on exactly when it is
+    // An optional edge is worth spending one of the upgrades on exactly when it is
     // too weak as-is but doubling it would clear the threshold.
     private static bool IsUpgradeEligible(int strength, int threshold) =>
         strength < threshold && 2 * strength >= threshold;
@@ -294,7 +294,7 @@ internal static class MaximizeSpanningTreeStabilityWithUpgradesSolution
 
     // A must-edge below the threshold can neither be dropped nor upgraded, so its
     // mere presence rules the threshold out for both arms.
-    private static bool ExistsBelowThreshold(StabilityGraph graph, int threshold) =>
+    private static bool HasEdgeBelowThreshold(StabilityGraph graph, int threshold) =>
         graph.MustEdges.Exists(edge => edge.Strength < threshold);
 
     // Both arms front the identical maximize-the-minimum binary search - same

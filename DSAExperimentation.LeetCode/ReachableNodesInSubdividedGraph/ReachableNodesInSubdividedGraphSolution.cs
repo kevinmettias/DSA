@@ -26,18 +26,18 @@ internal static class ReachableNodesInSubdividedGraphSolution
     // engine. Its cost grows with the TOTAL subdivision count, which can dwarf the
     // original graph - that is the arm the strategy below has to justify itself
     // against.
-    public static int CountReachableNodesByMaterializedBfs(int[][] edges, int maxMoves, int n)
+    public static int CountReachableNodesByMaterializedBfs(int[][] edges, int maxMoves, int nodeCount)
     {
-        var adjacency = BuildSubdividedAdjacency(edges, n);
+        var adjacency = BuildSubdividedAdjacency(edges, nodeCount);
 
         return CountReachableViaBfs(adjacency, maxMoves);
     }
 
-    private static List<List<int>> BuildSubdividedAdjacency(int[][] edges, int n)
+    private static List<List<int>> BuildSubdividedAdjacency(int[][] edges, int nodeCount)
     {
-        var adjacency = new List<List<int>>(n);
+        var adjacency = new List<List<int>>(nodeCount);
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency.Add([]);
         }
@@ -74,10 +74,10 @@ internal static class ReachableNodesInSubdividedGraphSolution
         return mid;
     }
 
-    private static void Connect(List<List<int>> adjacency, int a, int b)
+    private static void Connect(List<List<int>> adjacency, int fromNode, int toNode)
     {
-        adjacency[a].Add(b);
-        adjacency[b].Add(a);
+        adjacency[fromNode].Add(toNode);
+        adjacency[toNode].Add(fromNode);
     }
 
     private static int CountReachableViaBfs(List<List<int>> adjacency, int maxMoves)
@@ -128,9 +128,9 @@ internal static class ReachableNodesInSubdividedGraphSolution
     // edge's reachable subdivision nodes analytically - cost independent of how large
     // any single edge's subdivision count is. The same "search once, answer many
     // queries" composition FindEdgesInShortestPathsSolution uses for LC 3123.
-    public static int CountReachableNodesByDijkstra(int[][] edges, int maxMoves, int n)
+    public static int CountReachableNodesByDijkstra(int[][] edges, int maxMoves, int nodeCount)
     {
-        var graph = SubdividedGraph.Build(n, edges);
+        var graph = SubdividedGraph.Build(nodeCount, edges);
 
         return CountReachableNodesByDijkstra(graph, maxMoves);
     }

@@ -8,8 +8,8 @@ namespace DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
 // LeetCode 2818. Apply Operations to Maximize Score: each operation picks a subarray
 // not picked before and multiplies the running score by that subarray's element of
 // highest prime score - the count of its distinct prime factors - taking the leftmost
-// such element on a tie. With k operations to spend, report the largest score
-// obtainable, modulo 1e9+7.
+// such element on a tie. With operationCount operations to spend, report the largest
+// score obtainable, modulo 1e9+7.
 //
 // Since the picked element is a function of the subarray alone, the whole problem is:
 // how many subarrays would pick index i? That count is (i - left[i]) * (right[i] - i),
@@ -38,12 +38,12 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     // handful of small integers. Nothing from this repo's own structures - it is the
     // arm the monotonic-stack strategy has to justify itself against, and stating it
     // here is what finally gets it asserted.
-    public static long MaximumScoreByLinearBoundaryScan(int[] nums, int k)
+    public static long MaximumScoreByLinearBoundaryScan(int[] nums, int operationCount)
     {
         var scores = PrimeScores(nums);
         var (left, right) = BoundariesByOutwardScan(scores);
 
-        return SpendOperations(ValueDescendingByArraySort(nums), left, right, k);
+        return SpendOperations(ValueDescendingByArraySort(nums), left, right, operationCount);
     }
 
     private static (int[] Left, int[] Right) BoundariesByOutwardScan(int[] scores)
@@ -62,11 +62,11 @@ internal static class ApplyOperationsToMaximizeScoreSolution
 
     // Nearest index to the left whose score this one does not beat, found by walking
     // outward until the strict "lower than mine" condition breaks.
-    private static int LeftBoundaryByOutwardScan(int[] scores, int i)
+    private static int LeftBoundaryByOutwardScan(int[] scores, int index)
     {
-        var earlier = i - 1;
+        var earlier = index - 1;
 
-        while (earlier >= 0 && scores[earlier] < scores[i])
+        while (earlier >= 0 && scores[earlier] < scores[index])
         {
             earlier--;
         }
@@ -76,11 +76,11 @@ internal static class ApplyOperationsToMaximizeScoreSolution
 
     // Nearest index to the right whose score is strictly greater, found by walking
     // outward until that condition breaks.
-    private static int RightBoundaryByOutwardScan(int[] scores, int i)
+    private static int RightBoundaryByOutwardScan(int[] scores, int index)
     {
-        var later = i + 1;
+        var later = index + 1;
 
-        while (later < scores.Length && scores[later] <= scores[i])
+        while (later < scores.Length && scores[later] <= scores[index])
         {
             later++;
         }
@@ -101,13 +101,13 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     // relation refuses it, which is exactly what makes a tie belong to its leftmost
     // occurrence once. The value-descending order comes from MergeSort over an
     // ArrayIndexedSequence, the same composition ClosestRoom already uses.
-    public static long MaximumScoreByStackBoundaryScan(int[] nums, int k)
+    public static long MaximumScoreByStackBoundaryScan(int[] nums, int operationCount)
     {
         var scores = PrimeScores(nums);
         var left = NearestBoundary.GreaterOrEqualToTheLeft(scores, NoBlockingScoreToTheLeft);
         var right = NearestBoundary.GreaterToTheRight(scores, scores.Length);
 
-        return SpendOperations(ValueDescendingByMergeSort(nums), left, right, k);
+        return SpendOperations(ValueDescendingByMergeSort(nums), left, right, operationCount);
     }
 
     private static IndexedValue[] ValueDescendingByMergeSort(int[] nums)
@@ -195,10 +195,10 @@ internal static class ApplyOperationsToMaximizeScoreSolution
     //
     // ModularArithmetic is LeetCode's own "report it modulo 1e9+7" convention rather
     // than a primitive either arm competes on (ARCHITECTURE.md 17.6), so both share it.
-    private static long SpendOperations(IndexedValue[] valueDescending, int[] left, int[] right, int k)
+    private static long SpendOperations(IndexedValue[] valueDescending, int[] left, int[] right, int operationCount)
     {
         var score = 1L;
-        var remaining = (long)k;
+        var remaining = (long)operationCount;
 
         foreach (var entry in valueDescending)
         {

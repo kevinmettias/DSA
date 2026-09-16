@@ -25,9 +25,9 @@ public class SubarrayProductLessThanKBenchmarks
 
     [Benchmark(Baseline = true)]
     public int BruteForce() =>
-        SubarrayProductLessThanKSolution.NumSubarrayProductLessThanKByBruteForce(_nums, K);
+        SubarrayProductLessThanKSolution.CountSubarraysWithProductLessThanKByBruteForce(_nums, K);
 
     [Benchmark]
     public int LogPrefixLowerBound() =>
-        SubarrayProductLessThanKSolution.NumSubarrayProductLessThanKByLogPrefixLowerBound(_nums, K);
+        SubarrayProductLessThanKSolution.CountSubarraysWithProductLessThanKByLogPrefixLowerBound(_nums, K);
 }

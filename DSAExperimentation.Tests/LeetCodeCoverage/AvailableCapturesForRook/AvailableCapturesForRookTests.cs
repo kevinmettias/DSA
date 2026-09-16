@@ -75,15 +75,15 @@ public sealed class AvailableCapturesForRookTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumRookCapturesByFullBoardScan_LeetCodeExamples_ReturnsCapturablePawnCount(
+    public void CountRookCapturesByFullBoardScan_LeetCodeExamples_ReturnsCapturablePawnCount(
         string[] rows, int expected) =>
-        Assert.Equal(expected, AvailableCapturesForRookSolution.NumRookCapturesByFullBoardScan(ParseBoard(rows)));
+        Assert.Equal(expected, AvailableCapturesForRookSolution.CountRookCapturesByFullBoardScan(ParseBoard(rows)));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumRookCapturesByRayWalk_LeetCodeExamples_ReturnsCapturablePawnCount(
+    public void CountRookCapturesByRayWalk_LeetCodeExamples_ReturnsCapturablePawnCount(
         string[] rows, int expected) =>
-        Assert.Equal(expected, AvailableCapturesForRookSolution.NumRookCapturesByRayWalk(ParseBoard(rows)));
+        Assert.Equal(expected, AvailableCapturesForRookSolution.CountRookCapturesByRayWalk(ParseBoard(rows)));
 
     private static char[][] ParseBoard(string[] rows) => rows.Select(r => r.ToCharArray()).ToArray();
 }

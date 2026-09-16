@@ -88,13 +88,13 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
             UnlockedCount = 1;
         }
 
-        public bool IsUnlocked(int i) => _unlocked[i];
+        public bool IsUnlocked(int computerIndex) => _unlocked[computerIndex];
 
-        public bool HasUnlockerFor(int i)
+        public bool HasUnlockerFor(int computerIndex)
         {
-            for (var j = 0; j < i; j++)
+            for (var j = 0; j < computerIndex; j++)
             {
-                if (_unlocked[j] && Complexity[j] < Complexity[i])
+                if (_unlocked[j] && Complexity[j] < Complexity[computerIndex])
                 {
                     return true;
                 }
@@ -103,15 +103,15 @@ internal static class CountTheNumberOfComputerUnlockingPermutationsSolution
             return false;
         }
 
-        public void Unlock(int i)
+        public void Unlock(int computerIndex)
         {
-            _unlocked[i] = true;
+            _unlocked[computerIndex] = true;
             UnlockedCount++;
         }
 
-        public void Relock(int i)
+        public void Relock(int computerIndex)
         {
-            _unlocked[i] = false;
+            _unlocked[computerIndex] = false;
             UnlockedCount--;
         }
     }

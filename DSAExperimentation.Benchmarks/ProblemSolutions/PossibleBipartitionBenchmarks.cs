@@ -78,10 +78,10 @@ public class PossibleBipartitionBenchmarks
         half + random.Next(PersonCount - half);
 
     [Benchmark(Baseline = true)]
-    public bool ArrayAdjacencyIterativeDfs() =>
-        PossibleBipartitionSolution.PossibleBipartitionByColorArrayDfs(_adjacency);
+    public bool CanBipartitionByColorArrayDfs() =>
+        PossibleBipartitionSolution.CanBipartitionByColorArrayDfs(_adjacency);
 
     [Benchmark]
-    public bool BipartiteCheckBfs() =>
-        PossibleBipartitionSolution.PossibleBipartitionByBipartiteCheck(_graph);
+    public bool CanBipartitionByBipartiteCheck() =>
+        PossibleBipartitionSolution.CanBipartitionByBipartiteCheck(_graph);
 }

@@ -2,7 +2,7 @@ namespace DSAExperimentation.LeetCode.MaximizeGridHappiness;
 
 // LC 1659's m x n grid reduced to what both strategies' recursion actually reads:
 // how many cells there are to fill, and how to read and update the trailing
-// occupancy profile that records the last n placements.
+// occupancy profile that records the last ColumnCount placements.
 //
 // The profile is one base-3 digit per cell (0 empty, 1 introvert, 2 extrovert)
 // holding a sliding window of the last ColumnCount placements, so the cell above the
@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.MaximizeGridHappiness;
 // (ARCHITECTURE.md §17.3) rather than in Domain/. It is also the prepared-input
 // shape §17.4 calls for: a benchmark builds it once in [GlobalSetup] and hands it to
 // the measured method, and since it is not an IEnumerable it can never be confused
-// with the (m, n) overload.
+// with the (rowCount, columnCount) overload.
 internal sealed class GridLayout(int columnCount, int totalCells, int oldestDigitScale)
 {
     // One digit per occupancy state: empty, introvert, extrovert.

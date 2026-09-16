@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.DesignAStackWithIncrementOperation;
 
 // LeetCode 1381. Design a Stack With Increment Operation: a stack capped at
 // maxSize, whose Push is a no-op once full, whose Pop reports -1 on empty, and
-// whose Increment adds val to the bottom min(k, size) elements.
+// whose Increment adds val to the bottom min(bottomElementCount, size) elements.
 //
 // This is a design problem - LeetCode's own shape is a stateful object with three
 // operations, not a single return value - so each strategy is a factory rather
@@ -15,14 +15,16 @@ namespace DSAExperimentation.LeetCode.DesignAStackWithIncrementOperation;
 // holding the live values, one a scratch buffer - the same "compose two Stack<int>
 // instances" move MinStackSolution makes for LC 155. Stack<T>'s public surface is
 // deliberately LIFO-only (Push/TryPop/TryPeek, no indexer - see Stack.cs's own doc
-// comment), so reaching the bottom k elements means draining everything into
-// scratch, whose top-to-bottom order is then exactly the original bottom-to-top
-// order, adding val to the first k popped back off it, and pushing the rest back
-// unchanged: O(size) per Increment regardless of k.
+// comment), so reaching the bottom bottomElementCount elements means draining
+// everything into scratch, whose top-to-bottom order is then exactly the original
+// bottom-to-top order, adding val to the first bottomElementCount popped back off it,
+// and pushing the rest back unchanged: O(size) per Increment regardless of
+// bottomElementCount.
 //
 // CreateByIndexedList is the textbook baseline that composition has to justify
 // itself against: a BCL List<int> whose indexer reaches the bottom slots directly,
-// so Increment touches exactly min(k, size) of them, O(k) per call. Its internals
+// so Increment touches exactly min(bottomElementCount, size) of them,
+// O(bottomElementCount) per call. Its internals
 // are deliberately BCL only; it is what you would write without this repo. Before
 // this migration it lived as untested scaffolding inside
 // DesignAStackWithIncrementOperationBenchmarks - and not even as a stack: the
@@ -46,7 +48,7 @@ internal static class DesignAStackWithIncrementOperationSolution
 
         int Pop();
 
-        void Increment(int k, int val);
+        void Increment(int bottomElementCount, int val);
     }
 
     private sealed class StackDrainCustomStack(int maxSize) : ICustomStack
@@ -63,7 +65,7 @@ internal static class DesignAStackWithIncrementOperationSolution
 
         public int Pop() => _values.TryPop(out var value) ? value : EmptyPop;
 
-        public void Increment(int k, int val)
+        public void Increment(int bottomElementCount, int val)
         {
             var scratch = new RepoIntStack();
 
@@ -72,7 +74,7 @@ internal static class DesignAStackWithIncrementOperationSolution
                 scratch.Push(item);
             }
 
-            var affected = Math.Min(k, scratch.Count);
+            var affected = Math.Min(bottomElementCount, scratch.Count);
 
             for (var i = 0; i < affected; i++)
             {
@@ -111,9 +113,9 @@ internal static class DesignAStackWithIncrementOperationSolution
             return value;
         }
 
-        public void Increment(int k, int val)
+        public void Increment(int bottomElementCount, int val)
         {
-            var affected = Math.Min(k, _values.Count);
+            var affected = Math.Min(bottomElementCount, _values.Count);
 
             for (var i = 0; i < affected; i++)
             {

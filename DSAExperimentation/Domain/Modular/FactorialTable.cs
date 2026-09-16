@@ -41,17 +41,18 @@ internal sealed class FactorialTable(long[] factorial, long[] inverseFactorial)
     // callers want a product, not one coefficient: a multinomial coefficient is
     // factorial[n] times one inverse factorial per bucket, and the infection and
     // balanced-permutation counts read an inverse factorial on its own.
-    public long Factorial(int n) => factorial[n];
+    public long Factorial(int argument) => factorial[argument];
 
-    public long InverseFactorial(int n) => inverseFactorial[n];
+    public long InverseFactorial(int argument) => inverseFactorial[argument];
 
-    public long Choose(int n, int r) =>
-        IsImpossibleChoice(n, r)
+    public long Choose(int totalCount, int chosenCount) =>
+        IsImpossibleChoice(totalCount, chosenCount)
             ? 0
-            : factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo
-                * inverseFactorial[n - r] % ModularArithmetic.Modulo;
+            : factorial[totalCount] * inverseFactorial[chosenCount] % ModularArithmetic.Modulo
+                * inverseFactorial[totalCount - chosenCount] % ModularArithmetic.Modulo;
 
-    // nCr counts subsets of r taken from n, so a negative n or r, or an r past n,
-    // names a subset that cannot exist.
-    private static bool IsImpossibleChoice(int n, int r) => n < 0 || r < 0 || r > n;
+    // nCr counts subsets of `chosenCount` taken from `totalCount`, so a negative total or
+    // chosen count, or a chosen count past the total, names a subset that cannot exist.
+    private static bool IsImpossibleChoice(int totalCount, int chosenCount) =>
+        totalCount < 0 || chosenCount < 0 || chosenCount > totalCount;
 }

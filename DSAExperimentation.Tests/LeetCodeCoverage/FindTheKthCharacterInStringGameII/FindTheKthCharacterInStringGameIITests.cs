@@ -17,9 +17,10 @@ public sealed class FindTheKthCharacterInStringGameIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthCharacterByBruteForceSimulation_LeetCodeExamples_ReturnsKthCharacter(
-        long k, int[] operations, char expected)
+        long targetPosition, int[] operations, char expected)
     {
-        var actual = FindTheKthCharacterInStringGameIISolution.KthCharacterByBruteForceSimulation(k, operations);
+        var actual = FindTheKthCharacterInStringGameIISolution.KthCharacterByBruteForceSimulation(
+            targetPosition, operations);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +28,10 @@ public sealed class FindTheKthCharacterInStringGameIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthCharacterByBackwardTrace_LeetCodeExamples_ReturnsKthCharacter(
-        long k, int[] operations, char expected)
+        long targetPosition, int[] operations, char expected)
     {
-        var actual = FindTheKthCharacterInStringGameIISolution.KthCharacterByBackwardTrace(k, operations);
+        var actual = FindTheKthCharacterInStringGameIISolution.KthCharacterByBackwardTrace(
+            targetPosition, operations);
 
         Assert.Equal(expected, actual);
     }

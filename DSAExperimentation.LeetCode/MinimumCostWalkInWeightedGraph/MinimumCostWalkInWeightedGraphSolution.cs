@@ -13,9 +13,9 @@ internal static class MinimumCostWalkInWeightedGraphSolution
     // Baseline: re-derives each query's component from scratch with a BFS over a
     // BCL adjacency list, ANDing every edge crossed along the way - "what you'd
     // write without this repo," recomputed per query rather than precomputed once.
-    public static int[] MinimumCostByBruteForceWalk(int n, int[][] edges, int[][] query)
+    public static int[] MinimumCostByBruteForceWalk(int vertexCount, int[][] edges, int[][] query)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(vertexCount, edges);
         var answers = new int[query.Length];
 
         for (var i = 0; i < query.Length; i++)
@@ -26,11 +26,11 @@ internal static class MinimumCostWalkInWeightedGraphSolution
         return answers;
     }
 
-    private static List<(int Neighbor, int Weight)>[] BuildAdjacency(int n, int[][] edges)
+    private static List<(int Neighbor, int Weight)>[] BuildAdjacency(int vertexCount, int[][] edges)
     {
-        var adjacency = new List<(int Neighbor, int Weight)>[n];
+        var adjacency = new List<(int Neighbor, int Weight)>[vertexCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < vertexCount; i++)
         {
             adjacency[i] = [];
         }
@@ -87,9 +87,9 @@ internal static class MinimumCostWalkInWeightedGraphSolution
     // Composed: DataStructures.DisjointSet groups every vertex into a component
     // once; WalkCostComponents folds each component's AND alongside it, so every
     // query after that first pass is a single Find plus an array lookup.
-    public static int[] MinimumCostByUnionFind(int n, int[][] edges, int[][] query)
+    public static int[] MinimumCostByUnionFind(int vertexCount, int[][] edges, int[][] query)
     {
-        var components = WalkCostComponents.Build(n, edges);
+        var components = WalkCostComponents.Build(vertexCount, edges);
         return MinimumCostByUnionFind(components, query);
     }
 

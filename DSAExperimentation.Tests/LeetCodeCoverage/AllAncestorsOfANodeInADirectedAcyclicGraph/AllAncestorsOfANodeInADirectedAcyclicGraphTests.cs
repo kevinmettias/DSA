@@ -29,20 +29,20 @@ public sealed class AllAncestorsOfANodeInADirectedAcyclicGraphTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetAncestorsByPerNodeForwardWalk_LeetCodeExamples_ReturnsEachNodesAncestorsAscending(
-        int n, int[][] edges, int[][] expected) =>
+        int nodeCount, int[][] edges, int[][] expected) =>
         Assert.Equal(
             expected,
             AllAncestorsOfANodeInADirectedAcyclicGraphSolution
-                .GetAncestorsByPerNodeForwardWalk(n, edges)
+                .GetAncestorsByPerNodeForwardWalk(nodeCount, edges)
                 .Select(ancestors => ancestors.ToArray()));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetAncestorsByTopologicalDpPass_LeetCodeExamples_ReturnsEachNodesAncestorsAscending(
-        int n, int[][] edges, int[][] expected) =>
+        int nodeCount, int[][] edges, int[][] expected) =>
         Assert.Equal(
             expected,
             AllAncestorsOfANodeInADirectedAcyclicGraphSolution
-                .GetAncestorsByTopologicalDpPass(n, edges)
+                .GetAncestorsByTopologicalDpPass(nodeCount, edges)
                 .Select(ancestors => ancestors.ToArray()));
 }

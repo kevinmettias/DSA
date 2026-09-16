@@ -16,19 +16,19 @@ public sealed class CheckIfDigitsAreEqualInStringAfterOperationsITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AreEqualByAdjacentSumReduction_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
+    public void IsEqualByAdjacentSumReduction_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
         DigitsMatchExample example) =>
         Assert.Equal(
             example.Expected,
-            CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(example.S));
+            CheckIfDigitsAreEqualInStringAfterOperationsISolution.IsEqualByAdjacentSumReduction(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AreEqualByPascalRowCoefficients_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
+    public void IsEqualByPascalRowCoefficients_LeetCodeExamples_ReturnsWhetherFinalDigitsMatch(
         DigitsMatchExample example) =>
         Assert.Equal(
             example.Expected,
-            CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByPascalRowCoefficients(example.S));
+            CheckIfDigitsAreEqualInStringAfterOperationsISolution.IsEqualByPascalRowCoefficients(example.S));
 
     // One LeetCode example: the digit string and whether the two final digits match. The
     // row names both positions - a bare `bool` argument would read as "true" and say

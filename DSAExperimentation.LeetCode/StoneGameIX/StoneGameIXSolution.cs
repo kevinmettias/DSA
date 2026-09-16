@@ -37,7 +37,7 @@ internal static class StoneGameIXSolution
     // actually distinguishes one position from another. This is the arm the closed form
     // has to justify itself against - and, before this migration, the benchmark baseline
     // nothing ever asserted.
-    public static bool AliceWinsByGameTreeMinimax(int[] stones)
+    public static bool CanAliceWinByGameTreeMinimax(int[] stones)
     {
         var counts = CountByRemainder(stones);
         var outcome = Memoizer.Memoize<(int C0, int C1, int C2, int TurnSum), int>(
@@ -105,11 +105,11 @@ internal static class StoneGameIXSolution
             return best;
         }
 
-        private static GameState NextState((int C0, int C1, int C2, int TurnSum) state, int r)
+        private static GameState NextState((int C0, int C1, int C2, int TurnSum) state, int remainder)
         {
             var (c0, c1, c2, turnSum) = state;
 
-            return r switch
+            return remainder switch
             {
                 0 => new GameState(c0 - 1, c1, c2, turnSum),
                 1 => new GameState(c0, c1 - 1, c2, turnSum),
@@ -117,14 +117,14 @@ internal static class StoneGameIXSolution
             };
         }
 
-        // Negamax step: a move of remainder r updates the running sum; landing on a
+        // Negamax step: a move of `remainder` updates the running sum; landing on a
         // multiple of 3 loses immediately for the mover, otherwise the outcome is
         // whatever the opponent's own best play yields, negated back to this mover's
         // perspective.
         private static int Branch(
-            int r, GameState state, IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
+            int remainder, GameState state, IRecurrence<(int C0, int C1, int C2, int TurnSum), int> rest)
         {
-            var newSum = (state.TurnSum + r) % RemainderBucketCount;
+            var newSum = (state.TurnSum + remainder) % RemainderBucketCount;
 
             if (newSum == 0)
             {
@@ -137,7 +137,7 @@ internal static class StoneGameIXSolution
 
     // Bucket the stones by value mod 3 with this repo's own HashMap<int,int>, then read
     // the answer off the known parity rule over the three counts.
-    public static bool AliceWinsByClosedFormCounting(int[] stones)
+    public static bool CanAliceWinByClosedFormCounting(int[] stones)
     {
         var counts = new HashMap<int, int>();
 

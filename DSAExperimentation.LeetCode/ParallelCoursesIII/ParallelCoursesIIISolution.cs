@@ -27,9 +27,9 @@ internal static class ParallelCoursesIIISolution
     // LeetCode's own input shape: courses are 1-indexed, relations[j] =
     // [prevCourse, nextCourse] means prevCourse must finish before nextCourse may
     // start, and time[i] is course i + 1's duration in months.
-    public static int MinimumTimeByKahnsTopologicalSortDp(int n, int[][] relations, int[] time)
+    public static int MinimumTimeByKahnsTopologicalSortDp(int courseCount, int[][] relations, int[] time)
     {
-        var courses = BuildCourses(n, relations, time);
+        var courses = BuildCourses(courseCount, relations, time);
         return MinimumTimeByKahnsTopologicalSortDp(courses);
     }
 
@@ -74,9 +74,9 @@ internal static class ParallelCoursesIIISolution
     // to be enumerated in. Deliberately written with BCL collections and no ordering
     // primitive - it is the arm the composed solution above has to justify itself
     // against.
-    public static int MinimumTimeByRepeatedRelaxation(int n, int[][] relations, int[] time)
+    public static int MinimumTimeByRepeatedRelaxation(int courseCount, int[][] relations, int[] time)
     {
-        var courses = BuildCourses(n, relations, time);
+        var courses = BuildCourses(courseCount, relations, time);
         return MinimumTimeByRepeatedRelaxation(courses);
     }
 
@@ -110,9 +110,9 @@ internal static class ParallelCoursesIIISolution
         }
     }
 
-    private static List<CourseTimeNode> BuildCourses(int n, int[][] relations, int[] time)
+    private static List<CourseTimeNode> BuildCourses(int courseCount, int[][] relations, int[] time)
     {
-        var courses = Enumerable.Range(0, n).Select(id => new CourseTimeNode(id, time[id])).ToList();
+        var courses = Enumerable.Range(0, courseCount).Select(id => new CourseTimeNode(id, time[id])).ToList();
 
         foreach (var relation in relations)
         {

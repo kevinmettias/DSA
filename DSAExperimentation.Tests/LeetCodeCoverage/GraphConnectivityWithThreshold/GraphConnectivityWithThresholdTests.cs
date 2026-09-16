@@ -28,8 +28,8 @@ public sealed class GraphConnectivityWithThresholdTests
                 5, 1, [[4, 5], [4, 5], [3, 2], [2, 3], [3, 4]], [false, false, false, false, false]
             },
             {
-                // Every eligible divisor exceeds n/2, so no divisor has a second
-                // multiple inside [1, n] and nothing is ever unioned.
+                // Every eligible divisor exceeds cityCount/2, so no divisor has a
+                // second multiple inside [1, cityCount] and nothing is ever unioned.
                 5, 3, [[1, 2], [2, 3], [1, 5]], [false, false, false]
             },
             {
@@ -38,7 +38,7 @@ public sealed class GraphConnectivityWithThresholdTests
                 6, 5, [[3, 3], [1, 6]], [true, false]
             },
             {
-                // Threshold 1 with a larger n: {2,4,6,8}, {3,6,9} and {5,10} merge
+                // Threshold 1 with a larger cityCount: {2,4,6,8}, {3,6,9} and {5,10} merge
                 // through their shared multiples into one component of every composite,
                 // while the primes 7 and 1 stay isolated.
                 10, 1, [[4, 9], [2, 5], [7, 10], [1, 1]], [true, true, false, true]
@@ -48,10 +48,10 @@ public sealed class GraphConnectivityWithThresholdTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreConnectedByNaiveUnionFind_LeetCodeExamples_ReportsSharedDivisorConnectivity(
-        int n, int threshold, int[][] queries, bool[] expected)
+        int cityCount, int threshold, int[][] queries, bool[] expected)
     {
         var actual =
-            GraphConnectivityWithThresholdSolution.AreConnectedByNaiveUnionFind(n, threshold, queries);
+            GraphConnectivityWithThresholdSolution.AreConnectedByNaiveUnionFind(cityCount, threshold, queries);
 
         Assert.Equal(expected, actual);
     }
@@ -59,9 +59,9 @@ public sealed class GraphConnectivityWithThresholdTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void AreConnectedByDisjointSet_LeetCodeExamples_ReportsSharedDivisorConnectivity(
-        int n, int threshold, int[][] queries, bool[] expected)
+        int cityCount, int threshold, int[][] queries, bool[] expected)
     {
-        var actual = GraphConnectivityWithThresholdSolution.AreConnectedByDisjointSet(n, threshold, queries);
+        var actual = GraphConnectivityWithThresholdSolution.AreConnectedByDisjointSet(cityCount, threshold, queries);
 
         Assert.Equal(expected, actual);
     }

@@ -14,10 +14,10 @@ internal static class AddStringsSolution
     private const int DecimalBase = 10;
 
     // Accumulate digits least-significant first, then reverse the buffer in place.
-    public static string AddByCharArrayReverse(string a, string b)
+    public static string AddByCharArrayReverse(string firstOperand, string secondOperand)
     {
         var chars = new List<char>();
-        var walk = new DigitWalk(a, b);
+        var walk = new DigitWalk(firstOperand, secondOperand);
 
         while (walk.HasMore)
         {
@@ -30,10 +30,10 @@ internal static class AddStringsSolution
 
     // Push digits least-significant first onto Stack<char>; popping yields them
     // most-significant first, so no reversal pass is needed.
-    public static string AddByBitStack(string a, string b)
+    public static string AddByBitStack(string firstOperand, string secondOperand)
     {
         var stack = new DigitStack();
-        var walk = new DigitWalk(a, b);
+        var walk = new DigitWalk(firstOperand, secondOperand);
 
         while (walk.HasMore)
         {
@@ -52,28 +52,28 @@ internal static class AddStringsSolution
 
     // The carry walk itself, shared by both strategies so the only thing they
     // differ in is the digit buffer.
-    private sealed class DigitWalk(string a, string b)
+    private sealed class DigitWalk(string firstOperand, string secondOperand)
     {
-        private readonly string _a = a;
-        private readonly string _b = b;
-        private int _i = a.Length - 1;
-        private int _j = b.Length - 1;
+        private readonly string _firstOperand = firstOperand;
+        private readonly string _secondOperand = secondOperand;
+        private int _firstIndex = firstOperand.Length - 1;
+        private int _secondIndex = secondOperand.Length - 1;
         private int _carry;
 
-        public bool HasMore => _i >= 0 || _j >= 0 || _carry > 0;
+        public bool HasMore => _firstIndex >= 0 || _secondIndex >= 0 || _carry > 0;
 
         public char NextDigit()
         {
             var sum = _carry;
 
-            if (_i >= 0)
+            if (_firstIndex >= 0)
             {
-                sum += _a[_i--] - '0';
+                sum += _firstOperand[_firstIndex--] - '0';
             }
 
-            if (_j >= 0)
+            if (_secondIndex >= 0)
             {
-                sum += _b[_j--] - '0';
+                sum += _secondOperand[_secondIndex--] - '0';
             }
 
             _carry = sum / DecimalBase;

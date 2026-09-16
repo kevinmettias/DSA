@@ -14,9 +14,9 @@ public class MinimumOperationsToEqualizeBinaryStringBenchmarks
 {
     private const int Seed = 3666;
 
-    private string _s = "";
+    private string _binary = "";
 
-    private int _k;
+    private int _flipCount;
     private int _zeroCount;
     private EqualizeStateGraph _graph = null!;
     [Params(200, 1_000)]
@@ -25,14 +25,14 @@ public class MinimumOperationsToEqualizeBinaryStringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        (_s, _k) = MinimumOperationsToEqualizeBinaryStringWorkloads.Build(Length, seed: Seed);
-        _zeroCount = _s.Count(c => c == '0');
-        _graph = EqualizeStateGraph.Build(Length, _k);
+        (_binary, _flipCount) = MinimumOperationsToEqualizeBinaryStringWorkloads.Build(Length, seed: Seed);
+        _zeroCount = _binary.Count(c => c == '0');
+        _graph = EqualizeStateGraph.Build(Length, _flipCount);
     }
 
     [Benchmark(Baseline = true)]
     public int MutationQueueBfs() =>
-        MinimumOperationsToEqualizeBinaryStringSolution.MinOperationsByMutationQueue(_s, _k);
+        MinimumOperationsToEqualizeBinaryStringSolution.MinOperationsByMutationQueue(_binary, _flipCount);
 
     [Benchmark]
     public int ReduceGraphBfs() =>

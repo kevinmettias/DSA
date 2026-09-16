@@ -16,12 +16,12 @@ internal static class ClimbingStairsIISolution
     // The textbook answer: recompute every subpath from scratch, no cache -
     // deliberately written without this repo's primitives, the arm the composed
     // strategy below has to justify itself against.
-    public static long MinCostByBruteForce(int n, int[] costs) => MinCostFrom(n, costs);
+    public static long MinCostByBruteForce(int stepCount, int[] costs) => MinCostFrom(stepCount, costs);
 
     // This repo's own Memoizer over the identical recurrence - natural-looking
     // recursion via a shared cache instead of a hand-rolled dp[] array.
-    public static long MinCostByMemoizedRecurrence(int n, int[] costs) =>
-        Memoizer.Memoize<int, long>(n, new MinCostToStep(costs));
+    public static long MinCostByMemoizedRecurrence(int stepCount, int[] costs) =>
+        Memoizer.Memoize<int, long>(stepCount, new MinCostToStep(costs));
 
     // The rule, named: the cheapest way to reach a step is the cheapest way to reach
     // one of the three steps below it, plus that step's own cost and the squared

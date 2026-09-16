@@ -34,13 +34,13 @@ internal static class MinimumAreaRectangleIISolution
     {
         var minArea = double.MaxValue;
 
-        for (var a = 0; a < points.Length; a++)
+        for (var indexA = 0; indexA < points.Length; indexA++)
         {
-            for (var b = a + 1; b < points.Length; b++)
+            for (var indexB = indexA + 1; indexB < points.Length; indexB++)
             {
-                for (var c = b + 1; c < points.Length; c++)
+                for (var indexC = indexB + 1; indexC < points.Length; indexC++)
                 {
-                    var areaForTriple = BestAreaForTriple(points, a, b, c);
+                    var areaForTriple = BestAreaForTriple(points, indexA, indexB, indexC);
                     minArea = Math.Min(minArea, areaForTriple);
                 }
             }
@@ -50,20 +50,24 @@ internal static class MinimumAreaRectangleIISolution
     }
 
     // The fourth corner's loop, split out so the quadruple scan itself stays three
-    // levels deep. Each d yields the three distinct diagonal pairings of {a,b,c,d}.
-    private static double BestAreaForTriple(int[][] points, int a, int b, int c)
+    // levels deep. Each indexD yields the three distinct diagonal pairings of
+    // {indexA, indexB, indexC, indexD}.
+    private static double BestAreaForTriple(int[][] points, int indexA, int indexB, int indexC)
     {
         var minArea = double.MaxValue;
 
-        for (var d = c + 1; d < points.Length; d++)
+        for (var indexD = indexC + 1; indexD < points.Length; indexD++)
         {
-            var areaWithDiagonalsAbCd = RectangleArea(points, new DiagonalCandidate(a, c, b, d)); // diagonals (a,b), (c,d)
+            // diagonals (indexA,indexB), (indexC,indexD)
+            var areaWithDiagonalsAbCd = RectangleArea(points, new DiagonalCandidate(indexA, indexC, indexB, indexD));
             minArea = Smaller(minArea, areaWithDiagonalsAbCd);
 
-            var areaWithDiagonalsAcBd = RectangleArea(points, new DiagonalCandidate(a, b, c, d)); // diagonals (a,c), (b,d)
+            // diagonals (indexA,indexC), (indexB,indexD)
+            var areaWithDiagonalsAcBd = RectangleArea(points, new DiagonalCandidate(indexA, indexB, indexC, indexD));
             minArea = Smaller(minArea, areaWithDiagonalsAcBd);
 
-            var areaWithDiagonalsAdBc = RectangleArea(points, new DiagonalCandidate(a, b, d, c)); // diagonals (a,d), (b,c)
+            // diagonals (indexA,indexD), (indexB,indexC)
+            var areaWithDiagonalsAdBc = RectangleArea(points, new DiagonalCandidate(indexA, indexB, indexD, indexC));
             minArea = Smaller(minArea, areaWithDiagonalsAdBc);
         }
 
@@ -92,9 +96,9 @@ internal static class MinimumAreaRectangleIISolution
         return Distance(cornerOne, cornerTwo) * Distance(cornerOne, cornerFour);
     }
 
-    private static double Distance((int X, int Y) a, (int X, int Y) b)
+    private static double Distance((int X, int Y) firstPoint, (int X, int Y) secondPoint)
     {
-        var lengthSquared = LengthSquared(a, b);
+        var lengthSquared = LengthSquared(firstPoint, secondPoint);
         return Math.Sqrt(lengthSquared);
     }
 
@@ -123,10 +127,10 @@ internal static class MinimumAreaRectangleIISolution
     private static double Smaller(double minArea, double? candidate) =>
         candidate is null ? minArea : Math.Min(minArea, candidate.Value);
 
-    private static int LengthSquared((int X, int Y) a, (int X, int Y) b)
+    private static int LengthSquared((int X, int Y) firstPoint, (int X, int Y) secondPoint)
     {
-        var dx = a.X - b.X;
-        var dy = a.Y - b.Y;
+        var dx = firstPoint.X - secondPoint.X;
+        var dy = firstPoint.Y - secondPoint.Y;
         return (dx * dx) + (dy * dy);
     }
 

@@ -22,32 +22,33 @@ namespace DSAExperimentation.LeetCode.PermutationsIV;
 // tracks "which of my values are still unused" and finds the r-th one.
 internal static class PermutationsIVSolution
 {
-    private const long SaturationCap = 2_000_000_000_000_000L; // comfortably above k's 10^15 bound
+    private const long SaturationCap = 2_000_000_000_000_000L; // above the 10^15 bound on targetRank
 
     // The textbook arm: a BCL List<int> per parity (remove-by-rank is a linear
     // shift) and exact BigInteger factorials - nothing here depends on this repo
     // at all, the arm the Fenwick strategy has to beat.
-    public static int[] KthPermutationByBigIntegerRank(int n, long k)
+    public static int[] KthPermutationByBigIntegerRank(int permutationLength, long targetRank)
     {
-        var factorial = BigIntegerFactorialTable(n);
-        var oddCount = (n + 1) / 2;
-        var evenCount = n / 2;
-        var total = factorial[oddCount] * factorial[evenCount] * (IsEven(n) ? 2 : 1);
+        var factorial = BigIntegerFactorialTable(permutationLength);
+        var oddCount = (permutationLength + 1) / 2;
+        var evenCount = permutationLength / 2;
+        var total =
+            factorial[oddCount] * factorial[evenCount] * (IsEven(permutationLength) ? 2 : 1);
 
-        if (k > total)
+        if (targetRank > total)
         {
             return [];
         }
 
-        return UnrankByBigIntegerRank(n, k, factorial);
+        return UnrankByBigIntegerRank(permutationLength, targetRank, factorial);
     }
 
-    private static BigInteger[] BigIntegerFactorialTable(int n)
+    private static BigInteger[] BigIntegerFactorialTable(int permutationLength)
     {
-        var table = new BigInteger[n + 1];
+        var table = new BigInteger[permutationLength + 1];
         table[0] = BigInteger.One;
 
-        for (var i = 1; i <= n; i++)
+        for (var i = 1; i <= permutationLength; i++)
         {
             table[i] = table[i - 1] * i;
         }
@@ -58,20 +59,20 @@ internal static class PermutationsIVSolution
     // Odds and evens hold the still-unplaced values of each parity, and the
     // cursor carries the rank still to spend plus the parity of the value just
     // placed, which is what pins every later slot's required parity.
-    private static int[] UnrankByBigIntegerRank(int n, long k, BigInteger[] factorial)
+    private static int[] UnrankByBigIntegerRank(int permutationLength, long targetRank, BigInteger[] factorial)
     {
-        var oddCount = (n + 1) / 2;
-        var evenCount = n / 2;
+        var oddCount = (permutationLength + 1) / 2;
+        var evenCount = permutationLength / 2;
         var pools = (
             Factorial: factorial,
             Odds: Enumerable.Range(0, oddCount).Select(i => (2 * i) + 1).ToList(),
             Evens: Enumerable.Range(0, evenCount).Select(i => (2 * i) + 2).ToList());
-        var cursor = (RemainingRank: (BigInteger)(k - 1), PreviousWasOdd: (bool?)null);
-        var result = new int[n];
+        var cursor = (RemainingRank: (BigInteger)(targetRank - 1), PreviousWasOdd: (bool?)null);
+        var result = new int[permutationLength];
 
-        for (var position = 0; position < n; position++)
+        for (var position = 0; position < permutationLength; position++)
         {
-            var (value, nextCursor) = TakeBigIntegerStep(pools, cursor, n, position);
+            var (value, nextCursor) = TakeBigIntegerStep(pools, cursor, permutationLength, position);
             result[position] = value;
             cursor = nextCursor;
         }
@@ -85,14 +86,14 @@ internal static class PermutationsIVSolution
     // forces and divides by that pool's own completion count.
     private static (int Value, (BigInteger RemainingRank, bool? PreviousWasOdd) Cursor) TakeBigIntegerStep(
         (BigInteger[] Factorial, List<int> Odds, List<int> Evens) pools,
-        (BigInteger RemainingRank, bool? PreviousWasOdd) cursor, int n, int position)
+        (BigInteger RemainingRank, bool? PreviousWasOdd) cursor, int permutationLength, int position)
     {
-        if (position == 0 && IsEven(n))
+        if (position == 0 && IsEven(permutationLength))
         {
             return TakeBigIntegerOpener(pools, cursor);
         }
 
-        var pickOdd = cursor.PreviousWasOdd is null ? IsOdd(n) : !cursor.PreviousWasOdd.Value;
+        var pickOdd = cursor.PreviousWasOdd is null ? IsOdd(permutationLength) : !cursor.PreviousWasOdd.Value;
         var pool = pickOdd ? pools.Odds : pools.Evens;
         var otherCount = pickOdd ? pools.Evens.Count : pools.Odds.Count;
         var stepBlockSize = pools.Factorial[pool.Count - 1] * pools.Factorial[otherCount];
@@ -127,28 +128,28 @@ internal static class PermutationsIVSolution
     // repo's own BinarySearch.LowerBound over the tree's running prefix count -
     // O(log^2 n) per pick instead of List<T>.RemoveAt's O(n) shift - with capped
     // long arithmetic standing in for BigInteger.
-    public static int[] KthPermutationByFenwickOrderStatistics(int n, long k)
+    public static int[] KthPermutationByFenwickOrderStatistics(int permutationLength, long targetRank)
     {
-        var factorial = SaturatingFactorialTable(n);
-        var oddCount = (n + 1) / 2;
-        var evenCount = n / 2;
+        var factorial = SaturatingFactorialTable(permutationLength);
+        var oddCount = (permutationLength + 1) / 2;
+        var evenCount = permutationLength / 2;
         var oddEvenWays = SaturatingMultiply(factorial[oddCount], factorial[evenCount]);
-        var total = SaturatingMultiply(oddEvenWays, IsEven(n) ? 2 : 1);
+        var total = SaturatingMultiply(oddEvenWays, IsEven(permutationLength) ? 2 : 1);
 
-        if (k > total)
+        if (targetRank > total)
         {
             return [];
         }
 
-        return UnrankByFenwickOrderStatistics(n, k, factorial);
+        return UnrankByFenwickOrderStatistics(permutationLength, targetRank, factorial);
     }
 
-    private static long[] SaturatingFactorialTable(int n)
+    private static long[] SaturatingFactorialTable(int permutationLength)
     {
-        var table = new long[n + 1];
+        var table = new long[permutationLength + 1];
         table[0] = 1L;
 
-        for (var i = 1; i <= n; i++)
+        for (var i = 1; i <= permutationLength; i++)
         {
             table[i] = SaturatingMultiply(table[i - 1], i);
         }
@@ -159,24 +160,24 @@ internal static class PermutationsIVSolution
     // The same unranking as the BigInteger arm with a presence FenwickTree per
     // parity, so the cursor also carries how many values each parity still has
     // left - the pool's own completion count is read off it.
-    private static int[] UnrankByFenwickOrderStatistics(int n, long k, long[] factorial)
+    private static int[] UnrankByFenwickOrderStatistics(int permutationLength, long targetRank, long[] factorial)
     {
-        var oddCount = (n + 1) / 2;
-        var evenCount = n / 2;
+        var oddCount = (permutationLength + 1) / 2;
+        var evenCount = permutationLength / 2;
         var pools = (
             Factorial: factorial,
             OddPresence: new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, oddCount).ToList()),
             EvenPresence: new FenwickTree<int, SumOperation<int>>(Enumerable.Repeat(1, evenCount).ToList()));
         var cursor = (
-            RemainingRank: k - 1,
+            RemainingRank: targetRank - 1,
             OddRemaining: oddCount,
             EvenRemaining: evenCount,
             PreviousWasOdd: (bool?)null);
-        var result = new int[n];
+        var result = new int[permutationLength];
 
-        for (var position = 0; position < n; position++)
+        for (var position = 0; position < permutationLength; position++)
         {
-            var (value, nextCursor) = TakeFenwickStep(pools, cursor, n, position);
+            var (value, nextCursor) = TakeFenwickStep(pools, cursor, permutationLength, position);
             result[position] = value;
             cursor = nextCursor;
         }
@@ -189,14 +190,14 @@ internal static class PermutationsIVSolution
             (long[] Factorial, FenwickTree<int, SumOperation<int>> OddPresence,
                 FenwickTree<int, SumOperation<int>> EvenPresence) pools,
             (long RemainingRank, int OddRemaining, int EvenRemaining, bool? PreviousWasOdd) cursor,
-            int n, int position)
+            int permutationLength, int position)
     {
-        if (position == 0 && IsEven(n))
+        if (position == 0 && IsEven(permutationLength))
         {
             return TakeFenwickOpener(pools, cursor);
         }
 
-        var pickOdd = cursor.PreviousWasOdd is null ? IsOdd(n) : !cursor.PreviousWasOdd.Value;
+        var pickOdd = cursor.PreviousWasOdd is null ? IsOdd(permutationLength) : !cursor.PreviousWasOdd.Value;
         var presence = pickOdd ? pools.OddPresence : pools.EvenPresence;
         var poolCount = pickOdd ? cursor.OddRemaining : cursor.EvenRemaining;
         var otherCount = pickOdd ? cursor.EvenRemaining : cursor.OddRemaining;

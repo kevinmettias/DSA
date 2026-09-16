@@ -21,17 +21,17 @@ public sealed class ValidParenthesisStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckValidStringByReachableOpenCountDp_Examples_MatchesExpectedValidity(ValidityExample example) =>
+    public void IsValidStringByReachableOpenCountDp_Examples_MatchesExpectedValidity(ValidityExample example) =>
         Assert.Equal(
             example.Expected,
-            ValidParenthesisStringSolution.CheckValidStringByReachableOpenCountDp(example.S));
+            ValidParenthesisStringSolution.IsValidStringByReachableOpenCountDp(example.S));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckValidStringByTwoIndexStackSweep_Examples_MatchesExpectedValidity(ValidityExample example) =>
+    public void IsValidStringByTwoIndexStackSweep_Examples_MatchesExpectedValidity(ValidityExample example) =>
         Assert.Equal(
             example.Expected,
-            ValidParenthesisStringSolution.CheckValidStringByTwoIndexStackSweep(example.S));
+            ValidParenthesisStringSolution.IsValidStringByTwoIndexStackSweep(example.S));
 
     // One LeetCode example: the string to validate and whether it can be made valid. The
     // row names both positions - a bare `bool` argument would read as "true" and say

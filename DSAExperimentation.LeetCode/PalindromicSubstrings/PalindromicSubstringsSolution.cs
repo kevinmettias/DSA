@@ -17,24 +17,24 @@ namespace DSAExperimentation.LeetCode.PalindromicSubstrings;
 // the max radius, this one takes the sum.
 internal static class PalindromicSubstringsSolution
 {
-    public static int CountSubstringsByExpandAroundCenter(string s)
+    public static int CountSubstringsByExpandAroundCenter(string text)
     {
         var count = 0;
 
-        for (var center = 0; center < s.Length; center++)
+        for (var center = 0; center < text.Length; center++)
         {
-            count += CountExpansionsFrom(s, center, center);
-            count += CountExpansionsFrom(s, center, center + 1);
+            count += CountExpansionsFrom(text, center, center);
+            count += CountExpansionsFrom(text, center, center + 1);
         }
 
         return count;
     }
 
-    private static int CountExpansionsFrom(string s, int left, int right)
+    private static int CountExpansionsFrom(string text, int left, int right)
     {
         var count = 0;
 
-        while (ExpandsFurther(s, left, right))
+        while (CanExpandFurther(text, left, right))
         {
             count++;
             left--;
@@ -46,19 +46,19 @@ internal static class PalindromicSubstringsSolution
 
     // The expansion can continue: both indices are still inside the text, and the
     // characters they point at match.
-    private static bool ExpandsFurther(string s, int left, int right)
-        => left >= 0 && right < s.Length && s[left] == s[right];
+    private static bool CanExpandFurther(string text, int left, int right)
+        => left >= 0 && right < text.Length && text[left] == text[right];
 
-    public static int CountSubstringsByManacher(string s)
+    public static int CountSubstringsByManacher(string text)
     {
         var count = 0;
 
-        foreach (var radius in Manacher.ComputeOddRadii(s))
+        foreach (var radius in Manacher.ComputeOddRadii(text))
         {
             count += radius;
         }
 
-        foreach (var radius in Manacher.ComputeEvenRadii(s))
+        foreach (var radius in Manacher.ComputeEvenRadii(text))
         {
             count += radius;
         }

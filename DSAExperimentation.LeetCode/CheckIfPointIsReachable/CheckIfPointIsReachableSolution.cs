@@ -37,12 +37,12 @@ internal static class CheckIfPointIsReachableSolution
         var queue = new Queue<(long X, long Y)>();
         queue.Enqueue(start);
 
-        return SweepByBreadthFirstSearch(queue, visited, targetX, targetY);
+        return IsTargetReachableByBreadthFirstSearch(queue, visited, targetX, targetY);
     }
 
     // Drains the frontier: each point popped either answers (it is the target) or
     // expands into its four moves, so the search ends only when nothing new is left.
-    private static bool SweepByBreadthFirstSearch(
+    private static bool IsTargetReachableByBreadthFirstSearch(
         Queue<(long X, long Y)> queue, HashSet<(long X, long Y)> visited, int targetX, int targetY)
     {
         while (queue.Count > 0)
@@ -67,12 +67,12 @@ internal static class CheckIfPointIsReachableSolution
     }
 
     // The four moves, in the order the puzzle states them.
-    private static IEnumerable<(long X, long Y)> Successors(long x, long y)
+    private static IEnumerable<(long X, long Y)> Successors(long coordinateX, long coordinateY)
     {
-        yield return (x + y, y);
-        yield return (x, x + y);
-        yield return (DoublingFactor * x, y);
-        yield return (x, DoublingFactor * y);
+        yield return (coordinateX + coordinateY, coordinateY);
+        yield return (coordinateX, coordinateX + coordinateY);
+        yield return (DoublingFactor * coordinateX, coordinateY);
+        yield return (coordinateX, DoublingFactor * coordinateY);
     }
 
     // A successor is worth queueing only when it stays inside the target's box -
@@ -98,5 +98,6 @@ internal static class CheckIfPointIsReachableSolution
     // arise.
     private static bool IsPowerOfTwo(int value) => (value & (value - 1)) == 0;
 
-    private static int EuclideanGcd(int a, int b) => b == 0 ? a : EuclideanGcd(b, a % b);
+    private static int EuclideanGcd(int dividend, int divisor) =>
+        divisor == 0 ? dividend : EuclideanGcd(divisor, dividend % divisor);
 }

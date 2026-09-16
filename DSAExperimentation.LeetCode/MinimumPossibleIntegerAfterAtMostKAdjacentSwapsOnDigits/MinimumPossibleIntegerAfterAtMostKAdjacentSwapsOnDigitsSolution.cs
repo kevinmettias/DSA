@@ -4,7 +4,7 @@ using RepoIntQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 namespace DSAExperimentation.LeetCode.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
 
 // LeetCode 1505. Minimum Possible Integer After at Most K Adjacent Swaps On Digits: the
-// smallest arrangement reachable from a digit string using at most k adjacent swaps.
+// smallest arrangement reachable from a digit string using at most maxSwaps adjacent swaps.
 //
 // Both strategies are the same greedy: fill each output slot with the smallest digit whose
 // frontmost still-unplaced occurrence is affordable within the remaining swap budget, where
@@ -19,11 +19,11 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
     // List<char>, scan the affordable prefix for the smallest one, emit it and RemoveAt it -
     // O(length) per output slot, O(length^2) overall. Deliberately written without this
     // repo's primitives; it is the arm the Fenwick greedy has to beat.
-    public static string MinIntegerByListRemoval(string num, int k)
+    public static string MinIntegerByListRemoval(string num, int maxSwaps)
     {
         var remaining = num.ToList();
         var result = new char[remaining.Count];
-        var remainingSwaps = k;
+        var remainingSwaps = maxSwaps;
 
         for (var slot = 0; slot < result.Length; slot++)
         {
@@ -58,7 +58,7 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
     // Per-digit occurrence order rides on this repo's own Queue<int> - FIFO, because
     // PrefixQuery is monotonic non-decreasing in position, so a digit's frontmost occurrence
     // is always its cheapest one.
-    public static string MinIntegerByFenwickTreeGreedy(string num, int k)
+    public static string MinIntegerByFenwickTreeGreedy(string num, int maxSwaps)
     {
         var length = num.Length;
         var unplacedFlags = Enumerable.Repeat(1, length).ToArray();
@@ -66,7 +66,7 @@ internal static class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSol
             BuildPositionsByDigit(num),
             new FenwickTree<int, SumOperation<int>>(unplacedFlags),
             new char[length]);
-        var remainingSwaps = k;
+        var remainingSwaps = maxSwaps;
 
         for (var slot = 0; slot < length; slot++)
         {

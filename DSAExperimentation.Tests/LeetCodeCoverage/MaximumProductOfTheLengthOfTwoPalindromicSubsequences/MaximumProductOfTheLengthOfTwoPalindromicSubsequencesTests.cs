@@ -24,16 +24,16 @@ public sealed class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProductByBitmaskScan_LeetCodeExamples_ReturnsBestDisjointPalindromePairProduct(
-        string s, int expected) =>
+        string text, int expected) =>
         Assert.Equal(
             expected,
-            MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution.MaxProductByBitmaskScan(s));
+            MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution.MaxProductByBitmaskScan(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProductByBacktrack_LeetCodeExamples_ReturnsBestDisjointPalindromePairProduct(
-        string s, int expected) =>
+        string text, int expected) =>
         Assert.Equal(
             expected,
-            MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution.MaxProductByBacktrack(s));
+            MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution.MaxProductByBacktrack(text));
 }

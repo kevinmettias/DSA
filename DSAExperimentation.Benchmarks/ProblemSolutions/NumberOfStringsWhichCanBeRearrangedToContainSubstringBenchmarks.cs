@@ -7,17 +7,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution's, the same
 // methods ...Tests proves correct. The state DP is O(n) with a small constant
 // factor per step; the inclusion-exclusion closed form is O(log n) via modular
-// exponentiation (Domain.Modular.ModularArithmetic) regardless of n, so the gap
-// should widen as N grows toward LC 2930's real 1e5 bound.
+// exponentiation (Domain.Modular.ModularArithmetic) regardless of the string length,
+// so the gap should widen as StringLength grows toward LC 2930's real 1e5 bound.
 [MemoryDiagnoser]
 public class NumberOfStringsWhichCanBeRearrangedToContainSubstringBenchmarks
 {
     [Params(1_000, 100_000)]
-    public int N { get; set; }
+    public int StringLength { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int StateDp() => NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByStateDp(N);
+    public int StateDp() =>
+        NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByStateDp(StringLength);
 
     [Benchmark]
-    public int InclusionExclusion() => NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution.CountRearrangeableStringsByInclusionExclusion(N);
+    public int InclusionExclusion() =>
+        NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution
+            .CountRearrangeableStringsByInclusionExclusion(StringLength);
 }

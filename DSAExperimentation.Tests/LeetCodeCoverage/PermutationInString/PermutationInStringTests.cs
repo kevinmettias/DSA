@@ -19,10 +19,10 @@ public sealed class PermutationInStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckInclusionByPerWindowRebuild_LeetCodeExamples_ReturnsWhetherPermutationExists(
+    public void HasPermutationByPerWindowRebuild_LeetCodeExamples_ReturnsWhetherPermutationExists(
         InclusionExample example)
     {
-        var actual = PermutationInStringSolution.CheckInclusionByPerWindowRebuild(
+        var actual = PermutationInStringSolution.HasPermutationByPerWindowRebuild(
             new PermutationPattern(example.Permutation), new SearchedText(example.Text));
 
         Assert.Equal(example.Expected, actual);
@@ -30,10 +30,10 @@ public sealed class PermutationInStringTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckInclusionBySlidingWindow_LeetCodeExamples_ReturnsWhetherPermutationExists(
+    public void HasPermutationBySlidingWindow_LeetCodeExamples_ReturnsWhetherPermutationExists(
         InclusionExample example)
     {
-        var actual = PermutationInStringSolution.CheckInclusionBySlidingWindow(
+        var actual = PermutationInStringSolution.HasPermutationBySlidingWindow(
             new PermutationPattern(example.Permutation), new SearchedText(example.Text));
 
         Assert.Equal(example.Expected, actual);

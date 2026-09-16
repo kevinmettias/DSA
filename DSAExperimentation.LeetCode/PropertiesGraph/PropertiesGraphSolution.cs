@@ -5,7 +5,8 @@ namespace DSAExperimentation.LeetCode.PropertiesGraph;
 
 // LeetCode 3493. Properties Graph: an undirected edge joins i and j whenever
 // intersect(properties[i], properties[j]) - the count of DISTINCT values common
-// to both rows - is >= k. Return the number of connected components.
+// to both rows - is >= `minimumIntersectionCount`. Return the number of connected
+// components.
 //
 // Both strategies test every pair (n <= 100 per LC's own constraints, so O(n^2 *
 // m) is already the intended order) and differ only in what computes intersect()
@@ -18,7 +19,7 @@ internal static class PropertiesGraphSolution
     // hand-rolled int[] parent array with path compression - deliberately no
     // repo primitive, the "what you'd write without this repo" arm the composed
     // strategy below has to beat.
-    public static int NumberOfComponentsByBruteForce(int[][] properties, int k)
+    public static int NumberOfComponentsByBruteForce(int[][] properties, int minimumIntersectionCount)
     {
         var n = properties.Length;
         var parent = new int[n];
@@ -30,7 +31,7 @@ internal static class PropertiesGraphSolution
 
         var rows = BuildHashSets(properties);
 
-        UnionIntersectingRows(rows, k, parent);
+        UnionIntersectingRows(rows, minimumIntersectionCount, parent);
 
         return CountRoots(parent);
     }
@@ -48,14 +49,15 @@ internal static class PropertiesGraphSolution
         return rows;
     }
 
-    // Unions every pair of rows whose distinct-value intersection reaches k.
-    private static void UnionIntersectingRows(HashSet<int>[] rows, int k, int[] parent)
+    // Unions every pair of rows whose distinct-value intersection reaches
+    // `minimumIntersectionCount`.
+    private static void UnionIntersectingRows(HashSet<int>[] rows, int minimumIntersectionCount, int[] parent)
     {
         for (var i = 0; i < rows.Length; i++)
         {
             for (var j = i + 1; j < rows.Length; j++)
             {
-                if (IntersectCount(rows[i], rows[j]) >= k)
+                if (IntersectCount(rows[i], rows[j]) >= minimumIntersectionCount)
                 {
                     Union(parent, i, j);
                 }
@@ -78,13 +80,13 @@ internal static class PropertiesGraphSolution
         return roots.Count;
     }
 
-    private static int IntersectCount(HashSet<int> a, HashSet<int> b)
+    private static int IntersectCount(HashSet<int> firstValues, HashSet<int> secondValues)
     {
         var count = 0;
 
-        foreach (var value in a)
+        foreach (var value in firstValues)
         {
-            if (b.Contains(value))
+            if (secondValues.Contains(value))
             {
                 count++;
             }
@@ -93,25 +95,25 @@ internal static class PropertiesGraphSolution
         return count;
     }
 
-    private static int Find(int[] parent, int x)
+    private static int Find(int[] parent, int element)
     {
-        while (parent[x] != x)
+        while (parent[element] != element)
         {
-            parent[x] = parent[parent[x]];
-            x = parent[x];
+            parent[element] = parent[parent[element]];
+            element = parent[element];
         }
 
-        return x;
+        return element;
     }
 
-    private static void Union(int[] parent, int a, int b)
+    private static void Union(int[] parent, int firstElement, int secondElement)
     {
-        var rootA = Find(parent, a);
-        var rootB = Find(parent, b);
+        var firstRoot = Find(parent, firstElement);
+        var secondRoot = Find(parent, secondElement);
 
-        if (rootA != rootB)
+        if (firstRoot != secondRoot)
         {
-            parent[rootA] = rootB;
+            parent[firstRoot] = secondRoot;
         }
     }
 
@@ -123,7 +125,7 @@ internal static class PropertiesGraphSolution
     // keeps a comparable surface deliberately narrow), so each row's distinct
     // values are also kept as a plain array alongside its Set - Distinct's own
     // Set<int> is what produces that array, TryAdd rejecting every repeat.
-    public static int NumberOfComponentsByDisjointSet(int[][] properties, int k)
+    public static int NumberOfComponentsByDisjointSet(int[][] properties, int minimumIntersectionCount)
     {
         var n = properties.Length;
         var forest = new DisjointSet(n);
@@ -132,7 +134,7 @@ internal static class PropertiesGraphSolution
 
         BuildRowSets(properties, rowSets, distinctRows);
 
-        UnionIntersectingRows(distinctRows, rowSets, k, forest);
+        UnionIntersectingRows(distinctRows, rowSets, minimumIntersectionCount, forest);
 
         return CountRoots(forest);
     }
@@ -148,13 +150,14 @@ internal static class PropertiesGraphSolution
         }
     }
 
-    private static void UnionIntersectingRows(int[][] distinctRows, Set<int>[] rowSets, int k, DisjointSet forest)
+    private static void UnionIntersectingRows(
+        int[][] distinctRows, Set<int>[] rowSets, int minimumIntersectionCount, DisjointSet forest)
     {
         for (var i = 0; i < distinctRows.Length; i++)
         {
             for (var j = i + 1; j < distinctRows.Length; j++)
             {
-                if (IntersectCount(distinctRows[i], rowSets[j]) >= k)
+                if (IntersectCount(distinctRows[i], rowSets[j]) >= minimumIntersectionCount)
                 {
                     forest.Union(i, j);
                 }

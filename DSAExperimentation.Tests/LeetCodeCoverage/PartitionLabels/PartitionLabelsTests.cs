@@ -17,12 +17,12 @@ public sealed class PartitionLabelsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionLabelSizesByBruteForceRescan_LeetCodeExamples_ReturnsExpectedPartitionSizes(
-        string s, List<int> expected) =>
-        Assert.Equal(expected, PartitionLabelsSolution.PartitionLabelSizesByBruteForceRescan(s));
+        string text, List<int> expected) =>
+        Assert.Equal(expected, PartitionLabelsSolution.PartitionLabelSizesByBruteForceRescan(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionLabelSizesByHashMapOnePass_LeetCodeExamples_ReturnsExpectedPartitionSizes(
-        string s, List<int> expected) =>
-        Assert.Equal(expected, PartitionLabelsSolution.PartitionLabelSizesByHashMapOnePass(s));
+        string text, List<int> expected) =>
+        Assert.Equal(expected, PartitionLabelsSolution.PartitionLabelSizesByHashMapOnePass(text));
 }

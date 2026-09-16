@@ -40,14 +40,14 @@ internal static class FindMaximumAreaOfATriangleSolution
 
     // The running best after considering one triple: a triple with no axis-parallel
     // side, or one that encloses no area at all, leaves the answer where it was.
-    private static long BestOfTriple(long best, int[] a, int[] b, int[] c)
+    private static long BestOfTriple(long best, int[] firstPoint, int[] secondPoint, int[] thirdPoint)
     {
-        if (!HasAxisParallelSide(a, b, c))
+        if (!HasAxisParallelSide(firstPoint, secondPoint, thirdPoint))
         {
             return best;
         }
 
-        var doubledArea = DoubledArea(a, b, c);
+        var doubledArea = DoubledArea(firstPoint, secondPoint, thirdPoint);
 
         if (doubledArea > 0 && doubledArea > best)
         {
@@ -57,13 +57,18 @@ internal static class FindMaximumAreaOfATriangleSolution
         return best;
     }
 
-    private static bool HasAxisParallelSide(int[] a, int[] b, int[] c) =>
-        SharesAnAxis(a, b) || SharesAnAxis(b, c) || SharesAnAxis(a, c);
+    private static bool HasAxisParallelSide(int[] firstPoint, int[] secondPoint, int[] thirdPoint) =>
+        IsAxisParallelPair(firstPoint, secondPoint)
+        || IsAxisParallelPair(secondPoint, thirdPoint)
+        || IsAxisParallelPair(firstPoint, thirdPoint);
 
-    private static bool SharesAnAxis(int[] p, int[] q) => p[0] == q[0] || p[1] == q[1];
+    private static bool IsAxisParallelPair(int[] firstPoint, int[] secondPoint) =>
+        firstPoint[0] == secondPoint[0] || firstPoint[1] == secondPoint[1];
 
-    private static long DoubledArea(int[] a, int[] b, int[] c) =>
-        Math.Abs(((long)(b[0] - a[0]) * (c[1] - a[1])) - ((long)(c[0] - a[0]) * (b[1] - a[1])));
+    private static long DoubledArea(int[] firstPoint, int[] secondPoint, int[] thirdPoint) =>
+        Math.Abs(
+            ((long)(secondPoint[0] - firstPoint[0]) * (thirdPoint[1] - firstPoint[1]))
+            - ((long)(thirdPoint[0] - firstPoint[0]) * (secondPoint[1] - firstPoint[1])));
 
     // Composed: one O(n) pass over this repo's own HashMap<TKey, TValue>, grouping
     // points into a running [min, max] x-span per row (shared y) and [min, max]
@@ -99,17 +104,17 @@ internal static class FindMaximumAreaOfATriangleSolution
         HashMap<int, AxisSpan> columnSpans,
         (int MinX, int MaxX, int MinY, int MaxY) bounds)
     {
-        var (x, y) = (point[0], point[1]);
+        var (columnPosition, rowPosition) = (point[0], point[1]);
 
-        rowSpans.Set(y, rowSpans.TryGetValue(y, out var row)
-            ? WidenedSpan(row, x)
-            : SinglePointSpan(x));
+        rowSpans.Set(rowPosition, rowSpans.TryGetValue(rowPosition, out var row)
+            ? WidenedSpan(row, columnPosition)
+            : SinglePointSpan(columnPosition));
 
-        columnSpans.Set(x, columnSpans.TryGetValue(x, out var column)
-            ? WidenedSpan(column, y)
-            : SinglePointSpan(y));
+        columnSpans.Set(columnPosition, columnSpans.TryGetValue(columnPosition, out var column)
+            ? WidenedSpan(column, rowPosition)
+            : SinglePointSpan(rowPosition));
 
-        return ExpandBounds(bounds, x, y);
+        return ExpandBounds(bounds, columnPosition, rowPosition);
     }
 
     private static AxisSpan WidenedSpan(AxisSpan span, int value) =>
@@ -119,12 +124,12 @@ internal static class FindMaximumAreaOfATriangleSolution
 
     // The bounding box grown to include one more point.
     private static (int MinX, int MaxX, int MinY, int MaxY) ExpandBounds(
-        (int MinX, int MaxX, int MinY, int MaxY) bounds, int x, int y) =>
+        (int MinX, int MaxX, int MinY, int MaxY) bounds, int columnPosition, int rowPosition) =>
         (
-            Math.Min(bounds.MinX, x),
-            Math.Max(bounds.MaxX, x),
-            Math.Min(bounds.MinY, y),
-            Math.Max(bounds.MaxY, y));
+            Math.Min(bounds.MinX, columnPosition),
+            Math.Max(bounds.MaxX, columnPosition),
+            Math.Min(bounds.MinY, rowPosition),
+            Math.Max(bounds.MaxY, rowPosition));
 
     // The best triangle over one axis of spans, folding each candidate base into the
     // answer. A base is a line whose span is non-empty; its height is the farthest

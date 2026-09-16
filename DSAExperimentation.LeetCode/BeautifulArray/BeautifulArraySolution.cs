@@ -28,10 +28,10 @@ internal static class BeautifulArraySolution
     // when a position runs out of candidates. Exponential - n = 16 already costs
     // ~13M search nodes - and written with BCL arrays only, because this is what
     // you reach for before noticing the parity argument below.
-    public static int[] ConstructByPrunedBacktracking(int n)
+    public static int[] ConstructByPrunedBacktracking(int length)
     {
-        var search = new PrefixSearch(n, new bool[n + 1], new int[n]);
-        Extend(0, search);
+        var search = new PrefixSearch(length, new bool[length + 1], new int[length]);
+        TryExtend(0, search);
 
         return search.Values;
     }
@@ -43,10 +43,10 @@ internal static class BeautifulArraySolution
     // 2 * a[k], and any triple within one half is the recursive property. This
     // repo's own HashMap<int, int[]> memoizes the O(log n) distinct subproblem
     // sizes the two recursive calls keep revisiting.
-    public static int[] ConstructByMemoizedDivideAndConquer(int n) =>
-        Build(n, new HashMap<int, int[]>());
+    public static int[] ConstructByMemoizedDivideAndConquer(int length) =>
+        Build(length, new HashMap<int, int[]>());
 
-    private static bool Extend(int position, PrefixSearch search)
+    private static bool TryExtend(int position, PrefixSearch search)
     {
         if (position == search.Length)
         {
@@ -83,7 +83,7 @@ internal static class BeautifulArraySolution
 
         search.Used[candidate] = true;
 
-        if (Extend(position + 1, search))
+        if (TryExtend(position + 1, search))
         {
             return true;
         }
@@ -110,23 +110,23 @@ internal static class BeautifulArraySolution
         return true;
     }
 
-    private static int[] Build(int n, HashMap<int, int[]> memo)
+    private static int[] Build(int length, HashMap<int, int[]> memo)
     {
-        if (n == SmallestValue)
+        if (length == SmallestValue)
         {
             return [SmallestValue];
         }
 
-        if (memo.TryGetValue(n, out var cached))
+        if (memo.TryGetValue(length, out var cached))
         {
             return cached;
         }
 
-        var odds = Build((n + 1) / ProblemSizeDivisor, memo).Select(x => (RangeScaleFactor * x) - 1);
-        var evens = Build(n / ProblemSizeDivisor, memo).Select(x => RangeScaleFactor * x);
+        var odds = Build((length + 1) / ProblemSizeDivisor, memo).Select(x => (RangeScaleFactor * x) - 1);
+        var evens = Build(length / ProblemSizeDivisor, memo).Select(x => RangeScaleFactor * x);
         var result = odds.Concat(evens).ToArray();
 
-        memo.Set(n, result);
+        memo.Set(length, result);
 
         return result;
     }

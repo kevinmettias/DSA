@@ -26,27 +26,29 @@ namespace DSAExperimentation.LeetCode.FindTheLargestPalindromeDivisibleByK;
 // in O(1) per position instead of re-deriving it.
 internal static class FindTheLargestPalindromeDivisibleByKSolution
 {
-    public static string LargestPalindromeByBruteForce(int n, int k)
+    public static string LargestPalindromeByBruteForce(int digitCount, int divisor)
     {
-        var half = new char[HalfLength(n)];
+        var half = new char[HalfLength(digitCount)];
 
-        return TryFillDescending(0, half, n, k) ? Mirror(half, n) : string.Empty;
+        return TryFillDescending(0, half, digitCount, divisor)
+            ? Mirror(half, digitCount)
+            : string.Empty;
     }
 
-    public static string LargestPalindromeByDigitDpMemo(int n, int k)
+    public static string LargestPalindromeByDigitDpMemo(int digitCount, int divisor)
     {
-        var h = HalfLength(n);
-        var weight = BuildWeights(n, k, h);
-        var digitChoice = FeasibleDigitChoices(weight, k);
+        var halfLength = HalfLength(digitCount);
+        var weight = BuildWeights(digitCount, divisor, halfLength);
+        var digitChoice = FeasibleDigitChoices(weight, divisor);
 
         if (digitChoice is null)
         {
             return string.Empty;
         }
 
-        var half = FillGreedyHalf(h, k, weight, digitChoice);
+        var half = FillGreedyHalf(halfLength, divisor, weight, digitChoice);
 
-        return Mirror(half, n);
+        return Mirror(half, digitCount);
     }
 
     /// <summary>
@@ -69,22 +71,22 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
             IsFeasible(state, (Weights: weights, Modulus: modulus), digitChoice, rest);
     }
 
-    private static int[] BuildWeights(int n, int k, int h)
+    private static int[] BuildWeights(int digitCount, int divisor, int halfLength)
     {
-        var pow10 = new int[n];
-        pow10[0] = 1 % k;
+        var pow10 = new int[digitCount];
+        pow10[0] = 1 % divisor;
 
-        for (var i = 1; i < n; i++)
+        for (var i = 1; i < digitCount; i++)
         {
-            pow10[i] = pow10[i - 1] * 10 % k;
+            pow10[i] = pow10[i - 1] * 10 % divisor;
         }
 
-        var weight = new int[h];
+        var weight = new int[halfLength];
 
-        for (var i = 0; i < h; i++)
+        for (var i = 0; i < halfLength; i++)
         {
-            var mirrorPosition = n - 1 - i;
-            weight[i] = WeightForPosition(pow10, i, mirrorPosition, k);
+            var mirrorPosition = digitCount - 1 - i;
+            weight[i] = WeightForPosition(pow10, i, mirrorPosition, divisor);
         }
 
         return weight;
@@ -108,12 +110,12 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
     // state feasible. Null is the "no such palindrome exists" answer - there is then
     // no state for the greedy replay to read, so the empty string is all that is left.
     private static Dictionary<(int Position, int Needed), int>? FeasibleDigitChoices(
-        int[] weight, int k)
+        int[] weight, int divisor)
     {
         var digitChoice = new Dictionary<(int Position, int Needed), int>();
 
         var feasible = Memoizer.Memoize<(int Position, int Needed), bool>(
-            (0, 0), new FeasibleRemainder(weight, k, digitChoice));
+            (0, 0), new FeasibleRemainder(weight, divisor, digitChoice));
 
         return feasible ? digitChoice : null;
     }
@@ -123,16 +125,17 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
     // derived it - replay starts at the same (0, 0), so it visits the same states and
     // finds a digit recorded for every one of them.
     private static char[] FillGreedyHalf(
-        int h, int k, int[] weight, Dictionary<(int Position, int Needed), int> digitChoice)
+        int halfLength, int divisor, int[] weight,
+        Dictionary<(int Position, int Needed), int> digitChoice)
     {
-        var half = new char[h];
+        var half = new char[halfLength];
         var needed = 0;
 
-        for (var position = 0; position < h; position++)
+        for (var position = 0; position < halfLength; position++)
         {
             var digit = digitChoice[(position, needed)];
             half[position] = (char)('0' + digit);
-            needed = Reduce(needed - digit * weight[position], k);
+            needed = Reduce(needed - digit * weight[position], divisor);
         }
 
         return half;
@@ -145,8 +148,8 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
     // Needed the same way this recursion did.
     //
     // The weight table and the modulus it was reduced under are one residue rule:
-    // every weight is a residue mod k, and neither is ever read without the other.
-    // Its length is h itself, so the walk's end reads off the table.
+    // every weight is a residue mod divisor, and neither is ever read without the
+    // other. Its length is halfLength itself, so the walk's end reads off the table.
     private static bool IsFeasible(
         (int Position, int Needed) state,
         (int[] Weights, int Modulus) residue,
@@ -176,12 +179,12 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
         return false;
     }
 
-    private static bool TryFillDescending(int position, char[] half, int n, int k)
+    private static bool TryFillDescending(int position, char[] half, int digitCount, int divisor)
     {
         if (position == half.Length)
         {
-            var candidate = Mirror(half, n);
-            return IsDivisible(candidate, k);
+            var candidate = Mirror(half, digitCount);
+            return IsDivisible(candidate, divisor);
         }
 
         var lowestDigit = position == 0 ? 1 : 0;
@@ -190,7 +193,7 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
         {
             half[position] = (char)('0' + digit);
 
-            if (TryFillDescending(position + 1, half, n, k))
+            if (TryFillDescending(position + 1, half, digitCount, divisor))
             {
                 return true;
             }
@@ -199,30 +202,30 @@ internal static class FindTheLargestPalindromeDivisibleByKSolution
         return false;
     }
 
-    private static bool IsDivisible(string number, int k)
+    private static bool IsDivisible(string number, int divisor)
     {
         var remainder = 0;
 
         foreach (var digit in number)
         {
-            remainder = (remainder * 10 + (digit - '0')) % k;
+            remainder = (remainder * 10 + (digit - '0')) % divisor;
         }
 
         return remainder == 0;
     }
 
-    private static int Reduce(int value, int k) => ((value % k) + k) % k;
+    private static int Reduce(int value, int divisor) => ((value % divisor) + divisor) % divisor;
 
-    private static int HalfLength(int n) => (n + 1) / 2;
+    private static int HalfLength(int digitCount) => (digitCount + 1) / 2;
 
-    private static string Mirror(char[] half, int n)
+    private static string Mirror(char[] half, int digitCount)
     {
-        var result = new char[n];
+        var result = new char[digitCount];
 
         for (var i = 0; i < half.Length; i++)
         {
             result[i] = half[i];
-            result[n - 1 - i] = half[i];
+            result[digitCount - 1 - i] = half[i];
         }
 
         return new string(result);

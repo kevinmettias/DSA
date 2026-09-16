@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.VowelsGameInAString;
 //
 // The two turn kinds are not interchangeable - a state that is winning for
 // "whoever moves next" in most turn games instead has to be tracked once per
-// role here - but the game still collapses to one fact: Alice wins iff s
+// role here - but the game still collapses to one fact: Alice wins iff `text`
 // contains at least one vowel. If the total vowel count is odd she can clear
 // the whole string in one move and win immediately; if it is even but
 // positive she removes a single vowel, which leaves an odd count for Bob and
@@ -29,17 +29,17 @@ internal static class VowelsGameInAStringSolution
     // land on the same string. Deliberately written without this repo's
     // primitives beyond a plain Dictionary, the arm the closed form below has
     // to agree with.
-    public static bool DoesAliceWinByGameSearch(string s)
+    public static bool CanAliceWinByGameSearch(string text)
     {
         var aliceMemo = new Dictionary<string, bool>();
         var bobMemo = new Dictionary<string, bool>();
-        return AliceToMoveWins(s, aliceMemo, bobMemo);
+        return IsWinningForAliceToMove(text, aliceMemo, bobMemo);
     }
 
-    // The derived closed form: Alice wins iff s has at least one vowel.
-    public static bool DoesAliceWinByVowelExistence(string s)
+    // The derived closed form: Alice wins iff `text` has at least one vowel.
+    public static bool CanAliceWinByVowelExistence(string text)
     {
-        foreach (var c in s)
+        foreach (var c in text)
         {
             if (VowelSet.Has(c))
             {
@@ -52,31 +52,31 @@ internal static class VowelsGameInAStringSolution
 
     // Alice needs a substring with an odd vowel count; she wins if any such
     // removal leaves Bob facing a state where he cannot win.
-    private static bool AliceToMoveWins(
-        string s, Dictionary<string, bool> aliceMemo, Dictionary<string, bool> bobMemo)
+    private static bool IsWinningForAliceToMove(
+        string text, Dictionary<string, bool> aliceMemo, Dictionary<string, bool> bobMemo)
     {
-        if (aliceMemo.TryGetValue(s, out var cached))
+        if (aliceMemo.TryGetValue(text, out var cached))
         {
             return cached;
         }
 
-        var wins = HasWinningRemoval(s, VowelParity.Odd, (aliceMemo, bobMemo));
-        aliceMemo[s] = wins;
+        var wins = HasWinningRemoval(text, VowelParity.Odd, (aliceMemo, bobMemo));
+        aliceMemo[text] = wins;
         return wins;
     }
 
     // Bob needs a substring with an even (0 included) vowel count; he wins if
     // any such removal leaves Alice facing a state where she cannot win.
-    private static bool BobToMoveWins(
-        string s, Dictionary<string, bool> aliceMemo, Dictionary<string, bool> bobMemo)
+    private static bool IsWinningForBobToMove(
+        string text, Dictionary<string, bool> aliceMemo, Dictionary<string, bool> bobMemo)
     {
-        if (bobMemo.TryGetValue(s, out var cached))
+        if (bobMemo.TryGetValue(text, out var cached))
         {
             return cached;
         }
 
-        var wins = HasWinningRemoval(s, VowelParity.Even, (aliceMemo, bobMemo));
-        bobMemo[s] = wins;
+        var wins = HasWinningRemoval(text, VowelParity.Even, (aliceMemo, bobMemo));
+        bobMemo[text] = wins;
         return wins;
     }
 
@@ -84,13 +84,13 @@ internal static class VowelsGameInAStringSolution
     // count against the mover's required parity, and stops at the first
     // removal that makes the opponent lose.
     private static bool HasWinningRemoval(
-        string s,
+        string text,
         VowelParity requiredParity,
         (Dictionary<string, bool> AliceMemo, Dictionary<string, bool> BobMemo) memos)
     {
-        for (var start = 0; start < s.Length; start++)
+        for (var start = 0; start < text.Length; start++)
         {
-            if (HasWinningRemovalFrom(s, start, requiredParity, memos))
+            if (HasWinningRemovalFrom(text, start, requiredParity, memos))
             {
                 return true;
             }
@@ -103,16 +103,16 @@ internal static class VowelsGameInAStringSolution
     // and reports whether any prefix with this start has the required parity and
     // leaves the opponent losing.
     private static bool HasWinningRemovalFrom(
-        string s,
+        string text,
         int start,
         VowelParity requiredParity,
         (Dictionary<string, bool> AliceMemo, Dictionary<string, bool> BobMemo) memos)
     {
         var vowels = 0;
 
-        for (var end = start; end < s.Length; end++)
+        for (var end = start; end < text.Length; end++)
         {
-            if (Vowels.Contains(s[end]))
+            if (Vowels.Contains(text[end]))
             {
                 vowels++;
             }
@@ -122,8 +122,8 @@ internal static class VowelsGameInAStringSolution
                 continue;
             }
 
-            var rest = s.Remove(start, end - start + 1);
-            if (OpponentLoses(rest, requiredParity, memos))
+            var rest = text.Remove(start, end - start + 1);
+            if (IsLosingForOpponent(rest, requiredParity, memos))
             {
                 return true;
             }
@@ -135,17 +135,17 @@ internal static class VowelsGameInAStringSolution
     // The question a removal asks of the position it leaves behind: does whoever
     // moves next lose from here? This mover's own parity fixes which of the two
     // turn functions answers it, since only the other role can be next to move.
-    private static bool OpponentLoses(
+    private static bool IsLosingForOpponent(
         string remaining,
         VowelParity movedParity,
         (Dictionary<string, bool> AliceMemo, Dictionary<string, bool> BobMemo) memos)
     {
         if (movedParity == VowelParity.Odd)
         {
-            return !BobToMoveWins(remaining, memos.AliceMemo, memos.BobMemo);
+            return !IsWinningForBobToMove(remaining, memos.AliceMemo, memos.BobMemo);
         }
 
-        return !AliceToMoveWins(remaining, memos.AliceMemo, memos.BobMemo);
+        return !IsWinningForAliceToMove(remaining, memos.AliceMemo, memos.BobMemo);
     }
 
     // A removal is legal only when its vowel count has the parity its mover needs.

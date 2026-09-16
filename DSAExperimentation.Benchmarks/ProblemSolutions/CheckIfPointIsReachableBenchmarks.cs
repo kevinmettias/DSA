@@ -26,10 +26,10 @@ public class CheckIfPointIsReachableBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceBfs() =>
+    public bool IsReachableByBruteForceBfs() =>
         CheckIfPointIsReachableSolution.IsReachableByBruteForceBfs(_targetX, _targetY);
 
     [Benchmark]
-    public bool GcdIsPowerOfTwo() =>
+    public bool IsReachableByGcd() =>
         CheckIfPointIsReachableSolution.IsReachableByGcd(_targetX, _targetY);
 }

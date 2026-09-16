@@ -40,7 +40,7 @@ internal static class BellmanFord
 
         for (var round = 0; round < vertexList.Count - 1; round++)
         {
-            RelaxAll(edges, distances);
+            TryRelaxAll(edges, distances);
         }
 
         // A distance can still improve on this extra round only if some cycle on the path
@@ -48,12 +48,14 @@ internal static class BellmanFord
         // source. distances is left exactly as computed through the |V| - 1 guaranteed-valid
         // rounds - a wrong/incomplete answer, not an exception, the same shape TrySort's own
         // false case already establishes.
-        return !RelaxAll(edges, distances);
+        return !TryRelaxAll(edges, distances);
     }
 
     // Returns whether any edge still improved a known distance - true here (on the |V|th call)
-    // is the negative-cycle signal; on every earlier call the return value is unused.
-    private static bool RelaxAll<TNode, TWeight>(
+    // is the negative-cycle signal; on every earlier call the return value is unused. The `Try`
+    // is the attempt-returns-success convention: every round mutates `distances`, and the bool
+    // is whether the attempt found anything left to improve.
+    private static bool TryRelaxAll<TNode, TWeight>(
         List<(TNode From, TNode To, TWeight Weight)> edges, Dictionary<TNode, TWeight> distances)
         where TNode : class
         where TWeight : INumber<TWeight>

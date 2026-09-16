@@ -25,7 +25,7 @@ internal static class WaterAndJugProblemSolution
 
         while (pending.TryPop(out var state))
         {
-            if (Expand(visited, pending, state, (jugX, jugY, target)))
+            if (HasReachedTarget(visited, pending, state, (jugX, jugY, target)))
             {
                 return true;
             }
@@ -37,7 +37,7 @@ internal static class WaterAndJugProblemSolution
     // One state expanded: a state already seen is skipped, one whose two jugs sum to
     // the target ends the search, and otherwise every successor not yet seen is
     // queued behind it.
-    private static bool Expand(
+    private static bool HasReachedTarget(
         HashSet<(int X, int Y)> visited,
         Stack<(int X, int Y)> pending,
         (int X, int Y) state,
@@ -105,5 +105,6 @@ internal static class WaterAndJugProblemSolution
         yield return (state.X + pourYtoX, state.Y - pourYtoX);
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int firstValue, int secondValue) =>
+        secondValue == 0 ? firstValue : Gcd(secondValue, firstValue % secondValue);
 }

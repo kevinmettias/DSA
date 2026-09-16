@@ -3,7 +3,7 @@ using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.Suffi
 namespace DSAExperimentation.LeetCode.LongestDuplicateSubstring;
 
 // LeetCode 1044. Longest Duplicate Substring: return the longest substring that
-// occurs at least twice in s (occurrences may overlap), or "" if there is none.
+// occurs at least twice in the text (occurrences may overlap), or "" if there is none.
 //
 // The key property both strategies rest on is that a duplicated substring is
 // exactly a shared prefix of two distinct suffixes. The baseline takes that
@@ -19,16 +19,16 @@ internal static class LongestDuplicateSubstringSolution
     // Baseline: compare every pair of suffixes directly, O(n^2) pairs each costing
     // an O(match length) character scan. Deliberately plain BCL - this is what you
     // would write without this repo.
-    public static string LongestDupSubstringByAllSuffixPairs(string s)
+    public static string LongestDuplicateSubstringByAllSuffixPairs(string text)
     {
         var bestLength = 0;
         var bestStart = 0;
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            for (var j = i + 1; j < s.Length; j++)
+            for (var j = i + 1; j < text.Length; j++)
             {
-                var commonPrefixLength = CommonPrefixLength(s, i, j);
+                var commonPrefixLength = CommonPrefixLength(text, i, j);
 
                 if (commonPrefixLength > bestLength)
                 {
@@ -38,14 +38,14 @@ internal static class LongestDuplicateSubstringSolution
             }
         }
 
-        return s.Substring(bestStart, bestLength);
+        return text.Substring(bestStart, bestLength);
     }
 
-    private static int CommonPrefixLength(string s, int first, int second)
+    private static int CommonPrefixLength(string text, int first, int second)
     {
         var length = 0;
 
-        while (AgreeAtOffset(s, first, second, length))
+        while (HasMatchingCharacterAt(text, first, second, length))
         {
             length++;
         }
@@ -55,17 +55,17 @@ internal static class LongestDuplicateSubstringSolution
 
     // Both suffixes still have a character at this offset, and those characters
     // are the same one.
-    private static bool AgreeAtOffset(string s, int first, int second, int offset)
-        => first + offset < s.Length
-            && second + offset < s.Length
-            && s[first + offset] == s[second + offset];
+    private static bool HasMatchingCharacterAt(string text, int first, int second, int offset)
+        => first + offset < text.Length
+            && second + offset < text.Length
+            && text[first + offset] == text[second + offset];
 
     // Composed: the answer is the maximum entry of the suffix array's
     // longest-common-prefix array, and the substring it names starts at the suffix
     // that entry belongs to. O(n log^2 n) to build, then one linear scan.
-    public static string LongestDupSubstringBySuffixArray(string s)
+    public static string LongestDuplicateSubstringBySuffixArray(string text)
     {
-        var suffixArray = new SuffixArrayStructure(s);
+        var suffixArray = new SuffixArrayStructure(text);
         var longestCommonPrefixes = suffixArray.LongestCommonPrefixArray;
 
         var bestLength = 0;
@@ -80,6 +80,6 @@ internal static class LongestDuplicateSubstringSolution
             }
         }
 
-        return bestLength == 0 ? "" : s.Substring(suffixArray.Suffixes[bestSuffixIndex], bestLength);
+        return bestLength == 0 ? "" : text.Substring(suffixArray.Suffixes[bestSuffixIndex], bestLength);
     }
 }

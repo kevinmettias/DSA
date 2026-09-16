@@ -22,7 +22,7 @@ public class SmallestStringWithSwapsBenchmarks
     private const int RandomSeed = 1202;
     private const int AlphabetSize = 26;
 
-    private string _s = "";
+    private string _source = "";
 
     private int[][] _pairs = [];
     [Params(200, 5_000)]
@@ -38,7 +38,7 @@ public class SmallestStringWithSwapsBenchmarks
             chars[i] = (char)('a' + random.Next(AlphabetSize));
         }
 
-        _s = new string(chars);
+        _source = new string(chars);
 
         _pairs = new int[Length][];
         for (var i = 0; i < Length; i++)
@@ -49,9 +49,9 @@ public class SmallestStringWithSwapsBenchmarks
 
     [Benchmark(Baseline = true)]
     public string AdjacencyListBfs() =>
-        SmallestStringWithSwapsSolution.SmallestStringByAdjacencyListBfs(_s, _pairs);
+        SmallestStringWithSwapsSolution.SmallestStringByAdjacencyListBfs(_source, _pairs);
 
     [Benchmark]
     public string DisjointSetUnionFind() =>
-        SmallestStringWithSwapsSolution.SmallestStringByDisjointSet(_s, _pairs);
+        SmallestStringWithSwapsSolution.SmallestStringByDisjointSet(_source, _pairs);
 }

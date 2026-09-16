@@ -19,9 +19,9 @@ public sealed class MaximumPointsAfterCollectingCoinsFromAllNodesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPointsByMemoizedRecursion_LeetCodeExamples_ReturnsMaximumPoints(
-        int[][] edges, int[] coins, int k, long expected)
+        int[][] edges, int[] coins, int cost, long expected)
     {
-        var actual = MaximumPointsAfterCollectingCoinsFromAllNodesSolution.MaxPointsByMemoizedRecursion(edges, coins, k);
+        var actual = MaximumPointsAfterCollectingCoinsFromAllNodesSolution.MaxPointsByMemoizedRecursion(edges, coins, cost);
 
         Assert.Equal(expected, actual);
     }
@@ -29,9 +29,9 @@ public sealed class MaximumPointsAfterCollectingCoinsFromAllNodesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxPointsByTreeFold_LeetCodeExamples_ReturnsMaximumPoints(
-        int[][] edges, int[] coins, int k, long expected)
+        int[][] edges, int[] coins, int cost, long expected)
     {
-        var actual = MaximumPointsAfterCollectingCoinsFromAllNodesSolution.MaxPointsByTreeFold(edges, coins, k);
+        var actual = MaximumPointsAfterCollectingCoinsFromAllNodesSolution.MaxPointsByTreeFold(edges, coins, cost);
 
         Assert.Equal(expected, actual);
     }

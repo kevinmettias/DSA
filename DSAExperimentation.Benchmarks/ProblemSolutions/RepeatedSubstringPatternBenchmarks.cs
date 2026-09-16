@@ -25,10 +25,10 @@ public class RepeatedSubstringPatternBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool DivisorBruteForce() =>
+    public bool HasRepeatedSubstringPatternByDivisorBruteForce() =>
         RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByDivisorBruteForce(_text);
 
     [Benchmark]
-    public bool KmpFailureFunction() =>
+    public bool HasRepeatedSubstringPatternByKmpFailureFunction() =>
         RepeatedSubstringPatternSolution.HasRepeatedSubstringPatternByKmpFailureFunction(_text);
 }

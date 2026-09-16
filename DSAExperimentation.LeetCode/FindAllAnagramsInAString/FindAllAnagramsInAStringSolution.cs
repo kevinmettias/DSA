@@ -2,8 +2,8 @@ using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.FindAllAnagramsInAString;
 
-// LeetCode 438. Find All Anagrams in a String: every start index of a substring of s
-// that is an anagram of p.
+// LeetCode 438. Find All Anagrams in a String: every start index of a substring of the
+// scanned text that is an anagram of the pattern.
 //
 // ByBruteForceRebuild is the textbook O(n*m) baseline - a fresh frequency count built
 // and compared for every window start, written without this repo's own collections.
@@ -17,21 +17,21 @@ internal static class FindAllAnagramsInAStringSolution
     // The textbook answer: a fresh BCL Dictionary<char,int> built and compared for
     // every window start. Deliberately written without this repo's own collections -
     // it is the arm the composed solution below has to justify itself against.
-    public static List<int> FindAnagramIndicesByBruteForceRebuild(ScannedText s, AnagramPattern p)
+    public static List<int> FindAnagramIndicesByBruteForceRebuild(ScannedText scannedText, AnagramPattern pattern)
     {
         var result = new List<int>();
-        if (p.Text.Length > s.Text.Length)
+        if (pattern.Text.Length > scannedText.Text.Length)
         {
             return result;
         }
 
-        var target = BuildFrequencyMap(p.Text);
+        var target = BuildFrequencyMap(pattern.Text);
 
-        for (var start = 0; start <= s.Text.Length - p.Text.Length; start++)
+        for (var start = 0; start <= scannedText.Text.Length - pattern.Text.Length; start++)
         {
-            var candidate = s.Text.Substring(start, p.Text.Length);
+            var candidate = scannedText.Text.Substring(start, pattern.Text.Length);
             var window = BuildFrequencyMap(candidate);
-            if (FrequenciesEqual(window, target))
+            if (HasSameFrequencies(window, target))
             {
                 result.Add(start);
             }
@@ -52,7 +52,7 @@ internal static class FindAllAnagramsInAStringSolution
         return counts;
     }
 
-    private static bool FrequenciesEqual(Dictionary<char, int> window, Dictionary<char, int> target)
+    private static bool HasSameFrequencies(Dictionary<char, int> window, Dictionary<char, int> target)
     {
         if (window.Count != target.Count)
         {
@@ -73,35 +73,35 @@ internal static class FindAllAnagramsInAStringSolution
     // This repo's own sliding window: two HashMap<char,int> frequency maps (window vs.
     // target) plus a running "matched distinct characters" counter, so each character
     // enters and leaves the window exactly once.
-    public static List<int> FindAnagramIndicesBySlidingWindow(ScannedText s, AnagramPattern p)
+    public static List<int> FindAnagramIndicesBySlidingWindow(ScannedText scannedText, AnagramPattern pattern)
     {
         var result = new List<int>();
-        if (p.Text.Length > s.Text.Length)
+        if (pattern.Text.Length > scannedText.Text.Length)
         {
             return result;
         }
 
-        var need = BuildRepoFrequencyMap(p.Text);
+        var need = BuildRepoFrequencyMap(pattern.Text);
         var state = new AnagramWindowState(need);
 
-        for (var i = 0; i < s.Text.Length; i++)
+        for (var i = 0; i < scannedText.Text.Length; i++)
         {
-            if (state.Advance(i, s.Text, p.Text.Length))
+            if (state.HasAnagramEndingAt(i, scannedText.Text, pattern.Text.Length))
             {
-                result.Add(i - p.Text.Length + 1);
+                result.Add(i - pattern.Text.Length + 1);
             }
         }
 
         return result;
     }
 
-    private static HashMap<char, int> BuildRepoFrequencyMap(string p)
+    private static HashMap<char, int> BuildRepoFrequencyMap(string pattern)
     {
         var need = new HashMap<char, int>();
-        foreach (var c in p)
+        foreach (var character in pattern)
         {
-            need.TryGetValue(c, out var count);
-            need.Set(c, count + 1);
+            need.TryGetValue(character, out var count);
+            need.Set(character, count + 1);
         }
 
         return need;
@@ -114,27 +114,27 @@ internal static class FindAllAnagramsInAStringSolution
 
         public bool IsFullMatch => _matched == need.Count;
 
-        public bool Advance(int i, string s, int windowLength)
+        public bool HasAnagramEndingAt(int endIndex, string text, int windowLength)
         {
-            AbsorbEntering(s[i]);
+            AbsorbEntering(text[endIndex]);
 
-            if (i < windowLength - 1)
+            if (endIndex < windowLength - 1)
             {
                 return false;
             }
 
-            return EvictLeavingAndReportMatch(i, s, windowLength);
+            return HasFullMatchBeforeEvicting(endIndex, text, windowLength);
         }
 
-        private void AbsorbEntering(char c)
+        private void AbsorbEntering(char character)
         {
-            if (!need.TryGetValue(c, out var needed))
+            if (!need.TryGetValue(character, out var needed))
             {
                 return;
             }
 
-            _window.TryGetValue(c, out var count);
-            _window.Set(c, count + 1);
+            _window.TryGetValue(character, out var count);
+            _window.Set(character, count + 1);
 
             if (count + 1 == needed)
             {
@@ -144,28 +144,28 @@ internal static class FindAllAnagramsInAStringSolution
 
         // The match state is read BEFORE the leaving character is evicted: it is the
         // answer for the window that just ended, and the eviction can only un-match it.
-        private bool EvictLeavingAndReportMatch(int i, string s, int windowLength)
+        private bool HasFullMatchBeforeEvicting(int endIndex, string text, int windowLength)
         {
             var isMatch = IsFullMatch;
-            ReleaseLeaving(s[i - windowLength + 1]);
+            ReleaseLeaving(text[endIndex - windowLength + 1]);
             return isMatch;
         }
 
-        private void ReleaseLeaving(char c)
+        private void ReleaseLeaving(char character)
         {
-            if (!need.TryGetValue(c, out var needed))
+            if (!need.TryGetValue(character, out var needed))
             {
                 return;
             }
 
-            _window.TryGetValue(c, out var count);
+            _window.TryGetValue(character, out var count);
 
             if (count == needed)
             {
                 _matched--;
             }
 
-            _window.Set(c, count - 1);
+            _window.Set(character, count - 1);
         }
     }
 }

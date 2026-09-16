@@ -3,8 +3,8 @@ using DSAExperimentation.DataStructures.Deque;
 namespace DSAExperimentation.LeetCode.CyclicallyRotatingAGrid;
 
 // LeetCode 1914. Cyclically Rotating a Grid: every concentric layer's boundary
-// cells form one ring, and each ring rotates counter-clockwise by k independently
-// of every other ring.
+// cells form one ring, and each ring rotates counter-clockwise by rotationSteps
+// independently of every other ring.
 //
 // Both strategies share the same decomposition - walk a layer's boundary clockwise
 // into a flat cell list, rotate the values along it, write them back in the same
@@ -13,30 +13,31 @@ namespace DSAExperimentation.LeetCode.CyclicallyRotatingAGrid;
 // walks, not a fixed clockwise ring order, the same reason SpiralMatrixSolution
 // keeps its own boundary walk.
 //
-// What separates the two arms is only how far each rotates. k reaches 1e9 while a
-// ring's own length tops out near 2 * (rows + cols), so stepping one position at a
-// time k times is O(k) per ring however few cells it holds - the natural
-// first-draft mistake - while reducing k modulo the ring length first is O(ring).
+// What separates the two arms is only how far each rotates. rotationSteps reaches
+// 1e9 while a ring's own length tops out near 2 * (rows + cols), so stepping one
+// position at a time rotationSteps times is O(k) per ring however few cells it
+// holds - the natural first-draft mistake - while reducing rotationSteps modulo the
+// ring length first is O(ring).
 internal static class CyclicallyRotatingAGridSolution
 {
     // A ring layer consumes one row/column off each opposing side of the shorter
     // dimension, so the layer count is half of it.
     private const int SidesPerRingLayer = 2;
 
-    // The textbook simulation: a BCL Queue rotated one position at a time, k times,
-    // with no reduction against the ring's own length. Deliberately written without
-    // this repo's primitives - it is the arm the deque strategy below has to justify
-    // itself against, and Queue<int> is a circular buffer just like Deque<T>'s, so
-    // the gap the comparison shows is the missing reduction rather than a change of
-    // container.
-    public static int[][] RotateGridByStepwiseQueue(int[][] grid, int k)
+    // The textbook simulation: a BCL Queue rotated one position at a time,
+    // rotationSteps times, with no reduction against the ring's own length.
+    // Deliberately written without this repo's primitives - it is the arm the deque
+    // strategy below has to justify itself against, and Queue<int> is a circular
+    // buffer just like Deque<T>'s, so the gap the comparison shows is the missing
+    // reduction rather than a change of container.
+    public static int[][] RotateGridByStepwiseQueue(int[][] grid, int rotationSteps)
     {
         var rotated = CopyOf(grid);
 
         foreach (var cells in RingsOf(rotated))
         {
             var ring = LoadQueue(rotated, cells);
-            StepFrontToBack(ring, k);
+            StepFrontToBack(ring, rotationSteps);
             WriteBack(rotated, cells, ring);
         }
 
@@ -72,17 +73,17 @@ internal static class CyclicallyRotatingAGridSolution
         }
     }
 
-    // This repo's own Deque<T> holds the ring, and k is reduced modulo the ring's
-    // length before any value moves - so each ring costs one pass to load, at most
-    // ringLength - 1 O(1) TryPopFront/PushBack steps, and one pass to write back.
-    public static int[][] RotateGridByDequeRings(int[][] grid, int k)
+    // This repo's own Deque<T> holds the ring, and rotationSteps is reduced modulo the
+    // ring's length before any value moves - so each ring costs one pass to load, at
+    // most ringLength - 1 O(1) TryPopFront/PushBack steps, and one pass to write back.
+    public static int[][] RotateGridByDequeRings(int[][] grid, int rotationSteps)
     {
         var rotated = CopyOf(grid);
 
         foreach (var cells in RingsOf(rotated))
         {
             var ring = LoadDeque(rotated, cells);
-            RotateFrontToBack(ring, k % cells.Count);
+            RotateFrontToBack(ring, rotationSteps % cells.Count);
             WriteBack(rotated, cells, ring);
         }
 

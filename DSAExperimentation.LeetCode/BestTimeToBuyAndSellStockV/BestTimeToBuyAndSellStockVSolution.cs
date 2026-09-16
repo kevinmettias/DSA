@@ -2,9 +2,9 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockV;
 
-// LeetCode 3573. Best Time to Buy and Sell Stock V: at most k transactions,
-// each either a normal buy-then-sell or a short sell-then-buy-back, never two
-// open at once. Buying subtracts the day's price and selling adds it (the
+// LeetCode 3573. Best Time to Buy and Sell Stock V: at most transactionBudget
+// transactions, each either a normal buy-then-sell or a short sell-then-buy-back,
+// never two open at once. Buying subtracts the day's price and selling adds it (the
 // classic stock-DP fold), so a transaction's profit is just the sum of its two
 // half-steps and neither strategy has to remember an entry price - state is
 // only (day, transactions started, position: flat/long/short).
@@ -24,24 +24,26 @@ internal static class BestTimeToBuyAndSellStockVSolution
     // Unmemoized recursion over the exact same state machine the composed
     // strategy below runs through Memoizer - up to 3 branches per day,
     // genuinely exponential, the arm the memoized strategy has to beat.
-    public static long MaxProfitByBruteForce(int[] prices, int k) => ProfitFrom((0, 0, Flat), prices, k);
+    public static long MaxProfitByBruteForce(int[] prices, int transactionBudget) =>
+        ProfitFrom((0, 0, Flat), prices, transactionBudget);
 
     // Same recurrence, run through Algorithms.DynamicProgramming.Memoizer so
     // each of the at-most 3 * n * (k+1) distinct (day, used, position) states
     // is solved once instead of recomputed down every path that reaches it.
-    public static long MaxProfitByTransactionMemoization(int[] prices, int k) =>
+    public static long MaxProfitByTransactionMemoization(int[] prices, int transactionBudget) =>
         Memoizer.Memoize<(int Day, int Used, int Position), long>(
             (0, 0, Flat),
-            new ProfitDayByDay(prices, k));
+            new ProfitDayByDay(prices, transactionBudget));
 
-    private static long ProfitFrom((int Day, int Used, int Position) state, int[] prices, int k)
+    private static long ProfitFrom(
+        (int Day, int Used, int Position) state, int[] prices, int transactionBudget)
     {
         if (state.Day == prices.Length)
         {
             return state.Position == Flat ? 0 : Unreachable;
         }
 
-        return BestAfterToday(state, prices, k);
+        return BestAfterToday(state, prices, transactionBudget);
     }
 
     // One day of the state machine, from a day that still has prices left: doing
@@ -78,7 +80,7 @@ internal static class BestTimeToBuyAndSellStockVSolution
     // and whatever the open position allows is then tried against that. The day's
     // prices and the transaction budget are the whole of what the rule needs from its
     // caller, so they are the constructor's inputs.
-    private sealed class ProfitDayByDay(int[] prices, int k)
+    private sealed class ProfitDayByDay(int[] prices, int transactionBudget)
         : IRecurrence<(int Day, int Used, int Position), long>
     {
         public long Replay(
@@ -92,7 +94,7 @@ internal static class BestTimeToBuyAndSellStockVSolution
 
             var best = rest.Replay((state.Day + 1, state.Used, state.Position), rest);
 
-            if (state.Position == Flat && state.Used < k)
+            if (state.Position == Flat && state.Used < transactionBudget)
             {
                 best = Math.Max(best, -prices[state.Day] + rest.Replay((state.Day + 1, state.Used + 1, Holding), rest));
                 best = Math.Max(best, prices[state.Day] + rest.Replay((state.Day + 1, state.Used + 1, ShortSold), rest));

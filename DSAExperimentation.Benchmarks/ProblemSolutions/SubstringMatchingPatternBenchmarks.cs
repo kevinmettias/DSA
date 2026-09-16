@@ -4,8 +4,8 @@ using DSAExperimentation.LeetCode.SubstringMatchingPattern;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubstringMatchingPatternSolution's, the same methods
-// SubstringMatchingPatternTests proves correct. s is a run of 'a's and both halves
-// of p are a long run of 'a's followed by a 'b' - a character s never contains - so
+// SubstringMatchingPatternTests proves correct. subject is a run of 'a's and both halves
+// of pattern are a long run of 'a's followed by a 'b' - a character subject never contains - so
 // every candidate window matches almost the whole prefix/suffix before failing on
 // the last character, forcing both strategies through their full worst case instead
 // of an early first-character mismatch making brute force look artificially
@@ -13,9 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class SubstringMatchingPatternBenchmarks
 {
-    private string _s = "";
+    private string _subject = "";
 
-    private string _p = "";
+    private string _pattern = "";
     [Params(50, 300)]
     public int Length { get; set; }
 
@@ -23,15 +23,15 @@ public class SubstringMatchingPatternBenchmarks
     public void Setup()
     {
         var half = new string('a', Length / 4) + 'b';
-        _s = new string('a', Length);
-        _p = $"{half}*{half}";
+        _subject = new string('a', Length);
+        _pattern = $"{half}*{half}";
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() =>
-        SubstringMatchingPatternSolution.HasMatchByBruteForce(new SubjectText(_s), new WildcardPattern(_p));
+    public bool HasMatchByBruteForce() =>
+        SubstringMatchingPatternSolution.HasMatchByBruteForce(new SubjectText(_subject), new WildcardPattern(_pattern));
 
     [Benchmark]
-    public bool PrefixFunctionSearch() =>
-        SubstringMatchingPatternSolution.HasMatchByPrefixFunctionSearch(new SubjectText(_s), new WildcardPattern(_p));
+    public bool HasMatchByPrefixFunctionSearch() =>
+        SubstringMatchingPatternSolution.HasMatchByPrefixFunctionSearch(new SubjectText(_subject), new WildcardPattern(_pattern));
 }

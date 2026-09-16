@@ -1,14 +1,15 @@
 namespace DSAExperimentation.LeetCode.MinimumOperationsToEqualizeBinaryString;
 
-// The state graph behind LC 3666: one node per possible zero-count 0..n: flipping
-// exactly k indices picks some i of the current zeros (0 <= i <= min(k, zeroCount))
-// and k - i of the current ones (0 <= k - i <= n - zeroCount), turning zeroCount
-// into zeroCount + k - 2i. As i ranges over its valid interval, the reachable
+// The state graph behind LC 3666: one node per possible zero-count 0..stringLength:
+// flipping exactly flipCount indices picks some i of the current zeros
+// (0 <= i <= min(flipCount, zeroCount)) and flipCount - i of the current ones
+// (0 <= flipCount - i <= stringLength - zeroCount), turning zeroCount into
+// zeroCount + flipCount - 2i. As i ranges over its valid interval, the reachable
 // zero-counts form a contiguous, constant-parity run - every zero-count in
-// [zeroCount + k - 2*iMax, zeroCount + k - 2*iMin] stepping by 2.
+// [zeroCount + flipCount - 2*iMax, zeroCount + flipCount - 2*iMin] stepping by 2.
 //
 // This is the domain model, not an answer to any one query about it - it knows how
-// one flip-k operation moves between zero-counts and nothing about which start or
+// one flip operation moves between zero-counts and nothing about which start or
 // target a caller wants. Callers supply their own.
 internal sealed class EqualizeStateGraph
 {
@@ -16,19 +17,19 @@ internal sealed class EqualizeStateGraph
 
     private EqualizeStateGraph(EqualizeStateNode[] nodesByZeroCount) => _nodesByZeroCount = nodesByZeroCount;
 
-    // One node per zero-count 0..n, each wired to every zero-count one operation
-    // reaches from it.
-    public static EqualizeStateGraph Build(int n, int k)
+    // One node per zero-count 0..stringLength, each wired to every zero-count one
+    // operation reaches from it.
+    public static EqualizeStateGraph Build(int stringLength, int flipCount)
     {
-        var nodes = new EqualizeStateNode[n + 1];
-        for (var zeroCount = 0; zeroCount <= n; zeroCount++)
+        var nodes = new EqualizeStateNode[stringLength + 1];
+        for (var zeroCount = 0; zeroCount <= stringLength; zeroCount++)
         {
             nodes[zeroCount] = new EqualizeStateNode(zeroCount);
         }
 
-        for (var zeroCount = 0; zeroCount <= n; zeroCount++)
+        for (var zeroCount = 0; zeroCount <= stringLength; zeroCount++)
         {
-            foreach (var reachable in ReachableZeroCounts(zeroCount, n, k))
+            foreach (var reachable in ReachableZeroCounts(zeroCount, stringLength, flipCount))
             {
                 nodes[zeroCount].Neighbors.Add(nodes[reachable]);
             }
@@ -41,15 +42,15 @@ internal sealed class EqualizeStateGraph
 
     // Pure zero-count arithmetic, so callers that never materialize the graph
     // (a hand-rolled BFS, say) can use it too.
-    public static IEnumerable<int> ReachableZeroCounts(int zeroCount, int n, int k)
+    public static IEnumerable<int> ReachableZeroCounts(int zeroCount, int stringLength, int flipCount)
     {
-        var onesCount = n - zeroCount;
-        var flippedZerosMin = Math.Max(0, k - onesCount);
-        var flippedZerosMax = Math.Min(k, zeroCount);
+        var onesCount = stringLength - zeroCount;
+        var flippedZerosMin = Math.Max(0, flipCount - onesCount);
+        var flippedZerosMax = Math.Min(flipCount, zeroCount);
 
         for (var flippedZeros = flippedZerosMax; flippedZeros >= flippedZerosMin; flippedZeros--)
         {
-            yield return zeroCount + k - 2 * flippedZeros;
+            yield return zeroCount + flipCount - 2 * flippedZeros;
         }
     }
 }

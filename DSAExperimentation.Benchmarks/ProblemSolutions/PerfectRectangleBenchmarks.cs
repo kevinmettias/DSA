@@ -33,8 +33,10 @@ public class PerfectRectangleBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool PairwiseOverlapCheck() => PerfectRectangleSolution.IsRectangleCoverByPairwiseOverlap(_rectangles);
+    public bool IsRectangleCoverByPairwiseOverlap() =>
+        PerfectRectangleSolution.IsRectangleCoverByPairwiseOverlap(_rectangles);
 
     [Benchmark]
-    public bool CornerToggleSet() => PerfectRectangleSolution.IsRectangleCoverByCornerToggle(_rectangles);
+    public bool IsRectangleCoverByCornerToggle() =>
+        PerfectRectangleSolution.IsRectangleCoverByCornerToggle(_rectangles);
 }

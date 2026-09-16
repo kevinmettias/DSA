@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.MaximumTotalSubarrayValueII;
 
-// LeetCode 3691. Maximum Total Subarray Value II: pick exactly k distinct
+// LeetCode 3691. Maximum Total Subarray Value II: pick exactly topCount distinct
 // subarrays nums[l..r] (overlaps allowed, no repeats) to maximize the sum of each
 // one's value, max(l..r) - min(l..r).
 //
@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.MaximumTotalSubarrayValueII;
 // ... >= value(l, l) - exactly LC 373 "K Pairs with Smallest Sums"'s row-sorted
 // shape. Seed a max-heap with (value(l, n-1), l, n-1) for every l, and whenever
 // (l, r) is popped, only THEN reveal (l, r-1) - never before, since the row's
-// monotonicity is only known in that one direction. Popping k times greedily
+// monotonicity is only known in that one direction. Popping topCount times greedily
 // recovers the true top-k SET this way, the same lazy-heap correctness argument
 // LC 373 relies on. Range max/min per candidate is exactly
 // DataStructures.SegmentTree's role, and DataStructures.Heap.Heap already exists
@@ -22,12 +22,12 @@ internal static class MaximumTotalSubarrayValueIISolution
 {
     // What you would write without this repo: recompute every subarray's value
     // directly - a running max/min as r grows for each fixed l - collect them all,
-    // and sum the k largest.
-    public static long MaxTotalValueByBruteForce(int[] nums, int k)
+    // and sum the topCount largest.
+    public static long MaxTotalValueByBruteForce(int[] nums, int topCount)
     {
         var values = CollectSubarrayValues(nums);
 
-        return SumLargest(values, k);
+        return SumLargest(values, topCount);
     }
 
     // value(l, r) for every subarray, measured from scratch: a running max/min as
@@ -52,15 +52,15 @@ internal static class MaximumTotalSubarrayValueIISolution
         return values;
     }
 
-    // The greedy sum: sort descending and take the first k, which is exactly the
-    // k largest values in the set.
-    private static long SumLargest(List<long> values, int k)
+    // The greedy sum: sort descending and take the first topCount, which is exactly
+    // the topCount largest values in the set.
+    private static long SumLargest(List<long> values, int topCount)
     {
         values.Sort((left, right) => right.CompareTo(left));
 
         var total = 0L;
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < topCount; i++)
         {
             total += values[i];
         }
@@ -71,14 +71,14 @@ internal static class MaximumTotalSubarrayValueIISolution
     // Composed: two SegmentTrees answer max(l..r)/min(l..r) in O(log n), and a
     // Heap<SubarrayCandidate, MaxHeapOrder<SubarrayCandidate>> runs the lazy
     // top-k walk described above.
-    public static long MaxTotalValueBySegmentTreeHeap(int[] nums, int k) =>
+    public static long MaxTotalValueBySegmentTreeHeap(int[] nums, int topCount) =>
         MaxTotalValueBySegmentTreeHeap(
             new SegmentTree<int, MaxOperation<int>>(nums),
             new SegmentTree<int, MinOperation<int>>(nums),
-            k);
+            topCount);
 
     public static long MaxTotalValueBySegmentTreeHeap(
-        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, MinOperation<int>> minTree, int k)
+        SegmentTree<int, MaxOperation<int>> maxTree, SegmentTree<int, MinOperation<int>> minTree, int topCount)
     {
         var heap = new Heap<SubarrayCandidate, MaxHeapOrder<SubarrayCandidate>>();
 
@@ -88,7 +88,7 @@ internal static class MaximumTotalSubarrayValueIISolution
             heap.Push(widest);
         }
 
-        return SumTopK(heap, maxTree, minTree, k);
+        return SumTopK(heap, maxTree, minTree, topCount);
     }
 
     // The greedy half of the walk: pop the largest window, add its value, and only
@@ -98,11 +98,11 @@ internal static class MaximumTotalSubarrayValueIISolution
         Heap<SubarrayCandidate, MaxHeapOrder<SubarrayCandidate>> heap,
         SegmentTree<int, MaxOperation<int>> maxTree,
         SegmentTree<int, MinOperation<int>> minTree,
-        int k)
+        int topCount)
     {
         var total = 0L;
 
-        for (var taken = 0; taken < k; taken++)
+        for (var taken = 0; taken < topCount; taken++)
         {
             heap.TryPop(out var candidate);
             total += candidate.Value;

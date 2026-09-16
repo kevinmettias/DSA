@@ -39,6 +39,6 @@ public class WalkingRobotSimulationIIBenchmarks
             robot.Move(steps);
         }
 
-        return robot.GetPos();
+        return robot.GetPosition();
     }
 }

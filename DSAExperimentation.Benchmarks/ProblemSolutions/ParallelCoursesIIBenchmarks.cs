@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class ParallelCoursesIIBenchmarks
 {
-    private const int K = 2;
+    private const int MaxPerSemester = 2;
 
     private int[][] _relations = [];
 
@@ -24,9 +24,11 @@ public class ParallelCoursesIIBenchmarks
 
     [Benchmark(Baseline = true)]
     public int BruteForceRecursion() =>
-        ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(CourseCount, _relations, K);
+        ParallelCoursesIISolution.MinNumberOfSemestersByBruteForceRecursion(
+            CourseCount, _relations, MaxPerSemester);
 
     [Benchmark]
     public int MemoizedRecursion() =>
-        ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(CourseCount, _relations, K);
+        ParallelCoursesIISolution.MinNumberOfSemestersByMemoizedRecursion(
+            CourseCount, _relations, MaxPerSemester);
 }

@@ -28,13 +28,13 @@ public sealed class StoneGameIXTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByGameTreeMinimax_LeetCodeExamples_MatchesExpectedOutcome(RemainderGameExample example) =>
-        Assert.Equal(example.AliceWins, StoneGameIXSolution.AliceWinsByGameTreeMinimax(example.Stones));
+    public void CanAliceWinByGameTreeMinimax_LeetCodeExamples_MatchesExpectedOutcome(RemainderGameExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameIXSolution.CanAliceWinByGameTreeMinimax(example.Stones));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByClosedFormCounting_LeetCodeExamples_MatchesExpectedOutcome(RemainderGameExample example) =>
-        Assert.Equal(example.AliceWins, StoneGameIXSolution.AliceWinsByClosedFormCounting(example.Stones));
+    public void CanAliceWinByClosedFormCounting_LeetCodeExamples_MatchesExpectedOutcome(RemainderGameExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameIXSolution.CanAliceWinByClosedFormCounting(example.Stones));
 
     // Nested because it is only ever used inside this test class and has no
     // independent identity: this harness's own vocabulary for one LeetCode example.

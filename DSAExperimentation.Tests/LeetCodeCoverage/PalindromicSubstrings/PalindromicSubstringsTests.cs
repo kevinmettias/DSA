@@ -19,12 +19,12 @@ public sealed class PalindromicSubstringsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSubstringsByExpandAroundCenter_LeetCodeExamples_CountsPalindromicSubstrings(
-        string s, int expected) =>
-        Assert.Equal(expected, PalindromicSubstringsSolution.CountSubstringsByExpandAroundCenter(s));
+        string text, int expected) =>
+        Assert.Equal(expected, PalindromicSubstringsSolution.CountSubstringsByExpandAroundCenter(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountSubstringsByManacher_LeetCodeExamples_CountsPalindromicSubstrings(
-        string s, int expected) =>
-        Assert.Equal(expected, PalindromicSubstringsSolution.CountSubstringsByManacher(s));
+        string text, int expected) =>
+        Assert.Equal(expected, PalindromicSubstringsSolution.CountSubstringsByManacher(text));
 }

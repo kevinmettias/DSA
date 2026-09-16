@@ -27,20 +27,20 @@ internal static class NumberOfDistinctRollSequencesSolution
     // The textbook answer: plain recursion, no cache. Deliberately written without
     // this repo's primitives - it is the arm the composed solution has to justify
     // itself against.
-    public static long DistinctSequencesByBruteForceRecursion(int n) =>
-        CountSequences(n, FirstDay, NoRoll, NoRoll);
+    public static long DistinctSequencesByBruteForceRecursion(int sequenceLength) =>
+        CountSequences(sequenceLength, FirstDay, NoRoll, NoRoll);
 
     // This repo's own answer: the identical recurrence handed to Memoizer, keyed on
     // the 3-tuple state - the same composition NumberOfMusicPlaylists and
     // SuperEggDrop use for a multi-field DP state.
-    public static long DistinctSequencesByMemoizedRecursion(int n) =>
+    public static long DistinctSequencesByMemoizedRecursion(int sequenceLength) =>
         Memoizer.Memoize<(int Day, int SecondLastRoll, int LastRoll), long>(
             (FirstDay, NoRoll, NoRoll),
-            new SequenceCounts(n));
+            new SequenceCounts(sequenceLength));
 
-    private static long CountSequences(int n, int day, int secondLastRoll, int lastRoll)
+    private static long CountSequences(int sequenceLength, int day, int secondLastRoll, int lastRoll)
     {
-        if (day > n)
+        if (day > sequenceLength)
         {
             return 1;
         }
@@ -54,7 +54,8 @@ internal static class NumberOfDistinctRollSequencesSolution
                 continue;
             }
 
-            total = (total + CountSequences(n, day + 1, lastRoll, face)) % ModularArithmetic.Modulo;
+            total = (total + CountSequences(sequenceLength, day + 1, lastRoll, face))
+                % ModularArithmetic.Modulo;
         }
 
         return total;
@@ -72,7 +73,8 @@ internal static class NumberOfDistinctRollSequencesSolution
         return lastRoll == NoRoll || Gcd(face, lastRoll) == 1;
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int firstOperand, int secondOperand) =>
+        secondOperand == 0 ? firstOperand : Gcd(secondOperand, firstOperand % secondOperand);
 
     // The recurrence, as a named type: the sequences a (day, second-last, last) state
     // opens up are the ones each face that may legally follow it leads to, summed, and

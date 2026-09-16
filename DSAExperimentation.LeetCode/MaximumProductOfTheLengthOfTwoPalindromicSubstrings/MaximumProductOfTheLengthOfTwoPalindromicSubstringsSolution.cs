@@ -33,23 +33,23 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
     // to find that side's longest odd palindrome, with no precomputation carried
     // between splits. Plain BCL indexing and nothing else - this is the arm the
     // composed strategy has to justify itself against.
-    public static long MaxProductByCenterExpansion(string s)
+    public static long MaxProductByCenterExpansion(string text)
     {
         var best = 0L;
 
-        for (var split = 0; split < s.Length - 1; split++)
+        for (var split = 0; split < text.Length - 1; split++)
         {
-            var leftBest = LongestOddPalindromeInRange(s, 0, split);
-            var rightBest = LongestOddPalindromeInRange(s, split + 1, s.Length - 1);
+            var leftBest = LongestOddPalindromeInRange(text, 0, split);
+            var rightBest = LongestOddPalindromeInRange(text, split + 1, text.Length - 1);
             best = Math.Max(best, (long)leftBest * rightBest);
         }
 
         return best;
     }
 
-    // Longest odd-length palindrome lying entirely within s[lo..hi], found by
+    // Longest odd-length palindrome lying entirely within text[lo..hi], found by
     // expanding outward from every center in that window until it would leave it.
-    private static int LongestOddPalindromeInRange(string s, int lo, int hi)
+    private static int LongestOddPalindromeInRange(string text, int lo, int hi)
     {
         var best = 1;
 
@@ -58,7 +58,7 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
             var radius = 0;
 
             while (HasRoomToExpand(center, radius, lo, hi)
-                && OuterCharactersMirror(s, center, radius))
+                && IsOuterPairMirrored(text, center, radius))
             {
                 radius++;
             }
@@ -70,23 +70,23 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
     }
 
     // The pair of characters one step outside the current radius has to stay inside
-    // s[lo..hi] for the palindrome to keep growing within the window.
+    // text[lo..hi] for the palindrome to keep growing within the window.
     private static bool HasRoomToExpand(int center, int radius, int lo, int hi) =>
         center - radius - 1 >= lo && center + radius + 1 <= hi;
 
-    private static bool OuterCharactersMirror(string s, int center, int radius) =>
-        s[center - radius - 1] == s[center + radius + 1];
+    private static bool IsOuterPairMirrored(string text, int center, int radius) =>
+        text[center - radius - 1] == text[center + radius + 1];
 
     // One O(n) Manacher pass, then two sweeps over its per-center radii.
-    public static long MaxProductByManacherRadii(string s)
+    public static long MaxProductByManacherRadii(string text)
     {
-        var oddRadii = Manacher.ComputeOddRadii(s);
-        var leftBest = BestPalindromeEndingAtOrBefore(s.Length, oddRadii);
-        var rightBest = BestPalindromeStartingAtOrAfter(s.Length, oddRadii);
+        var oddRadii = Manacher.ComputeOddRadii(text);
+        var leftBest = BestPalindromeEndingAtOrBefore(text.Length, oddRadii);
+        var rightBest = BestPalindromeStartingAtOrAfter(text.Length, oddRadii);
 
         var best = 0L;
 
-        for (var split = 0; split < s.Length - 1; split++)
+        for (var split = 0; split < text.Length - 1; split++)
         {
             best = Math.Max(best, (long)leftBest[split] * rightBest[split + 1]);
         }
@@ -94,11 +94,11 @@ internal static class MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutio
         return best;
     }
 
-    // best[i] = length of the longest odd palindrome entirely within s[0..i].
+    // best[i] = length of the longest odd palindrome entirely within text[0..i].
     private static int[] BestPalindromeEndingAtOrBefore(int length, int[] oddRadii) =>
         BestPalindromeInDirection(length, oddRadii, SweepDirection.Forward);
 
-    // best[i] = length of the longest odd palindrome entirely within s[i..length-1].
+    // best[i] = length of the longest odd palindrome entirely within text[i..length-1].
     private static int[] BestPalindromeStartingAtOrAfter(int length, int[] oddRadii) =>
         BestPalindromeInDirection(length, oddRadii, SweepDirection.Backward);
 

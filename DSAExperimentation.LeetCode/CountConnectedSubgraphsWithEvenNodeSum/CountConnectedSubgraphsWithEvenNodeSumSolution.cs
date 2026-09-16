@@ -32,11 +32,11 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
         return count;
     }
 
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[n];
+        var adjacency = new List<int>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }
@@ -50,7 +50,7 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
         return adjacency;
     }
 
-    private static bool IsConnectedByBfs(int mask, int n, List<int>[] adjacency)
+    private static bool IsConnectedByBfs(int mask, int nodeCount, List<int>[] adjacency)
     {
         var start = BitOperations.TrailingZeroCount(mask);
         var visited = new HashSet<int> { start };
@@ -89,12 +89,12 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
         return count;
     }
 
-    private static bool IsConnectedByDisjointSet(int mask, int n, int[][] edges)
+    private static bool IsConnectedByDisjointSet(int mask, int nodeCount, int[][] edges)
     {
-        var forest = new DisjointSet(n);
+        var forest = new DisjointSet(nodeCount);
         UnionMaskEdges(forest, mask, edges);
 
-        return AllSetBitsShareRoot(forest, mask, n);
+        return IsEverySetBitConnected(forest, mask, nodeCount);
     }
 
     // Only edges with both endpoints inside the mask may be unioned - an edge
@@ -110,11 +110,13 @@ internal static class CountConnectedSubgraphsWithEvenNodeSumSolution
         }
     }
 
-    private static bool AllSetBitsShareRoot(DisjointSet forest, int mask, int n)
+    // Every node the mask keeps must land in the same component as the first one
+    // seen, which is what makes the induced subgraph connected.
+    private static bool IsEverySetBitConnected(DisjointSet forest, int mask, int nodeCount)
     {
         var root = -1;
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             if (((mask >> i) & 1) == 0)
             {

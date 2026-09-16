@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.CrackingTheSafe;
 // sequence, built by a greedy-with-undo search over the de Bruijn graph's edges. A
 // candidate digit is only offered when appending it would extend the answer with a
 // password not yet seen; choosing records that password before appending so undoing
-// can look the same password back up (by re-reading the trailing N characters of the
-// still-appended answer) and remove it again on backtrack.
+// can look the same password back up (by re-reading the trailing PasswordLength
+// characters of the still-appended answer) and remove it again on backtrack.
 //
 // Both strategies do the identical choose/explore/unchoose walk and differ only in
 // whether it is hand-specialized or composed from this repo's generic
@@ -23,21 +23,24 @@ internal static class CrackingTheSafeSolution
     // BCL HashSet<string> of passwords seen so far. Deliberately written without this
     // repo's generic engine - it is the arm the composed strategy below has to justify
     // itself against.
-    public static string CrackSafeByGreedyRecursion(int n, int k)
+    public static string CrackSafeByGreedyRecursion(int passwordLength, int alphabetSize)
     {
         var state = new SpecializedState(
-            n, k, new StringBuilder(new string('0', n)), new HashSet<string> { new string('0', n) });
+            passwordLength,
+            alphabetSize,
+            new StringBuilder(new string('0', passwordLength)),
+            new HashSet<string> { new string('0', passwordLength) });
 
-        Search(state);
+        TrySearch(state);
         return state.Answer.ToString();
     }
 
     // This repo's generic Backtrack.TrySearch engine, closed over a shared mutable
     // state carrying the same StringBuilder answer plus a Set<string> of passwords
     // already covered that the specialized walk above carries as a BCL HashSet.
-    public static string CrackSafeByBacktrackEngine(int n, int k)
+    public static string CrackSafeByBacktrackEngine(int passwordLength, int alphabetSize)
     {
-        var state = new EngineState(n, k);
+        var state = new EngineState(passwordLength, alphabetSize);
         string? answer = null;
 
         var steps = new BacktrackingSteps<EngineState, int>(
@@ -69,11 +72,11 @@ internal static class CrackingTheSafeSolution
         state.Answer.Length -= 1;
     }
 
-    private static string CurrentSuffix(EngineState state) => Suffix(state, state.N);
+    private static string CurrentSuffix(EngineState state) => Suffix(state, state.PasswordLength);
 
     private static IEnumerable<int> CandidateDigits(EngineState state)
     {
-        for (var digit = 0; digit < state.K; digit++)
+        for (var digit = 0; digit < state.AlphabetSize; digit++)
         {
             var nextPassword = NextPassword(state, digit);
             if (!state.Visited.Has(nextPassword))
@@ -83,16 +86,17 @@ internal static class CrackingTheSafeSolution
         }
     }
 
-    private static bool Search(SpecializedState state)
+    private static bool TrySearch(SpecializedState state)
     {
         if (state.Visited.Count == state.Total)
         {
             return true;
         }
 
-        var prefix = state.Answer.ToString(state.Answer.Length - (state.N - 1), state.N - 1);
+        var prefix = state.Answer.ToString(
+            state.Answer.Length - (state.PasswordLength - 1), state.PasswordLength - 1);
 
-        for (var digit = 0; digit < state.K; digit++)
+        for (var digit = 0; digit < state.AlphabetSize; digit++)
         {
             var password = prefix + (char)('0' + digit);
             if (state.Visited.Add(password) && TryExtend(state, password, digit))
@@ -104,14 +108,14 @@ internal static class CrackingTheSafeSolution
         return false;
     }
 
-    // The "try password, recurse, undo on failure" branch from Search's digit loop:
+    // The "try password, recurse, undo on failure" branch from TrySearch's digit loop:
     // appends the digit, recurses, and only rolls back the append/visited-add if the
     // recursive search did not find a full Eulerian path from here.
     private static bool TryExtend(SpecializedState state, string password, int digit)
     {
         state.Answer.Append((char)('0' + digit));
 
-        if (Search(state))
+        if (TrySearch(state))
         {
             return true;
         }
@@ -122,32 +126,33 @@ internal static class CrackingTheSafeSolution
     }
 
     private static string NextPassword(EngineState state, int digit) =>
-        Suffix(state, state.N - 1) + (char)('0' + digit);
+        Suffix(state, state.PasswordLength - 1) + (char)('0' + digit);
 
     private static string Suffix(EngineState state, int length) =>
         state.Answer.ToString(state.Answer.Length - length, length);
 
     private sealed record EngineState
     {
-        public int N { get; }
+        public int PasswordLength { get; }
 
-        public int K { get; }
+        public int AlphabetSize { get; }
         public int Total { get; }
         public StringBuilder Answer { get; }
         public Set<string> Visited { get; }
-        public EngineState(int n, int k)
+        public EngineState(int passwordLength, int alphabetSize)
         {
-            N = n;
-            K = k;
-            Total = (int)Math.Pow(k, n);
-            Answer = new StringBuilder(new string('0', n));
+            PasswordLength = passwordLength;
+            AlphabetSize = alphabetSize;
+            Total = (int)Math.Pow(alphabetSize, passwordLength);
+            Answer = new StringBuilder(new string('0', passwordLength));
             Visited = new Set<string>();
-            Visited.TryAdd(new string('0', n));
+            Visited.TryAdd(new string('0', passwordLength));
         }
     }
 
-    private sealed record SpecializedState(int N, int K, StringBuilder Answer, HashSet<string> Visited)
+    private sealed record SpecializedState(
+        int PasswordLength, int AlphabetSize, StringBuilder Answer, HashSet<string> Visited)
     {
-        public int Total => (int)Math.Pow(K, N);
+        public int Total => (int)Math.Pow(AlphabetSize, PasswordLength);
     }
 }

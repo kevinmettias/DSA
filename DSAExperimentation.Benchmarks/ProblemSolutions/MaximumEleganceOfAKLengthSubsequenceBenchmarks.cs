@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumEleganceOfAKLengthSubsequenceSolution's, the
 // same methods MaximumEleganceOfAKLengthSubsequenceTests proves correct against
 // LeetCode's own examples. Categories are drawn from a pool much smaller than the
-// item count so the post-k scan actually walks the duplicates stack down instead
-// of running out of duplicates after the very first swap.
+// item count so the scan past subsequenceLength actually walks the duplicates stack
+// down instead of running out of duplicates after the very first swap.
 [MemoryDiagnoser]
 public class MaximumEleganceOfAKLengthSubsequenceBenchmarks
 {
@@ -17,7 +17,7 @@ public class MaximumEleganceOfAKLengthSubsequenceBenchmarks
 
     private int[][] _items = [];
 
-    private int _k;
+    private int _subsequenceLength;
     [Params(500, 5_000)]
     public int ItemCount { get; set; }
 
@@ -28,12 +28,14 @@ public class MaximumEleganceOfAKLengthSubsequenceBenchmarks
         _items = Enumerable.Range(0, ItemCount)
             .Select(_ => new[] { random.Next(1, MaxProfitExclusive), random.Next(0, CategoryPoolSize) })
             .ToArray();
-        _k = ItemCount / 2;
+        _subsequenceLength = ItemCount / 2;
     }
 
     [Benchmark(Baseline = true)]
-    public long Bcl() => MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByBcl(_items, _k);
+    public long Bcl() =>
+        MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByBcl(_items, _subsequenceLength);
 
     [Benchmark]
-    public long RepoPrimitives() => MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByRepoPrimitives(_items, _k);
+    public long RepoPrimitives() =>
+        MaximumEleganceOfAKLengthSubsequenceSolution.MaximumEleganceByRepoPrimitives(_items, _subsequenceLength);
 }

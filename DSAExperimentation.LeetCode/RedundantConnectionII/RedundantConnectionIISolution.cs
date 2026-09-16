@@ -41,21 +41,21 @@ internal static class RedundantConnectionIISolution
     // the remaining edges are acyclic - checked as two separate O(n) passes, neither
     // one alone (as LC 684's own single-cycle-check would be) sufficient for the
     // directed, two-failure-mode shape LC 685 adds over LC 684.
-    private static bool IsValidTreeWithout(int[][] edges, int n, int skip)
+    private static bool IsValidTreeWithout(int[][] edges, int edgeCount, int skip)
     {
-        if (!HasAtMostOneParentEach(edges, n, skip))
+        if (!HasAtMostOneParentEach(edges, edgeCount, skip))
         {
             return false;
         }
 
-        return IsAcyclicWithoutCompression(edges, n, skip);
+        return IsAcyclicWithoutCompression(edges, edgeCount, skip);
     }
 
-    private static bool HasAtMostOneParentEach(int[][] edges, int n, int skip)
+    private static bool HasAtMostOneParentEach(int[][] edges, int edgeCount, int skip)
     {
-        var inDegree = new int[n + 1];
+        var inDegree = new int[edgeCount + 1];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < edgeCount; i++)
         {
             if (i == skip)
             {
@@ -74,17 +74,17 @@ internal static class RedundantConnectionIISolution
         return true;
     }
 
-    private static bool IsAcyclicWithoutCompression(int[][] edges, int n, int skip)
+    private static bool IsAcyclicWithoutCompression(int[][] edges, int edgeCount, int skip)
     {
-        var parent = new int[n + 1];
-        for (var i = 0; i <= n; i++)
+        var parent = new int[edgeCount + 1];
+        for (var i = 0; i <= edgeCount; i++)
         {
             parent[i] = i;
         }
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < edgeCount; i++)
         {
-            if (UnionEdgeDetectsCycle(edges, parent, skip, i))
+            if (IsEdgeClosingCycle(edges, parent, skip, i))
             {
                 return false;
             }
@@ -93,30 +93,30 @@ internal static class RedundantConnectionIISolution
         return true;
     }
 
-    private static bool UnionEdgeDetectsCycle(int[][] edges, int[] parent, int skip, int i)
+    private static bool IsEdgeClosingCycle(int[][] edges, int[] parent, int skip, int edgeIndex)
     {
-        if (i == skip)
+        if (edgeIndex == skip)
         {
             return false;
         }
 
-        var (u, v) = (edges[i][0], edges[i][1]);
-        return UnionRoots(parent, u, v);
+        var (parentNode, childNode) = (edges[edgeIndex][0], edges[edgeIndex][1]);
+        return IsClosingCycleOnUnion(parent, parentNode, childNode);
     }
 
     // Endpoints already sharing a root are what closes a cycle; otherwise the edge
     // joins the two components and closes nothing.
-    private static bool UnionRoots(int[] parent, int u, int v)
+    private static bool IsClosingCycleOnUnion(int[] parent, int firstEndpoint, int secondEndpoint)
     {
-        var rootU = FindRootNoCompression(parent, u);
-        var rootV = FindRootNoCompression(parent, v);
+        var firstRoot = FindRootNoCompression(parent, firstEndpoint);
+        var secondRoot = FindRootNoCompression(parent, secondEndpoint);
 
-        if (rootU == rootV)
+        if (firstRoot == secondRoot)
         {
             return true;
         }
 
-        parent[rootV] = rootU;
+        parent[secondRoot] = firstRoot;
         return false;
     }
 
@@ -180,11 +180,11 @@ internal static class RedundantConnectionIISolution
 
     // Builds the DisjointSet over every edge except `skip` and returns the first edge
     // that closes a cycle, or [] if none does.
-    private static int[] FindCycleEdge(int[][] edges, int n, int skip)
+    private static int[] FindCycleEdge(int[][] edges, int edgeCount, int skip)
     {
-        var components = new DisjointSet(n + 1);
+        var components = new DisjointSet(edgeCount + 1);
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < edgeCount; i++)
         {
             if (i == skip)
             {

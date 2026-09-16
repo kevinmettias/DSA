@@ -20,9 +20,9 @@ public sealed class MinimumTimeToVisitDisappearingNodesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimesByDijkstraQueue_LeetCodeExamples_ReturnsEarliestArrivalTimes(
-        int n, int[][] edges, int[] disappear, int[] expected)
+        int nodeCount, int[][] edges, int[] disappear, int[] expected)
     {
-        var actual = MinimumTimeToVisitDisappearingNodesSolution.MinimumTimesByDijkstraQueue(n, edges, disappear);
+        var actual = MinimumTimeToVisitDisappearingNodesSolution.MinimumTimesByDijkstraQueue(nodeCount, edges, disappear);
 
         Assert.Equal(expected, actual);
     }
@@ -30,9 +30,9 @@ public sealed class MinimumTimeToVisitDisappearingNodesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimesByPriorityHeap_LeetCodeExamples_ReturnsEarliestArrivalTimes(
-        int n, int[][] edges, int[] disappear, int[] expected)
+        int nodeCount, int[][] edges, int[] disappear, int[] expected)
     {
-        var actual = MinimumTimeToVisitDisappearingNodesSolution.MinimumTimesByPriorityHeap(n, edges, disappear);
+        var actual = MinimumTimeToVisitDisappearingNodesSolution.MinimumTimesByPriorityHeap(nodeCount, edges, disappear);
 
         Assert.Equal(expected, actual);
     }

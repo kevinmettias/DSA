@@ -17,7 +17,7 @@ internal sealed class BinaryTreeLevelOrderTraversalRegistration : ILeetCodeProbl
                 "LevelGroupedTraversal",
                 levelOrder => BinaryTreeLevelOrderTraversalSolution.LevelOrderByLevelGroupedTraversal(
                     LeetCodeWireFormat.ToBinaryTree(levelOrder)))
-            .MatchingAnswersWith(LeetCodeAnswers.SequenceOfSequencesEqual<int>)
+            .MatchingAnswersWith(LeetCodeAnswers.IsSequenceOfSequencesEqual<int>)
             .Case("example-1", [3, 9, 20, null, null, 15, 7], [[3], [9, 20], [15, 7]])
             .Case("example-2", [1], [[1]])
             .Case("empty-tree", [], [])

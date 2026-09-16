@@ -17,13 +17,13 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
     // with an explicit stack, and size the component as you go. Deliberately BCL
     // throughout - it is the arm the composed solution has to justify itself
     // against.
-    public static long CountPairsByDepthFirstFloodFill(int n, int[][] edges)
+    public static long CountPairsByDepthFirstFloodFill(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
-        var visited = new bool[n];
+        var adjacency = BuildAdjacency(nodeCount, edges);
+        var visited = new bool[nodeCount];
         var reachablePairs = 0L;
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             if (visited[node])
             {
@@ -34,14 +34,14 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
             reachablePairs += PairsWithin(size);
         }
 
-        return PairsWithin(n) - reachablePairs;
+        return PairsWithin(nodeCount) - reachablePairs;
     }
 
-    private static int[][] BuildAdjacency(int n, int[][] edges)
+    private static int[][] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[n];
+        var adjacency = new List<int>[nodeCount];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             adjacency[node] = [];
         }
@@ -52,9 +52,9 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
             adjacency[edge[1]].Add(edge[0]);
         }
 
-        var result = new int[n][];
+        var result = new int[nodeCount][];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             result[node] = [.. adjacency[node]];
         }
@@ -92,19 +92,19 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
     // use), then tally each component's size in a HashMap keyed by root. Reading
     // the sizes back through HashMap.Values makes each distinct component
     // contribute exactly once, so no second pass over the nodes is needed.
-    public static long CountPairsByDisjointSet(int n, int[][] edges)
+    public static long CountPairsByDisjointSet(int nodeCount, int[][] edges)
     {
-        var components = UnionAll(n, edges);
-        var sizeByRoot = ComponentSizes(components, n);
+        var components = UnionAll(nodeCount, edges);
+        var sizeByRoot = ComponentSizes(components, nodeCount);
         var reachablePairs = SumPairsWithin(sizeByRoot);
 
-        return PairsWithin(n) - reachablePairs;
+        return PairsWithin(nodeCount) - reachablePairs;
     }
 
     // Every edge unioned into one DisjointSet, whose roots are then the components.
-    private static DisjointSet UnionAll(int n, int[][] edges)
+    private static DisjointSet UnionAll(int nodeCount, int[][] edges)
     {
-        var components = new DisjointSet(n);
+        var components = new DisjointSet(nodeCount);
 
         foreach (var edge in edges)
         {
@@ -115,11 +115,11 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
     }
 
     // Each component's size, keyed by its root - the tally the answer is summed from.
-    private static HashMap<int, long> ComponentSizes(DisjointSet components, int n)
+    private static HashMap<int, long> ComponentSizes(DisjointSet components, int nodeCount)
     {
         var sizeByRoot = new HashMap<int, long>();
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             var root = components.Find(node);
             sizeByRoot.TryGetValue(root, out var size);
@@ -142,7 +142,7 @@ internal static class CountUnreachablePairsOfNodesInAnUndirectedGraphSolution
         return reachablePairs;
     }
 
-    // C(size, 2) - the unordered pairs available inside a group of this size. n can
-    // reach 1e5, so the total is well past int range and every count stays long.
+    // C(size, 2) - the unordered pairs available inside a group of this size. The node
+    // count can reach 1e5, so the total is well past int range and every count stays long.
     private static long PairsWithin(long size) => size * (size - 1) / 2;
 }

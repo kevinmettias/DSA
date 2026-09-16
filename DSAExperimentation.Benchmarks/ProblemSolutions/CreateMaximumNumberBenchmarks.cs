@@ -15,7 +15,7 @@ public class CreateMaximumNumberBenchmarks
     private int[] _nums1 = [];
 
     private int[] _nums2 = [];
-    private int _k;
+    private int _digitCount;
     [Params(20, 100)]
     public int Length { get; set; }
 
@@ -25,13 +25,13 @@ public class CreateMaximumNumberBenchmarks
         var random = new Random(RandomSeed);
         _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(0, DigitUpperBoundExclusive)).ToArray();
         _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(0, DigitUpperBoundExclusive)).ToArray();
-        _k = Length;
+        _digitCount = Length;
     }
 
     [Benchmark(Baseline = true)]
-    public int[] NaiveSubsequenceScan() => CreateMaximumNumberSolution.MaxNumberByNaiveScan(_nums1, _nums2, _k);
+    public int[] NaiveSubsequenceScan() => CreateMaximumNumberSolution.MaxNumberByNaiveScan(_nums1, _nums2, _digitCount);
 
     [Benchmark]
     public int[] MonotonicStackSubsequence() =>
-        CreateMaximumNumberSolution.MaxNumberByMonotonicStack(_nums1, _nums2, _k);
+        CreateMaximumNumberSolution.MaxNumberByMonotonicStack(_nums1, _nums2, _digitCount);
 }

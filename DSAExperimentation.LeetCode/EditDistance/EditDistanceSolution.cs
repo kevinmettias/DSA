@@ -49,12 +49,13 @@ internal static class EditDistanceSolution
     }
 
     // The diagonal entry: both suffixes advanced by one, the free match-through.
-    private static int DiagonalCost(int[,] dp, int i, int j) => dp[i + 1, j + 1];
+    private static int DiagonalCost(int[,] dp, int word1Index, int word2Index) =>
+        dp[word1Index + 1, word2Index + 1];
 
     // One edit charged, plus the cheaper of the remaining delete and the insert-or-
     // replace the caller has already minimized in.
-    private static int CostAfterOneEdit(int[,] dp, int i, int j, int insertOrReplace) =>
-        1 + Math.Min(dp[i + 1, j], insertOrReplace);
+    private static int CostAfterOneEdit(int[,] dp, int word1Index, int word2Index, int insertOrReplace) =>
+        1 + Math.Min(dp[word1Index + 1, word2Index], insertOrReplace);
 
     // Memoizer caches the same recurrence, called top-down from (0, 0) instead of
     // filled bottom-up, so only the suffix pairs the walk actually visits get
@@ -95,11 +96,11 @@ internal static class EditDistanceSolution
         // insert-or-replace - the same charge the tabulation arm's CostAfterOneEdit
         // makes, with the three suffixes it chooses between reached through the memo.
         private static int OneEditPlusCheapestMove(
-            int i, int j, IRecurrence<(int First, int Second), int> rest)
+            int word1Index, int word2Index, IRecurrence<(int First, int Second), int> rest)
         {
-            var insert = rest.Replay((i, j + 1), rest);
-            var replace = rest.Replay((i + 1, j + 1), rest);
-            var delete = rest.Replay((i + 1, j), rest);
+            var insert = rest.Replay((word1Index, word2Index + 1), rest);
+            var replace = rest.Replay((word1Index + 1, word2Index + 1), rest);
+            var delete = rest.Replay((word1Index + 1, word2Index), rest);
             var insertOrReplace = Math.Min(insert, replace);
 
             return 1 + Math.Min(delete, insertOrReplace);

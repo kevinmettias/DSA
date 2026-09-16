@@ -26,14 +26,14 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
     // touches the left-or-top boundary, instead of DisjointSet.
     public static bool IsReachableByBoundaryFloodFill(int xCorner, int yCorner, int[][] circles)
     {
-        if (AnyCircleCoversCorner(xCorner, yCorner, circles))
+        if (HasCornerCoveringCircle(xCorner, yCorner, circles))
         {
             return false;
         }
 
         var (touchesLeftOrTop, touchesBottomOrRight, adjacency) = BuildOverlapGraph(circles, xCorner, yCorner);
 
-        return !ReachesBottomOrRight(adjacency, touchesLeftOrTop, touchesBottomOrRight);
+        return !HasReachedBottomOrRight(adjacency, touchesLeftOrTop, touchesBottomOrRight);
     }
 
     // The whole overlap/boundary picture the flood fill below walks: which circles touch
@@ -50,12 +50,12 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
         for (var index = 0; index < count; index++)
         {
             adjacency[index] = [];
-            touchesLeftOrTop[index] = TouchesLeftOrTop(circles[index], xCorner, yCorner);
-            touchesBottomOrRight[index] = TouchesBottomOrRight(circles[index], xCorner, yCorner);
+            touchesLeftOrTop[index] = IsTouchingLeftOrTop(circles[index], xCorner, yCorner);
+            touchesBottomOrRight[index] = IsTouchingBottomOrRight(circles[index], xCorner, yCorner);
 
             for (var other = 0; other < index; other++)
             {
-                if (Overlaps(circles[index], circles[other]))
+                if (HasOverlap(circles[index], circles[other]))
                 {
                     adjacency[index].Add(other);
                     adjacency[other].Add(index);
@@ -69,7 +69,7 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
     // The flood fill itself, standing in for DisjointSet: every circle touching the
     // left-or-top boundary seeds the wave, and the rectangle is cut in two as soon as the
     // wave reaches a circle touching the bottom-or-right boundary.
-    private static bool ReachesBottomOrRight(
+    private static bool HasReachedBottomOrRight(
         List<int>[] adjacency, bool[] touchesLeftOrTop, bool[] touchesBottomOrRight)
     {
         var visited = new bool[adjacency.Length];
@@ -123,7 +123,7 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
     // been unioned in.
     public static bool IsReachableByDisjointSet(int xCorner, int yCorner, int[][] circles)
     {
-        if (AnyCircleCoversCorner(xCorner, yCorner, circles))
+        if (HasCornerCoveringCircle(xCorner, yCorner, circles))
         {
             return false;
         }
@@ -146,12 +146,12 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
 
         for (var index = 0; index < count; index++)
         {
-            if (TouchesLeftOrTop(circles[index], xCorner, yCorner))
+            if (IsTouchingLeftOrTop(circles[index], xCorner, yCorner))
             {
                 groups.Union(index, leftOrTopId);
             }
 
-            if (TouchesBottomOrRight(circles[index], xCorner, yCorner))
+            if (IsTouchingBottomOrRight(circles[index], xCorner, yCorner))
             {
                 groups.Union(index, bottomOrRightId);
             }
@@ -168,14 +168,14 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
     {
         for (var other = index + 1; other < circles.Length; other++)
         {
-            if (Overlaps(circles[index], circles[other]))
+            if (HasOverlap(circles[index], circles[other]))
             {
                 groups.Union(index, other);
             }
         }
     }
 
-    private static bool AnyCircleCoversCorner(int xCorner, int yCorner, int[][] circles)
+    private static bool HasCornerCoveringCircle(int xCorner, int yCorner, int[][] circles)
     {
         foreach (var circle in circles)
         {
@@ -189,7 +189,7 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
         return false;
     }
 
-    private static bool Overlaps(int[] first, int[] second)
+    private static bool HasOverlap(int[] first, int[] second)
     {
         var radiusSum = (long)first[2] + second[2];
 
@@ -197,21 +197,21 @@ internal static class CheckIfTheRectangleCornerIsReachableSolution
     }
 
     // The left edge (x=0, 0<=y<=yCorner) or the top edge (y=yCorner, 0<=x<=xCorner).
-    private static bool TouchesLeftOrTop(int[] circle, int xCorner, int yCorner)
-        => TouchesSegment(circle, (0, 0), (0, yCorner)) ||
-            TouchesSegment(circle, (0, yCorner), (xCorner, yCorner));
+    private static bool IsTouchingLeftOrTop(int[] circle, int xCorner, int yCorner)
+        => IsTouchingSegment(circle, (0, 0), (0, yCorner)) ||
+            IsTouchingSegment(circle, (0, yCorner), (xCorner, yCorner));
 
     // The bottom edge (y=0, 0<=x<=xCorner) or the right edge (x=xCorner, 0<=y<=yCorner).
-    private static bool TouchesBottomOrRight(int[] circle, int xCorner, int yCorner)
-        => TouchesSegment(circle, (0, 0), (xCorner, 0)) ||
-            TouchesSegment(circle, (xCorner, 0), (xCorner, yCorner));
+    private static bool IsTouchingBottomOrRight(int[] circle, int xCorner, int yCorner)
+        => IsTouchingSegment(circle, (0, 0), (xCorner, 0)) ||
+            IsTouchingSegment(circle, (xCorner, 0), (xCorner, yCorner));
 
     // Distance from the circle's center to the nearest point of an axis-aligned segment,
     // compared against the radius - the segment is always either purely vertical or
     // purely horizontal here, so clamping one coordinate onto the segment's fixed span
     // gives the closest point directly, with no general point-to-segment projection
     // needed.
-    private static bool TouchesSegment(int[] circle, (int X, int Y) from, (int X, int Y) to)
+    private static bool IsTouchingSegment(int[] circle, (int X, int Y) from, (int X, int Y) to)
     {
         var closestX = ClampOntoSpan(circle[0], from.X, to.X);
         var closestY = ClampOntoSpan(circle[1], from.Y, to.Y);

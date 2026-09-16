@@ -6,12 +6,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: all three arms are WaterAndJugProblemSolution's, the same
 // methods WaterAndJugProblemTests proves correct. Target is chosen
 // unreachable (jugX+jugY-1, never a multiple of gcd(jugX,jugY) for jugY>1)
-// so StackSearch and DepthFirstSearch both explore the identical
-// O(jugX*jugY) implicit graph of fill states without ever short-circuiting -
-// making that pair a constant-factor/allocation comparison. GcdFormula is
-// the actual closed-form answer (Bezout's identity) and is expected to blow
-// both away, showing the state-space search is the wrong tool once the
-// number-theory shortcut is known.
+// so CanMeasureWaterByStackSearch and CanMeasureWaterByDepthFirstSearch both
+// explore the identical O(jugX*jugY) implicit graph of fill states without ever
+// short-circuiting - making that pair a constant-factor/allocation comparison.
+// CanMeasureWaterByGcdFormula is the actual closed-form answer (Bezout's
+// identity) and is expected to blow both away, showing the state-space search
+// is the wrong tool once the number-theory shortcut is known.
 [MemoryDiagnoser]
 public class WaterAndJugProblemBenchmarks
 {
@@ -33,14 +33,14 @@ public class WaterAndJugProblemBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool StackSearch() =>
+    public bool CanMeasureWaterByStackSearch() =>
         WaterAndJugProblemSolution.CanMeasureWaterByStackSearch(_jugX, _jugY, _target);
 
     [Benchmark]
-    public bool DepthFirstSearch() =>
+    public bool CanMeasureWaterByDepthFirstSearch() =>
         WaterAndJugProblemSolution.CanMeasureWaterByDepthFirstSearch(_jugX, _jugY, _target);
 
     [Benchmark]
-    public bool GcdFormula() =>
+    public bool CanMeasureWaterByGcdFormula() =>
         WaterAndJugProblemSolution.CanMeasureWaterByGcdFormula(_jugX, _jugY, _target);
 }

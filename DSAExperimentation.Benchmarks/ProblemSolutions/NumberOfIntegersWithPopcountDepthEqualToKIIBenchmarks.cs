@@ -13,9 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // over from the previous run would make each later update a same-depth no-op
 // instead of the real Add(-1)/Add(+1) pair being measured
 // (MatrixCellsInDistanceOrderBenchmarks' own per-iteration reset precedent).
-// N stays moderate for the brute-force arm - it rescans up to N elements per
-// range query - while the Fenwick-bucket arm scales to the real problem's N
-// and query count each up to 1e5 trivially.
+// ElementCount stays moderate for the brute-force arm - it rescans up to
+// ElementCount elements per range query - while the Fenwick-bucket arm scales to
+// the real problem's N and query count each up to 1e5 trivially.
 [MemoryDiagnoser]
 public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
 {
@@ -29,7 +29,7 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
     private long[][] _queries = [];
     private PopcountDepthFenwickIndex _index = null!;
     [Params(200, 2_000)]
-    public int N { get; set; }
+    public int ElementCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
@@ -40,12 +40,12 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
         _queries = BuildQueries(random);
     }
 
-    // The N values every query runs against, drawn uniformly from [1, MaxValue).
+    // The ElementCount values every query runs against, drawn uniformly from [1, MaxValue).
     private long[] BuildNums(Random random)
     {
-        var nums = new long[N];
+        var nums = new long[ElementCount];
 
-        for (var i = 0; i < N; i++)
+        for (var i = 0; i < ElementCount; i++)
         {
             nums[i] = random.NextInt64(1, MaxValue);
         }
@@ -75,8 +75,8 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
     // One type-1 query: the range being counted over and the popcount depth it counts.
     private long[] BuildRangeQuery(Random random)
     {
-        var left = random.Next(N);
-        var right = left + random.Next(N - left);
+        var left = random.Next(ElementCount);
+        var right = left + random.Next(ElementCount - left);
         var k = random.Next(0, PopcountDepthBounds.MaxTrackedDepth + 1);
 
         return [1, left, right, k];
@@ -84,7 +84,7 @@ public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
 
     // One type-2 query: the point being updated and the value written to it.
     private long[] BuildUpdateQuery(Random random) =>
-        [UpdateQuery, random.Next(N), random.NextInt64(1, MaxValue)];
+        [UpdateQuery, random.Next(ElementCount), random.NextInt64(1, MaxValue)];
 
     [IterationSetup]
     public void IterationSetup() => _index = PopcountDepthFenwickIndex.Build(_nums);

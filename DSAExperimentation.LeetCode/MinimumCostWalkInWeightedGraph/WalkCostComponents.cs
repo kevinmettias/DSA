@@ -14,16 +14,16 @@ namespace DSAExperimentation.LeetCode.MinimumCostWalkInWeightedGraph;
 //
 // Composes DataStructures.DisjointSet.DisjointSet - the dense-int Operations layer,
 // not KeyedDisjointSet<TKey>'s key-to-id wrapper - directly: LC's vertices already
-// are the dense [0, n) ids DisjointSet expects, so there is no key to map, unlike
+// are the dense [0, vertexCount) ids DisjointSet expects, so there is no key to map, unlike
 // MinimumSpanningTree's KeyedDisjointSet<TNode> use over arbitrary TNode vertices.
 // Aliased to DisjointSetOperations for the same reason KeyedDisjointSet.cs needs
 // it: DataStructures.DisjointSet is both this file's namespace segment and the
 // type's own name.
 internal sealed class WalkCostComponents(DisjointSetOperations components, int[] andByRoot)
 {
-    public static WalkCostComponents Build(int n, int[][] edges)
+    public static WalkCostComponents Build(int vertexCount, int[][] edges)
     {
-        var components = new DisjointSetOperations(n);
+        var components = new DisjointSetOperations(vertexCount);
 
         foreach (var edge in edges)
         {
@@ -33,7 +33,7 @@ internal sealed class WalkCostComponents(DisjointSetOperations components, int[]
         // -1 is all bits set, the identity element for AND - folding any weight
         // into it just returns that weight, the same "start from the identity"
         // shape a sum starts from 0.
-        var andByRoot = new int[n];
+        var andByRoot = new int[vertexCount];
         Array.Fill(andByRoot, -1);
 
         foreach (var edge in edges)

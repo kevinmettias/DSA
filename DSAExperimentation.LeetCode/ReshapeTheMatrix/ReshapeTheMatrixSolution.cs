@@ -1,27 +1,27 @@
 namespace DSAExperimentation.LeetCode.ReshapeTheMatrix;
 
-// LeetCode 566. Reshape the Matrix: refill an r x c matrix from an existing
-// matrix's cells in row-major order, or return the original unchanged when the
-// two shapes don't hold the same number of cells.
+// LeetCode 566. Reshape the Matrix: refill a matrix with targetRows rows and
+// targetCols columns from an existing matrix's cells in row-major order, or return
+// the original unchanged when the two shapes don't hold the same number of cells.
 internal static class ReshapeTheMatrixSolution
 {
     // Recomputes both the source and destination row/col from a flat index for
     // every cell.
-    public static int[][] ReshapeByLinearIndexDivMod(int[][] mat, int r, int c)
+    public static int[][] ReshapeByLinearIndexDivMod(int[][] mat, int targetRows, int targetCols)
     {
         var rows = mat.Length;
         var cols = mat[0].Length;
 
-        if (rows * cols != r * c)
+        if (rows * cols != targetRows * targetCols)
         {
             return mat;
         }
 
-        var reshaped = Enumerable.Range(0, r).Select(_ => new int[c]).ToArray();
+        var reshaped = Enumerable.Range(0, targetRows).Select(_ => new int[targetCols]).ToArray();
 
         for (var i = 0; i < rows * cols; i++)
         {
-            reshaped[i / c][i % c] = mat[i / cols][i % cols];
+            reshaped[i / targetCols][i % targetCols] = mat[i / cols][i % cols];
         }
 
         return reshaped;
@@ -29,18 +29,18 @@ internal static class ReshapeTheMatrixSolution
 
     // Walks a destination cursor directly, wrapping only when a row fills up -
     // no division or modulo per cell.
-    public static int[][] ReshapeByCursorWalk(int[][] mat, int r, int c)
+    public static int[][] ReshapeByCursorWalk(int[][] mat, int targetRows, int targetCols)
     {
         var rows = mat.Length;
         var cols = mat[0].Length;
 
-        if (rows * cols != r * c)
+        if (rows * cols != targetRows * targetCols)
         {
             return mat;
         }
 
-        var reshaped = Enumerable.Range(0, r).Select(_ => new int[c]).ToArray();
-        CopyWithCursorWalk(reshaped, mat, cols, c);
+        var reshaped = Enumerable.Range(0, targetRows).Select(_ => new int[targetCols]).ToArray();
+        CopyWithCursorWalk(reshaped, mat, cols, targetCols);
 
         return reshaped;
     }

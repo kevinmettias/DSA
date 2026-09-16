@@ -4,8 +4,8 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 
 // LeetCode 3620. Network Recovery Pathways: among all 0 -> n-1 paths that stay
-// on online intermediate nodes and whose total edge cost is <= k, maximize the
-// path's score (its minimum edge cost). Whether a path of score >= T exists is
+// on online intermediate nodes and whose total edge cost is <= costBudget,
+// maximize the path's score (its minimum edge cost). Whether a path of score >= T exists is
 // monotonic in T - raising the threshold only ever removes edges, so a feasible
 // threshold's own total cost can only rise - so the answer reduces to
 // binary-searching the largest feasible T, one min-cost-path query per probe
@@ -17,16 +17,16 @@ internal static class NetworkRecoveryPathwaysSolution
     // Textbook baseline: BCL Dictionary adjacency rebuilt per probe and BCL's
     // own PriorityQueue for Dijkstra - the arm the repo's own ShortestPath
     // engine below has to justify itself against.
-    public static int FindMaxPathScoreByBruteForceDijkstra(int[][] edges, bool[] online, long k)
+    public static int FindMaxPathScoreByBruteForceDijkstra(int[][] edges, bool[] online, long costBudget)
     {
         var network = RecoveryNetwork.Build(online.Length, edges, online);
-        return FindMaxPathScoreByBruteForceDijkstra(network, k);
+        return FindMaxPathScoreByBruteForceDijkstra(network, costBudget);
     }
 
-    public static int FindMaxPathScoreByBruteForceDijkstra(RecoveryNetwork network, long k) =>
-        BinarySearchMaxScore(network.MaxCost, new FeasibilityByBruteForceDijkstra(network, k));
+    public static int FindMaxPathScoreByBruteForceDijkstra(RecoveryNetwork network, long costBudget) =>
+        BinarySearchMaxScore(network.MaxCost, new FeasibilityByBruteForceDijkstra(network, costBudget));
 
-    private static bool IsFeasibleByBruteForceDijkstra(RecoveryNetwork network, long threshold, long k)
+    private static bool IsFeasibleByBruteForceDijkstra(RecoveryNetwork network, long threshold, long costBudget)
     {
         var n = network.Nodes.Length;
         var adjacency = BuildEligibleAdjacency(network, threshold);
@@ -44,7 +44,7 @@ internal static class NetworkRecoveryPathwaysSolution
             }
         }
 
-        return distances.TryGetValue(n - 1, out var best) && best <= k;
+        return distances.TryGetValue(n - 1, out var best) && best <= costBudget;
     }
 
     // Only the edges a path of this score is allowed to use, as a plain BCL
@@ -107,23 +107,23 @@ internal static class NetworkRecoveryPathwaysSolution
     // priority queue - the same swap
     // MinimumTimeToTransportAllIndividualsSolution's two arms make around
     // TransportGraph/TransportTopology.
-    public static int FindMaxPathScoreByReduceGraph(int[][] edges, bool[] online, long k)
+    public static int FindMaxPathScoreByReduceGraph(int[][] edges, bool[] online, long costBudget)
     {
         var network = RecoveryNetwork.Build(online.Length, edges, online);
-        return FindMaxPathScoreByReduceGraph(network, k);
+        return FindMaxPathScoreByReduceGraph(network, costBudget);
     }
 
-    public static int FindMaxPathScoreByReduceGraph(RecoveryNetwork network, long k) =>
-        BinarySearchMaxScore(network.MaxCost, new FeasibilityByReduceGraph(network, k));
+    public static int FindMaxPathScoreByReduceGraph(RecoveryNetwork network, long costBudget) =>
+        BinarySearchMaxScore(network.MaxCost, new FeasibilityByReduceGraph(network, costBudget));
 
-    private static bool IsFeasibleByReduceGraph(RecoveryNetwork network, long threshold, long k)
+    private static bool IsFeasibleByReduceGraph(RecoveryNetwork network, long threshold, long costBudget)
     {
         network.Rebuild(threshold);
 
         var distances = ShortestPath
             .Dijkstra<RecoveryNode, RecoveryTopology, ListEdges<RecoveryNode, long>, long>(network.Source);
 
-        return distances.TryGetValue(network.Destination, out var best) && best <= k;
+        return distances.TryGetValue(network.Destination, out var best) && best <= costBudget;
     }
 
     // Shared by both strategies: the largest threshold whose feasibility probe
@@ -155,7 +155,7 @@ internal static class NetworkRecoveryPathwaysSolution
 
     // The one question both arms answer, each in its own way: is there a source-to-
     // destination path, staying on online intermediate nodes, whose total cost stays
-    // within the budget k and whose own score - its cheapest edge - reaches this
+    // within costBudget and whose own score - its cheapest edge - reaches this
     // threshold. The threshold is named here for both arms to share, which a bare
     // callable had nowhere to put.
     private interface IFeasibilityProbe
@@ -165,15 +165,15 @@ internal static class NetworkRecoveryPathwaysSolution
 
     // The baseline probe: rebuild the BCL adjacency for this threshold and run the
     // hand-rolled Dijkstra over it.
-    private sealed class FeasibilityByBruteForceDijkstra(RecoveryNetwork network, long k) : IFeasibilityProbe
+    private sealed class FeasibilityByBruteForceDijkstra(RecoveryNetwork network, long costBudget) : IFeasibilityProbe
     {
-        public bool IsFeasible(long threshold) => IsFeasibleByBruteForceDijkstra(network, threshold, k);
+        public bool IsFeasible(long threshold) => IsFeasibleByBruteForceDijkstra(network, threshold, costBudget);
     }
 
     // The composed probe: restrict the RecoveryNetwork to this threshold and let this
     // repo's own ShortestPath engine answer it.
-    private sealed class FeasibilityByReduceGraph(RecoveryNetwork network, long k) : IFeasibilityProbe
+    private sealed class FeasibilityByReduceGraph(RecoveryNetwork network, long costBudget) : IFeasibilityProbe
     {
-        public bool IsFeasible(long threshold) => IsFeasibleByReduceGraph(network, threshold, k);
+        public bool IsFeasible(long threshold) => IsFeasibleByReduceGraph(network, threshold, costBudget);
     }
 }

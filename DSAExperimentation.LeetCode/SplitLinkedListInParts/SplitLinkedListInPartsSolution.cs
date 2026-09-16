@@ -12,12 +12,12 @@ namespace DSAExperimentation.LeetCode.SplitLinkedListInParts;
 internal static class SplitLinkedListInPartsSolution
 {
     // Baseline: walk the list once to materialize every value into a BCL
-    // List<int>, then allocate k brand-new SinglyLinkedListNode<int> chains
-    // from slices of it - O(n) extra node allocation on top of the input list.
-    // Deliberately written without this repo's in-place pointer trick - it is
-    // the arm SplitListToPartsByInPlaceRewire has to justify itself against.
+    // List<int>, then allocate partCount brand-new SinglyLinkedListNode<int>
+    // chains from slices of it - O(n) extra node allocation on top of the input
+    // list. Deliberately written without this repo's in-place pointer trick - it
+    // is the arm SplitListToPartsByInPlaceRewire has to justify itself against.
     public static SinglyLinkedListNode<int>?[] SplitListToPartsByArrayRebuild(
-        SinglyLinkedListNode<int>? head, int k)
+        SinglyLinkedListNode<int>? head, int partCount)
     {
         var values = new List<int>();
 
@@ -26,11 +26,11 @@ internal static class SplitLinkedListInPartsSolution
             values.Add(node.Value);
         }
 
-        var sizing = new PartSizing(values.Count / k, values.Count % k);
-        var parts = new SinglyLinkedListNode<int>?[k];
+        var sizing = new PartSizing(values.Count / partCount, values.Count % partCount);
+        var parts = new SinglyLinkedListNode<int>?[partCount];
         var index = 0;
 
-        for (var i = 0; i < k; i++)
+        for (var i = 0; i < partCount; i++)
         {
             (parts[i], index) = BuildPart(values, sizing, i, index);
         }
@@ -39,9 +39,9 @@ internal static class SplitLinkedListInPartsSolution
     }
 
     private static (SinglyLinkedListNode<int>? Part, int NextIndex) BuildPart(
-        List<int> values, PartSizing sizing, int i, int index)
+        List<int> values, PartSizing sizing, int partIndex, int index)
     {
-        var currentSize = sizing.Size + (i < sizing.Extra ? 1 : 0);
+        var currentSize = sizing.Size + (partIndex < sizing.Extra ? 1 : 0);
 
         if (currentSize == 0)
         {
@@ -65,7 +65,7 @@ internal static class SplitLinkedListInPartsSolution
     // node - only the k-length result array is new allocation. Mutates the
     // chain reachable from head.
     public static SinglyLinkedListNode<int>?[] SplitListToPartsByInPlaceRewire(
-        SinglyLinkedListNode<int>? head, int k)
+        SinglyLinkedListNode<int>? head, int partCount)
     {
         var length = 0;
 
@@ -74,11 +74,11 @@ internal static class SplitLinkedListInPartsSolution
             length++;
         }
 
-        var sizing = new PartSizing(length / k, length % k);
-        var parts = new SinglyLinkedListNode<int>?[k];
+        var sizing = new PartSizing(length / partCount, length % partCount);
+        var parts = new SinglyLinkedListNode<int>?[partCount];
         var current = head;
 
-        for (var i = 0; i < k && current is not null; i++)
+        for (var i = 0; i < partCount && current is not null; i++)
         {
             (parts[i], current) = CarvePart(current, sizing, i);
         }
@@ -87,22 +87,22 @@ internal static class SplitLinkedListInPartsSolution
     }
 
     private static (SinglyLinkedListNode<int> Part, SinglyLinkedListNode<int>? NextCurrent) CarvePart(
-        SinglyLinkedListNode<int> current, PartSizing sizing, int i)
+        SinglyLinkedListNode<int> current, PartSizing sizing, int partIndex)
     {
-        var last = LastNodeOfPart(current, sizing, i);
+        var last = LastNodeOfPart(current, sizing, partIndex);
         var next = last.Next;
         last.Next = null;
 
         return (current, next);
     }
 
-    // Walks `first` to the last node of part `i`: the base size, plus one node while
-    // the remainder lasts.
+    // Walks `first` to the last node of part `partIndex`: the base size, plus one node
+    // while the remainder lasts.
     private static SinglyLinkedListNode<int> LastNodeOfPart(
-        SinglyLinkedListNode<int> first, PartSizing sizing, int i)
+        SinglyLinkedListNode<int> first, PartSizing sizing, int partIndex)
     {
         var last = first;
-        var size = sizing.Size + (i < sizing.Extra ? 1 : 0);
+        var size = sizing.Size + (partIndex < sizing.Extra ? 1 : 0);
 
         for (var j = 1; j < size; j++)
         {

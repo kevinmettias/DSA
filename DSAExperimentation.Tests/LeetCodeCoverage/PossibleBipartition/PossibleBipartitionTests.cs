@@ -43,20 +43,20 @@ public sealed class PossibleBipartitionTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PossibleBipartitionByColorArrayDfs_LeetCodeExamples_ReturnsWhetherDislikesSplitInTwo(
+    public void CanBipartitionByColorArrayDfs_LeetCodeExamples_ReturnsWhetherDislikesSplitInTwo(
         PossibleBipartitionCase example)
     {
-        var actual = PossibleBipartitionSolution.PossibleBipartitionByColorArrayDfs(example.N, example.Dislikes);
+        var actual = PossibleBipartitionSolution.CanBipartitionByColorArrayDfs(example.N, example.Dislikes);
 
         Assert.Equal(example.Expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PossibleBipartitionByBipartiteCheck_LeetCodeExamples_ReturnsWhetherDislikesSplitInTwo(
+    public void CanBipartitionByBipartiteCheck_LeetCodeExamples_ReturnsWhetherDislikesSplitInTwo(
         PossibleBipartitionCase example)
     {
-        var actual = PossibleBipartitionSolution.PossibleBipartitionByBipartiteCheck(example.N, example.Dislikes);
+        var actual = PossibleBipartitionSolution.CanBipartitionByBipartiteCheck(example.N, example.Dislikes);
 
         Assert.Equal(example.Expected, actual);
     }

@@ -17,9 +17,9 @@ public sealed class NumberOfSubarraysWithANDValueOfKTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountByBruteForce_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, int k, long expected)
+    public void CountByBruteForce_LeetCodeExamples_ReturnsMatchingSubarrayCount(int[] nums, int targetValue, long expected)
     {
-        var actual = NumberOfSubarraysWithANDValueOfKSolution.CountByBruteForce(nums, k);
+        var actual = NumberOfSubarraysWithANDValueOfKSolution.CountByBruteForce(nums, targetValue);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class NumberOfSubarraysWithANDValueOfKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountByAndValueCompression_LeetCodeExamples_ReturnsMatchingSubarrayCount(
-        int[] nums, int k, long expected)
+        int[] nums, int targetValue, long expected)
     {
-        var actual = NumberOfSubarraysWithANDValueOfKSolution.CountByAndValueCompression(nums, k);
+        var actual = NumberOfSubarraysWithANDValueOfKSolution.CountByAndValueCompression(nums, targetValue);
 
         Assert.Equal(expected, actual);
     }

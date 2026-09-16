@@ -15,18 +15,20 @@ public sealed class ReshapeTheMatrixTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ReshapeByLinearIndexDivMod_Example_ReturnsRowMajorReshape(int[][] mat, int r, int c, int[][] expected)
+    public void ReshapeByLinearIndexDivMod_Example_ReturnsRowMajorReshape(
+        int[][] mat, int targetRows, int targetCols, int[][] expected)
     {
-        var actual = ReshapeTheMatrixSolution.ReshapeByLinearIndexDivMod(mat, r, c);
+        var actual = ReshapeTheMatrixSolution.ReshapeByLinearIndexDivMod(mat, targetRows, targetCols);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ReshapeByCursorWalk_Example_ReturnsRowMajorReshape(int[][] mat, int r, int c, int[][] expected)
+    public void ReshapeByCursorWalk_Example_ReturnsRowMajorReshape(
+        int[][] mat, int targetRows, int targetCols, int[][] expected)
     {
-        var actual = ReshapeTheMatrixSolution.ReshapeByCursorWalk(mat, r, c);
+        var actual = ReshapeTheMatrixSolution.ReshapeByCursorWalk(mat, targetRows, targetCols);
 
         Assert.Equal(expected, actual);
     }

@@ -4,12 +4,12 @@ namespace DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
 
 // LeetCode 363. Max Sum of Rectangle No Larger Than K: for every left/right column
 // pair, compress the matrix to a 1D row-sum array via a running total, then find
-// its best contiguous window summing to no more than k. Both strategies share that
-// outer column-pair scan (ScanColumnPairs) and differ only in how a single row-sum
-// window's best value is found - an O(rows^2) brute-force scan of every start/end
-// pair, or this repo's own BinarySearchTree<int> holding every prefix sum seen so
-// far: for each new prefix sum, the SMALLEST previously-seen prefix sum >=
-// (prefix - k) gives the largest window not exceeding k, the classic TreeSet-
+// its best contiguous window summing to no more than sumLimit. Both strategies share
+// that outer column-pair scan (ScanColumnPairs) and differ only in how a single
+// row-sum window's best value is found - an O(rows^2) brute-force scan of every
+// start/end pair, or this repo's own BinarySearchTree<int> holding every prefix sum
+// seen so far: for each new prefix sum, the SMALLEST previously-seen prefix sum >=
+// (prefix - sumLimit) gives the largest window not exceeding sumLimit, the classic TreeSet-
 // ceiling approach, walked directly over BinaryTreeNode<int>'s already-public
 // Value/Left/Right rather than a new production primitive (the same kind of
 // problem-specific traversal KthSmallestElementInABSTSolution.RankHooks composes
@@ -20,10 +20,10 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
     // checked directly, O(rows^2) per column pair - deliberately without this
     // repo's BinarySearchTree, the arm the ceiling-scan strategy below has to
     // justify itself against.
-    public static int MaxSumSubmatrixByBruteForceWindowScan(int[][] matrix, int k) =>
-        ScanColumnPairs(matrix, new BruteForceWindowBestSum(k));
+    public static int MaxSumSubmatrixByBruteForceWindowScan(int[][] matrix, int sumLimit) =>
+        ScanColumnPairs(matrix, new BruteForceWindowBestSum(sumLimit));
 
-    private static int BestWindowBruteForce(int[] rowSums, int k)
+    private static int BestWindowBruteForce(int[] rowSums, int sumLimit)
     {
         var best = int.MinValue;
 
@@ -35,7 +35,7 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
             {
                 sum += rowSums[end];
 
-                if (sum <= k)
+                if (sum <= sumLimit)
                 {
                     best = Math.Max(best, sum);
                 }
@@ -46,12 +46,12 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
     }
 
     // This repo's own BinarySearchTree<int> holding every prefix sum seen so far,
-    // answering each "smallest prefix sum >= (current - k)" query in O(log rows)
+    // answering each "smallest prefix sum >= (current - sumLimit)" query in O(log rows)
     // instead of an O(rows) scan.
-    public static int MaxSumSubmatrixByBstCeilingScan(int[][] matrix, int k) =>
-        ScanColumnPairs(matrix, new BstCeilingWindowBestSum(k));
+    public static int MaxSumSubmatrixByBstCeilingScan(int[][] matrix, int sumLimit) =>
+        ScanColumnPairs(matrix, new BstCeilingWindowBestSum(sumLimit));
 
-    private static int BestWindowBstCeiling(int[] rowSums, int k)
+    private static int BestWindowBstCeiling(int[] rowSums, int sumLimit)
     {
         var prefixes = new BinarySearchTree<int>();
         prefixes.Insert(0);
@@ -63,7 +63,7 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
         {
             prefix += value;
 
-            if (TryFindCeiling(prefixes, prefix - k, out var ceiling))
+            if (TryFindCeiling(prefixes, prefix - sumLimit, out var ceiling))
             {
                 best = Math.Max(best, prefix - ceiling);
             }
@@ -130,21 +130,22 @@ internal static class MaxSumOfRectangleNoLargerThanKSolution
     }
 
     // What the shared column-pair scan asks of a strategy: given one compressed
-    // row-sum array, find its best contiguous window summing to no more than k. k is
-    // part of the answer's definition, so it is held by the chooser built for it
-    // rather than passed alongside the array on every one of the scan's calls.
+    // row-sum array, find its best contiguous window summing to no more than
+    // sumLimit. sumLimit is part of the answer's definition, so it is held by the
+    // chooser built for it rather than passed alongside the array on every one of
+    // the scan's calls.
     private interface IWindowBestSum
     {
         int BestFor(int[] rowSums);
     }
 
-    private sealed class BruteForceWindowBestSum(int k) : IWindowBestSum
+    private sealed class BruteForceWindowBestSum(int sumLimit) : IWindowBestSum
     {
-        public int BestFor(int[] rowSums) => BestWindowBruteForce(rowSums, k);
+        public int BestFor(int[] rowSums) => BestWindowBruteForce(rowSums, sumLimit);
     }
 
-    private sealed class BstCeilingWindowBestSum(int k) : IWindowBestSum
+    private sealed class BstCeilingWindowBestSum(int sumLimit) : IWindowBestSum
     {
-        public int BestFor(int[] rowSums) => BestWindowBstCeiling(rowSums, k);
+        public int BestFor(int[] rowSums) => BestWindowBstCeiling(rowSums, sumLimit);
     }
 }

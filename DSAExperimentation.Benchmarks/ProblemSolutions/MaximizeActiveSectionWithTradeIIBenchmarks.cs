@@ -16,7 +16,7 @@ public class MaximizeActiveSectionWithTradeIIBenchmarks
 {
     private const int Seed = 3501;
     private const int MaxQueryCount = 200;
-    private const int ZeroOutOfFiveWeight = 2; private string _s = "";
+    private const int ZeroOutOfFiveWeight = 2; private string _text = "";
 
     private int[][] _queries = [];
     private ActiveSectionTradeIndex _index = null!;
@@ -29,9 +29,9 @@ public class MaximizeActiveSectionWithTradeIIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _s = BuildBinaryString(Length, random);
+        _text = BuildBinaryString(Length, random);
         _queries = BuildQueries(Length, random);
-        _index = new ActiveSectionTradeIndex(_s);
+        _index = new ActiveSectionTradeIndex(_text);
     }
 
     private static string BuildBinaryString(int length, Random random)
@@ -63,7 +63,7 @@ public class MaximizeActiveSectionWithTradeIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int[] RunScan() => MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRunScan(_s, _queries);
+    public int[] RunScan() => MaximizeActiveSectionWithTradeIISolution.MaxActiveAfterTradeByRunScan(_text, _queries);
 
     [Benchmark]
     public int[] RangeMaxIndex() =>

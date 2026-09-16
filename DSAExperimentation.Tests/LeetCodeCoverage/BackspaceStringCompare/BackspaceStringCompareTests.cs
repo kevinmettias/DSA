@@ -22,20 +22,20 @@ public sealed class BackspaceStringCompareTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void BackspaceCompareByBclStack_LeetCodeExamples_ReturnsWhetherTypedTextMatches(
+    public void IsTypedTextEqualByBclStack_LeetCodeExamples_ReturnsWhetherTypedTextMatches(
         BackspacePairCase example)
     {
-        var actual = BackspaceStringCompareSolution.BackspaceCompareByBclStack(example.S, example.T);
+        var actual = BackspaceStringCompareSolution.IsTypedTextEqualByBclStack(example.S, example.T);
 
         Assert.Equal(example.Expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void BackspaceCompareByStackReplay_LeetCodeExamples_ReturnsWhetherTypedTextMatches(
+    public void IsTypedTextEqualByStackReplay_LeetCodeExamples_ReturnsWhetherTypedTextMatches(
         BackspacePairCase example)
     {
-        var actual = BackspaceStringCompareSolution.BackspaceCompareByStackReplay(example.S, example.T);
+        var actual = BackspaceStringCompareSolution.IsTypedTextEqualByStackReplay(example.S, example.T);
 
         Assert.Equal(example.Expected, actual);
     }

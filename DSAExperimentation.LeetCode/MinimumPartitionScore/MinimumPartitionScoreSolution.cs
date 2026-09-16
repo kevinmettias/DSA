@@ -2,15 +2,16 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.MinimumPartitionScore;
 
-// LeetCode 3826. Minimum Partition Score: split nums into exactly k
+// LeetCode 3826. Minimum Partition Score: split nums into exactly groupCount
 // contiguous subarrays, minimizing the sum over every subarray of
 // sumArr * (sumArr + 1) / 2.
 //
 // State (Index, GroupsUsed) = "min score to finish partitioning nums[Index..]
-// into the remaining k - GroupsUsed groups" - the same shape
+// into the remaining groupCount - GroupsUsed groups" - the same shape
 // MinimumSumOfValuesByDividingArraySolution's (Index, GroupIndex) state uses,
 // with a triangular-number cost in place of a running-AND target. A
-// partition into exactly k groups always exists for 1 <= k <= nums.Length,
+// partition into exactly groupCount groups always exists for
+// 1 <= groupCount <= nums.Length,
 // so unlike that problem this recurrence never needs a "no valid split"
 // sentinel. Both strategies share PartitionStep and differ only in how
 // repeated states get cached - a Dictionary hand-threaded through the
@@ -21,9 +22,9 @@ internal static class MinimumPartitionScoreSolution
     // The textbook form: recursion over a hand-rolled Dictionary memo table,
     // its lookup/store written out at every call site. The arm the repo's
     // own Memoizer-based strategy below has to beat.
-    public static long MinPartitionScoreByDictionaryMemo(int[] nums, int k)
+    public static long MinPartitionScoreByDictionaryMemo(int[] nums, int groupCount)
     {
-        var run = new DictionaryMemoRun(BuildPrefixSums(nums), k);
+        var run = new DictionaryMemoRun(BuildPrefixSums(nums), groupCount);
 
         return run.Replay((0, 0), run);
     }
@@ -31,36 +32,36 @@ internal static class MinimumPartitionScoreSolution
     // Same recurrence, routed through this repo's own Memoizer so each
     // distinct (Index, GroupsUsed) state is solved once without hand-writing
     // the cache lookup/store around every call.
-    public static long MinPartitionScoreByMemoizedPartition(int[] nums, int k) =>
-        Memoizer.Memoize((0, 0), new ScoreFromPartitionStart(BuildPrefixSums(nums), k));
+    public static long MinPartitionScoreByMemoizedPartition(int[] nums, int groupCount) =>
+        Memoizer.Memoize((0, 0), new ScoreFromPartitionStart(BuildPrefixSums(nums), groupCount));
 
     // The next group's start index and how many groups are already used are the whole
     // state: everything else the step reads is fixed for the call and lives here.
-    private sealed class ScoreFromPartitionStart(long[] prefixSums, int k)
+    private sealed class ScoreFromPartitionStart(long[] prefixSums, int groupCount)
         : IRecurrence<(int Index, int GroupsUsed), long>
     {
         public long Replay((int Index, int GroupsUsed) state, IRecurrence<(int Index, int GroupsUsed), long> rest)
-            => PartitionStep(state, prefixSums, k, rest);
+            => PartitionStep(state, prefixSums, groupCount, rest);
     }
 
     // The hand-rolled memo run: it keeps the table and hands itself to the recurrence as
     // the recursion, exactly as Memoizer's own run does - the lookup and the store are
     // just written out here instead of being supplied by the library.
-    private sealed class DictionaryMemoRun(long[] prefixSums, int k)
+    private sealed class DictionaryMemoRun(long[] prefixSums, int groupCount)
         : IRecurrence<(int Index, int GroupsUsed), long>
     {
-        private readonly ScoreFromPartitionStart step = new(prefixSums, k);
-        private readonly Dictionary<(int Index, int GroupsUsed), long> memo = [];
+        private readonly ScoreFromPartitionStart _step = new(prefixSums, groupCount);
+        private readonly Dictionary<(int Index, int GroupsUsed), long> _memo = [];
 
         public long Replay((int Index, int GroupsUsed) state, IRecurrence<(int Index, int GroupsUsed), long> rest)
         {
-            if (memo.TryGetValue(state, out var cached))
+            if (_memo.TryGetValue(state, out var cached))
             {
                 return cached;
             }
 
-            var result = step.Replay(state, this);
-            memo[state] = result;
+            var result = _step.Replay(state, this);
+            _memo[state] = result;
             return result;
         }
     }
@@ -68,21 +69,21 @@ internal static class MinimumPartitionScoreSolution
     private static long PartitionStep(
         (int Index, int GroupsUsed) state,
         long[] prefixSums,
-        int k,
+        int groupCount,
         IRecurrence<(int Index, int GroupsUsed), long> solveRest)
     {
         var (index, groupsUsed) = state;
-        var n = prefixSums.Length - 1;
-        var remainingGroups = k - groupsUsed;
+        var elementCount = prefixSums.Length - 1;
+        var remainingGroups = groupCount - groupsUsed;
 
         if (remainingGroups == 1)
         {
-            return SubarrayValue(prefixSums, index, n);
+            return SubarrayValue(prefixSums, index, elementCount);
         }
 
         // Every remaining group needs at least one element, so this group
-        // may claim at most n - index - (remainingGroups - 1) of them.
-        var lastEnd = n - (remainingGroups - 1);
+        // may claim at most elementCount - index - (remainingGroups - 1) of them.
+        var lastEnd = elementCount - (remainingGroups - 1);
 
         return BestScoreOverGroupEnds(prefixSums, index, lastEnd, (groupsUsed + 1, solveRest));
     }

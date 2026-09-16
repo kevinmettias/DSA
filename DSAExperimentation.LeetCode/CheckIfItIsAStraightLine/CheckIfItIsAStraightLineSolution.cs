@@ -8,9 +8,9 @@ namespace DSAExperimentation.LeetCode.CheckIfItIsAStraightLine;
 // Both strategies compare directions by cross-multiplication rather than slope
 // division, which avoids floating point and removes the vertical-line (dx == 0)
 // special case. They differ only in how much of the point set each one anchors
-// against: CheckStraightLineByBruteForceEveryTriple is the textbook O(n^3) triple
+// against: IsStraightLineByBruteForceEveryTriple is the textbook O(n^3) triple
 // scan - the baseline, previously untested because it lived only in a benchmark -
-// while CheckStraightLineByAnchoredCrossProductScan uses the fact that collinearity
+// while IsStraightLineByAnchoredCrossProductScan uses the fact that collinearity
 // is transitive through a fixed anchor pair to settle it in one O(n) pass.
 internal static class CheckIfItIsAStraightLineSolution
 {
@@ -21,7 +21,7 @@ internal static class CheckIfItIsAStraightLineSolution
     // Baseline: test every unordered triple (i, j, k) for collinearity. Deliberately
     // plain BCL arithmetic over the input array - what you would write without this
     // repo.
-    public static bool CheckStraightLineByBruteForceEveryTriple(int[][] coordinates)
+    public static bool IsStraightLineByBruteForceEveryTriple(int[][] coordinates)
     {
         for (var i = 0; i < coordinates.Length; i++)
         {
@@ -37,14 +37,14 @@ internal static class CheckIfItIsAStraightLineSolution
         return true;
     }
 
-    private static bool HasNonCollinearThirdPoint(int[][] coordinates, int i, int j)
+    private static bool HasNonCollinearThirdPoint(int[][] coordinates, int firstIndex, int secondIndex)
     {
-        for (var k = j + 1; k < coordinates.Length; k++)
+        for (var k = secondIndex + 1; k < coordinates.Length; k++)
         {
-            var dx1 = (long)(coordinates[j][0] - coordinates[i][0]);
-            var dy1 = (long)(coordinates[j][1] - coordinates[i][1]);
-            var dx2 = (long)(coordinates[k][0] - coordinates[i][0]);
-            var dy2 = (long)(coordinates[k][1] - coordinates[i][1]);
+            var dx1 = (long)(coordinates[secondIndex][0] - coordinates[firstIndex][0]);
+            var dy1 = (long)(coordinates[secondIndex][1] - coordinates[firstIndex][1]);
+            var dx2 = (long)(coordinates[k][0] - coordinates[firstIndex][0]);
+            var dy2 = (long)(coordinates[k][1] - coordinates[firstIndex][1]);
 
             if (dx1 * dy2 != dy1 * dx2)
             {
@@ -57,7 +57,7 @@ internal static class CheckIfItIsAStraightLineSolution
 
     // One pass: every point must share a direction with the vector from the first
     // point to the second.
-    public static bool CheckStraightLineByAnchoredCrossProductScan(int[][] coordinates)
+    public static bool IsStraightLineByAnchoredCrossProductScan(int[][] coordinates)
     {
         var x0 = coordinates[0][0];
         var y0 = coordinates[0][1];

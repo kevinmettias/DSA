@@ -19,51 +19,53 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
 {
     // Textbook baseline: build every one of the m^n arrays directly and count
     // adjacent matches on each, materializing nothing beyond the array under
-    // construction. Only tractable for the tiny n/m LeetCode's own examples use -
+    // construction. Only tractable for the tiny sizes LeetCode's own examples use -
     // the arm the closed-form strategy has to beat.
-    public static long CountGoodArraysByBruteForce(int n, int m, int k)
+    public static long CountGoodArraysByBruteForce(int arrayLength, int maxValue, int matchCount)
     {
-        var arr = new int[n];
-        return CountFrom(arr, (Index: 0, Matches: 0), m, k);
+        var arr = new int[arrayLength];
+        return CountFrom(arr, (Index: 0, Matches: 0), maxValue, matchCount);
     }
 
     // Composed: one binomial coefficient (which n-1 gaps are equal) times one
     // modular power (every "different" gap's independent choice), both O(log n)
     // once Domain.Modular's FactorialTable is built - O(n) total against the
     // baseline's O(m^n).
-    public static long CountGoodArraysByModularCombinatorics(int n, int m, int k)
+    public static long CountGoodArraysByModularCombinatorics(int arrayLength, int maxValue, int matchCount)
     {
-        var table = FactorialTable.Build(n);
-        var waysToChooseEqualGaps = table.Choose(n - 1, k);
-        var waysToFillDifferentGaps = ModularArithmetic.Power(m - 1, n - 1 - k);
+        var table = FactorialTable.Build(arrayLength);
+        var waysToChooseEqualGaps = table.Choose(arrayLength - 1, matchCount);
+        var waysToFillDifferentGaps = ModularArithmetic.Power(maxValue - 1, arrayLength - 1 - matchCount);
 
-        return waysToChooseEqualGaps * m % ModularArithmetic.Modulo * waysToFillDifferentGaps % ModularArithmetic.Modulo;
+        return waysToChooseEqualGaps * maxValue % ModularArithmetic.Modulo
+            * waysToFillDifferentGaps % ModularArithmetic.Modulo;
     }
 
     // The walk's own state: which position of the array it is deciding, and how many
-    // equal adjacent gaps the filled prefix already has. The array's length is n, so
-    // the walk reads n off the array it is filling rather than being told again.
-    private static long CountFrom(int[] arr, (int Index, int Matches) state, int m, int k)
+    // equal adjacent gaps the filled prefix already has. The array's length is
+    // `arrayLength`, so the walk reads the length off the array it is filling rather
+    // than being told again.
+    private static long CountFrom(int[] arr, (int Index, int Matches) state, int maxValue, int matchCount)
     {
         var (index, matches) = state;
 
-        if (matches > k)
+        if (matches > matchCount)
         {
             return 0;
         }
 
         if (index == arr.Length)
         {
-            return matches == k ? 1 : 0;
+            return matches == matchCount ? 1 : 0;
         }
 
         var total = 0L;
 
-        for (var value = 1; value <= m; value++)
+        for (var value = 1; value <= maxValue; value++)
         {
             arr[index] = value;
             var nextMatches = MatchesAfterPlacing(arr, index, value, matches);
-            total += CountFrom(arr, (Index: index + 1, Matches: nextMatches), m, k);
+            total += CountFrom(arr, (Index: index + 1, Matches: nextMatches), maxValue, matchCount);
         }
 
         return total % ModularArithmetic.Modulo;

@@ -20,24 +20,24 @@ public sealed class QueriesOnAPermutationWithKeyTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ProcessQueriesByListMoveToFront_LeetCodeExamples_ReturnsQueriedIndices(
+    public void AnswerQueriesByListMoveToFront_LeetCodeExamples_ReturnsQueriedIndices(
         int[] queries,
-        int m,
+        int permutationSize,
         int[] expected)
     {
-        var actual = QueriesOnAPermutationWithKeySolution.ProcessQueriesByListMoveToFront(queries, m);
+        var actual = QueriesOnAPermutationWithKeySolution.AnswerQueriesByListMoveToFront(queries, permutationSize);
 
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ProcessQueriesByDynamicArrayMoveToFront_LeetCodeExamples_ReturnsQueriedIndices(
+    public void AnswerQueriesByDynamicArrayMoveToFront_LeetCodeExamples_ReturnsQueriedIndices(
         int[] queries,
-        int m,
+        int permutationSize,
         int[] expected)
     {
-        var actual = QueriesOnAPermutationWithKeySolution.ProcessQueriesByDynamicArrayMoveToFront(queries, m);
+        var actual = QueriesOnAPermutationWithKeySolution.AnswerQueriesByDynamicArrayMoveToFront(queries, permutationSize);
 
         Assert.Equal(expected, actual);
     }

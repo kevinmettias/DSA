@@ -24,8 +24,8 @@ public class DecodeWaysIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long Tabulation() => DecodeWaysIISolution.NumDecodingsByTabulation(_value);
+    public long Tabulation() => DecodeWaysIISolution.CountDecodingsByTabulation(_value);
 
     [Benchmark]
-    public long Memoized() => DecodeWaysIISolution.NumDecodingsByMemoization(_value);
+    public long Memoized() => DecodeWaysIISolution.CountDecodingsByMemoization(_value);
 }

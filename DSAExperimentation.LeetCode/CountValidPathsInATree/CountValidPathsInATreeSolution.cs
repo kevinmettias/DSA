@@ -41,15 +41,15 @@ internal static class CountValidPathsInATreeSolution
     // written with a BCL bool[] sieve, BCL adjacency lists and a BCL Queue and
     // nothing else (ARCHITECTURE.md #17.5) - it is the arm the composed strategy
     // below has to justify itself against.
-    public static long CountValidPathsByPerPairPathWalk(int n, int[][] edges)
+    public static long CountValidPathsByPerPairPathWalk(int nodeCount, int[][] edges)
     {
-        var isPrime = SieveWithBclArray(n);
-        var adjacency = BuildAdjacency(n, edges);
+        var isPrime = SieveWithBclArray(nodeCount);
+        var adjacency = BuildAdjacency(nodeCount, edges);
         long total = 0;
 
-        for (var a = 1; a <= n; a++)
+        for (var a = 1; a <= nodeCount; a++)
         {
-            for (var b = a + 1; b <= n; b++)
+            for (var b = a + 1; b <= nodeCount; b++)
             {
                 if (CountPrimesOnPath(a, b, adjacency, isPrime) == ExactlyOnePrime)
                 {
@@ -62,23 +62,23 @@ internal static class CountValidPathsInATreeSolution
     }
 
     // Sieve of Eratosthenes over a BCL array, for the baseline arm only.
-    private static bool[] SieveWithBclArray(int n)
+    private static bool[] SieveWithBclArray(int nodeCount)
     {
-        var isPrime = new bool[n + 1];
+        var isPrime = new bool[nodeCount + 1];
 
-        for (var value = FirstPrime; value <= n; value++)
+        for (var value = FirstPrime; value <= nodeCount; value++)
         {
             isPrime[value] = true;
         }
 
-        for (var factor = FirstPrime; (long)factor * factor <= n; factor++)
+        for (var factor = FirstPrime; (long)factor * factor <= nodeCount; factor++)
         {
             if (!isPrime[factor])
             {
                 continue;
             }
 
-            for (var multiple = factor * factor; multiple <= n; multiple += factor)
+            for (var multiple = factor * factor; multiple <= nodeCount; multiple += factor)
             {
                 isPrime[multiple] = false;
             }
@@ -88,40 +88,42 @@ internal static class CountValidPathsInATreeSolution
     }
 
     // A tree has exactly one path between any two nodes, so the BFS parent chain
-    // from b back to a IS that path - no shortest-path argument is needed.
-    private static int CountPrimesOnPath(int a, int b, List<int>[] adjacency, bool[] isPrime)
+    // from targetLabel back to rootLabel IS that path - no shortest-path argument is
+    // needed.
+    private static int CountPrimesOnPath(
+        int rootLabel, int targetLabel, List<int>[] adjacency, bool[] isPrime)
     {
-        var parent = BuildParentChain(a, b, adjacency);
+        var parent = BuildParentChain(rootLabel, targetLabel, adjacency);
         var primes = 0;
 
-        for (var current = b; ; current = parent[current])
+        for (var current = targetLabel; ; current = parent[current])
         {
             if (isPrime[current])
             {
                 primes++;
             }
 
-            if (current == a)
+            if (current == rootLabel)
             {
                 return primes;
             }
         }
     }
 
-    private static int[] BuildParentChain(int a, int b, List<int>[] adjacency)
+    private static int[] BuildParentChain(int rootLabel, int targetLabel, List<int>[] adjacency)
     {
         var parent = new int[adjacency.Length];
         Array.Fill(parent, Unvisited);
 
         var queue = new Queue<int>();
-        queue.Enqueue(a);
-        parent[a] = a;
+        queue.Enqueue(rootLabel);
+        parent[rootLabel] = rootLabel;
 
         while (queue.Count > 0)
         {
             var node = queue.Dequeue();
 
-            if (node == b)
+            if (node == targetLabel)
             {
                 return parent;
             }
@@ -146,17 +148,17 @@ internal static class CountValidPathsInATreeSolution
 
     // This repo's own answer: DisjointSet collapses each non-prime blob onto a
     // single representative, then one sweep over the primes pairs their arms.
-    public static long CountValidPathsByDisjointSetBlobs(int n, int[][] edges)
+    public static long CountValidPathsByDisjointSetBlobs(int nodeCount, int[][] edges)
     {
-        var isPrime = SieveWithDynamicArray(n);
-        var adjacency = BuildAdjacency(n, edges);
-        var components = UnionNonPrimeEdges(n, edges, isPrime);
-        var blobSize = ComputeBlobSizes(n, isPrime, components);
+        var isPrime = SieveWithDynamicArray(nodeCount);
+        var adjacency = BuildAdjacency(nodeCount, edges);
+        var components = UnionNonPrimeEdges(nodeCount, edges, isPrime);
+        var blobSize = ComputeBlobSizes(nodeCount, isPrime, components);
         var blobs = new PrimeBlobs(isPrime, components, blobSize);
 
         long total = 0;
 
-        for (var label = 1; label <= n; label++)
+        for (var label = 1; label <= nodeCount; label++)
         {
             if (isPrime.Get(label))
             {
@@ -170,23 +172,23 @@ internal static class CountValidPathsInATreeSolution
     // The same sieve over DynamicArray<bool>, the composite-tracking array Count
     // Primes (LC 204) already establishes for this repo - no dedicated sieve or
     // prime primitive exists.
-    private static DynamicArray<bool> SieveWithDynamicArray(int n)
+    private static DynamicArray<bool> SieveWithDynamicArray(int nodeCount)
     {
         var isPrime = new DynamicArray<bool>();
 
-        for (var value = 0; value <= n; value++)
+        for (var value = 0; value <= nodeCount; value++)
         {
             isPrime.Add(value >= FirstPrime);
         }
 
-        for (var factor = FirstPrime; (long)factor * factor <= n; factor++)
+        for (var factor = FirstPrime; (long)factor * factor <= nodeCount; factor++)
         {
             if (!isPrime.Get(factor))
             {
                 continue;
             }
 
-            for (var multiple = factor * factor; multiple <= n; multiple += factor)
+            for (var multiple = factor * factor; multiple <= nodeCount; multiple += factor)
             {
                 isPrime.Set(multiple, false);
             }
@@ -195,10 +197,11 @@ internal static class CountValidPathsInATreeSolution
         return isPrime;
     }
 
-    private static DisjointSet UnionNonPrimeEdges(int n, int[][] edges, DynamicArray<bool> isPrime)
+    private static DisjointSet UnionNonPrimeEdges(
+        int nodeCount, int[][] edges, DynamicArray<bool> isPrime)
     {
         // Ids are the labels themselves, so the forest carries one unused slot 0.
-        var components = new DisjointSet(n + 1);
+        var components = new DisjointSet(nodeCount + 1);
 
         foreach (var edge in edges)
         {
@@ -211,11 +214,12 @@ internal static class CountValidPathsInATreeSolution
         return components;
     }
 
-    private static int[] ComputeBlobSizes(int n, DynamicArray<bool> isPrime, DisjointSet components)
+    private static int[] ComputeBlobSizes(
+        int nodeCount, DynamicArray<bool> isPrime, DisjointSet components)
     {
-        var blobSize = new int[n + 1];
+        var blobSize = new int[nodeCount + 1];
 
-        for (var node = 1; node <= n; node++)
+        for (var node = 1; node <= nodeCount; node++)
         {
             if (!isPrime.Get(node))
             {
@@ -248,11 +252,11 @@ internal static class CountValidPathsInATreeSolution
         return total;
     }
 
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    private static List<int>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<int>[n + 1];
+        var adjacency = new List<int>[nodeCount + 1];
 
-        for (var i = 0; i <= n; i++)
+        for (var i = 0; i <= nodeCount; i++)
         {
             adjacency[i] = [];
         }

@@ -18,9 +18,9 @@ public sealed class PartitionListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionByArrayRebuild_LeetCodeExamples_PartitionsList(
-        int[] values, int x, int[] expected)
+        int[] values, int partitionValue, int[] expected)
     {
-        var partitioned = PartitionListSolution.PartitionByArrayRebuild(BuildList(values), x);
+        var partitioned = PartitionListSolution.PartitionByArrayRebuild(BuildList(values), partitionValue);
         var actual = ToArray(partitioned);
 
         Assert.Equal(expected, actual);
@@ -29,9 +29,9 @@ public sealed class PartitionListTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void PartitionByPointerSplice_LeetCodeExamples_PartitionsList(
-        int[] values, int x, int[] expected)
+        int[] values, int partitionValue, int[] expected)
     {
-        var partitioned = PartitionListSolution.PartitionByPointerSplice(BuildList(values), x);
+        var partitioned = PartitionListSolution.PartitionByPointerSplice(BuildList(values), partitionValue);
         var actual = ToArray(partitioned);
 
         Assert.Equal(expected, actual);

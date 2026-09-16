@@ -36,66 +36,71 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     // beat; kept here rather than shared with Part I's solution class because
     // every LeetCode problem folder answers its own LeetCode problem id
     // independently (see OpenTheLock, CountNumberOfTrapezoidsI/II).
-    public static long MaximumSumByDynamicProgramming(int[] nums, int m, int l, int r)
+    public static long MaximumSumByDynamicProgramming(
+        int[] nums, int maxSubarrayCount, int minLength, int maxLength)
     {
-        var n = nums.Length;
+        var elementCount = nums.Length;
         var prefix = BuildPrefixSums(nums);
-        var dp = BuildInfeasibleGrid(n, m);
+        var dp = BuildInfeasibleGrid(elementCount, maxSubarrayCount);
 
-        for (var i = 1; i <= n; i++)
+        for (var rowIndex = 1; rowIndex <= elementCount; rowIndex++)
         {
-            FillRowForEachCount(dp, prefix, i, (m, l, r));
+            FillRowForEachCount(dp, prefix, rowIndex, (maxSubarrayCount, minLength, maxLength));
         }
 
-        return BestOverAtLeastOneSubarray(dp, n, m);
+        return BestOverAtLeastOneSubarray(dp, elementCount, maxSubarrayCount);
     }
 
-    private static long[][] BuildInfeasibleGrid(int n, int m)
+    private static long[][] BuildInfeasibleGrid(int elementCount, int maxSubarrayCount)
     {
-        var dp = new long[n + 1][];
+        var dp = new long[elementCount + 1][];
 
-        for (var i = 0; i <= n; i++)
+        for (var rowIndex = 0; rowIndex <= elementCount; rowIndex++)
         {
-            dp[i] = new long[m + 1];
-            Array.Fill(dp[i], Infeasible);
-            dp[i][0] = 0;
+            dp[rowIndex] = new long[maxSubarrayCount + 1];
+            Array.Fill(dp[rowIndex], Infeasible);
+            dp[rowIndex][0] = 0;
         }
 
         return dp;
     }
 
-    // Fills row i of Part I's table: dp[i][j] is the best sum using exactly j
-    // disjoint subarrays fully inside nums[0..i), each of length in [l, r].
+    // Fills row rowIndex of Part I's table: dp[rowIndex][j] is the best sum using
+    // exactly j disjoint subarrays fully inside nums[0..rowIndex), each of length
+    // in [minLength, maxLength].
     private static void FillRowForEachCount(
-        long[][] dp, long[] prefix, int i, (int MaxCount, int MinLength, int MaxLength) limits)
+        long[][] dp, long[] prefix, int rowIndex, (int MaxCount, int MinLength, int MaxLength) limits)
     {
         for (var j = 1; j <= limits.MaxCount; j++)
         {
-            var best = dp[i - 1][j];
+            var best = dp[rowIndex - 1][j];
 
-            for (var length = limits.MinLength; length <= limits.MaxLength && length <= i; length++)
+            for (var length = limits.MinLength;
+                length <= limits.MaxLength && length <= rowIndex;
+                length++)
             {
-                var start = i - length;
+                var start = rowIndex - length;
 
                 if (dp[start][j - 1] != Infeasible)
                 {
-                    best = Math.Max(best, dp[start][j - 1] + prefix[i] - prefix[start]);
+                    best = Math.Max(best, dp[start][j - 1] + prefix[rowIndex] - prefix[start]);
                 }
             }
 
-            dp[i][j] = best;
+            dp[rowIndex][j] = best;
         }
     }
 
-    // The answer is the best "exactly j subarrays" entry across the whole j = 1..m
-    // range, since using fewer than m subarrays is always allowed.
-    private static long BestOverAtLeastOneSubarray(long[][] dp, int n, int m)
+    // The answer is the best "exactly j subarrays" entry across the whole
+    // j = 1..maxSubarrayCount range, since using fewer than maxSubarrayCount
+    // subarrays is always allowed.
+    private static long BestOverAtLeastOneSubarray(long[][] dp, int elementCount, int maxSubarrayCount)
     {
         var answer = Infeasible;
 
-        for (var j = 1; j <= m; j++)
+        for (var j = 1; j <= maxSubarrayCount; j++)
         {
-            answer = Math.Max(answer, dp[n][j]);
+            answer = Math.Max(answer, dp[elementCount][j]);
         }
 
         return answer;
@@ -108,7 +113,8 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     // the smallest lambda clearing the "<= m" binary search always lands in
     // that set - see PenalizedOptimum's own comment for the tie-break this
     // depends on.
-    public static long MaximumSumByLagrangianRelaxation(int[] nums, int m, int l, int r)
+    public static long MaximumSumByLagrangianRelaxation(
+        int[] nums, int maxSubarrayCount, int minLength, int maxLength)
     {
         var lowLambda = 0L;
         var highLambda = PenaltyBound;
@@ -116,9 +122,9 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
         while (lowLambda < highLambda)
         {
             var midLambda = lowLambda + ((highLambda - lowLambda) / 2);
-            var (_, count) = PenalizedOptimum(nums, l, r, midLambda);
+            var (_, count) = PenalizedOptimum(nums, minLength, maxLength, midLambda);
 
-            if (count <= m)
+            if (count <= maxSubarrayCount)
             {
                 highLambda = midLambda;
             }
@@ -128,9 +134,9 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
             }
         }
 
-        var (value, _) = PenalizedOptimum(nums, l, r, lowLambda);
+        var (value, _) = PenalizedOptimum(nums, minLength, maxLength, lowLambda);
 
-        return value + (lowLambda * m);
+        return value + (lowLambda * maxSubarrayCount);
     }
 
     // best[i]: the unconstrained (any count, including zero) best (value, count)
@@ -146,25 +152,26 @@ internal static class MaximumSumOfMNonOverlappingSubarraysIISolution
     // the search's boundary lambda is correct regardless of which tied count
     // wins a given tie - only the count needs a consistent rule to keep the
     // search monotonic.
-    private static (long Value, long Count) PenalizedOptimum(int[] nums, int l, int r, long lambda)
+    private static (long Value, long Count) PenalizedOptimum(
+        int[] nums, int minLength, int maxLength, long lambda)
     {
-        var n = nums.Length;
+        var elementCount = nums.Length;
         var prefix = BuildPrefixSums(nums);
-        var best = new (long Value, long Count)[n + 1];
-        var bestNonEmpty = new (long Value, long Count)[n + 1];
+        var best = new (long Value, long Count)[elementCount + 1];
+        var bestNonEmpty = new (long Value, long Count)[elementCount + 1];
         Array.Fill(bestNonEmpty, (Infeasible, long.MaxValue));
         best[0] = (0, 0);
 
         var deque = new MonotonicDeque();
         var tables = (Best: best, NonEmpty: bestNonEmpty);
 
-        for (var i = 1; i <= n; i++)
+        for (var index = 1; index <= elementCount; index++)
         {
-            RefreshPenaltyWindow(prefix, best, deque, (i, l, r));
-            AdvancePenalizedTables(prefix, tables, deque, (i, lambda));
+            RefreshPenaltyWindow(prefix, best, deque, (index, minLength, maxLength));
+            AdvancePenalizedTables(prefix, tables, deque, (index, lambda));
         }
 
-        return bestNonEmpty[n];
+        return bestNonEmpty[elementCount];
     }
 
     // Slide the window of starts a subarray ending at window.Index may use: i - l

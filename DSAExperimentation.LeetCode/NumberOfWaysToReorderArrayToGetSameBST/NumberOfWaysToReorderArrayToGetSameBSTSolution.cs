@@ -26,14 +26,14 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
     // re-scanned into a fresh "less than root" / "greater than root" List<int>, and
     // the two halves recurse. Deliberately BCL-only - it is the arm the composed
     // solution below has to justify itself against.
-    public static int NumOfWaysByListSplitting(int[] nums) => ExcludeOriginal(SplitWays(nums));
+    public static int CountWaysByListSplitting(int[] nums) => ExcludeOriginal(SplitWays(nums));
 
     // Build the actual BST via this repo's own BinarySearchTree<int>.Insert, then
     // fold it bottom-up with this repo's own TreeFold/IFoldAlgebra catamorphism -
     // the same machinery TreeMetrics closes over BinaryTreeNode<int> for - so every
     // node's (size, ways) is computed in one walk rather than by re-partitioning the
     // input at every level.
-    public static int NumOfWaysByTreeFold(int[] nums)
+    public static int CountWaysByTreeFold(int[] nums)
     {
         var tree = new BinarySearchTree<int>();
 
@@ -96,7 +96,8 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
     private static int ExcludeOriginal(long ways) =>
         (int)((ways - 1 + ModularArithmetic.Modulo) % ModularArithmetic.Modulo);
 
-    private static long Choose(int n, int k) => Memoizer.Memoize<(int N, int K), long>((n, k), new PascalRow());
+    private static long Choose(int itemCount, int pickCount) =>
+        Memoizer.Memoize<(int N, int K), long>((itemCount, pickCount), new PascalRow());
 
     // Per node: total child-subtree size, and the ways to interleave every child's
     // already-counted insertion sequence back into one sequence for this node - a

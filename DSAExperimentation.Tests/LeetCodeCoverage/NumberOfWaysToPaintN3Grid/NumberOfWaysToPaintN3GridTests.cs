@@ -20,11 +20,11 @@ public sealed class NumberOfWaysToPaintN3GridTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumOfWaysByTabulation_LeetCodeExamples_ReturnsColoringCount(int n, long expected) =>
-        Assert.Equal(expected, NumberOfWaysToPaintN3GridSolution.NumOfWaysByTabulation(n));
+    public void CountWaysByTabulation_LeetCodeExamples_ReturnsColoringCount(int rowCount, long expected) =>
+        Assert.Equal(expected, NumberOfWaysToPaintN3GridSolution.CountWaysByTabulation(rowCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void NumOfWaysByMemoizedRecurrence_LeetCodeExamples_ReturnsColoringCount(int n, long expected) =>
-        Assert.Equal(expected, NumberOfWaysToPaintN3GridSolution.NumOfWaysByMemoizedRecurrence(n));
+    public void CountWaysByMemoizedRecurrence_LeetCodeExamples_ReturnsColoringCount(int rowCount, long expected) =>
+        Assert.Equal(expected, NumberOfWaysToPaintN3GridSolution.CountWaysByMemoizedRecurrence(rowCount));
 }

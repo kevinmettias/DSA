@@ -4,15 +4,15 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
 
 // LeetCode 3123. Find Edges in Shortest Paths: an undirected weighted graph of
-// n nodes (0..n-1, possibly disconnected). For every edge, report whether it
-// lies on at least one shortest path from node 0 to node n-1.
+// nodeCount nodes, 0-indexed and possibly disconnected. For every edge, report
+// whether it lies on at least one shortest path from node 0 to the last node.
 //
 // An edge (u, v, w) lies on some shortest 0->(n-1) path exactly when
 // dist(0, u) + w + dist(v, n-1) equals the overall shortest distance, or the
 // same check with u and v swapped (a shortest path may cross the edge in
-// either direction). Running one Dijkstra from node 0 and one from node n-1
-// gives every distance either check needs, instead of a fresh search per
-// edge. When 0 and n-1 are not connected at all, no edge belongs to any
+// either direction). Running one Dijkstra from node 0 and one from the last
+// node gives every distance either check needs, instead of a fresh search per
+// edge. When nodes 0 and n-1 are not connected at all, no edge belongs to any
 // shortest path, so the answer is all false.
 internal static class FindEdgesInShortestPathsSolution
 {
@@ -20,20 +20,20 @@ internal static class FindEdgesInShortestPathsSolution
     // Dijkstra, run once from each end - deliberately without this repo's own
     // graph engine, the arm the composed strategy below has to justify itself
     // against.
-    public static bool[] AnswerByBruteForceDijkstra(int n, int[][] edges)
+    public static bool[] AnswerByBruteForceDijkstra(int nodeCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(nodeCount, edges);
         var distFromStart = Dijkstra(adjacency, 0);
-        var distFromEnd = Dijkstra(adjacency, n - 1);
+        var distFromEnd = Dijkstra(adjacency, nodeCount - 1);
 
         return BuildAnswer(edges, distFromStart, distFromEnd);
     }
 
-    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int n, int[][] edges)
+    private static List<(int Neighbor, long Weight)>[] BuildAdjacency(int nodeCount, int[][] edges)
     {
-        var adjacency = new List<(int Neighbor, long Weight)>[n];
+        var adjacency = new List<(int Neighbor, long Weight)>[nodeCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < nodeCount; i++)
         {
             adjacency[i] = [];
         }
@@ -100,14 +100,14 @@ internal static class FindEdgesInShortestPathsSolution
             var edge = edges[i];
             var (a, b, w) = (edge[0], edge[1], (long)edge[2]);
 
-            answer[i] = OnShortestPath(distFromStart, distFromEnd, (a, b, w), shortest)
-                || OnShortestPath(distFromStart, distFromEnd, (b, a, w), shortest);
+            answer[i] = IsOnShortestPath(distFromStart, distFromEnd, (a, b, w), shortest)
+                || IsOnShortestPath(distFromStart, distFromEnd, (b, a, w), shortest);
         }
 
         return answer;
     }
 
-    private static bool OnShortestPath(
+    private static bool IsOnShortestPath(
         long[] distFromStart, long[] distFromEnd, (int U, int V, long W) edge, long shortest)
         => distFromStart[edge.U] != long.MaxValue && distFromEnd[edge.V] != long.MaxValue
             && distFromStart[edge.U] + edge.W + distFromEnd[edge.V] == shortest;
@@ -118,9 +118,9 @@ internal static class FindEdgesInShortestPathsSolution
     // n-1) plus a per-edge lookup - the same "search once, answer many
     // queries" composition OpenTheLockSolution's MinTurnsByReduceGraph uses
     // for its own graph-reduce arm.
-    public static bool[] AnswerByShortestPathDijkstra(int n, int[][] edges)
+    public static bool[] AnswerByShortestPathDijkstra(int nodeCount, int[][] edges)
     {
-        var graph = EdgeGraph.Build(n, edges);
+        var graph = EdgeGraph.Build(nodeCount, edges);
 
         return AnswerByShortestPathDijkstra(graph);
     }
@@ -158,14 +158,14 @@ internal static class FindEdgesInShortestPathsSolution
             var edge = graph.Edges[i];
             var (a, b, w) = (edge[0], edge[1], (long)edge[2]);
 
-            answer[i] = OnShortestPath(nodes, distances, (a, b, w), shortest)
-                || OnShortestPath(nodes, distances, (b, a, w), shortest);
+            answer[i] = IsOnShortestPath(nodes, distances, (a, b, w), shortest)
+                || IsOnShortestPath(nodes, distances, (b, a, w), shortest);
         }
 
         return answer;
     }
 
-    private static bool OnShortestPath(
+    private static bool IsOnShortestPath(
         EdgeGraphNode[] nodes,
         (Dictionary<EdgeGraphNode, long> FromStart, Dictionary<EdgeGraphNode, long> FromEnd) distances,
         (int U, int V, long W) edge,

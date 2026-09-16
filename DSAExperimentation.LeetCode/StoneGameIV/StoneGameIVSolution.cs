@@ -18,11 +18,11 @@ internal static class StoneGameIVSolution
     // square-removal sequences that reach it. Deliberately written with nothing but
     // the call stack - it is the arm the memoized strategy has to justify itself
     // against.
-    public static bool AliceWinsByUnmemoizedRecursion(int n)
+    public static bool CanAliceWinByUnmemoizedRecursion(int stoneCount)
     {
-        for (var square = 1; square * square <= n; square++)
+        for (var square = 1; square * square <= stoneCount; square++)
         {
-            if (!AliceWinsByUnmemoizedRecursion(n - (square * square)))
+            if (!CanAliceWinByUnmemoizedRecursion(stoneCount - (square * square)))
             {
                 return true;
             }
@@ -34,8 +34,8 @@ internal static class StoneGameIVSolution
     // The same recurrence over this repo's own Memoizer, which caches each remaining
     // count the first time it is resolved, collapsing the exponential tree to one
     // evaluation per distinct count.
-    public static bool AliceWinsByMemoizedRecursion(int n)
-        => Memoizer.Memoize<int, bool>(n, new WinFromSquareRemoval());
+    public static bool CanAliceWinByMemoizedRecursion(int stoneCount)
+        => Memoizer.Memoize<int, bool>(stoneCount, new WinFromSquareRemoval());
 
     // The recurrence, as a named type: the mover wins from `state` stones exactly when
     // some square-sized removal leaves the opponent losing, and loses once no square

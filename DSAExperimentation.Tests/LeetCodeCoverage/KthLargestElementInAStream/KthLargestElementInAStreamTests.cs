@@ -17,9 +17,9 @@ public sealed class KthLargestElementInAStreamTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySizeKMinHeap_LeetCodeExampleSequence_ReturnsRunningKthLargest(
-        int k, int[] nums, int[] adds, int[] expected)
+        int kthRank, int[] nums, int[] adds, int[] expected)
     {
-        var stream = KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(k, nums);
+        var stream = KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(kthRank, nums);
 
         RunScript(stream, adds, expected);
     }
@@ -27,9 +27,9 @@ public sealed class KthLargestElementInAStreamTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySortOnEveryAdd_LeetCodeExampleSequence_ReturnsRunningKthLargest(
-        int k, int[] nums, int[] adds, int[] expected)
+        int kthRank, int[] nums, int[] adds, int[] expected)
     {
-        var stream = KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(k, nums);
+        var stream = KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(kthRank, nums);
 
         RunScript(stream, adds, expected);
     }

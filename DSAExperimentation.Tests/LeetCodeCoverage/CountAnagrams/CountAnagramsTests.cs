@@ -21,17 +21,17 @@ public sealed class CountAnagramsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountAnagramsByBruteForce_LeetCodeExamples_ReturnsDistinctPermutationProduct(string s, long expected)
+    public void CountAnagramsByBruteForce_LeetCodeExamples_ReturnsDistinctPermutationProduct(string sentence, long expected)
     {
-        var actual = CountAnagramsSolution.CountAnagramsByBruteForce(s);
+        var actual = CountAnagramsSolution.CountAnagramsByBruteForce(sentence);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountAnagramsByModularFactorial_LeetCodeExamples_ReturnsDistinctPermutationProduct(string s, long expected)
+    public void CountAnagramsByModularFactorial_LeetCodeExamples_ReturnsDistinctPermutationProduct(string sentence, long expected)
     {
-        var actual = CountAnagramsSolution.CountAnagramsByModularFactorial(s);
+        var actual = CountAnagramsSolution.CountAnagramsByModularFactorial(sentence);
         Assert.Equal(expected, actual);
     }
 }

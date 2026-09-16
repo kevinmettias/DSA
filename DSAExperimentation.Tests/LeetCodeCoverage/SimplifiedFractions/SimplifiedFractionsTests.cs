@@ -3,8 +3,9 @@ using DSAExperimentation.LeetCode.SimplifiedFractions;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SimplifiedFractions;
 
 // Harness only. Both strategies are SimplifiedFractionsSolution's - this file pins
-// them to LeetCode's published examples, including n = 1 (no proper fraction
-// exists at all) and n = 4, whose expected list omits the reducible 2/4.
+// them to LeetCode's published examples, including denominatorLimit = 1 (no proper
+// fraction exists at all) and denominatorLimit = 4, whose expected list omits the
+// reducible 2/4.
 public sealed class SimplifiedFractionsTests
 {
     public static TheoryData<int, string[]> Examples =>
@@ -19,12 +20,12 @@ public sealed class SimplifiedFractionsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void ListFractionsByTrialDivisionGcd_LeetCodeExamples_ReturnsEveryCoprimePairExactlyOnce(
-        int n, string[] expected) =>
-        Assert.Equal(expected, SimplifiedFractionsSolution.ListFractionsByTrialDivisionGcd(n));
+        int denominatorLimit, string[] expected) =>
+        Assert.Equal(expected, SimplifiedFractionsSolution.ListFractionsByTrialDivisionGcd(denominatorLimit));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ListFractionsByEuclideanGcd_LeetCodeExamples_ReturnsEveryCoprimePairExactlyOnce(
-        int n, string[] expected) =>
-        Assert.Equal(expected, SimplifiedFractionsSolution.ListFractionsByEuclideanGcd(n));
+        int denominatorLimit, string[] expected) =>
+        Assert.Equal(expected, SimplifiedFractionsSolution.ListFractionsByEuclideanGcd(denominatorLimit));
 }

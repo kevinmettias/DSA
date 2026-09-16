@@ -30,15 +30,15 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
     private const int BobOnlyEdgeType = 2;
     private const int BothOwnersEdgeType = 3;
 
-    // LeetCode labels nodes 1..n; both strategies below index from 0.
+    // LeetCode labels its nodes from 1 upward; both strategies below index from 0.
     private const int FirstNodeLabel = 1;
 
     // The textbook answer: adjacency lists plus a BFS flood fill per connectivity
     // question - what you would write without a union-find. BCL containers only.
-    public static int MaxNumEdgesToRemoveByFloodFill(int n, int[][] edges)
+    public static int MaxNumberOfEdgesToRemoveByFloodFill(int nodeCount, int[][] edges)
     {
-        var alice = BuildEmptyAdjacency(n);
-        var bob = BuildEmptyAdjacency(n);
+        var alice = BuildEmptyAdjacency(nodeCount);
+        var bob = BuildEmptyAdjacency(nodeCount);
 
         var usedEdges = ConnectSharedEdges(alice, bob, edges);
         usedEdges += ConnectOwnEdgesForBoth(alice, bob, edges);
@@ -48,11 +48,11 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
             : LeetCodeAnswer.None;
     }
 
-    private static List<int>[] BuildEmptyAdjacency(int n)
+    private static List<int>[] BuildEmptyAdjacency(int nodeCount)
     {
-        var adjacency = new List<int>[n];
+        var adjacency = new List<int>[nodeCount];
 
-        for (var node = 0; node < n; node++)
+        for (var node = 0; node < nodeCount; node++)
         {
             adjacency[node] = [];
         }
@@ -113,10 +113,10 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
     private static int ConnectOwnEdgesForBoth(List<int>[] alice, List<int>[] bob, int[][] edges) =>
         ConnectOwnEdges(alice, edges, AliceOnlyEdgeType) + ConnectOwnEdges(bob, edges, BobOnlyEdgeType);
 
-    private static void Connect(List<int>[] adjacency, int u, int v)
+    private static void Connect(List<int>[] adjacency, int firstEndpoint, int secondEndpoint)
     {
-        adjacency[u].Add(v);
-        adjacency[v].Add(u);
+        adjacency[firstEndpoint].Add(secondEndpoint);
+        adjacency[secondEndpoint].Add(firstEndpoint);
     }
 
     private static bool CanReach(List<int>[] adjacency, int source, int target)
@@ -181,10 +181,10 @@ internal static class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution
     // This repo's own DisjointSet, one instance per traverser: the same greedy, with
     // every "already connected?" question answered in near-constant amortized time by
     // Find/IsConnected instead of a fresh graph walk.
-    public static int MaxNumEdgesToRemoveByDisjointSet(int n, int[][] edges)
+    public static int MaxNumberOfEdgesToRemoveByDisjointSet(int nodeCount, int[][] edges)
     {
-        var alice = new DisjointSet(n);
-        var bob = new DisjointSet(n);
+        var alice = new DisjointSet(nodeCount);
+        var bob = new DisjointSet(nodeCount);
 
         var usedEdges = UnionSharedEdges(alice, bob, edges);
         usedEdges += UnionOwnEdgesForBoth(alice, bob, edges);

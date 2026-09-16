@@ -21,11 +21,11 @@ public sealed class MinimumNumberOfMovesToMakePalindromeTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinMovesByListRemoveInsert_LeetCodeExamples_ReturnsMinimumAdjacentSwaps(string s, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfMovesToMakePalindromeSolution.MinMovesByListRemoveInsert(s));
+    public void MinMovesByListRemoveInsert_LeetCodeExamples_ReturnsMinimumAdjacentSwaps(string text, int expected) =>
+        Assert.Equal(expected, MinimumNumberOfMovesToMakePalindromeSolution.MinMovesByListRemoveInsert(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MinMovesByIndexedSequenceSwap_LeetCodeExamples_ReturnsMinimumAdjacentSwaps(string s, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfMovesToMakePalindromeSolution.MinMovesByIndexedSequenceSwap(s));
+    public void MinMovesByIndexedSequenceSwap_LeetCodeExamples_ReturnsMinimumAdjacentSwaps(string text, int expected) =>
+        Assert.Equal(expected, MinimumNumberOfMovesToMakePalindromeSolution.MinMovesByIndexedSequenceSwap(text));
 }

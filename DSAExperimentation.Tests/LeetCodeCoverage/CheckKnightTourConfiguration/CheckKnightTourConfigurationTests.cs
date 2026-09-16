@@ -106,19 +106,19 @@ public sealed class CheckKnightTourConfigurationTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckValidGridByBoardRescan_LeetCodeExamples_ReturnsWhetherTheTourIsValid(
+    public void IsValidGridByBoardRescan_LeetCodeExamples_ReturnsWhetherTheTourIsValid(
         KnightTourCase example) =>
         Assert.Equal(
             example.Expected,
-            CheckKnightTourConfigurationSolution.CheckValidGridByBoardRescan(example.Grid));
+            CheckKnightTourConfigurationSolution.IsValidGridByBoardRescan(example.Grid));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CheckValidGridByPositionLookup_LeetCodeExamples_ReturnsWhetherTheTourIsValid(
+    public void IsValidGridByPositionLookup_LeetCodeExamples_ReturnsWhetherTheTourIsValid(
         KnightTourCase example) =>
         Assert.Equal(
             example.Expected,
-            CheckKnightTourConfigurationSolution.CheckValidGridByPositionLookup(example.Grid));
+            CheckKnightTourConfigurationSolution.IsValidGridByPositionLookup(example.Grid));
 
     // One LeetCode example: the board and whether it holds a valid knight's tour. The
     // expected value is named at every construction site, so a row reads as the case

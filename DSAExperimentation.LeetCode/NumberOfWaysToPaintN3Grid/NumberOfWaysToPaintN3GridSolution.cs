@@ -32,12 +32,12 @@ internal static class NumberOfWaysToPaintN3GridSolution
     // The textbook answer: a bottom-up scan carrying (same, different) forward
     // in two locals. Deliberately written without this repo's primitives - it is
     // the arm the memoized strategy below has to justify itself against.
-    public static long NumOfWaysByTabulation(int n)
+    public static long CountWaysByTabulation(int rowCount)
     {
         var same = FirstRowPatternCount;
         var different = FirstRowPatternCount;
 
-        for (var row = SecondRow; row <= n; row++)
+        for (var row = SecondRow; row <= rowCount; row++)
         {
             var nextSame = ((SameFollowerWeight * same) + (DifferentFollowerWeight * different))
                 % ModularArithmetic.Modulo;
@@ -53,9 +53,9 @@ internal static class NumberOfWaysToPaintN3GridSolution
     // This repo's own top-down engine: Memoizer.Memoize caches each row's
     // (same, different) pair the first time it is reached, so the recurrence
     // reads as ordinary recursion with no hand-rolled cache dictionary.
-    public static long NumOfWaysByMemoizedRecurrence(int n)
+    public static long CountWaysByMemoizedRecurrence(int rowCount)
     {
-        var (same, different) = Memoizer.Memoize<int, (long Same, long Different)>(n, new RowPatternCounts());
+        var (same, different) = Memoizer.Memoize<int, (long Same, long Different)>(rowCount, new RowPatternCounts());
         return (same + different) % ModularArithmetic.Modulo;
     }
 

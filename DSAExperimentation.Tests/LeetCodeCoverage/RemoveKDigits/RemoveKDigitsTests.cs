@@ -18,9 +18,9 @@ public sealed class RemoveKDigitsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RemoveByRepeatedFirstDescentRemoval_ClassicExamples_ReturnsSmallestPossibleNumber(
-        string num, int k, string expected)
+        string num, int removalCount, string expected)
     {
-        var actual = RemoveKDigitsSolution.RemoveByRepeatedFirstDescentRemoval(num, k);
+        var actual = RemoveKDigitsSolution.RemoveByRepeatedFirstDescentRemoval(num, removalCount);
 
         Assert.Equal(expected, actual);
     }
@@ -28,9 +28,9 @@ public sealed class RemoveKDigitsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RemoveByMonotonicStackSweep_ClassicExamples_ReturnsSmallestPossibleNumber(
-        string num, int k, string expected)
+        string num, int removalCount, string expected)
     {
-        var actual = RemoveKDigitsSolution.RemoveByMonotonicStackSweep(num, k);
+        var actual = RemoveKDigitsSolution.RemoveByMonotonicStackSweep(num, removalCount);
 
         Assert.Equal(expected, actual);
     }

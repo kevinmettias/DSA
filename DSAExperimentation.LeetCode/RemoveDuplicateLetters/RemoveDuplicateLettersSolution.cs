@@ -22,18 +22,18 @@ internal static class RemoveDuplicateLettersSolution
     // letter stripped out. Deliberately written without this repo's
     // primitives - it is the arm the composed solution below has to justify
     // itself against.
-    public static string SmallestSubsequenceByRecursiveSplit(string s)
+    public static string SmallestSubsequenceByRecursiveSplit(string letters)
     {
-        if (s.Length == 0)
+        if (letters.Length == 0)
         {
             return string.Empty;
         }
 
-        var distinctInS = DistinctLetters(s);
+        var distinctInLetters = DistinctLetters(letters);
 
         for (var candidate = 0; candidate < AlphabetSize; candidate++)
         {
-            var placed = TryPlaceCandidate(s, distinctInS, candidate);
+            var placed = TryPlaceCandidate(letters, distinctInLetters, candidate);
 
             if (placed is not null)
             {
@@ -44,17 +44,17 @@ internal static class RemoveDuplicateLettersSolution
         return string.Empty;
     }
 
-    private static string? TryPlaceCandidate(string s, bool[] distinctInS, int candidate)
+    private static string? TryPlaceCandidate(string letters, bool[] distinctInLetters, int candidate)
     {
-        if (!distinctInS[candidate])
+        if (!distinctInLetters[candidate])
         {
             return null;
         }
 
         var c = (char)('a' + candidate);
-        var suffix = s[s.IndexOf(c)..];
+        var suffix = letters[letters.IndexOf(c)..];
 
-        if (!SameDistinctLetters(distinctInS, DistinctLetters(suffix)))
+        if (!HasSameDistinctLetters(distinctInLetters, DistinctLetters(suffix)))
         {
             return null;
         }
@@ -64,7 +64,7 @@ internal static class RemoveDuplicateLettersSolution
         return c + SmallestSubsequenceByRecursiveSplit(remainder);
     }
 
-    private static bool SameDistinctLetters(bool[] left, bool[] right)
+    private static bool HasSameDistinctLetters(bool[] left, bool[] right)
     {
         for (var i = 0; i < AlphabetSize; i++)
         {
@@ -81,39 +81,39 @@ internal static class RemoveDuplicateLettersSolution
     // skip a letter already placed, otherwise pop any larger letter still on
     // the stack that reappears later in the string, then push. Popping keeps
     // the candidate answer lexicographically smallest without ever rescanning.
-    public static string SmallestSubsequenceByStackAndSet(string s)
+    public static string SmallestSubsequenceByStackAndSet(string letters)
     {
         var lastOccurrence = new int[AlphabetSize];
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < letters.Length; i++)
         {
-            lastOccurrence[s[i] - 'a'] = i;
+            lastOccurrence[letters[i] - 'a'] = i;
         }
 
         var candidate = new CandidateStack();
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < letters.Length; i++)
         {
-            AppendCandidateLetter(candidate, lastOccurrence, s[i], i);
+            AppendCandidateLetter(candidate, lastOccurrence, letters[i], i);
         }
 
         return DrainToAnswer(candidate);
     }
 
-    private static void AppendCandidateLetter(CandidateStack candidate, int[] lastOccurrence, char c, int index)
+    private static void AppendCandidateLetter(CandidateStack candidate, int[] lastOccurrence, char letter, int index)
     {
-        if (candidate.OnStack.Has(c))
+        if (candidate.OnStack.Has(letter))
         {
             return;
         }
 
-        while (candidate.Stack.TryPeek(out var top) && ShouldPopTop(top, c, lastOccurrence, index))
+        while (candidate.Stack.TryPeek(out var top) && ShouldPopTop(top, letter, lastOccurrence, index))
         {
             candidate.Stack.TryPop(out _);
             candidate.OnStack.TryRemove(top);
         }
 
-        candidate.Stack.Push(c);
-        candidate.OnStack.TryAdd(c);
+        candidate.Stack.Push(letter);
+        candidate.OnStack.TryAdd(letter);
     }
 
     // The letter on top is larger than the one arriving and still appears later in the
@@ -134,10 +134,10 @@ internal static class RemoveDuplicateLettersSolution
         return new string(result);
     }
 
-    private static bool[] DistinctLetters(string s)
+    private static bool[] DistinctLetters(string letters)
     {
         var seen = new bool[AlphabetSize];
-        foreach (var c in s)
+        foreach (var c in letters)
         {
             seen[c - 'a'] = true;
         }

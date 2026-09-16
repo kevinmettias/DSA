@@ -23,9 +23,9 @@ public sealed class PalindromePartitioningIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinChangesByNaiveRecursion_LeetCodeExamples_ReturnsMinimumCharacterChanges(
-        string s, int k, int expected)
+        string text, int partitionCount, int expected)
     {
-        var actual = PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(s, k);
+        var actual = PalindromePartitioningIIISolution.MinChangesByNaiveRecursion(text, partitionCount);
 
         Assert.Equal(expected, actual);
     }
@@ -33,9 +33,9 @@ public sealed class PalindromePartitioningIIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinChangesByMemoizedRecurrence_LeetCodeExamples_ReturnsMinimumCharacterChanges(
-        string s, int k, int expected)
+        string text, int partitionCount, int expected)
     {
-        var actual = PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(s, k);
+        var actual = PalindromePartitioningIIISolution.MinChangesByMemoizedRecurrence(text, partitionCount);
 
         Assert.Equal(expected, actual);
     }

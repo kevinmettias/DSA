@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AllPossibleFullBinaryTrees;
 // Harness only: both strategies live in AllPossibleFullBinaryTreesSolution. The
 // memoized arm was previously benchmark-only and unasserted - it shares subtree
 // objects across parent splits, so the odd counts here pin both the Catalan result
-// count and that every returned tree is still full with exactly n nodes.
+// count and that every returned tree is still full with exactly nodeCount nodes.
 public sealed class AllPossibleFullBinaryTreesTests
 {
     public static TheoryData<int, int> Examples =>
@@ -24,42 +24,43 @@ public sealed class AllPossibleFullBinaryTreesTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AllPossibleFbtByPlainRecursion_LeetCodeExamples_ReturnsEveryFullBinaryTreeOfThatSize(
-        int n, int expectedCount) =>
+    public void AllPossibleFullBinaryTreesByPlainRecursion_LeetCodeExamples_ReturnsEveryFullBinaryTreeOfThatSize(
+        int nodeCount, int expectedCount) =>
         AssertAllFullWithNodeCount(
-            AllPossibleFullBinaryTreesSolution.AllPossibleFbtByPlainRecursion(n), n, expectedCount);
+            AllPossibleFullBinaryTreesSolution.AllPossibleFullBinaryTreesByPlainRecursion(nodeCount), nodeCount, expectedCount);
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AllPossibleFbtByMemoizedNodeCount_LeetCodeExamples_ReturnsEveryFullBinaryTreeOfThatSize(
-        int n, int expectedCount) =>
+    public void AllPossibleFullBinaryTreesByMemoizedNodeCount_LeetCodeExamples_ReturnsEveryFullBinaryTreeOfThatSize(
+        int nodeCount, int expectedCount) =>
         AssertAllFullWithNodeCount(
-            AllPossibleFullBinaryTreesSolution.AllPossibleFbtByMemoizedNodeCount(n), n, expectedCount);
+            AllPossibleFullBinaryTreesSolution.AllPossibleFullBinaryTreesByMemoizedNodeCount(nodeCount), nodeCount, expectedCount);
 
     [Fact]
-    public void AllPossibleFbtByPlainRecursion_SingleNode_ReturnsOneLeaf() =>
-        AssertSingleLeafTree(AllPossibleFullBinaryTreesSolution.AllPossibleFbtByPlainRecursion(1));
+    public void AllPossibleFullBinaryTreesByPlainRecursion_SingleNode_ReturnsOneLeaf() =>
+        AssertSingleLeafTree(AllPossibleFullBinaryTreesSolution.AllPossibleFullBinaryTreesByPlainRecursion(1));
 
     [Fact]
-    public void AllPossibleFbtByMemoizedNodeCount_SingleNode_ReturnsOneLeaf() =>
-        AssertSingleLeafTree(AllPossibleFullBinaryTreesSolution.AllPossibleFbtByMemoizedNodeCount(1));
+    public void AllPossibleFullBinaryTreesByMemoizedNodeCount_SingleNode_ReturnsOneLeaf() =>
+        AssertSingleLeafTree(AllPossibleFullBinaryTreesSolution.AllPossibleFullBinaryTreesByMemoizedNodeCount(1));
 
     private static void AssertAllFullWithNodeCount(
-        List<BinaryTreeNode<int>?> trees, int n, int expectedCount)
+        List<BinaryTreeNode<int>?> trees, int nodeCount, int expectedCount)
     {
         Assert.Equal(expectedCount, trees.Count);
         Assert.All(trees, tree =>
         {
-            Assert.Equal(n, CountNodes(tree));
+            Assert.Equal(nodeCount, CountNodes(tree));
             Assert.True(IsFull(tree));
         });
     }
 
     private static void AssertSingleLeafTree(List<BinaryTreeNode<int>?> trees)
     {
-        // n = 1 is the recurrence's base case, which lists the leaf it builds, and the
-        // solution reports "no full binary tree of this size" as an empty list (every
-        // even n above) rather than as a null entry - so the one entry here is a tree.
+        // nodeCount = 1 is the recurrence's base case, which lists the leaf it builds,
+        // and the solution reports "no full binary tree of this size" as an empty list
+        // (every even nodeCount above) rather than as a null entry - so the one entry
+        // here is a tree.
         // IsType asks for it instead of promising it.
         var tree = Assert.IsType<BinaryTreeNode<int>>(Assert.Single(trees));
 

@@ -2,11 +2,12 @@ using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 
 namespace DSAExperimentation.LeetCode.CountSubtreesWithMaxDistanceBetweenCities;
 
-// LeetCode 1617. Count Subtrees With Max Distance Between Cities: for d = 1..n-1,
-// how many subsets of the cities induce a connected subtree whose two farthest
-// cities are exactly d apart.
+// LeetCode 1617. Count Subtrees With Max Distance Between Cities: for
+// d = 1..cityCount - 1, how many subsets of the cities induce a connected subtree
+// whose two farthest cities are exactly d apart.
 //
-// n <= 15, so every city subset is a bitmask and both strategies try all of them.
+// cityCount <= 15, so every city subset is a bitmask and both strategies try all
+// of them.
 // A mask is a valid subtree iff a BFS confined to the mask reaches every city in
 // it; the two strategies differ only in how many BFS passes they spend measuring
 // that mask's diameter - one per member city (baseline) versus the classic two
@@ -33,9 +34,9 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
     // that leaves one of its own cities unreached is not a subtree. Deliberately
     // written with BCL collections only; it is the arm the double-BFS strategy below
     // has to justify itself against.
-    public static int[] CountSubtreesByAllPairsBfs(int n, int[][] edges)
+    public static int[] CountSubtreesByAllPairsBfs(int cityCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(cityCount, edges);
 
         return CountSubtreesByAllPairsBfs(adjacency);
     }
@@ -47,9 +48,9 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
     // passes instead of one per member city. The frontier is this repo's own
     // Queue<int>, the same adjacency-list-plus-Queue shape MinimumHeightTreesSolution
     // uses for its own edge-list search.
-    public static int[] CountSubtreesByDoubleBfs(int n, int[][] edges)
+    public static int[] CountSubtreesByDoubleBfs(int cityCount, int[][] edges)
     {
-        var adjacency = BuildAdjacency(n, edges);
+        var adjacency = BuildAdjacency(cityCount, edges);
 
         return CountSubtreesByDoubleBfs(adjacency);
     }
@@ -68,10 +69,10 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
 
     private static int[] CountSubtrees(List<int>[] adjacency, IDiameterStrategy computeDiameter)
     {
-        var n = adjacency.Length;
-        var counts = new int[n - 1];
+        var cityCount = adjacency.Length;
+        var counts = new int[cityCount - 1];
 
-        for (var mask = 1; mask < (1 << n); mask++)
+        for (var mask = 1; mask < (1 << cityCount); mask++)
         {
             if (PopCount(mask) < MinSubtreeCityCount)
             {
@@ -258,22 +259,22 @@ internal static class CountSubtreesWithMaxDistanceBetweenCitiesSolution
         return distance;
     }
 
-    private static int[] NewDistanceArray(int n, int start)
+    private static int[] NewDistanceArray(int cityCount, int start)
     {
-        var distance = new int[n];
+        var distance = new int[cityCount];
         Array.Fill(distance, Unreached);
         distance[start] = 0;
 
         return distance;
     }
 
-    // LeetCode numbers the cities 1..n and the edge list references them directly,
-    // so each endpoint drops by one to index the adjacency array.
-    private static List<int>[] BuildAdjacency(int n, int[][] edges)
+    // LeetCode numbers the cities 1..cityCount and the edge list references them
+    // directly, so each endpoint drops by one to index the adjacency array.
+    private static List<int>[] BuildAdjacency(int cityCount, int[][] edges)
     {
-        var adjacency = new List<int>[n];
+        var adjacency = new List<int>[cityCount];
 
-        for (var i = 0; i < n; i++)
+        for (var i = 0; i < cityCount; i++)
         {
             adjacency[i] = [];
         }

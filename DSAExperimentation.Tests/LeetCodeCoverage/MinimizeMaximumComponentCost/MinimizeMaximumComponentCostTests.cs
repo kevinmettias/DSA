@@ -17,9 +17,9 @@ public sealed class MinimizeMaximumComponentCostTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByUnionFind_LeetCodeExamples_ReturnsMinimizedMaximumComponentCost(
-        int n, int[][] edges, int k, int expected)
+        int nodeCount, int[][] edges, int maxComponents, int expected)
     {
-        var actual = MinimizeMaximumComponentCostSolution.MinCostByUnionFind(n, edges, k);
+        var actual = MinimizeMaximumComponentCostSolution.MinCostByUnionFind(nodeCount, edges, maxComponents);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class MinimizeMaximumComponentCostTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinCostByKruskalMst_LeetCodeExamples_ReturnsMinimizedMaximumComponentCost(
-        int n, int[][] edges, int k, int expected)
+        int nodeCount, int[][] edges, int maxComponents, int expected)
     {
-        var actual = MinimizeMaximumComponentCostSolution.MinCostByKruskalMst(n, edges, k);
+        var actual = MinimizeMaximumComponentCostSolution.MinCostByKruskalMst(nodeCount, edges, maxComponents);
 
         Assert.Equal(expected, actual);
     }

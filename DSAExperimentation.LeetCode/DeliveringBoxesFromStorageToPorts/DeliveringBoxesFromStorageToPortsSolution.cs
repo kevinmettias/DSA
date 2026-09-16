@@ -100,22 +100,23 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
             return window;
         }
 
-        public void AdvanceAndComputeTrip(int i, int[] dp)
+        public void AdvanceAndComputeTrip(int deliveredCount, int[] dp)
         {
-            AdvanceLeftBound(i);
-            dp[i] = ComputeTripCost(i, dp);
-            MaintainBackWindow(i, dp);
+            AdvanceLeftBound(deliveredCount);
+            dp[deliveredCount] = ComputeTripCost(deliveredCount, dp);
+            MaintainBackWindow(deliveredCount, dp);
         }
 
-        private void AdvanceLeftBound(int i)
+        private void AdvanceLeftBound(int deliveredCount)
         {
-            while (i - _left > maxBoxes || schedule.WeightOfFirst(i) - schedule.WeightOfFirst(_left) > maxWeight)
+            while (deliveredCount - _left > maxBoxes
+                || schedule.WeightOfFirst(deliveredCount) - schedule.WeightOfFirst(_left) > maxWeight)
             {
                 _left++;
             }
         }
 
-        private int ComputeTripCost(int i, int[] dp)
+        private int ComputeTripCost(int deliveredCount, int[] dp)
         {
             while (_window.TryPeekFront(out var frontIndex) && frontIndex < _left)
             {
@@ -124,26 +125,26 @@ internal static class DeliveringBoxesFromStorageToPortsSolution
 
             _window.TryPeekFront(out var bestIndex);
 
-            return TripBaseCost + schedule.PortSwitchesAmongFirst(i) + CarryOver(bestIndex, dp);
+            return TripBaseCost + schedule.PortSwitchesAmongFirst(deliveredCount) + CarryOver(bestIndex, dp);
         }
 
         // The last position has no successor to split at, and its switch prefix
         // would read past the end of the schedule.
-        private void MaintainBackWindow(int i, int[] dp)
+        private void MaintainBackWindow(int deliveredCount, int[] dp)
         {
-            if (i == dp.Length - 1)
+            if (deliveredCount == dp.Length - 1)
             {
                 return;
             }
 
-            var candidate = CarryOver(i, dp);
+            var candidate = CarryOver(deliveredCount, dp);
 
             while (_window.TryPeekBack(out var backIndex) && CarryOver(backIndex, dp) >= candidate)
             {
                 _window.TryPopBack(out _);
             }
 
-            _window.PushBack(i);
+            _window.PushBack(deliveredCount);
         }
 
         private int CarryOver(int index, int[] dp) => dp[index] - schedule.PortSwitchesAmongFirst(index + 1);

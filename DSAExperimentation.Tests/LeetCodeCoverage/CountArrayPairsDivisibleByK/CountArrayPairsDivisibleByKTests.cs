@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountArrayPairsDivisibleByK;
 // Harness only. Both the pairwise scan and the HashMap gcd-grouping are
 // CountArrayPairsDivisibleByKSolution's; this file pins them to LeetCode's published
 // examples plus the cases the grouping has to get right on its own - every value
-// landing in one group, k = 1 so every pair qualifies, and a mix where the qualifying
+// landing in one group, divisor = 1 so every pair qualifies, and a mix where the qualifying
 // pairs all straddle two different groups.
 public sealed class CountArrayPairsDivisibleByKTests
 {
@@ -24,9 +24,9 @@ public sealed class CountArrayPairsDivisibleByKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByBruteForce_LeetCodeExamples_ReturnsDivisiblePairCount(
-        int[] nums, int k, long expected)
+        int[] nums, int divisor, long expected)
     {
-        var actual = CountArrayPairsDivisibleByKSolution.CountPairsByBruteForce(nums, k);
+        var actual = CountArrayPairsDivisibleByKSolution.CountPairsByBruteForce(nums, divisor);
 
         Assert.Equal(expected, actual);
     }
@@ -34,9 +34,9 @@ public sealed class CountArrayPairsDivisibleByKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPairsByGcdGroups_LeetCodeExamples_ReturnsDivisiblePairCount(
-        int[] nums, int k, long expected)
+        int[] nums, int divisor, long expected)
     {
-        var actual = CountArrayPairsDivisibleByKSolution.CountPairsByGcdGroups(nums, k);
+        var actual = CountArrayPairsDivisibleByKSolution.CountPairsByGcdGroups(nums, divisor);
 
         Assert.Equal(expected, actual);
     }

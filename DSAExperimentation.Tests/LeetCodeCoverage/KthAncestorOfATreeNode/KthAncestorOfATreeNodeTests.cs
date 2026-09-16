@@ -46,9 +46,9 @@ public sealed class KthAncestorOfATreeNodeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetKthAncestorByParentWalk_LeetCodeExamples_ReturnsAncestorOrMinusOne(
-        int[] parent, int node, int k, int expected)
+        int[] parent, int node, int ancestorSteps, int expected)
     {
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(parent, node, k);
+        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(parent, node, ancestorSteps);
 
         Assert.Equal(expected, ancestor);
     }
@@ -56,9 +56,9 @@ public sealed class KthAncestorOfATreeNodeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GetKthAncestorByAncestorChains_LeetCodeExamples_ReturnsAncestorOrMinusOne(
-        int[] parent, int node, int k, int expected)
+        int[] parent, int node, int ancestorSteps, int expected)
     {
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(parent, node, k);
+        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(parent, node, ancestorSteps);
 
         Assert.Equal(expected, ancestor);
     }
@@ -66,10 +66,10 @@ public sealed class KthAncestorOfATreeNodeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void BuildAncestorChains_LeetCodeExamples_AnswersFromOnePrecomputedTable(
-        int[] parent, int node, int k, int expected)
+        int[] parent, int node, int ancestorSteps, int expected)
     {
         var chains = KthAncestorOfATreeNodeSolution.BuildAncestorChains(parent);
-        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, k);
+        var ancestor = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, ancestorSteps);
 
         Assert.Equal(parent.Length, chains.Count);
         Assert.Equal(expected, ancestor);

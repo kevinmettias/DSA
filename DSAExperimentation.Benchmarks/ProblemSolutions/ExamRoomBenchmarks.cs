@@ -5,10 +5,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ExamRoomSolution's, the same strategies ExamRoomTests
 // proves correct. Both share the identical Seat() gap scan, so what is being compared
-// is Leave(p): the baseline's O(n) List<T>.Remove scan versus this repo's O(log n)
-// BinarySearch.LowerBound locate. Drain seats Length students, then has every one of
-// them leave in the order they arrived, so both arms run the same call script. The
-// room itself is stateful and must be rebuilt per invocation, so [GlobalSetup] only
+// is Leave(seatNumber): the baseline's O(n) List<T>.Remove scan versus this repo's
+// O(log n) BinarySearch.LowerBound locate. Drain seats Length students, then has every
+// one of them leave in the order they arrived, so both arms run the same call script.
+// The room itself is stateful and must be rebuilt per invocation, so [GlobalSetup] only
 // fixes the workload SIZE (ARCHITECTURE.md §17.7).
 [MemoryDiagnoser]
 public class ExamRoomBenchmarks

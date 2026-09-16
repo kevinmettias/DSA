@@ -19,14 +19,14 @@ internal static class TheNumberOfBeautifulSubsetsSolution
     // the ones containing a |x-y| == k pair afterwards, checking all C(size,2)
     // pairs per subset. Deliberately written without this repo's primitives - it
     // is the arm the pruned search below has to justify itself against.
-    public static int CountBeautifulSubsetsByBitmask(int[] nums, int k)
+    public static int CountBeautifulSubsetsByBitmask(int[] nums, int difference)
     {
         var count = 0;
         var subsetCount = 1 << nums.Length;
 
         for (var mask = 1; mask < subsetCount; mask++)
         {
-            if (IsBeautiful(nums, k, mask))
+            if (IsBeautiful(nums, difference, mask))
             {
                 count++;
             }
@@ -35,7 +35,7 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         return count;
     }
 
-    private static bool IsBeautiful(int[] nums, int k, int mask)
+    private static bool IsBeautiful(int[] nums, int difference, int mask)
     {
         for (var i = 0; i < nums.Length; i++)
         {
@@ -46,7 +46,7 @@ internal static class TheNumberOfBeautifulSubsetsSolution
 
             for (var j = i + 1; j < nums.Length; j++)
             {
-                if ((mask & (1 << j)) != 0 && Math.Abs(nums[i] - nums[j]) == k)
+                if ((mask & (1 << j)) != 0 && Math.Abs(nums[i] - nums[j]) == difference)
                 {
                     return false;
                 }
@@ -61,9 +61,10 @@ internal static class TheNumberOfBeautifulSubsetsSolution
     // in Candidates, don't generate-then-filter" shape BeautifulArrangement uses. A
     // HashMap<value,count> tracks how many currently-included elements sit at each
     // value, so "would including nums[index] create a |x-y| == k pair" is an O(1)
-    // pair of lookups (value-k, value+k) instead of a scan of the partial subset,
-    // and an illegal inclusion is never made rather than discovered after the fact.
-    public static int CountBeautifulSubsetsByPrunedBacktracking(int[] nums, int k)
+    // pair of lookups (value - difference, value + difference) instead of a scan of
+    // the partial subset, and an illegal inclusion is never made rather than
+    // discovered after the fact.
+    public static int CountBeautifulSubsetsByPrunedBacktracking(int[] nums, int difference)
     {
         var count = 0;
         var state = new SubsetWalk();
@@ -71,7 +72,7 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         Backtrack.Search<SubsetWalk, Inclusion>(
             state,
             s => s.Index == nums.Length,
-            s => Candidates(s, nums, k),
+            s => Candidates(s, nums, difference),
             (s, inclusion) => Choose(s, nums, inclusion),
             (s, inclusion) => Unchoose(s, nums, inclusion),
             s =>
@@ -85,7 +86,8 @@ internal static class TheNumberOfBeautifulSubsetsSolution
         return count;
     }
 
-    private static IEnumerable<Inclusion> Candidates(SubsetWalk state, int[] nums, int k)
+    private static IEnumerable<Inclusion> Candidates(
+        SubsetWalk state, int[] nums, int difference)
     {
         if (state.Index == nums.Length)
         {
@@ -94,16 +96,16 @@ internal static class TheNumberOfBeautifulSubsetsSolution
 
         yield return Inclusion.Exclude;
 
-        if (CanInclude(state, nums[state.Index], k))
+        if (CanInclude(state, nums[state.Index], difference))
         {
             yield return Inclusion.Include;
         }
     }
 
-    private static bool CanInclude(SubsetWalk state, int value, int k)
+    private static bool CanInclude(SubsetWalk state, int value, int difference)
     {
-        state.Frequency.TryGetValue(value - k, out var lower);
-        state.Frequency.TryGetValue(value + k, out var upper);
+        state.Frequency.TryGetValue(value - difference, out var lower);
+        state.Frequency.TryGetValue(value + difference, out var upper);
 
         return lower == 0 && upper == 0;
     }

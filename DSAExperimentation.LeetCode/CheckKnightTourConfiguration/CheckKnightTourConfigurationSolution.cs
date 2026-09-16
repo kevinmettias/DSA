@@ -29,9 +29,9 @@ internal static class CheckKnightTourConfigurationSolution
     // whole board to find each one's cell. Deliberately BCL-only, and deliberately
     // paying O(n^2) per move for O(n^4) overall - it is the arm the single-pass
     // inversion below has to justify itself against.
-    public static bool CheckValidGridByBoardRescan(int[][] grid)
+    public static bool IsValidGridByBoardRescan(int[][] grid)
     {
-        if (!StartsAtTopLeft(grid))
+        if (!IsFirstMoveAtTopLeft(grid))
         {
             return false;
         }
@@ -71,9 +71,9 @@ internal static class CheckKnightTourConfigurationSolution
     // The board already IS the map from cell to move number; inverting it in one
     // O(n^2) pass gives the map from move number to cell, after which the walk is
     // a single linear scan over consecutive entries.
-    public static bool CheckValidGridByPositionLookup(int[][] grid)
+    public static bool IsValidGridByPositionLookup(int[][] grid)
     {
-        if (!StartsAtTopLeft(grid))
+        if (!IsFirstMoveAtTopLeft(grid))
         {
             return false;
         }
@@ -109,7 +109,7 @@ internal static class CheckKnightTourConfigurationSolution
         return positionByMove;
     }
 
-    private static bool StartsAtTopLeft(int[][] grid) => grid[0][0] == FirstMove;
+    private static bool IsFirstMoveAtTopLeft(int[][] grid) => grid[0][0] == FirstMove;
 
     private static bool IsKnightMove((int Row, int Col) from, (int Row, int Col) to)
     {

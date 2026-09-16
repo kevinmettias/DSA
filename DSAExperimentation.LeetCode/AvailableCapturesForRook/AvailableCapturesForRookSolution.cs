@@ -28,10 +28,10 @@ internal static class AvailableCapturesForRookSolution
     // that happens to share a line with the rook, confirm nothing stands between
     // them. Deliberately pays for the whole board even though only two lines of it
     // can ever matter - it is the arm the ray walk has to justify itself against.
-    public static int NumRookCapturesByFullBoardScan(char[][] board) =>
-        NumRookCapturesByFullBoardScan(board, FindRook(board));
+    public static int CountRookCapturesByFullBoardScan(char[][] board) =>
+        CountRookCapturesByFullBoardScan(board, FindRook(board));
 
-    public static int NumRookCapturesByFullBoardScan(char[][] board, RookSquare rook)
+    public static int CountRookCapturesByFullBoardScan(char[][] board, RookSquare rook)
     {
         var captures = 0;
 
@@ -57,10 +57,10 @@ internal static class AvailableCapturesForRookSolution
     // One ray per direction: advance while the square is empty, then capture if the
     // square that stopped the walk is a pawn. A bishop stops the walk without
     // scoring, and running off the edge stops it too.
-    public static int NumRookCapturesByRayWalk(char[][] board) =>
-        NumRookCapturesByRayWalk(board, FindRook(board));
+    public static int CountRookCapturesByRayWalk(char[][] board) =>
+        CountRookCapturesByRayWalk(board, FindRook(board));
 
-    public static int NumRookCapturesByRayWalk(char[][] board, RookSquare rook)
+    public static int CountRookCapturesByRayWalk(char[][] board, RookSquare rook)
     {
         var captures = 0;
 

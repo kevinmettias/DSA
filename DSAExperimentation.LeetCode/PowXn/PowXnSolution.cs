@@ -10,16 +10,16 @@ namespace DSAExperimentation.LeetCode.PowXn;
 // same "lighter repo-primitive fit" case as Power of Two's bit trick.
 internal static class PowXnSolution
 {
-    // The textbook baseline: multiply by x once per unit of exponent.
-    // Deliberately written without this repo's primitives - it is the arm the
-    // squaring strategy below has to justify itself against.
-    public static double PowByRepeatedMultiplication(double x, int n)
+    // The textbook baseline: multiply the base into the result once per unit of
+    // the exponent counter. Deliberately written without this repo's primitives -
+    // it is the arm the squaring strategy below has to justify itself against.
+    public static double PowByRepeatedMultiplication(double baseValue, int power)
     {
-        long exponent = n;
+        long exponent = power;
 
         if (exponent < 0)
         {
-            x = 1 / x;
+            baseValue = 1 / baseValue;
             exponent = -exponent;
         }
 
@@ -27,7 +27,7 @@ internal static class PowXnSolution
 
         for (var i = 0L; i < exponent; i++)
         {
-            result *= x;
+            result *= baseValue;
         }
 
         return result;
@@ -35,13 +35,13 @@ internal static class PowXnSolution
 
     // Halve the exponent each step instead of decrementing it, squaring the
     // base to compensate - the same quantity in O(log |n|) multiplications.
-    public static double PowByExponentiationBySquaring(double x, int n)
+    public static double PowByExponentiationBySquaring(double baseValue, int power)
     {
-        long exponent = n;
+        long exponent = power;
 
         if (exponent < 0)
         {
-            x = 1 / x;
+            baseValue = 1 / baseValue;
             exponent = -exponent;
         }
 
@@ -51,10 +51,10 @@ internal static class PowXnSolution
         {
             if ((exponent & 1) == 1)
             {
-                result *= x;
+                result *= baseValue;
             }
 
-            x *= x;
+            baseValue *= baseValue;
             exponent >>= 1;
         }
 

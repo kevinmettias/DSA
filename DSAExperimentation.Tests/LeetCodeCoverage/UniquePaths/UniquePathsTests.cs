@@ -17,9 +17,9 @@ public sealed class UniquePathsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPathsByCombinatorics_LeetCodeExamples_ReturnsExpectedCount(
-        int m, int n, int expected)
+        int rowCount, int columnCount, int expected)
     {
-        var actual = UniquePathsSolution.CountPathsByCombinatorics(m, n);
+        var actual = UniquePathsSolution.CountPathsByCombinatorics(rowCount, columnCount);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class UniquePathsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountPathsByMemoizedRecurrence_LeetCodeExamples_ReturnsExpectedCount(
-        int m, int n, int expected)
+        int rowCount, int columnCount, int expected)
     {
-        var actual = UniquePathsSolution.CountPathsByMemoizedRecurrence(m, n);
+        var actual = UniquePathsSolution.CountPathsByMemoizedRecurrence(rowCount, columnCount);
 
         Assert.Equal(expected, actual);
     }

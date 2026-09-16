@@ -38,15 +38,15 @@ internal static class LargestPerimeterTriangleSolution
         return best;
     }
 
-    private static int BestPerimeterWithFixedPair(int[] nums, int i, int j, int best)
+    private static int BestPerimeterWithFixedPair(int[] nums, int firstIndex, int secondIndex, int best)
     {
-        for (var k = j + 1; k < nums.Length; k++)
+        for (var thirdIndex = secondIndex + 1; thirdIndex < nums.Length; thirdIndex++)
         {
-            int a = nums[i], b = nums[j], c = nums[k];
+            int firstSide = nums[firstIndex], secondSide = nums[secondIndex], thirdSide = nums[thirdIndex];
 
-            if (FormsTriangle(a, b, c))
+            if (CanFormTriangle(firstSide, secondSide, thirdSide))
             {
-                best = Math.Max(best, a + b + c);
+                best = Math.Max(best, firstSide + secondSide + thirdSide);
             }
         }
 
@@ -54,8 +54,10 @@ internal static class LargestPerimeterTriangleSolution
     }
 
     // All three triangle inequalities hold, so the sides enclose a non-zero area.
-    private static bool FormsTriangle(int a, int b, int c)
-        => a + b > c && a + c > b && b + c > a;
+    private static bool CanFormTriangle(int firstSide, int secondSide, int thirdSide) =>
+        firstSide + secondSide > thirdSide
+        && firstSide + thirdSide > secondSide
+        && secondSide + thirdSide > firstSide;
 
     // This repo's own MergeSort over an ArrayIndexedSequence<int> - the same
     // composition SortAnArray proves out for LC 912 and
