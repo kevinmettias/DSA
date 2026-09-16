@@ -27,7 +27,7 @@ public sealed partial class LowestCommonAncestorOfABinaryTreeBenchmarksTests
 
     // A node of the heap-layout fixture carries its own index as its value, so the index the layout
     // arithmetic below derives is the value the returned node must carry.
-    private static int ValueOf(object? node) => ((BinaryTreeNode<int>)node!).Value;
+    private static int ValueOf(object? node) => Assert.IsType<BinaryTreeNode<int>>(node).Value;
 
     private static int ExpectedLcaValue(int nodeCount) =>
         LayoutLca(LeftmostLeafIndex(nodeCount), RightmostLeafIndex(nodeCount));

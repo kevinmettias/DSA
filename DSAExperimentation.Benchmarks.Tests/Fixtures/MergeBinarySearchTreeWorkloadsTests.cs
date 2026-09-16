@@ -35,8 +35,10 @@ public sealed partial class MergeBinarySearchTreeWorkloadsTests
 
         foreach (var index in Enumerable.Range(0, TreeCount - 1))
         {
-            Assert.NotNull(forest[index].Left);
-            Assert.Equal(forest[index + 1].Value, forest[index].Left!.Value);
+            var leaf = forest[index].Left;
+            Assert.NotNull(leaf);
+
+            Assert.Equal(forest[index + 1].Value, leaf.Value);
         }
 
         Assert.Null(forest[^1].Left);

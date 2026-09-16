@@ -42,7 +42,7 @@ public sealed partial class LinkedListCycleIIBenchmarksTests
 
     // The arm's result is the internal node type boxed back into object? (CS0050), which is why the
     // entry is read back out of the box rather than named by the arm's own signature.
-    private static int EntryValue(object? entry) => ((SinglyLinkedListNode<int>)entry!).Value;
+    private static int EntryValue(object? entry) => Assert.IsType<SinglyLinkedListNode<int>>(entry).Value;
 
     private static LinkedListCycleIIBenchmarks BuildHarness()
     {

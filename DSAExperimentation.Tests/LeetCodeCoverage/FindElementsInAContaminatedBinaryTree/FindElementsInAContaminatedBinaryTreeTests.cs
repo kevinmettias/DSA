@@ -38,20 +38,30 @@ public sealed partial class FindElementsInAContaminatedBinaryTreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByListScan_LeetCodeExamples_FindsExactlyTheRecoveredValues(
-        int?[] levelOrder, int[] targets, bool[] expected) =>
+        int?[] levelOrder, int[] targets, bool[] expected)
+    {
+        var contaminated = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(contaminated);
+
         AssertFinds(
-            FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(LeetCodeWireFormat.ToBinaryTree(levelOrder)!),
+            FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(contaminated),
             targets,
             expected);
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByTopDownSet_LeetCodeExamples_FindsExactlyTheRecoveredValues(
-        int?[] levelOrder, int[] targets, bool[] expected) =>
+        int?[] levelOrder, int[] targets, bool[] expected)
+    {
+        var contaminated = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(contaminated);
+
         AssertFinds(
-            FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(LeetCodeWireFormat.ToBinaryTree(levelOrder)!),
+            FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(contaminated),
             targets,
             expected);
+    }
 
     private static void AssertFinds(IFindElements elements, int[] targets, bool[] expected)
     {

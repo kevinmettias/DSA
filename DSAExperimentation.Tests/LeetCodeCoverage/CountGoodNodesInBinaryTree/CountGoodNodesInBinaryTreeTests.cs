@@ -45,16 +45,26 @@ public sealed partial class CountGoodNodesInBinaryTreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodNodesByRecursiveDfs_LeetCodeExamples_CountsNodesNoAncestorOutranks(
-        int?[] levelOrder, int expected) =>
+        int?[] levelOrder, int expected)
+    {
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(root);
+
         Assert.Equal(
             expected,
-            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByRecursiveDfs(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
+            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByRecursiveDfs(root));
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountGoodNodesByTopDownTraversal_LeetCodeExamples_CountsNodesNoAncestorOutranks(
-        int?[] levelOrder, int expected) =>
+        int?[] levelOrder, int expected)
+    {
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(root);
+
         Assert.Equal(
             expected,
-            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByTopDownTraversal(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
+            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByTopDownTraversal(root));
+    }
 }

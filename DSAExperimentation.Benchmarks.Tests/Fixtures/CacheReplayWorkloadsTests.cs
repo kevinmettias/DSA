@@ -39,7 +39,7 @@ public sealed partial class CacheReplayWorkloadsTests
     }
 
     [Fact]
-    public void Build_LaterRounds_AlternateGetsThatAnswerWithPutsThatDoNot()
+    public void Build_LaterRounds_AnswerOnlyOnGetSteps()
     {
         var script = CacheReplayWorkloads.Build(Capacity, Seed);
         var cache = new RecordingCache();

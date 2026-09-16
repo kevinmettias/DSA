@@ -62,15 +62,6 @@ internal static class FindTheCountOfMonotonicPairsISolution
         return currentRow;
     }
 
-    // The same recurrence, but each row is built from a running prefix sum of the
-    // row before it, so every currentRow[j] is one lookup instead of a re-summed
-    // loop - O(n * maxValue) overall. That O(n * maxValue) form is what Part II's
-    // larger maxValue actually needs, which is why LC 3251's class holds its one
-    // implementation; this arm calls through. Nothing narrows - both parts answer
-    // a long.
-    public static long CountPairsByPrefixSumDP(int[] nums) =>
-        FindTheCountOfMonotonicPairsIISolution.CountPairsByPrefixSumDP(nums);
-
     private static long Total(long[] lastRow)
     {
         var total = 0L;
@@ -82,4 +73,13 @@ internal static class FindTheCountOfMonotonicPairsISolution
 
         return total;
     }
+
+    // The same recurrence, but each row is built from a running prefix sum of the
+    // row before it, so every currentRow[j] is one lookup instead of a re-summed
+    // loop - O(n * maxValue) overall. That O(n * maxValue) form is what Part II's
+    // larger maxValue actually needs, which is why LC 3251's class holds its one
+    // implementation; this arm calls through. Nothing narrows - both parts answer
+    // a long.
+    public static long CountPairsByPrefixSumDP(int[] nums) =>
+        FindTheCountOfMonotonicPairsIISolution.CountPairsByPrefixSumDP(nums);
 }

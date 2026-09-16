@@ -56,7 +56,10 @@ public sealed partial class BeautifulArrayBenchmarksTests
 
         foreach (var value in answer)
         {
-            if (value < SmallestValue || value >= placed.Length || placed[value])
+            var isOutsideRangeOrAlreadyPlaced =
+                value < SmallestValue || value >= placed.Length || placed[value];
+
+            if (isOutsideRangeOrAlreadyPlaced)
             {
                 return false;
             }
@@ -67,22 +70,37 @@ public sealed partial class BeautifulArrayBenchmarksTests
         return HasNoAveragingTriple(answer);
     }
 
+    // The triple walk is one helper per starting index rather than three nested loops in
+    // one body: same i < k < j order, same first-hit early exit, but each body stays two
+    // levels deep and the k/j walk carries a name that says what it is looking for.
     private static bool HasNoAveragingTriple(int[] answer)
     {
         for (var i = 0; i < answer.Length; i++)
         {
-            for (var k = i + 1; k < answer.Length; k++)
+            if (HasAveragingTripleStartingAt(answer, i))
             {
-                for (var j = k + 1; j < answer.Length; j++)
-                {
-                    if ((ArithmeticMeanMultiplier * answer[k]) == answer[i] + answer[j])
-                    {
-                        return false;
-                    }
-                }
+                return false;
             }
         }
 
         return true;
+    }
+
+    // Whether any pair after `startIndex` averages back to the value at it: for i < k < j,
+    // a[k] is the mean of a[i] and a[j] exactly when 2 * a[k] is their sum.
+    private static bool HasAveragingTripleStartingAt(int[] answer, int startIndex)
+    {
+        for (var k = startIndex + 1; k < answer.Length; k++)
+        {
+            for (var j = k + 1; j < answer.Length; j++)
+            {
+                if ((ArithmeticMeanMultiplier * answer[k]) == answer[startIndex] + answer[j])
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

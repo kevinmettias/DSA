@@ -55,12 +55,12 @@ public sealed partial class IteratorForCombinationBenchmarksTests
 
     // Pascal's triangle rather than a multiplicative formula, so the expected count is derived
     // here instead of restated from whatever the arms happen to return.
-    private static int BinomialCoefficient(int n, int k)
+    private static int BinomialCoefficient(int setSize, int chosenCount)
     {
-        var row = new int[n + 1];
+        var row = new int[setSize + 1];
         row[0] = 1;
 
-        for (var step = 0; step < n; step++)
+        for (var step = 0; step < setSize; step++)
         {
             for (var column = step + 1; column > 0; column--)
             {
@@ -68,6 +68,6 @@ public sealed partial class IteratorForCombinationBenchmarksTests
             }
         }
 
-        return row[k];
+        return row[chosenCount];
     }
 }

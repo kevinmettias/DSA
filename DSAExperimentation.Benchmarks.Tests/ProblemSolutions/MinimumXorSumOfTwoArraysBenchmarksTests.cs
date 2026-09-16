@@ -17,7 +17,7 @@ public sealed partial class MinimumXorSumOfTwoArraysBenchmarksTests
         Assert.Equal(BuildHarness().BruteForceRecursion(), BuildHarness().BruteForceRecursion());
 
     [Fact]
-    public void BruteForceRecursion_SeededNumPairs_AgreesWithMemoizedRecursion()
+    public void BruteForceRecursion_SeededNumberPairs_AgreesWithMemoizedRecursion()
     {
         var harness = BuildHarness();
 
@@ -25,7 +25,7 @@ public sealed partial class MinimumXorSumOfTwoArraysBenchmarksTests
     }
 
     [Fact]
-    public void MemoizedRecursion_SeededNumPairs_AgreesWithBruteForceRecursion()
+    public void MemoizedRecursion_SeededNumberPairs_AgreesWithBruteForceRecursion()
     {
         var harness = BuildHarness();
 

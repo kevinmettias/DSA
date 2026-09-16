@@ -37,7 +37,7 @@ public sealed partial class CityRoadWorkloadsTests
 
         foreach (var city in Enumerable.Range(1, CityCount - 1))
         {
-            Assert.Contains(roads, road => ReachesAnEarlierCity(road, city));
+            Assert.Contains(roads, road => IsConnectedToEarlierCity(road, city));
         }
     }
 
@@ -57,6 +57,6 @@ public sealed partial class CityRoadWorkloadsTests
             AnswerText.Of(CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, Seed)),
             AnswerText.Of(CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, Seed)));
 
-    private static bool ReachesAnEarlierCity(int[] road, int city) =>
+    private static bool IsConnectedToEarlierCity(int[] road, int city) =>
         (road[0] == city && road[1] < city) || (road[1] == city && road[0] < city);
 }

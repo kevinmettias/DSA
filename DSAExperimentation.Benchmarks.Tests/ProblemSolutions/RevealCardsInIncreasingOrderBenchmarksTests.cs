@@ -30,7 +30,7 @@ public sealed partial class RevealCardsInIncreasingOrderBenchmarksTests
         var harness = BuildHarness();
         var ordered = harness.ListRemoveAtSimulation();
 
-        Assert.True(RevealsInIncreasingOrder(ordered));
+        Assert.True(IsRevealedInIncreasingOrder(ordered));
         Assert.Equal(AnswerText.Of(harness.QueueSimulation()), AnswerText.Of(ordered));
     }
 
@@ -40,14 +40,14 @@ public sealed partial class RevealCardsInIncreasingOrderBenchmarksTests
         var harness = BuildHarness();
         var ordered = harness.QueueSimulation();
 
-        Assert.True(RevealsInIncreasingOrder(ordered));
+        Assert.True(IsRevealedInIncreasingOrder(ordered));
         Assert.Equal(AnswerText.Of(harness.ListRemoveAtSimulation()), AnswerText.Of(ordered));
     }
 
     // Runs the problem's own process over the candidate ordering: reveal the front, then move the
     // next card to the bottom, until nothing is left. The revealed values must come out
     // non-decreasing for the ordering to be the answer the problem asks for.
-    private static bool RevealsInIncreasingOrder(int[] ordered)
+    private static bool IsRevealedInIncreasingOrder(int[] ordered)
     {
         var pending = new Queue<int>(ordered);
         var previous = int.MinValue;

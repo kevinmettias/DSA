@@ -32,7 +32,7 @@ public sealed partial class ApplesWorkloadsTests
 
         foreach (var shop in Enumerable.Range(1, ShopCount - 1))
         {
-            Assert.Contains(roads, road => SpanningRoad(road, shop));
+            Assert.Contains(roads, road => IsRoadToEarlierShop(road, shop));
         }
     }
 
@@ -56,6 +56,6 @@ public sealed partial class ApplesWorkloadsTests
         Assert.Equal(AnswerText.Of(roads), AnswerText.Of(repeatRoads));
     }
 
-    private static bool SpanningRoad(int[] road, int shop) =>
+    private static bool IsRoadToEarlierShop(int[] road, int shop) =>
         (road[0] == shop && road[1] < shop) || (road[1] == shop && road[0] < shop);
 }

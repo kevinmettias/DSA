@@ -43,8 +43,8 @@ public sealed partial class IsomorphicStringWorkloadsTests
         foreach (var position in Enumerable.Range(0, Length))
         {
             Assert.True(
-                MappedConsistently(sourceToTarget, source[position], target[position])
-                && MappedConsistently(targetToSource, target[position], source[position]));
+                HasConsistentMapping(sourceToTarget, source[position], target[position])
+                && HasConsistentMapping(targetToSource, target[position], source[position]));
         }
     }
 
@@ -58,7 +58,7 @@ public sealed partial class IsomorphicStringWorkloadsTests
         Assert.Equal(target, repeatTarget);
     }
 
-    private static bool MappedConsistently(Dictionary<char, char> mapping, char from, char to)
+    private static bool HasConsistentMapping(Dictionary<char, char> mapping, char from, char to)
     {
         if (mapping.TryGetValue(from, out var mapped))
         {

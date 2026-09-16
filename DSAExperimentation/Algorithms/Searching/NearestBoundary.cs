@@ -21,51 +21,51 @@ internal static class NearestBoundary
     // The nearest position to the left whose value is strictly smaller than the value
     // at the position asked about; `none` when the value is a prefix minimum.
     public static int[] SmallerToTheLeft(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate < current, none, BoundaryDirection.ToTheLeft);
+        Sweep(values, BoundaryRelation.StrictlySmaller, none, BoundaryDirection.ToTheLeft);
 
     // The nearest position to the left whose value is smaller than or equal to the value
     // at the position asked about - so an equal neighbour is a boundary rather than
     // something the sweep pops on its way further left.
     public static int[] SmallerOrEqualToTheLeft(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate <= current, none, BoundaryDirection.ToTheLeft);
+        Sweep(values, BoundaryRelation.SmallerOrEqual, none, BoundaryDirection.ToTheLeft);
 
     // The nearest position to the left whose value is strictly greater than the value at
     // the position asked about; `none` when the value is a prefix maximum.
     public static int[] GreaterToTheLeft(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate > current, none, BoundaryDirection.ToTheLeft);
+        Sweep(values, BoundaryRelation.StrictlyGreater, none, BoundaryDirection.ToTheLeft);
 
     // The nearest position to the left whose value is greater than or equal to the value
     // at the position asked about.
     public static int[] GreaterOrEqualToTheLeft(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate >= current, none, BoundaryDirection.ToTheLeft);
+        Sweep(values, BoundaryRelation.GreaterOrEqual, none, BoundaryDirection.ToTheLeft);
 
     // The nearest position to the right whose value is strictly smaller than the value at
     // the position asked about; `none` when the value is a suffix minimum.
     public static int[] SmallerToTheRight(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate < current, none, BoundaryDirection.ToTheRight);
+        Sweep(values, BoundaryRelation.StrictlySmaller, none, BoundaryDirection.ToTheRight);
 
     // The nearest position to the right whose value is smaller than or equal to the value
     // at the position asked about - the mirror of SmallerOrEqualToTheLeft, and the side a
     // caller pairs with a strict SmallerToTheLeft to keep one of two equal minima.
     public static int[] SmallerOrEqualToTheRight(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate <= current, none, BoundaryDirection.ToTheRight);
+        Sweep(values, BoundaryRelation.SmallerOrEqual, none, BoundaryDirection.ToTheRight);
 
     // The nearest position to the right whose value is strictly greater than the value at
     // the position asked about; `none` when the value is a suffix maximum.
     public static int[] GreaterToTheRight(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate > current, none, BoundaryDirection.ToTheRight);
+        Sweep(values, BoundaryRelation.StrictlyGreater, none, BoundaryDirection.ToTheRight);
 
     // The nearest position to the right whose value is greater than or equal to the value
     // at the position asked about.
     public static int[] GreaterOrEqualToTheRight(ReadOnlySpan<int> values, int none) =>
-        Sweep(values, static (candidate, current) => candidate >= current, none, BoundaryDirection.ToTheRight);
+        Sweep(values, BoundaryRelation.GreaterOrEqual, none, BoundaryDirection.ToTheRight);
 
     // `none` is the caller's to choose because the useful sentinel differs by caller: one
     // wants -1, so a range starting at a boundary reads as -1 + 1 == 0; another wants
     // values.Length, so a range ending at one reads as Length with no special case. A
     // scan that picked for them would push that choice back onto call sites as arithmetic.
     private static int[] Sweep(
-        ReadOnlySpan<int> values, Func<int, int, bool> relation, int none, BoundaryDirection direction)
+        ReadOnlySpan<int> values, BoundaryRelation relation, int none, BoundaryDirection direction)
     {
         var boundaries = new int[values.Length];
         var pending = new Stack<int>();
@@ -77,7 +77,7 @@ internal static class NearestBoundary
             // Everything the relation rejects is popped: a rejected position can never be
             // a boundary for any later position either, which is what makes this O(n)
             // rather than a rescan.
-            while (pending.TryPeek(out var top) && !relation(values[top], values[position]))
+            while (pending.TryPeek(out var top) && !IsBoundaryFor(relation, values[top], values[position]))
             {
                 pending.TryPop(out _);
             }
@@ -87,6 +87,32 @@ internal static class NearestBoundary
         }
 
         return boundaries;
+    }
+
+    // Whether the candidate value still stands in the named relation to the value being
+    // asked about - so it is a boundary for that position rather than something the sweep
+    // pops on its way further along. The relation arrives as a word rather than as a
+    // lambda so the two values it is read against cannot be silently exchanged: for a
+    // non-symmetric relation, `candidate < current` and `current < candidate` are
+    // different algorithms, and the call site says which one it meant.
+    private static bool IsBoundaryFor(BoundaryRelation relation, int candidate, int current) =>
+        relation switch
+        {
+            BoundaryRelation.StrictlySmaller => candidate < current,
+            BoundaryRelation.SmallerOrEqual => candidate <= current,
+            BoundaryRelation.StrictlyGreater => candidate > current,
+            BoundaryRelation.GreaterOrEqual => candidate >= current,
+            _ => false,
+        };
+
+    // The four relations the sweep reads: whichever one a caller names is the whole of
+    // that caller's algorithm, since the sweep itself is identical for all four.
+    private enum BoundaryRelation
+    {
+        StrictlySmaller,
+        SmallerOrEqual,
+        StrictlyGreater,
+        GreaterOrEqual,
     }
 
     private enum BoundaryDirection

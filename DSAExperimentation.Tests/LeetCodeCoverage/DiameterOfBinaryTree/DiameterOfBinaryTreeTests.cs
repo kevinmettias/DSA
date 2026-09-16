@@ -26,10 +26,20 @@ public sealed partial class DiameterOfBinaryTreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void DiameterByRecomputedHeightPerNode_ReturnsLongestPathEdgeCount(int?[] levelOrder, int expected)
-        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByRecomputedHeightPerNode(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
+    {
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(root);
+
+        Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByRecomputedHeightPerNode(root));
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DiameterByTreeMetricsFold_ReturnsLongestPathEdgeCount(int?[] levelOrder, int expected)
-        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByTreeMetricsFold(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
+    {
+        var root = LeetCodeWireFormat.ToBinaryTree(levelOrder);
+        Assert.NotNull(root);
+
+        Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByTreeMetricsFold(root));
+    }
 }

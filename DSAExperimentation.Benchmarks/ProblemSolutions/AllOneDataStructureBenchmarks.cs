@@ -32,27 +32,48 @@ public class AllOneDataStructureBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-
-        // Zero-padded to one width so every generated key has the same length. LC 432 pins
-        // GetMaxKey/GetMinKey only to return SOME key at the extreme count, and the replay below
-        // sums the returned key's length - so with mixed-length names ("key9" beside "key10") the
-        // value this benchmark returns depended on which tied key an arm happened to answer with.
-        // A bucket holds every key at a tied count, and the dictionary-scan arm and the bucketed
-        // arm legitimately pick different members of it, so the two arms were reporting values
-        // that were never comparable quantities. Padding removes the tie-break from the answer
-        // without touching the script, the arms or the work either one does.
-        var keyNumberWidth = Length.ToString().Length;
-        var keys = Enumerable.Range(0, Length)
-            .Select(i => KeyPrefix + i.ToString().PadLeft(keyNumberWidth, KeyNumberPad))
-            .ToArray();
+        var keys = BuildKeys();
         var ops = new List<(int Type, string Key)>(Length * OpsCapacityMultiplier);
 
+        AppendInitialIncs(ops, keys);
+        AppendMixedRounds(ops, keys, random);
+
+        _ops = [.. ops];
+    }
+
+    // The Length distinct keys the script seeds, zero-padded to one width so every generated key
+    // has the same length. LC 432 pins GetMaxKey/GetMinKey only to return SOME key at the extreme
+    // count, and the replay below sums the returned key's length - so with mixed-length names
+    // ("key9" beside "key10") the value this benchmark returns would depend on which tied key an
+    // arm happened to answer with. A bucket holds every key at a tied count, and the
+    // dictionary-scan arm and the bucketed arm legitimately pick different members of it, so the
+    // two arms were reporting values that were never comparable quantities. Padding removes the
+    // tie-break from the answer without touching the script, the arms or the work either one does.
+    private string[] BuildKeys()
+    {
+        var keyNumberWidth = Length.ToString().Length;
+
+        return Enumerable.Range(0, Length)
+            .Select(i => KeyPrefix + i.ToString().PadLeft(keyNumberWidth, KeyNumberPad))
+            .ToArray();
+    }
+
+    // The Inc calls that seed every key at count 1, so the rounds that follow meet keys that
+    // are already present and keys that are not.
+    private static void AppendInitialIncs(List<(int Type, string Key)> ops, string[] keys)
+    {
         foreach (var key in keys)
         {
             ops.Add((IncOpType, key));
         }
+    }
 
-        for (var round = 0; round < Length; round++)
+    // The rounds the benchmark actually replays: one Inc on a key drawn from the whole seeded
+    // range, then the GetMaxKey/GetMinKey pair whose returned keys the replay sums.
+    private static void AppendMixedRounds(
+        List<(int Type, string Key)> ops, string[] keys, Random random)
+    {
+        for (var round = 0; round < keys.Length; round++)
         {
             ops.Add((IncOpType, keys[random.Next(keys.Length)]));
             // Get* take no key argument; string.Empty is the absence, said once, rather
@@ -60,8 +81,6 @@ public class AllOneDataStructureBenchmarks
             ops.Add((GetMaxKeyOpType, string.Empty));
             ops.Add((GetMinKeyOpType, string.Empty));
         }
-
-        _ops = [.. ops];
     }
 
     [Benchmark(Baseline = true)]
@@ -70,6 +89,8 @@ public class AllOneDataStructureBenchmarks
     [Benchmark]
     public int BucketedLinkedListOnePass() => Replay(AllOneDataStructureSolution.CreateByBucketedLinkedList());
 
+    // Replay is shared by both [Benchmark] arms, so by the module's call-order rule it sits after
+    // them rather than after the first arm that reaches it.
     private int Replay(AllOneDataStructureSolution.IAllOne allOne)
     {
         var checksum = 0;

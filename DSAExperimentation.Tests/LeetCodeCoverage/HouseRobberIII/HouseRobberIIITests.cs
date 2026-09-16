@@ -24,11 +24,21 @@ public sealed partial class HouseRobberIIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RobByRecursivePair_LeetCodeExamples_ReturnsBestNonAdjacentSum(int?[] values, int expected) =>
-        Assert.Equal(expected, HouseRobberIIISolution.RobByRecursivePair(LeetCodeWireFormat.ToBinaryTree(values)!));
+    public void RobByRecursivePair_LeetCodeExamples_ReturnsBestNonAdjacentSum(int?[] values, int expected)
+    {
+        var house = LeetCodeWireFormat.ToBinaryTree(values);
+        Assert.NotNull(house);
+
+        Assert.Equal(expected, HouseRobberIIISolution.RobByRecursivePair(house));
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RobByTreeFoldAlgebra_LeetCodeExamples_ReturnsBestNonAdjacentSum(int?[] values, int expected) =>
-        Assert.Equal(expected, HouseRobberIIISolution.RobByTreeFoldAlgebra(LeetCodeWireFormat.ToBinaryTree(values)!));
+    public void RobByTreeFoldAlgebra_LeetCodeExamples_ReturnsBestNonAdjacentSum(int?[] values, int expected)
+    {
+        var house = LeetCodeWireFormat.ToBinaryTree(values);
+        Assert.NotNull(house);
+
+        Assert.Equal(expected, HouseRobberIIISolution.RobByTreeFoldAlgebra(house));
+    }
 }
