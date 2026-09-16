@@ -87,41 +87,21 @@ internal static class CountNumberOfBalancedPermutationsSolution
         var half = total / 2;
         var evenSlots = (num.Length + 1) / 2;
         var oddSlots = num.Length / 2;
-        var (factorial, inverseFactorial) = BuildFactorialTable(num.Length);
-        var ways = FoldDigitSplits(counts, evenSlots, half, inverseFactorial);
+        var table = FactorialTable.Build(num.Length);
+        var ways = FoldDigitSplits(counts, evenSlots, half, table);
 
-        return ways * factorial[evenSlots] % ModularArithmetic.Modulo * factorial[oddSlots] % ModularArithmetic.Modulo;
+        return ways * table.Factorial(evenSlots) % ModularArithmetic.Modulo
+            * table.Factorial(oddSlots) % ModularArithmetic.Modulo;
     }
 
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
-    {
-        var factorial = new long[maxSize + 1];
-        var inverseFactorial = new long[maxSize + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxSize; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        inverseFactorial[maxSize] = ModularArithmetic.Inverse(factorial[maxSize]);
-
-        for (var i = maxSize - 1; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
-        }
-
-        return (factorial, inverseFactorial);
-    }
-
-    private static long FoldDigitSplits(int[] counts, int evenSlots, int half, long[] inverseFactorial)
+    private static long FoldDigitSplits(int[] counts, int evenSlots, int half, FactorialTable table)
     {
         var dp = new long[evenSlots + 1, half + 1];
         dp[0, 0] = 1;
 
         for (var digit = 0; digit < counts.Length; digit++)
         {
-            dp = FoldDigit(dp, digit, counts[digit], inverseFactorial);
+            dp = FoldDigit(dp, digit, counts[digit], table);
         }
 
         return dp[evenSlots, half];
@@ -130,7 +110,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
     // Every table the fold builds is (evenSlots + 1) x (half + 1), so both bounds are
     // the dimensions of the table it is handed - and one digit's value and its copy
     // count are a single fact about that digit rather than two.
-    private static long[,] FoldDigit(long[,] dp, int digit, int count, long[] inverseFactorial)
+    private static long[,] FoldDigit(long[,] dp, int digit, int count, FactorialTable table)
     {
         var evenSlots = dp.GetLength(0) - 1;
         var half = dp.GetLength(1) - 1;
@@ -143,7 +123,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
                 if (dp[used, sum] != 0)
                 {
                     var cell = (Used: used, Sum: sum, Ways: dp[used, sum]);
-                    AccumulateDigitSplits(next, cell, (Value: digit, Count: count), inverseFactorial);
+                    AccumulateDigitSplits(next, cell, (Value: digit, Count: count), table);
                 }
             }
         }
@@ -158,7 +138,7 @@ internal static class CountNumberOfBalancedPermutationsSolution
         long[,] next,
         (int Used, int Sum, long Ways) cell,
         (int Value, int Count) group,
-        long[] inverseFactorial)
+        FactorialTable table)
     {
         var evenSlots = next.GetLength(0) - 1;
         var half = next.GetLength(1) - 1;
@@ -173,8 +153,8 @@ internal static class CountNumberOfBalancedPermutationsSolution
                 break;
             }
 
-            var contribution = cell.Ways * inverseFactorial[k] % ModularArithmetic.Modulo *
-                inverseFactorial[group.Count - k] % ModularArithmetic.Modulo;
+            var contribution = cell.Ways * table.InverseFactorial(k) % ModularArithmetic.Modulo *
+                table.InverseFactorial(group.Count - k) % ModularArithmetic.Modulo;
             next[nextUsed, nextSum] = (next[nextUsed, nextSum] + contribution) % ModularArithmetic.Modulo;
         }
     }

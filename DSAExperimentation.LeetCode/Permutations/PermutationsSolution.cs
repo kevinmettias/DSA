@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.Backtracking;
+using DSAExperimentation.LeetCode.PermutationsII;
 
 namespace DSAExperimentation.LeetCode.Permutations;
 
@@ -12,7 +12,9 @@ namespace DSAExperimentation.LeetCode.Permutations;
 // had both arms merely counting completions, which is a valid measurement choice
 // but not the question either strategy is proven correct against (ARCHITECTURE.md
 // 17.8's WordLadderII precedent for promoting a counting arm back to the real
-// answer).
+// answer). The engine arm is PermutationsIISolution's, called through - see that
+// class for why LC 47's driver is the general one - so this class's own writing is
+// the specialized recursion it is measured against.
 internal static class PermutationsSolution
 {
     // The textbook answer: plain recursion over a BCL used[] flag array and a
@@ -30,28 +32,13 @@ internal static class PermutationsSolution
     }
 
     // This repo's Backtrack.Search primitive drives the identical
-    // choose/explore/unchoose shape declaratively.
-    public static List<List<int>> PermuteByBacktracking(int[] nums)
-    {
-        var results = new List<List<int>>();
-        var state = new State(nums.Length);
-
-        Backtrack.Search<State, int>(
-            state,
-            s => s.Values.Count == nums.Length,
-            s => s.Values.Count == nums.Length
-                ? Array.Empty<int>()
-                : UnusedIndices(s, nums),
-            (s, i) => { s.Used[i] = true; s.Values.Add(nums[i]); },
-            (s, i) => { s.Used[i] = false; s.Values.RemoveAt(s.Values.Count - 1); },
-            s => results.Add([.. s.Values]));
-
-        return results;
-    }
-
-    // The moves still open to a partial state, in index order.
-    private static IEnumerable<int> UnusedIndices(State s, int[] nums) =>
-        Enumerable.Range(0, nums.Length).Where(i => !s.Used[i]);
+    // choose/explore/unchoose shape declaratively. LC 47's class is where that
+    // engine's permutation driver is written, because its duplicate-skip rule is
+    // the general case and LC 46's input - all elements already distinct - is the
+    // one that rule never fires on; this arm calls through. Nothing narrows: both
+    // problems answer a List<List<int>> over the same input shape.
+    public static List<List<int>> PermuteByBacktracking(int[] nums) =>
+        PermutationsIISolution.PermuteUniqueByBacktracking(nums);
 
     // The choose/explore/unchoose step: a full path is one permutation, otherwise
     // every still-unused index is tried in turn and un-chosen again on the way back.
@@ -76,14 +63,5 @@ internal static class PermutationsSolution
             path.RemoveAt(path.Count - 1);
             used[i] = false;
         }
-    }
-
-    private sealed record State
-    {
-        public bool[] Used { get; }
-
-        public List<int> Values { get; } = [];
-
-        public State(int length) => Used = new bool[length];
     }
 }

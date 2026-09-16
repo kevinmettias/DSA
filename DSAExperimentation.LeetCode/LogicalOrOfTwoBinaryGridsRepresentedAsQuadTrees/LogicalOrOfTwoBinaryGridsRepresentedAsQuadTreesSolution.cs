@@ -22,8 +22,6 @@ namespace DSAExperimentation.LeetCode.LogicalOrOfTwoBinaryGridsRepresentedAsQuad
 // the grid area.
 internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
 {
-    private const int QuadrantSplitFactor = 2;
-
     public static QuadTreeNode OrByDirectRecursiveMerge(QuadTreeNode tree1, QuadTreeNode tree2)
     {
         if (tree1.IsLeaf)
@@ -80,10 +78,10 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
 
     private static int[][] MergeGrids(QuadTreeNode tree1, QuadTreeNode tree2, int size)
     {
-        var grid1 = ToGrid(tree1, size);
-        var grid2 = ToGrid(tree2, size);
+        var grid1 = QuadTreeGrid.Materialize(tree1, size);
+        var grid2 = QuadTreeGrid.Materialize(tree2, size);
 
-        var merged = NewGrid(size);
+        var merged = QuadTreeGrid.Allocate(size);
         for (var row = 0; row < size; row++)
         {
             for (var col = 0; col < size; col++)
@@ -93,46 +91,5 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
         }
 
         return merged;
-    }
-
-    private static int[][] ToGrid(QuadTreeNode node, int size)
-    {
-        var grid = NewGrid(size);
-        Fill(node, grid, origin: (0, 0), size);
-        return grid;
-    }
-
-    private static int[][] NewGrid(int size)
-    {
-        var grid = new int[size][];
-        for (var row = 0; row < size; row++)
-        {
-            grid[row] = new int[size];
-        }
-
-        return grid;
-    }
-
-    private static void Fill(QuadTreeNode node, int[][] grid, (int Row, int Col) origin, int size)
-    {
-        if (node.IsLeaf)
-        {
-            var value = node.Val ? 1 : 0;
-            for (var r = origin.Row; r < origin.Row + size; r++)
-            {
-                for (var c = origin.Col; c < origin.Col + size; c++)
-                {
-                    grid[r][c] = value;
-                }
-            }
-
-            return;
-        }
-
-        var half = size / QuadrantSplitFactor;
-        Fill(node.TopLeft!, grid, origin, half);
-        Fill(node.TopRight!, grid, (origin.Row, origin.Col + half), half);
-        Fill(node.BottomLeft!, grid, (origin.Row + half, origin.Col), half);
-        Fill(node.BottomRight!, grid, (origin.Row + half, origin.Col + half), half);
     }
 }

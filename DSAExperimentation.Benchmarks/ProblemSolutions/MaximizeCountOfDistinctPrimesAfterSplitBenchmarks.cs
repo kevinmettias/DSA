@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,11 @@ public class MaximizeCountOfDistinctPrimesAfterSplitBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
+
+        // A query is not two draws from one range - a split index bounded by the array
+        // length, then the replacement value bounded by the value range - so it keeps
+        // its own draw pair rather than going through SeededDraws.Pairs.
         _queries = Enumerable.Range(0, QueryCount)
             .Select(_ => new[] { random.Next(0, Length), random.Next(1, MaxValueExclusive) })
             .ToArray();

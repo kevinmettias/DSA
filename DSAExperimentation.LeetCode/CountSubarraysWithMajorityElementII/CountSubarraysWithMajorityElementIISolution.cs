@@ -49,6 +49,8 @@ internal static class CountSubarraysWithMajorityElementIISolution
         return count;
     }
 
+    // The one implementation of the sweep the class doc derives: LC 3737's own
+    // CountByFenwickPrefixSum calls this and narrows the total to its int answer.
     public static long CountByFenwickPrefixSum(int[] nums, int target)
     {
         var prefix = BuildPrefixSums(nums, target);

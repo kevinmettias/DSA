@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindBuildingWhereAliceAndBobCanMeet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,10 +27,8 @@ public class FindBuildingWhereAliceAndBobCanMeetBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _heights = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxHeightExclusive)).ToArray();
-        _queries = Enumerable.Range(0, Length)
-            .Select(_ => new[] { random.Next(0, Length), random.Next(0, Length) })
-            .ToArray();
+        _heights = SeededDraws.Values(Length, 1, MaxHeightExclusive, random);
+        _queries = SeededDraws.Pairs(Length, 0, Length, random);
     }
 
     [Benchmark(Baseline = true)]

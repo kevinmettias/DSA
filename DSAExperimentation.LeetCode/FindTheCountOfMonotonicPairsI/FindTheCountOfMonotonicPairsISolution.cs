@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 
 namespace DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsI;
 
@@ -63,62 +64,12 @@ internal static class FindTheCountOfMonotonicPairsISolution
 
     // The same recurrence, but each row is built from a running prefix sum of the
     // row before it, so every currentRow[j] is one lookup instead of a re-summed
-    // loop - O(n * maxValue) overall. This is the arm Part II's larger maxValue
-    // actually needs; Domain.Modular.ModularArithmetic supplies the shared
-    // 1e9+7 LeetCode reports both parts under.
-    public static long CountPairsByPrefixSumDP(int[] nums)
-    {
-        var maxValue = nums.Max();
-        var previousRow = new long[maxValue + 1];
-
-        for (var value = 0; value <= nums[0]; value++)
-        {
-            previousRow[value] = 1;
-        }
-
-        for (var i = 1; i < nums.Length; i++)
-        {
-            previousRow = SumRowByPrefix(previousRow, nums, i, maxValue);
-        }
-
-        return Total(previousRow);
-    }
-
-    // One prefix-sum DP row: the same recurrence as SumRowByRescan, but built from one
-    // running prefix sum of row i-1 so each currentRow[j] is a single lookup.
-    private static long[] SumRowByPrefix(long[] previousRow, int[] nums, int index, int maxValue)
-    {
-        var delta = Math.Max(0, nums[index] - nums[index - 1]);
-        var prefix = PrefixSums(previousRow, nums[index - 1]);
-        var currentRow = new long[maxValue + 1];
-
-        for (var j = 0; j <= nums[index]; j++)
-        {
-            var limit = j - delta;
-            currentRow[j] = limit < 0 ? 0 : PrefixSumUpTo(prefix, limit, nums[index - 1]);
-        }
-
-        return currentRow;
-    }
-
-    private static long[] PrefixSums(long[] row, int upperInclusive)
-    {
-        var prefix = new long[upperInclusive + 1];
-        var running = 0L;
-
-        for (var value = 0; value <= upperInclusive; value++)
-        {
-            running = (running + row[value]) % ModularArithmetic.Modulo;
-            prefix[value] = running;
-        }
-
-        return prefix;
-    }
-
-    // The running sum is only built up to nums[i - 1], so a limit that overshoots that
-    // bound reads the last entry rather than running off the end of the prefix array.
-    private static long PrefixSumUpTo(long[] prefix, int limit, int upperInclusive) =>
-        prefix[Math.Min(limit, upperInclusive)];
+    // loop - O(n * maxValue) overall. That O(n * maxValue) form is what Part II's
+    // larger maxValue actually needs, which is why LC 3251's class holds its one
+    // implementation; this arm calls through. Nothing narrows - both parts answer
+    // a long.
+    public static long CountPairsByPrefixSumDP(int[] nums) =>
+        FindTheCountOfMonotonicPairsIISolution.CountPairsByPrefixSumDP(nums);
 
     private static long Total(long[] lastRow)
     {

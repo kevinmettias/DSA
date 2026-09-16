@@ -1,11 +1,12 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BalanceABinarySearchTree;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BalanceABinarySearchTree;
 
 // Harness only: both strategies live in BalanceABinarySearchTreeSolution. Examples
 // are stated as LeetCode's own level-order arrays - BinaryTreeNode<int> is
-// internal, so it cannot appear in a public TheoryData member; BuildTree
+// internal, so it cannot appear in a public TheoryData member; LeetCodeWireFormat.ToBinaryTree
 // reconstructs it inside each test method instead, the same shape
 // DiameterOfBinaryTreeTests uses. LeetCode accepts any height-balanced BST whose
 // in-order walk reproduces the input's values, so each example is checked against
@@ -41,7 +42,7 @@ public sealed class BalanceABinarySearchTreeTests
     public void BalanceByInOrderTraversal_LeetCodeExamples_ProducesHeightBalancedBstWithSameValues(
         int?[] levelOrder, int[] expectedSorted)
     {
-        var balanced = BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(BuildTree(levelOrder));
+        var balanced = BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(LeetCodeWireFormat.ToBinaryTree(levelOrder)!);
 
         Assert.Equal(expectedSorted, InOrder(balanced));
         Assert.True(IsHeightBalanced(balanced).IsBalanced);
@@ -52,54 +53,10 @@ public sealed class BalanceABinarySearchTreeTests
     public void BalanceByRepeatedKthSmallest_LeetCodeExamples_ProducesHeightBalancedBstWithSameValues(
         int?[] levelOrder, int[] expectedSorted)
     {
-        var balanced = BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(BuildTree(levelOrder));
+        var balanced = BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(LeetCodeWireFormat.ToBinaryTree(levelOrder)!);
 
         Assert.Equal(expectedSorted, InOrder(balanced));
         Assert.True(IsHeightBalanced(balanced).IsBalanced);
-    }
-
-    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
-    // in for a missing child.
-    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
-    {
-        var rootValue = levelOrder[0]
-            ?? throw new InvalidOperationException(
-                "every example above starts with a root value; a null first slot would mean no tree to build.");
-
-        var root = new BinaryTreeNode<int>(rootValue);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-
-        var i = 1;
-        while (i < levelOrder.Length)
-        {
-            i = AttachChildren(levelOrder, i, queue);
-        }
-
-        return root;
-    }
-
-    // Consumes one slot for each of the dequeued parent's children and returns the
-    // index just past them: a null or absent slot attaches nothing but is still spent.
-    private static int AttachChildren(int?[] levelOrder, int i, Queue<BinaryTreeNode<int>> queue)
-    {
-        var parent = queue.Dequeue();
-
-        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
-        {
-            parent.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(parent.Left);
-        }
-
-        i++;
-
-        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
-        {
-            parent.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(parent.Right);
-        }
-
-        return i + 1;
     }
 
     private static int[] InOrder(BinaryTreeNode<int>? node)

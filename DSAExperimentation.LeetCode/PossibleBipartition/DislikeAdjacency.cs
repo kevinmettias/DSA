@@ -16,20 +16,13 @@ internal sealed class DislikeAdjacency
 
     private DislikeAdjacency(int[][] neighbors) => Neighbors = neighbors;
 
+    // One empty neighbour list per person id, then both directions of every dislike
+    // pair - the layout LeetCodeAdjacency states once for every problem taking an
+    // (n, edges) pair.
     public static DislikeAdjacency Build(int n, int[][] dislikes)
     {
-        var neighbors = new List<int>[n + 1];
-
-        for (var id = 0; id <= n; id++)
-        {
-            neighbors[id] = [];
-        }
-
-        foreach (var pair in dislikes)
-        {
-            neighbors[pair[0]].Add(pair[1]);
-            neighbors[pair[1]].Add(pair[0]);
-        }
+        var neighbors = LeetCodeAdjacency.OneBased<List<int>>(
+            n, dislikes, _ => [], (list, farId, _, _) => list.Add(farId));
 
         return new DislikeAdjacency(neighbors.Select(list => list.ToArray()).ToArray());
     }

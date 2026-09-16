@@ -1,6 +1,3 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
-
 namespace DSAExperimentation.LeetCode.NonOverlappingIntervals;
 
 // LeetCode 435. Non-overlapping Intervals: the minimum number of intervals to
@@ -15,7 +12,7 @@ internal static class NonOverlappingIntervalsSolution
     // primitives; it is the arm the composed solution below has to justify
     // itself against.
     public static int EraseOverlapIntervalsByBruteForce(int[][] intervals) =>
-        EraseOverlapIntervalsByBruteForce(ToTuples(intervals));
+        EraseOverlapIntervalsByBruteForce(LeetCodeIntervals.AsPairs(intervals));
 
     public static int EraseOverlapIntervalsByBruteForce((int Start, int End)[] intervals)
     {
@@ -74,34 +71,28 @@ internal static class NonOverlappingIntervalsSolution
         return removedCount;
     }
 
-    // This repo's own O(n log n) MergeSort over ArrayIndexedSequence to sort once
-    // by end coordinate, followed by a single O(n) greedy pass: keep an interval
-    // whenever its start does not precede the previously kept interval's end. The
-    // removal count is simply the leftover.
+    // The end order IntervalEndOrder states - this repo's own O(n log n) MergeSort
+    // over ArrayIndexedSequence, applied once - followed by a single O(n) greedy
+    // pass: keep an interval whenever its start does not precede the previously kept
+    // interval's end. The removal count is simply the leftover.
     public static int EraseOverlapIntervalsBySortThenGreedy(int[][] intervals) =>
-        EraseOverlapIntervalsBySortThenGreedy(ToTuples(intervals));
+        EraseOverlapIntervalsBySortThenGreedy(LeetCodeIntervals.AsPairs(intervals));
 
     public static int EraseOverlapIntervalsBySortThenGreedy((int Start, int End)[] intervals)
     {
-        MergeSort.Sort<(int Start, int End), ArrayIndexedSequence<(int Start, int End)>>(
-            new ArrayIndexedSequence<(int Start, int End)>(intervals),
-            Comparer<(int Start, int End)>.Create((a, b) => a.End.CompareTo(b.End)));
-
+        var sorted = IntervalEndOrder.SortedByEnd(intervals);
         var kept = 1;
-        var lastEnd = intervals[0].End;
+        var lastEnd = sorted[0].End;
 
-        for (var i = 1; i < intervals.Length; i++)
+        for (var i = 1; i < sorted.Length; i++)
         {
-            if (intervals[i].Start >= lastEnd)
+            if (sorted[i].Start >= lastEnd)
             {
                 kept++;
-                lastEnd = intervals[i].End;
+                lastEnd = sorted[i].End;
             }
         }
 
-        return intervals.Length - kept;
+        return sorted.Length - kept;
     }
-
-    private static (int Start, int End)[] ToTuples(int[][] intervals) =>
-        intervals.Select(p => (Start: p[0], End: p[1])).ToArray();
 }

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BinaryTreeLevelOrderTraversalII;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.BinaryTreeLevelOrderTraversalII;
 
@@ -27,7 +28,7 @@ public sealed class BinaryTreeLevelOrderTraversalIITests
         int?[] levelOrder, List<List<int>> expected) =>
         Assert.Equal(
             expected,
-            BinaryTreeLevelOrderTraversalIISolution.LevelOrderBottomByQueue(BuildTree(levelOrder)));
+            BinaryTreeLevelOrderTraversalIISolution.LevelOrderBottomByQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -35,48 +36,5 @@ public sealed class BinaryTreeLevelOrderTraversalIITests
         int?[] levelOrder, List<List<int>> expected) =>
         Assert.Equal(
             expected,
-            BinaryTreeLevelOrderTraversalIISolution.LevelOrderBottomByLevelGroupedTraversal(BuildTree(levelOrder)));
-
-    // Deserializes LeetCode's level-order array notation into this repo's
-    // BinaryTreeNode. Harness input translation, not an algorithm strategy.
-    private static BinaryTreeNode<int>? BuildTree(int?[] levelOrder)
-    {
-        if (levelOrder.Length == 0 || levelOrder[0] is not int rootValue)
-        {
-            return null;
-        }
-
-        var root = new BinaryTreeNode<int>(rootValue);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-
-        var i = 1;
-        while (queue.Count > 0 && i < levelOrder.Length)
-        {
-            i = AttachChildren(levelOrder, i, queue);
-        }
-
-        return root;
-    }
-
-    // Consumes one slot for each of the dequeued parent's children and returns the
-    // index just past them: a null or absent slot attaches nothing but is still spent.
-    private static int AttachChildren(int?[] levelOrder, int i, Queue<BinaryTreeNode<int>> queue)
-    {
-        var node = queue.Dequeue();
-
-        if (i < levelOrder.Length && levelOrder[i++] is int leftValue)
-        {
-            node.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(node.Left);
-        }
-
-        if (i < levelOrder.Length && levelOrder[i++] is int rightValue)
-        {
-            node.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(node.Right);
-        }
-
-        return i;
-    }
+            BinaryTreeLevelOrderTraversalIISolution.LevelOrderBottomByLevelGroupedTraversal(LeetCodeWireFormat.ToBinaryTree(levelOrder)));
 }

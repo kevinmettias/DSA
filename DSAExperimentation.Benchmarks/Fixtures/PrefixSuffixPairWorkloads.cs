@@ -9,24 +9,6 @@ internal static class PrefixSuffixPairWorkloads
 {
     private const string Alphabet = "abcd";
 
-    public static string[] BuildWords(int count, int maxLength, int seed)
-    {
-        var random = new Random(seed);
-        var words = new string[count];
-
-        for (var i = 0; i < count; i++)
-        {
-            var length = random.Next(1, maxLength + 1);
-            var chars = new char[length];
-
-            for (var j = 0; j < length; j++)
-            {
-                chars[j] = Alphabet[random.Next(Alphabet.Length)];
-            }
-
-            words[i] = new string(chars);
-        }
-
-        return words;
-    }
+    public static string[] BuildWords(int count, int maxLength, int seed) =>
+        RandomWords.Build(count, Alphabet, maxLength, seed);
 }

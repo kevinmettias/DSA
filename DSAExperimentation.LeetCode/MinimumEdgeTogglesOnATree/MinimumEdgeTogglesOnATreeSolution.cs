@@ -39,26 +39,13 @@ internal static class MinimumEdgeTogglesOnATreeSolution
         return [.. toggled];
     }
 
-    // The BCL adjacency list the textbook arm walks: n empty neighbour lists, then
-    // each undirected edge appended to both of its endpoints.
-    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int nodeCount, int[][] edges)
-    {
-        var adjacency = new List<(int To, int EdgeIndex)>[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        for (var edgeIndex = 0; edgeIndex < edges.Length; edgeIndex++)
-        {
-            var (u, v) = (edges[edgeIndex][0], edges[edgeIndex][1]);
-            adjacency[u].Add((v, edgeIndex));
-            adjacency[v].Add((u, edgeIndex));
-        }
-
-        return adjacency;
-    }
+    // The BCL adjacency list the textbook arm walks: n empty neighbour lists, then each
+    // undirected edge appended to both of its endpoints, each side carrying the index it
+    // came from. LeetCodeAdjacency states that layout once for every problem taking an
+    // (n, edges) pair; only the stored per-neighbour pair is this arm's own.
+    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int nodeCount, int[][] edges) =>
+        LeetCodeAdjacency.ZeroBased<List<(int To, int EdgeIndex)>>(
+            nodeCount, edges, _ => [], (list, farId, _, edgeIndex) => list.Add((farId, edgeIndex)));
 
     // An undirected walk step is the node and the neighbour it came from (the parent
     // is how this DFS excludes that neighbour), and the two colour strings always

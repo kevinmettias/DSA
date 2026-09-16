@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Domain.Modular;
 using DSAExperimentation.LeetCode.CountValidSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

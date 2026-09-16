@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.MaximumPrimeDifference;
 
 namespace DSAExperimentation.LeetCode.ClosestPrimeNumbersInRange;
 
@@ -9,9 +9,9 @@ namespace DSAExperimentation.LeetCode.ClosestPrimeNumbersInRange;
 // Both strategies walk the range in ascending order and feed every prime they see
 // to the same ClosestPairScan, so the tie rule is stated once; they differ only in
 // how a candidate's primality is decided - O(sqrt(n)) trial division per candidate,
-// or one Sieve of Eratosthenes over this repo's own DynamicArray<bool> composite
-// tracker and an O(1) lookup per candidate afterwards. That is the same "share the
-// walk, contrast the primality test" split MostFrequentPrime uses for LC 3044.
+// or the shared PrimeSieve over [0, right] and an O(1) lookup per candidate
+// afterwards. That is the same "share the walk, contrast the primality test" split
+// MostFrequentPrime uses for LC 3044.
 internal static class ClosestPrimeNumbersInRangeSolution
 {
     private const int SmallestPrime = 2;
@@ -58,12 +58,12 @@ internal static class ClosestPrimeNumbersInRangeSolution
         return true;
     }
 
-    // One sieve up to `right` over this repo's own DynamicArray<bool>, the same
-    // composition CountPrimes builds, so each candidate costs a single lookup and
-    // the whole range is settled in O(right log log right).
+    // One sieve up to `right` through the shared PrimeSieve - this problem's
+    // bound, not this problem's construction - so each candidate costs a single
+    // lookup and the whole range is settled in O(right log log right).
     public static int[] ClosestPrimesBySieve(int left, int right)
     {
-        var isComposite = SieveComposites(right);
+        var isComposite = PrimeSieve.BuildCompositeTracker(right);
         var scan = new ClosestPairScan();
 
         for (var candidate = Math.Max(left, SmallestPrime); candidate <= right; candidate++)
@@ -75,33 +75,6 @@ internal static class ClosestPrimeNumbersInRangeSolution
         }
 
         return scan.Pair;
-    }
-
-    // Index i is "i is not prime", so 0 and 1 start out set and every multiple of a
-    // surviving prime is struck from its square upwards.
-    private static DynamicArray<bool> SieveComposites(int right)
-    {
-        var isComposite = new DynamicArray<bool>();
-
-        for (var i = 0; i <= right; i++)
-        {
-            isComposite.Add(i < SmallestPrime);
-        }
-
-        for (var i = SmallestPrime; (long)i * i <= right; i++)
-        {
-            if (isComposite.Get(i))
-            {
-                continue;
-            }
-
-            for (var multiple = i * i; multiple <= right; multiple += i)
-            {
-                isComposite.Set(multiple, true);
-            }
-        }
-
-        return isComposite;
     }
 
     // The closest-pair rule itself, shared by both strategies so neither can drift

@@ -1,4 +1,4 @@
-using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetII;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetI;
 
@@ -13,10 +13,12 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetI;
 // Jump Game II shape: the answer is the minimum number of such jumps from 0 to
 // target.Length, or -1 if target.Length itself is unreachable.
 //
-// Both strategies answer the same question with the same signature and share the
-// one Jump-Game-II sweep - they differ only in how reach[] is computed - so the
-// test harness can assert them against each other and the benchmark harness can
-// time them without either restating the greedy jump logic twice.
+// Both strategies answer the same question with the same signature - they differ
+// only in how reach[] is computed - so the test harness can assert them against
+// each other and the benchmark harness can time them side by side. The brute-force
+// reach scan is this class's own, LC 3291's bound being what keeps it tractable;
+// the ZFunction reach scan is MinimumNumberOfValidStringsToFormTargetIISolution's,
+// LC 3292's 5*10^4 bound being what requires it, and this class calls through.
 internal static class MinimumNumberOfValidStringsToFormTargetISolution
 {
     // Textbook O(target.Length * sum(words[i].Length)): for every start position,
@@ -73,36 +75,12 @@ internal static class MinimumNumberOfValidStringsToFormTargetISolution
     // target[i:] for every i at once - the sentinel can never itself match a
     // lowercase target character, so the match can never run past word.Length and
     // "read past" it into target's own content. Folding the max of that array over
-    // every word yields reach[] directly.
-    public static int MinValidStringsByZFunctionAcrossWords(string[] words, string target)
-    {
-        var reach = ReachByZFunctionAcrossWords(words, target);
-
-        return MinJumps(reach);
-    }
-
-    private static int[] ReachByZFunctionAcrossWords(string[] words, string target)
-    {
-        var n = target.Length;
-        var reach = new int[n];
-
-        foreach (var word in words)
-        {
-            var combined = string.Concat(word, "\0", target);
-            var z = ZFunction.Compute(combined);
-            var offset = word.Length + 1;
-
-            for (var i = 0; i < n; i++)
-            {
-                if (z[offset + i] > reach[i])
-                {
-                    reach[i] = z[offset + i];
-                }
-            }
-        }
-
-        return reach;
-    }
+    // every word yields reach[] directly. LC 3292's own 5*10^4 bound is what
+    // requires that reach scan, which makes its class the one implementation of
+    // it; this arm calls through. Nothing narrows - both parts answer an int over
+    // the same signature.
+    public static int MinValidStringsByZFunctionAcrossWords(string[] words, string target) =>
+        MinimumNumberOfValidStringsToFormTargetIISolution.MinValidStringsByZFunctionAcrossWords(words, target);
 
     // Jump Game II over reach[]: currentEnd is the farthest position reachable
     // using the jump count committed so far; farthest is the farthest position

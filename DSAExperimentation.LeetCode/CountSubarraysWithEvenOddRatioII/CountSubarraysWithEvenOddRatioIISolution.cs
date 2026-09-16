@@ -16,8 +16,9 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioII;
 // with prefix[L] <= prefix[R]. Coordinate-compress the prefix sums via
 // BinarySearch.LowerBound, then sweep left to right through this repo's own
 // FenwickTree<int, SumOperation<int>> (a Binary Indexed Tree) - the same
-// shape CountOfRangeSumTests already uses for LC 327, and CountSubarrays
-// WithEvenOddRatioISolution proves out at the smaller LC 4011 scale first.
+// shape CountOfRangeSumTests already uses for LC 327, and the one sweep both
+// this problem and LC 4011 count through: 4011's own arm calls this one and
+// narrows the total to the int its much smaller bound keeps it inside.
 internal static class CountSubarraysWithEvenOddRatioIISolution
 {
     // Every subarray scanned directly, extending y one element at a time -

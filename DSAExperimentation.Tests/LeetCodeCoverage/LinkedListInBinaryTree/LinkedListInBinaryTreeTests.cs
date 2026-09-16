@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.LinkedListInBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListInBinaryTree;
@@ -9,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListInBinaryTree;
 // trees the original test used. Trees arrive in LeetCode's own level-order-with-null
 // array shape and lists as plain value arrays, because BinaryTreeNode<int> and
 // SinglyLinkedListNode<int> are internal and cannot appear in a public TheoryData
-// signature; BuildTree and BuildList reconstruct them.
+// signature; LeetCodeWireFormat.ToBinaryTree and BuildList reconstruct them.
 public sealed class LinkedListInBinaryTreeTests
 {
     // LC 1367's own example tree, shared by its three published cases.
@@ -38,7 +39,7 @@ public sealed class LinkedListInBinaryTreeTests
         SubPathExample example)
     {
         var matches = LinkedListInBinaryTreeSolution.IsSubPathByArraySliceWalk(
-            BuildList(example.HeadValues), BuildTree(example.TreeValues));
+            BuildList(example.HeadValues), LeetCodeWireFormat.ToBinaryTree(example.TreeValues));
 
         Assert.Equal(example.Expected, matches);
     }
@@ -49,7 +50,7 @@ public sealed class LinkedListInBinaryTreeTests
         SubPathExample example)
     {
         var matches = LinkedListInBinaryTreeSolution.IsSubPathByLinkedNodeWalk(
-            BuildList(example.HeadValues), BuildTree(example.TreeValues));
+            BuildList(example.HeadValues), LeetCodeWireFormat.ToBinaryTree(example.TreeValues));
 
         Assert.Equal(example.Expected, matches);
     }
@@ -66,51 +67,6 @@ public sealed class LinkedListInBinaryTreeTests
         }
 
         return head;
-    }
-
-    // LeetCode's level-order array shape: each existing node consumes exactly two
-    // subsequent slots for its children, null marking a missing one.
-    private static BinaryTreeNode<int>? BuildTree(int?[] values)
-    {
-        if (values.Length == 0 || values[0] is null)
-        {
-            return null;
-        }
-
-        var root = new BinaryTreeNode<int>(values[0].Value);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-        var i = 1;
-
-        while (queue.Count > 0 && i < values.Length)
-        {
-            var node = queue.Dequeue();
-            i = AttachChildren(node, values, i, queue);
-        }
-
-        return root;
-    }
-
-    // Takes the two slots a dequeued node's children occupy, attaching each one that
-    // exists and queueing it up, and returns the index of the next unattached slot.
-    private static int AttachChildren(
-        BinaryTreeNode<int> node, int?[] values, int i, Queue<BinaryTreeNode<int>> queue)
-    {
-        if (values[i] is int leftValue)
-        {
-            node.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(node.Left);
-        }
-
-        i++;
-
-        if (i < values.Length && values[i] is int rightValue)
-        {
-            node.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(node.Right);
-        }
-
-        return i + 1;
     }
 
     // One example as one argument. The expected answer is a bool, and a bare `true` or

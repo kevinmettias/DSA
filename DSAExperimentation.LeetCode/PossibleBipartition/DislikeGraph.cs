@@ -17,22 +17,14 @@ internal sealed class DislikeGraph
 
     private DislikeGraph(IReadOnlyList<PersonNode> people) => People = people;
 
+    // A PersonNode per person id, then both directions of every dislike pair.
+    // LeetCodeAdjacency states that layout once for every problem taking an (n, edges)
+    // pair; slot i holding person i is this problem being numbered 1..n, and the
+    // placeholder that numbering leaves at slot 0 is sliced off below.
     public static DislikeGraph Build(int n, int[][] dislikes)
     {
-        // Slot i holds person i, so LeetCode's 1..n numbering indexes directly;
-        // slot 0 is a placeholder that carries no edges and is not returned.
-        var byId = new PersonNode[n + 1];
-
-        for (var id = PersonNumbering.First; id <= n; id++)
-        {
-            byId[id] = new PersonNode(id);
-        }
-
-        foreach (var pair in dislikes)
-        {
-            byId[pair[0]].Dislikes.Add(byId[pair[1]]);
-            byId[pair[1]].Dislikes.Add(byId[pair[0]]);
-        }
+        var byId = LeetCodeAdjacency.OneBased<PersonNode>(
+            n, dislikes, id => new PersonNode(id), (person, _, farPerson, _) => person.Dislikes.Add(farPerson));
 
         return new DislikeGraph(byId[PersonNumbering.First..]);
     }

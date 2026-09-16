@@ -53,47 +53,14 @@ internal static class DirectionAssignmentsWithExactlyKVisiblePeopleSolution
     // Vandermonde's identity: sum_a C(pos, a) * C(rightSize, k - a) = C(pos +
     // rightSize, k) = C(n - 1, k), since pos + rightSize is everyone except the
     // person at pos. So the whole convolution collapses to one binomial
-    // coefficient, doubled for pos's own free choice. Domain.Modular supplies
-    // the Fermat's-little-theorem inverse the factorial table needs
-    // (RoomWaysPrecomputedFactorialAlgebra / CountNumberOfBalancedPermutations
-    // precedent for building factorial/inverse-factorial tables from it).
+    // coefficient, doubled for pos's own free choice. Domain.Modular's shared
+    // FactorialTable supplies the coefficient (the same table
+    // RoomWaysPrecomputedFactorialAlgebra and CountNumberOfBalancedPermutations
+    // build).
     public static int CountAssignmentsByVandermondeIdentity(int n, int pos, int k)
     {
-        var (factorial, inverseFactorial) = BuildFactorialTable(n - 1);
-        var combinations = Combination(n - 1, k, factorial, inverseFactorial);
+        var combinations = FactorialTable.Build(n - 1).Choose(n - 1, k);
 
         return (int)(combinations * 2 % ModularArithmetic.Modulo);
-    }
-
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
-    {
-        var factorial = new long[maxSize + 1];
-        var inverseFactorial = new long[maxSize + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxSize; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        inverseFactorial[maxSize] = ModularArithmetic.Inverse(factorial[maxSize]);
-
-        for (var i = maxSize - 1; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
-        }
-
-        return (factorial, inverseFactorial);
-    }
-
-    private static long Combination(int total, int choose, long[] factorial, long[] inverseFactorial)
-    {
-        if (choose < 0 || choose > total)
-        {
-            return 0;
-        }
-
-        return factorial[total] * inverseFactorial[choose] % ModularArithmetic.Modulo *
-            inverseFactorial[total - choose] % ModularArithmetic.Modulo;
     }
 }

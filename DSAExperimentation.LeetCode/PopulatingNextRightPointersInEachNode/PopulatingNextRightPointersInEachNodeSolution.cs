@@ -2,6 +2,7 @@ using DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNodeII;
 
 namespace DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNode;
 
@@ -11,6 +12,13 @@ namespace DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNode;
 // own, so "populate" is represented as a node -> next-node map built from a
 // level-by-level BFS - the two strategies differ only in how a level's boundary is
 // discovered, the same split BinaryTreeLevelOrderTraversalSolution uses for LC 102.
+//
+// Only the manual-queue baseline is this class's own; the level-grouped arm is LC
+// 117's, called through. #117 asks the same question of an arbitrary binary tree,
+// so its class is the one implementation of that walk - the perfectness #116
+// guarantees is not what makes the walk work (BinaryTreeChildren compacts null
+// Left/Right slots away, so a missing child just yields a shorter level), which is
+// why the same walk answers both problems unchanged.
 internal static class PopulatingNextRightPointersInEachNodeSolution
 {
     // Textbook baseline: BCL Queue + Dictionary, snapshotting Count at the top of
@@ -74,54 +82,12 @@ internal static class PopulatingNextRightPointersInEachNodeSolution
         return node;
     }
 
-    // This repo's own level-grouped BFS: LevelGroupedBreadthFirstTraversal already
-    // buffers a whole depth before firing, so the hook just links each buffered
-    // level's nodes to their right neighbor, null-ing the last one.
+    // This repo's own level-grouped BFS: LevelGroupedBreadthFirstTraversal buffers a
+    // whole depth before firing, so the hook only has to link each buffered level's
+    // nodes to their right neighbor and null the last one. LC 117's class holds the
+    // one implementation of that pairing over an arbitrary tree; this arm calls it,
+    // which is why this class needs no level hook of its own.
     public static HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?> ConnectByLevelGroupedTraversal(
-        BinaryTreeNode<int> root)
-    {
-        LevelHooks.BeginCapture();
-
-        LevelGroupedBreadthFirstTraversal.Walk<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            LevelHooks>(root);
-
-        var next = new HashMap<BinaryTreeNode<int>, BinaryTreeNode<int>?>();
-
-        foreach (var level in LevelHooks.CapturedLevels)
-        {
-            for (var i = 0; i < level.Count; i++)
-            {
-                var hasRightNeighbor = i + 1 < level.Count;
-                next.Set(level[i], hasRightNeighbor ? RightNeighbor(level, i) : null);
-            }
-        }
-
-        return next;
-    }
-
-    // The node immediately to the right of `index` within one level.
-    private static BinaryTreeNode<int> RightNeighbor(List<BinaryTreeNode<int>> level, int index) =>
-        level[index + 1];
-
-    // A witness for this problem alone: buffers each depth's nodes so Connect can
-    // link them left to right once a level is known complete.
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
-    {
-        // Static because ILevelGroupedHooks is static-abstract - the walk takes the hook as a
-        // type argument and reaches it through the type, so no LevelHooks instance exists that
-        // could own this buffer - and AsyncLocal is what keeps it safe: the list belongs to the
-        // flow that started the Walk, so a traversal on another thread reads its own. Private,
-        // with BeginCapture/CapturedLevels the only way in and out: the buffer exists for this
-        // one caller's start-and-read pair, so nothing outside the hook needs to name it.
-        private static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
-
-        public static List<List<BinaryTreeNode<int>>> CapturedLevels => Output.Value!;
-
-        public static void BeginCapture() => Output.Value = [];
-
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
-            Output.Value!.Add(level.ToList());
-    }
+        BinaryTreeNode<int> root) =>
+        PopulatingNextRightPointersInEachNodeIISolution.ConnectByLevelGroupedTraversal(root);
 }

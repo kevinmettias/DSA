@@ -1,0 +1,15 @@
+<Project>
+
+  <!-- One declaration for the whole workspace. MSBuild imports this into every
+       project beneath it before the project body runs, so each project still
+       overrides any of these by declaring its own - which is exactly the point:
+       a project that needs net10.0-windows or Nullable=annotations says so, and
+       one that says nothing inherits the workspace's answer instead of silently
+       inheriting nothing. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

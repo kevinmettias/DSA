@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesI;
 
 namespace DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesII;
 
@@ -21,23 +22,11 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
 {
     // Textbook baseline: Part I's strided walk, unconditionally, regardless of k -
     // the arm the bucketed strategy below has to justify itself against at this
-    // problem's larger n and q.
-    public static int XorAfterQueriesByStridedWalk(int[] nums, int[][] queries)
-    {
-        var values = (int[])nums.Clone();
-
-        foreach (var query in queries)
-        {
-            var (l, r, k, v) = (query[0], query[1], query[2], query[3]);
-
-            for (var idx = l; idx <= r; idx += k)
-            {
-                values[idx] = (int)((long)values[idx] * v % ModularArithmetic.Modulo);
-            }
-        }
-
-        return XorAll(values);
-    }
+    // problem's larger n and q. LC 3653's class is where that walk is written, so
+    // this arm calls it through: nothing narrows, since both parts answer an int
+    // over the same [l, r, k, v] query.
+    public static int XorAfterQueriesByStridedWalk(int[] nums, int[][] queries) =>
+        XORAfterRangeMultiplicationQueriesISolution.XorAfterQueriesByStridedWalk(nums, queries);
 
     // Sqrt-decomposition: queries with a stride above the threshold are walked
     // directly (few indices each); queries with a stride at or below it are grouped
@@ -153,18 +142,6 @@ internal static class XORAfterRangeMultiplicationQueriesIISolution
             var idx = residue + t * stride;
             values[idx] = values[idx] * running % ModularArithmetic.Modulo;
         }
-    }
-
-    private static int XorAll(int[] values)
-    {
-        var result = 0;
-
-        foreach (var value in values)
-        {
-            result ^= value;
-        }
-
-        return result;
     }
 
     private static int XorAll(long[] values)

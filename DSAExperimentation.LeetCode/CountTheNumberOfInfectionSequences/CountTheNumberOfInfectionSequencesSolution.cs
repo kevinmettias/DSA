@@ -37,19 +37,20 @@ internal static class CountTheNumberOfInfectionSequencesSolution
     }
 
     // One O(n) scan measures every run between (and around) the sick children,
-    // then a single factorial/inverse-factorial table build - the same
-    // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial shape -
-    // turns the whole answer into O(n) more work with no recursion or enumeration.
+    // then a single Domain.Modular FactorialTable.Build - the same table
+    // RoomWaysPrecomputedFactorialAlgebra/CountAnagramsByModularFactorial read
+    // their coefficients from - turns the whole answer into O(n) more work with
+    // no recursion or enumeration.
     public static long CountSequencesByGapCombinatorics(int n, int[] sick)
     {
         var (runLengths, interiorRunLengths, totalMoves) = MeasureRuns(n, sick);
-        var (factorial, inverseFactorial) = BuildFactorialTable(totalMoves);
+        var table = FactorialTable.Build(totalMoves);
 
-        var answer = factorial[totalMoves];
+        var answer = table.Factorial(totalMoves);
 
         foreach (var length in runLengths)
         {
-            answer = answer * inverseFactorial[length] % ModularArithmetic.Modulo;
+            answer = answer * table.InverseFactorial(length) % ModularArithmetic.Modulo;
         }
 
         foreach (var length in interiorRunLengths)
@@ -79,27 +80,6 @@ internal static class CountTheNumberOfInfectionSequencesSolution
         runLengths.Add(n - 1 - sick[^1]);
 
         return (runLengths, interiorRunLengths, n - sick.Length);
-    }
-
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
-    {
-        var factorial = new long[maxSize + 1];
-        var inverseFactorial = new long[maxSize + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxSize; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        inverseFactorial[maxSize] = ModularArithmetic.Inverse(factorial[maxSize]);
-
-        for (var i = maxSize - 1; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
-        }
-
-        return (factorial, inverseFactorial);
     }
 
     private static long CountCompletions(bool[] infected)

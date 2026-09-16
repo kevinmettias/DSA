@@ -8,8 +8,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructQuadTree;
 // examples, checking both that construction finds the expected compression (via
 // leaf count - an implementation that never merges uniform regions would still
 // rebuild the grid correctly, but with far more leaves than expected) and that
-// walking the resulting tree back into a grid reproduces the original input
-// exactly.
+// walking the resulting tree back into a grid (QuadTreeGrid.Materialize, the walk
+// LC 558's harness decodes with too) reproduces the original input exactly.
 public sealed class ConstructQuadTreeTests
 {
     public static TheoryData<int[][], int> Examples =>
@@ -49,17 +49,14 @@ public sealed class ConstructQuadTreeTests
     {
         Assert.Equal(expectedLeafCount, CountLeaves(root));
 
-        var rebuilt = grid.Select(row => new int[row.Length]).ToArray();
-        Fill(root, rebuilt, new Region(0, 0, grid.Length));
-
-        Assert.Equal(grid, rebuilt);
+        Assert.Equal(grid, QuadTreeGrid.Materialize(root, grid.Length));
     }
 
     // ConstructQuadTreeSolution marks a node IsLeaf false only in the object
     // initializer that fills all four quadrants from its own recursive builds - in
     // both strategies, so neither the cell scan nor the Fenwick sum can reach a
-    // non-leaf node with a quadrant missing. Both walks below read those children,
-    // and both ask for them here rather than promising them.
+    // non-leaf node with a quadrant missing. The leaf count below reads those
+    // children, and asks for them here rather than promising them.
     private static QuadTreeNode Child(QuadTreeNode? child) =>
         child ?? throw new InvalidOperationException(
             "a non-leaf QuadTreeNode carries all four children - the solution sets IsLeaf false only after building them");
@@ -76,30 +73,4 @@ public sealed class ConstructQuadTreeTests
     private static int CountQuadrantLeaves(QuadTreeNode node) =>
         CountLeaves(Child(node.TopLeft)) + CountLeaves(Child(node.TopRight)) +
         CountLeaves(Child(node.BottomLeft)) + CountLeaves(Child(node.BottomRight));
-
-    private readonly record struct Region(int Row, int Col, int Size);
-
-    private static void Fill(QuadTreeNode node, int[][] grid, Region region)
-    {
-        if (node.IsLeaf)
-        {
-            var value = node.Val ? 1 : 0;
-
-            for (var r = region.Row; r < region.Row + region.Size; r++)
-            {
-                for (var c = region.Col; c < region.Col + region.Size; c++)
-                {
-                    grid[r][c] = value;
-                }
-            }
-
-            return;
-        }
-
-        var half = region.Size / 2;
-        Fill(Child(node.TopLeft), grid, new Region(region.Row, region.Col, half));
-        Fill(Child(node.TopRight), grid, new Region(region.Row, region.Col + half, half));
-        Fill(Child(node.BottomLeft), grid, new Region(region.Row + half, region.Col, half));
-        Fill(Child(node.BottomRight), grid, new Region(region.Row + half, region.Col + half, half));
-    }
 }

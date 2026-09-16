@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.DiameterOfBinaryTree;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.DiameterOfBinaryTree;
 
@@ -7,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DiameterOfBinaryTree;
 // two strategies: a naive recompute-height-per-node baseline, and this repo's own
 // TreeMetrics.Diameter fold. Examples are stated as LeetCode's own level-order
 // arrays - BinaryTreeNode<int> is internal, so it cannot appear in a public
-// TheoryData member; BuildTree reconstructs it inside each test method instead.
+// TheoryData member; LeetCodeWireFormat.ToBinaryTree reconstructs it inside each test method instead.
 public sealed class DiameterOfBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples()
@@ -25,52 +26,10 @@ public sealed class DiameterOfBinaryTreeTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void DiameterByRecomputedHeightPerNode_ReturnsLongestPathEdgeCount(int?[] levelOrder, int expected)
-        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByRecomputedHeightPerNode(BuildTree(levelOrder)));
+        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByRecomputedHeightPerNode(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void DiameterByTreeMetricsFold_ReturnsLongestPathEdgeCount(int?[] levelOrder, int expected)
-        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByTreeMetricsFold(BuildTree(levelOrder)));
-
-    // LeetCode's own level-order input shape: a BFS-ordered array with null
-    // standing in for a missing child.
-    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
-    {
-        var rootValue = levelOrder[0]
-            ?? throw new InvalidOperationException(
-                "every example above starts with a root value; a null first slot would mean no tree to build.");
-
-        var root = new BinaryTreeNode<int>(rootValue);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-        var i = 1;
-
-        while (i < levelOrder.Length)
-        {
-            var current = queue.Dequeue();
-            i = AttachChildren(current, levelOrder, queue, i);
-        }
-
-        return root;
-    }
-
-    private static int AttachChildren(
-        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
-    {
-        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
-        {
-            current.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(current.Left);
-        }
-
-        i++;
-
-        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
-        {
-            current.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(current.Right);
-        }
-
-        return i + 1;
-    }
+        => Assert.Equal(expected, DiameterOfBinaryTreeSolution.DiameterByTreeMetricsFold(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
 }

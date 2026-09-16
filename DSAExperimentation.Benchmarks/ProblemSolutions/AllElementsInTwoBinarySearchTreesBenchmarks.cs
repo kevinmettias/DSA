@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.AllElementsInTwoBinarySearchTrees;
 
@@ -33,14 +34,7 @@ public class AllElementsInTwoBinarySearchTreesBenchmarks
 
     private BinaryTreeNode<int>? BuildTree(int seed)
     {
-        var values = Enumerable.Range(0, NodeCount).ToArray();
-        var random = new Random(seed);
-
-        for (var i = values.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (values[i], values[j]) = (values[j], values[i]);
-        }
+        var values = SeededSequences.ShuffledZeroTo(NodeCount, seed);
 
         var tree = new BinarySearchTree<int>();
         foreach (var value in values)

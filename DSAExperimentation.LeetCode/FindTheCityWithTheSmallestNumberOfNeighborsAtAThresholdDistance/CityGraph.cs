@@ -11,21 +11,14 @@ internal sealed class CityGraph
 
     private CityGraph(CityNode[] cities) => Cities = cities;
 
+    // A CityNode per city id, then both directions of every road. LeetCodeAdjacency
+    // states that layout once for every problem taking an (n, edges) pair; this
+    // problem's own detail is that a slot holds the road's weight beside its far city,
+    // which is what the wiring callback reads the edge's third value for.
     public static CityGraph Build(int n, int[][] edges)
     {
-        var cities = new CityNode[n];
-
-        for (var i = 0; i < n; i++)
-        {
-            cities[i] = new CityNode(i);
-        }
-
-        foreach (var edge in edges)
-        {
-            var (from, to, weight) = (edge[0], edge[1], edge[2]);
-            cities[from].Edges.Add((weight, cities[to]));
-            cities[to].Edges.Add((weight, cities[from]));
-        }
+        var cities = LeetCodeAdjacency.ZeroBased<CityNode>(
+            n, edges, id => new CityNode(id), (city, _, farCity, edgeIndex) => city.Edges.Add((edges[edgeIndex][2], farCity)));
 
         return new CityGraph(cities);
     }

@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheMinimumCostArrayPermutation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,16 +25,7 @@ public class FindTheMinimumCostArrayPermutationBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(Seed);
-        var nums = Enumerable.Range(0, N).ToArray();
-
-        for (var i = nums.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (nums[i], nums[j]) = (nums[j], nums[i]);
-        }
-
-        _nums = nums;
+        _nums = SeededSequences.ShuffledZeroTo(N, Seed);
     }
 
     [Benchmark(Baseline = true)]

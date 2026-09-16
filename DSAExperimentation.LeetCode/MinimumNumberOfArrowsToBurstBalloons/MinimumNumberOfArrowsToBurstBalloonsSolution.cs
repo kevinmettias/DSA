@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.NonOverlappingIntervals;
 
 namespace DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
 
@@ -8,19 +7,19 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
 //
 // FindMinArrowShotsByBruteForceRescan is the textbook O(n^2) baseline: repeatedly
 // rescan every unburst balloon for the minimum end, then burst everything that
-// reaches it. FindMinArrowShotsBySortEndsThenGreedyScan sorts once by end with this
-// repo's own MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence - the
-// same custom-comparer shape QueueReconstructionByHeightTests exercises - then makes
-// a single O(n) greedy pass: an arrow placed at the end of the earliest-ending
-// unburst balloon always bursts the largest possible set of remaining balloons, so
-// sorting once is enough. This is NOT IntervalSet.Count: transitively-merged overlap
+// reaches it. FindMinArrowShotsBySortEndsThenGreedyScan reads the end order
+// NonOverlappingIntervals' IntervalEndOrder states - the same
+// MergeSort.Sort<Element,TSequence> over an ArrayIndexedSequence LC 435 sorts with,
+// declared once for both - then makes a single O(n) greedy pass: an arrow placed at
+// the end of the earliest-ending unburst balloon always bursts the largest possible
+// set of remaining balloons, so sorting once is enough. This is NOT IntervalSet.Count: transitively-merged overlap
 // groups can still need more than one stabbing point, e.g. [1,2],[2,3],[3,4] merge
 // into one interval but need two arrows.
 internal static class MinimumNumberOfArrowsToBurstBalloonsSolution
 {
     // LeetCode's own shape.
     public static int FindMinArrowShotsByBruteForceRescan(int[][] points) =>
-        FindMinArrowShotsByBruteForceRescan(ToPairs(points));
+        FindMinArrowShotsByBruteForceRescan(LeetCodeIntervals.AsPairs(points));
 
     // Deliberately written without this repo's primitives - the baseline the sorted
     // greedy scan below has to justify itself against.
@@ -70,34 +69,26 @@ internal static class MinimumNumberOfArrowsToBurstBalloonsSolution
 
     // LeetCode's own shape.
     public static int FindMinArrowShotsBySortEndsThenGreedyScan(int[][] points) =>
-        FindMinArrowShotsBySortEndsThenGreedyScan(ToPairs(points));
+        FindMinArrowShotsBySortEndsThenGreedyScan(LeetCodeIntervals.AsPairs(points));
 
     // Prepared-input overload: takes the (Start, End) pairs a benchmark's
     // [GlobalSetup] already generated in that shape, so the points[]-of-points[]
     // unpack isn't charged to the measured method.
     public static int FindMinArrowShotsBySortEndsThenGreedyScan((int Start, int End)[] points)
     {
-        var items = ((int Start, int End)[])points.Clone();
-
-        MergeSort.Sort<(int Start, int End), ArrayIndexedSequence<(int Start, int End)>>(
-            new ArrayIndexedSequence<(int Start, int End)>(items),
-            Comparer<(int Start, int End)>.Create((a, b) => a.End.CompareTo(b.End)));
-
+        var sorted = IntervalEndOrder.SortedByEnd(points);
         var arrows = 1;
-        var arrowPosition = items[0].End;
+        var arrowPosition = sorted[0].End;
 
-        for (var i = 1; i < items.Length; i++)
+        for (var i = 1; i < sorted.Length; i++)
         {
-            if (items[i].Start > arrowPosition)
+            if (sorted[i].Start > arrowPosition)
             {
                 arrows++;
-                arrowPosition = items[i].End;
+                arrowPosition = sorted[i].End;
             }
         }
 
         return arrows;
     }
-
-    private static (int Start, int End)[] ToPairs(int[][] points) =>
-        points.Select(p => (Start: p[0], End: p[1])).ToArray();
 }

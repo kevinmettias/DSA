@@ -53,17 +53,17 @@ internal static class CountKReducibleNumbersLessThanNSolution
     // `CountNumbersByPopcount` is the classic binary digit-DP count - for each
     // '1' bit s sets, fix it to 0 and freely choose every lower bit, weighting
     // each choice of how many of those free bits are set by the binomial
-    // coefficient C(remaining bits, ones needed) (Domain.Modular's factorial/
-    // inverse-factorial table, the same nCr-by-modular-inverse shape
-    // CountBalancedPermutationsSolution and RoomWaysPrecomputedFactorialAlgebra
-    // both already use). k >= 1 always (LC's own constraint), so x = 1 itself
+    // coefficient C(remaining bits, ones needed) (Domain.Modular's shared
+    // FactorialTable, the same table CountBalancedPermutationsSolution and
+    // RoomWaysPrecomputedFactorialAlgebra read their coefficients from). k >= 1
+    // always (LC's own constraint), so x = 1 itself
     // (0 operations needed) never needs separating from the rest of its
     // popcount-1 bucket (1 operation needed): both are <= k regardless, so a
     // uniform "1 + steps[c] <= k" test decides the whole bucket correctly.
     public static int CountKReducibleNumbersByPopcountCombinatorics(string s, int k)
     {
         var length = s.Length;
-        var table = BuildFactorialTable(length);
+        var table = FactorialTable.Build(length);
         var steps = BuildReductionSteps(length);
         var countByPopcount = CountNumbersByPopcount(s, table);
         var answer = 0L;
@@ -77,27 +77,6 @@ internal static class CountKReducibleNumbersLessThanNSolution
         }
 
         return (int)answer;
-    }
-
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
-    {
-        var factorial = new long[maxSize + 1];
-        var inverseFactorial = new long[maxSize + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxSize; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        inverseFactorial[maxSize] = ModularArithmetic.Inverse(factorial[maxSize]);
-
-        for (var i = maxSize - 1; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
-        }
-
-        return (factorial, inverseFactorial);
     }
 
     // steps[v] is how many popcount applications reduce the small integer v to
@@ -115,7 +94,7 @@ internal static class CountKReducibleNumbersLessThanNSolution
         return steps;
     }
 
-    private static long[] CountNumbersByPopcount(string s, (long[] Factorial, long[] InverseFactorial) table)
+    private static long[] CountNumbersByPopcount(string s, FactorialTable table)
     {
         var length = s.Length;
         var counts = new long[length + 1];
@@ -135,20 +114,13 @@ internal static class CountKReducibleNumbersLessThanNSolution
 
     // At a '1' bit forced to 0, every combination of the `remainingBits` lower
     // bits is a valid number less than n with that many extra set bits.
-    private static void AccumulateSuffixChoices(
-        long[] counts, int onesInPrefix, int remainingBits, (long[] Factorial, long[] InverseFactorial) table)
+    private static void AccumulateSuffixChoices(long[] counts, int onesInPrefix, int remainingBits, FactorialTable table)
     {
         for (var onesInSuffix = 0; onesInSuffix <= remainingBits; onesInSuffix++)
         {
             var popcount = onesInPrefix + onesInSuffix;
-            var ways = BinomialCoefficient(remainingBits, onesInSuffix, table);
+            var ways = table.Choose(remainingBits, onesInSuffix);
             counts[popcount] = (counts[popcount] + ways) % ModularArithmetic.Modulo;
         }
     }
-
-    // Every coefficient needs both halves of the table, so they arrive as the one
-    // pair BuildFactorialTable already returns rather than as two parallel arrays.
-    private static long BinomialCoefficient(int n, int r, (long[] Factorial, long[] InverseFactorial) table) =>
-        table.Factorial[n] * table.InverseFactorial[r] % ModularArithmetic.Modulo
-            * table.InverseFactorial[n - r] % ModularArithmetic.Modulo;
 }

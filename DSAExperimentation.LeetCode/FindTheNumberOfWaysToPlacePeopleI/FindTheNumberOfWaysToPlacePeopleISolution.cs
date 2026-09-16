@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleII;
 
 namespace DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleI;
 
@@ -9,13 +10,13 @@ namespace DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleI;
 // lower-right corner of, and no third point lies inside or on that
 // rectangle's boundary.
 //
-// n <= 50 here, so the O(n^3) "check every third point" baseline is already
-// fast enough - but the O(n^2 log n) sorted-sweep strategy LC 3027 actually
-// needs to clear ITS bound is exactly as correct at this smaller one, so both
-// strategies are proven here too, the same way MaximumStrongPairXORI still
-// carries the bucket strategy its own bound doesn't strictly require. See
-// FindTheNumberOfWaysToPlacePeopleIISolution for the sweep strategy's own
-// reasoning - identical here, just restated at LC 3025's scale.
+// n <= 50 here, so the O(n^3) "check every third point" baseline below is
+// already fast enough - the O(n^2 log n) sorted-sweep strategy is the one LC
+// 3027 needs at its own bound, and it is exactly as correct at this smaller
+// one, so this class proves both arms the way MaximumStrongPairXORI carries a
+// bucket strategy its own bound doesn't strictly require. The sweep itself is
+// FindTheNumberOfWaysToPlacePeopleIISolution's, called through; only the
+// brute force is this class's own.
 internal static class FindTheNumberOfWaysToPlacePeopleISolution
 {
     // The textbook O(n^3) scan: every ordered pair, checked against every
@@ -86,34 +87,12 @@ internal static class FindTheNumberOfWaysToPlacePeopleISolution
     // Prepared-input overload: `sortedPoints` must already be sorted by x
     // ascending, y descending on ties (PointOrder.ByXThenDescendingY - a type of
     // its own so a benchmark's [GlobalSetup] can sort with the exact rule this
-    // strategy's precondition depends on, instead of duplicating it). For a fixed Alice
-    // i, every point to its right in that order already has x >= points[i].x,
-    // so a single left-to-right scan tracking the highest y counted so far
-    // (maxY) finds every visible Bob: a closer point k (i < k < j) only
-    // blocks j when points[k].y falls in (points[j].y, points[i].y], which is
-    // exactly the range maxY has already absorbed once such a point has been
-    // counted.
-    public static int CountPairsBySortedSweep(ArrayIndexedSequence<int[]> sortedPoints)
-    {
-        var count = 0;
-
-        for (var i = 0; i < sortedPoints.Length; i++)
-        {
-            var aliceY = sortedPoints.Get(i)[1];
-            var maxY = int.MinValue;
-
-            for (var j = i + 1; j < sortedPoints.Length; j++)
-            {
-                var bobY = sortedPoints.Get(j)[1];
-
-                if (bobY <= aliceY && bobY > maxY)
-                {
-                    count++;
-                    maxY = bobY;
-                }
-            }
-        }
-
-        return count;
-    }
+    // strategy's precondition depends on, instead of duplicating it).
+    //
+    // LC 3027's own bound is what makes its class the one implementation of the
+    // maxY scan, so this arm calls it: the reasoning the sweep rests on is that
+    // class's doc comment, and the two problems' sorts are the same rule under
+    // different names. Nothing narrows - both problems answer an int.
+    public static int CountPairsBySortedSweep(ArrayIndexedSequence<int[]> sortedPoints) =>
+        FindTheNumberOfWaysToPlacePeopleIISolution.CountPairsBySortedSweep(sortedPoints);
 }

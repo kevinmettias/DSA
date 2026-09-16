@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PeaksInArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,27 +22,7 @@ public class PeaksInArrayBenchmarks
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, Length)).ToArray();
-        _queries = new int[Length][];
-
-        for (var i = 0; i < Length; i++)
-        {
-            var isRangeQuery = i % 2 == 0;
-            _queries[i] = isRangeQuery
-                ? WholeRangeCountQuery()
-                : RandomPointUpdateQuery(random);
-        }
-    }
-
-    // A type-1 query: count the peaks across the whole array.
-    private int[] WholeRangeCountQuery() => [1, 0, Length - 1];
-
-    // A type-2 query: overwrite a random index with a different random value.
-    private int[] RandomPointUpdateQuery(Random random) =>
-        [2, random.Next(Length), random.Next(1, Length)];
+    public void Setup() => (_nums, _queries) = PeakQueryWorkloads.Build(Length, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public List<int> BruteForce() => PeaksInArraySolution.CountPeaksByBruteForce(_nums, _queries);

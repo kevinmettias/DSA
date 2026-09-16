@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.CountGoodNodesInBinaryTree;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodNodesInBinaryTree;
 
@@ -9,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodNodesInBinaryTree;
 // TopDownTraversal threading it through ITopDownHooks.Descend.
 //
 // Examples are stated as LeetCode's own level-order arrays - BinaryTreeNode<int> is
-// internal, so it cannot appear in a public TheoryData member; BuildTree
+// internal, so it cannot appear in a public TheoryData member; LeetCodeWireFormat.ToBinaryTree
 // reconstructs the tree inside each test method instead, the same shape
 // FindElementsInAContaminatedBinaryTreeTests (LC 1261) uses.
 public sealed class CountGoodNodesInBinaryTreeTests
@@ -47,7 +48,7 @@ public sealed class CountGoodNodesInBinaryTreeTests
         int?[] levelOrder, int expected) =>
         Assert.Equal(
             expected,
-            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByRecursiveDfs(BuildTree(levelOrder)));
+            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByRecursiveDfs(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -55,50 +56,5 @@ public sealed class CountGoodNodesInBinaryTreeTests
         int?[] levelOrder, int expected) =>
         Assert.Equal(
             expected,
-            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByTopDownTraversal(BuildTree(levelOrder)));
-
-    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
-    // in for a missing child. The shape names the root in slot 0, so an array that
-    // opens with null describes no tree for this helper to build.
-    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
-    {
-        var rootValue = levelOrder[0]
-            ?? throw new InvalidOperationException(
-                "every example above opens with its root, and the level-order shape names the root in slot 0");
-
-        var root = new BinaryTreeNode<int>(rootValue);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-
-        var i = 1;
-        while (i < levelOrder.Length)
-        {
-            i = AttachChildren(levelOrder, i, queue);
-        }
-
-        return root;
-    }
-
-    // Consumes one slot for each of the dequeued parent's children and returns the
-    // index just past them: a null or absent slot attaches nothing but is still spent.
-    private static int AttachChildren(int?[] levelOrder, int i, Queue<BinaryTreeNode<int>> queue)
-    {
-        var parent = queue.Dequeue();
-
-        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
-        {
-            parent.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(parent.Left);
-        }
-
-        i++;
-
-        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
-        {
-            parent.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(parent.Right);
-        }
-
-        return i + 1;
-    }
+            CountGoodNodesInBinaryTreeSolution.CountGoodNodesByTopDownTraversal(LeetCodeWireFormat.ToBinaryTree(levelOrder)!));
 }
