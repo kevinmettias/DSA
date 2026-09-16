@@ -26,12 +26,6 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
 {
     private const long StartEntranceCost = 1; // (0 + 1) * (0 + 1), always.
 
-    private static readonly (int DeltaRow, int DeltaCol, bool MatchesOddAction)[] Moves =
-    [
-        (1, 0, true), (0, 1, true),
-        (-1, 0, false), (0, -1, false),
-    ];
-
     public static long MinCostByBclDijkstra(int m, int n, int[][] penalty)
     {
         var start = (Row: 0, Col: 0, NextActionIsOdd: true);
@@ -84,7 +78,7 @@ internal static class MinimumCostPathWithAlternatingDirectionsIIISolution
         var cols = penalty[0].Length;
         var flipped = !source.NextActionIsOdd;
 
-        foreach (var (deltaRow, deltaCol, matchesOddAction) in Moves)
+        foreach (var (deltaRow, deltaCol, matchesOddAction) in AlternatingGridMoveTable.Moves)
         {
             var nextRow = source.Row + deltaRow;
             var nextCol = source.Col + deltaCol;

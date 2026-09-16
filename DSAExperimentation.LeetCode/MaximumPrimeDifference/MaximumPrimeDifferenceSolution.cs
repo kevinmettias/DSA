@@ -1,5 +1,3 @@
-using DSAExperimentation.DataStructures.DynamicArray;
-
 namespace DSAExperimentation.LeetCode.MaximumPrimeDifference;
 
 // LeetCode 3115. Maximum Prime Difference: the maximum distance between the
@@ -63,15 +61,16 @@ internal static class MaximumPrimeDifferenceSolution
         return true;
     }
 
-    // A Sieve of Eratosthenes over [0, MaxValue] built once as a
-    // DynamicArray<bool> composite tracker - the same primitive and
-    // construction MostFrequentPrimeSolution.MostFrequentPrimeBySieve uses -
-    // turns every subsequent primality check into an O(1) lookup, so the
-    // single left-to-right/right-to-left scan for the first and last prime
-    // index runs in O(n + MaxValue) overall.
+    // A Sieve of Eratosthenes over [0, MaxValue] built once through the shared
+    // PrimeSieve turns every subsequent primality check into an O(1) lookup, so
+    // the single left-to-right/right-to-left scan for the first and last prime
+    // index runs in O(n + MaxValue) overall. PrimeSieve is declared in this
+    // folder because LC 3115's 100 bound is what a whole-array sieve is sized
+    // by, and every problem that ranges over one crosses off its multiples the
+    // same way.
     public static int MaxDistanceByEndpointScanWithSieve(int[] nums)
     {
-        var isComposite = BuildSieve(MaxValue);
+        var isComposite = PrimeSieve.BuildCompositeTracker(MaxValue);
         var first = LeetCodeAnswer.None;
         var last = LeetCodeAnswer.None;
 
@@ -91,31 +90,6 @@ internal static class MaximumPrimeDifferenceSolution
         }
 
         return first == LeetCodeAnswer.None ? LeetCodeAnswer.None : EndpointDistance(first, last);
-    }
-
-    private static DynamicArray<bool> BuildSieve(int bound)
-    {
-        var isComposite = new DynamicArray<bool>();
-
-        for (var i = 0; i <= bound; i++)
-        {
-            isComposite.Add(i < 2);
-        }
-
-        for (var i = 2; i * i <= bound; i++)
-        {
-            if (isComposite.Get(i))
-            {
-                continue;
-            }
-
-            for (var multiple = i * i; multiple <= bound; multiple += i)
-            {
-                isComposite.Set(multiple, true);
-            }
-        }
-
-        return isComposite;
     }
 
     // How far apart the first and last prime indices are.

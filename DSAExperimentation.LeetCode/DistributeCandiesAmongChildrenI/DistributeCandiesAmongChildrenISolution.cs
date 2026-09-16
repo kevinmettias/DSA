@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenII;
+
 namespace DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenI;
 
 // LeetCode 2928. Distribute Candies Among Children I: count the ways to hand out n
@@ -8,26 +10,13 @@ namespace DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenI;
 internal static class DistributeCandiesAmongChildrenISolution
 {
     // The textbook double loop: fix the first two children's shares, the third is
-    // forced by n, and only counted when it also respects the limit.
-    public static int CountWaysByBruteForce(int n, int limit)
-    {
-        var ways = 0;
-
-        for (var first = 0; first <= Math.Min(n, limit); first++)
-        {
-            for (var second = 0; second <= Math.Min(n - first, limit); second++)
-            {
-                var third = n - first - second;
-
-                if (third >= 0 && third <= limit)
-                {
-                    ways++;
-                }
-            }
-        }
-
-        return ways;
-    }
+    // forced by n, and only counted when it also respects the limit. LC 2929 asks the
+    // identical question at a bound where the count outgrows an int, so its
+    // long-returning loop is the one implementation of that loop; this arm is it
+    // narrowed to this problem's answer type, which fits because n and limit stop at
+    // 50 here.
+    public static int CountWaysByBruteForce(int n, int limit) =>
+        (int)DistributeCandiesAmongChildrenIISolution.CountWaysByBruteForce(n, limit);
 
     // Stars-and-bars for a+b+c=n counts every nonnegative solution; inclusion-
     // exclusion then subtracts back the ones where one child alone already exceeds

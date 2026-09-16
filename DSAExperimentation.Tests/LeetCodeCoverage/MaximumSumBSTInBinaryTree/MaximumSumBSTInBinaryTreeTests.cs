@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.MaximumSumBSTInBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumBSTInBinaryTree;
@@ -7,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumBSTInBinaryTree;
 // scan are MaximumSumBSTInBinaryTreeSolution's - this file pins them to LeetCode's
 // published examples, given in LeetCode's own level-order-with-null array shape
 // (BinaryTreeNode<int> is internal, so it cannot appear in a public TheoryData
-// signature; BuildTree reconstructs it).
+// signature; LeetCodeWireFormat.ToBinaryTree reconstructs it).
 public sealed class MaximumSumBSTInBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples =>
@@ -36,54 +37,11 @@ public sealed class MaximumSumBSTInBinaryTreeTests
     [MemberData(nameof(Examples))]
     public void MaxSumBSTByRevalidatingEachNode_LeetCodeExamples_ReturnsBestValidSubtreeSum(
         int?[] values, int expected) =>
-        Assert.Equal(expected, MaximumSumBSTInBinaryTreeSolution.MaxSumBSTByRevalidatingEachNode(BuildTree(values)));
+        Assert.Equal(expected, MaximumSumBSTInBinaryTreeSolution.MaxSumBSTByRevalidatingEachNode(LeetCodeWireFormat.ToBinaryTree(values)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxSumBSTByBottomUpScan_LeetCodeExamples_ReturnsBestValidSubtreeSum(
         int?[] values, int expected) =>
-        Assert.Equal(expected, MaximumSumBSTInBinaryTreeSolution.MaxSumBSTByBottomUpScan(BuildTree(values)));
-
-    // LeetCode's level-order array shape: each existing node consumes exactly
-    // two subsequent slots for its children, null marking a missing one.
-    private static BinaryTreeNode<int>? BuildTree(int?[] values)
-    {
-        if (values.Length == 0 || values[0] is null)
-        {
-            return null;
-        }
-
-        var root = new BinaryTreeNode<int>(values[0].Value);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-        var i = 1;
-
-        while (queue.Count > 0 && i < values.Length)
-        {
-            var node = queue.Dequeue();
-            i = AttachChildren(node, values, queue, i);
-        }
-
-        return root;
-    }
-
-    private static int AttachChildren(
-        BinaryTreeNode<int> node, int?[] values, Queue<BinaryTreeNode<int>> queue, int i)
-    {
-        if (i < values.Length && values[i] is int leftValue)
-        {
-            node.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(node.Left);
-        }
-
-        i++;
-
-        if (i < values.Length && values[i] is int rightValue)
-        {
-            node.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(node.Right);
-        }
-
-        return i + 1;
-    }
+        Assert.Equal(expected, MaximumSumBSTInBinaryTreeSolution.MaxSumBSTByBottomUpScan(LeetCodeWireFormat.ToBinaryTree(values)));
 }

@@ -11,8 +11,6 @@ namespace DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 // the answer there is a single digit.
 internal sealed class RemainderGraph
 {
-    private const int DecimalDigitBase = 10;
-
     public RemainderNode Start { get; }
 
     public RemainderNode Zero { get; }
@@ -34,7 +32,7 @@ internal sealed class RemainderGraph
 
         foreach (var node in nodesByRemainder.Values)
         {
-            node.Neighbors.Add(nodesByRemainder[((node.Remainder * DecimalDigitBase) + 1) % k]);
+            node.Neighbors.Add(nodesByRemainder[((node.Remainder * RepunitDigitBase.Value) + 1) % k]);
         }
 
         return new RemainderGraph(nodesByRemainder[1 % k], nodesByRemainder[0]);

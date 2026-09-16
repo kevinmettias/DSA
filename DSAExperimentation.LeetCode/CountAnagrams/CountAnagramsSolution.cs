@@ -37,13 +37,11 @@ internal static class CountAnagramsSolution
         return distinct.Count;
     }
 
-    // One O(maxWordLength) factorial/inverse-factorial table build (this repo's own
-    // ModularArithmetic supplies the modulus and the Fermat's-little-theorem
-    // inverse the table needs - the same shape
-    // RoomWaysPrecomputedFactorialAlgebra already uses for a different counting
-    // problem), then O(word.Length) per word: factorial[len] times the inverse
-    // factorial of each letter's repeat count, mod 1e9+7. No permutation is ever
-    // materialized.
+    // One O(maxWordLength) FactorialTable.Build (Domain.Modular's shared table, the
+    // one RoomWaysPrecomputedFactorialAlgebra and every other modulo-1e9+7 counting
+    // problem in the catalogue builds), then O(word.Length) per word: the word's
+    // factorial times the inverse factorial of each letter's repeat count, mod
+    // 1e9+7. No permutation is ever materialized.
     public static long CountAnagramsByModularFactorial(string s)
     {
         var words = s.Split(' ');
@@ -54,39 +52,18 @@ internal static class CountAnagramsSolution
             maxLength = Math.Max(maxLength, word.Length);
         }
 
-        var (factorial, inverseFactorial) = BuildFactorialTable(maxLength);
+        var table = FactorialTable.Build(maxLength);
         var answer = 1L;
 
         foreach (var word in words)
         {
-            answer = answer * DistinctPermutationsByModularFactorial(word, factorial, inverseFactorial) % ModularArithmetic.Modulo;
+            answer = answer * DistinctPermutationsByModularFactorial(word, table) % ModularArithmetic.Modulo;
         }
 
         return answer;
     }
 
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxLength)
-    {
-        var factorial = new long[maxLength + 1];
-        var inverseFactorial = new long[maxLength + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxLength; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        inverseFactorial[maxLength] = ModularArithmetic.Inverse(factorial[maxLength]);
-
-        for (var i = maxLength - 1; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
-        }
-
-        return (factorial, inverseFactorial);
-    }
-
-    private static long DistinctPermutationsByModularFactorial(string word, long[] factorial, long[] inverseFactorial)
+    private static long DistinctPermutationsByModularFactorial(string word, FactorialTable table)
     {
         var counts = new int[AlphabetSize];
 
@@ -95,11 +72,11 @@ internal static class CountAnagramsSolution
             counts[c - 'a']++;
         }
 
-        var result = factorial[word.Length];
+        var result = table.Factorial(word.Length);
 
         foreach (var count in counts)
         {
-            result = result * inverseFactorial[count] % ModularArithmetic.Modulo;
+            result = result * table.InverseFactorial(count) % ModularArithmetic.Modulo;
         }
 
         return result;

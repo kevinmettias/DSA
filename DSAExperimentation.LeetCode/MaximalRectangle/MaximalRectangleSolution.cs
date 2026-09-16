@@ -1,4 +1,4 @@
-using HeightStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.LeetCode.LargestRectangleInHistogram;
 
 namespace DSAExperimentation.LeetCode.MaximalRectangle;
 
@@ -12,10 +12,10 @@ namespace DSAExperimentation.LeetCode.MaximalRectangle;
 // RowHistogramStack reduces the problem to LeetCode 84 applied once per row -
 // each row's running height array (consecutive '1's stacked on top of the
 // row above) turns the search into rowCount independent histogram-max-
-// rectangle sweeps, using this repo's own Stack<int> exactly as
-// LargestRectangleInHistogramSolution does. The reduction is kept self-
-// contained here rather than calling that solution directly - solution
-// classes are one per problem, not a shared library between them.
+// rectangle sweeps, and the sweep itself is LargestRectangleInHistogramSolution's
+// own monotonic-stack arm rather than a second copy of it: what this class
+// contributes is the reduction to per-row heights, and the histogram rectangle is
+// that class's problem, already asserted against its own fixtures.
 internal static class MaximalRectangleSolution
 {
     // The textbook brute force: for every pair of rows, collapse the strip
@@ -93,40 +93,12 @@ internal static class MaximalRectangleSolution
                 heights[col] = cellIsOne ? Incremented(heights[col]) : 0;
             }
 
-            maxArea = Math.Max(maxArea, LargestRectangleArea(heights));
+            maxArea = Math.Max(
+                maxArea, LargestRectangleInHistogramSolution.LargestRectangleAreaByMonotonicStack(heights));
         }
 
         return maxArea;
     }
-
-    private static int LargestRectangleArea(int[] heights)
-    {
-        var indices = new HeightStack();
-        var maxArea = 0;
-
-        for (var i = 0; i <= heights.Length; i++)
-        {
-            var currentHeight = i == heights.Length ? 0 : HeightAt(heights, i);
-
-            while (indices.TryPeek(out var top) && heights[top] >= currentHeight)
-            {
-                indices.TryPop(out _);
-                var height = heights[top];
-                var width = indices.TryPeek(out var left) ? WidthBetween(left, i) : i;
-                maxArea = Math.Max(maxArea, height * width);
-            }
-
-            indices.Push(i);
-        }
-
-        return maxArea;
-    }
-
-    private static int HeightAt(int[] heights, int index) => heights[index];
-
-    // The number of columns strictly between the two bounded indices, which is
-    // the rectangle's width once a left boundary has been found.
-    private static int WidthBetween(int left, int right) => right - left - 1;
 
     // The running run of set columns (or histogram height), extended by the
     // current column: the consequence of a still-set test in either strategy.

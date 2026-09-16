@@ -1,4 +1,5 @@
 using DSAExperimentation.Domain.Modular;
+using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsI;
 
 namespace DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 
@@ -17,47 +18,12 @@ internal static class FindTheCountOfMonotonicPairsIISolution
 {
     // Textbook baseline: re-sum each row's prefix from scratch per j. Correct at
     // any maxValue, but O(n * maxValue^2) - the arm the prefix-sum DP below has
-    // to beat now that maxValue can reach 1000.
-    public static long CountPairsByBruteForceDP(int[] nums)
-    {
-        var maxValue = nums.Max();
-        var previousRow = new long[maxValue + 1];
-
-        for (var value = 0; value <= nums[0]; value++)
-        {
-            previousRow[value] = 1;
-        }
-
-        for (var i = 1; i < nums.Length; i++)
-        {
-            previousRow = BuildRowByBruteForce(previousRow, nums, i, maxValue);
-        }
-
-        return Total(previousRow);
-    }
-
-    // One row of the brute-force DP: for every j, re-sum the first
-    // min(j - delta, nums[i - 1]) entries of row i-1 from scratch.
-    private static long[] BuildRowByBruteForce(long[] previousRow, int[] nums, int i, int maxValue)
-    {
-        var delta = Math.Max(0, nums[i] - nums[i - 1]);
-        var currentRow = new long[maxValue + 1];
-
-        for (var j = 0; j <= nums[i]; j++)
-        {
-            var limit = Math.Min(j - delta, nums[i - 1]);
-            var sum = 0L;
-
-            for (var previousValue = 0; previousValue <= limit; previousValue++)
-            {
-                sum += previousRow[previousValue];
-            }
-
-            currentRow[j] = sum % ModularArithmetic.Modulo;
-        }
-
-        return currentRow;
-    }
+    // to beat now that maxValue can reach 1000. LC 3250's own bound is the one
+    // that keeps this form tractable, which is why Part I's class holds its one
+    // implementation; this arm calls through. Nothing narrows - both parts answer
+    // a long.
+    public static long CountPairsByBruteForceDP(int[] nums) =>
+        FindTheCountOfMonotonicPairsISolution.CountPairsByBruteForceDP(nums);
 
     // A running prefix sum turns each row into O(maxValue) instead of
     // O(maxValue^2) - O(n * maxValue) overall, which is what keeps this

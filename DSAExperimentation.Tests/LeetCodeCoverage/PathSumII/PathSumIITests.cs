@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.PathSumII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PathSumII;
@@ -7,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathSumII;
 // LeetCode's published examples, given in LeetCode's own level-order-with-null
 // array shape. BinaryTreeNode<int> is internal, so - as in
 // ValidateBinarySearchTreeTests - it stays out of a public TheoryData signature
-// and BuildTree reconstructs it from that array. Path order isn't part of
+// and LeetCodeWireFormat.ToBinaryTree reconstructs it from that array. Path order isn't part of
 // LeetCode's contract ("return the paths in any order"), so assertions check
 // membership and count rather than a fixed sequence.
 public sealed class PathSumIITests
@@ -36,7 +37,7 @@ public sealed class PathSumIITests
     public void FindPathsByRecursiveBacktrack_LeetCodeExamples_ReturnsEveryMatchingRootToLeafPath(
         PathSumExample example)
     {
-        var paths = PathSumIISolution.FindPathsByRecursiveBacktrack(BuildTree(example.Values), example.TargetSum);
+        var paths = PathSumIISolution.FindPathsByRecursiveBacktrack(LeetCodeWireFormat.ToBinaryTree(example.Values), example.TargetSum);
 
         AssertMatches(example.Expected, paths);
     }
@@ -46,54 +47,9 @@ public sealed class PathSumIITests
     public void FindPathsByAllRootToLeafPaths_LeetCodeExamples_ReturnsEveryMatchingRootToLeafPath(
         PathSumExample example)
     {
-        var paths = PathSumIISolution.FindPathsByAllRootToLeafPaths(BuildTree(example.Values), example.TargetSum);
+        var paths = PathSumIISolution.FindPathsByAllRootToLeafPaths(LeetCodeWireFormat.ToBinaryTree(example.Values), example.TargetSum);
 
         AssertMatches(example.Expected, paths);
-    }
-
-    // LeetCode's level-order array shape: each existing node consumes exactly
-    // two subsequent slots for its children, null marking a missing one.
-    private static BinaryTreeNode<int>? BuildTree(int?[] values)
-    {
-        if (values.Length == 0 || values[0] is null)
-        {
-            return null;
-        }
-
-        var root = new BinaryTreeNode<int>(values[0].Value);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-
-        var i = 1;
-        while (queue.Count > 0 && i < values.Length)
-        {
-            i = AttachChildren(values, i, queue);
-        }
-
-        return root;
-    }
-
-    // Consumes one slot for each of the dequeued parent's children and returns the
-    // index just past them: a null or absent slot attaches nothing but is still spent.
-    private static int AttachChildren(int?[] values, int i, Queue<BinaryTreeNode<int>> queue)
-    {
-        var node = queue.Dequeue();
-
-        if (values[i] is int leftValue)
-        {
-            node.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(node.Left);
-        }
-
-        i++;
-
-        if (i < values.Length && values[i] is int rightValue)
-        {
-            node.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(node.Right);
-        }
-
-        return i + 1;
     }
 
     private static void AssertMatches(int[][] expected, List<List<int>> actual)

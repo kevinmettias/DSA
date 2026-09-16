@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.LeetCode.MaximumPrimeDifference;
 
 namespace DSAExperimentation.LeetCode.MostFrequentPrime;
 
@@ -60,15 +60,15 @@ internal static class MostFrequentPrimeSolution
         return true;
     }
 
-    // This repo's own Sieve of Eratosthenes, run once over a DynamicArray<bool>
-    // composite tracker sized to the largest value the grid can possibly
-    // produce (10^max(rows, cols) - 1) - the same composition
-    // ClosestPrimeNumbersInRangeTests already builds for LC 2523, reused here
-    // so every candidate is a single O(1) array lookup instead of a fresh
-    // trial-division walk.
+    // This repo's own Sieve of Eratosthenes, run once through the shared
+    // PrimeSieve over a tracker sized to the largest value the grid can
+    // possibly produce (10^max(rows, cols) - 1), so every candidate is a single
+    // O(1) array lookup instead of a fresh trial-division walk. The bound is
+    // this problem's own; the construction is not, so only the bound is written
+    // here.
     public static int MostFrequentPrimeBySieve(int[][] mat)
     {
-        var isComposite = BuildSieve(MaxPossibleValue(mat));
+        var isComposite = PrimeSieve.BuildCompositeTracker(MaxPossibleValue(mat));
         var frequency = new Dictionary<int, int>();
 
         foreach (var value in GenerateCandidateNumbers(mat))
@@ -80,31 +80,6 @@ internal static class MostFrequentPrimeSolution
         }
 
         return MostFrequent(frequency);
-    }
-
-    private static DynamicArray<bool> BuildSieve(int bound)
-    {
-        var isComposite = new DynamicArray<bool>();
-
-        for (var i = 0; i <= bound; i++)
-        {
-            isComposite.Add(i < 2);
-        }
-
-        for (var i = 2; (long)i * i <= bound; i++)
-        {
-            if (isComposite.Get(i))
-            {
-                continue;
-            }
-
-            for (var multiple = i * i; multiple <= bound; multiple += i)
-            {
-                isComposite.Set(multiple, true);
-            }
-        }
-
-        return isComposite;
     }
 
     private static int MaxPossibleValue(int[][] mat)

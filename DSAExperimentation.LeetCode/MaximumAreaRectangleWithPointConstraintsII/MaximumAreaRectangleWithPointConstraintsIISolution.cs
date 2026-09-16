@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsI;
 
 namespace DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsII;
 
@@ -20,105 +21,23 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
 
     // Textbook baseline: every combination of 4 of the n points, checked for
     // being exactly an axis-aligned rectangle's corner set, then checked against
-    // every other point for a border/interior violation - O(n^5), the same shape
-    // Part I's own MaxAreaByQuadrupleScan uses. Deliberately independent of Part
-    // I's class (a private baseline, not a shared production primitive) and only
-    // tractable at the tiny n LeetCode's published examples use.
+    // every other point for a border/interior violation - O(n^5), the same scan
+    // Part I's own MaxAreaByQuadrupleScan performs, and tractable only at the tiny
+    // n LeetCode's published examples use. LC 3380's class is where that scan is
+    // written - its bound is the one that makes it appropriate - so this arm hands
+    // it the same points as the int[] pairs that class's input already is. Nothing
+    // narrows: both parts answer a long.
     public static long MaxAreaByQuadrupleScan(int[] xCoord, int[] yCoord)
     {
-        var points = BuildPoints(xCoord, yCoord);
-        var n = points.Length;
-        var maxArea = None;
+        var points = new int[xCoord.Length][];
 
-        for (var a = 0; a < n; a++)
+        for (var i = 0; i < xCoord.Length; i++)
         {
-            for (var b = a + 1; b < n; b++)
-            {
-                for (var c = b + 1; c < n; c++)
-                {
-                    var triple = (points[a], points[b], points[c]);
-                    var area = BestFourthArea(points, triple, c + 1);
-                    maxArea = Math.Max(maxArea, area);
-                }
-            }
+            points[i] = [xCoord[i], yCoord[i]];
         }
 
-        return maxArea;
+        return MaximumAreaRectangleWithPointConstraintsISolution.MaxAreaByQuadrupleScan(points);
     }
-
-    // The innermost of the scan's four nested loops, lifted out so the three that
-    // pick a, b and c read as a flat sequence: the best area this triple of corners
-    // can complete with any later fourth point.
-    private static long BestFourthArea(Point[] points, (Point P1, Point P2, Point P3) triple, int startIndex)
-    {
-        var maxArea = None;
-
-        for (var fourth = startIndex; fourth < points.Length; fourth++)
-        {
-            var quadruple = (triple.P1, triple.P2, triple.P3, points[fourth]);
-            var area = RectangleAreaOrNone(points, quadruple);
-            maxArea = Math.Max(maxArea, area);
-        }
-
-        return maxArea;
-    }
-
-    // The four candidate points arrive as one argument, never four: the scan picks them
-    // as a corner set, and "are these four a rectangle's corners?" is one question about
-    // the set rather than four independent values that could be transposed.
-    private static long RectangleAreaOrNone(
-        Point[] points, (Point P1, Point P2, Point P3, Point P4) quadruple)
-    {
-        if (!TryAxisAlignedRectangle(quadruple, out var box))
-        {
-            return None;
-        }
-
-        return HasBlockingPoint(points, box) ? None : box.Area;
-    }
-
-    private static bool TryAxisAlignedRectangle(
-        (Point P1, Point P2, Point P3, Point P4) quadruple, out Box box)
-    {
-        var (p1, p2, p3, p4) = quadruple;
-        var xs = new[] { p1.X, p2.X, p3.X, p4.X }.Distinct().OrderBy(x => x).ToArray();
-        var ys = new[] { p1.Y, p2.Y, p3.Y, p4.Y }.Distinct().OrderBy(y => y).ToArray();
-
-        box = default;
-
-        if (xs.Length != 2 || ys.Length != 2)
-        {
-            return false;
-        }
-
-        box = new Box(xs[0], xs[1], ys[0], ys[1]);
-        var corners = new HashSet<Point> { p1, p2, p3, p4 };
-
-        return corners.SetEquals(box.Corners());
-    }
-
-    private static bool HasBlockingPoint(Point[] points, Box box)
-    {
-        foreach (var point in points)
-        {
-            if (box.IsCorner(point))
-            {
-                continue;
-            }
-
-            if (LiesWithinBox(point, box))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // A point blocks the box when it lies inside both of the box's spans; sitting
-    // exactly on an edge counts, which is why only the four corners were skipped.
-    private static bool LiesWithinBox(Point point, Box box)
-        => point.X >= box.MinX && point.X <= box.MaxX && point.Y >= box.MinY && point.Y <= box.MaxY;
 
     // Composed: sweep columns (distinct x, ascending) left to right. Within a
     // column, only y-adjacent pairs of points can ever be a rectangle's vertical
@@ -259,20 +178,4 @@ internal static class MaximumAreaRectangleWithPointConstraintsIISolution
         Dictionary<int, int> YIndex,
         SegmentTree<int, MaxOperation<int>> LastXAtY,
         Dictionary<(int Y1, int Y2), int> OpenEdges);
-
-    private readonly record struct Box(int MinX, int MaxX, int MinY, int MaxY)
-    {
-        public long Area => (long)(MaxX - MinX) * (MaxY - MinY);
-
-        public IEnumerable<Point> Corners()
-        {
-            yield return new Point(MinX, MinY);
-            yield return new Point(MinX, MaxY);
-            yield return new Point(MaxX, MinY);
-            yield return new Point(MaxX, MaxY);
-        }
-
-        public bool IsCorner(Point point) =>
-            (point.X == MinX || point.X == MaxX) && (point.Y == MinY || point.Y == MaxY);
-    }
 }

@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructQuadTree;
 using DSAExperimentation.LeetCode.LogicalOrOfTwoBinaryGridsRepresentedAsQuadTrees;
@@ -20,10 +21,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
 {
-    // Quad-tree branching factor: every region splits into 2x2 = 4 quadrants,
-    // so each dimension halves at every recursion level.
-    private const int QuadrantSplitFactor = 2;
-
     private QuadTreeNode _tree1 = null!;
 
     private QuadTreeNode _tree2 = null!;
@@ -55,9 +52,12 @@ public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
         _tree2 = ConstructQuadTreeSolution.BuildByBruteForceCellScan(grid2);
     }
 
-    private bool IsTopHalf(int row) => row < Size / QuadrantSplitFactor;
+    // A quad-tree region splits into 2x2 quadrants, so each dimension halves at every recursion
+    // level - AlgorithmConstants.HalvingFactor, the shared divisor every middle-splitting call site
+    // in the repo reads rather than holding a private copy of 2 under a name of its own.
+    private bool IsTopHalf(int row) => row < Size / AlgorithmConstants.HalvingFactor;
 
-    private bool IsLeftHalf(int col) => col < Size / QuadrantSplitFactor;
+    private bool IsLeftHalf(int col) => col < Size / AlgorithmConstants.HalvingFactor;
 
     [Benchmark(Baseline = true)]
     public object? BruteForceGridMaterialize() =>

@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.FindElementsInAContaminatedBinaryTree;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindElementsInAContaminatedBinaryTree;
 
@@ -9,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindElementsInAContaminatedB
 // TopDownTraversal recovering into a Set<int> answered in O(1).
 //
 // Examples are stated as LeetCode's own level-order arrays - BinaryTreeNode<int> is
-// internal, so it cannot appear in a public TheoryData member; BuildTree
+// internal, so it cannot appear in a public TheoryData member; LeetCodeWireFormat.ToBinaryTree
 // reconstructs the tree inside each test method instead. Every present node carries
 // the contaminated value -1 and null stands for a missing child: only the shape is
 // input, since recovery overwrites every value.
@@ -39,7 +40,7 @@ public sealed class FindElementsInAContaminatedBinaryTreeTests
     public void CreateByListScan_LeetCodeExamples_FindsExactlyTheRecoveredValues(
         int?[] levelOrder, int[] targets, bool[] expected) =>
         AssertFinds(
-            FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(BuildTree(levelOrder)),
+            FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(LeetCodeWireFormat.ToBinaryTree(levelOrder)!),
             targets,
             expected);
 
@@ -48,7 +49,7 @@ public sealed class FindElementsInAContaminatedBinaryTreeTests
     public void CreateByTopDownSet_LeetCodeExamples_FindsExactlyTheRecoveredValues(
         int?[] levelOrder, int[] targets, bool[] expected) =>
         AssertFinds(
-            FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(BuildTree(levelOrder)),
+            FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(LeetCodeWireFormat.ToBinaryTree(levelOrder)!),
             targets,
             expected);
 
@@ -58,48 +59,5 @@ public sealed class FindElementsInAContaminatedBinaryTreeTests
         {
             Assert.Equal(expected[i], elements.Find(targets[i]));
         }
-    }
-
-    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
-    // in for a missing child. The shape names the root in slot 0, so an array that
-    // opens with null describes no tree for this helper to build.
-    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
-    {
-        var rootValue = levelOrder[0]
-            ?? throw new InvalidOperationException(
-                "every example above opens with its root, and the level-order shape names the root in slot 0");
-
-        var root = new BinaryTreeNode<int>(rootValue);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-        var i = 1;
-
-        while (i < levelOrder.Length)
-        {
-            var current = queue.Dequeue();
-            i = AttachChildren(current, levelOrder, queue, i);
-        }
-
-        return root;
-    }
-
-    private static int AttachChildren(
-        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
-    {
-        if (i < levelOrder.Length && levelOrder[i] is { } leftValue)
-        {
-            current.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(current.Left);
-        }
-
-        i++;
-
-        if (i < levelOrder.Length && levelOrder[i] is { } rightValue)
-        {
-            current.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(current.Right);
-        }
-
-        return i + 1;
     }
 }

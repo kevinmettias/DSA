@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ClosestNodesQueriesInABinarySearchTree;
 
@@ -29,14 +30,11 @@ public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var values = Enumerable.Range(0, NodeCount).ToArray();
+        // One Random drives both the shuffle and the query draws below, exactly as the
+        // inline version did, so the query stream stays the one every measurement of
+        // this harness was recorded against.
         var random = new Random(RandomSeed);
-
-        for (var i = values.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (values[i], values[j]) = (values[j], values[i]);
-        }
+        var values = SeededSequences.ShuffledZeroTo(NodeCount, random);
 
         var tree = new BinarySearchTree<int>();
 

@@ -45,7 +45,7 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
     {
         _leafCount = initial.Count;
         _values = new SegmentTreeArray<Element>(_leafCount);
-        _pending = new SegmentTreeArray<TUpdate>(_leafCount);
+        _pending = new SegmentTreeArray<TUpdate>(_leafCount, TOperation.NoUpdate);
 
         if (_leafCount > 0)
         {
@@ -66,26 +66,23 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
         return Query(new SegmentRange(0, 0, _leafCount - 1), left, right);
     }
 
-    // Also seeds _pending with NoUpdate at every node Build visits - the exact same node set
-    // UpdateRange/Query/PushDown ever read via the identical [Start,End] partition recursion, so
-    // no node is ever read before this initializes it.
-    private void Build(SegmentRange range, IReadOnlyList<Element> initial)
+    // _pending needs no seeding pass here: the constructor builds it with TOperation.NoUpdate as the
+    // arena's fill, so every node reads as "nothing pending" before Build touches anything - not
+    // merely the nodes this recursion visits.
+    private void Build(SegmentRange range, IReadOnlyList<Element> initial) =>
+        SegmentTreeBuild.Fill<Element, BuildCombine>(_values, range, initial);
+
+    // SegmentTreeBuild.Fill is contracted on ICombineOperation<Element>; this tree's TOperation is an
+    // IRangeUpdateOperation<Element,TUpdate>, which deliberately does not inherit it (that file's own
+    // doc comment: two structure identities, two witnesses). Forwarding Combine - the one member the
+    // two contracts already state identically - lets both trees keep one shared build recursion
+    // without either contract being declared in terms of the other. Not a second witness for callers
+    // to satisfy: it is private, and nothing outside this class ever names it.
+    private readonly struct BuildCombine : ICombineOperation<Element>
     {
-        _pending.Set(range.Node, TOperation.NoUpdate);
+        public static Element Identity => TOperation.Identity;
 
-        if (range.Start == range.End)
-        {
-            _values.Set(range.Node, initial[range.Start]);
-            return;
-        }
-
-        var (left, right) = range.Split();
-
-        Build(left, initial);
-        Build(right, initial);
-
-        var combined = TOperation.Combine(_values.Get(left.Node), _values.Get(right.Node));
-        _values.Set(range.Node, combined);
+        public static Element Combine(Element left, Element right) => TOperation.Combine(left, right);
     }
 
     private void UpdateRange(SegmentRange range, int left, int right, TUpdate update)

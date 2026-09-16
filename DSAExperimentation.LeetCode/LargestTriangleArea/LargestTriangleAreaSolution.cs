@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.ErectTheFence;
 using HullStack = DSAExperimentation.DataStructures.Stack.Stack<(int X, int Y)>;
 
 namespace DSAExperimentation.LeetCode.LargestTriangleArea;
@@ -16,11 +15,12 @@ namespace DSAExperimentation.LeetCode.LargestTriangleArea;
 // can only grow the triangle - so no candidate that could win is discarded.
 //
 // The hull is Andrew's monotone chain over this repo's own primitives, the same
-// composition ErectTheFenceSolution (LC 587) uses: MergeSort over
-// ArrayIndexedSequence to order by (X, Y), then Stack<(int,int)> for the
-// pop-while-not-a-left-turn sweep. It is kept here rather than shared with LC 587
-// because that problem needs the *boundary* points (corners plus every point
-// collinear-and-between), while this one needs only the strict corners.
+// composition ErectTheFenceSolution (LC 587) uses: the (X, Y) order LC 587's own
+// CoordinateOrder declares, then Stack<(int,int)> for the
+// pop-while-not-a-left-turn sweep. The order is shared because it is the sweep's
+// precondition; what each problem does with the swept chain is not, since LC 587
+// needs the *boundary* points (corners plus every point collinear-and-between),
+// while this one needs only the strict corners.
 //
 // A degenerate all-collinear input has no hull triangle at all - the sweep leaves
 // fewer than three corners - so the composed strategy falls back to the original
@@ -54,21 +54,11 @@ internal static class LargestTriangleAreaSolution
 
     private static List<(int X, int Y)> ConvexHull((int X, int Y)[] points)
     {
-        var sorted = SortByCoordinates(points);
+        var sorted = CoordinateOrder.SortedByCoordinates(points);
         var lower = HalfHull(sorted);
         var upper = HalfHull(sorted.Reverse().ToArray());
 
         return [.. lower.Take(lower.Count - 1), .. upper.Take(upper.Count - 1)];
-    }
-
-    private static (int X, int Y)[] SortByCoordinates((int X, int Y)[] points)
-    {
-        var sorted = points.ToArray();
-        MergeSort.Sort<(int X, int Y), ArrayIndexedSequence<(int X, int Y)>>(
-            new ArrayIndexedSequence<(int X, int Y)>(sorted),
-            Comparer<(int X, int Y)>.Create((a, b) => a.X != b.X ? a.X.CompareTo(b.X) : a.Y.CompareTo(b.Y)));
-
-        return sorted;
     }
 
     private static List<(int X, int Y)> HalfHull((int X, int Y)[] points)

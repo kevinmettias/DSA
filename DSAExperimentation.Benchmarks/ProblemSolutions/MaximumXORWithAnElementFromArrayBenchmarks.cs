@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumXORWithAnElementFromArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,10 +25,8 @@ public class MaximumXORWithAnElementFromArrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueLimit)).ToArray();
-        _queries = Enumerable.Range(0, Length)
-            .Select(_ => new[] { random.Next(0, ValueLimit), random.Next(0, ValueLimit) })
-            .ToArray();
+        _nums = SeededDraws.Values(Length, 0, ValueLimit, random);
+        _queries = SeededDraws.Pairs(Length, 0, ValueLimit, random);
     }
 
     [Benchmark(Baseline = true)]

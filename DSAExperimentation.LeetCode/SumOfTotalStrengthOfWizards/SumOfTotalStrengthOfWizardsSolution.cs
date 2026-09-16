@@ -1,5 +1,5 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Domain.Modular;
-using RepoIntStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 
@@ -17,13 +17,14 @@ namespace DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 // in the run forward to the next smaller-or-equal element - the same >= / >
 // asymmetry between the two sweeps, resolving a run of equal minimums to its
 // leftmost occurrence so no subarray is ever counted twice - and both boundary
-// arrays come from one sweep each over this repo's own Stack<int> of pending
-// indices. What is new here is the weight: instead of counting those subarrays,
+// arrays come from one NearestBoundary sweep each. What is new here is the weight: instead of counting those subarrays,
 // each one contributes its sum, and the total of all of them is read off a
 // prefix-sum-of-prefix-sums array (PP[i+1] = PP[i] + prefix[i]) in O(1) per index
 // rather than re-summing each subarray. The whole pass stays O(n).
 internal static class SumOfTotalStrengthOfWizardsSolution
 {
+    private const int NoSmallerElementToTheLeft = -1;
+
     // The textbook answer: every subarray's minimum and total, computed directly.
     // Deliberately written without this repo's primitives - it is the arm the
     // composed solution below has to justify itself against.
@@ -49,55 +50,17 @@ internal static class SumOfTotalStrengthOfWizardsSolution
 
     public static int TotalStrengthByMonotonicStack(int[] strength)
     {
-        var previousSmaller = ComputePreviousSmallerIndex(strength);
-        var nextSmallerOrEqual = ComputeNextSmallerOrEqualIndex(strength);
+        // The >= / > asymmetry in the class doc, named here at the two call sites: the sweep
+        // back to the left takes a value equal to this one, the sweep forward to the right
+        // refuses it, so an equal minimum resolves against the earlier index and no subarray
+        // is claimed twice. Both sentinels are one step outside the array, which is what lets
+        // SumWeightedContributions index prefixOfPrefix[left + 1] and [right + 1] unchecked.
+        var previousSmaller = NearestBoundary.SmallerToTheLeft(strength, NoSmallerElementToTheLeft);
+        var nextSmallerOrEqual = NearestBoundary.SmallerOrEqualToTheRight(strength, strength.Length);
         var prefix = ComputePrefixSums(strength);
         var prefixOfPrefix = ComputePrefixOfPrefixSums(prefix);
 
         return SumWeightedContributions(strength, previousSmaller, nextSmallerOrEqual, prefixOfPrefix);
-    }
-
-    // previousSmaller[i] = the nearest index to the left holding a strictly smaller
-    // value, or -1 when no such element exists.
-    private static int[] ComputePreviousSmallerIndex(int[] strength)
-    {
-        var left = new int[strength.Length];
-        var pendingIndices = new RepoIntStack();
-
-        for (var i = 0; i < strength.Length; i++)
-        {
-            while (pendingIndices.TryPeek(out var top) && strength[top] >= strength[i])
-            {
-                pendingIndices.TryPop(out _);
-            }
-
-            left[i] = pendingIndices.TryPeek(out var previous) ? previous : -1;
-            pendingIndices.Push(i);
-        }
-
-        return left;
-    }
-
-    // The mirror image, stopping at the next smaller-or-equal element rather than
-    // the next strictly smaller one, so equal values never both claim the same
-    // subarray. strength.Length when no such element exists.
-    private static int[] ComputeNextSmallerOrEqualIndex(int[] strength)
-    {
-        var right = new int[strength.Length];
-        var pendingIndices = new RepoIntStack();
-
-        for (var i = strength.Length - 1; i >= 0; i--)
-        {
-            while (pendingIndices.TryPeek(out var top) && strength[top] > strength[i])
-            {
-                pendingIndices.TryPop(out _);
-            }
-
-            right[i] = pendingIndices.TryPeek(out var next) ? next : strength.Length;
-            pendingIndices.Push(i);
-        }
-
-        return right;
     }
 
     private static long[] ComputePrefixSums(int[] strength)

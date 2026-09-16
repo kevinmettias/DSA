@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumAreaRectangleII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,20 +23,7 @@ public class MinimumAreaRectangleIIBenchmarks
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        var grid = (int)Math.Ceiling(Math.Sqrt(Length)) + GridPadding;
-
-        var coordinates = new HashSet<(int X, int Y)>();
-
-        while (coordinates.Count < Length)
-        {
-            coordinates.Add((random.Next(grid), random.Next(grid)));
-        }
-
-        _points = coordinates.Select(c => new[] { c.X, c.Y }).ToArray();
-    }
+    public void Setup() => _points = LatticePointWorkloads.InGrid(Length, GridPadding, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public double BruteForceQuadruples() =>

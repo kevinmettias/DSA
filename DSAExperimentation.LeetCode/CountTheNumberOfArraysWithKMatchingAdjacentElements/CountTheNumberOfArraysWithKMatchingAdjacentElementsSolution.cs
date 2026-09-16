@@ -29,46 +29,15 @@ internal static class CountTheNumberOfArraysWithKMatchingAdjacentElementsSolutio
 
     // Composed: one binomial coefficient (which n-1 gaps are equal) times one
     // modular power (every "different" gap's independent choice), both O(log n)
-    // once the O(n) factorial/inverse-factorial table is built - O(n) total
-    // against the baseline's O(m^n).
+    // once Domain.Modular's FactorialTable is built - O(n) total against the
+    // baseline's O(m^n).
     public static long CountGoodArraysByModularCombinatorics(int n, int m, int k)
     {
-        var (factorial, inverseFactorial) = BuildFactorialTable(n);
-        var waysToChooseEqualGaps = BinomialCoefficient(n - 1, k, factorial, inverseFactorial);
+        var table = FactorialTable.Build(n);
+        var waysToChooseEqualGaps = table.Choose(n - 1, k);
         var waysToFillDifferentGaps = ModularArithmetic.Power(m - 1, n - 1 - k);
 
         return waysToChooseEqualGaps * m % ModularArithmetic.Modulo * waysToFillDifferentGaps % ModularArithmetic.Modulo;
-    }
-
-    private static (long[] Factorial, long[] InverseFactorial) BuildFactorialTable(int maxSize)
-    {
-        var factorial = new long[maxSize + 1];
-        var inverseFactorial = new long[maxSize + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= maxSize; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        inverseFactorial[maxSize] = ModularArithmetic.Inverse(factorial[maxSize]);
-
-        for (var i = maxSize - 1; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % ModularArithmetic.Modulo;
-        }
-
-        return (factorial, inverseFactorial);
-    }
-
-    private static long BinomialCoefficient(int n, int r, long[] factorial, long[] inverseFactorial)
-    {
-        if (r < 0 || r > n)
-        {
-            return 0;
-        }
-
-        return factorial[n] * inverseFactorial[r] % ModularArithmetic.Modulo * inverseFactorial[n - r] % ModularArithmetic.Modulo;
     }
 
     // The walk's own state: which position of the array it is deciding, and how many

@@ -1,7 +1,7 @@
+using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.Domain.Modular;
-using NumberStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
 
@@ -26,9 +26,10 @@ internal static class ApplyOperationsToMaximizeScoreSolution
 {
     private const int SmallestPrime = 2;
 
-    // No index to the left carries a score this one does not beat, so the range
-    // reaches the start of the array - the same "one before the first index" sentinel
-    // a monotonic boundary scan always needs (CountBowlSubarrays' NoGreaterElement).
+    // Where a subarray's count comes from, both sentinels are one step outside the array
+    // so the two factors need no special case at either end: (i - left[i]) counts the
+    // leftward starts with left[i] == -1, and (right[i] - i) counts the rightward ends with
+    // right[i] == scores.Length.
     private const int NoBlockingScoreToTheLeft = -1;
 
     // The textbook answer: walk outward from every index until the score condition
@@ -95,62 +96,18 @@ internal static class ApplyOperationsToMaximizeScoreSolution
         return order;
     }
 
-    // Two passes over this repo's own Stack<int> - the same LIFO primitive
-    // AddTwoNumbersII uses for a different purpose - each maintaining a monotonic
-    // stack of indices, so every index is pushed and popped at most once per pass and
-    // the boundaries cost O(n) in total rather than O(n^2). The value-descending order
-    // comes from MergeSort over an ArrayIndexedSequence, the same composition
-    // ClosestRoom already uses.
+    // Both boundaries come from NearestBoundary's sweep - the same relation pairing this
+    // class's count depends on: the left relation takes a score equal to this one, the right
+    // relation refuses it, which is exactly what makes a tie belong to its leftmost
+    // occurrence once. The value-descending order comes from MergeSort over an
+    // ArrayIndexedSequence, the same composition ClosestRoom already uses.
     public static long MaximumScoreByStackBoundaryScan(int[] nums, int k)
     {
         var scores = PrimeScores(nums);
-        var left = LeftBoundariesByMonotonicStack(scores);
-        var right = RightBoundariesByMonotonicStack(scores);
+        var left = NearestBoundary.GreaterOrEqualToTheLeft(scores, NoBlockingScoreToTheLeft);
+        var right = NearestBoundary.GreaterToTheRight(scores, scores.Length);
 
         return SpendOperations(ValueDescendingByMergeSort(nums), left, right, k);
-    }
-
-    // Nearest index to the left with a score >= this one - keeps popping
-    // strictly-lower scores off the stack, so a tie's leftmost occurrence is always
-    // the one a later equal-score index sees as its boundary.
-    private static int[] LeftBoundariesByMonotonicStack(int[] scores)
-    {
-        var left = new int[scores.Length];
-        var stack = new NumberStack();
-
-        for (var i = 0; i < scores.Length; i++)
-        {
-            while (stack.TryPeek(out var top) && scores[top] < scores[i])
-            {
-                stack.TryPop(out _);
-            }
-
-            left[i] = stack.TryPeek(out var boundary) ? boundary : NoBlockingScoreToTheLeft;
-            stack.Push(i);
-        }
-
-        return left;
-    }
-
-    // Nearest index to the right with a strictly greater score - pops on "<=" so an
-    // equal-score neighbour never closes the range early; only a real improvement does.
-    private static int[] RightBoundariesByMonotonicStack(int[] scores)
-    {
-        var right = new int[scores.Length];
-        var stack = new NumberStack();
-
-        for (var i = scores.Length - 1; i >= 0; i--)
-        {
-            while (stack.TryPeek(out var top) && scores[top] <= scores[i])
-            {
-                stack.TryPop(out _);
-            }
-
-            right[i] = stack.TryPeek(out var boundary) ? boundary : scores.Length;
-            stack.Push(i);
-        }
-
-        return right;
     }
 
     private static IndexedValue[] ValueDescendingByMergeSort(int[] nums)

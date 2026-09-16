@@ -73,44 +73,6 @@ public sealed class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
 
     private static QuadTreeNode Build(int[][] grid) => ConstructQuadTreeSolution.BuildByBruteForceCellScan(grid);
 
-    private static void AssertReconstructsExpectedGrid(QuadTreeNode result, int[][] expected)
-    {
-        var rebuilt = expected.Select(row => new int[row.Length]).ToArray();
-        Fill(result, rebuilt, new Region(0, 0, expected.Length));
-
-        Assert.Equal(expected, rebuilt);
-    }
-
-    private readonly record struct Region(int Row, int Col, int Size);
-
-    private static void Fill(QuadTreeNode node, int[][] grid, Region region)
-    {
-        if (node.IsLeaf)
-        {
-            var value = node.Val ? 1 : 0;
-            for (var r = region.Row; r < region.Row + region.Size; r++)
-            {
-                for (var c = region.Col; c < region.Col + region.Size; c++)
-                {
-                    grid[r][c] = value;
-                }
-            }
-
-            return;
-        }
-
-        var half = region.Size / 2;
-        Fill(Quadrant(node.TopLeft), grid, new Region(region.Row, region.Col, half));
-        Fill(Quadrant(node.TopRight), grid, new Region(region.Row, region.Col + half, half));
-        Fill(Quadrant(node.BottomLeft), grid, new Region(region.Row + half, region.Col, half));
-        Fill(Quadrant(node.BottomRight), grid, new Region(region.Row + half, region.Col + half, half));
-    }
-
-    // A QuadTreeNode carries all four quadrants exactly when it is not a leaf. Every
-    // IsLeaf: false node these cases decode is built by an initializer that fills all
-    // four: ConstructQuadTreeSolution does that for the inputs Build makes, and the
-    // strategy under test does it for the merged tree that comes back.
-    private static QuadTreeNode Quadrant(QuadTreeNode? quadrant) =>
-        quadrant ?? throw new InvalidOperationException(
-            "a non-leaf QuadTreeNode carries all four children, and ConstructQuadTreeSolution builds one only that way.");
+    private static void AssertReconstructsExpectedGrid(QuadTreeNode result, int[][] expected) =>
+        Assert.Equal(expected, QuadTreeGrid.Materialize(result, expected.Length));
 }

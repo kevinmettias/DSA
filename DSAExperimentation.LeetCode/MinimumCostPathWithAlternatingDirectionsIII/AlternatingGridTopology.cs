@@ -14,12 +14,6 @@ namespace DSAExperimentation.LeetCode.MinimumCostPathWithAlternatingDirectionsII
 internal readonly struct AlternatingGridTopology
     : IEdgeTopology<AlternatingGridNode, ListEdges<AlternatingGridNode, long>, long>
 {
-    private static readonly (int DeltaRow, int DeltaCol, bool MatchesOddAction)[] Moves =
-    [
-        (1, 0, true), (0, 1, true),
-        (-1, 0, false), (0, -1, false),
-    ];
-
     public static ListEdges<AlternatingGridNode, long> GetEdges(AlternatingGridNode node)
     {
         var penalty = node.Penalty;
@@ -33,7 +27,7 @@ internal readonly struct AlternatingGridTopology
             (stayPenalty, node with { NextActionIsOdd = flipped }),
         };
 
-        foreach (var (deltaRow, deltaCol, matchesOddAction) in Moves)
+        foreach (var (deltaRow, deltaCol, matchesOddAction) in AlternatingGridMoveTable.Moves)
         {
             AddMoveEdge(edges, node, (deltaRow, deltaCol, matchesOddAction), (rows, cols));
         }

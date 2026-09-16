@@ -15,22 +15,14 @@ internal sealed class GardenNetwork
 
     private GardenNetwork(IReadOnlyList<GardenNode> gardens) => Gardens = gardens;
 
+    // A GardenNode per garden id, then both directions of every path.
+    // LeetCodeAdjacency states that layout once for every problem taking an (n, edges)
+    // pair; slot id holding garden id is this problem being numbered 1..n, and the
+    // placeholder that numbering leaves at slot 0 is sliced off below.
     public static GardenNetwork Build(int n, int[][] paths)
     {
-        // Slot id holds garden id, so LeetCode's 1..n numbering indexes directly;
-        // slot 0 is a placeholder that carries no edges and is not returned.
-        var byId = new GardenNode[n + 1];
-
-        for (var id = GardenNumbering.FirstGarden; id <= n; id++)
-        {
-            byId[id] = new GardenNode(id);
-        }
-
-        foreach (var path in paths)
-        {
-            byId[path[0]].ConnectedGardens.Add(byId[path[1]]);
-            byId[path[1]].ConnectedGardens.Add(byId[path[0]]);
-        }
+        var byId = LeetCodeAdjacency.OneBased<GardenNode>(
+            n, paths, id => new GardenNode(id), (garden, _, farGarden, _) => garden.ConnectedGardens.Add(farGarden));
 
         return new GardenNetwork(byId[GardenNumbering.FirstGarden..]);
     }

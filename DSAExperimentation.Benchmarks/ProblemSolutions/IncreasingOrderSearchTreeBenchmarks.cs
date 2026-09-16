@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
 
@@ -27,16 +28,7 @@ public class IncreasingOrderSearchTreeBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var values = Enumerable.Range(1, NodeCount).ToArray();
-        var random = new Random(1);
-
-        for (var i = values.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (values[i], values[j]) = (values[j], values[i]);
-        }
-
-        _shuffledValues = values;
+        _shuffledValues = SeededSequences.ShuffledOneTo(NodeCount, seed: 1);
     }
 
     [Benchmark(Baseline = true)]

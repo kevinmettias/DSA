@@ -18,7 +18,20 @@ internal sealed class SegmentTreeArray<Element>
 
     private readonly Element[] _nodes;
 
-    public SegmentTreeArray(int leafCount) => _nodes = new Element[SizeMultiplier * Math.Max(leafCount, 1)];
+    // fill seeds every slot, not only the nodes a tree's own recursion happens to visit: the arena
+    // is private to one tree, so a uniform start is always equivalent, and it is what
+    // LazySegmentTree's pending tags need - a node's tag must read as "nothing pending" whether or
+    // not anything ever wrote to that node.
+    public SegmentTreeArray(int leafCount, Element? fill = default)
+    {
+        _nodes = new Element[SizeMultiplier * Math.Max(leafCount, 1)];
+
+        // The default fill is what a fresh array already holds, so only a real filler is written.
+        if (fill is not null)
+        {
+            Array.Fill(_nodes, fill);
+        }
+    }
 
     public Element Get(int node) => _nodes[node];
 

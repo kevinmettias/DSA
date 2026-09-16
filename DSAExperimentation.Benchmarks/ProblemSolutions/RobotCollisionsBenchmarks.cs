@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RobotCollisions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -29,14 +30,7 @@ public class RobotCollisionsBenchmarks
     {
         var random = new Random(Seed);
 
-        var shuffledPositions = Enumerable.Range(1, Length).ToArray();
-        for (var i = shuffledPositions.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (shuffledPositions[i], shuffledPositions[j]) = (shuffledPositions[j], shuffledPositions[i]);
-        }
-
-        _positions = shuffledPositions;
+        _positions = SeededSequences.ShuffledOneTo(Length, random);
         _healths = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxHealthExclusive)).ToArray();
         _directions = new string([.. Enumerable.Range(0, Length).Select(_ => IsLeftward(random) ? 'L' : 'R')]);
     }

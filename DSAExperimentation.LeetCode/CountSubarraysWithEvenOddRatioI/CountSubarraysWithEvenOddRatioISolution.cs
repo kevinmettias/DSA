@@ -1,6 +1,4 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.FenwickTree;
-using DSAExperimentation.DataStructures.Sequence;
+using DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioII;
 
 namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioI;
 
@@ -14,9 +12,9 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioI;
 // score every odd element +a and every even element -b, and count index
 // pairs (L, R) whose prefix sums satisfy prefix[L] <= prefix[R]. That is
 // exactly the coordinate-compression-plus-Fenwick-sweep shape
-// CountOfRangeSumTests already uses for LC 327, and it is the strategy LC
-// 4013 (same rule, n up to 1e5) needs to stay subquadratic - this class
-// proves it out at the smaller size first.
+// CountOfRangeSumTests already uses for LC 327. LC 4013 (same rule, n up to
+// 1e5) is where that sweep lives, since its bound is the one whose count needs
+// a 64-bit accumulator; this class reads its own total off that implementation.
 internal static class CountSubarraysWithEvenOddRatioISolution
 {
     // Every subarray scanned directly, extending y one element at a time -
@@ -44,41 +42,12 @@ internal static class CountSubarraysWithEvenOddRatioISolution
         return (int)count;
     }
 
-    // One O(n log n) left-to-right sweep: build the +a/-b weighted prefix
-    // sums, coordinate-compress them via BinarySearch.LowerBound over their
-    // sorted distinct values, then for each prefix[R] query this repo's own
-    // FenwickTree<int, SumOperation<int>> (a Binary Indexed Tree) for how
-    // many earlier prefixes already inserted are <= prefix[R] before
-    // inserting prefix[R] itself.
-    public static int CountByFenwickPrefixSweep(int[] nums, int a, int b)
-    {
-        var prefix = WeightedPrefixSums(nums, a, b);
-        var sortedDistinct = prefix.Distinct().Order().ToArray();
-        var ranks = new ArraySequence<long>(sortedDistinct);
-        var tree = new FenwickTree<int, SumOperation<int>>(sortedDistinct.Length);
-
-        var count = 0L;
-
-        foreach (var prefixSum in prefix)
-        {
-            var rank = BinarySearch.LowerBound(ranks, prefixSum);
-            count += tree.PrefixQuery(rank);
-            tree.Add(rank, 1);
-        }
-
-        return (int)count;
-    }
-
-    private static long[] WeightedPrefixSums(int[] nums, int a, int b)
-    {
-        var prefix = new long[nums.Length + 1];
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            var isOdd = nums[i] % 2 != 0;
-            prefix[i + 1] = prefix[i] + (isOdd ? a : -b);
-        }
-
-        return prefix;
-    }
+    // LC 4013's own sweep - build the +a/-b weighted prefix sums, coordinate-compress
+    // them, then query this repo's FenwickTree<int, SumOperation<int>> for how many
+    // earlier prefixes are <= prefix[R] before inserting prefix[R] itself - kept there
+    // because its bound is the one that needs the count to stay a long. At n <= 1000 the
+    // total cannot leave int range, so narrowing that arm is the whole difference between
+    // the two problems and a second copy of the loop would buy nothing.
+    public static int CountByFenwickPrefixSweep(int[] nums, int a, int b) =>
+        (int)CountSubarraysWithEvenOddRatioIISolution.CountByFenwickPrefixSweep(nums, a, b);
 }

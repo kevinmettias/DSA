@@ -46,22 +46,8 @@ internal sealed class SegmentTree<Element, TOperation>
         return Query(new SegmentRange(0, 0, _leafCount - 1), left, right);
     }
 
-    private void Build(SegmentRange range, IReadOnlyList<Element> initial)
-    {
-        if (range.Start == range.End)
-        {
-            _nodes.Set(range.Node, initial[range.Start]);
-            return;
-        }
-
-        var (left, right) = range.Split();
-
-        Build(left, initial);
-        Build(right, initial);
-
-        var combined = TOperation.Combine(_nodes.Get(left.Node), _nodes.Get(right.Node));
-        _nodes.Set(range.Node, combined);
-    }
+    private void Build(SegmentRange range, IReadOnlyList<Element> initial) =>
+        SegmentTreeBuild.Fill<Element, TOperation>(_nodes, range, initial);
 
     private void Update(SegmentRange range, int index, Element value)
     {

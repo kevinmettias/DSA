@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.DeleteNodeInABST;
@@ -24,16 +25,7 @@ public class DeleteNodeInABSTBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var values = Enumerable.Range(0, NodeCount).ToArray();
-        var random = new Random(1);
-
-        for (var i = values.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (values[i], values[j]) = (values[j], values[i]);
-        }
-
-        _insertionOrder = values;
+        _insertionOrder = SeededSequences.ShuffledZeroTo(NodeCount, seed: 1);
         _target = NodeCount / AlgorithmConstants.HalvingFactor;
     }
 

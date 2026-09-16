@@ -24,25 +24,13 @@ internal sealed record ToggleTree(RootedTreeNode Root, int[] ParentEdgeIndex)
     }
 
     // Both directions of every edge, each side carrying the index it came from: that index
-    // is the one thing a bare parent array cannot recover once the BFS has run.
-    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int n, int[][] edges)
-    {
-        var adjacency = new List<(int To, int EdgeIndex)>[n];
-
-        for (var i = 0; i < n; i++)
-        {
-            adjacency[i] = [];
-        }
-
-        for (var edgeIndex = 0; edgeIndex < edges.Length; edgeIndex++)
-        {
-            var (u, v) = (edges[edgeIndex][0], edges[edgeIndex][1]);
-            adjacency[u].Add((v, edgeIndex));
-            adjacency[v].Add((u, edgeIndex));
-        }
-
-        return adjacency;
-    }
+    // is the one thing a bare parent array cannot recover once the BFS has run, and it is
+    // what this arm's wiring callback stores beside each neighbour id.
+    // LeetCodeAdjacency states the rest of the layout once for every problem taking an
+    // (n, edges) pair.
+    private static List<(int To, int EdgeIndex)>[] BuildAdjacency(int n, int[][] edges) =>
+        LeetCodeAdjacency.ZeroBased<List<(int To, int EdgeIndex)>>(
+            n, edges, _ => [], (list, farId, _, edgeIndex) => list.Add((farId, edgeIndex)));
 
     // The BFS-to-parent-array conversion, rooted at 0, returning each node's parent and the
     // edge index that attached it.

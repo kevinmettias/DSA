@@ -1,5 +1,3 @@
-using DSAExperimentation.Algorithms.Sorting;
-using DSAExperimentation.DataStructures.Sequence;
 using HullStack = DSAExperimentation.DataStructures.Stack.Stack<(int X, int Y)>;
 
 namespace DSAExperimentation.LeetCode.ErectTheFence;
@@ -106,10 +104,10 @@ internal static class ErectTheFenceSolution
         return true;
     }
 
-    // This repo's own MergeSort (over ArrayIndexedSequence) to sort by (x, y),
-    // then Andrew's monotone chain over this repo's own Stack<(int,int)> to build
-    // the O(h) strict hull corners, then the same collinearity/betweenness scan
-    // restricted to just those h edges instead of every O(n^2) pair.
+    // The (x, y) order CoordinateOrder states, then Andrew's monotone chain over
+    // this repo's own Stack<(int,int)> to build the O(h) strict hull corners, then
+    // the same collinearity/betweenness scan restricted to just those h edges
+    // instead of every O(n^2) pair.
     public static List<(int X, int Y)> OuterTreesByMonotoneChain((int X, int Y)[] points)
     {
         if (points.Length < MinPointsForTurn + 1)
@@ -117,7 +115,7 @@ internal static class ErectTheFenceSolution
             return points.ToList();
         }
 
-        var sorted = SortByCoordinates(points);
+        var sorted = CoordinateOrder.SortedByCoordinates(points);
         var corners = ComputeHullCorners(sorted);
         var fence = new HashSet<(int X, int Y)>();
 
@@ -130,16 +128,6 @@ internal static class ErectTheFenceSolution
         }
 
         return fence.ToList();
-    }
-
-    private static (int X, int Y)[] SortByCoordinates((int X, int Y)[] points)
-    {
-        var sorted = points.ToArray();
-        MergeSort.Sort<(int X, int Y), ArrayIndexedSequence<(int X, int Y)>>(
-            new ArrayIndexedSequence<(int X, int Y)>(sorted),
-            Comparer<(int X, int Y)>.Create((a, b) => a.X != b.X ? a.X.CompareTo(b.X) : a.Y.CompareTo(b.Y)));
-
-        return sorted;
     }
 
     private static List<(int X, int Y)> ComputeHullCorners((int X, int Y)[] sorted)

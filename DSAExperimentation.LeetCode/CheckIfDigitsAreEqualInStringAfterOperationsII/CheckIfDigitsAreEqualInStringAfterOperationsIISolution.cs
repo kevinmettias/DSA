@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsI;
+
 namespace DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsII;
 
 // LeetCode 3463. Check If Digits Are Equal in String After Operations II: the same
@@ -20,37 +22,12 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
     private static readonly int[,] BinomialModFiveTable = BuildBinomialModFiveTable();
 
     // The textbook answer: perform the reduction exactly as stated. O(n^2) - the
-    // arm the Lucas strategy has to beat once n approaches the 10^5 bound.
-    public static bool AreEqualByAdjacentSumReduction(string s)
-    {
-        var digits = ToDigits(s);
-
-        while (digits.Length > 2)
-        {
-            var next = new int[digits.Length - 1];
-
-            for (var i = 0; i < next.Length; i++)
-            {
-                next[i] = (digits[i] + digits[i + 1]) % Modulo;
-            }
-
-            digits = next;
-        }
-
-        return digits[0] == digits[1];
-    }
-
-    private static int[] ToDigits(string s)
-    {
-        var digits = new int[s.Length];
-
-        for (var i = 0; i < s.Length; i++)
-        {
-            digits[i] = s[i] - '0';
-        }
-
-        return digits;
-    }
+    // arm the Lucas strategy has to beat once n approaches the 10^5 bound, and the
+    // very reduction LC 3461 asks for at a bound that stays quadratic-friendly, so
+    // Part I's own baseline is the one implementation of it rather than a second
+    // copy restating the same loop under this file's own modulus name.
+    public static bool AreEqualByAdjacentSumReduction(string s) =>
+        CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(s);
 
     public static bool AreEqualByLucasBinomialCoefficients(string s)
     {

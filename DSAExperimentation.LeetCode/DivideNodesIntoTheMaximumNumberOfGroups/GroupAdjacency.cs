@@ -17,20 +17,12 @@ internal sealed class GroupAdjacency
 
     private GroupAdjacency(int[][] neighbors) => Neighbors = neighbors;
 
+    // One empty neighbour list per node id, then both directions of every edge - the
+    // layout LeetCodeAdjacency states once for every problem taking an (n, edges) pair.
     public static GroupAdjacency Build(int nodeCount, int[][] edges)
     {
-        var neighbors = new List<int>[nodeCount + 1];
-
-        for (var id = 0; id <= nodeCount; id++)
-        {
-            neighbors[id] = [];
-        }
-
-        foreach (var edge in edges)
-        {
-            neighbors[edge[0]].Add(edge[1]);
-            neighbors[edge[1]].Add(edge[0]);
-        }
+        var neighbors = LeetCodeAdjacency.OneBased<List<int>>(
+            nodeCount, edges, _ => [], (list, farId, _, _) => list.Add(farId));
 
         return new GroupAdjacency(neighbors.Select(list => list.ToArray()).ToArray());
     }

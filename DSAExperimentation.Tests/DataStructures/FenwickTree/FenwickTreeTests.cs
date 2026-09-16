@@ -41,6 +41,9 @@ public sealed partial class FenwickTreeTests
         var valueAtUpdateIndex = tree.Query(Fixtures.UpdateIndex, Fixtures.UpdateIndex);
         Assert.Equal(Fixtures.ValueAtUpdateIndex, valueAtUpdateIndex);
 
+        var prefixSumThroughUpdateIndex = tree.PrefixQuery(Fixtures.UpdateIndex);
+        Assert.Equal(Fixtures.PrefixSumThroughUpdateIndex, prefixSumThroughUpdateIndex);
+
         var sumOfFirstTwoElements = tree.Query(0, 1);
         Assert.Equal(Fixtures.SumOfFirstTwoElements, sumOfFirstTwoElements);
 
@@ -110,6 +113,7 @@ public sealed partial class FenwickTreeTests
         public const int UpdateIndex = 2;
         public const int UpdateDelta = 10;
         public const int ValueAtUpdateIndex = 13;
+        public const int PrefixSumThroughUpdateIndex = 16;
         public const int SumOfFirstTwoElements = 3;
         public const int SumOfAllElementsAfterUpdate = 25;
         public const int FirstThreeRangeEnd = 2;

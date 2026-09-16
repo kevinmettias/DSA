@@ -12,21 +12,14 @@ internal sealed class BranchNetwork
 
     private BranchNetwork(BranchNode[] nodes) => Nodes = nodes;
 
+    // A BranchNode per branch id, then both directions of every road. LeetCodeAdjacency
+    // states that layout once for every problem taking an (n, edges) pair; this
+    // problem's own detail is that a slot holds the road's weight beside its far
+    // branch, which is what the wiring callback reads the road's third value for.
     public static BranchNetwork Build(int n, int[][] roads)
     {
-        var nodes = new BranchNode[n];
-
-        for (var i = 0; i < n; i++)
-        {
-            nodes[i] = new BranchNode(i);
-        }
-
-        foreach (var road in roads)
-        {
-            var (from, to, weight) = (road[0], road[1], road[2]);
-            nodes[from].Edges.Add((weight, nodes[to]));
-            nodes[to].Edges.Add((weight, nodes[from]));
-        }
+        var nodes = LeetCodeAdjacency.ZeroBased<BranchNode>(
+            n, roads, id => new BranchNode(id), (node, _, farNode, edgeIndex) => node.Edges.Add((roads[edgeIndex][2], farNode)));
 
         return new BranchNetwork(nodes);
     }

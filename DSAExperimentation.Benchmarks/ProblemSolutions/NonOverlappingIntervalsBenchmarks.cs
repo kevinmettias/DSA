@@ -9,9 +9,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hits brute force's true worst case - its outer "find the next kept interval"
 // loop runs close to n times, each paying a full O(n) rescan - instead of the
 // heavy-overlap case where most intervals get eliminated in the first few
-// rounds. SortByEndThenGreedyScan clones _intervals per invocation because the
-// sort strategy mutates its input in place and each BenchmarkDotNet iteration
-// must start from the same unsorted, shuffled workload.
+// rounds. SortByEndThenGreedyScan can pass _intervals as it is: the sort strategy
+// reads it through IntervalEndOrder.SortedByEnd, which sorts a copy, so every
+// BenchmarkDotNet iteration starts from the same unsorted, shuffled workload
+// without the harness having to clone it first.
 [MemoryDiagnoser]
 public class NonOverlappingIntervalsBenchmarks
 {
@@ -41,5 +42,5 @@ public class NonOverlappingIntervalsBenchmarks
 
     [Benchmark]
     public int SortByEndThenGreedyScan() =>
-        NonOverlappingIntervalsSolution.EraseOverlapIntervalsBySortThenGreedy(((int Start, int End)[])_intervals.Clone());
+        NonOverlappingIntervalsSolution.EraseOverlapIntervalsBySortThenGreedy(_intervals);
 }

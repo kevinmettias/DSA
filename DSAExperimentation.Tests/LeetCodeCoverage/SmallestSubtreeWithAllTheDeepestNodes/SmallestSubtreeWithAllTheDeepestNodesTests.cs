@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.SmallestSubtreeWithAllTheDeepestNodes;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestSubtreeWithAllTheDeepestNodes;
@@ -29,7 +30,7 @@ public sealed class SmallestSubtreeWithAllTheDeepestNodesTests
         Assert.Equal(
             expected,
             SubtreeRoot(
-                SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByRecursion(BuildTree(levelOrder))).Value);
+                SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByRecursion(LeetCodeWireFormat.ToBinaryTree(levelOrder))).Value);
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -38,7 +39,7 @@ public sealed class SmallestSubtreeWithAllTheDeepestNodesTests
         Assert.Equal(
             expected,
             SubtreeRoot(
-                SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByTreeFold(BuildTree(levelOrder))).Value);
+                SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByTreeFold(LeetCodeWireFormat.ToBinaryTree(levelOrder))).Value);
 
     // Both strategies return the deepest subtree's root, and both return null only
     // for a null root - which no example above has, since a level-order array names
@@ -46,47 +47,4 @@ public sealed class SmallestSubtreeWithAllTheDeepestNodesTests
     // absent, rather than promising it to the compiler.
     private static BinaryTreeNode<int> SubtreeRoot(BinaryTreeNode<int>? subtree) =>
         Assert.IsType<BinaryTreeNode<int>>(subtree);
-
-    // LeetCode's level-order array shape: each existing node consumes exactly two
-    // subsequent slots for its children, null marking a missing one.
-    private static BinaryTreeNode<int>? BuildTree(int?[] levelOrder)
-    {
-        if (levelOrder.Length == 0 || levelOrder[0] is null)
-        {
-            return null;
-        }
-
-        var root = new BinaryTreeNode<int>(levelOrder[0].Value);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-        var i = 1;
-
-        while (queue.Count > 0 && i < levelOrder.Length)
-        {
-            var node = queue.Dequeue();
-            i = AttachChildren(node, levelOrder, queue, i);
-        }
-
-        return root;
-    }
-
-    private static int AttachChildren(
-        BinaryTreeNode<int> node, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int i)
-    {
-        if (i < levelOrder.Length && levelOrder[i] is int leftValue)
-        {
-            node.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(node.Left);
-        }
-
-        i++;
-
-        if (i < levelOrder.Length && levelOrder[i] is int rightValue)
-        {
-            node.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(node.Right);
-        }
-
-        return i + 1;
-    }
 }

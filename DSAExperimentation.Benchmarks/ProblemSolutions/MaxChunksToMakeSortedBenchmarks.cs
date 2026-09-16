@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaxChunksToMakeSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,16 +18,7 @@ public class MaxChunksToMakeSortedBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var values = Enumerable.Range(0, Length).ToArray();
-        var random = new Random(1);
-
-        for (var i = values.Length - 1; i > 0; i--)
-        {
-            var j = random.Next(i + 1);
-            (values[i], values[j]) = (values[j], values[i]);
-        }
-
-        _values = values;
+        _values = SeededSequences.ShuffledZeroTo(Length, seed: 1);
     }
 
     [Benchmark(Baseline = true)]

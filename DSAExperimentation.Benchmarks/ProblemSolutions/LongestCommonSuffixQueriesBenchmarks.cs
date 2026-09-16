@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.LongestCommonSuffixQueries;
 
@@ -12,8 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LongestCommonSuffixQueriesBenchmarks
 {
     private const int Seed = 3093;
-    private const int MaxWordLength = 10;
-    private const string Alphabet = "ab";
 
     private string[] _wordsContainer = [];
 
@@ -26,29 +25,9 @@ public class LongestCommonSuffixQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _wordsContainer = BuildWords(random, ContainerSize);
-        _wordsQuery = BuildWords(random, ContainerSize);
+        _wordsContainer = LongestCommonSuffixQueriesWorkloads.BuildWords(ContainerSize, random);
+        _wordsQuery = LongestCommonSuffixQueriesWorkloads.BuildWords(ContainerSize, random);
         _trie = LongestCommonSuffixQueriesSolution.BuildSuffixTrie(_wordsContainer);
-    }
-
-    private static string[] BuildWords(Random random, int count)
-    {
-        var words = new string[count];
-
-        for (var i = 0; i < count; i++)
-        {
-            var length = random.Next(1, MaxWordLength + 1);
-            var chars = new char[length];
-
-            for (var j = 0; j < length; j++)
-            {
-                chars[j] = Alphabet[random.Next(Alphabet.Length)];
-            }
-
-            words[i] = new string(chars);
-        }
-
-        return words;
     }
 
     [Benchmark(Baseline = true)]

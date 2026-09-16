@@ -1,4 +1,4 @@
-using IndexStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
+using DSAExperimentation.Algorithms.Searching;
 
 namespace DSAExperimentation.LeetCode.CountBowlSubarrays;
 
@@ -12,9 +12,8 @@ namespace DSAExperimentation.LeetCode.CountBowlSubarrays;
 // next-greater neighbour (in whichever direction), or the interior max would meet
 // or beat it. So [l, r] is a bowl iff either r is l's next strictly-greater index
 // (nums[l] < nums[r]) or l is r's previous strictly-greater index (nums[r] <
-// nums[l]) - two arrays a single monotonic-decreasing stack pass each produces,
-// composed here from this repo's own Stack<int> rather than a hand-rolled array
-// stack.
+// nums[l]) - two boundary arrays NearestBoundary's one-pass sweep produces, the same
+// sweep ApplyOperationsToMaximizeScore's stack arm reads its boundaries from.
 internal static class CountBowlSubarraysSolution
 {
     private const int NoGreaterElement = -1;
@@ -46,13 +45,16 @@ internal static class CountBowlSubarraysSolution
     }
 
     // Composed: only the 2n (index, next/previous strictly-greater index) pairs a
-    // monotonic-decreasing Stack<int> pass produces can ever be a bowl's pinning
-    // end, so counting those directly replaces the O(n^2) pair scan with two O(n)
-    // passes.
+    // monotonic sweep produces can ever be a bowl's pinning end, so counting those
+    // directly replaces the O(n^2) pair scan with two O(n) sweeps. The two relations are
+    // the pair every "nearest greater boundary" count in this repo pairs up: the rightward
+    // one strict so an equal neighbour cannot resolve an index, the leftward one or-equal
+    // so that index resolves against it instead - which on this problem's distinct values
+    // is the strictly-greater index either way.
     public static int CountBowlsByMonotonicStack(int[] nums)
     {
-        var nextGreater = NextGreaterIndices(nums);
-        var previousGreater = PreviousGreaterIndices(nums);
+        var nextGreater = NearestBoundary.GreaterToTheRight(nums, NoGreaterElement);
+        var previousGreater = NearestBoundary.GreaterOrEqualToTheLeft(nums, NoGreaterElement);
         var count = 0;
 
         for (var i = 0; i < nums.Length; i++)
@@ -69,47 +71,5 @@ internal static class CountBowlSubarraysSolution
         }
 
         return count;
-    }
-
-    private static int[] NextGreaterIndices(int[] nums)
-    {
-        var result = new int[nums.Length];
-        Array.Fill(result, NoGreaterElement);
-
-        var stack = new IndexStack();
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            while (stack.TryPeek(out var top) && nums[top] < nums[i])
-            {
-                stack.TryPop(out _);
-                result[top] = i;
-            }
-
-            stack.Push(i);
-        }
-
-        return result;
-    }
-
-    private static int[] PreviousGreaterIndices(int[] nums)
-    {
-        var result = new int[nums.Length];
-        Array.Fill(result, NoGreaterElement);
-
-        var stack = new IndexStack();
-
-        for (var i = 0; i < nums.Length; i++)
-        {
-            while (stack.TryPeek(out var top) && nums[top] < nums[i])
-            {
-                stack.TryPop(out _);
-            }
-
-            result[i] = stack.TryPeek(out var previous) ? previous : NoGreaterElement;
-            stack.Push(i);
-        }
-
-        return result;
     }
 }

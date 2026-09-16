@@ -16,8 +16,6 @@ namespace DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 // remainder 0 unreachable when k shares a factor with 10.
 internal static class SmallestIntegerDivisibleByKSolution
 {
-    private const int DecimalDigitBase = 10;
-
     // The textbook answer: one int updated in place, BCL-only. After k steps the
     // remainders must have repeated, so failing to hit 0 by then proves there is no
     // answer at all.
@@ -27,7 +25,7 @@ internal static class SmallestIntegerDivisibleByKSolution
 
         for (var length = 1; length <= k; length++)
         {
-            remainder = ((remainder * DecimalDigitBase) + 1) % k;
+            remainder = ((remainder * RepunitDigitBase.Value) + 1) % k;
 
             if (remainder == 0)
             {
