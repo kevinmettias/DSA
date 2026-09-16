@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InvertBinaryTree;
 // never exercised. BinaryTreeNode<int> is internal, so - as in SameTreeTests - it
 // stays out of a public TheoryData/[Theory] signature and LeetCodeWireFormat.ToBinaryTree reconstructs
 // it from LeetCode's own level-order-with-null array shape.
-public sealed class InvertBinaryTreeTests
+public sealed partial class InvertBinaryTreeTests
 {
     [Fact]
     public void InvertByRecursiveSwap_LeetCodeExampleOne_MirrorsEveryLevel()

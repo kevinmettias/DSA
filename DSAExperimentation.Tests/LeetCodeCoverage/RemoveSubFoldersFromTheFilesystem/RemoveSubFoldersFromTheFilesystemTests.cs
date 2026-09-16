@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveSubFoldersFromTheFiles
 // LC 1233 accepts the surviving folders in any order, and the two strategies emit
 // different orders by construction, so each expectation is stated ordinal-sorted and
 // each arm's result is ordered the same way before comparison.
-public sealed class RemoveSubFoldersFromTheFilesystemTests
+public sealed partial class RemoveSubFoldersFromTheFilesystemTests
 {
     public static TheoryData<string[], string[]> Examples =>
         new()

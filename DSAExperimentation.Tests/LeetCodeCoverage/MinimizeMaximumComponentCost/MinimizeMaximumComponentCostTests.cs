@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeMaximumComponentCost
 // Harness only. The reverse-Kruskal merge itself is
 // MinimizeMaximumComponentCostSolution's - this file just pins both strategies
 // to LeetCode's published examples.
-public sealed class MinimizeMaximumComponentCostTests
+public sealed partial class MinimizeMaximumComponentCostTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
         new()

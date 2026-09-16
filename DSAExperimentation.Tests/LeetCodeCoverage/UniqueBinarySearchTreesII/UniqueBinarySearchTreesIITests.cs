@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.UniqueBinarySearchTreesII;
 // file pins them to LeetCode's published example (n=3) and the n=1 edge case,
 // checking every returned tree is a structurally valid BST over [1..n] via
 // its in-order sequence, plus the n=1 case's exact single-leaf shape.
-public sealed class UniqueBinarySearchTreesIITests
+public sealed partial class UniqueBinarySearchTreesIITests
 {
     public static TheoryData<int, int, int[]> Examples =>
         new()

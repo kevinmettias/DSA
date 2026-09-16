@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ThreeSumWithMultiplicity;
 // One test method per strategy over one shared set of examples, so a failure names
 // the strategy that broke - which is what finally puts the cubic baseline under
 // test, since it previously existed only as a benchmark arm nothing asserted.
-public sealed class ThreeSumWithMultiplicityTests
+public sealed partial class ThreeSumWithMultiplicityTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumQueryMutable;
 // sequence of mutating calls rather than a single argument tuple - the same shape
 // DesignTaskManagerTests already uses for its own instance-API problem. RangeSumOperation.Apply is pure
 // dispatch (which method to call with which arguments) - no summing logic of its own.
-public sealed class RangeSumQueryMutableTests
+public sealed partial class RangeSumQueryMutableTests
 {
     public static TheoryData<int[], RangeSumOperation[], int?[]> Examples =>
         new()
@@ -36,20 +36,15 @@ public sealed class RangeSumQueryMutableTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByArrayRescan_LeetCodeExamples_ReflectsMutation(int[] initial, RangeSumOperation[] operations, int?[] expected) =>
-        RunScript(RangeSumQueryMutableSolution.CreateByArrayRescan(initial), operations, expected);
+        Assert.Equal(expected, RunScript(RangeSumQueryMutableSolution.CreateByArrayRescan(initial), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySegmentTreeQuery_LeetCodeExamples_ReflectsMutation(int[] initial, RangeSumOperation[] operations, int?[] expected) =>
-        RunScript(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(initial), operations, expected);
+        Assert.Equal(expected, RunScript(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(initial), operations));
 
-    private static void RunScript(INumArray numArray, RangeSumOperation[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(numArray));
-        }
-    }
+    private static int?[] RunScript(INumArray numArray, RangeSumOperation[] operations) =>
+        [.. operations.Select(operation => operation.Apply(numArray))];
 
     // One call in a NumArray script: which operation to invoke and with what arguments. Pure
     // dispatch, built via the named factories below so a script (like Examples above) reads like the

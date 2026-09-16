@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteTheMiddleNodeOfALinked
 // TheoryData member; the examples travel as value arrays and BuildList
 // reconstructs a fresh list inside each test method, which every arm needs
 // anyway because deleting is destructive.
-public sealed class DeleteTheMiddleNodeOfALinkedListTests
+public sealed partial class DeleteTheMiddleNodeOfALinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

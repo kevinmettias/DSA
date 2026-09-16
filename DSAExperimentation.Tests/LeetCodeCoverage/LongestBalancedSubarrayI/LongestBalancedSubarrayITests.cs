@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestBalancedSubarrayI;
 
 // Harness only. Both strategies are LongestBalancedSubarrayISolution's - this
 // file pins them to LeetCode's published examples.
-public sealed class LongestBalancedSubarrayITests
+public sealed partial class LongestBalancedSubarrayITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

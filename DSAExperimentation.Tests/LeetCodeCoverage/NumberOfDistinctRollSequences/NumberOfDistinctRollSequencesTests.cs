@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfDistinctRollSequence
 // pin the two boundaries where the "no roll yet" sentinel is still in the state,
 // sequenceLength = 4 is LeetCode's own published example, and the longer counts keep
 // the two arms honest once the recurrence has revisited states.
-public sealed class NumberOfDistinctRollSequencesTests
+public sealed partial class NumberOfDistinctRollSequencesTests
 {
     public static TheoryData<int, long> Examples =>
         new()

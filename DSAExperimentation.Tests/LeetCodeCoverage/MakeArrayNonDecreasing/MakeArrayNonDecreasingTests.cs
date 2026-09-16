@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MakeArrayNonDecreasing;
 
 // Harness only. Both strategies are MakeArrayNonDecreasingSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class MakeArrayNonDecreasingTests
+public sealed partial class MakeArrayNonDecreasingTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

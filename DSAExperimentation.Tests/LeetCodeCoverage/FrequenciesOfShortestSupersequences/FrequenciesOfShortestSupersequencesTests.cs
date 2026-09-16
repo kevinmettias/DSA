@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FrequenciesOfShortestSuperse
 // this file just pins them to LeetCode's published examples. Neither LC nor either
 // strategy promises an output order, so assertions compare the two result sets
 // after sorting each into a canonical order.
-public sealed class FrequenciesOfShortestSupersequencesTests
+public sealed partial class FrequenciesOfShortestSupersequencesTests
 {
     public static TheoryData<string[], int[][]> Examples =>
         new()

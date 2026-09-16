@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameIX;
 
 // Harness only. Both reachability strategies are JumpGameIXSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class JumpGameIXTests
+public sealed partial class JumpGameIXTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

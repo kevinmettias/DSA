@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameIII;
 // examples plus the two boundary cases neither harness used to cover: a start that
 // is already on a zero, and a zero that exists but sits outside the reachable
 // component.
-public sealed class JumpGameIIITests
+public sealed partial class JumpGameIIITests
 {
     public static TheoryData<ZeroReachExample> Examples =>
         new()

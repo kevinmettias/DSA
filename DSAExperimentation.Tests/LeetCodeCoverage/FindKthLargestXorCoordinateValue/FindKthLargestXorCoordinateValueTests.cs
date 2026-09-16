@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindKthLargestXorCoordinateV
 // LeetCode's published examples - including rank == 4, the rank the original coverage
 // omitted, whose answer is the 0 that the corner cancellation produces - plus two
 // degenerate shapes where one dimension is a single cell.
-public sealed class FindKthLargestXorCoordinateValueTests
+public sealed partial class FindKthLargestXorCoordinateValueTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

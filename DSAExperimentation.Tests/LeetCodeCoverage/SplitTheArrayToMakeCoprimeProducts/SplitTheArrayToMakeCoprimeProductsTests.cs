@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SplitTheArrayToMakeCoprimePr
 // the BigInteger gcd scan the benchmark's baseline arm used to own and nothing
 // asserted, and the HashMap<prime,lastIndex> boundary sweep this file used to
 // inline.
-public sealed class SplitTheArrayToMakeCoprimeProductsTests
+public sealed partial class SplitTheArrayToMakeCoprimeProductsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

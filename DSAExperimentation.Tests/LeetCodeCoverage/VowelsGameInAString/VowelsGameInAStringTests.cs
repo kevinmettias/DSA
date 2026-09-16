@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.VowelsGameInAString;
 
 // Harness only. Both strategies are VowelsGameInAStringSolution's - this file
 // pins them to LeetCode's published examples.
-public sealed class VowelsGameInAStringTests
+public sealed partial class VowelsGameInAStringTests
 {
     public static TheoryData<GameCase> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReplaceNonCoprimeNumbersInAr
 // ReplaceNonCoprimeNumbersInArraySolution's - this file just pins them to
 // LeetCode's published examples plus the cascade cases that distinguish a
 // backward-merging stack from a naive left-to-right pass.
-public sealed class ReplaceNonCoprimeNumbersInArrayTests
+public sealed partial class ReplaceNonCoprimeNumbersInArrayTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

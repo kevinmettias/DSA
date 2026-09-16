@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RepeatedStringMatch;
 // Harness only. Both substring-search strategies live in RepeatedStringMatchSolution
 // and are asserted against the same examples, including the case with no valid
 // repeat count at all.
-public sealed class RepeatedStringMatchTests
+public sealed partial class RepeatedStringMatchTests
 {
     public static TheoryData<RepeatsExample> Examples =>
         new()

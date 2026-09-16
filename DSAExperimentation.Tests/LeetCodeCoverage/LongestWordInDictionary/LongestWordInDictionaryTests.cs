@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestWordInDictionary;
 
 // Harness only. Both strategies are LongestWordInDictionarySolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class LongestWordInDictionaryTests
+public sealed partial class LongestWordInDictionaryTests
 {
     public static TheoryData<string[], string> Examples =>
         new()

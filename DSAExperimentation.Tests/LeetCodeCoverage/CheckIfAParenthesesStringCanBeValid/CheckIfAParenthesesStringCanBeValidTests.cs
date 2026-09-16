@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAParenthesesStringCan
 // the benchmark's stack arm used to get wrong, a free position that has to become
 // '(' to save a locked ')', and a free position sitting before a locked '(' that no
 // rewriting can rescue.
-public sealed class CheckIfAParenthesesStringCanBeValidTests
+public sealed partial class CheckIfAParenthesesStringCanBeValidTests
 {
     public static TheoryData<ValidityCase> Examples =>
         new()

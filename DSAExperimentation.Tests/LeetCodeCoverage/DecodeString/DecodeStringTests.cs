@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DecodeString;
 
 // Harness only. Both decoding strategies are DecodeStringSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class DecodeStringTests
+public sealed partial class DecodeStringTests
 {
     public static TheoryData<DecodeCase> Examples =>
         new()

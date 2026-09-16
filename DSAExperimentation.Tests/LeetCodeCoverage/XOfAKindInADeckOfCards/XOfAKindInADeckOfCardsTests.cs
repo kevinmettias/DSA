@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.XOfAKindInADeckOfCards;
 // them to LeetCode's published examples plus the cases the GCD fold has to get
 // right - a single card, a lone pair, unequal-but-commensurable counts, and counts
 // whose only common divisor is 1.
-public sealed class XOfAKindInADeckOfCardsTests
+public sealed partial class XOfAKindInADeckOfCardsTests
 {
     public static TheoryData<DeckCase> Examples =>
         new()

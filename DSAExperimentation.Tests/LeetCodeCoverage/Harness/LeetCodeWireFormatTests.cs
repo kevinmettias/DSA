@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
 // is the part worth pinning down: LeetCode does NOT pad a missing node's slots,
 // so the array is not a 2i+1/2i+2 heap layout and indexing it as one silently
 // builds a different tree.
-public sealed class LeetCodeWireFormatTests
+public sealed partial class LeetCodeWireFormatTests
 {
     [Fact]
     public void ToBinaryTree_OnAnEmptyArray_ReturnsNull() => Assert.Null(LeetCodeWireFormat.ToBinaryTree([]));

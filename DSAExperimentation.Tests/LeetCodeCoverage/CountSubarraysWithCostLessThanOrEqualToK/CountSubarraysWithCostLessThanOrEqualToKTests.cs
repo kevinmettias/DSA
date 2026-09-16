@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithCostLessTh
 // to LeetCode's published examples, including the all-equal array (every
 // subarray costs 0 regardless of length) and the zero-cost-limit case (only
 // single-element subarrays ever qualify).
-public sealed class CountSubarraysWithCostLessThanOrEqualToKTests
+public sealed partial class CountSubarraysWithCostLessThanOrEqualToKTests
 {
     public static TheoryData<int[], long, long> Examples =>
         new()

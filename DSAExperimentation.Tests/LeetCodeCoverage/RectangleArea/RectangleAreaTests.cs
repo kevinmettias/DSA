@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RectangleArea;
 // Harness only: both strategies are RectangleAreaSolution's - the closed-form O(1)
 // overlap arithmetic and the unit-grid brute force it has to beat, now under test
 // itself instead of sitting unasserted as a benchmark-only baseline.
-public sealed class RectangleAreaTests
+public sealed partial class RectangleAreaTests
 {
     public static TheoryData<RectangleAreaCase> Examples =>
         new()

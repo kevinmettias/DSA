@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NextGreaterElementI;
 
 // Harness only. Both strategies are NextGreaterElementISolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class NextGreaterElementITests
+public sealed partial class NextGreaterElementITests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

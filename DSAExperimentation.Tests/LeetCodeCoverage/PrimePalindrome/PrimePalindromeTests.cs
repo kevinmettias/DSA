@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimePalindrome;
 // examples. The sequential scan was previously the benchmark's unasserted baseline -
 // it is asserted here, including on 9999, where the answer sits five digits up
 // because no four-digit palindrome is ever prime.
-public sealed class PrimePalindromeTests
+public sealed partial class PrimePalindromeTests
 {
     public static TheoryData<int, long> Examples =>
         new()

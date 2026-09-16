@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimeNumberOfSetBitsInBinary
 
 // Harness only: both strategies live in PrimeNumberOfSetBitsInBinaryRepresentationSolution
 // and are asserted against the same examples.
-public sealed class PrimeNumberOfSetBitsInBinaryRepresentationTests
+public sealed partial class PrimeNumberOfSetBitsInBinaryRepresentationTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

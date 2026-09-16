@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ParsingABooleanExpression;
 // Harness only: both strategies live in ParsingABooleanExpressionSolution and are
 // asserted against the same expressions - the leaf cases, each operator on its own,
 // and the nested expression LeetCode itself publishes.
-public sealed class ParsingABooleanExpressionTests
+public sealed partial class ParsingABooleanExpressionTests
 {
     public static TheoryData<ExpressionExample> Examples =>
         new()

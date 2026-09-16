@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestSubarrayToBeRemovedT
 // to LeetCode's published examples plus the two shapes the stitching arm has to get
 // right without any prefix/suffix overlap at all: a strictly decreasing array (only
 // one element can survive) and an already-sorted one (nothing is removed).
-public sealed class ShortestSubarrayToBeRemovedToMakeArraySortedTests
+public sealed partial class ShortestSubarrayToBeRemovedToMakeArraySortedTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

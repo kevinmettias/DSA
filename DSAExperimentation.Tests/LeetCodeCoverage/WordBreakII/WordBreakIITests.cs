@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordBreakII;
 // them to LeetCode's published examples, sorting each result the same way the
 // original assertions did since neither strategy promises a particular sentence
 // order.
-public sealed class WordBreakIITests
+public sealed partial class WordBreakIITests
 {
     public static TheoryData<string, string[], string[]> Examples =>
         new()

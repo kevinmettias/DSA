@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfSquarefulArrays;
 // pins them to LeetCode's published examples plus cases that exercise duplicate
 // dedup (equal values must not be counted twice) and outright rejection (no
 // adjacent pair sums to a square).
-public sealed class NumberOfSquarefulArraysTests
+public sealed partial class NumberOfSquarefulArraysTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

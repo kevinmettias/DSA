@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfItIsAStraightLine;
 // asserted against the same examples. The O(n^3) every-triple baseline previously
 // existed only as a benchmark arm and was never asserted by anything; it answers the
 // same question as the anchored one-pass scan, so both run the same example set.
-public sealed class CheckIfItIsAStraightLineTests
+public sealed partial class CheckIfItIsAStraightLineTests
 {
     public static TheoryData<StraightLineCase> Examples =>
         new()

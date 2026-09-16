@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CouplesHoldingHands;
 
 // Harness only. Both strategies are CouplesHoldingHandsSolution's - this file just
 // pins them to LeetCode's published examples plus an already-paired edge case.
-public sealed class CouplesHoldingHandsTests
+public sealed partial class CouplesHoldingHandsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

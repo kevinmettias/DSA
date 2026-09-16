@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathExistenceQueriesInAGraph
 // broke. Example 2's [2,3] query and example 3's last two queries are the
 // unreachable (-1) cases; example 2's [0,2] is the only query in this set that
 // needs more than a single hop.
-public sealed class PathExistenceQueriesInAGraphIITests
+public sealed partial class PathExistenceQueriesInAGraphIITests
 {
     public static TheoryData<PathExistenceCase> Examples =>
         new()

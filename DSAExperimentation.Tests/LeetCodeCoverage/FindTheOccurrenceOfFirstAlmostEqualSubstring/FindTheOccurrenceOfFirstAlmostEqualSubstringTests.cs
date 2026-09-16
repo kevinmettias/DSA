@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheOccurrenceOfFirstAlmo
 // Harness only: both strategies live in
 // FindTheOccurrenceOfFirstAlmostEqualSubstringSolution. This file just pins
 // them to #3303's published examples, including the no-match case.
-public sealed class FindTheOccurrenceOfFirstAlmostEqualSubstringTests
+public sealed partial class FindTheOccurrenceOfFirstAlmostEqualSubstringTests
 {
     public static TheoryData<AlmostEqualCase> Examples =>
         new()

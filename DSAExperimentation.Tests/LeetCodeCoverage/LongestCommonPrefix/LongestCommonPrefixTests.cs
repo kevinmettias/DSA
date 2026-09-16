@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestCommonPrefix;
 
 // Harness only. Both strategies are LongestCommonPrefixSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class LongestCommonPrefixTests
+public sealed partial class LongestCommonPrefixTests
 {
     public static TheoryData<string[], string> Examples =>
         new()

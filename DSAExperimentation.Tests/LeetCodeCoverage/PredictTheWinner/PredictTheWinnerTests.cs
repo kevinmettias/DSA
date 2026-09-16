@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PredictTheWinner;
 
 // Harness only. Both strategies are PredictTheWinnerSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class PredictTheWinnerTests
+public sealed partial class PredictTheWinnerTests
 {
     public static TheoryData<PredictTheWinnerCase> Examples =>
         new()

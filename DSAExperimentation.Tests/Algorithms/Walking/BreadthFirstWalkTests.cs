@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.Algorithms.Walking;
 // tracked guard, because an unguarded walk is valid only under ITreeTopology's
 // unique-ancestry promise; the depths and the frontier row show what the guard
 // does to the visit order.
-public sealed class BreadthFirstWalkTests
+public sealed partial class BreadthFirstWalkTests
 {
     public static TheoryData<WalkExample> Examples =>
         new()

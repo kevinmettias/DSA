@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindInMountainArray;
 // them to LeetCode's published examples plus the cases that separate the two
 // slopes - a target on the peak itself, and one present on both slopes whose
 // smaller index is the required answer.
-public sealed class FindInMountainArrayTests
+public sealed partial class FindInMountainArrayTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

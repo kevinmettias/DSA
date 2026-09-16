@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountAlmostEqualPairsII;
 
 // Harness only: both strategies live in CountAlmostEqualPairsIISolution - this file
 // just pins them to LeetCode's published examples.
-public sealed class CountAlmostEqualPairsIITests
+public sealed partial class CountAlmostEqualPairsIITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

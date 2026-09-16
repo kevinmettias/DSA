@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ProcessRestrictedFriendReque
 // Harness only. Both strategies are ProcessRestrictedFriendRequestsSolution's -
 // this file just pins them to LeetCode's published examples, plus a request whose
 // rejection is purely transitive, a self-request, and a restriction-free run.
-public sealed class ProcessRestrictedFriendRequestsTests
+public sealed partial class ProcessRestrictedFriendRequestsTests
 {
     public static TheoryData<int, int[][], int[][], bool[]> Examples =>
         new()

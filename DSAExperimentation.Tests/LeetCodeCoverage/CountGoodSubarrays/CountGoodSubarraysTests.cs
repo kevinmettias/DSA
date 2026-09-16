@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodSubarrays;
 // Harness only. The OR == max characterization and the running-OR-groups
 // compression both live in CountGoodSubarraysSolution - this file just pins
 // both strategies to LeetCode's published examples.
-public sealed class CountGoodSubarraysTests
+public sealed partial class CountGoodSubarraysTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

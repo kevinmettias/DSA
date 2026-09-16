@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMinimumTimeToFinishAllJo
 // LowerBound-over-feasibility search - are FindMinimumTimeToFinishAllJobsSolution's,
 // so this file only pins them to LeetCode's published examples plus the cases that
 // separate "minimum achievable maximum load" from the greedy answer.
-public sealed class FindMinimumTimeToFinishAllJobsTests
+public sealed partial class FindMinimumTimeToFinishAllJobsTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

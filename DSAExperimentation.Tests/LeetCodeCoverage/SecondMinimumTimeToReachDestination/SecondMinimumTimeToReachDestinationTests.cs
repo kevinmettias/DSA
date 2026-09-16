@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SecondMinimumTimeToReachDest
 // that no signal is ever red, a bipartite graph where the second-shortest route is two
 // roads longer rather than one, a triangle where it is exactly one longer, and a
 // signal so short that every single arrival waits.
-public sealed class SecondMinimumTimeToReachDestinationTests
+public sealed partial class SecondMinimumTimeToReachDestinationTests
 {
     public static TheoryData<ArrivalExample> Examples =>
         new()

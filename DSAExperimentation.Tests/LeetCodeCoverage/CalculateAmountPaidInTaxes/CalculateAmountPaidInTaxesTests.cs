@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CalculateAmountPaidInTaxes;
 // CalculateAmountPaidInTaxesSolution's - this file pins them to LeetCode's published
 // examples plus the zero-income, single-bracket and income-above-the-top-bracket
 // cases, where the loop either never taxes anything or never gets to break early.
-public sealed class CalculateAmountPaidInTaxesTests
+public sealed partial class CalculateAmountPaidInTaxesTests
 {
     private const int Precision = 5;
 

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ParallelCoursesII;
 // the strategy that broke rather than reporting a disagreement between an anonymous
 // test helper and an anonymous benchmark arm. The no-prerequisites cases are the
 // shape the benchmark measures, so they are asserted here too.
-public sealed class ParallelCoursesIITests
+public sealed partial class ParallelCoursesIITests
 {
     // Cases both arms are checked at. The unmemoized arm re-explores a
     // completed-course mask once per semester order that reaches it (courseCount = 11

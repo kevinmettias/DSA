@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostPathWithEdgeRever
 // Harness only. The augmented digraph itself is ReversalGraph and both Dijkstra
 // strategies are MinimumCostPathWithEdgeReversalsSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class MinimumCostPathWithEdgeReversalsTests
+public sealed partial class MinimumCostPathWithEdgeReversalsTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

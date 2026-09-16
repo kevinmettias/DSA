@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheLongestValidObstacleC
 // FindTheLongestValidObstacleCourseAtEachPositionSolution and are asserted against the
 // same examples, including the all-equal run (where non-decreasing beats strictly
 // increasing) and the strictly decreasing case where every answer is 1.
-public sealed class FindTheLongestValidObstacleCourseAtEachPositionTests
+public sealed partial class FindTheLongestValidObstacleCourseAtEachPositionTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

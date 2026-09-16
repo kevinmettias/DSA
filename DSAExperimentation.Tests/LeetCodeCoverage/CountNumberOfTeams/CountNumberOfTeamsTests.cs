@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNumberOfTeams;
 // triple loop and the pair of coordinate-compressed Fenwick sweeps - pinned here
 // to LeetCode's published examples plus the degenerate cases (equal ratings, too
 // few soldiers) the sweep has to answer without a middle soldier existing.
-public sealed class CountNumberOfTeamsTests
+public sealed partial class CountNumberOfTeamsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

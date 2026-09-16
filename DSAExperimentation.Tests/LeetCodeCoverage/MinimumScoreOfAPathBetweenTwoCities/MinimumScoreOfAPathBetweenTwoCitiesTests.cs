@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumScoreOfAPathBetweenTw
 // Harness only. Both strategies are MinimumScoreOfAPathBetweenTwoCitiesSolution's -
 // including the flood fill, which the benchmark used to own privately as its baseline
 // and nothing asserted.
-public sealed class MinimumScoreOfAPathBetweenTwoCitiesTests
+public sealed partial class MinimumScoreOfAPathBetweenTwoCitiesTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePairs;
 // Harness only. Both strategies are PalindromePairsSolution's - this file just pins
 // them to LeetCode's published examples, expressed as sets of index pairs since a
 // word may pair with more than one other word and pair order isn't specified.
-public sealed class PalindromePairsTests
+public sealed partial class PalindromePairsTests
 {
     public static TheoryData<string[], (int First, int Second)[]> Examples =>
         new()

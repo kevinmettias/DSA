@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfVisiblePeopleInAQueu
 // file just pins them to LeetCode's published examples plus the tie-heavy shapes
 // that separate a correct visibility rule from a sloppy one: a run of equal heights,
 // and equal heights sandwiched between two taller people.
-public sealed class NumberOfVisiblePeopleInAQueueTests
+public sealed partial class NumberOfVisiblePeopleInAQueueTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

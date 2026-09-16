@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumStrongPairXORII;
 // file just pins them to LeetCode's published examples, the same ones LC 2932
 // publishes for the identical question at a smaller bound, including the case
 // where no strong pair exists at all (nums = [10, 100]).
-public sealed class MaximumStrongPairXORIITests
+public sealed partial class MaximumStrongPairXORIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

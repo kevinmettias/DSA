@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickIndex;
 // candidate set" idea InsertDeleteGetRandomO1Tests already uses for GetRandom -
 // plus, where the original test asserted it, that every valid index eventually
 // gets returned across many calls.
-public sealed class RandomPickIndexTests
+public sealed partial class RandomPickIndexTests
 {
     public static TheoryData<PickExample> Examples =>
         new()

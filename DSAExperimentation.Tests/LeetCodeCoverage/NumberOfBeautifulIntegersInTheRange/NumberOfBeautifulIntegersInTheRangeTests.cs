@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfBeautifulIntegersInT
 // Harness only: the algorithms live in NumberOfBeautifulIntegersInTheRangeSolution.
 // One test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke.
-public sealed class NumberOfBeautifulIntegersInTheRangeTests
+public sealed partial class NumberOfBeautifulIntegersInTheRangeTests
 {
     public static TheoryData<int, int, int, long> Examples =>
         new()
@@ -14,6 +14,9 @@ public sealed class NumberOfBeautifulIntegersInTheRangeTests
             { 1, 10, 1, 1 }, // only 10 (digits 1,0 - one odd, one even)
             { 5, 5, 2, 0 }, // 5 is a single odd digit (never balanced) and isn't even divisible by 2
         };
+
+    public static TheoryData<int, int, int> RandomizedRanges =>
+        new() { { 1, 1000, 1 }, { 123, 4567, 7 }, { 1, 999_999, 13 } };
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -36,9 +39,7 @@ public sealed class NumberOfBeautifulIntegersInTheRangeTests
     }
 
     [Theory]
-    [InlineData(1, 1000, 1)]
-    [InlineData(123, 4567, 7)]
-    [InlineData(1, 999_999, 13)]
+    [MemberData(nameof(RandomizedRanges))]
     public void BothStrategies_RandomizedRanges_Agree(int low, int high, int divisor)
     {
         var bruteForce = NumberOfBeautifulIntegersInTheRangeSolution.CountByBruteForce(low, high, divisor);

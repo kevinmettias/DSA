@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HandOfStraights;
 // just pins them to LeetCode's published examples, including a hand that cannot
 // divide evenly into groups at all and a hand whose duplicates have to be spread
 // across parallel groups rather than stacked into one.
-public sealed class HandOfStraightsTests
+public sealed partial class HandOfStraightsTests
 {
     public static TheoryData<StraightHandExample> Examples =>
         new()

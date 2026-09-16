@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SelectCellsInGridWithMaximum
 
 // Harness only: both strategies are SelectCellsInGridWithMaximumScoreSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class SelectCellsInGridWithMaximumScoreTests
+public sealed partial class SelectCellsInGridWithMaximumScoreTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

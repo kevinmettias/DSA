@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LastRemainingIntegerAfterAlt
 // Harness only. Both strategies are
 // LastRemainingIntegerAfterAlternatingDeletionOperationsSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class LastRemainingIntegerAfterAlternatingDeletionOperationsTests
+public sealed partial class LastRemainingIntegerAfterAlternatingDeletionOperationsTests
 {
     public static TheoryData<long, long> Examples =>
         new()

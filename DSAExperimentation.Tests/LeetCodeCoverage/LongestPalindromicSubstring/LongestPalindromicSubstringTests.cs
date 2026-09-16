@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestPalindromicSubstring;
 
 // Harness only. Both strategies are LongestPalindromicSubstringSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class LongestPalindromicSubstringTests
+public sealed partial class LongestPalindromicSubstringTests
 {
     public static TheoryData<PalindromeExample> Examples =>
         new()

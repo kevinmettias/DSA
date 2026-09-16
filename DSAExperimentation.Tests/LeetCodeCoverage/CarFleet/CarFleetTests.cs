@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CarFleet;
 // LeetCode's published examples once and asserts each strategy against them, so a
 // failure names the strategy that broke. The O(n^2) recompute-max-each-car arm used
 // to live only in the benchmark, unasserted; it is a first-class tested strategy now.
-public sealed class CarFleetTests
+public sealed partial class CarFleetTests
 {
     public static TheoryData<int, int[], int[], int> Examples =>
         new()

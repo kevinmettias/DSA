@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumOneBitOperationsToMak
 // - this file just pins them to LeetCode's published examples plus the already-zero
 // case, the single-flip case, and two powers/patterns far enough along the Gray code
 // path that the closed form and the search would visibly disagree if either drifted.
-public sealed class MinimumOneBitOperationsToMakeIntegersZeroTests
+public sealed partial class MinimumOneBitOperationsToMakeIntegersZeroTests
 {
     public static TheoryData<int, int> Examples =>
         new()

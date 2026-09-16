@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StampingTheSequence;
 // Many move sequences are valid for the same input, so each example pins the move
 // COUNT and the observable postcondition LeetCode's own judge checks - replaying the
 // returned start indices, in order, onto a blank '?' canvas lands on target.
-public sealed class StampingTheSequenceTests
+public sealed partial class StampingTheSequenceTests
 {
     public static TheoryData<StampCase> Examples =>
         new()

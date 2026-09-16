@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
-public sealed class WeightedGridTests
+public sealed partial class WeightedGridTests
 {
     [Fact]
     public void Build_ProducesOneNodePerCellKeyedByItsCoordinate()

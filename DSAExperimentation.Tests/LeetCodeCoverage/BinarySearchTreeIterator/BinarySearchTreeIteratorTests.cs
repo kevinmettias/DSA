@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BinarySearchTreeIterator;
 // one [Fact] per tree rather than [Theory]. Only one strategy exists (the
 // original benchmark's two [Benchmark] arms were both `return 1` placeholders,
 // not a second algorithm to reconcile), so there is only one method family.
-public sealed class BinarySearchTreeIteratorTests
+public sealed partial class BinarySearchTreeIteratorTests
 {
     [Fact]
     public void CreateByLeftSpineStack_LeetCodeExample_ReturnsInOrderSequence()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestPalindromicPathInGrap
 
 // Harness only. Both strategies are LongestPalindromicPathInGraphSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class LongestPalindromicPathInGraphTests
+public sealed partial class LongestPalindromicPathInGraphTests
 {
     public static TheoryData<int, int[][], string, int> Examples =>
         new()

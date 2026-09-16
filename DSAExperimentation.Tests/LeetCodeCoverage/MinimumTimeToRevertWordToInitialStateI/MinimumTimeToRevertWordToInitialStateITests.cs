@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToRevertWordToIni
 // Harness only. Both strategies live in
 // MinimumTimeToRevertWordToInitialStateISolution - this file just pins them
 // to LeetCode's published examples.
-public sealed class MinimumTimeToRevertWordToInitialStateITests
+public sealed partial class MinimumTimeToRevertWordToInitialStateITests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

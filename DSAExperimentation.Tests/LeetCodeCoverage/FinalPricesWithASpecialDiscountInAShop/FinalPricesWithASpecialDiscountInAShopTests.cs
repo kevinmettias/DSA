@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FinalPricesWithASpecialDisco
 // Harness only: both strategies are FinalPricesWithASpecialDiscountInAShopSolution's
 // - the forward-scanning baseline and the monotonic-stack pass - pinned here to
 // LeetCode's three published examples plus the degenerate single-item shop.
-public sealed class FinalPricesWithASpecialDiscountInAShopTests
+public sealed partial class FinalPricesWithASpecialDiscountInAShopTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

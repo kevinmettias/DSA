@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteNodeInABST;
 // read back via the same Has/InOrderTraversal composition KthSmallestElementInABST
 // -Tests already uses) rather than the boolean BinarySearchTree.TryDelete happens
 // to return.
-public sealed class DeleteNodeInABSTTests
+public sealed partial class DeleteNodeInABSTTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

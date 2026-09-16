@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysOfCuttingAPizza;
 // file pins them to LeetCode's published examples plus the two edge cases the
 // original test carried: a single piece, which never cuts at all, and a pizza with
 // fewer apples than requested pieces, which no arrangement of cuts can satisfy.
-public sealed class NumberOfWaysOfCuttingAPizzaTests
+public sealed partial class NumberOfWaysOfCuttingAPizzaTests
 {
     public static TheoryData<string[], int, int> Examples =>
         new()

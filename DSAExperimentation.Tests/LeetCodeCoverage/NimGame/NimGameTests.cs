@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NimGame;
 
 // Harness only: both strategies live in NimGameSolution and are asserted
 // against the same examples.
-public sealed class NimGameTests
+public sealed partial class NimGameTests
 {
     public static TheoryData<NimExample> Examples =>
         new()

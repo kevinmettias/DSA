@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumStrongPairXORI;
 // Harness only. Both strategies live in MaximumStrongPairXORISolution - this
 // file just pins them to LeetCode's published examples, including the case
 // where no strong pair exists at all (nums = [10, 100]).
-public sealed class MaximumStrongPairXORITests
+public sealed partial class MaximumStrongPairXORITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

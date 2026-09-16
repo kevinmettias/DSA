@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfPeopleAwareOfASecret
 // Harness only. Both strategies are NumberOfPeopleAwareOfASecretSolution's -
 // including the quadratic sliding-window sum, which the benchmark used to own
 // privately as its baseline and nothing asserted.
-public sealed class NumberOfPeopleAwareOfASecretTests
+public sealed partial class NumberOfPeopleAwareOfASecretTests
 {
     public static TheoryData<int, int, int, long> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSubarraySumAfterAtMos
 // Harness only. Both strategies are MaximumSubarraySumAfterAtMostKSwapsSolution's -
 // this file just pins them to LeetCode's published examples, including example 3's
 // swapBudget = 0 case, where no swap is available at all.
-public sealed class MaximumSubarraySumAfterAtMostKSwapsTests
+public sealed partial class MaximumSubarraySumAfterAtMostKSwapsTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

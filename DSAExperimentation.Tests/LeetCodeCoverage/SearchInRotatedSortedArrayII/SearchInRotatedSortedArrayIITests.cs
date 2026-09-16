@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchInRotatedSortedArrayII
 // Harness only: the algorithms live in SearchInRotatedSortedArrayIISolution. One
 // test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke.
-public sealed class SearchInRotatedSortedArrayIITests
+public sealed partial class SearchInRotatedSortedArrayIITests
 {
     public static TheoryData<RotatedSearchExample> Examples =>
         new()

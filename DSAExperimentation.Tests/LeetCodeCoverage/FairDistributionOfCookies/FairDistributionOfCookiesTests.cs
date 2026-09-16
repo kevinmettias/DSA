@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FairDistributionOfCookies;
 // published examples plus the one-bag-per-child case (where symmetry breaking is all
 // there is to do) and a perfectly divisible split (where the branch-and-bound bound
 // is reached exactly rather than beaten).
-public sealed class FairDistributionOfCookiesTests
+public sealed partial class FairDistributionOfCookiesTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

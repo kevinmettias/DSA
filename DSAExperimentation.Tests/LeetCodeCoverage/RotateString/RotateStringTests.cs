@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RotateString;
 // mismatch scan and the KMP failure-function search - pinned here to LeetCode's
 // published examples plus the length mismatch and zero-shift edges the original
 // coverage asserted.
-public sealed class RotateStringTests
+public sealed partial class RotateStringTests
 {
     public static TheoryData<RotationExample> Examples =>
         new()

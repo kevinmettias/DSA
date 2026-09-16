@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToConnectTwoGroup
 // live in MinimumCostToConnectTwoGroupsOfPointsSolution; this file pins them to
 // LeetCode's published examples plus the degenerate shapes the original test never
 // covered, so a disagreement names the strategy that broke.
-public sealed class MinimumCostToConnectTwoGroupsOfPointsTests
+public sealed partial class MinimumCostToConnectTwoGroupsOfPointsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

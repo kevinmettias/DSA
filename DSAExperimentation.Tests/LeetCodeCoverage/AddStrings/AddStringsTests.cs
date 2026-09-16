@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AddStrings;
 
 // Harness only: both strategies live in AddStringsSolution and are asserted against
 // the same examples, including the carry-out case that grows the result.
-public sealed class AddStringsTests
+public sealed partial class AddStringsTests
 {
     public static TheoryData<DecimalSumExample> Examples =>
         new()

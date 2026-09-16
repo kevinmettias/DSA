@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DecodeWaysII;
 // single/pair recurrence so '*' stands for "any digit 1-9" at a single position
 // and the matching range of valid two-digit combinations at a pair, with every
 // running total reduced mod 1e9+7 as LeetCode requires.
-public sealed class DecodeWaysIITests
+public sealed partial class DecodeWaysIITests
 {
     public static TheoryData<string, long> Examples => new()
     {

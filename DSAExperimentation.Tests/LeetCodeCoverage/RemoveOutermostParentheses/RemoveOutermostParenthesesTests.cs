@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveOutermostParentheses;
 // Harness only. Both strategies are RemoveOutermostParenthesesSolution's - this file
 // just pins them to LeetCode's published examples, a single nested primitive, and the
 // all-trivial-primitives case whose whole answer is the empty string.
-public sealed class RemoveOutermostParenthesesTests
+public sealed partial class RemoveOutermostParenthesesTests
 {
     public static TheoryData<OutermostParenthesesCase> Examples =>
         new()

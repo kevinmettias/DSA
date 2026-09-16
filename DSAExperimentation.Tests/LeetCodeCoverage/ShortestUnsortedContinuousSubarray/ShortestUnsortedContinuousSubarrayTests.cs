@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestUnsortedContinuousSu
 
 // Harness only: both strategies live in ShortestUnsortedContinuousSubarraySolution
 // and are asserted against the same examples.
-public sealed class ShortestUnsortedContinuousSubarrayTests
+public sealed partial class ShortestUnsortedContinuousSubarrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

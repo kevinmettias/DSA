@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ComplexNumberMultiplication;
 // primitive applies here - there is nothing to compose over two fixed-size (int,int)
 // pairs and one closed-form formula, the same "lighter repo-primitive fit" case as
 // Pow(x, n)/Power of Two.
-public sealed class ComplexNumberMultiplicationTests
+public sealed partial class ComplexNumberMultiplicationTests
 {
     public static TheoryData<ComplexProductCase> Examples => new()
     {

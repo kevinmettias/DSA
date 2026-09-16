@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CatAndMouseII;
 // recurrence routed through Memoizer - are CatAndMouseIISolution's, so this file
 // only pins them to LeetCode's published examples plus the wall, capture and
 // jump-distance cases that separate a win from a loss.
-public sealed class CatAndMouseIITests
+public sealed partial class CatAndMouseIITests
 {
     public static TheoryData<CanMouseWinExample> Examples =>
         new()

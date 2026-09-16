@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumIncrementsForTargetMu
 // Harness only. Both strategies are
 // MinimumIncrementsForTargetMultiplesInAnArraySolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class MinimumIncrementsForTargetMultiplesInAnArrayTests
+public sealed partial class MinimumIncrementsForTargetMultiplesInAnArrayTests
 {
     public static TheoryData<int[], int[], long> Examples =>
         new()

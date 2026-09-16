@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DirectionAssignmentsWithExac
 // Harness only. The Pascal-convolution and Vandermonde-identity derivations
 // both live in DirectionAssignmentsWithExactlyKVisiblePeopleSolution - this
 // file just pins both strategies to LeetCode's published examples.
-public sealed class DirectionAssignmentsWithExactlyKVisiblePeopleTests
+public sealed partial class DirectionAssignmentsWithExactlyKVisiblePeopleTests
 {
     public static TheoryData<int, int, int, int> Examples =>
         new()

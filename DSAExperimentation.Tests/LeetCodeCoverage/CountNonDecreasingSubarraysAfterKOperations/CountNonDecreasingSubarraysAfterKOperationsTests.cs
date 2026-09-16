@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNonDecreasingSubarraysA
 // Harness only. Both counting strategies are
 // CountNonDecreasingSubarraysAfterKOperationsSolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class CountNonDecreasingSubarraysAfterKOperationsTests
+public sealed partial class CountNonDecreasingSubarraysAfterKOperationsTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

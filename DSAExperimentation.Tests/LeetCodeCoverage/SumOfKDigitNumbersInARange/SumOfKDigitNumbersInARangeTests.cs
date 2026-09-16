@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfKDigitNumbersInARange;
 // Harness only: both strategies live in SumOfKDigitNumbersInARangeSolution and
 // are asserted against the same examples, so a failure names the strategy that
 // broke.
-public sealed class SumOfKDigitNumbersInARangeTests
+public sealed partial class SumOfKDigitNumbersInARangeTests
 {
     public static TheoryData<int, int, int, long> Examples =>
         new()

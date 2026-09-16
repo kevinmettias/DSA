@@ -17,6 +17,7 @@ public class AllOneDataStructureBenchmarks
 {
     private const int RandomSeed = 432; // LC problem number
     private const string KeyPrefix = "key";
+    private const char KeyNumberPad = '0';
     private const int OpsCapacityMultiplier = 4;
     private const int IncOpType = 0;
     private const int GetMaxKeyOpType = 2;
@@ -31,7 +32,19 @@ public class AllOneDataStructureBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var keys = Enumerable.Range(0, Length).Select(i => KeyPrefix + i).ToArray();
+
+        // Zero-padded to one width so every generated key has the same length. LC 432 pins
+        // GetMaxKey/GetMinKey only to return SOME key at the extreme count, and the replay below
+        // sums the returned key's length - so with mixed-length names ("key9" beside "key10") the
+        // value this benchmark returns depended on which tied key an arm happened to answer with.
+        // A bucket holds every key at a tied count, and the dictionary-scan arm and the bucketed
+        // arm legitimately pick different members of it, so the two arms were reporting values
+        // that were never comparable quantities. Padding removes the tie-break from the answer
+        // without touching the script, the arms or the work either one does.
+        var keyNumberWidth = Length.ToString().Length;
+        var keys = Enumerable.Range(0, Length)
+            .Select(i => KeyPrefix + i.ToString().PadLeft(keyNumberWidth, KeyNumberPad))
+            .ToArray();
         var ops = new List<(int Type, string Key)>(Length * OpsCapacityMultiplier);
 
         foreach (var key in keys)

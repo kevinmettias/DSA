@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AllPossibleFullBinaryTrees;
 // memoized arm was previously benchmark-only and unasserted - it shares subtree
 // objects across parent splits, so the odd counts here pin both the Catalan result
 // count and that every returned tree is still full with exactly nodeCount nodes.
-public sealed class AllPossibleFullBinaryTreesTests
+public sealed partial class AllPossibleFullBinaryTreesTests
 {
     public static TheoryData<int, int> Examples =>
         new()

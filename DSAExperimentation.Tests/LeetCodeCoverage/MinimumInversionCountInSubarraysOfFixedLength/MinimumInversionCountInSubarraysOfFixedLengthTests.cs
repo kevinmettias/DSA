@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumInversionCountInSubar
 // Harness only. Both strategies are
 // MinimumInversionCountInSubarraysOfFixedLengthSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class MinimumInversionCountInSubarraysOfFixedLengthTests
+public sealed partial class MinimumInversionCountInSubarraysOfFixedLengthTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

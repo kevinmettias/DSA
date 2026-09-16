@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountingWordsWithAGivenPrefi
 // published examples plus the boundary cases the two have to agree on - a prefix equal
 // to a whole word, a prefix longer than any word, repeated words that must each be
 // counted, and a prefix that occurs inside words without ever starting one.
-public sealed class CountingWordsWithAGivenPrefixTests
+public sealed partial class CountingWordsWithAGivenPrefixTests
 {
     public static TheoryData<string[], string, int> Examples =>
         new()

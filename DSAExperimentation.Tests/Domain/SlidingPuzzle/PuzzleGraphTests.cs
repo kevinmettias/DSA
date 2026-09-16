@@ -2,7 +2,7 @@ using DSAExperimentation.Domain.SlidingPuzzle;
 
 namespace DSAExperimentation.Tests.Domain.SlidingPuzzle;
 
-public sealed class PuzzleGraphTests
+public sealed partial class PuzzleGraphTests
 {
     // The solved board the blank-slide tests are stated against. A constant rather
     // than a local in the one test that needs the blank's own position: its scope is

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ContainsDuplicateIII;
 // Harness only: both strategies are ContainsDuplicateIIISolution's - this file
 // just pins them to LeetCode's published examples, including the two unopenable
 // INT_MIN/INT_MAX cases the bucketed strategy's long-keyed HashMap exists for.
-public sealed class ContainsDuplicateIIITests
+public sealed partial class ContainsDuplicateIIITests
 {
     public static TheoryData<NearbyAlmostDuplicateCase> Examples =>
         new()

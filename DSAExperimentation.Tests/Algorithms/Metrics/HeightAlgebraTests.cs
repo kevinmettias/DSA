@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Metrics;
 
-public sealed class HeightAlgebraTests
+public sealed partial class HeightAlgebraTests
 {
     private static readonly TestNode Node = new("A");
 

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubarrayProductLessThanK;
 
 // Harness only. Both strategies are SubarrayProductLessThanKSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class SubarrayProductLessThanKTests
+public sealed partial class SubarrayProductLessThanKTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

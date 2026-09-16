@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindBuildingWhereAliceAndBob
 // a forward search with no answer at all, and a query given with its two
 // indices in the opposite (b, a) order to confirm the answer only depends on
 // { a, b } as a set.
-public sealed class FindBuildingWhereAliceAndBobCanMeetTests
+public sealed partial class FindBuildingWhereAliceAndBobCanMeetTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

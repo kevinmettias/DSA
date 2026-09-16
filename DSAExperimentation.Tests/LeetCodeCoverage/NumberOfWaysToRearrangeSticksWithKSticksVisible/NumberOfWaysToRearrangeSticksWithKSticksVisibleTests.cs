@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToRearrangeStick
 // strategy that broke rather than reporting a disagreement between an anonymous
 // test helper and an anonymous benchmark arm. The permutation baseline was never
 // asserted before this migration.
-public sealed class NumberOfWaysToRearrangeSticksWithKSticksVisibleTests
+public sealed partial class NumberOfWaysToRearrangeSticksWithKSticksVisibleTests
 {
     // Cases both arms are checked at. The permutation baseline lays out all n!
     // arrangements, so the shared set stops at the larger of the two stick counts

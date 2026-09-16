@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidPalindromeII;
 
 // Harness only. Both strategies are ValidPalindromeIISolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class ValidPalindromeIITests
+public sealed partial class ValidPalindromeIITests
 {
     public static TheoryData<PalindromeExample> Examples =>
         new()

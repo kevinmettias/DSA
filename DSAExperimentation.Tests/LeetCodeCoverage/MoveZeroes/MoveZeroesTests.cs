@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MoveZeroes;
 
 // Harness only. Both strategies are MoveZeroesSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class MoveZeroesTests
+public sealed partial class MoveZeroesTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

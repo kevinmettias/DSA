@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindEventualSafeStates;
 // them to LeetCode's published examples plus the four degenerate graphs the two
 // arms disagree on most easily: a lone terminal node, a self loop, a two-node cycle,
 // and a pure chain where every node is safe.
-public sealed class FindEventualSafeStatesTests
+public sealed partial class FindEventualSafeStatesTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

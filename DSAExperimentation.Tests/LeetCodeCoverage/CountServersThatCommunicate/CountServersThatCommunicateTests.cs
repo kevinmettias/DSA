@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountServersThatCommunicate;
 // and this file just pins them to LeetCode's published examples, plus the
 // degenerate grids (no servers at all, a lone server, a single full row) that
 // separate "present" from "has a companion".
-public sealed class CountServersThatCommunicateTests
+public sealed partial class CountServersThatCommunicateTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 
-public sealed class NaturalChildOrderTests
+public sealed partial class NaturalChildOrderTests
 {
     [Fact]
     public void Apply_LeavesTheChildrenInTheirDeclaredOrder()

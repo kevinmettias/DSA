@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BinaryTreeRightSideView;
 // this file pins it to LeetCode's published examples, given in LeetCode's own
 // level-order-with-null array shape (BinaryTreeNode<int> is internal, so it
 // cannot appear in a public TheoryData signature; LeetCodeWireFormat.ToBinaryTree reconstructs it).
-public sealed class BinaryTreeRightSideViewTests
+public sealed partial class BinaryTreeRightSideViewTests
 {
     public static TheoryData<int?[], List<int>> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MostCommonWord;
 // just pins them to LeetCode's published examples, including the mixed-case and
 // punctuation-heavy cases that decide whether tokenization agrees with LeetCode's
 // own "separated by spaces and/or punctuation" definition.
-public sealed class MostCommonWordTests
+public sealed partial class MostCommonWordTests
 {
     public static TheoryData<string, string[], string> Examples =>
         new()

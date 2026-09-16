@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertIntoABinarySearchTree;
 // file pins them to LeetCode's published examples. LeetCode accepts ANY valid
 // resulting BST, so assertions check the in-order sequence (every original
 // value present, in order, plus the new one) rather than one particular shape.
-public sealed class InsertIntoABinarySearchTreeTests
+public sealed partial class InsertIntoABinarySearchTreeTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

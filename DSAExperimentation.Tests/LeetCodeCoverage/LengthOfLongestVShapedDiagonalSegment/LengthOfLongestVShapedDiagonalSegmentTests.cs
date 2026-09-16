@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LengthOfLongestVShapedDiagon
 // LengthOfLongestVShapedDiagonalSegmentSolution - this file just pins both
 // strategies to LeetCode's published examples, including the one-turn, no-turn and
 // single-cell cases.
-public sealed class LengthOfLongestVShapedDiagonalSegmentTests
+public sealed partial class LengthOfLongestVShapedDiagonalSegmentTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

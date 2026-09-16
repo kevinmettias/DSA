@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ContinuousSubarrays;
 // window's boundaries: a single element, a run where every pair is within the limit
 // so every subarray counts, a strictly descending run where the left edge advances on
 // almost every step, and a spike that empties the window down to one element.
-public sealed class ContinuousSubarraysTests
+public sealed partial class ContinuousSubarraysTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

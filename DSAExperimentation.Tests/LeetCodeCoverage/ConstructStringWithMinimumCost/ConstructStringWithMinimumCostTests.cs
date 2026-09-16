@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructStringWithMinimumCo
 // ConstructStringWithMinimumCostSolution's - this file just pins their
 // LeetCode-shaped overloads to LeetCode's published examples, including the
 // unreachable case where none of the words contain a letter target needs.
-public sealed class ConstructStringWithMinimumCostTests
+public sealed partial class ConstructStringWithMinimumCostTests
 {
     public static TheoryData<string, string[], int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HowManyNumbersAreSmallerThan
 // HowManyNumbersAreSmallerThanTheCurrentNumberSolution's - this file pins them to
 // LeetCode's three published examples plus the all-equal case, which is the one
 // that catches a LowerBound that reported an upper bound instead.
-public sealed class HowManyNumbersAreSmallerThanTheCurrentNumberTests
+public sealed partial class HowManyNumbersAreSmallerThanTheCurrentNumberTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordSearchII;
 // Harness only. Both search strategies are WordSearchIISolution's - this file just
 // pins them to LeetCode's published examples, including the prefix-sharing case
 // where one dictionary word is itself a prefix of another.
-public sealed class WordSearchIITests
+public sealed partial class WordSearchIITests
 {
     [Theory]
     [MemberData(nameof(Examples))]

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SpecialPermutations;
 // Harness only: both strategies are SpecialPermutationsSolution's, the same
 // n!-enumeration baseline and (Remaining, Last) bitmask DP
 // SpecialPermutationsBenchmarks measures.
-public sealed class SpecialPermutationsTests
+public sealed partial class SpecialPermutationsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

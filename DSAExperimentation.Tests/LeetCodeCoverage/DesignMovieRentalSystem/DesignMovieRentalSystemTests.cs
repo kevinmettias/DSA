@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignMovieRentalSystem;
 // Every answer is normalised to int[][] so one expected value per operation covers
 // all four calls: search() answers as a single row of shop ids, report() as one row
 // per rented (shop, movie) pair, and the two void calls as no rows at all.
-public sealed class DesignMovieRentalSystemTests
+public sealed partial class DesignMovieRentalSystemTests
 {
     private static readonly int[][] SixShopsOneMovie =
     [
@@ -99,28 +99,20 @@ public sealed class DesignMovieRentalSystemTests
     [MemberData(nameof(Examples))]
     public void MovieRentingSystemBySortOnQuery_LeetCodeExamples_AnswersEveryCallInTheScript(
         int shopCount, int[][] entries, MovieRentalOp[] operations, int[][][] expected) =>
-        RunScript(
+        Assert.Equal(expected, RunScript(
             new DesignMovieRentalSystemSolution.MovieRentingSystemBySortOnQuery(shopCount, entries),
-            operations,
-            expected);
+            operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MovieRentingSystemByBinarySearchTree_LeetCodeExamples_AnswersEveryCallInTheScript(
         int shopCount, int[][] entries, MovieRentalOp[] operations, int[][][] expected) =>
-        RunScript(
+        Assert.Equal(expected, RunScript(
             new DesignMovieRentalSystemSolution.MovieRentingSystemByBinarySearchTree(shopCount, entries),
-            operations,
-            expected);
+            operations));
 
-    private static void RunScript(
+    private static int[][][] RunScript(
         DesignMovieRentalSystemSolution.IMovieRentingSystem system,
-        MovieRentalOp[] operations,
-        int[][][] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(system));
-        }
-    }
+        MovieRentalOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(system))];
 }

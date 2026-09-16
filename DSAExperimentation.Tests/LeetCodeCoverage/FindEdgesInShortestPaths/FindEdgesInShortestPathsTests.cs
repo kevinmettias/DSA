@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindEdgesInShortestPaths;
 // Harness only. The weighted graph itself is EdgeGraph and both Dijkstra strategies
 // are FindEdgesInShortestPathsSolution's - this file just pins them to LeetCode's
 // published examples.
-public sealed class FindEdgesInShortestPathsTests
+public sealed partial class FindEdgesInShortestPathsTests
 {
     public static TheoryData<int, int[][], bool[]> Examples =>
         new()

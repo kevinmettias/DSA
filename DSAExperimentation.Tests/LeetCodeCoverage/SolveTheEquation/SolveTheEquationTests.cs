@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SolveTheEquation;
 // "Ax+B=Cx+D" into a running (coefficient of x, constant) pair via one
 // left-to-right scan, then combines the two sides and solves the single
 // resulting linear equation.
-public sealed class SolveTheEquationTests
+public sealed partial class SolveTheEquationTests
 {
     public static TheoryData<EquationExample> Examples => new()
     {

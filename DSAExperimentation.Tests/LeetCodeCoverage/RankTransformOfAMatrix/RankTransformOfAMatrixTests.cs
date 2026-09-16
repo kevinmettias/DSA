@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RankTransformOfAMatrix;
 // this file just pins them to LeetCode's four published examples, plus an
 // all-equal matrix (every cell shares one row or column, so one rank) and a
 // single cell.
-public sealed class RankTransformOfAMatrixTests
+public sealed partial class RankTransformOfAMatrixTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

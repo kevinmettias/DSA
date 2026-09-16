@@ -5,7 +5,7 @@ using DSAExperimentation.Algorithms.Metrics;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class LowercaseTrieTests
+public sealed partial class LowercaseTrieTests
 {
     [Fact]
     public void Set_ThenTryGetValue_ReturnsTrueAndStoredValue()

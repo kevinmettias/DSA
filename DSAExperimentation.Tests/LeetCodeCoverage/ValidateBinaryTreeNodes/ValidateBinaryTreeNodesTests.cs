@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateBinaryTreeNodes;
 // untested in the benchmark - pinned here to LeetCode's published examples plus the
 // two failure shapes the union-find arm exists to catch (a node with two parents,
 // and a cycle among non-root nodes).
-public sealed class ValidateBinaryTreeNodesTests
+public sealed partial class ValidateBinaryTreeNodesTests
 {
     public static TheoryData<TreeNodesExample> Examples =>
         new()

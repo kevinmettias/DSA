@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestSubstringOfOneRepeati
 // this file just pins them to LeetCode's published examples plus the edge cases the
 // RunSegment merge has to get right: a one-character string, an update that splits an
 // existing run, and an update that rewrites a character with itself.
-public sealed class LongestSubstringOfOneRepeatingCharacterTests
+public sealed partial class LongestSubstringOfOneRepeatingCharacterTests
 {
     public static TheoryData<RepeatingRunExample> Examples =>
         new()

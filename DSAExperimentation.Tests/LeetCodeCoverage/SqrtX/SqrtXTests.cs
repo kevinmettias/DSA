@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SqrtX;
 
 // Harness only: both strategies live in SqrtXSolution and are asserted against the
 // same examples, including the near-int-max case that stresses the search range.
-public sealed class SqrtXTests
+public sealed partial class SqrtXTests
 {
     public static TheoryData<int, int> Examples =>
         new()

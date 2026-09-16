@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ProbabilityOfATwoBoxesHaving
 // every half/half split leaves one distinct colour on each side or two on both)
 // and one that never can ([3, 1], where box 1 either holds a single colour or
 // splits the majority colour and leaves box 2 with only it).
-public sealed class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsTests
+public sealed partial class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsTests
 {
     // The probability is accumulated in double, so the published five-decimal
     // answers are compared well inside their own rounding.

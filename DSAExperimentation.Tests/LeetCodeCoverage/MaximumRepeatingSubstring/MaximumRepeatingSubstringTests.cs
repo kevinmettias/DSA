@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumRepeatingSubstring;
 // MaximumRepeatingSubstringSolution and are asserted against the same examples,
 // including the case where word never occurs at all (answer 0) and one where the
 // whole sequence is a single repetition of word.
-public sealed class MaximumRepeatingSubstringTests
+public sealed partial class MaximumRepeatingSubstringTests
 {
     public static TheoryData<RepeatCountExample> Examples =>
         new()

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConvertSortedListToBinarySea
 // each example is checked against those two properties rather than one
 // specific tree shape - the same convention
 // ConvertSortedArrayToBinarySearchTreeTests uses for LC 108.
-public sealed class ConvertSortedListToBinarySearchTreeTests
+public sealed partial class ConvertSortedListToBinarySearchTreeTests
 {
     public static TheoryData<int[]> Examples =>
         new()

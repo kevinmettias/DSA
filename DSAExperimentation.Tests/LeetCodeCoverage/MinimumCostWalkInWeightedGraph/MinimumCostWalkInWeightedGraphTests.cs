@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostWalkInWeightedGra
 
 // Harness only. Both strategies are MinimumCostWalkInWeightedGraphSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class MinimumCostWalkInWeightedGraphTests
+public sealed partial class MinimumCostWalkInWeightedGraphTests
 {
     public static TheoryData<int, int[][], int[][], int[]> Examples =>
         new()

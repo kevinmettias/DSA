@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumWidthRamp;
 // the benchmark used to hide, and the monotonically-decreasing candidate stack - so this
 // file just pins them to LeetCode's published examples plus the no-ramp case where the
 // answer is 0 and the equal-values case where the widest ramp spans the whole array.
-public sealed class MaximumWidthRampTests
+public sealed partial class MaximumWidthRampTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

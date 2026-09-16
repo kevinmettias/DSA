@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ChalkboardXorGame;
 // rather than reporting a disagreement between an anonymous test helper and an
 // anonymous benchmark arm. The closed form in particular was never asserted before:
 // it existed only as a benchmark arm.
-public sealed class ChalkboardXorGameTests
+public sealed partial class ChalkboardXorGameTests
 {
     public static TheoryData<GameExample> Examples =>
         new()

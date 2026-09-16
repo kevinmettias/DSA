@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinCostClimbingStairs;
 
 // Harness only. MinCostClimbingStairsSolution owns all three strategies; this file
 // pins each of them to LeetCode's published examples.
-public sealed class MinCostClimbingStairsTests
+public sealed partial class MinCostClimbingStairsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

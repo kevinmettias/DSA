@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToPaintN3Grid;
 // are asserted against the same examples - the single-row base case, the small
 // row counts with known totals, and the large input whose answer only comes out
 // right if every running total is reduced mod 1e9+7.
-public sealed class NumberOfWaysToPaintN3GridTests
+public sealed partial class NumberOfWaysToPaintN3GridTests
 {
     public static TheoryData<int, long> Examples =>
         new()

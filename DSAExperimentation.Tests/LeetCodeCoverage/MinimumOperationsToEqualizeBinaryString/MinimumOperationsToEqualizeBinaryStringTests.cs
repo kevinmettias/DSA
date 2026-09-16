@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumOperationsToEqualizeB
 // Harness only. The zero-count graph itself is EqualizeStateGraph and both search
 // strategies are MinimumOperationsToEqualizeBinaryStringSolution's - this file just
 // pins them to LeetCode's published examples, including the unreachable case.
-public sealed class MinimumOperationsToEqualizeBinaryStringTests
+public sealed partial class MinimumOperationsToEqualizeBinaryStringTests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

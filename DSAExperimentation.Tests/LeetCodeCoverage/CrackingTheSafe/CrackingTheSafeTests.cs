@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CrackingTheSafe;
 // them to LeetCode's published examples by checking the produced answer has exactly
 // the length a de Bruijn sequence demands (k^n + n - 1) and contains every possible
 // password of length passwordLength as a substring.
-public sealed class CrackingTheSafeTests
+public sealed partial class CrackingTheSafeTests
 {
     public static TheoryData<int, int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMinimumInRotatedSortedAr
 // Harness only: both strategies live in FindMinimumInRotatedSortedArraySolution
 // and are asserted against the same examples, including the unrotated array and
 // the two-element rotation that exercise the pivot proxy at its edges.
-public sealed class FindMinimumInRotatedSortedArrayTests
+public sealed partial class FindMinimumInRotatedSortedArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

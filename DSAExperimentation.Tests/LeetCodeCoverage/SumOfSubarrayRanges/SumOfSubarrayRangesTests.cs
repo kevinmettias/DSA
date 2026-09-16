@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfSubarrayRanges;
 // strictly decreasing array, which are mirror images of each other. The
 // brute-force arm was previously an unasserted benchmark baseline; it is under
 // test here for the first time.
-public sealed class SumOfSubarrayRangesTests
+public sealed partial class SumOfSubarrayRangesTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

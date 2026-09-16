@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidParenthesisString;
 
 // Harness only. Both strategies are ValidParenthesisStringSolution's, so a
 // failure names the strategy that broke.
-public sealed class ValidParenthesisStringTests
+public sealed partial class ValidParenthesisStringTests
 {
     public static TheoryData<ValidityExample> Examples =>
         new()

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodTripletsInAnArray;
 // array that is fully increasing (every triple good) and one that is fully
 // decreasing (none), and a case whose nums2 is not the identity permutation, so a
 // strategy that forgot to re-rank through nums2 could not pass by accident.
-public sealed class CountGoodTripletsInAnArrayTests
+public sealed partial class CountGoodTripletsInAnArrayTests
 {
     public static TheoryData<int[], int[], long> Examples =>
         new()

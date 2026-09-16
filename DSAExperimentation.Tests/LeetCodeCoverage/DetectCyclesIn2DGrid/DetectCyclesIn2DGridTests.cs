@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DetectCyclesIn2DGrid;
 // pins them to LeetCode's published examples plus the smallest grids that can and
 // cannot close a cycle, which is also what finally gets the parent-tracked DFS
 // baseline - previously benchmark-only - under assertion.
-public sealed class DetectCyclesIn2DGridTests
+public sealed partial class DetectCyclesIn2DGridTests
 {
     public static TheoryData<CycleGridCase> Examples =>
         new()

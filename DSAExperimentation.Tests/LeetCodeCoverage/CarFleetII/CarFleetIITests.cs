@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CarFleetII;
 // plus the equal-speed, single-car and same-time-chain cases that exercise the
 // "never catches up" and "candidate already collided" branches the stack sweep pops
 // on.
-public sealed class CarFleetIITests
+public sealed partial class CarFleetIITests
 {
     public static TheoryData<int[][], double[]> Examples =>
         new()

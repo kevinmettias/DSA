@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RobotReturnToOrigin;
 
 // Harness only. Both strategies are RobotReturnToOriginSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class RobotReturnToOriginTests
+public sealed partial class RobotReturnToOriginTests
 {
     public static TheoryData<JudgeCircleExample> Examples =>
         new()

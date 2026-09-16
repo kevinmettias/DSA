@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckingExistenceOfEdgeLengt
 // edge's weight (the bound is strict, so it must not help), a parallel edge whose
 // lighter copy is the one that counts, a pair in two different components, and a
 // query that needs more than one hop.
-public sealed class CheckingExistenceOfEdgeLengthLimitedPathsTests
+public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsTests
 {
     public static TheoryData<int, int[][], int[][], bool[]> Examples =>
         new()

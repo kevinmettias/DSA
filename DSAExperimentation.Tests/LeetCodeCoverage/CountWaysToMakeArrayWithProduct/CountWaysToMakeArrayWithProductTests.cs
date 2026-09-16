@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountWaysToMakeArrayWithProd
 // published examples plus a single prime-power query, which is the one case that
 // exercises a query whose k divides out completely inside the trial-division loop
 // with no leftover prime.
-public sealed class CountWaysToMakeArrayWithProductTests
+public sealed partial class CountWaysToMakeArrayWithProductTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

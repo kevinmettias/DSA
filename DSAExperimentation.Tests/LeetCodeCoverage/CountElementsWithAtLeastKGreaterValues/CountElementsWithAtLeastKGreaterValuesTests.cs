@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountElementsWithAtLeastKGre
 
 // Harness only. Both strategies are CountElementsWithAtLeastKGreaterValuesSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class CountElementsWithAtLeastKGreaterValuesTests
+public sealed partial class CountElementsWithAtLeastKGreaterValuesTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

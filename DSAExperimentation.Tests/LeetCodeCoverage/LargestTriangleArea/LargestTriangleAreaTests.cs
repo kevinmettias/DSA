@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestTriangleArea;
 // asserted against the same examples - LeetCode's two published ones plus the
 // all-collinear case, which is the input that collapses the convex hull below
 // three vertices and sends the reducing strategy down its fallback path.
-public sealed class LargestTriangleAreaTests
+public sealed partial class LargestTriangleAreaTests
 {
     private const int AreaPrecision = 5;
 

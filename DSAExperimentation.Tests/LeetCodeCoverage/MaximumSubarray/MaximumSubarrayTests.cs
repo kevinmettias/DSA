@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSubarray;
 // Harness only. Both strategies live in MaximumSubarraySolution and are
 // asserted against the same examples, including a single-element array and
 // an all-positive array where the whole array is the best subarray.
-public sealed class MaximumSubarrayTests
+public sealed partial class MaximumSubarrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

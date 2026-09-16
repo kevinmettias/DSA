@@ -2,14 +2,13 @@ using DSAExperimentation.Domain.Locks;
 
 namespace DSAExperimentation.Tests.Domain.Locks;
 
-public sealed class LockWheelsTests
+public sealed partial class LockWheelsTests
 {
+    public static TheoryData<int, string> IndexToZeroPaddedCombination =>
+        new() { { 0, "0000" }, { 7, "0007" }, { 42, "0042" }, { 1234, "1234" }, { 9999, "9999" } };
+
     [Theory]
-    [InlineData(0, "0000")]
-    [InlineData(7, "0007")]
-    [InlineData(42, "0042")]
-    [InlineData(1234, "1234")]
-    [InlineData(9999, "9999")]
+    [MemberData(nameof(IndexToZeroPaddedCombination))]
     public void Combination_ZeroPadsToOneDigitPerWheel(int index, string expected) =>
         Assert.Equal(expected, LockWheels.Combination(index));
 

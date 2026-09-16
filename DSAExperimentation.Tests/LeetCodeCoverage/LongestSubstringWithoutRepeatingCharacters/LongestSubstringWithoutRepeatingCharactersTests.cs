@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestSubstringWithoutRepea
 // Harness only. Both strategies are
 // LongestSubstringWithoutRepeatingCharactersSolution's - this file pins them to
 // LeetCode's published examples.
-public sealed class LongestSubstringWithoutRepeatingCharactersTests
+public sealed partial class LongestSubstringWithoutRepeatingCharactersTests
 {
     public static TheoryData<string, int> Examples =>
         new()

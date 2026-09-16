@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LengthOfTheLongestIncreasing
 
 // Harness only. Both search strategies are LengthOfTheLongestIncreasingPathSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class LengthOfTheLongestIncreasingPathTests
+public sealed partial class LengthOfTheLongestIncreasingPathTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

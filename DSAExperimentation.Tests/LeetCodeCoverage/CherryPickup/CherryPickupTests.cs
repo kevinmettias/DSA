@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CherryPickup;
 // Harness only. Both strategies are CherryPickupSolution's - this file just pins
 // them to LeetCode's published examples, including the no-round-trip case that
 // exercises the Blocked propagation all the way back to the root call.
-public sealed class CherryPickupTests
+public sealed partial class CherryPickupTests
 {
     public static TheoryData<int[,], int> Examples =>
         new()

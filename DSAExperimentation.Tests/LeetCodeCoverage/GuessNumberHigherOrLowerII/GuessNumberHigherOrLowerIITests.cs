@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GuessNumberHigherOrLowerII;
 // Harness only: both strategies live in GuessNumberHigherOrLowerIISolution. One test
 // method per strategy over one shared set of LeetCode's own examples, so a failure
 // names the strategy that broke.
-public sealed class GuessNumberHigherOrLowerIITests
+public sealed partial class GuessNumberHigherOrLowerIITests
 {
     public static TheoryData<int, int> Examples =>
         new()

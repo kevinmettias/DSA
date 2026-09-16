@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSumIIInputArrayIsSorted;
 // here is TwoSumIIInputArrayIsSortedSolution's - this file just pins it to
 // LeetCode's published examples, including a duplicate-valued array to prove the
 // binary search still lands on the correct pair, not merely some equal value.
-public sealed class TwoSumIIInputArrayIsSortedTests
+public sealed partial class TwoSumIIInputArrayIsSortedTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

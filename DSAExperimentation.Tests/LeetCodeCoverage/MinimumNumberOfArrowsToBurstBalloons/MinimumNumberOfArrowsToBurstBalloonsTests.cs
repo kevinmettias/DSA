@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfArrowsToBurst
 // Harness only: both strategies live in MinimumNumberOfArrowsToBurstBalloonsSolution
 // and are asserted against the same examples, including the chained-touching case
 // that rules out solving this via IntervalSet.Count.
-public sealed class MinimumNumberOfArrowsToBurstBalloonsTests
+public sealed partial class MinimumNumberOfArrowsToBurstBalloonsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

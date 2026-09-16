@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OpenTheLock;
 // strategies are OpenTheLockSolution's - this file just pins them to LeetCode's
 // published examples, including the two unopenable cases the graph strategy has to
 // answer without a target node existing at all.
-public sealed class OpenTheLockTests
+public sealed partial class OpenTheLockTests
 {
     public static TheoryData<string[], string, int> Examples =>
         new()

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNestingDepthOfTwoVali
 // "(((())))" case is the one the original test checked only by property (that the
 // two groups' depths sum to the original's); stating the array outright is strictly
 // stronger and still satisfies that property.
-public sealed class MaximumNestingDepthOfTwoValidParenthesesStringsTests
+public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsTests
 {
     public static TheoryData<string, int[]> Examples =>
         new()

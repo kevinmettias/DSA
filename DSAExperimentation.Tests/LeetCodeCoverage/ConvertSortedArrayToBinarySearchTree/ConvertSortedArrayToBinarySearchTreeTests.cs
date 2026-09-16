@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConvertSortedArrayToBinarySe
 // height-balanced BST whose in-order walk reproduces the sorted input, so each
 // example is checked against those two properties rather than one specific
 // tree shape.
-public sealed class ConvertSortedArrayToBinarySearchTreeTests
+public sealed partial class ConvertSortedArrayToBinarySearchTreeTests
 {
     public static TheoryData<int[]> Examples =>
         new()

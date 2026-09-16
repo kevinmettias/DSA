@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortIntegersByThePowerValue;
 // repo's MergeSort over ArrayIndexedSequence and the insertion sort that used to live
 // untested as the benchmark's baseline - pinned to LeetCode's published examples plus
 // a single-value range and a case whose kth falls on a power tie.
-public sealed class SortIntegersByThePowerValueTests
+public sealed partial class SortIntegersByThePowerValueTests
 {
     public static TheoryData<int, int, int, int> Examples =>
         new()

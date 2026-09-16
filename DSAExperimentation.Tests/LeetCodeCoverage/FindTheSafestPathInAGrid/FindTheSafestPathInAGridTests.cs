@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheSafestPathInAGrid;
 // Harness only: the algorithms live in FindTheSafestPathInAGridSolution. One test
 // method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke.
-public sealed class FindTheSafestPathInAGridTests
+public sealed partial class FindTheSafestPathInAGridTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

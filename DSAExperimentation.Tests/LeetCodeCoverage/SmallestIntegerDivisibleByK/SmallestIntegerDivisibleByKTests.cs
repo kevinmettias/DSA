@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestIntegerDivisibleByK;
 // Harness only. Both strategies are SmallestIntegerDivisibleByKSolution's - the
 // modular walk that used to live only in the benchmark's baseline arm, and the
 // Reduce.Graph BFS the test used to inline.
-public sealed class SmallestIntegerDivisibleByKTests
+public sealed partial class SmallestIntegerDivisibleByKTests
 {
     public static TheoryData<int, int> Examples =>
         new()

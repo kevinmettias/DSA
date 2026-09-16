@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DivideTwoIntegers;
 // Harness only: both strategies live in DivideTwoIntegersSolution and are
 // asserted against the same published examples, including the two int32-overflow
 // edge cases LeetCode calls out explicitly.
-public sealed class DivideTwoIntegersTests
+public sealed partial class DivideTwoIntegersTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

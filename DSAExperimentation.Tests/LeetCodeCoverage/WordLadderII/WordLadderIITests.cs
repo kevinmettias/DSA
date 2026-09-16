@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordLadderII;
 // sorted before comparison. The two ends of the ladder are both strings and the
 // search is not symmetric in them, so each row names which is which rather than
 // leaving two interchangeable positions.
-public sealed class WordLadderIITests
+public sealed partial class WordLadderIITests
 {
     public static TheoryData<LadderExample> Examples =>
         new()

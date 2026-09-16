@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountIntegersInIntervals;
 // exercised the IntervalSet composition; CreateByHashSetPerInteger's baseline (previously
 // untested scaffolding inlined in the benchmark) gets that same coverage here for the
 // first time.
-public sealed class CountIntegersInIntervalsTests
+public sealed partial class CountIntegersInIntervalsTests
 {
     public static TheoryData<(int Left, int Right)[], int[]> Examples =>
         new()

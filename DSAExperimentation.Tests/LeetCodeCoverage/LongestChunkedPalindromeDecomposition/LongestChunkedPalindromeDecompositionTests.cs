@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestChunkedPalindromeDeco
 // walk's tail condition turns on (a single character, an even-length pair that
 // matches, an even-length pair that does not, an odd-length run, and a text whose
 // whole decomposition is a single repeated pair).
-public sealed class LongestChunkedPalindromeDecompositionTests
+public sealed partial class LongestChunkedPalindromeDecompositionTests
 {
     public static TheoryData<string, int> Examples =>
         new()

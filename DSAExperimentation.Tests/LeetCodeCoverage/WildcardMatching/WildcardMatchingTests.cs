@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WildcardMatching;
 // Harness only: both strategies live in WildcardMatchingSolution - the textbook
 // greedy two-pointer scan, and a memoized top-down recurrence over this repo's own
 // Memoizer.
-public sealed class WildcardMatchingTests
+public sealed partial class WildcardMatchingTests
 {
     public static TheoryData<MatchExample> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CourseSchedule;
 // Harness only. The single strategy is CourseScheduleSolution's - this file
 // checks LeetCode's published examples, stated in LeetCode's own
 // (numCourses, prerequisites) input shape.
-public sealed class CourseScheduleTests
+public sealed partial class CourseScheduleTests
 {
     public static TheoryData<CourseExample> Examples =>
         new()

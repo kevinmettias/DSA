@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ExtraCharactersInAString;
 // dictionary word longer than the string (which the trie arm has to reject by running
 // out of string rather than out of prefix), and the greedy trap where taking the longest
 // word first is worse than taking the shorter one.
-public sealed class ExtraCharactersInAStringTests
+public sealed partial class ExtraCharactersInAStringTests
 {
     public static TheoryData<string, string[], int> Examples =>
         new()

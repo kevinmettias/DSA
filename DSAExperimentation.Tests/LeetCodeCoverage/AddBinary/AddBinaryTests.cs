@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AddBinary;
 
 // Harness only: both strategies live in AddBinarySolution and are asserted against
 // the same examples, including the carry-out case that grows the result.
-public sealed class AddBinaryTests
+public sealed partial class AddBinaryTests
 {
     public static TheoryData<BinarySumExample> Examples =>
         new()

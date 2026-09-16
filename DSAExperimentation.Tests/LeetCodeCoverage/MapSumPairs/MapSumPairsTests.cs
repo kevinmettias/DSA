@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MapSumPairs;
 // every key/value in keys/values, then replays sum queries against each
 // IMapSumStrategy implementation and checks the totals LeetCode itself
 // publishes, so a failure still names the strategy that broke.
-public sealed class MapSumPairsTests
+public sealed partial class MapSumPairsTests
 {
     public static TheoryData<MapSumExample> Examples =>
         new()

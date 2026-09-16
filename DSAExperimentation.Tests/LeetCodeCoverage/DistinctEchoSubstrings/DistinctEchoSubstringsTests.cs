@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistinctEchoSubstrings;
 // and the RollingHash-screened sweep - pinned here to LeetCode's published examples
 // plus the cases that separate "counts echoes" from "counts distinct echoes"
 // ("aaaa", "abababab", where the same echo is found at several starts).
-public sealed class DistinctEchoSubstringsTests
+public sealed partial class DistinctEchoSubstringsTests
 {
     public static TheoryData<string, int> Examples =>
         new()

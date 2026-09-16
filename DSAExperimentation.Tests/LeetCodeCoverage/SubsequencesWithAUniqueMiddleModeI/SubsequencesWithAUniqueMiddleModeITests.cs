@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubsequencesWithAUniqueMiddl
 // Harness only: both strategies are
 // SubsequencesWithAUniqueMiddleModeISolution's. One test method per strategy
 // over LeetCode's own examples, so a failure names the strategy that broke.
-public sealed class SubsequencesWithAUniqueMiddleModeITests
+public sealed partial class SubsequencesWithAUniqueMiddleModeITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

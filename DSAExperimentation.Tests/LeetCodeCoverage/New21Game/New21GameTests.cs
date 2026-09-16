@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.New21Game;
 // two more boundaries) are stated once and replayed against each, so a failure names
 // the strategy that broke rather than reporting a disagreement between an anonymous
 // test helper and an anonymous benchmark arm.
-public sealed class New21GameTests
+public sealed partial class New21GameTests
 {
     private const int ProbabilityPrecision = 5;
 

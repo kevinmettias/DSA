@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MirrorReflection;
 // them to LeetCode's published examples plus pairs that exercise the GCD reduction
 // itself (non-coprime (roomSide, rayHeight), and rayHeight = roomSide), including the
 // O(roomSide) unfolding simulation that used to live unasserted in the benchmark.
-public sealed class MirrorReflectionTests
+public sealed partial class MirrorReflectionTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

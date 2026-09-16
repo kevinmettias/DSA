@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumStudentsTakingExam;
 // pinned here to LeetCode's three published examples plus an all-broken classroom
 // (nobody can sit), a single row (no diagonal constraint ever applies) and a single
 // column (only the row-above rule can bite).
-public sealed class MaximumStudentsTakingExamTests
+public sealed partial class MaximumStudentsTakingExamTests
 {
     public static TheoryData<char[][], int> Examples =>
         new()

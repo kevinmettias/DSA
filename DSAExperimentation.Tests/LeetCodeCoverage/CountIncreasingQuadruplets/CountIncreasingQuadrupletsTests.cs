@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountIncreasingQuadruplets;
 // examples only reach a count of 2). Every case is a permutation of 1..n, which
 // LC 2552's constraints guarantee and the Fenwick arm's value-as-index mapping
 // relies on.
-public sealed class CountIncreasingQuadrupletsTests
+public sealed partial class CountIncreasingQuadrupletsTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

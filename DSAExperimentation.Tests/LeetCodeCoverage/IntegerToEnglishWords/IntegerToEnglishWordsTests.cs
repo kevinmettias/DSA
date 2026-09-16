@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IntegerToEnglishWords;
 
 // Harness only. Both strategies are IntegerToEnglishWordsSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class IntegerToEnglishWordsTests
+public sealed partial class IntegerToEnglishWordsTests
 {
     public static TheoryData<int, string> Examples =>
         new()

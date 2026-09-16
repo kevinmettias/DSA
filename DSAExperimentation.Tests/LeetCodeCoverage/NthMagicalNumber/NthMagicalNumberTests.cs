@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NthMagicalNumber;
 // second factor is a multiple of the first (inclusion-exclusion subtracts the whole
 // overlap), a coprime pair that interleaves both sequences, and the factor pair the
 // benchmark measures.
-public sealed class NthMagicalNumberTests
+public sealed partial class NthMagicalNumberTests
 {
     public static TheoryData<int, int, int, int> Examples =>
         new()

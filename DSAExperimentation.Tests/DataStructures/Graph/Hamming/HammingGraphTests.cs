@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Hamming;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Hamming;
 
-public sealed class HammingGraphTests
+public sealed partial class HammingGraphTests
 {
     public static TheoryData<OneApartExample> IsOneApartExamples =>
         new()

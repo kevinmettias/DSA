@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfIntegersWithPopcount
 // desiredDepth = 1 (the powers of two {2, 4, 8}, deliberately excluding x = 1
 // itself - the case the combinatorial strategy's popcount-1-bucket adjustment
 // exists for).
-public sealed class NumberOfIntegersWithPopcountDepthEqualToKITests
+public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKITests
 {
     public static TheoryData<long, int, long> Examples =>
         new()

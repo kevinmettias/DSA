@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.UniquePathsIII;
 // just pins them to LeetCode's published examples, including the grid where no walk
 // can cover every empty square, plus a two-cell grid where the walk ends on its very
 // first step.
-public sealed class UniquePathsIIITests
+public sealed partial class UniquePathsIIITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PowerOfTwo;
 
 // Harness only: both strategies live in PowerOfTwoSolution and are asserted
 // against the same examples.
-public sealed class PowerOfTwoTests
+public sealed partial class PowerOfTwoTests
 {
     public static TheoryData<PowerOfTwoCase> Examples =>
         new()

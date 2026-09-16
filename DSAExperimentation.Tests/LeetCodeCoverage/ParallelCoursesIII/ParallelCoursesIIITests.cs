@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ParallelCoursesIII;
 // input shape, plus the cases the two arms have to agree on: a single course, a
 // prerequisite-free set whose answer is just the longest single duration, and a
 // linear chain whose answer is the whole summed critical path.
-public sealed class ParallelCoursesIIITests
+public sealed partial class ParallelCoursesIIITests
 {
     public static TheoryData<int, int[][], int[], int> Examples =>
         new()

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignGraphWithShortestPathC
 // own instance-API problem. An addEdge returns null in LeetCode's judge output,
 // so ShortestPathGraphOp.Apply returns null for it too and the expected sequence
 // reads exactly like the published one.
-public sealed class DesignGraphWithShortestPathCalculatorTests
+public sealed partial class DesignGraphWithShortestPathCalculatorTests
 {
     public static TheoryData<int, int[][], ShortestPathGraphOp[], int?[]> Examples =>
         new()
@@ -76,28 +76,20 @@ public sealed class DesignGraphWithShortestPathCalculatorTests
     [MemberData(nameof(Examples))]
     public void ShortestPathGraphByArrayDijkstra_LeetCodeExamples_MatchesExpectedSequence(
         int nodeCount, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
-        RunScript(
+        Assert.Equal(expected, RunScript(
             new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra(nodeCount, edges),
-            operations,
-            expected);
+            operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void ShortestPathGraphByHeapDijkstra_LeetCodeExamples_MatchesExpectedSequence(
         int nodeCount, int[][] edges, ShortestPathGraphOp[] operations, int?[] expected) =>
-        RunScript(
+        Assert.Equal(expected, RunScript(
             new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra(nodeCount, edges),
-            operations,
-            expected);
+            operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignGraphWithShortestPathCalculatorSolution.IShortestPathGraph graph,
-        ShortestPathGraphOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(graph));
-        }
-    }
+        ShortestPathGraphOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(graph))];
 }

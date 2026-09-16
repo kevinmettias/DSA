@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PaintingAGridWithThreeDiffer
 // examples, so a failure names the strategy that broke. The brute force was
 // previously only a [Benchmark(Baseline = true)] arm with nothing asserting it -
 // these are its first assertions.
-public sealed class PaintingAGridWithThreeDifferentColorsTests
+public sealed partial class PaintingAGridWithThreeDifferentColorsTests
 {
     // LeetCode's three published examples, plus the two hand-counted grids the
     // pre-migration test carried. m=1 has no vertical adjacency at all, so only the

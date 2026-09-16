@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumBalancedShipments;
 
 // Harness only. Both strategies are MaximumBalancedShipmentsSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class MaximumBalancedShipmentsTests
+public sealed partial class MaximumBalancedShipmentsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

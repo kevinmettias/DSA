@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PopulatingNextRightPointersI
 // its level. As in the sibling PopulatingNextRightPointersInEachNodeIITests, the
 // chain a strategy produced is read through a named strategy type rather than a
 // bare Func.
-public sealed class PopulatingNextRightPointersInEachNodeTests
+public sealed partial class PopulatingNextRightPointersInEachNodeTests
 {
     public static TheoryData<int[], int?[]> Examples =>
         new()

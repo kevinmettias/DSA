@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountPartitionsWithMaxMinDif
 // Harness only. Both strategies are
 // CountPartitionsWithMaxMinDifferenceAtMostKSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class CountPartitionsWithMaxMinDifferenceAtMostKTests
+public sealed partial class CountPartitionsWithMaxMinDifferenceAtMostKTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NRepeatedElementInSize2NArra
 // pairwise baseline the benchmark used to hide, and the Set<int> single pass - so this
 // file just pins them to LeetCode's published examples plus the cases the original
 // test added: the repeat trailing the array, and the smallest valid n = 2 input.
-public sealed class NRepeatedElementInSize2NArrayTests
+public sealed partial class NRepeatedElementInSize2NArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

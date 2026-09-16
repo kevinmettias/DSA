@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NQueensII;
 // array-recursion baseline and this repo's own Backtrack.Search composition,
 // asserted against the same board sizes including the boards with no
 // solution at all.
-public sealed class NQueensIITests
+public sealed partial class NQueensIITests
 {
     public static TheoryData<int, int> Examples =>
         new()

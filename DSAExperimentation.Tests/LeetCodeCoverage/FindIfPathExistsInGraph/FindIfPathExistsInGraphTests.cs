@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindIfPathExistsInGraph;
 // single-node graph where source is already the destination and the disconnected
 // chain where the whole source component has to be exhausted before the answer is
 // no.
-public sealed class FindIfPathExistsInGraphTests
+public sealed partial class FindIfPathExistsInGraphTests
 {
     public static TheoryData<ReachabilityCase> Examples =>
         new()

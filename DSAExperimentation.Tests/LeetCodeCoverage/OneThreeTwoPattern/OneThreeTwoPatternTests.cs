@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OneThreeTwoPattern;
 
 // Harness only. Both strategies are OneThreeTwoPatternSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class OneThreeTwoPatternTests
+public sealed partial class OneThreeTwoPatternTests
 {
     public static TheoryData<PatternExample> Examples =>
         new()

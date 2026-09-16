@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeManhattanDistances;
 // MinimizeManhattanDistancesSolution's - this file just pins them to LeetCode's
 // published examples, including the all-coincident-points case that forces every
 // transform range to collapse to zero.
-public sealed class MinimizeManhattanDistancesTests
+public sealed partial class MinimizeManhattanDistancesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

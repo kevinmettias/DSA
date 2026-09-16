@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfOperationsToM
 // MinimumNumberOfOperationsToMakeXAndYEqualSolution. One test method per strategy
 // over one shared set of LeetCode's own examples, so a failure names the strategy
 // that broke (TwoSumTests precedent).
-public sealed class MinimumNumberOfOperationsToMakeXAndYEqualTests
+public sealed partial class MinimumNumberOfOperationsToMakeXAndYEqualTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortItemsByGroupsRespectingD
 // actually asks for rather than one arbitrary permutation: every item appears once,
 // every beforeItems constraint holds, and each group's items sit in one contiguous
 // block. An empty result means "no valid ordering exists".
-public sealed class SortItemsByGroupsRespectingDependenciesTests
+public sealed partial class SortItemsByGroupsRespectingDependenciesTests
 {
     public static TheoryData<OrderExample> Examples =>
         new()

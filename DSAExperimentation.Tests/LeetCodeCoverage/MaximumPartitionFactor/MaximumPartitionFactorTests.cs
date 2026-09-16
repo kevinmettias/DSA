@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumPartitionFactor;
 
 // Harness only. Both strategies are MaximumPartitionFactorSolution's - this file
 // pins them to LeetCode's published examples.
-public sealed class MaximumPartitionFactorTests
+public sealed partial class MaximumPartitionFactorTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

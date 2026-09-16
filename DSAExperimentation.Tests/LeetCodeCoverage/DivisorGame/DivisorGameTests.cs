@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DivisorGame;
 // is the closed form it reduces to, so pinning both to one example set is exactly the
 // check that the reduction holds - the benchmark previously compared them with only
 // the recursion under test.
-public sealed class DivisorGameTests
+public sealed partial class DivisorGameTests
 {
     public static TheoryData<DivisorGameCase> Examples =>
         new()

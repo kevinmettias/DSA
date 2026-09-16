@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountBowlSubarrays;
 
 // Harness only. Both strategies are CountBowlSubarraysSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class CountBowlSubarraysTests
+public sealed partial class CountBowlSubarraysTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
-public sealed class ManhattanHeuristicTests
+public sealed partial class ManhattanHeuristicTests
 {
     public static TheoryData<EstimateCase> Examples =>
         new()

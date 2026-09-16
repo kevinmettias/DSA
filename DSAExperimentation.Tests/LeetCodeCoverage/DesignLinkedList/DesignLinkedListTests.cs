@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignLinkedList;
 // (previously scaffolding inlined in the benchmark, and only exercising AddAtHead in
 // isolation there) gets the same full-API coverage here for the first time.
 // DesignLinkedListOp.Apply is pure dispatch, no list logic of its own.
-public sealed class DesignLinkedListTests
+public sealed partial class DesignLinkedListTests
 {
     public static TheoryData<DesignLinkedListOp[], int?[]> Examples =>
         new()
@@ -66,22 +66,17 @@ public sealed class DesignLinkedListTests
     [MemberData(nameof(Examples))]
     public void CreateBySinglyLinkedListChain_LeetCodeExamples_MatchesExpectedResults(
         DesignLinkedListOp[] operations, int?[] expected) =>
-        RunScript(DesignLinkedListSolution.CreateBySinglyLinkedListChain(), operations, expected);
+        Assert.Equal(expected, RunScript(DesignLinkedListSolution.CreateBySinglyLinkedListChain(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByArrayList_LeetCodeExamples_MatchesExpectedResults(
         DesignLinkedListOp[] operations, int?[] expected) =>
-        RunScript(DesignLinkedListSolution.CreateByArrayList(), operations, expected);
+        Assert.Equal(expected, RunScript(DesignLinkedListSolution.CreateByArrayList(), operations));
 
-    private static void RunScript(
-        DesignLinkedListSolution.IMyLinkedList list, DesignLinkedListOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(list));
-        }
-    }
+    private static int?[] RunScript(
+        DesignLinkedListSolution.IMyLinkedList list, DesignLinkedListOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(list))];
 
     // One call in a DesignLinkedList script: which method to invoke and with what
     // arguments. Pure dispatch, built via the named factories below so a script (like

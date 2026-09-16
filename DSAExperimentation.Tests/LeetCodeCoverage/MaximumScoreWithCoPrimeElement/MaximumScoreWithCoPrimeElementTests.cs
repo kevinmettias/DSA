@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumScoreWithCoPrimeEleme
 
 // Harness only. Both strategies are MaximumScoreWithCoPrimeElementSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class MaximumScoreWithCoPrimeElementTests
+public sealed partial class MaximumScoreWithCoPrimeElementTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

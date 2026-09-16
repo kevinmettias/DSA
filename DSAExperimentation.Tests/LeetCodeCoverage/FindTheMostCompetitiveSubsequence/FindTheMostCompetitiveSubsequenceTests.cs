@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheMostCompetitiveSubseq
 // LeetCode never published - selectionLength equal to the whole array, a
 // selectionLength of 1, a run of equal elements, and a single-element array -
 // each of which lands on a different branch of the greedy rule.
-public sealed class FindTheMostCompetitiveSubsequenceTests
+public sealed partial class FindTheMostCompetitiveSubsequenceTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

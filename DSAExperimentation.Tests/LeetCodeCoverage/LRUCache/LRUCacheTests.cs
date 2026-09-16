@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LRUCache;
 // problem. LRUCacheOp.Apply is pure dispatch plus LeetCode's own -1-on-miss
 // convention (ICache<TKey,TValue>.TryGetValue leaves `value` undefined on a
 // miss, per its own doc comment) - no eviction logic of its own.
-public sealed class LRUCacheTests
+public sealed partial class LRUCacheTests
 {
     public static TheoryData<int, LRUCacheOp[], int?[]> Examples =>
         new()
@@ -37,21 +37,16 @@ public sealed class LRUCacheTests
     [MemberData(nameof(Examples))]
     public void CreateByLruCachePrimitive_LeetCodeExample_EvictsLeastRecentlyUsedKey(
         int capacity, LRUCacheOp[] operations, int?[] expected) =>
-        RunScript(LRUCacheSolution.CreateByLruCachePrimitive(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(LRUCacheSolution.CreateByLruCachePrimitive(capacity), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByDictionaryLinkedList_LeetCodeExample_EvictsLeastRecentlyUsedKey(
         int capacity, LRUCacheOp[] operations, int?[] expected) =>
-        RunScript(LRUCacheSolution.CreateByDictionaryLinkedList(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(LRUCacheSolution.CreateByDictionaryLinkedList(capacity), operations));
 
-    private static void RunScript(ICache<int, int> cache, LRUCacheOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(cache));
-        }
-    }
+    private static int?[] RunScript(ICache<int, int> cache, LRUCacheOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(cache))];
 
     // One call in an LRUCache script: which method to invoke and with what
     // arguments. Pure dispatch, built via the named factories below so a script

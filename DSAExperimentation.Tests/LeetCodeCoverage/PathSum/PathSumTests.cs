@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathSum;
 // internal, so - as in BinaryTreeLevelOrderTraversalTests - it stays out of a
 // public TheoryData signature and LeetCodeWireFormat.ToBinaryTree reconstructs it from LeetCode's own
 // level-order-with-null array shape.
-public sealed class PathSumTests
+public sealed partial class PathSumTests
 {
     // LeetCode 112's own examples: root = [5,4,8,11,null,13,4,7,2,null,null,null,1]
     // with targetSum 22 -> true (5 -> 4 -> 11 -> 2), root = [1,2,3] with targetSum 5

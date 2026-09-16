@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeModule;
 // behaviour - CreateByLinearScan's baseline (previously untested scaffolding inlined
 // in the benchmark, and there only for queryRange) gets that same coverage here for
 // the first time. RangeModuleOp.Apply is pure dispatch, no interval logic of its own.
-public sealed class RangeModuleTests
+public sealed partial class RangeModuleTests
 {
     public static TheoryData<RangeModuleOp[], bool?[]> Examples =>
         new()
@@ -52,21 +52,16 @@ public sealed class RangeModuleTests
     [MemberData(nameof(Examples))]
     public void CreateByIntervalSetBinarySearch_LeetCodeExamples_TracksAddQueryAndRemove(
         RangeModuleOp[] operations, bool?[] expected) =>
-        RunScript(RangeModuleSolution.CreateByIntervalSetBinarySearch(), operations, expected);
+        Assert.Equal(expected, RunScript(RangeModuleSolution.CreateByIntervalSetBinarySearch(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByLinearScan_LeetCodeExamples_TracksAddQueryAndRemove(
         RangeModuleOp[] operations, bool?[] expected) =>
-        RunScript(RangeModuleSolution.CreateByLinearScan(), operations, expected);
+        Assert.Equal(expected, RunScript(RangeModuleSolution.CreateByLinearScan(), operations));
 
-    private static void RunScript(RangeModuleSolution.IRangeModule module, RangeModuleOp[] operations, bool?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(module));
-        }
-    }
+    private static bool?[] RunScript(RangeModuleSolution.IRangeModule module, RangeModuleOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(module))];
 
     // One call in a RangeModule script: which method to invoke and with what bounds. Pure
     // dispatch, built via the named factories below so a script (like Examples above)

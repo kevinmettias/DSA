@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfThereIsAValidPathInAG
 // this file just pins them to LeetCode's published examples plus the corner cases
 // the original coverage carried, one theory per strategy so a failure names the
 // strategy that broke.
-public sealed class CheckIfThereIsAValidPathInAGridTests
+public sealed partial class CheckIfThereIsAValidPathInAGridTests
 {
     public static TheoryData<StreetGridCase> Examples =>
         new()

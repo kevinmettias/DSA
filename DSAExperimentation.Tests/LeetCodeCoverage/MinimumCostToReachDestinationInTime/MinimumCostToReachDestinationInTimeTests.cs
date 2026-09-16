@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToReachDestinatio
 // with no budget at all, and a pair where the cheap route is the slow one and only
 // the looser budget can afford it. The naive walk is asserted here for the first
 // time; it used to live in the benchmark as an unasserted baseline.
-public sealed class MinimumCostToReachDestinationInTimeTests
+public sealed partial class MinimumCostToReachDestinationInTimeTests
 {
     public static TheoryData<int, int[][], int[], int> Examples =>
         new()

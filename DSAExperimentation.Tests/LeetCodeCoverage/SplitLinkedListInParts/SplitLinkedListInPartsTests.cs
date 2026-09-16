@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SplitLinkedListInParts;
 // Harness only. Both strategies are SplitLinkedListInPartsSolution's - this file
 // just pins them to LeetCode's published examples, including the case where
 // partCount exceeds the list length and trailing parts must be null.
-public sealed class SplitLinkedListInPartsTests
+public sealed partial class SplitLinkedListInPartsTests
 {
     public static TheoryData<int[], int, int[]?[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumOperationsToConvertAl
 // Harness only. The range-minimum decomposition both strategies share is
 // MinimumOperationsToConvertAllElementsToZeroSolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class MinimumOperationsToConvertAllElementsToZeroTests
+public sealed partial class MinimumOperationsToConvertAllElementsToZeroTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

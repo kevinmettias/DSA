@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateBinarySearchTree;
 // BinaryTreeNode<int> is internal, so - as in UniqueBinarySearchTreesIITests - it
 // stays out of a public TheoryData signature and LeetCodeWireFormat.ToBinaryTree reconstructs it from
 // that array.
-public sealed class ValidateBinarySearchTreeTests
+public sealed partial class ValidateBinarySearchTreeTests
 {
     public static TheoryData<TreeExample> Examples =>
         new()

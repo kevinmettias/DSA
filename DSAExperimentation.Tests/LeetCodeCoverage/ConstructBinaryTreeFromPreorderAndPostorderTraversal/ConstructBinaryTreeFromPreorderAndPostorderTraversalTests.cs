@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinaryTreeFromPreor
 // any tree matching both traversals, so each example is checked by re-flattening
 // the reconstructed tree and requiring it to round-trip to the two inputs - which
 // also pins the leaf cases, since any spurious child would show up in the walks.
-public sealed class ConstructBinaryTreeFromPreorderAndPostorderTraversalTests
+public sealed partial class ConstructBinaryTreeFromPreorderAndPostorderTraversalTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

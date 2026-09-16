@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestComponentSizeByCommon
 // are pinned to LeetCode's published examples, plus the degenerate cases the two arms
 // have to agree on - a lone value, a pair sharing nothing, and a 1 (which has no prime
 // factors at all, so it can never join a component).
-public sealed class LargestComponentSizeByCommonFactorTests
+public sealed partial class LargestComponentSizeByCommonFactorTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

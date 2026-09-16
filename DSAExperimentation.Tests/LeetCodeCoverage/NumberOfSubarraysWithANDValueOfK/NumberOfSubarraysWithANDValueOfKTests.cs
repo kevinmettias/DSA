@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfSubarraysWithANDValu
 // Harness only. Both strategies are
 // NumberOfSubarraysWithANDValueOfKSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class NumberOfSubarraysWithANDValueOfKTests
+public sealed partial class NumberOfSubarraysWithANDValueOfKTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

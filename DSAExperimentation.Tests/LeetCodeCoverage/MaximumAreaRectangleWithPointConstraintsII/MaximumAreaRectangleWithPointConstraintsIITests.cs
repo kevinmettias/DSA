@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumAreaRectangleWithPoin
 // MaximumAreaRectangleWithPointConstraintsIISolution's. One test method per
 // strategy over LeetCode's own examples, so a failure names the strategy that
 // broke.
-public sealed class MaximumAreaRectangleWithPointConstraintsIITests
+public sealed partial class MaximumAreaRectangleWithPointConstraintsIITests
 {
     public static TheoryData<int[], int[], long> Examples =>
         new()

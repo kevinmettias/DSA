@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfIntegersWithPopcount
 // NumberOfIntegersWithPopcountDepthEqualToKIISolution's - this file just pins
 // both strategies to LeetCode's published examples, each of which mixes
 // range-count and point-update queries.
-public sealed class NumberOfIntegersWithPopcountDepthEqualToKIITests
+public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIITests
 {
     public static TheoryData<long[], long[][], int[]> Examples =>
         new()

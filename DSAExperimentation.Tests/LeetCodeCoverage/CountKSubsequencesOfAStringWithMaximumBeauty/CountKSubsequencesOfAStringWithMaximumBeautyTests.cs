@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountKSubsequencesOfAStringW
 // CountKSubsequencesOfAStringWithMaximumBeautySolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class CountKSubsequencesOfAStringWithMaximumBeautyTests
+public sealed partial class CountKSubsequencesOfAStringWithMaximumBeautyTests
 {
     public static TheoryData<string, int, long> Examples =>
         new()
@@ -15,6 +15,9 @@ public sealed class CountKSubsequencesOfAStringWithMaximumBeautyTests
             { "abbcd", 4, 2 }, // only 4 distinct chars exist - the single set {a,b,c,d}, product 1*2*1*1 = 2
             { "abcabcabc", 2, 27 }, // a,b,c all tied at freq3: choose 2 of 3 -> C(3,2)*3^2 = 27
         };
+
+    public static TheoryData<string, int> RandomizedInputs =>
+        new() { { "aaaabbbbccccdddd", 3 }, { "thequickbrownfoxjumpsoverthelazydog", 5 }, { "zzzzyyyyxxxx", 2 } };
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -33,9 +36,7 @@ public sealed class CountKSubsequencesOfAStringWithMaximumBeautyTests
     }
 
     [Theory]
-    [InlineData("aaaabbbbccccdddd", 3)]
-    [InlineData("thequickbrownfoxjumpsoverthelazydog", 5)]
-    [InlineData("zzzzyyyyxxxx", 2)]
+    [MemberData(nameof(RandomizedInputs))]
     public void BothStrategies_RandomizedInputs_Agree(string text, int subsequenceLength)
     {
         var bruteForce = CountKSubsequencesOfAStringWithMaximumBeautySolution.CountByBruteForceCombinations(text, subsequenceLength);

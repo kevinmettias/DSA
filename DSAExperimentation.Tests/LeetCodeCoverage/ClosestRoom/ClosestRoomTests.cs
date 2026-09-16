@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ClosestRoom;
 // last (so the baseline's own tie-break is exercised, not just the sweep's), a
 // preferred id below every eligible one (no floor), and one above them all (no
 // ceiling). The scan arm used to exist only as an unasserted benchmark baseline.
-public sealed class ClosestRoomTests
+public sealed partial class ClosestRoomTests
 {
     public static TheoryData<int[][], int[][], int[]> Examples =>
         new()

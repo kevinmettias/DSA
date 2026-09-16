@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FlowerPlantingWithNoAdjacent
 // type, so the answer is deterministic and can be stated outright rather than only
 // checked for validity - the assertion helper checks both, since the planting
 // property is what the problem actually asks for.
-public sealed class FlowerPlantingWithNoAdjacentTests
+public sealed partial class FlowerPlantingWithNoAdjacentTests
 {
     public static TheoryData<int, int[][], int[]> Examples =>
         new()

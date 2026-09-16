@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestConsecutiveSequence;
 // Harness only: the run-expansion strategy lives in
 // LongestConsecutiveSequenceSolution - this file just pins it to LeetCode's
 // published examples.
-public sealed class LongestConsecutiveSequenceTests
+public sealed partial class LongestConsecutiveSequenceTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

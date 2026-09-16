@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SlidingWindowMaximum;
 
 // Harness only. Both search strategies are SlidingWindowMaximumSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class SlidingWindowMaximumTests
+public sealed partial class SlidingWindowMaximumTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

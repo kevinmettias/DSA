@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CapacityToShipPackagesWithin
 // the hand-rolled lo/hi bisection that used to live only in the benchmark's baseline
 // arm, and the BinarySearch.LowerBound walk over the feasibility sequence the test
 // used to inline.
-public sealed class CapacityToShipPackagesWithinDDaysTests
+public sealed partial class CapacityToShipPackagesWithinDDaysTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

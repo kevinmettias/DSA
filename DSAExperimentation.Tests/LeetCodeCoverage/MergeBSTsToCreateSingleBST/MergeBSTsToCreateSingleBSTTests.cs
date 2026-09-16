@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeBSTsToCreateSingleBST;
 // signature; BuildForest reconstructs them inside each test method, which also gives
 // every strategy its own forest to splice (the merge mutates Left/Right in place).
 // An empty expected array means "no valid merge", which is how LeetCode renders it.
-public sealed class MergeBSTsToCreateSingleBSTTests
+public sealed partial class MergeBSTsToCreateSingleBSTTests
 {
     public static TheoryData<int?[][], int?[]> Examples =>
         new()

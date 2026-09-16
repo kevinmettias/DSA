@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxAreaOfIsland;
 
 // Harness only. Both strategies are MaxAreaOfIslandSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class MaxAreaOfIslandTests
+public sealed partial class MaxAreaOfIslandTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

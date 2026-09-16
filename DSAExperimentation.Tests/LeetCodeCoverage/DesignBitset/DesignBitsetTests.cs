@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignBitset;
 // operation's result as the string LeetCode's own judge output shows for it - "null"
 // for the void mutators, "true"/"false" for all()/one(), the decimal count, and the
 // bit string itself - so one expected value per call covers the whole mixed surface.
-public sealed class DesignBitsetTests
+public sealed partial class DesignBitsetTests
 {
     public static TheoryData<int, BitsetOp[], string[]> Examples =>
         new()
@@ -116,21 +116,16 @@ public sealed class DesignBitsetTests
     [MemberData(nameof(Examples))]
     public void BitsetByEagerFlip_LeetCodeExamples_MatchesExpectedSequence(
         int size, BitsetOp[] operations, string[] expected) =>
-        RunScript(new BitsetByEagerFlip(size), operations, expected);
+        Assert.Equal(expected, RunScript(new BitsetByEagerFlip(size), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BitsetByLazyFlag_LeetCodeExamples_MatchesExpectedSequence(
         int size, BitsetOp[] operations, string[] expected) =>
-        RunScript(new BitsetByLazyFlag(size), operations, expected);
+        Assert.Equal(expected, RunScript(new BitsetByLazyFlag(size), operations));
 
-    private static void RunScript(IBitset bitset, BitsetOp[] operations, string[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(bitset));
-        }
-    }
+    private static string[] RunScript(IBitset bitset, BitsetOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(bitset))];
 
     // One call in a Bitset script: which operation to invoke and with what index. Pure
     // dispatch, built via the named factories below so a script (like Examples above)

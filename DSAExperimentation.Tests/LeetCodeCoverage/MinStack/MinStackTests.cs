@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinStack;
 // already uses for its own instance-API problem. Only one strategy exists (no
 // benchmark existed for this problem to inventory a second, baseline arm from),
 // so there is only one [Theory] method.
-public sealed class MinStackTests
+public sealed partial class MinStackTests
 {
     public static TheoryData<MinStackOp[], int?[]> Examples =>
         new()

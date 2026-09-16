@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeVisitingAllPoints
 // Harness only: both of MinimumTimeVisitingAllPointsSolution's strategies over
 // LeetCode's examples, which is also what pins the ChebyshevHeuristic arm to the
 // open-coded arithmetic it is supposed to reproduce.
-public sealed class MinimumTimeVisitingAllPointsTests
+public sealed partial class MinimumTimeVisitingAllPointsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

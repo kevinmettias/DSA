@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeTheMinimumPoweredCit
 // the BinarySearch.LowerBound walk over the infeasibility sequence the test used to
 // inline. The greedy feasibility sweep and the IRandomAccessSequence<bool> witness
 // both moved down beside the solution.
-public sealed class MaximizeTheMinimumPoweredCityTests
+public sealed partial class MaximizeTheMinimumPoweredCityTests
 {
     public static TheoryData<int[], int, int, long> Examples =>
         new()

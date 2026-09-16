@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameVII;
 // the benchmark as its baseline arm) now gets the same examples as
 // MaxScoreDifferenceByMemoizedRecursion (previously this file's own private helper),
 // so a failure names the strategy that broke.
-public sealed class StoneGameVIITests
+public sealed partial class StoneGameVIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

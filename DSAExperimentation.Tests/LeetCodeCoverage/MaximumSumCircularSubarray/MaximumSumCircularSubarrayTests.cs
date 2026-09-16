@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumCircularSubarray;
 // single-element array, an all-negative array whose answer is its least-negative
 // element (the case the complement trick gets wrong without its fallback), and a
 // wraparound case where the best subarray really does straddle the end.
-public sealed class MaximumSumCircularSubarrayTests
+public sealed partial class MaximumSumCircularSubarrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

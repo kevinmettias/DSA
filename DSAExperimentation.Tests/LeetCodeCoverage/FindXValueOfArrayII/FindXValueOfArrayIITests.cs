@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindXValueOfArrayII;
 
 // Harness only. Both strategies are FindXValueOfArrayIISolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class FindXValueOfArrayIITests
+public sealed partial class FindXValueOfArrayIITests
 {
     public static TheoryData<int[], int, int[][], int[]> Examples =>
         new()

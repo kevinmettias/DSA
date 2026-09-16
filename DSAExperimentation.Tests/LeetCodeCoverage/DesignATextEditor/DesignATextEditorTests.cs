@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignATextEditor;
 // instance-API problems. AddText returns null in LeetCode's judge output and
 // deleteText returns a count while the two cursor moves return strings, so the
 // expected sequence is object?[] and reads exactly like the published one.
-public sealed class DesignATextEditorTests
+public sealed partial class DesignATextEditorTests
 {
     public static TheoryData<TextEditorOp[], object?[]> Examples =>
         new()
@@ -66,22 +66,16 @@ public sealed class DesignATextEditorTests
     [MemberData(nameof(Examples))]
     public void TextEditorByListBacked_LeetCodeExamples_MatchesExpectedSequence(
         TextEditorOp[] operations, object?[] expected) =>
-        RunScript(new DesignATextEditorSolution.TextEditorByListBacked(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignATextEditorSolution.TextEditorByListBacked(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TextEditorByStackBacked_LeetCodeExamples_MatchesExpectedSequence(
         TextEditorOp[] operations, object?[] expected) =>
-        RunScript(new DesignATextEditorSolution.TextEditorByStackBacked(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignATextEditorSolution.TextEditorByStackBacked(), operations));
 
-    private static void RunScript(
+    private static object?[] RunScript(
         DesignATextEditorSolution.ITextEditor editor,
-        TextEditorOp[] operations,
-        object?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(editor));
-        }
-    }
+        TextEditorOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(editor))];
 }

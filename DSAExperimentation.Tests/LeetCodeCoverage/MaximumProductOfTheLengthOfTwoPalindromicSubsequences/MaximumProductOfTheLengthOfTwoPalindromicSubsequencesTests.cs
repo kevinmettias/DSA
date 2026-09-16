@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProductOfTheLengthOfT
 // (no second disjoint palindrome exists, so the answer is 0), two distinct characters
 // (each is a length-1 palindrome), and three identical ones (a length-2 palindrome paired
 // with the leftover character).
-public sealed class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesTests
+public sealed partial class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesTests
 {
     public static TheoryData<string, int> Examples =>
         new()

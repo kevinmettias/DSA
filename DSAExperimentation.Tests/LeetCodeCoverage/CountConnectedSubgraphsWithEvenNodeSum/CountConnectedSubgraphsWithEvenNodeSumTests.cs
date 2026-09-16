@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountConnectedSubgraphsWithE
 // CountConnectedSubgraphsWithEvenNodeSumSolution's - this file just pins them to
 // LeetCode's published examples, including the single-node graph where the only
 // possible subset has an odd sum.
-public sealed class CountConnectedSubgraphsWithEvenNodeSumTests
+public sealed partial class CountConnectedSubgraphsWithEvenNodeSumTests
 {
     public static TheoryData<int[], int[][], int> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FirstBadVersion;
 
 // Harness only: both strategies live in FirstBadVersionSolution and are asserted
 // against the same examples, including LeetCode's official large-n overflow case.
-public sealed class FirstBadVersionTests
+public sealed partial class FirstBadVersionTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

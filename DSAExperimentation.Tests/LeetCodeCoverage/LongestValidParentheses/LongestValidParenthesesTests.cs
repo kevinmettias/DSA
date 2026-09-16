@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestValidParentheses;
 // Harness only: the algorithms live in LongestValidParenthesesSolution. One test
 // method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke.
-public sealed class LongestValidParenthesesTests
+public sealed partial class LongestValidParenthesesTests
 {
     public static TheoryData<string, int> Examples =>
         new()

@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobberIII;
 // this repo's generic TreeFold engine closes over) lives beside the solution and is
 // exercised only through RobByTreeFoldAlgebra here, per the same precedent as
 // CountWaysToBuildRoomsInAnAntColony's RoomWaysAlgebra.
-public sealed class HouseRobberIIITests
+public sealed partial class HouseRobberIIITests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfWorkSessionsT
 // beat the greedy "fill each session as full as possible" answer). The unmemoized
 // arm is asserted here for the first time: before the migration it existed only as
 // the benchmark's baseline, which nothing checked.
-public sealed class MinimumNumberOfWorkSessionsToFinishTheTasksTests
+public sealed partial class MinimumNumberOfWorkSessionsToFinishTheTasksTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

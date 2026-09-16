@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestSubtreeWithAllTheDee
 // TheoryData signature), and the expected answer is the value of the subtree root
 // LeetCode reports - values are distinct in every example, so the value identifies
 // exactly one node of the tree.
-public sealed class SmallestSubtreeWithAllTheDeepestNodesTests
+public sealed partial class SmallestSubtreeWithAllTheDeepestNodesTests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

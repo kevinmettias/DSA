@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountAllPossibleRoutes;
 // them to LeetCode's three published examples plus two cases the original coverage
 // left untested: a start that equals the finish (the route of length zero counts on
 // its own), and a fuel budget large enough to force real back-and-forth revisiting.
-public sealed class CountAllPossibleRoutesTests
+public sealed partial class CountAllPossibleRoutesTests
 {
     public static TheoryData<CountRoutesCase> Examples =>
         new()

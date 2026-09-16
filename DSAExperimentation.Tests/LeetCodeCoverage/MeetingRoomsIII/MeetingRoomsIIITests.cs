@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MeetingRoomsIII;
 // published examples this pins the shapes the simulation has to get right - meetings
 // listed out of start order, a delayed meeting that keeps its original duration, and
 // a tie on the busiest room resolving to the lowest room number.
-public sealed class MeetingRoomsIIITests
+public sealed partial class MeetingRoomsIIITests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

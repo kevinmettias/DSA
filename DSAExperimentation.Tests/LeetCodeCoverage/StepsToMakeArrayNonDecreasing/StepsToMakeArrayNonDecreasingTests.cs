@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StepsToMakeArrayNonDecreasin
 // an array that is already sorted (no round runs), a strictly decreasing one
 // (every removal happens in a single round), and a leading maximum that peels one
 // element per round for as many rounds as there are elements behind it.
-public sealed class StepsToMakeArrayNonDecreasingTests
+public sealed partial class StepsToMakeArrayNonDecreasingTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

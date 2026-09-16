@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StatisticsFromALargeSample;
 // Harness only. Both strategies are StatisticsFromALargeSampleSolution's; this file
 // pins them to LeetCode's published examples plus the odd/even-total pair that
 // exercises both halves of the median rule.
-public sealed class StatisticsFromALargeSampleTests
+public sealed partial class StatisticsFromALargeSampleTests
 {
     // LeetCode fixes the sample's value range at [0, 255], so every count array is
     // this long however few buckets an example actually fills.

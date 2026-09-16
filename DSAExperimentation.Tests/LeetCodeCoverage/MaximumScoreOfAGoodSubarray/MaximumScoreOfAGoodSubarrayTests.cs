@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumScoreOfAGoodSubarray;
 // O(n^2) expand baseline used to exist only as a benchmark arm with nothing
 // asserting it, so it is pinned to the same examples as the monotonic-stack
 // sweep here.
-public sealed class MaximumScoreOfAGoodSubarrayTests
+public sealed partial class MaximumScoreOfAGoodSubarrayTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

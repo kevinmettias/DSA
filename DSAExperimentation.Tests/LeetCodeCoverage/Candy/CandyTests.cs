@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Candy;
 // Harness only: both strategies live in CandySolution and are asserted against the
 // same examples, including flat and strictly monotonic ratings that the two-pass
 // slope-constraint approach's forward/backward passes have to combine correctly.
-public sealed class CandyTests
+public sealed partial class CandyTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

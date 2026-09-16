@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignANumberContainerSystem
 // sequence of mutating calls rather than a single argument tuple.
 // NumberContainerOp.Apply is pure dispatch (which method to call with which
 // arguments) - no index/ordering logic of its own.
-public sealed class DesignANumberContainerSystemTests
+public sealed partial class DesignANumberContainerSystemTests
 {
     public static TheoryData<NumberContainerOp[], int?[]> Examples =>
         new()
@@ -75,22 +75,18 @@ public sealed class DesignANumberContainerSystemTests
     [MemberData(nameof(Examples))]
     public void NumberContainersByLinearScan_LeetCodeExamples_FindsSmallestCurrentlyAssignedIndex(
         NumberContainerOp[] operations, int?[] expected) =>
-        RunScript(new DesignANumberContainerSystemSolution.NumberContainersByLinearScan(), operations, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignANumberContainerSystemSolution.NumberContainersByLinearScan(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberContainersByLazyDeletionHeap_LeetCodeExamples_FindsSmallestCurrentlyAssignedIndex(
         NumberContainerOp[] operations, int?[] expected) =>
-        RunScript(new DesignANumberContainerSystemSolution.NumberContainersByLazyDeletionHeap(), operations, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignANumberContainerSystemSolution.NumberContainersByLazyDeletionHeap(), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignANumberContainerSystemSolution.INumberContainerStrategy strategy,
-        NumberContainerOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+        NumberContainerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 }

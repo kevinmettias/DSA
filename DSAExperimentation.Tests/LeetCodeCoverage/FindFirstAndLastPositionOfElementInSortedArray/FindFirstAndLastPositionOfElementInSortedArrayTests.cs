@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.FindFirstAndLastPositionOfElementInSortedArray
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FindFirstAndLastPositionOfElementInSortedArray;
 
-public sealed class FindFirstAndLastPositionOfElementInSortedArrayTests
+public sealed partial class FindFirstAndLastPositionOfElementInSortedArrayTests
 {
     public static TheoryData<int[], int, int[]> Examples => new()
     {

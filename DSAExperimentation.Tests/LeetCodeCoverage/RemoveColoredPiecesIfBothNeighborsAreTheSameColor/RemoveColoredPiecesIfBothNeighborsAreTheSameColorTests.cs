@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveColoredPiecesIfBothNei
 // reach: a run short enough to yield no moves at all, equal budgets (which Alice
 // loses, because she needs a STRICTLY larger one), and a string of one color only,
 // where the losing player's budget is never touched.
-public sealed class RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests
+public sealed partial class RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests
 {
     public static TheoryData<ColoredPiecesCase> Examples =>
         new()

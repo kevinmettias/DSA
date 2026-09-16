@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfGoodPaths;
 // into the solution class: before this migration it lived only in the benchmark's
 // baseline arm and nothing checked that the arm the DisjointSet sweep is measured
 // against was even right.
-public sealed class NumberOfGoodPathsTests
+public sealed partial class NumberOfGoodPathsTests
 {
     public static TheoryData<int[], int[][], int> Examples =>
         new()

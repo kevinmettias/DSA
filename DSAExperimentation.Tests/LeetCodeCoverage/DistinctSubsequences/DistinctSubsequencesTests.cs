@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistinctSubsequences;
 // pins it to LeetCode's published examples. Source and target are both strings and
 // the match is not symmetric, so each row names which is which rather than leaving
 // two interchangeable positions.
-public sealed class DistinctSubsequencesTests
+public sealed partial class DistinctSubsequencesTests
 {
     public static TheoryData<SubsequenceExample> Examples =>
         new()

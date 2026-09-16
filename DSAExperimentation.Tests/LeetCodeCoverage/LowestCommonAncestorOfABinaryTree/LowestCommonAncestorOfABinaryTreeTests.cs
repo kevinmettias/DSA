@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LowestCommonAncestorOfABinar
 // Harness only. The strategy is LowestCommonAncestorOfABinaryTreeSolution's - this
 // file just pins it to LeetCode's published examples plus a couple of added cases,
 // against a fresh copy of LeetCode's own example tree.
-public sealed class LowestCommonAncestorOfABinaryTreeTests
+public sealed partial class LowestCommonAncestorOfABinaryTreeTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

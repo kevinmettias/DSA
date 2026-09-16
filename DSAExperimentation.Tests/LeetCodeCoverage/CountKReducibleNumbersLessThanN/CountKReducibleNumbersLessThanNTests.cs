@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountKReducibleNumbersLessTh
 // Harness only: the algorithms live in CountKReducibleNumbersLessThanNSolution.
 // One test method per strategy over one shared set of LeetCode's own examples, so
 // a failure names the strategy that broke (TwoSumTests precedent).
-public sealed class CountKReducibleNumbersLessThanNTests
+public sealed partial class CountKReducibleNumbersLessThanNTests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

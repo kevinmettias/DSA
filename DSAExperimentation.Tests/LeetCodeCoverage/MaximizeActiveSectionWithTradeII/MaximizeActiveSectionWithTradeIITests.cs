@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeActiveSectionWithTra
 
 // Harness only. Both strategies are MaximizeActiveSectionWithTradeIISolution's
 // - this file just pins them to LeetCode's published examples.
-public sealed class MaximizeActiveSectionWithTradeIITests
+public sealed partial class MaximizeActiveSectionWithTradeIITests
 {
     public static TheoryData<string, int[][], int[]> Examples =>
         new()

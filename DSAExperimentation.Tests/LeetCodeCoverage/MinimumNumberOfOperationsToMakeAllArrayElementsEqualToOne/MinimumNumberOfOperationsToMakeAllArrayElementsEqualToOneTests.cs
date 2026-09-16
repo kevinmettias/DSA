@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfOperationsToM
 // window is ever searched), a single element (no window of length two exists at
 // all), and an array whose overall gcd is not 1 (every window is scanned and none
 // succeeds).
-public sealed class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneTests
+public sealed partial class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

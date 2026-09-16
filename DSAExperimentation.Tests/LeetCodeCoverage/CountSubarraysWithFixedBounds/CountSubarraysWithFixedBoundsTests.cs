@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithFixedBound
 // plus the cases that exercise an out-of-range element splitting the array
 // ([1, 5, 9, 1, 5], where the 9 blocks every subarray that spans it) and a bound
 // that no element reaches at all.
-public sealed class CountSubarraysWithFixedBoundsTests
+public sealed partial class CountSubarraysWithFixedBoundsTests
 {
     public static TheoryData<int[], int, int, long> Examples =>
         new()

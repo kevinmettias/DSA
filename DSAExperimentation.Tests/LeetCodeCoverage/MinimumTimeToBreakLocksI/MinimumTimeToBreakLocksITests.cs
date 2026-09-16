@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToBreakLocksI;
 // Harness only: both strategies live in MinimumTimeToBreakLocksISolution. One
 // test method per strategy over one shared set of LeetCode's own examples, so
 // a failure names the strategy that broke.
-public sealed class MinimumTimeToBreakLocksITests
+public sealed partial class MinimumTimeToBreakLocksITests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

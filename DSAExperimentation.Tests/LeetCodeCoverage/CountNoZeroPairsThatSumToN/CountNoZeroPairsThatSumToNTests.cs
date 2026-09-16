@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNoZeroPairsThatSumToN;
 // Harness only. CountNoZeroPairsThatSumToNSolution owns both the brute-force
 // baseline and the memoized digit-DP recurrence; this file pins them to
 // LeetCode's three published examples.
-public sealed class CountNoZeroPairsThatSumToNTests
+public sealed partial class CountNoZeroPairsThatSumToNTests
 {
     public static TheoryData<long, long> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheKthLargestIntegerInTh
 // and are asserted against the same examples - LeetCode's three published ones plus
 // the two cases that pin the numeric-vs-lexicographic distinction (same-length
 // digit-by-digit compare, and a longer string outranking a larger leading digit).
-public sealed class FindTheKthLargestIntegerInTheArrayTests
+public sealed partial class FindTheKthLargestIntegerInTheArrayTests
 {
     public static TheoryData<string[], int, string> Examples =>
         new()

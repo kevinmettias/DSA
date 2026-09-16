@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteDuplicateFoldersInSyst
 //
 // The problem states the returned paths may be in any order, so the assertion
 // compares them as a set.
-public sealed class DeleteDuplicateFoldersInSystemTests
+public sealed partial class DeleteDuplicateFoldersInSystemTests
 {
     public static TheoryData<string[][], string[][]> Examples =>
         new()

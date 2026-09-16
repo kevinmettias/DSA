@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountValidPathsInATree;
 // the per-pair path walk, which used to exist only as an unasserted benchmark
 // baseline - and this file pins them to the same examples so a failure names the
 // strategy that broke.
-public sealed class CountValidPathsInATreeTests
+public sealed partial class CountValidPathsInATreeTests
 {
     public static TheoryData<int, int[][], long> Examples =>
         new()

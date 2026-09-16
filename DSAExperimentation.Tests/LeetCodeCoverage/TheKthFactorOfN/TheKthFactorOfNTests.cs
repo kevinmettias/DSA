@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheKthFactorOfN;
 // get right: a perfect square (whose root must be counted exactly once), a prime, the
 // largest divisor of all (`number` itself), and a `rank` that runs past the end of the
 // divisor list.
-public sealed class TheKthFactorOfNTests
+public sealed partial class TheKthFactorOfNTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

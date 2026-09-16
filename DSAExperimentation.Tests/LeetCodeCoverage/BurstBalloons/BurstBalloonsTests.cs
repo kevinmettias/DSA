@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BurstBalloons;
 // Harness only: the algorithms live in BurstBalloonsSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class BurstBalloonsTests
+public sealed partial class BurstBalloonsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

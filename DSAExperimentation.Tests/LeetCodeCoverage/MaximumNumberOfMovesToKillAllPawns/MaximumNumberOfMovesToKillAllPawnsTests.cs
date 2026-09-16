@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfMovesToKillAl
 
 // Harness only: both strategies are MaximumNumberOfMovesToKillAllPawnsSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class MaximumNumberOfMovesToKillAllPawnsTests
+public sealed partial class MaximumNumberOfMovesToKillAllPawnsTests
 {
     public static TheoryData<int, int, int[][], int> Examples =>
         new()

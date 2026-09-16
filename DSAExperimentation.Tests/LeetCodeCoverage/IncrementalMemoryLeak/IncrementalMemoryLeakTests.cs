@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IncrementalMemoryLeak;
 // IncrementalMemoryLeakSolution's - this file just pins them to LeetCode's
 // published examples plus the tie and exhausted-stick edges the heap's ordering
 // has to get right, one theory per strategy so a failure names the arm that broke.
-public sealed class IncrementalMemoryLeakTests
+public sealed partial class IncrementalMemoryLeakTests
 {
     public static TheoryData<int, int, int[]> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfCoinsYouCanGe
 // gets the round-simulating baseline - previously benchmark-only - under
 // assertion, so the index pattern the sorted arm relies on is checked against an
 // arm that actually plays the game.
-public sealed class MaximumNumberOfCoinsYouCanGetTests
+public sealed partial class MaximumNumberOfCoinsYouCanGetTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

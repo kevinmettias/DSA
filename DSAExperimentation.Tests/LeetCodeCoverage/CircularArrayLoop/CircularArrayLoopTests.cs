@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CircularArrayLoop;
 
 // Harness only. Both strategies are CircularArrayLoopSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class CircularArrayLoopTests
+public sealed partial class CircularArrayLoopTests
 {
     public static TheoryData<CircularArrayCase> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameII;
 // two-pointer scan, and modeling reachability as an implicit unweighted-hop graph
 // (index i -> every index one jump away) answered with this repo's own
 // ShortestPath.Dijkstra.
-public sealed class JumpGameIITests
+public sealed partial class JumpGameIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

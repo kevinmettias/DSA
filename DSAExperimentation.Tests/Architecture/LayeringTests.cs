@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // genuinely intended - IntervalSet composes BinarySearch rather than duplicating
 // its bisection loop. A ProjectReference cannot say "this one edge, for this
 // reason"; the allow-list below can.
-public sealed class LayeringTests
+public sealed partial class LayeringTests
 {
     // Lowest tier first. A file in tier i may reference tiers 0..i only.
     private static readonly string[] Tiers = ["DataStructures", "Algorithms", "Domain", "LeetCode"];

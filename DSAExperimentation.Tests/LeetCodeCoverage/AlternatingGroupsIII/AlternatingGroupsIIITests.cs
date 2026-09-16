@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AlternatingGroupsIII;
 // LeetCode's published examples, including the query that repaints a tile to
 // the color it already has (a no-op the ledger must not mistake for a wall
 // change).
-public sealed class AlternatingGroupsIIITests
+public sealed partial class AlternatingGroupsIIITests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

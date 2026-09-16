@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReachableNodesWithRestrictio
 // cases are LeetCode's two published examples plus the boundaries the restriction rule
 // turns on - nothing restricted at all, a single node with no edges, and a restriction
 // sitting directly on node 0's only neighbour so the answer collapses to the root.
-public sealed class ReachableNodesWithRestrictionsTests
+public sealed partial class ReachableNodesWithRestrictionsTests
 {
     public static TheoryData<int, int[][], int[], int> Examples => new()
     {

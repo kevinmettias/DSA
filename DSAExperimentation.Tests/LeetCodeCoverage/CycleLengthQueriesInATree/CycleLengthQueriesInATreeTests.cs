@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CycleLengthQueriesInATree;
 // Harness only. Both strategies are CycleLengthQueriesInATreeSolution's - the
 // per-query ancestor Dictionary that used to live only in the benchmark's baseline
 // arm, and the HeapArrayIndex.Parent two-pointer walk the test used to inline.
-public sealed class CycleLengthQueriesInATreeTests
+public sealed partial class CycleLengthQueriesInATreeTests
 {
     public static TheoryData<int, int[][], int[]> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheSkylineProblem;
 // the strategy that broke. The third example has an ending building and a starting
 // building of equal height sharing an x-coordinate, proving intra-batch event
 // order doesn't affect the result.
-public sealed class TheSkylineProblemTests
+public sealed partial class TheSkylineProblemTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

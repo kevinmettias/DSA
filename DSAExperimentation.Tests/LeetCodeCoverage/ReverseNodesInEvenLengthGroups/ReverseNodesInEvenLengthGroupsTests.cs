@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseNodesInEvenLengthGrou
 // growing group size creates: a single node (no group after the head at all), a
 // truncated odd final group, and a truncated final group that comes out even and
 // therefore does reverse.
-public sealed class ReverseNodesInEvenLengthGroupsTests
+public sealed partial class ReverseNodesInEvenLengthGroupsTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

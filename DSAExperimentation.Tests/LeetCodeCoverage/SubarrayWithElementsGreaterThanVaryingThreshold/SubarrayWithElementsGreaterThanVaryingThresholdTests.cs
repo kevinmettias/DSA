@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubarrayWithElementsGreaterT
 // returns 1 (the first qualifying window in value order). Most examples here are
 // pinned to a single admissible size, so the freedom is not load-bearing anywhere the
 // answer is actually determined.
-public sealed class SubarrayWithElementsGreaterThanVaryingThresholdTests
+public sealed partial class SubarrayWithElementsGreaterThanVaryingThresholdTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

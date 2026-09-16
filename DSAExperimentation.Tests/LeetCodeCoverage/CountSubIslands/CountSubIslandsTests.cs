@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubIslands;
 // them to LeetCode's two published examples plus the three shapes the pre-migration
 // test carried: every island covered, one island straddling grid1 water, and a
 // grid2 with no land at all.
-public sealed class CountSubIslandsTests
+public sealed partial class CountSubIslandsTests
 {
     public static TheoryData<int[][], int[][], int> Examples =>
         new()

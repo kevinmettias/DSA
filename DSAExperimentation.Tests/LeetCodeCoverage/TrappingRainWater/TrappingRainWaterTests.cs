@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TrappingRainWater;
 // Harness only. Both strategies live in TrappingRainWaterSolution - this file
 // just pins them to LeetCode's published examples plus a couple of edge cases
 // (no walls tall enough to trap anything, and a single bar).
-public sealed class TrappingRainWaterTests
+public sealed partial class TrappingRainWaterTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

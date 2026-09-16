@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheNumberOfSubarraysWher
 // Harness only. Both strategies are
 // FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumTests
+public sealed partial class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

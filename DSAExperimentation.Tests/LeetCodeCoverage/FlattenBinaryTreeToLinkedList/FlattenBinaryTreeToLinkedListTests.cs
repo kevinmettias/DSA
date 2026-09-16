@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FlattenBinaryTreeToLinkedLis
 // so - as in ValidateBinarySearchTreeTests - it stays out of a public TheoryData/
 // [Theory] signature, and since flattening mutates its tree in place, each example
 // is a private factory rebuilt fresh per [Fact].
-public sealed class FlattenBinaryTreeToLinkedListTests
+public sealed partial class FlattenBinaryTreeToLinkedListTests
 {
     [Fact]
     public void FlattenByRecursiveSplice_ClassicExample_RewritesToPreorderRightChain()
@@ -32,11 +32,11 @@ public sealed class FlattenBinaryTreeToLinkedListTests
 
     [Fact]
     public void FlattenByRecursiveSplice_EmptyTree_DoesNotThrow() =>
-        FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(null);
+        Assert.Null(Record.Exception(() => FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(null)));
 
     [Fact]
     public void FlattenByTopDownPreorderRelink_EmptyTree_DoesNotThrow() =>
-        FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(null);
+        Assert.Null(Record.Exception(() => FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(null)));
 
     [Fact]
     public void FlattenByRecursiveSplice_SingleNode_LeavesItAsTheWholeChain()

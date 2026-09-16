@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeAlternatingSumUsingS
 // and the DisjointSet strategy; this file pins them to LeetCode's three published
 // examples, including the no-swaps-at-all case where every index is its own
 // singleton component.
-public sealed class MaximizeAlternatingSumUsingSwapsTests
+public sealed partial class MaximizeAlternatingSumUsingSwapsTests
 {
     public static TheoryData<int[], int[][], long> Examples =>
         new()

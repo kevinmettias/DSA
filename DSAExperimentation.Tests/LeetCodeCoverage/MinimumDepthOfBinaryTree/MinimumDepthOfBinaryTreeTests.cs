@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumDepthOfBinaryTree;
 // none of the pre-migration files exercised. BinaryTreeNode<int> is internal, so -
 // as in SameTreeTests - it stays out of a public TheoryData signature and
 // LeetCodeWireFormat.ToBinaryTree reconstructs it from LeetCode's own level-order-with-null array shape.
-public sealed class MinimumDepthOfBinaryTreeTests
+public sealed partial class MinimumDepthOfBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

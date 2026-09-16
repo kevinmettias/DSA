@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfTotalStrengthOfWizards;
 // (increasing values, a repeated minimum, a lone element), a run of equal values
 // that exercises the </<= tie-breaking end to end, and a strictly decreasing array
 // where the last element is the minimum of every subarray reaching it.
-public sealed class SumOfTotalStrengthOfWizardsTests
+public sealed partial class SumOfTotalStrengthOfWizardsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

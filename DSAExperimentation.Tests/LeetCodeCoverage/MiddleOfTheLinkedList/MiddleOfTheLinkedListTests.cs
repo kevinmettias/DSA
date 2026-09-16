@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MiddleOfTheLinkedList;
 // Harness only. Both strategies are MiddleOfTheLinkedListSolution's - this file
 // states LeetCode's examples once as the list's values plus the value of the node
 // the answer must land on, and asserts each strategy against them.
-public sealed class MiddleOfTheLinkedListTests
+public sealed partial class MiddleOfTheLinkedListTests
 {
     private const int MidpointDivisor = 2;
 

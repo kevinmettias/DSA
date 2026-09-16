@@ -2,7 +2,7 @@ using DSAExperimentation.Domain.Locks;
 
 namespace DSAExperimentation.Tests.Domain.Locks;
 
-public sealed class LockGraphTests
+public sealed partial class LockGraphTests
 {
     [Fact]
     public void WheelTurnNeighbors_ReturnsTwoTurnsPerWheel()

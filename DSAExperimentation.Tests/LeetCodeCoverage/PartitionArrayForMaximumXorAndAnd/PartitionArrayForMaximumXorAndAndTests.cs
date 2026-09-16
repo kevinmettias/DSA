@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionArrayForMaximumXorA
 
 // Harness only. Both strategies are PartitionArrayForMaximumXorAndAndSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class PartitionArrayForMaximumXorAndAndTests
+public sealed partial class PartitionArrayForMaximumXorAndAndTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

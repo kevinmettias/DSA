@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BinaryTreeLevelOrderTraversa
 // own level-order-with-null array shape (BinaryTreeNode<int> is internal, so
 // it cannot appear in a public TheoryData signature; LeetCodeWireFormat.ToBinaryTree reconstructs
 // it).
-public sealed class BinaryTreeLevelOrderTraversalTests
+public sealed partial class BinaryTreeLevelOrderTraversalTests
 {
     public static TheoryData<int?[], List<List<int>>> Examples =>
         new()

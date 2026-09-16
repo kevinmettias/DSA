@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BalancedBinaryTree;
 // Harness only. The height-or-unbalanced recursion is
 // BalancedBinaryTreeSolution's; this file just pins it to LeetCode's
 // published examples plus the trivial empty-tree and single-node cases.
-public sealed class BalancedBinaryTreeTests
+public sealed partial class BalancedBinaryTreeTests
 {
     [Fact]
     public void IsBalancedByHeightRecursion_BalancedTree_ReturnsTrue() =>

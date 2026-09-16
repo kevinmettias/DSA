@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConvertBinaryNumberInALinked
 // Harness only. Both strategies are ConvertBinaryNumberInALinkedListToIntegerSolution's -
 // this file states LeetCode's examples once as the list's bits plus the decimal
 // value they encode, and asserts each strategy against them.
-public sealed class ConvertBinaryNumberInALinkedListToIntegerTests
+public sealed partial class ConvertBinaryNumberInALinkedListToIntegerTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

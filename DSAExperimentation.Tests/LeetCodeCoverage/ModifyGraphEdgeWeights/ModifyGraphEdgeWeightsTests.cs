@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ModifyGraphEdgeWeights;
 // is exactly target, so its own sample output for the first example differs from
 // the one below; every expected array here is what BOTH strategies produce, and
 // each has been checked by hand to put the shortest distance exactly on target.
-public sealed class ModifyGraphEdgeWeightsTests
+public sealed partial class ModifyGraphEdgeWeightsTests
 {
     public static TheoryData<WeightEditExample> Examples =>
         new()

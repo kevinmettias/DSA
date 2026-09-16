@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ThresholdMajorityQueries;
 
 // Harness only. Both query strategies are ThresholdMajorityQueriesSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class ThresholdMajorityQueriesTests
+public sealed partial class ThresholdMajorityQueriesTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

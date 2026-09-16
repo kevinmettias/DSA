@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountCollisionsOfMonkeysOnAP
 // and the exponentiation-by-squaring arm - pinned to LeetCode's published examples
 // plus lengths large enough that 2^n has wrapped the modulus several times, which
 // is where the two arms would drift if either handled the fold differently.
-public sealed class CountCollisionsOfMonkeysOnAPolygonTests
+public sealed partial class CountCollisionsOfMonkeysOnAPolygonTests
 {
     public static TheoryData<int, int> Examples =>
         new()

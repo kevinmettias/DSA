@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumOperationsToEqualizeS
 // this file just pins them to LeetCode's published examples, including the
 // [0,2] query that must resolve to -1 because index 0 and index 2 sit in
 // different remainder-mod-k runs.
-public sealed class MinimumOperationsToEqualizeSubarraysTests
+public sealed partial class MinimumOperationsToEqualizeSubarraysTests
 {
     public static TheoryData<int[], int, int[][], long[]> Examples =>
         new()

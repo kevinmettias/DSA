@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNumberOfTrapezoidsII;
 // to LeetCode's published examples, including the axis-aligned case shared
 // with Part I's own second example (a horizontal trapezoid is a special case
 // of a general one).
-public sealed class CountNumberOfTrapezoidsIITests
+public sealed partial class CountNumberOfTrapezoidsIITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

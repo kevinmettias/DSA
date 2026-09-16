@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheCityWithTheSmallestNu
 // this file just pins them to LeetCode's published examples plus the edge cases
 // the original test left uncovered (a lone city, and a graph where some pair is
 // unreachable at any distance).
-public sealed class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceTests
+public sealed partial class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
         new()

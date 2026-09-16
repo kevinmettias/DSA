@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AllElementsInTwoBinarySearch
 // Each tree is given as its BST insertion order rather than as a node graph:
 // BinaryTreeNode<TValue> is internal, so a public MemberData member cannot name it,
 // and the insertion order pins the same shape LeetCode draws.
-public sealed class AllElementsInTwoBinarySearchTreesTests
+public sealed partial class AllElementsInTwoBinarySearchTreesTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

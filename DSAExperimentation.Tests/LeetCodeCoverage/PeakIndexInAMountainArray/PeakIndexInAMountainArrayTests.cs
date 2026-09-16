@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PeakIndexInAMountainArray;
 // mountain (peak at index 1, the earliest LC allows, and peak at the last-but-one
 // index). The linear scan was previously a benchmark-only baseline and had never
 // been asserted against anything.
-public sealed class PeakIndexInAMountainArrayTests
+public sealed partial class PeakIndexInAMountainArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FruitsIntoBasketsII;
 // Harness only. FruitsIntoBasketsIISolution owns the one strategy this
 // problem's n <= 100 bound calls for; this file just pins it to LeetCode's
 // published examples plus a couple of hand-verified edge cases.
-public sealed class FruitsIntoBasketsIITests
+public sealed partial class FruitsIntoBasketsIITests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

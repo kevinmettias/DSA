@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToWearDifferentH
 // NumberOfWaysToWearDifferentHatsToEachOtherSolution; this file pins them to
 // LeetCode's published examples plus the hand-checked cases the original test
 // carried, so a disagreement names the strategy that broke.
-public sealed class NumberOfWaysToWearDifferentHatsToEachOtherTests
+public sealed partial class NumberOfWaysToWearDifferentHatsToEachOtherTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

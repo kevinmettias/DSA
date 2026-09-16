@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShoppingOffers;
 // Harness only. Both strategies are ShoppingOffersSolution's - this file just pins
 // them to LeetCode's published examples, including the brute-force baseline, which
 // was never asserted before this migration.
-public sealed class ShoppingOffersTests
+public sealed partial class ShoppingOffersTests
 {
     public static TheoryData<int[], int[][], int[], int> Examples =>
         new()

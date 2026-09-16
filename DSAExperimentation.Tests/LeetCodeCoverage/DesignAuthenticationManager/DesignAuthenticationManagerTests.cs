@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAuthenticationManager;
 // returns null for them too and the expected sequence reads exactly like the
 // published one. The linear-scan baseline used to exist only as a benchmark arm
 // with nothing asserting it; it is pinned to the same scripts here.
-public sealed class DesignAuthenticationManagerTests
+public sealed partial class DesignAuthenticationManagerTests
 {
     public static TheoryData<int, AuthenticationManagerOp[], int?[]> Examples =>
         new()
@@ -63,28 +63,18 @@ public sealed class DesignAuthenticationManagerTests
     [MemberData(nameof(Examples))]
     public void AuthenticationManagerByLinearScanList_LeetCodeExamples_MatchesExpectedSequence(
         int timeToLive, AuthenticationManagerOp[] operations, int?[] expected) =>
-        RunScript(
-            new DesignAuthenticationManagerSolution.AuthenticationManagerByLinearScanList(timeToLive),
-            operations,
-            expected);
+        Assert.Equal(expected, RunScript(
+            new DesignAuthenticationManagerSolution.AuthenticationManagerByLinearScanList(timeToLive), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AuthenticationManagerByHashMap_LeetCodeExamples_MatchesExpectedSequence(
         int timeToLive, AuthenticationManagerOp[] operations, int?[] expected) =>
-        RunScript(
-            new DesignAuthenticationManagerSolution.AuthenticationManagerByHashMap(timeToLive),
-            operations,
-            expected);
+        Assert.Equal(expected, RunScript(
+            new DesignAuthenticationManagerSolution.AuthenticationManagerByHashMap(timeToLive), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignAuthenticationManagerSolution.IAuthenticationManager manager,
-        AuthenticationManagerOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(manager));
-        }
-    }
+        AuthenticationManagerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(manager))];
 }

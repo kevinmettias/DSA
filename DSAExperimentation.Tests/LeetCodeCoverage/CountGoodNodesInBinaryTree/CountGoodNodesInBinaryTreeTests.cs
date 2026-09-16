@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodNodesInBinaryTree;
 // internal, so it cannot appear in a public TheoryData member; LeetCodeWireFormat.ToBinaryTree
 // reconstructs the tree inside each test method instead, the same shape
 // FindElementsInAContaminatedBinaryTreeTests (LC 1261) uses.
-public sealed class CountGoodNodesInBinaryTreeTests
+public sealed partial class CountGoodNodesInBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TopKFrequentWords;
 // Harness only. Both strategies are TopKFrequentWordsSolution's - this file just
 // pins them to LeetCode's published examples, including the frequency-tie case
 // that exercises the required lexicographic tie-break.
-public sealed class TopKFrequentWordsTests
+public sealed partial class TopKFrequentWordsTests
 {
     public static TheoryData<string[], int, string[]> Examples =>
         new()

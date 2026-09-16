@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LastStoneWeightII;
 // Harness only: both strategies live in LastStoneWeightIISolution, so the bottom-up
 // tabulation that used to be the benchmark's unasserted baseline is now held to the
 // same examples as the memoized recursion.
-public sealed class LastStoneWeightIITests
+public sealed partial class LastStoneWeightIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionString;
 // just pins them to LeetCode's published examples, including the trailing-
 // duplicate-segment case ("aaaa") that the leftover segment must be dropped
 // from, not force-added.
-public sealed class PartitionStringTests
+public sealed partial class PartitionStringTests
 {
     public static TheoryData<string, string[]> Examples =>
         new()

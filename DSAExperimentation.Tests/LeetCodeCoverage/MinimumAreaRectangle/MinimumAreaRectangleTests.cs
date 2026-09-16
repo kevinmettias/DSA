@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAreaRectangle;
 // states LeetCode's published examples once and asserts every strategy against
 // them - the linear-rescan baseline included, which the benchmark previously
 // measured without anything checking its answer.
-public sealed class MinimumAreaRectangleTests
+public sealed partial class MinimumAreaRectangleTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PowXn;
 // LeetCode's published examples, including the int.MinValue exponent that would
 // overflow a plain int negation and forces both strategies through the long-typed
 // exponent path instead.
-public sealed class PowXnTests
+public sealed partial class PowXnTests
 {
     public static TheoryData<double, int, double> Examples =>
         new()

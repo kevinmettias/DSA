@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ApplyDiscountEveryNOrders;
 //
 // A row is one cashier: the arguments its constructor is published with, plus the
 // script of GetBill(Product, Amount) calls and the totals LeetCode says they return.
-public sealed class ApplyDiscountEveryNOrdersTests
+public sealed partial class ApplyDiscountEveryNOrdersTests
 {
     public static TheoryData<
         (int N, int Discount, int[] Products, int[] Prices),

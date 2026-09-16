@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestDuplicateSubstring;
 // case, a non-overlapping repeat, and the two shortest inputs that can and cannot
 // contain a duplicate at all. Every example has a UNIQUE longest duplicate, so both
 // strategies must agree on the substring and not merely on its length.
-public sealed class LongestDuplicateSubstringTests
+public sealed partial class LongestDuplicateSubstringTests
 {
     public static TheoryData<DuplicateSubstringExample> Examples =>
         new()

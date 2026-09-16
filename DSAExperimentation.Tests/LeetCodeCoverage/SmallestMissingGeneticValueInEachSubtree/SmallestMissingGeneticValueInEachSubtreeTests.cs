@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestMissingGeneticValueI
 // to LeetCode's published examples plus the two the pre-migration test carried. The
 // subtree-rescan baseline was previously untested scaffolding inlined in the benchmark;
 // it gets the same coverage as the composed walk here for the first time.
-public sealed class SmallestMissingGeneticValueInEachSubtreeTests
+public sealed partial class SmallestMissingGeneticValueInEachSubtreeTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

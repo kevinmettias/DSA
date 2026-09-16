@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinaryTreeFromPreor
 // ConstructBinaryTreeFromPreorderAndInorderTraversalSolution. This file pins it to
 // LeetCode's published examples by re-flattening the reconstructed tree back to
 // preorder and checking it round-trips to the input.
-public sealed class ConstructBinaryTreeFromPreorderAndInorderTraversalTests
+public sealed partial class ConstructBinaryTreeFromPreorderAndInorderTraversalTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

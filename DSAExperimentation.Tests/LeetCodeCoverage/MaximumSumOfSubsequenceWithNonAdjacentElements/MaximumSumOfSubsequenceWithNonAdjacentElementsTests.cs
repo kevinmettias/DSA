@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumOfSubsequenceWithN
 // Harness only. Both strategies are
 // MaximumSumOfSubsequenceWithNonAdjacentElementsSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class MaximumSumOfSubsequenceWithNonAdjacentElementsTests
+public sealed partial class MaximumSumOfSubsequenceWithNonAdjacentElementsTests
 {
     public static TheoryData<int[], int[][], int> Examples =>
         new()

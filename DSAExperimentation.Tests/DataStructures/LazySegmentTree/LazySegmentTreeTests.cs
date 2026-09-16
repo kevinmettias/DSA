@@ -110,6 +110,42 @@ public sealed partial class LazySegmentTreeTests
             () => tree.UpdateRange(0, Fixtures.NoUpdateSentinelInitialValues.Length - 1, null));
     }
 
+    // Every node above the leaves is TOperation.Combine of its two children, so a two-element
+    // tree's root is exactly the operation's own Combine of the pair, and an eight-element
+    // tree's root is that same combine folded over the whole input. Asserted against the
+    // operation rather than against a hand-summed literal, which is the whole claim being made.
+    [Fact]
+    public void Combine_ChildrenOfEveryInternalNode_IsTheOperationsOwnCombine()
+    {
+        var pair = new LazySegmentTree<int, int, RangeAddSumOperation<int>>(Fixtures.CombinedPairValues);
+
+        Assert.Equal(
+            RangeAddSumOperation<int>.Combine(Fixtures.CombinedPairValues[0], Fixtures.CombinedPairValues[1]),
+            pair.Query(0, Fixtures.CombinedPairValues.Length - 1));
+
+        var tree = RangeAddSumTree();
+
+        Assert.Equal(
+            Fixtures.RangeAddSumInitialValues.Aggregate(
+                (left, right) => RangeAddSumOperation<int>.Combine(left, right)),
+            tree.Query(0, Fixtures.LastIndexOfEightElementTree));
+    }
+
+    // A query answers its disjoint branches with TOperation.Identity, so a max tree over values
+    // that all sit below default still reports its true max: RangeAssignMaxOperation<int>'s
+    // identity is int.MinValue, and a default(int) standing in for it would win the combine
+    // instead of losing to every element.
+    [Fact]
+    public void Identity_DisjointQueryBranch_IsTheOperationsOwnIdentity()
+    {
+        var tree = new LazySegmentTree<int, int?, RangeAssignMaxOperation<int>>(Fixtures.AllBelowDefaultValues);
+
+        Assert.Equal(
+            Fixtures.ExpectedMaxOfAllBelowDefaultValues,
+            tree.Query(0, Fixtures.AllBelowDefaultValues.Length - 1));
+        Assert.Equal(Fixtures.ExpectedMaxOfFirstTwoBelowDefaultValues, tree.Query(0, 1));
+    }
+
     // The two configurations this file exercises, each built from the one before it: a test
     // asks for the state it queries by name instead of repeating the updates that reach it.
     private static LazySegmentTree<int, int, RangeAddSumOperation<int>> RangeAddSumTree() =>
@@ -179,6 +215,11 @@ public sealed partial class LazySegmentTreeTests
         public static readonly int[] SmallTreeValues = [1, 2, 3];
         public static readonly int[] SingleElementTreeValues = [42];
         public static readonly int[] NoUpdateSentinelInitialValues = [5, 3, 8, 1];
+        public static readonly int[] CombinedPairValues = [3, 4];
+
+        // Every value below default, so a disjoint query branch answered with default(int)
+        // rather than with the max operation's own int.MinValue identity would win the combine.
+        public static readonly int[] AllBelowDefaultValues = [-5, -8, -3];
 
         // Index bounds shared by the tests above: every RangeAddSum/RangeAssignMax
         // test applies its first update over [1, FirstUpdateRangeEnd] and, where a
@@ -208,5 +249,7 @@ public sealed partial class LazySegmentTreeTests
         public const int ExpectedMaxOfWholeRange = 9;
         public const int ExpectedMaxOfFirstThreeElements = 8;
         public const int ExpectedMaxOutsideAssignedRange = 7;
+        public const int ExpectedMaxOfAllBelowDefaultValues = -3;
+        public const int ExpectedMaxOfFirstTwoBelowDefaultValues = -5;
     }
 }

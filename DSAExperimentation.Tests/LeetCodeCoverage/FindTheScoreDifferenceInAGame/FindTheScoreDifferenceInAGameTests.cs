@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheScoreDifferenceInAGam
 // Harness only. Both strategies are FindTheScoreDifferenceInAGameSolution's - this
 // file just pins them to hand-simulated examples, including a game that ends after
 // a single turn (marking a neighbor finishes the array) and a fully-tied one.
-public sealed class FindTheScoreDifferenceInAGameTests
+public sealed partial class FindTheScoreDifferenceInAGameTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

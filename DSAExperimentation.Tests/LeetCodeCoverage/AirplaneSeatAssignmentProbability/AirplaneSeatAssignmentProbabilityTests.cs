@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AirplaneSeatAssignmentProbab
 // the closed form is what it reduces to, so pinning both to one example set is exactly
 // the check that the reduction holds - the benchmark previously compared them with
 // only the recursion under test.
-public sealed class AirplaneSeatAssignmentProbabilityTests
+public sealed partial class AirplaneSeatAssignmentProbabilityTests
 {
     public static TheoryData<int, double> Examples =>
         new()

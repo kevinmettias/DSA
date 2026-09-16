@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseNodesInKGroup;
 // Harness only. Both strategies are ReverseNodesInKGroupSolution's - this file
 // pins them to LeetCode's published examples, including groupSize = 1 (a no-op) and a
 // single-node list (always a short final group).
-public sealed class ReverseNodesInKGroupTests
+public sealed partial class ReverseNodesInKGroupTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

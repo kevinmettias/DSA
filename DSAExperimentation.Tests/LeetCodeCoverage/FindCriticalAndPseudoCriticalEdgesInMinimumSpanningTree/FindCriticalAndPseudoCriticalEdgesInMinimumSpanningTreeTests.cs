@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindCriticalAndPseudoCritica
 //
 // Both lists are reported in ascending edge index, which is the order the scan
 // discovers them in.
-public sealed class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeTests
+public sealed partial class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeTests
 {
     public static TheoryData<int, int[][], int[], int[]> Examples =>
         new()

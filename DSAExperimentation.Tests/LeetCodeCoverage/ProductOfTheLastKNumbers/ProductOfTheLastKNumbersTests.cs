@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ProductOfTheLastKNumbers;
 // A script step is one published call: IsAdd steps call Add(Value) and assert
 // nothing; the rest call GetProduct(Value) and assert Expected, which for those
 // steps is the answer LeetCode publishes.
-public sealed class ProductOfTheLastKNumbersTests
+public sealed partial class ProductOfTheLastKNumbersTests
 {
     public static TheoryData<(bool IsAdd, int Value, int Expected)[]> Examples =>
         new()

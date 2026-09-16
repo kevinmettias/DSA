@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumOfAlternatingSubse
 // MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution. One test method
 // per strategy over one shared set of LeetCode's own examples, so a failure names
 // the strategy that broke.
-public sealed class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKTests
+public sealed partial class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

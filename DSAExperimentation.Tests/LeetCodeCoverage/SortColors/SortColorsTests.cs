@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortColors;
 
 // Harness only. Both strategies are SortColorsSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class SortColorsTests
+public sealed partial class SortColorsTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

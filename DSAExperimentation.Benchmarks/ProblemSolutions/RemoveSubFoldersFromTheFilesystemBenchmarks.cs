@@ -53,5 +53,5 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     [Benchmark]
     public int MergeSortThenScan() =>
         RemoveSubFoldersFromTheFilesystemSolution
-            .RemoveSubfoldersByMergeSortThenScan(_folders).Count;
+            .RemoveSubfoldersByMergeSortThenScan(_folders).Count + 1;
 }

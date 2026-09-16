@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxValueOfEquation;
 // the strategy that broke rather than reporting a disagreement between an anonymous
 // test helper and an anonymous benchmark arm. The all-negative case pins the
 // behaviour when every candidate pair scores below zero.
-public sealed class MaxValueOfEquationTests
+public sealed partial class MaxValueOfEquationTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProfitFromValidTopolo
 // bitmask per node and both strategies are
 // MaximumProfitFromValidTopologicalOrderInDagSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class MaximumProfitFromValidTopologicalOrderInDagTests
+public sealed partial class MaximumProfitFromValidTopologicalOrderInDagTests
 {
     public static TheoryData<int, int[][], int[], long> Examples =>
         new()

@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
-public sealed class WeightedGridTopologyTests
+public sealed partial class WeightedGridTopologyTests
 {
     [Fact]
     public void GetEdges_ExposesTheNodesOwnWeightedEdges()

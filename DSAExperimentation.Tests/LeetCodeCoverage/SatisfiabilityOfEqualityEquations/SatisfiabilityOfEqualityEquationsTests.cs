@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SatisfiabilityOfEqualityEqua
 // adjacency-list BFS reachability query per inequality, and this repo's own
 // DisjointSet over the 26-letter alphabet. Harness only - the examples are stated
 // once and each strategy gets its own theory so a failure names the arm that broke.
-public sealed class SatisfiabilityOfEqualityEquationsTests
+public sealed partial class SatisfiabilityOfEqualityEquationsTests
 {
     public static TheoryData<EquationsExample> Examples =>
         new()

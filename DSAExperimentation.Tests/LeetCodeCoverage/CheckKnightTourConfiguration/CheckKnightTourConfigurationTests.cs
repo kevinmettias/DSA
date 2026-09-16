@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckKnightTourConfiguration
 // The "valid moves but the knight starts elsewhere" case is new: LC 2596 requires
 // the tour to begin at the top-left cell, and neither of the two inlined copies
 // checked it.
-public sealed class CheckKnightTourConfigurationTests
+public sealed partial class CheckKnightTourConfigurationTests
 {
     public static TheoryData<KnightTourCase> Examples =>
         new()

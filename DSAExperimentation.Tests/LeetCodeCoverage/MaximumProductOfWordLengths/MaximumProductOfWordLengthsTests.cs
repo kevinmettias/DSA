@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProductOfWordLengths;
 
 // Harness only: both arms are MaximumProductOfWordLengthsSolution's, the same
 // methods MaximumProductOfWordLengthsBenchmarks measures.
-public sealed class MaximumProductOfWordLengthsTests
+public sealed partial class MaximumProductOfWordLengthsTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

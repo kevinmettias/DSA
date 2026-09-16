@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PermutationsIV;
 // Harness only. The factorial-number-system unranking for both strategies is
 // PermutationsIVSolution's - this file just pins them to LeetCode's published
 // examples, including the k-too-large case that must come back empty.
-public sealed class PermutationsIVTests
+public sealed partial class PermutationsIVTests
 {
     public static TheoryData<int, long, int[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfSubarraysThatMatchAP
 // Harness only. Both strategies live in
 // NumberOfSubarraysThatMatchAPatternISolution - this file just pins them to
 // LeetCode's published examples.
-public sealed class NumberOfSubarraysThatMatchAPatternITests
+public sealed partial class NumberOfSubarraysThatMatchAPatternITests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

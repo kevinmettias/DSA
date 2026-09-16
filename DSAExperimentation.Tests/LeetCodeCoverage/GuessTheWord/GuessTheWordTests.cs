@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GuessTheWord;
 // secret was actually found, and it was found inside LeetCode's 10-call budget - so
 // a strategy that brute-forced the pool would fail even while returning the right
 // word.
-public sealed class GuessTheWordTests
+public sealed partial class GuessTheWordTests
 {
     // LeetCode allows at most 10 calls to Master.Guess.
     private const int GuessBudget = 10;

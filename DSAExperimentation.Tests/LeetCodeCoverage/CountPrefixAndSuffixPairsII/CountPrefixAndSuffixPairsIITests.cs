@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountPrefixAndSuffixPairsII;
 // CountPrefixAndSuffixPairsIISolution - this file just pins them to
 // LeetCode's published examples, the same three CountPrefixAndSuffixPairsI
 // uses for LC 3042's easy variant.
-public sealed class CountPrefixAndSuffixPairsIITests
+public sealed partial class CountPrefixAndSuffixPairsIITests
 {
     public static TheoryData<string[], long> Examples =>
         new()

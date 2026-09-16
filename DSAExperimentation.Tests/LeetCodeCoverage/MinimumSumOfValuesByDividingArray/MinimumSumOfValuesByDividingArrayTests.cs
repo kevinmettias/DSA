@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumSumOfValuesByDividing
 // MinimumSumOfValuesByDividingArraySolution's - this file just pins them to
 // LeetCode's published examples, including the unsatisfiable case whose
 // whole-array AND can never reach the single requested andValues entry.
-public sealed class MinimumSumOfValuesByDividingArrayTests
+public sealed partial class MinimumSumOfValuesByDividingArrayTests
 {
     public static TheoryData<int[], int[], long> Examples =>
         new()

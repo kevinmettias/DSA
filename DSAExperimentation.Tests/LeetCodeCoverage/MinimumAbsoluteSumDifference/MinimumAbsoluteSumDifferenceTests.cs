@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAbsoluteSumDifference
 // swap in, so the one term stands) and an input where the best replacement sits at
 // the very end of the sorted copy, which is the boundary the lower-bound probe's
 // insertion == Length branch exists for.
-public sealed class MinimumAbsoluteSumDifferenceTests
+public sealed partial class MinimumAbsoluteSumDifferenceTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

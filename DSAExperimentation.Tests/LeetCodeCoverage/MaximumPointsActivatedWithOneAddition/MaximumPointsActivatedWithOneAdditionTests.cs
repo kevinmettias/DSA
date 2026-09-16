@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumPointsActivatedWithOn
 // Harness only. The bipartite x/y reduction lives in
 // MaximumPointsActivatedWithOneAdditionSolution - this file just pins both
 // strategies to LeetCode's published examples.
-public sealed class MaximumPointsActivatedWithOneAdditionTests
+public sealed partial class MaximumPointsActivatedWithOneAdditionTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

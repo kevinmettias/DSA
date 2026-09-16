@@ -17,9 +17,16 @@ internal static class CacheReplayWorkloads
         for (var key = 0; key < capacity; key++)
         {
             var value = random.Next(0, capacity);
+
+            // Named separately because a for-loop variable is one variable shared by every
+            // iteration: a closure capturing `key` directly would leave all capacity puts
+            // writing the loop's exit value, so the cache would hold one entry instead of
+            // the full capacity this script is supposed to fill it to.
+            var filledKey = key;
+
             script.Add(cache =>
             {
-                cache.Set(key, value);
+                cache.Set(filledKey, value);
                 return null;
             });
         }

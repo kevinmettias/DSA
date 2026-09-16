@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumObstacleRemovalToReac
 // 0/1-weighted shortest path gets wrong most easily: a detour that costs nothing
 // at all, a corridor with no detour available, and the single-cell grid where the
 // source already is the corner.
-public sealed class MinimumObstacleRemovalToReachCornerTests
+public sealed partial class MinimumObstacleRemovalToReachCornerTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

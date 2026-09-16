@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSubarrayMinProduct;
 // LeetCode's published examples plus the single-element, all-equal, monotone and
 // over-the-modulus cases that exercise the span bounds at the array's edges and the
 // final 1e9+7 reduction.
-public sealed class MaximumSubarrayMinProductTests
+public sealed partial class MaximumSubarrayMinProductTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

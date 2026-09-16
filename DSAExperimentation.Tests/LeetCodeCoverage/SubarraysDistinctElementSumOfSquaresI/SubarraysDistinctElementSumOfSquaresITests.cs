@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubarraysDistinctElementSumO
 // the strategy that broke. LeetCode's two published examples are joined by a
 // singleton and an all-distinct array, which the original test - asserting one
 // inlined helper against two cases - never covered.
-public sealed class SubarraysDistinctElementSumOfSquaresITests
+public sealed partial class SubarraysDistinctElementSumOfSquaresITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

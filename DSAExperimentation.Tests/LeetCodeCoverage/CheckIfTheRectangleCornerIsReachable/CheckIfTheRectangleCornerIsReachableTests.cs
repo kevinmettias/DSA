@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfTheRectangleCornerIsR
 // CheckIfTheRectangleCornerIsReachableSolution's - this file just pins them to
 // LeetCode's published examples, including the two-circle chain (Example 3) that only
 // blocks the path once its members are unioned together, not individually.
-public sealed class CheckIfTheRectangleCornerIsReachableTests
+public sealed partial class CheckIfTheRectangleCornerIsReachableTests
 {
     public static TheoryData<CornerPathCase> Examples =>
         new()

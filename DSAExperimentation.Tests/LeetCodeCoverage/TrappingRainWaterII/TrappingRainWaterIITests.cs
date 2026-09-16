@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TrappingRainWaterII;
 // Harness only. Both search strategies are TrappingRainWaterIISolution's -
 // this file just pins them to LeetCode's published examples, plus a
 // smaller-than-3x3 case neither original arm exercised.
-public sealed class TrappingRainWaterIITests
+public sealed partial class TrappingRainWaterIITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

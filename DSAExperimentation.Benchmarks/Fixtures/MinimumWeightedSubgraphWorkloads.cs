@@ -40,6 +40,15 @@ internal static class MinimumWeightedSubgraphWorkloads
         for (var e = 0; e < extraEdgesPerNode; e++)
         {
             var target = random.Next(nodeCount);
+
+            // Redrawn rather than skipped: LC 2203 fixes fromi != toi, and this method's whole point is
+            // that the second source gets its own full spread of outgoing edges, so a draw that lands on
+            // the source itself is discarded. nodeCount is at least two, so a different target exists.
+            while (target == SecondSourceId)
+            {
+                target = random.Next(nodeCount);
+            }
+
             edges.Add([SecondSourceId, target, random.Next(1, EdgeWeightUpperBound)]);
         }
     }

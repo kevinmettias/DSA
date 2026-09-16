@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumPossibleMaximumWaitin
 // MinimumPossibleMaximumWaitingTimeSolution's - this file just pins them to
 // LeetCode's published examples, including the unserved-first-car case the
 // search has to answer with -1 rather than a wait time.
-public sealed class MinimumPossibleMaximumWaitingTimeTests
+public sealed partial class MinimumPossibleMaximumWaitingTimeTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAStringContainsAllBin
 // this repo's own Set<int> are CheckIfAStringContainsAllBinaryCodesOfSizeKSolution's;
 // this file pins them to LeetCode's published examples plus the boundary cases - a
 // text exactly long enough to hold all 2^k windows, and one far too short to.
-public sealed class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
+public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKTests
 {
     public static TheoryData<AllCodesExample> Examples =>
         new()

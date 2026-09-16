@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindPolygonWithTheLargestPer
 // FindPolygonWithTheLargestPerimeterSolution's - this file just pins them to
 // LeetCode's published examples, including the case where no valid polygon
 // exists at all.
-public sealed class FindPolygonWithTheLargestPerimeterTests
+public sealed partial class FindPolygonWithTheLargestPerimeterTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

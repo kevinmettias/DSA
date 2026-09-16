@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockWit
 // Harness only. Both strategies are
 // BestTimeToBuyAndSellStockWithTransactionFeeSolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class BestTimeToBuyAndSellStockWithTransactionFeeTests
+public sealed partial class BestTimeToBuyAndSellStockWithTransactionFeeTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

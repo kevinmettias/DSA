@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ApplyOperationsToMaximizeSco
 // operationCount larger than it, and a product big enough to wrap the 1e9+7 modulus. Every expectation was computed
 // from the problem statement directly - enumerate all subarrays, take each one's
 // picked element, multiply the k largest - not from either strategy.
-public sealed class ApplyOperationsToMaximizeScoreTests
+public sealed partial class ApplyOperationsToMaximizeScoreTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

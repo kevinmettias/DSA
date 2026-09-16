@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountPrefixAndSuffixPairsI;
 // Harness only: both counting strategies live in
 // CountPrefixAndSuffixPairsISolution - this file just pins them to LeetCode's
 // published examples.
-public sealed class CountPrefixAndSuffixPairsITests
+public sealed partial class CountPrefixAndSuffixPairsITests
 {
     public static TheoryData<string[], int> Examples =>
         new()

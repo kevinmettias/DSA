@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfEvenNumbersAfterQueries
 // queries, a lone odd entry that stays odd, repeated queries against one index that
 // flip it odd and back, and negative values (where C#'s % is negative for odd
 // entries, so "even" has to be tested as % 2 == 0 rather than == 1).
-public sealed class SumOfEvenNumbersAfterQueriesTests
+public sealed partial class SumOfEvenNumbersAfterQueriesTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

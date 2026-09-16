@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountValidSequences;
 // Harness only. The stars-and-bars derivation and both nCr strategies are
 // CountValidSequencesSolution's; this file just pins them to LeetCode's
 // published examples.
-public sealed class CountValidSequencesTests
+public sealed partial class CountValidSequencesTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GCDSortOfAnArray;
 // lone value, an already-sorted array whose values share no factor at all (so every
 // component is a singleton and no swap is ever needed), and an array that needs exactly
 // one swap across a component boundary that does not exist.
-public sealed class GCDSortOfAnArrayTests
+public sealed partial class GCDSortOfAnArrayTests
 {
     public static TheoryData<GcdSortCase> Examples =>
         new()

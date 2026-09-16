@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 
-public sealed class ListChildrenTests
+public sealed partial class ListChildrenTests
 {
     [Fact]
     public void Count_ReportsTheBackingListsLength() => Assert.Equal(2, new ListChildren<TestNode>([new("A"), new("B")]).Count);

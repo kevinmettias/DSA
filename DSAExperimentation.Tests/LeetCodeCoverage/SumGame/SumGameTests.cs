@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumGame;
 // Bob can always level, and a board where both blanks sit on one half so Bob never
 // gets to answer them. The brute-force arm is asserted here for the first time; it
 // used to live in the benchmark as an unasserted baseline.
-public sealed class SumGameTests
+public sealed partial class SumGameTests
 {
     public static TheoryData<SumGameExample> Examples =>
         new()

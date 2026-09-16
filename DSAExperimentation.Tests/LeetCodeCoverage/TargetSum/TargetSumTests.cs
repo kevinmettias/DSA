@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TargetSum;
 // Harness only. Both strategies are TargetSumSolution's - this file just pins them
 // to LeetCode's published examples, including the unmemoized recursion baseline that
 // was never asserted anywhere before this migration.
-public sealed class TargetSumTests
+public sealed partial class TargetSumTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

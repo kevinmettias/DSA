@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestContinuousSubarrayWit
 // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution; this file
 // pins them to LeetCode's published examples plus the cases the original test
 // carried, so a disagreement names the strategy that broke.
-public sealed class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitTests
+public sealed partial class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

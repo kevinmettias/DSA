@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheCountOfMonotonicPairs
 
 // Harness only. Both strategies are FindTheCountOfMonotonicPairsISolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class FindTheCountOfMonotonicPairsITests
+public sealed partial class FindTheCountOfMonotonicPairsITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

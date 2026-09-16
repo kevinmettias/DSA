@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NextGreaterElementII;
 // asserted against the same examples - the O(n) monotonic-stack sweep (walking
 // the circular array twice over this repo's own Stack<int>) and the O(n^2)
 // scan-ahead baseline it has to justify itself against.
-public sealed class NextGreaterElementIITests
+public sealed partial class NextGreaterElementIITests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

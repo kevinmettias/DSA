@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfGoodPartitio
 // Harness only: both strategies live in CountTheNumberOfGoodPartitionsSolution.
 // One test method per strategy over one shared set of LeetCode's published
 // examples, so a failure names the strategy that broke.
-public sealed class CountTheNumberOfGoodPartitionsTests
+public sealed partial class CountTheNumberOfGoodPartitionsTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

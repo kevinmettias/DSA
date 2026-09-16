@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountPrimeGapBalancedSubarra
 // Harness only: both strategies are CountPrimeGapBalancedSubarraysSolution's -
 // this file just pins them to LeetCode's published examples (OpenTheLockTests
 // precedent).
-public sealed class CountPrimeGapBalancedSubarraysTests
+public sealed partial class CountPrimeGapBalancedSubarraysTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

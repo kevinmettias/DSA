@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMaximumNonDecreasingArra
 // FindMaximumNonDecreasingArrayLengthSolution and are asserted against the same
 // examples, including an already non-decreasing array (no merges needed at all)
 // and one where every element must merge into a single block.
-public sealed class FindMaximumNonDecreasingArrayLengthTests
+public sealed partial class FindMaximumNonDecreasingArrayLengthTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class BinaryTreeChildrenTests
+public sealed partial class BinaryTreeChildrenTests
 {
     private static BinaryTreeNode<int> Node(int value, BinaryTreeNode<int>? left = null, BinaryTreeNode<int>? right = null) =>
         new(value) { Left = left, Right = right };

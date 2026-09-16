@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReachableNodesInSubdividedGr
 // the materializing BFS baseline and the Dijkstra-plus-arithmetic composition - are
 // ReachableNodesInSubdividedGraphSolution's; this file just pins them to LeetCode's
 // published examples plus the boundary cases the pre-migration test carried.
-public sealed class ReachableNodesInSubdividedGraphTests
+public sealed partial class ReachableNodesInSubdividedGraphTests
 {
     public static TheoryData<int[][], int, int, int> Examples =>
         new()

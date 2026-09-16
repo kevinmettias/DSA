@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NextGreaterElementIV;
 // asserted against the same examples, including the equal-values case (strictly
 // greater, so ties never count), a strictly decreasing run where nothing resolves,
 // and a duplicate-heavy run that exercises the promotion between the two stacks.
-public sealed class NextGreaterElementIVTests
+public sealed partial class NextGreaterElementIVTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

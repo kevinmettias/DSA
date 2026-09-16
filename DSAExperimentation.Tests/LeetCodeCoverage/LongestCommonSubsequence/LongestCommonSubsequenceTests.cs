@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestCommonSubsequence;
 // baseline arm) now gets the same examples as LengthByMemoizedSuffixPairDp
 // (previously the test's own private helper), so a failure names the strategy that
 // broke.
-public sealed class LongestCommonSubsequenceTests
+public sealed partial class LongestCommonSubsequenceTests
 {
     public static TheoryData<LcsExample> Examples =>
         new()

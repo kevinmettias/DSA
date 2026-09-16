@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Finding3DigitEvenNumbers;
 // List.Contains dedupe baseline that used to exist only as an unasserted benchmark
 // arm, and the Set<int> + MergeSort composition - and this file pins both to
 // LeetCode's published examples plus the degenerate digit sets.
-public sealed class Finding3DigitEvenNumbersTests
+public sealed partial class Finding3DigitEvenNumbersTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

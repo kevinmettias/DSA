@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TaskSchedulerII;
 // LeetCode's two published examples plus the boundaries the cooldown rule turns on -
 // no repeats at all, back-to-back repeats that each force a full wait, and a single
 // task that can never wait for anything.
-public sealed class TaskSchedulerIITests
+public sealed partial class TaskSchedulerIITests
 {
     public static TheoryData<int[], int, long> Examples => new()
     {

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveDuplicatesFromSortedAr
 // Harness only. Both strategies are RemoveDuplicatesFromSortedArrayIISolution's -
 // this file pins them to LeetCode's published examples, asserting both the
 // reported length and the compacted at-most-twice prefix it describes.
-public sealed class RemoveDuplicatesFromSortedArrayIITests
+public sealed partial class RemoveDuplicatesFromSortedArrayIITests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

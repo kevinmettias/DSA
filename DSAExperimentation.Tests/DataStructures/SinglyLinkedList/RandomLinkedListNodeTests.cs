@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.SinglyLinkedList;
 
 namespace DSAExperimentation.Tests.DataStructures.SinglyLinkedList;
 
-public sealed class RandomLinkedListNodeTests
+public sealed partial class RandomLinkedListNodeTests
 {
     [Fact]
     public void Value_ConstructedWithValue_ReturnsThatValue() =>

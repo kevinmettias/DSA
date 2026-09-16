@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSumIVInputIsABST;
 // builds the classic LeetCode example tree (and a couple of edge cases) with this
 // repo's own BinarySearchTree<int>.Insert and pins each strategy to LeetCode's
 // published answer.
-public sealed class TwoSumIVInputIsABSTTests
+public sealed partial class TwoSumIVInputIsABSTTests
 {
     // Insert order [5,3,6,2,4,7] recreates the classic LC 653 example tree exactly:
     //         5

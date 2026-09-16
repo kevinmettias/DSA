@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumXORWithAnElementFromA
 // offline sweep in particular has to survive: a query no element qualifies for at
 // all, and a pair of queries whose limits arrive in decreasing order, which only
 // the sweep's own re-ordering makes answerable in one pass.
-public sealed class MaximumXORWithAnElementFromArrayTests
+public sealed partial class MaximumXORWithAnElementFromArrayTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

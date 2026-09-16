@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindSumOfArrayProductOfMagic
 // Harness only. Both the direct enumeration and the carry-digit DP are
 // FindSumOfArrayProductOfMagicalSequencesSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class FindSumOfArrayProductOfMagicalSequencesTests
+public sealed partial class FindSumOfArrayProductOfMagicalSequencesTests
 {
     public static TheoryData<int, int, int[], int> Examples =>
         new()

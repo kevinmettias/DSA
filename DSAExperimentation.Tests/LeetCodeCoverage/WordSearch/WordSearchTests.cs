@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordSearch;
 
 // Harness only. Both search strategies are WordSearchSolution's - this file just
 // pins them to LeetCode's published examples over its own board.
-public sealed class WordSearchTests
+public sealed partial class WordSearchTests
 {
     private static readonly char[][] Board =
         [['A', 'B', 'C', 'E'], ['S', 'F', 'C', 'S'], ['A', 'D', 'E', 'E']];

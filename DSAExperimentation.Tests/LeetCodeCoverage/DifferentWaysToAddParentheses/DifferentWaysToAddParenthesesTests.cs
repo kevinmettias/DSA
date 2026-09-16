@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DifferentWaysToAddParenthese
 
 // Harness only. Both strategies are DifferentWaysToAddParenthesesSolution's - this
 // file pins them to LeetCode's published examples.
-public sealed class DifferentWaysToAddParenthesesTests
+public sealed partial class DifferentWaysToAddParenthesesTests
 {
     public static TheoryData<string, int[]> Examples =>
         new()

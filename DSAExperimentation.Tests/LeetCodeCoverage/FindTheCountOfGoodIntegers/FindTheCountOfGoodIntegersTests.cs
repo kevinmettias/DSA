@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheCountOfGoodIntegers;
 
 // Harness only: both strategies live in FindTheCountOfGoodIntegersSolution - this
 // file just pins them to LeetCode's published examples.
-public sealed class FindTheCountOfGoodIntegersTests
+public sealed partial class FindTheCountOfGoodIntegersTests
 {
     public static TheoryData<int, int, long> Examples =>
         new()

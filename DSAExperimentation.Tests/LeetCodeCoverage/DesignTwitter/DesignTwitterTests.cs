@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignTwitter;
 // operation script, so a failure still names the strategy that broke.
 // TwitterOp.Apply is pure dispatch (which method to call with which arguments) -
 // no feed-ordering logic of its own.
-public sealed class DesignTwitterTests
+public sealed partial class DesignTwitterTests
 {
     public static TheoryData<TwitterOp[], List<int>?[]> Examples =>
         new()
@@ -57,22 +57,17 @@ public sealed class DesignTwitterTests
     [MemberData(nameof(Examples))]
     public void TwitterByGatherAllAndSort_LeetCodeExamples_ReturnsMostRecentTenAcrossFollowedSources(
         TwitterOp[] operations, List<int>?[] expected) =>
-        RunScript(new DesignTwitterSolution.TwitterByGatherAllAndSort(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignTwitterSolution.TwitterByGatherAllAndSort(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TwitterByHeapKWayMerge_LeetCodeExamples_ReturnsMostRecentTenAcrossFollowedSources(
         TwitterOp[] operations, List<int>?[] expected) =>
-        RunScript(new DesignTwitterSolution.TwitterByHeapKWayMerge(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignTwitterSolution.TwitterByHeapKWayMerge(), operations));
 
-    private static void RunScript(
-        DesignTwitterSolution.ITwitterStrategy strategy, TwitterOp[] operations, List<int>?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+    private static List<int>?[] RunScript(
+        DesignTwitterSolution.ITwitterStrategy strategy, TwitterOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 
     // One call in a Twitter script: which method to invoke and with what arguments.
     // Pure dispatch, built via the named factories below so a script (like Examples

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidSquare;
 
 // Harness only. Both strategies are ValidSquareSolution's; this file pins them to
 // LeetCode's published examples.
-public sealed class ValidSquareTests
+public sealed partial class ValidSquareTests
 {
     public static TheoryData<SquareExample> Examples =>
         new()

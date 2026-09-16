@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheRepetitions;
 // against the same examples, including the large-n1 case that only cycle detection
 // can traverse quickly (the naive arm still finishes it here - it is only LeetCode's
 // real n1 <= 10^6 judge that the O(n1 * |s1|) walk cannot meet in time).
-public sealed class CountTheRepetitionsTests
+public sealed partial class CountTheRepetitionsTests
 {
     public static TheoryData<RepetitionCase> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindBeautifulIndicesInTheGiv
 // examples as #3006 - only the constraints differ - so this file pins both
 // strategies to that shared set. One test method per strategy, so a failure names
 // the strategy that broke.
-public sealed class FindBeautifulIndicesInTheGivenArrayIITests
+public sealed partial class FindBeautifulIndicesInTheGivenArrayIITests
 {
     public static TheoryData<BeautifulIndicesCase> Examples =>
         new()

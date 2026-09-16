@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumOfBST;
 // this repo's own BinarySearchTree<int>.Insert (which reproduces the published
 // shapes exactly), and asserts every strategy against the same expectations - the
 // full scan included, which the benchmark's baseline arm previously left unchecked.
-public sealed class RangeSumOfBSTTests
+public sealed partial class RangeSumOfBSTTests
 {
     // values (insertion order), low, high, expected sum
     public static TheoryData<int[], int, int, int> Examples =>

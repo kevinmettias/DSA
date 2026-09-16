@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BoatsToSavePeople;
 // Harness only: both strategies live in BoatsToSavePeopleSolution and are asserted
 // against the same examples - LeetCode's three published ones, a single passenger,
 // a set where every pair is exactly at the limit, and one where everyone pairs up.
-public sealed class BoatsToSavePeopleTests
+public sealed partial class BoatsToSavePeopleTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

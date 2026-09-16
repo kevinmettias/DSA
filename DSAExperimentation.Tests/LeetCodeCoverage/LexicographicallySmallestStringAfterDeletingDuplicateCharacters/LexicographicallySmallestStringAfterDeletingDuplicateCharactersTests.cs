@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LexicographicallySmallestStr
 // asserted against the same examples, including the single-character case where
 // no deletion is even possible and a case with a trailing character that only a
 // final cleanup pass (not the main left-to-right sweep) can drop.
-public sealed class LexicographicallySmallestStringAfterDeletingDuplicateCharactersTests
+public sealed partial class LexicographicallySmallestStringAfterDeletingDuplicateCharactersTests
 {
     public static TheoryData<DeletionExample> Examples =>
         new()

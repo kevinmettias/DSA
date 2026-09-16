@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumStrictlyIncreasingCel
 // that separate "strictly greater" from "greater or equal", which is where the
 // equal-value batching in the sorted arm and the strict comparison in the memoized arm
 // both have to agree.
-public sealed class MaximumStrictlyIncreasingCellsInAMatrixTests
+public sealed partial class MaximumStrictlyIncreasingCellsInAMatrixTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

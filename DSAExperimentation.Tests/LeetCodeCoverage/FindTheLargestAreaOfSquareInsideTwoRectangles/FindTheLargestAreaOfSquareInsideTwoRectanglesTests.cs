@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheLargestAreaOfSquareIn
 // Harness only: both pairwise strategies live in
 // FindTheLargestAreaOfSquareInsideTwoRectanglesSolution - this file just
 // pins them to LeetCode's published examples.
-public sealed class FindTheLargestAreaOfSquareInsideTwoRectanglesTests
+public sealed partial class FindTheLargestAreaOfSquareInsideTwoRectanglesTests
 {
     public static TheoryData<int[][], int[][], long> Examples =>
         new()

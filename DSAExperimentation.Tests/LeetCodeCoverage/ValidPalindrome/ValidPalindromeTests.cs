@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidPalindrome;
 
 // Harness only. The two-pointer scan is ValidPalindromeSolution's; this file
 // pins it to LeetCode's published examples.
-public sealed class ValidPalindromeTests
+public sealed partial class ValidPalindromeTests
 {
     public static TheoryData<PalindromeCase> Examples =>
         new()

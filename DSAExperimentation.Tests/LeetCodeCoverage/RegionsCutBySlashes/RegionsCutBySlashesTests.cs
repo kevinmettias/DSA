@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RegionsCutBySlashes;
 // method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke - which now includes the 3x3-expansion
 // flood fill the benchmark used as its untested baseline arm.
-public sealed class RegionsCutBySlashesTests
+public sealed partial class RegionsCutBySlashesTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

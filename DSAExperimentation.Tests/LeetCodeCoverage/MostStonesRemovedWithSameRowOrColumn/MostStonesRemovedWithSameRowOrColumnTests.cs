@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MostStonesRemovedWithSameRow
 // and are pinned to LeetCode's published examples, plus the two degenerate cases the
 // axis-keyed union has to agree with the pairwise scan on - a single stone, and stones
 // that share no row or column at all.
-public sealed class MostStonesRemovedWithSameRowOrColumnTests
+public sealed partial class MostStonesRemovedWithSameRowOrColumnTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeTwoSortedLists;
 
 // Harness only. The one strategy is MergeTwoSortedListsSolution's - this file pins it
 // to LeetCode's published examples, stated once as value arrays.
-public sealed class MergeTwoSortedListsTests
+public sealed partial class MergeTwoSortedListsTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

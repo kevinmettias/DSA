@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Metrics;
 
-public sealed class DiameterAlgebraTests
+public sealed partial class DiameterAlgebraTests
 {
     private static readonly TestNode Node = new("A");
 

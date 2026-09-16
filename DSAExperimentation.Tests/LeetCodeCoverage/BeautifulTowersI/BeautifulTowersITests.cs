@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BeautifulTowersI;
 // clamp on either side of the peak), a strictly increasing array (the peak is the
 // last index and the whole array is its own left run) and a flat array (every
 // tower keeps its cap).
-public sealed class BeautifulTowersITests
+public sealed partial class BeautifulTowersITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

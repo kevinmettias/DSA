@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindingMKAverage;
 // (previously untested scaffolding inlined in the benchmark) gets that same coverage
 // here for the first time. MKAverageOp.Apply is pure dispatch, no averaging logic of
 // its own.
-public sealed class FindingMKAverageTests
+public sealed partial class FindingMKAverageTests
 {
     public static TheoryData<int, int, MKAverageOp[], int?[]> Examples =>
         new()
@@ -93,31 +93,22 @@ public sealed class FindingMKAverageTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySortingSlidingWindow_LeetCodeExamples_ReturnsTrimmedWindowMean(
-        int windowSize, int trimCount, MKAverageOp[] operations, int?[] expected)
-    {
-        var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(windowSize, trimCount);
-
-        RunScript(mkAverage, operations, expected);
-    }
+        int windowSize, int trimCount, MKAverageOp[] operations, int?[] expected) =>
+        Assert.Equal(
+            expected,
+            RunScript(FindingMKAverageSolution.CreateBySortingSlidingWindow(windowSize, trimCount), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByFenwickOrderStatistics_LeetCodeExamples_ReturnsTrimmedWindowMean(
-        int windowSize, int trimCount, MKAverageOp[] operations, int?[] expected)
-    {
-        var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(windowSize, trimCount);
+        int windowSize, int trimCount, MKAverageOp[] operations, int?[] expected) =>
+        Assert.Equal(
+            expected,
+            RunScript(FindingMKAverageSolution.CreateByFenwickOrderStatistics(windowSize, trimCount), operations));
 
-        RunScript(mkAverage, operations, expected);
-    }
-
-    private static void RunScript(
-        FindingMKAverageSolution.IMKAverage mkAverage, MKAverageOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(mkAverage));
-        }
-    }
+    private static int?[] RunScript(
+        FindingMKAverageSolution.IMKAverage mkAverage, MKAverageOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(mkAverage))];
 
     // One call in an MKAverage script: either an addElement with its value or a
     // calculateMKAverage. Pure dispatch, built via the named factories below so a script

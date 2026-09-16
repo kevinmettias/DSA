@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FinalElementAfterSubarrayDel
 // same examples, so a failure names the strategy that broke. The two full
 // game-tree strategies are exercised on the same small inputs as the O(1)
 // closed form - proving the shortcut right rather than merely asserting it.
-public sealed class FinalElementAfterSubarrayDeletionsTests
+public sealed partial class FinalElementAfterSubarrayDeletionsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

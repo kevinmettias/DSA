@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNonZeroProductOfTheAr
 // product written out by hand, so the squaring arm cannot agree with the naive arm
 // on a wrong pairing. p stays small enough that the O(exponent) baseline can run
 // every case too, which is the whole point of it being a first-class strategy.
-public sealed class MinimumNonZeroProductOfTheArrayElementsTests
+public sealed partial class MinimumNonZeroProductOfTheArrayElementsTests
 {
     public static TheoryData<int, long> Examples =>
         new()

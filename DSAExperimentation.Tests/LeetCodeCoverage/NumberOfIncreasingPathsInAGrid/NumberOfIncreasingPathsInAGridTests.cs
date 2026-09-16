@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfIncreasingPathsInAGr
 // file just pins them to LeetCode's published examples, plus the degenerate grids the
 // examples never reach: an all-equal grid where no step is ever increasing, and a
 // strictly increasing column where every suffix of the chain counts.
-public sealed class NumberOfIncreasingPathsInAGridTests
+public sealed partial class NumberOfIncreasingPathsInAGridTests
 {
     public static TheoryData<int[,], int> Examples =>
         new()

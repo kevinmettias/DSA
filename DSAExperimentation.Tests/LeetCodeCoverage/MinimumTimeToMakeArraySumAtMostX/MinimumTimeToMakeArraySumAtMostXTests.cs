@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToMakeArraySumAtM
 // boundaries: a sum already at or below targetSum (no seconds needed at all), a target
 // only the very last operation reaches (every index has to be zeroed), and a
 // nums2 of all zeroes, where nothing grows and the reduction is pure nums1.
-public sealed class MinimumTimeToMakeArraySumAtMostXTests
+public sealed partial class MinimumTimeToMakeArraySumAtMostXTests
 {
     public static TheoryData<int[], int[], int, int> Examples =>
         new()

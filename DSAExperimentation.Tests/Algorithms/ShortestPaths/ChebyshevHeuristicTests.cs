@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
-public sealed class ChebyshevHeuristicTests
+public sealed partial class ChebyshevHeuristicTests
 {
     public static TheoryData<EstimateCase> Examples =>
         new()

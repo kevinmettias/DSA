@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Hamming;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Hamming;
 
-public sealed class StandardAlphabetsTests
+public sealed partial class StandardAlphabetsTests
 {
     [Fact]
     public void LowercaseLatin_IsTheTwentySixLettersInOrder()

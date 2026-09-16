@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PopulatingNextRightPointersI
 // TheoryData signature; BuildTree reconstructs it). Every value in an example tree
 // is distinct, so a value can stand in for its node's identity when stating the
 // expected next-pointer chain.
-public sealed class PopulatingNextRightPointersInEachNodeIITests
+public sealed partial class PopulatingNextRightPointersInEachNodeIITests
 {
     public static TheoryData<int?[], (int Value, int? NextValue)[]> Examples =>
         new()

@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 
-public sealed class EdgeTargetsTests
+public sealed partial class EdgeTargetsTests
 {
     private static EdgeTargets<TestNode, int, ListEdges<TestNode, int>> Targets() =>
         new(new ListEdges<TestNode, int>([(3, new TestNode("A")), (7, new TestNode("B"))]));

@@ -3,7 +3,7 @@ using DSAExperimentation.Domain.SlidingPuzzle;
 
 namespace DSAExperimentation.Tests.Domain.SlidingPuzzle;
 
-public sealed class PuzzleTopologyTests
+public sealed partial class PuzzleTopologyTests
 {
     [Fact]
     public void GetChildren_ExposesTheBoardsOneBlankSlideAway()

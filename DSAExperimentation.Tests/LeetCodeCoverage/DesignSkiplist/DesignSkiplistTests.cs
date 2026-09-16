@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSkiplist;
 // failure still names the strategy that broke even though the "input" here is a
 // sequence of mutating/querying calls rather than a single argument tuple.
 // SkiplistOp.Apply is pure dispatch - no multiset logic of its own.
-public sealed class DesignSkiplistTests
+public sealed partial class DesignSkiplistTests
 {
     public static TheoryData<SkiplistOp[], bool?[]> Examples =>
         new()
@@ -72,22 +72,17 @@ public sealed class DesignSkiplistTests
     [MemberData(nameof(Examples))]
     public void SkiplistByLinearScanList_LeetCodeExamples_MatchesExpectedResults(
         SkiplistOp[] operations, bool?[] expected) =>
-        RunScript(new DesignSkiplistSolution.SkiplistByLinearScanList(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignSkiplistSolution.SkiplistByLinearScanList(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SkiplistByFenwickFrequencies_LeetCodeExamples_MatchesExpectedResults(
         SkiplistOp[] operations, bool?[] expected) =>
-        RunScript(new DesignSkiplistSolution.SkiplistByFenwickFrequencies(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignSkiplistSolution.SkiplistByFenwickFrequencies(), operations));
 
-    private static void RunScript(
-        DesignSkiplistSolution.ISkiplist skiplist, SkiplistOp[] operations, bool?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(skiplist));
-        }
-    }
+    private static bool?[] RunScript(
+        DesignSkiplistSolution.ISkiplist skiplist, SkiplistOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(skiplist))];
 
     // One call in a Skiplist script: which method to invoke and with what value. Pure
     // dispatch, built via the named factories below so a script (like Examples above)

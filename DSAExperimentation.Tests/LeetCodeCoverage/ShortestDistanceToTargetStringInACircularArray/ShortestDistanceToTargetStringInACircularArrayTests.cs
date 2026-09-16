@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestDistanceToTargetStri
 // min(diff, n - diff) linear scan, which used to exist as an unasserted benchmark
 // baseline - and this file pins them to the same examples so a failure names the
 // strategy that broke.
-public sealed class ShortestDistanceToTargetStringInACircularArrayTests
+public sealed partial class ShortestDistanceToTargetStringInACircularArrayTests
 {
     public static TheoryData<string[], string, int, int> Examples =>
         new()

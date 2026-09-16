@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CanIWin;
 // examples are stated once and replayed against each, so a failure names the
 // strategy that broke rather than reporting a disagreement between an anonymous
 // test helper and an anonymous benchmark arm.
-public sealed class CanIWinTests
+public sealed partial class CanIWinTests
 {
     public static TheoryData<CanWinExample> Examples =>
         new()

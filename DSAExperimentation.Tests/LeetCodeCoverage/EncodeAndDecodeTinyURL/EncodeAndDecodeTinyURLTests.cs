@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EncodeAndDecodeTinyURL;
 // Harness only. Both strategies are EncodeAndDecodeTinyURLSolution's - this file
 // replays LeetCode's published round-trip scenario and its dedup scenario against
 // each ICodecStrategy implementation, so a failure names the strategy that broke.
-public sealed class EncodeAndDecodeTinyURLTests
+public sealed partial class EncodeAndDecodeTinyURLTests
 {
     public static TheoryData<CodecScenario> Examples =>
         new()

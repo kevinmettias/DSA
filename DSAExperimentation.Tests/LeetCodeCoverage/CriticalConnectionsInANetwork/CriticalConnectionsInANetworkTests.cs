@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CriticalConnectionsInANetwor
 // LeetCode returns the connections in any order, so each expectation is stated in
 // ascending order and the actual result is sorted the same way before comparison -
 // membership, not discovery order, is the contract.
-public sealed class CriticalConnectionsInANetworkTests
+public sealed partial class CriticalConnectionsInANetworkTests
 {
     public static TheoryData<int, int[][], int[][]> Examples =>
         new()

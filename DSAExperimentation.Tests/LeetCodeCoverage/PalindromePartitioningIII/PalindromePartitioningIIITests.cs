@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioningIII;
 // asserted against the same examples, so a failure names the strategy that broke.
 // The naive recursion was previously only a benchmark's baseline arm and went
 // unasserted; it is under test here for the first time.
-public sealed class PalindromePartitioningIIITests
+public sealed partial class PalindromePartitioningIIITests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

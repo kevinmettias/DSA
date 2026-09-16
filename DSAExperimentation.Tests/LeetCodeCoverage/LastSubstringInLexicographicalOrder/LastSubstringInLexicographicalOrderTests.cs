@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LastSubstringInLexicographic
 // character, the all-equal string (where the tie between equal-prefixed suffixes must
 // break on length), and a case whose maximal suffix starts at the LAST occurrence of
 // the largest character rather than the first.
-public sealed class LastSubstringInLexicographicalOrderTests
+public sealed partial class LastSubstringInLexicographicalOrderTests
 {
     public static TheoryData<MaximalSuffixExample> Examples =>
         new()

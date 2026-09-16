@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReplaceWords;
 
 // Harness only: both strategies live in ReplaceWordsSolution and are asserted
 // against the same examples.
-public sealed class ReplaceWordsTests
+public sealed partial class ReplaceWordsTests
 {
     public static TheoryData<ReplaceWordsExample> Examples =>
         new()

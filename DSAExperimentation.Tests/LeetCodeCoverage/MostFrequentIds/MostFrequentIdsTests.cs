@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MostFrequentIds;
 
 // Harness only. Both strategies are MostFrequentIdsSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class MostFrequentIdsTests
+public sealed partial class MostFrequentIdsTests
 {
     public static TheoryData<int[], int[], long[]> Examples =>
         new()

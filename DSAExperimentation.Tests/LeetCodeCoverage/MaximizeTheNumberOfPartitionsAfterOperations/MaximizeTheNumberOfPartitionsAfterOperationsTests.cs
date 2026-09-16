@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeTheNumberOfPartition
 // MaximizeTheNumberOfPartitionsAfterOperationsSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke (TwoSumTests precedent).
-public sealed class MaximizeTheNumberOfPartitionsAfterOperationsTests
+public sealed partial class MaximizeTheNumberOfPartitionsAfterOperationsTests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

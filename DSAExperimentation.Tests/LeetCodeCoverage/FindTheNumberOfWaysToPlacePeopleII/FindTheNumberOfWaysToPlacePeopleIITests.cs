@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheNumberOfWaysToPlacePe
 // FindTheNumberOfWaysToPlacePeopleIISolution - this file just pins them to
 // LeetCode's published examples (the same three LC 3025 publishes, restated
 // at LC 3027's own n <= 1000 bound).
-public sealed class FindTheNumberOfWaysToPlacePeopleIITests
+public sealed partial class FindTheNumberOfWaysToPlacePeopleIITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

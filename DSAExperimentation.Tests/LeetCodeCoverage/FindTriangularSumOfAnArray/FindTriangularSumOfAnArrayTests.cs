@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTriangularSumOfAnArray;
 // Harness only. Both strategies are FindTriangularSumOfAnArraySolution's - this file
 // just pins them to LeetCode's published examples plus the cases that exercise the
 // mod-10 wrap and the single-element short circuit where no reduction runs at all.
-public sealed class FindTriangularSumOfAnArrayTests
+public sealed partial class FindTriangularSumOfAnArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

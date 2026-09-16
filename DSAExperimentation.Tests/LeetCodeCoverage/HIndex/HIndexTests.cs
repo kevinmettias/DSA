@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HIndex;
 
 // Harness only. Both strategies are HIndexSolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class HIndexTests
+public sealed partial class HIndexTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

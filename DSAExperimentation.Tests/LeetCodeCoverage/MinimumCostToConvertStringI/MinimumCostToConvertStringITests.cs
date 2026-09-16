@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToConvertStringI;
 // case the baseline's raw matrix and the graph strategy's distance
 // dictionary both have to report as -1 without ever agreeing on a magic
 // in-between value.
-public sealed class MinimumCostToConvertStringITests
+public sealed partial class MinimumCostToConvertStringITests
 {
     public static TheoryData<ConversionExample> Examples =>
         new()

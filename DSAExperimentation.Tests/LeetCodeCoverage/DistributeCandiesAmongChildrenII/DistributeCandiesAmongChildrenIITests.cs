@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistributeCandiesAmongChildr
 // LC 2929 restates LC 2928's exact examples at its larger (long-valued) bound, so
 // the same two inputs still pin the answer, this time through the long-typed
 // signature.
-public sealed class DistributeCandiesAmongChildrenIITests
+public sealed partial class DistributeCandiesAmongChildrenIITests
 {
     public static TheoryData<int, int, long> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PropertiesGraph;
 // Harness only. Both strategies are PropertiesGraphSolution's - this file just
 // pins them to LeetCode's published examples, including the below-threshold pair
 // that must NOT connect despite sharing a value.
-public sealed class PropertiesGraphTests
+public sealed partial class PropertiesGraphTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

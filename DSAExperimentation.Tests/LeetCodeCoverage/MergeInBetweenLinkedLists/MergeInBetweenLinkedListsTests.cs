@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeInBetweenLinkedLists;
 // builds LeetCode's published examples as linked lists and checks the resulting
 // list's values. Each theory builds its own lists because the splice strategy
 // rewires the nodes it is handed.
-public sealed class MergeInBetweenLinkedListsTests
+public sealed partial class MergeInBetweenLinkedListsTests
 {
     public static TheoryData<MergeBetweenExample> Examples =>
         new()

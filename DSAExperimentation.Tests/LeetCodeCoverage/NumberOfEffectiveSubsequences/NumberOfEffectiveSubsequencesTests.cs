@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfEffectiveSubsequence
 
 // Harness only. Both strategies are NumberOfEffectiveSubsequencesSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class NumberOfEffectiveSubsequencesTests
+public sealed partial class NumberOfEffectiveSubsequencesTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

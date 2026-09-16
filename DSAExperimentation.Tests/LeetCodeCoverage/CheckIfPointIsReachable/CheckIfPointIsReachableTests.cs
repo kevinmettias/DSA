@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfPointIsReachable;
 // published examples plus the smallest targets that separate the two failure
 // shapes: an odd gcd greater than one (3, 3), a gcd that is a power of two but
 // not one (8, 12), and coprime coordinates (4, 7).
-public sealed class CheckIfPointIsReachableTests
+public sealed partial class CheckIfPointIsReachableTests
 {
     public static TheoryData<ReachabilityCase> Examples =>
         new()

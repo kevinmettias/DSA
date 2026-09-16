@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SuperEggDrop;
 // recurrence's boundaries - one egg (the answer is the floor count), one floor, and
 // the two classic "maximum floors coverable in d drops" points (2 eggs / 10 floors
 // = 1+2+3+4, 3 eggs / 25 floors = C(5,1)+C(5,2)+C(5,3)).
-public sealed class SuperEggDropTests
+public sealed partial class SuperEggDropTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

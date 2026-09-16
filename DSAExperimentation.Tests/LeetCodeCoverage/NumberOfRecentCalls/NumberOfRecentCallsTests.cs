@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfRecentCalls;
 // against the same examples - LeetCode's published ping stream, the far-apart stream
 // the old test drove by hand, a single call, and the two window boundaries (a request
 // exactly 3000ms old is still counted, one 3001ms old is not).
-public sealed class NumberOfRecentCallsTests
+public sealed partial class NumberOfRecentCallsTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

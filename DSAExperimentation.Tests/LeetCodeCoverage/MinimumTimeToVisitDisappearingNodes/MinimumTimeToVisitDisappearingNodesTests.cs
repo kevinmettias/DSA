@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToVisitDisappeari
 // otherwise-identical graphs that only differ in disappear[] (Example 2 relaxes
 // Example 1's deadlines just enough to make node 1 reachable) and the exact-tie
 // case (a node reached exactly when it disappears still counts as unreachable).
-public sealed class MinimumTimeToVisitDisappearingNodesTests
+public sealed partial class MinimumTimeToVisitDisappearingNodesTests
 {
     public static TheoryData<int, int[][], int[], int[]> Examples =>
         new()

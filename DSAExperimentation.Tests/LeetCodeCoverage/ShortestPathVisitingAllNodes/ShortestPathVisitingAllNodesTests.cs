@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestPathVisitingAllNodes
 // multi-source BFS baseline and the Reduce.Graph composition - pinned here to
 // LeetCode's published examples plus the degenerate shapes: one node (already
 // done, zero steps), one edge, and a path graph.
-public sealed class ShortestPathVisitingAllNodesTests
+public sealed partial class ShortestPathVisitingAllNodesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

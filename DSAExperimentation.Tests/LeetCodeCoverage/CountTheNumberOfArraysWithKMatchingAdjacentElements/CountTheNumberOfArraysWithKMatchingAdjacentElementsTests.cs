@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfArraysWithKM
 // CountTheNumberOfArraysWithKMatchingAdjacentElementsSolution's. One test method
 // per strategy over LeetCode's own examples, so a failure names the strategy
 // that broke.
-public sealed class CountTheNumberOfArraysWithKMatchingAdjacentElementsTests
+public sealed partial class CountTheNumberOfArraysWithKMatchingAdjacentElementsTests
 {
     public static TheoryData<int, int, int, long> Examples =>
         new()

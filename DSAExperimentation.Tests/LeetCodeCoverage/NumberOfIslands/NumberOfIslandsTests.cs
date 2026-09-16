@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfIslands;
 
 // Harness only. The flood-fill count is NumberOfIslandsSolution's; this file
 // just pins it to LeetCode's published examples plus the original coverage grid.
-public sealed class NumberOfIslandsTests
+public sealed partial class NumberOfIslandsTests
 {
     public static TheoryData<char[][], int> Examples =>
         new()

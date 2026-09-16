@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ZumaGame;
 // LeetCode's published examples. The board and the hand are both strings and the
 // problem is not symmetric in them, so each row names which is which rather than
 // leaving two interchangeable positions.
-public sealed class ZumaGameTests
+public sealed partial class ZumaGameTests
 {
     public static TheoryData<ZumaExample> Examples =>
         new()

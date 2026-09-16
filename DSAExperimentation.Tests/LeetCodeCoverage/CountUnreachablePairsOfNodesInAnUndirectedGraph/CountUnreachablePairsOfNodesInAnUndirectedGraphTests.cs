@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountUnreachablePairsOfNodes
 // pair unreachable), a single fully connected component (none), and a graph whose
 // components have different sizes including an isolated node, which is where a
 // size tally that misses singletons goes wrong.
-public sealed class CountUnreachablePairsOfNodesInAnUndirectedGraphTests
+public sealed partial class CountUnreachablePairsOfNodesInAnUndirectedGraphTests
 {
     public static TheoryData<int, int[][], long> Examples =>
         new()

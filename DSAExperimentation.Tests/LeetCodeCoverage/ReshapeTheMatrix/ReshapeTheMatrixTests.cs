@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReshapeTheMatrix;
 // LeetCode 566. Reshape the Matrix: both strategies must produce the same
 // row-major reshape (or the original matrix back, when the cell counts don't
 // match) - see ReshapeTheMatrixSolution for the strategies themselves.
-public sealed class ReshapeTheMatrixTests
+public sealed partial class ReshapeTheMatrixTests
 {
     public static TheoryData<int[][], int, int, int[][]> Examples => new()
     {

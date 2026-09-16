@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinCostToConnectAllPoints;
 // LeetCode's published examples plus the degenerate one- and two-point inputs.
 // The baseline used to live inlined in MinCostToConnectAllPointsBenchmarks and was
 // asserted by nothing - it is under test here for the first time.
-public sealed class MinCostToConnectAllPointsTests
+public sealed partial class MinCostToConnectAllPointsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

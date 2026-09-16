@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumDeletionsToMakeAltern
 // Harness only. Both strategies are
 // MinimumDeletionsToMakeAlternatingSubstringSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class MinimumDeletionsToMakeAlternatingSubstringTests
+public sealed partial class MinimumDeletionsToMakeAlternatingSubstringTests
 {
     public static TheoryData<string, int[][], int[]> Examples =>
         new()

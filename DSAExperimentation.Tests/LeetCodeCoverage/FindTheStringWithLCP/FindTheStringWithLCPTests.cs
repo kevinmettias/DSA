@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheStringWithLCP;
 // Harness only: the algorithms live in FindTheStringWithLCPSolution. One test method
 // per strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke (TwoSumTests precedent).
-public sealed class FindTheStringWithLCPTests
+public sealed partial class FindTheStringWithLCPTests
 {
     public static TheoryData<int[][], string> Examples =>
         new()

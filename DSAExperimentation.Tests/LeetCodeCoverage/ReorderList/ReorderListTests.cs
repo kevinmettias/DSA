@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReorderList;
 // Harness only. The single strategy is ReorderListSolution's - this file
 // builds LeetCode's published examples as linked lists, reorders in place,
 // and checks the resulting list's values.
-public sealed class ReorderListTests
+public sealed partial class ReorderListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

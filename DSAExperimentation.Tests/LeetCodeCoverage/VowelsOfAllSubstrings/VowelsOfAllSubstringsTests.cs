@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.VowelsOfAllSubstrings;
 // O(n^2) substring scan, which the benchmark used to own privately and nothing
 // asserted; it is now the independent check that the closed form is actually
 // counting the same thing.
-public sealed class VowelsOfAllSubstringsTests
+public sealed partial class VowelsOfAllSubstringsTests
 {
     public static TheoryData<string, long> Examples =>
         new()

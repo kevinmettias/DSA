@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumScoreTriangulationOfP
 // One test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke. The un-memoized baseline is asserted here
 // too - it used to be a benchmark-private helper nothing checked.
-public sealed class MinimumScoreTriangulationOfPolygonTests
+public sealed partial class MinimumScoreTriangulationOfPolygonTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

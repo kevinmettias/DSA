@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountAllValidPickupAndDelive
 // this file pins them to LeetCode's published examples (n = 1, 2, 3), two more terms
 // of the closed form (2n)! / 2^n that the recurrence generates (n = 4, 5), and n = 100,
 // which is past the point where the running product must be reduced mod 1e9+7.
-public sealed class CountAllValidPickupAndDeliveryOptionsTests
+public sealed partial class CountAllValidPickupAndDeliveryOptionsTests
 {
     public static TheoryData<int, long> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfThereIsAValidParenthe
 // examples is what finally puts the un-memoized recursion - previously a private
 // helper in the benchmark, asserted by nothing - under test alongside the memoized
 // walk it is measured against.
-public sealed class CheckIfThereIsAValidParenthesesStringPathTests
+public sealed partial class CheckIfThereIsAValidParenthesesStringPathTests
 {
     public static TheoryData<ParenthesesGridCase> Examples =>
         new()

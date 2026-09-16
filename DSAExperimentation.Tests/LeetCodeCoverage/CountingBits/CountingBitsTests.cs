@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountingBits;
 // Harness only. Both strategies live in CountingBitsSolution - this file just pins
 // them to LeetCode's published examples plus the boundary value 0, the constraint's
 // lower bound.
-public sealed class CountingBitsTests
+public sealed partial class CountingBitsTests
 {
     public static TheoryData<int, int[]> Examples =>
         new()

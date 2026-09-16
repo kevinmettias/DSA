@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxPointsOnALine;
 // benchmark's slope-grouping arm got wrong: it bucketed a point coinciding with
 // the anchor under its own trivial (0,0) "slope" instead of adding it to
 // whichever real line wins, so it never found the line through all four points.
-public sealed class MaxPointsOnALineTests
+public sealed partial class MaxPointsOnALineTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

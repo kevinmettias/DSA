@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CollectCoinsInATree;
 // Harness only: the coin-aware leaf trim and both of its frontier strategies live in
 // CollectCoinsInATreeSolution. One test method per strategy over one shared set of
 // examples, so a failure names the strategy that broke.
-public sealed class CollectCoinsInATreeTests
+public sealed partial class CollectCoinsInATreeTests
 {
     public static TheoryData<int[][], int[], int> Examples =>
         new()

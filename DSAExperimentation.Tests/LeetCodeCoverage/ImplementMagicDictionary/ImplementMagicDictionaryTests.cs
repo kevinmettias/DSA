@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementMagicDictionary;
 // row pairs one dictionary with the batch of search words replayed against it - the
 // same "call script" shape LRUCacheTests/MinStackTests use for their own
 // instance-API problems.
-public sealed class ImplementMagicDictionaryTests
+public sealed partial class ImplementMagicDictionaryTests
 {
     public static TheoryData<string[], string[], bool[]> Examples =>
         new()

@@ -3,7 +3,7 @@ using DSAExperimentation.Domain.Locks;
 
 namespace DSAExperimentation.Tests.Domain.Locks;
 
-public sealed class LockTopologyTests
+public sealed partial class LockTopologyTests
 {
     [Fact]
     public void GetChildren_ExposesTheCombinationsOneTurnAway()

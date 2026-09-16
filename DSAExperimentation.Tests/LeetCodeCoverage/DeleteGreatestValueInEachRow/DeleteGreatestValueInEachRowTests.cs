@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteGreatestValueInEachRow
 // a single row (where every value is its own round's maximum), a grid of equal
 // values (where every round ties), and a square grid whose rows start sorted the
 // wrong way round.
-public sealed class DeleteGreatestValueInEachRowTests
+public sealed partial class DeleteGreatestValueInEachRowTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

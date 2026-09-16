@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RotateList;
 // Harness only. Both strategies are RotateListSolution's - this file builds
 // LeetCode's published examples as linked lists and checks the resulting list's
 // values.
-public sealed class RotateListTests
+public sealed partial class RotateListTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

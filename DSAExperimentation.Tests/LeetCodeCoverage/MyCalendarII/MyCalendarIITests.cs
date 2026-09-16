@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MyCalendarII;
 // replays LeetCode's published Book() call scripts against each and asserts
 // the accept/reject result of every single call, including the touching-
 // endpoints case neither strategy may treat as a double booking.
-public sealed class MyCalendarIITests
+public sealed partial class MyCalendarIITests
 {
     public static TheoryData<(int Start, int End)[], bool[]> Examples =>
         new()

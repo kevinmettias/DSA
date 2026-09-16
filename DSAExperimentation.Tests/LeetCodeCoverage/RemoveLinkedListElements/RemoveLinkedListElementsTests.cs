@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveLinkedListElements;
 // Harness only. Both strategies are RemoveLinkedListElementsSolution's - this file
 // builds LeetCode's published examples as linked lists and checks the resulting
 // list's values, including the case where val matches the head node itself.
-public sealed class RemoveLinkedListElementsTests
+public sealed partial class RemoveLinkedListElementsTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

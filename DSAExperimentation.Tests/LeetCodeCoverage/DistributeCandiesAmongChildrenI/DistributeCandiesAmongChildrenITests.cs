@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistributeCandiesAmongChildr
 // Harness only: both strategies live in DistributeCandiesAmongChildrenISolution.
 // One test method per strategy over one shared set of LeetCode's own examples, so
 // a failure names the strategy that broke (TwoSumTests precedent).
-public sealed class DistributeCandiesAmongChildrenITests
+public sealed partial class DistributeCandiesAmongChildrenITests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

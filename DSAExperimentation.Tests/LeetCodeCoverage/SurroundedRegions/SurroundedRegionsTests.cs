@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SurroundedRegions;
 // SurroundedRegionsSolution - this file just pins it to LeetCode's published
 // examples. Solve mutates its board in place, so each example carries the
 // input and the expected post-mutation board.
-public sealed class SurroundedRegionsTests
+public sealed partial class SurroundedRegionsTests
 {
     public static TheoryData<char[][], char[][]> Examples =>
         new()

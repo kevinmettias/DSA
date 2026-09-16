@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumLinesToRepresentALine
 // asserted here under its own name. The pre-migration test only covered the second one;
 // the floating-slope baseline (previously untested scaffolding inlined in the benchmark)
 // is asserted here for the first time, against the same examples.
-public sealed class MinimumLinesToRepresentALineChartTests
+public sealed partial class MinimumLinesToRepresentALineChartTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

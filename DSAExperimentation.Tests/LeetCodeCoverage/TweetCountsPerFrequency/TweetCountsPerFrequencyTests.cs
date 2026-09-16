@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TweetCountsPerFrequency;
 // filter by name), against each ITweetCountsStrategy implementation via a small
 // operation script, so a failure still names the strategy that broke.
 // TweetOp.Apply is pure dispatch - no bucketing logic of its own.
-public sealed class TweetCountsPerFrequencyTests
+public sealed partial class TweetCountsPerFrequencyTests
 {
     // LC 1348's own frequency names, stated here rather than read off the solution.
     // A test that asked the solution what "minute" is would still pass after the
@@ -72,21 +72,16 @@ public sealed class TweetCountsPerFrequencyTests
     [MemberData(nameof(Examples))]
     public void TweetCountsByFlatListFilter_LeetCodeExamples_BucketsByRequestedFrequency(
         TweetOp[] operations, List<int>?[] expected) =>
-        RunScript(new TweetCountsByFlatListFilter(), operations, expected);
+        Assert.Equal(expected, RunScript(new TweetCountsByFlatListFilter(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TweetCountsByHashMapGroupedByName_LeetCodeExamples_BucketsByRequestedFrequency(
         TweetOp[] operations, List<int>?[] expected) =>
-        RunScript(new TweetCountsByHashMapGroupedByName(), operations, expected);
+        Assert.Equal(expected, RunScript(new TweetCountsByHashMapGroupedByName(), operations));
 
-    private static void RunScript(ITweetCountsStrategy strategy, TweetOp[] operations, List<int>?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+    private static List<int>?[] RunScript(ITweetCountsStrategy strategy, TweetOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 
     // The bucket name a query groups by - LC's own "minute" / "hour" / "day". It is its
     // own type rather than a string so a query's frequency cannot be handed over in the

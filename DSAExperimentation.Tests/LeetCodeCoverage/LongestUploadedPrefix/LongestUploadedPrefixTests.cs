@@ -15,7 +15,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestUploadedPrefix;
 // baseline arm and nothing checked that the arm the frontier is measured against
 // was even right. It is also the one strategy that needs the stream capacity, which
 // is why the script states it.
-public sealed class LongestUploadedPrefixTests
+public sealed partial class LongestUploadedPrefixTests
 {
     public static TheoryData<UploadScript, int[]> Examples =>
         new()

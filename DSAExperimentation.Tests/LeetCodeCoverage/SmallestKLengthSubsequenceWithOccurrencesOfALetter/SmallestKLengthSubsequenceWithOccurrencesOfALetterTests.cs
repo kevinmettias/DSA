@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestKLengthSubsequenceWi
 // to LeetCode's published examples plus the boundary cases the greedy has to get
 // right. The window-rescan baseline (previously untested scaffolding inlined in the
 // benchmark) is asserted here for the first time.
-public sealed class SmallestKLengthSubsequenceWithOccurrencesOfALetterTests
+public sealed partial class SmallestKLengthSubsequenceWithOccurrencesOfALetterTests
 {
     public static TheoryData<SubsequenceExample> Examples =>
         new()

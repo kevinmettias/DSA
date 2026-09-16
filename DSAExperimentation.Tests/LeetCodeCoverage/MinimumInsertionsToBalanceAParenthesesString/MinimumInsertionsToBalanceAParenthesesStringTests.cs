@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumInsertionsToBalanceAP
 // Harness only: both strategies live in MinimumInsertionsToBalanceAParenthesesStringSolution
 // and are asserted against the same examples, including the all-openers and
 // all-closers extremes that separate "insert a closer" from "insert an opener".
-public sealed class MinimumInsertionsToBalanceAParenthesesStringTests
+public sealed partial class MinimumInsertionsToBalanceAParenthesesStringTests
 {
     public static TheoryData<string, int> Examples =>
         new()

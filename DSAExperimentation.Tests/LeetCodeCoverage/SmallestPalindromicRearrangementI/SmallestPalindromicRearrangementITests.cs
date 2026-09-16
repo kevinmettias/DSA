@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestPalindromicRearrange
 
 // Harness only. Both strategies are SmallestPalindromicRearrangementISolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class SmallestPalindromicRearrangementITests
+public sealed partial class SmallestPalindromicRearrangementITests
 {
     public static TheoryData<RearrangementExample> Examples =>
         new()

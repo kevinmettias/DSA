@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Hamming;
 
-public sealed class HammingSearchTests
+public sealed partial class HammingSearchTests
 {
     [Fact]
     public void MutationDistance_ReachableTarget_ReturnsEdgesWalked()

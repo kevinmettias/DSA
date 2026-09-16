@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.Tests.DataStructures.SegmentTree;
 
-public sealed class SegmentRangeTests
+public sealed partial class SegmentRangeTests
 {
     [Fact]
     public void Split_EvenSpan_HalvesItIntoTwoEqualParts()

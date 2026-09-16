@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindElementsInAContaminatedB
 // reconstructs the tree inside each test method instead. Every present node carries
 // the contaminated value -1 and null stands for a missing child: only the shape is
 // input, since recovery overwrites every value.
-public sealed class FindElementsInAContaminatedBinaryTreeTests
+public sealed partial class FindElementsInAContaminatedBinaryTreeTests
 {
     public static TheoryData<int?[], int[], bool[]> Examples =>
         new()

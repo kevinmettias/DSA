@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfRobotsWithinB
 // this file just pins them to LeetCode's published examples, plus the two
 // single-robot edges (exactly on budget, one unit over) that separate a window of
 // length one from a window of length zero.
-public sealed class MaximumNumberOfRobotsWithinBudgetTests
+public sealed partial class MaximumNumberOfRobotsWithinBudgetTests
 {
     public static TheoryData<int[], int[], long, int> Examples =>
         new()

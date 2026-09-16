@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumDepthOfBinaryTree;
 // file pins them to LeetCode's published examples, given in LeetCode's own
 // level-order-with-null array shape (BinaryTreeNode<int> is internal, so it
 // cannot appear in a public TheoryData signature; LeetCodeWireFormat.ToBinaryTree reconstructs it).
-public sealed class MaximumDepthOfBinaryTreeTests
+public sealed partial class MaximumDepthOfBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

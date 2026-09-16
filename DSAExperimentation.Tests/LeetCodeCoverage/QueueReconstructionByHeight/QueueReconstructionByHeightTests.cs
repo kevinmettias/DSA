@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.QueueReconstructionByHeight;
 
 // Harness only. Both strategies are QueueReconstructionByHeightSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class QueueReconstructionByHeightTests
+public sealed partial class QueueReconstructionByHeightTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

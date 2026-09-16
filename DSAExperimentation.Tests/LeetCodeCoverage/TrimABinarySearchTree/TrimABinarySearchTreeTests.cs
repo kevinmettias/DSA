@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TrimABinarySearchTree;
 // BinarySearchTree<int>.Insert and confirms what survives via
 // InOrderTraversal/IInOrderHooks (the same composition DeleteNodeInABSTTests
 // already uses), which also confirms the surviving values stay sorted.
-public sealed class TrimABinarySearchTreeTests
+public sealed partial class TrimABinarySearchTreeTests
 {
     public static TheoryData<int[], int, int, int[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheSequenceOfStringsAppe
 // Harness only. Both screen-walk strategies are
 // FindTheSequenceOfStringsAppearedOnTheScreenSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class FindTheSequenceOfStringsAppearedOnTheScreenTests
+public sealed partial class FindTheSequenceOfStringsAppearedOnTheScreenTests
 {
     public static TheoryData<string, string[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KokoEatingBananas;
 // Harness only. Both strategies are KokoEatingBananasSolution's - the hand-rolled
 // bisection that used to live only in the benchmark's baseline arm, and the
 // BinarySearch.LowerBound walk over the feasibility sequence the test used to inline.
-public sealed class KokoEatingBananasTests
+public sealed partial class KokoEatingBananasTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioningIV;
 // asserted against the same examples, so a failure names the strategy that broke.
 // The unmemoized recursion was previously only a benchmark's baseline arm and went
 // unasserted; it is under test here for the first time.
-public sealed class PalindromePartitioningIVTests
+public sealed partial class PalindromePartitioningIVTests
 {
     public static TheoryData<PartitionExample> Examples =>
         new()

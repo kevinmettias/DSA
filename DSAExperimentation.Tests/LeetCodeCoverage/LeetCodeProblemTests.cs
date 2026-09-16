@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage;
 // "two-sum/HashMap/no-pair-sums-to-target" - and they travel as one ArmIdentity
 // row rather than as three interchangeable string positions, so a row states which
 // string is the slug, which the strategy and which the case.
-public sealed class LeetCodeProblemTests
+public sealed partial class LeetCodeProblemTests
 {
     public static TheoryData<ArmIdentity> CaseArms
     {

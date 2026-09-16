@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReversePairs;
 // Harness only. Both strategies are ReversePairsSolution's - this file just pins
 // them to LeetCode's published examples, including the pairwise-scan baseline that
 // was never asserted anywhere before this migration.
-public sealed class ReversePairsTests
+public sealed partial class ReversePairsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

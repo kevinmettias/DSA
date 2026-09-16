@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumOperationsToMakeArray
 // - this file just pins them to LeetCode's published examples, including the mixed
 // increment/decrement case (Example 2) that a formula covering only the LC 1526
 // same-direction case would get wrong.
-public sealed class MinimumOperationsToMakeArrayEqualToTargetTests
+public sealed partial class MinimumOperationsToMakeArrayEqualToTargetTests
 {
     public static TheoryData<int[], int[], long> Examples =>
         new()

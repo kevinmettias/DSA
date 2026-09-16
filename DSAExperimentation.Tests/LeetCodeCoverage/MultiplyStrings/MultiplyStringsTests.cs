@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MultiplyStrings;
 // overflows past ~18-19 digits, exactly why LeetCode's own constraints (up to
 // 200 digits) rule that shortcut out for real inputs - MultiplyByDigitStack is
 // the strategy this repo relies on beyond that range.
-public sealed class MultiplyStringsTests
+public sealed partial class MultiplyStringsTests
 {
     public static TheoryData<ProductExample> Examples =>
         new()

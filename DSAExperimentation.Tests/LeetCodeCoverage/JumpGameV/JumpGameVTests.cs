@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameV;
 // examples, including the two the original test omitted (a strictly decreasing
 // run, where every index is reachable in one chain, and the alternating array
 // where no jump ever chains).
-public sealed class JumpGameVTests
+public sealed partial class JumpGameVTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

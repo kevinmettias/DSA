@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAreaRectangleII;
 // states LeetCode's published examples once and asserts every strategy against
 // them - the O(n^4) quadruple-scan baseline included, which the benchmark
 // previously measured without anything checking its answer.
-public sealed class MinimumAreaRectangleIITests
+public sealed partial class MinimumAreaRectangleIITests
 {
     private const int AreaPrecision = 5;
 

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SingleNumber;
 // Harness only: the one strategy lives in SingleNumberSolution and is asserted
 // against LeetCode's published examples plus a single-element case and a
 // negative-value case.
-public sealed class SingleNumberTests
+public sealed partial class SingleNumberTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

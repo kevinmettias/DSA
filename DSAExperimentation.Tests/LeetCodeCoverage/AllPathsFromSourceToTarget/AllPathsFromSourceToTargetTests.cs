@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AllPathsFromSourceToTarget;
 //
 // Path order is not part of LeetCode's answer, so each example is compared as an
 // unordered set of sequences rather than position by position.
-public sealed class AllPathsFromSourceToTargetTests
+public sealed partial class AllPathsFromSourceToTargetTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

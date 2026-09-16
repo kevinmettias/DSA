@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NonOverlappingIntervals;
 
 // Harness only. Both strategies are NonOverlappingIntervalsSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class NonOverlappingIntervalsTests
+public sealed partial class NonOverlappingIntervalsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithEvenOddRat
 // Harness only. Both strategies are CountSubarraysWithEvenOddRatioIISolution's
 // - this file just pins them to LeetCode's published examples (the same
 // three LC 4011 publishes, since 4013 is the identical rule at a larger n).
-public sealed class CountSubarraysWithEvenOddRatioIITests
+public sealed partial class CountSubarraysWithEvenOddRatioIITests
 {
     public static TheoryData<int[], int, int, long> Examples =>
         new()

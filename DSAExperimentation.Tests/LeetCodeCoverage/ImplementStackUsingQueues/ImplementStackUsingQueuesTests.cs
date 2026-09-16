@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementStackUsingQueues;
 // sequence of mutating calls rather than a single argument tuple. StackOp.Apply
 // is pure dispatch (which method to call with which argument) - no rotation
 // logic of its own.
-public sealed class ImplementStackUsingQueuesTests
+public sealed partial class ImplementStackUsingQueuesTests
 {
     public static TheoryData<StackOp[], object?[]> Examples =>
         new()
@@ -40,19 +40,14 @@ public sealed class ImplementStackUsingQueuesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByBuiltInQueue_LeetCodeExamples_BehavesLifo(StackOp[] operations, object?[] expected) =>
-        RunScript(ImplementStackUsingQueuesSolution.CreateByBuiltInQueue(), operations, expected);
+        Assert.Equal(expected, RunScript(ImplementStackUsingQueuesSolution.CreateByBuiltInQueue(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByQueuePrimitive_LeetCodeExamples_BehavesLifo(StackOp[] operations, object?[] expected) =>
-        RunScript(ImplementStackUsingQueuesSolution.CreateByQueuePrimitive(), operations, expected);
+        Assert.Equal(expected, RunScript(ImplementStackUsingQueuesSolution.CreateByQueuePrimitive(), operations));
 
-    private static void RunScript(
-        ImplementStackUsingQueuesSolution.IStackOperations stack, StackOp[] operations, object?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(stack));
-        }
-    }
+    private static object?[] RunScript(
+        ImplementStackUsingQueuesSolution.IStackOperations stack, StackOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(stack))];
 }

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseSubstringsBetweenEach
 // ReverseSubstringsBetweenEachPairOfParenthesesSolution's - this file pins them to
 // LeetCode's published examples plus the unbracketed input the original test
 // carried, which is the only case where neither strategy reverses anything.
-public sealed class ReverseSubstringsBetweenEachPairOfParenthesesTests
+public sealed partial class ReverseSubstringsBetweenEachPairOfParenthesesTests
 {
     public static TheoryData<ParenthesesExample> Examples =>
         new()

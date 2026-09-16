@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IncreasingOrderSearchTree;
 // member (CS0053). Each example therefore states its tree as a BST insertion order -
 // this repo's own BinarySearchTree<int> builds the same shape the pre-migration test
 // spelled out with node literals - plus the ascending right-only chain expected out.
-public sealed class IncreasingOrderSearchTreeTests
+public sealed partial class IncreasingOrderSearchTreeTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

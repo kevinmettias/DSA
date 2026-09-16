@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeCountOfDistinctPrime
 // MaximizeCountOfDistinctPrimesAfterSplitSolution's - this file just pins them
 // to LeetCode's published examples, including updates that persist across
 // queries and the case where no split ever contains a prime.
-public sealed class MaximizeCountOfDistinctPrimesAfterSplitTests
+public sealed partial class MaximizeCountOfDistinctPrimesAfterSplitTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

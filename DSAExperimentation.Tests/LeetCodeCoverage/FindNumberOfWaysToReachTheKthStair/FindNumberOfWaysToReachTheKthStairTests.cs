@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindNumberOfWaysToReachTheKt
 
 // Harness only. Both strategies are FindNumberOfWaysToReachTheKthStairSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class FindNumberOfWaysToReachTheKthStairTests
+public sealed partial class FindNumberOfWaysToReachTheKthStairTests
 {
     public static TheoryData<int, int> Examples =>
         new()

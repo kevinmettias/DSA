@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.UglyNumberIII;
 // overlap), the case where all three coincide, the first-element case where the
 // answer is just the smallest factor, and the (a, b, c) triple the benchmark
 // measures.
-public sealed class UglyNumberIIITests
+public sealed partial class UglyNumberIIITests
 {
     public static TheoryData<UglyExample> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FirstUniqueCharacterInAStrin
 
 // Harness only. Both strategies live in FirstUniqueCharacterInAStringSolution and
 // are asserted against the same examples.
-public sealed class FirstUniqueCharacterInAStringTests
+public sealed partial class FirstUniqueCharacterInAStringTests
 {
     public static TheoryData<string, int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheLengthOfTheLongestCom
 // Harness only: both strategies live in
 // FindTheLengthOfTheLongestCommonPrefixSolution - this file just pins them to
 // LeetCode's published examples.
-public sealed class FindTheLengthOfTheLongestCommonPrefixTests
+public sealed partial class FindTheLengthOfTheLongestCommonPrefixTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestPathInBinaryMatrix;
 // Harness only. See ShortestPathInBinaryMatrixSolution for the two strategies: the
 // same 8-directional BFS over the BCL's Queue<T> and over this repo's own
 // Queue<TElement>.
-public sealed class ShortestPathInBinaryMatrixTests
+public sealed partial class ShortestPathInBinaryMatrixTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

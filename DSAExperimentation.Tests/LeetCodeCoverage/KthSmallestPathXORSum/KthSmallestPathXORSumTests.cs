@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestPathXORSum;
 // and both strategies are KthSmallestPathXORSumSolution's - this file just pins
 // them to LeetCode's published examples (CheckIfDfsStringsArePalindromesTests
 // precedent).
-public sealed class KthSmallestPathXORSumTests
+public sealed partial class KthSmallestPathXORSumTests
 {
     public static TheoryData<int[], int[], int[][], int[]> Examples =>
         new()

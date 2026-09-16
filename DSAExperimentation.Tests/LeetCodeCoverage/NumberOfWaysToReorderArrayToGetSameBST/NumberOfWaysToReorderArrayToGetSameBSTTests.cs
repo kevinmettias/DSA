@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToReorderArrayTo
 // LeetCode's published examples plus the degenerate shapes (single element, already
 // ascending, already descending) where the only reordering is the array itself and
 // the answer is 0.
-public sealed class NumberOfWaysToReorderArrayToGetSameBSTTests
+public sealed partial class NumberOfWaysToReorderArrayToGetSameBSTTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

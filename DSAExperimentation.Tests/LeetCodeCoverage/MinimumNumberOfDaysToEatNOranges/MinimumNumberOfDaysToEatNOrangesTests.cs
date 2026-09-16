@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfDaysToEatNOra
 // LeetCode's published examples plus the small values where the two branches of the
 // recurrence tie (2, 3, 9) are asserted against each, so the unmemoized baseline is
 // now held to the same answers as the memoized recurrence.
-public sealed class MinimumNumberOfDaysToEatNOrangesTests
+public sealed partial class MinimumNumberOfDaysToEatNOrangesTests
 {
     public static TheoryData<int, int> Examples =>
         new()

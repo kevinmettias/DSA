@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumBSTInBinaryTree;
 // published examples, given in LeetCode's own level-order-with-null array shape
 // (BinaryTreeNode<int> is internal, so it cannot appear in a public TheoryData
 // signature; LeetCodeWireFormat.ToBinaryTree reconstructs it).
-public sealed class MaximumSumBSTInBinaryTreeTests
+public sealed partial class MaximumSumBSTInBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

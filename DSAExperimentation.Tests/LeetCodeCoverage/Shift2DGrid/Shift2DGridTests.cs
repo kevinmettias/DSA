@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Shift2DGrid;
 // against the same examples - including the degenerate shifts (shiftCount = 0 and a
 // whole number of cycles) and the single-row/single-column grids, where a row-major
 // rotation is easiest to get wrong.
-public sealed class Shift2DGridTests
+public sealed partial class Shift2DGridTests
 {
     public static TheoryData<int[][], int, int[][]> Examples =>
         new()

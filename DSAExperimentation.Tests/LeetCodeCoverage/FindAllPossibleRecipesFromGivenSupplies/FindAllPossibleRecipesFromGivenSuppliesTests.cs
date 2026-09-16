@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindAllPossibleRecipesFromGi
 // that depends on it. LeetCode accepts the makeable recipes in any order; every case
 // here is one both strategies emit in the same order, so the assertion can stay an
 // exact sequence rather than a set comparison.
-public sealed class FindAllPossibleRecipesFromGivenSuppliesTests
+public sealed partial class FindAllPossibleRecipesFromGivenSuppliesTests
 {
     public static TheoryData<string[], string[][], string[], string[]> Examples =>
         new()

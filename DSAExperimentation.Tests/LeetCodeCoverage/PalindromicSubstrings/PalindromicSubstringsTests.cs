@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromicSubstrings;
 // Harness only. Both strategies are PalindromicSubstringsSolution's - this file
 // just pins them to LeetCode's published examples plus the mixed and
 // single-character cases the original test also covered.
-public sealed class PalindromicSubstringsTests
+public sealed partial class PalindromicSubstringsTests
 {
     public static TheoryData<string, int> Examples =>
         new()

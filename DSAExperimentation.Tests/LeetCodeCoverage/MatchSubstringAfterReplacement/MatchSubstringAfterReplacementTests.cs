@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MatchSubstringAfterReplaceme
 // carry inline. This file just pins them to LeetCode's published examples plus the
 // cases that separate the two lookup shapes: one "old" character with several
 // allowed targets, no mappings at all, and a sub longer than s.
-public sealed class MatchSubstringAfterReplacementTests
+public sealed partial class MatchSubstringAfterReplacementTests
 {
     public static TheoryData<MatchExample> Examples =>
         new()

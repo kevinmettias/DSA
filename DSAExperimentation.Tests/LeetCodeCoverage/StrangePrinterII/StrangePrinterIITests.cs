@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StrangePrinterII;
 // and mutually-overlapping degenerate grids. The naive-rescan arm used to live
 // inlined in StrangePrinterIIBenchmarks and was asserted by nothing - it is under
 // test here for the first time.
-public sealed class StrangePrinterIITests
+public sealed partial class StrangePrinterIITests
 {
     public static TheoryData<ColorGridExample> Examples =>
         new()

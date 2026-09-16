@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SequentiallyOrdinalRankTrack
 // the re-sort baseline (previously untested scaffolding inlined in the benchmark)
 // gets that same coverage here for the first time. RankTrackerOp.Apply is pure
 // dispatch, no ranking logic of its own.
-public sealed class SequentiallyOrdinalRankTrackerTests
+public sealed partial class SequentiallyOrdinalRankTrackerTests
 {
     public static TheoryData<RankTrackerOp[], string?[]> Examples =>
         new()
@@ -85,24 +85,18 @@ public sealed class SequentiallyOrdinalRankTrackerTests
     [MemberData(nameof(Examples))]
     public void CreateByResortEveryGet_LeetCodeExamples_ReturnsSuccessiveRanks(
         RankTrackerOp[] operations, string?[] expected) =>
-        RunScript(SequentiallyOrdinalRankTrackerSolution.CreateByResortEveryGet(), operations, expected);
+        Assert.Equal(expected, RunScript(SequentiallyOrdinalRankTrackerSolution.CreateByResortEveryGet(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByTwoHeaps_LeetCodeExamples_ReturnsSuccessiveRanks(
         RankTrackerOp[] operations, string?[] expected) =>
-        RunScript(SequentiallyOrdinalRankTrackerSolution.CreateByTwoHeaps(), operations, expected);
+        Assert.Equal(expected, RunScript(SequentiallyOrdinalRankTrackerSolution.CreateByTwoHeaps(), operations));
 
-    private static void RunScript(
+    private static string?[] RunScript(
         SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker,
-        RankTrackerOp[] operations,
-        string?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(tracker));
-        }
-    }
+        RankTrackerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(tracker))];
 
     // One call in a rank-tracker script: which method to invoke and with what
     // arguments. Pure dispatch, built via the named factories below so a script (like

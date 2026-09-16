@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfDifferentSubsequence
 // all-multiples chain whose achievable gcds are exactly its own values, the coprime
 // pair whose gcd 1 is only reachable by taking both, and a repeated value that must
 // not be counted twice.
-public sealed class NumberOfDifferentSubsequencesGCDsTests
+public sealed partial class NumberOfDifferentSubsequencesGCDsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

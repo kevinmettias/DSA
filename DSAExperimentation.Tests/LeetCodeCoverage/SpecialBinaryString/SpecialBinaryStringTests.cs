@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SpecialBinaryString;
 // Harness only. The split-and-recurse walk and both sort strategies are
 // SpecialBinaryStringSolution's - this file just pins them to LeetCode's published
 // examples.
-public sealed class SpecialBinaryStringTests
+public sealed partial class SpecialBinaryStringTests
 {
     public static TheoryData<SpecialPieceExample> Examples =>
         new()

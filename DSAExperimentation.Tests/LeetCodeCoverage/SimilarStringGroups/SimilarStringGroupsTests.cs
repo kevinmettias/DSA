@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SimilarStringGroups;
 // pinned to the same examples here, including the transitive chain (tars~rats~arts)
 // that neither direct comparison would join on its own, equal-but-not-swapped
 // duplicates, and a set with no similar pair at all.
-public sealed class SimilarStringGroupsTests
+public sealed partial class SimilarStringGroupsTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

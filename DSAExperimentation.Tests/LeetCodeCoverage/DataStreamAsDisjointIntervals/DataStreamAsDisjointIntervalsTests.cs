@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DataStreamAsDisjointInterval
 // intervals reported after every single call, not just the last one - LC 352's own examples are
 // stated as a running summary, so Examples carries the expected snapshot after each addNum
 // alongside the values, and AssertSequence drives both strategies through the same script.
-public sealed class DataStreamAsDisjointIntervalsTests
+public sealed partial class DataStreamAsDisjointIntervalsTests
 {
     public static TheoryData<int[], (int Start, int End)[][]> Examples =>
         new()

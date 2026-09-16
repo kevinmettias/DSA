@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PowerOfThree;
 
 // Harness only: both strategies live in PowerOfThreeSolution and are asserted
 // against the same examples.
-public sealed class PowerOfThreeTests
+public sealed partial class PowerOfThreeTests
 {
     public static TheoryData<PowerOfThreeCase> Examples =>
         new()

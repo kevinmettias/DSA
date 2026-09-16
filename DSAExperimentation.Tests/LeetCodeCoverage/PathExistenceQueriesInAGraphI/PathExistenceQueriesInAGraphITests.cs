@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathExistenceQueriesInAGraph
 // Harness only. ProximityGroups reduces LC 3532's graph to its n-1 adjacent-pair
 // edges and both strategies are PathExistenceQueriesInAGraphISolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class PathExistenceQueriesInAGraphITests
+public sealed partial class PathExistenceQueriesInAGraphITests
 {
     public static TheoryData<ProximityExample> Examples =>
         new()

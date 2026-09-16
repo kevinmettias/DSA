@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchA2DMatrixII;
 // pins them to LeetCode's published examples, including the empty-matrix edge
 // case that forces the corner walk to guard its first index instead of assuming a
 // non-empty row.
-public sealed class SearchA2DMatrixIITests
+public sealed partial class SearchA2DMatrixIITests
 {
     private static readonly int[][] Matrix =
     [

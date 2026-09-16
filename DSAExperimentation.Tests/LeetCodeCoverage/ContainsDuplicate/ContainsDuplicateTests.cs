@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ContainsDuplicate;
 
 // Harness only: both strategies live in ContainsDuplicateSolution and are asserted
 // against the same examples, so a failure names the strategy that broke.
-public sealed class ContainsDuplicateTests
+public sealed partial class ContainsDuplicateTests
 {
     public static TheoryData<DuplicateCase> Examples =>
         new()

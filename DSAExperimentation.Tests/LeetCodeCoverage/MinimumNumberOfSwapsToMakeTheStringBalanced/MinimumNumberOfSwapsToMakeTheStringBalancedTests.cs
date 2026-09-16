@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfSwapsToMakeTh
 // Harness only: both strategies live in MinimumNumberOfSwapsToMakeTheStringBalancedSolution
 // and are asserted against the same examples, including the already-balanced cases and
 // the all-closers-then-all-openers shape the benchmark measures.
-public sealed class MinimumNumberOfSwapsToMakeTheStringBalancedTests
+public sealed partial class MinimumNumberOfSwapsToMakeTheStringBalancedTests
 {
     public static TheoryData<string, int> Examples =>
         new()

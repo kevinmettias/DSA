@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheNumberOfWeakCharactersInT
 // unequal defenses, wholly duplicate characters, and an equal-attack pair straddling a
 // genuinely weak character, which is what the descending-attack/ascending-defense
 // tie-break exists to get right.
-public sealed class TheNumberOfWeakCharactersInTheGameTests
+public sealed partial class TheNumberOfWeakCharactersInTheGameTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

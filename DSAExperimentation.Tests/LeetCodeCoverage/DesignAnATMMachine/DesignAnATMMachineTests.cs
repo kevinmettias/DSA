@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAnATMMachine;
 // asserting it, and it answered a weaker question there (did the withdrawal
 // succeed?) than the test's own arm did (which banknotes came out); both are pinned
 // to LeetCode's real answer here.
-public sealed class DesignAnATMMachineTests
+public sealed partial class DesignAnATMMachineTests
 {
     public static TheoryData<AtmOp[], long[]?[]> Examples =>
         new()
@@ -68,19 +68,15 @@ public sealed class DesignAnATMMachineTests
     [MemberData(nameof(Examples))]
     public void AtmByFiveSlotArray_LeetCodeExamples_MatchesExpectedSequence(
         AtmOp[] operations, long[]?[] expected) =>
-        RunScript(new DesignAnATMMachineSolution.AtmByFiveSlotArray(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignAnATMMachineSolution.AtmByFiveSlotArray(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AtmByHashMap_LeetCodeExamples_MatchesExpectedSequence(
         AtmOp[] operations, long[]?[] expected) =>
-        RunScript(new DesignAnATMMachineSolution.AtmByHashMap(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignAnATMMachineSolution.AtmByHashMap(), operations));
 
-    private static void RunScript(DesignAnATMMachineSolution.IAtm atm, AtmOp[] operations, long[]?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(atm));
-        }
-    }
+    private static long[]?[] RunScript(
+        DesignAnATMMachineSolution.IAtm atm, AtmOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(atm))];
 }

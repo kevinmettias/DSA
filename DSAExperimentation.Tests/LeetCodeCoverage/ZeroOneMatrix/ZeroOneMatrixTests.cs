@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ZeroOneMatrix;
 // LeetCode 542. 01 Matrix. See ZeroOneMatrixSolution for the two strategies: a
 // naive per-cell BFS baseline, and this repo's own multi-source BFS composed over
 // Queue<TElement>.
-public sealed class ZeroOneMatrixTests
+public sealed partial class ZeroOneMatrixTests
 {
     public static TheoryData<int[][], int[][]> Examples()
     {

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAnOrderedStream;
 // value inserted with each, and the chunk each Insert is expected to return - the
 // same call-script shape DesignBrowserHistoryTests already uses for its own
 // instance-API problem.
-public sealed class DesignAnOrderedStreamTests
+public sealed partial class DesignAnOrderedStreamTests
 {
     public static TheoryData<int, int[], string[], string[][]> Examples =>
         new()
@@ -38,22 +38,26 @@ public sealed class DesignAnOrderedStreamTests
     [MemberData(nameof(Examples))]
     public void OrderedStreamByListBacked_LeetCodeExamples_ReturnsChunksAsGapsClose(
         int streamSize, int[] idKeys, string[] values, string[][] expected) =>
-        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(streamSize), idKeys, values, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(streamSize), idKeys, values));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void OrderedStreamByDynamicArrayBacked_LeetCodeExamples_ReturnsChunksAsGapsClose(
         int streamSize, int[] idKeys, string[] values, string[][] expected) =>
-        RunScript(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(streamSize), idKeys, values, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(streamSize), idKeys, values));
 
-    private static void RunScript(
-        DesignAnOrderedStreamSolution.IOrderedStream stream, int[] idKeys, string[] values, string[][] expected)
+    private static string[][] RunScript(
+        DesignAnOrderedStreamSolution.IOrderedStream stream, int[] idKeys, string[] values)
     {
+        var chunks = new string[idKeys.Length][];
+
         for (var i = 0; i < idKeys.Length; i++)
         {
-            var chunk = stream.Insert(idKeys[i], values[i]);
-
-            Assert.Equal(expected[i], chunk);
+            chunks[i] = [.. stream.Insert(idKeys[i], values[i])];
         }
+
+        return chunks;
     }
 }

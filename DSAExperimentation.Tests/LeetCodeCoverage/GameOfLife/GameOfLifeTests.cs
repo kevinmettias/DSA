@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GameOfLife;
 // Harness only. Both strategies are GameOfLifeSolution's - this file just pins
 // them to LeetCode's published examples. Each row is cloned before advancing
 // so the two theory methods never share a mutated board.
-public sealed class GameOfLifeTests
+public sealed partial class GameOfLifeTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

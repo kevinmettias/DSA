@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FibonacciNumber;
 // Harness only. Both strategies are FibonacciNumberSolution's - this file just pins
 // them to LeetCode's published examples, including the naive baseline, which was
 // never asserted before this migration.
-public sealed class FibonacciNumberTests
+public sealed partial class FibonacciNumberTests
 {
     public static TheoryData<int, int> Examples =>
         new()

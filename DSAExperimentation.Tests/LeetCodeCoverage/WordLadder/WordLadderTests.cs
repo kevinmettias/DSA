@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordLadder;
 // strategies are WordLadderSolution's. The two ends of the ladder are both strings and the
 // search is not symmetric in them, so each row names which is which rather than leaving two
 // interchangeable positions.
-public sealed class WordLadderTests
+public sealed partial class WordLadderTests
 {
     public static TheoryData<LadderExample> Examples =>
         new()

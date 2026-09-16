@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheWinnerOfTheCircularGa
 // circle, stepSize = 1 (nobody is counted past, so the last friend survives), the
 // two-friend circle, and stepSize > friendCount, where the count wraps the circle
 // more than once before landing.
-public sealed class FindTheWinnerOfTheCircularGameTests
+public sealed partial class FindTheWinnerOfTheCircularGameTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

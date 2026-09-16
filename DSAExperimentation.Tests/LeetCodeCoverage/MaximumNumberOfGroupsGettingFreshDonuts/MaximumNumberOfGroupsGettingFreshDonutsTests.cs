@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfGroupsGetting
 // the original coverage carried, and two edges the original left untested: a
 // batchSize of 1 (every group is happy, and the remainder table is empty) and groups
 // that are all whole batches (the memoized search never runs at all).
-public sealed class MaximumNumberOfGroupsGettingFreshDonutsTests
+public sealed partial class MaximumNumberOfGroupsGettingFreshDonutsTests
 {
     public static TheoryData<int, int[], int> Examples =>
         new()

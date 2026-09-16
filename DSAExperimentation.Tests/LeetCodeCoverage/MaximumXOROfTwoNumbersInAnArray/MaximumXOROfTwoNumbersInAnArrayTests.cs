@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumXOROfTwoNumbersInAnAr
 // Harness only. Both strategies are MaximumXOROfTwoNumbersInAnArraySolution's - this
 // file just pins them to LeetCode's published examples, one theory per strategy so a
 // failure names the strategy that broke.
-public sealed class MaximumXOROfTwoNumbersInAnArrayTests
+public sealed partial class MaximumXOROfTwoNumbersInAnArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

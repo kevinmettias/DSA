@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeSpanningTreeStabilit
 // MaximizeSpanningTreeStabilityWithUpgradesSolution's - this file just pins them
 // to LeetCode's published examples, including the must-edge cycle that makes no
 // spanning tree possible at all regardless of the upgrade budget.
-public sealed class MaximizeSpanningTreeStabilityWithUpgradesTests
+public sealed partial class MaximizeSpanningTreeStabilityWithUpgradesTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
         new()

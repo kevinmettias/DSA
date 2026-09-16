@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PeaksInArray;
 
 // Harness only. Both strategies are PeaksInArraySolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class PeaksInArrayTests
+public sealed partial class PeaksInArrayTests
 {
     public static TheoryData<int[], int[][], List<int>> Examples =>
         new()

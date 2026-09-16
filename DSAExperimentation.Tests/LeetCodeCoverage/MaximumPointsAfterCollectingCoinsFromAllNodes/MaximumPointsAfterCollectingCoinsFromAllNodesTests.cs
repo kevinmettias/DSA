@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumPointsAfterCollecting
 // MaximumPointsAfterCollectingCoinsFromAllNodesSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class MaximumPointsAfterCollectingCoinsFromAllNodesTests
+public sealed partial class MaximumPointsAfterCollectingCoinsFromAllNodesTests
 {
     public static TheoryData<int[][], int[], int, long> Examples =>
         new()

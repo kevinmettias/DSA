@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestUncommonSubstringInA
 // Harness only. Both strategies are
 // ShortestUncommonSubstringInAnArraySolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class ShortestUncommonSubstringInAnArrayTests
+public sealed partial class ShortestUncommonSubstringInAnArrayTests
 {
     public static TheoryData<string[], string[]> Examples =>
         new()

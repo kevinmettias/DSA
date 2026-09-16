@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockUsi
 // Harness only. Both window-scoring strategies are
 // BestTimeToBuyAndSellStockUsingStrategySolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class BestTimeToBuyAndSellStockUsingStrategyTests
+public sealed partial class BestTimeToBuyAndSellStockUsingStrategyTests
 {
     public static TheoryData<int[], int[], int, long> Examples =>
         new()

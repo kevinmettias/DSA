@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Buffers;
 
 namespace DSAExperimentation.Tests.DataStructures.Buffers;
 
-public sealed class ContiguousGroupBufferStorageTests
+public sealed partial class ContiguousGroupBufferStorageTests
 {
     private static ContiguousGroupBufferStorage<int, string> Storage() => new();
 

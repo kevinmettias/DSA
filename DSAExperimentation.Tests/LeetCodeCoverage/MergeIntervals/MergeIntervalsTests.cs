@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeIntervals;
 // own merge invariant is covered directly by
 // DSAExperimentation.Tests/DataStructures/IntervalSet/IntervalSetTests.cs - this
 // file just pins the two strategies to LeetCode's published examples.
-public sealed class MergeIntervalsTests
+public sealed partial class MergeIntervalsTests
 {
     public static TheoryData<(int Start, int End)[], (int Start, int End)[]> Examples =>
         new()

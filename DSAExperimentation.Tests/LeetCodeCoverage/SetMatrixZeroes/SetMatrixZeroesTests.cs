@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SetMatrixZeroes;
 // Harness only. Both strategies are SetMatrixZeroesSolution's - this file just
 // pins them to LeetCode's published examples. Each row is cloned before
 // zeroing so the two theory methods never share a mutated matrix.
-public sealed class SetMatrixZeroesTests
+public sealed partial class SetMatrixZeroesTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

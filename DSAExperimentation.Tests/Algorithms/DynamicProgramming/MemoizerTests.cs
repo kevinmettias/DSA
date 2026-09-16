@@ -71,4 +71,23 @@ public sealed partial class MemoizerTests
         Assert.Equal(0, result);
         Assert.Equal(1, recurrence.Calls);
     }
+
+    // The cache MemoRun.Replay consults belongs to the run, never to the recurrence or to
+    // Memoizer: a second Memoize over the same recurrence is a second run, so it must ask for
+    // every state again rather than answer from a cache the first run left behind. WaysTo(5)
+    // reaches the six distinct states 0..5, which is why the second run doubles the tally.
+    [Fact]
+    public void Replay_ASecondMemoizeOverTheSameRecurrence_StartsFromAnEmptyCache()
+    {
+        var recurrence = new CountedRecurrence<int, long>(new WaysFromPreviousTwoSteps());
+
+        Memoizer.Memoize<int, long>(5, recurrence);
+
+        var callsAfterFirstRun = recurrence.Calls;
+        var secondResult = Memoizer.Memoize<int, long>(5, recurrence);
+
+        Assert.Equal(6, callsAfterFirstRun);
+        Assert.Equal(5, secondResult);
+        Assert.Equal(12, recurrence.Calls);
+    }
 }

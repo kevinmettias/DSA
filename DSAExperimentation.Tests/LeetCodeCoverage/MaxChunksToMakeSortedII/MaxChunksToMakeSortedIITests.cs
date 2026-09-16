@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxChunksToMakeSortedII;
 
 // Harness only. Both strategies are MaxChunksToMakeSortedIISolution's - this file
 // just pins them to LeetCode's published examples plus a single-element edge case.
-public sealed class MaxChunksToMakeSortedIITests
+public sealed partial class MaxChunksToMakeSortedIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

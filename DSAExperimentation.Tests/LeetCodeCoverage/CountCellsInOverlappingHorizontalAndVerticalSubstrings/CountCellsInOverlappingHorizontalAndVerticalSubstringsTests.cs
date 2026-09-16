@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountCellsInOverlappingHoriz
 // just pins them to LeetCode's published examples, including the single-cell
 // grid (Example 3) where the flattened row-major and column-major strings
 // coincide.
-public sealed class CountCellsInOverlappingHorizontalAndVerticalSubstringsTests
+public sealed partial class CountCellsInOverlappingHorizontalAndVerticalSubstringsTests
 {
     public static TheoryData<char[][], string, int> Examples =>
         new()

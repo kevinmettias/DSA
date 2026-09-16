@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AllOneDataStructure;
 // baseline (previously untested scaffolding inlined in the benchmark) gets that same
 // coverage here for the first time. AllOneOp.Apply is pure dispatch, no counting logic
 // of its own.
-public sealed class AllOneDataStructureTests
+public sealed partial class AllOneDataStructureTests
 {
     public static TheoryData<AllOneOp[], string?[]> Examples =>
         new()
@@ -55,22 +55,17 @@ public sealed class AllOneDataStructureTests
     [MemberData(nameof(Examples))]
     public void CreateByBucketedLinkedList_LeetCodeExamples_TracksMaxAndMinCountKeys(
         AllOneOp[] operations, string?[] expected) =>
-        RunScript(AllOneDataStructureSolution.CreateByBucketedLinkedList(), operations, expected);
+        Assert.Equal(expected, RunScript(AllOneDataStructureSolution.CreateByBucketedLinkedList(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByDictionaryScan_LeetCodeExamples_TracksMaxAndMinCountKeys(
         AllOneOp[] operations, string?[] expected) =>
-        RunScript(AllOneDataStructureSolution.CreateByDictionaryScan(), operations, expected);
+        Assert.Equal(expected, RunScript(AllOneDataStructureSolution.CreateByDictionaryScan(), operations));
 
-    private static void RunScript(
-        AllOneDataStructureSolution.IAllOne allOne, AllOneOp[] operations, string?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(allOne));
-        }
-    }
+    private static string?[] RunScript(
+        AllOneDataStructureSolution.IAllOne allOne, AllOneOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(allOne))];
 
     // One call in an AllOne script: which method to invoke and with what key. Pure dispatch,
     // built via the named factories below so a script (like Examples above) reads like the

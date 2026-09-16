@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToReconstructATr
 // versus a node whose neighbours are not all shared with its only possible parent)
 // and the two ways an answer of 2 can arise (a tie at the minimal qualifying
 // degree, versus a node tied with its own parent).
-public sealed class NumberOfWaysToReconstructATreeTests
+public sealed partial class NumberOfWaysToReconstructATreeTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

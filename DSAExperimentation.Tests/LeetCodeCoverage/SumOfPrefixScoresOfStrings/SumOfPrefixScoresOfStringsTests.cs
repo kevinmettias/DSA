@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfPrefixScoresOfStrings;
 // asserted against the same examples, including the duplicate-word case where one
 // word's own prefixes are counted twice and the nested case where every word is a
 // prefix of the next.
-public sealed class SumOfPrefixScoresOfStringsTests
+public sealed partial class SumOfPrefixScoresOfStringsTests
 {
     public static TheoryData<string[], int[]> Examples =>
         new()

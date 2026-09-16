@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RobotBoundedInCircle;
 // states LeetCode's published examples once and runs each strategy over them, so a
 // failure names the strategy that broke rather than reporting a disagreement
 // between two anonymous arms.
-public sealed class RobotBoundedInCircleTests
+public sealed partial class RobotBoundedInCircleTests
 {
     public static TheoryData<BoundedCircleExample> Examples =>
         new()

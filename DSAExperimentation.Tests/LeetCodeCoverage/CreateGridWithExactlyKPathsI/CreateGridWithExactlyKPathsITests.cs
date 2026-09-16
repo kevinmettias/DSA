@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CreateGridWithExactlyKPathsI
 // file pins both strategies to LeetCode's published examples plus a
 // count-the-paths check, since "return any grid" means the published output
 // string is not itself the oracle - a DP walk over the returned grid is.
-public sealed class CreateGridWithExactlyKPathsITests
+public sealed partial class CreateGridWithExactlyKPathsITests
 {
     public static TheoryData<GridPathExample> Examples =>
         new()

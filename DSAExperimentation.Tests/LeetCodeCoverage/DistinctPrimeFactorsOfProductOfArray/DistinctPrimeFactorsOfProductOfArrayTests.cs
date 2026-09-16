@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistinctPrimeFactorsOfProduc
 // Harness only. Both strategies are DistinctPrimeFactorsOfProductOfArraySolution's
 // - the BigInteger product the benchmark's baseline arm used to own and nothing
 // asserted, and the per-element Set<int> union this file used to inline.
-public sealed class DistinctPrimeFactorsOfProductOfArrayTests
+public sealed partial class DistinctPrimeFactorsOfProductOfArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

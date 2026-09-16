@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignEventManager;
 // DesignTaskManagerTests already uses for its own instance-API problem.
 // EventManagerOp.Apply is pure dispatch (which method to call with which
 // arguments) - no priority/ordering logic of its own.
-public sealed class DesignEventManagerTests
+public sealed partial class DesignEventManagerTests
 {
     public static TheoryData<(int EventId, int Priority)[], EventManagerOp[], int?[]> Examples =>
         new()
@@ -40,22 +40,16 @@ public sealed class DesignEventManagerTests
     [MemberData(nameof(Examples))]
     public void EventManagerByLinearScan_LeetCodeExamples_PollsHighestPriorityEventFirst(
         (int EventId, int Priority)[] initialEvents, EventManagerOp[] operations, int?[] expected) =>
-        RunScript(new DesignEventManagerSolution.EventManagerByLinearScan(initialEvents), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignEventManagerSolution.EventManagerByLinearScan(initialEvents), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void EventManagerByLazyDeletionHeap_LeetCodeExamples_PollsHighestPriorityEventFirst(
         (int EventId, int Priority)[] initialEvents, EventManagerOp[] operations, int?[] expected) =>
-        RunScript(new DesignEventManagerSolution.EventManagerByLazyDeletionHeap(initialEvents), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignEventManagerSolution.EventManagerByLazyDeletionHeap(initialEvents), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignEventManagerSolution.IEventManagerStrategy strategy,
-        EventManagerOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+        EventManagerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 }

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RepeatedSubstringPattern;
 
 // Harness only. Both strategies are RepeatedSubstringPatternSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class RepeatedSubstringPatternTests
+public sealed partial class RepeatedSubstringPatternTests
 {
     public static TheoryData<RepeatedPatternExample> Examples =>
         new()

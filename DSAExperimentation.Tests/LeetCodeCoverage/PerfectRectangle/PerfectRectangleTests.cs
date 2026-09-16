@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PerfectRectangle;
 // three examples cover a gap (caught by the area check alone) and an overlap
 // masked by an equal-sized gap elsewhere (caught only by the corner count), so both
 // strategies are proven against the same cases that motivate having two checks.
-public sealed class PerfectRectangleTests
+public sealed partial class PerfectRectangleTests
 {
     public static TheoryData<PerfectRectangleCase> Examples =>
         new()

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToConvertStringII
 // this file just pins them to LeetCode's published examples: a
 // single-character case identical to LC 2976's, a multi-character chain
 // requiring two hops through one substring, and an unreachable case.
-public sealed class MinimumCostToConvertStringIITests
+public sealed partial class MinimumCostToConvertStringIITests
 {
     public static TheoryData<ConversionExample> Examples =>
         new()

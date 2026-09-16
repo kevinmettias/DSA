@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToVisitACellInAGr
 // Harness only: the algorithms live in MinimumTimeToVisitACellInAGridSolution. One
 // test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke (TwoSumTests precedent).
-public sealed class MinimumTimeToVisitACellInAGridTests
+public sealed partial class MinimumTimeToVisitACellInAGridTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfDaysToDisconn
 // is connected by LC 1568's own definition, so [[1]] takes one day - remove that cell
 // and zero islands remain. The benchmark arm, which had no such short-circuit, was
 // the one that agreed with LeetCode.
-public sealed class MinimumNumberOfDaysToDisconnectIslandTests
+public sealed partial class MinimumNumberOfDaysToDisconnectIslandTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

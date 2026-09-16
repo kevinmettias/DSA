@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AccountsMerge;
 // them to LeetCode's published examples. Merged-account order is unspecified by
 // LeetCode, so examples are checked as a set of expected accounts rather than by
 // position.
-public sealed class AccountsMergeTests
+public sealed partial class AccountsMergeTests
 {
     public static TheoryData<string[][], string[][]> Examples =>
         new()

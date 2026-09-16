@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfSubarrayMinimums;
 // counted twice), a strictly increasing array where every element is its own
 // prefix's minimum, and a strictly decreasing one where the last element is the
 // minimum of every subarray that reaches it.
-public sealed class SumOfSubarrayMinimumsTests
+public sealed partial class SumOfSubarrayMinimumsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

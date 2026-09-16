@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestAmountWithSingleD
 // Harness only. Both strategies are
 // KthSmallestAmountWithSingleDenominationCombinationSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class KthSmallestAmountWithSingleDenominationCombinationTests
+public sealed partial class KthSmallestAmountWithSingleDenominationCombinationTests
 {
     public static TheoryData<int[], long, long> Examples =>
         new()

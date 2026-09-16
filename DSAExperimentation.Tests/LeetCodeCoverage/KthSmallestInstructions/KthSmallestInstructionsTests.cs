@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestInstructions;
 // three published examples for destination [2, 3] plus the two ranks that bound
 // the ordering (rank = 1 is all 'H' first, rank = 10 is the last of the ten routes)
 // and a one-by-one destination where every step is forced.
-public sealed class KthSmallestInstructionsTests
+public sealed partial class KthSmallestInstructionsTests
 {
     public static TheoryData<int[], long, string> Examples =>
         new()

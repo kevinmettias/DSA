@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindAllPeopleWithSecret;
 // repeated-relaxation baseline that used to exist only as an unasserted benchmark
 // arm, and the per-timestamp KeyedDisjointSet composition - and this file pins
 // both to LeetCode's published examples plus the orderings that separate them.
-public sealed class FindAllPeopleWithSecretTests
+public sealed partial class FindAllPeopleWithSecretTests
 {
     public static TheoryData<int, (int First, int Second, int Time)[], int, int[]> Examples =>
         new()

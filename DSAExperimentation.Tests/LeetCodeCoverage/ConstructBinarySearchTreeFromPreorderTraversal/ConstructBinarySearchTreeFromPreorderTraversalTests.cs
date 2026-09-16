@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinarySearchTreeFro
 // means) and its in-order must come out ascending (that is what makes it a BST) -
 // because preorder alone does not prove the ordering invariant. Reading a built
 // tree back out is result inspection, not the algorithm, which stays in tier 4.
-public sealed class ConstructBinarySearchTreeFromPreorderTraversalTests
+public sealed partial class ConstructBinarySearchTreeFromPreorderTraversalTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

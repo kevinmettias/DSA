@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfVisiblePoints
 // windowing bug hides in: a window that straddles the 360/0-degree seam, a field of
 // view narrow enough that a window centered on a point would overcount, and points
 // standing exactly on `location`.
-public sealed class MaximumNumberOfVisiblePointsTests
+public sealed partial class MaximumNumberOfVisiblePointsTests
 {
     public static TheoryData<int[][], int, int[], int> Examples =>
         new()

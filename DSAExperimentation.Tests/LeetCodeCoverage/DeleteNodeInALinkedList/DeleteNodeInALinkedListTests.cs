@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteNodeInALinkedList;
 // file builds LeetCode's published examples as linked lists, calls the solution on
 // the node at the given position (LeetCode's signature never passes a head
 // reference), then reads the resulting list back from head to verify.
-public sealed class DeleteNodeInALinkedListTests
+public sealed partial class DeleteNodeInALinkedListTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MedianOfTwoSortedArrays;
 
 // Harness only. Both strategies are MedianOfTwoSortedArraysSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class MedianOfTwoSortedArraysTests
+public sealed partial class MedianOfTwoSortedArraysTests
 {
     public static TheoryData<int[], int[], double> Examples =>
         new()

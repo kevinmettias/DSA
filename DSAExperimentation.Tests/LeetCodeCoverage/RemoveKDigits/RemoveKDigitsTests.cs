@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveKDigits;
 
 // Harness only. Both strategies are RemoveKDigitsSolution's - this file pins them to
 // LeetCode's published examples.
-public sealed class RemoveKDigitsTests
+public sealed partial class RemoveKDigitsTests
 {
     public static TheoryData<string, int, string> Examples =>
         new()

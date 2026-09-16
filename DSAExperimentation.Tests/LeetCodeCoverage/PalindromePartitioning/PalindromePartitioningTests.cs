@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioning;
 
 // Harness only. PalindromePartitioningSolution owns the backtracking walk; this
 // file pins it to LeetCode's published examples.
-public sealed class PalindromePartitioningTests
+public sealed partial class PalindromePartitioningTests
 {
     public static TheoryData<string, string[][]> Examples =>
         new()

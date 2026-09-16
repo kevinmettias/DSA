@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfSetsOfKNonOverlappin
 // segmentCount > pointCount guard exists for: segmentCount segments seated in
 // exactly segmentCount+1 points by touching, and segmentCount segments that cannot
 // be seated at all.
-public sealed class NumberOfSetsOfKNonOverlappingLineSegmentsTests
+public sealed partial class NumberOfSetsOfKNonOverlappingLineSegmentsTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

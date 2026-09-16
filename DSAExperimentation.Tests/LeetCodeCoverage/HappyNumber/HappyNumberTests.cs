@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HappyNumber;
 // Harness only: both strategies are HappyNumberSolution's - this file pins them
 // to LeetCode's published examples plus a couple of extra cases proving the
 // cycle-detection actually terminates instead of looping forever.
-public sealed class HappyNumberTests
+public sealed partial class HappyNumberTests
 {
     public static TheoryData<HappyNumberExample> Examples =>
         new()

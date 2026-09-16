@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumWeightedSubgraphWithT
 // strategies are MinimumWeightedSubgraphWithTheRequiredPathsSolution's - this file
 // just pins them to LeetCode's published examples plus the unreachable and
 // shared-source cases.
-public sealed class MinimumWeightedSubgraphWithTheRequiredPathsTests
+public sealed partial class MinimumWeightedSubgraphWithTheRequiredPathsTests
 {
     public static TheoryData<SubgraphExample> Examples =>
         new()

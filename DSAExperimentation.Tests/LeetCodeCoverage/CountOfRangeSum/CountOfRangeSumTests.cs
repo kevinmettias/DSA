@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountOfRangeSum;
 // them to LeetCode's published examples, including a large-magnitude case that
 // proves the algorithm's long prefix-sum accumulator is load-bearing, not
 // incidental.
-public sealed class CountOfRangeSumTests
+public sealed partial class CountOfRangeSumTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
         new()

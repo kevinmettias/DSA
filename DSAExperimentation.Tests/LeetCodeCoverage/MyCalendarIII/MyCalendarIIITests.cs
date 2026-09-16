@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MyCalendarIII;
 // Harness only. Both strategies are MyCalendarIIISolution's - this file just
 // replays LeetCode's published Book() call scripts against each and asserts
 // the max-overlap-so-far result returned after every single call.
-public sealed class MyCalendarIIITests
+public sealed partial class MyCalendarIIITests
 {
     public static TheoryData<(int Start, int End)[], int[]> Examples =>
         new()

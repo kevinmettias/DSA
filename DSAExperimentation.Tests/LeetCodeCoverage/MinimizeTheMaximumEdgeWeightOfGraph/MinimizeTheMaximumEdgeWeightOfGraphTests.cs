@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeTheMaximumEdgeWeight
 // both feasibility searches are MinimizeTheMaximumEdgeWeightOfGraphSolution's -
 // this file just pins them to LeetCode's published examples, including the two
 // unreachable cases where even keeping every edge cannot reach every node.
-public sealed class MinimizeTheMaximumEdgeWeightOfGraphTests
+public sealed partial class MinimizeTheMaximumEdgeWeightOfGraphTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
         new()

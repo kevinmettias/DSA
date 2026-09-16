@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumMovesToCaptureTheQuee
 // Harness only: the algorithms live in MinimumMovesToCaptureTheQueenSolution. One
 // test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke (TwoSumTests precedent).
-public sealed class MinimumMovesToCaptureTheQueenTests
+public sealed partial class MinimumMovesToCaptureTheQueenTests
 {
     public static TheoryData<QueenExample> Examples =>
         new()

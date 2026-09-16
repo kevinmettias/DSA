@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FourDivisors;
 // downward walk and the full-range trial division that used to live untested as the
 // benchmark's baseline - pinned to LeetCode's published examples plus numbers with
 // one, two, three and five divisors, which must all contribute nothing.
-public sealed class FourDivisorsTests
+public sealed partial class FourDivisorsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

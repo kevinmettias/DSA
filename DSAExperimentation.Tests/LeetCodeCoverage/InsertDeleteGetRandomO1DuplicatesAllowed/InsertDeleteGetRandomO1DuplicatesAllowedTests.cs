@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertDeleteGetRandomO1Dupli
 // depends on which call it answers" idea ImplementRouterTests already uses for
 // ForwardPacket's int[]. RandomizedCollectionOp.Apply is pure dispatch - no
 // multiplicity-tracking logic of its own.
-public sealed class InsertDeleteGetRandomO1DuplicatesAllowedTests
+public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedTests
 {
     public static TheoryData<RandomizedCollectionOp[], object?[]> Examples =>
         new()
@@ -57,44 +57,55 @@ public sealed class InsertDeleteGetRandomO1DuplicatesAllowedTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandomizedCollectionByListScan_LeetCodeExamples_TracksMultiplicitiesCorrectly(
-        RandomizedCollectionOp[] operations, object?[] expected) =>
-        RunScript(
+        RandomizedCollectionOp[] operations, object?[] expected)
+    {
+        var replies = RunScript(
             new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan(),
-            operations,
-            expected);
+            operations);
+
+        for (var i = 0; i < replies.Length; i++)
+        {
+            // GetRandom's expected slot carries the candidate set of values valid at
+            // this point in the script; int/bool results (Insert/Remove/Count) compare
+            // fine as plain boxed objects.
+            if (expected[i] is int[] candidates)
+            {
+                Assert.Contains(Assert.IsType<int>(replies[i]), candidates);
+            }
+            else
+            {
+                Assert.Equal(expected[i], replies[i]);
+            }
+        }
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandomizedCollectionByLinkedOccurrences_LeetCodeExamples_TracksMultiplicitiesCorrectly(
-        RandomizedCollectionOp[] operations, object?[] expected) =>
-        RunScript(
+        RandomizedCollectionOp[] operations, object?[] expected)
+    {
+        var replies = RunScript(
             new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences(),
-            operations,
-            expected);
+            operations);
 
-    private static void RunScript(
+        for (var i = 0; i < replies.Length; i++)
+        {
+            // GetRandom's expected slot carries the candidate set of values valid at
+            // this point in the script; int/bool results (Insert/Remove/Count) compare
+            // fine as plain boxed objects.
+            if (expected[i] is int[] candidates)
+            {
+                Assert.Contains(Assert.IsType<int>(replies[i]), candidates);
+            }
+            else
+            {
+                Assert.Equal(expected[i], replies[i]);
+            }
+        }
+    }
+
+    private static object?[] RunScript(
         InsertDeleteGetRandomO1DuplicatesAllowedSolution.IRandomizedCollection collection,
-        RandomizedCollectionOp[] operations,
-        object?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            AssertMatches(expected[i], operations[i].Apply(collection));
-        }
-    }
-
-    // GetRandom's expected slot carries the candidate set of values valid at that
-    // point in the script rather than one exact value; int/bool results
-    // (Insert/Remove/Count) compare fine as plain boxed objects.
-    private static void AssertMatches(object? expected, object? actual)
-    {
-        if (expected is int[] candidates)
-        {
-            Assert.Contains(Assert.IsType<int>(actual), candidates);
-        }
-        else
-        {
-            Assert.Equal(expected, actual);
-        }
-    }
+        RandomizedCollectionOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(collection))];
 }

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StockPriceFluctuation;
 // tuple, the same shape DetectSquaresTests uses for its own instance-API problem. The
 // full-scan baseline (previously untested scaffolding inlined in the benchmark) gets
 // the same coverage as the two-heap strategy here for the first time.
-public sealed class StockPriceFluctuationTests
+public sealed partial class StockPriceFluctuationTests
 {
     public static TheoryData<StockPriceOp[], int?[]> Examples =>
         new()
@@ -82,22 +82,17 @@ public sealed class StockPriceFluctuationTests
     [MemberData(nameof(Examples))]
     public void CreateByLazyDeletionTwoHeaps_LeetCodeExamples_TracksCurrentMaximumAndMinimum(
         StockPriceOp[] operations, int?[] expected) =>
-        RunScript(StockPriceFluctuationSolution.CreateByLazyDeletionTwoHeaps(), operations, expected);
+        Assert.Equal(expected, RunScript(StockPriceFluctuationSolution.CreateByLazyDeletionTwoHeaps(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByFullScan_LeetCodeExamples_TracksCurrentMaximumAndMinimum(
         StockPriceOp[] operations, int?[] expected) =>
-        RunScript(StockPriceFluctuationSolution.CreateByFullScan(), operations, expected);
+        Assert.Equal(expected, RunScript(StockPriceFluctuationSolution.CreateByFullScan(), operations));
 
-    private static void RunScript(
-        StockPriceFluctuationSolution.IStockPrice stockPrice, StockPriceOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(stockPrice));
-        }
-    }
+    private static int?[] RunScript(
+        StockPriceFluctuationSolution.IStockPrice stockPrice, StockPriceOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(stockPrice))];
 
     // One call in a StockPrice script: which operation to invoke and, for Update, the
     // record to store. Pure dispatch, built via the named factories below so a script

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfFlowersInFullBloom;
 // each of them to LeetCode's published examples plus the interval endpoints the
 // bound strategy has to split exactly right (a person arriving before every start,
 // after every end, and on a start and an end).
-public sealed class NumberOfFlowersInFullBloomTests
+public sealed partial class NumberOfFlowersInFullBloomTests
 {
     public static TheoryData<int[][], int[], int[]> Examples =>
         new()

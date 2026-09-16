@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithMajorityEl
 // LeetCode's published examples (the same three examples LC 3737's own
 // CountSubarraysWithMajorityElementITests uses - LC 3739 restates the identical
 // problem at a larger scale).
-public sealed class CountSubarraysWithMajorityElementIITests
+public sealed partial class CountSubarraysWithMajorityElementIITests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BlockPlacementQueries;
 // Harness only. Both strategies are BlockPlacementQueriesSolution's - this
 // file just pins them to LeetCode's published examples, including the
 // unopenable [2,2,2] case that depends on obstacle 0 always being present.
-public sealed class BlockPlacementQueriesTests
+public sealed partial class BlockPlacementQueriesTests
 {
     public static TheoryData<int[][], bool[]> Examples =>
         new()

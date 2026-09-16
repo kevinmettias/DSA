@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheLargestPalindromeDivi
 
 // Harness only: both strategies live in FindTheLargestPalindromeDivisibleByKSolution -
 // this file just pins them to LeetCode's published examples.
-public sealed class FindTheLargestPalindromeDivisibleByKTests
+public sealed partial class FindTheLargestPalindromeDivisibleByKTests
 {
     public static TheoryData<int, int, string> Examples =>
         new()

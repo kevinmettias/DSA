@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortingTheSentence;
 // them to LeetCode's published examples in LeetCode's own single-string input
 // shape, plus the one-word case, a two-word swap, and a fully reversed nine-word
 // sentence at the problem's upper bound.
-public sealed class SortingTheSentenceTests
+public sealed partial class SortingTheSentenceTests
 {
     public static TheoryData<SentenceExample> Examples =>
         new()

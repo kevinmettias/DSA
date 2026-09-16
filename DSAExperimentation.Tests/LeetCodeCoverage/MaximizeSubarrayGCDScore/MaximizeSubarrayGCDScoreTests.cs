@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeSubarrayGCDScore;
 
 // Harness only. Both strategies are MaximizeSubarrayGCDScoreSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class MaximizeSubarrayGCDScoreTests
+public sealed partial class MaximizeSubarrayGCDScoreTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

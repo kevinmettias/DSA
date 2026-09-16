@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumMovesToReachTargetInG
 // Harness only. Both strategies are MinimumMovesToReachTargetInGridSolution's - this
 // file just pins them to LeetCode's published examples, including the unreachable
 // target (Example 3) neither strategy can find any path to.
-public sealed class MinimumMovesToReachTargetInGridTests
+public sealed partial class MinimumMovesToReachTargetInGridTests
 {
     public static TheoryData<MoveCountExample> Examples =>
         new()

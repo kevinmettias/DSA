@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumSwapsToMakeSequencesI
 // this file pins them to LeetCode's published examples plus the degenerate shapes the
 // recurrence's base case has to survive: a single index, a pair already increasing in
 // both arrays, and a pair that only becomes increasing by swapping the last index.
-public sealed class MinimumSwapsToMakeSequencesIncreasingTests
+public sealed partial class MinimumSwapsToMakeSequencesIncreasingTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

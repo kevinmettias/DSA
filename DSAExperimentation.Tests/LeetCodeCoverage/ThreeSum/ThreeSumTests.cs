@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ThreeSum;
 // them to LeetCode's published examples. Triplet order is not part of the
 // contract for either strategy (the brute force collects into a HashSet), so
 // examples are compared as sorted sets of triplets.
-public sealed class ThreeSumTests
+public sealed partial class ThreeSumTests
 {
     public static TheoryData<int[], (int First, int Second, int Third)[]> Examples =>
         new()

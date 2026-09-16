@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeTheMaximumOfTwoArray
 // hand-rolled lo/hi bisection that used to live only in the benchmark's baseline
 // arm, and the BinarySearch.LowerBound walk over the feasibility sequence the test
 // used to inline.
-public sealed class MinimizeTheMaximumOfTwoArraysTests
+public sealed partial class MinimizeTheMaximumOfTwoArraysTests
 {
     public static TheoryData<MinimizeSetExample> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PoorPigs;
 // Harness only. Both strategies are PoorPigsSolution's - this file just pins them to
 // LeetCode's published examples, including the zero-pigs case where a single bucket
 // needs no testing at all.
-public sealed class PoorPigsTests
+public sealed partial class PoorPigsTests
 {
     public static TheoryData<int, int, int, int> Examples =>
         new()

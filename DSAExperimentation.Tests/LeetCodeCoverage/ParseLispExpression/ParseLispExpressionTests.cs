@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ParseLispExpression;
 // asserted against the same examples, including nested shadowing ("let x 2
 // (mult x (let x 3 y 4 (add x y))))") and sequential re-binding within one
 // "let" ("let x 3 x 2 x").
-public sealed class ParseLispExpressionTests
+public sealed partial class ParseLispExpressionTests
 {
     public static TheoryData<string, long> Examples =>
         new()

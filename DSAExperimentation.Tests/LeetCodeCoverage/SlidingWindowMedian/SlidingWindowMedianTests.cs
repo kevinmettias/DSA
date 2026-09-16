@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SlidingWindowMedian;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SlidingWindowMedian;
 
 // Harness only: both strategies live in SlidingWindowMedianSolution.
-public sealed class SlidingWindowMedianTests
+public sealed partial class SlidingWindowMedianTests
 {
     public static TheoryData<int[], int, double[]> Examples =>
         new()

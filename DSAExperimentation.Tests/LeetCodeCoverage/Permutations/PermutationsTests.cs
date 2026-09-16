@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Permutations;
 
 // Harness only: both strategies live in PermutationsSolution and are asserted
 // against the same examples, so a failure names the strategy that broke.
-public sealed class PermutationsTests
+public sealed partial class PermutationsTests
 {
     public static TheoryData<int[], int[][]> Examples =>
         new()

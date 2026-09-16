@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AddTwoNumbers;
 // Harness only. Both strategies are AddTwoNumbersSolution's - this file pins them
 // to LeetCode's published examples, stated once as digit arrays in the same
 // least-significant-digit-first order LC 2's own lists use.
-public sealed class AddTwoNumbersTests
+public sealed partial class AddTwoNumbersTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

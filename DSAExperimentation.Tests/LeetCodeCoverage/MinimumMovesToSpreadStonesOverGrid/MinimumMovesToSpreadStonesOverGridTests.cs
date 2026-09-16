@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumMovesToSpreadStonesOv
 // MinimumMovesToSpreadStonesOverGridSolution. One test method per strategy over
 // one shared set of LeetCode's own examples, so a failure names the strategy that
 // broke.
-public sealed class MinimumMovesToSpreadStonesOverGridTests
+public sealed partial class MinimumMovesToSpreadStonesOverGridTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()
@@ -15,6 +15,9 @@ public sealed class MinimumMovesToSpreadStonesOverGridTests
             { [[1, 3, 0], [1, 0, 0], [1, 0, 3]], 4 },
             { [[1, 1, 1], [1, 1, 1], [1, 1, 1]], 0 }, // already balanced, no moves needed
         };
+
+    public static TheoryData<int[]> RandomizedGrids =>
+        new() { new[] { 9, 0, 0, 0, 0, 0, 0, 0, 0 }, new[] { 0, 0, 4, 0, 3, 0, 2, 0, 0 }, new[] { 2, 2, 1, 0, 1, 0, 1, 1, 1 } };
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -27,9 +30,7 @@ public sealed class MinimumMovesToSpreadStonesOverGridTests
         => Assert.Equal(expected, MinimumMovesToSpreadStonesOverGridSolution.MinimumMovesByBacktrackPermutation(grid));
 
     [Theory]
-    [InlineData(new[] { 9, 0, 0, 0, 0, 0, 0, 0, 0 })]
-    [InlineData(new[] { 0, 0, 4, 0, 3, 0, 2, 0, 0 })]
-    [InlineData(new[] { 2, 2, 1, 0, 1, 0, 1, 1, 1 })]
+    [MemberData(nameof(RandomizedGrids))]
     public void BothStrategies_RandomizedGrids_Agree(int[] flatGrid)
     {
         var grid = new[]

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WiggleSortII;
 // Harness only: both strategies live in WiggleSortIISolution and are asserted
 // against the same examples - a value permutation check plus the strict wiggle
 // property, since LC accepts any arrangement of the input's own values.
-public sealed class WiggleSortIITests
+public sealed partial class WiggleSortIITests
 {
     public static TheoryData<int[]> Examples =>
         new()

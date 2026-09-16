@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchA2DMatrix;
 
 // Harness only. Both strategies are SearchA2DMatrixSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class SearchA2DMatrixTests
+public sealed partial class SearchA2DMatrixTests
 {
     public static TheoryData<MatrixSearchExample> Examples =>
         new()

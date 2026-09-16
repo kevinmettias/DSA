@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EliminationGame;
 // (1 and 9) plus the larger counts the pre-migration test cross-validated the
 // closed-form arithmetic against a list simulation for - so a failure names the
 // strategy that broke.
-public sealed class EliminationGameTests
+public sealed partial class EliminationGameTests
 {
     public static TheoryData<int, int> Examples =>
         new()

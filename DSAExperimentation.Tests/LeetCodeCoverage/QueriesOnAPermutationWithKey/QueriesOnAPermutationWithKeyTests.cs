@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.QueriesOnAPermutationWithKey
 // are asserted against the same examples - LeetCode's two, plus a single-query
 // case, a repeated-query case that must report 0 once the value is already at
 // the front, and the last-element case that exercises a full-length scan.
-public sealed class QueriesOnAPermutationWithKeyTests
+public sealed partial class QueriesOnAPermutationWithKeyTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

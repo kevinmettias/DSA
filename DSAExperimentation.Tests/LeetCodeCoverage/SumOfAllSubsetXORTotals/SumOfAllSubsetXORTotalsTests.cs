@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfAllSubsetXORTotals;
 // SumOfAllSubsetXORTotalsSolution's - this file just pins them to LeetCode's
 // published examples plus the single-element and duplicate-value edges, one
 // theory per strategy so a failure names the arm that broke.
-public sealed class SumOfAllSubsetXORTotalsTests
+public sealed partial class SumOfAllSubsetXORTotalsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

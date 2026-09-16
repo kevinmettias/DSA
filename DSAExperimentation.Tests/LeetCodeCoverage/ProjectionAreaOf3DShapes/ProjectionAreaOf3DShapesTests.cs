@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ProjectionAreaOf3DShapes;
 // row/column split the pre-migration test carried, and the fused single pass - are
 // ProjectionAreaOf3DShapesSolution's; this file just pins them to LeetCode's
 // published examples.
-public sealed class ProjectionAreaOf3DShapesTests
+public sealed partial class ProjectionAreaOf3DShapesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

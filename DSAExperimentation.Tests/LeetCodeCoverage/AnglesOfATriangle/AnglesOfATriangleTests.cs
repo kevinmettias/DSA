@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AnglesOfATriangle;
 // Harness only. Both strategies are AnglesOfATriangleSolution's - this file just
 // pins them to LeetCode's published examples, comparing each returned angle
 // within LeetCode's own stated 1e-5 tolerance.
-public sealed class AnglesOfATriangleTests
+public sealed partial class AnglesOfATriangleTests
 {
     public static TheoryData<int[], double[]> Examples =>
         new()

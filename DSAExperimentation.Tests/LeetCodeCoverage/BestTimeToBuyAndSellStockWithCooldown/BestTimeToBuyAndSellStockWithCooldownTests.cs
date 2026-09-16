@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockWit
 // Harness only: the algorithms live in BestTimeToBuyAndSellStockWithCooldownSolution.
 // One test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke.
-public sealed class BestTimeToBuyAndSellStockWithCooldownTests
+public sealed partial class BestTimeToBuyAndSellStockWithCooldownTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

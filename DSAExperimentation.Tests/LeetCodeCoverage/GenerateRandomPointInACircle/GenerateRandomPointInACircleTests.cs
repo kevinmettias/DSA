@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GenerateRandomPointInACircle
 // `using static`: a wildcard import drops every member in as a bare identifier,
 // so a reader meeting GenerateRandomPointInACircleByClosedFormPolar has nothing
 // on the line telling them whose it is.
-public sealed class GenerateRandomPointInACircleTests
+public sealed partial class GenerateRandomPointInACircleTests
 {
     private const double ContainmentTolerance = 1e-9;
 

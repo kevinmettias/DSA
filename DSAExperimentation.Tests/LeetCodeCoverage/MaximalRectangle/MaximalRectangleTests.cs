@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximalRectangle;
 // Harness only. Both strategies live in MaximalRectangleSolution - this file
 // just pins them to LeetCode's published examples plus an all-zeros matrix,
 // where neither strategy finds any rectangle at all.
-public sealed class MaximalRectangleTests
+public sealed partial class MaximalRectangleTests
 {
     public static TheoryData<char[][], int> Examples =>
         new()

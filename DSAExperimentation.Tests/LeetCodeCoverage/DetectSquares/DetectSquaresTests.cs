@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DetectSquares;
 // AllOneDataStructureTests uses for its own instance-API problem. The point-list
 // baseline (previously untested scaffolding inlined in the benchmark) gets the same
 // coverage as the grouped-HashMap strategy here for the first time.
-public sealed class DetectSquaresTests
+public sealed partial class DetectSquaresTests
 {
     public static TheoryData<DetectSquaresOp[], int?[]> Examples =>
         new()
@@ -64,22 +64,17 @@ public sealed class DetectSquaresTests
     [MemberData(nameof(Examples))]
     public void CreateByHashMapGroupedByX_LeetCodeExamples_CountsAxisAlignedSquares(
         DetectSquaresOp[] operations, int?[] expected) =>
-        RunScript(DetectSquaresSolution.CreateByHashMapGroupedByX(), operations, expected);
+        Assert.Equal(expected, RunScript(DetectSquaresSolution.CreateByHashMapGroupedByX(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByPointListScan_LeetCodeExamples_CountsAxisAlignedSquares(
         DetectSquaresOp[] operations, int?[] expected) =>
-        RunScript(DetectSquaresSolution.CreateByPointListScan(), operations, expected);
+        Assert.Equal(expected, RunScript(DetectSquaresSolution.CreateByPointListScan(), operations));
 
-    private static void RunScript(
-        DetectSquaresSolution.IDetectSquares detector, DetectSquaresOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(detector));
-        }
-    }
+    private static int?[] RunScript(
+        DetectSquaresSolution.IDetectSquares detector, DetectSquaresOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(detector))];
 
     // One call in a DetectSquares script: which operation to invoke and at which point.
     // Pure dispatch, built via the named factories below so a script (like Examples above)

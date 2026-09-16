@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubarraysWithMajorityEl
 // Harness only. Both strategies are
 // CountSubarraysWithMajorityElementISolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class CountSubarraysWithMajorityElementITests
+public sealed partial class CountSubarraysWithMajorityElementITests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

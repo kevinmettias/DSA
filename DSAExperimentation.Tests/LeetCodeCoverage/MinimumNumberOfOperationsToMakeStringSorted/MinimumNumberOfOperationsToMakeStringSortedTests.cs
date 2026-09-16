@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfOperationsToM
 // over one shared set of examples, so a failure names the strategy that broke - the
 // linear frequency scan included, which was previously a benchmark-only arm nothing
 // asserted.
-public sealed class MinimumNumberOfOperationsToMakeStringSortedTests
+public sealed partial class MinimumNumberOfOperationsToMakeStringSortedTests
 {
     public static TheoryData<string, int> Examples =>
         new()

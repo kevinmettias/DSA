@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeSubarraysAfterRemovi
 // Harness only. Both strategies are
 // MaximizeSubarraysAfterRemovingOneConflictingPairSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class MaximizeSubarraysAfterRemovingOneConflictingPairTests
+public sealed partial class MaximizeSubarraysAfterRemovingOneConflictingPairTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

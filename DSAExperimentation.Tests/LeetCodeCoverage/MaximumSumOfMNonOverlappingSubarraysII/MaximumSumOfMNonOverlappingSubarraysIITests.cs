@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumOfMNonOverlappingS
 // Harness only. Both strategies are MaximumSumOfMNonOverlappingSubarraysIISolution's -
 // this file just pins them to LeetCode's published examples, the same four Part I
 // (LC 3956) uses, since Part II states the identical rules at a larger n.
-public sealed class MaximumSumOfMNonOverlappingSubarraysIITests
+public sealed partial class MaximumSumOfMNonOverlappingSubarraysIITests
 {
     public static TheoryData<SubarraySumExample> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SoupServings;
 // case the old test asserted) are stated once and replayed against each, so a failure
 // names the strategy that broke rather than reporting a disagreement between an
 // anonymous test helper and an anonymous benchmark arm.
-public sealed class SoupServingsTests
+public sealed partial class SoupServingsTests
 {
     private const int ProbabilityPrecision = 5;
 

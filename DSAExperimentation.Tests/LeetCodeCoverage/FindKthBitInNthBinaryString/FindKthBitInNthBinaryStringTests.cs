@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindKthBitInNthBinaryString;
 // asserted against the same examples, which cover all three cases of the bisection -
 // the middle bit, a position left of it, and a mirrored-and-inverted position right
 // of it.
-public sealed class FindKthBitInNthBinaryStringTests
+public sealed partial class FindKthBitInNthBinaryStringTests
 {
     public static TheoryData<int, int, char> Examples =>
         new()

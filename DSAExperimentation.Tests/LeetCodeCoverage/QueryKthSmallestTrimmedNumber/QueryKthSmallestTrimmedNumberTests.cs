@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.QueryKthSmallestTrimmedNumbe
 // The tie case pins the rule the whole problem turns on - equal trimmed values resolve toward
 // the smaller original index - which the selection scan gets from scanning ascending and the
 // sort gets from MergeSort's documented stability.
-public sealed class QueryKthSmallestTrimmedNumberTests
+public sealed partial class QueryKthSmallestTrimmedNumberTests
 {
     public static TheoryData<string[], int[][], int[]> Examples => new()
     {

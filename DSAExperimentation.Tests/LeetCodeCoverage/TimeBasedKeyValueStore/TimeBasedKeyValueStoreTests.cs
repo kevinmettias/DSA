@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TimeBasedKeyValueStore;
 // A script step is one published call: IsSet steps call Set(Key, Value, Timestamp)
 // and assert nothing; the rest call Get(Key, Timestamp) and assert Value, which for
 // those steps is the answer LeetCode publishes.
-public sealed class TimeBasedKeyValueStoreTests
+public sealed partial class TimeBasedKeyValueStoreTests
 {
     public static TheoryData<(bool IsSet, string Key, string Value, int Timestamp)[]> Examples =>
         new()

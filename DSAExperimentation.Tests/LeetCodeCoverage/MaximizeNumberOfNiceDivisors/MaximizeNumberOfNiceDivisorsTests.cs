@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeNumberOfNiceDivisors
 // file pins them to LeetCode's two published examples plus the small budgets where
 // leaving the budget whole still beats splitting it, and the first budgets at which
 // peeling a 3 overtakes peeling a 2.
-public sealed class MaximizeNumberOfNiceDivisorsTests
+public sealed partial class MaximizeNumberOfNiceDivisorsTests
 {
     // 57 = 3 * 19, so the exact product is 3^19 = 1,162,261,467 - the smallest
     // multiple-of-three budget whose answer overflows LeetCode's own 1e9+7 modulus

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveZeroSumConsecutiveNode
 // LeetCode's published examples as linked lists and checks the surviving values,
 // including the cases the nested rescan used to get wrong: a run that starts at a
 // node rather than at the head, and a list that cancels away entirely.
-public sealed class RemoveZeroSumConsecutiveNodesFromLinkedListTests
+public sealed partial class RemoveZeroSumConsecutiveNodesFromLinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheNumberOfPossibleWaysF
 // Harness only. Both counting strategies are
 // FindTheNumberOfPossibleWaysForAnEventSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class FindTheNumberOfPossibleWaysForAnEventTests
+public sealed partial class FindTheNumberOfPossibleWaysForAnEventTests
 {
     public static TheoryData<int, int, int, int> Examples =>
         new()
