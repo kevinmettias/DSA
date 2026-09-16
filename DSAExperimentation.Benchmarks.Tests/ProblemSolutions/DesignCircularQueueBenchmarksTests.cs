@@ -14,6 +14,10 @@ public sealed partial class DesignCircularQueueBenchmarksTests
     // Mirrors the benchmark's own script length: the replay's total is a closed form over it.
     private const int OperationCount = 50_000;
 
+    // The summed value of the closed form 1 + 2 + ... + (OperationCount - 1) is a triangular number,
+    // which is that product over this.
+    private const int TriangularNumberDivisor = 2;
+
     [Fact]
     public void Setup_SameCapacity_RebuildsTheSameCallScript()
     {
@@ -53,5 +57,5 @@ public sealed partial class DesignCircularQueueBenchmarksTests
     // for the DeQueue that makes room; and step i's Rear contributes the value i the step before
     // it enqueued.
     private static long ExpectedReplayTotal(int capacity) =>
-        ((long)OperationCount * (OperationCount - 1) / 2) + OperationCount + (OperationCount - capacity);
+        ((long)OperationCount * (OperationCount - 1) / TriangularNumberDivisor) + OperationCount + (OperationCount - capacity);
 }

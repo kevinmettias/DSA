@@ -22,6 +22,9 @@ public sealed partial class ImplementQueueUsingStacksBenchmarksTests
     // private to the harness.
     private const int ScriptSeed = 232;
 
+    // The script's three rolls: 0 pushes the next value, 1 peeks, 2 pops.
+    private const int OperationKindCount = 3;
+
     [Fact]
     public void Setup_SameOperationCount_RebuildsTheSameScript() =>
         Assert.Equal(BuildHarness().TwoStackTransfer(), BuildHarness().TwoStackTransfer());
@@ -54,7 +57,7 @@ public sealed partial class ImplementQueueUsingStacksBenchmarksTests
 
         for (var i = 0; i < operationCount; i++)
         {
-            var roll = pending > 0 ? random.Next(0, 3) : 0;
+            var roll = pending > 0 ? random.Next(0, OperationKindCount) : 0;
 
             if (roll == 0)
             {

@@ -12,6 +12,7 @@ public sealed partial class MinimumWeightedSubgraphWorkloadsTests
     private const int ExtraEdgesPerNode = 3;
     private const int Seed = 2203; // LC problem number
     private const int EdgeFieldCount = 3; // FromNode, ToNode, Weight
+    private const int WeightFieldIndex = 2;
     private const int MinEdgeWeight = 1;
     private const int MaxEdgeWeight = 49;
     private const int SecondSourceId = 1;
@@ -26,7 +27,7 @@ public sealed partial class MinimumWeightedSubgraphWorkloadsTests
         Assert.All(edges, edge => Assert.Equal(EdgeFieldCount, edge.Length));
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinEdgeWeight, MaxEdgeWeight));
+        Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], MinEdgeWeight, MaxEdgeWeight));
     }
 
     // LC 2203's own constraint is that no edge's endpoints are the same node, so this has to hold for

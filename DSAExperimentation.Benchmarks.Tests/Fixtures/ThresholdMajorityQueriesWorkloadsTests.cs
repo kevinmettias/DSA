@@ -14,7 +14,8 @@ public sealed partial class ThresholdMajorityQueriesWorkloadsTests
     private const int ValueAlphabetSize = 20;
     private const int SmallestValue = 1;
     private const int SmallestValueCount = 2;
-    private const int QueryWidth = 3;
+    private const int QueryWidth = 3; // Left, Right, Threshold
+    private const int ThresholdFieldIndex = 2;
     private const int SmallestThreshold = 1;
 
     [Fact]
@@ -49,7 +50,7 @@ public sealed partial class ThresholdMajorityQueriesWorkloadsTests
         Assert.All(queries, query => Assert.Equal(QueryWidth, query.Length));
         Assert.All(queries, query => Assert.InRange(query[0], 0, ElementCount - 1));
         Assert.All(queries, query => Assert.InRange(query[1], query[0], ElementCount - 1));
-        Assert.All(queries, query => Assert.InRange(query[2], SmallestThreshold, query[1] - query[0] + 1));
+        Assert.All(queries, query => Assert.InRange(query[ThresholdFieldIndex], SmallestThreshold, query[1] - query[0] + 1));
     }
 
     [Fact]

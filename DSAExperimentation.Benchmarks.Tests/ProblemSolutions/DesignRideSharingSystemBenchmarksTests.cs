@@ -17,6 +17,9 @@ public sealed partial class DesignRideSharingSystemBenchmarksTests
     // rider exactly once each.
     private const int CancelledRiderCount = SmallestRiderCount / 10;
 
+    // A maximum needs both matched id sets - the drivers and the riders - each holding distinct ids.
+    private const long MatchedIdSetCount = 2L;
+
     [Fact]
     public void Setup_SameRiderCount_RebuildsTheSameCallScript()
     {
@@ -74,5 +77,5 @@ public sealed partial class DesignRideSharingSystemBenchmarksTests
     // A loose ceiling: at most every rider matches, and the two matched id sets then hold
     // distinct ids no larger than SmallestRiderCount - 1 each.
     private static long MaximumMatchedIdSum() =>
-        2L * SmallestRiderCount * (SmallestRiderCount - 1);
+        MatchedIdSetCount * SmallestRiderCount * (SmallestRiderCount - 1);
 }

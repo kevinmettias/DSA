@@ -50,6 +50,12 @@ public sealed partial class RepeatedDNASequencesBenchmarksTests
     private static string[] RepeatedTenMers()
     {
         var sequence = DnaSequenceWorkloads.BuildSequence(RepeatBearingLength, WorkloadSeed);
+
+        return CollectRepeatedTenMers(sequence, CountTenMers(sequence));
+    }
+
+    private static Dictionary<string, int> CountTenMers(string sequence)
+    {
         var occurrences = new Dictionary<string, int>(StringComparer.Ordinal);
 
         for (var i = 0; i + TenMerLength <= sequence.Length; i++)
@@ -58,6 +64,11 @@ public sealed partial class RepeatedDNASequencesBenchmarksTests
             occurrences[window] = occurrences.GetValueOrDefault(window) + 1;
         }
 
+        return occurrences;
+    }
+
+    private static string[] CollectRepeatedTenMers(string sequence, Dictionary<string, int> occurrences)
+    {
         var repeated = new List<string>();
         var reported = new HashSet<string>(StringComparer.Ordinal);
 

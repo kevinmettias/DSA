@@ -13,6 +13,7 @@ public sealed partial class MaxProfitWorkloadsTests
     private const int EdgeFieldCount = 2; // FromNode, ToNode
     private const int MinScore = 1;
     private const int MaxScoreExclusive = 100_001;
+    private const int UnorderedPairDivisor = 2; // a complete graph holds n(n-1)/2 distinct edges
 
     [Fact]
     public void Build_NodeCount_ReturnsOneScorePerNode() =>
@@ -42,7 +43,7 @@ public sealed partial class MaxProfitWorkloadsTests
     {
         var (edges, _) = MaxProfitWorkloads.Build(NodeCount, Seed);
 
-        Assert.InRange(edges.Length, 1, NodeCount * (NodeCount - 1) / 2);
+        Assert.InRange(edges.Length, 1, NodeCount * (NodeCount - 1) / UnorderedPairDivisor);
     }
 
     [Fact]

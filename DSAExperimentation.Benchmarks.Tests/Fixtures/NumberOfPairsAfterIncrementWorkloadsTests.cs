@@ -18,6 +18,7 @@ public sealed partial class NumberOfPairsAfterIncrementWorkloadsTests
     private const long SmallestCountTotal = 2;
     private const long LargestCountTotal = (2L * ValueUpperBound) - 1;
     private const int UnusedRangeBound = 0; // Left/Right/Delta on a count query, and Tot on an increment
+    private const int QueryKindAlternationCycle = 2; // even positions are range-adds, odd positions count queries
 
     [Fact]
     public void BuildNums1_ValueCount_ReturnsTheProblemsOwnFiveValueCap() =>
@@ -86,7 +87,7 @@ public sealed partial class NumberOfPairsAfterIncrementWorkloadsTests
     [Fact]
     public void BuildQueries_EveryOtherQuery_AlternatesARangeAddWithACount() =>
         Assert.Equal(
-            Enumerable.Range(0, QueryCount).Select(index => index % 2 == 0 ? PairQueryKind.Increment : PairQueryKind.Count),
+            Enumerable.Range(0, QueryCount).Select(index => index % QueryKindAlternationCycle == 0 ? PairQueryKind.Increment : PairQueryKind.Count),
             NumberOfPairsAfterIncrementWorkloads.BuildQueries(QueryCount, Nums2Length, Seed).Select(query => query.Kind));
 
     [Fact]

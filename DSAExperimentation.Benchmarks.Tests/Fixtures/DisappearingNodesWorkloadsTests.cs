@@ -10,6 +10,7 @@ public sealed partial class DisappearingNodesWorkloadsTests
     private const int NodeCount = 16;
     private const int Seed = 3112; // LC problem number
     private const int EdgeFieldCount = 3; // FromNode, ToNode, Length
+    private const int LengthFieldIndex = 2;
     private const int MinEdgeLength = 1;
     private const int MaxEdgeLength = 100;
     private const int MinDisappearTime = 1;
@@ -24,7 +25,7 @@ public sealed partial class DisappearingNodesWorkloadsTests
         Assert.All(edges, edge => Assert.NotEqual(edge[0], edge[1]));
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinEdgeLength, MaxEdgeLength));
+        Assert.All(edges, edge => Assert.InRange(edge[LengthFieldIndex], MinEdgeLength, MaxEdgeLength));
     }
 
     [Fact]

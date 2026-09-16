@@ -17,6 +17,10 @@ public sealed partial class KthSymbolInGrammarBenchmarksTests
     private const int FirstRowNumber = 1;
     private const int FirstRowLastSymbol = 0;
 
+    // LC 779's row holds two symbols, 0 and 1, so each row's complementation flips between them -
+    // which is the flip count read modulo this.
+    private const int SymbolCount = 2;
+
     [Fact]
     public void Setup_SameRowNumber_RebuildsTheSameLastIndex()
     {
@@ -53,5 +57,5 @@ public sealed partial class KthSymbolInGrammarBenchmarksTests
     // Counting the complementation steps directly - the last symbol is in the second half of every
     // row from the second one onward, so it flips once per row - rather than asking either arm.
     private static int LastSymbolOfRow(int rowNumber) =>
-        (FirstRowLastSymbol + rowNumber - FirstRowNumber) % 2;
+        (FirstRowLastSymbol + rowNumber - FirstRowNumber) % SymbolCount;
 }

@@ -12,6 +12,8 @@ public sealed partial class ApplesWorkloadsTests
     private const int ExtraRoadsPerShop = 3;
     private const int Seed = 3928; // LC problem number
     private const int RoadFieldCount = 4; // FromShop, ToShop, Cost, TaxMultiplier
+    private const int CostFieldIndex = 2;
+    private const int TaxMultiplierFieldIndex = 3;
     private const int MaxTaxMultiplier = 100;
 
     [Fact]
@@ -40,8 +42,8 @@ public sealed partial class ApplesWorkloadsTests
         var (_, roads) = ApplesWorkloads.Build(ShopCount, ExtraRoadsPerShop, Seed);
 
         Assert.All(roads, road => Assert.Equal(RoadFieldCount, road.Length));
-        Assert.All(roads, road => Assert.True(road[2] > 0));
-        Assert.All(roads, road => Assert.InRange(road[3], 1, MaxTaxMultiplier));
+        Assert.All(roads, road => Assert.True(road[CostFieldIndex] > 0));
+        Assert.All(roads, road => Assert.InRange(road[TaxMultiplierFieldIndex], 1, MaxTaxMultiplier));
     }
 
     [Fact]

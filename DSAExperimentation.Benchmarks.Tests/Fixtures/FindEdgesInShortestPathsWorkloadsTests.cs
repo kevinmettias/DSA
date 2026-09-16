@@ -11,6 +11,7 @@ public sealed partial class FindEdgesInShortestPathsWorkloadsTests
     private const int ExtraEdgesPerNode = 3;
     private const int Seed = 3123; // LC problem number
     private const int EdgeFieldCount = 3; // FromNode, ToNode, Weight
+    private const int WeightFieldIndex = 2;
     private const int MinEdgeWeight = 1;
     private const int MaxEdgeWeight = 49;
 
@@ -22,7 +23,7 @@ public sealed partial class FindEdgesInShortestPathsWorkloadsTests
         Assert.All(edges, edge => Assert.Equal(EdgeFieldCount, edge.Length));
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinEdgeWeight, MaxEdgeWeight));
+        Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], MinEdgeWeight, MaxEdgeWeight));
     }
 
     // LC 3123 is directed and the generator writes its spanning edge as { earlier node, later

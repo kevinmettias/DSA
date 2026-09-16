@@ -20,6 +20,10 @@ public sealed partial class DisplayTableOfFoodOrdersInARestaurantBenchmarksTests
     private const int MaximumTableRowCount = TablePoolSize + 1;
     private const int MaximumColumnCount = FoodPoolSize + 1;
 
+    // The header row plus at least one table row, and likewise the header cell plus at least one
+    // food column.
+    private const int MinimumTableDimensionCount = 2;
+
     [Fact]
     public void Setup_BoundedTableAndFoodPools_FrameTheDisplayTableAndRebuildTheSameWorkload()
     {
@@ -27,8 +31,8 @@ public sealed partial class DisplayTableOfFoodOrdersInARestaurantBenchmarksTests
         var table = harness.RescanEveryOrderPerCell();
 
         Assert.Equal(ExpectedHeaderFirstCell, table[0][0]);
-        Assert.InRange(table.Count, 2, MaximumTableRowCount);
-        Assert.InRange(table[0].Count, 2, MaximumColumnCount);
+        Assert.InRange(table.Count, MinimumTableDimensionCount, MaximumTableRowCount);
+        Assert.InRange(table[0].Count, MinimumTableDimensionCount, MaximumColumnCount);
         Assert.Equal(AnswerText.Of(table), AnswerText.Of(BuildHarness().RescanEveryOrderPerCell()));
     }
 

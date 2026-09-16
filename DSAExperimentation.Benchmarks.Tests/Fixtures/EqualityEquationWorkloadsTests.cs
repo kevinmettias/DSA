@@ -17,6 +17,7 @@ public sealed partial class EqualityEquationWorkloadsTests
     private const string EqualsOperator = "==";
     private const string NotEqualsOperator = "!=";
     private const int FewestInequalities = 1;
+    private const int MinorityShareDivisor = 2; // the inequalities stay under half the mix
 
     [Fact]
     public void BuildEquations_EquationCount_ReturnsOneEquationPerPosition() =>
@@ -42,7 +43,7 @@ public sealed partial class EqualityEquationWorkloadsTests
         var equations = EqualityEquationWorkloads.BuildEquations(EquationCount, Seed);
         var inequalities = equations.Count(IsInequality);
 
-        Assert.InRange(inequalities, FewestInequalities, EquationCount / 2);
+        Assert.InRange(inequalities, FewestInequalities, EquationCount / MinorityShareDivisor);
     }
 
     [Fact]

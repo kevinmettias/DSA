@@ -11,9 +11,13 @@ public sealed partial class ReachableNodesInSubdividedGraphWorkloadsTests
     private const int NodeCount = 30;
     private const int ExtraEdgesPerNode = 2;
     private const int Seed = 882; // LC problem number
-    private const int EdgeFieldCount = 3;
+    private const int EdgeFieldCount = 3; // U, V, SubdivisionCount
+    private const int SubdivisionCountFieldIndex = 2;
     private const int MinSubdivisionCount = 0;
     private const int EdgeWeightUpperBound = 50;
+    // The exclusive weight bound sits two above the highest subdivision count: one for the bound's
+    // own exclusivity, one for the workload's w -> w - 1 weight-to-count shift.
+    private const int WeightBoundToSubdivisionCountOffset = 2;
 
     [Fact]
     public void BuildEdges_EveryEdge_IsAThreeFieldRowInsideTheNodeAndSubdivisionBands()
@@ -26,7 +30,10 @@ public sealed partial class ReachableNodesInSubdividedGraphWorkloadsTests
         Assert.All(edges, edge => Assert.NotEqual(edge[0], edge[1]));
         Assert.All(
             edges,
-            edge => Assert.InRange(edge[2], MinSubdivisionCount, EdgeWeightUpperBound - 2));
+            edge => Assert.InRange(
+                edge[SubdivisionCountFieldIndex],
+                MinSubdivisionCount,
+                EdgeWeightUpperBound - WeightBoundToSubdivisionCountOffset));
     }
 
     // The backbone is what guarantees reachability from node 0, so every node beyond the first must have

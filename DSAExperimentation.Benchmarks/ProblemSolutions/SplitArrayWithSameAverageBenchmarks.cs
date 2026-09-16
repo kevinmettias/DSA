@@ -33,5 +33,5 @@ public class SplitArrayWithSameAverageBenchmarks
 
     [Benchmark]
     public bool CanSplitByMemoizedSubsetSum() =>
-        !SplitArrayWithSameAverageSolution.CanSplitByMemoizedSubsetSum(_nums);
+        SplitArrayWithSameAverageSolution.CanSplitByMemoizedSubsetSum(_nums);
 }

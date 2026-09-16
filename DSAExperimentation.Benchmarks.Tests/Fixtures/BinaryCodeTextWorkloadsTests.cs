@@ -8,6 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 public sealed partial class BinaryCodeTextWorkloadsTests
 {
     private const int CodeLength = 4;
+    private const int BinaryRadix = 2;
     private const int CodeCount = 1 << CodeLength;
 
     [Fact]
@@ -44,5 +45,5 @@ public sealed partial class BinaryCodeTextWorkloadsTests
             BinaryCodeTextWorkloads.BuildCoveringText(CodeLength),
             BinaryCodeTextWorkloads.BuildCoveringText(CodeLength));
 
-    private static string Binary(int code) => Convert.ToString(code, 2).PadLeft(CodeLength, '0');
+    private static string Binary(int code) => Convert.ToString(code, BinaryRadix).PadLeft(CodeLength, '0');
 }

@@ -11,11 +11,14 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIIWorkloadsTests
     private const int NodeCount = 64;
     private const int QueryCount = 32;
     private const int Seed = 3655; // LC problem number
-    private const int QueryWidth = 4;
+    private const int QueryWidth = 4; // l, r, k, v
+    private const int StrideFieldIndex = 2;
+    private const int MultiplierFieldIndex = 3;
     private const int MaxStartingValue = 1_000_000_000;
     private const int MaxMultiplier = 100_000;
     private const int SmallestValue = 1;
     private const int SmallStrideIndexParity = 0;
+    private const int QueryIndexCycle = 2; // even indices draw the small stride, odd indices the whole array
 
     [Fact]
     public void Build_StartingValues_ReturnsOnePerPositionInsideTheDocumentedBound()
@@ -35,8 +38,8 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIIWorkloadsTests
         Assert.All(queries, query => Assert.Equal(QueryWidth, query.Length));
         Assert.All(queries, query => Assert.InRange(query[0], 0, NodeCount - 1));
         Assert.All(queries, query => Assert.InRange(query[1], query[0], NodeCount - 1));
-        Assert.All(queries, query => Assert.InRange(query[2], SmallestValue, NodeCount));
-        Assert.All(queries, query => Assert.InRange(query[3], SmallestValue, MaxMultiplier));
+        Assert.All(queries, query => Assert.InRange(query[StrideFieldIndex], SmallestValue, NodeCount));
+        Assert.All(queries, query => Assert.InRange(query[MultiplierFieldIndex], SmallestValue, MaxMultiplier));
     }
 
     // The half that gives the bucketed path its work: every small-stride index carries a stride at most
@@ -47,8 +50,8 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIIWorkloadsTests
         var (_, queries) = XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NodeCount, QueryCount, Seed);
 
         Assert.All(
-            Enumerable.Range(0, QueryCount).Where(index => index % 2 == SmallStrideIndexParity),
-            index => Assert.InRange(queries[index][2], SmallestValue, SmallStrideCeiling));
+            Enumerable.Range(0, QueryCount).Where(index => index % QueryIndexCycle == SmallStrideIndexParity),
+            index => Assert.InRange(queries[index][StrideFieldIndex], SmallestValue, SmallStrideCeiling));
     }
 
     [Fact]

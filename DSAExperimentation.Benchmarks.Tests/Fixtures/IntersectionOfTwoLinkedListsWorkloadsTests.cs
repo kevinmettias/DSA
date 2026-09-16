@@ -9,6 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 public sealed partial class IntersectionOfTwoLinkedListsWorkloadsTests
 {
     private const int PrefixLength = 8;
+    private const int HeadBPrefixMultiplier = 2; // the workload gives HeadB twice HeadA's prefix
     private const int SharedTailNodeCount = 1;
     private const int SharedTailValue = -1;
 
@@ -25,7 +26,7 @@ public sealed partial class IntersectionOfTwoLinkedListsWorkloadsTests
     {
         var (_, headB) = IntersectionOfTwoLinkedListsWorkloads.Build(PrefixLength);
 
-        Assert.Equal((PrefixLength * 2) + SharedTailNodeCount, Nodes(headB).Count);
+        Assert.Equal((PrefixLength * HeadBPrefixMultiplier) + SharedTailNodeCount, Nodes(headB).Count);
     }
 
     // The intersection is the scenario: the two lists have to converge on one and the same node

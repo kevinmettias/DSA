@@ -16,6 +16,11 @@ public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
     // The divisor in Length choose 4: four indices, taken 4! ways.
     private const int QuadrupletIndexCount = 24;
 
+    // Length choose 4 multiplies four descending factors - Length, Length - 1, Length - 2 and
+    // Length - 3 - so these are the decrements that produce its third and fourth.
+    private const int ThirdFactorDecrement = 2;
+    private const int FourthFactorDecrement = 3;
+
     // A permutation need not admit a single increasing quadruplet.
     private const long FewestQuadruplets = 0L;
 
@@ -53,5 +58,6 @@ public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
 
     // Length choose 4: i < j < k < l is exactly a choice of four distinct indices.
     private static long FourIndexSelections(int length) =>
-        (long)length * (length - 1) * (length - 2) * (length - 3) / QuadrupletIndexCount;
+        (long)length * (length - 1) * (length - ThirdFactorDecrement) * (length - FourthFactorDecrement)
+            / QuadrupletIndexCount;
 }

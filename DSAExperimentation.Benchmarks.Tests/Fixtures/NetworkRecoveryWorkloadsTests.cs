@@ -11,6 +11,7 @@ public sealed partial class NetworkRecoveryWorkloadsTests
     private const int ExtraEdgesPerNode = 2;
     private const int Seed = 3620; // LC problem number
     private const int EdgeFieldCount = 3; // FromNode, ToNode, Cost
+    private const int CostFieldIndex = 2;
     private const int MinCost = 0;
     private const int CostUpperBound = 1_000_000_000;
     private const int FirstNode = 0;
@@ -29,7 +30,7 @@ public sealed partial class NetworkRecoveryWorkloadsTests
         Assert.All(edges, edge => Assert.InRange(edge[0], FirstNode, LastNode));
         Assert.All(edges, edge => Assert.InRange(edge[1], FirstNode, LastNode));
         Assert.All(edges, edge => Assert.True(edge[0] < edge[1]));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinCost, CostUpperBound - 1));
+        Assert.All(edges, edge => Assert.InRange(edge[CostFieldIndex], MinCost, CostUpperBound - 1));
     }
 
     [Fact]

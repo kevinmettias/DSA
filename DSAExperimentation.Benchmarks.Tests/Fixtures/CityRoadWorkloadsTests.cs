@@ -11,6 +11,7 @@ public sealed partial class CityRoadWorkloadsTests
     private const int ExtraRoadsPerCity = 3;
     private const int Seed = 1334; // LC problem number
     private const int RoadFieldCount = 3; // FromCity, ToCity, Weight
+    private const int WeightFieldIndex = 2;
     private const int MinRoadWeight = 1;
     private const int MaxRoadWeight = 19;
 
@@ -23,7 +24,7 @@ public sealed partial class CityRoadWorkloadsTests
         Assert.All(roads, road => Assert.NotEqual(road[0], road[1]));
         Assert.All(roads, road => Assert.InRange(road[0], 0, CityCount - 1));
         Assert.All(roads, road => Assert.InRange(road[1], 0, CityCount - 1));
-        Assert.All(roads, road => Assert.InRange(road[2], MinRoadWeight, MaxRoadWeight));
+        Assert.All(roads, road => Assert.InRange(road[WeightFieldIndex], MinRoadWeight, MaxRoadWeight));
     }
 
     // LC 1334's roads are undirected, and the generator emits its spanning road as

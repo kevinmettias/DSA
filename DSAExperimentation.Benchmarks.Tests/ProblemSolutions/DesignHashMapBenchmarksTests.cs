@@ -11,6 +11,10 @@ public sealed partial class DesignHashMapBenchmarksTests
 {
     private const int SmallestLength = 200;
 
+    // Mirrors the harness's own alternation modulus: the probes alternate between a populated key and
+    // an absent one, so the hits are this share of the length.
+    private const int HitShareDivisor = 2;
+
     [Fact]
     public void Setup_SameLength_RebuildsTheSameKeyAndProbeWorkload()
     {
@@ -18,7 +22,7 @@ public sealed partial class DesignHashMapBenchmarksTests
         // between one of those keys and one past the populated range - which has to report the
         // absent-key sentinel rather than a value, since every value stored equals its own key and
         // so is never negative. Half of SmallestLength hits is what both halves together allow.
-        Assert.Equal(SmallestLength / 2, BuildHarness().LinearScanList());
+        Assert.Equal(SmallestLength / HitShareDivisor, BuildHarness().LinearScanList());
         Assert.Equal(BuildHarness().LinearScanList(), BuildHarness().LinearScanList());
     }
 

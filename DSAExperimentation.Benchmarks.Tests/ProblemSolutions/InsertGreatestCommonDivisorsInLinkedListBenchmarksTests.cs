@@ -23,6 +23,10 @@ public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTe
     // gcd without any Euclidean step.
     private const int ConsecutiveGcd = 1;
 
+    // [GlobalSetup] builds the values 1..Length, and the run's first is seeded directly, so the loop
+    // over the rest starts at its second.
+    private const int SecondWorkloadValue = 2;
+
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload()
     {
@@ -76,7 +80,7 @@ public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTe
     {
         var values = new List<int> { 1 };
 
-        for (var value = 2; value <= length; value++)
+        for (var value = SecondWorkloadValue; value <= length; value++)
         {
             values.Add(ConsecutiveGcd);
             values.Add(value);

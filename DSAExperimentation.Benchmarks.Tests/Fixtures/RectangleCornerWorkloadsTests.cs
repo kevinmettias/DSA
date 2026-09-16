@@ -11,6 +11,7 @@ public sealed partial class RectangleCornerWorkloadsTests
     private const int CircleCount = 50;
     private const int Seed = 3235;
     private const int CircleFieldCount = 3; // x, y, r
+    private const int RadiusFieldIndex = 2;
     private const int MinRadius = 20;
     private const int MaxRadius = 80;
     private const int FirstCoordinate = 1;
@@ -36,7 +37,7 @@ public sealed partial class RectangleCornerWorkloadsTests
 
         Assert.All(circles, circle => Assert.InRange(circle[0], FirstCoordinate, RectangleCornerScenario.XCorner - 1));
         Assert.All(circles, circle => Assert.InRange(circle[1], FirstCoordinate, RectangleCornerScenario.YCorner - 1));
-        Assert.All(circles, circle => Assert.InRange(circle[2], MinRadius, MaxRadius));
+        Assert.All(circles, circle => Assert.InRange(circle[RadiusFieldIndex], MinRadius, MaxRadius));
     }
 
     [Fact]
@@ -69,7 +70,7 @@ public sealed partial class RectangleCornerWorkloadsTests
     {
         var dx = first[0] - second[0];
         var dy = first[1] - second[1];
-        var radii = first[2] + second[2];
+        var radii = first[RadiusFieldIndex] + second[RadiusFieldIndex];
 
         return (dx * dx) + (dy * dy) < (radii * radii);
     }

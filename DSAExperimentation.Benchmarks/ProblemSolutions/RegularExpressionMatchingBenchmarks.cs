@@ -35,7 +35,7 @@ public class RegularExpressionMatchingBenchmarks
 
     [Benchmark]
     public bool IsMatchByMemoization() =>
-        !RegularExpressionMatchingSolution.IsMatchByMemoization(
+        RegularExpressionMatchingSolution.IsMatchByMemoization(
             new RegularExpressionMatchingSolution.SubjectText(_text),
             new RegularExpressionMatchingSolution.RegexPattern(_pattern));
 }

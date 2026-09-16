@@ -12,7 +12,8 @@ public sealed partial class TimedRoadWorkloadsTests
     private const int LastCity = 16;
     private const int UnitStepSize = 1;
     private const int LongStepSize = 2;
-    private const int RoadWidth = 3;
+    private const int RoadWidth = 3; // FromCity, ToCity, Minutes
+    private const int MinutesFieldIndex = 2;
     private const int FeeCycleLength = 7;
     private const int SmallestFee = 1;
     private const int LargestFee = 7;
@@ -25,7 +26,7 @@ public sealed partial class TimedRoadWorkloadsTests
         Assert.NotEmpty(roads);
         Assert.All(roads, road => Assert.Equal(RoadWidth, road.Length));
         Assert.All(roads, road => Assert.InRange(road[1] - road[0], UnitStepSize, LongStepSize));
-        Assert.All(roads, road => Assert.Equal(road[1] - road[0], road[2]));
+        Assert.All(roads, road => Assert.Equal(road[1] - road[0], road[MinutesFieldIndex]));
         Assert.All(roads, road => Assert.InRange(road[0], 0, LastCity - 1));
     }
 
@@ -64,7 +65,7 @@ public sealed partial class TimedRoadWorkloadsTests
         var straightRunMinutes = TimedRoadWorkloads
             .BuildStepChain(LastCity)
             .Where(road => road[1] - road[0] == UnitStepSize)
-            .Sum(road => road[2]);
+            .Sum(road => road[MinutesFieldIndex]);
 
         Assert.Equal(LastCity, straightRunMinutes);
         Assert.Equal(straightRunMinutes, TimedRoadWorkloads.BudgetFor(LastCity));

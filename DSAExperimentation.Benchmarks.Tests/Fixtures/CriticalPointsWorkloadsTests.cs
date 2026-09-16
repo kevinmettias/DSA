@@ -14,6 +14,7 @@ public sealed partial class CriticalPointsWorkloadsTests
     private const int Seed = 2058; // LC problem number
     private const int MinMagnitude = 1;
     private const int MaxMagnitude = 999;
+    private const int AlternatingSignModulus = 2; // mirrors CriticalPointsWorkloads.AlternatingSignModulus
 
     [Fact]
     public void BuildZigzagList_Length_ReturnsAChainOfThatManyNodes() =>
@@ -26,7 +27,7 @@ public sealed partial class CriticalPointsWorkloadsTests
 
         for (var index = 0; index < Length; index++)
         {
-            Assert.Equal(index % 2 == 0 ? 1 : -1, Math.Sign(values[index]));
+            Assert.Equal(index % AlternatingSignModulus == 0 ? 1 : -1, Math.Sign(values[index]));
         }
     }
 

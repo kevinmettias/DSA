@@ -11,6 +11,7 @@ public sealed partial class MinimumCostWalkWorkloadsTests
     private const int QueryCount = 64;
     private const int Seed = 3108; // LC problem number
     private const int EdgeFieldCount = 3; // FromNode, ToNode, Weight
+    private const int WeightFieldIndex = 2;
     private const int QueryFieldCount = 2; // Source, Target
     private const int MinWeight = 0;
     private const int MaxWeightExclusive = 100_001;
@@ -31,7 +32,7 @@ public sealed partial class MinimumCostWalkWorkloadsTests
 
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinWeight, MaxWeightExclusive - 1));
+        Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], MinWeight, MaxWeightExclusive - 1));
     }
 
     [Fact]

@@ -11,7 +11,8 @@ public sealed partial class RandomWeightedGraphsTests
     private const int NodeCount = 50;
     private const int ExtraEdgesPerNode = 3;
     private const int Seed = 42;
-    private const int EdgeFieldCount = 3;
+    private const int EdgeFieldCount = 3; // FromNode, ToNode, Weight
+    private const int WeightFieldIndex = 2;
     private const int MinEdgeWeight = 1;
     private const int EdgeWeightUpperBound = 50;
 
@@ -57,7 +58,7 @@ public sealed partial class RandomWeightedGraphsTests
         Assert.All(edges, edge => Assert.InRange(edge[0], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.InRange(edge[1], 0, NodeCount - 1));
         Assert.All(edges, edge => Assert.NotEqual(edge[0], edge[1]));
-        Assert.All(edges, edge => Assert.InRange(edge[2], MinEdgeWeight, EdgeWeightUpperBound - 1));
+        Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], MinEdgeWeight, EdgeWeightUpperBound - 1));
     }
 
     [Fact]

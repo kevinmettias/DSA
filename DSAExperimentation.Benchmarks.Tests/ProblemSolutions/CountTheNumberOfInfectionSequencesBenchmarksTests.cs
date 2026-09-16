@@ -19,6 +19,9 @@ public sealed partial class CountTheNumberOfInfectionSequencesBenchmarksTests
     // Every healthy person is infected exactly once, so at least one sequence always exists.
     private const long FewestInfectionSequences = 1;
 
+    // Setup's sick array starts with exactly its two endpoints sick, so neither is ever infected.
+    private const int InitiallySickEndpoints = 2;
+
     [Fact]
     public void Setup_SameQueueLength_RebuildsTheSameSickSet()
     {
@@ -57,7 +60,7 @@ public sealed partial class CountTheNumberOfInfectionSequencesBenchmarksTests
     {
         var orderings = 1L;
 
-        for (var remaining = queueLength - 2; remaining > 1; remaining--)
+        for (var remaining = queueLength - InitiallySickEndpoints; remaining > 1; remaining--)
         {
             orderings *= remaining;
         }
