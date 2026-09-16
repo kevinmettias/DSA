@@ -4,8 +4,26 @@
   },
   "words": {
     "approved_abbreviations": [
+      "bcl",
+      "bfs",
+      "bst",
+      "bsts",
       "dfs",
-      "bfs"
+      "dp",
+      "gcd",
+      "gcds",
+      "kmp",
+      "kth",
+      "lcm",
+      "lcp",
+      "lcs",
+      "mst",
+      "nth",
+      "ql",
+      "repo",
+      "scc",
+      "sqrt",
+      "xn"
     ]
   },
   "naming": {
