@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RotateImage;
 // Harness only. Both strategies are RotateImageSolution's - this file just pins
 // them to LeetCode's published examples. Each row is cloned before rotating so
 // the two theory methods (and repeated data rows) never share a mutated matrix.
-public sealed class RotateImageTests
+public sealed partial class RotateImageTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CloneGraph;
 // benchmark/test mismatch. Node is internal, so - as in SameTreeTests - it stays
 // out of a public TheoryData/[Theory] signature; a case names its graph in
 // LeetCode's own adjacency-list shape and Build reconstructs it from that.
-public sealed class CloneGraphTests
+public sealed partial class CloneGraphTests
 {
     // LeetCode's adjacency-list shape: entry i names the 1-based values that node
     // i + 1 is adjacent to, so [[2], [1]] is LeetCode's two-node example and [[]]

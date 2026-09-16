@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheNumberOfWaysToPlacePe
 // Harness only. Both strategies live in
 // FindTheNumberOfWaysToPlacePeopleISolution - this file just pins them to
 // LeetCode's published examples.
-public sealed class FindTheNumberOfWaysToPlacePeopleITests
+public sealed partial class FindTheNumberOfWaysToPlacePeopleITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

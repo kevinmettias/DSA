@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementRand10UsingRand7;
 // asserted only to stay in range 1..10 - it is a deliberately biased "fast but
 // wrong" contrast (see the solution's own doc comment), so a uniformity assertion
 // against it would be asserting a property the strategy does not have.
-public sealed class ImplementRand10UsingRand7Tests
+public sealed partial class ImplementRand10UsingRand7Tests
 {
     // The sample size the uniformity test draws. A constant rather than a local: its
     // scope is a claim about where the value is authoritative, and the tolerance band

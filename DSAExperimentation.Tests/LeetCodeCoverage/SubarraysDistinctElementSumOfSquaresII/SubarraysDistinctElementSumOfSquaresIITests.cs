@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubarraysDistinctElementSumO
 // Harness only: the algorithms live in SubarraysDistinctElementSumOfSquaresIISolution.
 // One test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke.
-public sealed class SubarraysDistinctElementSumOfSquaresIITests
+public sealed partial class SubarraysDistinctElementSumOfSquaresIITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

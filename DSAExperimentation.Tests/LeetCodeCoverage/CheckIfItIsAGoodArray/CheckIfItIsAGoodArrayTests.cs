@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfItIsAGoodArray;
 // file just pins them to LeetCode's published examples plus the degenerate
 // single-element cases and a set whose values are pairwise non-coprime yet whose
 // overall gcd is still 1.
-public sealed class CheckIfItIsAGoodArrayTests
+public sealed partial class CheckIfItIsAGoodArrayTests
 {
     public static TheoryData<GoodArrayCase> Examples =>
         new()

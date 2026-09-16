@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGame;
 
 // Harness only. Both strategies are StoneGameSolution's - this file just pins them
 // to LeetCode's published examples plus a few more even-length pile rows.
-public sealed class StoneGameTests
+public sealed partial class StoneGameTests
 {
     public static TheoryData<PileGameExample> Examples =>
         new()

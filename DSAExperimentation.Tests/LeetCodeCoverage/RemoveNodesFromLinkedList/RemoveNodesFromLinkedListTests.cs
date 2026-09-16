@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveNodesFromLinkedList;
 // nothing asserted. SinglyLinkedListNode<int> is internal, so it cannot appear in a
 // public TheoryData<...> member (CS0053); the examples state the node values and
 // LeetCodeWireFormat translates both ends.
-public sealed class RemoveNodesFromLinkedListTests
+public sealed partial class RemoveNodesFromLinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

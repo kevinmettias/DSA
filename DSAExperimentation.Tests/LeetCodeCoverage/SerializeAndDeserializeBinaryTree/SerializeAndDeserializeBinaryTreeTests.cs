@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBinar
 // SerializeAndDeserializeBinaryTreeSolution's - this file just pins them to
 // LeetCode's published examples via a preorder-sequence comparison, since the
 // restored tree only needs to be structurally identical, not reference-equal.
-public sealed class SerializeAndDeserializeBinaryTreeTests
+public sealed partial class SerializeAndDeserializeBinaryTreeTests
 {
     // Each row is a preorder traversal with null children marked (null), matching
     // the solution's own token grammar - value, then left, then right.

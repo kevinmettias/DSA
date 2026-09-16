@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CyclicallyRotatingAGrid;
 // rotation amount larger than the ring it turns, a rotation amount that is a whole
 // number of ring lengths and so changes nothing, and a non-square grid whose single
 // ring spans both rows.
-public sealed class CyclicallyRotatingAGridTests
+public sealed partial class CyclicallyRotatingAGridTests
 {
     public static TheoryData<int[][], int, int[][]> Examples =>
         new()

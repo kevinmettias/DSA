@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.Algorithms.Walking;
 // breaking that promise costs. Names and depths are both expected per row because
 // they are the same descend order read two ways, and the starting depth is a row
 // value because a walk reports depth relative to where it was told to start.
-public sealed class DepthFirstWalkTests
+public sealed partial class DepthFirstWalkTests
 {
     public static TheoryData<WalkExample> Examples =>
         new()

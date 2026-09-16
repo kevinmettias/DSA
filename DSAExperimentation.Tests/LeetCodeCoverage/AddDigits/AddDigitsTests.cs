@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AddDigits;
 
 // Harness only. Both strategies are AddDigitsSolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class AddDigitsTests
+public sealed partial class AddDigitsTests
 {
     public static TheoryData<int, int> Examples =>
         new()

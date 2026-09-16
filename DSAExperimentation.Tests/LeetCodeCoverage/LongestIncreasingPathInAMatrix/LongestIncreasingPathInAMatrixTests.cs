@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestIncreasingPathInAMatr
 
 // Harness only. Both recurrences are LongestIncreasingPathInAMatrixSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class LongestIncreasingPathInAMatrixTests
+public sealed partial class LongestIncreasingPathInAMatrixTests
 {
     public static TheoryData<int[,], int> Examples =>
         new()

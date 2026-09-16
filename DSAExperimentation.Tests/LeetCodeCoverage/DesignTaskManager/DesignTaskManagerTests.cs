@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignTaskManager;
 // strategy that broke even though the "input" here is a sequence of mutating calls
 // rather than a single argument tuple. TaskManagerOp.Apply is pure dispatch (which
 // method to call with which arguments) - no priority/ordering logic of its own.
-public sealed class DesignTaskManagerTests
+public sealed partial class DesignTaskManagerTests
 {
     public static TheoryData<(int UserId, int TaskId, int Priority)[], TaskManagerOp[], int?[]> Examples =>
         new()
@@ -31,22 +31,19 @@ public sealed class DesignTaskManagerTests
     [MemberData(nameof(Examples))]
     public void TaskManagerByLinearScan_LeetCodeExample_ExecutesHighestPriorityTaskFirst(
         (int UserId, int TaskId, int Priority)[] initialTasks, TaskManagerOp[] operations, int?[] expected) =>
-        RunScript(new DesignTaskManagerSolution.TaskManagerByLinearScan(initialTasks), operations, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignTaskManagerSolution.TaskManagerByLinearScan(initialTasks), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void TaskManagerByLazyDeletionHeap_LeetCodeExample_ExecutesHighestPriorityTaskFirst(
         (int UserId, int TaskId, int Priority)[] initialTasks, TaskManagerOp[] operations, int?[] expected) =>
-        RunScript(new DesignTaskManagerSolution.TaskManagerByLazyDeletionHeap(initialTasks), operations, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignTaskManagerSolution.TaskManagerByLazyDeletionHeap(initialTasks), operations));
 
-    private static void RunScript(
-        DesignTaskManagerSolution.ITaskManagerStrategy strategy, TaskManagerOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+    private static int?[] RunScript(
+        DesignTaskManagerSolution.ITaskManagerStrategy strategy, TaskManagerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 
     // One call in a TaskManager script: which method to invoke and with what arguments.
     // Pure dispatch, built via the named factories below so a script (like Examples

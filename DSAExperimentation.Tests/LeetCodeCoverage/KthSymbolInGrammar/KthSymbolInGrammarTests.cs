@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSymbolInGrammar;
 // against the same examples, including every symbol of rows 2 and 3 so a flipped half
 // cannot pass, and the naive row-expansion baseline that was previously only ever run
 // by the benchmark.
-public sealed class KthSymbolInGrammarTests
+public sealed partial class KthSymbolInGrammarTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FancySequence;
 // benchmark, where it only ever produced a checksum sum rather than answering
 // getIndex at all) gets that same coverage here for the first time. FancyOp.Apply
 // is pure dispatch, no sequence logic of its own.
-public sealed class FancySequenceTests
+public sealed partial class FancySequenceTests
 {
     private const int NeverAppended = -1;
 
@@ -87,22 +87,17 @@ public sealed class FancySequenceTests
     [MemberData(nameof(Examples))]
     public void CreateByArrayRescan_LeetCodeExamples_ReportsEachIndexModuloOneENine(
         int capacity, FancyOp[] operations, int?[] expected) =>
-        RunScript(FancySequenceSolution.CreateByArrayRescan(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(FancySequenceSolution.CreateByArrayRescan(capacity), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByLazySegmentTreeAffine_LeetCodeExamples_ReportsEachIndexModuloOneENine(
         int capacity, FancyOp[] operations, int?[] expected) =>
-        RunScript(FancySequenceSolution.CreateByLazySegmentTreeAffine(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(FancySequenceSolution.CreateByLazySegmentTreeAffine(capacity), operations));
 
-    private static void RunScript(
-        FancySequenceSolution.IFancySequence fancy, FancyOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(fancy));
-        }
-    }
+    private static int?[] RunScript(
+        FancySequenceSolution.IFancySequence fancy, FancyOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(fancy))];
 
     // One call in a Fancy script: which method to invoke and with what argument. Pure
     // dispatch, built via the named factories below so a script (like Examples above)

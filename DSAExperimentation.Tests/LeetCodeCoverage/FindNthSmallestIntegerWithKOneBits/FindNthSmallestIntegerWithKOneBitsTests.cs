@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindNthSmallestIntegerWithKO
 // Harness only: both strategies live in FindNthSmallestIntegerWithKOneBitsSolution
 // and are asserted against the same examples, so a failure names the strategy
 // that broke.
-public sealed class FindNthSmallestIntegerWithKOneBitsTests
+public sealed partial class FindNthSmallestIntegerWithKOneBitsTests
 {
     public static TheoryData<long, int, long> Examples =>
         new()

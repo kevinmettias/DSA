@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumTwinSumOfALinkedList;
 // in a public TheoryData<...> member (CS0053); the examples state the node values
 // and each theory builds the chain, the same shape
 // FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsTests uses.
-public sealed class MaximumTwinSumOfALinkedListTests
+public sealed partial class MaximumTwinSumOfALinkedListTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfOperationsToMakeNetw
 // pins them to LeetCode's published examples plus the cases the two arms are most
 // likely to disagree on: too few cables to connect anything, a network that is
 // already connected, and a single computer with no cables at all.
-public sealed class NumberOfOperationsToMakeNetworkConnectedTests
+public sealed partial class NumberOfOperationsToMakeNetworkConnectedTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

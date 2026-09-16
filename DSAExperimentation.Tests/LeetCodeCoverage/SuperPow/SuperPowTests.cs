@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SuperPow;
 
 // Harness only: both strategies live in SuperPowSolution and are asserted against the
 // same examples.
-public sealed class SuperPowTests
+public sealed partial class SuperPowTests
 {
     public static TheoryData<int, int[], int> Examples =>
         new()

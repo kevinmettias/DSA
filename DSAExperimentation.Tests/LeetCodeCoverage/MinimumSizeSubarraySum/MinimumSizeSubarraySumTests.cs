@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumSizeSubarraySum;
 // Harness only. Both strategies are MinimumSizeSubarraySumSolution's - this file
 // just pins them to LeetCode's published examples, including the case where no
 // subarray reaches target at all.
-public sealed class MinimumSizeSubarraySumTests
+public sealed partial class MinimumSizeSubarraySumTests
 {
     public static TheoryData<int, int[], int> Examples =>
         new()

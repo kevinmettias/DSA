@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfDigitsAreEqualInStrin
 // Harness only. Both reduction strategies are
 // CheckIfDigitsAreEqualInStringAfterOperationsIISolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class CheckIfDigitsAreEqualInStringAfterOperationsIITests
+public sealed partial class CheckIfDigitsAreEqualInStringAfterOperationsIITests
 {
     public static TheoryData<DigitsMatchExample> Examples =>
         new()

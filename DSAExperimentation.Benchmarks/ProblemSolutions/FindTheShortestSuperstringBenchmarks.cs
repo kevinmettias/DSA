@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheShortestSuperstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,12 +11,31 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // string-overlap preprocessing they share. Word count stays small ([6, 9]) because
 // n! overtakes 2^n * n^2 fast enough that the brute force would otherwise dominate
 // the run.
+//
+// [GlobalSetup] builds a word chain rather than a random word list, because LC 943
+// does not have one answer per input: several maximum-overlap orders can assemble to
+// several different shortest superstrings, and the arms legitimately return different
+// ones. The random list this benchmark used before did exactly that - at this seed it
+// admitted four distinct shortest superstrings for six words and two for nine, with
+// no seed in reach admitting only one - which made the two published numbers
+// incomparable, the same defect AccountsMergeBenchmarks' shared-name generator had.
+//
+// The chain makes the answer unique. Each word after the first repeats its
+// predecessor's trailing four characters and adds one new one, and every word's
+// trailing window is kept distinct, so a pair can overlap by the maximum four only
+// when it is a consecutive pair of the chain: the chain order is then the single
+// highest-overlap tour and both arms have exactly one shortest superstring to return.
+// Word length, alphabet and seed are unchanged, and the arms still compare the same
+// two searches over the same prepared overlap matrix.
 [MemoryDiagnoser]
 public class FindTheShortestSuperstringBenchmarks
 {
     // LC problem number, reused as the deterministic word seed.
     private const int WordSeed = 943;
     private const int WordLength = 5;
+
+    // The letters a word is drawn from, and so the width of each trailing window.
+    private const string Alphabet = "ACGT";
 
     private WordOverlaps _overlaps = null!;
 
@@ -27,9 +45,9 @@ public class FindTheShortestSuperstringBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var words = SuperstringWordWorkloads.BuildWords(WordCount, WordLength, WordSeed);
+        var random = new Random(WordSeed);
 
-        _overlaps = WordOverlaps.Build(words);
+        _overlaps = WordOverlaps.Build(BuildUniqueAnswerWords(WordCount, random));
     }
 
     [Benchmark(Baseline = true)]
@@ -39,4 +57,60 @@ public class FindTheShortestSuperstringBenchmarks
     [Benchmark]
     public string MemoizedBitmaskDp() =>
         FindTheShortestSuperstringSolution.ShortestSuperstringByMemoizedBitmask(_overlaps);
+
+    private static string[] BuildUniqueAnswerWords(int wordCount, Random random)
+    {
+        var words = new List<string> { BuildWord(random) };
+
+        // Both windows of the opening word are reserved: a later word repeating its
+        // trailing window would add a second maximum-overlap link into the chain, and a
+        // later word repeating its leading window would let an order run off the end of
+        // the chain and still overlap by the maximum.
+        var reservedWindows = new HashSet<string>
+        {
+            TrailingWindow(words[0]),
+            LeadingWindow(words[0]),
+        };
+
+        while (words.Count < wordCount)
+        {
+            words.Add(BuildSuccessorWord(words[^1], random, reservedWindows));
+        }
+
+        return [.. words];
+    }
+
+    private static string BuildSuccessorWord(
+        string previous, Random random, HashSet<string> reservedWindows)
+    {
+        while (true)
+        {
+            var candidate = TrailingWindow(previous) + NextLetter(random);
+
+            if (reservedWindows.Add(TrailingWindow(candidate)))
+            {
+                return candidate;
+            }
+        }
+    }
+
+    private static string BuildWord(Random random)
+    {
+        var letters = new char[WordLength];
+
+        for (var i = 0; i < WordLength; i++)
+        {
+            letters[i] = NextLetter(random);
+        }
+
+        return new string(letters);
+    }
+
+    private static char NextLetter(Random random) => Alphabet[random.Next(Alphabet.Length)];
+
+    // The window a successor word has to repeat: the last WordLength - 1 characters.
+    private static string TrailingWindow(string word) => word[(word.Length - WordLength + 1)..];
+
+    // The window a word opens with: the first WordLength - 1 characters.
+    private static string LeadingWindow(string word) => word[..(WordLength - 1)];
 }

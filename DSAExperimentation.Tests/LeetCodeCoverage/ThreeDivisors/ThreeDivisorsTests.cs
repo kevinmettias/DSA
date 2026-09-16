@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ThreeDivisors;
 // benchmark's baseline - pinned to LeetCode's published examples plus prime squares
 // (the only numbers with exactly three divisors), primes, one, perfect squares of
 // composites and a number with nine divisors, which must all report false.
-public sealed class ThreeDivisorsTests
+public sealed partial class ThreeDivisorsTests
 {
     public static TheoryData<DivisorCountExample> Examples =>
         new()

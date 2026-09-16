@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RevealCardsInIncreasingOrder
 // Harness only: both strategies live in RevealCardsInIncreasingOrderSolution and are
 // asserted against the same examples, including the single-card deck where the
 // move-to-bottom step never runs and the two-card deck where it runs exactly once.
-public sealed class RevealCardsInIncreasingOrderTests
+public sealed partial class RevealCardsInIncreasingOrderTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

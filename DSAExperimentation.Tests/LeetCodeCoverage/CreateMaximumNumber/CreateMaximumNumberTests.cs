@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CreateMaximumNumber;
 
 // Harness only: both strategies live in CreateMaximumNumberSolution and are
 // asserted against the same examples.
-public sealed class CreateMaximumNumberTests
+public sealed partial class CreateMaximumNumberTests
 {
     public static TheoryData<int[], int[], int, int[]> Examples =>
         new()

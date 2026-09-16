@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSum;
 // Harness only: the algorithms live in TwoSumSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class TwoSumTests
+public sealed partial class TwoSumTests
 {
     public static TheoryData<TwoSumExample> Examples =>
         new()

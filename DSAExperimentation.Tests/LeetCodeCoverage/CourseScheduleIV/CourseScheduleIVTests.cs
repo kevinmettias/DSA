@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CourseScheduleIV;
 // strategies are CourseScheduleIVSolution's - this file just pins them to
 // LeetCode's published examples plus the longer-chain and branching cases that
 // separate a direct prerequisite from a transitive one.
-public sealed class CourseScheduleIVTests
+public sealed partial class CourseScheduleIVTests
 {
     public static TheoryData<int, int[][], int[][], bool[]> Examples =>
         new()

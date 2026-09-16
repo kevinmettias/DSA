@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SudokuSolver;
 // read a return value - it inspects `board` after the call - so each theory
 // mutates its own parsed copy and checks the mutated board is a complete,
 // valid solution.
-public sealed class SudokuSolverTests
+public sealed partial class SudokuSolverTests
 {
     public static TheoryData<string[]> Examples =>
         new()

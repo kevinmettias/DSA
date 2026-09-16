@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveMaxNumberOfEdgesToKeep
 // Alice alone being unable to traverse (the mirror of example 3, which only fails Bob),
 // and a graph whose type-3 edges alone already span every node, so every single-owner
 // edge is removable.
-public sealed class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTests
+public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

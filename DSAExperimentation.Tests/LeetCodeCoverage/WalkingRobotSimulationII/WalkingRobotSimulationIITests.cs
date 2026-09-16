@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WalkingRobotSimulationII;
 // example is a grid, the Move script run against it, and the position and heading
 // the robot ends on - GetPosition and GetDirection are pure, so a mid-script checkpoint is
 // simply another row with the shorter prefix of the same script.
-public sealed class WalkingRobotSimulationIITests
+public sealed partial class WalkingRobotSimulationIITests
 {
     public static TheoryData<RobotExample> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountIslandsWithTotalValueDi
 // Harness only. Both strategies are
 // CountIslandsWithTotalValueDivisibleByKSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class CountIslandsWithTotalValueDivisibleByKTests
+public sealed partial class CountIslandsWithTotalValueDivisibleByKTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

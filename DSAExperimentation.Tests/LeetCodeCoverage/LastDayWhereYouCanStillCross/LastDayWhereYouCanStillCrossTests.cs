@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LastDayWhereYouCanStillCross
 // LeetCode's own three, plus a single cell, a one-row grid and a non-square grid,
 // since every published example is square and the two arms compute their bounds from
 // the row and column counts separately.
-public sealed class LastDayWhereYouCanStillCrossTests
+public sealed partial class LastDayWhereYouCanStillCrossTests
 {
     public static TheoryData<int, int, int[][], int> Examples =>
         new()

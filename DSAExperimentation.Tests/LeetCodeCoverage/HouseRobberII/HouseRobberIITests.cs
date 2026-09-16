@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobberII;
 // against LeetCode's published examples, plus the single-house and two-house edge
 // cases the original test never covered (the circular wrap-around only bites once
 // there are at least two houses to skip between).
-public sealed class HouseRobberIITests
+public sealed partial class HouseRobberIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

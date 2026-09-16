@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class LowercaseTrieTopologyTests
+public sealed partial class LowercaseTrieTopologyTests
 {
     [Fact]
     public void GetChildren_EmptyNode_ReturnsNoneDespiteTheFullSlotArray()

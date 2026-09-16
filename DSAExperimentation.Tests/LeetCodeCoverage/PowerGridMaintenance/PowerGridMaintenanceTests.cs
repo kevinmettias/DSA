@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PowerGridMaintenance;
 // Harness only. Both strategies are PowerGridMaintenanceSolution's - this file just
 // pins them to LeetCode's published examples, including the disconnected-stations
 // case where a maintenance check has no grid-mate left to fall back on at all.
-public sealed class PowerGridMaintenanceTests
+public sealed partial class PowerGridMaintenanceTests
 {
     public static TheoryData<int, int[][], int[][], int[]> Examples =>
         new()

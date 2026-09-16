@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.DynamicArray;
 
 namespace DSAExperimentation.Tests.DataStructures.DynamicArray;
 
-public sealed class DynamicArrayStorageTests
+public sealed partial class DynamicArrayStorageTests
 {
     private static DynamicArrayStorage<int> Seeded(params int[] values)
     {

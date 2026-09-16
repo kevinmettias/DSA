@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfPairsSatisfyingInequ
 // One test method per strategy over one shared set of examples, so a failure names
 // the strategy that broke rather than reporting a disagreement between two
 // anonymous arms.
-public sealed class NumberOfPairsSatisfyingInequalityTests
+public sealed partial class NumberOfPairsSatisfyingInequalityTests
 {
     public static TheoryData<int[], int[], int, long> Examples =>
         new()

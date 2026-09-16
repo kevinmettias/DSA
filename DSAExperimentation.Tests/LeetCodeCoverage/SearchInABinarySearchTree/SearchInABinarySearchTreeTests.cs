@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchInABinarySearchTree;
 // file pins them to LeetCode's published examples, including the one where the
 // value is absent and the one where the value is the root itself (its own
 // subtree - the whole tree - comes back).
-public sealed class SearchInABinarySearchTreeTests
+public sealed partial class SearchInABinarySearchTreeTests
 {
     public static TheoryData<SubtreeSearchExample> Examples =>
         new()

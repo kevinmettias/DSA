@@ -16,7 +16,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAFoodRatingSystem;
 // in by a `using static`: a wildcard import drops every member in as a bare
 // identifier, so a reader meeting FoodRatingsByLinearScan has nothing on the line
 // telling them whose it is.
-public sealed class DesignAFoodRatingSystemTests
+public sealed partial class DesignAFoodRatingSystemTests
 {
     public static TheoryData<FoodRatingScript> Examples =>
         new()
@@ -90,30 +90,19 @@ public sealed class DesignAFoodRatingSystemTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FoodRatingsByLinearScan_LeetCodeExamples_ReturnsHighestRatedFoodPerCuisine(
-        FoodRatingScript script)
-    {
-        var strategy = new FoodRatingsByLinearScan(script.Foods, script.Cuisines, script.Ratings);
-
-        RunScript(strategy, script.Operations, script.Expected);
-    }
+        FoodRatingScript script) =>
+        Assert.Equal(script.Expected, RunScript(
+            new FoodRatingsByLinearScan(script.Foods, script.Cuisines, script.Ratings), script.Operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FoodRatingsByLazyDeletionHeap_LeetCodeExamples_ReturnsHighestRatedFoodPerCuisine(
-        FoodRatingScript script)
-    {
-        var strategy = new FoodRatingsByLazyDeletionHeap(script.Foods, script.Cuisines, script.Ratings);
+        FoodRatingScript script) =>
+        Assert.Equal(script.Expected, RunScript(
+            new FoodRatingsByLazyDeletionHeap(script.Foods, script.Cuisines, script.Ratings), script.Operations));
 
-        RunScript(strategy, script.Operations, script.Expected);
-    }
-
-    private static void RunScript(IFoodRatingStrategy strategy, FoodRatingOp[] operations, string?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+    private static string?[] RunScript(IFoodRatingStrategy strategy, FoodRatingOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 
     // One LeetCode example: the constructor's three parallel arrays, the calls to replay
     // against the built rating system, and the judge output for each call. Every argument

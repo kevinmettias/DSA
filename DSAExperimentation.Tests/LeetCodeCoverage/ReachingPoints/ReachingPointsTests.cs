@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReachingPoints;
 // the same examples - including the naive subtractive reduction, which was previously
 // only ever run by the benchmark, and which the benchmark had pinned to a source of
 // (1, 1) so its divisibility tail was never exercised against a real source.
-public sealed class ReachingPointsTests
+public sealed partial class ReachingPointsTests
 {
     public static TheoryData<ReachabilityExample> Examples =>
         new()

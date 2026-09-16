@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ProductOfArrayExceptSelf;
 // ProductOfArrayExceptSelfSolution's - this file just pins it to LeetCode's
 // published examples, including the zero-operand case a division-based
 // approach could not answer.
-public sealed class ProductOfArrayExceptSelfTests
+public sealed partial class ProductOfArrayExceptSelfTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

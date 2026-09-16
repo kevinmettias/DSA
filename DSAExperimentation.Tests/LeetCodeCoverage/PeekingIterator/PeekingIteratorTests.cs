@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PeekingIterator;
 // strategy that broke even though the "input" here is a sequence of calls
 // rather than a single argument tuple. PeekOp.Apply is pure dispatch (which
 // method to call) - no buffering logic of its own.
-public sealed class PeekingIteratorTests
+public sealed partial class PeekingIteratorTests
 {
     public static TheoryData<int[], PeekOp[], object?[]> Examples =>
         new()
@@ -38,21 +38,16 @@ public sealed class PeekingIteratorTests
     [MemberData(nameof(Examples))]
     public void CreateByIndexTracked_LeetCodeExamples_InterleavesCorrectly(
         int[] source, PeekOp[] operations, object?[] expected) =>
-        RunScript(PeekingIteratorSolution.CreateByIndexTracked(source), operations, expected);
+        Assert.Equal(expected, RunScript(PeekingIteratorSolution.CreateByIndexTracked(source), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByQueuePrimitive_LeetCodeExamples_InterleavesCorrectly(
         int[] source, PeekOp[] operations, object?[] expected) =>
-        RunScript(PeekingIteratorSolution.CreateByQueuePrimitive(source), operations, expected);
+        Assert.Equal(expected, RunScript(PeekingIteratorSolution.CreateByQueuePrimitive(source), operations));
 
-    private static void RunScript(IPeekingIterator iterator, PeekOp[] operations, object?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(iterator));
-        }
-    }
+    private static object?[] RunScript(IPeekingIterator iterator, PeekOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(iterator))];
 
     // One call in a peeking-iterator script: which operation to invoke. Pure
     // dispatch, built via the named factories below so a script (like Examples

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestPalindrome;
 // Harness only. Both strategies are ShortestPalindromeSolution's - this file just
 // pins them to LeetCode's published examples plus the edge cases the original
 // coverage carried (empty string, single char, already-palindrome).
-public sealed class ShortestPalindromeTests
+public sealed partial class ShortestPalindromeTests
 {
     public static TheoryData<PalindromeExample> Examples =>
         new()

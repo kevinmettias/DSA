@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortAnArray;
 // Harness only. Both sorts are SortAnArraySolution's; this file pins them to
 // LeetCode's published examples plus the shapes a sort has to survive - a
 // singleton, an already-sorted run, a strict reversal, and an all-equal run.
-public sealed class SortAnArrayTests
+public sealed partial class SortAnArrayTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

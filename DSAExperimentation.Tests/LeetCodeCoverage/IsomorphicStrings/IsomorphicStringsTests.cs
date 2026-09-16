@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IsomorphicStrings;
 // method per strategy over one shared set of LeetCode's own examples, plus a
 // couple that exercise both mapping directions, so a failure names the
 // strategy (and direction) that broke.
-public sealed class IsomorphicStringsTests
+public sealed partial class IsomorphicStringsTests
 {
     public static TheoryData<IsomorphismCase> Examples =>
         new()

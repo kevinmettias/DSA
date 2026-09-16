@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DoubleANumberRepresentedAsAL
 // and nothing asserted. SinglyLinkedListNode<int> is internal, so it cannot appear
 // in a public TheoryData<...> member (CS0053); the examples state the digits and
 // LeetCodeWireFormat translates both ends.
-public sealed class DoubleANumberRepresentedAsALinkedListTests
+public sealed partial class DoubleANumberRepresentedAsALinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

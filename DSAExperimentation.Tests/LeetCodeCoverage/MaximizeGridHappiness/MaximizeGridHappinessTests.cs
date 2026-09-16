@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeGridHappiness;
 // LeetCode's three published examples plus the degenerate shapes the recursion has
 // to get right at its edges: nobody to place, a single cell, a single row (the up
 // neighbor never exists) and a full 2x2 of extroverts (every adjacency pays).
-public sealed class MaximizeGridHappinessTests
+public sealed partial class MaximizeGridHappinessTests
 {
     public static TheoryData<GridHappinessExample> Examples =>
         new()

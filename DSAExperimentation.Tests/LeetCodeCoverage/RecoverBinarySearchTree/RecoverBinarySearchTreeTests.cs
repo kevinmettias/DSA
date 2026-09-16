@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RecoverBinarySearchTree;
 // as in ValidateBinarySearchTreeTests - it stays out of a public TheoryData/[Theory]
 // signature; each example is a private factory rebuilt fresh per [Fact], since
 // recovery mutates its tree in place.
-public sealed class RecoverBinarySearchTreeTests
+public sealed partial class RecoverBinarySearchTreeTests
 {
     [Fact]
     public void RecoverByManualRecursiveScan_AdjacentSwapAtTheRoot_RestoresBstOrdering()

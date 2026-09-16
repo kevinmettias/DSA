@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignSQL;
 // though the "input" here is a constructor plus a sequence of mutating calls rather
 // than a single argument tuple. SqlOp.Apply is pure dispatch (which method to call
 // with which arguments) - no row-id or table-lookup logic of its own.
-public sealed class DesignSQLTests
+public sealed partial class DesignSQLTests
 {
     public static TheoryData<string[], int[], SqlOp[], string?[]> Examples =>
         new()
@@ -98,19 +98,14 @@ public sealed class DesignSQLTests
     [MemberData(nameof(Examples))]
     public void SqlByListScan_LeetCodeExamples_ReadsTheCellOfTheLiveRow(
         string[] names, int[] columns, SqlOp[] operations, string?[] expected) =>
-        RunScript(new DesignSQLSolution.SqlByListScan(names, columns), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignSQLSolution.SqlByListScan(names, columns), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SqlByHashMapTables_LeetCodeExamples_ReadsTheCellOfTheLiveRow(
         string[] names, int[] columns, SqlOp[] operations, string?[] expected) =>
-        RunScript(new DesignSQLSolution.SqlByHashMapTables(names, columns), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignSQLSolution.SqlByHashMapTables(names, columns), operations));
 
-    private static void RunScript(DesignSQLSolution.ISqlStrategy strategy, SqlOp[] operations, string?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+    private static string?[] RunScript(DesignSQLSolution.ISqlStrategy strategy, SqlOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 }

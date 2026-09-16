@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DailyTemperatures;
 
 // Harness only. Both strategies are DailyTemperaturesSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class DailyTemperaturesTests
+public sealed partial class DailyTemperaturesTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

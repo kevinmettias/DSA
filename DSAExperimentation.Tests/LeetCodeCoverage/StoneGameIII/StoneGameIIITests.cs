@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIII;
 // LC 1406's winner) now gets the same examples as WinnerByMemoizedRecursion
 // (previously the test's own private helper), so a failure names the strategy that
 // broke.
-public sealed class StoneGameIIITests
+public sealed partial class StoneGameIIITests
 {
     public static TheoryData<int[], string> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GenerateParentheses;
 // them to LeetCode's published examples, stated once. Both strategies choose '('
 // before ')' at every step, so they produce the same combinations in the same order
 // and can be checked with one exact-sequence assertion each.
-public sealed class GenerateParenthesesTests
+public sealed partial class GenerateParenthesesTests
 {
     public static TheoryData<int, string[]> Examples =>
         new()

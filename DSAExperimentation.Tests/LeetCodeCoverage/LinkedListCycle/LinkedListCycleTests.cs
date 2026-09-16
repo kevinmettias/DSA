@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListCycle;
 // LeetCode's published examples as linked lists (pos is the 0-based index the
 // tail's Next rejoins, or -1 for no cycle) and checks whether each strategy
 // reports a cycle.
-public sealed class LinkedListCycleTests
+public sealed partial class LinkedListCycleTests
 {
     public static TheoryData<CycleExample> Examples =>
         new()

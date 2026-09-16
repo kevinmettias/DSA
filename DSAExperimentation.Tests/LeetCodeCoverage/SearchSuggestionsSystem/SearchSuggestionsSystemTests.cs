@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchSuggestionsSystem;
 // are SearchSuggestionsSystemSolution's; this file just pins them to LeetCode's
 // published examples, including the case where no product carries the prefix at
 // all and every keystroke reports an empty suggestion list.
-public sealed class SearchSuggestionsSystemTests
+public sealed partial class SearchSuggestionsSystemTests
 {
     public static TheoryData<string[], string, string[][]> Examples =>
         new()

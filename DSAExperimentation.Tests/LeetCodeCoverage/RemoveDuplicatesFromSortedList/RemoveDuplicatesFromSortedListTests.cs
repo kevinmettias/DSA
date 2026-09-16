@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveDuplicatesFromSortedLi
 // Harness only. Both strategies are RemoveDuplicatesFromSortedListSolution's -
 // this file builds LeetCode's published examples as linked lists and checks the
 // resulting list's values.
-public sealed class RemoveDuplicatesFromSortedListTests
+public sealed partial class RemoveDuplicatesFromSortedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

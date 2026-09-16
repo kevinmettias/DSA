@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximizeTheDistanceBetweenPo
 // Harness only. The perimeter mapping and both binary-search-on-the-answer
 // strategies are MaximizeTheDistanceBetweenPointsOnASquareSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class MaximizeTheDistanceBetweenPointsOnASquareTests
+public sealed partial class MaximizeTheDistanceBetweenPointsOnASquareTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
         new()

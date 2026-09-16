@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.UniqueBinarySearchTrees;
 
 // Harness only. Both strategies are UniqueBinarySearchTreesSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class UniqueBinarySearchTreesTests
+public sealed partial class UniqueBinarySearchTreesTests
 {
     public static TheoryData<int, int> Examples =>
         new()

@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage;
 // This lives in the Tests project rather than beside the harness because the
 // catalog fixtures are test data - the harness in DSAExperimentation.LeetCode has
 // no business depending on a snapshot of a third party's website.
-public sealed class LeetCodeRegistrationCatalogTests
+public sealed partial class LeetCodeRegistrationCatalogTests
 {
     // A slug typo is the quiet failure this catches. The harness only ever uses a
     // slug as a dictionary key, so "two-sums" would register, run, and pass -

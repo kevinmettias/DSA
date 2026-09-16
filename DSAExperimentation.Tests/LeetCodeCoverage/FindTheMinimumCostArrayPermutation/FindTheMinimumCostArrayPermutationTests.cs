@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheMinimumCostArrayPermu
 
 // Harness only. Both strategies live in FindTheMinimumCostArrayPermutationSolution -
 // this file just pins them to LeetCode's published examples.
-public sealed class FindTheMinimumCostArrayPermutationTests
+public sealed partial class FindTheMinimumCostArrayPermutationTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

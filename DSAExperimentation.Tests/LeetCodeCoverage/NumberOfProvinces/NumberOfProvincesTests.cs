@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfProvinces;
 // Harness only: the algorithms live in NumberOfProvincesSolution. One test method
 // per strategy over one shared set of LeetCode's own examples, so a failure names
 // the strategy that broke.
-public sealed class NumberOfProvincesTests
+public sealed partial class NumberOfProvincesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

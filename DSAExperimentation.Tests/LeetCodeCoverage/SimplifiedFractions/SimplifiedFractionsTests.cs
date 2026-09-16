@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SimplifiedFractions;
 // them to LeetCode's published examples, including denominatorLimit = 1 (no proper
 // fraction exists at all) and denominatorLimit = 4, whose expected list omits the
 // reducible 2/4.
-public sealed class SimplifiedFractionsTests
+public sealed partial class SimplifiedFractionsTests
 {
     public static TheoryData<int, string[]> Examples =>
         new()

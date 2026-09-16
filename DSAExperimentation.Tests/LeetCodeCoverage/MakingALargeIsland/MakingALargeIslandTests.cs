@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MakingALargeIsland;
 // pins them to LeetCode's published examples plus the two edge grids (all land,
 // all water) and one grid whose flip touches the same island twice, which is what
 // the labeled strategy's Set<int> dedup exists for.
-public sealed class MakingALargeIslandTests
+public sealed partial class MakingALargeIslandTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNumberOfBalancedPermuta
 // Harness only: the algorithms live in CountNumberOfBalancedPermutationsSolution.
 // One test method per strategy over one shared set of LeetCode's own examples, so
 // a failure names the strategy that broke (TwoSumTests precedent).
-public sealed class CountNumberOfBalancedPermutationsTests
+public sealed partial class CountNumberOfBalancedPermutationsTests
 {
     public static TheoryData<string, long> Examples =>
         new()

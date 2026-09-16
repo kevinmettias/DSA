@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RegularExpressionMatching;
 
 // Harness only: both strategies live in RegularExpressionMatchingSolution and are
 // asserted against the same examples.
-public sealed class RegularExpressionMatchingTests
+public sealed partial class RegularExpressionMatchingTests
 {
     public static TheoryData<MatchExample> Examples =>
         new()

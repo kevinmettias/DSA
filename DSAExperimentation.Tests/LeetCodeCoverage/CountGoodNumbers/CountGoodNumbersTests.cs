@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountGoodNumbers;
 // and the exponentiation-by-squaring arm - pinned here to LeetCode's published
 // examples plus the two smallest lengths that separate the even-index and
 // odd-index digit alphabets (length = 2 is 5 * 4, length = 3 is 5^2 * 4).
-public sealed class CountGoodNumbersTests
+public sealed partial class CountGoodNumbersTests
 {
     public static TheoryData<long, int> Examples =>
         new()

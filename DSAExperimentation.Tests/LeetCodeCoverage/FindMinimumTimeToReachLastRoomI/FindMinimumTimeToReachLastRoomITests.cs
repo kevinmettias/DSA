@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMinimumTimeToReachLastRo
 // Harness only: the algorithms live in FindMinimumTimeToReachLastRoomISolution. One
 // test method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke (TwoSumTests precedent).
-public sealed class FindMinimumTimeToReachLastRoomITests
+public sealed partial class FindMinimumTimeToReachLastRoomITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

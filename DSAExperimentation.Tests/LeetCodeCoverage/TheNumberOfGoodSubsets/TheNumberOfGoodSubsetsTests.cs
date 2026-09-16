@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheNumberOfGoodSubsets;
 // examples plus the cases the examples never reach: a value with a repeated prime
 // factor, duplicate values counted by index, 1s doubling the answer, three values that
 // pairwise share a prime, and all ten primes below 30 at once.
-public sealed class TheNumberOfGoodSubsetsTests
+public sealed partial class TheNumberOfGoodSubsetsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

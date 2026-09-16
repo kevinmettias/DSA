@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StickersToSpellWord;
 // Harness only. Both recursion strategies live in StickersToSpellWordSolution and
 // are asserted against the same examples, including the case where the target
 // letters can never all be covered.
-public sealed class StickersToSpellWordTests
+public sealed partial class StickersToSpellWordTests
 {
     public static TheoryData<string[], string, int> Examples =>
         new()

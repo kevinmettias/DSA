@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindValueOfMysteriousFunctio
 // and are asserted against the same examples - LeetCode's three published ones plus a case
 // where no subarray hits the target exactly, so the smallest gap has to come from a strict
 // prefix of some AND walk.
-public sealed class FindValueOfMysteriousFunctionClosestToTargetTests
+public sealed partial class FindValueOfMysteriousFunctionClosestToTargetTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

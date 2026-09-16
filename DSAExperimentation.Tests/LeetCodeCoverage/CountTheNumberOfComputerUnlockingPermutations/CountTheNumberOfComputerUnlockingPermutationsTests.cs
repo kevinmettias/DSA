@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfComputerUnlo
 // to LeetCode's published examples, including the six-computer case where every
 // index-1 computer is stuck behind an equal-complexity computer 0 and no unlock order
 // can ever reach it.
-public sealed class CountTheNumberOfComputerUnlockingPermutationsTests
+public sealed partial class CountTheNumberOfComputerUnlockingPermutationsTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

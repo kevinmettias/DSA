@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSegmentSumAfterRemova
 // the solution class: before this migration it lived only in the benchmark and
 // nothing checked that the arm the composed strategy is measured against was even
 // right.
-public sealed class MaximumSegmentSumAfterRemovalsTests
+public sealed partial class MaximumSegmentSumAfterRemovalsTests
 {
     public static TheoryData<int[], int[], long[]> Examples =>
         new()

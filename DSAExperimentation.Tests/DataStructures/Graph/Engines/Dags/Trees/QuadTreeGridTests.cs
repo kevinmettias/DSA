@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class QuadTreeGridTests
+public sealed partial class QuadTreeGridTests
 {
     private const int TwoByTwo = 2;
     private const int FourByFour = 4;

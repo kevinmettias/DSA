@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfEnclaves;
 // pins them to LeetCode's published examples. Each strategy clones the grid it is
 // handed, so the two theories can share one example set without the first run
 // sinking the land the second one needs.
-public sealed class NumberOfEnclavesTests
+public sealed partial class NumberOfEnclavesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

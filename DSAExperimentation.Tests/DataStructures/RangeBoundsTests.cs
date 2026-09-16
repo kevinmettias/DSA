@@ -2,22 +2,29 @@ using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Tests.DataStructures;
 
-public sealed class RangeBoundsTests
+public sealed partial class RangeBoundsTests
 {
     private const string Message = "out of range";
 
-    [Theory]
-    [InlineData(0, 1)]
-    [InlineData(0, 5)]
-    [InlineData(4, 5)]
-    public void ValidateIndex_InsideTheSize_DoesNotThrow(int index, int size) =>
-        RangeBounds.ValidateIndex(index, size, Message);
+    public static TheoryData<int, int> IndicesInsideTheSize =>
+        new() { { 0, 1 }, { 0, 5 }, { 4, 5 } };
+
+    public static TheoryData<int, int> IndicesOutsideTheSize =>
+        new() { { -1, 5 }, { 5, 5 }, { 6, 5 }, { 0, 0 } };
+
+    public static TheoryData<int, int, int> RangesInsideTheSize =>
+        new() { { 0, 0, 1 }, { 0, 4, 5 }, { 2, 2, 5 } };
+
+    public static TheoryData<int, int, int> RangesNegativePastTheEndOrInverted =>
+        new() { { -1, 2, 5 }, { 0, 5, 5 }, { 3, 2, 5 } };
 
     [Theory]
-    [InlineData(-1, 5)]
-    [InlineData(5, 5)]
-    [InlineData(6, 5)]
-    [InlineData(0, 0)]
+    [MemberData(nameof(IndicesInsideTheSize))]
+    public void ValidateIndex_InsideTheSize_DoesNotThrow(int index, int size) =>
+        Assert.Null(Record.Exception(() => RangeBounds.ValidateIndex(index, size, Message)));
+
+    [Theory]
+    [MemberData(nameof(IndicesOutsideTheSize))]
     public void ValidateIndex_OutsideTheSize_Throws(int index, int size) =>
         Assert.Throws<ArgumentOutOfRangeException>(() => RangeBounds.ValidateIndex(index, size, Message));
 
@@ -31,19 +38,16 @@ public sealed class RangeBoundsTests
     }
 
     [Theory]
-    [InlineData(0, 0, 1)]
-    [InlineData(0, 4, 5)]
-    [InlineData(2, 2, 5)]
+    [MemberData(nameof(RangesInsideTheSize))]
     public void ValidateRange_InsideTheSize_DoesNotThrow(int left, int right, int size) =>
-        RangeBounds.ValidateRange(left, right, size, Message);
+        Assert.Null(Record.Exception(() => RangeBounds.ValidateRange(left, right, size, Message)));
 
     [Theory]
-    [InlineData(-1, 2, 5)]
-    [InlineData(0, 5, 5)]
-    [InlineData(3, 2, 5)]
+    [MemberData(nameof(RangesNegativePastTheEndOrInverted))]
     public void ValidateRange_NegativePastTheEndOrInverted_Throws(int left, int right, int size) =>
         Assert.Throws<ArgumentOutOfRangeException>(() => RangeBounds.ValidateRange(left, right, size, Message));
 
     [Fact]
-    public void ValidateRange_AcceptsASingleElementRange() => RangeBounds.ValidateRange(4, 4, 5, Message);
+    public void ValidateRange_AcceptsASingleElementRange() =>
+        Assert.Null(Record.Exception(() => RangeBounds.ValidateRange(4, 4, 5, Message)));
 }

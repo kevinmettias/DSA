@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RectangleOverlap;
 // Harness only: both strategies are RectangleOverlapSolution's - the closed-form
 // O(1) axis-interval check and the unit-grid brute force it has to beat, now under
 // test itself instead of sitting unasserted as a benchmark-only baseline.
-public sealed class RectangleOverlapTests
+public sealed partial class RectangleOverlapTests
 {
     public static TheoryData<RectangleOverlapCase> Examples =>
         new()

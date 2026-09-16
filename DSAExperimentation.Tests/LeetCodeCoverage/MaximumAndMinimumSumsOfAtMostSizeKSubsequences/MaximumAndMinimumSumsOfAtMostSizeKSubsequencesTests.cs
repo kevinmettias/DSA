@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumAndMinimumSumsOfAtMos
 // MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution's - this file just pins
 // them to LeetCode's published examples, including the all-duplicates case that
 // exercises the max/min tables identically.
-public sealed class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesTests
+public sealed partial class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

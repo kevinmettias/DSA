@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.ShortestPaths;
 
-public sealed class ByPriorityOrderTests
+public sealed partial class ByPriorityOrderTests
 {
     private static (TestNode Node, int Priority) Entry(string name, int priority) => (new TestNode(name), priority);
 

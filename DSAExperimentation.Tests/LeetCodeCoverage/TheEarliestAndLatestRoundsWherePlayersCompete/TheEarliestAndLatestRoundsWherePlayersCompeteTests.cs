@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheEarliestAndLatestRoundsWh
 // benchmark-only baseline nothing asserted, and the Memoizer-backed one. One test
 // method per strategy over LeetCode's published examples plus the immediate-meeting
 // and mirror-normalization edges.
-public sealed class TheEarliestAndLatestRoundsWherePlayersCompeteTests
+public sealed partial class TheEarliestAndLatestRoundsWherePlayersCompeteTests
 {
     public static TheoryData<RoundBoundsExample> Examples =>
         new()

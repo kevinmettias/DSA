@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfStepsToReduceANumber
 // live untested as the benchmark's baseline - pinned to LeetCode's published examples
 // plus a cascading carry, an all-halvings case, and the alternating bit pattern the
 // benchmark measures.
-public sealed class NumberOfStepsToReduceANumberInBinaryRepresentationToOneTests
+public sealed partial class NumberOfStepsToReduceANumberInBinaryRepresentationToOneTests
 {
     public static TheoryData<string, int> Examples =>
         new()

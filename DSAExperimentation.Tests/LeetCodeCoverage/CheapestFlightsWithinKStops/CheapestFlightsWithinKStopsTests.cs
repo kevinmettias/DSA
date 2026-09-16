@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheapestFlightsWithinKStops;
 // CheapestFlightsWithinKStopsSolution's; this file just pins them to LeetCode's
 // published examples plus the stop-bound edges they have to agree on: an
 // unreachable destination, and src == dst costing nothing.
-public sealed class CheapestFlightsWithinKStopsTests
+public sealed partial class CheapestFlightsWithinKStopsTests
 {
     public static TheoryData<CheapestPriceExample> Examples =>
         new()

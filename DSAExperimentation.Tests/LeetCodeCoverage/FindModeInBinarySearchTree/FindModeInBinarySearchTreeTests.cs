@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindModeInBinarySearchTree;
 // before). LeetCode accepts the modes in any order, so both strategies' results are
 // sorted before comparing - the hash-map strategy in particular has no reason to
 // come out in ascending order the way the in-order-walk strategy naturally does.
-public sealed class FindModeInBinarySearchTreeTests
+public sealed partial class FindModeInBinarySearchTreeTests
 {
     public static TheoryData<TreeExample> Examples =>
         new()

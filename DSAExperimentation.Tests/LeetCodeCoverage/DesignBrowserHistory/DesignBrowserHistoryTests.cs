@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignBrowserHistory;
 // DesignCircularQueueTests already uses for its own instance-API problem. A Visit
 // returns null in LeetCode's judge output, so BrowserHistoryOp.Apply returns null
 // for it too and the expected sequence reads exactly like the published one.
-public sealed class DesignBrowserHistoryTests
+public sealed partial class DesignBrowserHistoryTests
 {
     public static TheoryData<string, BrowserHistoryOp[], string?[]> Examples =>
         new()
@@ -70,25 +70,18 @@ public sealed class DesignBrowserHistoryTests
     [MemberData(nameof(Examples))]
     public void BrowserHistoryByListBacked_LeetCodeExamples_MatchesExpectedSequence(
         string homepage, BrowserHistoryOp[] operations, string?[] expected) =>
-        RunScript(new DesignBrowserHistorySolution.BrowserHistoryByListBacked(homepage), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignBrowserHistorySolution.BrowserHistoryByListBacked(homepage), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BrowserHistoryByDynamicArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
         string homepage, BrowserHistoryOp[] operations, string?[] expected) =>
-        RunScript(
+        Assert.Equal(expected, RunScript(
             new DesignBrowserHistorySolution.BrowserHistoryByDynamicArrayBacked(homepage),
-            operations,
-            expected);
+            operations));
 
-    private static void RunScript(
+    private static string?[] RunScript(
         DesignBrowserHistorySolution.IBrowserHistory history,
-        BrowserHistoryOp[] operations,
-        string?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(history));
-        }
-    }
+        BrowserHistoryOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(history))];
 }

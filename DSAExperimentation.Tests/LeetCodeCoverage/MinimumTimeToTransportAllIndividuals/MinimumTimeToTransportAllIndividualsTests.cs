@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToTransportAllInd
 // strategies are MinimumTimeToTransportAllIndividualsSolution's - this file
 // just pins them to LeetCode's published examples, including the k = 1 case
 // that never reaches a full mask at all.
-public sealed class MinimumTimeToTransportAllIndividualsTests
+public sealed partial class MinimumTimeToTransportAllIndividualsTests
 {
     public static TheoryData<int[], int, double[], double> Examples =>
         new()

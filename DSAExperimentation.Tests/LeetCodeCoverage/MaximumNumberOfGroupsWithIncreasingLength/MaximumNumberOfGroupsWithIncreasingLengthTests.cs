@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfGroupsWithInc
 // single index whose spare capacity buys nothing, an unsorted input that only works
 // if the sort actually happens, and a large limit on one index that still cannot
 // exceed the group-size ceiling set by how many distinct indices exist.
-public sealed class MaximumNumberOfGroupsWithIncreasingLengthTests
+public sealed partial class MaximumNumberOfGroupsWithIncreasingLengthTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ClosestPrimeNumbersInRange;
 // arm, and the DynamicArray<bool> sieve this file used to inline. The benchmark's
 // two arms only ever returned the smallest gap; both now return LeetCode's actual
 // answer, the pair itself, so the tie rule is under test too.
-public sealed class ClosestPrimeNumbersInRangeTests
+public sealed partial class ClosestPrimeNumbersInRangeTests
 {
     public static TheoryData<int, int, int[]> Examples =>
         new()

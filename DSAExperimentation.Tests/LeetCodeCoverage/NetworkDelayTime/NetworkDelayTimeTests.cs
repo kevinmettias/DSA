@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NetworkDelayTime;
 // methods - this file just pins them to LeetCode's published examples, including
 // the two shapes of "some node is unreachable" (no edges at all, and an edge that
 // only leads away from the source).
-public sealed class NetworkDelayTimeTests
+public sealed partial class NetworkDelayTimeTests
 {
     public static TheoryData<int[][], int, int, int> Examples =>
         new()

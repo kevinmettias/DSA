@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MyCalendarI;
 // replays LeetCode's published Book() call scripts against each and asserts
 // the accept/reject result of every single call, including the touching-
 // endpoints case neither strategy may treat as a conflict.
-public sealed class MyCalendarITests
+public sealed partial class MyCalendarITests
 {
     public static TheoryData<(int Start, int End)[], bool[]> Examples =>
         new()

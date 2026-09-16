@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GreatestCommonDivisorTravers
 // agree on - a lone value (vacuously traversable), a lone 1, a 1 sitting alongside values
 // that do connect to each other, and a chain that is only connected transitively
 // (30-77-22-35 has no edge between 30 and 77 at all, only the path through 22 and 35).
-public sealed class GreatestCommonDivisorTraversalTests
+public sealed partial class GreatestCommonDivisorTraversalTests
 {
     public static TheoryData<TraversalExample> Examples =>
         new()

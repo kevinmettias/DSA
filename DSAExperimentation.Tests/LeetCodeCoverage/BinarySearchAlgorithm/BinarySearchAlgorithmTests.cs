@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BinarySearchAlgorithm;
 
 // Harness only. Both strategies are BinarySearchAlgorithmSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class BinarySearchAlgorithmTests
+public sealed partial class BinarySearchAlgorithmTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

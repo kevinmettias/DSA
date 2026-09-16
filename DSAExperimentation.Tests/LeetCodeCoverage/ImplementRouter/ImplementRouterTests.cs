@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementRouter;
 // querying calls rather than a single argument tuple. RouterOp.Apply is pure
 // dispatch (which method to call with which arguments) - no packet-storage
 // logic of its own.
-public sealed class ImplementRouterTests
+public sealed partial class ImplementRouterTests
 {
     public static TheoryData<int, RouterOp[], object?[]> Examples =>
         new()
@@ -42,35 +42,48 @@ public sealed class ImplementRouterTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RouterByLinearScan_LeetCodeExamples_RepliesMatchPublishedOutputs(
-        int memoryLimit, RouterOp[] operations, object?[] expected) =>
-        RunScript(new ImplementRouterSolution.RouterByLinearScan(memoryLimit), operations, expected);
+        int memoryLimit, RouterOp[] operations, object?[] expected)
+    {
+        var replies = RunScript(new ImplementRouterSolution.RouterByLinearScan(memoryLimit), operations);
+
+        for (var i = 0; i < replies.Length; i++)
+        {
+            // forwardPacket's expected slot is the int[] it must return element-wise;
+            // bool/int results (addPacket/getCount) compare fine as plain objects.
+            if (expected[i] is int[] expectedPacket)
+            {
+                Assert.Equal(expectedPacket, Assert.IsType<int[]>(replies[i]));
+            }
+            else
+            {
+                Assert.Equal(expected[i], replies[i]);
+            }
+        }
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RouterByBinarySearchIndex_LeetCodeExamples_RepliesMatchPublishedOutputs(
-        int memoryLimit, RouterOp[] operations, object?[] expected) =>
-        RunScript(new ImplementRouterSolution.RouterByBinarySearchIndex(memoryLimit), operations, expected);
-
-    private static void RunScript(
-        ImplementRouterSolution.IRouterStrategy strategy, RouterOp[] operations, object?[] expected)
+        int memoryLimit, RouterOp[] operations, object?[] expected)
     {
-        for (var i = 0; i < operations.Length; i++)
+        var replies = RunScript(new ImplementRouterSolution.RouterByBinarySearchIndex(memoryLimit), operations);
+
+        for (var i = 0; i < replies.Length; i++)
         {
-            AssertMatches(expected[i], operations[i].Apply(strategy));
+            // forwardPacket's expected slot is the int[] it must return element-wise;
+            // bool/int results (addPacket/getCount) compare fine as plain objects.
+            if (expected[i] is int[] expectedPacket)
+            {
+                Assert.Equal(expectedPacket, Assert.IsType<int[]>(replies[i]));
+            }
+            else
+            {
+                Assert.Equal(expected[i], replies[i]);
+            }
         }
     }
 
-    // int[] results (forwardPacket) need element-wise comparison; bool/int
-    // results (addPacket/getCount) compare fine as plain objects.
-    private static void AssertMatches(object? expected, object? actual)
-    {
-        if (expected is int[] expectedPacket)
-        {
-            Assert.Equal(expectedPacket, Assert.IsType<int[]>(actual));
-        }
-        else
-        {
-            Assert.Equal(expected, actual);
-        }
-    }
+    private static object?[] RunScript(
+        ImplementRouterSolution.IRouterStrategy strategy, RouterOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 }

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineMajorityElementInSubar
 // sequence against it, which is what LeetCode's Design shape actually specifies, so a
 // failure still names the strategy that broke. Every query obeys LeetCode's own
 // 2*threshold > right-left+1 guarantee, so each has exactly one admissible answer.
-public sealed class OnlineMajorityElementInSubarrayTests
+public sealed partial class OnlineMajorityElementInSubarrayTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

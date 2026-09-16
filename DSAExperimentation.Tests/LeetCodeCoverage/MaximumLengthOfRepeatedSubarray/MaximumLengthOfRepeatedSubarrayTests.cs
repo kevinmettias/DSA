@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumLengthOfRepeatedSubar
 // FindLengthByBruteForce (previously untested scaffolding inlined in the benchmark)
 // gets the same LeetCode examples as FindLengthByMemoizedSuffixPairDp (previously the
 // test's own private helper), so a failure names the strategy that broke.
-public sealed class MaximumLengthOfRepeatedSubarrayTests
+public sealed partial class MaximumLengthOfRepeatedSubarrayTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

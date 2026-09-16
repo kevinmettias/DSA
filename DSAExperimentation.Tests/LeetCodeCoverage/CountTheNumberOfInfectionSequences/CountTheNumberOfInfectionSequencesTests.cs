@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfInfectionSeq
 // Harness only: both strategies live in CountTheNumberOfInfectionSequencesSolution.
 // One test method per strategy over one shared set of LeetCode's published
 // examples, so a failure names the strategy that broke.
-public sealed class CountTheNumberOfInfectionSequencesTests
+public sealed partial class CountTheNumberOfInfectionSequencesTests
 {
     public static TheoryData<int, int[], long> Examples =>
         new()

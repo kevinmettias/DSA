@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNumberOfRectanglesConta
 // to LeetCode's published examples plus the boundary cases the bisecting strategy
 // has to get right (a point past every length, exact equality on both coordinates,
 // and a height above every rectangle).
-public sealed class CountNumberOfRectanglesContainingEachPointTests
+public sealed partial class CountNumberOfRectanglesContainingEachPointTests
 {
     public static TheoryData<int[][], int[][], int[]> Examples =>
         new()

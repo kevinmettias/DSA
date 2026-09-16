@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAuctionSystem;
 // even though the "input" here is a sequence of mutating calls rather than a
 // single argument tuple. AuctionOp.Apply is pure dispatch (which method to call
 // with which arguments) - no bidding/ordering logic of its own.
-public sealed class DesignAuctionSystemTests
+public sealed partial class DesignAuctionSystemTests
 {
     public static TheoryData<AuctionOp[], int?[]> Examples =>
         new()
@@ -36,22 +36,16 @@ public sealed class DesignAuctionSystemTests
     [MemberData(nameof(Examples))]
     public void AuctionSystemByLinearScan_LeetCodeExample_ReturnsHighestBidderPerItem(
         AuctionOp[] operations, int?[] expected) =>
-        RunScript(new DesignAuctionSystemSolution.AuctionSystemByLinearScan(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignAuctionSystemSolution.AuctionSystemByLinearScan(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void AuctionSystemByLazyDeletionHeap_LeetCodeExample_ReturnsHighestBidderPerItem(
         AuctionOp[] operations, int?[] expected) =>
-        RunScript(new DesignAuctionSystemSolution.AuctionSystemByLazyDeletionHeap(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignAuctionSystemSolution.AuctionSystemByLazyDeletionHeap(), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignAuctionSystemSolution.IAuctionSystemStrategy strategy,
-        AuctionOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+        AuctionOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 }

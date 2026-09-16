@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Hamming;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Hamming;
 
-public sealed class HammingTopologyTests
+public sealed partial class HammingTopologyTests
 {
     [Fact]
     public void GetChildren_ExposesTheNodesOwnNeighbours()

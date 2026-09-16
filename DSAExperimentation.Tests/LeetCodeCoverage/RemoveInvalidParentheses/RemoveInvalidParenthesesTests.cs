@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveInvalidParentheses;
 
 // Harness only. Both strategies are RemoveInvalidParenthesesSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class RemoveInvalidParenthesesTests
+public sealed partial class RemoveInvalidParenthesesTests
 {
     public static TheoryData<string, string[]> Examples =>
         new()

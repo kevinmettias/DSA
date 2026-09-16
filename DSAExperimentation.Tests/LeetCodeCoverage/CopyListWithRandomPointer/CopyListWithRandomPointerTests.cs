@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CopyListWithRandomPointer;
 // one strategy this file pins to LeetCode's published examples - each example is
 // (Value, RandomIndex) pairs in list order, RandomIndex null when that node's
 // Random pointer is unset, matching LC's own wire format for this problem.
-public sealed class CopyListWithRandomPointerTests
+public sealed partial class CopyListWithRandomPointerTests
 {
     public static TheoryData<(int Value, int? RandomIndex)[]> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LexicographicalNumbers;
 
 // Harness only. Both strategies live in LexicographicalNumbersSolution and are
 // asserted against the same examples.
-public sealed class LexicographicalNumbersTests
+public sealed partial class LexicographicalNumbersTests
 {
     public static TheoryData<int, int[]> Examples =>
         new()

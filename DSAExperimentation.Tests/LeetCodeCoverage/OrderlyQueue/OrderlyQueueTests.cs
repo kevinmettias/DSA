@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OrderlyQueue;
 
 // Harness only. Both strategies are OrderlyQueueSolution's - one example table,
 // one theory per strategy, so a failure names the strategy that broke.
-public sealed class OrderlyQueueTests
+public sealed partial class OrderlyQueueTests
 {
     public static TheoryData<string, int, string> Examples =>
         new()

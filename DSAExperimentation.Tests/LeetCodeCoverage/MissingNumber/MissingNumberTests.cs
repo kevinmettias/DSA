@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MissingNumber;
 
 // Harness only: both strategies live in MissingNumberSolution and are asserted
 // against the same examples.
-public sealed class MissingNumberTests
+public sealed partial class MissingNumberTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

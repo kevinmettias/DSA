@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestRectangleInHistogram;
 // this file just pins them to LeetCode's published examples plus a
 // strictly-increasing run, where the best rectangle is a suffix rather than
 // a single bar.
-public sealed class LargestRectangleInHistogramTests
+public sealed partial class LargestRectangleInHistogramTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

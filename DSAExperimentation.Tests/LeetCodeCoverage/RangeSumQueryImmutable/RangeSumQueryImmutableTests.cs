@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumQueryImmutable;
 
 // Harness only. Both strategies are RangeSumQueryImmutableSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class RangeSumQueryImmutableTests
+public sealed partial class RangeSumQueryImmutableTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
 // cannot cover this ground: every registered case is expected to PASS, so nothing
 // there would notice if RunCase reported success unconditionally, or ran the
 // wrong strategy, or silently dropped a case.
-public sealed class LeetCodeProblemBuilderTests
+public sealed partial class LeetCodeProblemBuilderTests
 {
     private const string Slug = "harness-fixture";
 

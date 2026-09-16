@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Dota2Senate;
 // Harness only: both strategies live in Dota2SenateSolution and are asserted
 // against the same examples, including the single-party cases neither strategy's
 // voting loop ever runs for.
-public sealed class Dota2SenateTests
+public sealed partial class Dota2SenateTests
 {
     public static TheoryData<SenateCase> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfDigitOne;
 // just pins them to LeetCode's published examples, plus a single-digit case
 // and a small n whose own digits repeat '1' (11 contributes two extra 1's on
 // top of the ones already counted from 1 and 10).
-public sealed class NumberOfDigitOneTests
+public sealed partial class NumberOfDigitOneTests
 {
     public static TheoryData<int, long> Examples =>
         new()

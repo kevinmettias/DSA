@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
 // REJECT matters more than what they accept: a comparer that says yes to
 // everything makes the whole harness green and meaningless. Every test below is
 // paired - one answer that must pass and one wrong answer that must not.
-public sealed class LeetCodeAnswersTests
+public sealed partial class LeetCodeAnswersTests
 {
     [Fact]
     public void IsExactlyEqual_OnArrays_ComparesByReferenceAndSoMustNotBeUsedForThem()

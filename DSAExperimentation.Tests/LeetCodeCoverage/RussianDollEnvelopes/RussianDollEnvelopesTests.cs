@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RussianDollEnvelopes;
 
 // Harness only. Both strategies are RussianDollEnvelopesSolution's - this file just pins them to
 // LeetCode's published examples, including the all-tied-widths case that cannot chain at all.
-public sealed class RussianDollEnvelopesTests
+public sealed partial class RussianDollEnvelopesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

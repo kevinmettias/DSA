@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IsGraphBipartite;
 // them to LeetCode's published examples plus the shapes the composed arm has to
 // answer without a single connected component to walk: isolated vertices and a
 // graph that is bipartite only because its components are considered separately.
-public sealed class IsGraphBipartiteTests
+public sealed partial class IsGraphBipartiteTests
 {
     public static TheoryData<BipartiteExample> Examples =>
         new()

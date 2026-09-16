@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ContainVirus;
 // Harness only. ContainVirusSolution owns the round-by-round simulation and both
 // region-discovery strategies; this file pins them to LeetCode's published
 // examples.
-public sealed class ContainVirusTests
+public sealed partial class ContainVirusTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

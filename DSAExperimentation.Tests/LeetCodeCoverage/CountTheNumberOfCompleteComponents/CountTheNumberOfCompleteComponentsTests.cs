@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfCompleteComp
 // pins both to LeetCode's published examples plus the degenerate shapes the
 // identity has to get right: an isolated node (k = 1 needs no edges) and a cycle
 // that is connected without being complete.
-public sealed class CountTheNumberOfCompleteComponentsTests
+public sealed partial class CountTheNumberOfCompleteComponentsTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

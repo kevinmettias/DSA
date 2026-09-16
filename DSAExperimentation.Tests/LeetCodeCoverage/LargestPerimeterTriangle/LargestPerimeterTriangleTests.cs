@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestPerimeterTriangle;
 // just pins them to LeetCode's published examples, the no-valid-triangle case, and a
 // case where the largest sides cannot form a triangle but a smaller triple can, so
 // the sorted scan has to keep walking down rather than stop at the top.
-public sealed class LargestPerimeterTriangleTests
+public sealed partial class LargestPerimeterTriangleTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstrainedSubsequenceSum;
 // asserted against the same examples - LeetCode's three published ones, the
 // all-negative case where the answer must still pick exactly one element, and a
 // single-element array.
-public sealed class ConstrainedSubsequenceSumTests
+public sealed partial class ConstrainedSubsequenceSumTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

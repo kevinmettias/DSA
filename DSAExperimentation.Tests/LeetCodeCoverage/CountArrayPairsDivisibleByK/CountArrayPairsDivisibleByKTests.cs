@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountArrayPairsDivisibleByK;
 // examples plus the cases the grouping has to get right on its own - every value
 // landing in one group, divisor = 1 so every pair qualifies, and a mix where the qualifying
 // pairs all straddle two different groups.
-public sealed class CountArrayPairsDivisibleByKTests
+public sealed partial class CountArrayPairsDivisibleByKTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LFUCache;
 // LFUCacheOp.Apply is pure dispatch plus LeetCode's own -1-on-miss convention
 // (ICache<TKey,TValue>.TryGetValue leaves `value` undefined on a miss, per its
 // own doc comment) - no eviction logic of its own.
-public sealed class LFUCacheTests
+public sealed partial class LFUCacheTests
 {
     public static TheoryData<int, LFUCacheOp[], int?[]> Examples =>
         new()
@@ -54,21 +54,16 @@ public sealed class LFUCacheTests
     [MemberData(nameof(Examples))]
     public void CreateByLfuCachePrimitive_LeetCodeExamples_EvictsLeastFrequentlyUsedKey(
         int capacity, LFUCacheOp[] operations, int?[] expected) =>
-        RunScript(LFUCacheSolution.CreateByLfuCachePrimitive(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(LFUCacheSolution.CreateByLfuCachePrimitive(capacity), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByDictionaryLinearScan_LeetCodeExamples_EvictsLeastFrequentlyUsedKey(
         int capacity, LFUCacheOp[] operations, int?[] expected) =>
-        RunScript(LFUCacheSolution.CreateByDictionaryLinearScan(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(LFUCacheSolution.CreateByDictionaryLinearScan(capacity), operations));
 
-    private static void RunScript(ICache<int, int> cache, LFUCacheOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(cache));
-        }
-    }
+    private static int?[] RunScript(ICache<int, int> cache, LFUCacheOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(cache))];
 
     // One call in an LFUCache script: which method to invoke and with what
     // arguments. Pure dispatch, built via the named factories below so a script

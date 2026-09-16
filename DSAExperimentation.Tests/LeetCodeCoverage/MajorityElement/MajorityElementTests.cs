@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MajorityElement;
 // Harness only. The one strategy here is MajorityElementSolution's - this file
 // just pins it to LeetCode's published examples plus a couple of edge cases the
 // original two-example test left uncovered.
-public sealed class MajorityElementTests
+public sealed partial class MajorityElementTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

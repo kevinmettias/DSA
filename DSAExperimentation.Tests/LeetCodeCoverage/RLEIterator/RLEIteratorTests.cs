@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RLEIterator;
 // implementation, one theory per strategy, so a failure names the strategy that
 // broke even though the "input" here is a sequence of calls rather than a single
 // argument tuple.
-public sealed class RLEIteratorTests
+public sealed partial class RLEIteratorTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

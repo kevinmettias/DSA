@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FallingSquares;
 
 // Harness only. Both strategies are FallingSquaresSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class FallingSquaresTests
+public sealed partial class FallingSquaresTests
 {
     public static TheoryData<int[][], List<int>> Examples =>
         new()

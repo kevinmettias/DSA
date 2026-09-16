@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NetworkRecoveryPathways;
 // to LeetCode's published examples, plus one unreachable-destination case
 // neither strategy's binary search should mistake for "threshold 0 is
 // feasible."
-public sealed class NetworkRecoveryPathwaysTests
+public sealed partial class NetworkRecoveryPathwaysTests
 {
     public static TheoryData<int[][], bool[], long, int> Examples =>
         new()

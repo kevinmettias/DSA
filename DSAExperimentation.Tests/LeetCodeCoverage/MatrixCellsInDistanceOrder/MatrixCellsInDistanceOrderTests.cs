@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MatrixCellsInDistanceOrder;
 // produce rather than one exact permutation; together with "every cell exactly once"
 // that pins the answer as tightly as LeetCode itself does, and exactly on the
 // tie-free single-row case.
-public sealed class MatrixCellsInDistanceOrderTests
+public sealed partial class MatrixCellsInDistanceOrderTests
 {
     public static TheoryData<MatrixExample> Examples =>
         new()

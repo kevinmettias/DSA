@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheNumberOfBeautifulSubsets;
 // set of examples, so a failure names the strategy that broke - including the
 // bitmask baseline, which used to exist only inside the benchmark and was therefore
 // asserted by nothing.
-public sealed class TheNumberOfBeautifulSubsetsTests
+public sealed partial class TheNumberOfBeautifulSubsetsTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GoodSubsequenceQueries;
 // Harness only. Both strategies are GoodSubsequenceQueriesSolution's - this file
 // just pins them to LeetCode's published examples, including Example 2's run of
 // two consecutive "yes" answers after the first update settles as "no".
-public sealed class GoodSubsequenceQueriesTests
+public sealed partial class GoodSubsequenceQueriesTests
 {
     public static TheoryData<int[], int, int[][], int> Examples =>
         new()

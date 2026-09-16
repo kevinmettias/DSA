@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FlattenNestedListIterator;
 // [Fact] per tree. Here each example is instead named by a nested NestedListShape
 // the theory data carries, and BuildList turns that shape into the structure inside
 // the test.
-public sealed class FlattenNestedListIteratorTests
+public sealed partial class FlattenNestedListIteratorTests
 {
     public static TheoryData<NestedListShape, List<int>> Examples =>
         new()

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StepByStepDirectionsFromABin
 // BinaryTreeNode<int> is internal, so it cannot appear in a public TheoryData
 // member; the trees travel as LeetCode's own level-order arrays and BuildTree
 // reconstructs one inside each test method.
-public sealed class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
+public sealed partial class StepByStepDirectionsFromABinaryTreeNodeToAnotherTests
 {
     public static TheoryData<int?[], int, int, string> Examples =>
         new()

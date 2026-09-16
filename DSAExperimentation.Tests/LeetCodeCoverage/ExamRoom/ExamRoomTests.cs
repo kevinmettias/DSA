@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ExamRoom;
 // LeetCode's published call scripts against each and asserts every Seat() result, so
 // a failure names the strategy that broke. A script entry is either (Seat, 0) or
 // (Leave, seatNumber); Seat() results are asserted in order against Expected.
-public sealed class ExamRoomTests
+public sealed partial class ExamRoomTests
 {
     private const string SeatOperation = "seat";
     private const string LeaveOperation = "leave";

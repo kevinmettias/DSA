@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfPairsAfterIncrement;
 // Harness only. Both range-add/count strategies are
 // NumberOfPairsAfterIncrementSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class NumberOfPairsAfterIncrementTests
+public sealed partial class NumberOfPairsAfterIncrementTests
 {
     public static TheoryData<int[], int[], int[][], int[]> Examples =>
         new()

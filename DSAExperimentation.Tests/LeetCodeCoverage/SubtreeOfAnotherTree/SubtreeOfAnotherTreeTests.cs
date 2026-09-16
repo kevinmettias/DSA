@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubtreeOfAnotherTree;
 // internal, so - as in SameTreeTests/ValidateBinarySearchTreeTests - it stays
 // out of a public TheoryData/[Theory] signature and is only ever handed to the
 // solution through private helpers.
-public sealed class SubtreeOfAnotherTreeTests
+public sealed partial class SubtreeOfAnotherTreeTests
 {
     [Fact]
     public void IsSubtreeByRecursiveCompareAtEveryNode_MatchingSubtreeExists_ReturnsTrue()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MakeLexicographicallySmalles
 // MakeLexicographicallySmallestArrayBySwappingElementsSolution and are asserted
 // against the same examples, including one where no pair is within `limit` of
 // another and the array is already its own answer.
-public sealed class MakeLexicographicallySmallestArrayBySwappingElementsTests
+public sealed partial class MakeLexicographicallySmallestArrayBySwappingElementsTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

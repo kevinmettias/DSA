@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToRevertWordToIni
 // MinimumTimeToRevertWordToInitialStateIISolution - this file just pins them
 // to LeetCode's published examples (identical to 3029's, since 3031 restates
 // the same problem at a larger bound).
-public sealed class MinimumTimeToRevertWordToInitialStateIITests
+public sealed partial class MinimumTimeToRevertWordToInitialStateIITests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

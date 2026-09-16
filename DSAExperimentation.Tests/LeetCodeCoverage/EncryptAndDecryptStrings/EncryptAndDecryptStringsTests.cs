@@ -17,7 +17,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EncryptAndDecryptStrings;
 // by a `using static`: a wildcard import drops every member in as a bare identifier,
 // so a reader meeting CreateByPrecomputedFrequency has nothing on the line telling
 // them whose it is.
-public sealed class EncryptAndDecryptStringsTests
+public sealed partial class EncryptAndDecryptStringsTests
 {
     public static TheoryData<EncrypterScript> Examples =>
         new()
@@ -107,7 +107,7 @@ public sealed class EncryptAndDecryptStringsTests
         var encrypter = EncryptAndDecryptStringsSolution.CreateByDictionaryRescan(
             script.Keys, script.Values, script.Dictionary);
 
-        RunScript(encrypter, script.Calls, script.Expected);
+        Assert.Equal(script.Expected, RunScript(encrypter, script.Calls));
     }
 
     [Theory]
@@ -117,16 +117,11 @@ public sealed class EncryptAndDecryptStringsTests
         var encrypter = EncryptAndDecryptStringsSolution.CreateByPrecomputedFrequency(
             script.Keys, script.Values, script.Dictionary);
 
-        RunScript(encrypter, script.Calls, script.Expected);
+        Assert.Equal(script.Expected, RunScript(encrypter, script.Calls));
     }
 
-    private static void RunScript(IEncrypter encrypter, EncrypterCall[] calls, string[] expected)
-    {
-        for (var i = 0; i < calls.Length; i++)
-        {
-            Assert.Equal(expected[i], calls[i].Apply(encrypter));
-        }
-    }
+    private static string[] RunScript(IEncrypter encrypter, EncrypterCall[] calls) =>
+        [.. calls.Select(call => call.Apply(encrypter))];
 
     // One LeetCode example: the encrypter's constructor arguments, the calls to replay
     // against it, and the judge output for each call. Every argument is named where it

@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.Tests.DataStructures.HashMap;
 
-public sealed class HashMapStorageTests
+public sealed partial class HashMapStorageTests
 {
     private static HashMapStorage<string, int> Storage() => new();
 

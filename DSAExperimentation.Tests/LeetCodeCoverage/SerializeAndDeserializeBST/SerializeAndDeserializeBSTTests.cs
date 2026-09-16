@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBST;
 // BinarySearchTree<int>.Insert so its shape is always genuinely BST-ordered, and
 // comparing round-tripped shape by preorder traversal since the restored tree only
 // needs to be structurally identical, not reference-equal.
-public sealed class SerializeAndDeserializeBSTTests
+public sealed partial class SerializeAndDeserializeBSTTests
 {
     public static TheoryData<int[]> Examples =>
         new()

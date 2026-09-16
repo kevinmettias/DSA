@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignFrontMiddleBackQueue;
 // shape DesignCircularDequeTests already uses for its own instance-API problem.
 // Apply returns int? so a script can state LeetCode's own judge output verbatim,
 // nulls for the three void pushes included.
-public sealed class DesignFrontMiddleBackQueueTests
+public sealed partial class DesignFrontMiddleBackQueueTests
 {
     public static TheoryData<FrontMiddleBackQueueOp[], int?[]> Examples =>
         new()
@@ -98,22 +98,16 @@ public sealed class DesignFrontMiddleBackQueueTests
     [MemberData(nameof(Examples))]
     public void FrontMiddleBackQueueByListInsert_LeetCodeExamples_MatchesExpectedSequence(
         FrontMiddleBackQueueOp[] operations, int?[] expected) =>
-        RunScript(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByListInsert(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByListInsert(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FrontMiddleBackQueueByTwoDeques_LeetCodeExamples_MatchesExpectedSequence(
         FrontMiddleBackQueueOp[] operations, int?[] expected) =>
-        RunScript(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByTwoDeques(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByTwoDeques(), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignFrontMiddleBackQueueSolution.IFrontMiddleBackQueue queue,
-        FrontMiddleBackQueueOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(queue));
-        }
-    }
+        FrontMiddleBackQueueOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(queue))];
 }

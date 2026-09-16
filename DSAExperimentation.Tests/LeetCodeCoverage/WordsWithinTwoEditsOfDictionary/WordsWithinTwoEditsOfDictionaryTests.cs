@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordsWithinTwoEditsOfDiction
 // are asserted against the same examples, including the budget boundary (two edits
 // match, three do not), a query that matches nothing, and duplicate queries, which
 // LeetCode reports once each rather than collapsing.
-public sealed class WordsWithinTwoEditsOfDictionaryTests
+public sealed partial class WordsWithinTwoEditsOfDictionaryTests
 {
     public static TheoryData<string[], string[], string[]> Examples =>
         new()

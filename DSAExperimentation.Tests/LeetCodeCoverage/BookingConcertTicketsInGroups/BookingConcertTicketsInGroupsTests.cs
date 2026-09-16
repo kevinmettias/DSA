@@ -11,13 +11,13 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BookingConcertTicketsInGroup
 // those scripts, gather and scatter answer with different types (a [row, seat] pair
 // versus a bool), so each BookMyShowOp carries its own expected answer instead of
 // the script being paired with one uniform expected[] array. BookMyShowOp is pure
-// dispatch plus the assertion - no seating logic of its own.
+// dispatch plus the recorded answer - no seating logic of its own.
 //
 // The pre-migration test only proved the segment-tree strategy; the row-scan
 // baseline (previously untested scaffolding inlined in the benchmark, where its
 // gather only ever reported whether a row was found rather than which row and seat)
 // gets that same coverage here for the first time.
-public sealed class BookingConcertTicketsInGroupsTests
+public sealed partial class BookingConcertTicketsInGroupsTests
 {
     public static TheoryData<int, int, BookMyShowOp[]> Examples =>
         new()
@@ -79,22 +79,21 @@ public sealed class BookingConcertTicketsInGroupsTests
     [MemberData(nameof(Examples))]
     public void BookMyShowByRowScan_LeetCodeExamples_SeatsEachGroupInTheLowestQualifyingRow(
         int rowCount, int seatsPerRow, BookMyShowOp[] operations) =>
-        RunScript(new BookingConcertTicketsInGroupsSolution.BookMyShowByRowScan(rowCount, seatsPerRow), operations);
+        Assert.Equal(operations.Select(operation => operation.Expected).ToArray(), RunScript(
+            new BookingConcertTicketsInGroupsSolution.BookMyShowByRowScan(rowCount, seatsPerRow),
+            operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void BookMyShowBySegmentTreeBinarySearch_LeetCodeExamples_SeatsEachGroupInTheLowestQualifyingRow(
         int rowCount, int seatsPerRow, BookMyShowOp[] operations) =>
-        RunScript(new BookingConcertTicketsInGroupsSolution.BookMyShowBySegmentTreeBinarySearch(rowCount, seatsPerRow), operations);
+        Assert.Equal(operations.Select(operation => operation.Expected).ToArray(), RunScript(
+            new BookingConcertTicketsInGroupsSolution.BookMyShowBySegmentTreeBinarySearch(rowCount, seatsPerRow),
+            operations));
 
-    private static void RunScript(
-        BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, BookMyShowOp[] operations)
-    {
-        foreach (var operation in operations)
-        {
-            operation.AssertAgainst(strategy);
-        }
-    }
+    private static object[] RunScript(
+        BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, BookMyShowOp[] operations) =>
+        [.. operations.Select(operation => operation.Observe(strategy))];
 
     // One call in a BookMyShow script: which method to invoke, with what arguments,
     // and what LeetCode says it answers. Built via the named factories below so a
@@ -116,19 +115,11 @@ public sealed class BookingConcertTicketsInGroupsTests
         // Internal, not public: IBookMyShowStrategy is internal to
         // BookingConcertTicketsInGroupsSolution, and only this same assembly's
         // RunScript ever calls this.
-        internal void AssertAgainst(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy)
-        {
-            if (isGather)
-            {
-                var seating = strategy.Gather(groupSize, maxRow);
+        internal object Observe(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy) =>
+            isGather ? strategy.Gather(groupSize, maxRow) : strategy.Scatter(groupSize, maxRow);
 
-                Assert.Equal(expectedSeating, seating);
-                return;
-            }
-
-            var seated = strategy.Scatter(groupSize, maxRow);
-
-            Assert.Equal(expectedSeated, seated);
-        }
+        // What this call answers, in the shape Observe reports it: the [row, seat]
+        // pair a gather answers with, or the seated-or-not flag a scatter answers with.
+        internal object Expected => isGather ? expectedSeating : expectedSeated;
     }
 }

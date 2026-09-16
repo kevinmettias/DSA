@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReconstructItinerary;
 // file just pins them to LeetCode's published examples, including the
 // multiple-valid-routes case that requires lexicographic tie-breaking to reach the
 // expected itinerary.
-public sealed class ReconstructItineraryTests
+public sealed partial class ReconstructItineraryTests
 {
     public static TheoryData<string[][], List<string>> Examples =>
         new()

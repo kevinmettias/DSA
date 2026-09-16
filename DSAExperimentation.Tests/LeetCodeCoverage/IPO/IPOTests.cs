@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IPO;
 // same examples - the classic two-heap greedy (a min-heap of projects by required
 // capital feeding a max-heap of unlocked profits) and the linear-rescan baseline
 // it has to justify itself against.
-public sealed class IPOTests
+public sealed partial class IPOTests
 {
     public static TheoryData<CapitalExample> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ScoreOfParentheses;
 // file just pins them to LeetCode's published examples plus the mixed
 // nesting/sibling shapes that separate "2 * inner" from "inner + inner", including
 // the O(n^2) depth-rescan baseline that used to live unasserted in the benchmark.
-public sealed class ScoreOfParenthesesTests
+public sealed partial class ScoreOfParenthesesTests
 {
     public static TheoryData<string, int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DisplayTableOfFoodOrdersInAR
 // and are asserted against the same examples - LeetCode's three published ones plus
 // the multi-table case the original test carried, which exercises a food ordered by
 // several tables and a table that ordered only some of the foods.
-public sealed class DisplayTableOfFoodOrdersInARestaurantTests
+public sealed partial class DisplayTableOfFoodOrdersInARestaurantTests
 {
     public static TheoryData<string[][], string[][]> Examples =>
         new()

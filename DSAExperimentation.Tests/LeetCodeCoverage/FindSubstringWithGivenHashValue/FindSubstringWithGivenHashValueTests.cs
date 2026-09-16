@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindSubstringWithGivenHashVa
 // neither strategy can exit early, and that is the path both of its arms actually
 // measure - so it is asserted here rather than left to the unasserted baseline
 // ARCHITECTURE.md section 17.1 describes.
-public sealed class FindSubstringWithGivenHashValueTests
+public sealed partial class FindSubstringWithGivenHashValueTests
 {
     public static TheoryData<HashExample> Examples =>
         new()

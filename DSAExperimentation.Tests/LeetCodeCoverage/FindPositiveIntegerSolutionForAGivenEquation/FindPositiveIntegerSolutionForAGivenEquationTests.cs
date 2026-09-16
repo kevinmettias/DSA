@@ -15,7 +15,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindPositiveIntegerSolutionF
 // theory's own parameter (CS0051). The first column is therefore typed <object> and
 // held as object, and each theory casts it back - the cast being the one place the
 // internal type is allowed to appear, and a row's stand-in always being one.
-public sealed class FindPositiveIntegerSolutionForAGivenEquationTests
+public sealed partial class FindPositiveIntegerSolutionForAGivenEquationTests
 {
     private const int Bound = SearchRange.Bound;
 

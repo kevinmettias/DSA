@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostTreeFromLeafValue
 // sweep's two halves (merge-on-arrival vs. drain-what-is-left) separately.
 // The exponential baseline is asserted here for the first time; the lengths stay
 // small because it really is exponential.
-public sealed class MinimumCostTreeFromLeafValuesTests
+public sealed partial class MinimumCostTreeFromLeafValuesTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

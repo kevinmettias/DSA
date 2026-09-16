@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfCommonFactors;
 // method per strategy over one shared set of examples, so a failure names the
 // strategy that broke rather than reporting a disagreement between two anonymous
 // arms.
-public sealed class NumberOfCommonFactorsTests
+public sealed partial class NumberOfCommonFactorsTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

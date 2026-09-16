@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfSubarraysThatMatchAP
 // NumberOfSubarraysThatMatchAPatternIISolution - this file just pins them to
 // LeetCode's published examples (identical to 3034's, since 3036 restates
 // the same problem at a larger bound).
-public sealed class NumberOfSubarraysThatMatchAPatternIITests
+public sealed partial class NumberOfSubarraysThatMatchAPatternIITests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfKConsecutiveB
 // this file pins them to LeetCode's published examples plus the boundary cases the
 // two arms disagree about most easily - an already-all-ones input, a flip that
 // exactly fills the array, and a window wider than the array itself.
-public sealed class MinimumNumberOfKConsecutiveBitFlipsTests
+public sealed partial class MinimumNumberOfKConsecutiveBitFlipsTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

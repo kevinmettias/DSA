@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheNumberOfSubsequencesW
 // FindTheNumberOfSubsequencesWithEqualGcdSolution - this file just pins them to
 // LeetCode's published examples plus a small hand-verified duplicate-value case
 // (TwoSumTests precedent).
-public sealed class FindTheNumberOfSubsequencesWithEqualGcdTests
+public sealed partial class FindTheNumberOfSubsequencesWithEqualGcdTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

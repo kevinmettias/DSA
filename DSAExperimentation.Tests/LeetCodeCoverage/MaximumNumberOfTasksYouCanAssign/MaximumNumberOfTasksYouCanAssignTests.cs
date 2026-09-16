@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfTasksYouCanAs
 // published examples plus the cases that separate the greedy's two hard choices:
 // spending a pill on the weakest qualifying worker rather than the strongest, and
 // giving up when no worker reaches the hardest remaining task even with one.
-public sealed class MaximumNumberOfTasksYouCanAssignTests
+public sealed partial class MaximumNumberOfTasksYouCanAssignTests
 {
     public static TheoryData<TaskAssignmentExample> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToReachAPosition
 // LeetCode's published examples plus the three edges the examples leave out: zero
 // steps already on target, a return-to-start walk, and a distance whose parity
 // cannot match the step count.
-public sealed class NumberOfWaysToReachAPositionAfterExactlyKStepsTests
+public sealed partial class NumberOfWaysToReachAPositionAfterExactlyKStepsTests
 {
     public static TheoryData<int, int, int, int> Examples =>
         new()

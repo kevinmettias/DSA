@@ -15,7 +15,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BalanceABinarySearchTree;
 // (previously untested scaffolding inlined in BalanceABinarySearchTreeBenchmarks as
 // its [Benchmark(Baseline = true)] arm) gets the identical assertions here for the
 // first time.
-public sealed class BalanceABinarySearchTreeTests
+public sealed partial class BalanceABinarySearchTreeTests
 {
     public static TheoryData<int?[], int[]> Examples =>
         new()

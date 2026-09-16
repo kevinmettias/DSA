@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostOfAPathWithSpecia
 // pre-migration test already carried. The array-scan Dijkstra baseline was previously
 // scaffolding inlined in the benchmark and asserted by nothing; it is held to the same
 // examples as the composed Dijkstra here for the first time.
-public sealed class MinimumCostOfAPathWithSpecialRoadsTests
+public sealed partial class MinimumCostOfAPathWithSpecialRoadsTests
 {
     public static TheoryData<int[], int[], int[][], int> Examples =>
         new()

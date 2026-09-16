@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IncrementalEvenWeightedCycle
 
 // Harness only. Both strategies are IncrementalEvenWeightedCycleQueriesSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class IncrementalEvenWeightedCycleQueriesTests
+public sealed partial class IncrementalEvenWeightedCycleQueriesTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

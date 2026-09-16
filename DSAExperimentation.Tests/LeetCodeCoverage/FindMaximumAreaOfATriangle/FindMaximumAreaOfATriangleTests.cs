@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMaximumAreaOfATriangle;
 // Harness only: both strategies are FindMaximumAreaOfATriangleSolution's - this
 // file just pins them to LeetCode's published examples (OpenTheLockTests
 // precedent).
-public sealed class FindMaximumAreaOfATriangleTests
+public sealed partial class FindMaximumAreaOfATriangleTests
 {
     public static TheoryData<int[][], long> Examples =>
         new()

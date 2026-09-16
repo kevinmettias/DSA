@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LexicographicallySmallestEqu
 // the adjacency-list BFS baseline and this repo's DisjointSet composition - pinned here
 // to LeetCode's published examples plus a self-equivalent pair and a baseStr whose
 // letters were never mentioned by s1/s2 at all.
-public sealed class LexicographicallySmallestEquivalentStringTests
+public sealed partial class LexicographicallySmallestEquivalentStringTests
 {
     public static TheoryData<RemapExample> Examples =>
         new()

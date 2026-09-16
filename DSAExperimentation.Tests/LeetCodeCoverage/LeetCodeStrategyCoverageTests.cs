@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage;
 //
 // The pairing is by namespace, which is what the file tree already asserts: one
 // problem folder holds one <Problem>Solution and one <Problem>Registration.
-public sealed class LeetCodeStrategyCoverageTests
+public sealed partial class LeetCodeStrategyCoverageTests
 {
     private const string StrategyInfix = "By";
     private const string SolutionSuffix = "Solution";

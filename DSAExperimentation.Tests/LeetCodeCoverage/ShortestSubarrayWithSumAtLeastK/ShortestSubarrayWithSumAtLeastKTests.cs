@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestSubarrayWithSumAtLea
 // O(n^2) prefix-pair scan and this repo's own Deque<int> monotonic prefix window -
 // and this file pins both to LeetCode's published examples plus the negative-value
 // cases a plain sliding window would get wrong.
-public sealed class ShortestSubarrayWithSumAtLeastKTests
+public sealed partial class ShortestSubarrayWithSumAtLeastKTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

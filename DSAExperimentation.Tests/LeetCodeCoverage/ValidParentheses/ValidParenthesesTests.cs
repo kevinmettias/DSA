@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidParentheses;
 
 // Harness only. The bracket-matching walk is ValidParenthesesSolution's - this
 // file just pins it to LeetCode's published examples.
-public sealed class ValidParenthesesTests
+public sealed partial class ValidParenthesesTests
 {
     public static TheoryData<BracketCase> Examples =>
         new()

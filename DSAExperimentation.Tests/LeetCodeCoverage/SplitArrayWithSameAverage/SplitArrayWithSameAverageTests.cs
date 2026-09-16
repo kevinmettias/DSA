@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SplitArrayWithSameAverage;
 // array (no proper non-empty split exists at all), a two-element split, and a
 // larger array whose total is coprime enough with its length that no candidate
 // subset size even yields an integer target.
-public sealed class SplitArrayWithSameAverageTests
+public sealed partial class SplitArrayWithSameAverageTests
 {
     public static TheoryData<SplitExample> Examples =>
         new()

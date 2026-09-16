@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ClosestSubsequenceSum;
 // The full 2^n subset scan was previously only a benchmark's baseline arm and went
 // unasserted; it is under test here for the first time, against the same meet-in-
 // the-middle answers.
-public sealed class ClosestSubsequenceSumTests
+public sealed partial class ClosestSubsequenceSumTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

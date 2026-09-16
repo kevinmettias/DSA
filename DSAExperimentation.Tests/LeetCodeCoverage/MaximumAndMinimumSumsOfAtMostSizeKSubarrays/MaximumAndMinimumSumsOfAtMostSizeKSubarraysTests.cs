@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumAndMinimumSumsOfAtMos
 // MaximumAndMinimumSumsOfAtMostSizeKSubarraysSolution's - this file just pins
 // them to LeetCode's published examples, including the negative-value case that
 // exercises the monotonic-stack tie-break against a repeated value (the two 1s).
-public sealed class MaximumAndMinimumSumsOfAtMostSizeKSubarraysTests
+public sealed partial class MaximumAndMinimumSumsOfAtMostSizeKSubarraysTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindServersThatHandledMostNu
 // LeetCode's published examples plus the two shapes the ring search has to get right:
 // a request that finds every server busy and is dropped, and a request whose
 // preferred server index is past the only free one, so the search has to wrap.
-public sealed class FindServersThatHandledMostNumberOfRequestsTests
+public sealed partial class FindServersThatHandledMostNumberOfRequestsTests
 {
     public static TheoryData<int, int[], int[], int[]> Examples =>
         new()

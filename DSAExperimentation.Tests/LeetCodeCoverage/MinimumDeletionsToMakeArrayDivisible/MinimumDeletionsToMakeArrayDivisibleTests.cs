@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumDeletionsToMakeArrayD
 // asserted here under their own names, so a failure names the strategy that broke. The cases
 // cover the three answers the problem can produce - some deletions, none, and -1 when no
 // element ever divides - plus a duplicate smallest that must be counted once, not twice.
-public sealed class MinimumDeletionsToMakeArrayDivisibleTests
+public sealed partial class MinimumDeletionsToMakeArrayDivisibleTests
 {
     public static TheoryData<int[], int[], int> Examples => new()
     {

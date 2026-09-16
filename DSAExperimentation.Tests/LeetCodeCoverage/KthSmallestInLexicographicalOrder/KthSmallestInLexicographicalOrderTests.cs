@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestInLexicographical
 // Harness only. Both strategies are KthSmallestInLexicographicalOrderSolution's -
 // this file just pins them to LeetCode's published example plus the first/last
 // elements of that same lexicographical order.
-public sealed class KthSmallestInLexicographicalOrderTests
+public sealed partial class KthSmallestInLexicographicalOrderTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

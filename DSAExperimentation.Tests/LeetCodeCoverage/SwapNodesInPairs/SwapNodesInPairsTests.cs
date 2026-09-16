@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SwapNodesInPairs;
 // the very nodes it is handed, so reusing one already-swapped instance across the
 // two theories sharing this data would silently feed the second call an
 // already-consumed structure.
-public sealed class SwapNodesInPairsTests
+public sealed partial class SwapNodesInPairsTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

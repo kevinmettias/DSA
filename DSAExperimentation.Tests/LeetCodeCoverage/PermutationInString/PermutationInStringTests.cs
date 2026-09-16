@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PermutationInString;
 // PermutationInStringSolution's - this file just pins them to LeetCode's
 // published examples plus a couple of edge cases (s1 longer than s2, and a
 // match that only appears once the window has slid past the start).
-public sealed class PermutationInStringTests
+public sealed partial class PermutationInStringTests
 {
     public static TheoryData<InclusionExample> Examples =>
         new()

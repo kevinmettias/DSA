@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfAWordOccursAsAPrefixO
 // file pins them to LeetCode's published examples plus the boundary cases the two
 // have to agree on - a whole-word match, a first-word match, and a search word that
 // occurs inside words without ever starting one.
-public sealed class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
+public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests
 {
     public static TheoryData<PrefixWordExample> Examples =>
         new()

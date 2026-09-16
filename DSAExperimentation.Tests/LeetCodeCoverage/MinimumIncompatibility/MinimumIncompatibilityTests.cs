@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumIncompatibility;
 // asserted against the same examples - LeetCode's own three, the `groupCount` = 1
 // degenerate case where the whole array is one group, and a `groupCount` = n case
 // where every group is a single element so repeated values are no obstacle at all.
-public sealed class MinimumIncompatibilityTests
+public sealed partial class MinimumIncompatibilityTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

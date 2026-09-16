@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TypeOfTriangle;
 // Harness only: the algorithms live in TypeOfTriangleSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class TypeOfTriangleTests
+public sealed partial class TypeOfTriangleTests
 {
     public static TheoryData<int[], string> Examples =>
         new()

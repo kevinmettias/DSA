@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionLabels;
 
 // Harness only: both strategies live in PartitionLabelsSolution and are asserted
 // against the same examples.
-public sealed class PartitionLabelsTests
+public sealed partial class PartitionLabelsTests
 {
     public static TheoryData<string, List<int>> Examples =>
         new()

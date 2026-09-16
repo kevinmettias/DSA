@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveNthNodeFromEndOfList;
 // Harness only. Both strategies are RemoveNthNodeFromEndOfListSolution's - this
 // file builds LeetCode's published examples as linked lists and checks the
 // resulting list's values.
-public sealed class RemoveNthNodeFromEndOfListTests
+public sealed partial class RemoveNthNodeFromEndOfListTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

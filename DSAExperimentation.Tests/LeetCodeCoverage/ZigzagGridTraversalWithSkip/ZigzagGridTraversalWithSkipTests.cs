@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ZigzagGridTraversalWithSkip;
 
 // Harness only. Both traversal strategies are ZigzagGridTraversalWithSkipSolution's
 // - this file just pins them to LeetCode's published examples.
-public sealed class ZigzagGridTraversalWithSkipTests
+public sealed partial class ZigzagGridTraversalWithSkipTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

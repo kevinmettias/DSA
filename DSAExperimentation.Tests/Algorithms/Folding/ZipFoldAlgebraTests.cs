@@ -4,7 +4,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Folding;
 
-public sealed class ZipFoldAlgebraTests
+public sealed partial class ZipFoldAlgebraTests
 {
     private static readonly TestNode Node = new("A");
 
@@ -43,5 +43,7 @@ public sealed class ZipFoldAlgebraTests
     }
 
     [Fact]
-    public void Enter_ForwardsToBothAlgebrasWithoutThrowing() => ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Enter(Node, 0);
+    public void Enter_ForwardsToBothAlgebrasWithoutThrowing() =>
+        Assert.Null(Record.Exception(
+            () => ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Enter(Node, 0)));
 }

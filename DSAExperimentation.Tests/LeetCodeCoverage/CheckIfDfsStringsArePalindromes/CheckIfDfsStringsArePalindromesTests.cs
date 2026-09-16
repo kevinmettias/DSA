@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfDfsStringsArePalindro
 // Harness only: the tree is DataStructures' own ParentArrayTree/RootedTreeNode and
 // both strategies are CheckIfDfsStringsArePalindromesSolution's - this file just
 // pins them to LeetCode's published examples (TwoSumTests precedent).
-public sealed class CheckIfDfsStringsArePalindromesTests
+public sealed partial class CheckIfDfsStringsArePalindromesTests
 {
     public static TheoryData<int[], string, bool[]> Examples =>
         new()

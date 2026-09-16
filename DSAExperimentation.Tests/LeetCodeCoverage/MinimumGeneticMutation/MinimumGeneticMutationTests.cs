@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumGeneticMutation;
 // Harness only: the same DataStructures.Graph.Hamming graph WordLadder uses, narrowed to the
 // 4-letter DNA alphabet, with both of MinimumGeneticMutationSolution's strategies
 // pinned to LeetCode's examples.
-public sealed class MinimumGeneticMutationTests
+public sealed partial class MinimumGeneticMutationTests
 {
     public static TheoryData<MutationExample> Examples =>
         new()

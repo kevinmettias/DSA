@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromicPathQueriesInATre
 // and both query strategies are PalindromicPathQueriesInATreeSolution's - this file
 // just pins them to two small hand-built trees, including a query that has to fail
 // (two odd-count letters on the path) alongside ones that succeed.
-public sealed class PalindromicPathQueriesInATreeTests
+public sealed partial class PalindromicPathQueriesInATreeTests
 {
     // Tree: 0(a) -> 1(a), 2(b); 1(a) -> 3(a), 4(b).
     private static readonly int[] FiveNodeParent = [-1, 0, 0, 1, 1];

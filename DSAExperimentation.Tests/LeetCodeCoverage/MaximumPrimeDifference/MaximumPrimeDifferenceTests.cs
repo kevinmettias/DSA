@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumPrimeDifference;
 // Harness only. Both strategies are MaximumPrimeDifferenceSolution's - this
 // file just pins them to LeetCode's published examples, including the
 // single-prime case whose answer is the degenerate distance 0.
-public sealed class MaximumPrimeDifferenceTests
+public sealed partial class MaximumPrimeDifferenceTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

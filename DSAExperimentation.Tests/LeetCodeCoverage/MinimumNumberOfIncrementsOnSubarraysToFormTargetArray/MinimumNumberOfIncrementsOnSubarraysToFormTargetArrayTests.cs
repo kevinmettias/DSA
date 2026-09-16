@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfIncrementsOnS
 // MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution and are asserted against the
 // same examples - LeetCode's published ones plus a flat array, where one stroke covers the
 // whole target and no later rise can add to the count.
-public sealed class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayTests
+public sealed partial class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

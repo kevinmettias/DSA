@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Reducing;
 
-public sealed class ZipReduceAlgebraTests
+public sealed partial class ZipReduceAlgebraTests
 {
     private static readonly TestNode Node = new("A");
 

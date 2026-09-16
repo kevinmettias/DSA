@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SurfaceAreaOf3DShapes;
 // border arm was previously benchmark-only and unasserted; the hollow grid
 // ([[1,1,1],[1,0,1],[1,1,1]]) and the single tall column are the cases that would
 // expose an off-by-one in its border offsets or a dropped height-0 skip.
-public sealed class SurfaceAreaOf3DShapesTests
+public sealed partial class SurfaceAreaOf3DShapesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

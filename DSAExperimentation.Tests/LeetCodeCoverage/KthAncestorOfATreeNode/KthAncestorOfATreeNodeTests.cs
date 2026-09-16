@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthAncestorOfATreeNode;
 //         1   2
 //        / \ / \
 //       3  4 5  6
-public sealed class KthAncestorOfATreeNodeTests
+public sealed partial class KthAncestorOfATreeNodeTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
         new()

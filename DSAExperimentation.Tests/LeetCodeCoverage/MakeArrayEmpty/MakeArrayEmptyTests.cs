@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MakeArrayEmpty;
 // already-ascending array (every step is a removal), and two strictly descending
 // arrays, where the sweep wraps past the end on every step and so exercises the
 // two-range branch on its own.
-public sealed class MakeArrayEmptyTests
+public sealed partial class MakeArrayEmptyTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

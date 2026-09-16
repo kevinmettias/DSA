@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FaultyKeyboard;
 // Harness only: the algorithms live in FaultyKeyboardSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class FaultyKeyboardTests
+public sealed partial class FaultyKeyboardTests
 {
     public static TheoryData<FaultyKeyboardCase> Examples =>
         new()

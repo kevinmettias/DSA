@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeForKConnectedComp
 // Harness only. Both strategies are MinimumTimeForKConnectedComponentsSolution's -
 // this file just pins them to LeetCode's published examples, including the
 // already-at-k case that needs no edge removed at all (answer 0).
-public sealed class MinimumTimeForKConnectedComponentsTests
+public sealed partial class MinimumTimeForKConnectedComponentsTests
 {
     public static TheoryData<int, int[][], int, int> Examples =>
         new()

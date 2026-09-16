@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfMusicPlaylists;
 // asserted against the same examples - LeetCode's three, plus the degenerate
 // single-song playlist and two alternating-playlist cases that pin down the
 // "no replay within replayGap songs" factor.
-public sealed class NumberOfMusicPlaylistsTests
+public sealed partial class NumberOfMusicPlaylistsTests
 {
     public static TheoryData<int, int, int, long> Examples =>
         new()

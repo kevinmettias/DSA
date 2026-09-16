@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubmatricesWithAllOnes;
 // LeetCode's published examples plus the degenerate all-zero/all-one matrices, where the
 // closed form (a size-n run contributes n(n+1)/2 ranges per row) makes the expected count
 // checkable by hand.
-public sealed class CountSubmatricesWithAllOnesTests
+public sealed partial class CountSubmatricesWithAllOnesTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

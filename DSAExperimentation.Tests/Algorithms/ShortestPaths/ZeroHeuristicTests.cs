@@ -3,8 +3,10 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
-public sealed class ZeroHeuristicTests
+public sealed partial class ZeroHeuristicTests
 {
+    private const double Tolerance = 1e-9;
+
     [Fact]
     public void Estimate_AlwaysReturnsZeroWhichIsWhatMakesAStarBehaveAsDijkstra()
     {
@@ -26,7 +28,7 @@ public sealed class ZeroHeuristicTests
     {
         var estimate = ZeroHeuristic<WeightedGridNode, double>.Estimate(new WeightedGridNode(2, 2), null);
 
-        Assert.Equal(0d, estimate);
+        Assert.Equal(0d, estimate, Tolerance);
     }
 
     [Fact]

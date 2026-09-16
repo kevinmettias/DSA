@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HeightChecker;
 // Harness only: both strategies live in HeightCheckerSolution, so the insertion-sort
 // baseline the benchmark used to hide is asserted against the same examples as the
 // MergeSort composition.
-public sealed class HeightCheckerTests
+public sealed partial class HeightCheckerTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

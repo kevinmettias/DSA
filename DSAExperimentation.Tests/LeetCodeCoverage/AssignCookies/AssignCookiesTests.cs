@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AssignCookies;
 // Harness only: both strategies live in AssignCookiesSolution and are asserted
 // against the same examples, including the case where no cookie is large enough
 // for either child.
-public sealed class AssignCookiesTests
+public sealed partial class AssignCookiesTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

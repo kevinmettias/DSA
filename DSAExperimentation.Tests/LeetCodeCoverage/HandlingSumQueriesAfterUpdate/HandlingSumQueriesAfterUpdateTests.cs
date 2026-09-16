@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HandlingSumQueriesAfterUpdat
 // HandlingSumQueriesAfterUpdateSolution's; this file just pins them to LeetCode's
 // published examples plus the cancelling-flip, multiple-reading and no-ones cases
 // that exercise the flip algebra's own laws.
-public sealed class HandlingSumQueriesAfterUpdateTests
+public sealed partial class HandlingSumQueriesAfterUpdateTests
 {
     public static TheoryData<int[], int[], int[][], long[]> Examples =>
         new()

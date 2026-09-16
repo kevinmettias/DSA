@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListComponents;
 // membership walk - are LinkedListComponentsSolution's; this file states LeetCode's
 // published examples once, as the list's values and nums, plus the run-counting
 // edges the two arms have to agree on.
-public sealed class LinkedListComponentsTests
+public sealed partial class LinkedListComponentsTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

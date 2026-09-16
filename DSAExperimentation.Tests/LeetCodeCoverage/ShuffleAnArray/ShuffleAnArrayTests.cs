@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShuffleAnArray;
 // reset() is the identity on the caller's stored array, so instead of a dedicated
 // reset() method this asserts the real invariant reset() depends on - shuffling
 // never mutates the array it was given - directly against each strategy.
-public sealed class ShuffleAnArrayTests
+public sealed partial class ShuffleAnArrayTests
 {
     public static TheoryData<int[]> Examples =>
         new()

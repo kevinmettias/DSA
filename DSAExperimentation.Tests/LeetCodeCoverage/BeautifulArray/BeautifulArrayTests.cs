@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BeautifulArray;
 // property itself rather than one fixed array. That is not a weakening: pinning the
 // divide-and-conquer output would reject the backtracking arm's equally valid
 // answer, which first differs at n = 8.
-public sealed class BeautifulArrayTests
+public sealed partial class BeautifulArrayTests
 {
     // Lengths both arms are checked at. The backtracking arm is exponential (n = 16
     // already costs ~13M search nodes), so the shared set stops at 12 and the

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidSudoku;
 
 // Harness only. Both strategies are ValidSudokuSolution's; this file just
 // pins them to LeetCode's published examples.
-public sealed class ValidSudokuTests
+public sealed partial class ValidSudokuTests
 {
     public static TheoryData<SudokuBoardExample> Examples =>
         new()

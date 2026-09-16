@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ThreeSumClosest;
 
 // Harness only. Both strategies are ThreeSumClosestSolution's; this file pins them
 // to LeetCode's published examples.
-public sealed class ThreeSumClosestTests
+public sealed partial class ThreeSumClosestTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

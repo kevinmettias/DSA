@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeDeviationInArray;
 // asserted against the same examples - LeetCode's own three, a single element that
 // still gets doubled and halved back, and a two-element case where halving carries
 // the running minimum below every value the array started with.
-public sealed class MinimizeDeviationInArrayTests
+public sealed partial class MinimizeDeviationInArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestCycleInAGraph;
 // the per-start forward walk, which used to exist as an unasserted benchmark
 // baseline - and this file pins them to the same examples so a failure names the
 // strategy that broke.
-public sealed class LongestCycleInAGraphTests
+public sealed partial class LongestCycleInAGraphTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

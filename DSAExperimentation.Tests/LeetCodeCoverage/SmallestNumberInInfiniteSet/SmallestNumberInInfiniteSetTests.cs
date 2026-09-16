@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestNumberInInfiniteSet;
 // CreateByListScan's baseline (previously untested scaffolding inlined in the
 // benchmark) gets that same coverage here for the first time. InfiniteSetOp.Apply is
 // pure dispatch, no set logic of its own.
-public sealed class SmallestNumberInInfiniteSetTests
+public sealed partial class SmallestNumberInInfiniteSetTests
 {
     public static TheoryData<InfiniteSetOp[], int?[]> Examples =>
         new()
@@ -67,24 +67,18 @@ public sealed class SmallestNumberInInfiniteSetTests
     [MemberData(nameof(Examples))]
     public void CreateByHeapAndSet_LeetCodeExamples_MatchesTheInfiniteSetTrace(
         InfiniteSetOp[] operations, int?[] expected) =>
-        RunScript(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet(), operations, expected);
+        Assert.Equal(expected, RunScript(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByListScan_LeetCodeExamples_MatchesTheInfiniteSetTrace(
         InfiniteSetOp[] operations, int?[] expected) =>
-        RunScript(SmallestNumberInInfiniteSetSolution.CreateByListScan(), operations, expected);
+        Assert.Equal(expected, RunScript(SmallestNumberInInfiniteSetSolution.CreateByListScan(), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set,
-        InfiniteSetOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(set));
-        }
-    }
+        InfiniteSetOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(set))];
 
     // One call in a SmallestInfiniteSet script: which method to invoke and with what
     // argument. Pure dispatch, built via the named factories below so a script (like

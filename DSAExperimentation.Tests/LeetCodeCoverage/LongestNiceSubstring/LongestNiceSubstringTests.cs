@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestNiceSubstring;
 // inlined in the benchmark as its baseline arm) now gets the same examples as
 // FindLongestNiceSubstringByDivideAndConquer (previously this file's own private
 // helper), so a failure names the strategy that broke.
-public sealed class LongestNiceSubstringTests
+public sealed partial class LongestNiceSubstringTests
 {
     public static TheoryData<NiceSubstringExample> Examples =>
         new()

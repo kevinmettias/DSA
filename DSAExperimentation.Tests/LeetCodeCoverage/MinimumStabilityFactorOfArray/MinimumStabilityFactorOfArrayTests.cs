@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumStabilityFactorOfArra
 // Harness only. Both strategies are MinimumStabilityFactorOfArraySolution's - this
 // file just pins them to LeetCode's published examples, including the two
 // separate stable runs in Example 3 that one modification cannot both break.
-public sealed class MinimumStabilityFactorOfArrayTests
+public sealed partial class MinimumStabilityFactorOfArrayTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToMakeAtLeastOneV
 // are MinimumCostToMakeAtLeastOneValidPathInAGridSolution's - this file pins them to
 // LeetCode's published examples plus the degenerate single-cell and single-row grids
 // that exercise the rectangular bounds rather than only square ones.
-public sealed class MinimumCostToMakeAtLeastOneValidPathInAGridTests
+public sealed partial class MinimumCostToMakeAtLeastOneValidPathInAGridTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OddEvenLinkedList;
 // Harness only. Both strategies are OddEvenLinkedListSolution's - this file just
 // pins them to LeetCode's published examples, plus the empty- and single-node
 // edge cases neither strategy may special-case incorrectly.
-public sealed class OddEvenLinkedListTests
+public sealed partial class OddEvenLinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

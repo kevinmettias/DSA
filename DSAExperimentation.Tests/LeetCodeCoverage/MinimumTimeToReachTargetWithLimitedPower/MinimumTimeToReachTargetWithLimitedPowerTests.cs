@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToReachTargetWith
 // search strategies are its methods - this file just pins them to LeetCode's
 // published examples, including the same-node case (no traversal needed, full
 // power reported back) and the unreachable case.
-public sealed class MinimumTimeToReachTargetWithLimitedPowerTests
+public sealed partial class MinimumTimeToReachTargetWithLimitedPowerTests
 {
     public static TheoryData<PowerExample> Examples =>
         new()

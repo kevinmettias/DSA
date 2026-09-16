@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfCoinsForFruit
 // Harness only: both strategies live in MinimumNumberOfCoinsForFruitsSolution and
 // are asserted against the same examples, including LeetCode's own note that
 // re-purchasing an already-free fruit can still be worth it.
-public sealed class MinimumNumberOfCoinsForFruitsTests
+public sealed partial class MinimumNumberOfCoinsForFruitsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNestingDepthOfThePare
 // this file just pins them to LeetCode's published examples, the sibling-groups case
 // where the deepest group is not the first, and the two no-parentheses expressions
 // whose answer is zero.
-public sealed class MaximumNestingDepthOfTheParenthesesTests
+public sealed partial class MaximumNestingDepthOfTheParenthesesTests
 {
     public static TheoryData<string, int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LexicographicallyMaximumMEXA
 // Harness only. Both cutting strategies are
 // LexicographicallyMaximumMEXArraySolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class LexicographicallyMaximumMEXArrayTests
+public sealed partial class LexicographicallyMaximumMEXArrayTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

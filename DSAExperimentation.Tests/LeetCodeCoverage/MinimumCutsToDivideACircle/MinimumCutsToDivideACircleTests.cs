@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCutsToDivideACircle;
 // states LeetCode's examples once and asserts each strategy against them, including
 // the one-cut-at-a-time simulation that was previously a benchmark-only arm and so
 // was never checked against an expected answer at all.
-public sealed class MinimumCutsToDivideACircleTests
+public sealed partial class MinimumCutsToDivideACircleTests
 {
     public static TheoryData<int, int> Examples =>
         new()

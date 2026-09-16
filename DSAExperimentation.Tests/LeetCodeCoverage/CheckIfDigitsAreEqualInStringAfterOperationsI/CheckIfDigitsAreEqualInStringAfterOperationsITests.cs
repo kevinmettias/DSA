@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CheckIfDigitsAreEqualInStrin
 // Harness only. Both the direct reduction and the Pascal-row closed form live in
 // CheckIfDigitsAreEqualInStringAfterOperationsISolution - this file just pins both
 // strategies to LeetCode's published examples.
-public sealed class CheckIfDigitsAreEqualInStringAfterOperationsITests
+public sealed partial class CheckIfDigitsAreEqualInStringAfterOperationsITests
 {
     public static TheoryData<DigitsMatchExample> Examples =>
         new()

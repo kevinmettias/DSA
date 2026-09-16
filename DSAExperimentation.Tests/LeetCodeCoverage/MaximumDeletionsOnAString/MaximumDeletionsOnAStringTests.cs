@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumDeletionsOnAString;
 // examples plus the cases that separate "take the smallest valid deletion" from
 // "take the best one" ("aaabaab", where deleting "aab" reaches 4 operations and
 // deleting "a" only reaches 3).
-public sealed class MaximumDeletionsOnAStringTests
+public sealed partial class MaximumDeletionsOnAStringTests
 {
     public static TheoryData<string, int> Examples =>
         new()

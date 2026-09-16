@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignHashMap;
 // failure still names the strategy that broke even though the "input" here is a
 // sequence of mutating/querying calls rather than a single argument tuple.
 // HashMapOp.Apply is pure dispatch - no key/value storage logic of its own.
-public sealed class DesignHashMapTests
+public sealed partial class DesignHashMapTests
 {
     public static TheoryData<HashMapOp[], int?[]> Examples =>
         new()
@@ -39,19 +39,14 @@ public sealed class DesignHashMapTests
     [MemberData(nameof(Examples))]
     public void MyHashMapByLinearScanList_LeetCodeExamples_MatchesExpectedResults(
         HashMapOp[] operations, int?[] expected) =>
-        RunScript(new DesignHashMapSolution.MyHashMapByLinearScanList(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignHashMapSolution.MyHashMapByLinearScanList(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MyHashMapByHashMapBacked_LeetCodeExamples_MatchesExpectedResults(
         HashMapOp[] operations, int?[] expected) =>
-        RunScript(new DesignHashMapSolution.MyHashMapByHashMapBacked(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignHashMapSolution.MyHashMapByHashMapBacked(), operations));
 
-    private static void RunScript(DesignHashMapSolution.IMyHashMap map, HashMapOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(map));
-        }
-    }
+    private static int?[] RunScript(DesignHashMapSolution.IMyHashMap map, HashMapOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(map))];
 }

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineElection;
 // two), the two-vote tie the old test drove by hand, a lead that changes hands
 // only when the challenger draws level, and a single-candidate log queried after
 // the last vote.
-public sealed class OnlineElectionTests
+public sealed partial class OnlineElectionTests
 {
     public static TheoryData<int[], int[], int[], int[]> Examples =>
         new()

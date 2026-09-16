@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubrectangleQueries;
 // DesignCircularQueueTests already uses for its own instance-API problem.
 // SubrectangleQueryOp.Apply returns null for UpdateSubrectangle, which LeetCode's
 // own judge output also reports as null, and the read value for GetValue.
-public sealed class SubrectangleQueriesTests
+public sealed partial class SubrectangleQueriesTests
 {
     public static TheoryData<int[][], SubrectangleQueryOp[], int?[]> Examples =>
         new()
@@ -83,22 +83,17 @@ public sealed class SubrectangleQueriesTests
     [MemberData(nameof(Examples))]
     public void SubrectangleQueriesByArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
         int[][] rectangle, SubrectangleQueryOp[] operations, int?[] expected) =>
-        RunScript(new SubrectangleQueriesSolution.SubrectangleQueriesByArrayBacked(rectangle), operations, expected);
+        Assert.Equal(expected, RunScript(new SubrectangleQueriesSolution.SubrectangleQueriesByArrayBacked(rectangle), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SubrectangleQueriesByDynamicArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
         int[][] rectangle, SubrectangleQueryOp[] operations, int?[] expected) =>
-        RunScript(new SubrectangleQueriesSolution.SubrectangleQueriesByDynamicArrayBacked(rectangle), operations, expected);
+        Assert.Equal(expected, RunScript(new SubrectangleQueriesSolution.SubrectangleQueriesByDynamicArrayBacked(rectangle), operations));
 
-    private static void RunScript(
-        SubrectangleQueriesSolution.ISubrectangleQueries queries, SubrectangleQueryOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(queries));
-        }
-    }
+    private static int?[] RunScript(
+        SubrectangleQueriesSolution.ISubrectangleQueries queries, SubrectangleQueryOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(queries))];
 
     // One call in a SubrectangleQueries script: which operation to invoke and with
     // what arguments. Pure dispatch, built via the named factories below so a script

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateStackSequences;
 // published examples plus the shapes that separate "greedy is safe" from "greedy is
 // lucky" - pop-immediately, pop-everything-at-the-end, and a pop order that is
 // unreachable only because of what was buried beneath the first match.
-public sealed class ValidateStackSequencesTests
+public sealed partial class ValidateStackSequencesTests
 {
     public static TheoryData<PushPopCase> Examples =>
         new()

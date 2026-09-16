@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ArrayPartition;
 // LeetCode 561. Array Partition: both strategies must maximize the sum of
 // pair-minimums for the same input, so each is asserted here under its own
 // name - see ArrayPartitionSolution for the strategies themselves.
-public sealed class ArrayPartitionTests
+public sealed partial class ArrayPartitionTests
 {
     public static TheoryData<int[], int> Examples => new()
     {

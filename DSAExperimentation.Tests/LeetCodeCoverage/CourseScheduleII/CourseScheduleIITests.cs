@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CourseScheduleII;
 // prerequisites (the diamond-dependency example accepts both [0,1,2,3] and
 // [0,2,1,3]), so a returned order is checked against the prerequisite
 // constraints themselves rather than against one fixed expected array.
-public sealed class CourseScheduleIITests
+public sealed partial class CourseScheduleIITests
 {
     public static TheoryData<CourseOrderExample> Examples =>
         new()

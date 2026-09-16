@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StringTransformation;
 // method per strategy over one shared set of examples, so a failure names the
 // strategy that broke rather than reporting a disagreement between two anonymous
 // arms.
-public sealed class StringTransformationTests
+public sealed partial class StringTransformationTests
 {
     public static TheoryData<TransformationExample> Examples =>
         new()

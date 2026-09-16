@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertionSortList;
 // Harness only. The one strategy is InsertionSortListSolution's - this file builds
 // LeetCode's published examples as linked lists and checks the resulting list's
 // values.
-public sealed class InsertionSortListTests
+public sealed partial class InsertionSortListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

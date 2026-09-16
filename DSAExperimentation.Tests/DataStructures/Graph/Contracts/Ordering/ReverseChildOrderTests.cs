@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 
-public sealed class ReverseChildOrderTests
+public sealed partial class ReverseChildOrderTests
 {
     [Fact]
     public void Apply_PresentsTheChildrenBackToFront()

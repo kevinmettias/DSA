@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EditDistance;
 
 // Harness only. EditDistanceSolution owns both the tabulated baseline and the
 // memoized recurrence; this file pins them to LeetCode's published examples.
-public sealed class EditDistanceTests
+public sealed partial class EditDistanceTests
 {
     public static TheoryData<EditDistanceCase> Examples =>
         new()

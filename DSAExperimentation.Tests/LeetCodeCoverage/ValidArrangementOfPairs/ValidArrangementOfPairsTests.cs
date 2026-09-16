@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidArrangementOfPairs;
 // of the input pairs. The start node IS pinned: it is the one part of the answer the
 // problem determines, being the unique node with outdegree - indegree == 1, or
 // pairs[0]'s source when the pairs form an Eulerian circuit instead.
-public sealed class ValidArrangementOfPairsTests
+public sealed partial class ValidArrangementOfPairsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

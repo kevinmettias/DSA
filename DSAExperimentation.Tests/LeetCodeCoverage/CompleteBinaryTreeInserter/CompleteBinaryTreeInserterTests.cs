@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CompleteBinaryTreeInserter;
 // public TheoryData signature; BuildComplete reconstructs it), the Insert sequence,
 // the parent value each Insert must return, and the tree's level-order values
 // afterwards, which is what proves each node landed in the next left-to-right slot.
-public sealed class CompleteBinaryTreeInserterTests
+public sealed partial class CompleteBinaryTreeInserterTests
 {
     public static TheoryData<int[], int[], int[], int[]> Examples =>
         new()

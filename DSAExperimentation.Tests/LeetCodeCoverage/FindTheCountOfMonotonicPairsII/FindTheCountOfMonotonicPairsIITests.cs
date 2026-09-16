@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheCountOfMonotonicPairs
 // this file just pins them to LeetCode's published examples (the same examples
 // Part I publishes, since the two problems share one statement and differ only
 // in how large nums[i] is allowed to be).
-public sealed class FindTheCountOfMonotonicPairsIITests
+public sealed partial class FindTheCountOfMonotonicPairsIITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

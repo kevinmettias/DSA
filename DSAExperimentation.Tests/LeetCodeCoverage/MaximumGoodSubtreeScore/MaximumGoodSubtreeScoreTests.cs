@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumGoodSubtreeScore;
 // just pins them to LeetCode's published examples, including the case where a
 // node's own value (22) has a digit repeated within itself and so can never appear
 // in any good subset, not even alone.
-public sealed class MaximumGoodSubtreeScoreTests
+public sealed partial class MaximumGoodSubtreeScoreTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumXorSumOfTwoArrays;
 // the cases pin down the single-element base case, a pairing that can reach zero, and
 // a pair where matching the two smallest values together is NOT optimal - the trap a
 // greedy arm would fall into.
-public sealed class MinimumXorSumOfTwoArraysTests
+public sealed partial class MinimumXorSumOfTwoArraysTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

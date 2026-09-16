@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BaseballGame;
 
 // Harness only. Both strategies are BaseballGameSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class BaseballGameTests
+public sealed partial class BaseballGameTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

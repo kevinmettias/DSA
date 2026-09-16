@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GreatestCommonDivisorOfStrin
 // str1+str2 == str2+str1 concatenation-equality baseline and this repo's
 // PrefixFunctionSearch period read - pinned here to LeetCode's published examples plus
 // two identical strings and a prefix-sharing pair that has no common divisor at all.
-public sealed class GreatestCommonDivisorOfStringsTests
+public sealed partial class GreatestCommonDivisorOfStringsTests
 {
     public static TheoryData<GcdExample> Examples =>
         new()

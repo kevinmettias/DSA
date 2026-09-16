@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortedGcdPairQueries;
 // Harness only. GcdPairCountIndex and both search strategies are
 // SortedGcdPairQueriesSolution's - this file just pins them to LeetCode's
 // published examples.
-public sealed class SortedGcdPairQueriesTests
+public sealed partial class SortedGcdPairQueriesTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

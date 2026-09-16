@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BasicCalculatorIV;
 // Harness only: both strategies live in BasicCalculatorIVSolution and are asserted
 // against the same examples, including the known-variable substitution cases and
 // the product-of-sums expansion to a degree-two term.
-public sealed class BasicCalculatorIVTests
+public sealed partial class BasicCalculatorIVTests
 {
     public static TheoryData<string, string[], int[], string[]> Examples =>
         new()

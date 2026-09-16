@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSubarrayXORWithBounde
 // Harness only. Both strategies are MaximumSubarrayXORWithBoundedRangeSolution's -
 // this file just pins them to hand-checked examples, including one where every
 // element falls outside [low, high] so no valid subarray exists at all.
-public sealed class MaximumSubarrayXORWithBoundedRangeTests
+public sealed partial class MaximumSubarrayXORWithBoundedRangeTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
         new()

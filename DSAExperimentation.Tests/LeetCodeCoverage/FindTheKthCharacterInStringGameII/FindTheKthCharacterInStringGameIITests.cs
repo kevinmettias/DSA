@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheKthCharacterInStringG
 // Harness only: both strategies live in
 // FindTheKthCharacterInStringGameIISolution. This file just pins them to
 // #3307's published examples.
-public sealed class FindTheKthCharacterInStringGameIITests
+public sealed partial class FindTheKthCharacterInStringGameIITests
 {
     public static TheoryData<long, int[], char> Examples =>
         new()

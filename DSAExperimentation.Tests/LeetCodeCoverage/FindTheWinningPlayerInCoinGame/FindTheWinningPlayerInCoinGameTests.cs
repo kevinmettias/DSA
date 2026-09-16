@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheWinningPlayerInCoinGa
 
 // Harness only. Both strategies are FindTheWinningPlayerInCoinGameSolution's -
 // this file pins them to LeetCode's published examples.
-public sealed class FindTheWinningPlayerInCoinGameTests
+public sealed partial class FindTheWinningPlayerInCoinGameTests
 {
     public static TheoryData<int, int, string> Examples =>
         new()

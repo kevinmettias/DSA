@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProductDifferenceBetw
 // - LeetCode's two published examples plus the shortest array the constraints
 // allow, an all-equal array whose difference is zero, and a case whose extremes sit
 // at both ends of the input rather than in sorted order already.
-public sealed class MaximumProductDifferenceBetweenTwoPairsTests
+public sealed partial class MaximumProductDifferenceBetweenTwoPairsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

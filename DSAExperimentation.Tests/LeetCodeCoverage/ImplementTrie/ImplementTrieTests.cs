@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementTrie;
 // shape LRUCacheTests already uses for its own instance-API problem.
 // ImplementTrieOp.Apply is pure dispatch onto Set/HasKey/HasPrefix - no trie logic
 // of its own.
-public sealed class ImplementTrieTests
+public sealed partial class ImplementTrieTests
 {
     public static TheoryData<ImplementTrieOp[], bool?[]> Examples =>
         new()
@@ -31,15 +31,10 @@ public sealed class ImplementTrieTests
     [MemberData(nameof(Examples))]
     public void CreateByTriePrimitive_LeetCodeExample_MatchesExpectedBehavior(
         ImplementTrieOp[] operations, bool?[] expected) =>
-        RunScript(ImplementTrieSolution.CreateByTriePrimitive(), operations, expected);
+        Assert.Equal(expected, RunScript(ImplementTrieSolution.CreateByTriePrimitive(), operations));
 
-    private static void RunScript(Trie<bool> trie, ImplementTrieOp[] operations, bool?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(trie));
-        }
-    }
+    private static bool?[] RunScript(Trie<bool> trie, ImplementTrieOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(trie))];
 
     // One call in an Implement-Trie script: which method to invoke and on what word.
     // Built via the named factories below so a script (like Examples above) reads

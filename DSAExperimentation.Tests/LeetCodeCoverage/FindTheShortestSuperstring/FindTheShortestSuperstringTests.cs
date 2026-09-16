@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheShortestSuperstring;
 // The assertion is the answer's length plus containment of every word rather than an
 // exact string, because LC 943 accepts any superstring of the minimum length and the
 // two strategies legitimately break ties differently.
-public sealed class FindTheShortestSuperstringTests
+public sealed partial class FindTheShortestSuperstringTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

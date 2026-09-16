@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfPointsFromGri
 // original suite carried, including the two cases where the start cell itself blocks
 // every query and the one where a below-query cell is unreachable because the region
 // around it is not.
-public sealed class MaximumNumberOfPointsFromGridQueriesTests
+public sealed partial class MaximumNumberOfPointsFromGridQueriesTests
 {
     public static TheoryData<int[][], int[], int[]> Examples =>
         new()

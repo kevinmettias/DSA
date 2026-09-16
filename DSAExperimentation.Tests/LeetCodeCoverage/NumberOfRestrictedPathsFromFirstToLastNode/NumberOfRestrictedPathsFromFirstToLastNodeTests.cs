@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfRestrictedPathsFromF
 // NumberOfRestrictedPathsFromFirstToLastNodeSolution's - this file just pins them to
 // LeetCode's published examples, including the second one whose only restricted path
 // leaves most of the graph unreachable under the distance-decreasing rule.
-public sealed class NumberOfRestrictedPathsFromFirstToLastNodeTests
+public sealed partial class NumberOfRestrictedPathsFromFirstToLastNodeTests
 {
     public static TheoryData<int, int[][], long> Examples =>
         new()

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignParkingSystem;
 // three capacities plus a script of requested car types and the accept/refuse answer
 // for each - the same call-script shape DesignBrowserHistoryTests uses for its own
 // instance-API problem.
-public sealed class DesignParkingSystemTests
+public sealed partial class DesignParkingSystemTests
 {
     public static TheoryData<SlotCapacities, int[], bool[]> Examples =>
         new()
@@ -36,7 +36,7 @@ public sealed class DesignParkingSystemTests
     {
         var system = new ParkingSystemByThreeFields(capacities.Big, capacities.Medium, capacities.Small);
 
-        RunScript(system, carTypes, expected);
+        Assert.Equal(expected, RunScript(system, carTypes));
     }
 
     [Theory]
@@ -46,16 +46,11 @@ public sealed class DesignParkingSystemTests
     {
         var system = new ParkingSystemByHashMap(capacities.Big, capacities.Medium, capacities.Small);
 
-        RunScript(system, carTypes, expected);
+        Assert.Equal(expected, RunScript(system, carTypes));
     }
 
-    private static void RunScript(IParkingSystem system, int[] carTypes, bool[] expected)
-    {
-        for (var i = 0; i < carTypes.Length; i++)
-        {
-            Assert.Equal(expected[i], system.AddCar(carTypes[i]));
-        }
-    }
+    private static bool[] RunScript(IParkingSystem system, int[] carTypes) =>
+        [.. carTypes.Select(carType => system.AddCar(carType))];
 
     // The three slot counts a parking system is constructed with. They travel together at
     // every call site and LeetCode's own constructor takes them as one turn, so they are

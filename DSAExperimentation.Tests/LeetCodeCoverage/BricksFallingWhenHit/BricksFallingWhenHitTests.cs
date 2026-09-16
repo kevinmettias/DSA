@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BricksFallingWhenHit;
 // published examples plus the cases the two disagree about most easily: a hit on
 // a cell that was never a brick, a hit whose own brick is the only thing that
 // falls, and a hit that severs a whole slab from the roof.
-public sealed class BricksFallingWhenHitTests
+public sealed partial class BricksFallingWhenHitTests
 {
     public static TheoryData<int[][], int[][], int[]> Examples =>
         new()

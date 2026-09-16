@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumGeneticDifferenceQuer
 // file just pins them to LeetCode's published examples plus the shapes the offline
 // DFS has to get right that the two published cases do not exercise: a single-node
 // tree, a straight chain, and a node queried twice.
-public sealed class MaximumGeneticDifferenceQueryTests
+public sealed partial class MaximumGeneticDifferenceQueryTests
 {
     public static TheoryData<int[], int[][], int[]> Examples =>
         new()

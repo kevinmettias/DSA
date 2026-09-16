@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimizeHammingDistanceAfter
 // component whose source multiset repeats a value (so the count, not a set, is what
 // decides the shortfall), a self-swap pair that must leave every index in its own
 // component, and arrays that already match.
-public sealed class MinimizeHammingDistanceAfterSwapOperationsTests
+public sealed partial class MinimizeHammingDistanceAfterSwapOperationsTests
 {
     public static TheoryData<int[], int[], int[][], int> Examples =>
         new()

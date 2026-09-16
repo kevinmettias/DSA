@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomFlipMatrix;
 // two properties LeetCode's Flip/Reset contract guarantees (every cell is visited
 // exactly once before the matrix fills, and Reset restores full coverage) against each
 // IFlipMatrix implementation, so a failure names the strategy that broke.
-public sealed class RandomFlipMatrixTests
+public sealed partial class RandomFlipMatrixTests
 {
     public static TheoryData<int, int> Dimensions =>
         new()

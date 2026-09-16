@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumIntervalToIncludeEach
 // published examples plus the uncovered-query, equal-size and descending-query cases
 // that exercise the sweep's discard loop and its write-back through the original query
 // order.
-public sealed class MinimumIntervalToIncludeEachQueryTests
+public sealed partial class MinimumIntervalToIncludeEachQueryTests
 {
     public static TheoryData<int[][], int[], int[]> Examples =>
         new()

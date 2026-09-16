@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CreateSortedArrayThroughInst
 // this file just pins them to LeetCode's published examples, plus the degenerate
 // orderings (already sorted either way, all equal, one element) where every
 // insertion is free.
-public sealed class CreateSortedArrayThroughInstructionsTests
+public sealed partial class CreateSortedArrayThroughInstructionsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistributeRepeatingIntegers;
 // file just pins them to LeetCode's published examples, plus the cases that
 // separate "enough copies in total" from "enough copies of one value", which is
 // the whole point of the problem.
-public sealed class DistributeRepeatingIntegersTests
+public sealed partial class DistributeRepeatingIntegersTests
 {
     public static TheoryData<DistributionCase> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RedundantConnection;
 // the extra edge - the first edge that connects two nodes already in the same
 // DisjointSet component. Harness only: the strategy is
 // RedundantConnectionSolution's.
-public sealed class RedundantConnectionTests
+public sealed partial class RedundantConnectionTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

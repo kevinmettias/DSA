@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IteratorForCombination;
 // HasNext before every Next and exhaustion at the end. The bitmask enumeration was
 // previously only a benchmark's baseline arm and went unasserted; it is under test
 // here for the first time.
-public sealed class IteratorForCombinationTests
+public sealed partial class IteratorForCombinationTests
 {
     public static TheoryData<string, int, string[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AvailableCapturesForRook;
 // Harness only. Both strategies are AvailableCapturesForRookSolution's - this file
 // pins them to LeetCode's published examples, given as one string per rank
 // (ParseBoard widens them into the char[][] the problem's own signature takes).
-public sealed class AvailableCapturesForRookTests
+public sealed partial class AvailableCapturesForRookTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

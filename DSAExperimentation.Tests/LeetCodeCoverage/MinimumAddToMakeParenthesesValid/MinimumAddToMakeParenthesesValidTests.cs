@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAddToMakeParenthesesV
 // Harness only: both strategies live in MinimumAddToMakeParenthesesValidSolution
 // and are asserted against the same examples, including the closer-before-opener
 // case where neither half of the count can be inferred from the other.
-public sealed class MinimumAddToMakeParenthesesValidTests
+public sealed partial class MinimumAddToMakeParenthesesValidTests
 {
     public static TheoryData<string, int> Examples =>
         new()

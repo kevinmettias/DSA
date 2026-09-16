@@ -2,22 +2,27 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.Tests.Domain.Modular;
 
-public sealed class FactorialTableTests
+public sealed partial class FactorialTableTests
 {
+    public static TheoryData<int, long> ArgumentsToExpectedFactorials =>
+        new() { { 0, 1 }, { 1, 1 }, { 2, 2 }, { 5, 120 }, { 10, 3_628_800 } };
+
+    public static TheoryData<int> ArgumentsForInverseFactorial =>
+        new() { 0, 1, 7, 1_000 };
+
+    public static TheoryData<int, int, long> BinomialCasesToKnownCoefficients =>
+        new() { { 5, 2, 10 }, { 10, 3, 120 }, { 4, 4, 1 }, { 0, 0, 1 }, { 20, 10, 184_756 } };
+
+    public static TheoryData<int, int> BinomialCasesOutsideTheRange =>
+        new() { { 4, 5 }, { 4, -1 }, { -1, 0 }, { 0, 1 } };
+
     [Theory]
-    [InlineData(0, 1)]
-    [InlineData(1, 1)]
-    [InlineData(2, 2)]
-    [InlineData(5, 120)]
-    [InlineData(10, 3_628_800)]
+    [MemberData(nameof(ArgumentsToExpectedFactorials))]
     public void Factorial_MatchesOrdinaryFactorial(int argument, long expected) =>
         Assert.Equal(expected, FactorialTable.Build(argument).Factorial(argument));
 
     [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(7)]
-    [InlineData(1_000)]
+    [MemberData(nameof(ArgumentsForInverseFactorial))]
     public void InverseFactorial_MultipliedByItsFactorial_IsOne(int argument)
     {
         var table = FactorialTable.Build(argument);
@@ -39,19 +44,12 @@ public sealed class FactorialTableTests
     // The table's reason for existing: one modular inverse at build time makes every
     // later division a multiplication.
     [Theory]
-    [InlineData(5, 2, 10)]
-    [InlineData(10, 3, 120)]
-    [InlineData(4, 4, 1)]
-    [InlineData(0, 0, 1)]
-    [InlineData(20, 10, 184_756)]
+    [MemberData(nameof(BinomialCasesToKnownCoefficients))]
     public void Choose_MatchesKnownBinomialCoefficients(int totalCount, int chosenCount, long expected) =>
         Assert.Equal(expected, FactorialTable.Build(totalCount).Choose(totalCount, chosenCount));
 
     [Theory]
-    [InlineData(4, 5)]
-    [InlineData(4, -1)]
-    [InlineData(-1, 0)]
-    [InlineData(0, 1)]
+    [MemberData(nameof(BinomialCasesOutsideTheRange))]
     public void Choose_OutsideTheBinomialRange_IsZero(int totalCount, int chosenCount) =>
         Assert.Equal(0, FactorialTable.Build(4).Choose(totalCount, chosenCount));
 

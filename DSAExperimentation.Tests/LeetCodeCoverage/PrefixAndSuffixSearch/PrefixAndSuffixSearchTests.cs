@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PrefixAndSuffixSearch;
 // Harness only. Both search strategies are PrefixAndSuffixSearchSolution's - this
 // file just pins them to LeetCode's published examples, including the shared-match
 // tie-break that always resolves to the largest word index.
-public sealed class PrefixAndSuffixSearchTests
+public sealed partial class PrefixAndSuffixSearchTests
 {
     public static TheoryData<PrefixAndSuffixCase> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestRepeatingCharacterRep
 // LeetCode 424. Longest Repeating Character Replacement: harness only. Both
 // strategies are LongestRepeatingCharacterReplacementSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class LongestRepeatingCharacterReplacementTests
+public sealed partial class LongestRepeatingCharacterReplacementTests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GuessNumberHigherOrLower;
 
 // Harness only: both strategies live in GuessNumberHigherOrLowerSolution and are
 // asserted against the same examples.
-public sealed class GuessNumberHigherOrLowerTests
+public sealed partial class GuessNumberHigherOrLowerTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

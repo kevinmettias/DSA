@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WalkingRobotSimulation;
 // Harness only. Both strategies are WalkingRobotSimulationSolution's - the linear
 // obstacle scan that used to live only in the benchmark's baseline arm, and the
 // Set<(int, int)> walk the test used to inline.
-public sealed class WalkingRobotSimulationTests
+public sealed partial class WalkingRobotSimulationTests
 {
     public static TheoryData<int[], int[][], int> Examples =>
         new()

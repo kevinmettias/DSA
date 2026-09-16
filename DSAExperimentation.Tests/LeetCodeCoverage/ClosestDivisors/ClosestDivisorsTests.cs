@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ClosestDivisors;
 // binary search and the full-range divisor scan that used to live untested in the
 // benchmark - pinned to LeetCode's published examples plus the smallest inputs and a
 // case where the tighter pair comes from num + 1 rather than num + 2.
-public sealed class ClosestDivisorsTests
+public sealed partial class ClosestDivisorsTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

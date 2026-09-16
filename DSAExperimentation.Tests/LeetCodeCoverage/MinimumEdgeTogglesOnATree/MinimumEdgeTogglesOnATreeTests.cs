@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumEdgeTogglesOnATree;
 // ToggleTree and both strategies are MinimumEdgeTogglesOnATreeSolution's - this
 // file just pins them to LeetCode's published examples, including the
 // unsatisfiable case that has to answer [-1] without ever choosing an edge.
-public sealed class MinimumEdgeTogglesOnATreeTests
+public sealed partial class MinimumEdgeTogglesOnATreeTests
 {
     public static TheoryData<ToggleExample> Examples =>
         new()

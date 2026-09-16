@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfVisitedCellsI
 // MinimumNumberOfVisitedCellsInAGridSolution's; this file just pins them to LeetCode's
 // published examples, plus the 1x1 grid where the start already IS the target and a
 // two-row grid whose every jump is a single step.
-public sealed class MinimumNumberOfVisitedCellsInAGridTests
+public sealed partial class MinimumNumberOfVisitedCellsInAGridTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

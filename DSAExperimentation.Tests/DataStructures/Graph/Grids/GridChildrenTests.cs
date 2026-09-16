@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
-public sealed class GridChildrenTests
+public sealed partial class GridChildrenTests
 {
     private static Grid Open(int rows, int cols)
     {

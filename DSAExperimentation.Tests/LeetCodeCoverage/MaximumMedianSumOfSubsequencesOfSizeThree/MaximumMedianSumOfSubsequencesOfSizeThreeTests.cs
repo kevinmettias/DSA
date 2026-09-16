@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumMedianSumOfSubsequenc
 // MaximumMedianSumOfSubsequencesOfSizeThreeSolution's - this file just pins
 // both strategies to LeetCode's published examples plus the smallest possible
 // case (one triple, so the median sum is just that triple's own median).
-public sealed class MaximumMedianSumOfSubsequencesOfSizeThreeTests
+public sealed partial class MaximumMedianSumOfSubsequencesOfSizeThreeTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

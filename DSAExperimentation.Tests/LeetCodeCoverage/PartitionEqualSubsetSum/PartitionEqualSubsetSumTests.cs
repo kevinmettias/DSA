@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionEqualSubsetSum;
 // Harness only: both strategies live in PartitionEqualSubsetSumSolution and are
 // asserted against the same examples, including the odd-total case that makes an
 // equal split impossible before any subset-sum search runs.
-public sealed class PartitionEqualSubsetSumTests
+public sealed partial class PartitionEqualSubsetSumTests
 {
     public static TheoryData<SubsetSumExample> Examples =>
         new()

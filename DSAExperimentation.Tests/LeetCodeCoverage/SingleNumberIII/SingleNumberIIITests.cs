@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SingleNumberIII;
 // Harness only: both strategies live in SingleNumberIIISolution and are asserted
 // against the same examples. LC260 accepts either order for the two singletons,
 // so each result is sorted before comparing.
-public sealed class SingleNumberIIITests
+public sealed partial class SingleNumberIIITests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

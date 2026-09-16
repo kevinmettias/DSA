@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveBoxes;
 // Harness only: the algorithms live in RemoveBoxesSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class RemoveBoxesTests
+public sealed partial class RemoveBoxesTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

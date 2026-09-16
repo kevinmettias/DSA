@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MostFrequentPrime;
 // Harness only: the directional walk and both primality strategies live in
 // MostFrequentPrimeSolution - this file just pins them to LeetCode's
 // published examples.
-public sealed class MostFrequentPrimeTests
+public sealed partial class MostFrequentPrimeTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

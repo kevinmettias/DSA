@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LeastOperatorsToExpressNumbe
 // file states LeetCode's published examples once and asserts every strategy
 // against them - the un-memoized baseline included, which the benchmark previously
 // measured without anything checking its answer.
-public sealed class LeastOperatorsToExpressNumberTests
+public sealed partial class LeastOperatorsToExpressNumberTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

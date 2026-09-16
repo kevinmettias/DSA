@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SwappingNodesInALinkedList;
 // SwapNodesByTwoPointerWalk rewrites the Values of the very list it is handed:
 // sharing one already-swapped chain between the two theories over this data would
 // feed the second call an input the first had already consumed.
-public sealed class SwappingNodesInALinkedListTests
+public sealed partial class SwappingNodesInALinkedListTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

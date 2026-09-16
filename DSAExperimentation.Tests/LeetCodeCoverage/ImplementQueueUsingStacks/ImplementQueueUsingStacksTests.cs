@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ImplementQueueUsingStacks;
 // benchmark's two [Benchmark] arms were both `return 1` placeholders, not a
 // second algorithm to reconcile - see ImplementQueueUsingStacksSolution's own
 // doc comment), so there is only one [Theory] method.
-public sealed class ImplementQueueUsingStacksTests
+public sealed partial class ImplementQueueUsingStacksTests
 {
     public static TheoryData<QueueOp[], object?[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumGap;
 // Harness only. Both strategies are MaximumGapSolution's - LC 164's published
 // examples plus an all-duplicates edge case and a two-element case with a large
 // gap - this file just pins them to LeetCode's expected answers.
-public sealed class MaximumGapTests
+public sealed partial class MaximumGapTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

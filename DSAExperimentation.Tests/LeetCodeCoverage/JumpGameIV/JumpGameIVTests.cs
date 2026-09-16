@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameIV;
 // level-order BFS with same-value group pruning, and modeling the same
 // i+1/i-1/same-value reachability as an implicit unweighted-hop graph answered
 // with this repo's own ShortestPath.Dijkstra.
-public sealed class JumpGameIVTests
+public sealed partial class JumpGameIVTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

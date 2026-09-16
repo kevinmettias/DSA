@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromeLinkedList;
 
 // Harness only. The single strategy is PalindromeLinkedListSolution's - this file
 // builds LeetCode's published examples as linked lists and checks the result.
-public sealed class PalindromeLinkedListTests
+public sealed partial class PalindromeLinkedListTests
 {
     public static TheoryData<ListCase> Examples =>
         new()

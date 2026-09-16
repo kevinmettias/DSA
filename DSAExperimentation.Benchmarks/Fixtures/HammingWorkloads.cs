@@ -23,10 +23,25 @@ internal static class HammingWorkloads
 
         for (var i = 1; i < count; i++)
         {
-            current[random.Next(length)] = characters[random.Next(characters.Length)];
+            var position = random.Next(length);
+
+            // Drawn from the alphabet with the character being replaced taken out: drawing from the
+            // whole alphabet redraws the current character one time in four, and a step that changes
+            // nothing is not one of the single-character mutations this chain is a chain of.
+            current[position] = NextDifferentCharacter(characters, current[position], random);
             values.Add(new string(current));
         }
 
         return ([.. values], values[0], values[^1]);
+    }
+
+    // A character of the alphabet other than `current`: an index drawn from the alphabet shortened by
+    // one is mapped past the current character's own position, so the result is always a mutation.
+    private static char NextDifferentCharacter(string characters, char current, Random random)
+    {
+        var currentIndex = characters.IndexOf(current);
+        var drawn = random.Next(characters.Length - 1);
+
+        return characters[drawn >= currentIndex ? drawn + 1 : drawn];
     }
 }

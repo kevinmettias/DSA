@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfStringsWhichCanBeRea
 // NumberOfStringsWhichCanBeRearrangedToContainSubstringSolution. One test method
 // per strategy over one shared set of LeetCode's own examples, so a failure names
 // the strategy that broke (TwoSumTests precedent).
-public sealed class NumberOfStringsWhichCanBeRearrangedToContainSubstringTests
+public sealed partial class NumberOfStringsWhichCanBeRearrangedToContainSubstringTests
 {
     public static TheoryData<int, int> Examples =>
         new()

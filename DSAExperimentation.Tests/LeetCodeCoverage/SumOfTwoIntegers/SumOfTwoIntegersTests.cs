@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfTwoIntegers;
 
 // Harness only: both strategies live in SumOfTwoIntegersSolution and are
 // asserted against the same published examples.
-public sealed class SumOfTwoIntegersTests
+public sealed partial class SumOfTwoIntegersTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

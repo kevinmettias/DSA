@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProductOfTheLengthOfT
 // that separate them: a whole string that is itself a palindrome (so the answer must
 // come from nested sub-palindromes), a run of one repeated character (where the best
 // split is not the middle), and inputs whose only answer is 1 * 1.
-public sealed class MaximumProductOfTheLengthOfTwoPalindromicSubstringsTests
+public sealed partial class MaximumProductOfTheLengthOfTwoPalindromicSubstringsTests
 {
     public static TheoryData<string, long> Examples =>
         new()

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignMemoryAllocator;
 // here is a sequence of mutating calls rather than a single argument tuple.
 // MemoryAllocatorOp.Apply is pure dispatch (which method to call with which
 // arguments) - no run-finding or bookkeeping logic of its own.
-public sealed class DesignMemoryAllocatorTests
+public sealed partial class DesignMemoryAllocatorTests
 {
     public static TheoryData<int, MemoryAllocatorOp[], int[]> Examples =>
         new()
@@ -83,22 +83,16 @@ public sealed class DesignMemoryAllocatorTests
     [MemberData(nameof(Examples))]
     public void MemoryAllocatorByArrayScan_LeetCodeExamples_MatchesPublishedOutputSequence(
         int memorySize, MemoryAllocatorOp[] operations, int[] expected) =>
-        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByArrayScan(memorySize), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByArrayScan(memorySize), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MemoryAllocatorByHashMapIndex_LeetCodeExamples_MatchesPublishedOutputSequence(
         int memorySize, MemoryAllocatorOp[] operations, int[] expected) =>
-        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByHashMapIndex(memorySize), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByHashMapIndex(memorySize), operations));
 
-    private static void RunScript(
+    private static int[] RunScript(
         DesignMemoryAllocatorSolution.IMemoryAllocatorStrategy allocator,
-        MemoryAllocatorOp[] operations,
-        int[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(allocator));
-        }
-    }
+        MemoryAllocatorOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(allocator))];
 }

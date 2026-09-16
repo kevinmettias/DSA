@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WordBreak;
 
 // Harness only. The Trie<bool> + Memoizer composition is WordBreakSolution's -
 // this file just pins it to LeetCode's published examples.
-public sealed class WordBreakTests
+public sealed partial class WordBreakTests
 {
     public static TheoryData<SegmentCase> Examples =>
         new()

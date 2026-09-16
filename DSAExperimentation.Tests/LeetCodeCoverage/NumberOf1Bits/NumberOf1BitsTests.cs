@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOf1Bits;
 
 // Harness only: the one strategy lives in NumberOf1BitsSolution and is asserted
 // against LeetCode's published examples.
-public sealed class NumberOf1BitsTests
+public sealed partial class NumberOf1BitsTests
 {
     public static TheoryData<uint, int> Examples =>
         new()

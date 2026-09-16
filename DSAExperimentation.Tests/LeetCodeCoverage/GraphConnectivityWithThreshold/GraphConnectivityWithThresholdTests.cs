@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GraphConnectivityWithThresho
 // failure names the strategy that broke rather than reporting a disagreement between
 // two anonymous arms. Cases below are LeetCode's own published examples plus the
 // boundary ones the pre-migration test had already added.
-public sealed class GraphConnectivityWithThresholdTests
+public sealed partial class GraphConnectivityWithThresholdTests
 {
     public static TheoryData<int, int, int[][], bool[]> Examples =>
         new()

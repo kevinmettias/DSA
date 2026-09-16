@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumBinaryTree;
 // Harness only. Both strategies are MaximumBinaryTreeSolution's - this file just
 // pins them to LeetCode's published examples, comparing each built tree against a
 // hand-written expected shape (a print, not a second construction algorithm).
-public sealed class MaximumBinaryTreeTests
+public sealed partial class MaximumBinaryTreeTests
 {
     public static TheoryData<int[], string> Examples =>
         new()

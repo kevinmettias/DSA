@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BeautifulArrangement;
 // Harness only: both strategies are BeautifulArrangementSolution's, the same
 // generate-then-filter baseline and pruned Backtrack.Search composition
 // BeautifulArrangementBenchmarks measures.
-public sealed class BeautifulArrangementTests
+public sealed partial class BeautifulArrangementTests
 {
     public static TheoryData<int, int> Examples =>
         new()

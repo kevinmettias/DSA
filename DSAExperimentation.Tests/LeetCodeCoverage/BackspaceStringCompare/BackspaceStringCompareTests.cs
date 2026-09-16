@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BackspaceStringCompare;
 // decide whether a backspace on already-empty text is the no-op LeetCode says it
 // is and whether two strings that agree character-for-character after replay but
 // not before are still reported equal.
-public sealed class BackspaceStringCompareTests
+public sealed partial class BackspaceStringCompareTests
 {
     public static TheoryData<BackspacePairCase> Examples =>
         new()

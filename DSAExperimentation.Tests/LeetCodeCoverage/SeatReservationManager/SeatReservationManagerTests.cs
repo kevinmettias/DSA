@@ -15,7 +15,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SeatReservationManager;
 // asserting it; it is pinned to the same scripts here, which is what puts the seat
 // count in the data at all - it is the one strategy that really does allocate an
 // entry per seat up front.
-public sealed class SeatReservationManagerTests
+public sealed partial class SeatReservationManagerTests
 {
     public static TheoryData<SeatManagerScript, int?[]> Examples =>
         new()
@@ -93,21 +93,16 @@ public sealed class SeatReservationManagerTests
     [MemberData(nameof(Examples))]
     public void SeatManagerByLinearScanArray_LeetCodeExamples_MatchesExpectedSequence(
         SeatManagerScript script, int?[] expected) =>
-        RunScript(new SeatManagerByLinearScanArray(script.SeatCount), script.Operations, expected);
+        Assert.Equal(expected, RunScript(new SeatManagerByLinearScanArray(script.SeatCount), script.Operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SeatManagerByReleasedSeatHeap_LeetCodeExamples_MatchesExpectedSequence(
         SeatManagerScript script, int?[] expected) =>
-        RunScript(new SeatManagerByReleasedSeatHeap(), script.Operations, expected);
+        Assert.Equal(expected, RunScript(new SeatManagerByReleasedSeatHeap(), script.Operations));
 
-    private static void RunScript(ISeatManager manager, SeatManagerOp[] operations, int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(manager));
-        }
-    }
+    private static int?[] RunScript(ISeatManager manager, SeatManagerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(manager))];
 
     // One LeetCode call script: the seat count its constructor was given, and the calls
     // made after it. The two travel together because only one of the strategies takes

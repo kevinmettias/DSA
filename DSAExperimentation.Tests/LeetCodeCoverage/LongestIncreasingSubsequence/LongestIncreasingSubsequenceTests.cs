@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestIncreasingSubsequence
 
 // Harness only. Both strategies are LongestIncreasingSubsequenceSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class LongestIncreasingSubsequenceTests
+public sealed partial class LongestIncreasingSubsequenceTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

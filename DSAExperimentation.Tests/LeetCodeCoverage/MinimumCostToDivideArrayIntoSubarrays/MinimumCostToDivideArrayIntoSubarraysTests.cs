@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToDivideArrayInto
 // Harness only. Both strategies are
 // MinimumCostToDivideArraysIntoSubarraysSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class MinimumCostToDivideArrayIntoSubarraysTests
+public sealed partial class MinimumCostToDivideArrayIntoSubarraysTests
 {
     public static TheoryData<int[], int[], int, long> Examples =>
         new()

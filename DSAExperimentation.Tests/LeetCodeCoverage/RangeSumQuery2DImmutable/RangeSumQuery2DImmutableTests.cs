@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumQuery2DImmutable;
 // Harness only. Both strategies are RangeSumQuery2DImmutableSolution's - this file just pins them
 // to LeetCode's published examples, one [Theory] per strategy so a failure names the strategy that
 // broke.
-public sealed class RangeSumQuery2DImmutableTests
+public sealed partial class RangeSumQuery2DImmutableTests
 {
     private static readonly int[][] ExampleMatrix =
     [

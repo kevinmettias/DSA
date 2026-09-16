@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindSubarrayWithBitwiseORClo
 
 // Harness only. Both strategies are FindSubarrayWithBitwiseORClosestToKSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class FindSubarrayWithBitwiseORClosestToKTests
+public sealed partial class FindSubarrayWithBitwiseORClosestToKTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

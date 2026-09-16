@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertGreatestCommonDivisors
 // boundaries: coprime neighbours (the inserted value is 1), equal neighbours (the
 // inserted value is the value itself), and a divisor chain where consecutive gaps
 // insert different divisors.
-public sealed class InsertGreatestCommonDivisorsInLinkedListTests
+public sealed partial class InsertGreatestCommonDivisorsInLinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

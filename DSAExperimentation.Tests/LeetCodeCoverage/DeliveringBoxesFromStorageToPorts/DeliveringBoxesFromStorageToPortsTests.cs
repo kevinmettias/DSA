@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeliveringBoxesFromStorageTo
 // never published - one trip that carries everything, a box count of one that
 // forces a trip each, and a weight limit rather than a count limit deciding where
 // the window closes.
-public sealed class DeliveringBoxesFromStorageToPortsTests
+public sealed partial class DeliveringBoxesFromStorageToPortsTests
 {
     // Each box is LeetCode's [port, weight]; the answer is the total number of
     // legs the ship travels.

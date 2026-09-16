@@ -4,7 +4,7 @@ using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
-public sealed class AllPairsShortestPathsTests
+public sealed partial class AllPairsShortestPathsTests
 {
     [Fact]
     public void TryComputeDistances_SampleGraph_MatchesDijkstraFromEachSource()

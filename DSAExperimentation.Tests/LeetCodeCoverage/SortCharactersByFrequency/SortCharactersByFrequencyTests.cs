@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SortCharactersByFrequency;
 // asserted against the same examples. LeetCode accepts any arrangement whose
 // characters are grouped by non-increasing frequency, so the assertion checks that
 // property directly rather than one fixed expected string.
-public sealed class SortCharactersByFrequencyTests
+public sealed partial class SortCharactersByFrequencyTests
 {
     public static TheoryData<string> Examples =>
         new() { "tree", "cccaaa", "a" };

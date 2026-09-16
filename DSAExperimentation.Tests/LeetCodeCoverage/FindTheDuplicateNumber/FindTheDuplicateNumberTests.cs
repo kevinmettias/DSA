@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheDuplicateNumber;
 
 // Harness only. Both strategies are FindTheDuplicateNumberSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class FindTheDuplicateNumberTests
+public sealed partial class FindTheDuplicateNumberTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindWinnerOnATicTacToeGame;
 // FindWinnerOnATicTacToeGameSolution's; this file pins them to LeetCode's
 // published examples plus the column and anti-diagonal wins the examples never
 // exercise, so a regression names the strategy that broke.
-public sealed class FindWinnerOnATicTacToeGameTests
+public sealed partial class FindWinnerOnATicTacToeGameTests
 {
     public static TheoryData<int[][], string> Examples =>
         new()

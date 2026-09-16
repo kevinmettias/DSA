@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthLargestElement;
 
 // Harness only. Both strategies are KthLargestElementSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class KthLargestElementTests
+public sealed partial class KthLargestElementTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

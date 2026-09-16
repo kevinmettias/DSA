@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheSumOfSubsequencePower
 // FindTheSumOfSubsequencePowersSolution's - this file just pins them to LeetCode's
 // published examples, including the zero-power duplicate-value case and a
 // negative-value case.
-public sealed class FindTheSumOfSubsequencePowersTests
+public sealed partial class FindTheSumOfSubsequencePowersTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

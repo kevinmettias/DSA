@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestMatchingSubstring;
 // Harness only. Splitting p and finding the shortest match are both
 // ShortestMatchingSubstringSolution's - this file just pins both strategies to
 // LeetCode's published examples, including the all-empty-parts and no-match cases.
-public sealed class ShortestMatchingSubstringTests
+public sealed partial class ShortestMatchingSubstringTests
 {
     public static TheoryData<WildcardMatchExample> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KDivisibleElementsSubarrays;
 // pinning them to the same examples is what finally puts the HashSet baseline -
 // previously a private helper in the benchmark, asserted by nothing - under test
 // alongside the Set-backed dedupe it is measured against.
-public sealed class KDivisibleElementsSubarraysTests
+public sealed partial class KDivisibleElementsSubarraysTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
         new()

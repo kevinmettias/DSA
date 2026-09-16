@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Walking;
 
-public sealed class UnguardedVisitTests
+public sealed partial class UnguardedVisitTests
 {
     [Fact]
     public void ShouldVisit_AlwaysReturnsTrue()

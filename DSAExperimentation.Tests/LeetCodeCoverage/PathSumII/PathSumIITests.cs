@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathSumII;
 // and LeetCodeWireFormat.ToBinaryTree reconstructs it from that array. Path order isn't part of
 // LeetCode's contract ("return the paths in any order"), so assertions check
 // membership and count rather than a fixed sequence.
-public sealed class PathSumIITests
+public sealed partial class PathSumIITests
 {
     public static TheoryData<PathSumExample> Examples =>
         new()

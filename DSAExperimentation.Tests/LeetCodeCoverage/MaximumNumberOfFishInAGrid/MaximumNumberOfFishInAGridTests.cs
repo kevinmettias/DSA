@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfFishInAGrid;
 // largest component is not its heaviest one catches a strategy that kept counting
 // cells, and a grid whose best component comes last catches one that returned the
 // first component it found.
-public sealed class MaximumNumberOfFishInAGridTests
+public sealed partial class MaximumNumberOfFishInAGridTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

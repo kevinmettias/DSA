@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumPairRemovalToSortArra
 
 // Harness only. Both strategies are MinimumPairRemovalToSortArrayISolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class MinimumPairRemovalToSortArrayITests
+public sealed partial class MinimumPairRemovalToSortArrayITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

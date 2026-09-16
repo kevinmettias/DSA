@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumWindowSubstring;
 
 // Harness only. Both strategies are MinimumWindowSubstringSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class MinimumWindowSubstringTests
+public sealed partial class MinimumWindowSubstringTests
 {
     public static TheoryData<WindowExample> Examples =>
         new()

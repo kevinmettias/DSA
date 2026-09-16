@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PrimeArrangements;
 // Harness only. Both strategies are PrimeArrangementsSolution's - this file pins
 // them to LeetCode's published examples plus the small-upperBound boundaries
 // where the prime count is zero or one and the factorials collapse to 1.
-public sealed class PrimeArrangementsTests
+public sealed partial class PrimeArrangementsTests
 {
     public static TheoryData<int, int> Examples =>
         new()

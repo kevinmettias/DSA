@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ElevatorRequestsI;
 
 // Harness only. Both strategies are ElevatorRequestsISolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class ElevatorRequestsITests
+public sealed partial class ElevatorRequestsITests
 {
     public static TheoryData<int, int[], int> Examples =>
         new()

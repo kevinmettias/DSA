@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EvaluateReversePolishNotatio
 // Harness only. The operand-stack evaluation is
 // EvaluateReversePolishNotationSolution's; this file pins it to LeetCode's
 // published examples.
-public sealed class EvaluateReversePolishNotationTests
+public sealed partial class EvaluateReversePolishNotationTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

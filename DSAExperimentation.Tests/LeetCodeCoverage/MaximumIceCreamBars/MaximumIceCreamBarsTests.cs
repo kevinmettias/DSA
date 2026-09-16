@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumIceCreamBars;
 // method per strategy over one shared set of examples, so a failure names the
 // strategy that broke - the O(n^2) selection scan included, which was previously a
 // benchmark-only arm nothing asserted.
-public sealed class MaximumIceCreamBarsTests
+public sealed partial class MaximumIceCreamBarsTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

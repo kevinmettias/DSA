@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class BitTrieChildrenTests
+public sealed partial class BitTrieChildrenTests
 {
     [Fact]
     public void Count_NoBranches_IsZero() => Assert.Equal(0, new BitTrieChildren(new BitTrieNode()).Count);

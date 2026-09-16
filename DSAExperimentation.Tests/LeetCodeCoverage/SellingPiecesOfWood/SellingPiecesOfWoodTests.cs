@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SellingPiecesOfWood;
 // benchmark arm asserted by nothing - under test beside the Memoizer-cached
 // recurrence it is measured against. Every board here is small enough that the
 // baseline's exponential branching stays trivial.
-public sealed class SellingPiecesOfWoodTests
+public sealed partial class SellingPiecesOfWoodTests
 {
     public static TheoryData<int, int, (int Height, int Width, int Price)[], long> Examples =>
         new()

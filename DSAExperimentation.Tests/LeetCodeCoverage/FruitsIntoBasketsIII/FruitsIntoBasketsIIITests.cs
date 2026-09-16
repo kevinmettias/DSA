@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FruitsIntoBasketsIII;
 // FruitsIntoBasketsIIISolution's - this file just pins them to LeetCode's
 // published examples (identical to LC 3477's, at the harder n <= 1e5 bound)
 // plus a couple of hand-verified edge cases.
-public sealed class FruitsIntoBasketsIIITests
+public sealed partial class FruitsIntoBasketsIIITests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

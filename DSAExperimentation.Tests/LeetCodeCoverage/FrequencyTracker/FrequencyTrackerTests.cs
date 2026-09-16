@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FrequencyTracker;
 // sorted-scan list baseline (previously untested scaffolding inlined in the
 // benchmark) is held to the same script here for the first time. FrequencyTrackerOp
 // .Apply is pure dispatch, no counting logic of its own.
-public sealed class FrequencyTrackerTests
+public sealed partial class FrequencyTrackerTests
 {
     public static TheoryData<FrequencyTrackerOp[], bool?[]> Examples =>
         new()
@@ -81,22 +81,17 @@ public sealed class FrequencyTrackerTests
     [MemberData(nameof(Examples))]
     public void CreateBySortedScanList_LeetCodeExamples_TracksNumbersAtEachFrequency(
         FrequencyTrackerOp[] operations, bool?[] expected) =>
-        RunScript(FrequencyTrackerSolution.CreateBySortedScanList(), operations, expected);
+        Assert.Equal(expected, RunScript(FrequencyTrackerSolution.CreateBySortedScanList(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByPairedHashMaps_LeetCodeExamples_TracksNumbersAtEachFrequency(
         FrequencyTrackerOp[] operations, bool?[] expected) =>
-        RunScript(FrequencyTrackerSolution.CreateByPairedHashMaps(), operations, expected);
+        Assert.Equal(expected, RunScript(FrequencyTrackerSolution.CreateByPairedHashMaps(), operations));
 
-    private static void RunScript(
-        FrequencyTrackerSolution.IFrequencyTracker tracker, FrequencyTrackerOp[] operations, bool?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(tracker));
-        }
-    }
+    private static bool?[] RunScript(
+        FrequencyTrackerSolution.IFrequencyTracker tracker, FrequencyTrackerOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(tracker))];
 
     // One call in a FrequencyTracker script: which method to invoke and with what
     // argument. Pure dispatch, built via the named factories below so a script (like

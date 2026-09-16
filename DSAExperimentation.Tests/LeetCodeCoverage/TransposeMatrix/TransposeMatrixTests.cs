@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TransposeMatrix;
 // Harness only: both strategies live in TransposeMatrixSolution. The cache-blocked
 // arm was previously benchmark-only and unasserted; the tall and wide cases here are
 // the ones that would expose a swapped row/column bound in it.
-public sealed class TransposeMatrixTests
+public sealed partial class TransposeMatrixTests
 {
     public static TheoryData<int[][], int[][]> Examples =>
         new()

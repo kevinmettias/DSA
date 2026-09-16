@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignHashSet;
 // so a failure still names the strategy that broke even though the "input" here
 // is a sequence of mutating/querying calls rather than a single argument tuple.
 // HashSetOp.Apply is pure dispatch - no membership-tracking logic of its own.
-public sealed class DesignHashSetTests
+public sealed partial class DesignHashSetTests
 {
     public static TheoryData<HashSetOp[], bool?[]> Examples =>
         new()
@@ -46,19 +46,14 @@ public sealed class DesignHashSetTests
     [MemberData(nameof(Examples))]
     public void MyHashSetByListScan_LeetCodeExamples_TracksMembershipCorrectly(
         HashSetOp[] operations, bool?[] expected) =>
-        RunScript(new DesignHashSetSolution.MyHashSetByListScan(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignHashSetSolution.MyHashSetByListScan(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MyHashSetBySetBacked_LeetCodeExamples_TracksMembershipCorrectly(
         HashSetOp[] operations, bool?[] expected) =>
-        RunScript(new DesignHashSetSolution.MyHashSetBySetBacked(), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignHashSetSolution.MyHashSetBySetBacked(), operations));
 
-    private static void RunScript(DesignHashSetSolution.IMyHashSet set, HashSetOp[] operations, bool?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(set));
-        }
-    }
+    private static bool?[] RunScript(DesignHashSetSolution.IMyHashSet set, HashSetOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(set))];
 }

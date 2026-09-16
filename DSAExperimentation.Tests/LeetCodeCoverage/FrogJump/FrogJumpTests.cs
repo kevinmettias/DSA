@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FrogJump;
 
 // Harness only. Both strategies are FrogJumpSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class FrogJumpTests
+public sealed partial class FrogJumpTests
 {
     public static TheoryData<FrogJumpCase> Examples =>
         new()

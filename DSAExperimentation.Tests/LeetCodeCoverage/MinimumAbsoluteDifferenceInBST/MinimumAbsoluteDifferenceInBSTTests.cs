@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAbsoluteDifferenceInB
 // level-order-with-null array shape. BinaryTreeNode<int> is internal, so - as in
 // RecoverBinarySearchTreeTests - it stays out of a public TheoryData signature and
 // LeetCodeWireFormat.ToBinaryTree reconstructs it from that array.
-public sealed class MinimumAbsoluteDifferenceInBSTTests
+public sealed partial class MinimumAbsoluteDifferenceInBSTTests
 {
     public static TheoryData<int?[], int> Examples =>
         new()

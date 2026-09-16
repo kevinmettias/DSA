@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubarraySumEqualsK;
 
 // LeetCode 560. Subarray Sum Equals K: harness only. Both strategies are
 // SubarraySumEqualsKSolution's; this file pins them to the same examples.
-public sealed class SubarraySumEqualsKTests
+public sealed partial class SubarraySumEqualsKTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

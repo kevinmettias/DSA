@@ -4,7 +4,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Topologies;
 
-public sealed class EdgeTopologyAsGraphTopologyTests
+public sealed partial class EdgeTopologyAsGraphTopologyTests
 {
     private static WeightedGridNode Cell(int row, int col) => new(row, col);
 

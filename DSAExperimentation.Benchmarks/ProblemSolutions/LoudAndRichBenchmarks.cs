@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LoudAndRich;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,6 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // from a lower id to a higher one (capped fan-out) so the relation is a
 // guaranteed-acyclic DAG, the same generation shape CourseScheduleIIBenchmarks
 // already uses.
+//
+// Quiet values are a shuffled permutation of 0..PersonCount-1 rather than
+// independent draws from that range: LC 851 asks for the least quiet person
+// among everyone at least as rich as x, and independent draws collide, so two
+// people routinely tie for that minimum and the two arms legitimately report
+// different ids for the same person - input outside the problem's contract, the
+// same defect AccountsMergeBenchmarks' duplicate-email-with-different-owner
+// generator had. A permutation gives every person a distinct value, so the
+// least quiet person is unique and both arms answer the same question.
 [MemoryDiagnoser]
 public class LoudAndRichBenchmarks
 {
@@ -26,7 +36,7 @@ public class LoudAndRichBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _quiet = Enumerable.Range(0, PersonCount).Select(_ => random.Next(0, PersonCount)).ToArray();
+        _quiet = SeededSequences.ShuffledZeroTo(PersonCount, random);
         _people = Enumerable.Range(0, PersonCount).Select(id => new PersonNode(id)).ToList();
 
         for (var i = 0; i < PersonCount; i++)

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FormArrayByConcatenatingSuba
 // rather than LeetCode's disjoint-and-in-order question) now gets the same
 // examples as CanChooseByCharCompressedKmpSearch (previously this file's own
 // private helper), so a failure names the strategy that broke.
-public sealed class FormArrayByConcatenatingSubarraysOfAnotherArrayTests
+public sealed partial class FormArrayByConcatenatingSubarraysOfAnotherArrayTests
 {
     public static TheoryData<ConcatenationCase> Examples =>
         new()

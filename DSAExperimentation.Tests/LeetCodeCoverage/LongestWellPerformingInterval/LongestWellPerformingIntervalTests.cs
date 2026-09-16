@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestWellPerformingInterva
 // to LeetCode's published examples plus the cases that separate the two branches of
 // the linear strategy: an interval that starts at index 0 because the running score
 // is already positive, and one found only by matching a score seen earlier.
-public sealed class LongestWellPerformingIntervalTests
+public sealed partial class LongestWellPerformingIntervalTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

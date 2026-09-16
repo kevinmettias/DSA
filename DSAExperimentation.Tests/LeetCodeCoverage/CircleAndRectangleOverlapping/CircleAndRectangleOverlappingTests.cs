@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CircleAndRectangleOverlappin
 // clamp-and-distance check and the lattice-point scan that used to live untested as the
 // benchmark's baseline - pinned to LeetCode's published examples plus a centre inside
 // the rectangle, a tangent circle, and a corner just out of reach.
-public sealed class CircleAndRectangleOverlappingTests
+public sealed partial class CircleAndRectangleOverlappingTests
 {
     public static TheoryData<OverlapCase> Examples =>
         new()

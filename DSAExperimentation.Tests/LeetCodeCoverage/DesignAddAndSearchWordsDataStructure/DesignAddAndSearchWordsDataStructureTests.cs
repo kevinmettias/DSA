@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAddAndSearchWordsDataS
 // - this file adds every word in wordsToAdd, then replays searches against each
 // IWordDictionaryStrategy implementation and checks the results LeetCode itself
 // publishes, so a failure still names the strategy that broke.
-public sealed class DesignAddAndSearchWordsDataStructureTests
+public sealed partial class DesignAddAndSearchWordsDataStructureTests
 {
     public static TheoryData<string[], string[], bool[]> Examples =>
         new()

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumAbsoluteDifferenceBet
 // so the answer is 0), minimumIndexDistance = n - 1 (exactly one admissible pair),
 // equal values at the admissible distance, and an array whose best pair is neither
 // adjacent nor the closest values overall.
-public sealed class MinimumAbsoluteDifferenceBetweenElementsWithConstraintTests
+public sealed partial class MinimumAbsoluteDifferenceBetweenElementsWithConstraintTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

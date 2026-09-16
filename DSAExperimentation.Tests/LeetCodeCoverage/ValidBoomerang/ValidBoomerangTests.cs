@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidBoomerang;
 // Heron area and the exact integer cross product - pinned to the same examples so
 // the tolerance-based arm is held to the exact one's answers, including the
 // collinear and duplicate-point cases where its epsilon is doing the work.
-public sealed class ValidBoomerangTests
+public sealed partial class ValidBoomerangTests
 {
     public static TheoryData<PointTripleExample> Examples =>
         new()

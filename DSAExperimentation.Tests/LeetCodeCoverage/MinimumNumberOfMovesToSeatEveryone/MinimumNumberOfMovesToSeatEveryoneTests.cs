@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfMovesToSeatEv
 // catches a pairing that is not by rank. Both strategies live in
 // MinimumNumberOfMovesToSeatEveryoneSolution and are asserted separately so a
 // failure names the arm that broke.
-public sealed class MinimumNumberOfMovesToSeatEveryoneTests
+public sealed partial class MinimumNumberOfMovesToSeatEveryoneTests
 {
     public static TheoryData<int[], int[], int> Examples => new()
     {

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfDartsInsideOf
 // MaximumNumberOfDartsInsideOfACircularDartboardSolution for the two strategies:
 // the same candidate-center sweep buffering into a plain BCL List, and into this
 // repo's own DynamicArray.
-public sealed class MaximumNumberOfDartsInsideOfACircularDartboardTests
+public sealed partial class MaximumNumberOfDartsInsideOfACircularDartboardTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

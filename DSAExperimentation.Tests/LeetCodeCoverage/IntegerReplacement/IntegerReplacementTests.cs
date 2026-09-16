@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IntegerReplacement;
 // Harness only. Both strategies are IntegerReplacementSolution's - LeetCode's
 // published examples plus int.MaxValue (the n+1 overflow edge the solution's own
 // long-typed recursion exists to guard against) are asserted against each.
-public sealed class IntegerReplacementTests
+public sealed partial class IntegerReplacementTests
 {
     public static TheoryData<int, int> Examples =>
         new()

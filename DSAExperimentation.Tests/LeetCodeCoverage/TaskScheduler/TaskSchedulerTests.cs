@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TaskScheduler;
 
 // Harness only. Both strategies are TaskSchedulerSolution's; this file pins them to
 // LeetCode's published examples.
-public sealed class TaskSchedulerTests
+public sealed partial class TaskSchedulerTests
 {
     public static TheoryData<char[], int, int> Examples =>
         new()

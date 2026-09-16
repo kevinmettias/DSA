@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumPossibleIntegerAfterA
 // LeetCode's published examples plus the two budget extremes - a zero budget, which must
 // return the input untouched, and a budget larger than any arrangement needs, which must
 // return the sorted digits.
-public sealed class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsTests
+public sealed partial class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsTests
 {
     public static TheoryData<string, int, string> Examples =>
         new()

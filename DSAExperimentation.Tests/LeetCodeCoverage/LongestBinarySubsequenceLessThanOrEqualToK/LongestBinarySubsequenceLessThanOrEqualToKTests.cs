@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestBinarySubsequenceLess
 // enumeration - previously a benchmark arm asserted by nothing - under test beside
 // the greedy scan it is measured against. Every string here is short enough that the
 // baseline's 2^n walk stays trivial.
-public sealed class LongestBinarySubsequenceLessThanOrEqualToKTests
+public sealed partial class LongestBinarySubsequenceLessThanOrEqualToKTests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

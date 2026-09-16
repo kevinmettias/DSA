@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseBits;
 
 // Harness only: the single strategy lives in ReverseBitsSolution and is asserted
 // against LeetCode's published examples.
-public sealed class ReverseBitsTests
+public sealed partial class ReverseBitsTests
 {
     public static TheoryData<uint, uint> Examples =>
         new()

@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickWithBlacklist;
 // "eventually covers every whitelisted number" scenario additionally asserts full
 // coverage after enough calls, exactly as the pre-migration test did for its one
 // strategy.
-public sealed class RandomPickWithBlacklistTests
+public sealed partial class RandomPickWithBlacklistTests
 {
     public static TheoryData<BlacklistScenario> Examples =>
         new()

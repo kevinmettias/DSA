@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSubtreesWithMaxDistance
 // CountSubtreesWithMaxDistanceBetweenCitiesSolution's - this file just pins them to
 // LeetCode's three published examples plus a four-city path, whose buckets separate
 // a chain from the star shape example 1 already covers.
-public sealed class CountSubtreesWithMaxDistanceBetweenCitiesTests
+public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesTests
 {
     public static TheoryData<int, int[][], int[]> Examples =>
         new()

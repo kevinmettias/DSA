@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountPairsWithXorInARange;
 // the wide-open band, a single value with no pair at all, a duplicate-heavy input
 // whose only in-range XOR is zero, and the low == high == 0 band that makes the
 // trie arm subtract a CountLessThan(0) it must answer without descending.
-public sealed class CountPairsWithXorInARangeTests
+public sealed partial class CountPairsWithXorInARangeTests
 {
     public static TheoryData<int[], int, int, int> Examples =>
         new()

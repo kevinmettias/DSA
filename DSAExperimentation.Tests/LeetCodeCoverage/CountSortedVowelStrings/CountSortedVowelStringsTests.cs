@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSortedVowelStrings;
 // recurrence that only counts them - asserted against LeetCode's published
 // examples plus the two small lengths that catch an off-by-one in the "vowels may
 // repeat" rule.
-public sealed class CountSortedVowelStringsTests
+public sealed partial class CountSortedVowelStringsTests
 {
     public static TheoryData<int, int> Examples =>
         new()

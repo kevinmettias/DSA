@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeKSortedLists;
 // MergeListsByHeap rewires the very nodes it is handed, so reusing one already-
 // merged instance across strategies (or across the two theories sharing this
 // data) would silently feed the second call an already-consumed structure.
-public sealed class MergeKSortedListsTests
+public sealed partial class MergeKSortedListsTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

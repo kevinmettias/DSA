@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameVII;
 // test helper and an anonymous benchmark arm. The unmemoized baseline was never
 // asserted before this migration; every case here is small enough that its
 // reconverging jump chains stay cheap.
-public sealed class JumpGameVIITests
+public sealed partial class JumpGameVIITests
 {
     public static TheoryData<JumpWindowExample> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumReverseOperations;
 // this file just pins them to LeetCode's published examples, plus the two degenerate
 // window sizes the examples never reach: K = 1, where no reversal moves anything, and
 // K = n, where the only window there is splits the array into mirror pairs.
-public sealed class MinimumReverseOperationsTests
+public sealed partial class MinimumReverseOperationsTests
 {
     public static TheoryData<ReverseExample> Examples =>
         new()

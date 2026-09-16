@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountVisitedNodesInADirected
 // CountVisitedNodesInADirectedGraphSolution - including the per-start forward walk,
 // which used to exist only as an unasserted benchmark baseline - and this file pins
 // them to the same examples so a failure names the strategy that broke.
-public sealed class CountVisitedNodesInADirectedGraphTests
+public sealed partial class CountVisitedNodesInADirectedGraphTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

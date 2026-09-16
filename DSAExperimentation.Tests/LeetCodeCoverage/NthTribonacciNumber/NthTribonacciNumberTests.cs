@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NthTribonacciNumber;
 // naive triple recursion, which was never asserted before this migration.
 // termIndex = 25 is LeetCode's second example and is as far as the exponential arm
 // is asked to go.
-public sealed class NthTribonacciNumberTests
+public sealed partial class NthTribonacciNumberTests
 {
     public static TheoryData<int, int> Examples =>
         new()

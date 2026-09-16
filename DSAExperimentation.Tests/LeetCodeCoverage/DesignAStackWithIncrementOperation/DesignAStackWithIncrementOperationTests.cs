@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignAStackWithIncrementOpe
 // stack-less increment loop inlined in DesignAStackWithIncrementOperationBenchmarks
 // as its [Benchmark(Baseline = true)] arm) gets the identical assertions here for
 // the first time.
-public sealed class DesignAStackWithIncrementOperationTests
+public sealed partial class DesignAStackWithIncrementOperationTests
 {
     public static TheoryData<int, CustomStackOp[], int?[]> Examples =>
         new()
@@ -115,24 +115,20 @@ public sealed class DesignAStackWithIncrementOperationTests
     [MemberData(nameof(Examples))]
     public void CreateByStackDrain_LeetCodeExamples_CapsPushesAndIncrementsBottomK(
         int maxSize, CustomStackOp[] operations, int?[] expected) =>
-        RunScript(DesignAStackWithIncrementOperationSolution.CreateByStackDrain(maxSize), operations, expected);
+        Assert.Equal(expected, RunScript(
+            DesignAStackWithIncrementOperationSolution.CreateByStackDrain(maxSize), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByIndexedList_LeetCodeExamples_CapsPushesAndIncrementsBottomK(
         int maxSize, CustomStackOp[] operations, int?[] expected) =>
-        RunScript(DesignAStackWithIncrementOperationSolution.CreateByIndexedList(maxSize), operations, expected);
+        Assert.Equal(expected, RunScript(
+            DesignAStackWithIncrementOperationSolution.CreateByIndexedList(maxSize), operations));
 
-    private static void RunScript(
+    private static int?[] RunScript(
         DesignAStackWithIncrementOperationSolution.ICustomStack stack,
-        CustomStackOp[] operations,
-        int?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(stack));
-        }
-    }
+        CustomStackOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(stack))];
 
     // One call in a CustomStack script: push a value, pop, or add to the bottom
     // bottomElementCount elements. Pure dispatch, built via the named factories below

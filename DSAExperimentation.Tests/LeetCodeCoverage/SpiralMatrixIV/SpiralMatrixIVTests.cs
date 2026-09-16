@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrixIV;
 // and nothing asserted. SinglyLinkedListNode<int> is internal, so it cannot appear
 // in a public TheoryData<...> member (CS0053); the examples state the node values
 // and LeetCodeWireFormat builds the chain.
-public sealed class SpiralMatrixIVTests
+public sealed partial class SpiralMatrixIVTests
 {
     public static TheoryData<int, int, int[], int[][]> Examples =>
         new()

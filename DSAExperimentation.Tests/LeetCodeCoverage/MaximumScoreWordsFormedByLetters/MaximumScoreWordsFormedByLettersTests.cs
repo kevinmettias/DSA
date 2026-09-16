@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumScoreWordsFormedByLet
 // Harness only: both strategies live in MaximumScoreWordsFormedByLettersSolution and
 // are asserted against the same examples - including the two cases where taking the
 // locally obvious word is wrong, which is what makes the backtracking necessary.
-public sealed class MaximumScoreWordsFormedByLettersTests
+public sealed partial class MaximumScoreWordsFormedByLettersTests
 {
     private const int AlphabetSize = 26;
 

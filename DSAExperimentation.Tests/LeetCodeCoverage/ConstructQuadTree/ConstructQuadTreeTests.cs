@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructQuadTree;
 // rebuild the grid correctly, but with far more leaves than expected) and that
 // walking the resulting tree back into a grid (QuadTreeGrid.Materialize, the walk
 // LC 558's harness decodes with too) reproduces the original input exactly.
-public sealed class ConstructQuadTreeTests
+public sealed partial class ConstructQuadTreeTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

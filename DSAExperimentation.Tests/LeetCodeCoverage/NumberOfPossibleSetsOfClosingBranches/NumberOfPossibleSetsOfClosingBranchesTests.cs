@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfPossibleSetsOfClosin
 // NumberOfPossibleSetsOfClosingBranchesSolution. One test method per strategy
 // over one shared set of LeetCode's published examples, so a failure names the
 // strategy that broke.
-public sealed class NumberOfPossibleSetsOfClosingBranchesTests
+public sealed partial class NumberOfPossibleSetsOfClosingBranchesTests
 {
     public static TheoryData<int, int[][], int, long> Examples =>
         new()

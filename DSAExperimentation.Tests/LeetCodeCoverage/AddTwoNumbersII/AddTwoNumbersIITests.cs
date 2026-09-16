@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AddTwoNumbersII;
 // Harness only. Both strategies are AddTwoNumbersIISolution's - this file just
 // pins them to LeetCode's published examples, converting each row's operand/result
 // arrays to/from the repo's own SinglyLinkedListNode<int>.
-public sealed class AddTwoNumbersIITests
+public sealed partial class AddTwoNumbersIITests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

@@ -14,7 +14,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListRandomNode;
 // pattern OpenTheLockTests uses for MinTurnsByReduceGraph. The repeated-draw
 // cases share one assertion helper, which takes the strategy as the named
 // IRandomDraw type below rather than as a bare Func.
-public sealed class LinkedListRandomNodeTests
+public sealed partial class LinkedListRandomNodeTests
 {
     [Fact]
     public void GetRandomByReservoirSampling_SingleNodeList_AlwaysReturnsThatValue()

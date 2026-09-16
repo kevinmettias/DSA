@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SameTree;
 // SameTreeSolution has a single method. BinaryTreeNode<int> is internal, so - as
 // in ValidateBinarySearchTreeTests - it stays out of a public TheoryData/[Theory]
 // signature and is only ever handed to the solution through private helpers.
-public sealed class SameTreeTests
+public sealed partial class SameTreeTests
 {
     [Fact]
     public void IsSameByRecursiveCompare_IdenticalTrees_ReturnsTrue()

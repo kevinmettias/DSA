@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumOfMNonOverlappingS
 // this file just pins them to LeetCode's published examples, including example 4's
 // all-negative array, the case that catches an "at most j" DP into wrongly
 // returning 0 by skipping every subarray.
-public sealed class MaximumSumOfMNonOverlappingSubarraysITests
+public sealed partial class MaximumSumOfMNonOverlappingSubarraysITests
 {
     public static TheoryData<SubarraySumExample> Examples =>
         new()

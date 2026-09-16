@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfVerticesToRea
 // examples plus the edgeless graph (every node is its own source) are asserted
 // against each, so the nested-scan baseline is now held to the same answers as the
 // marking pass.
-public sealed class MinimumNumberOfVerticesToReachAllNodesTests
+public sealed partial class MinimumNumberOfVerticesToReachAllNodesTests
 {
     public static TheoryData<int, int[][], int[]> Examples =>
         new()

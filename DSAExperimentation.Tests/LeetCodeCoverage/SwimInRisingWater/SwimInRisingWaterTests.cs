@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SwimInRisingWater;
 
 // Harness only. Both search strategies are SwimInRisingWaterSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class SwimInRisingWaterTests
+public sealed partial class SwimInRisingWaterTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

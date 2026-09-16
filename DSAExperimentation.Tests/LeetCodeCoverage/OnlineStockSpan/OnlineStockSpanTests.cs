@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OnlineStockSpan;
 // increasing stream the old test drove by hand, a single day, a strictly
 // decreasing stream where no day ever spans another, and a flat stream where
 // every day spans all of them (prices are compared with <=, not <).
-public sealed class OnlineStockSpanTests
+public sealed partial class OnlineStockSpanTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

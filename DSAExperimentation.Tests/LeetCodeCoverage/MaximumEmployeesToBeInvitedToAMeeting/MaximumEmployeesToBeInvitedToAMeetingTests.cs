@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumEmployeesToBeInvitedT
 // which the benchmark used to own privately as its baseline arm and nothing
 // asserted. EmployeeNode/EmployeeTopology moved beside the solution, so this
 // folder no longer carries a Fixtures/ subfolder.
-public sealed class MaximumEmployeesToBeInvitedToAMeetingTests
+public sealed partial class MaximumEmployeesToBeInvitedToAMeetingTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

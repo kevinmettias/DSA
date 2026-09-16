@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CombinationSumIV;
 // Harness only: both strategies live in CombinationSumIVSolution. One test method per
 // strategy over one shared set of LeetCode's own examples, so a failure names the
 // strategy that broke.
-public sealed class CombinationSumIVTests
+public sealed partial class CombinationSumIVTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

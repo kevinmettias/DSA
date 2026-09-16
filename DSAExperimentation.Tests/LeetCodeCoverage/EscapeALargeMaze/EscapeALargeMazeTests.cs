@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EscapeALargeMaze;
 // flood fill allocates boardSize^2 cells and can only be asserted on a reduced
 // board. The reduced set is the same five scenarios, so the capped traversal is
 // pinned to it as well and the two strategies are shown to agree cell for cell.
-public sealed class EscapeALargeMazeTests
+public sealed partial class EscapeALargeMazeTests
 {
     private const int ReducedBoardSize = 500;
     private const int ReducedBoardMaxCoordinate = ReducedBoardSize - 1;

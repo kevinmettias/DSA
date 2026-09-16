@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LogicalOrOfTwoBinaryGridsRep
 // two input quad-trees from grids via ConstructQuadTreeSolution (LC 427), runs one OR
 // strategy, and checks that decoding the result tree back to a grid reproduces the
 // expected elementwise OR exactly.
-public sealed class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
+public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests
 {
     public static TheoryData<int[][], int[][], int[][]> Examples =>
         new()

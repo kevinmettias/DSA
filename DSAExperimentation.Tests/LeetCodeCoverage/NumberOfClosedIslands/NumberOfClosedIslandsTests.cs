@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfClosedIslands;
 // this file just pins them to LeetCode's three published examples, the
 // border-touching component the count has to exclude, and an all-water grid
 // where every cell reaches the edge.
-public sealed class NumberOfClosedIslandsTests
+public sealed partial class NumberOfClosedIslandsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

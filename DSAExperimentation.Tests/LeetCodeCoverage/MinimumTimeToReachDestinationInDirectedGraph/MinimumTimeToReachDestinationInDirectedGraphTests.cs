@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumTimeToReachDestinatio
 // MinimumTimeToReachDestinationInDirectedGraphSolution's - this file just pins
 // them to LeetCode's published examples, including the unreachable case where
 // node 0 has no outgoing edge at all.
-public sealed class MinimumTimeToReachDestinationInDirectedGraphTests
+public sealed partial class MinimumTimeToReachDestinationInDirectedGraphTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

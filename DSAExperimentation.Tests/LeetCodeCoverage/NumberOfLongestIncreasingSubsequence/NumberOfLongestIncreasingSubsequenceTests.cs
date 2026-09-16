@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfLongestIncreasingSubsequence;
 
 // Harness only: the algorithm lives in NumberOfLongestIncreasingSubsequenceSolution.
-public sealed class NumberOfLongestIncreasingSubsequenceTests
+public sealed partial class NumberOfLongestIncreasingSubsequenceTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

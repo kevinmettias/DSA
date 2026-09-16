@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathWithMaximumProbability;
 // methods - this file pins them to LeetCode's three published examples plus two the
 // original test did not cover: an edge that has to be traversed backwards (which only
 // an honestly undirected graph finds) and a certain-probability chain.
-public sealed class PathWithMaximumProbabilityTests
+public sealed partial class PathWithMaximumProbabilityTests
 {
     private const int Precision = 5;
 

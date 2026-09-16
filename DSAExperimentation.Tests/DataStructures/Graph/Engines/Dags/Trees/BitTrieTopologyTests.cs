@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class BitTrieTopologyTests
+public sealed partial class BitTrieTopologyTests
 {
     [Fact]
     public void GetChildren_ExposesBothBranchesZeroFirst()

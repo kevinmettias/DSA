@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumCompatibilityScoreSum
 // MaximumCompatibilityScoreSumSolution's - this file just pins them to LeetCode's
 // published examples plus a case where greedily giving each student its own best
 // mentor is wrong, which is what the search has to get right.
-public sealed class MaximumCompatibilityScoreSumTests
+public sealed partial class MaximumCompatibilityScoreSumTests
 {
     public static TheoryData<int[][], int[][], int> Examples =>
         new()

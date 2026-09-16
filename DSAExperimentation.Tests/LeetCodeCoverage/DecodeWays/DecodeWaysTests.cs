@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DecodeWays;
 // Harness only. Both strategies live in DecodeWaysSolution and are asserted
 // against the same examples, including the leading- and embedded-zero cases that
 // end a decoding branch outright.
-public sealed class DecodeWaysTests
+public sealed partial class DecodeWaysTests
 {
     public static TheoryData<string, int> Examples =>
         new()

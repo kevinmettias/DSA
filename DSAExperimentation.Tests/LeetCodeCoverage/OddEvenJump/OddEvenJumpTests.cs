@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OddEvenJump;
 // Harness only: both strategies live in OddEvenJumpSolution and are asserted against
 // the same examples, including the single-index array where the base case is the whole
 // answer and an all-equal array where every index qualifies in both directions.
-public sealed class OddEvenJumpTests
+public sealed partial class OddEvenJumpTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

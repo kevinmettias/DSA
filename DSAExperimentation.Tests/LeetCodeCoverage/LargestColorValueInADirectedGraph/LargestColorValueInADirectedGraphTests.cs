@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LargestColorValueInADirected
 // edgeless graph, a path whose colors are all distinct, a path whose answer is not
 // its final node's color, and a cycle that is longer than the self-loop LeetCode's
 // own second example uses.
-public sealed class LargestColorValueInADirectedGraphTests
+public sealed partial class LargestColorValueInADirectedGraphTests
 {
     public static TheoryData<string, int[][], int> Examples =>
         new()

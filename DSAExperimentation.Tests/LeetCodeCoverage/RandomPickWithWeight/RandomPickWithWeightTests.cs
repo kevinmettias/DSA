@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickWithWeight;
 // nondeterministic, so each example carries a seed (as the original hand-written
 // test did) and the set of indices that are valid to return, plus a dedicated
 // statistical case checking that a far-larger weight is favored accordingly.
-public sealed class RandomPickWithWeightTests
+public sealed partial class RandomPickWithWeightTests
 {
     public static TheoryData<int[], int, int[], int> Examples =>
         new()

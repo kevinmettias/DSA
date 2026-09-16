@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPointInNonOverlappingR
 // LeetCode's published examples: every drawn point must land inside one of the
 // given rectangles, and picks must be weighted by rectangle area rather than
 // uniform over rectangles.
-public sealed class RandomPointInNonOverlappingRectanglesTests
+public sealed partial class RandomPointInNonOverlappingRectanglesTests
 {
     private const int DrawsPerBoundsCheck = 100;
     private const int DrawsPerAreaWeightingCheck = 500;

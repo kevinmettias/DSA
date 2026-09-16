@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeTripletsToFormTargetTri
 // benchmark-only baseline nothing asserted, and the Set<int>-tracked linear scan.
 // One test method per strategy over LeetCode's published examples plus the edge
 // cases the original coverage carried.
-public sealed class MergeTripletsToFormTargetTripletTests
+public sealed partial class MergeTripletsToFormTargetTripletTests
 {
     public static TheoryData<TripletMergeExample> Examples =>
         new()

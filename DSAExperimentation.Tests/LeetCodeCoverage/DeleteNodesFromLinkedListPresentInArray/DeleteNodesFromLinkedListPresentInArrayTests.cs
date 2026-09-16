@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DeleteNodesFromLinkedListPre
 // Harness only. Both strategies are
 // DeleteNodesFromLinkedListPresentInArraySolution's - this file pins them to
 // LeetCode's published examples.
-public sealed class DeleteNodesFromLinkedListPresentInArrayTests
+public sealed partial class DeleteNodesFromLinkedListPresentInArrayTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

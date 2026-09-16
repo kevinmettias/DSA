@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TallestBillboard;
 // LeetCode's published examples, plus the cases the un-memoized baseline has to agree
 // with the memoized arm on - a two-rod split, and a rod set whose powers of two admit no
 // equal split at all. Rod counts stay small because the baseline really is 3^N.
-public sealed class TallestBillboardTests
+public sealed partial class TallestBillboardTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

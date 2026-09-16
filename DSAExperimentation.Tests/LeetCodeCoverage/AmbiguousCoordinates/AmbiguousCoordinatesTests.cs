@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AmbiguousCoordinates;
 // can carry, a run where both zero rules bite at once, and a trailing zero that
 // leaves exactly one answer. Order is not part of LeetCode's answer, so examples
 // compare as sets.
-public sealed class AmbiguousCoordinatesTests
+public sealed partial class AmbiguousCoordinatesTests
 {
     public static TheoryData<string, string[]> Examples =>
         new()

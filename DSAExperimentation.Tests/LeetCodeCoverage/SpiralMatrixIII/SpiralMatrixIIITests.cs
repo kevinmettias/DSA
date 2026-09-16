@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrixIII;
 // against the same examples, so a failure names the strategy that broke. The
 // visited-set arm was previously only a benchmark baseline and nothing asserted
 // it; it is under test here for the first time.
-public sealed class SpiralMatrixIIITests
+public sealed partial class SpiralMatrixIIITests
 {
     public static TheoryData<SpiralExample> Examples =>
         new()

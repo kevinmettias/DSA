@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TrafficSignalColor;
 // Harness only. The classification lives in TrafficSignalColorSolution - this
 // file pins it to LeetCode's published examples plus the boundary values its own
 // range check has to get right (0, 30 and 90 inclusive; 91 and 1000 excluded).
-public sealed class TrafficSignalColorTests
+public sealed partial class TrafficSignalColorTests
 {
     public static TheoryData<int, string> Examples =>
         new()

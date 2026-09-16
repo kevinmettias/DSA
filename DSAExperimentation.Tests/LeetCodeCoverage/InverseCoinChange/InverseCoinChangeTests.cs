@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InverseCoinChange;
 // Harness only. Both strategies are InverseCoinChangeSolution's - this file
 // just pins them to LeetCode's published examples, including the
 // unreconstructible case that must return an empty array.
-public sealed class InverseCoinChangeTests
+public sealed partial class InverseCoinChangeTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

@@ -4,7 +4,7 @@ using DSAExperimentation.Tests.Algorithms.ShortestPaths.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths;
 
-public sealed class BellmanFordTests
+public sealed partial class BellmanFordTests
 {
     [Fact]
     public void TryComputeDistances_SampleGraph_MatchesDijkstra()

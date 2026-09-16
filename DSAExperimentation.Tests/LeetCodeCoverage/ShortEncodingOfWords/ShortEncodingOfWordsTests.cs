@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortEncodingOfWords;
 // pins them to LeetCode's published examples plus the repeated-word case, which is
 // the one every "drop the suffixes" strategy has to deduplicate first or it charges
 // the same word twice.
-public sealed class ShortEncodingOfWordsTests
+public sealed partial class ShortEncodingOfWordsTests
 {
     public static TheoryData<string[], int> Examples =>
         new()

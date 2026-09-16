@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BasicCalculator;
 
 // Harness only. Both strategies are BasicCalculatorSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class BasicCalculatorTests
+public sealed partial class BasicCalculatorTests
 {
     public static TheoryData<string, int> Examples =>
         new()

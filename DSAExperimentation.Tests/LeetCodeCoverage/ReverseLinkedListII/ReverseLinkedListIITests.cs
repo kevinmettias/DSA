@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseLinkedListII;
 // Harness only. Both strategies are ReverseLinkedListIISolution's - this file
 // builds LeetCode's published examples as linked lists and checks the resulting
 // list's values.
-public sealed class ReverseLinkedListIITests
+public sealed partial class ReverseLinkedListIITests
 {
     public static TheoryData<int[], int, int, int[]> Examples =>
         new()

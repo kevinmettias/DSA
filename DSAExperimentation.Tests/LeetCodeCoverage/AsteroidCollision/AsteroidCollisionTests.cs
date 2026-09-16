@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AsteroidCollision;
 
 // Harness only: both strategies live in AsteroidCollisionSolution and are
 // asserted against the same examples, including the cascading-collision case.
-public sealed class AsteroidCollisionTests
+public sealed partial class AsteroidCollisionTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

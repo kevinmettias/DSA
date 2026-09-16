@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LetterCombinationsOfAPhoneNu
 
 // Harness only. Both strategies are LetterCombinationsOfAPhoneNumberSolution's;
 // this file pins them to LeetCode's published examples.
-public sealed class LetterCombinationsOfAPhoneNumberTests
+public sealed partial class LetterCombinationsOfAPhoneNumberTests
 {
     public static TheoryData<string, string[]> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeSimilarItems;
 // quadratic linear scan, which used to exist as an unasserted benchmark baseline
 // that only counted its results instead of returning them - and this file pins
 // them to the same examples so a failure names the strategy that broke.
-public sealed class MergeSimilarItemsTests
+public sealed partial class MergeSimilarItemsTests
 {
     public static TheoryData<int[][], int[][], (int Value, int Weight)[]> Examples =>
         new()

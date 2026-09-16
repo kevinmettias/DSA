@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TopKFrequentElements;
 // Harness only: both strategies live in TopKFrequentElementsSolution and are
 // asserted against the same examples. Order is not part of LeetCode's contract
 // for this problem, so equality is checked as a set.
-public sealed class TopKFrequentElementsTests
+public sealed partial class TopKFrequentElementsTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

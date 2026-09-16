@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestPathInAWeightedTree;
 
 // Harness only. Both strategies are ShortestPathInAWeightedTreeSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class ShortestPathInAWeightedTreeTests
+public sealed partial class ShortestPathInAWeightedTreeTests
 {
     public static TheoryData<int, int[][], int[][], int[]> Examples =>
         new()

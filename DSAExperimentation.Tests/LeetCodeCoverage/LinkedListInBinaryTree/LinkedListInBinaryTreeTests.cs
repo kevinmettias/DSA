@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListInBinaryTree;
 // array shape and lists as plain value arrays, because BinaryTreeNode<int> and
 // SinglyLinkedListNode<int> are internal and cannot appear in a public TheoryData
 // signature; LeetCodeWireFormat.ToBinaryTree and BuildList reconstruct them.
-public sealed class LinkedListInBinaryTreeTests
+public sealed partial class LinkedListInBinaryTreeTests
 {
     // LC 1367's own example tree, shared by its three published cases.
     private static readonly int?[] PublishedTree =

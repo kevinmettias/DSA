@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BestTimeToBuyAndSellStockIII
 
 // Harness only: both strategies live in BestTimeToBuyAndSellStockIIISolution and
 // are asserted against the same examples.
-public sealed class BestTimeToBuyAndSellStockIIITests
+public sealed partial class BestTimeToBuyAndSellStockIIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

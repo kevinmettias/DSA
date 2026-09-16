@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfMatchingSubsequences
 // this file pins them to LeetCode's published examples plus the cases the bucket
 // pass has to get right on its own: words that share a waiting character, repeated
 // words, and a word whose characters all appear but out of order.
-public sealed class NumberOfMatchingSubsequencesTests
+public sealed partial class NumberOfMatchingSubsequencesTests
 {
     public static TheoryData<string, string[], int> Examples =>
         new()

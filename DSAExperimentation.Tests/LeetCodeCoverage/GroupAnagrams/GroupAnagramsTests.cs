@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GroupAnagrams;
 
 // Harness only. Both strategies are GroupAnagramsSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class GroupAnagramsTests
+public sealed partial class GroupAnagramsTests
 {
     public static TheoryData<string[], string[][]> Examples =>
         new()

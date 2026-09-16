@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumQueries;
 // them to LeetCode's published examples plus the boundary cases that decide whether the
 // coordinate-compressed suffix query is inclusive: a threshold exactly equal to the only
 // pair, and one a single unit past it in each coordinate.
-public sealed class MaximumSumQueriesTests
+public sealed partial class MaximumSumQueriesTests
 {
     public static TheoryData<int[], int[], int[][], int[]> Examples =>
         new()

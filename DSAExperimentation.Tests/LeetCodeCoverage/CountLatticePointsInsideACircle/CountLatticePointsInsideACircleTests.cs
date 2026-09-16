@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountLatticePointsInsideACir
 // pinning them to the same examples is what finally puts the full-grid baseline -
 // previously a private helper in the benchmark, asserted by nothing - under test
 // alongside the Set-backed union it is measured against.
-public sealed class CountLatticePointsInsideACircleTests
+public sealed partial class CountLatticePointsInsideACircleTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfMovesToMakePa
 // LeetCode's published examples plus an already-palindromic input and the
 // three-character odd-length case, which is the smallest input that exercises the
 // lone-middle-character nudge.
-public sealed class MinimumNumberOfMovesToMakePalindromeTests
+public sealed partial class MinimumNumberOfMovesToMakePalindromeTests
 {
     public static TheoryData<string, int> Examples =>
         new()

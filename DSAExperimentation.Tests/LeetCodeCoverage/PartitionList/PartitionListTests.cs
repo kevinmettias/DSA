@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionList;
 // Harness only. Both strategies are PartitionListSolution's - this file builds
 // LeetCode's published examples as linked lists and checks the resulting list's
 // values.
-public sealed class PartitionListTests
+public sealed partial class PartitionListTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

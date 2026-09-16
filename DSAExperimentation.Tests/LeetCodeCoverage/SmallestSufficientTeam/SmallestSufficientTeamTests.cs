@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestSufficientTeam;
 // LeetCode accepts ANY minimal sufficient team, so each example pins the team's
 // size and the assertion re-checks coverage with this repo's Set<string> rather
 // than demanding one particular set of indices.
-public sealed class SmallestSufficientTeamTests
+public sealed partial class SmallestSufficientTeamTests
 {
     public static TheoryData<string[], string[][], int> Examples =>
         new()

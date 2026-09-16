@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIV;
 // is the same recurrence with a cache, so pinning both to one example set is exactly
 // the check that memoization changed nothing - the benchmark previously compared them
 // with only the memoized arm under test.
-public sealed class StoneGameIVTests
+public sealed partial class StoneGameIVTests
 {
     public static TheoryData<TakeAwaySquaresExample> Examples =>
         new()

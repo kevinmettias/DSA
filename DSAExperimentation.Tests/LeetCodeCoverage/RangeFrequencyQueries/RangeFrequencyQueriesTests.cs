@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeFrequencyQueries;
 // Harness only. Both strategies are RangeFrequencyQueriesSolution's - this file
 // just pins them to LeetCode's published example queries, plus a value that never
 // occurs, a single-index window, and a window that excludes some occurrences.
-public sealed class RangeFrequencyQueriesTests
+public sealed partial class RangeFrequencyQueriesTests
 {
     public static TheoryData<RangeFrequencyCase> Examples =>
         new()

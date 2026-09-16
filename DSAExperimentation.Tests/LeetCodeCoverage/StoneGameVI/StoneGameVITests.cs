@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameVI;
 // LeetCode's three published examples plus the boundaries it never published - a
 // single stone, a run of equal swings whose tie-break order must not matter, and a
 // lopsided board where Bob's values decide every stone.
-public sealed class StoneGameVITests
+public sealed partial class StoneGameVITests
 {
     // 1 when Alice ends ahead, -1 when Bob does, 0 on a tie.
     public static TheoryData<int[], int[], int> Examples =>

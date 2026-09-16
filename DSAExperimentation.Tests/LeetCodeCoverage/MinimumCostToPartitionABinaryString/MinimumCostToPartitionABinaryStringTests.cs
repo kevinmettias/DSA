@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToPartitionABinar
 // Harness only: both strategies live in
 // MinimumCostToPartitionABinaryStringSolution and are asserted against the
 // same examples, so a failure names the strategy that broke.
-public sealed class MinimumCostToPartitionABinaryStringTests
+public sealed partial class MinimumCostToPartitionABinaryStringTests
 {
     public static TheoryData<string, int, int, long> Examples =>
         new()

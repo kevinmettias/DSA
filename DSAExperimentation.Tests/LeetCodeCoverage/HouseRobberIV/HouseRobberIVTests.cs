@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobberIV;
 // three further cases the original arms never reached: a single house,
 // requiredHouseCount = 1, and a run where the only requiredHouseCount non-adjacent
 // choices all sit at the maximum.
-public sealed class HouseRobberIVTests
+public sealed partial class HouseRobberIVTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

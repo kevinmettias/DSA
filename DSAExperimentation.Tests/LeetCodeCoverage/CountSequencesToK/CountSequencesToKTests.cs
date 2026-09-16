@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountSequencesToK;
 // Harness only: both strategies live in CountSequencesToKSolution and are
 // asserted against the same examples, so a failure names the strategy that
 // broke.
-public sealed class CountSequencesToKTests
+public sealed partial class CountSequencesToKTests
 {
     public static TheoryData<int[], long, long> Examples =>
         new()

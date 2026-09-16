@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.QueensThatCanAttackTheKing;
 // pins them to LeetCode's published examples on the problem's own 8x8 board.
 // LeetCode does not fix the order of the returned coordinates, so both arms are
 // compared after sorting by row then column.
-public sealed class QueensThatCanAttackTheKingTests
+public sealed partial class QueensThatCanAttackTheKingTests
 {
     public static TheoryData<int[][], int[], int[][]> Examples =>
         new()

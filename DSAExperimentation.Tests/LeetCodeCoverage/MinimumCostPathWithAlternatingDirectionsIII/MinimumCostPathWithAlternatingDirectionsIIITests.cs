@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostPathWithAlternati
 // Harness only. The alternating-parity state search is
 // MinimumCostPathWithAlternatingDirectionsIIISolution's; this file just pins both
 // strategies to LeetCode's published examples.
-public sealed class MinimumCostPathWithAlternatingDirectionsIIITests
+public sealed partial class MinimumCostPathWithAlternatingDirectionsIIITests
 {
     public static TheoryData<int, int, int[][], long> Examples =>
         new()

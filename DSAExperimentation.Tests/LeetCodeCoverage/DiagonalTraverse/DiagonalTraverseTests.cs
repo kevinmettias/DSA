@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DiagonalTraverse;
 
 // Harness only. Both zig-zag walks are DiagonalTraverseSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class DiagonalTraverseTests
+public sealed partial class DiagonalTraverseTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

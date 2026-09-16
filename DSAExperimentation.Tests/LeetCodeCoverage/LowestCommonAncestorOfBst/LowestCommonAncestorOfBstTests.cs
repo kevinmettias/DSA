@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LowestCommonAncestorOfBst;
 // composing this repo's generic tree LCA engine over a BinarySearchTree<int>'s
 // nodes - the same "generic engines are a free win" payoff phase 1 of this repo's
 // tree work already found for traversal/metrics/paths.
-public sealed class LowestCommonAncestorOfBstTests
+public sealed partial class LowestCommonAncestorOfBstTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

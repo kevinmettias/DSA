@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfBeautifulSubsequences;
 
 // Harness only. Both strategies are SumOfBeautifulSubsequencesSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class SumOfBeautifulSubsequencesTests
+public sealed partial class SumOfBeautifulSubsequencesTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

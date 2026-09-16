@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestIncreasingSubsequence
 // Harness only: both strategies are LongestIncreasingSubsequenceIISolution's. Beyond
 // LeetCode's three published examples this pins the two ends of the k constraint - a
 // run the gap rule admits whole, and a run it rejects at every step.
-public sealed class LongestIncreasingSubsequenceIITests
+public sealed partial class LongestIncreasingSubsequenceIITests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

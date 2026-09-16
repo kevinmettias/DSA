@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CamelcaseMatching;
 // Harness only. Both strategies are CamelcaseMatchingSolution's - this file pins them
 // to LeetCode's three published examples plus the extra-uppercase-letter case, which
 // is the one an unanchored regex gets wrong.
-public sealed class CamelcaseMatchingTests
+public sealed partial class CamelcaseMatchingTests
 {
     private static readonly string[] ClassicQueries =
         ["FooBar", "FooBarTest", "FootBall", "FrameBuffer", "ForceFeedBack"];

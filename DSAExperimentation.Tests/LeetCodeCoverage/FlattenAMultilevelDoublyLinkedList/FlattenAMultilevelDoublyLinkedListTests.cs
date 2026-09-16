@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FlattenAMultilevelDoublyLink
 // the three things the pre-migration test checked across three separate Facts, now
 // checked together for every example against every strategy so a failure names the
 // strategy that broke.
-public sealed class FlattenAMultilevelDoublyLinkedListTests
+public sealed partial class FlattenAMultilevelDoublyLinkedListTests
 {
     // Each level is (ParentLevel, ParentIndex, Values): ParentLevel < 0 marks the top level
     // (its first node is the list head); otherwise Values' first node becomes the Child of

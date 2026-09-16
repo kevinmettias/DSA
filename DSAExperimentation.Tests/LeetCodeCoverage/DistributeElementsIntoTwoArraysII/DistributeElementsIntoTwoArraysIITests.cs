@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DistributeElementsIntoTwoArr
 
 // Harness only. Both strategies are DistributeElementsIntoTwoArraysIISolution's
 // - this file just pins them to LeetCode's published examples.
-public sealed class DistributeElementsIntoTwoArraysIITests
+public sealed partial class DistributeElementsIntoTwoArraysIITests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

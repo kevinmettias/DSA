@@ -6,7 +6,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Traversal.TopDown;
 
-public sealed class TopDownTraversalTests
+public sealed partial class TopDownTraversalTests
 {
     private static List<(string Path, int Depth, NodePosition Position)> Walk(TestNode root)
     {

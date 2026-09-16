@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.AllAncestorsOfANodeInADirect
 // pins them to LeetCode's published examples plus the edgeless and single-chain
 // cases, which are the two shapes where the topological pass has nothing to
 // propagate and everything to propagate respectively.
-public sealed class AllAncestorsOfANodeInADirectedAcyclicGraphTests
+public sealed partial class AllAncestorsOfANodeInADirectedAcyclicGraphTests
 {
     public static TheoryData<int, int[][], int[][]> Examples =>
         new()

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CombinationSumIII;
 
 // Harness only: both strategies live in CombinationSumIIISolution and are asserted
 // against the same examples, so a failure names the strategy that broke.
-public sealed class CombinationSumIIITests
+public sealed partial class CombinationSumIIITests
 {
     public static TheoryData<int, int, int[][]> Examples =>
         new()

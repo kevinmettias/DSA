@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestBalancedSubarrayII;
 // file pins them to LeetCode's published examples (the same examples as
 // LongestBalancedSubarrayI, whose only difference from this problem is n's
 // upper bound).
-public sealed class LongestBalancedSubarrayIITests
+public sealed partial class LongestBalancedSubarrayIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

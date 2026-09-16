@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SplitArrayLargestSum;
 // Harness only. Both strategies are SplitArrayLargestSumSolution's - this file
 // just pins them to LeetCode's published examples, plus the subarrayCount = 1 and
 // subarrayCount = nums.Length boundaries neither original arm exercised.
-public sealed class SplitArrayLargestSumTests
+public sealed partial class SplitArrayLargestSumTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

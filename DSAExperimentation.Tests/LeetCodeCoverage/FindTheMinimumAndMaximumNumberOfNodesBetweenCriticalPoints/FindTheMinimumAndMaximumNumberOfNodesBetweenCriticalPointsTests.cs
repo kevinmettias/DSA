@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheMinimumAndMaximumNumb
 // public TheoryData<...> member (CS0053); the examples state the node values and
 // each theory builds the chain, the same shape
 // ConvertBinaryNumberInALinkedListToIntegerTests uses.
-public sealed class FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsTests
+public sealed partial class FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

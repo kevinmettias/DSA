@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindAllGoodStrings;
 // enumeration baseline and the KMP-automaton digit DP - pinned here to LeetCode's
 // published examples plus two whole-alphabet ranges where the answer is countable
 // by hand.
-public sealed class FindAllGoodStringsTests
+public sealed partial class FindAllGoodStringsTests
 {
     public static TheoryData<GoodStringRangeCase> Examples =>
         new()

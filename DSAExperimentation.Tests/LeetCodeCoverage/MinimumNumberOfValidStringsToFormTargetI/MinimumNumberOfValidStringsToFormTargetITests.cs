@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumNumberOfValidStringsT
 // Harness only. Both reach-computation strategies feed the same Jump-Game-II sweep
 // inside MinimumNumberOfValidStringsToFormTargetISolution - this file just pins
 // them to LeetCode's published examples, including the unreachable case.
-public sealed class MinimumNumberOfValidStringsToFormTargetITests
+public sealed partial class MinimumNumberOfValidStringsToFormTargetITests
 {
     public static TheoryData<string[], string, int> Examples =>
         new()

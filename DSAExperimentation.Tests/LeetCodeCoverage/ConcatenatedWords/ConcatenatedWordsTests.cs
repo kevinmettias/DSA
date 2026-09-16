@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConcatenatedWords;
 
 // Harness only. Both strategies are ConcatenatedWordsSolution's - this file just
 // pins them to LeetCode's published examples.
-public sealed class ConcatenatedWordsTests
+public sealed partial class ConcatenatedWordsTests
 {
     public static TheoryData<string[], string[]> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountAnagrams;
 // broke (TwoSumTests precedent). Every expected value stays well under 1e9+7, so
 // brute force's exact distinct-permutation product and the modular-factorial
 // strategy's residue are directly comparable via plain equality.
-public sealed class CountAnagramsTests
+public sealed partial class CountAnagramsTests
 {
     public static TheoryData<string, long> Examples =>
         new()

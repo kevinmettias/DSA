@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Reducing;
 
-public sealed class DistanceMapReduceAlgebraTests
+public sealed partial class DistanceMapReduceAlgebraTests
 {
     [Fact]
     public void Seed_StartsAsAnEmptyMap() => Assert.Empty(DistanceMapReduceAlgebra<TestNode>.Seed);

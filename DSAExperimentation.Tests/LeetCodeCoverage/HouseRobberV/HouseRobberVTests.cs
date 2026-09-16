@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobberV;
 // run forces a skip even though the skipped house is worth more than its
 // same-color neighbor (example 3: house 1's value 1 loses to robbing houses 0
 // and 2 instead).
-public sealed class HouseRobberVTests
+public sealed partial class HouseRobberVTests
 {
     public static TheoryData<int[], int[], long> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DetonateTheMaximumBombs;
 // successor closure run through this repo's DepthFirstSearch - and this file pins
 // them to LeetCode's published examples plus the one-bomb and two-cluster cases the
 // originals were missing.
-public sealed class DetonateTheMaximumBombsTests
+public sealed partial class DetonateTheMaximumBombsTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

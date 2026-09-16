@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OperationsOnTree;
 //
 // LockedDescendantsOf - the step the two strategies actually differ in - has its own
 // examples and its own test class, OperationsOnTreeLockedDescendantsTests.
-public sealed class OperationsOnTreeTests
+public sealed partial class OperationsOnTreeTests
 {
     public static TheoryData<int[], LockingTreeOp[], bool[]> Examples =>
         new()

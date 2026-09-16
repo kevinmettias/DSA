@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RemoveDuplicateLetters;
 
 // Harness only: both arms are RemoveDuplicateLettersSolution's, the same
 // methods RemoveDuplicateLettersBenchmarks measures.
-public sealed class RemoveDuplicateLettersTests
+public sealed partial class RemoveDuplicateLettersTests
 {
     public static TheoryData<SmallestSubsequenceCase> Examples =>
         new()

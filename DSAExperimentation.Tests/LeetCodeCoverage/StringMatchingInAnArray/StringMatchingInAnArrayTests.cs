@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StringMatchingInAnArray;
 // building LC 1408's list) now gets the same examples as
 // FindContainedWordsByPrefixFunctionSearch (previously the test's own private
 // helper), so a failure names the strategy that broke.
-public sealed class StringMatchingInAnArrayTests
+public sealed partial class StringMatchingInAnArrayTests
 {
     public static TheoryData<string[], string[]> Examples =>
         new()

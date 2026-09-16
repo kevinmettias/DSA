@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumTotalBeautyOfTheGarde
 // The linear descent used to exist solely as a benchmark baseline with nothing
 // asserting it, so it is pinned to exactly the same examples as the composed
 // sort-and-binary-search strategy here.
-public sealed class MaximumTotalBeautyOfTheGardensTests
+public sealed partial class MaximumTotalBeautyOfTheGardensTests
 {
     public static TheoryData<BeautyExample> Examples =>
         new()

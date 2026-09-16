@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGameVI;
 // (previously untested scaffolding inlined in the benchmark as its baseline arm) now
 // gets the same examples as MaxResultByMonotonicDeque (previously this file's own
 // private helper), so a failure names the strategy that broke.
-public sealed class JumpGameVITests
+public sealed partial class JumpGameVITests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

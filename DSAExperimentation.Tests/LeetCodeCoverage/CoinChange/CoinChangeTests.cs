@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CoinChange;
 
 // Harness only: both strategies live in CoinChangeSolution and are asserted
 // against the same examples.
-public sealed class CoinChangeTests
+public sealed partial class CoinChangeTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignRideSharingSystem;
 // of mutating calls rather than a single argument tuple. RideOp.Apply is pure
 // dispatch (which method to call with which arguments) - no matching/queueing
 // logic of its own.
-public sealed class DesignRideSharingSystemTests
+public sealed partial class DesignRideSharingSystemTests
 {
     public static TheoryData<RideOp[], int[]?[]> Examples =>
         new()
@@ -44,22 +44,18 @@ public sealed class DesignRideSharingSystemTests
     [MemberData(nameof(Examples))]
     public void RideSharingSystemByLinearScanQueue_LeetCodeExample_ReturnsFifoMatches(
         RideOp[] operations, int[]?[] expected) =>
-        RunScript(new DesignRideSharingSystemSolution.RideSharingSystemByLinearScanQueue(), operations, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignRideSharingSystemSolution.RideSharingSystemByLinearScanQueue(), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RideSharingSystemByLazyDeletionQueue_LeetCodeExample_ReturnsFifoMatches(
         RideOp[] operations, int[]?[] expected) =>
-        RunScript(new DesignRideSharingSystemSolution.RideSharingSystemByLazyDeletionQueue(), operations, expected);
+        Assert.Equal(expected, RunScript(
+            new DesignRideSharingSystemSolution.RideSharingSystemByLazyDeletionQueue(), operations));
 
-    private static void RunScript(
+    private static int[]?[] RunScript(
         DesignRideSharingSystemSolution.IRideSharingStrategy strategy,
-        RideOp[] operations,
-        int[]?[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(strategy));
-        }
-    }
+        RideOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(strategy))];
 }

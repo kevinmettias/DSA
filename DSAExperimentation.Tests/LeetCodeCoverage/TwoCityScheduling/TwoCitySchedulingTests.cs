@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoCityScheduling;
 // Harness only: both strategies live in TwoCitySchedulingSolution and are asserted
 // against the same examples - LeetCode's three published ones, plus the all-equal
 // costs case where every split is optimal.
-public sealed class TwoCitySchedulingTests
+public sealed partial class TwoCitySchedulingTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

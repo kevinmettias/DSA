@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 
-public sealed class SparseArrayChildrenTests
+public sealed partial class SparseArrayChildrenTests
 {
     private static readonly TestNode A = new("A");
     private static readonly TestNode B = new("B");

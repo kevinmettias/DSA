@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RaceCar;
 // file states LeetCode's published examples once, plus further targets whose
 // shortest command sequences exercise overshoot-and-reverse rather than a single
 // run of 'A's.
-public sealed class RaceCarTests
+public sealed partial class RaceCarTests
 {
     public static TheoryData<int, int> Examples =>
         new()

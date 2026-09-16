@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestHappyPrefix;
 // Harness only. Both strategies are LongestHappyPrefixSolution's - this file just
 // pins them to LeetCode's published examples, one theory per strategy so a failure
 // names the strategy that broke.
-public sealed class LongestHappyPrefixTests
+public sealed partial class LongestHappyPrefixTests
 {
     public static TheoryData<HappyPrefixExample> Examples =>
         new()

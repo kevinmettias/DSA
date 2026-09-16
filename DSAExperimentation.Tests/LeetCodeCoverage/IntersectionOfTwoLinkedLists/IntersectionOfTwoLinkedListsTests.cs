@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.IntersectionOfTwoLinkedLists
 // two intersecting shapes plus the no-intersection case, each identified by the
 // values unique to A, the values unique to B, and the shared tail (empty means
 // no intersection).
-public sealed class IntersectionOfTwoLinkedListsTests
+public sealed partial class IntersectionOfTwoLinkedListsTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

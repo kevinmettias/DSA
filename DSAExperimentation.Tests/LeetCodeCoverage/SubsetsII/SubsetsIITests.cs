@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubsetsII;
 // SubsetsIISolution - this file just pins it to LeetCode's published examples.
 // Subset order is not part of LeetCode's contract, so each case is checked as a
 // set of subsets rather than an ordered sequence.
-public sealed class SubsetsIITests
+public sealed partial class SubsetsIITests
 {
     public static TheoryData<int[], int[][]> Examples =>
         new()

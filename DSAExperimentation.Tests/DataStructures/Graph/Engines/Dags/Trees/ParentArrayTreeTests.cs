@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class ParentArrayTreeTests
+public sealed partial class ParentArrayTreeTests
 {
     [Fact]
     public void Build_ReturnsOneNodePerEntryIndexedById()

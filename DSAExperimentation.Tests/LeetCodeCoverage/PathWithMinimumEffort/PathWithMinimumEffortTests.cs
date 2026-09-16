@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PathWithMinimumEffort;
 // (no step is ever taken, so the effort is zero) and a rectangular grid, since
 // the problem's m x n bound is not square and the benchmark only ever measures
 // square workloads.
-public sealed class PathWithMinimumEffortTests
+public sealed partial class PathWithMinimumEffortTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DesignCircularDeque;
 // CircularDequeOp.Apply encodes LeetCode's own bool results as 1/0 alongside
 // GetFront/GetRear's int results, matching the mixed bool/int shape LeetCode's own
 // judge output already uses for this call sequence.
-public sealed class DesignCircularDequeTests
+public sealed partial class DesignCircularDequeTests
 {
     public static TheoryData<int, CircularDequeOp[], int[]> Examples =>
         new()
@@ -46,22 +46,16 @@ public sealed class DesignCircularDequeTests
     [MemberData(nameof(Examples))]
     public void CircularDequeByArrayBacked_LeetCodeExamples_MatchesExpectedSequence(
         int capacity, CircularDequeOp[] operations, int[] expected) =>
-        RunScript(new DesignCircularDequeSolution.CircularDequeByArrayBacked(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignCircularDequeSolution.CircularDequeByArrayBacked(capacity), operations));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CircularDequeByDequeBacked_LeetCodeExamples_MatchesExpectedSequence(
         int capacity, CircularDequeOp[] operations, int[] expected) =>
-        RunScript(new DesignCircularDequeSolution.CircularDequeByDequeBacked(capacity), operations, expected);
+        Assert.Equal(expected, RunScript(new DesignCircularDequeSolution.CircularDequeByDequeBacked(capacity), operations));
 
-    private static void RunScript(
+    private static int[] RunScript(
         DesignCircularDequeSolution.ICircularDeque deque,
-        CircularDequeOp[] operations,
-        int[] expected)
-    {
-        for (var i = 0; i < operations.Length; i++)
-        {
-            Assert.Equal(expected[i], operations[i].Apply(deque));
-        }
-    }
+        CircularDequeOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(deque))];
 }

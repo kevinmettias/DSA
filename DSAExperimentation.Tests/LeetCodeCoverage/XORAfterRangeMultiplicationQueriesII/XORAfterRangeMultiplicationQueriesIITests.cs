@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.XORAfterRangeMultiplicationQ
 // Harness only. Both query-application strategies are
 // XORAfterRangeMultiplicationQueriesIISolution's - this file just pins them to
 // LeetCode's published examples, the same two Part I uses.
-public sealed class XORAfterRangeMultiplicationQueriesIITests
+public sealed partial class XORAfterRangeMultiplicationQueriesIITests
 {
     public static TheoryData<int[], int[][], int> Examples =>
         new()

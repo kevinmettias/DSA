@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.QueriesOnNumberOfPointsInsid
 // it sits on, and negative coordinates whose squared distance must not lose its sign
 // handling. The brute-force scan was previously untested scaffolding inlined in the
 // benchmark and is asserted here for the first time.
-public sealed class QueriesOnNumberOfPointsInsideACircleTests
+public sealed partial class QueriesOnNumberOfPointsInsideACircleTests
 {
     public static TheoryData<int[][], int[][], int[]> Examples =>
         new()

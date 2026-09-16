@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class BinaryTreeTopologyTests
+public sealed partial class BinaryTreeTopologyTests
 {
     [Fact]
     public void GetChildren_ExposesBothChildrenLeftFirst()

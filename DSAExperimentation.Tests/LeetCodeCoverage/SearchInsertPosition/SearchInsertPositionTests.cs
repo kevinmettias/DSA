@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.SearchInsertPosition;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SearchInsertPosition;
 
-public sealed class SearchInsertPositionTests
+public sealed partial class SearchInsertPositionTests
 {
     public static TheoryData<int[], int, int> Examples => new()
     {

@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Walking;
 
-public sealed class TrackedVisitGuardTests
+public sealed partial class TrackedVisitGuardTests
 {
     [Fact]
     public void ShouldVisit_FirstSighting_ReturnsTrue()

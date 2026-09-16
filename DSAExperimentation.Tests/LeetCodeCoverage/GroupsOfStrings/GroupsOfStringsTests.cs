@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GroupsOfStrings;
 // pairwise popcount baseline the pre-migration benchmark kept to itself - and
 // which only counted groups there, never reporting the largest one LeetCode also
 // asks for.
-public sealed class GroupsOfStringsTests
+public sealed partial class GroupsOfStringsTests
 {
     // (words, [number of groups, size of the largest group])
     public static TheoryData<string[], int[]> Examples =>

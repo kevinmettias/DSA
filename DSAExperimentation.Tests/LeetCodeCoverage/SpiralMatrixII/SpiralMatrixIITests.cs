@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrixII;
 
 // Harness only: both strategies live in SpiralMatrixIISolution and are asserted
 // against the same examples, so a failure names the strategy that broke.
-public sealed class SpiralMatrixIITests
+public sealed partial class SpiralMatrixIITests
 {
     public static TheoryData<int, int[][]> Examples =>
         new()

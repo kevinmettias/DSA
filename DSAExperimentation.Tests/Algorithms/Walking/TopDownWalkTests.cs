@@ -7,7 +7,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Walking;
 
-public sealed class TopDownWalkTests
+public sealed partial class TopDownWalkTests
 {
     private static List<(string Path, int Depth, NodePosition Position)> Walk(TestNode root, int depth)
     {

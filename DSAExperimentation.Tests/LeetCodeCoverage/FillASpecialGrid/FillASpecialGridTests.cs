@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FillASpecialGrid;
 
 // Harness only: both strategies live in FillASpecialGridSolution and are asserted
 // against the same examples, so a failure names the strategy that broke.
-public sealed class FillASpecialGridTests
+public sealed partial class FillASpecialGridTests
 {
     public static TheoryData<int, int[][]> Examples =>
         new()

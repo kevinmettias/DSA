@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumAndSumOfArray;
 // file just pins them to LeetCode's published examples plus the small cases that
 // catch the two ways a slot walk goes wrong: forcing a slot to be filled, and
 // filling slots in index order rather than picking the better AND.
-public sealed class MaximumAndSumOfArrayTests
+public sealed partial class MaximumAndSumOfArrayTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

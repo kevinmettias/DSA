@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NextGreaterNodeInLinkedList;
 // Harness only. Both strategies are NextGreaterNodeInLinkedListSolution's - this
 // file states LeetCode's examples once as the list's values plus the expected
 // per-node answer, and asserts each strategy against them.
-public sealed class NextGreaterNodeInLinkedListTests
+public sealed partial class NextGreaterNodeInLinkedListTests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

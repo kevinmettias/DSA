@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionArrayIntoTwoArraysT
 // subset search would pick. Both strategies live in
 // PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolution and are asserted
 // separately so a failure names the arm that broke.
-public sealed class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceTests
+public sealed partial class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceTests
 {
     public static TheoryData<int[], int> Examples => new()
     {

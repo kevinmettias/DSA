@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PrisonCellsAfterNDays;
 // method per strategy over one shared set of LeetCode's own examples, so a
 // failure names the strategy that broke - which now includes the day-by-day
 // simulation the benchmark used as its untested baseline arm.
-public sealed class PrisonCellsAfterNDaysTests
+public sealed partial class PrisonCellsAfterNDaysTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

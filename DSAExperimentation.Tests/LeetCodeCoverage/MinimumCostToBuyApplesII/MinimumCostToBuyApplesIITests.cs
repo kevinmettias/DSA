@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumCostToBuyApplesII;
 // Harness only: both strategies live in MinimumCostToBuyApplesIISolution. One test
 // method per strategy over one shared set of LeetCode's own examples, so a failure
 // names the strategy that broke.
-public sealed class MinimumCostToBuyApplesIITests
+public sealed partial class MinimumCostToBuyApplesIITests
 {
     public static TheoryData<int, int[], int[][], long[]> Examples =>
         new()

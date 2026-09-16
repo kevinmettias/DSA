@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PeaksInArrayII;
 // Harness only. Both strategies are PeaksInArrayIISolution's - this file just
 // pins them to LeetCode's published examples, including the point update
 // between the two type-1 queries in every example.
-public sealed class PeaksInArrayIITests
+public sealed partial class PeaksInArrayIITests
 {
     public static TheoryData<int[], int[][], List<long>> Examples =>
         new()

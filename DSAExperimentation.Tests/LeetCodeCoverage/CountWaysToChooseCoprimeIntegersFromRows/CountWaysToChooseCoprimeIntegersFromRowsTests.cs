@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountWaysToChooseCoprimeInte
 // Harness only. Both strategies are
 // CountWaysToChooseCoprimeIntegersFromRowsSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class CountWaysToChooseCoprimeIntegersFromRowsTests
+public sealed partial class CountWaysToChooseCoprimeIntegersFromRowsTests
 {
     public static TheoryData<int[][], long> Examples =>
         new()

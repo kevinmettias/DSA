@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BuildAMatrixWithConditions;
 // exactly once and honours every condition on both axes. The rescan baseline is
 // asserted here too, which is the point of hoisting it into the solution class:
 // before this migration it existed only as a benchmark arm nothing checked.
-public sealed class BuildAMatrixWithConditionsTests
+public sealed partial class BuildAMatrixWithConditionsTests
 {
     public static TheoryData<MatrixExample> Examples =>
         new()

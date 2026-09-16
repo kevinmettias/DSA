@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionToKEqualSumSubsets;
 
 // Harness only. Both strategies are PartitionToKEqualSumSubsetsSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class PartitionToKEqualSumSubsetsTests
+public sealed partial class PartitionToKEqualSumSubsetsTests
 {
     public static TheoryData<KSubsetExample> Examples =>
         new()

@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.FenwickTree;
 
 namespace DSAExperimentation.Tests.DataStructures.FenwickTree;
 
-public sealed class FenwickArrayTests
+public sealed partial class FenwickArrayTests
 {
     [Fact]
     public void Set_ThenGet_ReturnsTheStoredValue()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RelativeSortArray;
 // Harness only. Both orderings are RelativeSortArraySolution's; this file pins them
 // to LeetCode's published examples plus the two edges the original test never
 // covered - an arr1 with nothing ranked at all, and an arr1 with nothing unranked.
-public sealed class RelativeSortArrayTests
+public sealed partial class RelativeSortArrayTests
 {
     public static TheoryData<int[], int[], int[]> Examples =>
         new()

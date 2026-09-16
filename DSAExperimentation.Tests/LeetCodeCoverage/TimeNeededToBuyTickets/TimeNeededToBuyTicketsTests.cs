@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TimeNeededToBuyTickets;
 // closed form from the simulation: targetPerson at the front of the line (everyone
 // behind them loses a turn), targetPerson wanting a single ticket (everyone behind
 // them contributes nothing at all), and a one-person line.
-public sealed class TimeNeededToBuyTicketsTests
+public sealed partial class TimeNeededToBuyTicketsTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

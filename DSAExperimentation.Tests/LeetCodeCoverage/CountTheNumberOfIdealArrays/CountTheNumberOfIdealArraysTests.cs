@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfIdealArrays;
 // prime power (8 = 2^3), which is the one shape that exercises an exponent above one
 // dividing out completely inside the trial-division loop with no leftover prime.
 // IdealArraysByTrialDivision was previously the benchmark's untested baseline arm.
-public sealed class CountTheNumberOfIdealArraysTests
+public sealed partial class CountTheNumberOfIdealArraysTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

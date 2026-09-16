@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KClosestPointsToOrigin;
 // max-heap returns farthest-first as it drains - so every example is asserted as a set
 // of points, and no example is written with a distance tie straddling the nearestCount
 // boundary, which would make more than one answer correct.
-public sealed class KClosestPointsToOriginTests
+public sealed partial class KClosestPointsToOriginTests
 {
     public static TheoryData<int[][], int, int[][]> Examples =>
         new()

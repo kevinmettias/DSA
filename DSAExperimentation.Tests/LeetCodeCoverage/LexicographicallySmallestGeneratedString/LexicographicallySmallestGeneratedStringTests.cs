@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LexicographicallySmallestGen
 // merge ("TT"/"aa"), an 'F' window that needs its rightmost free character
 // bumped ("TF"/"a"), and an 'F' window whose every position is pinned by
 // surrounding 'T's, so it cannot be broken at all ("TFTF"/"aaa").
-public sealed class LexicographicallySmallestGeneratedStringTests
+public sealed partial class LexicographicallySmallestGeneratedStringTests
 {
     public static TheoryData<GenerationExample> Examples =>
         new()

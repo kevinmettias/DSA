@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StreamOfCharacters;
 // each example's characters one at a time through an IStreamCheckerStrategy and
 // checks the per-character answers LeetCode itself publishes, so a failure still
 // names the strategy that broke.
-public sealed class StreamOfCharactersTests
+public sealed partial class StreamOfCharactersTests
 {
     public static TheoryData<string[], string, bool[]> Examples =>
         new()

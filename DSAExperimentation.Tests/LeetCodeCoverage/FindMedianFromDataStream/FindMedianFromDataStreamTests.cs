@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindMedianFromDataStream;
 // script is a sequence of AddNum values with the expected FindMedian result
 // checked after every insert, so a failure still names both the strategy and
 // the exact insert that produced the wrong median.
-public sealed class FindMedianFromDataStreamTests
+public sealed partial class FindMedianFromDataStreamTests
 {
     public static TheoryData<int[], double[]> Examples =>
         new()
@@ -19,20 +19,24 @@ public sealed class FindMedianFromDataStreamTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateByTwoHeaps_LeetCodeExamples_TracksRunningMedian(int[] stream, double[] expectedMedians) =>
-        RunScript(FindMedianFromDataStreamSolution.CreateByTwoHeaps(), stream, expectedMedians);
+        Assert.Equal(expectedMedians, RunScript(FindMedianFromDataStreamSolution.CreateByTwoHeaps(), stream));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CreateBySortOnEveryQuery_LeetCodeExamples_TracksRunningMedian(
         int[] stream, double[] expectedMedians) =>
-        RunScript(FindMedianFromDataStreamSolution.CreateBySortOnEveryQuery(), stream, expectedMedians);
+        Assert.Equal(expectedMedians, RunScript(FindMedianFromDataStreamSolution.CreateBySortOnEveryQuery(), stream));
 
-    private static void RunScript(IMedianFinder medianFinder, int[] stream, double[] expectedMedians)
+    private static double[] RunScript(IMedianFinder medianFinder, int[] stream)
     {
+        var medians = new double[stream.Length];
+
         for (var i = 0; i < stream.Length; i++)
         {
             medianFinder.AddNum(stream[i]);
-            Assert.Equal(expectedMedians[i], medianFinder.FindMedian());
+            medians[i] = medianFinder.FindMedian();
         }
+
+        return medians;
     }
 }

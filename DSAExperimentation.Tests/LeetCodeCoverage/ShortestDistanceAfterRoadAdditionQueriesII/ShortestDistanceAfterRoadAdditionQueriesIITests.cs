@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ShortestDistanceAfterRoadAdd
 // ShortestDistanceAfterRoadAdditionQueriesIISolution's - this file just pins them to
 // LeetCode's published examples, including the second one (Example 2) where a later
 // query is fully nested inside an earlier one and must leave the answer unchanged.
-public sealed class ShortestDistanceAfterRoadAdditionQueriesIITests
+public sealed partial class ShortestDistanceAfterRoadAdditionQueriesIITests
 {
     public static TheoryData<int, int[][], int[]> Examples =>
         new()

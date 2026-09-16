@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindASafeWalkThroughAGrid;
 // Harness only: both strategies are FindASafeWalkThroughAGridSolution's - this
 // file just pins them to LeetCode's published examples, including the one where
 // every path except a single detour is unsafe.
-public sealed class FindASafeWalkThroughAGridTests
+public sealed partial class FindASafeWalkThroughAGridTests
 {
     public static TheoryData<SafeWalkCase> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.UniquePaths;
 // Harness only. Both strategies are UniquePathsSolution's - the combinatorial
 // closed form and the memoized grid recurrence - checked against LeetCode's
 // published examples.
-public sealed class UniquePathsTests
+public sealed partial class UniquePathsTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

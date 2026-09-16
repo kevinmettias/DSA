@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PossibleBipartition;
 // split that only works because the components are considered separately. The
 // color-array arm was previously only a benchmark baseline and nothing asserted
 // it; it is under test here for the first time.
-public sealed class PossibleBipartitionTests
+public sealed partial class PossibleBipartitionTests
 {
     public static TheoryData<PossibleBipartitionCase> Examples =>
         new()

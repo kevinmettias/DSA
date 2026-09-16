@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumProductSubarray;
 // Harness only: both strategies live in MaximumProductSubarraySolution and are
 // asserted against the same examples, including the negative-only and
 // single-element cases that exercise the min/max swap on its own.
-public sealed class MaximumProductSubarrayTests
+public sealed partial class MaximumProductSubarrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

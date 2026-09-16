@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ContinuousSubarraySum;
 // Harness only: both strategies live in ContinuousSubarraySumSolution and are asserted
 // against the same examples, including the case that fails only because the qualifying
 // remainder repeat is one index too close together.
-public sealed class ContinuousSubarraySumTests
+public sealed partial class ContinuousSubarraySumTests
 {
     public static TheoryData<SubarraySumCase> Examples =>
         new()

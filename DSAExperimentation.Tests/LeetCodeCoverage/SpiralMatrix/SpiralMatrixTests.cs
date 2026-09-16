@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrix;
 // against the same examples - the four-boundary-pointer shrink this file's
 // original helper computed, and the visited-grid simulation that used to be
 // untested benchmark scaffolding.
-public sealed class SpiralMatrixTests
+public sealed partial class SpiralMatrixTests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

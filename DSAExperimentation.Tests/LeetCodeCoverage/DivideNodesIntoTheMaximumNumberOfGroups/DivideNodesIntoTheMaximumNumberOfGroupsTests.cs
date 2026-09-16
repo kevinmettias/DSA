@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DivideNodesIntoTheMaximumNum
 // two-component graph (whose bests must be summed independently rather than
 // taken from one BFS root across the whole graph), a single edge, and a star
 // (whose best root is a leaf, not the centre).
-public sealed class DivideNodesIntoTheMaximumNumberOfGroupsTests
+public sealed partial class DivideNodesIntoTheMaximumNumberOfGroupsTests
 {
     public static TheoryData<int, int[][], int> Examples =>
         new()

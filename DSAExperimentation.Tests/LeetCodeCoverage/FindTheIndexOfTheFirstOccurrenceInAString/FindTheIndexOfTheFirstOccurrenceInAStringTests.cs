@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheIndexOfTheFirstOccurr
 // Harness only: both strategies live in
 // FindTheIndexOfTheFirstOccurrenceInAStringSolution and are asserted against the
 // same published examples.
-public sealed class FindTheIndexOfTheFirstOccurrenceInAStringTests
+public sealed partial class FindTheIndexOfTheFirstOccurrenceInAStringTests
 {
     public static TheoryData<FirstOccurrenceCase> Examples =>
         new()

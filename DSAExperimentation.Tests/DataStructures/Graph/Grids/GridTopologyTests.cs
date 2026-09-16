@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Grids;
 
-public sealed class GridTopologyTests
+public sealed partial class GridTopologyTests
 {
     private static Grid OpenThreeByThree()
     {

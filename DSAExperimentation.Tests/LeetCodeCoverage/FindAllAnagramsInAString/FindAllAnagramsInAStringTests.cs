@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindAllAnagramsInAString;
 // Harness only. Both strategies are FindAllAnagramsInAStringSolution's - this file
 // just pins them to LeetCode's published examples, including the pattern-longer-
 // than-string case both strategies must short-circuit on.
-public sealed class FindAllAnagramsInAStringTests
+public sealed partial class FindAllAnagramsInAStringTests
 {
     public static TheoryData<AnagramCase> Examples =>
         new()

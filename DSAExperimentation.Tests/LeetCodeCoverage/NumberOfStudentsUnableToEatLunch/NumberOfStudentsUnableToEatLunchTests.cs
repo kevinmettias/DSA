@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfStudentsUnableToEatL
 // shortest inputs the constraints allow, a line that stalls on its very first lap,
 // a line where everyone eats only after cycling, and a stall that leaves exactly
 // one student.
-public sealed class NumberOfStudentsUnableToEatLunchTests
+public sealed partial class NumberOfStudentsUnableToEatLunchTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

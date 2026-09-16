@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Hamming;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths.Hamming;
 
-public sealed class HammingDistancesTests
+public sealed partial class HammingDistancesTests
 {
     [Fact]
     public void From_LabelsTheRootWithZero()

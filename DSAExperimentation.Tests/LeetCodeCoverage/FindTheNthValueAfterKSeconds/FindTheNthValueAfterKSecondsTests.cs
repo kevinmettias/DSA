@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindTheNthValueAfterKSeconds
 
 // Harness only. Both strategies are FindTheNthValueAfterKSecondsSolution's -
 // this file just pins them to LeetCode's published examples.
-public sealed class FindTheNthValueAfterKSecondsTests
+public sealed partial class FindTheNthValueAfterKSecondsTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

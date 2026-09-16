@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountConnectedComponentsInLC
 // Harness only: both strategies are CountConnectedComponentsInLCMGraphSolution's.
 // One test method per strategy over LeetCode's own examples, so a failure names
 // the strategy that broke.
-public sealed class CountConnectedComponentsInLCMGraphTests
+public sealed partial class CountConnectedComponentsInLCMGraphTests
 {
     public static TheoryData<int[], int, int> Examples =>
         new()

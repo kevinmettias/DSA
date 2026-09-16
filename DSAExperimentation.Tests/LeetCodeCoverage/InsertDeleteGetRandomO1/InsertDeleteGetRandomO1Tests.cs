@@ -13,7 +13,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.InsertDeleteGetRandomO1;
 // "expected slot shape depends on which call it answers" idea ImplementRouterTests
 // already uses for ForwardPacket's int[]. RandomizedSetOp.Apply is pure dispatch - no
 // membership-tracking logic of its own.
-public sealed class InsertDeleteGetRandomO1Tests
+public sealed partial class InsertDeleteGetRandomO1Tests
 {
     public static TheoryData<RandomizedSetOp[], object?[]> Examples =>
         new()
@@ -50,36 +50,50 @@ public sealed class InsertDeleteGetRandomO1Tests
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandomizedSetByListScan_LeetCodeExamples_TracksMembershipCorrectly(
-        RandomizedSetOp[] operations, object?[] expected) =>
-        RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan(), operations, expected);
+        RandomizedSetOp[] operations, object?[] expected)
+    {
+        var replies = RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByListScan(), operations);
+
+        for (var i = 0; i < replies.Length; i++)
+        {
+            // GetRandom's expected slot carries the candidate set of values valid at
+            // this point in the script; int/bool results (Insert/Remove/Count) compare
+            // fine as plain boxed objects.
+            if (expected[i] is int[] candidates)
+            {
+                Assert.Contains(Assert.IsType<int>(replies[i]), candidates);
+            }
+            else
+            {
+                Assert.Equal(expected[i], replies[i]);
+            }
+        }
+    }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void RandomizedSetByHashMapSwapRemove_LeetCodeExamples_TracksMembershipCorrectly(
-        RandomizedSetOp[] operations, object?[] expected) =>
-        RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove(), operations, expected);
-
-    private static void RunScript(
-        InsertDeleteGetRandomO1Solution.IRandomizedSet set, RandomizedSetOp[] operations, object?[] expected)
+        RandomizedSetOp[] operations, object?[] expected)
     {
-        for (var i = 0; i < operations.Length; i++)
+        var replies = RunScript(new InsertDeleteGetRandomO1Solution.RandomizedSetByHashMapSwapRemove(), operations);
+
+        for (var i = 0; i < replies.Length; i++)
         {
-            AssertMatches(expected[i], operations[i].Apply(set));
+            // GetRandom's expected slot carries the candidate set of values valid at
+            // this point in the script; int/bool results (Insert/Remove/Count) compare
+            // fine as plain boxed objects.
+            if (expected[i] is int[] candidates)
+            {
+                Assert.Contains(Assert.IsType<int>(replies[i]), candidates);
+            }
+            else
+            {
+                Assert.Equal(expected[i], replies[i]);
+            }
         }
     }
 
-    // GetRandom's expected slot carries the candidate set of values valid at that
-    // point in the script rather than one exact value; int/bool results
-    // (Insert/Remove/Count) compare fine as plain boxed objects.
-    private static void AssertMatches(object? expected, object? actual)
-    {
-        if (expected is int[] candidates)
-        {
-            Assert.Contains(Assert.IsType<int>(actual), candidates);
-        }
-        else
-        {
-            Assert.Equal(expected, actual);
-        }
-    }
+    private static object?[] RunScript(
+        InsertDeleteGetRandomO1Solution.IRandomizedSet set, RandomizedSetOp[] operations) =>
+        [.. operations.Select(operation => operation.Apply(set))];
 }

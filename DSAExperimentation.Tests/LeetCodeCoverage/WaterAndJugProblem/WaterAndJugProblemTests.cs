@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.WaterAndJugProblem;
 // Harness only. All three strategies live in WaterAndJugProblemSolution; this
 // file just pins them to LeetCode's published examples plus a boundary case
 // where the target exceeds the combined capacity.
-public sealed class WaterAndJugProblemTests
+public sealed partial class WaterAndJugProblemTests
 {
     public static TheoryData<MeasureWaterExample> Examples =>
         new()

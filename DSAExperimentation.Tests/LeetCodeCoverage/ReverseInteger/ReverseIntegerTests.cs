@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseInteger;
 // Harness only: both strategies live in ReverseIntegerSolution and are asserted
 // against the same examples, including the two inputs whose reversal overflows a
 // 32-bit int.
-public sealed class ReverseIntegerTests
+public sealed partial class ReverseIntegerTests
 {
     public static TheoryData<int, int> Examples =>
         new()

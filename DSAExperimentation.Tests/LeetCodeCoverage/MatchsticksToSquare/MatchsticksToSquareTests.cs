@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MatchsticksToSquare;
 
 // Harness only. Both strategies are MatchsticksToSquareSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class MatchsticksToSquareTests
+public sealed partial class MatchsticksToSquareTests
 {
     public static TheoryData<SquareExample> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SlidingPuzzle;
 // Harness only. The board-permutation graph itself is Domain.SlidingPuzzle's and
 // both search strategies are SlidingPuzzleSolution's - this file just pins them
 // to LeetCode's published examples.
-public sealed class SlidingPuzzleTests
+public sealed partial class SlidingPuzzleTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

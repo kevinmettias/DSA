@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameIX;
 // Alice busts on her first move), [1,1,2] (even remainder-0 count with both other
 // buckets non-empty - Alice wins by opening with the remainder-2 stone), and [3,1,1,1]
 // (odd remainder-0 count carried by an imbalance of exactly 3).
-public sealed class StoneGameIXTests
+public sealed partial class StoneGameIXTests
 {
     public static TheoryData<RemainderGameExample> Examples =>
         new()

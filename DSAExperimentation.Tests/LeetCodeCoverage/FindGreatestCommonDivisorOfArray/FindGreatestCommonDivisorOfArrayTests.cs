@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindGreatestCommonDivisorOfA
 // Harness only: both gcd strategies live in FindGreatestCommonDivisorOfArraySolution
 // and are asserted against the same examples - LeetCode's three published ones plus
 // the coprime, single-element and min-divides-max cases that pin the ends of the scan.
-public sealed class FindGreatestCommonDivisorOfArrayTests
+public sealed partial class FindGreatestCommonDivisorOfArrayTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestSubstringWithAtLeastK
 // Harness only. Both strategies are
 // LongestSubstringWithAtLeastKRepeatingCharactersSolution's - this file just pins
 // them to LeetCode's published examples.
-public sealed class LongestSubstringWithAtLeastKRepeatingCharactersTests
+public sealed partial class LongestSubstringWithAtLeastKRepeatingCharactersTests
 {
     public static TheoryData<string, int, int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaxSumOfRectangleNoLargerTha
 // Harness only. Both strategies are MaxSumOfRectangleNoLargerThanKSolution's - this
 // file pins them to LeetCode's classic example plus the single-row exact-limit
 // case, so a failure names the strategy that broke.
-public sealed class MaxSumOfRectangleNoLargerThanKTests
+public sealed partial class MaxSumOfRectangleNoLargerThanKTests
 {
     public static TheoryData<int[][], int, int> Examples =>
         new()

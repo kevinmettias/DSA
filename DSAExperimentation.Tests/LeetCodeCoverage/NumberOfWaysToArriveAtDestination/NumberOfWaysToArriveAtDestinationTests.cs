@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfWaysToArriveAtDestin
 // strategies are NumberOfWaysToArriveAtDestinationSolution's - this file just pins
 // them to LeetCode's published examples, plus the diamond where two equal-time
 // routes converge and the one-intersection graph where the journey is already over.
-public sealed class NumberOfWaysToArriveAtDestinationTests
+public sealed partial class NumberOfWaysToArriveAtDestinationTests
 {
     public static TheoryData<int, int[][], long> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FindConsecutiveIntegersFromA
 // and the Deque<int> window with an incremental match count. This file replays each
 // example's arrivals one at a time through an IDataStreamStrategy and checks the
 // per-call answers, so a failure still names the strategy that broke.
-public sealed class FindConsecutiveIntegersFromADataStreamTests
+public sealed partial class FindConsecutiveIntegersFromADataStreamTests
 {
     public static TheoryData<int, int, int[], bool[]> Examples =>
         new()

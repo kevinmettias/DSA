@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumOperationsToMakeBinar
 // MinimumOperationsToMakeBinaryArrayElementsEqualToOneISolution's - this file
 // just pins them to LeetCode's published examples, including the unreachable
 // case where the trailing zero has no room left for a flip.
-public sealed class MinimumOperationsToMakeBinaryArrayElementsEqualToOneITests
+public sealed partial class MinimumOperationsToMakeBinaryArrayElementsEqualToOneITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

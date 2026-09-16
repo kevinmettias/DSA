@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.OperationsOnTree;
 // benchmark measures - before the tiered migration the whole-tree scan existed only as
 // the benchmark's baseline arm, which nothing asserted. The lock/unlock/upgrade script
 // both strategies have to agree on lives in OperationsOnTreeTests.
-public sealed class OperationsOnTreeLockedDescendantsTests
+public sealed partial class OperationsOnTreeLockedDescendantsTests
 {
     public static TheoryData<int[], LockingTreeOp[], int, int[]> Examples =>
         new()

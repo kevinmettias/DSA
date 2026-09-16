@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountNumberOfTrapezoidsI;
 // Harness only. The horizontal-trapezoid counting itself is
 // CountNumberOfTrapezoidsISolution's - this file just pins both strategies to
 // LeetCode's published examples.
-public sealed class CountNumberOfTrapezoidsITests
+public sealed partial class CountNumberOfTrapezoidsITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountTheNumberOfSquareFreeSu
 // Harness only: the algorithms live in CountTheNumberOfSquareFreeSubsetsSolution. One
 // test method per strategy over one shared set of examples, so a failure names the
 // strategy that broke (TwoSumTests precedent).
-public sealed class CountTheNumberOfSquareFreeSubsetsTests
+public sealed partial class CountTheNumberOfSquareFreeSubsetsTests
 {
     public static TheoryData<int[], long> Examples =>
         new()

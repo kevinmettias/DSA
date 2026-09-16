@@ -3,7 +3,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Contracts.Ordering;
 
-public sealed class ReversedChildrenTests
+public sealed partial class ReversedChildrenTests
 {
     private static ReversedChildren<TestNode, ListChildren<TestNode>> Wrap(params string[] names) =>
         new(new ListChildren<TestNode>([.. names.Select(n => new TestNode(n))]));

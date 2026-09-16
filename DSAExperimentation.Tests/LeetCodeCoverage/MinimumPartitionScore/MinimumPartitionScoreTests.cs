@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumPartitionScore;
 // Harness only: both strategies live in MinimumPartitionScoreSolution and are
 // asserted against the same examples, so a failure names the strategy that
 // broke.
-public sealed class MinimumPartitionScoreTests
+public sealed partial class MinimumPartitionScoreTests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

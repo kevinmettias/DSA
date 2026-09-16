@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.Algorithms.Searching;
 // boundary that would have to be to the left of the first position, and one past the last
 // position for a boundary to the right, so a range reads as [boundary + 1, position] with no
 // special case for either end. Neither is baked into the sweep; both are passed per call.
-public sealed class NearestBoundaryTests
+public sealed partial class NearestBoundaryTests
 {
     private static readonly int[] Repeating = [4, 2, 4, 2, 4];
 

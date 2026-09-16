@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ClimbingStairsII;
 
 // Harness only. ClimbingStairsIISolution owns both the brute-force baseline and the
 // memoized recurrence; this file pins them to LeetCode's three published examples.
-public sealed class ClimbingStairsIITests
+public sealed partial class ClimbingStairsIITests
 {
     public static TheoryData<int, int[], long> Examples =>
         new()

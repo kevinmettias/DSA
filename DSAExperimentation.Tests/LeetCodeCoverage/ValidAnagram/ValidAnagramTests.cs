@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidAnagram;
 
 // Harness only. Both strategies are ValidAnagramSolution's - this file just pins
 // them to LeetCode's published examples plus the differing-length case.
-public sealed class ValidAnagramTests
+public sealed partial class ValidAnagramTests
 {
     public static TheoryData<AnagramExample> Examples =>
         new()

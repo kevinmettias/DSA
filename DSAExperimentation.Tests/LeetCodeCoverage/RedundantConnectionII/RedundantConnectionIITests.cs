@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RedundantConnectionII;
 // RedundantConnectionIISolution's - this file pins them to LeetCode's published
 // examples, including the two-parents-but-still-cycles case that distinguishes
 // which of the two conflicting edges is the real answer.
-public sealed class RedundantConnectionIITests
+public sealed partial class RedundantConnectionIITests
 {
     public static TheoryData<int[][], int[]> Examples =>
         new()

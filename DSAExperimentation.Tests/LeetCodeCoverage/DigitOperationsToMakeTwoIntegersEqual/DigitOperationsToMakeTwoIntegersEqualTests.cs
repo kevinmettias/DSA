@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DigitOperationsToMakeTwoInte
 // over one shared set of LeetCode's own examples, including the two -1 cases
 // (an unreachable pair, and a target that is already prime) that the graph
 // strategy has to answer without a target node existing at all.
-public sealed class DigitOperationsToMakeTwoIntegersEqualTests
+public sealed partial class DigitOperationsToMakeTwoIntegersEqualTests
 {
     public static TheoryData<int, int, int> Examples =>
         new()

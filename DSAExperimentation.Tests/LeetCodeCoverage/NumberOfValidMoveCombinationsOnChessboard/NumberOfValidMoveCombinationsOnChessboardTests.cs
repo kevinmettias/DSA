@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfValidMoveCombination
 // each piece alone in a corner, LeetCode's own off-corner bishop, and the two-piece
 // cases where the simultaneous-movement collision rule is what removes
 // combinations from the product.
-public sealed class NumberOfValidMoveCombinationsOnChessboardTests
+public sealed partial class NumberOfValidMoveCombinationsOnChessboardTests
 {
     public static TheoryData<string[], int[][], int> Examples =>
         new()

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RectangleAreaII;
 // LeetCode's published examples plus disjoint and nested shapes. The single
 // 10^9 x 10^9 rectangle is the case that forces the overflow-safe modular
 // accumulation: 10^18 mod (10^9 + 7) is 49.
-public sealed class RectangleAreaIITests
+public sealed partial class RectangleAreaIITests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

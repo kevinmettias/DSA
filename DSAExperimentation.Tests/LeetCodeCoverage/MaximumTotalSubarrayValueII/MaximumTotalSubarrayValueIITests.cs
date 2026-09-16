@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumTotalSubarrayValueII;
 
 // Harness only. Both strategies are MaximumTotalSubarrayValueIISolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class MaximumTotalSubarrayValueIITests
+public sealed partial class MaximumTotalSubarrayValueIITests
 {
     public static TheoryData<int[], int, long> Examples =>
         new()

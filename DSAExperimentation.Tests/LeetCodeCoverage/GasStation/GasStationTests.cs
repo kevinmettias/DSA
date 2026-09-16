@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.GasStation;
 // against the same examples - the greedy debt-reset scan this file's
 // original private helper computed, and the O(n^2) brute-force simulation
 // that used to be untested benchmark scaffolding.
-public sealed class GasStationTests
+public sealed partial class GasStationTests
 {
     public static TheoryData<int[], int[], int> Examples =>
         new()

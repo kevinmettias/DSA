@@ -19,7 +19,7 @@ namespace DSAExperimentation.Tests.Architecture;
 // its harnesses under the rule in the same commit, and nothing here needs editing
 // to keep pace. Only the SHARED benchmark fixture folder needs a ledger, because
 // it is flat and its stragglers sit in no folder that could key the rule.
-public sealed class Tier5WitnessTests
+public sealed partial class Tier5WitnessTests
 {
     private const string BenchmarksProject = "DSAExperimentation.Benchmarks";
     private const string TestsProject = "DSAExperimentation.Tests";

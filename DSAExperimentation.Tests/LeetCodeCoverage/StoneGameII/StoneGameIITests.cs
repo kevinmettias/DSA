@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameII;
 // benchmark as its baseline arm) now gets the same examples as
 // MaxStonesByMemoizedRecursion (previously the test's own private helper), so a
 // failure names the strategy that broke.
-public sealed class StoneGameIITests
+public sealed partial class StoneGameIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

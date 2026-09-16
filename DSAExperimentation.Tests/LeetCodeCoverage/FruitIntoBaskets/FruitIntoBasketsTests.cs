@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.FruitIntoBaskets;
 // Harness only: both strategies live in FruitIntoBasketsSolution and are asserted
 // against the same examples - LeetCode's three published ones, a single tree type,
 // a single tree, and a run where the answer sits at the very end of the array.
-public sealed class FruitIntoBasketsTests
+public sealed partial class FruitIntoBasketsTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

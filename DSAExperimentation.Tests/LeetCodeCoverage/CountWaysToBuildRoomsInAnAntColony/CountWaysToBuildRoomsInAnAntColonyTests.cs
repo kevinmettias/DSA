@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.CountWaysToBuildRoomsInAnAnt
 // Harness only. Pinning both algebras to the same examples is what proves the
 // precomputed-factorial table agrees with the straightforward per-node one - a
 // check the benchmark alone could never make.
-public sealed class CountWaysToBuildRoomsInAnAntColonyTests
+public sealed partial class CountWaysToBuildRoomsInAnAntColonyTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LastStoneWeight;
 // against the same examples - LeetCode's own, the mutual-annihilation case, a
 // single stone, and two smash sequences where a difference stone has to be smashed
 // again after being put back.
-public sealed class LastStoneWeightTests
+public sealed partial class LastStoneWeightTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

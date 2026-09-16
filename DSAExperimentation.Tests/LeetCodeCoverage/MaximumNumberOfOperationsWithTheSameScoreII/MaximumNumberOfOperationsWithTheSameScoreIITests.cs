@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumNumberOfOperationsWit
 // Harness only: both search strategies live in
 // MaximumNumberOfOperationsWithTheSameScoreIISolution - this file just pins them
 // to LeetCode's published examples.
-public sealed class MaximumNumberOfOperationsWithTheSameScoreIITests
+public sealed partial class MaximumNumberOfOperationsWithTheSameScoreIITests
 {
     public static TheoryData<int[], int> Examples =>
         new()

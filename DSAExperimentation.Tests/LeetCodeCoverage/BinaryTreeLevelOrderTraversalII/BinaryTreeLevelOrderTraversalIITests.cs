@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BinaryTreeLevelOrderTraversa
 // array is harness plumbing, not part of either strategy under test - both
 // strategies already take a prebuilt root, exactly like LeetCode's own
 // TreeNode-typed signature.
-public sealed class BinaryTreeLevelOrderTraversalIITests
+public sealed partial class BinaryTreeLevelOrderTraversalIITests
 {
     public static TheoryData<int?[], List<List<int>>> Examples =>
         new()

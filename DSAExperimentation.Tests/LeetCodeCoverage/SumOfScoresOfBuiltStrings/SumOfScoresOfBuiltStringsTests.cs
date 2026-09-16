@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SumOfScoresOfBuiltStrings;
 // test asserted is either a palindrome or free of self-overlap, and on exactly
 // those inputs summing the Z-array of reverse(s) accidentally agrees with the
 // answer. "aab" and "banana" are the smallest inputs where it does not.
-public sealed class SumOfScoresOfBuiltStringsTests
+public sealed partial class SumOfScoresOfBuiltStringsTests
 {
     // (text, sum of every suffix's longest common prefix with text)
     public static TheoryData<string, long> Examples =>

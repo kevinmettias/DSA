@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConcatenatedDivisibility;
 
 // Harness only: both strategies live in ConcatenatedDivisibilitySolution and are
 // asserted against the same examples, so a failure names the strategy that broke.
-public sealed class ConcatenatedDivisibilityTests
+public sealed partial class ConcatenatedDivisibilityTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
         new()

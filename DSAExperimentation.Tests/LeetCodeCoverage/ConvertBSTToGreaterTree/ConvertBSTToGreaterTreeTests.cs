@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ConvertBSTToGreaterTree;
 // BinaryTreeLevelOrderTraversalTests - it stays out of a public TheoryData signature
 // and LeetCodeWireFormat.ToBinaryTree reconstructs both the input tree and the expected one from that
 // shape (CS0053 is why this file used one [Fact] per example before).
-public sealed class ConvertBSTToGreaterTreeTests
+public sealed partial class ConvertBSTToGreaterTreeTests
 {
     public static TheoryData<TreeExample> Examples =>
         new()

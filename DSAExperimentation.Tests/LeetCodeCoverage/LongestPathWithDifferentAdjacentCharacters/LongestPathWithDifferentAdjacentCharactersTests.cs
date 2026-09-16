@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestPathWithDifferentAdja
 // strategies are LongestPathWithDifferentAdjacentCharactersSolution's - this file
 // just pins them to the same examples, which is what proves the O(n) fold agrees
 // with the O(n^2) recomputing walk the benchmark measures it against.
-public sealed class LongestPathWithDifferentAdjacentCharactersTests
+public sealed partial class LongestPathWithDifferentAdjacentCharactersTests
 {
     public static TheoryData<int[], string, int> Examples =>
         new()

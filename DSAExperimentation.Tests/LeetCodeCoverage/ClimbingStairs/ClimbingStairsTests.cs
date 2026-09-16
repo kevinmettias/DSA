@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ClimbingStairs;
 
 // Harness only. ClimbingStairsSolution owns the memoized recurrence; this file
 // pins it to LeetCode's published examples plus the original five-step case.
-public sealed class ClimbingStairsTests
+public sealed partial class ClimbingStairsTests
 {
     public static TheoryData<int, int> Examples =>
         new()

@@ -2,7 +2,7 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
-public sealed class RootedTreeTopologyTests
+public sealed partial class RootedTreeTopologyTests
 {
     [Fact]
     public void GetChildren_ExposesTheNodesOwnChildrenInOrder()

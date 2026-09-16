@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SmallestStringWithSwaps;
 // SmallestStringWithSwapsSolution's - this file just pins them to LeetCode's
 // published examples plus the degenerate no-pair case, where every index is its own
 // component and the string comes back untouched.
-public sealed class SmallestStringWithSwapsTests
+public sealed partial class SmallestStringWithSwapsTests
 {
     public static TheoryData<string, int[][], string> Examples =>
         new()

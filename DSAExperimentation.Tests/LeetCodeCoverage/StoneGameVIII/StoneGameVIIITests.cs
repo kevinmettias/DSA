@@ -10,7 +10,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.StoneGameVIII;
 // published examples the cases pin the two branches of the recurrence apart: a
 // board whose last boundary is ruinous, so ending the move early wins, and boards
 // where taking everything is optimal.
-public sealed class StoneGameVIIITests
+public sealed partial class StoneGameVIIITests
 {
     public static TheoryData<int[], long> Examples =>
         new()

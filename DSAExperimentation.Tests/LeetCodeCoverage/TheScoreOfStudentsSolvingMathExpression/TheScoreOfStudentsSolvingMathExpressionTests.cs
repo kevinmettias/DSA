@@ -11,7 +11,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.TheScoreOfStudentsSolvingMat
 // test carried. That expression has exactly two full parenthesizations: (2+3)*4 = 20 and
 // 2+(3*4) = 14. Standard precedence gives 14, so 14 scores 5, the other achievable value
 // 20 scores 2, and 99 - achievable under no parenthesization at all - scores 0.
-public sealed class TheScoreOfStudentsSolvingMathExpressionTests
+public sealed partial class TheScoreOfStudentsSolvingMathExpressionTests
 {
     public static TheoryData<string, int[], int> Examples =>
         new()

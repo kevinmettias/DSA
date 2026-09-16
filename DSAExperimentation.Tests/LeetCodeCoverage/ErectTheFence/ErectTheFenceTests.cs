@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ErectTheFence;
 // against the same examples, including the all-collinear case that has no
 // interior at all. Order is not part of LeetCode's answer, so examples compare
 // as sets.
-public sealed class ErectTheFenceTests
+public sealed partial class ErectTheFenceTests
 {
     public static TheoryData<(int X, int Y)[], (int X, int Y)[]> Examples =>
         new()

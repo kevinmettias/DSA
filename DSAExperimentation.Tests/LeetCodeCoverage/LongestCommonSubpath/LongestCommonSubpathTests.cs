@@ -7,7 +7,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestCommonSubpath;
 // the RollingHash-screened one - pinned here to LeetCode's published examples plus
 // the three edge shapes the original test carried: no overlap at all, a single
 // shared city, and a run that has to survive an intersection across three paths.
-public sealed class LongestCommonSubpathTests
+public sealed partial class LongestCommonSubpathTests
 {
     public static TheoryData<int[][], int> Examples =>
         new()

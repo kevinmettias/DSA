@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.EvaluateDivision;
 // Harness only. Both strategies are EvaluateDivisionSolution's - this file pins them
 // to LeetCode's published examples, including unknown-variable and
 // unknown-variable-to-itself queries.
-public sealed class EvaluateDivisionTests
+public sealed partial class EvaluateDivisionTests
 {
     public static TheoryData<DivisionQueryCase> Examples =>
         new()

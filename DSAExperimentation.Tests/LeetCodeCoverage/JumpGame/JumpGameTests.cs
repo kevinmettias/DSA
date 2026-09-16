@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.JumpGame;
 // against the same examples - the greedy farthest-reach scan this file's
 // original helper computed, and the O(n^2) forward-reachability DP that used
 // to be untested benchmark scaffolding.
-public sealed class JumpGameTests
+public sealed partial class JumpGameTests
 {
     public static TheoryData<JumpReachExample> Examples =>
         new()

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LoudAndRich;
 // to LeetCode's published examples, stated in LeetCode's own (richer, quiet)
 // input shape. The per-person walk was previously a benchmark-only baseline and
 // had never been asserted against anything.
-public sealed class LoudAndRichTests
+public sealed partial class LoudAndRichTests
 {
     public static TheoryData<int[][], int[], int[]> Examples =>
         new()

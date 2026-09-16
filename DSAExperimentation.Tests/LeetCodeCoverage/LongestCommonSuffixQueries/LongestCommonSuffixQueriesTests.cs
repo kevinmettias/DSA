@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.LongestCommonSuffixQueries;
 // Harness only. The suffix trie itself is LongestCommonSuffixQueriesSolution's -
 // this file just pins both strategies to LeetCode's published examples, including
 // the "xyz"/all-tie-at-empty-suffix case that exercises the trie's root value.
-public sealed class LongestCommonSuffixQueriesTests
+public sealed partial class LongestCommonSuffixQueriesTests
 {
     public static TheoryData<string[], string[], int[]> Examples =>
         new()

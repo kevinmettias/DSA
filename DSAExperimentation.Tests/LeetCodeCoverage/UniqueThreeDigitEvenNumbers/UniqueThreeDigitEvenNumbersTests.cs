@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.UniqueThreeDigitEvenNumbers;
 
 // Harness only. Both strategies are UniqueThreeDigitEvenNumbersSolution's - this
 // file just pins them to LeetCode's published examples.
-public sealed class UniqueThreeDigitEvenNumbersTests
+public sealed partial class UniqueThreeDigitEvenNumbersTests
 {
     public static TheoryData<int[], int> Examples =>
         new()

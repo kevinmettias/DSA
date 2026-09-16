@@ -8,7 +8,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.BeautifulTowersII;
 // scale is about: a strictly increasing array (peak at the last index) and 1,000
 // towers all at the 1e9 cap, whose 1e12 answer overflows int and so proves the
 // long accumulation is real rather than incidental.
-public sealed class BeautifulTowersIITests
+public sealed partial class BeautifulTowersIITests
 {
     private const int MaxHeight = 1_000_000_000;
     private const int FlatTowerCount = 1_000;

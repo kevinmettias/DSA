@@ -9,7 +9,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.DiameterOfBinaryTree;
 // TreeMetrics.Diameter fold. Examples are stated as LeetCode's own level-order
 // arrays - BinaryTreeNode<int> is internal, so it cannot appear in a public
 // TheoryData member; LeetCodeWireFormat.ToBinaryTree reconstructs it inside each test method instead.
-public sealed class DiameterOfBinaryTreeTests
+public sealed partial class DiameterOfBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples()
     {

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfValidWordsForEachPuz
 // this file just pins them to LeetCode's published examples, plus the degenerate
 // cases the mask encoding has to get right (a puzzle matching nothing, and a word
 // whose letters are all present but which still misses the first letter).
-public sealed class NumberOfValidWordsForEachPuzzleTests
+public sealed partial class NumberOfValidWordsForEachPuzzleTests
 {
     public static TheoryData<string[], string[], int[]> Examples =>
         new()

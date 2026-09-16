@@ -4,7 +4,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SubstringMatchingPattern;
 
 // Harness only. Both strategies are SubstringMatchingPatternSolution's - this file
 // just pins them to LeetCode's published examples.
-public sealed class SubstringMatchingPatternTests
+public sealed partial class SubstringMatchingPatternTests
 {
     public static TheoryData<MatchExample> Examples =>
         new()

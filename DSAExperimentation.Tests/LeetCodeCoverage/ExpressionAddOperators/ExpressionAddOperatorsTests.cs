@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.ExpressionAddOperators;
 // Harness only: both strategies live in ExpressionAddOperatorsSolution and are
 // asserted against the same examples, including a leading-zero case and a
 // no-solution case.
-public sealed class ExpressionAddOperatorsTests
+public sealed partial class ExpressionAddOperatorsTests
 {
     public static TheoryData<string, int, string[]> Examples =>
         new()

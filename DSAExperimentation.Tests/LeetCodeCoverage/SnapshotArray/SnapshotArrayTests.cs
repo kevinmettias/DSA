@@ -12,7 +12,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.SnapshotArray;
 // assert nothing; Snap steps call Snap() and assert the snap id it hands back; Get
 // steps call Get(Index, Argument) and assert the value, which for those steps is
 // the answer LeetCode publishes.
-public sealed class SnapshotArrayTests
+public sealed partial class SnapshotArrayTests
 {
     public enum SnapshotCall
     {

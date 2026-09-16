@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RobotCollisions;
 // Harness only: both strategies are RobotCollisionsSolution's, the same
 // restart-the-scan baseline and single-sweep stack simulation
 // RobotCollisionsBenchmarks measures.
-public sealed class RobotCollisionsTests
+public sealed partial class RobotCollisionsTests
 {
     public static TheoryData<int[], int[], string, int[]> Examples =>
         new()

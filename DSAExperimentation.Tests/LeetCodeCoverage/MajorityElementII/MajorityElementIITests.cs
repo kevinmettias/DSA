@@ -6,7 +6,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.MajorityElementII;
 // pins it to LeetCode's published examples plus the no-winner and two-winner
 // edges the original two-example test left uncovered. Order is unconstrained by
 // the problem statement, so both sides are sorted before comparing.
-public sealed class MajorityElementIITests
+public sealed partial class MajorityElementIITests
 {
     public static TheoryData<int[], int[]> Examples =>
         new()

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.PartitionArrayIntoTwoEqualPr
 // Harness only. Both partition searches are
 // PartitionArrayIntoTwoEqualProductSubsetsSolution's - this file just pins them to
 // LeetCode's published examples.
-public sealed class PartitionArrayIntoTwoEqualProductSubsetsTests
+public sealed partial class PartitionArrayIntoTwoEqualProductSubsetsTests
 {
     public static TheoryData<ProductSubsetExample> Examples =>
         new()
