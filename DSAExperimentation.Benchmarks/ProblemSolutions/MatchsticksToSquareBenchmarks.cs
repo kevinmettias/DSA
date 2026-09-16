@@ -33,8 +33,10 @@ public class MatchsticksToSquareBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveBacktracking() => MatchsticksToSquareSolution.CanMakeSquareByNaiveBacktracking(_matchsticks);
+    public bool CanMakeSquareByNaiveBacktracking() =>
+        MatchsticksToSquareSolution.CanMakeSquareByNaiveBacktracking(_matchsticks);
 
     [Benchmark]
-    public bool GenericBacktrack() => MatchsticksToSquareSolution.CanMakeSquareByGenericBacktrack(_matchsticks);
+    public bool CanMakeSquareByGenericBacktrack() =>
+        MatchsticksToSquareSolution.CanMakeSquareByGenericBacktrack(_matchsticks);
 }

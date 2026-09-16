@@ -16,16 +16,18 @@ internal static class FibonacciNumberSolution
 
     // The textbook O(2^n) double recursion, deliberately written without this
     // repo's primitives - the arm FibByMemoizedTopDown is measured against.
-    public static int FibByNaiveRecursion(int n)
-        => n <= 1
-            ? n
-            : SumOfPredecessors(FibByNaiveRecursion(n - 1), FibByNaiveRecursion(n - SecondPredecessorOffset));
+    public static int FibByNaiveRecursion(int sequenceIndex)
+        => sequenceIndex <= 1
+            ? sequenceIndex
+            : SumOfPredecessors(
+                FibByNaiveRecursion(sequenceIndex - 1),
+                FibByNaiveRecursion(sequenceIndex - SecondPredecessorOffset));
 
     // The recurrence's own sum, reached only once both predecessors have been computed.
     private static int SumOfPredecessors(int first, int second) => first + second;
 
-    public static int FibByMemoizedTopDown(int n) =>
-        Memoizer.Memoize<int, int>(n, new SumOfTwoPredecessors());
+    public static int FibByMemoizedTopDown(int sequenceIndex) =>
+        Memoizer.Memoize<int, int>(sequenceIndex, new SumOfTwoPredecessors());
 
     // The recurrence, as a named type: 0 and 1 are themselves, and every later value is
     // the sum of its two predecessors.

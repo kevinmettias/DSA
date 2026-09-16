@@ -16,11 +16,14 @@ public sealed class LexicographicalNumbersTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LexicalOrderByStringSort_LeetCodeExamples_ReturnsExpectedOrder(int n, int[] expected) =>
-        Assert.Equal(expected, LexicographicalNumbersSolution.LexicalOrderByStringSort(n));
+    public void LexicalOrderByStringSort_LeetCodeExamples_ReturnsExpectedOrder(
+        int upperBound, int[] expected) =>
+        Assert.Equal(expected, LexicographicalNumbersSolution.LexicalOrderByStringSort(upperBound));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void LexicalOrderByDepthFirstDigitTree_LeetCodeExamples_ReturnsExpectedOrder(int n, int[] expected) =>
-        Assert.Equal(expected, LexicographicalNumbersSolution.LexicalOrderByDepthFirstDigitTree(n));
+    public void LexicalOrderByDepthFirstDigitTree_LeetCodeExamples_ReturnsExpectedOrder(
+        int upperBound, int[] expected) =>
+        Assert.Equal(
+            expected, LexicographicalNumbersSolution.LexicalOrderByDepthFirstDigitTree(upperBound));
 }

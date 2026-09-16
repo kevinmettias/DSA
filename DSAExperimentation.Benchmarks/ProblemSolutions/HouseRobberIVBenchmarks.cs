@@ -12,11 +12,11 @@ public class HouseRobberIVBenchmarks
 {
     private const int RandomSeed = 2560; // LeetCode problem number
     private const int MaxValueExclusive = 2_000;
-    private const int KDivisor = 4;
+    private const int RequiredHouseCountDivisor = 4;
 
     private int[] _nums = [];
 
-    private int _k;
+    private int _requiredHouseCount;
     [Params(200, 2_000)]
     public int Length { get; set; }
 
@@ -25,12 +25,12 @@ public class HouseRobberIVBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _k = (Length / KDivisor) + 1;
+        _requiredHouseCount = (Length / RequiredHouseCountDivisor) + 1;
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScan() => HouseRobberIVSolution.MinCapabilityByLinearScan(_nums, _k);
+    public int LinearScan() => HouseRobberIVSolution.MinCapabilityByLinearScan(_nums, _requiredHouseCount);
 
     [Benchmark]
-    public int SequenceLowerBound() => HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(_nums, _k);
+    public int SequenceLowerBound() => HouseRobberIVSolution.MinCapabilityBySequenceLowerBound(_nums, _requiredHouseCount);
 }

@@ -59,5 +59,5 @@ internal static class XOfAKindInADeckOfCardsSolution
         return divisor >= MinPartitionSize;
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
 }

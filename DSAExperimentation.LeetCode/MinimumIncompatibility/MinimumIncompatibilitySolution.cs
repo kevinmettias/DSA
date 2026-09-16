@@ -3,15 +3,15 @@ using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.MinimumIncompatibility;
 
-// LeetCode 1681. Minimum Incompatibility: split nums into exactly k subsets of
-// equal size, none containing a repeated value, minimizing the total of each
+// LeetCode 1681. Minimum Incompatibility: split nums into exactly `groupCount` subsets
+// of equal size, none containing a repeated value, minimizing the total of each
 // subset's (max - min); report -1 when no such split exists.
 //
 // The search is a bitmask recursion over "which elements still need a group". Only
 // the set of remaining elements matters, never the order the earlier groups were
 // formed in, so each step canonicalizes by always putting the lowest still-
-// ungrouped index into the group being built - that collapses the k! orderings of
-// one grouping down to a single path.
+// ungrouped index into the group being built - that collapses the `groupCount`!
+// orderings of one grouping down to a single path.
 //
 // The same remaining-mask is still reachable through more than one grouping, which
 // is the whole difference between the two strategies: the baseline re-derives each
@@ -29,9 +29,11 @@ internal static class MinimumIncompatibilitySolution
     // remaining-mask reachable through several grouping orders is recomputed once
     // per path that reaches it. Deliberately written without this repo's primitives
     // - it is the arm the memoized strategy has to justify itself against.
-    public static int MinimumIncompatibilityByUnmemoizedRecursion(int[] nums, int k)
+    public static int MinimumIncompatibilityByUnmemoizedRecursion(
+        int[] nums, int groupCount)
     {
-        var plan = new GroupingPlan<HashSet<int>>(nums, nums.Length / k, HashSetNovelty.Instance);
+        var plan = new GroupingPlan<HashSet<int>>(
+            nums, nums.Length / groupCount, HashSetNovelty.Instance);
         var fullMask = (1 << nums.Length) - 1;
         var best = BestGrouping(plan, fullMask);
 
@@ -41,9 +43,11 @@ internal static class MinimumIncompatibilitySolution
     // Composed: this repo's own Memoizer<TState,TResult> supplies the cache, keyed
     // on the exact remaining-mask the recurrence branches on, so each of the 2^n
     // reachable states is evaluated once however many grouping orders reach it.
-    public static int MinimumIncompatibilityByMemoizedRecursion(int[] nums, int k)
+    public static int MinimumIncompatibilityByMemoizedRecursion(
+        int[] nums, int groupCount)
     {
-        var plan = new GroupingPlan<Set<int>>(nums, nums.Length / k, SetNovelty.Instance);
+        var plan = new GroupingPlan<Set<int>>(
+            nums, nums.Length / groupCount, SetNovelty.Instance);
         var fullMask = (1 << nums.Length) - 1;
 
         var best = Memoizer.Memoize(fullMask, new BestGroupingFromMask<Set<int>>(plan));
@@ -53,8 +57,8 @@ internal static class MinimumIncompatibilitySolution
 
     // The memoized recurrence, as a named type: `remaining` is the set of elements still
     // waiting for a group, and the lowest still-ungrouped one always joins the group
-    // being built - which is what collapses the k! orderings of one grouping into one
-    // path - leaving every legal companion subset of the rest to be tried.
+    // being built - which is what collapses the `groupCount`! orderings of one grouping
+    // into one path - leaving every legal companion subset of the rest to be tried.
     private sealed class BestGroupingFromMask<TSeen>(GroupingPlan<TSeen> plan) : IRecurrence<int, int>
     {
         public int Replay(int remaining, IRecurrence<int, int> rest)
@@ -177,7 +181,7 @@ internal static class MinimumIncompatibilitySolution
                 continue;
             }
 
-            if (!plan.Novelty.Admit(seen, plan.Nums[i]))
+            if (!plan.Novelty.TryAdmit(seen, plan.Nums[i]))
             {
                 return false;
             }

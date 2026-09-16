@@ -41,23 +41,23 @@ internal static class BlockPlacementQueriesSolution
         obstacles.Insert(~index, position);
     }
 
-    private static bool CanPlace(List<long> obstacles, long x, long size)
+    private static bool CanPlace(List<long> obstacles, long coordinate, long size)
     {
         var maxGap = 0L;
 
-        for (var i = 0; i < obstacles.Count && obstacles[i] <= x; i++)
+        for (var i = 0; i < obstacles.Count && obstacles[i] <= coordinate; i++)
         {
-            var nextIsWithinRange = i + 1 < obstacles.Count && obstacles[i + 1] <= x;
-            var rightBound = nextIsWithinRange ? NextObstaclePosition(obstacles, i) : x;
+            var nextIsWithinRange = i + 1 < obstacles.Count && obstacles[i + 1] <= coordinate;
+            var rightBound = nextIsWithinRange ? NextObstaclePosition(obstacles, i) : coordinate;
             maxGap = Math.Max(maxGap, rightBound - obstacles[i]);
         }
 
         return size <= maxGap;
     }
 
-    // The obstacle following index i, read only where the caller has already
-    // established that one exists at or before x.
-    private static long NextObstaclePosition(List<long> obstacles, int i) => obstacles[i + 1];
+    // The obstacle following obstacleIndex, read only where the caller has already
+    // established that one exists at or before coordinate.
+    private static long NextObstaclePosition(List<long> obstacles, int obstacleIndex) => obstacles[obstacleIndex + 1];
 
     // This repo's own point-update SegmentTree<long, MaxOperation<long>> for
     // "the largest gap ending at or before a coordinate", plus this problem's

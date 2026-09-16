@@ -15,6 +15,6 @@ public sealed class ReverseBitsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ReverseByBitShift_LeetCodeExamples_ReturnsReversedBitPattern(uint n, uint expected) =>
-        Assert.Equal(expected, ReverseBitsSolution.ReverseByBitShift(n));
+    public void ReverseByBitShift_LeetCodeExamples_ReturnsReversedBitPattern(uint value, uint expected) =>
+        Assert.Equal(expected, ReverseBitsSolution.ReverseByBitShift(value));
 }

@@ -49,25 +49,25 @@ internal static class RobotCollisionsSolution
         return [.. items.OrderBy(item => item.Index).Select(item => item.Health)];
     }
 
-    private static void ResolvePair(List<(int Index, int Health, char Direction)> items, int i)
+    private static void ResolvePair(List<(int Index, int Health, char Direction)> items, int pairIndex)
     {
-        var (leftIndex, leftHealth, leftDirection) = items[i];
-        var (rightIndex, rightHealth, rightDirection) = items[i + 1];
+        var (leftIndex, leftHealth, leftDirection) = items[pairIndex];
+        var (rightIndex, rightHealth, rightDirection) = items[pairIndex + 1];
 
         if (leftHealth > rightHealth)
         {
-            items[i] = (leftIndex, leftHealth - 1, leftDirection);
-            items.RemoveAt(i + 1);
+            items[pairIndex] = (leftIndex, leftHealth - 1, leftDirection);
+            items.RemoveAt(pairIndex + 1);
         }
         else if (leftHealth < rightHealth)
         {
-            items[i + 1] = (rightIndex, rightHealth - 1, rightDirection);
-            items.RemoveAt(i);
+            items[pairIndex + 1] = (rightIndex, rightHealth - 1, rightDirection);
+            items.RemoveAt(pairIndex);
         }
         else
         {
-            items.RemoveAt(i + 1);
-            items.RemoveAt(i);
+            items.RemoveAt(pairIndex + 1);
+            items.RemoveAt(pairIndex);
         }
     }
 

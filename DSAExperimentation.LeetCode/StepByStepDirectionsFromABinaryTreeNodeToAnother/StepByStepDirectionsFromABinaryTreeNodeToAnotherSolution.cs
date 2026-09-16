@@ -62,7 +62,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
             return true;
         }
 
-        if (DescendsToTarget(node, target, path))
+        if (HasTargetInSubtrees(node, target, path))
         {
             return true;
         }
@@ -73,14 +73,14 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
 
     // The target hangs off this node: the left child is tried before the right,
     // because each attempt appends to the shared path and rolls it back on failure.
-    private static bool DescendsToTarget(
+    private static bool HasTargetInSubtrees(
         BinaryTreeNode<int> node, BinaryTreeNode<int> target, List<BinaryTreeNode<int>> path)
         => (node.Left is not null && TryFindPath(node.Left, target, path))
             || (node.Right is not null && TryFindPath(node.Right, target, path));
 
     // The two paths still agree here: both have a step at this offset, and it is
     // the same node.
-    private static bool PathsAgreeAt(
+    private static bool IsSameNodeAtOffset(
         List<BinaryTreeNode<int>> pathToStart, List<BinaryTreeNode<int>> pathToDest, int offset)
         => offset < pathToStart.Count
             && offset < pathToDest.Count
@@ -93,7 +93,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
     {
         var commonLength = 0;
 
-        while (PathsAgreeAt(pathToStart, pathToDest, commonLength))
+        while (IsSameNodeAtOffset(pathToStart, pathToDest, commonLength))
         {
             commonLength++;
         }

@@ -3,12 +3,13 @@ using RepoRunQueue = DSAExperimentation.DataStructures.Queue.Queue<(int Count, i
 namespace DSAExperimentation.LeetCode.RLEIterator;
 
 // LeetCode 900. RLE Iterator: an encoding of (count, value) run pairs is exhausted
-// by repeated next(n) calls, each consuming the next n elements of the decoded
-// sequence and returning the last one consumed - or -1 if fewer than n remain.
+// by repeated next(elementCount) calls, each consuming the next elementCount
+// elements of the decoded sequence and returning the last one consumed - or -1 if
+// fewer than elementCount remain.
 //
 // A design problem - LeetCode's own shape is a stateful object with a single
-// next(n) operation, not one return value - so the strategy choice is which
-// implementation backs it, the same shape PeekingIteratorSolution uses for LC 284.
+// next(elementCount) operation, not one return value - so the strategy choice is
+// which implementation backs it, the same shape PeekingIteratorSolution uses for LC 284.
 //
 // IRleIterator is bespoke to this problem alone, so it stays here rather than in
 // DataStructures/.
@@ -36,17 +37,17 @@ internal static class RLEIteratorSolution
 
         public DecompressedArrayRleIterator(int[] encoding) => _values = Decompress(encoding);
 
-        public int Next(int n)
+        public int Next(int elementCount)
         {
             var last = LeetCodeAnswer.None;
 
-            while (n > 0 && _index < _values.Length)
+            while (elementCount > 0 && _index < _values.Length)
             {
                 last = _values[_index++];
-                n--;
+                elementCount--;
             }
 
-            return n > 0 ? LeetCodeAnswer.None : last;
+            return elementCount > 0 ? LeetCodeAnswer.None : last;
         }
 
         private static int[] Decompress(int[] encoding)
@@ -87,9 +88,9 @@ internal static class RLEIteratorSolution
             }
         }
 
-        public int Next(int n)
+        public int Next(int elementCount)
         {
-            while (n > 0)
+            while (elementCount > 0)
             {
                 if (_remaining == 0)
                 {
@@ -102,9 +103,9 @@ internal static class RLEIteratorSolution
                     _value = run.Value;
                 }
 
-                var consumed = Math.Min(n, _remaining);
+                var consumed = Math.Min(elementCount, _remaining);
                 _remaining -= consumed;
-                n -= consumed;
+                elementCount -= consumed;
             }
 
             return _value;

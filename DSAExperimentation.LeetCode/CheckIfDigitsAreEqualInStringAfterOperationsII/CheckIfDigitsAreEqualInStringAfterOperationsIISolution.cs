@@ -27,7 +27,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsIISolution
     // Part I's own baseline is the one implementation of it rather than a second
     // copy restating the same loop under this file's own modulus name.
     public static bool IsEqualByAdjacentSumReduction(string digits) =>
-        CheckIfDigitsAreEqualInStringAfterOperationsISolution.AreEqualByAdjacentSumReduction(digits);
+        CheckIfDigitsAreEqualInStringAfterOperationsISolution.IsEqualByAdjacentSumReduction(digits);
 
     public static bool IsEqualByLucasBinomialCoefficients(string digits)
     {

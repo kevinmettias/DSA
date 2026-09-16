@@ -9,11 +9,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class LexicographicalNumbersBenchmarks
 {
     [Params(1_000, 500_000)]
-    public int N { get; set; }
+    public int UpperBound { get; set; }
 
     [Benchmark(Baseline = true)]
-    public List<int> StringSort() => LexicographicalNumbersSolution.LexicalOrderByStringSort(N);
+    public List<int> StringSort() => LexicographicalNumbersSolution.LexicalOrderByStringSort(UpperBound);
 
     [Benchmark]
-    public List<int> DepthFirstDigitTree() => LexicographicalNumbersSolution.LexicalOrderByDepthFirstDigitTree(N);
+    public List<int> DepthFirstDigitTree() =>
+        LexicographicalNumbersSolution.LexicalOrderByDepthFirstDigitTree(UpperBound);
 }

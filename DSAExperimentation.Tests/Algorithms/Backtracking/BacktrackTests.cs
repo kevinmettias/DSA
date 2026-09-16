@@ -145,9 +145,9 @@ public sealed partial class BacktrackTests
         {
             var subsets = new List<int[]>();
 
-            IEnumerable<int> CandidatesFrom(SubsetsScenario s)
+            IEnumerable<int> CandidatesFrom(SubsetsScenario scenario)
             {
-                var start = s.NextStartIndex();
+                var start = scenario.NextStartIndex();
                 return Enumerable.Range(start, nums.Length - start);
             }
 
@@ -155,9 +155,9 @@ public sealed partial class BacktrackTests
                 this,
                 isSolution: _ => true,
                 candidates: CandidatesFrom,
-                choose: (s, index) => s.ChosenIndices.Add(index),
-                unchoose: (s, _) => s.ChosenIndices.RemoveAt(s.ChosenIndices.Count - 1),
-                onSolution: s => subsets.Add(s.ChosenIndices.Select(i => nums[i]).ToArray()));
+                choose: (scenario, index) => scenario.ChosenIndices.Add(index),
+                unchoose: (scenario, _) => scenario.ChosenIndices.RemoveAt(scenario.ChosenIndices.Count - 1),
+                onSolution: scenario => subsets.Add(scenario.ChosenIndices.Select(i => nums[i]).ToArray()));
 
             return subsets;
         }

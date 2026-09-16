@@ -13,9 +13,9 @@ internal static class FirstBadVersionSolution
     // The textbook answer: call the oracle once per version, in order, until it turns
     // bad - O(n) worst case. Deliberately BCL-only; the oracle check is the only thing
     // either strategy is allowed to know about the input's shape.
-    public static int FirstBadVersionByLinearScan(int n, int firstBad)
+    public static int FirstBadVersionByLinearScan(int versionCount, int firstBad)
     {
-        for (var version = 1; version <= n; version++)
+        for (var version = 1; version <= versionCount; version++)
         {
             if (IsBadVersion(version, firstBad))
             {
@@ -31,15 +31,15 @@ internal static class FirstBadVersionSolution
     // This repo's own BinarySearch.LowerBound over a monotone virtual sequence - the
     // oracle is computed on demand via Get, so the O(n) version history is never
     // materialized, and LowerBound finds the flip point in O(log n) probes.
-    public static int FirstBadVersionByLowerBound(int n, int firstBad)
+    public static int FirstBadVersionByLowerBound(int versionCount, int firstBad)
     {
-        var sequence = new IsBadVersionSequence(firstBad, n);
+        var sequence = new IsBadVersionSequence(firstBad, versionCount);
 
         return BinarySearch.LowerBound<int, IsBadVersionSequence>(sequence, 1) + 1;
     }
 
     // index is the 0-based version-1: every version from firstBad onward is bad, and
-    // the sequence never actually allocates the n versions it represents. A witness
+    // the sequence never actually allocates the versions it represents. A witness
     // for this problem alone - the flip-point formula is First Bad Version's own
     // content, not a general "virtual monotone sequence" shape.
     private readonly struct IsBadVersionSequence(int firstBad, int length) : IRandomAccessSequence<int>

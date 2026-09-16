@@ -101,7 +101,7 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
 
         private void ShrinkToLimit()
         {
-            while (WindowSpreadExceedsLimit(_maxWindow, _minWindow, nums, limit))
+            while (IsWindowSpreadOverLimit(_maxWindow, _minWindow, nums, limit))
             {
                 _left++;
                 DropStaleFronts();
@@ -110,7 +110,7 @@ internal static class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualTo
 
         // The window is over its limit while both deques still hold a front and the spread
         // between those two fronts - largest value minus smallest - is past limit.
-        private static bool WindowSpreadExceedsLimit(
+        private static bool IsWindowSpreadOverLimit(
             RepoDeque maxWindow, RepoDeque minWindow, int[] nums, int limit) =>
             maxWindow.TryPeekFront(out var maxFront) && minWindow.TryPeekFront(out var minFront) &&
             nums[maxFront] - nums[minFront] > limit;

@@ -31,10 +31,12 @@ public class ContainsDuplicateIIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool SlidingWindowBruteForce() =>
-        ContainsDuplicateIIISolution.ContainsNearbyAlmostDuplicateBySlidingWindowBruteForce(_values, IndexDiff, ValueDiff);
+    public bool HasNearbyAlmostDuplicateBySlidingWindowBruteForce() =>
+        ContainsDuplicateIIISolution.HasNearbyAlmostDuplicateBySlidingWindowBruteForce(
+            _values, IndexDiff, ValueDiff);
 
     [Benchmark]
-    public bool BucketedHashMap() =>
-        ContainsDuplicateIIISolution.ContainsNearbyAlmostDuplicateByBucketedHashMap(_values, IndexDiff, ValueDiff);
+    public bool HasNearbyAlmostDuplicateByBucketedHashMap() =>
+        ContainsDuplicateIIISolution.HasNearbyAlmostDuplicateByBucketedHashMap(
+            _values, IndexDiff, ValueDiff);
 }

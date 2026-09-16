@@ -15,7 +15,7 @@ public class LengthOfTheLongestIncreasingPathBenchmarks
 
     private int[][] _coordinates = [];
 
-    private int _k;
+    private int _requiredIndex;
     [Params(200, 1_000)]
     public int PointCount { get; set; }
 
@@ -31,12 +31,14 @@ public class LengthOfTheLongestIncreasingPathBenchmarks
         }
 
         _coordinates = seen.Select(p => new[] { p.X, p.Y }).ToArray();
-        _k = PointCount / 2;
+        _requiredIndex = PointCount / 2;
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce() => LengthOfTheLongestIncreasingPathSolution.MaxPathLengthByBruteForce(_coordinates, _k);
+    public int BruteForce() => LengthOfTheLongestIncreasingPathSolution.MaxPathLengthByBruteForce(
+        _coordinates, _requiredIndex);
 
     [Benchmark]
-    public int SegmentTreeSweep() => LengthOfTheLongestIncreasingPathSolution.MaxPathLengthBySegmentTree(_coordinates, _k);
+    public int SegmentTreeSweep() => LengthOfTheLongestIncreasingPathSolution.MaxPathLengthBySegmentTree(
+        _coordinates, _requiredIndex);
 }

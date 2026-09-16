@@ -88,15 +88,16 @@ internal static class MinimumMovesToReachTargetInGridSolution
 
     // Undoes the single forced last move, reporting false once the walk reaches a state
     // no move could have produced.
-    private static bool TryStepBack(long x, long y, ref long targetX, ref long targetY)
+    private static bool TryStepBack(
+        long startX, long startY, ref long targetX, ref long targetY)
     {
         if (targetX == targetY)
         {
-            if (x == 0)
+            if (startX == 0)
             {
                 targetX = 0;
             }
-            else if (y == 0)
+            else if (startY == 0)
             {
                 targetY = 0;
             }

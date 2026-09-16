@@ -17,10 +17,10 @@ public sealed class BestTimeToBuyAndSellStockUsingStrategyTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitByBruteForceWindowSum_LeetCodeExamples_ReturnsBestAchievableProfit(
-        int[] prices, int[] strategy, int k, long expected)
+        int[] prices, int[] strategy, int windowSize, long expected)
     {
         var actual = BestTimeToBuyAndSellStockUsingStrategySolution.MaxProfitByBruteForceWindowSum(
-            prices, strategy, k);
+            prices, strategy, windowSize);
 
         Assert.Equal(expected, actual);
     }
@@ -28,10 +28,10 @@ public sealed class BestTimeToBuyAndSellStockUsingStrategyTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MaxProfitBySlidingWindowSum_LeetCodeExamples_ReturnsBestAchievableProfit(
-        int[] prices, int[] strategy, int k, long expected)
+        int[] prices, int[] strategy, int windowSize, long expected)
     {
         var actual = BestTimeToBuyAndSellStockUsingStrategySolution.MaxProfitBySlidingWindowSum(
-            prices, strategy, k);
+            prices, strategy, windowSize);
 
         Assert.Equal(expected, actual);
     }

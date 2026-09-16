@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.DistinctSubsequences;
 // exactly when it matches the next unconsumed target character.
 internal static class DistinctSubsequencesSolution
 {
-    public static int NumDistinctByMemoizedRecursion(SourceText source, TargetPattern target) =>
+    public static int CountDistinctSubsequencesByMemoizedRecursion(SourceText source, TargetPattern target) =>
         Memoizer.Memoize<(int Source, int Target), int>((0, 0), new MatchesFromConsumedPrefixes(source, target));
 
     // The recurrence, as a named type: a fully consumed target is one match, a fully

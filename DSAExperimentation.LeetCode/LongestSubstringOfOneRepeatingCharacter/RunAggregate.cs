@@ -28,8 +28,12 @@ internal readonly struct RunAggregate : ICombineOperation<RunSegment>
         }
 
         var bridges = left.Right == right.Left;
-        var prefixLen = bridges && left.PrefixLen == left.Len ? BridgedPrefixLen(left, right) : left.PrefixLen;
-        var suffixLen = bridges && right.SuffixLen == right.Len ? BridgedSuffixLen(left, right) : right.SuffixLen;
+        var prefixLen = bridges && left.PrefixLen == left.Len
+            ? BridgedPrefixLength(left, right)
+            : left.PrefixLen;
+        var suffixLen = bridges && right.SuffixLen == right.Len
+            ? BridgedSuffixLength(left, right)
+            : right.SuffixLen;
         var maxLen = Math.Max(left.MaxLen, right.MaxLen);
 
         if (bridges)
@@ -42,9 +46,9 @@ internal readonly struct RunAggregate : ICombineOperation<RunSegment>
 
     // The left range is one run that bridges, so it carries the merged prefix
     // past itself and into the right range's leading run.
-    private static int BridgedPrefixLen(RunSegment left, RunSegment right) => left.Len + right.PrefixLen;
+    private static int BridgedPrefixLength(RunSegment left, RunSegment right) => left.Len + right.PrefixLen;
 
     // The mirror of the above: the right range is one run that bridges, so it
     // carries the merged suffix back into the left range's trailing run.
-    private static int BridgedSuffixLen(RunSegment left, RunSegment right) => right.Len + left.SuffixLen;
+    private static int BridgedSuffixLength(RunSegment left, RunSegment right) => right.Len + left.SuffixLen;
 }

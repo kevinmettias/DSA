@@ -32,7 +32,7 @@ internal readonly record struct RaceCarStateSpace(int PositionBound, int MaxSpee
         return magnitude;
     }
 
-    public bool Contains(int position, int speed) =>
+    public bool IsWithinBounds(int position, int speed) =>
         Math.Abs(position) <= PositionBound && Math.Abs(speed) <= MaxSpeedMagnitude;
 
     // Both signs of every reachable speed magnitude: speeds only ever start at +-1

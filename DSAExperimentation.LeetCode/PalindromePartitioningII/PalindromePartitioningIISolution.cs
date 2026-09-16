@@ -13,8 +13,8 @@ namespace DSAExperimentation.LeetCode.PalindromePartitioningII;
 // approach to reconcile against.
 internal static class PalindromePartitioningIISolution
 {
-    public static int MinCutByMemoizedSuffixRecurrence(string s) =>
-        Memoizer.Memoize<int, int>(0, new MinPiecesFromSuffix(s)) - 1;
+    public static int MinCutByMemoizedSuffixRecurrence(string text) =>
+        Memoizer.Memoize<int, int>(0, new MinPiecesFromSuffix(text)) - 1;
 
     // The recurrence itself, named: one piece for every palindromic prefix of the
     // remaining suffix, plus the fewest pieces covering whatever follows it.
@@ -41,11 +41,11 @@ internal static class PalindromePartitioningIISolution
         }
     }
 
-    private static bool IsPalindrome(string s, int left, int right)
+    private static bool IsPalindrome(string text, int left, int right)
     {
         while (left < right)
         {
-            if (s[left++] != s[right--])
+            if (text[left++] != text[right--])
             {
                 return false;
             }

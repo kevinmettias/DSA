@@ -20,6 +20,6 @@ public sealed class RepeatedDNASequencesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindByFixedWindowSet_LeetCodeExamples_ReturnsRepeatedWindowsInFirstAppearanceOrder(
-        string s, string[] expected) =>
-        Assert.Equal(expected, RepeatedDNASequencesSolution.FindByFixedWindowSet(s));
+        string sequence, string[] expected) =>
+        Assert.Equal(expected, RepeatedDNASequencesSolution.FindByFixedWindowSet(sequence));
 }

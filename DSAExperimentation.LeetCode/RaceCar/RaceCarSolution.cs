@@ -50,7 +50,7 @@ internal static class RaceCarSolution
         var acceleratePosition = state.Position + state.Speed;
         var accelerateSpeed = state.Speed * RaceCarMotion.SpeedDoublingFactor;
 
-        if (walk.Space.Contains(acceleratePosition, accelerateSpeed) &&
+        if (walk.Space.IsWithinBounds(acceleratePosition, accelerateSpeed) &&
             walk.Visited.Add((acceleratePosition, accelerateSpeed)))
         {
             walk.Queue.Enqueue((acceleratePosition, accelerateSpeed, state.Commands + 1));

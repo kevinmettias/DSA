@@ -12,7 +12,7 @@ public sealed class EdgeTargetsTests
     public void Count_MatchesTheWrappedEdgeCount() => Assert.Equal(2, Targets().Count);
 
     [Fact]
-    public void Get_DropsTheEdgeDataAndKeepsTheTarget()
+    public void Get_DropsTheEdgePayloadAndKeepsTheTarget()
     {
         var targets = Targets();
 

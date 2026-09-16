@@ -117,10 +117,10 @@ internal static class MaximumNumberOfDartsInsideOfACircularDartboardSolution
     // ends. Null when the darts are further apart than a diameter, since no such
     // circle exists then.
     private static ((double X, double Y) First, (double X, double Y) Second)? BoundaryCenters(
-        int[] a, int[] b, int radius)
+        int[] firstDart, int[] secondDart, int radius)
     {
-        var dx = (double)(b[0] - a[0]);
-        var dy = (double)(b[1] - a[1]);
+        var dx = (double)(secondDart[0] - firstDart[0]);
+        var dy = (double)(secondDart[1] - firstDart[1]);
         var distanceSquared = (dx * dx) + (dy * dy);
 
         if (distanceSquared > MaxPairDistanceSquaredFactor * radius * radius)
@@ -128,8 +128,8 @@ internal static class MaximumNumberOfDartsInsideOfACircularDartboardSolution
             return null;
         }
 
-        var midX = (a[0] + b[0]) / Half;
-        var midY = (a[1] + b[1]) / Half;
+        var midX = (firstDart[0] + secondDart[0]) / Half;
+        var midY = (firstDart[1] + secondDart[1]) / Half;
         var distance = Math.Sqrt(distanceSquared);
         var halfChord = distance / Half;
         var heightSquared = Math.Max(0.0, ((double)radius * radius) - (halfChord * halfChord));

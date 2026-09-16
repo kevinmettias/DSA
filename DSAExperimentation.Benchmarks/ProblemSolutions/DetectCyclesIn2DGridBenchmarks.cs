@@ -38,10 +38,10 @@ public class DetectCyclesIn2DGridBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool ParentTrackedDepthFirstSearch() =>
-        DetectCyclesIn2DGridSolution.ContainsCycleByParentTrackedDepthFirstSearch(_grid);
+    public bool HasCycleByParentTrackedDepthFirstSearch() =>
+        DetectCyclesIn2DGridSolution.HasCycleByParentTrackedDepthFirstSearch(_grid);
 
     [Benchmark]
-    public bool DisjointSetEdgeUnion() =>
-        DetectCyclesIn2DGridSolution.ContainsCycleByDisjointSetEdgeUnion(_grid);
+    public bool HasCycleByDisjointSetEdgeUnion() =>
+        DetectCyclesIn2DGridSolution.HasCycleByDisjointSetEdgeUnion(_grid);
 }

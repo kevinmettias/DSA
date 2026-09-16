@@ -53,18 +53,18 @@ internal static class MinimumSumOfValuesByDividingArraySolution
     private sealed class DictionaryMemoRun(int[] nums, int[] andValues)
         : IRecurrence<(int Index, int GroupIndex), long?>
     {
-        private readonly MinimumSumFromGroupStart step = new(nums, andValues);
-        private readonly Dictionary<(int Index, int GroupIndex), long?> memo = [];
+        private readonly MinimumSumFromGroupStart _step = new(nums, andValues);
+        private readonly Dictionary<(int Index, int GroupIndex), long?> _memo = [];
 
         public long? Replay((int Index, int GroupIndex) state, IRecurrence<(int Index, int GroupIndex), long?> rest)
         {
-            if (memo.TryGetValue(state, out var cached))
+            if (_memo.TryGetValue(state, out var cached))
             {
                 return cached;
             }
 
-            var result = step.Replay(state, this);
-            memo[state] = result;
+            var result = _step.Replay(state, this);
+            _memo[state] = result;
             return result;
         }
     }

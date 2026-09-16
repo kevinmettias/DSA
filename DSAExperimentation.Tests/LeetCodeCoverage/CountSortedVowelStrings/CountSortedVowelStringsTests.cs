@@ -22,12 +22,12 @@ public sealed class CountSortedVowelStringsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountVowelStringsByBacktrackingEnumeration_LeetCodeExamples_ReturnsExpectedCount(
-        int n, int expected) =>
-        Assert.Equal(expected, CountSortedVowelStringsSolution.CountVowelStringsByBacktrackingEnumeration(n));
+        int length, int expected) =>
+        Assert.Equal(expected, CountSortedVowelStringsSolution.CountVowelStringsByBacktrackingEnumeration(length));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CountVowelStringsByMemoizedRecurrence_LeetCodeExamples_ReturnsExpectedCount(
-        int n, int expected) =>
-        Assert.Equal(expected, CountSortedVowelStringsSolution.CountVowelStringsByMemoizedRecurrence(n));
+        int length, int expected) =>
+        Assert.Equal(expected, CountSortedVowelStringsSolution.CountVowelStringsByMemoizedRecurrence(length));
 }

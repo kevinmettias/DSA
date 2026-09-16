@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
 // stack holds exactly the expression's value.
 internal static class EvaluateReversePolishNotationSolution
 {
-    public static int EvalByOperandStack(string[] tokens)
+    public static int EvaluateByOperandStack(string[] tokens)
     {
         var stack = new IntStack();
 

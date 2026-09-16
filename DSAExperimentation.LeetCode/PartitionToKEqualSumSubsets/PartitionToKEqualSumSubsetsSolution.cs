@@ -5,47 +5,48 @@ namespace DSAExperimentation.LeetCode.PartitionToKEqualSumSubsets;
 // LeetCode 698. Partition to K Equal Sum Subsets: can every number be assigned to
 // one of k buckets so all k buckets end up with the same sum?
 //
-// The k=4 generalization of LeetCode 473 (MatchsticksToSquare) - both strategies
-// assign numbers, largest first, to one of k running bucket sums, backtracking
-// whenever a placement would overshoot the target bucket sum. Candidates only
-// offers buckets that don't overshoot, which by construction (every bucket <=
-// target, and the total is a multiple of k) forces every bucket to land on
-// exactly the target once all numbers are placed.
+// The four-bucket generalization of LeetCode 473 (MatchsticksToSquare) - both
+// strategies assign numbers, largest first, to one of the bucketCount running
+// bucket sums, backtracking whenever a placement would overshoot the target bucket
+// sum. Candidates only offers buckets that don't overshoot, which by construction
+// (every bucket <= target, and the total is a multiple of bucketCount) forces every
+// bucket to land on exactly the target once all numbers are placed.
 internal static class PartitionToKEqualSumSubsetsSolution
 {
-    // The textbook recursion: a hand-written DFS over k running bucket sums,
+    // The textbook recursion: a hand-written DFS over bucketCount running bucket sums,
     // undoing a placement on backtrack. Deliberately written without this repo's
     // Backtrack primitive - it is the arm the composed solution below has to
     // justify itself against.
-    public static bool CanPartitionKSubsetsByNaiveBacktracking(int[] nums, int k)
+    public static bool CanPartitionKSubsetsByNaiveBacktracking(int[] nums, int bucketCount)
     {
-        if (!TryComputeTarget(nums, k, out var target))
+        if (!TryComputeTarget(nums, bucketCount, out var target))
         {
             return false;
         }
 
         var sorted = SortedDescending(nums);
-        var buckets = new int[k];
+        var buckets = new int[bucketCount];
 
-        return SearchByNaiveBacktracking(sorted, (buckets, target), 0);
+        return TrySearchByNaiveBacktracking(sorted, (buckets, target), 0);
     }
 
     // This repo's own Backtrack.TrySearch (the NQueens/SudokuSolver/
     // MatchsticksToSquare precedent), closed over the same choose/explore/
-    // unchoose steps NaiveBacktracking writes out by hand.
-    public static bool CanPartitionKSubsetsByGenericBacktrack(int[] nums, int k)
+    // unchoose steps TrySearchByNaiveBacktracking writes out by hand.
+    public static bool CanPartitionKSubsetsByGenericBacktrack(int[] nums, int bucketCount)
     {
-        if (!TryComputeTarget(nums, k, out var target))
+        if (!TryComputeTarget(nums, bucketCount, out var target))
         {
             return false;
         }
 
         var sorted = SortedDescending(nums);
-        var state = new BucketState(sorted, target, k);
+        var state = new BucketState(sorted, target, bucketCount);
 
         return Backtrack.TrySearch<BucketState, int>(state, new BacktrackingSteps<BucketState, int>(
             IsSolution: s => s.Index == sorted.Length,
-            Candidates: s => s.Index == sorted.Length ? Array.Empty<int>() : AvailableBuckets(s, k),
+            Candidates: s =>
+                s.Index == sorted.Length ? Array.Empty<int>() : AvailableBuckets(s, bucketCount),
             Choose: (s, bucket) => s.Place(bucket),
             Unchoose: (s, bucket) => s.Remove(bucket),
             OnSolution: _ => true));
@@ -57,9 +58,10 @@ internal static class PartitionToKEqualSumSubsetsSolution
         => Enumerable.Range(0, bucketCount).Where(state.CanPlace);
 
     // The running bucket sums and the target each of them has to land on are one
-    // thing - the bucket state the search is filling - and k is just how many of
-    // them there are, so it is read off the array rather than threaded alongside it.
-    private static bool SearchByNaiveBacktracking(int[] sorted, (int[] Buckets, int Target) state, int index)
+    // thing - the bucket state the search is filling - and how many buckets there
+    // are is read off the array rather than threaded alongside it.
+    private static bool TrySearchByNaiveBacktracking(
+        int[] sorted, (int[] Buckets, int Target) state, int index)
     {
         if (index == sorted.Length)
         {
@@ -86,7 +88,7 @@ internal static class PartitionToKEqualSumSubsetsSolution
 
         state.Buckets[bucket] += sorted[index];
 
-        if (SearchByNaiveBacktracking(sorted, state, index + 1))
+        if (TrySearchByNaiveBacktracking(sorted, state, index + 1))
         {
             return true;
         }
@@ -95,23 +97,23 @@ internal static class PartitionToKEqualSumSubsetsSolution
         return false;
     }
 
-    private static bool TryComputeTarget(int[] nums, int k, out int target)
+    private static bool TryComputeTarget(int[] nums, int bucketCount, out int target)
     {
         target = 0;
 
-        if (k <= 0 || nums.Length < k)
+        if (bucketCount <= 0 || nums.Length < bucketCount)
         {
             return false;
         }
 
         var total = nums.Sum();
 
-        if (total % k != 0)
+        if (total % bucketCount != 0)
         {
             return false;
         }
 
-        target = total / k;
+        target = total / bucketCount;
         return nums.Max() <= target;
     }
 
@@ -123,9 +125,9 @@ internal static class PartitionToKEqualSumSubsetsSolution
         return sorted;
     }
 
-    private sealed class BucketState(int[] nums, int target, int k)
+    private sealed class BucketState(int[] nums, int target, int bucketCount)
     {
-        private readonly int[] _buckets = new int[k];
+        private readonly int[] _buckets = new int[bucketCount];
 
         public int Index { get; private set; }
 

@@ -82,12 +82,12 @@ internal static class ClosestNodesQueriesInABinarySearchTreeSolution
             return;
         }
 
-        if (ImprovesFloor(node.Value, query, floor))
+        if (IsBetterFloor(node.Value, query, floor))
         {
             floor = node.Value;
         }
 
-        if (ImprovesCeiling(node.Value, query, ceiling))
+        if (IsBetterCeiling(node.Value, query, ceiling))
         {
             ceiling = node.Value;
         }
@@ -96,14 +96,14 @@ internal static class ClosestNodesQueriesInABinarySearchTreeSolution
         Scan(node.Right, query, ref floor, ref ceiling);
     }
 
-    // A node improves the floor when it does not overshoot the query and either no
+    // A node is a better floor when it does not overshoot the query and either no
     // floor has been seen yet or this value sits closer to the query from below.
-    private static bool ImprovesFloor(int value, int query, int floor) =>
+    private static bool IsBetterFloor(int value, int query, int floor) =>
         value <= query && (floor == LeetCodeAnswer.None || value > floor);
 
     // The mirror of the above on the other side: the best ceiling is the smallest node
     // value still at or above the query.
-    private static bool ImprovesCeiling(int value, int query, int ceiling) =>
+    private static bool IsBetterCeiling(int value, int query, int ceiling) =>
         value >= query && (ceiling == LeetCodeAnswer.None || value < ceiling);
 
     // Hooks are static, so the buffer being filled lives in AsyncLocal state

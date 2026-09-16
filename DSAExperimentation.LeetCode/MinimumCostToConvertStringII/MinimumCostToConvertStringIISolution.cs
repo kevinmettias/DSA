@@ -189,42 +189,42 @@ internal static class MinimumCostToConvertStringIISolution
     // One position of the walk: a position whose character is already right costs
     // nothing, and any same-length window the strategy can price is one operation
     // (or a chain of operations) over source[i..i+L).
-    private static void RelaxFromPosition(long[] dp, int i, ConversionWalk walk)
+    private static void RelaxFromPosition(long[] dp, int position, ConversionWalk walk)
     {
-        if (dp[i] >= Unreachable)
+        if (dp[position] >= Unreachable)
         {
             return;
         }
 
-        if (walk.Source[i] == walk.Target[i])
+        if (walk.Source[position] == walk.Target[position])
         {
-            Relax(dp, i + 1, dp[i]);
+            Relax(dp, position + 1, dp[position]);
         }
 
         foreach (var length in walk.Lengths)
         {
-            RelaxWindow(dp, i, length, walk);
+            RelaxWindow(dp, position, length, walk);
         }
     }
 
     // One window at one position. A window that runs off the end cannot be chosen,
     // and neither can one `pricing` has no price for - the rules simply never spell
     // that conversion.
-    private static void RelaxWindow(long[] dp, int i, int length, ConversionWalk walk)
+    private static void RelaxWindow(long[] dp, int position, int length, ConversionWalk walk)
     {
-        if (i + length > walk.Source.Length)
+        if (position + length > walk.Source.Length)
         {
             return;
         }
 
-        var fromWindow = walk.Source.Substring(i, length);
-        var toWindow = walk.Target.Substring(i, length);
+        var fromWindow = walk.Source.Substring(position, length);
+        var toWindow = walk.Target.Substring(position, length);
         var windows = new WindowPair(fromWindow, toWindow);
         var edgeCost = walk.Pricing.CostOf(windows);
 
         if (edgeCost < Unreachable)
         {
-            Relax(dp, i + length, dp[i] + edgeCost);
+            Relax(dp, position + length, dp[position] + edgeCost);
         }
     }
 
@@ -236,9 +236,9 @@ internal static class MinimumCostToConvertStringIISolution
         return minimumCost < Unreachable ? minimumCost : LeetCodeAnswer.None;
     }
 
-    private static long[] NewDpArray(int n)
+    private static long[] NewDpArray(int sourceLength)
     {
-        var dp = new long[n + 1];
+        var dp = new long[sourceLength + 1];
         Array.Fill(dp, Unreachable);
         dp[0] = 0;
 

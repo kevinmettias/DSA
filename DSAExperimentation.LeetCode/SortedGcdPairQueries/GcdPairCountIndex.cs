@@ -116,8 +116,8 @@ internal sealed class GcdPairCountIndex
         return cumulative;
     }
 
-    // The smallest gcd value v for which more than k pairs have gcd <= v - LC's
-    // 0-indexed "k-th smallest" restated as a lower-bound lookup for k+1.
-    public int KthSmallestGcd(int k)
-        => BinarySearch.LowerBound<long, ArraySequence<long>>(new ArraySequence<long>(_cumulativePairCountUpTo), k + 1);
+    // The smallest gcd value v for which more than rank pairs have gcd <= v - LC's
+    // 0-indexed "k-th smallest" restated as a lower-bound lookup for rank + 1.
+    public int KthSmallestGcd(int rank)
+        => BinarySearch.LowerBound<long, ArraySequence<long>>(new ArraySequence<long>(_cumulativePairCountUpTo), rank + 1);
 }

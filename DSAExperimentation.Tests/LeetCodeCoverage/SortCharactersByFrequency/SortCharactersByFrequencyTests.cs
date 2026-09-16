@@ -13,20 +13,20 @@ public sealed class SortCharactersByFrequencyTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FrequencySortByDictionaryOrderBy_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s)
+    public void FrequencySortByDictionaryOrderBy_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string text)
     {
         var result = new FrequencySortResult(
-            s, SortCharactersByFrequencySolution.FrequencySortByDictionaryOrderBy(s));
+            text, SortCharactersByFrequencySolution.FrequencySortByDictionaryOrderBy(text));
 
         AssertOrderedByDescendingFrequency(result);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FrequencySortByHashMapHeap_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string s)
+    public void FrequencySortByHashMapHeap_LeetCodeExamples_OrdersCharactersByDescendingFrequency(string text)
     {
         var result = new FrequencySortResult(
-            s, SortCharactersByFrequencySolution.FrequencySortByHashMapHeap(s));
+            text, SortCharactersByFrequencySolution.FrequencySortByHashMapHeap(text));
 
         AssertOrderedByDescendingFrequency(result);
     }

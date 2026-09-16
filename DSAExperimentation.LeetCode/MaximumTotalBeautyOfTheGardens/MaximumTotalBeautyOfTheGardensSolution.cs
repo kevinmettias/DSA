@@ -149,16 +149,16 @@ internal static class MaximumTotalBeautyOfTheGardensSolution
         return best;
     }
 
-    private static long BeautyForSplit(SplitContext context, int i, long completionCost, IMaxAchievableHeight heightAt)
+    private static long BeautyForSplit(SplitContext context, int splitIndex, long completionCost, IMaxAchievableHeight heightAt)
     {
         var height = 0L;
 
-        if (i > 0 && context.AnyGardenIncomplete)
+        if (splitIndex > 0 && context.AnyGardenIncomplete)
         {
-            height = heightAt.Compute(i, context.Budget - completionCost);
+            height = heightAt.Compute(splitIndex, context.Budget - completionCost);
         }
 
-        return ((long)(context.N - i) * context.Weights.Full) + (height * context.Weights.Partial);
+        return ((long)(context.N - splitIndex) * context.Weights.Full) + (height * context.Weights.Partial);
     }
 
     private static long[] BuildPrefixSum(int[] sorted)

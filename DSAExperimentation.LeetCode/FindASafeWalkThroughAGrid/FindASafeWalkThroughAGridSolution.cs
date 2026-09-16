@@ -145,14 +145,14 @@ internal static class FindASafeWalkThroughAGridSolution
             return false;
         }
 
-        return SurvivesDamage(startCost, pathDamage, health);
+        return HasHealthToSpare(startCost, pathDamage, health);
     }
 
     // Dijkstra's own distances never include the source's cost, since every edge
     // weight it sums is charged to entering the DESTINATION - so the source cell's
     // own damage (already paid just by starting there) is added back in before the
     // health left over is checked.
-    private static bool SurvivesDamage(int startCost, int pathDamage, int health)
+    private static bool HasHealthToSpare(int startCost, int pathDamage, int health)
     {
         var totalDamage = startCost + pathDamage;
         return health - totalDamage >= 1;

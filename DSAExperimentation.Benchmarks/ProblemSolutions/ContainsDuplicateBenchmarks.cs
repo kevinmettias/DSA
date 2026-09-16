@@ -21,8 +21,8 @@ public class ContainsDuplicateBenchmarks
     public void Setup() => _nums = ContainsDuplicateWorkloads.BuildDistinctValues(Length, seed: Seed);
 
     [Benchmark(Baseline = true)]
-    public bool BruteForce() => ContainsDuplicateSolution.ContainsDuplicateByBruteForce(_nums);
+    public bool HasDuplicateByBruteForce() => ContainsDuplicateSolution.HasDuplicateByBruteForce(_nums);
 
     [Benchmark]
-    public bool SetProbe() => ContainsDuplicateSolution.ContainsDuplicateBySetProbe(_nums);
+    public bool HasDuplicateBySetProbe() => ContainsDuplicateSolution.HasDuplicateBySetProbe(_nums);
 }

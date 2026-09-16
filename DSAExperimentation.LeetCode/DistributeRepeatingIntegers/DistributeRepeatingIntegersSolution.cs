@@ -20,14 +20,14 @@ internal static class DistributeRepeatingIntegersSolution
     // Deliberately written without this repo's Backtrack primitive - it is the arm
     // the composed solution below has to justify itself against.
     public static bool CanDistributeByNaiveBacktracking(int[] nums, int[] quantity)
-        => SearchNaive(StockCountsOf(nums), OrdersDescending(quantity), 0);
+        => TrySearchNaive(StockCountsOf(nums), OrdersDescending(quantity), 0);
 
     // Section 17.4's hoisted overload: the stock counts are already prepared, so
     // grouping nums is not charged to the search being measured.
     public static bool CanDistributeByNaiveBacktracking(DynamicArray<int> stock, int[] quantity)
-        => SearchNaive(CopyOf(stock), OrdersDescending(quantity), 0);
+        => TrySearchNaive(CopyOf(stock), OrdersDescending(quantity), 0);
 
-    private static bool SearchNaive(int[] remaining, int[] orders, int index)
+    private static bool TrySearchNaive(int[] remaining, int[] orders, int index)
     {
         if (index == orders.Length)
         {
@@ -54,7 +54,7 @@ internal static class DistributeRepeatingIntegersSolution
 
         remaining[value] -= orders[index];
 
-        if (SearchNaive(remaining, orders, index + 1))
+        if (TrySearchNaive(remaining, orders, index + 1))
         {
             return true;
         }
@@ -67,13 +67,13 @@ internal static class DistributeRepeatingIntegersSolution
     // PartitionToKEqualSumSubsets precedent), closed over the same choose/explore/
     // unchoose steps the naive arm writes out by hand.
     public static bool CanDistributeByGenericBacktrack(int[] nums, int[] quantity)
-        => SearchGeneric(StockCountsOf(nums), OrdersDescending(quantity));
+        => TrySearchGeneric(StockCountsOf(nums), OrdersDescending(quantity));
 
     // Section 17.4's hoisted overload, as above.
     public static bool CanDistributeByGenericBacktrack(DynamicArray<int> stock, int[] quantity)
-        => SearchGeneric(CopyOf(stock), OrdersDescending(quantity));
+        => TrySearchGeneric(CopyOf(stock), OrdersDescending(quantity));
 
-    private static bool SearchGeneric(int[] stock, int[] orders)
+    private static bool TrySearchGeneric(int[] stock, int[] orders)
     {
         var state = new OrderState(orders, stock);
 

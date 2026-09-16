@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.CountIslandsWithTotalValueDivisibleByK;
 
 // LeetCode 3619. Count Islands With Total Value Divisible by K: flood-fill every
 // 4-directionally connected group of positive cells, sum its values, and count
-// the groups whose sum is a multiple of k.
+// the groups whose sum is a multiple of divisor.
 internal static class CountIslandsWithTotalValueDivisibleByKSolution
 {
     private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];
@@ -12,7 +12,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
     // The textbook flood fill: a hand-rolled BCL Stack<T> and a visited bool[,],
     // walking one island at a time - the arm the DFS-engine strategy below has to
     // justify itself against.
-    public static int CountByFloodFillStack(int[][] grid, int k)
+    public static int CountByFloodFillStack(int[][] grid, int divisor)
     {
         var rows = grid.Length;
         var visited = new bool[rows, grid[0].Length];
@@ -27,7 +27,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
                     continue;
                 }
 
-                if (FloodFillTotal(grid, visited, row, col) % k == 0)
+                if (FloodFillTotal(grid, visited, row, col) % divisor == 0)
                 {
                     islands++;
                 }
@@ -85,7 +85,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
     // GetChildren is static-abstract so it cannot close over the runtime grid to
     // read one - exactly the "arbitrary successor relation" case
     // DepthFirstSearch's own doc comment carves out a Func-based engine for.
-    public static int CountByDepthFirstSearchTraverse(int[][] grid, int k)
+    public static int CountByDepthFirstSearchTraverse(int[][] grid, int divisor)
     {
         var rows = grid.Length;
         var visited = new HashSet<(int Row, int Col)>();
@@ -100,7 +100,7 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
                     continue;
                 }
 
-                if (IsDivisibleIsland(grid, visited, (row, col), k))
+                if (IsDivisibleIsland(grid, visited, (row, col), divisor))
                 {
                     islands++;
                 }
@@ -111,14 +111,14 @@ internal static class CountIslandsWithTotalValueDivisibleByKSolution
     }
 
     // The island at `start`: every land cell the traversal engine reaches from it,
-    // claimed in one go, and whether the island's total value divides by k.
+    // claimed in one go, and whether the island's total value divides by divisor.
     private static bool IsDivisibleIsland(
-        int[][] grid, HashSet<(int Row, int Col)> visited, (int Row, int Col) start, int k)
+        int[][] grid, HashSet<(int Row, int Col)> visited, (int Row, int Col) start, int divisor)
     {
         var island = DepthFirstSearch.Traverse<(int Row, int Col)>(start, cell => LandNeighbors(grid, cell));
         visited.UnionWith(island);
 
-        return island.Sum(cell => (long)grid[cell.Row][cell.Col]) % k == 0;
+        return island.Sum(cell => (long)grid[cell.Row][cell.Col]) % divisor == 0;
     }
 
     private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)

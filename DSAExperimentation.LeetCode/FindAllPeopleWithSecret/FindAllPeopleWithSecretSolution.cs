@@ -40,14 +40,16 @@ internal static class FindAllPeopleWithSecretSolution
 
             while (changed)
             {
-                changed = RelaxGroupOnce(group, knowsSecret);
+                changed = TryRelaxGroupOnce(group, knowsSecret);
             }
         }
 
         return CollectKnowers(knowsSecret);
     }
 
-    private static bool RelaxGroupOnce((int First, int Second)[] group, bool[] knowsSecret)
+    // One relaxation pass over the group, answering whether any edge was still mixed
+    // (and so actually pushed the secret across) - the loop above repeats until it isn't.
+    private static bool TryRelaxGroupOnce((int First, int Second)[] group, bool[] knowsSecret)
     {
         var changed = false;
 

@@ -43,7 +43,7 @@ internal static class GCDSortOfAnArraySolution
         var sorted = (int[])nums.Clone();
         Array.Sort(sorted);
 
-        return SameComponentAtEveryPosition(parent, nums, sorted);
+        return IsSameComponentAtEveryPosition(parent, nums, sorted);
     }
 
     private static int[] InitializeParent(int count)
@@ -72,7 +72,7 @@ internal static class GCDSortOfAnArraySolution
         }
     }
 
-    private static bool SameComponentAtEveryPosition(int[] parent, int[] nums, int[] sorted)
+    private static bool IsSameComponentAtEveryPosition(int[] parent, int[] nums, int[] sorted)
     {
         for (var i = 0; i < nums.Length; i++)
         {

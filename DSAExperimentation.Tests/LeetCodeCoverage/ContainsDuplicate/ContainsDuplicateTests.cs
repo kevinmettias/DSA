@@ -17,13 +17,13 @@ public sealed class ContainsDuplicateTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(DuplicateCase example) =>
-        Assert.Equal(example.Expected, ContainsDuplicateSolution.ContainsDuplicateByBruteForce(example.Nums));
+    public void HasDuplicateByBruteForce_LeetCodeExamples_ReturnsExpected(DuplicateCase example) =>
+        Assert.Equal(example.Expected, ContainsDuplicateSolution.HasDuplicateByBruteForce(example.Nums));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void ContainsDuplicateBySetProbe_LeetCodeExamples_ReturnsExpected(DuplicateCase example) =>
-        Assert.Equal(example.Expected, ContainsDuplicateSolution.ContainsDuplicateBySetProbe(example.Nums));
+    public void HasDuplicateBySetProbe_LeetCodeExamples_ReturnsExpected(DuplicateCase example) =>
+        Assert.Equal(example.Expected, ContainsDuplicateSolution.HasDuplicateBySetProbe(example.Nums));
 
     // One LeetCode example: the array and whether it holds a repeated value. The
     // expected value is named at every construction site, so a row reads as the case

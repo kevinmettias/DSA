@@ -17,9 +17,9 @@ public sealed class FirstBadVersionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FirstBadVersionByLinearScan_LeetCodeExamples_ReturnsFirstBadVersion(
-        int n, int firstBad, int expected)
+        int versionCount, int firstBad, int expected)
     {
-        var actual = FirstBadVersionSolution.FirstBadVersionByLinearScan(n, firstBad);
+        var actual = FirstBadVersionSolution.FirstBadVersionByLinearScan(versionCount, firstBad);
 
         Assert.Equal(expected, actual);
     }
@@ -27,9 +27,9 @@ public sealed class FirstBadVersionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FirstBadVersionByLowerBound_LeetCodeExamples_ReturnsFirstBadVersion(
-        int n, int firstBad, int expected)
+        int versionCount, int firstBad, int expected)
     {
-        var actual = FirstBadVersionSolution.FirstBadVersionByLowerBound(n, firstBad);
+        var actual = FirstBadVersionSolution.FirstBadVersionByLowerBound(versionCount, firstBad);
 
         Assert.Equal(expected, actual);
     }

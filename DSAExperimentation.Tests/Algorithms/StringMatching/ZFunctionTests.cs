@@ -158,7 +158,7 @@ public sealed partial class ZFunctionTests
     {
         var length = 0;
 
-        while (CharsMatchAt(first, second, length))
+        while (HasMatchingCharsAt(first, second, length))
         {
             length++;
         }
@@ -166,7 +166,7 @@ public sealed partial class ZFunctionTests
         return length;
     }
 
-    private static bool CharsMatchAt(ReadOnlySpan<char> first, ReadOnlySpan<char> second, int index)
+    private static bool HasMatchingCharsAt(ReadOnlySpan<char> first, ReadOnlySpan<char> second, int index)
     {
         if (index >= first.Length || index >= second.Length)
         {

@@ -34,7 +34,7 @@ internal static class ReachingPointsSolution
             }
         }
 
-        return CompletesInFixedIncrements(sx, sy, tx, ty);
+        return IsReachableInFixedIncrements(sx, sy, tx, ty);
     }
 
     // Undo an entire run of same-direction growth steps in one remainder operation, so
@@ -53,12 +53,12 @@ internal static class ReachingPointsSolution
             }
         }
 
-        return CompletesInFixedIncrements(sx, sy, tx, ty);
+        return IsReachableInFixedIncrements(sx, sy, tx, ty);
     }
 
     // With one coordinate already at its source value, the other one only ever grew by
     // that fixed value, so reachability is a divisibility check.
-    private static bool CompletesInFixedIncrements(int sx, int sy, int tx, int ty)
+    private static bool IsReachableInFixedIncrements(int sx, int sy, int tx, int ty)
     {
         if (tx == sx)
         {

@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.ContainsDuplicateIII;
 // enough to prove |nums[i]-nums[j]| <= valueDiff without a sorted structure.
 internal static class ContainsDuplicateIIISolution
 {
-    public static bool ContainsNearbyAlmostDuplicateByBucketedHashMap(int[] nums, int indexDiff, int valueDiff)
+    public static bool HasNearbyAlmostDuplicateByBucketedHashMap(int[] nums, int indexDiff, int valueDiff)
     {
         if (indexDiff <= 0 || valueDiff < 0)
         {
@@ -36,22 +36,22 @@ internal static class ContainsDuplicateIIISolution
     // indexDiff and valueDiff are adjacent ints of the same type, so only position told
     // them apart at the call site; as one `bounds` argument each says what it measures.
     private static bool HasNearbyDuplicate(
-        int[] nums, int i, (int IndexDiff, int ValueDiff) bounds, HashMap<long, long> buckets)
+        int[] nums, int index, (int IndexDiff, int ValueDiff) bounds, HashMap<long, long> buckets)
     {
         var (indexDiff, valueDiff) = bounds;
         var width = (long)valueDiff + 1;
-        var bucketId = BucketId(nums[i], width);
+        var bucketId = BucketId(nums[index], width);
 
-        if (HasDuplicateWithinValueDiff(bucketId, nums[i], valueDiff, buckets))
+        if (HasDuplicateWithinValueDiff(bucketId, nums[index], valueDiff, buckets))
         {
             return true;
         }
 
-        buckets.Set(bucketId, nums[i]);
+        buckets.Set(bucketId, nums[index]);
 
-        if (i >= indexDiff)
+        if (index >= indexDiff)
         {
-            var evictedBucketId = BucketId(nums[i - indexDiff], width);
+            var evictedBucketId = BucketId(nums[index - indexDiff], width);
             buckets.TryRemove(evictedBucketId);
         }
 
@@ -86,7 +86,7 @@ internal static class ContainsDuplicateIIISolution
     // valueDiff<0 is unnecessary here: an empty backward window and an
     // unsatisfiable Math.Abs(...) <= valueDiff comparison already fall out to
     // false on their own.
-    public static bool ContainsNearbyAlmostDuplicateBySlidingWindowBruteForce(int[] nums, int indexDiff, int valueDiff)
+    public static bool HasNearbyAlmostDuplicateBySlidingWindowBruteForce(int[] nums, int indexDiff, int valueDiff)
     {
         for (var i = 0; i < nums.Length; i++)
         {

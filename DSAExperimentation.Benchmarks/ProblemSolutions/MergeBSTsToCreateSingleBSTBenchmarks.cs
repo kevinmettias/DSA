@@ -31,12 +31,12 @@ public class MergeBSTsToCreateSingleBSTBenchmarks
     public void Setup() => _template = MergeBinarySearchTreeWorkloads.BuildChain(TreeCount);
 
     [Benchmark(Baseline = true)]
-    public bool LinearScanMerge() =>
+    public bool CanMergeByLinearScan() =>
         MergeBSTsToCreateSingleBSTSolution.CanMergeByLinearScan(
             MergeBinarySearchTreeWorkloads.Clone(_template)) is not null;
 
     [Benchmark]
-    public bool HashMapIndexedMerge() =>
+    public bool CanMergeByHashMapIndex() =>
         MergeBSTsToCreateSingleBSTSolution.CanMergeByHashMapIndex(
             MergeBinarySearchTreeWorkloads.Clone(_template)) is not null;
 }

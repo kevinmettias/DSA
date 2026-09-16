@@ -15,5 +15,5 @@ internal sealed class SetNovelty : INoveltySet<Set<int>>
 
     public Set<int> Fresh() => new();
 
-    public bool Admit(Set<int> seen, int value) => seen.TryAdd(value);
+    public bool TryAdmit(Set<int> seen, int value) => seen.TryAdd(value);
 }

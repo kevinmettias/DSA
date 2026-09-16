@@ -52,21 +52,21 @@ internal static class BalanceABinarySearchTreeSolution
         return BuildFromArray(sorted, 0, count - 1);
     }
 
-    private static int FindKthSmallest(BinaryTreeNode<int>? root, int k)
+    private static int FindKthSmallest(BinaryTreeNode<int>? root, int rank)
     {
-        var remaining = k;
+        var remaining = rank;
         var result = 0;
-        Visit(root);
+        VisitInOrder(root);
         return result;
 
-        void Visit(BinaryTreeNode<int>? node)
+        void VisitInOrder(BinaryTreeNode<int>? node)
         {
             if (node is null || remaining == 0)
             {
                 return;
             }
 
-            Visit(node.Left);
+            VisitInOrder(node.Left);
 
             if (remaining == 0)
             {
@@ -81,7 +81,7 @@ internal static class BalanceABinarySearchTreeSolution
                 return;
             }
 
-            Visit(node.Right);
+            VisitInOrder(node.Right);
         }
     }
 

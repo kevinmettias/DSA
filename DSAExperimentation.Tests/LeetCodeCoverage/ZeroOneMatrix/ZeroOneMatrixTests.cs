@@ -9,14 +9,14 @@ public sealed class ZeroOneMatrixTests
 {
     public static TheoryData<int[][], int[][]> Examples()
     {
-        var data = new TheoryData<int[][], int[][]>
+        var examples = new TheoryData<int[][], int[][]>
         {
             { [[0, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, 0], [0, 1, 0], [0, 0, 0]] },
             { [[0, 0, 0], [0, 1, 0], [1, 1, 1]], [[0, 0, 0], [0, 1, 0], [1, 2, 1]] },
             { [[0]], [[0]] },
         };
 
-        return data;
+        return examples;
     }
 
     [Theory]

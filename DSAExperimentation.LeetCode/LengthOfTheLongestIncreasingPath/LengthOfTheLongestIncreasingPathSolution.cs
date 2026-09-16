@@ -5,11 +5,11 @@ using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTre
 
 namespace DSAExperimentation.LeetCode.LengthOfTheLongestIncreasingPath;
 
-// LeetCode 3288. Length of the Longest Increasing Path: coordinates[k] must appear
-// somewhere in a sequence of points whose x and y both strictly increase step to
-// step; return the longest such sequence's length. This is 2D LIS split at a fixed
-// point: the answer is (longest chain ENDING at k) + (longest chain STARTING at k) - 1,
-// the shared point counted once.
+// LeetCode 3288. Length of the Longest Increasing Path: coordinates[requiredIndex]
+// must appear somewhere in a sequence of points whose x and y both strictly increase
+// step to step; return the longest such sequence's length. This is 2D LIS split at a
+// fixed point: the answer is (longest chain ENDING at requiredIndex) + (longest chain
+// STARTING at requiredIndex) - 1, the shared point counted once.
 //
 // Both strategies answer the same question with the same signature, so the test
 // harness can assert they agree and the benchmark harness can time them against
@@ -23,7 +23,7 @@ internal static class LengthOfTheLongestIncreasingPathSolution
     // larger x and y" into "longest chain ending at i in the negated plane", which is
     // how the one helper answers both halves here - the arm the segment-tree strategy
     // below has to beat.
-    public static int MaxPathLengthByBruteForce(int[][] coordinates, int k)
+    public static int MaxPathLengthByBruteForce(int[][] coordinates, int requiredIndex)
     {
         var n = coordinates.Length;
         var endingAt = new int[n];
@@ -31,8 +31,8 @@ internal static class LengthOfTheLongestIncreasingPathSolution
         Array.Fill(endingAt, -1);
         Array.Fill(startingAt, -1);
 
-        return LongestChainEndingAt(coordinates, endingAt, k)
-            + LongestChainEndingAt(Negate(coordinates), startingAt, k) - 1;
+        return LongestChainEndingAt(coordinates, endingAt, requiredIndex)
+            + LongestChainEndingAt(Negate(coordinates), startingAt, requiredIndex) - 1;
     }
 
     // Composed: ChainLengths below is a coordinate-compressed, x-ascending sweep
@@ -44,12 +44,12 @@ internal static class LengthOfTheLongestIncreasingPathSolution
     // from smaller negated x and y" (reversing a chain never changes its length), so
     // the same helper run twice - once as given, once on the negated points - produces
     // both halves without a second, mirrored implementation to keep in sync.
-    public static int MaxPathLengthBySegmentTree(int[][] coordinates, int k)
+    public static int MaxPathLengthBySegmentTree(int[][] coordinates, int requiredIndex)
     {
         var endingAt = ChainLengths(coordinates);
         var startingAt = ChainLengths(Negate(coordinates));
 
-        return endingAt[k] + startingAt[k] - 1;
+        return endingAt[requiredIndex] + startingAt[requiredIndex] - 1;
     }
 
     // chain[i] = length of the longest increasing path ending at point i. Points are

@@ -116,13 +116,13 @@ internal static class SurfaceAreaOf3DShapesSolution
         return padded;
     }
 
-    private static int SumPaddedArea(int[][] padded, int n)
+    private static int SumPaddedArea(int[][] padded, int sideLength)
     {
         var area = 0;
 
-        for (var r = 1; r <= n; r++)
+        for (var r = 1; r <= sideLength; r++)
         {
-            for (var c = 1; c <= n; c++)
+            for (var c = 1; c <= sideLength; c++)
             {
                 area += PaddedCellExposedArea(padded, r, c);
             }
@@ -131,9 +131,9 @@ internal static class SurfaceAreaOf3DShapesSolution
         return area;
     }
 
-    private static int PaddedCellExposedArea(int[][] padded, int r, int c)
+    private static int PaddedCellExposedArea(int[][] padded, int row, int col)
     {
-        var height = padded[r][c];
+        var height = padded[row][col];
 
         if (height == 0)
         {
@@ -141,10 +141,10 @@ internal static class SurfaceAreaOf3DShapesSolution
         }
 
         var area = TopAndBottomFaceArea;
-        area += Math.Max(0, height - padded[r - 1][c]);
-        area += Math.Max(0, height - padded[r + 1][c]);
-        area += Math.Max(0, height - padded[r][c - 1]);
-        area += Math.Max(0, height - padded[r][c + 1]);
+        area += Math.Max(0, height - padded[row - 1][col]);
+        area += Math.Max(0, height - padded[row + 1][col]);
+        area += Math.Max(0, height - padded[row][col - 1]);
+        area += Math.Max(0, height - padded[row][col + 1]);
         return area;
     }
 }

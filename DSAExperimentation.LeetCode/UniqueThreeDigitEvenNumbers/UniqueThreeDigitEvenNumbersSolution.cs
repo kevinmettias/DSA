@@ -66,8 +66,8 @@ internal static class UniqueThreeDigitEvenNumbersSolution
     private static IEnumerable<int> NoCandidates() => [];
 
     // The digit positions still free to choose, in array order.
-    private static IEnumerable<int> UnusedPositions(State s, int digitCount) =>
-        Enumerable.Range(0, digitCount).Where(i => !s.Used[i]);
+    private static IEnumerable<int> UnusedPositions(State state, int digitCount) =>
+        Enumerable.Range(0, digitCount).Where(i => !state.Used[i]);
 
     // The choose/explore/unchoose step: three chosen digits are one candidate number,
     // otherwise every still-unused position is tried in turn and un-chosen on the way

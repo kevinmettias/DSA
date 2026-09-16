@@ -75,19 +75,19 @@ public sealed class PopulatingNextRightPointersInEachNodeTests
         return nodes;
     }
 
-    private static void LinkChildren(BinaryTreeNode<int>[] nodes, int i)
+    private static void LinkChildren(BinaryTreeNode<int>[] nodes, int nodeIndex)
     {
-        var left = 2 * i + 1;
-        var right = 2 * i + 2;
+        var left = 2 * nodeIndex + 1;
+        var right = 2 * nodeIndex + 2;
 
         if (left < nodes.Length)
         {
-            nodes[i].Left = nodes[left];
+            nodes[nodeIndex].Left = nodes[left];
         }
 
         if (right < nodes.Length)
         {
-            nodes[i].Right = nodes[right];
+            nodes[nodeIndex].Right = nodes[right];
         }
     }
 

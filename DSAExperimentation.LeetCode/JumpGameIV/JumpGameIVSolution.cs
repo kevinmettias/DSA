@@ -47,7 +47,7 @@ internal static class JumpGameIVSolution
             {
                 var i = walk.Frontier.Dequeue();
 
-                if (ExpandFrom(i, arr, walk))
+                if (HasReachedLastIndex(i, arr, walk))
                 {
                     return steps;
                 }
@@ -59,32 +59,32 @@ internal static class JumpGameIVSolution
         return LeetCodeAnswer.None;
     }
 
-    private static bool ExpandFrom(int i, int[] arr, HopWalk walk)
+    private static bool HasReachedLastIndex(int index, int[] arr, HopWalk walk)
     {
-        if (i == walk.Length - 1)
+        if (index == walk.Length - 1)
         {
             return true;
         }
 
-        if (walk.IndicesByValue.TryGetValue(arr[i], out var sameValue))
+        if (walk.IndicesByValue.TryGetValue(arr[index], out var sameValue))
         {
             foreach (var j in sameValue)
             {
                 EnqueueUnvisited(j, walk);
             }
 
-            walk.IndicesByValue.Remove(arr[i]);
+            walk.IndicesByValue.Remove(arr[index]);
         }
 
-        EnqueueUnvisited(i + 1, walk);
-        EnqueueUnvisited(i - 1, walk);
+        EnqueueUnvisited(index + 1, walk);
+        EnqueueUnvisited(index - 1, walk);
 
         return false;
     }
 
     private static void EnqueueUnvisited(int target, HopWalk walk)
     {
-        if (CannotBeEnqueued(walk, target))
+        if (IsNotEnqueuable(walk, target))
         {
             return;
         }
@@ -95,7 +95,7 @@ internal static class JumpGameIVSolution
 
     // A hop target only joins the frontier when it lands on the array and has not been
     // reached yet - anything else is a step to nowhere or a step already taken.
-    private static bool CannotBeEnqueued(HopWalk walk, int target) =>
+    private static bool IsNotEnqueuable(HopWalk walk, int target) =>
         target < 0 || target >= walk.Length || walk.Visited[target];
 
     private readonly record struct HopWalk(
@@ -149,26 +149,26 @@ internal static class JumpGameIVSolution
         return nodes;
     }
 
-    private static void ConnectAdjacentIndices(ValueHopNode[] nodes, int i)
+    private static void ConnectAdjacentIndices(ValueHopNode[] nodes, int index)
     {
-        if (i + 1 < nodes.Length)
+        if (index + 1 < nodes.Length)
         {
-            nodes[i].Edges.Add((1, nodes[i + 1]));
+            nodes[index].Edges.Add((1, nodes[index + 1]));
         }
 
-        if (i - 1 >= 0)
+        if (index - 1 >= 0)
         {
-            nodes[i].Edges.Add((1, nodes[i - 1]));
+            nodes[index].Edges.Add((1, nodes[index - 1]));
         }
     }
 
-    private static void ConnectSameValueIndices(ValueHopNode[] nodes, int i, List<int> sameValueIndices)
+    private static void ConnectSameValueIndices(ValueHopNode[] nodes, int index, List<int> sameValueIndices)
     {
         foreach (var j in sameValueIndices)
         {
-            if (j != i)
+            if (j != index)
             {
-                nodes[i].Edges.Add((1, nodes[j]));
+                nodes[index].Edges.Add((1, nodes[j]));
             }
         }
     }

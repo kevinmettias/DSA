@@ -20,7 +20,7 @@ internal static class CombinationSumSolution
         var results = new List<List<int>>();
         var path = new List<int>();
 
-        void Search(int start, int remaining)
+        void SearchCombinations(int start, int remaining)
         {
             if (remaining == 0)
             {
@@ -31,12 +31,12 @@ internal static class CombinationSumSolution
             for (var i = start; i < sorted.Length && sorted[i] <= remaining; i++)
             {
                 path.Add(sorted[i]);
-                Search(i, remaining - sorted[i]);
+                SearchCombinations(i, remaining - sorted[i]);
                 path.RemoveAt(path.Count - 1);
             }
         }
 
-        Search(0, target);
+        SearchCombinations(0, target);
         return results;
     }
 

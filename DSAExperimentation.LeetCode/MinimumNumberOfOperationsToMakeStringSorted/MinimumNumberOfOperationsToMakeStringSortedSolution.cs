@@ -5,12 +5,12 @@ namespace DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorte
 
 // LeetCode 1830. Minimum Number of Operations to Make String Sorted: the operation
 // the problem describes is exactly the "previous permutation" step, so the number of
-// operations is s's 0-indexed rank among the distinct permutations of its own
-// multiset of characters, sorted ascending, reported modulo 1e9+7.
+// operations is the string's 0-indexed rank among the distinct permutations of its
+// own multiset of characters, sorted ascending, reported modulo 1e9+7.
 //
-// Both strategies sweep s left to right accumulating the same rank sum: at each
-// position, every not-yet-placed letter smaller than the current one could have led
-// the remaining suffix, and each such choice contributes (remaining-1)! divided by
+// Both strategies sweep the string left to right accumulating the same rank sum: at
+// each position, every not-yet-placed letter smaller than the current one could have
+// led the remaining suffix, and each such choice contributes (remaining-1)! divided by
 // the factorial of every letter's remaining count - folded here as a running
 // inverse-factorial product that costs one multiplication per step instead of a
 // recomputation. Domain.Modular supplies the modulus and the Fermat's-little-theorem
@@ -28,13 +28,13 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     // smaller-letter count at every position. Nothing but BCL arrays inside - only
     // the modulus itself is shared, because 1e9+7 is LeetCode's reporting
     // convention rather than part of the algorithm's character.
-    public static int MakeStringSortedByFrequencyScan(string s)
+    public static int MakeStringSortedByFrequencyScan(string text)
     {
-        var (factorial, inverseFactorial) = BuildFactorialTables(s.Length);
-        var remaining = BuildFrequencyTable(s);
-        var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), s.Length);
+        var (factorial, inverseFactorial) = BuildFactorialTables(text.Length);
+        var remaining = BuildFrequencyTable(text);
+        var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), text.Length);
 
-        foreach (var letter in s)
+        foreach (var letter in text)
         {
             var index = letter - 'a';
             var smaller = 0;
@@ -55,14 +55,14 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
     // frequency array, answers the smaller-letter count as one PrefixQuery and
     // absorbs each placement as one Add - the same value-indexed-Fenwick shape
     // MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits uses for digits.
-    public static int MakeStringSortedByFenwickSweep(string s)
+    public static int MakeStringSortedByFenwickSweep(string text)
     {
-        var (factorial, inverseFactorial) = BuildFactorialTables(s.Length);
-        var remaining = BuildFrequencyTable(s);
+        var (factorial, inverseFactorial) = BuildFactorialTables(text.Length);
+        var remaining = BuildFrequencyTable(text);
         var counts = new FenwickTree<int, SumOperation<int>>(remaining);
-        var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), s.Length);
+        var state = new RankState(0L, InverseFactorialProduct(remaining, inverseFactorial), text.Length);
 
-        foreach (var letter in s)
+        foreach (var letter in text)
         {
             var index = letter - 'a';
             var smaller = index == 0 ? 0 : counts.PrefixQuery(index - 1);
@@ -119,11 +119,11 @@ internal static class MinimumNumberOfOperationsToMakeStringSortedSolution
         return (factorial, inverseFactorial);
     }
 
-    private static int[] BuildFrequencyTable(string s)
+    private static int[] BuildFrequencyTable(string text)
     {
         var frequency = new int[AlphabetSize];
 
-        foreach (var letter in s)
+        foreach (var letter in text)
         {
             frequency[letter - 'a']++;
         }

@@ -2,26 +2,26 @@ using DSAExperimentation.Algorithms.Backtracking;
 
 namespace DSAExperimentation.LeetCode.PalindromePartitioning;
 
-// LeetCode 131. Palindrome Partitioning: every way to cut s into a sequence of
-// substrings that are all palindromes.
+// LeetCode 131. Palindrome Partitioning: every way to cut `text` into a sequence
+// of substrings that are all palindromes.
 //
-// Candidates(s, start) offers every palindromic prefix beginning at start, in
+// Candidates(text, start) offers every palindromic prefix beginning at start, in
 // increasing length; Backtrack.Search's choose/explore/unchoose walk tries each in
 // turn, and OnSolution copies out the current partition whenever the cursor reaches
-// the end of s. Only one strategy exists here - the original benchmark's two
+// the end of `text`. Only one strategy exists here - the original benchmark's two
 // [Benchmark] arms were both compile-smoke placeholders (`=> 1`), not a second real
 // approach to reconcile against.
 internal static class PalindromePartitioningSolution
 {
-    public static List<List<string>> PartitionByBacktracking(string s)
+    public static List<List<string>> PartitionByBacktracking(string text)
     {
         var results = new List<List<string>>();
         var state = new PartitionState();
 
         Backtrack.Search<PartitionState, string>(
             state,
-            x => x.Index == s.Length,
-            x => x.Index == s.Length ? NoCandidates() : Candidates(s, x.Index),
+            x => x.Index == text.Length,
+            x => x.Index == text.Length ? NoCandidates() : Candidates(text, x.Index),
             (x, part) =>
             {
                 x.Starts.Push(x.Index);
@@ -38,25 +38,25 @@ internal static class PalindromePartitioningSolution
         return results;
     }
 
-    // No palindromic prefix is left once the cursor reaches the end of s.
+    // No palindromic prefix is left once the cursor reaches the end of `text`.
     private static IEnumerable<string> NoCandidates() => [];
 
-    private static IEnumerable<string> Candidates(string s, int start)
+    private static IEnumerable<string> Candidates(string text, int start)
     {
-        for (var end = start; end < s.Length; end++)
+        for (var end = start; end < text.Length; end++)
         {
-            if (IsPalindrome(s, start, end))
+            if (IsPalindrome(text, start, end))
             {
-                yield return s[start..(end + 1)];
+                yield return text[start..(end + 1)];
             }
         }
     }
 
-    private static bool IsPalindrome(string s, int left, int right)
+    private static bool IsPalindrome(string text, int left, int right)
     {
         while (left < right)
         {
-            if (s[left++] != s[right--])
+            if (text[left++] != text[right--])
             {
                 return false;
             }

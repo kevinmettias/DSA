@@ -29,9 +29,9 @@ public sealed class FindXValueOfArrayIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void XValueCountsByBruteForce_LeetCodeExamples_ReturnsCountsPerQuery(
-        int[] nums, int k, int[][] queries, int[] expected)
+        int[] nums, int modulus, int[][] queries, int[] expected)
     {
-        var actual = FindXValueOfArrayIISolution.XValueCountsByBruteForce(nums, k, queries);
+        var actual = FindXValueOfArrayIISolution.XValueCountsByBruteForce(nums, modulus, queries);
 
         Assert.Equal(expected, actual);
     }
@@ -39,9 +39,9 @@ public sealed class FindXValueOfArrayIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void XValueCountsBySegmentTreeAutomaton_LeetCodeExamples_ReturnsCountsPerQuery(
-        int[] nums, int k, int[][] queries, int[] expected)
+        int[] nums, int modulus, int[][] queries, int[] expected)
     {
-        var actual = FindXValueOfArrayIISolution.XValueCountsBySegmentTreeAutomaton(nums, k, queries);
+        var actual = FindXValueOfArrayIISolution.XValueCountsBySegmentTreeAutomaton(nums, modulus, queries);
 
         Assert.Equal(expected, actual);
     }

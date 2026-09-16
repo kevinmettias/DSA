@@ -115,15 +115,15 @@ internal static class MinimumNumberOfValidStringsToFormTargetISolution
 
     // A jump window closes when the scan reaches currentEnd: one more jump is spent
     // and the window becomes everything one further jump can reach. A window that
-    // reaches nothing new means target can never be formed, and covering n means it
-    // has been - `Answer` carries what to return in either case (None, or the jump
-    // count) and is null while the sweep must carry on. An index short of the end
+    // reaches nothing new means target can never be formed, and covering targetLength
+    // means it has been - `Answer` carries what to return in either case (None, or the
+    // jump count) and is null while the sweep must carry on. An index short of the end
     // leaves the cursor untouched.
     private static (int Jumps, int CurrentEnd, int? Answer) CloseJumpWindowIfAtEnd(
         (int Index, int CurrentEnd) window,
         int farthest,
         int jumps,
-        int n)
+        int targetLength)
     {
         if (window.Index != window.CurrentEnd)
         {
@@ -138,6 +138,6 @@ internal static class MinimumNumberOfValidStringsToFormTargetISolution
         var nextJumps = jumps + 1;
         var nextEnd = farthest;
 
-        return (nextJumps, nextEnd, nextEnd >= n ? nextJumps : null);
+        return (nextJumps, nextEnd, nextEnd >= targetLength ? nextJumps : null);
     }
 }

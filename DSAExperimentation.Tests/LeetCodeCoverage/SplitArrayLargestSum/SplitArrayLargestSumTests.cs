@@ -3,8 +3,8 @@ using DSAExperimentation.LeetCode.SplitArrayLargestSum;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SplitArrayLargestSum;
 
 // Harness only. Both strategies are SplitArrayLargestSumSolution's - this file
-// just pins them to LeetCode's published examples, plus the k=1 and
-// k=nums.Length boundaries neither original arm exercised.
+// just pins them to LeetCode's published examples, plus the subarrayCount = 1 and
+// subarrayCount = nums.Length boundaries neither original arm exercised.
 public sealed class SplitArrayLargestSumTests
 {
     public static TheoryData<int[], int, int> Examples =>
@@ -20,9 +20,9 @@ public sealed class SplitArrayLargestSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimizedLargestSumByManualBinarySearch_LeetCodeExamples_ReturnsSmallestFeasibleMax(
-        int[] nums, int k, int expected)
+        int[] nums, int subarrayCount, int expected)
     {
-        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(nums, k);
+        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumByManualBinarySearch(nums, subarrayCount);
 
         Assert.Equal(expected, actual);
     }
@@ -30,9 +30,9 @@ public sealed class SplitArrayLargestSumTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimizedLargestSumBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleMax(
-        int[] nums, int k, int expected)
+        int[] nums, int subarrayCount, int expected)
     {
-        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(nums, k);
+        var actual = SplitArrayLargestSumSolution.MinimizedLargestSumBySequenceLowerBound(nums, subarrayCount);
 
         Assert.Equal(expected, actual);
     }

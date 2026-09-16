@@ -2,8 +2,9 @@ using DSAExperimentation.Algorithms.StringMatching;
 
 namespace DSAExperimentation.LeetCode.LongestHappyPrefix;
 
-// LeetCode 1392. Longest Happy Prefix: the longest non-empty proper prefix of s
-// that is also a suffix of s - returned as the prefix itself, not its length.
+// LeetCode 1392. Longest Happy Prefix: the longest non-empty proper prefix of
+// `text` that is also a suffix of `text` - returned as the prefix itself, not its
+// length.
 //
 // That is precisely what KMP's prefix/failure function measures, so the composed
 // strategy has no separate algorithm at all: it runs
@@ -14,16 +15,16 @@ internal static class LongestHappyPrefixSolution
     // compare that many characters each time - O(n^2) in the worst case.
     // Deliberately written with nothing but BCL spans; it is the arm the composed
     // strategy below has to justify itself against.
-    public static string LongestPrefixByShrinkAndCompare(string s)
+    public static string LongestPrefixByShrinkAndCompare(string text)
     {
-        for (var length = s.Length - 1; length >= 1; length--)
+        for (var length = text.Length - 1; length >= 1; length--)
         {
-            var prefix = s.AsSpan(0, length);
-            var suffix = s.AsSpan(s.Length - length, length);
+            var prefix = text.AsSpan(0, length);
+            var suffix = text.AsSpan(text.Length - length, length);
 
             if (prefix.SequenceEqual(suffix))
             {
-                return s[..length];
+                return text[..length];
             }
         }
 
@@ -31,15 +32,15 @@ internal static class LongestHappyPrefixSolution
     }
 
     // This repo's own KMP prefix/failure function: failure[^1] is by definition the
-    // length of the longest proper prefix of s that is also a suffix of s, so one
-    // O(n) pass answers the problem outright and the only remaining work is the
-    // slice.
-    public static string LongestPrefixByPrefixFunction(string s)
+    // length of the longest proper prefix of `text` that is also a suffix of
+    // `text`, so one O(n) pass answers the problem outright and the only remaining
+    // work is the slice.
+    public static string LongestPrefixByPrefixFunction(string text)
     {
-        var failure = PrefixFunctionSearch.ComputeFailureFunction(s);
+        var failure = PrefixFunctionSearch.ComputeFailureFunction(text);
         var length = failure.Length == 0 ? 0 : LastFailureValue(failure);
 
-        return s[..length];
+        return text[..length];
     }
 
     // The failure function's final entry: its longest prefix-that-is-also-a-suffix length.

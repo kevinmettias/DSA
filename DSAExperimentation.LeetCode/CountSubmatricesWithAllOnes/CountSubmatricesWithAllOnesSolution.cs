@@ -96,14 +96,16 @@ internal static class CountSubmatricesWithAllOnesSolution
     }
 
     // With a previous smaller height in reach, this column's own dp entry already counts
-    // every subarray that stops at that height, and the (j - previousSmaller) columns since
-    // all extend by heights[j] - so the total is that entry plus those extensions.
-    private static int RowTotalWithPreviousSmaller(int[] dp, int[] heights, int previousSmaller, int j) =>
-        dp[previousSmaller] + ((j - previousSmaller) * heights[j]);
+    // every subarray that stops at that height, and the (columnIndex - previousSmaller)
+    // columns since all extend by heights[columnIndex] - so the total is that entry plus
+    // those extensions.
+    private static int RowTotalWithPreviousSmaller(int[] dp, int[] heights, int previousSmaller, int columnIndex) =>
+        dp[previousSmaller] + ((columnIndex - previousSmaller) * heights[columnIndex]);
 
-    // With nothing smaller before it, every one of the j + 1 subarrays ending here is
-    // bottomed at heights[j], the row's minimum so far.
-    private static int RowTotalWithoutPreviousSmaller(int[] heights, int j) => (j + 1) * heights[j];
+    // With nothing smaller before it, every one of the columnIndex + 1 subarrays ending
+    // here is bottomed at heights[columnIndex], the row's minimum so far.
+    private static int RowTotalWithoutPreviousSmaller(int[] heights, int columnIndex) =>
+        (columnIndex + 1) * heights[columnIndex];
 
     // The histogram both strategies read: a column's height grows while the column holds a
     // one and resets to zero the moment it does not.

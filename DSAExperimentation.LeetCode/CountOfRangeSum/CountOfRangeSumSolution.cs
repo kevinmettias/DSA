@@ -56,13 +56,13 @@ internal static class CountOfRangeSumSolution
 
         foreach (var prefixSum in prefix)
         {
-            count += ProcessPrefixSum(index, prefixSum, lower, upper);
+            count += AccumulatePrefixSumContribution(index, prefixSum, lower, upper);
         }
 
         return count;
     }
 
-    private static int ProcessPrefixSum(RangeSumIndex index, long prefixSum, int lower, int upper)
+    private static int AccumulatePrefixSumContribution(RangeSumIndex index, long prefixSum, int lower, int upper)
     {
         var loRank = BinarySearch.LowerBound(index.Sequence, prefixSum - upper);
         var hiRank = BinarySearch.UpperBound(index.Sequence, prefixSum - lower) - 1;

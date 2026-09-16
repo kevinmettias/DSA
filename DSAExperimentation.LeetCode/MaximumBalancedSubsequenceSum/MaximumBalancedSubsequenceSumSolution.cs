@@ -41,14 +41,16 @@ internal static class MaximumBalancedSubsequenceSumSolution
         return answer;
     }
 
-    // Best dp[j] over j < index with b[j] <= b[index], plus this element's own
-    // value: the single O(n) predecessor scan the segment-tree arm replaces.
-    private static long BestPredecessorSum(long[] b, long[] dp, int value, int index)
+    // Best dp[j] over j < index with shiftedValues[j] <= shiftedValues[index], plus
+    // this element's own value: the single O(n) predecessor scan the segment-tree arm
+    // replaces. The shifted values are nums[i] - i, the array the class comment calls
+    // b.
+    private static long BestPredecessorSum(long[] shiftedValues, long[] dp, int value, int index)
     {
         var best = 0L;
         for (var j = 0; j < index; j++)
         {
-            if (b[j] <= b[index])
+            if (shiftedValues[j] <= shiftedValues[index])
             {
                 best = Math.Max(best, dp[j]);
             }

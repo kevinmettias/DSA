@@ -82,11 +82,11 @@ internal static class DivideTwoIntegersSolution
     {
         public int Length => length;
 
-        public int Get(int quotient) => ProductExceeds(quotient) ? 1 : 0;
+        public int Get(int quotient) => IsProductExceedingDividend(quotient) ? 1 : 0;
 
         // The predicate, named: "does q's product with the divisor already exceed the
         // dividend" is what LowerBound is really searching, and a call in the arm keeps
         // that search reading as one.
-        private bool ProductExceeds(int quotient) => divisor * quotient > dividend;
+        private bool IsProductExceedingDividend(int quotient) => divisor * quotient > dividend;
     }
 }

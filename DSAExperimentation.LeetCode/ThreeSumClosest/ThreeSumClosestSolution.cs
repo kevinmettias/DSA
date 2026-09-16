@@ -75,14 +75,14 @@ internal static class ThreeSumClosestSolution
         return best;
     }
 
-    private static (int Best, bool FoundExact) ScanForClosest(int[] sorted, int target, int i, int best)
+    private static (int Best, bool FoundExact) ScanForClosest(int[] sorted, int target, int firstIndex, int best)
     {
-        var left = i + 1;
+        var left = firstIndex + 1;
         var right = sorted.Length - 1;
 
         while (left < right)
         {
-            var sum = sorted[i] + sorted[left] + sorted[right];
+            var sum = sorted[firstIndex] + sorted[left] + sorted[right];
             best = UpdateBest(target, best, sum);
 
             if (sum == target)

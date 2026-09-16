@@ -16,9 +16,9 @@ internal static class MinimumCostToBuyApplesIISolution
     // Textbook: BCL Dictionary adjacency plus BCL's own PriorityQueue for
     // Dijkstra, run twice per source - the arm the repo's own ShortestPath engine
     // below has to justify itself against.
-    public static long[] MinCostsByBruteForceDijkstra(int n, int[] prices, int[][] roads)
+    public static long[] MinCostsByBruteForceDijkstra(int shopCount, int[] prices, int[][] roads)
     {
-        var network = AppleNetwork.Build(n, prices, roads);
+        var network = AppleNetwork.Build(shopCount, prices, roads);
         return MinCostsByBruteForceDijkstra(network);
     }
 
@@ -103,9 +103,9 @@ internal static class MinimumCostToBuyApplesIISolution
     // baseline's hand-rolled BCL priority queue - the same swap
     // NetworkRecoveryPathwaysSolution's two arms make around RecoveryNode/
     // RecoveryTopology.
-    public static long[] MinCostsByReduceGraph(int n, int[] prices, int[][] roads)
+    public static long[] MinCostsByReduceGraph(int shopCount, int[] prices, int[][] roads)
     {
-        var network = AppleNetwork.Build(n, prices, roads);
+        var network = AppleNetwork.Build(shopCount, prices, roads);
         return MinCostsByReduceGraph(network);
     }
 

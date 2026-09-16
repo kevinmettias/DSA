@@ -54,11 +54,11 @@ internal static class PermutationsIISolution
         return results;
     }
 
-    private static IEnumerable<int> NextCandidates(int[] sorted, State s)
+    private static IEnumerable<int> NextCandidates(int[] sorted, State state)
     {
         for (var i = 0; i < sorted.Length; i++)
         {
-            if (IsEligibleCandidate(sorted, s, i))
+            if (IsEligibleCandidate(sorted, state, i))
             {
                 yield return i;
             }
@@ -68,8 +68,11 @@ internal static class PermutationsIISolution
     // The duplicate rule stated positively: a candidate is offered when it is unplaced
     // and either nothing precedes it, or the value before it differs, or that earlier
     // copy has already been placed.
-    private static bool IsEligibleCandidate(int[] sorted, State s, int i) =>
-        !s.Used[i] && (i == 0 || sorted[i] != sorted[i - 1] || s.Used[i - 1]);
+    private static bool IsEligibleCandidate(int[] sorted, State state, int candidateIndex) =>
+        !state.Used[candidateIndex]
+        && (candidateIndex == 0
+            || sorted[candidateIndex] != sorted[candidateIndex - 1]
+            || state.Used[candidateIndex - 1]);
 
     // The recursion the baseline drives by hand: place one eligible candidate, recurse,
     // then undo the placement, so every completion of `path` is one distinct ordering.
@@ -99,8 +102,11 @@ internal static class PermutationsIISolution
     // A candidate is skipped when its value is already placed, or when it repeats the
     // value just before it and that earlier copy is still unplaced - taking this one
     // first would only re-produce an ordering the earlier copy yields anyway.
-    private static bool ShouldSkipCandidate(bool[] used, int[] sorted, int i) =>
-        used[i] || (i > 0 && sorted[i] == sorted[i - 1] && !used[i - 1]);
+    private static bool ShouldSkipCandidate(bool[] used, int[] sorted, int candidateIndex) =>
+        used[candidateIndex]
+        || (candidateIndex > 0
+            && sorted[candidateIndex] == sorted[candidateIndex - 1]
+            && !used[candidateIndex - 1]);
 
     private static int[] SortedCopy(int[] nums)
     {

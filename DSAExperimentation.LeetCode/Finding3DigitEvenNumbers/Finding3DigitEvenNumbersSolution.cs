@@ -76,7 +76,7 @@ internal static class Finding3DigitEvenNumbersSolution
     {
         for (var ones = 0; ones < digits.Length; ones++)
         {
-            if (CannotBeOnesDigit(ones, prefix, digits))
+            if (IsOnesDigitUnusable(ones, prefix, digits))
             {
                 continue;
             }
@@ -88,7 +88,7 @@ internal static class Finding3DigitEvenNumbersSolution
 
     // The ones position is free only when neither earlier position already claimed
     // it, and its digit is even.
-    private static bool CannotBeOnesDigit(int ones, DigitPrefix prefix, int[] digits)
+    private static bool IsOnesDigitUnusable(int ones, DigitPrefix prefix, int[] digits)
         => ones == prefix.Hundreds || ones == prefix.Tens || digits[ones] % OddEvenDivisor != 0;
 
     private readonly record struct DigitPrefix(int Hundreds, int Tens);
@@ -122,11 +122,11 @@ internal static class Finding3DigitEvenNumbersSolution
     // same growing result list the baseline scans linearly.
     private sealed class SetDedupeCollector(List<int> found) : ICandidateCollector
     {
-        private readonly Set<int> seen = new();
+        private readonly Set<int> _seen = new();
 
         public void Collect(int number)
         {
-            if (seen.TryAdd(number))
+            if (_seen.TryAdd(number))
             {
                 found.Add(number);
             }

@@ -21,9 +21,9 @@ public sealed class MinimumNumberOfVerticesToReachAllNodesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindSmallestSetOfVerticesByNestedScan_LeetCodeExamples_ReturnsEveryZeroInDegreeNode(
-        int n, int[][] edges, int[] expected)
+        int nodeCount, int[][] edges, int[] expected)
     {
-        var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByNestedScan(n, edges);
+        var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByNestedScan(nodeCount, edges);
 
         Assert.Equal(expected, actual);
     }
@@ -31,9 +31,9 @@ public sealed class MinimumNumberOfVerticesToReachAllNodesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindSmallestSetOfVerticesByInDegreeSet_LeetCodeExamples_ReturnsEveryZeroInDegreeNode(
-        int n, int[][] edges, int[] expected)
+        int nodeCount, int[][] edges, int[] expected)
     {
-        var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByInDegreeSet(n, edges);
+        var actual = MinimumNumberOfVerticesToReachAllNodesSolution.FindSmallestSetOfVerticesByInDegreeSet(nodeCount, edges);
 
         Assert.Equal(expected, actual);
     }

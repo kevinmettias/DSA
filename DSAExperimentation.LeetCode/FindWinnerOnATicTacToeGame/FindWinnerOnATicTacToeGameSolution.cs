@@ -126,7 +126,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
         {
             var mark = MarkFor(i);
 
-            if (tallies.Apply(moves[i][0], moves[i][1], mark))
+            if (tallies.HasCompletedLine(moves[i][0], moves[i][1], mark))
             {
                 return PlayerFor(mark);
             }
@@ -142,7 +142,7 @@ internal static class FindWinnerOnATicTacToeGameSolution
         private int _diagonal;
         private int _antiDiagonal;
 
-        public bool Apply(int row, int column, int mark)
+        public bool HasCompletedLine(int row, int column, int mark)
         {
             _rowCount[row] += mark;
             _columnCount[column] += mark;

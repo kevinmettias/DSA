@@ -82,14 +82,14 @@ public sealed class DesignMemoryAllocatorTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MemoryAllocatorByArrayScan_LeetCodeExamples_MatchesPublishedOutputSequence(
-        int n, MemoryAllocatorOp[] operations, int[] expected) =>
-        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByArrayScan(n), operations, expected);
+        int memorySize, MemoryAllocatorOp[] operations, int[] expected) =>
+        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByArrayScan(memorySize), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MemoryAllocatorByHashMapIndex_LeetCodeExamples_MatchesPublishedOutputSequence(
-        int n, MemoryAllocatorOp[] operations, int[] expected) =>
-        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByHashMapIndex(n), operations, expected);
+        int memorySize, MemoryAllocatorOp[] operations, int[] expected) =>
+        RunScript(new DesignMemoryAllocatorSolution.MemoryAllocatorByHashMapIndex(memorySize), operations, expected);
 
     private static void RunScript(
         DesignMemoryAllocatorSolution.IMemoryAllocatorStrategy allocator,

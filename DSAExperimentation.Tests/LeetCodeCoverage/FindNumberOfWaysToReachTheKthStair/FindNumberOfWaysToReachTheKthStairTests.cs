@@ -15,11 +15,11 @@ public sealed class FindNumberOfWaysToReachTheKthStairTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void WaysByBruteRecursion_LeetCodeExamples_ReturnsWayCount(int k, int expected) =>
-        Assert.Equal(expected, FindNumberOfWaysToReachTheKthStairSolution.WaysByBruteRecursion(k));
+    public void WaysByBruteRecursion_LeetCodeExamples_ReturnsWayCount(int targetStair, int expected) =>
+        Assert.Equal(expected, FindNumberOfWaysToReachTheKthStairSolution.WaysByBruteRecursion(targetStair));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void WaysByMemoizedRecurrence_LeetCodeExamples_ReturnsWayCount(int k, int expected) =>
-        Assert.Equal(expected, FindNumberOfWaysToReachTheKthStairSolution.WaysByMemoizedRecurrence(k));
+    public void WaysByMemoizedRecurrence_LeetCodeExamples_ReturnsWayCount(int targetStair, int expected) =>
+        Assert.Equal(expected, FindNumberOfWaysToReachTheKthStairSolution.WaysByMemoizedRecurrence(targetStair));
 }

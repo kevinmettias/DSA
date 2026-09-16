@@ -113,15 +113,15 @@ internal static class SolveTheEquationSolution
         return $"x={constant / coefficientX}";
     }
 
-    private static bool TryConsumeSign(char c, out int sign)
+    private static bool TryConsumeSign(char character, out int sign)
     {
-        if (c == '+')
+        if (character == '+')
         {
             sign = 1;
             return true;
         }
 
-        if (c == '-')
+        if (character == '-')
         {
             sign = -1;
             return true;

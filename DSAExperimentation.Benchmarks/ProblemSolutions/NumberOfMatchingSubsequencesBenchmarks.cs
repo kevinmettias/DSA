@@ -40,4 +40,5 @@ public class NumberOfMatchingSubsequencesBenchmarks
 
     [Benchmark]
     public int HashMapQueueBuckets() =>
-        NumberOfMatchingSubsequencesSolution.CountMatchingSubseqByWait
+        NumberOfMatchingSubsequencesSolution.CountMatchingSubseqByWaitingBuckets(_searchedText, _words);
+}

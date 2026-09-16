@@ -5,7 +5,7 @@ using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.LeetCode.SortCharactersByFrequency;
 
-// LeetCode 451. Sort Characters By Frequency: rearrange s so characters appear in
+// LeetCode 451. Sort Characters By Frequency: rearrange text so characters appear in
 // non-increasing order of how often they occur (any tie-break order is valid).
 //
 // The baseline counts with the BCL's own Dictionary and sorts every distinct
@@ -21,16 +21,16 @@ internal static class SortCharactersByFrequencySolution
     // The textbook approach: count with a BCL Dictionary, then sort every
     // distinct character by frequency. Deliberately written without this repo's
     // primitives - the arm the heap strategy below has to justify itself against.
-    public static string FrequencySortByDictionaryOrderBy(string s)
+    public static string FrequencySortByDictionaryOrderBy(string text)
     {
         var counts = new Dictionary<char, int>();
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             counts[c] = counts.GetValueOrDefault(c) + 1;
         }
 
-        var result = new StringBuilder(s.Length);
+        var result = new StringBuilder(text.Length);
 
         foreach (var entry in counts.OrderByDescending(entry => entry.Value))
         {
@@ -40,19 +40,19 @@ internal static class SortCharactersByFrequencySolution
         return result.ToString();
     }
 
-    public static string FrequencySortByHashMapHeap(string s)
+    public static string FrequencySortByHashMapHeap(string text)
     {
-        var counts = CountCharacters(s);
+        var counts = CountCharacters(text);
         var heap = BuildDescendingHeap(counts);
 
-        return DrainHeapToString(heap, s.Length);
+        return DrainHeapToString(heap, text.Length);
     }
 
-    private static HashMap<char, int> CountCharacters(string s)
+    private static HashMap<char, int> CountCharacters(string text)
     {
         var counts = new HashMap<char, int>();
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             counts.TryGetValue(c, out var count);
             counts.Set(c, count + 1);

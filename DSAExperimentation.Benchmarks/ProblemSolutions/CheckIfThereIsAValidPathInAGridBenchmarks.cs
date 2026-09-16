@@ -33,10 +33,10 @@ public class CheckIfThereIsAValidPathInAGridBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool RecursiveDfs() =>
+    public bool HasValidPathByRecursiveDfs() =>
         CheckIfThereIsAValidPathInAGridSolution.HasValidPathByRecursiveDfs(_grid);
 
     [Benchmark]
-    public bool DepthFirstSearchTraverse() =>
+    public bool HasValidPathByDepthFirstTraverse() =>
         CheckIfThereIsAValidPathInAGridSolution.HasValidPathByDepthFirstTraverse(_grid);
 }

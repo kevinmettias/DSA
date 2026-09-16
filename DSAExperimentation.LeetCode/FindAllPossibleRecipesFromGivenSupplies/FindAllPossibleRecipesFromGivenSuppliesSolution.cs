@@ -50,19 +50,19 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
     // actually made - are created together and updated together, so they arrive as
     // the one piece of state this pass mutates.
     private static bool TryMakeRecipe(
-        int i, string[] recipes, string[][] ingredients, (HashSet<string> Available, bool[] Made) state)
+        int recipeIndex, string[] recipes, string[][] ingredients, (HashSet<string> Available, bool[] Made) state)
     {
-        if (state.Made[i] || !AllIngredientsAvailable(ingredients[i], state.Available))
+        if (state.Made[recipeIndex] || !HasAllIngredients(ingredients[recipeIndex], state.Available))
         {
             return false;
         }
 
-        state.Made[i] = true;
-        state.Available.Add(recipes[i]);
+        state.Made[recipeIndex] = true;
+        state.Available.Add(recipes[recipeIndex]);
         return true;
     }
 
-    private static bool AllIngredientsAvailable(string[] ingredients, HashSet<string> available)
+    private static bool HasAllIngredients(string[] ingredients, HashSet<string> available)
     {
         foreach (var ingredient in ingredients)
         {
@@ -146,7 +146,7 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
     }
 
     private static void RecordIngredientDependencies(
-        int i, string[] ingredients, SupplyLookup lookup, RecipeGraph graph)
+        int recipeIndex, string[] ingredients, SupplyLookup lookup, RecipeGraph graph)
     {
         foreach (var ingredient in ingredients)
         {
@@ -157,12 +157,12 @@ internal static class FindAllPossibleRecipesFromGivenSuppliesSolution
 
             if (lookup.RecipeIndex.TryGetValue(ingredient, out var prerequisite))
             {
-                graph.Dependents[prerequisite].Add(i);
-                graph.InDegree[i]++;
+                graph.Dependents[prerequisite].Add(recipeIndex);
+                graph.InDegree[recipeIndex]++;
             }
             else
             {
-                graph.Blocked[i] = true;
+                graph.Blocked[recipeIndex] = true;
             }
         }
     }

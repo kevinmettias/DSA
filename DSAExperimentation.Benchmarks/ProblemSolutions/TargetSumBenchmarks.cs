@@ -4,8 +4,8 @@ using DSAExperimentation.LeetCode.TargetSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TargetSumSolution's, the same methods TargetSumTests
-// proves correct. N is kept modest specifically because the unmemoized baseline's
-// 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents.
+// proves correct. ElementCount is kept modest specifically because the unmemoized
+// baseline's 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents.
 [MemoryDiagnoser]
 public class TargetSumBenchmarks
 {
@@ -17,13 +17,13 @@ public class TargetSumBenchmarks
     // flips nums[0] from + to - in the target sum
 
     [Params(18, 22)]
-    public int N { get; set; }
+    public int ElementCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, N).Select(_ => random.Next(1, RandomValueUpperBoundExclusive)).ToArray();
+        _nums = Enumerable.Range(0, ElementCount).Select(_ => random.Next(1, RandomValueUpperBoundExclusive)).ToArray();
         _target = _nums.Sum() - (SignFlipMultiplier * _nums[0]);
     }
 

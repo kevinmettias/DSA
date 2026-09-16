@@ -16,10 +16,10 @@ internal static class ComplexNumberMultiplicationSolution
     // The textbook baseline: string.Split allocates an array plus one substring per
     // component. Deliberately written without this repo's primitives - a complex
     // number here is nothing but a (string, string) pair, LeetCode's own shape.
-    public static string MultiplyByStringSplit(string a, string b)
+    public static string MultiplyByStringSplit(string left, string right)
     {
-        var (realA, imaginaryA) = ParseSplit(a);
-        var (realB, imaginaryB) = ParseSplit(b);
+        var (realA, imaginaryA) = ParseSplit(left);
+        var (realB, imaginaryB) = ParseSplit(right);
 
         return MultiplyAndFormat(realA, imaginaryA, realB, imaginaryB);
     }
@@ -32,10 +32,10 @@ internal static class ComplexNumberMultiplicationSolution
 
     // Slices with ReadOnlySpan<char> and parses directly from the span, allocating
     // nothing per operand.
-    public static string MultiplyBySpanParse(string a, string b)
+    public static string MultiplyBySpanParse(string left, string right)
     {
-        var (realA, imaginaryA) = ParseSpan(a);
-        var (realB, imaginaryB) = ParseSpan(b);
+        var (realA, imaginaryA) = ParseSpan(left);
+        var (realB, imaginaryB) = ParseSpan(right);
 
         return MultiplyAndFormat(realA, imaginaryA, realB, imaginaryB);
     }

@@ -77,7 +77,7 @@ internal static class StampingTheSequenceSolution
 
         for (var round = 0; round < canvas.Done.Length && turnedCount < canvas.Chars.Length; round++)
         {
-            if (!StampAvailableWindows(canvas, order, ref turnedCount))
+            if (!TryStampAvailableWindows(canvas, order, ref turnedCount))
             {
                 break;
             }
@@ -92,7 +92,7 @@ internal static class StampingTheSequenceSolution
 
         for (var round = 0; round < canvas.Done.Length && turnedCount < canvas.Chars.Length; round++)
         {
-            if (!StampAvailableWindows(canvas, order, ref turnedCount))
+            if (!TryStampAvailableWindows(canvas, order, ref turnedCount))
             {
                 break;
             }
@@ -103,7 +103,7 @@ internal static class StampingTheSequenceSolution
 
     // Tries every not-yet-done window once; returns whether any window stamped this
     // round (a false result means the reverse simulation is stuck).
-    private static bool StampAvailableWindows(StampCanvas canvas, List<int> order, ref int turnedCount)
+    private static bool TryStampAvailableWindows(StampCanvas canvas, List<int> order, ref int turnedCount)
     {
         var stampedThisRound = false;
 
@@ -122,7 +122,7 @@ internal static class StampingTheSequenceSolution
         return stampedThisRound;
     }
 
-    private static bool StampAvailableWindows(StampCanvas canvas, RepoStampStack order, ref int turnedCount)
+    private static bool TryStampAvailableWindows(StampCanvas canvas, RepoStampStack order, ref int turnedCount)
     {
         var stampedThisRound = false;
 

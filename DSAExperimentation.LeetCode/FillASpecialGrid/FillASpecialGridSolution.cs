@@ -23,9 +23,9 @@ internal static class FillASpecialGridSolution
     // just read directly off the bits instead of recursing.
     private static readonly int[] QuadrantDigit = [3, 0, 2, 1];
 
-    public static int[][] SpecialGridByRecursiveQuadrants(int n)
+    public static int[][] SpecialGridByRecursiveQuadrants(int levelCount)
     {
-        var size = 1 << n;
+        var size = 1 << levelCount;
         var grid = new int[size][];
 
         for (var row = 0; row < size; row++)
@@ -37,9 +37,9 @@ internal static class FillASpecialGridSolution
         return grid;
     }
 
-    public static int[][] SpecialGridByBitQuadrantDigits(int n)
+    public static int[][] SpecialGridByBitQuadrantDigits(int levelCount)
     {
-        var size = 1 << n;
+        var size = 1 << levelCount;
         var grid = new int[size][];
 
         for (var row = 0; row < size; row++)
@@ -48,18 +48,18 @@ internal static class FillASpecialGridSolution
 
             for (var col = 0; col < size; col++)
             {
-                grid[row][col] = ValueAt(row, col, n);
+                grid[row][col] = ValueAt(row, col, levelCount);
             }
         }
 
         return grid;
     }
 
-    private static int ValueAt(int row, int col, int n)
+    private static int ValueAt(int row, int col, int levelCount)
     {
         var value = 0;
 
-        for (var level = n - 1; level >= 0; level--)
+        for (var level = levelCount - 1; level >= 0; level--)
         {
             var rowBit = (row >> level) & 1;
             var colBit = (col >> level) & 1;

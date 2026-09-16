@@ -49,7 +49,7 @@ internal static class CourseScheduleIVSolution
 
         var (visited, pending) = CreateFrontier(graph, from);
 
-        return ReachesTarget(graph, visited, pending, to);
+        return CanReachTarget(graph, visited, pending, to);
     }
 
     private static (bool[] Visited, Queue<int> Pending) CreateFrontier(CourseGraph graph, int from)
@@ -62,7 +62,7 @@ internal static class CourseScheduleIVSolution
         return (visited, pending);
     }
 
-    private static bool ReachesTarget(CourseGraph graph, bool[] visited, Queue<int> pending, int to)
+    private static bool CanReachTarget(CourseGraph graph, bool[] visited, Queue<int> pending, int to)
     {
         while (pending.Count > 0)
         {

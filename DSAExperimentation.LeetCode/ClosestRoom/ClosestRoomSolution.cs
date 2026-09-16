@@ -47,7 +47,7 @@ internal static class ClosestRoomSolution
 
             var difference = Math.Abs(room[0] - preferred);
 
-            if (BeatsBestSoFar(difference, bestDifference, room[0], bestId))
+            if (IsBetterRoom(difference, bestDifference, room[0], bestId))
             {
                 bestDifference = difference;
                 bestId = room[0];
@@ -59,7 +59,7 @@ internal static class ClosestRoomSolution
 
     // A room wins when it sits strictly nearer to the preferred id, or ties on distance
     // and carries the smaller id - LC 1847's own tie-break.
-    private static bool BeatsBestSoFar(int difference, int bestDifference, int id, int bestId) =>
+    private static bool IsBetterRoom(int difference, int bestDifference, int id, int bestId) =>
         difference < bestDifference || (difference == bestDifference && id < bestId);
 
     // The composed answer: sort rooms by size descending and queries by minSize

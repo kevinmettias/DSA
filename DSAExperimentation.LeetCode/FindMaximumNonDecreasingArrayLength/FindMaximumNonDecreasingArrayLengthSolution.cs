@@ -44,14 +44,15 @@ internal static class FindMaximumNonDecreasingArrayLengthSolution
     // prefix[i] - prefix[j] reaches last[j], ranked by block count and then by the
     // smaller block sum. Nothing qualifying leaves the -1 that says "no partition
     // of this prefix exists".
-    private static (int BestBlocks, long BestLast) BestPredecessorOf(int i, long[] prefix, int[] dp, long[] last)
+    private static (int BestBlocks, long BestLast) BestPredecessorOf(
+        int cutIndex, long[] prefix, int[] dp, long[] last)
     {
         var bestBlocks = -1;
         var bestLast = 0L;
 
-        for (var j = 0; j < i; j++)
+        for (var j = 0; j < cutIndex; j++)
         {
-            var candidateLast = prefix[i] - prefix[j];
+            var candidateLast = prefix[cutIndex] - prefix[j];
 
             if (candidateLast < last[j])
             {
@@ -108,31 +109,32 @@ internal static class FindMaximumNonDecreasingArrayLengthSolution
     // Record what that predecessor extends the partition to, and return the key
     // this cut point contributes to the stack.
     private static long ApplyBestPredecessor(
-        int i,
+        int cutIndex,
         (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack,
         (long[] Prefix, int[] Dp, long[] Last) tables)
     {
         var keys = new DynamicArraySequence<long>(stack.Keys);
-        var position = BinarySearch.UpperBound<long, DynamicArraySequence<long>>(keys, tables.Prefix[i]) - 1;
+        var position = BinarySearch.UpperBound<long, DynamicArraySequence<long>>(
+            keys, tables.Prefix[cutIndex]) - 1;
         var j = stack.Cuts.Get(position);
 
-        tables.Dp[i] = tables.Dp[j] + 1;
-        tables.Last[i] = tables.Prefix[i] - tables.Prefix[j];
+        tables.Dp[cutIndex] = tables.Dp[j] + 1;
+        tables.Last[cutIndex] = tables.Prefix[cutIndex] - tables.Prefix[j];
 
-        return tables.Prefix[i] + tables.Last[i];
+        return tables.Prefix[cutIndex] + tables.Last[cutIndex];
     }
 
     // Stack the new cut point, first dropping every surviving cut it dominates.
     private static void PushCut(
-        int i, long key, (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack, int[] dp)
+        int cutIndex, long key, (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack, int[] dp)
     {
-        while (IsDominatedByNewCut(stack, dp, i, key))
+        while (IsDominatedByNewCut(stack, dp, cutIndex, key))
         {
             stack.Cuts.RemoveAt(stack.Cuts.Count - 1);
             stack.Keys.RemoveAt(stack.Keys.Count - 1);
         }
 
-        stack.Cuts.Add(i);
+        stack.Cuts.Add(cutIndex);
         stack.Keys.Add(key);
     }
 
@@ -142,10 +144,10 @@ internal static class FindMaximumNonDecreasingArrayLengthSolution
     private static bool IsDominatedByNewCut(
         (DynamicArray<int> Cuts, DynamicArray<long> Keys) stack,
         int[] dp,
-        int i,
+        int cutIndex,
         long key)
         => stack.Cuts.Count > 0
-            && dp[stack.Cuts.Get(stack.Cuts.Count - 1)] <= dp[i]
+            && dp[stack.Cuts.Get(stack.Cuts.Count - 1)] <= dp[cutIndex]
             && stack.Keys.Get(stack.Keys.Count - 1) >= key;
 
     private static long[] BuildPrefixSums(int[] nums)

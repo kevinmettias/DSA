@@ -28,30 +28,30 @@ internal static class FallingSquaresSolution
         return result;
     }
 
-    private static int StackSquareAndTrackMax(int[][] positions, int i, int[] heights, int overallMax)
+    private static int StackSquareAndTrackMax(int[][] positions, int squareIndex, int[] heights, int overallMax)
     {
-        var left = positions[i][0];
-        var right = left + positions[i][1];
+        var left = positions[squareIndex][0];
+        var right = left + positions[squareIndex][1];
         var heightBelow = 0;
 
-        for (var j = 0; j < i; j++)
+        for (var j = 0; j < squareIndex; j++)
         {
             var otherLeft = positions[j][0];
             var otherRight = otherLeft + positions[j][1];
 
-            if (FootprintsOverlap(left, right, otherLeft, otherRight) && heights[j] > heightBelow)
+            if (HasFootprintOverlap(left, right, otherLeft, otherRight) && heights[j] > heightBelow)
             {
                 heightBelow = heights[j];
             }
         }
 
-        heights[i] = heightBelow + positions[i][1];
-        return Math.Max(overallMax, heights[i]);
+        heights[squareIndex] = heightBelow + positions[squareIndex][1];
+        return Math.Max(overallMax, heights[squareIndex]);
     }
 
     // Two half-open footprints [left, right) share ground when each one starts before the
     // other ends.
-    private static bool FootprintsOverlap(int left, int right, int otherLeft, int otherRight) =>
+    private static bool HasFootprintOverlap(int left, int right, int otherLeft, int otherRight) =>
         left < otherRight && otherLeft < right;
 
     // Coordinate-compresses every square's footprint onto a dense leaf-index range,

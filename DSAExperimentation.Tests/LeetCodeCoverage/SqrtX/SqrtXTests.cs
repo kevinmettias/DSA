@@ -18,11 +18,11 @@ public sealed class SqrtXTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RootByMathSqrt_LeetCodeExamples_ReturnsFloorRoot(int x, int expected) =>
-        Assert.Equal(expected, SqrtXSolution.RootByMathSqrt(x));
+    public void RootByMathSqrt_LeetCodeExamples_ReturnsFloorRoot(int value, int expected) =>
+        Assert.Equal(expected, SqrtXSolution.RootByMathSqrt(value));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RootByBinarySearch_LeetCodeExamples_ReturnsFloorRoot(int x, int expected) =>
-        Assert.Equal(expected, SqrtXSolution.RootByBinarySearch(x));
+    public void RootByBinarySearch_LeetCodeExamples_ReturnsFloorRoot(int value, int expected) =>
+        Assert.Equal(expected, SqrtXSolution.RootByBinarySearch(value));
 }

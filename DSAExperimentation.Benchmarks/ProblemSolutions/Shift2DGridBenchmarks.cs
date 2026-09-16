@@ -7,8 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are Shift2DGridSolution's, the same methods
 // Shift2DGridTests proves correct. Direct row/col index arithmetic (compute each
 // source cell's shifted destination and write straight into a fresh array) vs. this
-// repo's own Deque<int> - flatten into it, right-rotate k mod (rows*cols) times via
-// TryPopBack + PushFront, then drain it back out into the grid shape.
+// repo's own Deque<int> - flatten into it, right-rotate it shiftCount mod (rows*cols)
+// times via TryPopBack + PushFront, then drain it back out into the grid shape.
 //
 // LeetCode's own input shape - a jagged grid and a shift count - is already what
 // both strategies take, so [GlobalSetup] only decides how large the workload is and
@@ -22,7 +22,7 @@ public class Shift2DGridBenchmarks
 
     private int[][] _grid = [];
 
-    private int _k;
+    private int _shiftCount;
     [Params(20, 200)]
     public int Size { get; set; }
 
@@ -44,12 +44,12 @@ public class Shift2DGridBenchmarks
 
         // Deliberately not a multiple of the grid's cell count, so both strategies
         // do a genuine partial rotation rather than a degenerate no-op/full-cycle.
-        _k = (Size * Size / AlgorithmConstants.HalvingFactor) + 1;
+        _shiftCount = (Size * Size / AlgorithmConstants.HalvingFactor) + 1;
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] IndexArithmeticShift() => Shift2DGridSolution.ShiftGridByIndexArithmetic(_grid, _k);
+    public int[][] IndexArithmeticShift() => Shift2DGridSolution.ShiftGridByIndexArithmetic(_grid, _shiftCount);
 
     [Benchmark]
-    public int[][] DequeRotationShift() => Shift2DGridSolution.ShiftGridByDequeRotation(_grid, _k);
+    public int[][] DequeRotationShift() => Shift2DGridSolution.ShiftGridByDequeRotation(_grid, _shiftCount);
 }

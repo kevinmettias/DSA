@@ -23,19 +23,19 @@ public sealed class SatisfiabilityOfEqualityEquationsTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void EquationsPossibleByAdjacencyBfs_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
+    public void IsSatisfiableByAdjacencyBfs_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
         EquationsExample example) =>
         Assert.Equal(
             example.IsSatisfiable,
-            SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByAdjacencyBfs(example.Equations));
+            SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByAdjacencyBfs(example.Equations));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void EquationsPossibleByDisjointSet_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
+    public void IsSatisfiableByDisjointSet_LeetCodeExamples_ReturnsWhetherEquationsAreSatisfiable(
         EquationsExample example) =>
         Assert.Equal(
             example.IsSatisfiable,
-            SatisfiabilityOfEqualityEquationsSolution.EquationsPossibleByDisjointSet(example.Equations));
+            SatisfiabilityOfEqualityEquationsSolution.IsSatisfiableByDisjointSet(example.Equations));
 
     // One example: the equation system and whether it can hold. The expectation is
     // named rather than carried by its position, so the row reads as an assertion

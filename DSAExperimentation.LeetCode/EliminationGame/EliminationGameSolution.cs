@@ -20,12 +20,12 @@ internal static class EliminationGameSolution
     // Every pass keeps only the numbers at odd (0-indexed) positions of whichever
     // direction it is walking; a right-to-left pass runs that same "keep odd
     // positions" rule against the reversed list, then reverses back.
-    public static int LastRemainingByHeadStepArithmetic(int n)
+    public static int LastRemainingByHeadStepArithmetic(int numberCount)
     {
         var head = 1;
         var step = 1;
         var leftToRight = true;
-        var remaining = n;
+        var remaining = numberCount;
 
         while (remaining > 1)
         {
@@ -42,11 +42,11 @@ internal static class EliminationGameSolution
         return head;
     }
 
-    public static int LastRemainingByListSimulation(int n)
+    public static int LastRemainingByListSimulation(int numberCount)
     {
         var current = new List<int>();
 
-        for (var i = 1; i <= n; i++)
+        for (var i = 1; i <= numberCount; i++)
         {
             current.Add(i);
         }

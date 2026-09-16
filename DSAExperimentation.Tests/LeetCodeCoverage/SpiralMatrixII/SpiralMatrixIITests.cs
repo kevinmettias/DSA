@@ -17,11 +17,11 @@ public sealed class SpiralMatrixIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GenerateMatrixByDirectionVectorWalk_LeetCodeExamples_FillsBoundsClockwise(int n, int[][] expected) =>
-        Assert.Equal(expected, SpiralMatrixIISolution.GenerateMatrixByDirectionVectorWalk(n));
+    public void GenerateMatrixByDirectionVectorWalk_LeetCodeExamples_FillsBoundsClockwise(int size, int[][] expected) =>
+        Assert.Equal(expected, SpiralMatrixIISolution.GenerateMatrixByDirectionVectorWalk(size));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void GenerateMatrixByBoundaryShrinking_LeetCodeExamples_FillsBoundsClockwise(int n, int[][] expected) =>
-        Assert.Equal(expected, SpiralMatrixIISolution.GenerateMatrixByBoundaryShrinking(n));
+    public void GenerateMatrixByBoundaryShrinking_LeetCodeExamples_FillsBoundsClockwise(int size, int[][] expected) =>
+        Assert.Equal(expected, SpiralMatrixIISolution.GenerateMatrixByBoundaryShrinking(size));
 }

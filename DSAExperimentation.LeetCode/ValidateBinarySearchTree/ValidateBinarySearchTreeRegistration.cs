@@ -40,11 +40,11 @@ internal sealed class ValidateBinarySearchTreeRegistration : ILeetCodeProblemReg
     {
         var levelOrder = new int?[(1 << depth) - 1];
 
-        Fill(index: 0, lowest: 1, highest: levelOrder.Length);
+        FillLevelOrder(index: 0, lowest: 1, highest: levelOrder.Length);
 
         return levelOrder;
 
-        void Fill(int index, int lowest, int highest)
+        void FillLevelOrder(int index, int lowest, int highest)
         {
             if (index >= levelOrder.Length || lowest > highest)
             {
@@ -54,8 +54,8 @@ internal sealed class ValidateBinarySearchTreeRegistration : ILeetCodeProblemReg
             var middle = lowest + ((highest - lowest) / 2);
             levelOrder[index] = middle;
 
-            Fill((2 * index) + 1, lowest, middle - 1);
-            Fill((2 * index) + 2, middle + 1, highest);
+            FillLevelOrder((2 * index) + 1, lowest, middle - 1);
+            FillLevelOrder((2 * index) + 2, middle + 1, highest);
         }
     }
 }

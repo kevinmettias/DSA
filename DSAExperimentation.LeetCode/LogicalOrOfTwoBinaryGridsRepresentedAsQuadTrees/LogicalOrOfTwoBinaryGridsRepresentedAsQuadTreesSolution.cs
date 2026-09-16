@@ -39,7 +39,7 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
         var bottomLeft = OrByDirectRecursiveMerge(tree1.BottomLeft!, tree2.BottomLeft!);
         var bottomRight = OrByDirectRecursiveMerge(tree1.BottomRight!, tree2.BottomRight!);
 
-        if (AreAllUniformLeaves(topLeft, topRight, bottomLeft, bottomRight))
+        if (HasUniformLeafQuadrants(topLeft, topRight, bottomLeft, bottomRight))
         {
             return new QuadTreeNode(Val: topLeft.Val, IsLeaf: true);
         }
@@ -55,7 +55,7 @@ internal static class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution
 
     // The merged parent is uniform exactly when all four of its quadrants are leaves
     // and all four carry the same value - the one case that collapses back to a leaf.
-    private static bool AreAllUniformLeaves(
+    private static bool HasUniformLeafQuadrants(
         QuadTreeNode topLeft, QuadTreeNode topRight, QuadTreeNode bottomLeft, QuadTreeNode bottomRight) =>
         topLeft.IsLeaf && topRight.IsLeaf && bottomLeft.IsLeaf && bottomRight.IsLeaf
         && topLeft.Val == topRight.Val && topRight.Val == bottomLeft.Val && bottomLeft.Val == bottomRight.Val;

@@ -15,9 +15,9 @@ internal static class ReverseSubstringsBetweenEachPairOfParenthesesSolution
     // The textbook answer: find the first ')', scan back to its matching '(',
     // splice the reversed inner substring back in, repeat. Deliberately BCL-only,
     // and quadratic - the whole string is rebuilt once per parenthesis pair.
-    public static string ReverseParenthesesByRepeatedSplice(string s)
+    public static string ReverseParenthesesByRepeatedSplice(string text)
     {
-        var current = s;
+        var current = text;
 
         // Stops when the current string holds no ')': every pair has been spliced out and the unwrapped string is returned.
         while (true)
@@ -44,14 +44,14 @@ internal static class ReverseSubstringsBetweenEachPairOfParenthesesSolution
     // '(' pushes the enclosing buffer aside and starts a fresh one, ')' reverses the
     // current buffer and folds it into the one it closes back into. Linear in the
     // total number of characters times the nesting depth they sit under.
-    public static string ReverseParenthesesByCharBufferStack(string s)
+    public static string ReverseParenthesesByCharBufferStack(string text)
     {
         var groups = new RepoCharListStack();
         var current = new List<char>();
 
-        foreach (var ch in s)
+        foreach (var ch in text)
         {
-            current = ProcessChar(groups, current, ch);
+            current = FoldChar(groups, current, ch);
         }
 
         return new string(current.ToArray());
@@ -60,7 +60,7 @@ internal static class ReverseSubstringsBetweenEachPairOfParenthesesSolution
     // One character folded into the buffer stack: '(' opens a fresh buffer above the
     // current one, ')' reverses the current buffer and appends it to the one it
     // closes back into, anything else just accumulates.
-    private static List<char> ProcessChar(RepoCharListStack groups, List<char> current, char ch)
+    private static List<char> FoldChar(RepoCharListStack groups, List<char> current, char ch)
     {
         switch (ch)
         {

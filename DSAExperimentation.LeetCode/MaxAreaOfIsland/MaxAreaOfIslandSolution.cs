@@ -61,16 +61,16 @@ internal static class MaxAreaOfIslandSolution
         return best;
     }
 
-    // One island's area: walk its whole land component from (r, c) and zero it, so
-    // a cell that belongs to this island is not walked a second time.
-    private static int IslandAreaAt(int[][] working, int r, int c)
+    // One island's area: walk its whole land component from (rowIndex, columnIndex)
+    // and zero it, so a cell that belongs to this island is not walked a second time.
+    private static int IslandAreaAt(int[][] working, int rowIndex, int columnIndex)
     {
-        if (working[r][c] != 1)
+        if (working[rowIndex][columnIndex] != 1)
         {
             return 0;
         }
 
-        var island = DepthFirstSearch.Traverse((r, c), p => LandNeighbors(working, p));
+        var island = DepthFirstSearch.Traverse((rowIndex, columnIndex), cell => LandNeighbors(working, cell));
 
         foreach (var (row, col) in island)
         {
@@ -80,14 +80,14 @@ internal static class MaxAreaOfIslandSolution
         return island.Count;
     }
 
-    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) p)
+    private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] grid, (int Row, int Col) cell)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
 
         foreach (var (dRow, dCol) in Directions)
         {
-            var next = (Row: p.Row + dRow, Col: p.Col + dCol);
+            var next = (Row: cell.Row + dRow, Col: cell.Col + dCol);
 
             if (IsLand(next, rows, cols, grid))
             {

@@ -17,16 +17,16 @@ public sealed class TopKFrequentElementsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTopKFrequentByFullSort_LeetCodeExamples_ReturnsTheKMostFrequentValues(
-        int[] nums, int k, int[] expected) =>
+        int[] nums, int topCount, int[] expected) =>
         Assert.Equal(
             new HashSet<int>(expected),
-            new HashSet<int>(TopKFrequentElementsSolution.FindTopKFrequentByFullSort(nums, k)));
+            new HashSet<int>(TopKFrequentElementsSolution.FindTopKFrequentByFullSort(nums, topCount)));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindTopKFrequentBySizeKMinHeap_LeetCodeExamples_ReturnsTheKMostFrequentValues(
-        int[] nums, int k, int[] expected) =>
+        int[] nums, int topCount, int[] expected) =>
         Assert.Equal(
             new HashSet<int>(expected),
-            new HashSet<int>(TopKFrequentElementsSolution.FindTopKFrequentBySizeKMinHeap(nums, k)));
+            new HashSet<int>(TopKFrequentElementsSolution.FindTopKFrequentBySizeKMinHeap(nums, topCount)));
 }

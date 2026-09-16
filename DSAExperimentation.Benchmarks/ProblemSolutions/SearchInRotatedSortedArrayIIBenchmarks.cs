@@ -31,9 +31,9 @@ public class SearchInRotatedSortedArrayIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool LinearScan() => SearchInRotatedSortedArrayIISolution.SearchByLinearScan(_values, _target);
+    public bool HasTargetByLinearScan() => SearchInRotatedSortedArrayIISolution.HasTargetByLinearScan(_values, _target);
 
     [Benchmark]
-    public bool TrimDuplicatesThenBinarySearch() =>
-        SearchInRotatedSortedArrayIISolution.SearchByTrimDuplicatesThenBinarySearch(_values, _target);
+    public bool HasTargetByTrimDuplicatesThenBinarySearch() =>
+        SearchInRotatedSortedArrayIISolution.HasTargetByTrimDuplicatesThenBinarySearch(_values, _target);
 }

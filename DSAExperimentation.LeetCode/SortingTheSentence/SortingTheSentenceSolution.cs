@@ -22,7 +22,7 @@ namespace DSAExperimentation.LeetCode.SortingTheSentence;
 internal static class SortingTheSentenceSolution
 {
     // LeetCode's own input shape: a single space-separated shuffled sentence.
-    public static string SortSentenceByMergeSort(string s) => JoinInPositionOrder(s.Split(' '));
+    public static string SortSentenceByMergeSort(string sentence) => JoinInPositionOrder(sentence.Split(' '));
 
     // The prepared-input overload sorts a copy: MergeSort orders in place, and a
     // benchmark hands the same array to every iteration.
@@ -37,7 +37,7 @@ internal static class SortingTheSentenceSolution
         return string.Join(' ', words.Select(StripPosition));
     }
 
-    public static string SortSentenceByPositionScan(string s) => SortSentenceByPositionScan(s.Split(' '));
+    public static string SortSentenceByPositionScan(string sentence) => SortSentenceByPositionScan(sentence.Split(' '));
 
     public static string SortSentenceByPositionScan(string[] words)
     {

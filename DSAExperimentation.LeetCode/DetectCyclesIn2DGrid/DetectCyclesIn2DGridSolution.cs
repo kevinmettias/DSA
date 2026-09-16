@@ -26,7 +26,7 @@ internal static class DetectCyclesIn2DGridSolution
     // already visited and is not the cell we arrived from closes a cycle.
     // Deliberately written on BCL types alone - it is the arm the DisjointSet
     // strategy below has to justify itself against.
-    public static bool ContainsCycleByParentTrackedDepthFirstSearch(char[][] grid)
+    public static bool HasCycleByParentTrackedDepthFirstSearch(char[][] grid)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;
@@ -107,7 +107,7 @@ internal static class DetectCyclesIn2DGridSolution
     // (never left or up) means every union crosses a genuinely new edge, so
     // IsConnected can only already be true when a path closes back into the same
     // component.
-    public static bool ContainsCycleByDisjointSetEdgeUnion(char[][] grid)
+    public static bool HasCycleByDisjointSetEdgeUnion(char[][] grid)
     {
         var rows = grid.Length;
         var cols = grid[0].Length;

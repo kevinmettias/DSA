@@ -5,8 +5,8 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestInstructions;
 // Harness only. Both strategies are KthSmallestInstructionsSolution's - the
 // enumerate-and-sort baseline and the memoized greedy walk - pinned to LeetCode's
 // three published examples for destination [2, 3] plus the two ranks that bound
-// the ordering (k = 1 is all 'H' first, k = 10 is the last of the ten routes) and
-// a one-by-one destination where every step is forced.
+// the ordering (rank = 1 is all 'H' first, rank = 10 is the last of the ten routes)
+// and a one-by-one destination where every step is forced.
 public sealed class KthSmallestInstructionsTests
 {
     public static TheoryData<int[], long, string> Examples =>
@@ -23,9 +23,9 @@ public sealed class KthSmallestInstructionsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthSmallestPathByEnumerateAndSort_LeetCodeExamples_ReturnsKthLexicographicRoute(
-        int[] destination, long k, string expected)
+        int[] destination, long rank, string expected)
     {
-        var actual = KthSmallestInstructionsSolution.KthSmallestPathByEnumerateAndSort(destination, k);
+        var actual = KthSmallestInstructionsSolution.KthSmallestPathByEnumerateAndSort(destination, rank);
 
         Assert.Equal(expected, actual);
     }
@@ -33,9 +33,9 @@ public sealed class KthSmallestInstructionsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void KthSmallestPathByMemoizedGreedy_LeetCodeExamples_ReturnsKthLexicographicRoute(
-        int[] destination, long k, string expected)
+        int[] destination, long rank, string expected)
     {
-        var actual = KthSmallestInstructionsSolution.KthSmallestPathByMemoizedGreedy(destination, k);
+        var actual = KthSmallestInstructionsSolution.KthSmallestPathByMemoizedGreedy(destination, rank);
 
         Assert.Equal(expected, actual);
     }

@@ -19,8 +19,8 @@ public class OneThreeTwoPatternBenchmarks
     public void Setup() => _nums = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceMinPrefixScan() => OneThreeTwoPatternSolution.HasPatternByBruteForce(_nums);
+    public bool HasPatternByBruteForce() => OneThreeTwoPatternSolution.HasPatternByBruteForce(_nums);
 
     [Benchmark]
-    public bool MonotonicStack() => OneThreeTwoPatternSolution.HasPatternByMonotonicStack(_nums);
+    public bool HasPatternByMonotonicStack() => OneThreeTwoPatternSolution.HasPatternByMonotonicStack(_nums);
 }

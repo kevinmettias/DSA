@@ -12,10 +12,11 @@ namespace DSAExperimentation.LeetCode.KthSmallestInstructions;
 // decides one character at a time, asking how many routes remain reachable if the
 // smaller choice 'H' is taken: that count is the Pascal's-triangle recurrence
 // ways(v, h) = ways(v-1, h) + ways(v, h-1) that UniquePaths already memoizes for
-// LeetCode 62, so k either falls inside the 'H' block or walks past it onto 'V'.
+// LeetCode 62, so the rank either falls inside the 'H' block or walks past it onto
+// 'V'.
 //
-// k is taken as a long rather than LeetCode's int so the count of routes can be
-// compared against it without a widening cast at every step; every int caller
+// The rank is taken as a long rather than LeetCode's int so the count of routes can
+// be compared against it without a widening cast at every step; every int caller
 // converts implicitly.
 internal static class KthSmallestInstructionsSolution
 {
@@ -32,22 +33,22 @@ internal static class KthSmallestInstructionsSolution
     // concatenation, a List<string> and its ordinal sort - because it is the arm
     // the greedy walk below has to justify itself against, and building
     // C(v+h, v) strings IS its cost.
-    public static string KthSmallestPathByEnumerateAndSort(int[] destination, long k)
+    public static string KthSmallestPathByEnumerateAndSort(int[] destination, long rank)
     {
         var paths = new List<string>();
 
         Generate(string.Empty, destination[RowIndex], destination[ColumnIndex], paths);
         paths.Sort(StringComparer.Ordinal);
 
-        return paths[(int)k - 1];
+        return paths[(int)rank - 1];
     }
 
     // This repo's own Memoizer caches the binomial counts, so each of the v + h
     // characters is decided in O(v * h) cached states instead of enumerating
     // C(v+h, v) whole strings.
-    public static string KthSmallestPathByMemoizedGreedy(int[] destination, long k)
+    public static string KthSmallestPathByMemoizedGreedy(int[] destination, long rank)
     {
-        var state = new GreedyState(destination[RowIndex], destination[ColumnIndex], k);
+        var state = new GreedyState(destination[RowIndex], destination[ColumnIndex], rank);
         var path = new StringBuilder();
 
         while (state.RemainingV > 0 || state.RemainingH > 0)

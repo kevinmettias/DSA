@@ -5,20 +5,21 @@ namespace DSAExperimentation.LeetCode.MinimumOneBitOperationsToMakeIntegersZero;
 
 // LeetCode 1611. Minimum One Bit Operations to Make Integers Zero: the two allowed
 // operations turn every non-negative integer into a node of one single implicit
-// graph - "flip bit 0" is always a valid move, and "flip the bit just above n's own
-// lowest set bit" is the only other one, so every state has degree <= 2 and the
-// whole graph is one path (the reflected-binary Gray code sequence, 0 at one end).
+// graph - "flip bit 0" is always a valid move, and "flip the bit just above the
+// value's own lowest set bit" is the only other one, so every state has degree <= 2
+// and the whole graph is one path (the reflected-binary Gray code sequence, 0 at one
+// end).
 //
 // Both strategies answer the same question from that observation. The search walks
 // the path a hop at a time and therefore does work proportional to the answer
-// itself; the closed form recognizes the answer as the inverse Gray code of n and
-// only ever touches n's own ~log2(n) bits.
+// itself; the closed form recognizes the answer as the inverse Gray code of the
+// target and only ever touches its own ~log2(n) bits.
 internal static class MinimumOneBitOperationsToMakeIntegersZeroSolution
 {
     // The state every operation count is measured to, and therefore the search root.
     private const int ZeroState = 0;
 
-    // n is already the goal, so nothing has to be flipped.
+    // The target is already the goal, so nothing has to be flipped.
     private const int NoOperations = 0;
 
     // Bit 0, the one operation one may always apply.
@@ -30,9 +31,9 @@ internal static class MinimumOneBitOperationsToMakeIntegersZeroSolution
     // a pre-built node graph. It is the arm the closed form has to justify itself
     // against - and, being a plain shortest-path walk, it is also the one that
     // demonstrates the answer rather than asserting it.
-    public static int MinimumOneBitOperationsByBreadthFirstSearch(int n)
+    public static int MinimumOneBitOperationsByBreadthFirstSearch(int target)
     {
-        if (n == ZeroState)
+        if (target == ZeroState)
         {
             return NoOperations;
         }
@@ -42,16 +43,16 @@ internal static class MinimumOneBitOperationsToMakeIntegersZeroSolution
         distances.Set(ZeroState, NoOperations);
         frontier.Enqueue(ZeroState);
 
-        return WalkToTarget(frontier, distances, n);
+        return WalkToTarget(frontier, distances, target);
     }
 
-    private static int WalkToTarget(StateQueue frontier, HashMap<int, int> distances, int n)
+    private static int WalkToTarget(StateQueue frontier, HashMap<int, int> distances, int target)
     {
         while (frontier.TryDequeue(out var state))
         {
             distances.TryGetValue(state, out var distance);
 
-            if (state == n)
+            if (state == target)
             {
                 return distance;
             }
@@ -103,13 +104,13 @@ internal static class MinimumOneBitOperationsToMakeIntegersZeroSolution
         return index;
     }
 
-    // The closed form: the path position of n in the reflected-binary Gray code is
-    // its inverse Gray code, the running xor of n's successive right shifts. Same
-    // answer as the search, in one pass over n's bits.
-    public static int MinimumOneBitOperationsByInverseGrayCode(int n)
+    // The closed form: the path position of the target in the reflected-binary Gray
+    // code is its inverse Gray code, the running xor of its successive right shifts.
+    // Same answer as the search, in one pass over the target's bits.
+    public static int MinimumOneBitOperationsByInverseGrayCode(int target)
     {
         var result = NoOperations;
-        var remaining = n;
+        var remaining = target;
 
         while (remaining > ZeroState)
         {

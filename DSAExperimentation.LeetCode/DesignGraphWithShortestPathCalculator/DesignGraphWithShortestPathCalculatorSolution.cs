@@ -4,7 +4,7 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 namespace DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 
 // LeetCode 2642. Design Graph With Shortest Path Calculator: a directed,
-// non-negative-weight graph over n fixed vertices that gains edges after
+// non-negative-weight graph over nodeCount fixed vertices that gains edges after
 // construction and answers repeated shortest-path queries between two given
 // nodes, reporting -1 when node2 is unreachable from node1.
 //
@@ -48,11 +48,11 @@ internal static class DesignGraphWithShortestPathCalculatorSolution
 
         private readonly List<(int Weight, int Target)>[] _adjacency;
 
-        public ShortestPathGraphByArrayDijkstra(int n, int[][] edges)
+        public ShortestPathGraphByArrayDijkstra(int nodeCount, int[][] edges)
         {
-            _adjacency = new List<(int Weight, int Target)>[n];
+            _adjacency = new List<(int Weight, int Target)>[nodeCount];
 
-            for (var i = 0; i < n; i++)
+            for (var i = 0; i < nodeCount; i++)
             {
                 _adjacency[i] = [];
             }
@@ -138,11 +138,11 @@ internal static class DesignGraphWithShortestPathCalculatorSolution
     {
         private readonly ShortestPathCalculatorNode[] _nodes;
 
-        public ShortestPathGraphByHeapDijkstra(int n, int[][] edges)
+        public ShortestPathGraphByHeapDijkstra(int nodeCount, int[][] edges)
         {
-            _nodes = new ShortestPathCalculatorNode[n];
+            _nodes = new ShortestPathCalculatorNode[nodeCount];
 
-            for (var i = 0; i < n; i++)
+            for (var i = 0; i < nodeCount; i++)
             {
                 _nodes[i] = new ShortestPathCalculatorNode(i);
             }

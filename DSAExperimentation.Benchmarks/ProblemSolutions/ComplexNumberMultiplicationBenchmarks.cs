@@ -30,12 +30,12 @@ public class ComplexNumberMultiplicationBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            _pairs[i] = (Format(random), Format(random));
+            _pairs[i] = (FormatComplex(random), FormatComplex(random));
         }
 
         return;
 
-        static string Format(Random random) => $"{random.Next(MinComponentValue, MaxComponentValueExclusive)}+{random.Next(MinComponentValue, MaxComponentValueExclusive)}i";
+        static string FormatComplex(Random random) => $"{random.Next(MinComponentValue, MaxComponentValueExclusive)}+{random.Next(MinComponentValue, MaxComponentValueExclusive)}i";
     }
 
     [Benchmark(Baseline = true)]

@@ -9,7 +9,7 @@ namespace DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
 // own folder rather than DataStructures/.
 internal sealed class Node(int val)
 {
-    public int Val { get; } = val;
+    public int Value { get; } = val;
 
     public Node? Previous { get; set; }
 

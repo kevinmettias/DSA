@@ -46,7 +46,7 @@ internal static class DeleteDuplicateFoldersInSystemSolution
         {
             for (var j = i + 1; j < nonLeafFolders.Count; j++)
             {
-                if (AreIdenticalSubtrees(nonLeafFolders[i], nonLeafFolders[j]))
+                if (IsIdenticalSubtree(nonLeafFolders[i], nonLeafFolders[j]))
                 {
                     nonLeafFolders[i].Deleted = true;
                     nonLeafFolders[j].Deleted = true;
@@ -106,7 +106,7 @@ internal static class DeleteDuplicateFoldersInSystemSolution
         }
     }
 
-    private static bool AreIdenticalSubtrees(FolderNode left, FolderNode right)
+    private static bool IsIdenticalSubtree(FolderNode left, FolderNode right)
     {
         if (left.Children.Count != right.Children.Count)
         {
@@ -122,7 +122,7 @@ internal static class DeleteDuplicateFoldersInSystemSolution
 
             left.Children.TryGetValue(name, out var leftChild);
 
-            if (!AreIdenticalSubtrees(leftChild, rightChild))
+            if (!IsIdenticalSubtree(leftChild, rightChild))
             {
                 return false;
             }

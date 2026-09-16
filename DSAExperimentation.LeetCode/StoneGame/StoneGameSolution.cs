@@ -17,13 +17,14 @@ internal static class StoneGameSolution
     // the cost is exponential. Deliberately written without this repo's
     // primitives - it is the arm the memoized strategy has to justify itself
     // against.
-    public static bool AliceWinsByUnmemoizedRecursion(int[] piles) => ScoreDiff(piles, 0, piles.Length - 1) > 0;
+    public static bool CanAliceWinByUnmemoizedRecursion(int[] piles) =>
+        ScoreDiff(piles, 0, piles.Length - 1) > 0;
 
     // This repo's own Memoizer<TState,TResult> supplies the cache, keyed on the
     // same (Left, Right)-state shape PredictTheWinner/BurstBalloons already use for
     // their own interval DP, collapsing the exponential recursion to O(n^2)
     // distinct sub-ranges.
-    public static bool AliceWinsByMemoizedRecursion(int[] piles)
+    public static bool CanAliceWinByMemoizedRecursion(int[] piles)
     {
         var scoreDiff = Memoizer.Memoize<(int Left, int Right), int>(
             (0, piles.Length - 1),

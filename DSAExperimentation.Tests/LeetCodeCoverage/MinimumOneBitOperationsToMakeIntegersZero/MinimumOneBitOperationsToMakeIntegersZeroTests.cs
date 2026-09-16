@@ -22,16 +22,18 @@ public sealed class MinimumOneBitOperationsToMakeIntegersZeroTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumOneBitOperationsByBreadthFirstSearch_LeetCodeExamples_ReturnsFewestFlips(
-        int n, int expected) =>
+        int target, int expected) =>
         Assert.Equal(
             expected,
-            MinimumOneBitOperationsToMakeIntegersZeroSolution.MinimumOneBitOperationsByBreadthFirstSearch(n));
+            MinimumOneBitOperationsToMakeIntegersZeroSolution
+                .MinimumOneBitOperationsByBreadthFirstSearch(target));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumOneBitOperationsByInverseGrayCode_LeetCodeExamples_ReturnsFewestFlips(
-        int n, int expected) =>
+        int target, int expected) =>
         Assert.Equal(
             expected,
-            MinimumOneBitOperationsToMakeIntegersZeroSolution.MinimumOneBitOperationsByInverseGrayCode(n));
+            MinimumOneBitOperationsToMakeIntegersZeroSolution
+                .MinimumOneBitOperationsByInverseGrayCode(target));
 }

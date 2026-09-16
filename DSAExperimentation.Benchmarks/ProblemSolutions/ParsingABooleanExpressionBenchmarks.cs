@@ -37,12 +37,13 @@ public class ParsingABooleanExpressionBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool RecursiveDescent() =>
-        ParsingABooleanExpressionSolution.ParseBoolExprByRecursiveDescent(_expression);
+    public bool IsBoolExprTrueByRecursiveDescent() =>
+        ParsingABooleanExpressionSolution.IsBoolExprTrueByRecursiveDescent(
+            _expression);
 
     [Benchmark]
-    public bool StackBased() =>
-        ParsingABooleanExpressionSolution.ParseBoolExprByParserStack(_expression);
+    public bool IsBoolExprTrueByParserStack() =>
+        ParsingABooleanExpressionSolution.IsBoolExprTrueByParserStack(_expression);
 
     // Workload sizing only: how large an expression to measure, not how to evaluate
     // one.

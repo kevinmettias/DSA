@@ -21,10 +21,10 @@ public class NumberOfWaysToArriveAtDestinationBenchmarks
     // NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks: NaiveDfs's blowup here
     // really is O(golden-ratio^N).
     [Params(20, 30)]
-    public int N { get; set; }
+    public int StepCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _graph = WaysGraph.Build(NodeCount(N), BuildTwoStepRoads(N));
+    public void Setup() => _graph = WaysGraph.Build(NodeCount(StepCount), BuildTwoStepRoads(StepCount));
 
     // The chain spans stepCount time-1 roads, so it has one more intersection than
     // steps.

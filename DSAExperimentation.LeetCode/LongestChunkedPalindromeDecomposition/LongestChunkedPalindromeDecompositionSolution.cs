@@ -49,7 +49,7 @@ internal static class LongestChunkedPalindromeDecompositionSolution
         var matchStart = state.MatchStart;
         var count = state.Count;
 
-        if (ChunksMatch(text, hash, new ChunkPair(matchStart, state.J, length)))
+        if (IsChunkPairEqual(text, hash, new ChunkPair(matchStart, state.J, length)))
         {
             count += MatchedPairChunkCount;
             matchStart = state.I + 1;
@@ -58,7 +58,7 @@ internal static class LongestChunkedPalindromeDecompositionSolution
         return state with { MatchStart = matchStart, I = state.I + 1, J = state.J - 1, Count = count };
     }
 
-    private static bool ChunksMatch(string text, RollingHash hash, ChunkPair pair)
+    private static bool IsChunkPairEqual(string text, RollingHash hash, ChunkPair pair)
     {
         if (hash.Hash(pair.LeftStart, pair.Length) != hash.Hash(pair.RightStart, pair.Length))
         {
@@ -106,7 +106,7 @@ internal static class LongestChunkedPalindromeDecompositionSolution
     private readonly record struct DecompositionState(int MatchStart, int I, int J, int Count);
 
     // Left/right start of a candidate chunk pair, plus how long that candidate
-    // chunk currently is - the unit ChunksMatch screens then verifies for equality.
+    // chunk currently is - the unit IsChunkPairEqual screens then verifies for equality.
     private readonly record struct ChunkPair(int LeftStart, int RightStart, int Length);
 
     // The same walk carrying its pending chunks as materialized strings instead of

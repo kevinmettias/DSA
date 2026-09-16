@@ -30,20 +30,22 @@ public sealed class RectangleOverlapTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void OverlapsByClosedFormAxisIntervals_LeetCodeExamples_ReturnsExpectedOverlap(
+    public void IsOverlappingByClosedFormAxisIntervals_LeetCodeExamples_ReturnsExpectedOverlap(
         RectangleOverlapCase example)
     {
-        var actual = RectangleOverlapSolution.OverlapsByClosedFormAxisIntervals(example.Rec1, example.Rec2);
+        var actual = RectangleOverlapSolution.IsOverlappingByClosedFormAxisIntervals(
+            example.Rec1, example.Rec2);
 
         Assert.Equal(example.Expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void OverlapsByUnitGridIntersectionScan_LeetCodeExamples_ReturnsExpectedOverlap(
+    public void IsOverlappingByUnitGridIntersectionScan_LeetCodeExamples_ReturnsExpectedOverlap(
         RectangleOverlapCase example)
     {
-        var actual = RectangleOverlapSolution.OverlapsByUnitGridIntersectionScan(example.Rec1, example.Rec2);
+        var actual = RectangleOverlapSolution.IsOverlappingByUnitGridIntersectionScan(
+            example.Rec1, example.Rec2);
 
         Assert.Equal(example.Expected, actual);
     }

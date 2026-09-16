@@ -38,7 +38,7 @@ internal static class HouseRobberVSolution
         return dp[^1];
     }
 
-    private static long PriorBest(long[] dp, int i) => i >= 2 ? BestUpTo(dp, i - 2) : 0;
+    private static long PriorBest(long[] dp, int houseIndex) => houseIndex >= 2 ? BestUpTo(dp, houseIndex - 2) : 0;
 
     // This repo's own top-down engine: Memoizer.Memoize caches best(i) the first
     // time each index is reached, so the recurrence reads as ordinary recursion

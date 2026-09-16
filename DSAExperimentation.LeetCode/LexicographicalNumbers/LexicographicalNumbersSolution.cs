@@ -19,30 +19,31 @@ internal static class LexicographicalNumbersSolution
     // The textbook answer: materialize every value's decimal string and sort by it.
     // Deliberately written without this repo's primitives - the O(n log n) arm the
     // DFS walk below has to justify itself against.
-    public static List<int> LexicalOrderByStringSort(int n) =>
-        Enumerable.Range(1, n)
+    public static List<int> LexicalOrderByStringSort(int upperBound) =>
+        Enumerable.Range(1, upperBound)
             .OrderBy(value => value.ToString(), StringComparer.Ordinal)
             .ToList();
 
-    public static List<int> LexicalOrderByDepthFirstDigitTree(int n)
+    public static List<int> LexicalOrderByDepthFirstDigitTree(int upperBound)
     {
-        var order = new List<int>(n);
+        var order = new List<int>(upperBound);
 
-        for (var root = 1; root <= MaxDigit && root <= n; root++)
+        for (var root = 1; root <= MaxDigit && root <= upperBound; root++)
         {
-            var traversal = DepthFirstSearch.Traverse(root, current => Successors(current, n));
+            var traversal = DepthFirstSearch.Traverse(
+                root, current => Successors(current, upperBound));
             order.AddRange(traversal);
         }
 
         return order;
     }
 
-    private static IEnumerable<int> Successors(int current, int n)
+    private static IEnumerable<int> Successors(int current, int upperBound)
     {
         for (var digit = 0; digit <= MaxDigit; digit++)
         {
             var next = (current * DecimalBase) + digit;
-            if (next > n)
+            if (next > upperBound)
             {
                 yield break;
             }

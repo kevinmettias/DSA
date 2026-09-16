@@ -5,9 +5,9 @@ namespace DSAExperimentation.LeetCode.HouseRobberIV;
 
 // LeetCode 2560. House Robber IV: the robber's "capability" is the largest amount
 // taken from any single house, and the answer is the smallest capability that
-// still allows robbing at least k non-adjacent houses.
+// still allows robbing at least requiredHouseCount non-adjacent houses.
 //
-// Feasibility is monotone in the capability - once some cap admits k
+// Feasibility is monotone in the capability - once some cap admits requiredHouseCount
 // non-adjacent houses, every larger cap admits at least as many, because raising
 // the cap only ever adds candidates - so the answer is the leftmost "true" in an
 // implicit [false...false, true...true] sequence over cap in [min(nums),
@@ -23,17 +23,18 @@ namespace DSAExperimentation.LeetCode.HouseRobberIV;
 internal static class HouseRobberIVSolution
 {
     // The textbook answer: sweep every candidate capability upward from the
-    // cheapest house and stop at the first that admits k robberies. Deliberately
-    // written without this repo's primitives - a plain loop over the value range -
-    // it is the arm the composed solution below has to justify itself against.
-    public static int MinCapabilityByLinearScan(int[] nums, int k)
+    // cheapest house and stop at the first that admits requiredHouseCount robberies.
+    // Deliberately written without this repo's primitives - a plain loop over the
+    // value range - it is the arm the composed solution below has to justify itself
+    // against.
+    public static int MinCapabilityByLinearScan(int[] nums, int requiredHouseCount)
     {
         var floor = nums.Min();
         var ceiling = nums.Max();
 
         for (var cap = floor; cap <= ceiling; cap++)
         {
-            if (CanRobAtLeastKWithinCap(nums, k, cap))
+            if (CanRobAtLeastHousesWithinCap(nums, requiredHouseCount, cap))
             {
                 return cap;
             }
@@ -45,7 +46,7 @@ internal static class HouseRobberIVSolution
     // The greedy count both strategies share: taking every affordable house whose
     // predecessor was skipped is optimal, because deferring an affordable house
     // can never let more of them be taken later.
-    private static bool CanRobAtLeastKWithinCap(int[] nums, int k, int cap)
+    private static bool CanRobAtLeastHousesWithinCap(int[] nums, int requiredHouseCount, int cap)
     {
         var count = 0;
         var previousRobbed = false;
@@ -63,17 +64,17 @@ internal static class HouseRobberIVSolution
             }
         }
 
-        return count >= k;
+        return count >= requiredHouseCount;
     }
 
     // Bisect the same monotone predicate instead of scanning it. LowerBound
     // returns the offset of the first "true" within [floor, ceiling], so the
     // capability itself is floor plus that offset.
-    public static int MinCapabilityBySequenceLowerBound(int[] nums, int k)
+    public static int MinCapabilityBySequenceLowerBound(int[] nums, int requiredHouseCount)
     {
         var floor = nums.Min();
         var ceiling = nums.Max();
-        var sequence = new FeasibleCapabilitySequence(nums, k, floor, ceiling);
+        var sequence = new FeasibleCapabilitySequence(nums, requiredHouseCount, floor, ceiling);
 
         return floor + BinarySearch.LowerBound(sequence, true);
     }
@@ -82,11 +83,12 @@ internal static class HouseRobberIVSolution
     // solution rather than in DataStructures/ or Algorithms/ (§17.3's
     // CountWaysToBuildRoomsInAnAntColony precedent, and LC 410's own
     // FeasibleSplitSequence).
-    private readonly struct FeasibleCapabilitySequence(int[] nums, int k, int floor, int ceiling)
+    private readonly struct FeasibleCapabilitySequence(int[] nums, int requiredHouseCount, int floor, int ceiling)
         : IRandomAccessSequence<bool>
     {
         public int Length => ceiling - floor + 1;
 
-        public bool Get(int index) => CanRobAtLeastKWithinCap(nums, k, floor + index);
+        public bool Get(int index) =>
+            CanRobAtLeastHousesWithinCap(nums, requiredHouseCount, floor + index);
     }
 }

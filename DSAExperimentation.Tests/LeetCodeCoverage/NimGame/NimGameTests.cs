@@ -29,7 +29,7 @@ public sealed class NimGameTests
 
     // One LeetCode example: the heap size and whether the player to move wins from it.
     // The outcome is the datum under test, so the row names it rather than leaving a
-    // bare `bool` next to the heap size where the read is `CanWin(n, true)` - true
-    // meaning what?
+    // bare `bool` next to the heap size where the read is `CanWin(stoneCount, true)` -
+    // true meaning what?
     public readonly record struct NimExample(int N, bool Expected);
 }

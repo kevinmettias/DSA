@@ -73,7 +73,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
 
         foreach (var query in queries)
         {
-            if (Search(trie.Root, new SearchState(query, 0, MaxEdits)))
+            if (HasMatch(trie.Root, new SearchState(query, 0, MaxEdits)))
             {
                 matches.Add(query);
             }
@@ -84,17 +84,17 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
 
     private readonly record struct SearchState(string Query, int Index, int RemainingEdits);
 
-    private static bool Search(LowercaseTrieNode<bool> node, SearchState state)
+    private static bool HasMatch(LowercaseTrieNode<bool> node, SearchState state)
     {
         if (state.Index == state.Query.Length)
         {
             return node.HasValue;
         }
 
-        return SearchChildren(node, state);
+        return HasMatchInChildren(node, state);
     }
 
-    private static bool SearchChildren(LowercaseTrieNode<bool> node, SearchState state)
+    private static bool HasMatchInChildren(LowercaseTrieNode<bool> node, SearchState state)
     {
         var target = state.Query[state.Index] - 'a';
 
@@ -121,7 +121,7 @@ internal static class WordsWithinTwoEditsOfDictionarySolution
             return false;
         }
 
-        return Search(next, state with { Index = state.Index + 1, RemainingEdits = nextBudget });
+        return HasMatch(next, state with { Index = state.Index + 1, RemainingEdits = nextBudget });
     }
 
     // A candidate that is not the target character spends one of the two edits.

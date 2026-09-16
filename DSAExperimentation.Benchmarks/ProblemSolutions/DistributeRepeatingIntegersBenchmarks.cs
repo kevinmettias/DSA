@@ -52,10 +52,10 @@ public class DistributeRepeatingIntegersBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveBacktracking() =>
+    public bool CanDistributeByNaiveBacktracking() =>
         DistributeRepeatingIntegersSolution.CanDistributeByNaiveBacktracking(_stock, _orders);
 
     [Benchmark]
-    public bool BacktrackPrimitive() =>
+    public bool CanDistributeByGenericBacktrack() =>
         DistributeRepeatingIntegersSolution.CanDistributeByGenericBacktrack(_stock, _orders);
 }

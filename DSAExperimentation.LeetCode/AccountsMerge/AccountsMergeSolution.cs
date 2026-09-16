@@ -49,7 +49,7 @@ internal static class AccountsMergeSolution
         {
             for (var j = i + 1; j < accounts.Length; j++)
             {
-                if (SharesEmail(accounts[i], accounts[j]))
+                if (HasSharedEmail(accounts[i], accounts[j]))
                 {
                     Union(parent, i, j);
                 }
@@ -57,7 +57,7 @@ internal static class AccountsMergeSolution
         }
     }
 
-    private static bool SharesEmail(string[] first, string[] second)
+    private static bool HasSharedEmail(string[] first, string[] second)
     {
         for (var i = 1; i < first.Length; i++)
         {
@@ -87,11 +87,11 @@ internal static class AccountsMergeSolution
     // time, over the identity array BuildIdentityParent wrote.
     private sealed class RootByParentWalk : IAccountRootLookup
     {
-        private readonly int[] parent;
+        private readonly int[] _parent;
 
-        public RootByParentWalk(int[] parent) => this.parent = parent;
+        public RootByParentWalk(int[] parent) => _parent = parent;
 
-        public int FindRoot(int accountIndex) => Find(parent, accountIndex);
+        public int FindRoot(int accountIndex) => Find(_parent, accountIndex);
     }
 
     private static List<string[]> BuildMergedAccounts(string[][] accounts, IAccountRootLookup roots)

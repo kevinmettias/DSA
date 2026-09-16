@@ -25,7 +25,7 @@ internal static class SatisfiabilityOfEqualityEquationsSolution
     // whether its two variables are connected. Deliberately written with BCL
     // primitives only - it is the arm the composed solution has to justify itself
     // against.
-    public static bool EquationsPossibleByAdjacencyBfs(string[] equations)
+    public static bool IsSatisfiableByAdjacencyBfs(string[] equations)
     {
         var (adjacency, inequalities) = BuildAdjacencyGraph(equations);
 
@@ -151,7 +151,7 @@ internal static class SatisfiabilityOfEqualityEquationsSolution
     // one Union, then a single scan of the "!=" equations asks IsConnected. The
     // same union-then-scan shape AccountsMerge uses, applied to a fixed alphabet
     // instead of account indices.
-    public static bool EquationsPossibleByDisjointSet(string[] equations)
+    public static bool IsSatisfiableByDisjointSet(string[] equations)
     {
         var components = new DisjointSet(AlphabetSize);
 

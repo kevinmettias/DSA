@@ -37,7 +37,7 @@ internal static class ConstructStringWithMinimumCostSolution
             }
         }
 
-        return TargetIsUnreachable(dp, target) ? LeetCodeAnswer.None : CostToBuildTarget(dp);
+        return IsTargetUnreachable(dp, target) ? LeetCodeAnswer.None : CostToBuildTarget(dp);
     }
 
     // One word offered at one position: skip it when it overruns the target or does not
@@ -47,7 +47,7 @@ internal static class ConstructStringWithMinimumCostSolution
     {
         var end = start + candidate.Word.Length;
 
-        if (end > target.Length || !MatchesAt(target, start, candidate.Word))
+        if (end > target.Length || !IsMatchAt(target, start, candidate.Word))
         {
             return;
         }
@@ -63,11 +63,11 @@ internal static class ConstructStringWithMinimumCostSolution
     // dp[i] is the min cost to build target's first i characters, so the slot
     // for the whole target is the only one a finished answer is read from, and
     // Unreached there is the "cannot be built at all" sentinel.
-    private static bool TargetIsUnreachable(int[] dp, string target) => dp[target.Length] == Unreached;
+    private static bool IsTargetUnreachable(int[] dp, string target) => dp[target.Length] == Unreached;
 
     private static int CostToBuildTarget(int[] dp) => dp[^1];
 
-    private static bool MatchesAt(string target, int start, string word)
+    private static bool IsMatchAt(string target, int start, string word)
     {
         for (var offset = 0; offset < word.Length; offset++)
         {
@@ -134,6 +134,6 @@ internal static class ConstructStringWithMinimumCostSolution
             }
         }
 
-        return TargetIsUnreachable(dp, target) ? LeetCodeAnswer.None : CostToBuildTarget(dp);
+        return IsTargetUnreachable(dp, target) ? LeetCodeAnswer.None : CostToBuildTarget(dp);
     }
 }

@@ -36,10 +36,10 @@ public class CheckIfThereIsAValidParenthesesStringPathBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool UnmemoizedRecursion() =>
+    public bool HasValidPathByUnmemoizedRecursion() =>
         CheckIfThereIsAValidParenthesesStringPathSolution.HasValidPathByUnmemoizedRecursion(_grid);
 
     [Benchmark]
-    public bool MemoizedRecursion() =>
+    public bool HasValidPathByMemoizedRecursion() =>
         CheckIfThereIsAValidParenthesesStringPathSolution.HasValidPathByMemoizedRecursion(_grid);
 }

@@ -25,11 +25,17 @@ public sealed class MinimumNumberOfOperationsToMakeStringSortedTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MakeStringSortedByFrequencyScan_LeetCodeExamples_ReturnsPermutationRank(string s, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFrequencyScan(s));
+    public void MakeStringSortedByFrequencyScan_LeetCodeExamples_ReturnsPermutationRank(
+        string text, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFrequencyScan(text));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void MakeStringSortedByFenwickSweep_LeetCodeExamples_ReturnsPermutationRank(string s, int expected) =>
-        Assert.Equal(expected, MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFenwickSweep(s));
+    public void MakeStringSortedByFenwickSweep_LeetCodeExamples_ReturnsPermutationRank(
+        string text, int expected) =>
+        Assert.Equal(
+            expected,
+            MinimumNumberOfOperationsToMakeStringSortedSolution.MakeStringSortedByFenwickSweep(text));
 }

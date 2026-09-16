@@ -20,7 +20,7 @@ public class KthSmallestElementInABSTBenchmarks
 
     private BinaryTreeNode<int>? _root;
 
-    private int _k;
+    private int _targetRank;
     private int _recursiveRemaining;
     private int? _recursiveResult;
     [Params(500, 20_000)]
@@ -39,13 +39,13 @@ public class KthSmallestElementInABSTBenchmarks
         }
 
         _root = tree.Root;
-        _k = NodeCount / MedianDivisor;
+        _targetRank = NodeCount / MedianDivisor;
     }
 
     [Benchmark(Baseline = true)]
     public int RecursiveInOrderWalk()
     {
-        _recursiveRemaining = _k;
+        _recursiveRemaining = _targetRank;
         _recursiveResult = null;
         Visit(_root);
         return _recursiveResult!.Value;
@@ -54,7 +54,7 @@ public class KthSmallestElementInABSTBenchmarks
     [Benchmark]
     public int InOrderTraversalHooks()
     {
-        State.Remaining.Value = _k;
+        State.Remaining.Value = _targetRank;
         State.Result.Value = null;
         InOrderTraversal.Walk<int, RankHooks>(_root);
         return State.Result.Value!.Value;

@@ -2,7 +2,8 @@ using DSAExperimentation.Algorithms.DynamicProgramming;
 
 namespace DSAExperimentation.LeetCode.CountingBits;
 
-// LeetCode 338. Counting Bits: for every value from 0 to n, count its set bits.
+// LeetCode 338. Counting Bits: for every value from 0 up to the given maximum,
+// count its set bits.
 //
 // The baseline recomputes each value's popcount independently with Brian
 // Kernighan's trick (v &= v - 1 drops the lowest set bit each iteration). The
@@ -14,11 +15,11 @@ internal static class CountingBitsSolution
 {
     // Deliberately BCL: nothing here but the textbook per-value bit-clearing loop,
     // the arm the composed recurrence below has to justify itself against.
-    public static int[] CountBitsByPerNumberLoop(int n)
+    public static int[] CountBitsByPerNumberLoop(int maximumValue)
     {
-        var result = new int[n + 1];
+        var result = new int[maximumValue + 1];
 
-        for (var i = 0; i <= n; i++)
+        for (var i = 0; i <= maximumValue; i++)
         {
             var value = i;
             var count = 0;
@@ -35,11 +36,11 @@ internal static class CountingBitsSolution
         return result;
     }
 
-    public static int[] CountBitsByMemoizedRecurrence(int n)
+    public static int[] CountBitsByMemoizedRecurrence(int maximumValue)
     {
-        var result = new int[n + 1];
+        var result = new int[maximumValue + 1];
 
-        for (var i = 0; i <= n; i++)
+        for (var i = 0; i <= maximumValue; i++)
         {
             result[i] = Memoizer.Memoize<int, int>(i, new BitsShiftedFromHalf());
         }

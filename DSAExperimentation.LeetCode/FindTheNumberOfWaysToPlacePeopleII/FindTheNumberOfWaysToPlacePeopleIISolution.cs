@@ -51,11 +51,11 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
     private static bool IsValidPlacement(int[][] points, int aliceIndex, int bobIndex) =>
         aliceIndex != bobIndex
         && IsUpperLeftOf(points[aliceIndex], points[bobIndex])
-        && NoPointBlocks(points, aliceIndex, bobIndex);
+        && HasNoBlockingPoint(points, aliceIndex, bobIndex);
 
     private static bool IsUpperLeftOf(int[] alice, int[] bob) => alice[0] <= bob[0] && alice[1] >= bob[1];
 
-    private static bool NoPointBlocks(int[][] points, int aliceIndex, int bobIndex)
+    private static bool HasNoBlockingPoint(int[][] points, int aliceIndex, int bobIndex)
     {
         var (aliceX, aliceY) = (points[aliceIndex][0], points[aliceIndex][1]);
         var (bobX, bobY) = (points[bobIndex][0], points[bobIndex][1]);
@@ -78,9 +78,9 @@ internal static class FindTheNumberOfWaysToPlacePeopleIISolution
         return true;
     }
 
-    private static bool IsWithinXSpan(int x, int left, int right) => x >= left && x <= right;
+    private static bool IsWithinXSpan(int pointX, int left, int right) => pointX >= left && pointX <= right;
 
-    private static bool IsWithinYSpan(int y, int top, int bottom) => y <= top && y >= bottom;
+    private static bool IsWithinYSpan(int pointY, int top, int bottom) => pointY <= top && pointY >= bottom;
 
     public static int CountPairsBySortedSweep(int[][] points)
     {

@@ -23,9 +23,9 @@ public sealed class FindMinimumTimeToFinishAllJobsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByExhaustiveAssignment_LeetCodeExamples_ReturnsSmallestAchievableMaximumLoad(
-        int[] jobs, int k, int expected)
+        int[] jobs, int workerCount, int expected)
     {
-        var actual = FindMinimumTimeToFinishAllJobsSolution.MinimumTimeByExhaustiveAssignment(jobs, k);
+        var actual = FindMinimumTimeToFinishAllJobsSolution.MinimumTimeByExhaustiveAssignment(jobs, workerCount);
 
         Assert.Equal(expected, actual);
     }
@@ -33,9 +33,9 @@ public sealed class FindMinimumTimeToFinishAllJobsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumTimeByFeasibilityBinarySearch_LeetCodeExamples_ReturnsSmallestAchievableMaximumLoad(
-        int[] jobs, int k, int expected)
+        int[] jobs, int workerCount, int expected)
     {
-        var actual = FindMinimumTimeToFinishAllJobsSolution.MinimumTimeByFeasibilityBinarySearch(jobs, k);
+        var actual = FindMinimumTimeToFinishAllJobsSolution.MinimumTimeByFeasibilityBinarySearch(jobs, workerCount);
 
         Assert.Equal(expected, actual);
     }

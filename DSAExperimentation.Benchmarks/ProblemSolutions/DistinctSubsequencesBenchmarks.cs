@@ -13,7 +13,7 @@ public class DistinctSubsequencesBenchmarks
 
     [Benchmark(Baseline = true)]
     public int MemoizedRecursion() =>
-        DistinctSubsequencesSolution.NumDistinctByMemoizedRecursion(
+        DistinctSubsequencesSolution.CountDistinctSubsequencesByMemoizedRecursion(
             new SourceText(Source),
             new TargetPattern(Target));
 }

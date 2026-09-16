@@ -55,16 +55,16 @@ internal static class RobotBoundedInCircleSolution
         switch (state.Direction)
         {
             case RobotDirection.North:
-                state.Y++;
+                state.RowPosition++;
                 break;
             case RobotDirection.East:
-                state.X++;
+                state.ColumnPosition++;
                 break;
             case RobotDirection.South:
-                state.Y--;
+                state.RowPosition--;
                 break;
             case RobotDirection.West:
-                state.X--;
+                state.ColumnPosition--;
                 break;
         }
     }
@@ -119,8 +119,8 @@ internal static class RobotBoundedInCircleSolution
         HashMap<RobotDirection, (int Dx, int Dy)> stepDeltas, ref RobotState state)
     {
         stepDeltas.TryGetValue(state.Direction, out var delta);
-        state.X += delta.Dx;
-        state.Y += delta.Dy;
+        state.ColumnPosition += delta.Dx;
+        state.RowPosition += delta.Dy;
     }
 
     // Facing plus position after one pass of the instruction string - everything
@@ -128,10 +128,10 @@ internal static class RobotBoundedInCircleSolution
     private sealed class RobotState
     {
         public RobotDirection Direction { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int ColumnPosition { get; set; }
+        public int RowPosition { get; set; }
 
-        public bool IsBounded => (X == 0 && Y == 0) || Direction != RobotDirection.North;
+        public bool IsBounded => (ColumnPosition == 0 && RowPosition == 0) || Direction != RobotDirection.North;
 
         // A facing is read as its index for the arithmetic and written back as a
         // RobotDirection: a right turn is one step along the enum's own order and a

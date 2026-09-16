@@ -46,10 +46,10 @@ public class FindIfPathExistsInGraphBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool IterativeDepthFirstReachability() =>
+    public bool HasPathByDepthFirstSearch() =>
         FindIfPathExistsInGraphSolution.HasPathByDepthFirstSearch(NodeCount, _edges, _source, _destination);
 
     [Benchmark]
-    public bool DisjointSetUnionFind() =>
+    public bool HasPathByDisjointSet() =>
         FindIfPathExistsInGraphSolution.HasPathByDisjointSet(NodeCount, _edges, _source, _destination);
 }

@@ -83,9 +83,9 @@ internal static class MinimumObstacleRemovalToReachCornerSolution
     // An unsettled cell improves the scan once it has been reached at all, and then
     // only by carrying fewer removals than the best found so far - a cell nothing
     // has picked yet counting as beatable.
-    private static bool IsImprovement(int[] removals, int i, int current)
-        => removals[i] != int.MaxValue
-            && (current == -1 || removals[i] < removals[current]);
+    private static bool IsImprovement(int[] removals, int candidateIndex, int current)
+        => removals[candidateIndex] != int.MaxValue
+            && (current == -1 || removals[candidateIndex] < removals[current]);
 
     private static void RelaxArrayNeighbors(int current, int[][] grid, int[] removals)
     {

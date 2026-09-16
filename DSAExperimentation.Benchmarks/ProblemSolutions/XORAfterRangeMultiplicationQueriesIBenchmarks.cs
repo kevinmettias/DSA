@@ -18,10 +18,10 @@ public class XORAfterRangeMultiplicationQueriesIBenchmarks
 
     private int[][] _queries = [];
     [Params(100, 1_000)]
-    public int NumCount { get; set; }
+    public int NumberCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => (_nums, _queries) = XORAfterRangeMultiplicationQueriesIWorkloads.Build(NumCount, QueryCount, seed: Seed);
+    public void Setup() => (_nums, _queries) = XORAfterRangeMultiplicationQueriesIWorkloads.Build(NumberCount, QueryCount, seed: Seed);
 
     [Benchmark(Baseline = true)]
     public int RangeScan() =>

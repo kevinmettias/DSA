@@ -18,13 +18,13 @@ public sealed class StoneGameTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByUnmemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(PileGameExample example) =>
-        Assert.Equal(example.AliceWins, StoneGameSolution.AliceWinsByUnmemoizedRecursion(example.Piles));
+    public void CanAliceWinByUnmemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(PileGameExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameSolution.CanAliceWinByUnmemoizedRecursion(example.Piles));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void AliceWinsByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(PileGameExample example) =>
-        Assert.Equal(example.AliceWins, StoneGameSolution.AliceWinsByMemoizedRecursion(example.Piles));
+    public void CanAliceWinByMemoizedRecursion_LeetCodeExamples_ReturnsWhetherAliceWins(PileGameExample example) =>
+        Assert.Equal(example.AliceWins, StoneGameSolution.CanAliceWinByMemoizedRecursion(example.Piles));
 
     // Nested because it is only ever used inside this test class and has no
     // independent identity: this harness's own vocabulary for one LeetCode example.

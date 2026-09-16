@@ -36,7 +36,7 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
 
         while (openRemaining > 0 || closeRemaining > 0)
         {
-            if (OpensNext(openRemaining, closeRemaining, random))
+            if (ShouldOpenNext(openRemaining, closeRemaining, random))
             {
                 builder.Append('(');
                 openRemaining--;
@@ -53,7 +53,7 @@ public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
 
     // An opener goes down while one is still owed and either the closers have caught
     // up - an opener is owed to keep the sequence valid - or the coin flip says so.
-    private static bool OpensNext(int openRemaining, int closeRemaining, Random random) =>
+    private static bool ShouldOpenNext(int openRemaining, int closeRemaining, Random random) =>
         openRemaining > 0 && (closeRemaining == openRemaining || random.Next(CoinFlipBound) == 0);
 
     [Benchmark(Baseline = true)]

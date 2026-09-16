@@ -120,7 +120,7 @@ internal static class BeautifulTowersISolution
         return sums;
     }
 
-    private static int LastIndex(int n) => n - 1;
+    private static int LastIndex(int length) => length - 1;
 
     private static long SumAt(long[] sums, int index) => sums[index];
 }

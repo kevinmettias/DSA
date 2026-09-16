@@ -113,11 +113,11 @@ internal static class SmallestUniqueSubarraySolution
         return encoded;
     }
 
-    private static bool HasUniqueWindowByRollingHash(RollingHash hash, int n, int length)
+    private static bool HasUniqueWindowByRollingHash(RollingHash hash, int arrayLength, int length)
     {
         var counts = new HashMap<RollingHashValue, int>();
 
-        for (var start = 0; start + length <= n; start++)
+        for (var start = 0; start + length <= arrayLength; start++)
         {
             var value = hash.Hash(start, length);
             counts.TryGetValue(value, out var count);

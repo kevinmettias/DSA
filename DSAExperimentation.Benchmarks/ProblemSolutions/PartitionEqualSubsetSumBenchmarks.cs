@@ -29,8 +29,8 @@ public class PartitionEqualSubsetSumBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool Tabulation() => PartitionEqualSubsetSumSolution.CanPartitionByTabulation(_nums, _half);
+    public bool CanPartitionByTabulation() => PartitionEqualSubsetSumSolution.CanPartitionByTabulation(_nums, _half);
 
     [Benchmark]
-    public bool Memoized() => PartitionEqualSubsetSumSolution.CanPartitionByMemoization(_nums, _half);
+    public bool CanPartitionByMemoization() => PartitionEqualSubsetSumSolution.CanPartitionByMemoization(_nums, _half);
 }

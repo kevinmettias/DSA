@@ -14,8 +14,8 @@ public class NimGameBenchmarks
     public int Stones { get; set; }
 
     [Benchmark(Baseline = true)]
-    public bool MemoizedRecursion() => NimGameSolution.CanWinByMemoizedRecursion(Stones);
+    public bool CanWinByMemoizedRecursion() => NimGameSolution.CanWinByMemoizedRecursion(Stones);
 
     [Benchmark]
-    public bool ModuloFormula() => NimGameSolution.CanWinByModuloFormula(Stones);
+    public bool CanWinByModuloFormula() => NimGameSolution.CanWinByModuloFormula(Stones);
 }

@@ -22,8 +22,8 @@ public sealed class KokoEatingBananasTests
             // Hours to spare, so the slowest speed already clears every pile.
             { [3, 6, 7, 11], 100, 1 },
 
-            // h equals the pile count, so every pile must go in a single hour and the
-            // answer is the largest pile.
+            // hourBudget equals the pile count, so every pile must go in a single
+            // hour and the answer is the largest pile.
             { [4, 4, 4, 4], 4, 4 },
 
             // Ceilings matter: at speed 2 the piles cost 2 + 1 + 2 = 5 hours, at speed
@@ -34,9 +34,10 @@ public sealed class KokoEatingBananasTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinEatingSpeedByManualBisection_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
-        int[] piles, int h, int expected)
+        int[] piles, int hourBudget, int expected)
     {
-        var actual = KokoEatingBananasSolution.MinEatingSpeedByManualBisection(piles, h);
+        var actual =
+            KokoEatingBananasSolution.MinEatingSpeedByManualBisection(piles, hourBudget);
 
         Assert.Equal(expected, actual);
     }
@@ -44,9 +45,10 @@ public sealed class KokoEatingBananasTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinEatingSpeedBySequenceLowerBound_LeetCodeExamples_ReturnsSmallestFeasibleSpeed(
-        int[] piles, int h, int expected)
+        int[] piles, int hourBudget, int expected)
     {
-        var actual = KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(piles, h);
+        var actual =
+            KokoEatingBananasSolution.MinEatingSpeedBySequenceLowerBound(piles, hourBudget);
 
         Assert.Equal(expected, actual);
     }

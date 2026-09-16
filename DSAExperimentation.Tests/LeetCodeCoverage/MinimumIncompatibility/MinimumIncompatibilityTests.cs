@@ -3,9 +3,9 @@ using DSAExperimentation.LeetCode.MinimumIncompatibility;
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumIncompatibility;
 
 // Harness only: both strategies live in MinimumIncompatibilitySolution and are
-// asserted against the same examples - LeetCode's own three, the k = 1 degenerate
-// case where the whole array is one group, and a k = n case where every group is a
-// single element so repeated values are no obstacle at all.
+// asserted against the same examples - LeetCode's own three, the `groupCount` = 1
+// degenerate case where the whole array is one group, and a `groupCount` = n case
+// where every group is a single element so repeated values are no obstacle at all.
 public sealed class MinimumIncompatibilityTests
 {
     public static TheoryData<int[], int, int> Examples =>
@@ -21,9 +21,9 @@ public sealed class MinimumIncompatibilityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumIncompatibilityByUnmemoizedRecursion_LeetCodeExamples_ReturnsMinimalTotalIncompatibility(
-        int[] nums, int k, int expected)
+        int[] nums, int groupCount, int expected)
     {
-        var actual = MinimumIncompatibilitySolution.MinimumIncompatibilityByUnmemoizedRecursion(nums, k);
+        var actual = MinimumIncompatibilitySolution.MinimumIncompatibilityByUnmemoizedRecursion(nums, groupCount);
 
         Assert.Equal(expected, actual);
     }
@@ -31,9 +31,9 @@ public sealed class MinimumIncompatibilityTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MinimumIncompatibilityByMemoizedRecursion_LeetCodeExamples_ReturnsMinimalTotalIncompatibility(
-        int[] nums, int k, int expected)
+        int[] nums, int groupCount, int expected)
     {
-        var actual = MinimumIncompatibilitySolution.MinimumIncompatibilityByMemoizedRecursion(nums, k);
+        var actual = MinimumIncompatibilitySolution.MinimumIncompatibilityByMemoizedRecursion(nums, groupCount);
 
         Assert.Equal(expected, actual);
     }

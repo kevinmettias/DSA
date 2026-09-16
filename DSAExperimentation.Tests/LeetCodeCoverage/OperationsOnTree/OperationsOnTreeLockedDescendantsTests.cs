@@ -48,7 +48,7 @@ public sealed class OperationsOnTreeLockedDescendantsTests
     {
         foreach (var operation in setup)
         {
-            operation.Apply(tree);
+            operation.TryApply(tree);
         }
 
         Assert.Equal(expected, tree.LockedDescendantsOf(num));

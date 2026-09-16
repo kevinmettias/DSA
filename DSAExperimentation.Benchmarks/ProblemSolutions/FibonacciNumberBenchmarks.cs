@@ -10,11 +10,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class FibonacciNumberBenchmarks
 {
     [Params(20, 30)]
-    public int N { get; set; }
+    public int SequenceIndex { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRecursion() => FibonacciNumberSolution.FibByNaiveRecursion(N);
+    public int NaiveRecursion() => FibonacciNumberSolution.FibByNaiveRecursion(SequenceIndex);
 
     [Benchmark]
-    public int MemoizedTopDown() => FibonacciNumberSolution.FibByMemoizedTopDown(N);
+    public int MemoizedTopDown() => FibonacciNumberSolution.FibByMemoizedTopDown(SequenceIndex);
 }

@@ -24,10 +24,10 @@ public class XOfAKindInADeckOfCardsBenchmarks
         _deck = XOfAKindInADeckOfCardsWorkloads.BuildPartitionableDeck(DeckSize, GroupSize, RandomSeed);
 
     [Benchmark(Baseline = true)]
-    public bool DictionaryCount() =>
+    public bool HasGroupsSizeXByDictionaryCount() =>
         XOfAKindInADeckOfCardsSolution.HasGroupsSizeXByDictionaryCount(_deck);
 
     [Benchmark]
-    public bool HashMapCount() =>
+    public bool HasGroupsSizeXByHashMapCount() =>
         XOfAKindInADeckOfCardsSolution.HasGroupsSizeXByHashMapCount(_deck);
 }

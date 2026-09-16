@@ -26,13 +26,13 @@ internal static class ScoreOfParenthesesSolution
 
     // Brute force: score every atomic "()" as 2^depth, re-deriving depth by
     // rescanning everything before it. BCL-only internals by design (§17.5).
-    public static int ScoreByNestedDepthScan(string s)
+    public static int ScoreByNestedDepthScan(string parentheses)
     {
         var total = 0;
 
-        for (var i = 0; i < s.Length - 1; i++)
+        for (var i = 0; i < parentheses.Length - 1; i++)
         {
-            if (s[i] != '(' || s[i + 1] != ')')
+            if (parentheses[i] != '(' || parentheses[i + 1] != ')')
             {
                 continue;
             }
@@ -41,7 +41,7 @@ internal static class ScoreOfParenthesesSolution
 
             for (var j = 0; j < i; j++)
             {
-                var isOpeningParen = s[j] == '(';
+                var isOpeningParen = parentheses[j] == '(';
                 depth += isOpeningParen ? 1 : -1;
             }
 
@@ -53,12 +53,12 @@ internal static class ScoreOfParenthesesSolution
 
     // One left-to-right pass over a sentinel-seeded Stack<int> of partial scores:
     // one push per '(', one fold-back per ')', O(n) total.
-    public static int ScoreByMonotonicStackFold(string s)
+    public static int ScoreByMonotonicStackFold(string parentheses)
     {
         var scores = new ScoreStack();
         scores.Push(0);
 
-        foreach (var c in s)
+        foreach (var c in parentheses)
         {
             if (c == '(')
             {

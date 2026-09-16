@@ -30,5 +30,5 @@ public class BalancedBinaryTreeBenchmarks
         };
 
     [Benchmark(Baseline = true)]
-    public bool HeightRecursion() => BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(_root);
+    public bool IsBalancedByHeightRecursion() => BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(_root);
 }

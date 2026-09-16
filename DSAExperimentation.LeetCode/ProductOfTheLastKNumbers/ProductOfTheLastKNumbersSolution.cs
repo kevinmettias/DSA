@@ -34,7 +34,7 @@ internal static class ProductOfTheLastKNumbersSolution
     {
         void Add(int num);
 
-        int GetProduct(int k);
+        int GetProduct(int lastCount);
     }
 
     private sealed class PrefixProductNumbers : IProductOfNumbers
@@ -62,16 +62,16 @@ internal static class ProductOfTheLastKNumbersSolution
             return prefix;
         }
 
-        public int GetProduct(int k)
+        public int GetProduct(int lastCount)
         {
             var sinceReset = _prefixProducts.Count - 1;
 
-            if (k > sinceReset)
+            if (lastCount > sinceReset)
             {
                 return 0;
             }
 
-            return (int)(_prefixProducts.Get(sinceReset) / _prefixProducts.Get(sinceReset - k));
+            return (int)(_prefixProducts.Get(sinceReset) / _prefixProducts.Get(sinceReset - lastCount));
         }
     }
 
@@ -81,11 +81,11 @@ internal static class ProductOfTheLastKNumbersSolution
 
         public void Add(int num) => _numbers.Add(num);
 
-        public int GetProduct(int k)
+        public int GetProduct(int lastCount)
         {
             long product = 1;
 
-            for (var i = _numbers.Count - k; i < _numbers.Count; i++)
+            for (var i = _numbers.Count - lastCount; i < _numbers.Count; i++)
             {
                 product *= _numbers[i];
             }

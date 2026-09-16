@@ -50,11 +50,11 @@ internal static class MaximumGoodSubtreeScoreSolution
         return children;
     }
 
-    private static void CollectSubtree(int u, int[] vals, List<int>[] children, List<int> values)
+    private static void CollectSubtree(int nodeId, int[] vals, List<int>[] children, List<int> values)
     {
-        values.Add(vals[u]);
+        values.Add(vals[nodeId]);
 
-        foreach (var child in children[u])
+        foreach (var child in children[nodeId])
         {
             CollectSubtree(child, vals, children, values);
         }

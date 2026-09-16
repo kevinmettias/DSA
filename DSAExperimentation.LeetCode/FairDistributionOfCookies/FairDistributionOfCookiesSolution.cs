@@ -2,8 +2,8 @@ using DSAExperimentation.Algorithms.Backtracking;
 
 namespace DSAExperimentation.LeetCode.FairDistributionOfCookies;
 
-// LeetCode 2305. Fair Distribution of Cookies: hand every bag to one of k children
-// and minimize the largest total any single child ends up with. This is a
+// LeetCode 2305. Fair Distribution of Cookies: hand every bag to one of childCount
+// children and minimize the largest total any single child ends up with. This is a
 // minimization over every complete assignment, not a first-solution decision
 // problem, so both strategies enumerate all leaves rather than stopping at one.
 //
@@ -24,10 +24,10 @@ internal static class FairDistributionOfCookiesSolution
 {
     // The textbook arm: explicit recursion over a shared int[] of running totals,
     // with best carried by ref. No primitive from this repo appears in it.
-    public static int DistributeCookiesByRecursiveBacktracking(int[] cookies, int k)
+    public static int DistributeCookiesByRecursiveBacktracking(int[] cookies, int childCount)
     {
         var sorted = SortDescending(cookies);
-        var buckets = new int[k];
+        var buckets = new int[childCount];
         var best = sorted.Sum();
 
         PlaceRemainingBags(sorted, buckets, index: 0, ref best);
@@ -37,10 +37,10 @@ internal static class FairDistributionOfCookiesSolution
 
     // The same search expressed as Backtrack.Search's five steps over a Distribution
     // that owns the buckets, the cursor and the incumbent best.
-    public static int DistributeCookiesByBacktrackSearch(int[] cookies, int k)
+    public static int DistributeCookiesByBacktrackSearch(int[] cookies, int childCount)
     {
         var sorted = SortDescending(cookies);
-        var state = new Distribution(sorted, k);
+        var state = new Distribution(sorted, childCount);
 
         Backtrack.Search(
             state,
@@ -116,9 +116,9 @@ internal static class FairDistributionOfCookiesSolution
     // The mutable state Backtrack.Search threads through choose/unchoose. Meaningless
     // outside LC 2305 - it encodes this problem's buckets and its two prunes - so it
     // stays beside the solution rather than becoming a shared type (§17.3).
-    private sealed class Distribution(int[] cookies, int k)
+    private sealed class Distribution(int[] cookies, int childCount)
     {
-        private readonly int[] _buckets = new int[k];
+        private readonly int[] _buckets = new int[childCount];
         private int _index;
 
         public bool IsComplete => _index == cookies.Length;

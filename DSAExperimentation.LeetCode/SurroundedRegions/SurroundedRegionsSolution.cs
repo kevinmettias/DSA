@@ -59,7 +59,7 @@ internal static class SurroundedRegionsSolution
             return;
         }
 
-        foreach (var (row, col) in DepthFirstSearch.Traverse(start, p => OpenNeighbors(board, p, rows, cols)))
+        foreach (var (row, col) in DepthFirstSearch.Traverse(start, cell => OpenNeighbors(board, cell, rows, cols)))
         {
             board[row][col] = BorderConnected;
         }
@@ -67,9 +67,9 @@ internal static class SurroundedRegionsSolution
 
     // The four orthogonal neighbours of a cell that are still un-marked 'O's.
     private static IEnumerable<(int Row, int Col)> OpenNeighbors(
-        char[][] board, (int Row, int Col) p, int rows, int cols)
+        char[][] board, (int Row, int Col) cell, int rows, int cols)
     {
-        (int Row, int Col)[] next = [(p.Row + 1, p.Col), (p.Row - 1, p.Col), (p.Row, p.Col + 1), (p.Row, p.Col - 1)];
+        (int Row, int Col)[] next = [(cell.Row + 1, cell.Col), (cell.Row - 1, cell.Col), (cell.Row, cell.Col + 1), (cell.Row, cell.Col - 1)];
 
         foreach (var n in next)
         {

@@ -31,10 +31,10 @@ public class GreatestCommonDivisorTraversalBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool PairwiseGcdScan() =>
+    public bool CanTraverseAllPairsByPairwiseGcd() =>
         GreatestCommonDivisorTraversalSolution.CanTraverseAllPairsByPairwiseGcd(_values);
 
     [Benchmark]
-    public bool DisjointSetByPrimeFactor() =>
+    public bool CanTraverseAllPairsByPrimeFactorUnion() =>
         GreatestCommonDivisorTraversalSolution.CanTraverseAllPairsByPrimeFactorUnion(_values);
 }

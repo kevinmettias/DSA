@@ -76,35 +76,36 @@ internal static class TrappingRainWaterIISolution
             {
                 for (var c = 1; c < cols - 1; c++)
                 {
-                    changed = RelaxCell(heightMap, r, c, water) || changed;
+                    changed = TryRelaxCell(heightMap, r, c, water) || changed;
                 }
             }
         }
     }
 
-    private static bool RelaxCell(int[][] heightMap, int r, int c, int[,] water)
+    private static bool TryRelaxCell(
+        int[][] heightMap, int rowIndex, int columnIndex, int[,] water)
     {
-        var floor = heightMap[r][c];
-        var best = water[r, c];
+        var floor = heightMap[rowIndex][columnIndex];
+        var best = water[rowIndex, columnIndex];
 
-        var north = Math.Max(floor, water[r - 1, c]);
+        var north = Math.Max(floor, water[rowIndex - 1, columnIndex]);
         best = Math.Min(best, north);
 
-        var south = Math.Max(floor, water[r + 1, c]);
+        var south = Math.Max(floor, water[rowIndex + 1, columnIndex]);
         best = Math.Min(best, south);
 
-        var west = Math.Max(floor, water[r, c - 1]);
+        var west = Math.Max(floor, water[rowIndex, columnIndex - 1]);
         best = Math.Min(best, west);
 
-        var east = Math.Max(floor, water[r, c + 1]);
+        var east = Math.Max(floor, water[rowIndex, columnIndex + 1]);
         best = Math.Min(best, east);
 
-        if (best >= water[r, c])
+        if (best >= water[rowIndex, columnIndex])
         {
             return false;
         }
 
-        water[r, c] = best;
+        water[rowIndex, columnIndex] = best;
         return true;
     }
 
@@ -223,8 +224,8 @@ internal static class TrappingRainWaterIISolution
     private static bool IsOffBoard(int row, int col, int rows, int cols)
         => row < 0 || row >= rows || col < 0 || col >= cols;
 
-    private static bool IsBoundary(int r, int c, int rows, int cols)
-        => r == 0 || r == rows - 1 || c == 0 || c == cols - 1;
+    private static bool IsBoundary(int rowIndex, int columnIndex, int rows, int cols)
+        => rowIndex == 0 || rowIndex == rows - 1 || columnIndex == 0 || columnIndex == cols - 1;
 
     private sealed record FloodState(
         int[][] HeightMap,

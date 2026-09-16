@@ -40,10 +40,10 @@ public class PartitionArrayIntoTwoEqualProductSubsetsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BitmaskEnumeration() =>
-        PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByBitmaskEnumeration(_nums, Target);
+    public bool CanPartitionEquallyByBitmaskEnumeration() =>
+        PartitionArrayIntoTwoEqualProductSubsetsSolution.CanPartitionEquallyByBitmaskEnumeration(_nums, Target);
 
     [Benchmark]
-    public bool PrunedBacktracking() =>
-        PartitionArrayIntoTwoEqualProductSubsetsSolution.CheckEqualPartitionsByPrunedBacktracking(_nums, Target);
+    public bool CanPartitionEquallyByPrunedBacktracking() =>
+        PartitionArrayIntoTwoEqualProductSubsetsSolution.CanPartitionEquallyByPrunedBacktracking(_nums, Target);
 }

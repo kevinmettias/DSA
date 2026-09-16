@@ -18,11 +18,11 @@ public sealed class FibonacciNumberTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FibByNaiveRecursion_LeetCodeExamples_ReturnsFibonacciNumber(int n, int expected) =>
-        Assert.Equal(expected, FibonacciNumberSolution.FibByNaiveRecursion(n));
+    public void FibByNaiveRecursion_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByNaiveRecursion(sequenceIndex));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FibByMemoizedTopDown_LeetCodeExamples_ReturnsFibonacciNumber(int n, int expected) =>
-        Assert.Equal(expected, FibonacciNumberSolution.FibByMemoizedTopDown(n));
+    public void FibByMemoizedTopDown_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByMemoizedTopDown(sequenceIndex));
 }

@@ -27,9 +27,9 @@ public class BoatsToSavePeopleBenchmarks
 
     [Benchmark(Baseline = true)]
     public int BruteForceRepeatedScan() =>
-        BoatsToSavePeopleSolution.NumRescueBoatsByRepeatedScan(_people, Limit);
+        BoatsToSavePeopleSolution.NumberOfRescueBoatsByRepeatedScan(_people, Limit);
 
     [Benchmark]
     public int SortThenTwoPointer() =>
-        BoatsToSavePeopleSolution.NumRescueBoatsBySortThenTwoPointer(_people, Limit);
+        BoatsToSavePeopleSolution.NumberOfRescueBoatsBySortThenTwoPointer(_people, Limit);
 }

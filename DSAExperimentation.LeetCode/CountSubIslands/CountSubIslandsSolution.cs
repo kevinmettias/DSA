@@ -33,7 +33,7 @@ internal static class CountSubIslandsSolution
         {
             for (var col = 0; col < remaining[row].Length; col++)
             {
-                if (CountsAsSubIsland(grid1, remaining, row, col))
+                if (IsSubIsland(grid1, remaining, row, col))
                 {
                     count++;
                 }
@@ -46,7 +46,7 @@ internal static class CountSubIslandsSolution
     // One cell's worth of the scan: skip water, otherwise flood the island it belongs to
     // and report what the flood learned. The flood zeroes `remaining` as it goes, so a
     // cell already walked can never seed a second, truncated island.
-    private static bool CountsAsSubIsland(int[][] grid1, int[][] remaining, int row, int col)
+    private static bool IsSubIsland(int[][] grid1, int[][] remaining, int row, int col)
     {
         if (remaining[row][col] != Land)
         {
@@ -77,7 +77,7 @@ internal static class CountSubIslandsSolution
         {
             for (var col = 0; col < remaining[row].Length; col++)
             {
-                if (CountsAsSubIslandByTraversal(grid1, remaining, row, col))
+                if (IsSubIslandByTraversal(grid1, remaining, row, col))
                 {
                     count++;
                 }
@@ -87,9 +87,9 @@ internal static class CountSubIslandsSolution
         return count;
     }
 
-    // The same one-cell step as CountsAsSubIsland, with the walk handed to the traversal
+    // The same one-cell step as IsSubIsland, with the walk handed to the traversal
     // primitive and the grid1 coverage test deferred to a pass over the cells it collected.
-    private static bool CountsAsSubIslandByTraversal(int[][] grid1, int[][] remaining, int row, int col)
+    private static bool IsSubIslandByTraversal(int[][] grid1, int[][] remaining, int row, int col)
     {
         if (remaining[row][col] != Land)
         {
@@ -99,7 +99,7 @@ internal static class CountSubIslandsSolution
         var island = DepthFirstSearch.Traverse<(int Row, int Col)>(
             (row, col), cell => LandNeighbors(remaining, cell));
 
-        return ClearIslandAndCheckCoverage(grid1, remaining, island);
+        return IsIslandCovered(grid1, remaining, island);
     }
 
     private static IEnumerable<(int Row, int Col)> LandNeighbors(int[][] remaining, (int Row, int Col) cell)
@@ -118,7 +118,8 @@ internal static class CountSubIslandsSolution
 
     // Runs after the traversal, never during it: the walk reads `remaining` lazily
     // through LandNeighbors, so zeroing cells mid-walk would truncate the island.
-    private static bool ClearIslandAndCheckCoverage(
+    // Clears the island out of `remaining` as it checks each cell against grid1.
+    private static bool IsIslandCovered(
         int[][] grid1, int[][] remaining, List<(int Row, int Col)> island)
     {
         var isSubIsland = true;

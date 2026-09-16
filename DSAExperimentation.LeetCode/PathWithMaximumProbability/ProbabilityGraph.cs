@@ -48,13 +48,13 @@ internal sealed class ProbabilityGraph
     }
 
     // LC 1514's edges are undirected, so each one is recorded from both ends.
-    private void Connect(int a, int b, double probability)
+    private void Connect(int firstNodeId, int secondNodeId, double probability)
     {
         var cost = -Math.Log(probability);
 
-        Adjacency[a].Add((probability, b));
-        Adjacency[b].Add((probability, a));
-        Nodes[a].Edges.Add((cost, Nodes[b]));
-        Nodes[b].Edges.Add((cost, Nodes[a]));
+        Adjacency[firstNodeId].Add((probability, secondNodeId));
+        Adjacency[secondNodeId].Add((probability, firstNodeId));
+        Nodes[firstNodeId].Edges.Add((cost, Nodes[secondNodeId]));
+        Nodes[secondNodeId].Edges.Add((cost, Nodes[firstNodeId]));
     }
 }

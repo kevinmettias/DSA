@@ -20,9 +20,9 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     // reversed adjacency. Only the input container (EdgeWeightGraph) is this
     // repo's; the search itself is deliberately plain, the arm the composed
     // strategy has to beat.
-    public static int MinMaxWeightByBinarySearchBfs(int n, int[][] edges, int threshold)
+    public static int MinMaxWeightByBinarySearchBfs(int nodeCount, int[][] edges, int threshold)
     {
-        var graph = EdgeWeightGraph.Build(n, edges);
+        var graph = EdgeWeightGraph.Build(nodeCount, edges);
 
         return MinMaxWeightByBinarySearchBfs(graph, threshold);
     }
@@ -58,9 +58,9 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     // Reduce.Graph over EdgeWeightTopology - the reversed, weight-filtered
     // adjacency this problem alone needs - the same way GridShortestPath answers
     // "how far" over GridTopology.
-    public static int MinMaxWeightByReduceGraphBinarySearch(int n, int[][] edges, int threshold)
+    public static int MinMaxWeightByReduceGraphBinarySearch(int nodeCount, int[][] edges, int threshold)
     {
-        var graph = EdgeWeightGraph.Build(n, edges);
+        var graph = EdgeWeightGraph.Build(nodeCount, edges);
 
         return MinMaxWeightByReduceGraphBinarySearch(graph, threshold);
     }
@@ -87,14 +87,14 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     // probe to probe.
     private interface IWeightFeasibility
     {
-        bool HoldsFor(int maxWeight);
+        bool IsFeasibleFor(int maxWeight);
     }
 
     // Smallest feasible weight in [1, maxWeight], or LeetCodeAnswer.None if even
     // maxWeight (every edge kept) still can't reach every node.
     private static int BinarySearchWeight(int maxWeight, IWeightFeasibility isFeasible)
     {
-        if (!isFeasible.HoldsFor(maxWeight))
+        if (!isFeasible.IsFeasibleFor(maxWeight))
         {
             return LeetCodeAnswer.None;
         }
@@ -114,7 +114,7 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
         {
             var mid = low + (high - low) / 2;
 
-            if (isFeasible.HoldsFor(mid))
+            if (isFeasible.IsFeasibleFor(mid))
             {
                 high = mid;
             }
@@ -131,13 +131,13 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
     // reversed adjacency.
     private sealed class BfsFeasibility(EdgeWeightGraph graph) : IWeightFeasibility
     {
-        public bool HoldsFor(int maxWeight) => IsFeasibleByBfs(graph, maxWeight);
+        public bool IsFeasibleFor(int maxWeight) => IsFeasibleByBfs(graph, maxWeight);
     }
 
     // The composed arm's mechanism: Reduce.Graph over EdgeWeightTopology - the
     // reversed, weight-filtered adjacency this problem alone needs.
     private sealed class ReduceGraphFeasibility(EdgeWeightGraph graph) : IWeightFeasibility
     {
-        public bool HoldsFor(int maxWeight) => IsFeasibleByReduceGraph(graph, maxWeight);
+        public bool IsFeasibleFor(int maxWeight) => IsFeasibleByReduceGraph(graph, maxWeight);
     }
 }

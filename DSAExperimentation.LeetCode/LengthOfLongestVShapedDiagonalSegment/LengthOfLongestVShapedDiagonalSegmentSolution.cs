@@ -62,7 +62,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         var (row, col) = start;
         var value = grid[row][col];
 
-        while (InBounds(grid, row, col) && grid[row][col] == value)
+        while (IsInBounds(grid, row, col) && grid[row][col] == value)
         {
             length++;
             best = Math.Max(best, length);
@@ -86,7 +86,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         var expected = NextExpected(grid[turnCell.Row][turnCell.Col]);
         var length = 0;
 
-        while (InBounds(grid, row, col) && grid[row][col] == expected)
+        while (IsInBounds(grid, row, col) && grid[row][col] == expected)
         {
             length++;
             expected = NextExpected(expected);
@@ -165,7 +165,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         var predecessorRow = row - dRow;
         var predecessorCol = col - dCol;
 
-        if (!InBounds(grid, predecessorRow, predecessorCol))
+        if (!IsInBounds(grid, predecessorRow, predecessorCol))
         {
             return 0;
         }
@@ -210,7 +210,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         var successorRow = row + dRow;
         var successorCol = col + dCol;
 
-        if (!InBounds(grid, successorRow, successorCol) ||
+        if (!IsInBounds(grid, successorRow, successorCol) ||
             grid[successorRow][successorCol] != NextExpected(grid[row][col]))
         {
             return 1;
@@ -263,7 +263,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
         var nextRow = cell.Row + dRow;
         var nextCol = cell.Col + dCol;
 
-        if (InBounds(grid, nextRow, nextCol) &&
+        if (IsInBounds(grid, nextRow, nextCol) &&
             grid[nextRow][nextCol] == NextExpected(grid[cell.Row][cell.Col]))
         {
             return arm + lengths.Forward[nextRow, nextCol, turnDirection];
@@ -285,7 +285,7 @@ internal static class LengthOfLongestVShapedDiagonalSegmentSolution
 
     // The row bound is tested first, so grid[0] is only reached once the grid is
     // known to have at least one row.
-    private static bool InBounds(int[][] grid, int row, int col) =>
+    private static bool IsInBounds(int[][] grid, int row, int col) =>
         row >= 0 && row < grid.Length && col >= 0 && col < grid[0].Length;
 
     // Which way FillArmLength and FillForwardLength sweep the rows is a state, not a

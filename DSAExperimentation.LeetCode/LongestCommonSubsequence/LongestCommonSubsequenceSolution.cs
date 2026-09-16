@@ -38,7 +38,8 @@ internal static class LongestCommonSubsequenceSolution
 
     // The characters match, so both cursors advance and the shared subsequence is the
     // next suffix pair's, one character longer.
-    private static int MatchedLcs(int[,] lcs, int i, int j) => 1 + lcs[i + 1, j + 1];
+    private static int MatchedLcs(int[,] lcs, int firstIndex, int secondIndex) =>
+        1 + lcs[firstIndex + 1, secondIndex + 1];
 
     // The same recurrence run top-down, with this repo's own Memoizer<TState,TResult>
     // caching each (i, j) suffix pair - so only the states actually reachable from

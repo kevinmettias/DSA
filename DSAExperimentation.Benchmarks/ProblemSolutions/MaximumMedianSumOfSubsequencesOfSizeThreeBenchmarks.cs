@@ -7,9 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods MaximumMedianSumOfSubsequencesOfSizeThreeTests proves
 // correct (NumberOfIntegersWithPopcountDepthEqualToKIBenchmarks precedent - no
 // [GlobalSetup] beyond the one random array both arms share, since nums is
-// the LeetCode input itself). N stays small for the brute-force partition
-// search - its search tree grows combinatorially, into the hundreds of
-// thousands of partial groupings by a dozen elements - while the
+// the LeetCode input itself). ElementCount stays small for the brute-force
+// partition search - its search tree grows combinatorially, into the hundreds
+// of thousands of partial groupings by a dozen elements - while the
 // sorted-greedy arm scales to the real problem's n up to 5*10^5 trivially.
 [MemoryDiagnoser]
 public class MaximumMedianSumOfSubsequencesOfSizeThreeBenchmarks
@@ -20,15 +20,15 @@ public class MaximumMedianSumOfSubsequencesOfSizeThreeBenchmarks
     private int[] _nums = [];
 
     [Params(6, 12)]
-    public int N { get; set; }
+    public int ElementCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
-        var nums = new int[N];
+        var nums = new int[ElementCount];
 
-        for (var i = 0; i < N; i++)
+        for (var i = 0; i < ElementCount; i++)
         {
             nums[i] = random.Next(1, MaxValue);
         }

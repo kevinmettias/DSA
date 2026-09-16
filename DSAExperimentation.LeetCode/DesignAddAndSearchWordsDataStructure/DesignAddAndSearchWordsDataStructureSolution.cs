@@ -31,7 +31,7 @@ internal static class DesignAddAndSearchWordsDataStructureSolution
         public void AddWord(string word) => _words.Add(word);
 
         public bool Search(string pattern) =>
-            _words.Exists(word => MatchesPattern(new StoredWord(word), new SearchPattern(pattern)));
+            _words.Exists(word => IsPatternMatch(new StoredWord(word), new SearchPattern(pattern)));
     }
 
     // This repo's own Trie<bool> gives the no-wildcard case an O(m) descent
@@ -53,13 +53,13 @@ internal static class DesignAddAndSearchWordsDataStructureSolution
 
         public bool Search(string pattern) =>
             pattern.Contains('.')
-                ? _allWords.Exists(word => MatchesPattern(new StoredWord(word), new SearchPattern(pattern)))
+                ? _allWords.Exists(word => IsPatternMatch(new StoredWord(word), new SearchPattern(pattern)))
                 : _exactWords.HasKey(pattern);
     }
 
     // Shared wildcard matching: same length, and every position either matches
     // the stored word exactly or the pattern has '.' there.
-    private static bool MatchesPattern(StoredWord word, SearchPattern pattern)
+    private static bool IsPatternMatch(StoredWord word, SearchPattern pattern)
     {
         if (word.Text.Length != pattern.Text.Length)
         {

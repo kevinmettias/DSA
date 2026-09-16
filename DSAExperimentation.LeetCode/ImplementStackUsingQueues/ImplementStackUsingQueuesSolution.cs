@@ -22,7 +22,7 @@ internal static class ImplementStackUsingQueuesSolution
 {
     internal interface IStackOperations
     {
-        void Push(int x);
+        void Push(int value);
 
         int Pop();
 
@@ -41,10 +41,10 @@ internal static class ImplementStackUsingQueuesSolution
     {
         private BclQueue _items = new();
 
-        public void Push(int x)
+        public void Push(int value)
         {
             var rotated = new BclQueue();
-            rotated.Enqueue(x);
+            rotated.Enqueue(value);
 
             while (_items.Count > 0)
             {
@@ -65,10 +65,10 @@ internal static class ImplementStackUsingQueuesSolution
     {
         private RepoQueue _items = new();
 
-        public void Push(int x)
+        public void Push(int value)
         {
             var rotated = new RepoQueue();
-            rotated.Enqueue(x);
+            rotated.Enqueue(value);
 
             while (_items.TryDequeue(out var item))
             {

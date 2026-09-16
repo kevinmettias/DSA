@@ -175,7 +175,7 @@ internal static class MaximumPartitionFactorSolution
 
         while (frontier.Count > 0)
         {
-            if (!ColorNeighbors(adjacency, color, frontier))
+            if (!TryColorNeighbors(adjacency, color, frontier))
             {
                 return false;
             }
@@ -186,7 +186,7 @@ internal static class MaximumPartitionFactorSolution
 
     // One breadth-first step: paint the front node's neighbours that have no color
     // yet, and report the conflict when one already shares the node's color.
-    private static bool ColorNeighbors(List<int>[] adjacency, int[] color, Queue<int> frontier)
+    private static bool TryColorNeighbors(List<int>[] adjacency, int[] color, Queue<int> frontier)
     {
         var node = frontier.Dequeue();
 

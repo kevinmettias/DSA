@@ -26,8 +26,8 @@ public class BalancedTreeFoldBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public int Recursive() => TreeFoldBenchmarkHelpers.Fold<RecursiveFoldEvaluation<BinaryTreeNode<int>>>(_root);
+    public int Recursive() => TreeFoldBenchmarkFixtures.Fold<RecursiveFoldEvaluation<BinaryTreeNode<int>>>(_root);
 
     [Benchmark]
-    public int Iterative() => TreeFoldBenchmarkHelpers.Fold<IterativeFoldEvaluation<BinaryTreeNode<int>>>(_root);
+    public int Iterative() => TreeFoldBenchmarkFixtures.Fold<IterativeFoldEvaluation<BinaryTreeNode<int>>>(_root);
 }

@@ -17,8 +17,8 @@ public class LowestCommonAncestorOfABinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    private BinaryTreeNode<int> _p = null!;
-    private BinaryTreeNode<int> _q = null!;
+    private BinaryTreeNode<int> _firstNode = null!;
+    private BinaryTreeNode<int> _secondNode = null!;
     [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
@@ -26,8 +26,8 @@ public class LowestCommonAncestorOfABinaryTreeBenchmarks
     public void Setup()
     {
         _root = BinaryTrees.Balanced(NodeCount);
-        _p = LeftmostLeaf(_root);
-        _q = RightmostLeaf(_root);
+        _firstNode = LeftmostLeaf(_root);
+        _secondNode = RightmostLeaf(_root);
     }
 
     private static BinaryTreeNode<int> LeftmostLeaf(BinaryTreeNode<int> node)
@@ -59,5 +59,5 @@ public class LowestCommonAncestorOfABinaryTreeBenchmarks
 
     [Benchmark]
     public object? AncestryWalk() =>
-        LowestCommonAncestorOfABinaryTreeSolution.FindLcaByAncestryWalk(_root, _p, _q);
+        LowestCommonAncestorOfABinaryTreeSolution.FindLcaByAncestryWalk(_root, _firstNode, _secondNode);
 }

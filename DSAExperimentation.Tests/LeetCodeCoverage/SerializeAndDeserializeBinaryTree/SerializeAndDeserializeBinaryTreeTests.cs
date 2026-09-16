@@ -50,12 +50,12 @@ public sealed class SerializeAndDeserializeBinaryTreeTests
         // function names it as a parameter rather than capturing it from the enclosing block.
         var index = 0;
 
-        return Build(ref index);
+        return BuildFromPreorder(ref index);
 
-        BinaryTreeNode<int>? Build(ref int index)
+        BinaryTreeNode<int>? BuildFromPreorder(ref int index)
         {
             var value = preorder[index++];
-            return value is null ? null : new BinaryTreeNode<int>(value.Value) { Left = Build(ref index), Right = Build(ref index) };
+            return value is null ? null : new BinaryTreeNode<int>(value.Value) { Left = BuildFromPreorder(ref index), Right = BuildFromPreorder(ref index) };
         }
     }
 

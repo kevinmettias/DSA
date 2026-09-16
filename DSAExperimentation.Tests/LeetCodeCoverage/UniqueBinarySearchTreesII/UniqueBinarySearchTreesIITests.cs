@@ -19,14 +19,16 @@ public sealed class UniqueBinarySearchTreesIITests
     [Theory]
     [MemberData(nameof(Examples))]
     public void GenerateTreesByPlainRecursion_LeetCodeExamples_ReturnsAllStructurallyValidBsts(
-        int n, int expectedCount, int[] expectedInOrder) =>
-        AssertAllValidBsts(UniqueBinarySearchTreesIISolution.GenerateTreesByPlainRecursion(n), expectedCount, expectedInOrder);
+        int nodeCount, int expectedCount, int[] expectedInOrder) =>
+        AssertAllValidBsts(
+            UniqueBinarySearchTreesIISolution.GenerateTreesByPlainRecursion(nodeCount), expectedCount, expectedInOrder);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GenerateTreesByMemoizedRange_LeetCodeExamples_ReturnsAllStructurallyValidBsts(
-        int n, int expectedCount, int[] expectedInOrder) =>
-        AssertAllValidBsts(UniqueBinarySearchTreesIISolution.GenerateTreesByMemoizedRange(n), expectedCount, expectedInOrder);
+        int nodeCount, int expectedCount, int[] expectedInOrder) =>
+        AssertAllValidBsts(
+            UniqueBinarySearchTreesIISolution.GenerateTreesByMemoizedRange(nodeCount), expectedCount, expectedInOrder);
 
     [Fact]
     public void GenerateTreesByPlainRecursion_NOne_ReturnsSingleLeafTree() =>

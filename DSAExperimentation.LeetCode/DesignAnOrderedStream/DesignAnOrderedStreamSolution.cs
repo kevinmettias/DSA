@@ -2,10 +2,10 @@ using RepoDynamicArray = DSAExperimentation.DataStructures.DynamicArray.DynamicA
 
 namespace DSAExperimentation.LeetCode.DesignAnOrderedStream;
 
-// LeetCode 1656. Design an Ordered Stream: n values arrive keyed 1..n in arbitrary
-// order, and each Insert returns the largest block of consecutive values that can be
-// handed out starting at the read cursor - so a value arriving early emits nothing
-// until the gap before it closes.
+// LeetCode 1656. Design an Ordered Stream: streamSize values arrive keyed
+// 1..streamSize in arbitrary order, and each Insert returns the largest block of
+// consecutive values that can be handed out starting at the read cursor - so a
+// value arriving early emits nothing until the gap before it closes.
 //
 // That is a fixed-size slot array plus a cursor that only advances while consecutive
 // slots are filled. LeetCode's own shape here is a stateful object with a
@@ -24,14 +24,15 @@ internal static class DesignAnOrderedStreamSolution
     }
 
     // The textbook baseline this composition has to justify itself against: a BCL
-    // List<string?> pre-sized with n null slots plus a cursor, deliberately written
-    // without this repo's DynamicArray<string?>.
+    // List<string?> pre-sized with streamSize null slots plus a cursor, deliberately
+    // written without this repo's DynamicArray<string?>.
     internal sealed class OrderedStreamByListBacked : IOrderedStream
     {
         private readonly List<string?> _values;
         private int _ptr;
 
-        public OrderedStreamByListBacked(int n) => _values = new List<string?>(new string?[n]);
+        public OrderedStreamByListBacked(int streamSize) =>
+            _values = new List<string?>(new string?[streamSize]);
 
         public List<string> Insert(int idKey, string value)
         {
@@ -59,9 +60,9 @@ internal static class DesignAnOrderedStreamSolution
         private readonly RepoDynamicArray _values = new();
         private int _ptr;
 
-        public OrderedStreamByDynamicArrayBacked(int n)
+        public OrderedStreamByDynamicArrayBacked(int streamSize)
         {
-            for (var i = 0; i < n; i++)
+            for (var i = 0; i < streamSize; i++)
             {
                 _values.Add(null);
             }

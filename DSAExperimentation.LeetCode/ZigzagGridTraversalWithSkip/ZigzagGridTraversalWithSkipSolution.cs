@@ -35,9 +35,9 @@ internal static class ZigzagGridTraversalWithSkipSolution
         return [.. result];
     }
 
-    // A right-to-left row visits the columns in reverse: position i reads column
-    // cols - 1 - i.
-    private static int MirroredColumn(int cols, int i) => cols - 1 - i;
+    // A right-to-left row visits the columns in reverse: the visit at `position`
+    // reads column cols - 1 - position.
+    private static int MirroredColumn(int cols, int position) => cols - 1 - position;
 
     // Composed: every even row is read straight off the array; every odd row is
     // pushed onto this repo's own Stack<int> and popped - the same "push forward,

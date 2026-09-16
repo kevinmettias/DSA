@@ -25,11 +25,11 @@ internal sealed class IntersectionNetwork(List<int>[] roads)
 
     public List<int> RoadsFrom(int intersection) => roads[intersection];
 
-    public static IntersectionNetwork Build(int n, int[][] edges)
+    public static IntersectionNetwork Build(int intersectionCount, int[][] edges)
     {
-        var roads = new List<int>[n];
+        var roads = new List<int>[intersectionCount];
 
-        for (var intersection = 0; intersection < n; intersection++)
+        for (var intersection = 0; intersection < intersectionCount; intersection++)
         {
             roads[intersection] = [];
         }

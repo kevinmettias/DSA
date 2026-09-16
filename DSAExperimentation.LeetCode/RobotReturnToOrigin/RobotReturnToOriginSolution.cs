@@ -5,13 +5,13 @@ namespace DSAExperimentation.LeetCode.RobotReturnToOrigin;
 // LeetCode 657. Robot Return to Origin: fold a move string into a net (x, y)
 // displacement and check it lands back on (0, 0).
 //
-// JudgeCircleBySwitch is the textbook baseline: a hand-written switch per move
+// IsAtOriginBySwitch is the textbook baseline: a hand-written switch per move
 // character, deliberately written without this repo's primitives. It is the arm
-// JudgeCircleByHashMapLookup - this repo's own HashMap<char,(int,int)> used as a
+// IsAtOriginByHashMapLookup - this repo's own HashMap<char,(int,int)> used as a
 // move-to-displacement lookup table - is measured against.
 internal static class RobotReturnToOriginSolution
 {
-    public static bool JudgeCircleBySwitch(string moves)
+    public static bool IsAtOriginBySwitch(string moves)
     {
         var x = 0;
         var y = 0;
@@ -35,7 +35,7 @@ internal static class RobotReturnToOriginSolution
         _ => (0, 0),
     };
 
-    public static bool JudgeCircleByHashMapLookup(string moves)
+    public static bool IsAtOriginByHashMapLookup(string moves)
     {
         var deltas = BuildDeltaTable();
         var (x, y) = NetDisplacement(moves, deltas);

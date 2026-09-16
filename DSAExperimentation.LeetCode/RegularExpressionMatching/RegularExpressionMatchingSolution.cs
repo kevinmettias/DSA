@@ -15,9 +15,9 @@ internal static class RegularExpressionMatchingSolution
     // with no trailing 'b' - deliberately written without this repo's primitives.
     public static bool IsMatchByRecursion(SubjectText text, RegexPattern pattern)
     {
-        return MatchFrom(0, 0);
+        return IsMatchFrom(0, 0);
 
-        bool MatchFrom(int textIndex, int patternIndex)
+        bool IsMatchFrom(int textIndex, int patternIndex)
         {
             if (patternIndex == pattern.Text.Length)
             {
@@ -29,11 +29,11 @@ internal static class RegularExpressionMatchingSolution
 
             if (patternIndex + 1 < pattern.Text.Length && pattern.Text[patternIndex + 1] == '*')
             {
-                return MatchFrom(textIndex, patternIndex + StarTokenLength)
-                    || (firstMatches && MatchFrom(textIndex + 1, patternIndex));
+                return IsMatchFrom(textIndex, patternIndex + StarTokenLength)
+                    || (firstMatches && IsMatchFrom(textIndex + 1, patternIndex));
             }
 
-            return firstMatches && MatchFrom(textIndex + 1, patternIndex + 1);
+            return firstMatches && IsMatchFrom(textIndex + 1, patternIndex + 1);
         }
     }
 

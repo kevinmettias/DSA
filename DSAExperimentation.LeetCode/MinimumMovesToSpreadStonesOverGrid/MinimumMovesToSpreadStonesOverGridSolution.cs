@@ -6,8 +6,8 @@ namespace DSAExperimentation.LeetCode.MinimumMovesToSpreadStonesOverGrid;
 // stones total, distributed unevenly; one move slides one stone to an
 // orthogonally adjacent cell, and the goal is the fewest moves to reach exactly
 // one stone per cell. Because moves are single unit steps with no obstacles,
-// the cost of relocating one stone from cell A to cell B by the shortest route
-// is exactly their Manhattan distance, and - the key simplification - the
+// the cost of relocating one stone from one cell to another by the shortest
+// route is exactly their Manhattan distance, and - the key simplification - the
 // total move count for ANY valid final routing equals the sum of Manhattan
 // distances of SOME bijection between "excess" stones (cells with more than
 // one) and "deficit" cells (cells with none), since stones from a
@@ -210,8 +210,10 @@ internal static class MinimumMovesToSpreadStonesOverGridSolution
         }
     }
 
-    private static int ManhattanDistance((int Row, int Col) a, (int Row, int Col) b)
-        => Math.Abs(a.Row - b.Row) + Math.Abs(a.Col - b.Col);
+    private static int ManhattanDistance(
+        (int Row, int Col) firstCell, (int Row, int Col) secondCell)
+        => Math.Abs(firstCell.Row - secondCell.Row)
+            + Math.Abs(firstCell.Col - secondCell.Col);
 
     private sealed class AssignmentState(int length)
     {

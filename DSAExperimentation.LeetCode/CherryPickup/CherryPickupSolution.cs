@@ -126,8 +126,8 @@ internal static class CherryPickupSolution
 
     // A walker's cell is unusable when it falls outside the grid or holds a thorn -
     // said once for each of the two walkers rather than eight times in one line.
-    private static bool IsUnusablePosition(int[,] grid, int row, int col, int n)
-        => row < 0 || row >= n || col < 0 || col >= n || grid[row, col] == -1;
+    private static bool IsUnusablePosition(int[,] grid, int row, int col, int gridSize)
+        => row < 0 || row >= gridSize || col < 0 || col >= gridSize || grid[row, col] == -1;
 
     private static int BestOfFour(int downAddCol2, int downSameCol2, int rightAddCol2, int rightSameCol2)
     {

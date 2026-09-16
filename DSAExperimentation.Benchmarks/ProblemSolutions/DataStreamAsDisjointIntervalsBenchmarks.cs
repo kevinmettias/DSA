@@ -33,7 +33,7 @@ public class DataStreamAsDisjointIntervalsBenchmarks
     public int FullRebuildEachCall() => Drain(DataStreamAsDisjointIntervalsSolution.CreateByFullRebuildEachCall());
 
     [Benchmark]
-    public int IntervalSetAddNum() => Drain(DataStreamAsDisjointIntervalsSolution.CreateByIntervalSetMerge());
+    public int IntervalSetMerge() => Drain(DataStreamAsDisjointIntervalsSolution.CreateByIntervalSetMerge());
 
     private int Drain(DataStreamAsDisjointIntervalsSolution.ISummaryRanges stream)
     {

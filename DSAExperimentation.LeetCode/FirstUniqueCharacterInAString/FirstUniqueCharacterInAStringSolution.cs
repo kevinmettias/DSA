@@ -15,15 +15,15 @@ internal static class FirstUniqueCharacterInAStringSolution
     // occurrences, with no early break on the first duplicate found - the O(n^2)
     // arm the HashMap pass below has to justify itself against. Deliberately
     // written without this repo's primitives.
-    public static int FirstUniqCharByBruteForce(string s)
+    public static int FirstUniqCharByBruteForce(string text)
     {
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
             var occurrences = 0;
 
-            for (var j = 0; j < s.Length; j++)
+            for (var j = 0; j < text.Length; j++)
             {
-                if (s[j] == s[i])
+                if (text[j] == text[i])
                 {
                     occurrences++;
                 }
@@ -38,19 +38,19 @@ internal static class FirstUniqueCharacterInAStringSolution
         return LeetCodeAnswer.None;
     }
 
-    public static int FirstUniqCharByHashMapTwoPass(string s)
+    public static int FirstUniqCharByHashMapTwoPass(string text)
     {
         var counts = new HashMap<char, int>();
 
-        foreach (var c in s)
+        foreach (var c in text)
         {
             counts.TryGetValue(c, out var count);
             counts.Set(c, count + 1);
         }
 
-        for (var i = 0; i < s.Length; i++)
+        for (var i = 0; i < text.Length; i++)
         {
-            counts.TryGetValue(s[i], out var count);
+            counts.TryGetValue(text[i], out var count);
 
             if (count == 1)
             {

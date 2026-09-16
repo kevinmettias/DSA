@@ -47,21 +47,23 @@ internal static class MinimumSwapsToMakeSequencesIncreasingSolution
         return rows;
     }
 
-    private static void UpdateTabulationStep(SwapArrays arrays, TabulationRows rows, int i)
+    private static void UpdateTabulationStep(SwapArrays arrays, TabulationRows rows, int index)
     {
-        rows.Keep[i] = int.MaxValue;
-        rows.Swap[i] = int.MaxValue;
+        rows.Keep[index] = int.MaxValue;
+        rows.Swap[index] = int.MaxValue;
 
-        if (arrays.Nums1[i] > arrays.Nums1[i - 1] && arrays.Nums2[i] > arrays.Nums2[i - 1])
+        if (arrays.Nums1[index] > arrays.Nums1[index - 1]
+            && arrays.Nums2[index] > arrays.Nums2[index - 1])
         {
-            rows.Keep[i] = Math.Min(rows.Keep[i], rows.Keep[i - 1]);
-            rows.Swap[i] = Math.Min(rows.Swap[i], rows.Swap[i - 1] + SwapCost);
+            rows.Keep[index] = Math.Min(rows.Keep[index], rows.Keep[index - 1]);
+            rows.Swap[index] = Math.Min(rows.Swap[index], rows.Swap[index - 1] + SwapCost);
         }
 
-        if (arrays.Nums1[i] > arrays.Nums2[i - 1] && arrays.Nums2[i] > arrays.Nums1[i - 1])
+        if (arrays.Nums1[index] > arrays.Nums2[index - 1]
+            && arrays.Nums2[index] > arrays.Nums1[index - 1])
         {
-            rows.Keep[i] = Math.Min(rows.Keep[i], rows.Swap[i - 1]);
-            rows.Swap[i] = Math.Min(rows.Swap[i], rows.Keep[i - 1] + SwapCost);
+            rows.Keep[index] = Math.Min(rows.Keep[index], rows.Swap[index - 1]);
+            rows.Swap[index] = Math.Min(rows.Swap[index], rows.Keep[index - 1] + SwapCost);
         }
     }
 
@@ -115,19 +117,19 @@ internal static class MinimumSwapsToMakeSequencesIncreasingSolution
         // Either predecessor is offered as a candidate - the previous index kept, or the
         // previous index swapped - and only the ones this pair actually accepts count.
         private int BestSwapChoice(
-            int i, (int CurA, int CurB) current, IRecurrence<(int Index, IndexState State), int> rest)
+            int index, (int CurA, int CurB) current, IRecurrence<(int Index, IndexState State), int> rest)
         {
             var best = int.MaxValue;
 
-            if (current.CurA > arrays.Nums1[i - 1] && current.CurB > arrays.Nums2[i - 1])
+            if (current.CurA > arrays.Nums1[index - 1] && current.CurB > arrays.Nums2[index - 1])
             {
-                var precededByKept = rest.Replay((i - 1, IndexState.Kept), rest);
+                var precededByKept = rest.Replay((index - 1, IndexState.Kept), rest);
                 best = Math.Min(best, precededByKept);
             }
 
-            if (current.CurA > arrays.Nums2[i - 1] && current.CurB > arrays.Nums1[i - 1])
+            if (current.CurA > arrays.Nums2[index - 1] && current.CurB > arrays.Nums1[index - 1])
             {
-                var precededBySwapped = rest.Replay((i - 1, IndexState.Swapped), rest);
+                var precededBySwapped = rest.Replay((index - 1, IndexState.Swapped), rest);
                 best = Math.Min(best, precededBySwapped);
             }
 

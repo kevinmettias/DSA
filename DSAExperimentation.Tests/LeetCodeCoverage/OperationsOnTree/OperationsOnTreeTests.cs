@@ -105,7 +105,7 @@ public sealed class OperationsOnTreeTests
     {
         for (var i = 0; i < operations.Length; i++)
         {
-            Assert.Equal(expected[i], operations[i].Apply(tree));
+            Assert.Equal(expected[i], operations[i].TryApply(tree));
         }
     }
 }

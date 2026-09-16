@@ -5,8 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeAlternatingSumUsingSwapsSolution's, the same
 // methods MaximizeAlternatingSumUsingSwapsTests proves correct. Setup wires up
-// roughly N/2 random swap pairs over N indices, so the workload has a handful of
-// nontrivial connected components rather than N singletons.
+// roughly ElementCount/2 random swap pairs over ElementCount indices, so the
+// workload has a handful of nontrivial connected components rather than
+// ElementCount singletons.
 [MemoryDiagnoser]
 public class MaximizeAlternatingSumUsingSwapsBenchmarks
 {
@@ -17,15 +18,16 @@ public class MaximizeAlternatingSumUsingSwapsBenchmarks
     // exclusive upper bound; LC 3695 allows values up to 1e9
 
     [Params(1_000, 10_000)]
-    public int N { get; set; }
+    public int ElementCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, N).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
-        _swaps = Enumerable.Range(0, N / 2)
-            .Select(_ => new[] { random.Next(N), random.Next(N) })
+        _nums = Enumerable.Range(0, ElementCount)
+            .Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        _swaps = Enumerable.Range(0, ElementCount / 2)
+            .Select(_ => new[] { random.Next(ElementCount), random.Next(ElementCount) })
             .Where(swap => swap[0] != swap[1])
             .ToArray();
     }

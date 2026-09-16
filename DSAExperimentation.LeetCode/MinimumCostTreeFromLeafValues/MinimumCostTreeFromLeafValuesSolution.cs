@@ -7,13 +7,13 @@ namespace DSAExperimentation.LeetCode.MinimumCostTreeFromLeafValues;
 // largest leaf in its left subtree and the largest leaf in its right subtree.
 // Return the smallest possible sum of those internal-node values.
 //
-// MctFromLeafValuesByUnmemoizedRecursion is the textbook interval recursion over
+// MinimumCostTreeFromLeafValuesByUnmemoizedRecursion is the textbook interval recursion over
 // (left, right) leaf-index bounds, recomputing max(arr[left..split]) and
 // max(arr[split+1..right]) freshly for every split candidate - exponential, since
 // each sub-range is re-explored through every enclosing split. It is the arm the
 // composed strategy has to justify itself against.
 //
-// MctFromLeafValuesByMonotonicStack skips the DP entirely. A leaf that is smaller
+// MinimumCostTreeFromLeafValuesByMonotonicStack skips the DP entirely. A leaf that is smaller
 // than both its still-open neighbours can only ever be optimal to combine with the
 // SMALLER of them - whichever neighbour it is merged into, that neighbour's maximum
 // is what every later merge sees, so pairing it with the smaller one costs least and
@@ -29,10 +29,10 @@ internal static class MinimumCostTreeFromLeafValuesSolution
 
     // The textbook answer: every split of every leaf range, with no memoization
     // and no repo primitives - deliberately what you would write first.
-    public static int MctFromLeafValuesByUnmemoizedRecursion(int[] arr)
+    public static int MinimumCostTreeFromLeafValuesByUnmemoizedRecursion(int[] arr)
         => (int)MinCost(arr, 0, arr.Length - 1);
 
-    public static int MctFromLeafValuesByMonotonicStack(int[] arr)
+    public static int MinimumCostTreeFromLeafValuesByMonotonicStack(int[] arr)
     {
         var stack = new RepoIntStack();
         stack.Push(int.MaxValue);

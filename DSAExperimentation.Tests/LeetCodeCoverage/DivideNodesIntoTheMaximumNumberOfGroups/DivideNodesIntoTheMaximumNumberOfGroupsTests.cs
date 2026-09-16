@@ -24,18 +24,18 @@ public sealed class DivideNodesIntoTheMaximumNumberOfGroupsTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MagnificentSetsByArrayAdjacencyBfs_LeetCodeExamples_ReturnsSummedBestGroupingPerComponent(
-        int n, int[][] edges, int expected)
+        int nodeCount, int[][] edges, int expected)
     {
-        var actual = DivideNodesIntoTheMaximumNumberOfGroupsSolution.MagnificentSetsByArrayAdjacencyBfs(n, edges);
+        var actual = DivideNodesIntoTheMaximumNumberOfGroupsSolution.MagnificentSetsByArrayAdjacencyBfs(nodeCount, edges);
         Assert.Equal(expected, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MagnificentSetsByReducePrimitives_LeetCodeExamples_ReturnsSummedBestGroupingPerComponent(
-        int n, int[][] edges, int expected)
+        int nodeCount, int[][] edges, int expected)
     {
-        var actual = DivideNodesIntoTheMaximumNumberOfGroupsSolution.MagnificentSetsByReducePrimitives(n, edges);
+        var actual = DivideNodesIntoTheMaximumNumberOfGroupsSolution.MagnificentSetsByReducePrimitives(nodeCount, edges);
         Assert.Equal(expected, actual);
     }
 }

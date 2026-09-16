@@ -66,10 +66,10 @@ public class HandOfStraightsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool DictionaryThenArraySort() =>
+    public bool IsNStraightHandByBclDictionary() =>
         HandOfStraightsSolution.IsNStraightHandByBclDictionary(_hand, GroupSize);
 
     [Benchmark]
-    public bool HashMapThenMergeSort() =>
+    public bool IsNStraightHandByHashMapMergeSort() =>
         HandOfStraightsSolution.IsNStraightHandByHashMapMergeSort(_hand, GroupSize);
 }

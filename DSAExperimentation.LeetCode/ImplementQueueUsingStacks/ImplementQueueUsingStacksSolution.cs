@@ -2,8 +2,9 @@ using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<int>;
 
 namespace DSAExperimentation.LeetCode.ImplementQueueUsingStacks;
 
-// LeetCode 232. Implement Queue using Stacks: an instance API (push/pop/peek/
-// empty) built from two of this repo's own Stack<int> instances. Elements
+// LeetCode 232. Implement Queue using Stacks: an instance API (push/pop/peek,
+// plus the emptiness check LeetCode spells `empty`) built from two of this
+// repo's own Stack<int> instances. Elements
 // always land on the "in" stack; a pop/peek transfers everything to the "out"
 // stack only when that one is empty, so each element crosses at most twice
 // across its whole lifetime - amortized O(1) pop/peek despite any single
@@ -24,7 +25,7 @@ internal static class ImplementQueueUsingStacksSolution
         private readonly RepoStack _in = new();
         private readonly RepoStack _out = new();
 
-        public void Push(int x) => _in.Push(x);
+        public void Push(int value) => _in.Push(value);
 
         public int Pop()
         {
@@ -40,7 +41,12 @@ internal static class ImplementQueueUsingStacksSolution
             return value;
         }
 
-        public bool Empty() => _in.Count == 0 && _out.Count == 0;
+        // Named IsEmpty, not LeetCode's own `empty`: TwoStackQueue is this repo's
+        // internal helper rather than the class LC 232 asks you to submit, it
+        // implements no interface that would pin the spelling, and the sibling
+        // design problems here (DesignCircularDeque, DesignCircularQueue) already
+        // spell the same predicate IsEmpty.
+        public bool IsEmpty() => _in.Count == 0 && _out.Count == 0;
 
         private void MoveIfOutIsEmpty()
         {

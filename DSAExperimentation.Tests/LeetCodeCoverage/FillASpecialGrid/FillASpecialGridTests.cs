@@ -17,12 +17,12 @@ public sealed class FillASpecialGridTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SpecialGridByRecursiveQuadrants_LeetCodeExamples_FillsQuadrantsInDescendingOrder(
-        int n, int[][] expected) =>
-        Assert.Equal(expected, FillASpecialGridSolution.SpecialGridByRecursiveQuadrants(n));
+        int levelCount, int[][] expected) =>
+        Assert.Equal(expected, FillASpecialGridSolution.SpecialGridByRecursiveQuadrants(levelCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SpecialGridByBitQuadrantDigits_LeetCodeExamples_FillsQuadrantsInDescendingOrder(
-        int n, int[][] expected) =>
-        Assert.Equal(expected, FillASpecialGridSolution.SpecialGridByBitQuadrantDigits(n));
+        int levelCount, int[][] expected) =>
+        Assert.Equal(expected, FillASpecialGridSolution.SpecialGridByBitQuadrantDigits(levelCount));
 }

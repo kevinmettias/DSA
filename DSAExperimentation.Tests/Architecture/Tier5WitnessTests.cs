@@ -184,7 +184,7 @@ public sealed class Tier5WitnessTests
     private static IEnumerable<string> WitnessesIn(string file)
         => File.ReadLines(file)
             .Select(BaseListOf)
-            .SelectMany(baseList => StructuralWitnesses.Where(witness => NamesType((baseList, witness))))
+            .SelectMany(baseList => StructuralWitnesses.Where(witness => IsNamedInBaseList((baseList, witness))))
             .Distinct();
 
     // The base list of a type declared on this line, or empty when the line
@@ -194,7 +194,7 @@ public sealed class Tier5WitnessTests
         var trimmed = line.TrimStart();
         var colon = trimmed.IndexOf(':');
 
-        if (DeclaresNoType(trimmed, colon))
+        if (HasNoTypeDeclaration(trimmed, colon))
         {
             return string.Empty;
         }
@@ -212,17 +212,17 @@ public sealed class Tier5WitnessTests
 
     // A comment, a line with no colon, and a line whose head names no type all have
     // the same answer: there is no base list here to read.
-    private static bool DeclaresNoType(string trimmed, int colon)
+    private static bool HasNoTypeDeclaration(string trimmed, int colon)
         => trimmed.StartsWith("//", StringComparison.Ordinal)
             || colon < 0
-            || !DeclaresType(trimmed[..colon]);
+            || !HasTypeDeclaration(trimmed[..colon]);
 
     // Generic constraints are cut away before any name inside them is read: a method
     // whose `where` clause accepts a witness does not write one.
     private static string WithoutConstraint(string baseList, int constraint)
         => baseList[..constraint];
 
-    private static bool DeclaresType(string head)
+    private static bool HasTypeDeclaration(string head)
         => head.Contains("class ", StringComparison.Ordinal)
             || head.Contains("struct ", StringComparison.Ordinal)
             || head.Contains("record ", StringComparison.Ordinal);
@@ -230,7 +230,7 @@ public sealed class Tier5WitnessTests
     // The pair travels as one value: the witness name is compared against the base
     // list it was found in, and as two adjacent strings a transposed call would
     // search for the base list inside the name and quietly match nothing.
-    private static bool NamesType((string BaseList, string Witness) candidate)
+    private static bool IsNamedInBaseList((string BaseList, string Witness) candidate)
     {
         for (var index = candidate.BaseList.IndexOf(candidate.Witness, StringComparison.Ordinal);
             index >= 0;

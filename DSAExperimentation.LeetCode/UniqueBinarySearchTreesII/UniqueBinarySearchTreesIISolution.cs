@@ -22,14 +22,14 @@ internal static class UniqueBinarySearchTreesIISolution
 {
     // Textbook baseline: plain left-root-right recursion, re-deriving any
     // sub-range reached from more than one parent call.
-    public static List<BinaryTreeNode<int>?> GenerateTreesByPlainRecursion(int n) =>
-        GeneratePlain(1, n);
+    public static List<BinaryTreeNode<int>?> GenerateTreesByPlainRecursion(int nodeCount) =>
+        GeneratePlain(1, nodeCount);
 
     // Identical recurrence, driven top-down through Memoizer keyed by the
     // (start,end) range, so a range reached from multiple parents is
     // generated once and its subtree objects shared across every caller.
-    public static List<BinaryTreeNode<int>?> GenerateTreesByMemoizedRange(int n) =>
-        Memoizer.Memoize<(int Start, int End), List<BinaryTreeNode<int>?>>((1, n), new EveryTreeOverRange());
+    public static List<BinaryTreeNode<int>?> GenerateTreesByMemoizedRange(int nodeCount) =>
+        Memoizer.Memoize<(int Start, int End), List<BinaryTreeNode<int>?>>((1, nodeCount), new EveryTreeOverRange());
 
     // The recurrence, named: a range of values is one tree per candidate root, each
     // root pairing every tree over its left sub-range with every tree over its right

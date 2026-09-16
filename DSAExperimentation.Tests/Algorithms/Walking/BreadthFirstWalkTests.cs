@@ -117,7 +117,7 @@ public sealed class BreadthFirstWalkTests
     // definition; the tree-only shapes keep the unguarded visit they can rely on.
     private static IVisitGuard<TestNode> GuardFor(TestNode root, GraphShape shape)
     {
-        if (NeedsTrackedGuard(shape))
+        if (IsTrackedGuardNeeded(shape))
         {
             return new TrackedVisitGuard<TestNode>([root]);
         }
@@ -125,7 +125,7 @@ public sealed class BreadthFirstWalkTests
         return new UnguardedVisit<TestNode>();
     }
 
-    private static bool NeedsTrackedGuard(GraphShape shape) =>
+    private static bool IsTrackedGuardNeeded(GraphShape shape) =>
         shape == GraphShape.Cycle || shape == GraphShape.Diamond;
 
     // WalkGraphs builds every shape but the single node; DiamondShare hands back the

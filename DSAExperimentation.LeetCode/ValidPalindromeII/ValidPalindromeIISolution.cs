@@ -10,16 +10,16 @@ namespace DSAExperimentation.LeetCode.ValidPalindromeII;
 // candidate strings, each an O(n) build-plus-check) it has to beat.
 internal static class ValidPalindromeIISolution
 {
-    public static bool IsValidPalindromeByBruteForceDeletion(string s)
+    public static bool IsValidPalindromeByBruteForceDeletion(string text)
     {
-        if (IsPalindromeRange(s, 0, s.Length - 1))
+        if (IsPalindromeRange(text, 0, text.Length - 1))
         {
             return true;
         }
 
-        for (var skip = 0; skip < s.Length; skip++)
+        for (var skip = 0; skip < text.Length; skip++)
         {
-            var candidate = s.Remove(skip, 1);
+            var candidate = text.Remove(skip, 1);
 
             if (IsPalindromeRange(candidate, 0, candidate.Length - 1))
             {
@@ -30,16 +30,16 @@ internal static class ValidPalindromeIISolution
         return false;
     }
 
-    public static bool IsValidPalindromeByMismatchSkip(string s)
+    public static bool IsValidPalindromeByMismatchSkip(string text)
     {
         var left = 0;
-        var right = s.Length - 1;
+        var right = text.Length - 1;
 
         while (left < right)
         {
-            if (s[left] != s[right])
+            if (text[left] != text[right])
             {
-                return IsPalindromeRange(s, left + 1, right) || IsPalindromeRange(s, left, right - 1);
+                return IsPalindromeRange(text, left + 1, right) || IsPalindromeRange(text, left, right - 1);
             }
 
             left++;
@@ -49,11 +49,11 @@ internal static class ValidPalindromeIISolution
         return true;
     }
 
-    private static bool IsPalindromeRange(string s, int left, int right)
+    private static bool IsPalindromeRange(string text, int left, int right)
     {
         while (left < right)
         {
-            if (s[left] != s[right])
+            if (text[left] != text[right])
             {
                 return false;
             }

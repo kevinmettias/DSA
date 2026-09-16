@@ -31,7 +31,7 @@ internal static class CountCellsInOverlappingHorizontalAndVerticalSubstringsSolu
 
         for (var start = 0; start + pattern.Length <= text.Length; start++)
         {
-            if (!MatchesAt(text, start, pattern))
+            if (!HasMatchAt(text, start, pattern))
             {
                 continue;
             }
@@ -45,7 +45,7 @@ internal static class CountCellsInOverlappingHorizontalAndVerticalSubstringsSolu
         return covered;
     }
 
-    private static bool MatchesAt(char[] text, int start, string pattern)
+    private static bool HasMatchAt(char[] text, int start, string pattern)
     {
         for (var offset = 0; offset < pattern.Length; offset++)
         {

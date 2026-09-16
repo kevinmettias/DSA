@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: the one arm is ValidateBinarySearchTreeSolution's, the same
 // method ValidateBinarySearchTreeTests proves correct. The previous class
 // carried RecursiveBounds and BinaryTreeNodeBounds as two [Benchmark] arms
-// that both called the same private Validate helper - one strategy under two
+// that both called the same private IsWithinBounds helper - one strategy under two
 // names, not two - so only the survivor remains.
 [MemoryDiagnoser]
 public class ValidateBinarySearchTreeBenchmarks
@@ -21,5 +21,5 @@ public class ValidateBinarySearchTreeBenchmarks
     public void Setup() => _root = new BinaryTreeNode<int>(RootValue) { Left = new(1), Right = new(RightValue) };
 
     [Benchmark]
-    public bool BoundsRecursion() => ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(_root);
+    public bool IsValidByBoundsRecursion() => ValidateBinarySearchTreeSolution.IsValidByBoundsRecursion(_root);
 }

@@ -3,7 +3,7 @@ using SuffixArrayStructure = DSAExperimentation.DataStructures.SuffixArray.Suffi
 namespace DSAExperimentation.LeetCode.LastSubstringInLexicographicalOrder;
 
 // LeetCode 1163. Last Substring in Lexicographical Order: return the
-// lexicographically largest substring of s.
+// lexicographically largest substring of `text`.
 //
 // Both strategies rest on the same observation: the largest substring is always a
 // SUFFIX. Any substring that stops early is a proper prefix of the suffix starting at
@@ -16,14 +16,14 @@ internal static class LastSubstringInLexicographicalOrderSolution
     // against it with an ordinal span comparison - O(n) comparisons, each up to O(n)
     // characters. Deliberately plain BCL; this is what you would write without this
     // repo.
-    public static string LastSubstringByPairwiseComparison(string s)
+    public static string LastSubstringByPairwiseComparison(string text)
     {
         var bestStart = 0;
 
-        for (var candidate = 1; candidate < s.Length; candidate++)
+        for (var candidate = 1; candidate < text.Length; candidate++)
         {
-            var candidateSpan = s.AsSpan(candidate);
-            var bestSpan = s.AsSpan(bestStart);
+            var candidateSpan = text.AsSpan(candidate);
+            var bestSpan = text.AsSpan(bestStart);
 
             if (candidateSpan.CompareTo(bestSpan, StringComparison.Ordinal) > 0)
             {
@@ -31,18 +31,18 @@ internal static class LastSubstringInLexicographicalOrderSolution
             }
         }
 
-        return s[bestStart..];
+        return text[bestStart..];
     }
 
     // Composed: this repo's own SuffixArray already sorts every suffix ascending in
     // O(n log^2 n), so the maximal suffix is simply its last entry and the whole
     // problem reduces to reading that one index back out - no separate maximal-suffix
     // scan of any kind.
-    public static string LastSubstringBySuffixArray(string s)
+    public static string LastSubstringBySuffixArray(string text)
     {
-        var suffixArray = new SuffixArrayStructure(s);
+        var suffixArray = new SuffixArrayStructure(text);
         var maxSuffixStart = suffixArray.Suffixes[^1];
 
-        return s[maxSuffixStart..];
+        return text[maxSuffixStart..];
     }
 }

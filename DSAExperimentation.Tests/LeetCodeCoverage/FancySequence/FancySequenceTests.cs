@@ -117,7 +117,7 @@ public sealed class FancySequenceTests
 
         public static FancyOp AddAll(int inc) => new(OpKind.AddAll, inc);
 
-        public static FancyOp MultAll(int m) => new(OpKind.MultAll, m);
+        public static FancyOp MultAll(int multiplier) => new(OpKind.MultAll, multiplier);
 
         public static FancyOp GetIndex(int idx) => new(OpKind.GetIndex, idx);
 

@@ -15,7 +15,7 @@ public class InterleavingStringBenchmarks
     private const string Target = "aadbbcbcac";
 
     [Benchmark]
-    public bool MemoizedRecursion() =>
+    public bool IsInterleaveByMemoizedRecursion() =>
         InterleavingStringSolution.IsInterleaveByMemoizedRecursion(
             First,
             Second,

@@ -17,6 +17,6 @@ public sealed class EvaluateReversePolishNotationTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void EvalByOperandStack_LeetCodeExamples_ReturnsExpressionValue(string[] tokens, int expected) =>
-        Assert.Equal(expected, EvaluateReversePolishNotationSolution.EvalByOperandStack(tokens));
+    public void EvaluateByOperandStack_LeetCodeExamples_ReturnsExpressionValue(string[] tokens, int expected) =>
+        Assert.Equal(expected, EvaluateReversePolishNotationSolution.EvaluateByOperandStack(tokens));
 }

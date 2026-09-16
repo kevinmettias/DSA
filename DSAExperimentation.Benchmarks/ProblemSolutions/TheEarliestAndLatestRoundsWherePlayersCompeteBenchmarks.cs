@@ -20,18 +20,18 @@ public class TheEarliestAndLatestRoundsWherePlayersCompeteBenchmarks
     private int _secondPlayer;
 
     [Params(10, 16)]
-    public int N { get; set; }
+    public int PlayerCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _secondPlayer = N / AlgorithmConstants.HalvingFactor;
+    public void Setup() => _secondPlayer = PlayerCount / AlgorithmConstants.HalvingFactor;
 
     [Benchmark(Baseline = true)]
     public (int Earliest, int Latest) UnmemoizedRecursion() =>
         TheEarliestAndLatestRoundsWherePlayersCompeteSolution.EarliestAndLatestByPlainRecursion(
-            N, FirstPlayer, _secondPlayer);
+            PlayerCount, FirstPlayer, _secondPlayer);
 
     [Benchmark]
     public (int Earliest, int Latest) MemoizedRecursion() =>
         TheEarliestAndLatestRoundsWherePlayersCompeteSolution.EarliestAndLatestByMemoizedRecurrence(
-            N, FirstPlayer, _secondPlayer);
+            PlayerCount, FirstPlayer, _secondPlayer);
 }

@@ -51,7 +51,7 @@ internal static class FancySequenceSolution
 
         void AddAll(int inc);
 
-        void MultAll(int m);
+        void MultAll(int multiplier);
 
         int GetIndex(int idx);
     }
@@ -72,11 +72,11 @@ internal static class FancySequenceSolution
             }
         }
 
-        public void MultAll(int m)
+        public void MultAll(int multiplier)
         {
             for (var i = 0; i < _values.Count; i++)
             {
-                _values[i] = _values[i] * m % ModularArithmetic.Modulo;
+                _values[i] = _values[i] * multiplier % ModularArithmetic.Modulo;
             }
         }
 
@@ -110,11 +110,11 @@ internal static class FancySequenceSolution
             }
         }
 
-        public void MultAll(int m)
+        public void MultAll(int multiplier)
         {
-            if (_size > 0 && m != IdentityMultiplier)
+            if (_size > 0 && multiplier != IdentityMultiplier)
             {
-                _tree.UpdateRange(0, _size - 1, (m, IdentityAddend));
+                _tree.UpdateRange(0, _size - 1, (multiplier, IdentityAddend));
             }
         }
 

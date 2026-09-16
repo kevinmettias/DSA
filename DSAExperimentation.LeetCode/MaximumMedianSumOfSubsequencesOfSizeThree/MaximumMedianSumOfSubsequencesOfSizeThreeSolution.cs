@@ -112,13 +112,15 @@ internal static class MaximumMedianSumOfSubsequencesOfSizeThreeSolution
         return Math.Max(best, candidate);
     }
 
-    private static int MedianOfThree(int x, int y, int z)
+    // The middle of three values, computed without sorting: the sum less the largest and
+    // the smallest leaves exactly the one in between.
+    private static int MedianOfThree(int firstValue, int secondValue, int thirdValue)
     {
-        var total = x + y + z;
-        var high = Math.Max(y, z);
-        var largest = Math.Max(x, high);
-        var low = Math.Min(y, z);
-        var smallest = Math.Min(x, low);
+        var total = firstValue + secondValue + thirdValue;
+        var high = Math.Max(secondValue, thirdValue);
+        var largest = Math.Max(firstValue, high);
+        var low = Math.Min(secondValue, thirdValue);
+        var smallest = Math.Min(firstValue, low);
 
         return total - largest - smallest;
     }

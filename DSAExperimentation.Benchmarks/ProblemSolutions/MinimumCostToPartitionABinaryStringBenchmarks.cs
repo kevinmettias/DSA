@@ -19,7 +19,7 @@ public class MinimumCostToPartitionABinaryStringBenchmarks
     private const int EncCost = 7;
     private const int FlatCost = 11;
 
-    private string _s = "";
+    private string _binaryString = "";
 
     private FenwickTree<int, SumOperation<int>> _sensitiveCounts = null!;
     [Params(1024, 8192)]
@@ -39,13 +39,13 @@ public class MinimumCostToPartitionABinaryStringBenchmarks
             sensitive[i] = isSensitive ? 1 : 0;
         }
 
-        _s = new string(characters);
+        _binaryString = new string(characters);
         _sensitiveCounts = new FenwickTree<int, SumOperation<int>>(sensitive);
     }
 
     [Benchmark(Baseline = true)]
     public long LinearScanRecursion() =>
-        MinimumCostToPartitionABinaryStringSolution.MinCostByLinearScanRecursion(_s, EncCost, FlatCost);
+        MinimumCostToPartitionABinaryStringSolution.MinCostByLinearScanRecursion(_binaryString, EncCost, FlatCost);
 
     [Benchmark]
     public long FenwickRangeSum() =>

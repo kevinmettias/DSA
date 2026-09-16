@@ -30,10 +30,10 @@ internal static class MaximumSumBSTInBinaryTreeSolution
     public static int MaxSumBSTByRevalidatingEachNode(BinaryTreeNode<int>? root)
     {
         var best = EmptySubtreeSum;
-        Visit(root);
+        VisitPreorder(root);
         return best;
 
-        void Visit(BinaryTreeNode<int>? node)
+        void VisitPreorder(BinaryTreeNode<int>? node)
         {
             if (node is null)
             {
@@ -45,8 +45,8 @@ internal static class MaximumSumBSTInBinaryTreeSolution
                 best = Math.Max(best, Sum(node));
             }
 
-            Visit(node.Left);
-            Visit(node.Right);
+            VisitPreorder(node.Left);
+            VisitPreorder(node.Right);
         }
     }
 
@@ -57,18 +57,18 @@ internal static class MaximumSumBSTInBinaryTreeSolution
     public static int MaxSumBSTByBottomUpScan(BinaryTreeNode<int>? root)
     {
         var best = EmptySubtreeSum;
-        Scan(root);
+        ScanPostorder(root);
         return best;
 
-        Summary Scan(BinaryTreeNode<int>? node)
+        Summary ScanPostorder(BinaryTreeNode<int>? node)
         {
             if (node is null)
             {
                 return new Summary(IsBst: true, Min: int.MaxValue, Max: int.MinValue, Sum: 0);
             }
 
-            var left = Scan(node.Left);
-            var right = Scan(node.Right);
+            var left = ScanPostorder(node.Left);
+            var right = ScanPostorder(node.Right);
             var isBst = left.IsBst && right.IsBst && node.Value > left.Max && node.Value < right.Min;
 
             if (!isBst)

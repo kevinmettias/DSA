@@ -31,11 +31,11 @@ public class FindASafeWalkThroughAGridBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceArrayDijkstra() =>
+    public bool IsSafeByBruteForceArrayDijkstra() =>
         FindASafeWalkThroughAGridSolution.IsSafeByBruteForceArrayDijkstra(_grid, health: 2 * GridSize);
 
     [Benchmark]
-    public bool WeightedGridDijkstra() =>
+    public bool IsSafeByWeightedGridDijkstra() =>
         FindASafeWalkThroughAGridSolution.IsSafeByWeightedGridDijkstra(
             _nodes, (GridSize, GridSize), _grid[0][0], health: 2 * GridSize);
 }

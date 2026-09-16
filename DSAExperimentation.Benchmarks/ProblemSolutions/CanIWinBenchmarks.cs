@@ -23,8 +23,8 @@ public class CanIWinBenchmarks
     public void Setup() => _desiredTotal = MaxChoosableInteger * (MaxChoosableInteger + 1) / GaussSumDivisor;
 
     [Benchmark(Baseline = true)]
-    public bool BruteForceRecursion() => CanIWinSolution.CanWinByBruteForceRecursion(MaxChoosableInteger, _desiredTotal);
+    public bool CanWinByBruteForceRecursion() => CanIWinSolution.CanWinByBruteForceRecursion(MaxChoosableInteger, _desiredTotal);
 
     [Benchmark]
-    public bool MemoizedRecursion() => CanIWinSolution.CanWinByMemoizedRecursion(MaxChoosableInteger, _desiredTotal);
+    public bool CanWinByMemoizedRecursion() => CanIWinSolution.CanWinByMemoizedRecursion(MaxChoosableInteger, _desiredTotal);
 }

@@ -23,7 +23,7 @@ public sealed class ContinuousSubarraySumTests
         SubarraySumCase example)
     {
         var actual = ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByBruteForce(
-            example.Nums, example.K);
+            example.Nums, example.Divisor);
 
         Assert.Equal(example.Expected, actual);
     }
@@ -34,16 +34,16 @@ public sealed class ContinuousSubarraySumTests
         SubarraySumCase example)
     {
         var actual = ContinuousSubarraySumSolution.HasSubarraySumMultipleOfKByHashMapPrefixRemainder(
-            example.Nums, example.K);
+            example.Nums, example.Divisor);
 
         Assert.Equal(example.Expected, actual);
     }
 
-    // One LeetCode example: the array, the divisor k, and whether some subarray of at
-    // least two elements sums to a multiple of k. The expected value is named at every
-    // construction site, so a row reads as the case it is rather than as a bare `true`
-    // whose meaning is its position. Nested because it is only ever used inside this
-    // test class - it is this harness's own vocabulary, not a type another file would
-    // import.
-    public readonly record struct SubarraySumCase(int[] Nums, int K, bool Expected);
+    // One LeetCode example: the array, its divisor, and whether some subarray of at
+    // least two elements sums to a multiple of that divisor. The expected value is
+    // named at every construction site, so a row reads as the case it is rather than
+    // as a bare `true` whose meaning is its position. Nested because it is only ever
+    // used inside this test class - it is this harness's own vocabulary, not a type
+    // another file would import.
+    public readonly record struct SubarraySumCase(int[] Nums, int Divisor, bool Expected);
 }

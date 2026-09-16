@@ -23,16 +23,16 @@ public sealed class CountCollisionsOfMonkeysOnAPolygonTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfWaysByRepeatedMultiplication_LeetCodeExamples_ReturnsCollisionCount(
-        int n, int expected) =>
+        int monkeyCount, int expected) =>
         Assert.Equal(
             expected,
-            CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByRepeatedMultiplication(n));
+            CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByRepeatedMultiplication(monkeyCount));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void NumberOfWaysByExponentiationBySquaring_LeetCodeExamples_ReturnsCollisionCount(
-        int n, int expected) =>
+        int monkeyCount, int expected) =>
         Assert.Equal(
             expected,
-            CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByExponentiationBySquaring(n));
+            CountCollisionsOfMonkeysOnAPolygonSolution.NumberOfWaysByExponentiationBySquaring(monkeyCount));
 }

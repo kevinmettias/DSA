@@ -14,11 +14,11 @@ internal static class FaultyKeyboardSolution
     // The textbook approach: physically reverse the buffer built so far every time
     // 'i' is typed. Correct, but each reversal costs O(current length), so a
     // string with many 'i's spread through it degrades toward O(n^2).
-    public static string FinalStringByReversal(string s)
+    public static string FinalStringByReversal(string keystrokes)
     {
         var chars = new List<char>();
 
-        foreach (var c in s)
+        foreach (var c in keystrokes)
         {
             if (c == 'i')
             {
@@ -37,12 +37,12 @@ internal static class FaultyKeyboardSolution
     // buffer at all, it just flips which end subsequent characters get appended
     // to, so the "reversal" costs nothing. Direction only matters once, at the
     // very end, when the buffer is read back out.
-    public static string FinalStringByDeque(string s)
+    public static string FinalStringByDeque(string keystrokes)
     {
         var deque = new Deque<char>();
         var order = ReadDirection.Forward;
 
-        foreach (var c in s)
+        foreach (var c in keystrokes)
         {
             if (c == 'i')
             {

@@ -21,12 +21,12 @@ internal static class MakeArrayElementsEqualToZeroSolution
                 continue;
             }
 
-            if (SimulatesToAllZero(nums, start, direction: -1))
+            if (IsClearedByWalk(nums, start, direction: -1))
             {
                 count++;
             }
 
-            if (SimulatesToAllZero(nums, start, direction: 1))
+            if (IsClearedByWalk(nums, start, direction: 1))
             {
                 count++;
             }
@@ -35,7 +35,7 @@ internal static class MakeArrayElementsEqualToZeroSolution
         return count;
     }
 
-    private static bool SimulatesToAllZero(int[] nums, int start, int direction)
+    private static bool IsClearedByWalk(int[] nums, int start, int direction)
     {
         var scratch = (int[])nums.Clone();
         var curr = start;

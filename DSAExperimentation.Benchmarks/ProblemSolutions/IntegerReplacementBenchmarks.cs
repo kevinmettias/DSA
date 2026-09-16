@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.IntegerReplacement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IntegerReplacementSolution's, the same methods
-// IntegerReplacementTests proves correct. N is deliberately the repeating-bit
+// IntegerReplacementTests proves correct. StartValue is deliberately the repeating-bit
 // pattern 0b0101...01 at two bit-lengths (not a "typical" random value): every
 // bit position forces an odd branch, so the unmemoized arm's call tree explodes
 // into millions of redundant calls (~10.9M for the 31-bit case) while the
@@ -15,11 +15,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class IntegerReplacementBenchmarks
 {
     [Params(21_845, 1_431_655_765)]
-    public int N { get; set; }
+    public int StartValue { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int UnmemoizedRecursion() => IntegerReplacementSolution.MinStepsByUnmemoizedRecursion(N);
+    public int UnmemoizedRecursion() => IntegerReplacementSolution.MinStepsByUnmemoizedRecursion(StartValue);
 
     [Benchmark]
-    public int MemoizedRecurrence() => IntegerReplacementSolution.MinStepsByMemoizedRecurrence(N);
+    public int MemoizedRecurrence() => IntegerReplacementSolution.MinStepsByMemoizedRecurrence(StartValue);
 }

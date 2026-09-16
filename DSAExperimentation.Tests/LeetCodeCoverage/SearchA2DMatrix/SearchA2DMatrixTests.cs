@@ -17,20 +17,20 @@ public sealed class SearchA2DMatrixTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchMatrixByLinearScan_LeetCodeExamples_ReturnsWhetherTargetExists(
+    public void HasTargetByLinearScan_LeetCodeExamples_ReturnsWhetherTargetExists(
         MatrixSearchExample example)
     {
-        var actual = SearchA2DMatrixSolution.SearchMatrixByLinearScan(example.Matrix, example.Target);
+        var actual = SearchA2DMatrixSolution.HasTargetByLinearScan(example.Matrix, example.Target);
 
         Assert.Equal(example.TargetExists, actual);
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SearchMatrixByBinarySearch_LeetCodeExamples_ReturnsWhetherTargetExists(
+    public void HasTargetByBinarySearch_LeetCodeExamples_ReturnsWhetherTargetExists(
         MatrixSearchExample example)
     {
-        var actual = SearchA2DMatrixSolution.SearchMatrixByBinarySearch(example.Matrix, example.Target);
+        var actual = SearchA2DMatrixSolution.HasTargetByBinarySearch(example.Matrix, example.Target);
 
         Assert.Equal(example.TargetExists, actual);
     }

@@ -4,8 +4,8 @@ using DSAExperimentation.Domain.Modular;
 namespace DSAExperimentation.LeetCode.NumberOfWaysToReachAPositionAfterExactlyKSteps;
 
 // LeetCode 2400. Number of Ways to Reach a Position After Exactly k Steps: count
-// the step sequences of length k that move from startPos to endPos, one unit left
-// or right per step, modulo 1e9+7.
+// the step sequences of length stepCount that move from startPos to endPos, one
+// unit left or right per step, modulo 1e9+7.
 //
 // Only the distance between the two positions matters, so both strategies collapse
 // the state to (remainingSteps, distanceToTarget) and recur:
@@ -17,29 +17,29 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToReachAPositionAfterExactlyKS
 // already reports 0 for any non-zero diff.
 //
 // They differ only in whether that state is remembered. The baseline re-derives it
-// on every left/right ordering that reaches it, which is 2^k work; the composed
-// strategy routes the same recurrence through this repo's own Memoizer keyed on the
-// (Steps, Diff) tuple - the 2-D value-tuple state shape TargetSumSolution's
+// on every left/right ordering that reaches it, which is 2^stepCount work; the
+// composed strategy routes the same recurrence through this repo's own Memoizer
+// keyed on the (Steps, Diff) tuple - the 2-D value-tuple state shape TargetSumSolution's
 // (Index, Sum) already establishes - so each state is solved once.
 internal static class NumberOfWaysToReachAPositionAfterExactlyKStepsSolution
 {
     // The textbook answer: plain recursion, no cache, BCL arithmetic only. This is
-    // the arm the memoized strategy has to justify itself against, and k must stay
-    // modest because the recursion really is 2^k.
-    public static int NumberOfWaysByUnmemoizedRecursion(int startPos, int endPos, int k)
+    // the arm the memoized strategy has to justify itself against, and stepCount must
+    // stay modest because the recursion really is 2^stepCount.
+    public static int NumberOfWaysByUnmemoizedRecursion(int startPos, int endPos, int stepCount)
     {
         var diff = Math.Abs(endPos - startPos);
 
-        return (int)WaysWithoutCache(k, diff);
+        return (int)WaysWithoutCache(stepCount, diff);
     }
 
     // Same recurrence driven top-down through Memoizer, so each (steps, diff) state
     // is solved once and shared by every step ordering that reaches it.
-    public static int NumberOfWaysByMemoizedRecursion(int startPos, int endPos, int k)
+    public static int NumberOfWaysByMemoizedRecursion(int startPos, int endPos, int stepCount)
     {
         var diff = Math.Abs(endPos - startPos);
 
-        return (int)Memoizer.Memoize<(int Steps, int Diff), long>((k, diff), new WaysFromRemainingSteps());
+        return (int)Memoizer.Memoize<(int Steps, int Diff), long>((stepCount, diff), new WaysFromRemainingSteps());
     }
 
     // The recurrence itself, named: from a state, the two physical step choices lead

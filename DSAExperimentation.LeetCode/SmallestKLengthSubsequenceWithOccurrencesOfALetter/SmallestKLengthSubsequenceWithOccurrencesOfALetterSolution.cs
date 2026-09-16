@@ -3,14 +3,15 @@ using RepoCharStack = DSAExperimentation.DataStructures.Stack.Stack<char>;
 namespace DSAExperimentation.LeetCode.SmallestKLengthSubsequenceWithOccurrencesOfALetter;
 
 // LeetCode 2030. Smallest K-Length Subsequence With Occurrences of a Letter: the
-// lexicographically smallest length-k subsequence of s that contains at least
-// `repetition` copies of `letter`.
+// lexicographically smallest subsequence of `text` with length `subsequenceLength`
+// that contains at least `repetition` copies of `letter`.
 //
 // Both strategies answer the same question and differ only in how they find each
 // output character. The feasibility rules are identical either way: a character may
-// only be taken while enough of the string remains to reach length k, and taking (or
-// dropping) a `letter` occurrence must never leave fewer than `repetition` of them
-// reachable - which is why both arms precompute the same suffix count of `letter`.
+// only be taken while enough of the string remains to reach `subsequenceLength`, and
+// taking (or dropping) a `letter` occurrence must never leave fewer than `repetition`
+// of them reachable - which is why both arms precompute the same suffix count of
+// `letter`.
 internal static class SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution
 {
     // Marks "no admissible position found yet" while scanning a window.
@@ -22,13 +23,15 @@ internal static class SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution
     // without this repo's primitives - plain arrays and an index cursor - because it
     // is the arm the monotonic-stack sweep below has to justify itself against.
     // O(n) per slot, so O(n*k) overall.
-    public static string SmallestSubsequenceByWindowRescan(string s, int k, char letter, int repetition)
+    public static string SmallestSubsequenceByWindowRescan(
+        string text, int subsequenceLength, char letter, int repetition)
     {
-        var context = new RescanContext(s, k, letter, repetition, BuildLetterSuffixCount(s, letter));
-        var answer = new char[k];
+        var context = new RescanContext(
+            text, subsequenceLength, letter, repetition, BuildLetterSuffixCount(text, letter));
+        var answer = new char[subsequenceLength];
         var progress = new ScanProgress();
 
-        for (var slot = 0; slot < k; slot++)
+        for (var slot = 0; slot < subsequenceLength; slot++)
         {
             SelectNextCharacter(context, answer, slot, progress);
         }
@@ -107,14 +110,16 @@ internal static class SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution
 
     // The same greedy monotonic-stack shape RemoveDuplicateLetters uses, built on this
     // repo's own Stack<char>, but popping is gated on two extra counts beyond "is the
-    // top bigger" - enough characters must still remain ahead to reach length k, and
-    // popping a `letter` occurrence must not drop the remaining supply below
-    // `repetition`. Each character is pushed once and popped at most once, so the
-    // whole sweep is O(n) rather than the baseline's O(n*k).
-    public static string SmallestSubsequenceByMonotonicStack(string s, int k, char letter, int repetition)
+    // top bigger" - enough characters must still remain ahead to reach
+    // `subsequenceLength`, and popping a `letter` occurrence must not drop the
+    // remaining supply below `repetition`. Each character is pushed once and popped at
+    // most once, so the whole sweep is O(n) rather than the baseline's O(n*k).
+    public static string SmallestSubsequenceByMonotonicStack(
+        string text, int subsequenceLength, char letter, int repetition)
     {
-        var n = s.Length;
-        var context = new SweepContext(s, n, k, letter, repetition, BuildLetterSuffixCount(s, letter));
+        var n = text.Length;
+        var context = new SweepContext(
+            text, n, subsequenceLength, letter, repetition, BuildLetterSuffixCount(text, letter));
 
         var stack = new RepoCharStack();
         var lettersInStack = 0;
@@ -153,8 +158,8 @@ internal static class SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution
 
     // The stack top is worth dropping when the character now arriving is smaller than
     // it AND the answer can still be completed without it: enough characters must
-    // remain ahead to refill the stack to length k, and dropping the top must not
-    // starve the `letter` quota.
+    // remain ahead to refill the stack to `subsequenceLength`, and dropping the top
+    // must not starve the `letter` quota.
     private static bool ShouldDropTop(
         SweepContext context, RepoCharStack stack, int lettersInStack, int index)
     {

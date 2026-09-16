@@ -2,10 +2,10 @@ using DSAExperimentation.Algorithms.Backtracking;
 
 namespace DSAExperimentation.LeetCode.NQueensII;
 
-// LeetCode 52. N-Queens II: count placements of n non-attacking queens on an
-// n x n board (one per row and column, no two sharing a diagonal), without
-// ever materializing a board - the only thing distinguishing this from LC
-// 51's placement-listing shape.
+// LeetCode 52. N-Queens II: count the placements of `boardSize` non-attacking
+// queens on a `boardSize` x `boardSize` board (one per row and column, no two
+// sharing a diagonal), without ever materializing a board - the only thing
+// distinguishing this from LC 51's placement-listing shape.
 internal static class NQueensIISolution
 {
     private const int DiagonalArrayMultiplier = 2;
@@ -14,11 +14,11 @@ internal static class NQueensIISolution
     // arrays (columns, "/" diagonals, "\" anti-diagonals), written without
     // this repo's Backtrack.Search - the arm the composed solution below has
     // to justify itself against.
-    public static int TotalNQueensByArrayRecursion(int n)
+    public static int TotalNQueensByArrayRecursion(int boardSize)
     {
-        var columns = new bool[n];
-        var diagonals = new bool[(DiagonalArrayMultiplier * n) - 1];
-        var antiDiagonals = new bool[(DiagonalArrayMultiplier * n) - 1];
+        var columns = new bool[boardSize];
+        var diagonals = new bool[(DiagonalArrayMultiplier * boardSize) - 1];
+        var antiDiagonals = new bool[(DiagonalArrayMultiplier * boardSize) - 1];
         var board = (Columns: columns, Diagonals: diagonals, AntiDiagonals: antiDiagonals);
 
         return CountFrom(board, 0);
@@ -29,15 +29,15 @@ internal static class NQueensIISolution
     // every open column in the current row, and OnSolution just counts
     // rather than recording a board - the same primitive LC 51 (N-Queens)
     // composes to list boards instead.
-    public static int TotalNQueensByBacktrackSearch(int n)
+    public static int TotalNQueensByBacktrackSearch(int boardSize)
     {
         var count = 0;
-        var state = new BoardState(n);
+        var state = new BoardState(boardSize);
 
         Backtrack.Search<BoardState, int>(
             state,
-            s => s.Row == n,
-            s => s.Row == n ? Array.Empty<int>() : OpenColumns(s, n),
+            s => s.Row == boardSize,
+            s => s.Row == boardSize ? Array.Empty<int>() : OpenColumns(s, boardSize),
             (s, col) => s.Place(col),
             (s, col) => s.Remove(col),
             _ => count++);

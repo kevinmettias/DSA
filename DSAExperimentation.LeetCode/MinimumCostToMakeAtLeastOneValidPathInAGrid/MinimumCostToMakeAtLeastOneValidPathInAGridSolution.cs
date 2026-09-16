@@ -42,7 +42,7 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
                 break;
             }
 
-            if (SettleAndRelax(grid, cell, distances, settled))
+            if (IsTargetCellSettled(grid, cell, distances, settled))
             {
                 return distances[cell.Row, cell.Col]!.Value;
             }
@@ -76,7 +76,9 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
     private static bool IsCloserThanBest(int? distance, int best)
         => distance is int candidate && candidate < best;
 
-    private static bool SettleAndRelax(int[][] grid, (int Row, int Col) cell, int?[,] distances, bool[,] settled)
+    // Settles this cell, then relaxes its neighbours unless the cell just settled is
+    // the far corner - the one settle the caller stops on.
+    private static bool IsTargetCellSettled(int[][] grid, (int Row, int Col) cell, int?[,] distances, bool[,] settled)
     {
         settled[cell.Row, cell.Col] = true;
 
@@ -184,11 +186,11 @@ internal static class MinimumCostToMakeAtLeastOneValidPathInAGridSolution
     // Following the source cell's own arrow is free; any other direction costs one
     // override.
     private static int CrossingCost(int[][] grid, (int Row, int Col) cell, int direction)
-        => FollowsArrow(grid, cell, direction) ? 0 : 1;
+        => IsFollowingArrow(grid, cell, direction) ? 0 : 1;
 
     // A cell's arrow names a direction counting from 1, so the cell follows this step
     // exactly when its own value is this direction's index.
-    private static bool FollowsArrow(int[][] grid, (int Row, int Col) cell, int direction)
+    private static bool IsFollowingArrow(int[][] grid, (int Row, int Col) cell, int direction)
         => grid[cell.Row][cell.Col] == direction + 1;
 
     private static bool IsInside(int[][] grid, (int Row, int Col) cell)

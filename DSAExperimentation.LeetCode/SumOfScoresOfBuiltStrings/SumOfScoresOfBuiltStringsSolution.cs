@@ -28,9 +28,9 @@ internal static class SumOfScoresOfBuiltStringsSolution
     // indices over the string it is handed - since it is the arm the linear
     // strategy below has to justify itself against. Worst case O(n^2), reached
     // exactly when the string overlaps itself heavily.
-    public static long SumScoresBySuffixComparison(string s)
+    public static long SumScoresBySuffixComparison(string text)
     {
-        var n = s.Length;
+        var n = text.Length;
         var total = (long)n;
 
         for (var length = 1; length < n; length++)
@@ -38,7 +38,7 @@ internal static class SumOfScoresOfBuiltStringsSolution
             var start = n - length;
             var score = 0;
 
-            while (score < length && s[start + score] == s[score])
+            while (score < length && text[start + score] == text[score])
             {
                 score++;
             }
@@ -58,10 +58,10 @@ internal static class SumOfScoresOfBuiltStringsSolution
     // characters - is added separately instead of read out of the array. The
     // running total is a long because n can reach 10^5 and every score can be
     // O(n), which overflows an int.
-    public static long SumScoresByZFunction(string s)
+    public static long SumScoresByZFunction(string text)
     {
-        var z = ZFunction.Compute(s);
-        var total = (long)s.Length;
+        var z = ZFunction.Compute(text);
+        var total = (long)text.Length;
 
         for (var start = 1; start < z.Length; start++)
         {

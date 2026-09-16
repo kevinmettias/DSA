@@ -17,19 +17,19 @@ public sealed class RobotReturnToOriginTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void JudgeCircleBySwitch_VariousMoveSequences_ReturnsWhetherRobotReturnsToOrigin(
+    public void IsAtOriginBySwitch_VariousMoveSequences_ReturnsWhetherRobotReturnsToOrigin(
         JudgeCircleExample example) =>
         Assert.Equal(
             example.ReturnsToOrigin,
-            RobotReturnToOriginSolution.JudgeCircleBySwitch(example.Moves));
+            RobotReturnToOriginSolution.IsAtOriginBySwitch(example.Moves));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void JudgeCircleByHashMapLookup_VariousMoveSequences_ReturnsWhetherRobotReturnsToOrigin(
+    public void IsAtOriginByHashMapLookup_VariousMoveSequences_ReturnsWhetherRobotReturnsToOrigin(
         JudgeCircleExample example) =>
         Assert.Equal(
             example.ReturnsToOrigin,
-            RobotReturnToOriginSolution.JudgeCircleByHashMapLookup(example.Moves));
+            RobotReturnToOriginSolution.IsAtOriginByHashMapLookup(example.Moves));
 
     // One example: the move sequence and whether it brings the robot back to the
     // origin. The expectation is named rather than carried by its position, so the

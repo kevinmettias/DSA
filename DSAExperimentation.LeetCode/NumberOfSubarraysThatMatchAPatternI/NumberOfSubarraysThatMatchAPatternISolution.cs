@@ -25,7 +25,7 @@ internal static class NumberOfSubarraysThatMatchAPatternISolution
 
         for (var i = 0; i + m < n; i++)
         {
-            if (MatchesAt(nums, pattern, i))
+            if (HasMatchAt(nums, pattern, i))
             {
                 count++;
             }
@@ -34,7 +34,7 @@ internal static class NumberOfSubarraysThatMatchAPatternISolution
         return count;
     }
 
-    private static bool MatchesAt(int[] nums, int[] pattern, int start)
+    private static bool HasMatchAt(int[] nums, int[] pattern, int start)
     {
         for (var j = 0; j < pattern.Length; j++)
         {

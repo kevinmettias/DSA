@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Valid Palindrome II (LC 680): harness only - both arms are
 // ValidPalindromeIISolution's, the same methods ValidPalindromeIITests proves
-// correct. _s places two differing characters symmetrically off-center so the
+// correct. _text places two differing characters symmetrically off-center so the
 // initial scan runs a genuine O(n) distance before finding the mismatch,
 // instead of collapsing to O(1) at either end.
 [MemoryDiagnoser]
@@ -13,13 +13,13 @@ public class ValidPalindromeIIBenchmarks
 {
     private const int OffsetDivisor = 3;
 
-    private string _s = "";
+    private string _text = "";
 
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _s = BuildInput(Length);
+    public void Setup() => _text = BuildInput(Length);
 
     private static string BuildInput(int length)
     {
@@ -35,8 +35,8 @@ public class ValidPalindromeIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool TryEachSingleDeletion() => ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(_s);
+    public bool TryEachSingleDeletion() => ValidPalindromeIISolution.IsValidPalindromeByBruteForceDeletion(_text);
 
     [Benchmark]
-    public bool MismatchSkipTwoPointer() => ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(_s);
+    public bool IsValidPalindromeByMismatchSkip() => ValidPalindromeIISolution.IsValidPalindromeByMismatchSkip(_text);
 }

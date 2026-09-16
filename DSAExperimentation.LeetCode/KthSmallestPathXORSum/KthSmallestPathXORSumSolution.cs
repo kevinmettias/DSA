@@ -133,10 +133,10 @@ internal static class KthSmallestPathXORSumSolution
         return answers;
     }
 
-    // The query's k is 1-based, so the k-th smallest distinct sum is the entry at
-    // k - 1 in the ascending list the callers have already established is long
+    // The query's rank is 1-based, so the rank-th smallest distinct sum is the entry
+    // at rank - 1 in the ascending list the callers have already established is long
     // enough.
-    private static int KthSmallestDistinctSum(IReadOnlyList<int> sortedDistinct, int k) => sortedDistinct[k - 1];
+    private static int KthSmallestDistinctSum(IReadOnlyList<int> sortedDistinct, int rank) => sortedDistinct[rank - 1];
 
     private static (int[] PathXor, int[] VisitOrder, int[] TimeIn, int[] TimeOut) BuildEulerTourWithPathXor(
         RootedTreeNode[] nodes, int[] parent, int[] vals)

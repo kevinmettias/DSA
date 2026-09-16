@@ -48,17 +48,17 @@ internal static class FindTheCountOfMonotonicPairsIISolution
     }
 
     // The prefix-sum twin of BuildRowByBruteForce: the same row, but each entry is
-    // read out of one upfront running-prefix pass over row i-1 instead of re-summed.
-    private static long[] BuildRowByPrefixSum(long[] previousRow, int[] nums, int i, int maxValue)
+    // read out of one upfront running-prefix pass over previousRow instead of re-summed.
+    private static long[] BuildRowByPrefixSum(long[] previousRow, int[] nums, int rowIndex, int maxValue)
     {
-        var delta = Math.Max(0, nums[i] - nums[i - 1]);
-        var prefix = PrefixSums(previousRow, nums[i - 1]);
+        var delta = Math.Max(0, nums[rowIndex] - nums[rowIndex - 1]);
+        var prefix = PrefixSums(previousRow, nums[rowIndex - 1]);
         var currentRow = new long[maxValue + 1];
 
-        for (var j = 0; j <= nums[i]; j++)
+        for (var j = 0; j <= nums[rowIndex]; j++)
         {
             var limit = j - delta;
-            currentRow[j] = limit < 0 ? 0 : PrefixAt(prefix, limit, nums[i - 1]);
+            currentRow[j] = limit < 0 ? 0 : PrefixAt(prefix, limit, nums[rowIndex - 1]);
         }
 
         return currentRow;

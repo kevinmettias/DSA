@@ -19,9 +19,9 @@ public readonly record struct LockingTreeOp(LockingTreeOp.OpKind kind, int num, 
 
     public static LockingTreeOp Upgrade(int num, int user) => new(OpKind.Upgrade, num, user);
 
-    // Internal, not public: only this same assembly's test methods ever call Apply,
+    // Internal, not public: only this same assembly's test methods ever call TryApply,
     // and LockingTree itself is internal to the solution tier.
-    internal bool Apply(LockingTree tree) => kind switch
+    internal bool TryApply(LockingTree tree) => kind switch
     {
         OpKind.Lock => tree.Lock(num, user),
         OpKind.Unlock => tree.Unlock(num, user),

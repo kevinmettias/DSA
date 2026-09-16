@@ -102,13 +102,14 @@ internal static class SumOfBeautifulSubsequencesSolution
         return (int)answer;
     }
 
-    // The exact count for divisor g: every strictly increasing subsequence drawn from
-    // the multiples of g, minus the counts already recorded for the larger multiples of
-    // g - which are exactly the subsequences whose own GCD is a proper multiple of g.
-    // Zero when g divides nothing in nums, which also contributes nothing to the sum.
-    private static long ExactCountForDivisor(int[] nums, int g, long[] exactCount)
+    // The exact count for `divisor`: every strictly increasing subsequence drawn from
+    // the multiples of `divisor`, minus the counts already recorded for its larger
+    // multiples - which are exactly the subsequences whose own GCD is a proper
+    // multiple of `divisor`. Zero when `divisor` divides nothing in nums, which also
+    // contributes nothing to the sum.
+    private static long ExactCountForDivisor(int[] nums, int divisor, long[] exactCount)
     {
-        var multiples = FilterMultiples(nums, g);
+        var multiples = FilterMultiples(nums, divisor);
 
         if (multiples.Count == 0)
         {
@@ -118,7 +119,7 @@ internal static class SumOfBeautifulSubsequencesSolution
         var total = CountIncreasingSubsequences(multiples);
         var largerMultiples = 0L;
 
-        for (var multiple = 2 * g; multiple < exactCount.Length; multiple += g)
+        for (var multiple = 2 * divisor; multiple < exactCount.Length; multiple += divisor)
         {
             largerMultiples += exactCount[multiple];
         }
@@ -128,13 +129,13 @@ internal static class SumOfBeautifulSubsequencesSolution
         return ((total - largerMultiples) % ModularArithmetic.Modulo + ModularArithmetic.Modulo) % ModularArithmetic.Modulo;
     }
 
-    private static List<int> FilterMultiples(int[] nums, int g)
+    private static List<int> FilterMultiples(int[] nums, int divisor)
     {
         var multiples = new List<int>();
 
         foreach (var value in nums)
         {
-            if (value % g == 0)
+            if (value % divisor == 0)
             {
                 multiples.Add(value);
             }
@@ -199,5 +200,6 @@ internal static class SumOfBeautifulSubsequencesSolution
         return (total + dp) % ModularArithmetic.Modulo;
     }
 
-    private static int Gcd(int a, int b) => b == 0 ? a : Gcd(b, a % b);
+    private static int Gcd(int leftValue, int rightValue) =>
+        rightValue == 0 ? leftValue : Gcd(rightValue, leftValue % rightValue);
 }

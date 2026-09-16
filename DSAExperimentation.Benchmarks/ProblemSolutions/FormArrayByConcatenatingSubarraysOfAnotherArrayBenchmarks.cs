@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // FormArrayByConcatenatingSubarraysOfAnotherArraySolution's, the same methods
 // FormArrayByConcatenatingSubarraysOfAnotherArrayTests proves correct.
-// NaiveSubarrayScan re-compares from scratch at every start position, O(n*m),
+// CanChooseByNaiveSubarrayScan re-compares from scratch at every start position, O(n*m),
 // against compressing both int arrays into a shared char alphabet (this repo's own
 // HashMap<int,char>) and searching with PrefixFunctionSearch (KMP), O(n+m)
 // guaranteed. nums is almost entirely zeros with a single distinguishing 1 at the
@@ -39,10 +39,10 @@ public class FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool NaiveSubarrayScan()
+    public bool CanChooseByNaiveSubarrayScan()
         => FormArrayByConcatenatingSubarraysOfAnotherArraySolution.CanChooseByNaiveSubarrayScan(_groups, _nums);
 
     [Benchmark]
-    public bool CharCompressedKmpSearch()
+    public bool CanChooseByCharCompressedKmpSearch()
         => FormArrayByConcatenatingSubarraysOfAnotherArraySolution.CanChooseByCharCompressedKmpSearch(_groups, _nums);
 }

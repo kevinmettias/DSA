@@ -1,7 +1,7 @@
 namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 
-// LC 1042's (n, paths) input materialized once as GardenNodes wired both ways,
-// since a path is bidirectional.
+// LC 1042's (gardenCount, paths) input materialized once as GardenNodes wired both
+// ways, since a path is bidirectional.
 //
 // This exists as a type rather than a bare node list so a benchmark can hoist
 // construction into [GlobalSetup] and hand the prepared graph to the strategy's
@@ -19,10 +19,10 @@ internal sealed class GardenNetwork
     // LeetCodeAdjacency states that layout once for every problem taking an (n, edges)
     // pair; slot id holding garden id is this problem being numbered 1..n, and the
     // placeholder that numbering leaves at slot 0 is sliced off below.
-    public static GardenNetwork Build(int n, int[][] paths)
+    public static GardenNetwork Build(int gardenCount, int[][] paths)
     {
         var byId = LeetCodeAdjacency.OneBased<GardenNode>(
-            n, paths, id => new GardenNode(id), (garden, _, farGarden, _) => garden.ConnectedGardens.Add(farGarden));
+            gardenCount, paths, id => new GardenNode(id), (garden, _, farGarden, _) => garden.ConnectedGardens.Add(farGarden));
 
         return new GardenNetwork(byId[GardenNumbering.FirstGarden..]);
     }

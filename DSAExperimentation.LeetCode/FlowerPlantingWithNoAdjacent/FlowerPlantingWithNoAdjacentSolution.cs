@@ -2,8 +2,8 @@ using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 
-// LeetCode 1042. Flower Planting With No Adjacent: give each of n gardens one of
-// four flower types so no two gardens joined by a path share a type.
+// LeetCode 1042. Flower Planting With No Adjacent: give each of gardenCount gardens
+// one of four flower types so no two gardens joined by a path share a type.
 //
 // Every garden has at most 3 paths (LeetCode's own constraint), so one of the four
 // types is always free: walking the gardens in order and taking the first
@@ -25,11 +25,11 @@ internal static class FlowerPlantingWithNoAdjacentSolution
     // already took in an int bitmask. O(gardens * paths), deliberately written with
     // nothing but BCL arrays; it is the arm the composed strategy below has to
     // justify itself against.
-    public static int[] GardenNoAdjByRawPathRescan(int n, int[][] paths)
+    public static int[] GardenNoAdjByRawPathRescan(int gardenCount, int[][] paths)
     {
-        var flowers = new int[n];
+        var flowers = new int[gardenCount];
 
-        for (var garden = GardenNumbering.FirstGarden; garden <= n; garden++)
+        for (var garden = GardenNumbering.FirstGarden; garden <= gardenCount; garden++)
         {
             var usedMask = ComputeUsedFlowerMask(garden, paths, flowers);
             flowers[garden - GardenNumbering.FirstGarden] = FirstAvailableFlower(usedMask);
@@ -89,9 +89,9 @@ internal static class FlowerPlantingWithNoAdjacentSolution
     // GardenTopology, so each garden reads only its own neighbors rather than the
     // whole paths array, and Set<int> tracks the types they took instead of a
     // hand-rolled bool[4] or bitmask.
-    public static int[] GardenNoAdjByAdjacencyList(int n, int[][] paths)
+    public static int[] GardenNoAdjByAdjacencyList(int gardenCount, int[][] paths)
     {
-        var network = GardenNetwork.Build(n, paths);
+        var network = GardenNetwork.Build(gardenCount, paths);
         return GardenNoAdjByAdjacencyList(network);
     }
 

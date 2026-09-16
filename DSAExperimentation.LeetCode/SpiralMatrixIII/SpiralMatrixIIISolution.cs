@@ -63,7 +63,7 @@ internal static class SpiralMatrixIIISolution
 
         while (result.Count < grid.Total)
         {
-            if (WalkTurns(walk, ref position, stride))
+            if (HasCompletedWalkInTurns(walk, ref position, stride))
             {
                 break;
             }
@@ -72,11 +72,11 @@ internal static class SpiralMatrixIIISolution
         }
     }
 
-    private static bool WalkTurns(SpiralWalk walk, ref SpiralPosition position, int stride)
+    private static bool HasCompletedWalkInTurns(SpiralWalk walk, ref SpiralPosition position, int stride)
     {
         for (var turn = 0; turn < TurnsPerStride; turn++)
         {
-            if (WalkStride(walk, ref position, stride))
+            if (HasCompletedWalkInStride(walk, ref position, stride))
             {
                 return true;
             }
@@ -87,7 +87,7 @@ internal static class SpiralMatrixIIISolution
         return false;
     }
 
-    private static bool WalkStride(SpiralWalk walk, ref SpiralPosition position, int stride)
+    private static bool HasCompletedWalkInStride(SpiralWalk walk, ref SpiralPosition position, int stride)
     {
         for (var step = 0; step < stride; step++)
         {
@@ -105,7 +105,7 @@ internal static class SpiralMatrixIIISolution
         position.Row += DeltaRow[position.Direction];
         position.Col += DeltaCol[position.Direction];
 
-        if (!walk.Grid.Contains(position.Row, position.Col))
+        if (!walk.Grid.IsInBounds(position.Row, position.Col))
         {
             return false;
         }
@@ -124,7 +124,7 @@ internal static class SpiralMatrixIIISolution
     {
         public int Total => Rows * Columns;
 
-        public bool Contains(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Columns;
+        public bool IsInBounds(int row, int col) => row >= 0 && row < Rows && col >= 0 && col < Columns;
     }
 
     private readonly record struct SpiralWalk(

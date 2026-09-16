@@ -17,11 +17,11 @@ public sealed class CountNoZeroPairsThatSumToNTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountPairsByBruteForce_LeetCodeExamples_ReturnsNoZeroPairCount(long n, long expected) =>
-        Assert.Equal(expected, CountNoZeroPairsThatSumToNSolution.CountPairsByBruteForce(n));
+    public void CountPairsByBruteForce_LeetCodeExamples_ReturnsNoZeroPairCount(long targetSum, long expected) =>
+        Assert.Equal(expected, CountNoZeroPairsThatSumToNSolution.CountPairsByBruteForce(targetSum));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CountPairsByMemoizedDigitDp_LeetCodeExamples_ReturnsNoZeroPairCount(long n, long expected) =>
-        Assert.Equal(expected, CountNoZeroPairsThatSumToNSolution.CountPairsByMemoizedDigitDp(n));
+    public void CountPairsByMemoizedDigitDp_LeetCodeExamples_ReturnsNoZeroPairCount(long targetSum, long expected) =>
+        Assert.Equal(expected, CountNoZeroPairsThatSumToNSolution.CountPairsByMemoizedDigitDp(targetSum));
 }

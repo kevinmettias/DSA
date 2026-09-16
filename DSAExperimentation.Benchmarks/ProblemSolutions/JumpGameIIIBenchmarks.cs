@@ -35,9 +35,9 @@ public class JumpGameIIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool HandRolledStackWalk() => JumpGameIIISolution.CanReachByStackWalk(_arr, _start);
+    public bool CanReachByStackWalk() => JumpGameIIISolution.CanReachByStackWalk(_arr, _start);
 
     [Benchmark]
-    public bool DepthFirstSearchTraverse() =>
+    public bool CanReachByDepthFirstSearch() =>
         JumpGameIIISolution.CanReachByDepthFirstSearch(_arr, _start);
 }

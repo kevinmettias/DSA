@@ -4,24 +4,24 @@ using DSAExperimentation.LeetCode.ReachingPoints;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReachingPointsSolution's, the same methods
-// ReachingPointsTests proves correct. Ty is fixed small so growing Tx makes the
-// subtractive reduction's step count grow with it, while the modulo reduction's stays
-// flat.
+// ReachingPointsTests proves correct. TargetY is fixed small so growing TargetX makes
+// the subtractive reduction's step count grow with it, while the modulo reduction's
+// stays flat.
 [MemoryDiagnoser]
 public class ReachingPointsBenchmarks
 {
-    private const int Sx = 1;
-    private const int Sy = 1;
-    private const int Ty = 3;
+    private const int SourceX = 1;
+    private const int SourceY = 1;
+    private const int TargetY = 3;
 
     [Params(10_000, 10_000_000)]
-    public int Tx { get; set; }
+    public int TargetX { get; set; }
 
     [Benchmark(Baseline = true)]
-    public bool SubtractiveBackwardReduction() =>
-        ReachingPointsSolution.IsReachableBySubtractiveReduction(Sx, Sy, Tx, Ty);
+    public bool IsReachableBySubtractiveReduction() =>
+        ReachingPointsSolution.IsReachableBySubtractiveReduction(SourceX, SourceY, TargetX, TargetY);
 
     [Benchmark]
-    public bool ModuloBackwardReduction() =>
-        ReachingPointsSolution.IsReachableByModuloReduction(Sx, Sy, Tx, Ty);
+    public bool IsReachableByModuloReduction() =>
+        ReachingPointsSolution.IsReachableByModuloReduction(SourceX, SourceY, TargetX, TargetY);
 }

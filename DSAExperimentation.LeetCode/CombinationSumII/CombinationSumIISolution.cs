@@ -50,16 +50,16 @@ internal static class CombinationSumIISolution
     // nothing left to offer.
     private static IEnumerable<int> NoCandidates() => [];
 
-    private static IEnumerable<int> NextCandidates(int[] sorted, int target, SearchState s)
+    private static IEnumerable<int> NextCandidates(int[] sorted, int target, SearchState state)
     {
-        for (var i = s.Start; i < sorted.Length; i++)
+        for (var i = state.Start; i < sorted.Length; i++)
         {
-            if (i > s.Start && sorted[i] == sorted[i - 1])
+            if (i > state.Start && sorted[i] == sorted[i - 1])
             {
                 continue;
             }
 
-            if (s.Sum + sorted[i] <= target)
+            if (state.Sum + sorted[i] <= target)
             {
                 yield return i;
             }

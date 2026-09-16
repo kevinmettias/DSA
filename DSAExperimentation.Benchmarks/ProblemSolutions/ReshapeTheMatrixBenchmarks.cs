@@ -18,8 +18,8 @@ public class ReshapeTheMatrixBenchmarks
     private const int Cols = 8;
     private const int ReshapeFactor = 2; private int[][] _mat = [];
 
-    private int _r;
-    private int _c;
+    private int _targetRows;
+    private int _targetCols;
     // rows multiplied, cols divided by the same factor to preserve total cell count
 
     [Params(20, 200)]
@@ -32,13 +32,15 @@ public class ReshapeTheMatrixBenchmarks
         _mat = Enumerable.Range(0, Rows).Select(_ => Enumerable.Range(0, Cols).Select(_ => random.Next(1, MaxCellValue)).ToArray()).ToArray();
 
         // Same total cell count (Rows*Cols), reshaped into twice as many rows and half as many columns.
-        _r = Rows * ReshapeFactor;
-        _c = Cols / ReshapeFactor;
+        _targetRows = Rows * ReshapeFactor;
+        _targetCols = Cols / ReshapeFactor;
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] LinearIndexDivMod() => ReshapeTheMatrixSolution.ReshapeByLinearIndexDivMod(_mat, _r, _c);
+    public int[][] LinearIndexDivMod() =>
+        ReshapeTheMatrixSolution.ReshapeByLinearIndexDivMod(_mat, _targetRows, _targetCols);
 
     [Benchmark]
-    public int[][] CursorWalk() => ReshapeTheMatrixSolution.ReshapeByCursorWalk(_mat, _r, _c);
+    public int[][] CursorWalk() =>
+        ReshapeTheMatrixSolution.ReshapeByCursorWalk(_mat, _targetRows, _targetCols);
 }

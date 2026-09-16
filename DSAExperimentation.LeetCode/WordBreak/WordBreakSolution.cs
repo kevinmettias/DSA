@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.WordBreak;
 // instead of a single true/false.
 internal static class WordBreakSolution
 {
-    public static bool CanBreakByTrieMemoized(string s, IList<string> wordDict)
+    public static bool CanBreakByTrieMemoized(string source, IList<string> wordDict)
     {
         var trie = new Trie<bool>();
 
@@ -21,10 +21,10 @@ internal static class WordBreakSolution
             trie.Set(word, true);
         }
 
-        return Memoizer.Memoize<int, bool>(0, new SegmentableFromEveryIndex(s, trie));
+        return Memoizer.Memoize<int, bool>(0, new SegmentableFromEveryIndex(source, trie));
     }
 
-    // The recurrence, named: s[start..] segments when some prefix of it is a whole
+    // The recurrence, named: source[start..] segments when some prefix of it is a whole
     // dictionary word and the remainder behind that word segments too, with the
     // exhausted string as the base case. The string and the trie screening its
     // prefixes belong to the caller and never vary during a run, so they travel in

@@ -21,11 +21,11 @@ public sealed class NQueensIITests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TotalNQueensByArrayRecursion_LeetCodeExamples_ReturnsSolutionCount(int n, int expected) =>
-        Assert.Equal(expected, NQueensIISolution.TotalNQueensByArrayRecursion(n));
+    public void TotalNQueensByArrayRecursion_LeetCodeExamples_ReturnsSolutionCount(int boardSize, int expected) =>
+        Assert.Equal(expected, NQueensIISolution.TotalNQueensByArrayRecursion(boardSize));
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TotalNQueensByBacktrackSearch_LeetCodeExamples_ReturnsSolutionCount(int n, int expected) =>
-        Assert.Equal(expected, NQueensIISolution.TotalNQueensByBacktrackSearch(n));
+    public void TotalNQueensByBacktrackSearch_LeetCodeExamples_ReturnsSolutionCount(int boardSize, int expected) =>
+        Assert.Equal(expected, NQueensIISolution.TotalNQueensByBacktrackSearch(boardSize));
 }

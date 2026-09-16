@@ -18,10 +18,10 @@ public class XORAfterRangeMultiplicationQueriesIIBenchmarks
 
     private int[][] _queries = [];
     [Params(1_000, 10_000)]
-    public int NumCount { get; set; }
+    public int NodeCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => (_nums, _queries) = XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NumCount, QueryCount, seed: Seed);
+    public void Setup() => (_nums, _queries) = XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NodeCount, QueryCount, seed: Seed);
 
     [Benchmark(Baseline = true)]
     public int StridedWalk() =>

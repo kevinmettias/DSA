@@ -18,14 +18,14 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
 
         for (var start = 0; start < nums.Length; start++)
         {
-            if (!InRange(nums[start], low, high))
+            if (!IsInRange(nums[start], low, high))
             {
                 continue;
             }
 
             var runningXor = 0;
 
-            for (var end = start; end < nums.Length && InRange(nums[end], low, high); end++)
+            for (var end = start; end < nums.Length && IsInRange(nums[end], low, high); end++)
             {
                 runningXor ^= nums[end];
                 best = Math.Max(best, runningXor);
@@ -65,14 +65,14 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
     private static (int Best, int Start) SweepRun(
         int[] nums, (int Low, int High) range, int best, int start)
     {
-        if (!InRange(nums[start], range.Low, range.High))
+        if (!IsInRange(nums[start], range.Low, range.High))
         {
             return (best, start + 1);
         }
 
         var end = start;
 
-        while (end < nums.Length && InRange(nums[end], range.Low, range.High))
+        while (end < nums.Length && IsInRange(nums[end], range.Low, range.High))
         {
             end++;
         }
@@ -124,5 +124,5 @@ internal static class MaximumSubarrayXORWithBoundedRangeSolution
         return best;
     }
 
-    private static bool InRange(int value, int low, int high) => value >= low && value <= high;
+    private static bool IsInRange(int value, int low, int high) => value >= low && value <= high;
 }

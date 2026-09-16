@@ -24,8 +24,8 @@ public class RobotReturnToOriginBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public bool SwitchStatement() => RobotReturnToOriginSolution.JudgeCircleBySwitch(_moves);
+    public bool IsAtOriginBySwitch() => RobotReturnToOriginSolution.IsAtOriginBySwitch(_moves);
 
     [Benchmark]
-    public bool HashMapLookup() => RobotReturnToOriginSolution.JudgeCircleByHashMapLookup(_moves);
+    public bool IsAtOriginByHashMapLookup() => RobotReturnToOriginSolution.IsAtOriginByHashMapLookup(_moves);
 }

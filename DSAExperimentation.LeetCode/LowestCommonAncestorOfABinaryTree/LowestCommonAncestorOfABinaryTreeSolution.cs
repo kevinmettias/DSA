@@ -17,10 +17,12 @@ namespace DSAExperimentation.LeetCode.LowestCommonAncestorOfABinaryTree;
 // no second arm to reconcile this against.
 internal static class LowestCommonAncestorOfABinaryTreeSolution
 {
+    // `firstNode` and `secondNode` are the two nodes whose lowest common ancestor is asked
+    // for; the engine below never consults an ordering, so neither has to precede the other.
     public static BinaryTreeNode<int>? FindLcaByAncestryWalk(
-        BinaryTreeNode<int> root, BinaryTreeNode<int> p, BinaryTreeNode<int> q) =>
+        BinaryTreeNode<int> root, BinaryTreeNode<int> firstNode, BinaryTreeNode<int> secondNode) =>
         LowestCommonAncestor.Find<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(
-            root, p, q);
+            root, firstNode, secondNode);
 }

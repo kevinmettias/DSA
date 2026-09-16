@@ -104,13 +104,13 @@ internal static class MaximumEmployeesToBeInvitedToAMeetingSolution
 
         for (var start = 0; start < favorite.Length; start++)
         {
-            ProcessCycleStart(start, context, totals);
+            AccumulateCycleTotalsFrom(start, context, totals);
         }
 
         return Math.Max(totals.LongestCycle, totals.PairedChainsTotal);
     }
 
-    private static void ProcessCycleStart(int start, CycleWalkContext context, CycleTotals totals)
+    private static void AccumulateCycleTotalsFrom(int start, CycleWalkContext context, CycleTotals totals)
     {
         if (context.Peeled[start] || context.Visited[start])
         {

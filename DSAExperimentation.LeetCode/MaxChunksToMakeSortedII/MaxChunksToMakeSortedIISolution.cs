@@ -23,7 +23,7 @@ internal static class MaxChunksToMakeSortedIISolution
         {
             runningMax = Math.Max(runningMax, arr[i]);
 
-            if (!RestIsAtLeast(arr, i + 1, runningMax))
+            if (!IsRestAtLeast(arr, i + 1, runningMax))
             {
                 continue;
             }
@@ -35,7 +35,7 @@ internal static class MaxChunksToMakeSortedIISolution
         return chunks;
     }
 
-    private static bool RestIsAtLeast(int[] arr, int fromIndex, int threshold)
+    private static bool IsRestAtLeast(int[] arr, int fromIndex, int threshold)
     {
         for (var j = fromIndex; j < arr.Length; j++)
         {

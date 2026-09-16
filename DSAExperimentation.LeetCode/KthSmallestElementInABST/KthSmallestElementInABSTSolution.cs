@@ -13,18 +13,18 @@ internal static class KthSmallestElementInABSTSolution
     // The textbook approach: a hand-rolled recursive in-order walk, counting down
     // as each node is visited. Written without this repo's traversal engine - the
     // arm KthSmallestByInOrderTraversal below has to justify itself against.
-    public static int KthSmallestByRecursiveWalk(BinaryTreeNode<int>? root, int k)
+    public static int KthSmallestByRecursiveWalk(BinaryTreeNode<int>? root, int rank)
     {
-        var (_, result) = VisitByRecursiveWalk(root, k, null);
+        var (_, result) = VisitByRecursiveWalk(root, rank, null);
         return result!.Value;
     }
 
     // This repo's own InOrderTraversal/IInOrderHooks composition - the same one
     // RecoverBinarySearchTreeSolution.RecoverByInOrderHooks uses. Hooks are static,
     // so the running rank and result live in AsyncLocal state alongside the walk.
-    public static int KthSmallestByInOrderTraversal(BinaryTreeNode<int>? root, int k)
+    public static int KthSmallestByInOrderTraversal(BinaryTreeNode<int>? root, int rank)
     {
-        State.Remaining.Value = k;
+        State.Remaining.Value = rank;
         State.Result.Value = null;
 
         InOrderTraversal.Walk<int, RankHooks>(root);

@@ -6,28 +6,28 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RangeSumQueryMutable;
 // LeetCode's published call sequences against each INumArray implementation via a small operation
 // script, so a failure still names the strategy that broke even though the "input" here is a
 // sequence of mutating calls rather than a single argument tuple - the same shape
-// DesignTaskManagerTests already uses for its own instance-API problem. NumArrayOp.Apply is pure
+// DesignTaskManagerTests already uses for its own instance-API problem. RangeSumOperation.Apply is pure
 // dispatch (which method to call with which arguments) - no summing logic of its own.
 public sealed class RangeSumQueryMutableTests
 {
-    public static TheoryData<int[], NumArrayOp[], int?[]> Examples =>
+    public static TheoryData<int[], RangeSumOperation[], int?[]> Examples =>
         new()
         {
             {
                 [1, 3, 5],
                 [
-                    NumArrayOp.SumRange(0, 2),
-                    NumArrayOp.Update(1, 2),
-                    NumArrayOp.SumRange(0, 2),
+                    RangeSumOperation.SumRange(0, 2),
+                    RangeSumOperation.Update(1, 2),
+                    RangeSumOperation.SumRange(0, 2),
                 ],
                 [9, null, 8]
             },
             {
                 [0, 0, 0, 0],
                 [
-                    NumArrayOp.Update(2, 10),
-                    NumArrayOp.Update(2, 4),
-                    NumArrayOp.SumRange(0, 3),
+                    RangeSumOperation.Update(2, 10),
+                    RangeSumOperation.Update(2, 4),
+                    RangeSumOperation.SumRange(0, 3),
                 ],
                 [null, null, 4]
             },
@@ -35,15 +35,15 @@ public sealed class RangeSumQueryMutableTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CreateByArrayRescan_LeetCodeExamples_ReflectsMutation(int[] initial, NumArrayOp[] operations, int?[] expected) =>
+    public void CreateByArrayRescan_LeetCodeExamples_ReflectsMutation(int[] initial, RangeSumOperation[] operations, int?[] expected) =>
         RunScript(RangeSumQueryMutableSolution.CreateByArrayRescan(initial), operations, expected);
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void CreateBySegmentTreeQuery_LeetCodeExamples_ReflectsMutation(int[] initial, NumArrayOp[] operations, int?[] expected) =>
+    public void CreateBySegmentTreeQuery_LeetCodeExamples_ReflectsMutation(int[] initial, RangeSumOperation[] operations, int?[] expected) =>
         RunScript(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(initial), operations, expected);
 
-    private static void RunScript(INumArray numArray, NumArrayOp[] operations, int?[] expected)
+    private static void RunScript(INumArray numArray, RangeSumOperation[] operations, int?[] expected)
     {
         for (var i = 0; i < operations.Length; i++)
         {
@@ -55,11 +55,11 @@ public sealed class RangeSumQueryMutableTests
     // dispatch, built via the named factories below so a script (like Examples above) reads like the
     // LeetCode call sequence it replays. Nested here rather than left at file scope so the file
     // declares exactly one type.
-    public readonly record struct NumArrayOp(NumArrayOp.OpKind kind, int a, int b)
+    public readonly record struct RangeSumOperation(RangeSumOperation.OpKind kind, int a, int b)
     {
-        public static NumArrayOp Update(int index, int val) => new(OpKind.Update, index, val);
+        public static RangeSumOperation Update(int index, int val) => new(OpKind.Update, index, val);
 
-        public static NumArrayOp SumRange(int left, int right) => new(OpKind.SumRange, left, right);
+        public static RangeSumOperation SumRange(int left, int right) => new(OpKind.SumRange, left, right);
 
         // null for Update, the returned sum for SumRange - so a script runner can assert against one
         // expected value per operation uniformly. Internal, not public: only this same assembly's

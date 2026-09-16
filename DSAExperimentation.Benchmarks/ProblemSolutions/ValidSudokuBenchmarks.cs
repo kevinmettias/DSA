@@ -25,8 +25,8 @@ public class ValidSudokuBenchmarks
     ];
 
     [Benchmark(Baseline = true)]
-    public bool BooleanGrid() => ValidSudokuSolution.IsValidByBooleanGrid(_board);
+    public bool IsValidByBooleanGrid() => ValidSudokuSolution.IsValidByBooleanGrid(_board);
 
     [Benchmark]
-    public bool SetKeys() => ValidSudokuSolution.IsValidBySetKeys(_board);
+    public bool IsValidBySetKeys() => ValidSudokuSolution.IsValidBySetKeys(_board);
 }

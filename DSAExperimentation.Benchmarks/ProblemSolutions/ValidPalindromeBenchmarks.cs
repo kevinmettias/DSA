@@ -15,5 +15,5 @@ public class ValidPalindromeBenchmarks
     private const string Value = "A man, a plan, a canal: Panama";
 
     [Benchmark(Baseline = true)]
-    public bool TwoPointerScan() => ValidPalindromeSolution.IsPalindromeByTwoPointerScan(Value);
+    public bool IsPalindromeByTwoPointerScan() => ValidPalindromeSolution.IsPalindromeByTwoPointerScan(Value);
 }

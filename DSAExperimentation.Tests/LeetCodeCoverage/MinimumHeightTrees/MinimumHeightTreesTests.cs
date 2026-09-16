@@ -18,16 +18,16 @@ public sealed class MinimumHeightTreesTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindRootsByHeightFromEveryNode_LeetCodeExamples_ReturnsMinimumHeightRoots(
-        int n, int[][] edges, int[] expected) =>
+        int nodeCount, int[][] edges, int[] expected) =>
         Assert.Equal(
             expected.Order(),
-            MinimumHeightTreesSolution.FindRootsByHeightFromEveryNode(n, edges).Order());
+            MinimumHeightTreesSolution.FindRootsByHeightFromEveryNode(nodeCount, edges).Order());
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void FindRootsByLeafPeeling_LeetCodeExamples_ReturnsMinimumHeightRoots(
-        int n, int[][] edges, int[] expected) =>
+        int nodeCount, int[][] edges, int[] expected) =>
         Assert.Equal(
             expected.Order(),
-            MinimumHeightTreesSolution.FindRootsByLeafPeeling(n, edges).Order());
+            MinimumHeightTreesSolution.FindRootsByLeafPeeling(nodeCount, edges).Order());
 }

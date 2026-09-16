@@ -21,8 +21,8 @@ public sealed class SmallestIntegerDivisibleByKTests
             { 10, -1 },
             { 20, -1 },
 
-            // Coprime to 10: the answer is the multiplicative order of 10 mod k,
-            // scaled by whatever factor of 9 k carries.
+            // Coprime to 10: the answer is the multiplicative order of 10 mod divisor,
+            // scaled by whatever factor of 9 the divisor carries.
             { 7, 6 },
             { 9, 9 },
             { 11, 2 },
@@ -33,12 +33,12 @@ public sealed class SmallestIntegerDivisibleByKTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestRepunitLengthByModularWalk_LeetCodeExamples_ReturnsShortestLengthOrNegativeOne(
-        int k, int expected) =>
-        Assert.Equal(expected, SmallestIntegerDivisibleByKSolution.SmallestRepunitLengthByModularWalk(k));
+        int divisor, int expected) =>
+        Assert.Equal(expected, SmallestIntegerDivisibleByKSolution.SmallestRepunitLengthByModularWalk(divisor));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SmallestRepunitLengthByReduceGraph_LeetCodeExamples_ReturnsShortestLengthOrNegativeOne(
-        int k, int expected) =>
-        Assert.Equal(expected, SmallestIntegerDivisibleByKSolution.SmallestRepunitLengthByReduceGraph(k));
+        int divisor, int expected) =>
+        Assert.Equal(expected, SmallestIntegerDivisibleByKSolution.SmallestRepunitLengthByReduceGraph(divisor));
 }
