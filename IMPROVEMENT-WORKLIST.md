@@ -5,7 +5,7 @@ Prioritised from three read-only surveys of this repository plus direct measurem
 should be re-checked before acting — one survey got a count wrong (it reported 4
 problems with no benchmark; the measured answer is 11).
 
-Scale for orientation: 6 projects, no `.sln`; 1,105 LeetCode problems; 1,105 coverage
+Scale for orientation: 6 projects, one root `DSA.slnx`; 1,105 LeetCode problems; 1,105 coverage
 tests; 1,111 benchmark classes (1,106 one-per-problem, 4 in `StrategySwaps/`, plus the
 generic registry harness) each with a companion test; ~10,346-line core library
 (✓, across 211 files).
@@ -280,14 +280,13 @@ benchmark tests. One arm dropped, matching the rest. A repo-wide sweep for the p
 
 ## P5 — Repository hygiene
 
-- `suppressions.json.bak-prune-1789527222` (457 KB) is **tracked** — an unreferenced backup
-  of linter output. Delete and extend `.gitignore`.
-- `.claude/leetcode-coverage/manifest.json` (2.9 MB, 27k lines) is tracked agent-workflow
-  intermediate state.
+**Mostly done in `7e0911e2`** (re-checked 2026-10-02): the tracked backup is deleted and
+`*.bak-prune-*` gitignored; `manifest.json` is untracked and gitignored but kept on disk for
+the workflows; `DSA.slnx` wires all six projects; `Fixtures.tmp_check/` no longer exists.
+What remains:
+
 - `BenchmarkDotNet.Artifacts/` exists in two places (root and under `Benchmarks/bin/...`).
-- `DSAExperimentation.Tests/LeetCodeCatalog/Fixtures.tmp_check/` is an empty leftover.
-- **No `.sln`** across six projects: nothing at the root can build or test them all, and
-  the `InternalsVisibleTo` lists are hand-maintained per project (5/4/1/0 entries), so
+- The `InternalsVisibleTo` lists are hand-maintained per project (5/4/1/0 entries), so
   adding a project means editing several `.csproj` files.
 
 **Action:** remove the tracked backup and the stray temp dir; add a solution file; decide
@@ -295,6 +294,67 @@ where `LeetCodeCatalog` belongs — it is I/O infrastructure living in a test pr
 
 **Done when:** `git ls-files` contains no backup or workflow-intermediate artifact, and a
 single root command builds and tests all projects.
+
+---
+
+## P6 — Replace the 1:1 benchmark companion tree with one generic check
+
+`Benchmarks.Tests/ProblemSolutions/` holds one `<Benchmark>Tests` class per benchmark —
+1,112 classes, 53,259 lines — and 92.5% of their 3,071 test methods assert one of two
+properties in different words: the workload rebuilds identically (958) and the arms agree
+(1,884). The tree is 1:1 because `check-test-coverage` attributes a subject by test class
+name, not because the tests need it.
+
+**Step 1 — DONE (`85fb3200`).** `BenchmarkArmsTests` asserts both properties once, over
+every class with a `[Benchmark]` method, alongside the existing tree. 2,220 rows, 13 s,
+stable across three runs; five deliberate breaks each caught and restored hash-identical.
+
+The measurement that step was for: **23 of 2,222 rows failed on the first run, none of them
+setup determinism**, and **21 table entries** in `ArmAgreement` account for them — not the
+~122 predicted (54 unordered + 60 node-returning + 8 void):
+
+| Entry | Count | Why |
+| --- | --- | --- |
+| Unordered | 9 | LeetCode leaves the order free (AccountsMerge, ThreeSum, Subsets, …) |
+| Random draw | 6 | each arm consumes the seeded generator differently |
+| Discarded result | 3 | `DeleteNodeInALinkedList`, `FlattenBinaryTreeToLinkedList`, `InvertBinaryTree` rewrite a copy and drop it |
+| Answers differ by design | 1 | `InsertIntoABinarySearchTree` returns the root of a different valid tree per arm |
+| Workload outside the contract | 1 | `TopKFrequentElements` (below) |
+| Excluded | 1 | the registry harness — its arms are `[ParamsSource]` values |
+
+The 60 node-returning arms needed nothing: `AnswerGraphText` walks fields, with cycles
+back-referenced. 5 of the 8 void arms compare by the harness state they leave. PowXn's
+last-bits difference is absorbed by a general rule (doubles to 12 significant digits).
+45 of the 55 classes whose companions compare unordered happen to agree in order today, so
+the theory holds them to exact order — stricter than the problem; a future reordering arm
+fails loudly and costs one table entry.
+
+**Found by it, not fixed:**
+
+- **`TopKFrequentElements`' workload ties 23 values at the top-10 boundary**, outside LC
+  347's "it is guaranteed that the answer is unique" — the same species as the old
+  AccountsMerge name collision. Its companion documents the tie and works around it with a
+  frequency oracle rather than calling it out.
+- **The 3 discarded-result void arms** are unobservable to any generic check. Returning the
+  rewritten structure (as the 60 `object?` arms do) would make them comparable.
+
+**Remaining steps:**
+
+1. **Deletion manifest, by assertion content, not test names.** The "986 classes hold only
+   determinism and agreement tests" figure classified by method name and overstates: a
+   content heuristic finds **670** companions that assert only arm against arm and **447** that
+   pin a value or property somewhere (e.g. `LinkedListCycleIIBenchmarksTests`' agreement test
+   also asserts `HeadValue`). The theory cannot replace a pinned value. Companions of the 21
+   `ArmAgreement` classes stay. Bulk deletes are refused in auto mode, so this is a manifest
+   for the owner.
+2. **The coverage gate.** Deleting companions reintroduces `check-test-coverage` findings:
+   either a "complete by construction" glob waiver on
+   `DSAExperimentation.Benchmarks/ProblemSolutions/**` (precedent: the existing
+   `DSAExperimentation.LeetCode/**` waiver), or teach nomos to credit theory coverage.
+3. **`ARCHITECTURE.md` §17.7 / §17.9** describe the companion rule and need rewriting.
+
+**Done when:** the companion tree holds only tests that pin something the theory cannot,
+the coverage gate accounts for the rest by a stated rule, and §17 describes that shape.
 
 ---
 
