@@ -9,7 +9,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 [MemoryDiagnoser]
 public class NQueensBenchmarks
 {
-    [Params(8)]
+    // The search tree grows super-exponentially in Size, so the spread is multiplicative
+    // rather than the arithmetic one most benchmarks here use: these three values are roughly
+    // an order of magnitude apart in work, and 12 would put a single iteration into minutes.
+    [Params(6, 8, 10)]
     public int Size { get; set; }
 
     [Benchmark(Baseline = true)]

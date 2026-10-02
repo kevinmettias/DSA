@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are KthLargestElementSolution's, the same methods
 // KthLargestElementTests proves correct.
 [MemoryDiagnoser]
-public class KthLargestBenchmarks
+public class KthLargestElementBenchmarks
 {
     private const int K = 10;
     private const int RandomSeed = 7;

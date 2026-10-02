@@ -9,6 +9,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TopDownMemoized dogfoods this repo's own Memoizer (a DP recurrence expressed as
 // natural-looking recursion, cached underneath). IterativeConstantSpace is the
 // O(n)-time O(1)-space answer a naive DP table wouldn't even need to beat.
+//
+// Deliberately at library level rather than under one LeetCode problem: the recurrence is
+// shared by LC 509 and LC 70, so there is no single problem folder this suite belongs to.
 [MemoryDiagnoser]
 public class FibonacciBenchmarks
 {

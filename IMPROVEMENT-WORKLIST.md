@@ -117,7 +117,7 @@ deliberate slowdown in one arm is detectable by comparing against it.
 
 ---
 
-## P4 — Close the scope gaps
+## P4 — Close the scope gaps — DONE
 
 **The 11 unbenchmarked problems — DONE.** All eleven now have both a benchmark class
 and a companion benchmark test. Two of the eleven (`KthLargestElement`,
@@ -161,13 +161,29 @@ registration (`MergeTwoSortedLists`, `MinStack`), and both were updated. The oth
 own per-problem test file asserts their second arm. Adding those registrations is the
 natural follow-on.
 
-Still open in P4:
+**The three folderless suites — DONE.** Two are genuinely library-level, and now say so in
+their own class comments: `FibonacciBenchmarks` covers a recurrence shared by LC 509 and
+LC 70, `ShortestPathAlgorithmBenchmarks` an algorithm choice forced by both LC 743 and
+LC 787. Neither belongs under one problem folder.
 
-- Three benchmark suites have no problem folder: `Fibonacci`, `KthLargest`,
-  `ShortestPathAlgorithm` — plausibly deliberate library-level suites; record why.
-- `NQueensBenchmarks` / `NQueensIIBenchmarks` declare `[Params(8)]` — a single value, so
-  the parameter is never varied. (Same defect as P3's single-arm classes: a declared axis
-  that never varies.)
+The third was not deliberate at all — `KthLargestBenchmarks` was simply named shorter than
+the solution folder it covers. Renamed to `KthLargestElementBenchmarks`, with its companion
+test, so README's "one benchmark per problem" is now literally true. No string in the repo
+referenced the old name except the generated coverage manifest.
+
+**`[Params(8)]` — DONE.** Both N-Queens suites now vary the axis: `NQueensBenchmarks` over
+(6, 8, 10) and `NQueensIIBenchmarks` over (8, 10, 12), multiplicative rather than
+arithmetic because the search tree is super-exponential in size. Measured on a dry run, the
+ratio the suite exists to show moves from 1.45 to 2.09 across the first arm's sizes and
+2.53 to 2.79 across the second's — under a single value it was a single number that could
+not have shown that.
+
+**One more cleanup found while doing this.** `KthLargestElementBenchmarksTests` still
+carried a true mirror pair (`FullSort_…_AgreesWithSizeKMinHeap` /
+`SizeKMinHeap_…_AgreesWithFullSort`) — the same defect `d98947ae` removed from the other
+benchmark tests. One arm dropped, matching the rest. A repo-wide sweep for the pattern
+(`A_Scenario_AgreesWithB` beside `B_Scenario_AgreesWithA`) now finds none; the remaining
+`_AgreesWith` tests in the folder are distinct scenarios naming the same direction.
 
 ---
 
