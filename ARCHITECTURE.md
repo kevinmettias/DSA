@@ -1343,6 +1343,20 @@ still about search cost — but this is a deliberate change in what is measured,
   to compose it: a coverage tree shaped that way can only tell you a problem's answer changed, not
   which primitive broke. `DSAExperimentation.Tests/` mirrors the source tree for exactly this
   reason, and `Tests/Domain/**` was created in this pass to extend that mirror to tier 3.
+- **`Harness/IBoundWorkload.cs` is a named type, and `check-doc-schema` is why its rationale is
+  here rather than on the type.** The interface replaces the bare `Func<object?>` the harness used
+  to store, and that decision was first written as a `<remarks>` essay. `<remarks>` is C#'s
+  catch-all bucket: the check projects it as free prose rather than a section, because a type's doc
+  is otherwise only its summary plus the sections its signature implies (`<param>`/`<returns>`/
+  `<exception>`/`<example>`), and an essay is none of those. The rationale was moved here instead of
+  waived, because the reasoning is worth keeping: a stored callable is a collaborator — invoked
+  later, by code that cannot see what it closes over, and more than once per run — so the delegate
+  form had nowhere to state the three things `Run` promises. It returns the strategy's own answer
+  (`null` for a void-shaped one) rather than `null` meaning "unbound"; it may throw whatever the
+  strategy throws, since resolution happened in `Setup` and the body is the strategy alone; and it
+  repeats, every invocation independent, which is what makes it safe to time in a loop. The input it
+  closes over is built once and read-only thereafter, so a repeated `Run` cannot measure
+  construction instead of the strategy.
 - **Two advisories are accepted rather than fixed.** `check-transposable-parameters` on signatures
   like `LadderLengthByMutationQueue(string beginWord, string endWord, ...)` is reporting LeetCode's
   own problem signature, which the solution tier deliberately mirrors; and `check-type-nature` on

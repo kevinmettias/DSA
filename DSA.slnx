@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="DSAExperimentation.Benchmarks.Tests/DSAExperimentation.Benchmarks.Tests.csproj" />
+  <Project Path="DSAExperimentation.Benchmarks/DSAExperimentation.Benchmarks.csproj" />
+  <Project Path="DSAExperimentation.LeetCode.Tests/DSAExperimentation.LeetCode.Tests.csproj" />
+  <Project Path="DSAExperimentation.LeetCode/DSAExperimentation.LeetCode.csproj" />
+  <Project Path="DSAExperimentation.Tests/DSAExperimentation.Tests.csproj" />
+  <Project Path="DSAExperimentation/DSAExperimentation.csproj" />
+</Solution>

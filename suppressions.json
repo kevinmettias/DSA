@@ -801,13 +801,6 @@
     },
     {
       "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
-      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Enter. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
       "path": "DSAExperimentation/Algorithms/Metrics/TreeMetrics.cs",
       "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Diameter, Height, HeightAndSize, Size. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
       "owner": "@kmettias",
@@ -1231,7 +1224,7 @@
     {
       "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/FindTheMinimumCostArrayPermutation/FindTheMinimumCostArrayPermutationSolution.cs",
-      "reason": "`best.Perm!` is safe at both sites because `Perm` is non-null exactly when `Score` has been lowered from its initial `long.MaxValue`: the pair is initialized to `(null, long.MaxValue)` (line 42) and the two fields are written only together, at line 158. At line 156 the array is passed to `BeatsBestSoFar` (line 174), which reads it only in the second disjunct `score == bestScore \u0026\u0026 IsLexicographicallySmaller(candidate, best)`; before the first assignment `best.Score` is still `long.MaxValue` while `score` is a bounded sum of adjacent differences, so `score \u003c bestScore` short-circuits there and the array is never read while null. Line 46 runs only after `SearchPermutations` has reached the base case at line 152 at least once (`perm` is non-empty), where that same `score \u003c long.MaxValue` holds, so the tuple has been assigned by the time the result is returned.",
+      "reason": "`best.Perm!` is safe at both sites because `Perm` is non-null exactly when `Score` has been lowered from its initial `long.MaxValue`: the pair is initialized to `(null, long.MaxValue)` (line 42) and the two fields are written only together, at line 158. At line 156 the array is passed to `IsBetterThanBestSoFar` (line 174), which reads it only in the second disjunct `score == bestScore \u0026\u0026 IsLexicographicallySmaller(candidate, best)`; before the first assignment `best.Score` is still `long.MaxValue` while `score` is a bounded sum of adjacent differences, so `score \u003c bestScore` short-circuits there and the array is never read while null. Line 46 runs only after `SearchPermutations` has reached the base case at line 152 at least once (`perm` is non-empty), where that same `score \u003c long.MaxValue` holds, so the tuple has been assigned by the time the result is returned.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1679,14 +1672,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/Fixtures/OverlappingSubstringGridWorkloads.cs",
-      "anchor": "`Alphabet = ",
-      "reason": "`Alphabet` is each declaring file's own value rather than one shared fact: the same name is also declared as `\"ACGT\"`, `\"aAbB\"`, `\"abc\"`, `\"abcd\"` and 8 more elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/Fixtures/PrefixSentenceWorkloads.cs",
       "anchor": "`FirstLetter = ",
       "reason": "`FirstLetter = 'a'` is declared in 3 independent units (FindTheSequenceOfStringsAppearedOnTheScreen/FindTheSequenceOfStringsAppearedOnTheScreenSolution.cs, FindTheStringWithLCP/FindTheStringWithLCPSolution.cs, Fixtures/PrefixSentenceWorkloads.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
@@ -1850,14 +1835,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/ApplyOperationsToMaximizeScoreBenchmarks.cs",
       "anchor": "`MaxValueExclusive = ",
       "reason": "`MaxValueExclusive` is each declaring file's own value rather than one shared fact: the same name is also declared as `1 \u003c\u003c 16`, `1 \u003c\u003c 17`, `1 \u003c\u003c 20`, `10` and 21 more elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/AssignCookiesBenchmarks.cs",
-      "anchor": "`RandomValueUpperBound = ",
-      "reason": "`RandomValueUpperBound` is each declaring file's own value rather than one shared fact: the same name is also declared as `10_000`, `1_000_000` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2050,14 +2027,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CheckIfThereIsAValidParenthesesStringPathBenchmarks.cs",
       "anchor": "`Open = ",
       "reason": "`Open` is each declaring file's own value rather than one shared fact: the same name is also declared as `'O'` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CombinationSumIIIBenchmarks.cs",
-      "anchor": "`K = ",
-      "reason": "`K` is each declaring file's own value rather than one shared fact: the same name is also declared as `0`, `1`, `1 \u003c\u003c 15`, `10` and 16 more elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2338,30 +2307,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindConsecutiveIntegersFromADataStreamBenchmarks.cs",
       "anchor": "`K = ",
       "reason": "`K` is each declaring file's own value rather than one shared fact: the same name is also declared as `0`, `1`, `1 \u003c\u003c 15`, `10` and 16 more elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindMinimumInRotatedSortedArrayIIBenchmarks.cs",
-      "anchor": "`DuplicateSpanDivisor = ",
-      "reason": "`DuplicateSpanDivisor = 8` is declared in 2 independent units (ProblemSolutions/FindMinimumInRotatedSortedArrayIIBenchmarks.cs, ProblemSolutions/SearchInRotatedSortedArrayIIBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindMinimumInRotatedSortedArrayIIBenchmarks.cs",
-      "anchor": "`MaxDuplicateSpan = ",
-      "reason": "`MaxDuplicateSpan = 40` is declared in 2 independent units (ProblemSolutions/FindMinimumInRotatedSortedArrayIIBenchmarks.cs, ProblemSolutions/SearchInRotatedSortedArrayIIBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindMinimumInRotatedSortedArrayIIBenchmarks.cs",
-      "anchor": "`PivotDivisor = ",
-      "reason": "`PivotDivisor = 3` is declared in 3 independent units (ProblemSolutions/FindMinimumInRotatedSortedArrayIIBenchmarks.cs, ProblemSolutions/SearchInRotatedSortedArrayBenchmarks.cs, ProblemSolutions/SearchInRotatedSortedArrayIIBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3651,14 +3596,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.LeetCode/PopulatingNextRightPointersInEachNode/PopulatingNextRightPointersInEachNodeSolution.cs",
-      "message": "`static readonly` field holding `List` `Output` is mutable global state: anything can write it and nothing owns it; make it a constant, or give it an owner — and if it must stay, say why on the line",
-      "reason": "The field is `static` because the contract it exists to satisfy is static-abstract: `ILevelGroupedHooks\u003cBinaryTreeNode\u003cint\u003e\u003e` is passed to `LevelGroupedBreadthFirstTraversal.Walk` as a TYPE ARGUMENT, so the walk reaches the hook through the type, and no LevelHooks instance exists that could own the buffer -- as an instance field this does not compile, and as a constant it cannot be written by `OnLevel`. What the rule reads as mutable global state is `AsyncLocal\u003cList\u003cList\u003cint\u003e\u003e\u003e`: the mutable list is the PAYLOAD of a flow-local slot, so a traversal started on another thread or in another async flow reads its own list, and the field itself is `readonly` and never reassigned. That is the ownership the rule asks for -- the buffer is owned by the flow that started the walk, which is exactly its lifetime. The two named remedies are both unavailable: a constant cannot be written by the callback, and there is no owner object to hand it to. Precedent, re-verified independently for these rows: `DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs` carries this finding's waiver for the same engine and the same `AsyncLocal` buffer, and a byte-identical copy of that file placed in scratch reports the finding again (1) while the original reports it waived -- so the ledger entry is the entire difference, not a difference in the code. The declaration's own comment in this file states the same two facts.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-transposable-parameters",
       "path": "DSAExperimentation.LeetCode/FindTheKthLargestIntegerInTheArray/FindTheKthLargestIntegerInTheArraySolution.cs",
       "message": "`CompareNumeric` takes 2 adjacent `string` parameters (first, second): the call site reads `CompareNumeric(first, second)`, so a caller can transpose them and the compiler will not object. Give each position a distinct type.",
@@ -4226,22 +4163,6 @@
     },
     {
       "check": "check-boolean-predicate",
-      "path": "DSAExperimentation.LeetCode/MinimumIncompatibility/HashSetNovelty.cs",
-      "message": "`Admit` answers",
-      "reason": "`Admit` is not this file's to choose: it is declared by `INoveltySet` here, and every finding this covers is a class implementing that interface - `INoveltySet` is the repo's own mirror of the problem's API, whose member names are LeetCode's (MyCircularDeque publishes `insertFront`, `insertLast`, `deleteFront`, `deleteLast`; MyCalendar publishes `book`; Skiplist publishes `search` and `erase`). This is precisely the case `symbols.Symbol.Contract_Bound` exists to decline, and the C# front end states why it cannot see it: \"implicit implementations of OTHER interfaces cannot be told apart from ordinary methods without resolving the interface, so they are not covered here\". Renaming the implementation alone does not compile; renaming the interface too would rename LeetCode's published API, which 17.3's mirror exists to preserve. Recorded as a gap in the front end's Contract_Bound projection, not as a defect in the name.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-boolean-predicate",
-      "path": "DSAExperimentation.LeetCode/MinimumIncompatibility/SetNovelty.cs",
-      "message": "`Admit` answers",
-      "reason": "`Admit` is not this file's to choose: it is declared by `INoveltySet` here, and every finding this covers is a class implementing that interface - `INoveltySet` is the repo's own mirror of the problem's API, whose member names are LeetCode's (MyCircularDeque publishes `insertFront`, `insertLast`, `deleteFront`, `deleteLast`; MyCalendar publishes `book`; Skiplist publishes `search` and `erase`). This is precisely the case `symbols.Symbol.Contract_Bound` exists to decline, and the C# front end states why it cannot see it: \"implicit implementations of OTHER interfaces cannot be told apart from ordinary methods without resolving the interface, so they are not covered here\". Renaming the implementation alone does not compile; renaming the interface too would rename LeetCode's published API, which 17.3's mirror exists to preserve. Recorded as a gap in the front end's Contract_Bound projection, not as a defect in the name.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-boolean-predicate",
       "path": "DSAExperimentation.LeetCode/DesignBitset/DesignBitsetSolution.cs",
       "message": "`All` answers",
       "reason": "`All` is not this file's to choose: it is declared by `IBitset` here, and every finding this covers is a class implementing that interface - `IBitset` is the repo's own mirror of the problem's API, whose member names are LeetCode's (MyCircularDeque publishes `insertFront`, `insertLast`, `deleteFront`, `deleteLast`; MyCalendar publishes `book`; Skiplist publishes `search` and `erase`). This is precisely the case `symbols.Symbol.Contract_Bound` exists to decline, and the C# front end states why it cannot see it: \"implicit implementations of OTHER interfaces cannot be told apart from ordinary methods without resolving the interface, so they are not covered here\". Renaming the implementation alone does not compile; renaming the interface too would rename LeetCode's published API, which 17.3's mirror exists to preserve. Recorded as a gap in the front end's Contract_Bound projection, not as a defect in the name.",
@@ -4453,14 +4374,6 @@
       "path": "DSAExperimentation.LeetCode/MaximizeSpanningTreeStabilityWithUpgrades/MaximizeSpanningTreeStabilityWithUpgradesSolution.cs",
       "message": "`Holds` answers",
       "reason": "`Holds` is not this file's to choose: it is declared by `IFeasibilityCheck` here, and every finding this covers is a class implementing that interface - `IFeasibilityCheck` is the repo's own mirror of the problem's API, whose member names are LeetCode's (MyCircularDeque publishes `insertFront`, `insertLast`, `deleteFront`, `deleteLast`; MyCalendar publishes `book`; Skiplist publishes `search` and `erase`). This is precisely the case `symbols.Symbol.Contract_Bound` exists to decline, and the C# front end states why it cannot see it: \"implicit implementations of OTHER interfaces cannot be told apart from ordinary methods without resolving the interface, so they are not covered here\". Renaming the implementation alone does not compile; renaming the interface too would rename LeetCode's published API, which 17.3's mirror exists to preserve. Recorded as a gap in the front end's Contract_Bound projection, not as a defect in the name.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-boolean-predicate",
-      "path": "DSAExperimentation.LeetCode/MinimizeTheMaximumEdgeWeightOfGraph/MinimizeTheMaximumEdgeWeightOfGraphSolution.cs",
-      "message": "`HoldsFor` answers",
-      "reason": "`HoldsFor` is not this file's to choose: it is declared by `IWeightFeasibility` here, and every finding this covers is a class implementing that interface - `IWeightFeasibility` is the repo's own mirror of the problem's API, whose member names are LeetCode's (MyCircularDeque publishes `insertFront`, `insertLast`, `deleteFront`, `deleteLast`; MyCalendar publishes `book`; Skiplist publishes `search` and `erase`). This is precisely the case `symbols.Symbol.Contract_Bound` exists to decline, and the C# front end states why it cannot see it: \"implicit implementations of OTHER interfaces cannot be told apart from ordinary methods without resolving the interface, so they are not covered here\". Renaming the implementation alone does not compile; renaming the interface too would rename LeetCode's published API, which 17.3's mirror exists to preserve. Recorded as a gap in the front end's Contract_Bound projection, not as a defect in the name.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
