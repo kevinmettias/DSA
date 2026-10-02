@@ -28,6 +28,34 @@ public sealed partial class MergeTwoSortedListsTests
         Assert.Equal(expected, actual);
     }
 
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MergeByRecursiveSelection_LeetCodeExamples_ReturnsOneInterleavedSortedList(
+        int[] first, int[] second, int[] expected)
+    {
+        var firstList = BuildList(first);
+        var secondList = BuildList(second);
+        var merged = MergeTwoSortedListsSolution.MergeByRecursiveSelection(firstList, secondList);
+        var actual = ToArray(merged);
+
+        Assert.Equal(expected, actual);
+    }
+
+    // The two arms are competing strategies for one question, so they must produce the same list
+    // from the same inputs - including the empty-list cases, where the recursive arm's two base
+    // cases have to hand back the other list unexamined.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Merge_AgreeOnEveryExample(int[] first, int[] second, int[] expected)
+    {
+        var bySplice = ToArray(MergeTwoSortedListsSolution.MergeByDummyHeadSplice(
+            BuildList(first), BuildList(second)));
+        var byRecursion = ToArray(MergeTwoSortedListsSolution.MergeByRecursiveSelection(
+            BuildList(first), BuildList(second)));
+
+        Assert.Equal(bySplice, byRecursion);
+    }
+
     private static SinglyLinkedListNode<int>? BuildList(int[] values)
     {
         SinglyLinkedListNode<int>? head = null;

@@ -9,6 +9,65 @@ namespace DSAExperimentation.LeetCode.CourseSchedule;
 // cycle (courses that depend on each other) makes completion impossible.
 internal static class CourseScheduleSolution
 {
+    // The textbook arm the topological sort is measured against: colour each course
+    // and treat an edge back into a course still on the current path as the cycle.
+    // Same verdict as Kahn's algorithm, reached by depth-first search over the same
+    // prerequisite edges rather than by draining in-degrees.
+    public static bool CanFinishByDepthFirstColoring(int numCourses, int[][] prerequisites)
+    {
+        var dependents = new List<int>[numCourses];
+
+        for (var course = 0; course < numCourses; course++)
+        {
+            dependents[course] = [];
+        }
+
+        foreach (var prerequisite in prerequisites)
+        {
+            dependents[prerequisite[1]].Add(prerequisite[0]);
+        }
+
+        var colours = new CourseColour[numCourses];
+
+        for (var course = 0; course < numCourses; course++)
+        {
+            if (colours[course] == CourseColour.Unvisited && HasCycle(course, dependents, colours))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool HasCycle(int course, List<int>[] dependents, CourseColour[] colours)
+    {
+        colours[course] = CourseColour.OnCurrentPath;
+
+        foreach (var dependent in dependents[course])
+        {
+            if (colours[dependent] == CourseColour.OnCurrentPath)
+            {
+                return true;
+            }
+
+            if (colours[dependent] == CourseColour.Unvisited && HasCycle(dependent, dependents, colours))
+            {
+                return true;
+            }
+        }
+
+        colours[course] = CourseColour.Settled;
+        return false;
+    }
+
+    private enum CourseColour
+    {
+        Unvisited,
+        OnCurrentPath,
+        Settled,
+    }
+
     // LeetCode's own input shape: prerequisites[i] = [a, b] means course b must
     // be completed before course a, i.e. an edge from b (prerequisite) to a
     // (dependent).

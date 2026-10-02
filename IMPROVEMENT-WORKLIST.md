@@ -119,15 +119,55 @@ deliberate slowdown in one arm is detectable by comparing against it.
 
 ## P4 — Close the scope gaps
 
-- **11 problems have neither a benchmark nor a benchmark test** (✓):
-  `ClimbingStairs`, `CourseSchedule`, `ImplementTrie`, `KthLargestElement`,
-  `LowestCommonAncestorOfBst`, `MergeTwoSortedLists`, `MinStack`, `NetworkDelayTime`,
-  `RedundantConnection`, `Subsets`, `ValidParentheses`.
-  README claims "one [benchmark] per problem" — add them or document the exceptions.
-- Three benchmark suites have no problem folder (✓): `Fibonacci`, `KthLargest`,
+**The 11 unbenchmarked problems — DONE.** All eleven now have both a benchmark class
+and a companion benchmark test. Two of the eleven (`KthLargestElement`,
+`NetworkDelayTime`) were already covered by differently-named library-level suites
+(`KthLargestBenchmarks`, `ShortestPathAlgorithmBenchmarks`), and both of those already
+carried two arms. The other nine needed new work.
+
+Eight of the nine got a **second arm**, because a benchmark with one arm is a ratio of
+1.00 by construction. The new arm follows the repo's own precedent (`KthLargestElement`):
+a textbook strategy added to the solution file, not a rival structure invented in the
+harness.
+
+| Problem | arm added | measured against |
+| --- | --- | --- |
+| `ClimbingStairs` | `CountWaysByIterativeRollingTotals` | `CountWaysByMemoizedRecurrence` |
+| `ValidParentheses` | `IsValidByRepeatedPairRemoval` | `IsValidByBracketStack` |
+| `Subsets` | `FindAllSubsetsByBitmask` | `FindAllSubsetsByBacktrackSearch` |
+| `RedundantConnection` | `FindRedundantEdgeByPathSearch` | `FindRedundantEdgeByDisjointSet` |
+| `CourseSchedule` | `CanFinishByDepthFirstColoring` | `CanFinishByTopologicalSort` |
+| `LowestCommonAncestorOfBst` | `FindLcaByBstValueComparison` | `FindLcaByAncestryWalk` |
+| `MergeTwoSortedLists` | `MergeByRecursiveSelection` | `MergeByDummyHeadSplice` |
+| `MinStack` | `CreateBySingleListScan` | `CreateByStackPrimitive` |
+
+Two decisions worth keeping:
+
+- **`ImplementTrie` is deliberately single-arm.** The solution *returns* the repo's own
+  `DataStructures.Trie.Trie<bool>` — a shape `TrieReturnedBySolutionSeamTests` exists to
+  pin. A rival node-chain trie written in the harness would time a structure the
+  architecture does not have. `BinarySearchTreeIteratorBenchmarks` is the same case.
+- **`MinStack` grew a nested `IMinStackOperations`** so LeetCode's four-call shape reaches
+  both arms identically, the same move `ApplyDiscountEveryNOrdersSolution` makes for its
+  two cashiers. Both factories now return the interface; the registration and the
+  per-problem test were retyped to match.
+
+**Newly discovered while doing this:** `LeetCodeStrategyCoverageTests` requires a
+registration to name *every* strategy its solution exposes ("Every strategy is measured
+and asserted, or none of them is"). Only two of the eight newly-armed problems own a
+registration (`MergeTwoSortedLists`, `MinStack`), and both were updated. The other six —
+`ClimbingStairs`, `ValidParentheses`, `Subsets`, `RedundantConnection`, `CourseSchedule`,
+`LowestCommonAncestorOfBst` — have **no registration file at all**, so nothing but their
+own per-problem test file asserts their second arm. Adding those registrations is the
+natural follow-on.
+
+Still open in P4:
+
+- Three benchmark suites have no problem folder: `Fibonacci`, `KthLargest`,
   `ShortestPathAlgorithm` — plausibly deliberate library-level suites; record why.
 - `NQueensBenchmarks` / `NQueensIIBenchmarks` declare `[Params(8)]` — a single value, so
-  the parameter is never varied.
+  the parameter is never varied. (Same defect as P3's single-arm classes: a declared axis
+  that never varies.)
 
 ---
 

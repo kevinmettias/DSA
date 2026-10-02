@@ -26,7 +26,8 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
 
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<IReadOnlyList<LeetCodeOperation>, List<int?>>("min-stack")
-            .Strategy("StackPrimitive", Replay)
+            .Strategy("StackPrimitive", ReplayWithStackPrimitive)
+            .Strategy("SingleListScan", ReplayWithSingleListScan)
             .MatchingAnswersWith(LeetCodeAnswers.IsSequenceEqual)
             .Case(
                 "example-1",
@@ -72,9 +73,19 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
                 [null, null, 5, null, 5, null, 3, null, 5])
             .Build();
 
-    private static List<int?> Replay(IReadOnlyList<LeetCodeOperation> script)
+    private static List<int?> ReplayWithStackPrimitive(IReadOnlyList<LeetCodeOperation> script) =>
+        Replay(script, MinStackSolution.CreateByStackPrimitive);
+
+    private static List<int?> ReplayWithSingleListScan(IReadOnlyList<LeetCodeOperation> script) =>
+        Replay(script, MinStackSolution.CreateBySingleListScan);
+
+    // One replay for both arms: the script, the per-call results and the dispatch below are
+    // identical whatever is underneath, so sharing them keeps the two registrations honest - an arm
+    // can only differ in the strategy it names, never in what a case means.
+    private static List<int?> Replay(
+        IReadOnlyList<LeetCodeOperation> script, Func<MinStackSolution.IMinStackOperations> createStack)
     {
-        var stack = MinStackSolution.CreateByStackPrimitive();
+        var stack = createStack();
         var results = new List<int?>(script.Count);
 
         foreach (var operation in script)
@@ -86,7 +97,7 @@ internal sealed class MinStackRegistration : ILeetCodeProblemRegistration
         return results;
     }
 
-    private static int? Apply(MinStackSolution.MinStackOperations stack, LeetCodeOperation operation)
+    private static int? Apply(MinStackSolution.IMinStackOperations stack, LeetCodeOperation operation)
     {
         switch (operation.Name)
         {

@@ -12,7 +12,8 @@ internal sealed class MergeTwoSortedListsRegistration : ILeetCodeProblemRegistra
 {
     public LeetCodeProblem Describe()
         => LeetCodeProblem.For<(int[] First, int[] Second), int[]>("merge-two-sorted-lists")
-            .Strategy("DummyHeadSplice", Merge)
+            .Strategy("DummyHeadSplice", MergeByDummyHeadSplice)
+            .Strategy("RecursiveSelection", MergeByRecursiveSelection)
             .MatchingAnswersWith(LeetCodeAnswers.IsSequenceEqual)
             .Case("example-1", ([1, 2, 4], [1, 3, 4]), [1, 1, 2, 3, 4, 4])
             .Case("example-2", ([], []), [])
@@ -29,11 +30,24 @@ internal sealed class MergeTwoSortedListsRegistration : ILeetCodeProblemRegistra
                  [.. Enumerable.Range(0, 2000).Select(value => (value * 2) + 1)]))
             .Build();
 
-    private static int[] Merge((int[] First, int[] Second) input)
+    private static int[] MergeByDummyHeadSplice((int[] First, int[] Second) input)
     {
         var first = LeetCodeWireFormat.ToLinkedList(input.First);
         var second = LeetCodeWireFormat.ToLinkedList(input.Second);
         var merged = MergeTwoSortedListsSolution.MergeByDummyHeadSplice(first, second);
+
+        return LeetCodeWireFormat.FromLinkedList(merged);
+    }
+
+    // The conversion is spelled out again rather than shared with the arm above because the two
+    // arms live in the solution, not here: a helper factoring the boundary out would have to take
+    // the merge as a delegate, and then the case that failed would no longer read as the strategy
+    // it names.
+    private static int[] MergeByRecursiveSelection((int[] First, int[] Second) input)
+    {
+        var first = LeetCodeWireFormat.ToLinkedList(input.First);
+        var second = LeetCodeWireFormat.ToLinkedList(input.Second);
+        var merged = MergeTwoSortedListsSolution.MergeByRecursiveSelection(first, second);
 
         return LeetCodeWireFormat.FromLinkedList(merged);
     }

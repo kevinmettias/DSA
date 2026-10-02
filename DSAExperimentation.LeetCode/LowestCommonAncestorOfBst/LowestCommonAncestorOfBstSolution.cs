@@ -11,9 +11,40 @@ namespace DSAExperimentation.LeetCode.LowestCommonAncestorOfBst;
 // generic tree LCA engine composes directly over a BinaryTreeNode<int>'s Left/Right
 // shape with zero BST-specific code of its own, the same "generic engines are a
 // free win" payoff phase 1 of this repo's tree work already found for traversal/
-// metrics/paths. Only one strategy exists in this repo's coverage today.
+// metrics/paths.
 internal static class LowestCommonAncestorOfBstSolution
 {
+    // The textbook arm the generic engine is measured against: descend from the root using the
+    // BST ordering alone, going left while both targets sit below the current value and right
+    // while both sit above it. It needs no parent links and no two-pass walk, which is exactly
+    // what the ordering is worth - and the reason it cannot answer the same question on a tree
+    // that is not ordered.
+    public static BinaryTreeNode<int>? FindLcaByBstValueComparison(
+        BinaryTreeNode<int> root, BinaryTreeNode<int> first, BinaryTreeNode<int> second)
+    {
+        var current = root;
+
+        while (true)
+        {
+            var goLeft = first.Value < current.Value && second.Value < current.Value;
+
+            if (goLeft || (first.Value > current.Value && second.Value > current.Value))
+            {
+                var next = goLeft ? current.Left : current.Right;
+
+                if (next is null)
+                {
+                    return null;
+                }
+
+                current = next;
+                continue;
+            }
+
+            return current;
+        }
+    }
+
     public static BinaryTreeNode<int>? FindLcaByAncestryWalk(
         BinaryTreeNode<int> root, BinaryTreeNode<int> first, BinaryTreeNode<int> second) =>
         LowestCommonAncestor.Find<
