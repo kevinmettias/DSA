@@ -92,9 +92,18 @@ Requires the .NET 10 SDK.
 # the core library's tests (the full suite is in three test projects)
 dotnet test DSAExperimentation.Tests/DSAExperimentation.Tests.csproj
 
-# benchmark every strategy for one problem
+# record a benchmark run: every strategy for one problem
 dotnet run -c Release --project DSAExperimentation.Benchmarks -- --filter "*AccountsMerge*"
+
+# check that a harness runs, without recording anything: one dry iteration
+dotnet run -c Release --project DSAExperimentation.Benchmarks -- --filter "*AccountsMerge*" --job dry
 ```
+
+A recorded run uses the job `BenchmarkConfig` pins — 6 warmups, 15 iterations — and writes to
+`BenchmarkDotNet.Artifacts/`. The `-report-full.json` file beside the readable Markdown and CSV
+reports is the machine-comparable one; it is what a baseline is compared against. Passing `--job`
+replaces the pinned job rather than adding to it, so a run whose numbers you intend to keep should
+not pass one.
 
 ## Layout
 
