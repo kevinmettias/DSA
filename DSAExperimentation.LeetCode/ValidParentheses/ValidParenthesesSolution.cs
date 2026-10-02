@@ -15,6 +15,44 @@ internal static class ValidParenthesesSolution
         ['}'] = '{',
     };
 
+    // The naive arm the single-scan stack is measured against: repeatedly delete any
+    // adjacent matching pair and re-scan until nothing changes. Deleting adjacent
+    // matched pairs never changes the verdict, so this agrees with the stack scan -
+    // but every pass re-walks the whole remaining string, which is exactly what the
+    // one-pass scan avoids.
+    public static bool IsValidByRepeatedPairRemoval(string brackets)
+    {
+        var remaining = new List<char>(brackets);
+
+        while (true)
+        {
+            var reduced = new List<char>(remaining.Count);
+            var removed = false;
+
+            for (var i = 0; i < remaining.Count; i++)
+            {
+                if (i + 1 < remaining.Count && IsMatchingPair(remaining[i], remaining[i + 1]))
+                {
+                    i++;
+                    removed = true;
+                    continue;
+                }
+
+                reduced.Add(remaining[i]);
+            }
+
+            if (!removed)
+            {
+                return remaining.Count == 0;
+            }
+
+            remaining = reduced;
+        }
+    }
+
+    private static bool IsMatchingPair(char opener, char closer) =>
+        (opener, closer) is ('(', ')') or ('[', ']') or ('{', '}');
+
     public static bool IsValidByBracketStack(string brackets)
     {
         var openers = new RepoCharStack();

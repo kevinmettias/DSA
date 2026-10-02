@@ -7,6 +7,22 @@ namespace DSAExperimentation.LeetCode.ClimbingStairs;
 // cache.
 internal static class ClimbingStairsSolution
 {
+    // The textbook arm the memoized recurrence is measured against: the identical
+    // recurrence rolled forward from two running totals, so it pays neither
+    // Memoizer's dictionary probe per state nor a call stack as deep as stepCount.
+    public static int CountWaysByIterativeRollingTotals(int stepCount)
+    {
+        var previous = 1; // ways(0)
+        var current = 1;  // ways(1)
+
+        for (var step = 2; step <= stepCount; step++)
+        {
+            (previous, current) = (current, previous + current);
+        }
+
+        return current;
+    }
+
     public static int CountWaysByMemoizedRecurrence(int stepCount) =>
         Memoizer.Memoize<int, int>(stepCount, new WaysFromPreviousTwoSteps());
 

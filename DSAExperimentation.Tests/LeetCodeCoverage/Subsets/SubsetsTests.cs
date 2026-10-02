@@ -28,4 +28,34 @@ public sealed partial class SubsetsTests
         var actualSet = actual.Select(subset => string.Join(",", subset)).ToHashSet();
         Assert.Equal(expectedSet, actualSet);
     }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindAllSubsetsByBitmask_LeetCodeExamples_ReturnsEverySubsetExactlyOnce(
+        int[] nums, int[][] expectedSubsets)
+    {
+        var actual = SubsetsSolution.FindAllSubsetsByBitmask(nums);
+
+        Assert.Equal(expectedSubsets.Length, actual.Count);
+
+        var expectedSet = expectedSubsets.Select(subset => string.Join(",", subset)).ToHashSet();
+        var actualSet = actual.Select(subset => string.Join(",", subset)).ToHashSet();
+        Assert.Equal(expectedSet, actualSet);
+    }
+
+    // The two arms are competing strategies for one question, so the property worth pinning is
+    // that they enumerate the same family of subsets rather than merely the same count.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindAllSubsets_AgreeOnEveryExample(int[] nums, int[][] expectedSubsets)
+    {
+        var byBacktrack = SubsetsSolution.FindAllSubsetsByBacktrack(nums)
+            .Select(subset => string.Join(",", subset))
+            .ToHashSet();
+        var byBitmask = SubsetsSolution.FindAllSubsetsByBitmask(nums)
+            .Select(subset => string.Join(",", subset))
+            .ToHashSet();
+
+        Assert.Equal(byBacktrack, byBitmask);
+    }
 }

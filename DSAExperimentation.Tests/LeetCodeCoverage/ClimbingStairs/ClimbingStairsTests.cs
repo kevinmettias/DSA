@@ -19,4 +19,17 @@ public sealed partial class ClimbingStairsTests
     public void CountWaysByMemoizedRecurrence_LeetCodeExamples_ReturnsDistinctClimbSequenceCount(
         int stepCount, int expected) =>
         Assert.Equal(expected, ClimbingStairsSolution.CountWaysByMemoizedRecurrence(stepCount));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountWaysByIterativeRollingTotals_LeetCodeExamples_ReturnsDistinctClimbSequenceCount(
+        int stepCount, int expected) =>
+        Assert.Equal(expected, ClimbingStairsSolution.CountWaysByIterativeRollingTotals(stepCount));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountWays_AgreeOnEveryExample(int stepCount, int expected) =>
+        Assert.Equal(
+            ClimbingStairsSolution.CountWaysByIterativeRollingTotals(stepCount),
+            ClimbingStairsSolution.CountWaysByMemoizedRecurrence(stepCount));
 }
