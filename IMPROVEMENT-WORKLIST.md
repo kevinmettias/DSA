@@ -96,8 +96,8 @@ that owes a direct test.
 ## P3 — Make benchmarking measurable
 
 **Done when:** a documented command reproduces a run, its baseline is in the repo, and a
-deliberate slowdown in one arm is detectable by comparing against it. — **the first three
-are met**; the tagging and the single-arm classes below are not.
+deliberate slowdown in one arm is detectable by comparing against it. — **met.** The only
+thing left below is the `[BenchmarkCategory]` tagging.
 
 **One place a run is configured — DONE** (`4e270441`). `BenchmarkConfig.For(args)` pins the
 recording job as explicit counts (6 warmups, 15 iterations, 1 launch) rather than as BDN's
@@ -140,22 +140,59 @@ synthetic data:
 Two fresh control runs were made (unchanged code, same filter, exit 0 expected): the first
 found the allocation bug, the second was clean.
 
-**Still open** — both of these were survey-reported in the first draft and are now measured;
-both were wrong, and in the direction that matters:
+**Still open — one item**, measured rather than trusted from the first draft:
 
 - **No `[BenchmarkCategory]` anywhere** across 1,111 classes, so results still cannot be
   sliced. One write per file; bulk multi-file rewrites are refused in this repo, so this wants
   a scripted pass or a decision to tag by folder.
-- **48 classes have a single arm, not 27** — 1,106 per-problem classes plus 4 in
-  `StrategySwaps/` plus the generic `LeetCodeProblemBenchmarks` at the root (a registry
-  harness, not a per-problem class, so not a candidate). Of the 47 per-problem ones, **18
-  carry a lone `[Benchmark(Baseline = true)]`**, which reports a ratio of exactly 1.00 by
-  construction — not 7. 2026-10-01, by counting `[Benchmark` per file.
-- **At least two of the 47 are deliberate.** P4 explicitly decided `ImplementTrieBenchmarks`
-  and `BinarySearchTreeIteratorBenchmarks` stay single-arm, because those solutions return the
-  repo's own structures and a rival written in the harness would time something the
-  architecture does not have. So this is 45 candidates, not 47, and each needs the same
-  judgement rather than a blanket second arm.
+
+**Single-arm classes — resolved this session.** The first draft's survey was wrong about the
+size, in the direction that mattered, so the numbers below are re-measured:
+
+- **48 → 24, and the 24 are each deliberate — DONE** (`a26df9c8`). The
+  first draft said 27; the measured figure was 47 per-problem classes plus the generic
+  `LeetCodeProblemBenchmarks` at the root (a registry harness, not a per-problem class). Of
+  the 47, **18 carried a lone `[Benchmark(Baseline = true)]`**, which reports a ratio of
+  exactly 1.00 by construction — not 7. 24 of the 47 were armed, leaving **23 per-problem
+  single-arm (12 of them lone-baseline)**. Count `[Benchmark` **anchored to line start**:
+  unanchored it also matches the prose in these very class comments ("the two `[Benchmark]`
+  arms were unwired stubs") and inflates the count.
+- **What "armed" means.** A genuinely different textbook approach was added as a second arm
+  wherever the benchmark returns a BCL type. The pre-existing arm kept the work and took
+  `Baseline = true`; the new arm sits first in the solution class (§17.3); every class gained
+  the agreeing-property test a two-arm harness needs, and the solution test gained the same
+  for the new strategy. `MajorityElement` and `MajorityElementII` were hand-written first as
+  the pattern's proof, then 22 more by three parallel agents editing only. Full suite green:
+  **11,323 + 117 + 3,789**, 0 failures.
+- **The 23 that remain are deliberate, classified rather than assumed.** 11 return a
+  solution-local or repo type (`object?` for a `ListNode`/`TreeNode`, or a mutation-typed
+  answer) so a rival would have to be written in the harness and time something the
+  architecture does not have — `ConstructBinaryTreeFrom{PreorderAndInorder,
+  InorderAndPostorder}Traversal`, `ConvertSorted{Array,List}ToBinarySearchTree`,
+  `CopyListWithRandomPointer`, `InsertionSortList`, `IntersectionOfTwoLinkedLists`,
+  `LowestCommonAncestorOfABinaryTree`, `ReorderList`, `ReverseLinkedList`, `SortList`. 2
+  are `void` because the mutation *is* the answer (`DeleteNodeInALinkedList`,
+  `InvertBinaryTree`). 4 are stateful structures or one-tricks, not algorithms
+  (`BinarySearchTreeIterator`, `ImplementQueueUsingStacks`, `ImplementTrie`,
+  `TrafficSignalColor`). 4 have only a strawman alternate — `ProductOfArrayExceptSelf`'s
+  division arm breaks on zeros, and `BinaryTreeMaximumPathSum`/`EvaluateReversePolishNotation`
+  have no honest rival; `FruitsIntoBasketsII`'s proposed arm answers a *different* question
+  (see below). 2 are deliberate: `SubsetsII` and `ValidateBinarySearchTree`.
+- **`FruitsIntoBasketsII` — the arm I proposed was wrong, and it is worth recording why.**
+  The natural alternate is a smallest-fit greedy; the problem requires *leftmost* fit, and
+  they disagree. LC example 1: fruits `[4,2,5]` into baskets `[3,5,4]` leaves **1** unplaced
+  (leftmost fit puts 4 in basket 1, 2 in basket 2, 5 nowhere), while smallest-fit leaves
+  **0**. Forcing it in would have made the two arms time two different problems.
+- **`ValidateBinarySearchTree` is left single-arm on its role, not its merits.** It is the
+  only one of the ten registered problems with exactly one strategy, so it is the sole
+  witness of the one-strategy path in both registry theories. Arming it would delete that
+  coverage, not add a comparison. `SubsetsII`'s former `IterativeDedup` arm is a *documented
+  removal* ("dead code wrapping the one real strategy"), not a survivor to extend.
+- **Known redundancy, flagged not fixed.** `InterleavingStringTests` still exercises a
+  private reimplementation of the memoized arm (a local `CanBuild : IRecurrence<…>`) in
+  `IsInterleave_LeetCodeExamples_ReturnsExpected`, alongside the new theories that call the
+  real arms. It is additive, not wrong, but it is a duplicate of arm 1 that could now be
+  deleted.
 - **README's "7,171 test methods"** counts `[Fact]`/`[Theory]` attributes; the three test
   projects hold 7,058 today. Close enough to be a definitional difference, so it is flagged
   rather than changed — the figure is a P0 doc-truth item.
