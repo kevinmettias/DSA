@@ -3,10 +3,12 @@ using DSAExperimentation.LeetCode.ValidPalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is ValidPalindromeSolution's, the same method
-// ValidPalindromeTests proves correct. Pre-migration this class was an
-// untested compile-smoke placeholder (`Baseline() => 1`,
-// `PrimitiveComposed() => 1`) rather than a second strategy to reconcile.
+// Harness only: both arms are ValidPalindromeSolution's, the same methods
+// ValidPalindromeTests proves correct. Pre-migration this class was an untested
+// compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`)
+// rather than a second strategy to reconcile. The operand is punctuation and
+// casing noise around a true palindrome, so neither arm can resolve on the
+// first pair.
 [MemoryDiagnoser]
 public class ValidPalindromeBenchmarks
 {
@@ -16,4 +18,7 @@ public class ValidPalindromeBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool IsPalindromeByTwoPointerScan() => ValidPalindromeSolution.IsPalindromeByTwoPointerScan(Value);
+
+    [Benchmark]
+    public bool NormalizedReversal() => ValidPalindromeSolution.IsPalindromeByNormalizedReversal(Value);
 }

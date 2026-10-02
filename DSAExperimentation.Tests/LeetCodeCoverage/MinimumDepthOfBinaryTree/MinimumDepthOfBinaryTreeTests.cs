@@ -4,12 +4,13 @@ using DSAExperimentation.LeetCode.MinimumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MinimumDepthOfBinaryTree;
 
-// Harness only. The single recursive strategy lives in
-// MinimumDepthOfBinaryTreeSolution and is asserted against LeetCode's published
-// examples, the original test's right-skewed case, and the empty-tree edge case
-// none of the pre-migration files exercised. BinaryTreeNode<int> is internal, so -
-// as in SameTreeTests - it stays out of a public TheoryData signature and
-// LeetCodeWireFormat.ToBinaryTree reconstructs it from LeetCode's own level-order-with-null array shape.
+// Harness only. Both strategies live in MinimumDepthOfBinaryTreeSolution - the
+// recursive walk and the level-order walk - and are asserted against LeetCode's
+// published examples, the original test's right-skewed case, and the empty-tree
+// edge case none of the pre-migration files exercised. BinaryTreeNode<int> is
+// internal, so - as in SameTreeTests - it stays out of a public TheoryData
+// signature and LeetCodeWireFormat.ToBinaryTree reconstructs it from LeetCode's own
+// level-order-with-null array shape.
 public sealed partial class MinimumDepthOfBinaryTreeTests
 {
     public static TheoryData<int?[], int> Examples =>
@@ -35,4 +36,23 @@ public sealed partial class MinimumDepthOfBinaryTreeTests
 
         Assert.Equal(expectedDepth, depth);
     }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinDepthByBreadthFirstSearch_Examples_ReturnsShortestLeafDepth(int?[] values, int expectedDepth)
+    {
+        var depth = MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstSearch(LeetCodeWireFormat.ToBinaryTree(values));
+
+        Assert.Equal(expectedDepth, depth);
+    }
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they return the same depth on every example - not merely that
+    // each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinDepth_AgreeOnEveryExample(int?[] values, int expectedDepth) =>
+        Assert.Equal(
+            MinimumDepthOfBinaryTreeSolution.MinDepthByRecursion(LeetCodeWireFormat.ToBinaryTree(values)),
+            MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstSearch(LeetCodeWireFormat.ToBinaryTree(values)));
 }

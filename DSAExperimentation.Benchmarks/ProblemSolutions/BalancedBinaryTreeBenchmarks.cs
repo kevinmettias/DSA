@@ -4,12 +4,13 @@ using DSAExperimentation.LeetCode.BalancedBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is BalancedBinaryTreeSolution's, the same
-// method BalancedBinaryTreeTests proves correct. The original benchmark's
-// two [Benchmark] arms (HeightCheck, BinaryTreeNodeCheck) called the exact
-// same private helper - one real strategy, not two - so there is only one
-// arm here too, mirroring ConvertSortedArrayToBinarySearchTreeBenchmarks'
-// precedent for a single-strategy problem.
+// Harness only: both arms are BalancedBinaryTreeSolution's, the same methods
+// BalancedBinaryTreeTests proves correct. The original benchmark's two [Benchmark]
+// arms (HeightCheck, BinaryTreeNodeCheck) called the exact same private helper - one
+// real strategy, not two - so the pair here is that bottom-up single-pass recursion
+// against the genuinely different top-down check, which re-measures each subtree's
+// height once per ancestor. The built tree is balanced, so the top-down arm cannot
+// bail out early and pays its full O(n log n) cost.
 [MemoryDiagnoser]
 public class BalancedBinaryTreeBenchmarks
 {
@@ -31,4 +32,7 @@ public class BalancedBinaryTreeBenchmarks
 
     [Benchmark(Baseline = true)]
     public bool IsBalancedByHeightRecursion() => BalancedBinaryTreeSolution.IsBalancedByHeightRecursion(_root);
+
+    [Benchmark]
+    public bool TopDownHeightCheck() => BalancedBinaryTreeSolution.IsBalancedByTopDownHeightCheck(_root);
 }

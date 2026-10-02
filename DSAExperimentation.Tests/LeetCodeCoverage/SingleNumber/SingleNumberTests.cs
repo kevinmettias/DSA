@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.SingleNumber;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SingleNumber;
 
-// Harness only: the one strategy lives in SingleNumberSolution and is asserted
+// Harness only: both strategies live in SingleNumberSolution and are asserted
 // against LeetCode's published examples plus a single-element case and a
 // negative-value case.
 public sealed partial class SingleNumberTests
@@ -20,4 +20,19 @@ public sealed partial class SingleNumberTests
     [MemberData(nameof(Examples))]
     public void FindUniqueByXorFold_LeetCodeExamples_ReturnsTheUnpairedValue(int[] nums, int expected) =>
         Assert.Equal(expected, SingleNumberSolution.FindUniqueByXorFold(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindUniqueBySetToggling_LeetCodeExamples_ReturnsTheUnpairedValue(int[] nums, int expected) =>
+        Assert.Equal(expected, SingleNumberSolution.FindUniqueBySetToggling(nums));
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they name the same survivor on every example - not merely that
+    // each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FindUnique_AgreeOnEveryExample(int[] nums, int expected) =>
+        Assert.Equal(
+            SingleNumberSolution.FindUniqueByXorFold(nums),
+            SingleNumberSolution.FindUniqueBySetToggling(nums));
 }

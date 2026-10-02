@@ -2,10 +2,10 @@ using DSAExperimentation.LeetCode.TwoSumIIInputArrayIsSorted;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.TwoSumIIInputArrayIsSorted;
 
-// Harness only. OffsetSequence is DataStructures.Sequence's and the one strategy
-// here is TwoSumIIInputArrayIsSortedSolution's - this file just pins it to
-// LeetCode's published examples, including a duplicate-valued array to prove the
-// binary search still lands on the correct pair, not merely some equal value.
+// Harness only. OffsetSequence is DataStructures.Sequence's and both strategies
+// here are TwoSumIIInputArrayIsSortedSolution's - this file just pins them to
+// LeetCode's published examples, including a duplicate-valued array to prove both
+// arms still land on the correct pair, not merely some equal value.
 public sealed partial class TwoSumIIInputArrayIsSortedTests
 {
     public static TheoryData<int[], int, int[]> Examples =>
@@ -26,4 +26,24 @@ public sealed partial class TwoSumIIInputArrayIsSortedTests
 
         Assert.Equal(expected, indices);
     }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TryFindIndicesByTwoPointerSqueeze_LeetCodeExamples_ReturnsOneBasedIndices(
+        int[] nums, int target, int[] expected)
+    {
+        var indices = TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByTwoPointerSqueeze(nums, target);
+
+        Assert.Equal(expected, indices);
+    }
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they report the same pair on every example - not merely that
+    // each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void TryFindIndices_AgreeOnEveryExample(int[] nums, int target, int[] expected) =>
+        Assert.Equal(
+            TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByBinarySearch(nums, target),
+            TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByTwoPointerSqueeze(nums, target));
 }

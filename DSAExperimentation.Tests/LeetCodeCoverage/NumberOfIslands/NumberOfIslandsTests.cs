@@ -2,8 +2,9 @@ using DSAExperimentation.LeetCode.NumberOfIslands;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.NumberOfIslands;
 
-// Harness only. The flood-fill count is NumberOfIslandsSolution's; this file
-// just pins it to LeetCode's published examples plus the original coverage grid.
+// Harness only. Both flood-fill strategies are NumberOfIslandsSolution's; this file
+// just pins them to LeetCode's published examples plus the original coverage grid.
+// Neither arm mutates the grid, so the same grid can be handed to both.
 public sealed partial class NumberOfIslandsTests
 {
     public static TheoryData<char[][], int> Examples =>
@@ -47,4 +48,20 @@ public sealed partial class NumberOfIslandsTests
     public void CountIslandsByDepthFirstSink_LeetCodeExamples_ReturnsComponentCount(
         char[][] grid, int expected) =>
         Assert.Equal(expected, NumberOfIslandsSolution.CountIslandsByDepthFirstSink(grid));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountIslandsByBreadthFirstSink_LeetCodeExamples_ReturnsComponentCount(
+        char[][] grid, int expected) =>
+        Assert.Equal(expected, NumberOfIslandsSolution.CountIslandsByBreadthFirstSink(grid));
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they name the same count on every example - not merely that each
+    // agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountIslands_AgreeOnEveryExample(char[][] grid, int expected) =>
+        Assert.Equal(
+            NumberOfIslandsSolution.CountIslandsByDepthFirstSink(grid),
+            NumberOfIslandsSolution.CountIslandsByBreadthFirstSink(grid));
 }

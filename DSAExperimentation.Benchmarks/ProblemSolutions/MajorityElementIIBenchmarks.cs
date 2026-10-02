@@ -3,14 +3,14 @@ using DSAExperimentation.LeetCode.MajorityElementII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the one arm is MajorityElementIISolution's, the same method
+// Harness only: both arms are MajorityElementIISolution's, the same methods
 // MajorityElementIITests proves correct. The original benchmark's two
 // [Benchmark] arms were unwired stubs (each just returned the literal 1), so
 // there was nothing to preserve from them beyond the fact that this benchmark
 // exists. Two disjoint majority values each fill just over a third of the array,
 // with the remainder random noise disjoint from both, all shuffled together - so
 // the HashMap count has to walk most of the array before either winner crosses
-// the n/3 threshold.
+// the n/3 threshold, and the voting arm has to walk it twice.
 [MemoryDiagnoser]
 public class MajorityElementIIBenchmarks
 {
@@ -61,6 +61,10 @@ public class MajorityElementIIBenchmarks
         return [.. values.OrderBy(_ => random.Next())];
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public List<int> HashMapCount() => MajorityElementIISolution.MajorityByHashMap(_nums);
+
+    [Benchmark]
+    public List<int> ExtendedBoyerMooreVoting() =>
+        MajorityElementIISolution.MajorityByExtendedBoyerMooreVoting(_nums);
 }

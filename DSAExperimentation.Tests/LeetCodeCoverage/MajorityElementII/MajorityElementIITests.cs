@@ -2,8 +2,8 @@ using DSAExperimentation.LeetCode.MajorityElementII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MajorityElementII;
 
-// Harness only. The one strategy here is MajorityElementIISolution's - this file
-// pins it to LeetCode's published examples plus the no-winner and two-winner
+// Harness only. Both strategies here are MajorityElementIISolution's - this file
+// pins them to LeetCode's published examples plus the no-winner and two-winner
 // edges the original two-example test left uncovered. Order is unconstrained by
 // the problem statement, so both sides are sorted before comparing.
 public sealed partial class MajorityElementIITests
@@ -22,4 +22,21 @@ public sealed partial class MajorityElementIITests
     [MemberData(nameof(Examples))]
     public void MajorityByHashMap_LeetCodeExamples_ReturnsElementsOverNThirds(int[] nums, int[] expected) =>
         Assert.Equal(expected.Order(), MajorityElementIISolution.MajorityByHashMap(nums).Order());
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MajorityByExtendedBoyerMooreVoting_LeetCodeExamples_ReturnsElementsOverNThirds(
+        int[] nums, int[] expected) =>
+        Assert.Equal(expected.Order(), MajorityElementIISolution.MajorityByExtendedBoyerMooreVoting(nums).Order());
+
+    // The two arms are competing strategies for one question, and the voting arm is the
+    // one that leans on the "at most two such values" bound the other ignores - so the
+    // property worth pinning is that both name the same set, not merely that each agrees
+    // with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Majority_AgreeOnEveryExample(int[] nums, int[] expected) =>
+        Assert.Equal(
+            MajorityElementIISolution.MajorityByHashMap(nums).Order(),
+            MajorityElementIISolution.MajorityByExtendedBoyerMooreVoting(nums).Order());
 }

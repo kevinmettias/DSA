@@ -159,8 +159,15 @@ both were wrong, and in the direction that matters:
 - **README's "7,171 test methods"** counts `[Fact]`/`[Theory]` attributes; the three test
   projects hold 7,058 today. Close enough to be a definitional difference, so it is flagged
   rather than changed — the figure is a P0 doc-truth item.
-- 98 classes have no `[GlobalSetup]`; 26 have no `[Params]` — timed-region input construction
-  is not structurally prevented.
+- **The "98 classes have no `[GlobalSetup]`" item is not a gap — measured, and withdrawn.**
+  There are 99 per-problem classes without one (`[BenchmarkCategory` occurrences: 0, so that
+  half of the item stands). But reading them shows why: a solution whose input is a scalar
+  takes it from `[Params]` directly (`AddDigitsByArithmetic(Value)`), so there is nothing to
+  build and nothing constructed inside the timed region. `[GlobalSetup]` is for the classes
+  that *do* build a tree, grid or list — which is exactly the ones that have it. The real
+  question is not "how many lack a setup" but "does any timed method construct a non-trivial
+  input", and that is unmeasured. 26 classes have no `[Params]`; that one is real, and those
+  are candidates for the same `[Params(8)]` treatment P4 gave the two N-Queens suites.
 
 ---
 

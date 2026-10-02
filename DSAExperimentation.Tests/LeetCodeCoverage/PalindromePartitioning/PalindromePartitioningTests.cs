@@ -2,8 +2,10 @@ using DSAExperimentation.LeetCode.PalindromePartitioning;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioning;
 
-// Harness only. PalindromePartitioningSolution owns the backtracking walk; this
-// file pins it to LeetCode's published examples.
+// Harness only. Both strategies live in PalindromePartitioningSolution - the
+// backtracking walk and the precomputed-table walk - so this file pins them to
+// LeetCode's published examples and to each other. Partition order is not part of
+// LeetCode's contract, so each result is checked as a set of partitions.
 public sealed partial class PalindromePartitioningTests
 {
     public static TheoryData<string, string[][]> Examples =>
@@ -18,6 +20,35 @@ public sealed partial class PalindromePartitioningTests
     public void PartitionByBacktracking_LeetCodeExamples_ReturnsEveryPalindromePartition(
         string text, string[][] expected) =>
         AssertSamePartitions(expected, PalindromePartitioningSolution.PartitionByBacktracking(text));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void PartitionByPrecomputedPalindromeTable_LeetCodeExamples_ReturnsEveryPalindromePartition(
+        string text, string[][] expected) =>
+        AssertSamePartitions(expected, PalindromePartitioningSolution.PartitionByPrecomputedPalindromeTable(text));
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they return the same partitions on every example - not merely
+    // that each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Partition_AgreeOnEveryExample(string text, string[][] expected) =>
+        AssertSamePartitionsBetween(
+            PalindromePartitioningSolution.PartitionByBacktracking(text),
+            PalindromePartitioningSolution.PartitionByPrecomputedPalindromeTable(text));
+
+    private static void AssertSamePartitionsBetween(List<List<string>> first, List<List<string>> second)
+    {
+        var firstArrays = first.Select(x => x.ToArray()).ToArray();
+        var secondArrays = second.Select(x => x.ToArray()).ToArray();
+
+        Assert.Equal(firstArrays.Length, secondArrays.Length);
+
+        foreach (var partition in firstArrays)
+        {
+            Assert.Contains(secondArrays, x => x.SequenceEqual(partition));
+        }
+    }
 
     private static void AssertSamePartitions(string[][] expected, List<List<string>> actual)
     {

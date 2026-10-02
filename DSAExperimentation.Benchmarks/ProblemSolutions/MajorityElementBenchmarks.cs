@@ -3,11 +3,12 @@ using DSAExperimentation.LeetCode.MajorityElement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the one arm is MajorityElementSolution's, the same method
+// Harness only: both arms are MajorityElementSolution's, the same methods
 // MajorityElementTests proves correct. The majority value fills just over half
 // the array and the rest is random noise disjoint from it, shuffled together, so
 // the HashMap count has to walk most of the array before any key crosses the
-// n/2 threshold.
+// n/2 threshold - while the voting arm has to walk all of it, never once being
+// spared the n/2 shortcut the count gets.
 [MemoryDiagnoser]
 public class MajorityElementBenchmarks
 {
@@ -40,6 +41,9 @@ public class MajorityElementBenchmarks
         _nums = [.. values.OrderBy(_ => random.Next())];
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int HashMapCount() => MajorityElementSolution.MajorityByHashMap(_nums);
+
+    [Benchmark]
+    public int BoyerMooreVoting() => MajorityElementSolution.MajorityByBoyerMooreVoting(_nums);
 }

@@ -3,11 +3,13 @@ using DSAExperimentation.LeetCode.SingleNumberII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the one arm is SingleNumberIISolution's, the same method
+// Harness only: both arms are SingleNumberIISolution's, the same methods
 // SingleNumberIITests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (Baseline() => 1, PrimitiveComposed() => 1) rather
 // than a second strategy to reconcile - there was only ever one algorithm here,
-// written once in the test and never actually exercised by the benchmark.
+// written once in the test and never actually exercised by the benchmark. The
+// mod-three sweep scans the array once per bit; the two-bit-counter arm scans it
+// once in total.
 [MemoryDiagnoser]
 public class SingleNumberIIBenchmarks
 {
@@ -41,6 +43,9 @@ public class SingleNumberIIBenchmarks
         _nums = [.. values.OrderBy(_ => random.Next())];
     }
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int BitCountModThree() => SingleNumberIISolution.FindSingleByBitCountModThree(_nums);
+
+    [Benchmark]
+    public int TwoBitCounters() => SingleNumberIISolution.FindSingleByTwoBitCounters(_nums);
 }

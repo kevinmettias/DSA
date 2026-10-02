@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for WordBreakBenchmarks (ARCHITECTURE 17.9). The class has a single arm, so there
-// is no second answer to compare against: the assertion is the decisive value its own comment names,
-// a source that tiles one dictionary word and is therefore segmentable end to end - the full-scan
-// case, not an early bail-out on a dead prefix.
+// Harness coverage for WordBreakBenchmarks (ARCHITECTURE 17.9). Its two arms are competing
+// strategies for the same question - the Trie + Memoizer composition and the bottom-up reachability
+// sweep - so a harness whose arms disagree is segmenting two different strings: both must report the
+// same answer. The decisive value is the one its own comment names - a source that tiles one
+// dictionary word and is therefore segmentable end to end, the full-scan case rather than an early
+// bail-out on a dead prefix.
 public sealed partial class WordBreakBenchmarksTests
 {
     private const int SmallestLength = 600;
@@ -19,6 +21,18 @@ public sealed partial class WordBreakBenchmarksTests
     [Fact]
     public void CanBreakByTrieMemoized_TiledDictionaryWord_SegmentsTheWholeSource() =>
         Assert.True(BuildHarness().CanBreakByTrieMemoized());
+
+    [Fact]
+    public void IterativeReachability_TiledDictionaryWord_SegmentsTheWholeSource() =>
+        Assert.True(BuildHarness().IterativeReachability());
+
+    [Fact]
+    public void IterativeReachability_AgreesWithCanBreakByTrieMemoized()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(harness.CanBreakByTrieMemoized(), harness.IterativeReachability());
+    }
 
     private static WordBreakBenchmarks BuildHarness()
     {

@@ -4,11 +4,12 @@ using DSAExperimentation.LeetCode.RepeatedDNASequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is RepeatedDNASequencesSolution's fixed-window
-// scan, the same method RepeatedDNASequencesTests proves correct. Sequence
-// length is swept via [Params]; DnaSequenceWorkloads owns generating a random
-// A/C/G/T string of that length so construction is charged to [GlobalSetup]
-// rather than to the scan being measured.
+// Harness only: both arms are RepeatedDNASequencesSolution's, the same methods
+// RepeatedDNASequencesTests proves correct. Sequence length is swept via
+// [Params]; DnaSequenceWorkloads owns generating a random A/C/G/T string of that
+// length so construction is charged to [GlobalSetup] rather than to the scan
+// being measured. The fixed-window arm allocates a 10-character substring per
+// position; the mask arm rolls a 20-bit integer instead.
 [MemoryDiagnoser]
 public class RepeatedDNASequencesBenchmarks
 {
@@ -22,6 +23,9 @@ public class RepeatedDNASequencesBenchmarks
     [GlobalSetup]
     public void Setup() => _sequence = DnaSequenceWorkloads.BuildSequence(Length, Seed);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public List<string> FixedWindowSet() => RepeatedDNASequencesSolution.FindByFixedWindowSet(_sequence);
+
+    [Benchmark]
+    public List<string> RollingTwoBitMask() => RepeatedDNASequencesSolution.FindByRollingTwoBitMask(_sequence);
 }

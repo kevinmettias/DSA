@@ -3,12 +3,13 @@ using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for BinaryTreeRightSideViewBenchmarks (ARCHITECTURE 17.9): the class has a single
-// arm, so there is no second strategy to reconcile it against and the assertion has to come from the
-// workload instead. Fixtures.BinaryTrees.Balanced makes the answer decisive: node values are their
-// heap indices, so level d holds indices [2^d - 1, 2^(d+1) - 2] and the right side view is the last
-// index on each level, clipped to the node count when the bottom level is partial. AnswerText.Of,
-// not OfUnorderedSet: one value per level with the levels in order is what a right side view is.
+// Harness coverage for BinaryTreeRightSideViewBenchmarks (ARCHITECTURE 17.9). Its two arms are
+// competing strategies for the same question - the buffered-level BFS and the right-first DFS - so a
+// harness whose arms disagree is reading two different trees: both must return the same view.
+// Fixtures.BinaryTrees.Balanced makes the answer decisive: node values are their heap indices, so
+// level d holds indices [2^d - 1, 2^(d+1) - 2] and the right side view is the last index on each
+// level, clipped to the node count when the bottom level is partial. AnswerText.Of, not
+// OfUnorderedSet: one value per level with the levels in order is what a right side view is.
 public sealed partial class BinaryTreeRightSideViewBenchmarksTests
 {
     private const int SmallestNodeCount = 255;
@@ -24,6 +25,22 @@ public sealed partial class BinaryTreeRightSideViewBenchmarksTests
         Assert.Equal(
             AnswerText.Of(ExpectedRightSideView(SmallestNodeCount)),
             AnswerText.Of(BuildHarness().LevelGroupedTraversal()));
+
+    [Fact]
+    public void DepthFirstRightFirst_CompleteTreeWithFullLevels_ReturnsTheRightmostIndexPerLevel() =>
+        Assert.Equal(
+            AnswerText.Of(ExpectedRightSideView(SmallestNodeCount)),
+            AnswerText.Of(BuildHarness().DepthFirstRightFirst()));
+
+    [Fact]
+    public void DepthFirstRightFirst_AgreesWithLevelGroupedTraversal()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(
+            AnswerText.Of(harness.LevelGroupedTraversal()),
+            AnswerText.Of(harness.DepthFirstRightFirst()));
+    }
 
     private static BinaryTreeRightSideViewBenchmarks BuildHarness()
     {

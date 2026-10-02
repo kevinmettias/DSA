@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.ReverseBits;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ReverseBits;
 
-// Harness only: the single strategy lives in ReverseBitsSolution and is asserted
+// Harness only: both strategies live in ReverseBitsSolution and are asserted
 // against LeetCode's published examples.
 public sealed partial class ReverseBitsTests
 {
@@ -17,4 +17,19 @@ public sealed partial class ReverseBitsTests
     [MemberData(nameof(Examples))]
     public void ReverseByBitShift_LeetCodeExamples_ReturnsReversedBitPattern(uint value, uint expected) =>
         Assert.Equal(expected, ReverseBitsSolution.ReverseByBitShift(value));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void ReverseByByteLookup_LeetCodeExamples_ReturnsReversedBitPattern(uint value, uint expected) =>
+        Assert.Equal(expected, ReverseBitsSolution.ReverseByByteLookup(value));
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they reverse to the same pattern on every example - not merely
+    // that each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Reverse_AgreeOnEveryExample(uint value, uint expected) =>
+        Assert.Equal(
+            ReverseBitsSolution.ReverseByBitShift(value),
+            ReverseBitsSolution.ReverseByByteLookup(value));
 }

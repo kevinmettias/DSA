@@ -2,10 +2,12 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for MajorityElementIIBenchmarks (ARCHITECTURE 17.9). There is one arm, so there
-// is no second strategy to agree with: the expected answer comes from the fixture instead. Setup
-// seeds two disjoint values, each (Length / 3) + 1 times - a strict third apiece - and fills the
-// rest with noise disjoint from both, so exactly those two values exceed the floor(n/3) frequency
+// Harness coverage for MajorityElementIIBenchmarks (ARCHITECTURE 17.9). Its two arms are competing
+// strategies for the same question, so a harness whose arms disagree is timing two different
+// problems: the HashMap count's single pass and the two-candidate voting arm's pass plus recount
+// must still name the same values. Setup seeds two disjoint values, each (Length / 3) + 1 times -
+// a strict third apiece - and fills the rest with noise disjoint from both, so exactly those two
+// values exceed the floor(n/3) frequency
 // and nothing else does, and the same Length must rebuild the same array. AnswerText.OfUnorderedSet
 // renders that pair as a set because LC 229 fixes no order on the values it returns (its own
 // examples list them however the scan happens to find them), so the outer order here is genuinely
@@ -27,6 +29,22 @@ public sealed partial class MajorityElementIIBenchmarksTests
         Assert.Equal(
             AnswerText.OfUnorderedSet(ExpectedMajorityValues),
             AnswerText.OfUnorderedSet(BuildHarness().HashMapCount()));
+
+    [Fact]
+    public void ExtendedBoyerMooreVoting_TwoSeededThirdsOverDisjointNoise_ReturnsBothSeededValues() =>
+        Assert.Equal(
+            AnswerText.OfUnorderedSet(ExpectedMajorityValues),
+            AnswerText.OfUnorderedSet(BuildHarness().ExtendedBoyerMooreVoting()));
+
+    [Fact]
+    public void ExtendedBoyerMooreVoting_AgreesWithHashMapCount()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(
+            AnswerText.OfUnorderedSet(harness.HashMapCount()),
+            AnswerText.OfUnorderedSet(harness.ExtendedBoyerMooreVoting()));
+    }
 
     private static MajorityElementIIBenchmarks BuildHarness()
     {

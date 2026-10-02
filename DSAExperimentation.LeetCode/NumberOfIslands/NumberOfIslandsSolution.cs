@@ -13,8 +13,59 @@ namespace DSAExperimentation.LeetCode.NumberOfIslands;
 // island's traversal already covered; it also means the same grid can be
 // measured repeatedly without rebuilding it between benchmark invocations,
 // which the mutating version could not survive.
+//
+// Two strategies share that scan and that claimed set: the breadth-first sink below
+// drains an explicit queue in FIFO order, while the depth-first sink reaches the
+// same cells through DepthFirstSearch.Traverse's recursive walk. Both claim each
+// island's cells exactly once, so they must count the same islands.
 internal static class NumberOfIslandsSolution
 {
+    // The explicit-queue counterpart to the recursive sink below: the same scan starts
+    // one flood fill per still-unclaimed land cell, but the frontier is a Queue drained
+    // from the front rather than a call stack, so a long thin island cannot deepen the
+    // recursion. It shares Neighbors and the claimed set, so it observes exactly the
+    // cells the depth-first arm does; only the order it drains them in differs, which
+    // is what the pair exists to time.
+    public static int CountIslandsByBreadthFirstSink(char[][] grid)
+    {
+        var claimed = new HashSet<(int Row, int Col)>();
+        var count = 0;
+
+        for (var row = 0; row < grid.Length; row++)
+        {
+            for (var col = 0; col < grid[0].Length; col++)
+            {
+                if (grid[row][col] != '1' || !claimed.Add((row, col)))
+                {
+                    continue;
+                }
+
+                count++;
+                SinkFrom((row, col), grid, claimed);
+            }
+        }
+
+        return count;
+    }
+
+    // One island's own flood: the start is already claimed, and every unclaimed land
+    // neighbor Neighbors yields is claimed and queued in turn, so the frontier never
+    // carries a cell twice.
+    private static void SinkFrom((int Row, int Col) start, char[][] grid, HashSet<(int Row, int Col)> claimed)
+    {
+        var frontier = new Queue<(int Row, int Col)>();
+        frontier.Enqueue(start);
+
+        while (frontier.Count > 0)
+        {
+            foreach (var neighbor in Neighbors(frontier.Dequeue(), grid, claimed))
+            {
+                claimed.Add(neighbor);
+                frontier.Enqueue(neighbor);
+            }
+        }
+    }
+
     public static int CountIslandsByDepthFirstSink(char[][] grid)
     {
         var claimed = new HashSet<(int Row, int Col)>();

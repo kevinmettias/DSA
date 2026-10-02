@@ -1,7 +1,11 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.LeetCode.InterleavingString;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.InterleavingString;
 
+// Harness only. Both arms are InterleavingStringSolution's competing strategies for
+// one question - a memoized recursion over (i, j) offsets and a bottom-up rolling
+// row - pinned to LeetCode's published examples.
 public sealed partial class InterleavingStringTests
 {
     public static TheoryData<InterleavingCase> Examples =>
@@ -19,6 +23,34 @@ public sealed partial class InterleavingStringTests
 
         Assert.Equal(example.Expected, actual);
     }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsInterleaveByIterativeTable_LeetCodeExamples_ReturnsExpected(InterleavingCase example)
+    {
+        var actual = InterleavingStringSolution.IsInterleaveByIterativeTable(
+            example.Strings.First,
+            example.Strings.Second,
+            new InterleavingStringSolution.TargetText(example.Strings.Target));
+
+        Assert.Equal(example.Expected, actual);
+    }
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they answer the same on every example - not merely that each
+    // agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsInterleave_AgreeOnEveryExample(InterleavingCase example) =>
+        Assert.Equal(
+            InterleavingStringSolution.IsInterleaveByMemoizedRecursion(
+                example.Strings.First,
+                example.Strings.Second,
+                new InterleavingStringSolution.TargetText(example.Strings.Target)),
+            InterleavingStringSolution.IsInterleaveByIterativeTable(
+                example.Strings.First,
+                example.Strings.Second,
+                new InterleavingStringSolution.TargetText(example.Strings.Target)));
 
     private static bool IsInterleave(InterleavingStrings strings)
     {

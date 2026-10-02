@@ -2,8 +2,9 @@ using DSAExperimentation.LeetCode.PalindromePartitioningII;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromePartitioningII;
 
-// Harness only. PalindromePartitioningIISolution owns the memoized suffix
-// recurrence; this file pins it to LeetCode's published examples.
+// Harness only. Both strategies belong to PalindromePartitioningIISolution - the
+// memoized suffix recurrence and the bottom-up cut table; this file pins them to
+// LeetCode's published examples.
 public sealed partial class PalindromePartitioningIITests
 {
     public static TheoryData<string, int> Examples =>
@@ -19,4 +20,20 @@ public sealed partial class PalindromePartitioningIITests
     public void MinCutByMemoizedSuffixRecurrence_LeetCodeExamples_ReturnsMinimumCuts(
         string text, int expected) =>
         Assert.Equal(expected, PalindromePartitioningIISolution.MinCutByMemoizedSuffixRecurrence(text));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCutByIterativeDynamicProgramming_LeetCodeExamples_ReturnsMinimumCuts(
+        string text, int expected) =>
+        Assert.Equal(expected, PalindromePartitioningIISolution.MinCutByIterativeDynamicProgramming(text));
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they return the same cut count on every example - not merely
+    // that each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void MinCut_AgreeOnEveryExample(string text, int expected) =>
+        Assert.Equal(
+            PalindromePartitioningIISolution.MinCutByMemoizedSuffixRecurrence(text),
+            PalindromePartitioningIISolution.MinCutByIterativeDynamicProgramming(text));
 }

@@ -11,6 +11,25 @@ namespace DSAExperimentation.LeetCode.HouseRobber;
 // jump to i + 2.
 internal static class HouseRobberSolution
 {
+    // The textbook arm the memoized recurrence is measured against: the same
+    // skip-or-rob rule rolled forward over the street, carrying only the two best
+    // hauls the next house could build on. It pays neither a Memoizer dictionary
+    // probe per house nor a call stack as deep as the street.
+    public static int RobByIterativeRollingTotals(int[] nums)
+    {
+        var bestBeforePrevious = 0;
+        var bestPrevious = 0;
+
+        foreach (var value in nums)
+        {
+            var robThisHouse = bestBeforePrevious + value;
+            bestBeforePrevious = bestPrevious;
+            bestPrevious = Math.Max(bestPrevious, robThisHouse);
+        }
+
+        return bestPrevious;
+    }
+
     public static int RobByMemoizedRecursion(int[] nums) =>
         Memoizer.Memoize<int, int>(0, new BestHaulFromHouse(nums));
 

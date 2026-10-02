@@ -2,16 +2,16 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for TwoSumIIInputArrayIsSortedBenchmarks (ARCHITECTURE 17.9): the class carries a
-// single arm, so there is no second strategy to reconcile and the assertion has to be an oracle
-// rather than an agreement.
+// Harness coverage for TwoSumIIInputArrayIsSortedBenchmarks (ARCHITECTURE 17.9): both arms are
+// competing strategies for the same question - a per-index binary search and a two-pointer squeeze
+// - so a harness whose arms disagree is finding two different pairs.
 //
 // Setup's nums is 0..Length-1 and its target is 2 * Length - 3, which only nums[Length - 2] and
 // nums[Length - 1] sum to - every earlier index's complement is negative, outside the array's value
-// range - so the scan cannot resolve early and the one valid pair is the last two positions,
-// reported 1-indexed the way LC 167 asks. That is the decisive value asserted below, and because
-// the returned indices are derived from the array, asserting them also pins that the same Length
-// rebuilt the same workload.
+// range - so the binary-search arm cannot resolve early and the one valid pair is the last two
+// positions, reported 1-indexed the way LC 167 asks. That is the decisive value asserted below, and
+// because the returned indices are derived from the array, asserting them also pins that the same
+// Length rebuilt the same workload.
 public sealed partial class TwoSumIIInputArrayIsSortedBenchmarksTests
 {
     // The smaller of Setup's [Params(200, 5_000)] lengths.
@@ -32,6 +32,22 @@ public sealed partial class TwoSumIIInputArrayIsSortedBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(AnswerText.Of(ExpectedIndices), AnswerText.Of(harness.BinarySearch()));
+    }
+
+    [Fact]
+    public void TwoPointerSqueeze_SmallestLength_FindsTheLastTwoPositions()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(AnswerText.Of(ExpectedIndices), AnswerText.Of(harness.TwoPointerSqueeze()));
+    }
+
+    [Fact]
+    public void TwoPointerSqueeze_AgreesWithBinarySearch()
+    {
+        var harness = BuildHarness();
+
+        Assert.Equal(AnswerText.Of(harness.BinarySearch()), AnswerText.Of(harness.TwoPointerSqueeze()));
     }
 
     private static TwoSumIIInputArrayIsSortedBenchmarks BuildHarness()

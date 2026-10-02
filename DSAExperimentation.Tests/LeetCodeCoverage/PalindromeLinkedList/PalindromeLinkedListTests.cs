@@ -3,8 +3,10 @@ using DSAExperimentation.LeetCode.PalindromeLinkedList;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.PalindromeLinkedList;
 
-// Harness only. The single strategy is PalindromeLinkedListSolution's - this file
-// builds LeetCode's published examples as linked lists and checks the result.
+// Harness only. Two strategies live in PalindromeLinkedListSolution - the stack
+// reversal and the fast/slow in-place reversal - so this file builds LeetCode's
+// published examples as linked lists, checks both, and checks they agree. Each
+// example is built as a fresh list per arm.
 public sealed partial class PalindromeLinkedListTests
 {
     public static TheoryData<ListCase> Examples =>
@@ -26,6 +28,29 @@ public sealed partial class PalindromeLinkedListTests
         var isPalindrome = PalindromeLinkedListSolution.IsPalindromeByStackReversal(head);
 
         Assert.Equal(example.Expected, isPalindrome);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsPalindromeByFastSlowReversal_LeetCodeExamples_ReturnsExpected(ListCase example)
+    {
+        var head = BuildList(example.Values);
+        var isPalindrome = PalindromeLinkedListSolution.IsPalindromeByFastSlowReversal(head);
+
+        Assert.Equal(example.Expected, isPalindrome);
+    }
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they reach the same verdict on every example - not merely that
+    // each agrees with the expectation beside it. Each arm gets its own list.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void IsPalindrome_AgreeOnEveryExample(ListCase example)
+    {
+        var byStackReversal = PalindromeLinkedListSolution.IsPalindromeByStackReversal(BuildList(example.Values));
+        var byFastSlowReversal = PalindromeLinkedListSolution.IsPalindromeByFastSlowReversal(BuildList(example.Values));
+
+        Assert.Equal(byStackReversal, byFastSlowReversal);
     }
 
     private static SinglyLinkedListNode<int>? BuildList(int[] values)

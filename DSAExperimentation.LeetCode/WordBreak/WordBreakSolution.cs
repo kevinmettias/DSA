@@ -6,12 +6,45 @@ namespace DSAExperimentation.LeetCode.WordBreak;
 // LeetCode 139. Word Break: can s be segmented into a space-separated sequence of
 // one or more dictionary words?
 //
-// This repo's own Trie<bool> screens dictionary prefixes; Memoizer caches each
-// start index's segmentability so a shared suffix is only solved once - the same
+// Two strategies sit here. CanBreakByTrieMemoized composes this repo's own
+// Trie<bool> - screening dictionary prefixes - with Memoizer, which caches each
+// start index's segmentability so a shared suffix is only solved once; the same
 // composition this repo's Word Break II coverage extends to collect every sentence
-// instead of a single true/false.
+// instead of a single true/false. CanBreakByIterativeReachability rolls that
+// segmentability forward instead, marking every position a dictionary word reaches
+// from an already-reachable one.
 internal static class WordBreakSolution
 {
+    // The textbook arm the Trie + Memoizer composition is measured against: a
+    // bottom-up sweep marking every position reachable by a dictionary word from an
+    // already-reachable start, with a HashSet for whole-word membership. It slices
+    // the source at every boundary rather than screening increments through the
+    // trie, and pays no Memoizer traffic.
+    public static bool CanBreakByIterativeReachability(string source, IList<string> wordDict)
+    {
+        var words = new HashSet<string>(wordDict);
+        var reachable = new bool[source.Length + 1];
+        reachable[0] = true;
+
+        for (var start = 0; start < source.Length; start++)
+        {
+            if (!reachable[start])
+            {
+                continue;
+            }
+
+            for (var end = start + 1; end <= source.Length; end++)
+            {
+                if (words.Contains(source[start..end]))
+                {
+                    reachable[end] = true;
+                }
+            }
+        }
+
+        return reachable[^1];
+    }
+
     public static bool CanBreakByTrieMemoized(string source, IList<string> wordDict)
     {
         var trie = new Trie<bool>();

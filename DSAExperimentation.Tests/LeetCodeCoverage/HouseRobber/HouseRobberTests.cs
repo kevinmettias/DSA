@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.HouseRobber;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.HouseRobber;
 
-// Harness only: the one strategy lives in HouseRobberSolution and is asserted
+// Harness only: both strategies live in HouseRobberSolution and are asserted
 // against LeetCode's published examples, plus a couple of thin edge cases the
 // original test never covered.
 public sealed partial class HouseRobberTests
@@ -20,4 +20,19 @@ public sealed partial class HouseRobberTests
     [MemberData(nameof(Examples))]
     public void RobByMemoizedRecursion_LeetCodeExamples_ReturnsBestNonAdjacentSum(int[] nums, int expected) =>
         Assert.Equal(expected, HouseRobberSolution.RobByMemoizedRecursion(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void RobByIterativeRollingTotals_LeetCodeExamples_ReturnsBestNonAdjacentSum(int[] nums, int expected) =>
+        Assert.Equal(expected, HouseRobberSolution.RobByIterativeRollingTotals(nums));
+
+    // The two arms are competing strategies for one question, so the property worth
+    // pinning is that they name the same haul on every example - not merely that
+    // each agrees with the expectation beside it.
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void Rob_AgreeOnEveryExample(int[] nums, int expected) =>
+        Assert.Equal(
+            HouseRobberSolution.RobByMemoizedRecursion(nums),
+            HouseRobberSolution.RobByIterativeRollingTotals(nums));
 }

@@ -2,9 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ValidPalindromeBenchmarks (ARCHITECTURE 17.9): the class carries a single
-// arm, so there is no second strategy to reconcile and the assertion has to be an oracle rather than
-// an agreement.
+// Harness coverage for ValidPalindromeBenchmarks (ARCHITECTURE 17.9): both arms are competing
+// strategies for the same question - the two-pointer scan and the normalized-reversal copy - so a
+// harness whose arms disagree is classifying two different strings.
 //
 // It carries no [Params] and no [GlobalSetup] either - the fixed [Benchmark] operand is the whole
 // workload - so a harness is nothing more than a new instance. That operand is LC 125's own first
@@ -19,6 +19,14 @@ public sealed partial class ValidPalindromeBenchmarksTests
     [Fact]
     public void IsPalindromeByTwoPointerScan_DocumentedValue_AcceptsTheExamplePalindrome() =>
         Assert.Equal(ExpectedIsPalindrome, BuildHarness().IsPalindromeByTwoPointerScan());
+
+    [Fact]
+    public void NormalizedReversal_DocumentedValue_AcceptsTheExamplePalindrome() =>
+        Assert.Equal(ExpectedIsPalindrome, BuildHarness().NormalizedReversal());
+
+    [Fact]
+    public void NormalizedReversal_AgreesWithIsPalindromeByTwoPointerScan() =>
+        Assert.Equal(BuildHarness().IsPalindromeByTwoPointerScan(), BuildHarness().NormalizedReversal());
 
     private static ValidPalindromeBenchmarks BuildHarness() => new();
 }

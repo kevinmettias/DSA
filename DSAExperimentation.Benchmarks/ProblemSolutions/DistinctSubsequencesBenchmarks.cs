@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DistinctSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is DistinctSubsequencesSolution's, the same method
+// Harness only: both arms are DistinctSubsequencesSolution's, the same methods
 // DistinctSubsequencesTests proves correct.
 [MemoryDiagnoser]
 public class DistinctSubsequencesBenchmarks
@@ -14,6 +14,12 @@ public class DistinctSubsequencesBenchmarks
     [Benchmark(Baseline = true)]
     public int MemoizedRecursion() =>
         DistinctSubsequencesSolution.CountDistinctSubsequencesByMemoizedRecursion(
+            new SourceText(Source),
+            new TargetPattern(Target));
+
+    [Benchmark]
+    public int IterativeTable() =>
+        DistinctSubsequencesSolution.CountDistinctSubsequencesByIterativeTable(
             new SourceText(Source),
             new TargetPattern(Target));
 }

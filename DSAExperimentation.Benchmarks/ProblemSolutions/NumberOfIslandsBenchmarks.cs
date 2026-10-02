@@ -4,11 +4,13 @@ using DSAExperimentation.LeetCode.NumberOfIslands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the single arm is NumberOfIslandsSolution's, the same method
+// Harness only: both arms are NumberOfIslandsSolution's, the same methods
 // NumberOfIslandsTests proves correct. Roughly half land, half water keeps the
 // flood fill busy across many separate islands rather than one solid block; the
 // solution's own claimed-set tracking (not grid mutation) is what lets the same
-// grid be reused, unchanged, across every invocation.
+// grid be reused, unchanged, across every invocation. The two arms differ only in
+// the order their flood fill drains a component's frontier - depth-first versus
+// breadth-first - so the pair isolates that order.
 [MemoryDiagnoser]
 public class NumberOfIslandsBenchmarks
 {
@@ -22,6 +24,9 @@ public class NumberOfIslandsBenchmarks
     [GlobalSetup]
     public void Setup() => _grid = NumberOfIslandsWorkloads.BuildGrid(GridSize, GridSize, Seed);
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public int DepthFirstSink() => NumberOfIslandsSolution.CountIslandsByDepthFirstSink(_grid);
+
+    [Benchmark]
+    public int BreadthFirstSink() => NumberOfIslandsSolution.CountIslandsByBreadthFirstSink(_grid);
 }

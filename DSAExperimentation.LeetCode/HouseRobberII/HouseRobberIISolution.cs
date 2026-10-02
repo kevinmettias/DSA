@@ -9,10 +9,42 @@ namespace DSAExperimentation.LeetCode.HouseRobberII;
 // problem - houses [0, n-2] (excluding the last) and [1, n-1] (excluding the
 // first) - because any valid selection must skip at least one of the two
 // wrap-around neighbors, and the better of the two exclusions is always safe to
-// take. Each run reuses #198's own memoized recursion, just started at a
-// different index and capped at a different end.
+// take. Each run is #198's own linear rule, just started at a different index and
+// capped at a different end: the memoized arm hands each run to this repo's
+// Memoizer, the rolling-totals arm walks it directly.
 internal static class HouseRobberIISolution
 {
+    // The textbook arm the memoized two-run split is measured against: each half of
+    // the circle is walked with #198's skip-or-rob rule carried in two rolling
+    // totals, so no Memoizer dictionary is built for either run and the circular
+    // case costs O(1) space per run like the linear one.
+    public static int RobByIterativeTwoPass(int[] nums)
+    {
+        if (nums.Length == 1)
+        {
+            return nums[0];
+        }
+
+        var excludingLastHouse = RobLinearRange(nums, 0, nums.Length - 2);
+        var excludingFirstHouse = RobLinearRange(nums, 1, nums.Length - 1);
+        return Math.Max(excludingLastHouse, excludingFirstHouse);
+    }
+
+    private static int RobLinearRange(int[] nums, int start, int end)
+    {
+        var bestBeforePrevious = 0;
+        var bestPrevious = 0;
+
+        for (var house = start; house <= end; house++)
+        {
+            var robThisHouse = bestBeforePrevious + nums[house];
+            bestBeforePrevious = bestPrevious;
+            bestPrevious = Math.Max(bestPrevious, robThisHouse);
+        }
+
+        return bestPrevious;
+    }
+
     public static int RobByMemoizedRecursion(int[] nums)
     {
         if (nums.Length == 1)
