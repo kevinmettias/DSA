@@ -33,15 +33,6 @@ public sealed partial class FrogJumpBenchmarksTests
         Assert.Equal(harness.CanCrossByHashMapDynamicProgramming(), harness.CanCrossByRecursiveBruteForce());
     }
 
-    [Fact]
-    public void CanCrossByHashMapDynamicProgramming_AgreesWithCanCrossByRecursiveBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedCrossingVerdict, harness.CanCrossByHashMapDynamicProgramming());
-        Assert.Equal(harness.CanCrossByRecursiveBruteForce(), harness.CanCrossByHashMapDynamicProgramming());
-    }
-
     private static FrogJumpBenchmarks BuildHarness()
     {
         var harness = new FrogJumpBenchmarks { StoneCount = SmallestStoneCount };

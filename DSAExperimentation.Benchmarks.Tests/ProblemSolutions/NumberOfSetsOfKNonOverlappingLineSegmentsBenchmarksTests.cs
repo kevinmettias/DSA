@@ -24,14 +24,6 @@ public sealed partial class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarksT
         Assert.Equal(harness.Memoized(), harness.Tabulation());
     }
 
-    [Fact]
-    public void Memoized_AgreesWithTabulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Tabulation(), harness.Memoized());
-    }
-
     private static NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks BuildHarness()
     {
         var harness = new NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks { Points = SmallestPoints };

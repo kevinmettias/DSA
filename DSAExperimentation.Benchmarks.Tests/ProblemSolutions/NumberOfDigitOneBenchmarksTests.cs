@@ -21,13 +21,5 @@ public sealed partial class NumberOfDigitOneBenchmarksTests
         Assert.Equal(harness.DigitPositionTally(), harness.BruteForceScan());
     }
 
-    [Fact]
-    public void DigitPositionTally_AgreesWithBruteForceScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceScan(), harness.DigitPositionTally());
-    }
-
     private static NumberOfDigitOneBenchmarks BuildHarness() => new() { UpperBound = SmallestUpperBound };
 }

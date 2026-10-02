@@ -25,14 +25,6 @@ public sealed partial class RectangleAreaIIBenchmarksTests
         Assert.Equal(harness.SweepLineWithIntervalSet(), harness.CoordinateCompressionCellCheck());
     }
 
-    [Fact]
-    public void SweepLineWithIntervalSet_AgreesWithCoordinateCompressionCellCheck()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CoordinateCompressionCellCheck(), harness.SweepLineWithIntervalSet());
-    }
-
     private static RectangleAreaIIBenchmarks BuildHarness()
     {
         var harness = new RectangleAreaIIBenchmarks { RectangleCount = SmallestRectangleCount };

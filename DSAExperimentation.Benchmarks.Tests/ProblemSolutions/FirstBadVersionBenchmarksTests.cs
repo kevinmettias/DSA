@@ -24,14 +24,6 @@ public sealed partial class FirstBadVersionBenchmarksTests
         Assert.Equal(harness.BinarySearchLowerBound(), harness.LinearScan());
     }
 
-    [Fact]
-    public void BinarySearchLowerBound_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScan(), harness.BinarySearchLowerBound());
-    }
-
     private static FirstBadVersionBenchmarks BuildHarness()
     {
         var harness = new FirstBadVersionBenchmarks { VersionCount = SmallestVersionCount };

@@ -23,14 +23,6 @@ public sealed partial class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesBenchm
         Assert.Equal(harness.PascalTriangle(), harness.FactorialCombinatorics());
     }
 
-    [Fact]
-    public void FactorialCombinatorics_AgreesWithPascalTriangle()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FactorialCombinatorics(), harness.PascalTriangle());
-    }
-
     private static MaximumAndMinimumSumsOfAtMostSizeKSubsequencesBenchmarks BuildHarness()
     {
         var harness = new MaximumAndMinimumSumsOfAtMostSizeKSubsequencesBenchmarks { Length = SmallestLength };

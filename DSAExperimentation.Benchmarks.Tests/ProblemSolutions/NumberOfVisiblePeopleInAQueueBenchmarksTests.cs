@@ -28,16 +28,6 @@ public sealed partial class NumberOfVisiblePeopleInAQueueBenchmarksTests
             AnswerText.Of(harness.BruteForceScan()));
     }
 
-    [Fact]
-    public void MonotonicStackSweep_AgreesWithBruteForceScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.BruteForceScan()),
-            AnswerText.Of(harness.MonotonicStackSweep()));
-    }
-
     private static NumberOfVisiblePeopleInAQueueBenchmarks BuildHarness()
     {
         var harness = new NumberOfVisiblePeopleInAQueueBenchmarks { Length = SmallestLength };

@@ -24,14 +24,6 @@ public sealed partial class NumberOfStudentsUnableToEatLunchBenchmarksTests
         Assert.Equal(harness.QueueStackSimulation(), harness.ListSimulation());
     }
 
-    [Fact]
-    public void QueueStackSimulation_AgreesWithListSimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ListSimulation(), harness.QueueStackSimulation());
-    }
-
     private static NumberOfStudentsUnableToEatLunchBenchmarks BuildHarness()
     {
         var harness = new NumberOfStudentsUnableToEatLunchBenchmarks { Length = SmallestLength };

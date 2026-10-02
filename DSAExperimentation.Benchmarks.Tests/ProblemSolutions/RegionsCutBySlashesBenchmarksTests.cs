@@ -25,14 +25,6 @@ public sealed partial class RegionsCutBySlashesBenchmarksTests
         Assert.Equal(harness.DisjointSetTriangleUnion(), harness.ThreeByThreeExpansionFloodFill());
     }
 
-    [Fact]
-    public void DisjointSetTriangleUnion_AgreesWithThreeByThreeExpansionFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ThreeByThreeExpansionFloodFill(), harness.DisjointSetTriangleUnion());
-    }
-
     private static RegionsCutBySlashesBenchmarks BuildHarness()
     {
         var harness = new RegionsCutBySlashesBenchmarks { GridSize = SmallestGridSize };

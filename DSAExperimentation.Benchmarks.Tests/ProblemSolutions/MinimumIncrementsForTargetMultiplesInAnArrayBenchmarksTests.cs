@@ -30,14 +30,6 @@ public sealed partial class MinimumIncrementsForTargetMultiplesInAnArrayBenchmar
         Assert.Equal(harness.MemoizedBitmaskDp(), harness.BottomUpBitmaskDp());
     }
 
-    [Fact]
-    public void MemoizedBitmaskDp_AgreesWithBottomUpBitmaskDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BottomUpBitmaskDp(), harness.MemoizedBitmaskDp());
-    }
-
     private static MinimumIncrementsForTargetMultiplesInAnArrayBenchmarks BuildHarness()
     {
         var harness = new MinimumIncrementsForTargetMultiplesInAnArrayBenchmarks { NumsCount = SmallestNumsCount };

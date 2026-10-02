@@ -18,13 +18,5 @@ public sealed partial class PoorPigsBenchmarksTests
         Assert.Equal(harness.BinarySearchOverPowers(), harness.LinearRecompute());
     }
 
-    [Fact]
-    public void BinarySearchOverPowers_AgreesWithLinearRecompute()
-    {
-        var harness = Harness(SmallestBuckets);
-
-        Assert.Equal(harness.LinearRecompute(), harness.BinarySearchOverPowers());
-    }
-
     private static PoorPigsBenchmarks Harness(int buckets) => new() { Buckets = buckets };
 }

@@ -25,14 +25,6 @@ public sealed partial class SubarraysDistinctElementSumOfSquaresIIBenchmarksTest
         Assert.Equal(harness.BruteForce(), harness.RangeFenwickTreeSweep());
     }
 
-    [Fact]
-    public void RangeFenwickTreeSweep_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RangeFenwickTreeSweep(), harness.BruteForce());
-    }
-
     private static SubarraysDistinctElementSumOfSquaresIIBenchmarks BuildHarness()
     {
         var harness = new SubarraysDistinctElementSumOfSquaresIIBenchmarks { Length = SmallestLength };

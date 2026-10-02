@@ -36,16 +36,6 @@ public sealed partial class RemoveSubFoldersFromTheFilesystemBenchmarksTests
         Assert.Equal(harness.MergeSortThenScan(), pairwiseCount);
     }
 
-    [Fact]
-    public void MergeSortThenScan_AgreesWithBruteForcePairwisePrefixCheck()
-    {
-        var harness = BuildHarness();
-        var mergeSortCount = harness.MergeSortThenScan();
-
-        Assert.InRange(mergeSortCount, FewestSurvivingFolders, SmallestLength);
-        Assert.Equal(harness.BruteForcePairwisePrefixCheck(), mergeSortCount);
-    }
-
     private static RemoveSubFoldersFromTheFilesystemBenchmarks BuildHarness()
     {
         var harness = new RemoveSubFoldersFromTheFilesystemBenchmarks { Length = SmallestLength };

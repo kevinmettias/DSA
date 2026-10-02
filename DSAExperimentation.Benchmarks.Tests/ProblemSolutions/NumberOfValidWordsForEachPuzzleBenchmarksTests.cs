@@ -29,16 +29,6 @@ public sealed partial class NumberOfValidWordsForEachPuzzleBenchmarksTests
             AnswerText.Of(harness.MaskComparison()));
     }
 
-    [Fact]
-    public void HashMapSubsetEnumeration_AgreesWithMaskComparison()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.MaskComparison()),
-            AnswerText.Of(harness.HashMapSubsetEnumeration()));
-    }
-
     private static NumberOfValidWordsForEachPuzzleBenchmarks BuildHarness()
     {
         var harness = new NumberOfValidWordsForEachPuzzleBenchmarks { WordCount = SmallestWordCount };

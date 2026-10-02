@@ -28,14 +28,6 @@ public sealed partial class MinimumLinesToRepresentALineChartBenchmarksTests
         Assert.Equal(harness.MergeSortIntegerSlope(), harness.ArraySortFloatingSlope());
     }
 
-    [Fact]
-    public void MergeSortIntegerSlope_AgreesWithArraySortFloatingSlope()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ArraySortFloatingSlope(), harness.MergeSortIntegerSlope());
-    }
-
     private static MinimumLinesToRepresentALineChartBenchmarks BuildHarness()
     {
         var harness = new MinimumLinesToRepresentALineChartBenchmarks { Length = SmallestLength };

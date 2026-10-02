@@ -25,14 +25,6 @@ public sealed partial class FindTriangularSumOfAnArrayBenchmarksTests
         Assert.Equal(harness.DynamicArrayReduction(), harness.InPlaceArrayReduction());
     }
 
-    [Fact]
-    public void DynamicArrayReduction_AgreesWithInPlaceArrayReduction()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.InPlaceArrayReduction(), harness.DynamicArrayReduction());
-    }
-
     private static FindTriangularSumOfAnArrayBenchmarks BuildHarness()
     {
         var harness = new FindTriangularSumOfAnArrayBenchmarks { Length = SmallestLength };

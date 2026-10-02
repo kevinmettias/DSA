@@ -23,14 +23,6 @@ public sealed partial class NumberOfProvincesBenchmarksTests
         Assert.Equal(harness.DisjointSetUnionFind(), harness.DepthFirstFloodFill());
     }
 
-    [Fact]
-    public void DisjointSetUnionFind_AgreesWithDepthFirstFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DepthFirstFloodFill(), harness.DisjointSetUnionFind());
-    }
-
     private static NumberOfProvincesBenchmarks BuildHarness()
     {
         var harness = new NumberOfProvincesBenchmarks { CityCount = SmallestCityCount };

@@ -30,14 +30,6 @@ public sealed partial class MinimumIntervalToIncludeEachQueryBenchmarksTests
         Assert.Equal(AnswerText.Of(harness.HeapSweep()), AnswerText.Of(harness.PerQueryScan()));
     }
 
-    [Fact]
-    public void HeapSweep_AgreesWithPerQueryScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerText.Of(harness.PerQueryScan()), AnswerText.Of(harness.HeapSweep()));
-    }
-
     private static MinimumIntervalToIncludeEachQueryBenchmarks BuildHarness()
     {
         var harness = new MinimumIntervalToIncludeEachQueryBenchmarks { Count = SmallestCount };

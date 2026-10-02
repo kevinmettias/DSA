@@ -32,16 +32,6 @@ public sealed partial class StoneGameIXBenchmarksTests
             harness.CanAliceWinByClosedFormCounting());
     }
 
-    [Fact]
-    public void CanAliceWinByClosedFormCounting_AgreesWithCanAliceWinByGameTreeMinimax()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.CanAliceWinByClosedFormCounting(),
-            harness.CanAliceWinByGameTreeMinimax());
-    }
-
     private static StoneGameIXBenchmarks BuildHarness()
     {
         var harness = new StoneGameIXBenchmarks { Length = SmallestLength };

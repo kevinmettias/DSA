@@ -30,16 +30,6 @@ public sealed partial class Finding3DigitEvenNumbersBenchmarksTests
             AnswerText.Of(harness.ListContainsScanDedupe()));
     }
 
-    [Fact]
-    public void SetDedupeThenMergeSort_AgreesWithListContainsScanDedupe()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.ListContainsScanDedupe()),
-            AnswerText.Of(harness.SetDedupeThenMergeSort()));
-    }
-
     private static Finding3DigitEvenNumbersBenchmarks BuildHarness()
     {
         var harness = new Finding3DigitEvenNumbersBenchmarks { Length = SmallestLength };

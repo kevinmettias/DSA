@@ -23,14 +23,6 @@ public sealed partial class MaximizeTheNumberOfPartitionsAfterOperationsBenchmar
         Assert.Equal(harness.BruteForceRecolor(), harness.BitmaskMemo());
     }
 
-    [Fact]
-    public void BitmaskMemo_AgreesWithBruteForceRecolor()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BitmaskMemo(), harness.BruteForceRecolor());
-    }
-
     private static MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks BuildHarness()
     {
         var harness = new MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks { Length = SmallestLength };

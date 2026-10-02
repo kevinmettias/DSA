@@ -19,14 +19,6 @@ public sealed partial class FindTheWinnerOfTheCircularGameBenchmarksTests
         Assert.Equal(harness.ByQueueRotation(), harness.ByListRemoval());
     }
 
-    [Fact]
-    public void ByQueueRotation_AgreesWithByListRemoval()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ByListRemoval(), harness.ByQueueRotation());
-    }
-
     private static FindTheWinnerOfTheCircularGameBenchmarks BuildHarness() =>
         new() { FriendCount = SmallestFriendCount };
 }

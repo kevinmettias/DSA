@@ -24,17 +24,6 @@ public sealed partial class PermutationsIVBenchmarksTests
             AnswerText.Of(Harness(LargestPermutationLength).BigIntegerRank()));
     }
 
-    [Fact]
-    public void FenwickOrderStatistics_AgreesWithBigIntegerRank()
-    {
-        Assert.Equal(
-            AnswerText.Of(Harness(SmallestPermutationLength).BigIntegerRank()),
-            AnswerText.Of(Harness(SmallestPermutationLength).FenwickOrderStatistics()));
-        Assert.Equal(
-            AnswerText.Of(Harness(LargestPermutationLength).BigIntegerRank()),
-            AnswerText.Of(Harness(LargestPermutationLength).FenwickOrderStatistics()));
-    }
-
     private static PermutationsIVBenchmarks Harness(int permutationLength) =>
         new() { PermutationLength = permutationLength };
 }

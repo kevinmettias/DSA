@@ -36,16 +36,6 @@ public sealed partial class StringMatchingInAnArrayBenchmarksTests
         Assert.Equal(ExpectedContainedWordCount, naive);
     }
 
-    [Fact]
-    public void KmpSubstringSearch_AgreesWithNaiveNestedLoop()
-    {
-        var harness = BuildHarness();
-        var prefixFunction = harness.KmpSubstringSearch();
-
-        Assert.Equal(prefixFunction, harness.NaiveNestedLoop());
-        Assert.Equal(ExpectedContainedWordCount, prefixFunction);
-    }
-
     private static StringMatchingInAnArrayBenchmarks BuildHarness()
     {
         var harness = new StringMatchingInAnArrayBenchmarks { WordCount = SmallestWordCount };

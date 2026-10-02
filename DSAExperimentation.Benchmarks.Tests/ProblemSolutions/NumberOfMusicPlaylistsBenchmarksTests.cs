@@ -37,14 +37,6 @@ public sealed partial class NumberOfMusicPlaylistsBenchmarksTests
         Assert.Equal(harness.Memoized(), harness.Tabulation());
     }
 
-    [Fact]
-    public void Memoized_AgreesWithTabulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Tabulation(), harness.Memoized());
-    }
-
     private static NumberOfMusicPlaylistsBenchmarks BuildHarness() =>
         new() { SongCount = SmallestSongCount };
 }

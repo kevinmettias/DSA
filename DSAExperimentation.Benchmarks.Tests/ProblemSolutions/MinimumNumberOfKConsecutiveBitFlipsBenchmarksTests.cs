@@ -30,14 +30,6 @@ public sealed partial class MinimumNumberOfKConsecutiveBitFlipsBenchmarksTests
         Assert.Equal(harness.QueueTrackedParity(), harness.InPlaceWindowFlip());
     }
 
-    [Fact]
-    public void QueueTrackedParity_AgreesWithInPlaceWindowFlip()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.InPlaceWindowFlip(), harness.QueueTrackedParity());
-    }
-
     private static MinimumNumberOfKConsecutiveBitFlipsBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfKConsecutiveBitFlipsBenchmarks { Length = SmallestLength };

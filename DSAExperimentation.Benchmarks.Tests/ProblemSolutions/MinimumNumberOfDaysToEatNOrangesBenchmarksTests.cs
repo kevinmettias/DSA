@@ -24,14 +24,6 @@ public sealed partial class MinimumNumberOfDaysToEatNOrangesBenchmarksTests
         Assert.Equal(harness.MemoizedRecurrence(), harness.UnmemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecurrence_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecurrence());
-    }
-
     private static MinimumNumberOfDaysToEatNOrangesBenchmarks BuildHarness() =>
         new() { OrangeCount = SmallestOrangeCount };
 }

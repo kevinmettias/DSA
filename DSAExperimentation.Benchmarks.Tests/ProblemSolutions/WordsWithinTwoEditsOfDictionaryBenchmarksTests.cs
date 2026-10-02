@@ -28,14 +28,6 @@ public sealed partial class WordsWithinTwoEditsOfDictionaryBenchmarksTests
     }
 
     [Fact]
-    public void TrieSearch_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerText.Of(harness.TrieSearch()), AnswerText.Of(harness.BruteForce()));
-    }
-
-    [Fact]
     public void BruteForce_EveryQueryWithinTheEditBudget_Matches() =>
         Assert.Equal(ExpectedMatchCount, BuildHarness().BruteForce().Length);
 

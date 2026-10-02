@@ -26,14 +26,6 @@ public sealed partial class NumberOfBeautifulIntegersInTheRangeBenchmarksTests
         Assert.Equal(harness.DigitDpMemo(), harness.BruteForce());
     }
 
-    [Fact]
-    public void DigitDpMemo_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.DigitDpMemo());
-    }
-
     private static NumberOfBeautifulIntegersInTheRangeBenchmarks BuildHarness()
     {
         var harness = new NumberOfBeautifulIntegersInTheRangeBenchmarks { RangeSize = SmallestRangeSize };

@@ -29,14 +29,6 @@ public sealed partial class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctB
         Assert.Equal(harness.BacktrackPrimitive(), harness.HandRolledRecursion(), RelativeTolerance);
     }
 
-    [Fact]
-    public void BacktrackPrimitive_AgreesWithHandRolledRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HandRolledRecursion(), harness.BacktrackPrimitive(), RelativeTolerance);
-    }
-
     private static ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks BuildHarness()
     {
         var harness = new ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks

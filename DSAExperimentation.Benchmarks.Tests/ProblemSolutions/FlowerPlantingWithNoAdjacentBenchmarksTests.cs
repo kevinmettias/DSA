@@ -31,16 +31,6 @@ public sealed partial class FlowerPlantingWithNoAdjacentBenchmarksTests
             AnswerText.Of(harness.RawPathsRescan()));
     }
 
-    [Fact]
-    public void AdjacencyListWithSetTracking_AgreesWithRawPathsRescan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.RawPathsRescan()),
-            AnswerText.Of(harness.AdjacencyListWithSetTracking()));
-    }
-
     private static FlowerPlantingWithNoAdjacentBenchmarks BuildHarness()
     {
         var harness = new FlowerPlantingWithNoAdjacentBenchmarks { GardenCount = SmallestGardenCount };

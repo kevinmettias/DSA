@@ -30,15 +30,6 @@ public sealed partial class FlattenNestedListIteratorBenchmarksTests
         Assert.Equal(AnswerText.Of(harness.LazyStack()), AnswerText.Of(harness.EagerFlatten()));
     }
 
-    [Fact]
-    public void LazyStack_AgreesWithEagerFlatten()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedLeaves(), harness.LazyStack());
-        Assert.Equal(AnswerText.Of(harness.EagerFlatten()), AnswerText.Of(harness.LazyStack()));
-    }
-
     // [GlobalSetup] fills the list with pairs of consecutive integers, so the flattened sequence is
     // the ascending run 0..SmallestLeafCount - 1.
     private static IEnumerable<int> ExpectedLeaves() => Enumerable.Range(0, SmallestLeafCount);

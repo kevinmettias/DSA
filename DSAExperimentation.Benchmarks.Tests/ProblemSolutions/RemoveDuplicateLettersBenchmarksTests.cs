@@ -23,14 +23,6 @@ public sealed partial class RemoveDuplicateLettersBenchmarksTests
         Assert.Equal(harness.StackAndSet(), harness.RecursiveSplit());
     }
 
-    [Fact]
-    public void StackAndSet_AgreesWithRecursiveSplit()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RecursiveSplit(), harness.StackAndSet());
-    }
-
     private static RemoveDuplicateLettersBenchmarks BuildHarness()
     {
         var harness = new RemoveDuplicateLettersBenchmarks { Length = SmallestLength };

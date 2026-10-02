@@ -24,14 +24,6 @@ public sealed partial class FindValueOfMysteriousFunctionClosestToTargetBenchmar
         Assert.Equal(harness.DistinctAndValuesHashMap(), harness.BruteForceAllSubarrays());
     }
 
-    [Fact]
-    public void DistinctAndValuesHashMap_AgreesWithBruteForceAllSubarrays()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceAllSubarrays(), harness.DistinctAndValuesHashMap());
-    }
-
     private static FindValueOfMysteriousFunctionClosestToTargetBenchmarks BuildHarness()
     {
         var harness = new FindValueOfMysteriousFunctionClosestToTargetBenchmarks { Length = SmallestLength };

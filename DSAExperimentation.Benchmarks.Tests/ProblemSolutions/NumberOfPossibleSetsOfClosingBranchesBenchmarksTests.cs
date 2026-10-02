@@ -28,14 +28,6 @@ public sealed partial class NumberOfPossibleSetsOfClosingBranchesBenchmarksTests
         Assert.Equal(harness.AllPairsShortestPaths(), harness.BruteForceFloydWarshall());
     }
 
-    [Fact]
-    public void AllPairsShortestPaths_AgreesWithBruteForceFloydWarshall()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceFloydWarshall(), harness.AllPairsShortestPaths());
-    }
-
     private static NumberOfPossibleSetsOfClosingBranchesBenchmarks BuildHarness()
     {
         var harness = new NumberOfPossibleSetsOfClosingBranchesBenchmarks

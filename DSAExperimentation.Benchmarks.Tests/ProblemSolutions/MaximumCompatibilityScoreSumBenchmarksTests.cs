@@ -23,14 +23,6 @@ public sealed partial class MaximumCompatibilityScoreSumBenchmarksTests
         Assert.Equal(harness.BruteForceRecursion(), harness.MemoizedBitmask());
     }
 
-    [Fact]
-    public void MemoizedBitmask_AgreesWithBruteForceRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedBitmask(), harness.BruteForceRecursion());
-    }
-
     private static MaximumCompatibilityScoreSumBenchmarks BuildHarness()
     {
         var harness = new MaximumCompatibilityScoreSumBenchmarks { GroupSize = SmallestGroupSize };

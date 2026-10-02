@@ -23,14 +23,6 @@ public sealed partial class NumberOfStepsToReduceANumberInBinaryRepresentationTo
         Assert.Equal(harness.CarryPropagationScan(), harness.StackAddSimulation());
     }
 
-    [Fact]
-    public void CarryPropagationScan_AgreesWithStackAddSimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.StackAddSimulation(), harness.CarryPropagationScan());
-    }
-
     private static NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks BuildHarness()
     {
         var harness = new NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks

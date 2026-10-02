@@ -23,14 +23,6 @@ public sealed partial class MaximumEleganceOfAKLengthSubsequenceBenchmarksTests
         Assert.Equal(harness.Bcl(), harness.RepoPrimitives());
     }
 
-    [Fact]
-    public void RepoPrimitives_AgreesWithBcl()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RepoPrimitives(), harness.Bcl());
-    }
-
     private static MaximumEleganceOfAKLengthSubsequenceBenchmarks BuildHarness()
     {
         var harness = new MaximumEleganceOfAKLengthSubsequenceBenchmarks { ItemCount = SmallestItemCount };

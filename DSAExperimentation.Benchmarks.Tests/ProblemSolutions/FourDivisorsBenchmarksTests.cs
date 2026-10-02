@@ -24,14 +24,6 @@ public sealed partial class FourDivisorsBenchmarksTests
         Assert.Equal(harness.BinarySearchAnchored(), harness.FullRangeScan());
     }
 
-    [Fact]
-    public void BinarySearchAnchored_AgreesWithFullRangeScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FullRangeScan(), harness.BinarySearchAnchored());
-    }
-
     private static FourDivisorsBenchmarks BuildHarness()
     {
         var harness = new FourDivisorsBenchmarks { Length = SmallestLength };

@@ -24,14 +24,6 @@ public sealed partial class NumberOfSquarefulArraysBenchmarksTests
         Assert.Equal(harness.PrunedBacktrack(), harness.GenerateThenFilter());
     }
 
-    [Fact]
-    public void PrunedBacktrack_AgreesWithGenerateThenFilter()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GenerateThenFilter(), harness.PrunedBacktrack());
-    }
-
     private static NumberOfSquarefulArraysBenchmarks BuildHarness()
     {
         var harness = new NumberOfSquarefulArraysBenchmarks { Length = SmallestLength };

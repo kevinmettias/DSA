@@ -28,14 +28,6 @@ public sealed partial class ZigzagGridTraversalWithSkipBenchmarksTests
     }
 
     [Fact]
-    public void RowStack_AgreesWithIndexFormula()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerText.Of(harness.RowStack()), AnswerText.Of(harness.IndexFormula()));
-    }
-
-    [Fact]
     public void IndexFormula_EveryOtherCellOfTheSnakeOrder_KeepsHalfTheCells() =>
         Assert.Equal(ExpectedTraversalLength, BuildHarness().IndexFormula().Length);
 

@@ -29,14 +29,6 @@ public sealed partial class MinimumIncompatibilityBenchmarksTests
         Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
-    }
-
     private static MinimumIncompatibilityBenchmarks BuildHarness()
     {
         var harness = new MinimumIncompatibilityBenchmarks { Length = SmallestLength };

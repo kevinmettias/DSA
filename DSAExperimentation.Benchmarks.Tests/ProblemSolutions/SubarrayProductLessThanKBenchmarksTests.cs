@@ -34,16 +34,6 @@ public sealed partial class SubarrayProductLessThanKBenchmarksTests
         Assert.Equal(ExpectedSubarrayCount, bruteForce);
     }
 
-    [Fact]
-    public void LogPrefixLowerBound_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-        var logPrefix = harness.LogPrefixLowerBound();
-
-        Assert.Equal(logPrefix, harness.BruteForce());
-        Assert.Equal(ExpectedSubarrayCount, logPrefix);
-    }
-
     private static SubarrayProductLessThanKBenchmarks BuildHarness()
     {
         var harness = new SubarrayProductLessThanKBenchmarks { Length = SmallestLength };

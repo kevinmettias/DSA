@@ -28,14 +28,6 @@ public sealed partial class MinimumNumberOfCoinsForFruitsBenchmarksTests
         Assert.Equal(harness.SegmentTreeDp(), harness.BruteForceDp());
     }
 
-    [Fact]
-    public void SegmentTreeDp_AgreesWithBruteForceDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceDp(), harness.SegmentTreeDp());
-    }
-
     private static MinimumNumberOfCoinsForFruitsBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfCoinsForFruitsBenchmarks { Length = SmallestLength };

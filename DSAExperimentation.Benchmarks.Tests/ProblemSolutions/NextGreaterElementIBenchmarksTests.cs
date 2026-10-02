@@ -30,16 +30,6 @@ public sealed partial class NextGreaterElementIBenchmarksTests
             AnswerText.Of(harness.MonotonicStackSweep()));
     }
 
-    [Fact]
-    public void PerQueryRescan_AgreesWithMonotonicStackSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.MonotonicStackSweep()),
-            AnswerText.Of(harness.PerQueryRescan()));
-    }
-
     private static NextGreaterElementIBenchmarks BuildHarness()
     {
         var harness = new NextGreaterElementIBenchmarks { Length = SmallestLength };

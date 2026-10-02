@@ -31,16 +31,6 @@ public sealed partial class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmark
             AnswerText.Of(ValuesOf(harness.NestedRescan())));
     }
 
-    [Fact]
-    public void PrefixSumMap_AgreesWithNestedRescan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.NestedRescan())),
-            AnswerText.Of(ValuesOf(harness.PrefixSumMap())));
-    }
-
     private static RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks BuildHarness()
     {
         var harness = new RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks { Length = SmallestLength };

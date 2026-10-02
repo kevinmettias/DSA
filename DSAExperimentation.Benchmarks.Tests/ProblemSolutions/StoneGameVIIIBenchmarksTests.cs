@@ -25,14 +25,6 @@ public sealed partial class StoneGameVIIIBenchmarksTests
         Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
-    }
-
     private static StoneGameVIIIBenchmarks BuildHarness()
     {
         var harness = new StoneGameVIIIBenchmarks { PileCount = SmallestPileCount };

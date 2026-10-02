@@ -32,15 +32,6 @@ public sealed partial class FindWinnerOnATicTacToeGameBenchmarksTests
         Assert.Equal(harness.IncrementalRunningCounts(), harness.RebuildAndRescanEveryMove());
     }
 
-    [Fact]
-    public void IncrementalRunningCounts_AgreesWithRebuildAndRescanEveryMove()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedFullBoardVerdict, harness.IncrementalRunningCounts());
-        Assert.Equal(harness.RebuildAndRescanEveryMove(), harness.IncrementalRunningCounts());
-    }
-
     private static FindWinnerOnATicTacToeGameBenchmarks BuildHarness()
     {
         var harness = new FindWinnerOnATicTacToeGameBenchmarks { Size = SmallestSize };

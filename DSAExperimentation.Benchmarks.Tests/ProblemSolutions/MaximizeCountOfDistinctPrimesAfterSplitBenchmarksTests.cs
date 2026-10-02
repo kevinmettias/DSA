@@ -29,12 +29,6 @@ public sealed partial class MaximizeCountOfDistinctPrimesAfterSplitBenchmarksTes
             AnswerText.Of(BuildHarness().BruteForce()),
             AnswerText.Of(BuildHarness().PrefixSuffixScan()));
 
-    [Fact]
-    public void PrefixSuffixScan_AgreesWithBruteForce() =>
-        Assert.Equal(
-            AnswerText.Of(BuildHarness().PrefixSuffixScan()),
-            AnswerText.Of(BuildHarness().BruteForce()));
-
     private static MaximizeCountOfDistinctPrimesAfterSplitBenchmarks BuildHarness()
     {
         var harness = new MaximizeCountOfDistinctPrimesAfterSplitBenchmarks { Length = SmallestLength };

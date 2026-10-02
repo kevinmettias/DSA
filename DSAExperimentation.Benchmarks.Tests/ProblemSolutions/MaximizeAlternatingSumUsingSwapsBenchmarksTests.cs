@@ -23,14 +23,6 @@ public sealed partial class MaximizeAlternatingSumUsingSwapsBenchmarksTests
         Assert.Equal(harness.ComponentBfs(), harness.DisjointSet());
     }
 
-    [Fact]
-    public void DisjointSet_AgreesWithComponentBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DisjointSet(), harness.ComponentBfs());
-    }
-
     private static MaximizeAlternatingSumUsingSwapsBenchmarks BuildHarness()
     {
         var harness = new MaximizeAlternatingSumUsingSwapsBenchmarks { ElementCount = SmallestElementCount };

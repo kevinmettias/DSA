@@ -37,14 +37,6 @@ public sealed partial class MaximumBinaryTreeBenchmarksTests
         Assert.Equal(RenderTree(harness.RescanForMax()), RenderTree(harness.MonotonicStack()));
     }
 
-    [Fact]
-    public void MonotonicStack_AgreesWithRescanForMax()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(RenderTree(harness.MonotonicStack()), RenderTree(harness.RescanForMax()));
-    }
-
     private static MaximumBinaryTreeBenchmarks BuildHarness()
     {
         var harness = new MaximumBinaryTreeBenchmarks { Length = SmallestLength };

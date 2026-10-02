@@ -25,14 +25,6 @@ public sealed partial class RemoveKDigitsBenchmarksTests
         Assert.Equal(harness.MonotonicStackSweep(), harness.RepeatedFirstDescentRemoval());
     }
 
-    [Fact]
-    public void MonotonicStackSweep_AgreesWithRepeatedFirstDescentRemoval()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RepeatedFirstDescentRemoval(), harness.MonotonicStackSweep());
-    }
-
     private static RemoveKDigitsBenchmarks BuildHarness()
     {
         var harness = new RemoveKDigitsBenchmarks { Length = SmallestLength };

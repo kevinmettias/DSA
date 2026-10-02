@@ -28,14 +28,6 @@ public sealed partial class WordLadderIIBenchmarksTests
     }
 
     [Fact]
-    public void ReduceGraphBfsBacktrack_AgreesWithMutationLayeredBfsBacktrack()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ReduceGraphBfsBacktrack(), harness.MutationLayeredBfsBacktrack());
-    }
-
-    [Fact]
     public void MutationLayeredBfsBacktrack_ConnectedChain_FindsAnActualSequence() =>
         Assert.True(BuildHarness().MutationLayeredBfsBacktrack() >= MinimumSequenceCount);
 

@@ -27,14 +27,6 @@ public sealed partial class WordSearchIIBenchmarksTests
         Assert.Equal(harness.PerWordBruteForce(), harness.TriePrunedSearch());
     }
 
-    [Fact]
-    public void TriePrunedSearch_AgreesWithPerWordBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TriePrunedSearch(), harness.PerWordBruteForce());
-    }
-
     private static WordSearchIIBenchmarks BuildHarness()
     {
         var harness = new WordSearchIIBenchmarks { WordCount = SmallestWordCount };

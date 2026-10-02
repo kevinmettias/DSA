@@ -24,13 +24,5 @@ public sealed partial class New21GameBenchmarksTests
         Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion(), RelativeTolerance);
     }
 
-    [Fact]
-    public void UnmemoizedRecursion_AgreesWithMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion(), RelativeTolerance);
-    }
-
     private static New21GameBenchmarks BuildHarness() => new() { StopAt = SmallestStopAt };
 }

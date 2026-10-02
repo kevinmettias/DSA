@@ -32,14 +32,6 @@ public sealed partial class MinimumMovesToCaptureTheQueenBenchmarksTests
         Assert.Equal(harness.LineOfSight(), harness.DestinationEnumeration());
     }
 
-    [Fact]
-    public void LineOfSight_AgreesWithDestinationEnumeration()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DestinationEnumeration(), harness.LineOfSight());
-    }
-
     private static MinimumMovesToCaptureTheQueenBenchmarks BuildHarness()
     {
         var harness = new MinimumMovesToCaptureTheQueenBenchmarks { BatchSize = SmallestBatchSize };

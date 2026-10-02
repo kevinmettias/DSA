@@ -30,14 +30,6 @@ public sealed partial class MaximumDepthOfBinaryTreeBenchmarksTests
         Assert.Equal(harness.RecursiveHeight(), harness.TreeMetricsHeight());
     }
 
-    [Fact]
-    public void TreeMetricsHeight_AgreesWithRecursiveHeight()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TreeMetricsHeight(), harness.RecursiveHeight());
-    }
-
     private static MaximumDepthOfBinaryTreeBenchmarks BuildHarness()
     {
         var harness = new MaximumDepthOfBinaryTreeBenchmarks();

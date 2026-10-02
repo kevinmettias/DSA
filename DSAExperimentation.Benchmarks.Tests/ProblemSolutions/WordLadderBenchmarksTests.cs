@@ -26,14 +26,6 @@ public sealed partial class WordLadderBenchmarksTests
     }
 
     [Fact]
-    public void ReduceGraphBfs_AgreesWithMutationQueueBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ReduceGraphBfs(), harness.MutationQueueBfs());
-    }
-
-    [Fact]
     public void MutationQueueBfs_ConnectedChain_FindsAnActualLadder() =>
         Assert.True(BuildHarness().MutationQueueBfs() >= MinimumLadderLength);
 

@@ -27,14 +27,6 @@ public sealed partial class MinimumNumberOfSwapsToMakeTheStringBalancedBenchmark
         Assert.Equal(harness.StackScan(), harness.BackwardScan());
     }
 
-    [Fact]
-    public void StackScan_AgreesWithBackwardScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BackwardScan(), harness.StackScan());
-    }
-
     private static MinimumNumberOfSwapsToMakeTheStringBalancedBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfSwapsToMakeTheStringBalancedBenchmarks { Length = SmallestLength };

@@ -30,14 +30,6 @@ public sealed partial class PopulatingNextRightPointersInEachNodeBenchmarksTests
     }
 
     [Fact]
-    public void LevelGroupedTraversal_AgreesWithManualQueueBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ManualQueueBfs(), harness.LevelGroupedTraversal());
-    }
-
-    [Fact]
     public void ManualQueueBfs_PerfectTree_LinksEveryNode() =>
         Assert.Equal(SmallestNodeCount, BuildHarness().ManualQueueBfs());
 

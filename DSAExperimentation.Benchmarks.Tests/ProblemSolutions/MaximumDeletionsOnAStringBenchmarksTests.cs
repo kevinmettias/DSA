@@ -22,14 +22,6 @@ public sealed partial class MaximumDeletionsOnAStringBenchmarksTests
         Assert.Equal(harness.NaiveSubstringComparison(), harness.RollingHashScreenedDp());
     }
 
-    [Fact]
-    public void RollingHashScreenedDp_AgreesWithNaiveSubstringComparison()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RollingHashScreenedDp(), harness.NaiveSubstringComparison());
-    }
-
     private static MaximumDeletionsOnAStringBenchmarks BuildHarness()
     {
         var harness = new MaximumDeletionsOnAStringBenchmarks { Length = SmallestLength };

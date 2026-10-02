@@ -30,14 +30,6 @@ public sealed partial class MinimumInversionCountInSubarraysOfFixedLengthBenchma
         Assert.Equal(harness.SlidingWindowFenwick(), harness.BruteForce());
     }
 
-    [Fact]
-    public void SlidingWindowFenwick_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.SlidingWindowFenwick());
-    }
-
     private static MinimumInversionCountInSubarraysOfFixedLengthBenchmarks BuildHarness()
     {
         var harness = new MinimumInversionCountInSubarraysOfFixedLengthBenchmarks { Length = SmallestLength };

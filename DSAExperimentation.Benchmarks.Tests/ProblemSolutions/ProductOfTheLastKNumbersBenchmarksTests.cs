@@ -26,14 +26,6 @@ public sealed partial class ProductOfTheLastKNumbersBenchmarksTests
         Assert.Equal(harness.PrefixProductDivision(), harness.ReplayLastKFromRawStream());
     }
 
-    [Fact]
-    public void PrefixProductDivision_AgreesWithReplayLastKFromRawStream()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ReplayLastKFromRawStream(), harness.PrefixProductDivision());
-    }
-
     private static ProductOfTheLastKNumbersBenchmarks BuildHarness()
     {
         var harness = new ProductOfTheLastKNumbersBenchmarks { Length = SmallestLength };

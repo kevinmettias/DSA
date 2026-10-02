@@ -20,14 +20,6 @@ public sealed partial class MaximizeNumberOfNiceDivisorsBenchmarksTests
         Assert.Equal(harness.NaiveRecursion(), harness.MemoizedTopDown());
     }
 
-    [Fact]
-    public void MemoizedTopDown_AgreesWithNaiveRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedTopDown(), harness.NaiveRecursion());
-    }
-
     private static MaximizeNumberOfNiceDivisorsBenchmarks BuildHarness() =>
         new() { PrimeFactors = SmallestPrimeFactorCount };
 }

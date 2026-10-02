@@ -24,13 +24,5 @@ public sealed partial class NthMagicalNumberBenchmarksTests
         Assert.Equal(harness.BinarySearchOnCount(), harness.BruteForceCount());
     }
 
-    [Fact]
-    public void BinarySearchOnCount_AgreesWithBruteForceCount()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceCount(), harness.BinarySearchOnCount());
-    }
-
     private static NthMagicalNumberBenchmarks BuildHarness() => new() { Rank = SmallestRank };
 }

@@ -28,14 +28,6 @@ public sealed partial class NetworkRecoveryPathwaysBenchmarksTests
         Assert.Equal(harness.ReduceGraph(), harness.BruteForceDijkstra());
     }
 
-    [Fact]
-    public void ReduceGraph_AgreesWithBruteForceDijkstra()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceDijkstra(), harness.ReduceGraph());
-    }
-
     private static NetworkRecoveryPathwaysBenchmarks BuildHarness()
     {
         var harness = new NetworkRecoveryPathwaysBenchmarks { NodeCount = SmallestNodeCount };

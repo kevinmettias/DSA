@@ -31,16 +31,6 @@ public sealed partial class StoneGameBenchmarksTests
         Assert.Equal(ExpectedAliceWins, unmemoized);
     }
 
-    [Fact]
-    public void CanAliceWinByMemoizedRecursion_AgreesWithCanAliceWinByUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-        var memoized = harness.CanAliceWinByMemoizedRecursion();
-
-        Assert.Equal(memoized, harness.CanAliceWinByUnmemoizedRecursion());
-        Assert.Equal(ExpectedAliceWins, memoized);
-    }
-
     private static StoneGameBenchmarks BuildHarness()
     {
         var harness = new StoneGameBenchmarks { PileCount = SmallestPileCount };

@@ -24,14 +24,6 @@ public sealed partial class RemoveDuplicatesFromSortedArrayIIBenchmarksTests
         Assert.Equal(harness.ArrayIndexedSequenceCompact(), harness.LinqGroupCapTwo());
     }
 
-    [Fact]
-    public void ArrayIndexedSequenceCompact_AgreesWithLinqGroupCapTwo()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinqGroupCapTwo(), harness.ArrayIndexedSequenceCompact());
-    }
-
     private static RemoveDuplicatesFromSortedArrayIIBenchmarks BuildHarness()
     {
         var harness = new RemoveDuplicatesFromSortedArrayIIBenchmarks { Length = SmallestLength };

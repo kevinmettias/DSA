@@ -23,14 +23,6 @@ public sealed partial class MaximumBalancedShipmentsBenchmarksTests
         Assert.Equal(harness.BruteForce(), harness.PreviousGreaterStack());
     }
 
-    [Fact]
-    public void PreviousGreaterStack_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PreviousGreaterStack(), harness.BruteForce());
-    }
-
     private static MaximumBalancedShipmentsBenchmarks BuildHarness()
     {
         var harness = new MaximumBalancedShipmentsBenchmarks { ParcelCount = SmallestParcelCount };

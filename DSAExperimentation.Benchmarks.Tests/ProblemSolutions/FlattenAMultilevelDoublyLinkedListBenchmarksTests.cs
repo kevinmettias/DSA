@@ -29,15 +29,6 @@ public sealed partial class FlattenAMultilevelDoublyLinkedListBenchmarksTests
         Assert.Equal(harness.StackBasedOnePass(), harness.BruteForceRescanFromHead());
     }
 
-    [Fact]
-    public void StackBasedOnePass_AgreesWithBruteForceRescanFromHead()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedFlattenedNodeCount, harness.StackBasedOnePass());
-        Assert.Equal(harness.BruteForceRescanFromHead(), harness.StackBasedOnePass());
-    }
-
     private static int ExpectedFlattenedNodeCount => SmallestLength + ChildCount;
 
     private static FlattenAMultilevelDoublyLinkedListBenchmarks BuildHarness() =>

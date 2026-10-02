@@ -22,14 +22,6 @@ public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIBenchmarks
         Assert.Equal(harness.PopcountCombinatorics(), harness.BruteForce());
     }
 
-    [Fact]
-    public void PopcountCombinatorics_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.PopcountCombinatorics());
-    }
-
     private static NumberOfIntegersWithPopcountDepthEqualToKIBenchmarks BuildHarness() =>
         new() { UpperBound = SmallestUpperBound };
 }

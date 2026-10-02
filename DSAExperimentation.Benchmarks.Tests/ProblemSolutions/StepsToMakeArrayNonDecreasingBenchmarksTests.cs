@@ -25,14 +25,6 @@ public sealed partial class StepsToMakeArrayNonDecreasingBenchmarksTests
         Assert.Equal(harness.SimulateRounds(), harness.MonotonicStackSweep());
     }
 
-    [Fact]
-    public void MonotonicStackSweep_AgreesWithSimulateRounds()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MonotonicStackSweep(), harness.SimulateRounds());
-    }
-
     private static StepsToMakeArrayNonDecreasingBenchmarks BuildHarness()
     {
         var harness = new StepsToMakeArrayNonDecreasingBenchmarks { Length = SmallestLength };

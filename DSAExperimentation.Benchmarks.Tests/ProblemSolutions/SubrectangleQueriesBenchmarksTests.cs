@@ -30,14 +30,6 @@ public sealed partial class SubrectangleQueriesBenchmarksTests
         Assert.Equal(harness.ArrayBacked(), harness.DynamicArrayBacked());
     }
 
-    [Fact]
-    public void DynamicArrayBacked_AgreesWithArrayBacked()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DynamicArrayBacked(), harness.ArrayBacked());
-    }
-
     private static SubrectangleQueriesBenchmarks BuildHarness()
     {
         var harness = new SubrectangleQueriesBenchmarks { Size = SmallestSize };

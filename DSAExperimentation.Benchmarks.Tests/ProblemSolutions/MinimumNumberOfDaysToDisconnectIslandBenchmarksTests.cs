@@ -35,14 +35,6 @@ public sealed partial class MinimumNumberOfDaysToDisconnectIslandBenchmarksTests
         Assert.Equal(harness.PrimitiveComposed(), harness.NaiveRecursiveFloodFill());
     }
 
-    [Fact]
-    public void PrimitiveComposed_AgreesWithNaiveRecursiveFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveRecursiveFloodFill(), harness.PrimitiveComposed());
-    }
-
     private static MinimumNumberOfDaysToDisconnectIslandBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfDaysToDisconnectIslandBenchmarks { Side = SmallestSide };

@@ -31,14 +31,6 @@ public sealed partial class MinimumNumberOfMovesToMakePalindromeBenchmarksTests
         Assert.Equal(harness.ArrayIndexedSequenceSwap(), harness.ListRemoveInsert());
     }
 
-    [Fact]
-    public void ArrayIndexedSequenceSwap_AgreesWithListRemoveInsert()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ListRemoveInsert(), harness.ArrayIndexedSequenceSwap());
-    }
-
     private static MinimumNumberOfMovesToMakePalindromeBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfMovesToMakePalindromeBenchmarks { Length = SmallestLength };

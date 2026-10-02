@@ -23,14 +23,6 @@ public sealed partial class NumberOfPairsSatisfyingInequalityBenchmarksTests
         Assert.Equal(harness.FenwickTreeSweep(), harness.PairwiseScan());
     }
 
-    [Fact]
-    public void FenwickTreeSweep_AgreesWithPairwiseScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PairwiseScan(), harness.FenwickTreeSweep());
-    }
-
     private static NumberOfPairsSatisfyingInequalityBenchmarks BuildHarness()
     {
         var harness = new NumberOfPairsSatisfyingInequalityBenchmarks { Length = SmallestLength };

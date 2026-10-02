@@ -25,14 +25,6 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIIBenchmarksTests
         Assert.Equal(harness.StridedWalk(), harness.SqrtDecomposition());
     }
 
-    [Fact]
-    public void SqrtDecomposition_AgreesWithStridedWalk()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SqrtDecomposition(), harness.StridedWalk());
-    }
-
     private static XORAfterRangeMultiplicationQueriesIIBenchmarks BuildHarness()
     {
         var harness = new XORAfterRangeMultiplicationQueriesIIBenchmarks { NodeCount = SmallestNodeCount };

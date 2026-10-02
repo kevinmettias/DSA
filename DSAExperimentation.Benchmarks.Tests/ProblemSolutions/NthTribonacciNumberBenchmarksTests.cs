@@ -23,13 +23,5 @@ public sealed partial class NthTribonacciNumberBenchmarksTests
         Assert.Equal(harness.MemoizedTopDown(), harness.NaiveRecursion());
     }
 
-    [Fact]
-    public void MemoizedTopDown_AgreesWithNaiveRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveRecursion(), harness.MemoizedTopDown());
-    }
-
     private static NthTribonacciNumberBenchmarks BuildHarness() => new() { TermIndex = SmallestTermIndex };
 }

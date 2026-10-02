@@ -36,16 +36,6 @@ public sealed partial class SubarraySumEqualsKBenchmarksTests
         Assert.Equal(ExpectedSubarrayCount, bruteForce);
     }
 
-    [Fact]
-    public void PrefixSumHashMap_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-        var prefixSums = harness.PrefixSumHashMap();
-
-        Assert.Equal(prefixSums, harness.BruteForce());
-        Assert.Equal(ExpectedSubarrayCount, prefixSums);
-    }
-
     private static SubarraySumEqualsKBenchmarks BuildHarness()
     {
         var harness = new SubarraySumEqualsKBenchmarks { Length = SmallestLength };

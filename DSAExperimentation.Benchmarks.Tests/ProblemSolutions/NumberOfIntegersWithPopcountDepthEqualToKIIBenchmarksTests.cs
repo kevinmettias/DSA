@@ -47,14 +47,6 @@ public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmark
         Assert.Equal(AnswerText.Of(harness.FenwickBuckets()), AnswerText.Of(harness.BruteForce()));
     }
 
-    [Fact]
-    public void FenwickBuckets_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(AnswerText.Of(harness.BruteForce()), AnswerText.Of(harness.FenwickBuckets()));
-    }
-
     private static NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks BuildHarness()
     {
         var harness = new NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks { ElementCount = SmallestElementCount };

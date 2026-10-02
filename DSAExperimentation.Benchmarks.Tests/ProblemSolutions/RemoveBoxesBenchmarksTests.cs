@@ -24,14 +24,6 @@ public sealed partial class RemoveBoxesBenchmarksTests
         Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
-    }
-
     private static RemoveBoxesBenchmarks BuildHarness()
     {
         var harness = new RemoveBoxesBenchmarks { BoxCount = SmallestBoxCount };

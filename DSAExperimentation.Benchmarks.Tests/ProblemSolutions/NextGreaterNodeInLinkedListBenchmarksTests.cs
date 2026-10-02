@@ -31,16 +31,6 @@ public sealed partial class NextGreaterNodeInLinkedListBenchmarksTests
             AnswerText.Of(harness.BruteForceScan()));
     }
 
-    [Fact]
-    public void MonotonicStackSweep_AgreesWithBruteForceScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.BruteForceScan()),
-            AnswerText.Of(harness.MonotonicStackSweep()));
-    }
-
     private static NextGreaterNodeInLinkedListBenchmarks BuildHarness()
     {
         var harness = new NextGreaterNodeInLinkedListBenchmarks { Length = SmallestLength };

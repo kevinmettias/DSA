@@ -32,16 +32,6 @@ public sealed partial class StrangePrinterIIBenchmarksTests
         Assert.Equal(ExpectedPrintable, naiveRescan);
     }
 
-    [Fact]
-    public void IsPrintableByKahnsTopologicalSort_AgreesWithIsPrintableByNaiveRescan()
-    {
-        var harness = BuildHarness();
-        var kahnsSort = harness.IsPrintableByKahnsTopologicalSort();
-
-        Assert.Equal(kahnsSort, harness.IsPrintableByNaiveRescan());
-        Assert.Equal(ExpectedPrintable, kahnsSort);
-    }
-
     private static StrangePrinterIIBenchmarks BuildHarness()
     {
         var harness = new StrangePrinterIIBenchmarks { ColorCount = SmallestColorCount };

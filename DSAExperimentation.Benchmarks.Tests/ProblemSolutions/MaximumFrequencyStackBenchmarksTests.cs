@@ -24,14 +24,6 @@ public sealed partial class MaximumFrequencyStackBenchmarksTests
         Assert.Equal(harness.RescanListOnEveryPop(), harness.HashMapAndStackByFrequency());
     }
 
-    [Fact]
-    public void HashMapAndStackByFrequency_AgreesWithRescanListOnEveryPop()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashMapAndStackByFrequency(), harness.RescanListOnEveryPop());
-    }
-
     private static MaximumFrequencyStackBenchmarks BuildHarness()
     {
         var harness = new MaximumFrequencyStackBenchmarks { OperationCount = SmallestOperationCount };

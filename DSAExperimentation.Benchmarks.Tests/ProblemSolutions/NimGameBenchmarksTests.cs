@@ -26,13 +26,5 @@ public sealed partial class NimGameBenchmarksTests
         Assert.Equal(harness.CanWinByModuloFormula(), harness.CanWinByMemoizedRecursion());
     }
 
-    [Fact]
-    public void CanWinByModuloFormula_AgreesWithCanWinByMemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CanWinByMemoizedRecursion(), harness.CanWinByModuloFormula());
-    }
-
     private static NimGameBenchmarks BuildHarness() => new() { Stones = SmallestStones };
 }

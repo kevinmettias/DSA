@@ -24,14 +24,6 @@ public sealed partial class MaximumAreaRectangleWithPointConstraintsIBenchmarksT
         Assert.Equal(harness.QuadrupleScan(), harness.CornerLookup());
     }
 
-    [Fact]
-    public void CornerLookup_AgreesWithQuadrupleScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CornerLookup(), harness.QuadrupleScan());
-    }
-
     private static MaximumAreaRectangleWithPointConstraintsIBenchmarks BuildHarness()
     {
         var harness = new MaximumAreaRectangleWithPointConstraintsIBenchmarks { GridSide = SmallestGridSide };

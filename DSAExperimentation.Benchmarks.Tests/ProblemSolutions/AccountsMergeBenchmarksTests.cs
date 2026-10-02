@@ -26,16 +26,6 @@ public sealed partial class AccountsMergeBenchmarksTests
             AnswerText.OfUnorderedSet(harness.PairwiseEmailOverlapScan()));
     }
 
-    [Fact]
-    public void UnionFindByEmail_AgreesWithPairwiseEmailOverlapScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.PairwiseEmailOverlapScan()),
-            AnswerText.OfUnorderedSet(harness.UnionFindByEmail()));
-    }
-
     private static AccountsMergeBenchmarks BuildHarness()
     {
         var harness = new AccountsMergeBenchmarks { AccountCount = SmallestAccountCount };

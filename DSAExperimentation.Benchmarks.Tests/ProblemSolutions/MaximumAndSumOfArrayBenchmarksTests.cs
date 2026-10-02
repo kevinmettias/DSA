@@ -23,14 +23,6 @@ public sealed partial class MaximumAndSumOfArrayBenchmarksTests
         Assert.Equal(harness.BruteForceRecursion(), harness.MemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithBruteForceRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.BruteForceRecursion());
-    }
-
     private static MaximumAndSumOfArrayBenchmarks BuildHarness()
     {
         var harness = new MaximumAndSumOfArrayBenchmarks { SlotCount = SmallestSlotCount };

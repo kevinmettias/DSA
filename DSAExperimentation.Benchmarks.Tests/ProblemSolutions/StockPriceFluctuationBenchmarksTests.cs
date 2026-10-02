@@ -26,14 +26,6 @@ public sealed partial class StockPriceFluctuationBenchmarksTests
         Assert.Equal(harness.FullScanEveryQuery(), harness.LazyDeletionTwoHeaps());
     }
 
-    [Fact]
-    public void LazyDeletionTwoHeaps_AgreesWithFullScanEveryQuery()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LazyDeletionTwoHeaps(), harness.FullScanEveryQuery());
-    }
-
     private static StockPriceFluctuationBenchmarks BuildHarness()
     {
         var harness = new StockPriceFluctuationBenchmarks { UpdateCount = SmallestUpdateCount };

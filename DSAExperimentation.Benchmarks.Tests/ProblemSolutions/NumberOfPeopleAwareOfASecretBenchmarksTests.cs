@@ -24,14 +24,6 @@ public sealed partial class NumberOfPeopleAwareOfASecretBenchmarksTests
         Assert.Equal(harness.FenwickRangeSum(), harness.SlidingWindowSum());
     }
 
-    [Fact]
-    public void FenwickRangeSum_AgreesWithSlidingWindowSum()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SlidingWindowSum(), harness.FenwickRangeSum());
-    }
-
     private static NumberOfPeopleAwareOfASecretBenchmarks BuildHarness()
     {
         var harness = new NumberOfPeopleAwareOfASecretBenchmarks { Length = SmallestLength };

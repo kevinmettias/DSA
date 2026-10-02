@@ -25,14 +25,6 @@ public sealed partial class StoneGameVIBenchmarksTests
         Assert.Equal(harness.ArraySortGreedy(), harness.MergeSortGreedy());
     }
 
-    [Fact]
-    public void MergeSortGreedy_AgreesWithArraySortGreedy()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MergeSortGreedy(), harness.ArraySortGreedy());
-    }
-
     private static StoneGameVIBenchmarks BuildHarness()
     {
         var harness = new StoneGameVIBenchmarks { Length = SmallestLength };

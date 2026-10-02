@@ -22,14 +22,6 @@ public sealed partial class MaximizeSubarrayGCDScoreBenchmarksTests
         Assert.Equal(harness.BruteForce(), harness.BottleneckGcdScan());
     }
 
-    [Fact]
-    public void BottleneckGcdScan_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BottleneckGcdScan(), harness.BruteForce());
-    }
-
     private static MaximizeSubarrayGCDScoreBenchmarks BuildHarness()
     {
         var harness = new MaximizeSubarrayGCDScoreBenchmarks { Length = SmallestLength };

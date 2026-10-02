@@ -30,16 +30,6 @@ public sealed partial class FindTheSequenceOfStringsAppearedOnTheScreenBenchmark
             AnswerText.Of(harness.StringBuilderWalk()));
     }
 
-    [Fact]
-    public void GrowableBufferWalk_AgreesWithStringBuilderWalk()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.StringBuilderWalk()),
-            AnswerText.Of(harness.GrowableBufferWalk()));
-    }
-
     private static FindTheSequenceOfStringsAppearedOnTheScreenBenchmarks BuildHarness()
     {
         var harness = new FindTheSequenceOfStringsAppearedOnTheScreenBenchmarks { Length = SmallestLength };

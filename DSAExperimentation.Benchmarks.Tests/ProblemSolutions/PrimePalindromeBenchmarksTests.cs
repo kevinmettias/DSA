@@ -25,16 +25,5 @@ public sealed partial class PrimePalindromeBenchmarksTests
             Harness(LargestLowerBound).SequentialScan());
     }
 
-    [Fact]
-    public void PalindromeGeneration_AgreesWithSequentialScan()
-    {
-        Assert.Equal(
-            Harness(SmallestLowerBound).SequentialScan(),
-            Harness(SmallestLowerBound).PalindromeGeneration());
-        Assert.Equal(
-            Harness(LargestLowerBound).SequentialScan(),
-            Harness(LargestLowerBound).PalindromeGeneration());
-    }
-
     private static PrimePalindromeBenchmarks Harness(int lowerBound) => new() { LowerBound = lowerBound };
 }

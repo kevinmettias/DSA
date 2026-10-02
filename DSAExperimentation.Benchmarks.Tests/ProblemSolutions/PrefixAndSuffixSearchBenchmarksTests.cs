@@ -27,14 +27,6 @@ public sealed partial class PrefixAndSuffixSearchBenchmarksTests
         Assert.Equal(harness.PrecomputedHashMapLookup(), harness.LinearScanPerQuery());
     }
 
-    [Fact]
-    public void PrecomputedHashMapLookup_AgreesWithLinearScanPerQuery()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScanPerQuery(), harness.PrecomputedHashMapLookup());
-    }
-
     private static PrefixAndSuffixSearchBenchmarks BuildHarness()
     {
         var harness = new PrefixAndSuffixSearchBenchmarks { WordCount = SmallestWordCount };

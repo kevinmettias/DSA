@@ -21,14 +21,6 @@ public sealed partial class FindTheWinningPlayerInCoinGameBenchmarksTests
         Assert.Equal(harness.TurnParity(), harness.Simulation());
     }
 
-    [Fact]
-    public void TurnParity_AgreesWithSimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Simulation(), harness.TurnParity());
-    }
-
     private static FindTheWinningPlayerInCoinGameBenchmarks BuildHarness() =>
         new()
         {

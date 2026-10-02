@@ -25,14 +25,6 @@ public sealed partial class SubsequencesWithAUniqueMiddleModeIBenchmarksTests
         Assert.Equal(harness.BruteForce(), harness.ModularCombinatorics());
     }
 
-    [Fact]
-    public void ModularCombinatorics_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ModularCombinatorics(), harness.BruteForce());
-    }
-
     private static SubsequencesWithAUniqueMiddleModeIBenchmarks BuildHarness()
     {
         var harness = new SubsequencesWithAUniqueMiddleModeIBenchmarks { Length = SmallestLength };

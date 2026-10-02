@@ -26,16 +26,6 @@ public sealed partial class PrisonCellsAfterNDaysBenchmarksTests
             AnswerText.Of(harness.DailySimulation()));
     }
 
-    [Fact]
-    public void CycleDetectionViaHashMap_AgreesWithDailySimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.DailySimulation()),
-            AnswerText.Of(harness.CycleDetectionViaHashMap()));
-    }
-
     private static PrisonCellsAfterNDaysBenchmarks BuildHarness()
     {
         var harness = new PrisonCellsAfterNDaysBenchmarks { Days = SmallestDays };

@@ -27,14 +27,6 @@ public sealed partial class NonOverlappingIntervalsBenchmarksTests
         Assert.Equal(harness.SortByEndThenGreedyScan(), harness.BruteForceRepeatedMinEndScan());
     }
 
-    [Fact]
-    public void SortByEndThenGreedyScan_AgreesWithBruteForceRepeatedMinEndScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceRepeatedMinEndScan(), harness.SortByEndThenGreedyScan());
-    }
-
     private static NonOverlappingIntervalsBenchmarks BuildHarness()
     {
         var harness = new NonOverlappingIntervalsBenchmarks { Length = SmallestLength };

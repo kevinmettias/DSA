@@ -26,14 +26,6 @@ public sealed partial class NumberOfEffectiveSubsequencesBenchmarksTests
         Assert.Equal(harness.OrSubsetTransform(), harness.BruteForce());
     }
 
-    [Fact]
-    public void OrSubsetTransform_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.OrSubsetTransform());
-    }
-
     private static NumberOfEffectiveSubsequencesBenchmarks BuildHarness()
     {
         var harness = new NumberOfEffectiveSubsequencesBenchmarks { Length = SmallestLength };

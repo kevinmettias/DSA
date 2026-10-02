@@ -26,14 +26,6 @@ public sealed partial class NumberOfIncreasingPathsInAGridBenchmarksTests
         Assert.Equal(harness.MemoizedRecurrence(), harness.NaiveRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecurrence_AgreesWithNaiveRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveRecursion(), harness.MemoizedRecurrence());
-    }
-
     private static NumberOfIncreasingPathsInAGridBenchmarks BuildHarness()
     {
         var harness = new NumberOfIncreasingPathsInAGridBenchmarks { Size = SmallestSize };

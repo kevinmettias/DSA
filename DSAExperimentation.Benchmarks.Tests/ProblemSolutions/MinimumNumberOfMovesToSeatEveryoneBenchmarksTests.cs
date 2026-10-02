@@ -28,14 +28,6 @@ public sealed partial class MinimumNumberOfMovesToSeatEveryoneBenchmarksTests
         Assert.Equal(harness.MergeSortPairSum(), harness.SelectionSortPairSum());
     }
 
-    [Fact]
-    public void MergeSortPairSum_AgreesWithSelectionSortPairSum()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SelectionSortPairSum(), harness.MergeSortPairSum());
-    }
-
     private static MinimumNumberOfMovesToSeatEveryoneBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfMovesToSeatEveryoneBenchmarks { Length = SmallestLength };

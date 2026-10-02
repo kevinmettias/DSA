@@ -18,13 +18,5 @@ public sealed partial class PrimeArrangementsBenchmarksTests
         Assert.Equal(harness.SieveOfEratosthenes(), harness.TrialDivision());
     }
 
-    [Fact]
-    public void SieveOfEratosthenes_AgreesWithTrialDivision()
-    {
-        var harness = Harness(SmallestUpperBound);
-
-        Assert.Equal(harness.TrialDivision(), harness.SieveOfEratosthenes());
-    }
-
     private static PrimeArrangementsBenchmarks Harness(int upperBound) => new() { UpperBound = upperBound };
 }

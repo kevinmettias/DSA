@@ -18,14 +18,4 @@ public sealed partial class PermutationsIIBenchmarksTests
             AnswerText.Of(harness.Backtracking()),
             AnswerText.Of(harness.SpecializedRecursive()));
     }
-
-    [Fact]
-    public void Backtracking_AgreesWithSpecializedRecursive()
-    {
-        var harness = new PermutationsIIBenchmarks();
-
-        Assert.Equal(
-            AnswerText.Of(harness.SpecializedRecursive()),
-            AnswerText.Of(harness.Backtracking()));
-    }
 }

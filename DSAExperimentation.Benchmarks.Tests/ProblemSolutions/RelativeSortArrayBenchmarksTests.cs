@@ -27,16 +27,6 @@ public sealed partial class RelativeSortArrayBenchmarksTests
             AnswerText.Of(harness.LinearScanComparerSort()));
     }
 
-    [Fact]
-    public void HashMapMergeSort_AgreesWithLinearScanComparerSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.LinearScanComparerSort()),
-            AnswerText.Of(harness.HashMapMergeSort()));
-    }
-
     private static RelativeSortArrayBenchmarks BuildHarness()
     {
         var harness = new RelativeSortArrayBenchmarks { Length = SmallestLength };

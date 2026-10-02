@@ -24,14 +24,6 @@ public sealed partial class NumberOfSubarraysWithANDValueOfKBenchmarksTests
         Assert.Equal(harness.AndValueCompression(), harness.BruteForce());
     }
 
-    [Fact]
-    public void AndValueCompression_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.AndValueCompression());
-    }
-
     private static NumberOfSubarraysWithANDValueOfKBenchmarks BuildHarness()
     {
         var harness = new NumberOfSubarraysWithANDValueOfKBenchmarks { Length = SmallestLength };

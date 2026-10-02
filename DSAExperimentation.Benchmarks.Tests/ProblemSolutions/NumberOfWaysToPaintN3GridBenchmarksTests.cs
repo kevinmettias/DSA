@@ -20,14 +20,6 @@ public sealed partial class NumberOfWaysToPaintN3GridBenchmarksTests
         Assert.Equal(harness.Memoized(), harness.Tabulation());
     }
 
-    [Fact]
-    public void Memoized_AgreesWithTabulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.Tabulation(), harness.Memoized());
-    }
-
     private static NumberOfWaysToPaintN3GridBenchmarks BuildHarness() =>
         new() { RowCount = SmallestRowCount };
 }

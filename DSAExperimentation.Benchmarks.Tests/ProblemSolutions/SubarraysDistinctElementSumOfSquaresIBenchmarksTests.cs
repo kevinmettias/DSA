@@ -25,14 +25,6 @@ public sealed partial class SubarraysDistinctElementSumOfSquaresIBenchmarksTests
         Assert.Equal(harness.BruteForce(), harness.GrowingSet());
     }
 
-    [Fact]
-    public void GrowingSet_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GrowingSet(), harness.BruteForce());
-    }
-
     private static SubarraysDistinctElementSumOfSquaresIBenchmarks BuildHarness()
     {
         var harness = new SubarraysDistinctElementSumOfSquaresIBenchmarks { Length = SmallestLength };

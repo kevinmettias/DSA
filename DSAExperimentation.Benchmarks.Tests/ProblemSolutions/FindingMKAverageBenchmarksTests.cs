@@ -30,14 +30,6 @@ public sealed partial class FindingMKAverageBenchmarksTests
         Assert.Equal(harness.FenwickOrderStatistics(), harness.SortingSlidingWindow());
     }
 
-    [Fact]
-    public void FenwickOrderStatistics_AgreesWithSortingSlidingWindow()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SortingSlidingWindow(), harness.FenwickOrderStatistics());
-    }
-
     private static FindingMKAverageBenchmarks BuildHarness()
     {
         var harness = new FindingMKAverageBenchmarks { Length = SmallestLength };

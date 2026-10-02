@@ -24,14 +24,6 @@ public sealed partial class MaximumEmployeesToBeInvitedToAMeetingBenchmarksTests
         Assert.Equal(harness.ManualPeelAndCycleWalk(), harness.GraphPrimitiveComposition());
     }
 
-    [Fact]
-    public void GraphPrimitiveComposition_AgreesWithManualPeelAndCycleWalk()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GraphPrimitiveComposition(), harness.ManualPeelAndCycleWalk());
-    }
-
     private static MaximumEmployeesToBeInvitedToAMeetingBenchmarks BuildHarness()
     {
         var harness = new MaximumEmployeesToBeInvitedToAMeetingBenchmarks { NodeCount = SmallestNodeCount };

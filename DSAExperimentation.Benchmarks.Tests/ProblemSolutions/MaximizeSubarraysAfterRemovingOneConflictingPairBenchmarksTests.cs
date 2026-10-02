@@ -23,14 +23,6 @@ public sealed partial class MaximizeSubarraysAfterRemovingOneConflictingPairBenc
         Assert.Equal(harness.BruteForce(), harness.GroupedBoundSweep());
     }
 
-    [Fact]
-    public void GroupedBoundSweep_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GroupedBoundSweep(), harness.BruteForce());
-    }
-
     private static MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks BuildHarness()
     {
         var harness = new MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks

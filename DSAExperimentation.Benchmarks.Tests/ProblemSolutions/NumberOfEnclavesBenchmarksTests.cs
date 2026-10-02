@@ -27,14 +27,6 @@ public sealed partial class NumberOfEnclavesBenchmarksTests
         Assert.Equal(harness.DepthFirstSearchTraversal(), harness.NaiveRecursiveFloodFill());
     }
 
-    [Fact]
-    public void DepthFirstSearchTraversal_AgreesWithNaiveRecursiveFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveRecursiveFloodFill(), harness.DepthFirstSearchTraversal());
-    }
-
     private static NumberOfEnclavesBenchmarks BuildHarness()
     {
         var harness = new NumberOfEnclavesBenchmarks { Side = SmallestSide };

@@ -31,16 +31,6 @@ public sealed partial class RemoveNodesFromLinkedListBenchmarksTests
             AnswerText.Of(ValuesOf(harness.BruteForceScan())));
     }
 
-    [Fact]
-    public void MonotonicStackSweep_AgreesWithBruteForceScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.BruteForceScan())),
-            AnswerText.Of(ValuesOf(harness.MonotonicStackSweep())));
-    }
-
     private static RemoveNodesFromLinkedListBenchmarks BuildHarness()
     {
         var harness = new RemoveNodesFromLinkedListBenchmarks { Length = SmallestLength };

@@ -25,16 +25,5 @@ public sealed partial class PowXnBenchmarksTests
             RelativeTolerance);
     }
 
-    [Fact]
-    public void ExponentiationBySquaring_AgreesWithRepeatedMultiplication()
-    {
-        var harness = Harness(SmallestExponent);
-
-        Assert.Equal(
-            harness.RepeatedMultiplication(),
-            harness.ExponentiationBySquaring(),
-            RelativeTolerance);
-    }
-
     private static PowXnBenchmarks Harness(int exponent) => new() { Exponent = exponent };
 }

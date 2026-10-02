@@ -32,16 +32,6 @@ public sealed partial class RemoveNthNodeFromEndOfListBenchmarksTests
             AnswerText.Of(ValuesOf(harness.ArrayRebuild())));
     }
 
-    [Fact]
-    public void TwoRunner_AgreesWithArrayRebuild()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayRebuild())),
-            AnswerText.Of(ValuesOf(harness.TwoRunner())));
-    }
-
     private static RemoveNthNodeFromEndOfListBenchmarks BuildHarness()
     {
         var harness = new RemoveNthNodeFromEndOfListBenchmarks { Length = SmallestLength };

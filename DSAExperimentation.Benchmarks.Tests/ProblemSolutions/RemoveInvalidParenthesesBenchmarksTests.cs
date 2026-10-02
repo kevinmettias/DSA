@@ -28,16 +28,6 @@ public sealed partial class RemoveInvalidParenthesesBenchmarksTests
             AnswerText.Of(harness.BruteForceAllSubsets()));
     }
 
-    [Fact]
-    public void QueueBfsMinimalRemoval_AgreesWithBruteForceAllSubsets()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.BruteForceAllSubsets()),
-            AnswerText.Of(harness.QueueBfsMinimalRemoval()));
-    }
-
     private static RemoveInvalidParenthesesBenchmarks BuildHarness()
     {
         var harness = new RemoveInvalidParenthesesBenchmarks { Length = SmallestLength };

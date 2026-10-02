@@ -26,14 +26,6 @@ public sealed partial class NumberOfGoodPathsBenchmarksTests
         Assert.Equal(harness.PairwisePathWalk(), harness.DisjointSetSweep());
     }
 
-    [Fact]
-    public void PairwisePathWalk_AgreesWithDisjointSetSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DisjointSetSweep(), harness.PairwisePathWalk());
-    }
-
     private static NumberOfGoodPathsBenchmarks BuildHarness()
     {
         var harness = new NumberOfGoodPathsBenchmarks { NodeCount = SmallestNodeCount };

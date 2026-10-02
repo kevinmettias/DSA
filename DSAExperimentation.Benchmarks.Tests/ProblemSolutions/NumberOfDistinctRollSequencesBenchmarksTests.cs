@@ -23,14 +23,6 @@ public sealed partial class NumberOfDistinctRollSequencesBenchmarksTests
         Assert.Equal(harness.MemoizedRecursion(), harness.BruteForceRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithBruteForceRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceRecursion(), harness.MemoizedRecursion());
-    }
-
     private static NumberOfDistinctRollSequencesBenchmarks BuildHarness() =>
         new() { SequenceLength = SmallestSequenceLength };
 }

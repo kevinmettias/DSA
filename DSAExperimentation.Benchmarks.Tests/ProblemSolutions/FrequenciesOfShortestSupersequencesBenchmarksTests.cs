@@ -32,16 +32,6 @@ public sealed partial class FrequenciesOfShortestSupersequencesBenchmarksTests
             AnswerText.Of(harness.DfsSkipSet()));
     }
 
-    [Fact]
-    public void TopologicalSort_AgreesWithDfsSkipSet()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.DfsSkipSet()),
-            AnswerText.Of(harness.TopologicalSort()));
-    }
-
     private static FrequenciesOfShortestSupersequencesBenchmarks BuildHarness()
     {
         var harness = new FrequenciesOfShortestSupersequencesBenchmarks { WordCount = SmallestWordCount };

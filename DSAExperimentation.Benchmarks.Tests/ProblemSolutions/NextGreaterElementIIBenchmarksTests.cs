@@ -31,16 +31,6 @@ public sealed partial class NextGreaterElementIIBenchmarksTests
             AnswerText.Of(harness.BruteForce()));
     }
 
-    [Fact]
-    public void MonotonicStack_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.BruteForce()),
-            AnswerText.Of(harness.MonotonicStack()));
-    }
-
     private static NextGreaterElementIIBenchmarks BuildHarness()
     {
         var harness = new NextGreaterElementIIBenchmarks { Length = SmallestLength };

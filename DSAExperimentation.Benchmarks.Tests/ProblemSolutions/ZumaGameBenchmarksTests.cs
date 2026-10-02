@@ -28,14 +28,6 @@ public sealed partial class ZumaGameBenchmarksTests
     }
 
     [Fact]
-    public void QueueBfsDedup_AgreesWithBruteForceDfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.QueueBfsDedup(), harness.BruteForceDfs());
-    }
-
-    [Fact]
     public void BruteForceDfs_OddBoardRepeats_NeedsTheDocumentedMinimumSteps() =>
         Assert.Equal(ExpectedMinimumSteps, BuildHarness().BruteForceDfs());
 

@@ -30,14 +30,6 @@ public sealed partial class MinimumMovesToSpreadStonesOverGridBenchmarksTests
         Assert.Equal(harness.BacktrackPermutation(), harness.BruteForcePermutation());
     }
 
-    [Fact]
-    public void BacktrackPermutation_AgreesWithBruteForcePermutation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForcePermutation(), harness.BacktrackPermutation());
-    }
-
     private static MinimumMovesToSpreadStonesOverGridBenchmarks BuildHarness()
     {
         var harness = new MinimumMovesToSpreadStonesOverGridBenchmarks { PileCount = SmallestPileCount };

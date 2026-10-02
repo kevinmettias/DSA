@@ -32,16 +32,6 @@ public sealed partial class NumberOfFlowersInFullBloomBenchmarksTests
             AnswerText.Of(harness.BruteForce()));
     }
 
-    [Fact]
-    public void SortThenBinarySearch_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.BruteForce()),
-            AnswerText.Of(harness.SortThenBinarySearch()));
-    }
-
     private static NumberOfFlowersInFullBloomBenchmarks BuildHarness()
     {
         var harness = new NumberOfFlowersInFullBloomBenchmarks { Count = SmallestCount };

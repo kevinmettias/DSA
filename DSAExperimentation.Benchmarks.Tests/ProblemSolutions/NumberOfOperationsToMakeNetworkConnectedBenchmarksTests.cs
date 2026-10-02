@@ -24,14 +24,6 @@ public sealed partial class NumberOfOperationsToMakeNetworkConnectedBenchmarksTe
         Assert.Equal(harness.DisjointSetUnionFind(), harness.DepthFirstFloodFill());
     }
 
-    [Fact]
-    public void DisjointSetUnionFind_AgreesWithDepthFirstFloodFill()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DepthFirstFloodFill(), harness.DisjointSetUnionFind());
-    }
-
     private static NumberOfOperationsToMakeNetworkConnectedBenchmarks BuildHarness()
     {
         var harness = new NumberOfOperationsToMakeNetworkConnectedBenchmarks { ComputerCount = SmallestComputerCount };

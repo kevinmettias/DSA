@@ -25,14 +25,6 @@ public sealed partial class StoneGameVBenchmarksTests
         Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
-    }
-
     private static StoneGameVBenchmarks BuildHarness()
     {
         var harness = new StoneGameVBenchmarks { PileCount = SmallestPileCount };

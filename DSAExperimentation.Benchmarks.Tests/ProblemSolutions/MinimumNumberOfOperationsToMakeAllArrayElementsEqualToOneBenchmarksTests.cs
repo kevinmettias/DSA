@@ -34,14 +34,6 @@ public sealed partial class MinimumNumberOfOperationsToMakeAllArrayElementsEqual
         Assert.Equal(harness.MinOperationsByEuclideanGcd(), harness.MinOperationsBySubtractionGcd());
     }
 
-    [Fact]
-    public void MinOperationsByEuclideanGcd_AgreesWithMinOperationsBySubtractionGcd()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MinOperationsBySubtractionGcd(), harness.MinOperationsByEuclideanGcd());
-    }
-
     private static MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneBenchmarks { Length = SmallestLength };

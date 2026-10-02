@@ -22,14 +22,6 @@ public sealed partial class MaximumGapBenchmarksTests
         Assert.Equal(harness.SelectionSort(), harness.MergeSortScan());
     }
 
-    [Fact]
-    public void MergeSortScan_AgreesWithSelectionSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MergeSortScan(), harness.SelectionSort());
-    }
-
     private static MaximumGapBenchmarks BuildHarness()
     {
         var harness = new MaximumGapBenchmarks { Length = SmallestLength };

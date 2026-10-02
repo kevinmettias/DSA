@@ -33,15 +33,6 @@ public sealed partial class FormArrayByConcatenatingSubarraysOfAnotherArrayBench
         Assert.Equal(harness.CanChooseByCharCompressedKmpSearch(), harness.CanChooseByNaiveSubarrayScan());
     }
 
-    [Fact]
-    public void CanChooseByCharCompressedKmpSearch_AgreesWithCanChooseByNaiveSubarrayScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedVerdict, harness.CanChooseByCharCompressedKmpSearch());
-        Assert.Equal(harness.CanChooseByNaiveSubarrayScan(), harness.CanChooseByCharCompressedKmpSearch());
-    }
-
     private static FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks BuildHarness()
     {
         var harness = new FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks { Length = SmallestLength };

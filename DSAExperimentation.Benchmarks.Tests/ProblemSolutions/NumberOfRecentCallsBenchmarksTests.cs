@@ -28,16 +28,6 @@ public sealed partial class NumberOfRecentCallsBenchmarksTests
             AnswerText.Of(harness.FullHistoryRescan()));
     }
 
-    [Fact]
-    public void SlidingWindowQueue_AgreesWithFullHistoryRescan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.FullHistoryRescan()),
-            AnswerText.Of(harness.SlidingWindowQueue()));
-    }
-
     private static NumberOfRecentCallsBenchmarks BuildHarness()
     {
         var harness = new NumberOfRecentCallsBenchmarks { CallCount = SmallestCallCount };

@@ -30,14 +30,6 @@ public sealed partial class FindTheShortestSuperstringBenchmarksTests
         Assert.Equal(harness.MemoizedBitmaskDp(), harness.BruteForcePermutations());
     }
 
-    [Fact]
-    public void MemoizedBitmaskDp_AgreesWithBruteForcePermutations()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForcePermutations(), harness.MemoizedBitmaskDp());
-    }
-
     private static FindTheShortestSuperstringBenchmarks BuildHarness()
     {
         var harness = new FindTheShortestSuperstringBenchmarks { WordCount = SmallestWordCount };

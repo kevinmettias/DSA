@@ -24,14 +24,6 @@ public sealed partial class FindTheScoreDifferenceInAGameBenchmarksTests
         Assert.Equal(harness.MinHeap(), harness.LinearScan());
     }
 
-    [Fact]
-    public void MinHeap_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScan(), harness.MinHeap());
-    }
-
     private static FindTheScoreDifferenceInAGameBenchmarks BuildHarness()
     {
         var harness = new FindTheScoreDifferenceInAGameBenchmarks { Length = SmallestLength };

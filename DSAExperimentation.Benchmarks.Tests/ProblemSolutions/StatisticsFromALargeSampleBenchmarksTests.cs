@@ -37,21 +37,6 @@ public sealed partial class StatisticsFromALargeSampleBenchmarksTests
         }
     }
 
-    [Fact]
-    public void CumulativeSumBinarySearch_AgreesWithExpandAndIndex()
-    {
-        var harness = BuildHarness();
-        var binarySearch = harness.CumulativeSumBinarySearch();
-        var expanded = harness.ExpandAndIndex();
-
-        Assert.Equal(binarySearch.Length, expanded.Length);
-
-        for (var i = 0; i < binarySearch.Length; i++)
-        {
-            Assert.True(IsWithinRelativeTolerance(binarySearch[i], expanded[i]));
-        }
-    }
-
     private static StatisticsFromALargeSampleBenchmarks BuildHarness()
     {
         var harness = new StatisticsFromALargeSampleBenchmarks

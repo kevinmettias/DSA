@@ -25,14 +25,6 @@ public sealed partial class RemoveOutermostParenthesesBenchmarksTests
         Assert.Equal(harness.StackOfOpeners(), harness.RunningDepthCounter());
     }
 
-    [Fact]
-    public void StackOfOpeners_AgreesWithRunningDepthCounter()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RunningDepthCounter(), harness.StackOfOpeners());
-    }
-
     private static RemoveOutermostParenthesesBenchmarks BuildHarness()
     {
         var harness = new RemoveOutermostParenthesesBenchmarks { PairCount = SmallestPairCount };

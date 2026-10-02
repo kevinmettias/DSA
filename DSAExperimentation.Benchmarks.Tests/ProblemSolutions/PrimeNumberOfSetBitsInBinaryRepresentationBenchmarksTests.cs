@@ -25,14 +25,6 @@ public sealed partial class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
         Assert.Equal(harness.PrecomputedSetLookup(), harness.TrialDivisionPerValue());
     }
 
-    [Fact]
-    public void PrecomputedSetLookup_AgreesWithTrialDivisionPerValue()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TrialDivisionPerValue(), harness.PrecomputedSetLookup());
-    }
-
     private static PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks BuildHarness()
     {
         var harness = new PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks

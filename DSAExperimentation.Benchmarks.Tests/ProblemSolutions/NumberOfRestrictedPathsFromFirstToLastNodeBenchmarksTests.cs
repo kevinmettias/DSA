@@ -24,14 +24,6 @@ public sealed partial class NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks
         Assert.Equal(harness.DagFoldMemoized(), harness.NaiveDfs());
     }
 
-    [Fact]
-    public void DagFoldMemoized_AgreesWithNaiveDfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NaiveDfs(), harness.DagFoldMemoized());
-    }
-
     private static NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks BuildHarness()
     {
         var harness = new NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks { StepCount = SmallestStepCount };

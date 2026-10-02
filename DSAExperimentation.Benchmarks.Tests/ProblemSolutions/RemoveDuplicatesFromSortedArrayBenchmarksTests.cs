@@ -24,14 +24,6 @@ public sealed partial class RemoveDuplicatesFromSortedArrayBenchmarksTests
         Assert.Equal(harness.ArrayIndexedSequenceCompact(), harness.LinqDistinct());
     }
 
-    [Fact]
-    public void ArrayIndexedSequenceCompact_AgreesWithLinqDistinct()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinqDistinct(), harness.ArrayIndexedSequenceCompact());
-    }
-
     private static RemoveDuplicatesFromSortedArrayBenchmarks BuildHarness()
     {
         var harness = new RemoveDuplicatesFromSortedArrayBenchmarks { Length = SmallestLength };

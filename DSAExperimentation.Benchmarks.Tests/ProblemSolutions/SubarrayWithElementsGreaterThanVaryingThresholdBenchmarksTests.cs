@@ -32,16 +32,6 @@ public sealed partial class SubarrayWithElementsGreaterThanVaryingThresholdBench
         Assert.Equal(LeetCodeAnswer.None, windowScan);
     }
 
-    [Fact]
-    public void UnionFindOrder_AgreesWithWindowMinimumScan()
-    {
-        var harness = BuildHarness();
-        var unionFind = harness.UnionFindOrder();
-
-        Assert.Equal(unionFind, harness.WindowMinimumScan());
-        Assert.Equal(LeetCodeAnswer.None, unionFind);
-    }
-
     private static SubarrayWithElementsGreaterThanVaryingThresholdBenchmarks BuildHarness()
     {
         var harness = new SubarrayWithElementsGreaterThanVaryingThresholdBenchmarks

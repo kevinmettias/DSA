@@ -29,14 +29,6 @@ public sealed partial class MinimumNumberOfIncrementsOnSubarraysToFormTargetArra
         Assert.Equal(harness.RunningDiffScan(), harness.LayerByLayerSimulation());
     }
 
-    [Fact]
-    public void RunningDiffScan_AgreesWithLayerByLayerSimulation()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LayerByLayerSimulation(), harness.RunningDiffScan());
-    }
-
     private static MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks { Length = SmallestLength };

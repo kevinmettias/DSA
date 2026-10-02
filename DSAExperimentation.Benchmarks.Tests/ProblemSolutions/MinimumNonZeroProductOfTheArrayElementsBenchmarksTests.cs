@@ -25,14 +25,6 @@ public sealed partial class MinimumNonZeroProductOfTheArrayElementsBenchmarksTes
         Assert.Equal(harness.ModPowBySquaring(), harness.RepeatedModularMultiplication());
     }
 
-    [Fact]
-    public void ModPowBySquaring_AgreesWithRepeatedModularMultiplication()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RepeatedModularMultiplication(), harness.ModPowBySquaring());
-    }
-
     private static MinimumNonZeroProductOfTheArrayElementsBenchmarks BuildHarness() =>
         new() { Power = SmallestPower };
 }

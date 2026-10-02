@@ -27,16 +27,6 @@ public sealed partial class PowerGridMaintenanceBenchmarksTests
             AnswerText.Of(harness.UnionFindSortedSet()));
     }
 
-    [Fact]
-    public void UnionFindHeap_AgreesWithUnionFindSortedSet()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.UnionFindSortedSet()),
-            AnswerText.Of(harness.UnionFindHeap()));
-    }
-
     private static PowerGridMaintenanceBenchmarks BuildHarness()
     {
         var harness = new PowerGridMaintenanceBenchmarks { StationCount = SmallestStationCount };

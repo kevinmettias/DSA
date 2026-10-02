@@ -30,14 +30,6 @@ public sealed partial class FrequencyTrackerBenchmarksTests
         Assert.Equal(harness.PairedHashMaps(), harness.SortedScanList());
     }
 
-    [Fact]
-    public void PairedHashMaps_AgreesWithSortedScanList()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SortedScanList(), harness.PairedHashMaps());
-    }
-
     private static FrequencyTrackerBenchmarks BuildHarness()
     {
         var harness = new FrequencyTrackerBenchmarks { Length = SmallestLength };

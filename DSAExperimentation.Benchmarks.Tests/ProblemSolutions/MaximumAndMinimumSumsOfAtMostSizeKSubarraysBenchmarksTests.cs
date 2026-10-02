@@ -23,14 +23,6 @@ public sealed partial class MaximumAndMinimumSumsOfAtMostSizeKSubarraysBenchmark
         Assert.Equal(harness.BruteForceWindow(), harness.MonotonicStackContribution());
     }
 
-    [Fact]
-    public void MonotonicStackContribution_AgreesWithBruteForceWindow()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MonotonicStackContribution(), harness.BruteForceWindow());
-    }
-
     private static MaximumAndMinimumSumsOfAtMostSizeKSubarraysBenchmarks BuildHarness()
     {
         var harness = new MaximumAndMinimumSumsOfAtMostSizeKSubarraysBenchmarks { Length = SmallestLength };

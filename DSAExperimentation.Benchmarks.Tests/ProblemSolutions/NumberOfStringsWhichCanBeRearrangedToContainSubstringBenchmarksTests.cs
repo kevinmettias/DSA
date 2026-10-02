@@ -20,14 +20,6 @@ public sealed partial class NumberOfStringsWhichCanBeRearrangedToContainSubstrin
         Assert.Equal(harness.InclusionExclusion(), harness.StateDp());
     }
 
-    [Fact]
-    public void InclusionExclusion_AgreesWithStateDp()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.StateDp(), harness.InclusionExclusion());
-    }
-
     private static NumberOfStringsWhichCanBeRearrangedToContainSubstringBenchmarks BuildHarness() =>
         new() { StringLength = SmallestStringLength };
 }

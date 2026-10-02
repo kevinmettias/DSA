@@ -27,14 +27,6 @@ public sealed partial class PrintWordsVerticallyBenchmarksTests
         Assert.Equal(harness.DynamicArrayTrimTail(), harness.ListCharTrimEnd());
     }
 
-    [Fact]
-    public void DynamicArrayTrimTail_AgreesWithListCharTrimEnd()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ListCharTrimEnd(), harness.DynamicArrayTrimTail());
-    }
-
     private static PrintWordsVerticallyBenchmarks BuildHarness()
     {
         var harness = new PrintWordsVerticallyBenchmarks { WordCount = SmallestWordCount };

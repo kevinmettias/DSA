@@ -23,14 +23,6 @@ public sealed partial class MaximizeGridHappinessBenchmarksTests
         Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
     }
 
-    [Fact]
-    public void MemoizedRecursion_AgreesWithUnmemoizedRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
-    }
-
     private static MaximizeGridHappinessBenchmarks BuildHarness()
     {
         var harness = new MaximizeGridHappinessBenchmarks { Rows = SmallestRowCount };

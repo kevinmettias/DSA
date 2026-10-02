@@ -23,14 +23,6 @@ public sealed partial class NumberOfLongestIncreasingSubsequenceBenchmarksTests
         Assert.Equal(harness.SegmentTreeCoordinateCompression(), harness.DynamicProgramming());
     }
 
-    [Fact]
-    public void SegmentTreeCoordinateCompression_AgreesWithDynamicProgramming()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DynamicProgramming(), harness.SegmentTreeCoordinateCompression());
-    }
-
     private static NumberOfLongestIncreasingSubsequenceBenchmarks BuildHarness()
     {
         var harness = new NumberOfLongestIncreasingSubsequenceBenchmarks { Length = SmallestLength };

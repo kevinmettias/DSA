@@ -28,14 +28,6 @@ public sealed partial class MinimumNumberOfOperationsToMakeStringSortedBenchmark
         Assert.Equal(harness.FenwickTreeSweep(), harness.LinearFrequencyScan());
     }
 
-    [Fact]
-    public void FenwickTreeSweep_AgreesWithLinearFrequencyScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearFrequencyScan(), harness.FenwickTreeSweep());
-    }
-
     private static MinimumNumberOfOperationsToMakeStringSortedBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfOperationsToMakeStringSortedBenchmarks { Length = SmallestLength };

@@ -31,16 +31,6 @@ public sealed partial class RemoveLinkedListElementsBenchmarksTests
             AnswerText.Of(ValuesOf(harness.ArrayRebuild())));
     }
 
-    [Fact]
-    public void DummyHeadSplice_AgreesWithArrayRebuild()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayRebuild())),
-            AnswerText.Of(ValuesOf(harness.DummyHeadSplice())));
-    }
-
     private static RemoveLinkedListElementsBenchmarks BuildHarness()
     {
         var harness = new RemoveLinkedListElementsBenchmarks { Length = SmallestLength };

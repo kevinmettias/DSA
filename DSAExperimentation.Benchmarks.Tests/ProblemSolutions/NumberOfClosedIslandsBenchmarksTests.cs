@@ -29,16 +29,6 @@ public sealed partial class NumberOfClosedIslandsBenchmarksTests
             harness.CountClosedIslandsByDepthFirstSearch());
     }
 
-    [Fact]
-    public void CountClosedIslandsByNaiveFloodFill_AgreesWithCountClosedIslandsByDepthFirstSearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.CountClosedIslandsByDepthFirstSearch(),
-            harness.CountClosedIslandsByNaiveFloodFill());
-    }
-
     private static NumberOfClosedIslandsBenchmarks BuildHarness()
     {
         var harness = new NumberOfClosedIslandsBenchmarks { Side = SmallestSide };

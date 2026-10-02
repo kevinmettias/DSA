@@ -28,16 +28,6 @@ public sealed partial class StreamOfCharactersBenchmarksTests
             harness.ReversedTrieBackwardWalk());
     }
 
-    [Fact]
-    public void ReversedTrieBackwardWalk_AgreesWithRescanEverySuffixAgainstHashSet()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.ReversedTrieBackwardWalk(),
-            harness.RescanEverySuffixAgainstHashSet());
-    }
-
     private static StreamOfCharactersBenchmarks BuildHarness()
     {
         var harness = new StreamOfCharactersBenchmarks { StreamLength = SmallestStreamLength };

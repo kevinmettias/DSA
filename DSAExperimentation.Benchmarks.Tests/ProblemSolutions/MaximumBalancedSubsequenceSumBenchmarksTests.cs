@@ -22,14 +22,6 @@ public sealed partial class MaximumBalancedSubsequenceSumBenchmarksTests
         Assert.Equal(harness.BruteForce(), harness.SegmentTreeSweep());
     }
 
-    [Fact]
-    public void SegmentTreeSweep_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SegmentTreeSweep(), harness.BruteForce());
-    }
-
     private static MaximumBalancedSubsequenceSumBenchmarks BuildHarness()
     {
         var harness = new MaximumBalancedSubsequenceSumBenchmarks { Length = SmallestLength };

@@ -28,16 +28,6 @@ public sealed partial class StepByStepDirectionsFromABinaryTreeNodeToAnotherBenc
             harness.LowestCommonAncestorWithRootToLeafPaths());
     }
 
-    [Fact]
-    public void LowestCommonAncestorWithRootToLeafPaths_AgreesWithDirectPathSearch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.LowestCommonAncestorWithRootToLeafPaths(),
-            harness.DirectPathSearch());
-    }
-
     private static StepByStepDirectionsFromABinaryTreeNodeToAnotherBenchmarks BuildHarness()
     {
         var harness = new StepByStepDirectionsFromABinaryTreeNodeToAnotherBenchmarks

@@ -26,14 +26,6 @@ public sealed partial class MinimumNumberOfOperationsToMakeXAndYEqualBenchmarksT
         Assert.Equal(harness.MemoizedReduce(), harness.MutationQueueBfs());
     }
 
-    [Fact]
-    public void MemoizedReduce_AgreesWithMutationQueueBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.MutationQueueBfs(), harness.MemoizedReduce());
-    }
-
     private static MinimumNumberOfOperationsToMakeXAndYEqualBenchmarks BuildHarness() =>
         new() { StartValue = SmallestStartValue };
 }

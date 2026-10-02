@@ -25,14 +25,6 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIBenchmarksTests
         Assert.Equal(harness.RangeScan(), harness.StridedWalk());
     }
 
-    [Fact]
-    public void StridedWalk_AgreesWithRangeScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.StridedWalk(), harness.RangeScan());
-    }
-
     private static XORAfterRangeMultiplicationQueriesIBenchmarks BuildHarness()
     {
         var harness = new XORAfterRangeMultiplicationQueriesIBenchmarks { NumberCount = SmallestNumberCount };

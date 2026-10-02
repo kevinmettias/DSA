@@ -27,16 +27,6 @@ public sealed partial class ProcessRestrictedFriendRequestsBenchmarksTests
             AnswerText.Of(harness.GraphReachabilityCheck()));
     }
 
-    [Fact]
-    public void DisjointSetUnionFind_AgreesWithGraphReachabilityCheck()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.GraphReachabilityCheck()),
-            AnswerText.Of(harness.DisjointSetUnionFind()));
-    }
-
     private static ProcessRestrictedFriendRequestsBenchmarks BuildHarness()
     {
         var harness = new ProcessRestrictedFriendRequestsBenchmarks { NodeCount = SmallestNodeCount };

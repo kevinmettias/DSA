@@ -24,14 +24,6 @@ public sealed partial class FindTheSumOfSubsequencePowersBenchmarksTests
         Assert.Equal(harness.ThresholdCounting(), harness.BruteForce());
     }
 
-    [Fact]
-    public void ThresholdCounting_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.ThresholdCounting());
-    }
-
     private static FindTheSumOfSubsequencePowersBenchmarks BuildHarness()
     {
         var harness = new FindTheSumOfSubsequencePowersBenchmarks { Length = SmallestLength };

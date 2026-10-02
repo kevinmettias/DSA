@@ -25,14 +25,6 @@ public sealed partial class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBen
         Assert.Equal(harness.DisjointSetUnionFind(), harness.BreadthFirstReachabilityCheck());
     }
 
-    [Fact]
-    public void DisjointSetUnionFind_AgreesWithBreadthFirstReachabilityCheck()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BreadthFirstReachabilityCheck(), harness.DisjointSetUnionFind());
-    }
-
     private static RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks BuildHarness()
     {
         var harness = new RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks

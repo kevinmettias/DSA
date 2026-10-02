@@ -23,14 +23,6 @@ public sealed partial class MaximizeTheMinimumPoweredCityBenchmarksTests
         Assert.Equal(harness.LinearScan(), harness.SequenceLowerBound());
     }
 
-    [Fact]
-    public void SequenceLowerBound_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SequenceLowerBound(), harness.LinearScan());
-    }
-
     private static MaximizeTheMinimumPoweredCityBenchmarks BuildHarness()
     {
         var harness = new MaximizeTheMinimumPoweredCityBenchmarks { Length = SmallestLength };

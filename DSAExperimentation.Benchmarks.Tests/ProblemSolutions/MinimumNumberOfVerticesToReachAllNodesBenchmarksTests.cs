@@ -33,16 +33,6 @@ public sealed partial class MinimumNumberOfVerticesToReachAllNodesBenchmarksTest
             AnswerText.Of(harness.NestedScanForZeroInDegree()));
     }
 
-    [Fact]
-    public void SetTrackedInDegree_AgreesWithNestedScanForZeroInDegree()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.NestedScanForZeroInDegree()),
-            AnswerText.Of(harness.SetTrackedInDegree()));
-    }
-
     private static MinimumNumberOfVerticesToReachAllNodesBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfVerticesToReachAllNodesBenchmarks { NodeCount = SmallestNodeCount };

@@ -29,16 +29,6 @@ public sealed partial class FindXValueOfArrayIIBenchmarksTests
             AnswerText.Of(harness.BruteForce()));
     }
 
-    [Fact]
-    public void SegmentTreeAutomaton_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.BruteForce()),
-            AnswerText.Of(harness.SegmentTreeAutomaton()));
-    }
-
     private static FindXValueOfArrayIIBenchmarks BuildHarness()
     {
         var harness = new FindXValueOfArrayIIBenchmarks { Length = SmallestLength };

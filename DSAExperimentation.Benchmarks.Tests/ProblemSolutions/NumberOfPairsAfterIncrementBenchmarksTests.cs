@@ -28,16 +28,6 @@ public sealed partial class NumberOfPairsAfterIncrementBenchmarksTests
             AnswerText.Of(harness.DirectArray()));
     }
 
-    [Fact]
-    public void RangeFenwickTree_AgreesWithDirectArray()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.DirectArray()),
-            AnswerText.Of(harness.RangeFenwickTree()));
-    }
-
     private static NumberOfPairsAfterIncrementBenchmarks BuildHarness()
     {
         var harness = new NumberOfPairsAfterIncrementBenchmarks { Nums2Length = SmallestNums2Length };

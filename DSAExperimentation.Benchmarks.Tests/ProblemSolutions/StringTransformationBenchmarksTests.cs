@@ -25,14 +25,6 @@ public sealed partial class StringTransformationBenchmarksTests
         Assert.Equal(harness.BruteForceRotationCompare(), harness.ZFunctionSearch());
     }
 
-    [Fact]
-    public void ZFunctionSearch_AgreesWithBruteForceRotationCompare()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ZFunctionSearch(), harness.BruteForceRotationCompare());
-    }
-
     private static StringTransformationBenchmarks BuildHarness()
     {
         var harness = new StringTransformationBenchmarks { Length = SmallestLength };

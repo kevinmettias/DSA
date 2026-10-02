@@ -31,14 +31,6 @@ public sealed partial class MinimumMovesToReachTargetInGridBenchmarksTests
         Assert.Equal(harness.BackwardReduction(), harness.BoundedForwardBfs());
     }
 
-    [Fact]
-    public void BackwardReduction_AgreesWithBoundedForwardBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BoundedForwardBfs(), harness.BackwardReduction());
-    }
-
     private static MinimumMovesToReachTargetInGridBenchmarks BuildHarness()
     {
         var harness = new MinimumMovesToReachTargetInGridBenchmarks { MoveCount = SmallestMoveCount };

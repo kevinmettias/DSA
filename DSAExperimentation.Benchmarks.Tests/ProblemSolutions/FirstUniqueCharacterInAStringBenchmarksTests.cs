@@ -30,14 +30,6 @@ public sealed partial class FirstUniqueCharacterInAStringBenchmarksTests
         Assert.Equal(harness.HashMapTwoPass(), harness.BruteForce());
     }
 
-    [Fact]
-    public void HashMapTwoPass_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.HashMapTwoPass());
-    }
-
     private static FirstUniqueCharacterInAStringBenchmarks BuildHarness()
     {
         var harness = new FirstUniqueCharacterInAStringBenchmarks { Length = SmallestLength };

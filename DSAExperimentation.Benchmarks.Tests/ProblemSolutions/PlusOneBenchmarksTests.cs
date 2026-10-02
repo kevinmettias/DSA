@@ -30,16 +30,6 @@ public sealed partial class PlusOneBenchmarksTests
     }
 
     [Fact]
-    public void DigitStack_AgreesWithArrayWalk()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.ArrayWalk()),
-            AnswerText.Of(harness.DigitStack()));
-    }
-
-    [Fact]
     public void ArrayWalk_AllNines_GrowsTheNumberByOneDigit() =>
         Assert.Equal(GrownLength, BuildHarness().ArrayWalk().Length);
 

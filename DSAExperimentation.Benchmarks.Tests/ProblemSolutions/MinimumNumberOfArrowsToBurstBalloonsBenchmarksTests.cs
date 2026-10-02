@@ -28,14 +28,6 @@ public sealed partial class MinimumNumberOfArrowsToBurstBalloonsBenchmarksTests
         Assert.Equal(harness.SortEndsThenGreedyScan(), harness.BruteForceRescan());
     }
 
-    [Fact]
-    public void SortEndsThenGreedyScan_AgreesWithBruteForceRescan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceRescan(), harness.SortEndsThenGreedyScan());
-    }
-
     private static MinimumNumberOfArrowsToBurstBalloonsBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfArrowsToBurstBalloonsBenchmarks { Length = SmallestLength };

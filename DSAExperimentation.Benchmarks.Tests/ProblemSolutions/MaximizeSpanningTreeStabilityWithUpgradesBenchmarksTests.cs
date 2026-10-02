@@ -23,14 +23,6 @@ public sealed partial class MaximizeSpanningTreeStabilityWithUpgradesBenchmarksT
         Assert.Equal(harness.ArrayUnionFind(), harness.DisjointSet());
     }
 
-    [Fact]
-    public void DisjointSet_AgreesWithArrayUnionFind()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DisjointSet(), harness.ArrayUnionFind());
-    }
-
     private static MaximizeSpanningTreeStabilityWithUpgradesBenchmarks BuildHarness()
     {
         var harness = new MaximizeSpanningTreeStabilityWithUpgradesBenchmarks { NodeCount = SmallestNodeCount };

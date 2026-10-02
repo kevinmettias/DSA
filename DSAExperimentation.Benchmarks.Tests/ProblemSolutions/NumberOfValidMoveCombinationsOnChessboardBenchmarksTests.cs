@@ -24,14 +24,6 @@ public sealed partial class NumberOfValidMoveCombinationsOnChessboardBenchmarksT
         Assert.Equal(harness.PrunedBacktracking(), harness.CartesianProductThenValidate());
     }
 
-    [Fact]
-    public void PrunedBacktracking_AgreesWithCartesianProductThenValidate()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.CartesianProductThenValidate(), harness.PrunedBacktracking());
-    }
-
     private static NumberOfValidMoveCombinationsOnChessboardBenchmarks BuildHarness()
     {
         var harness = new NumberOfValidMoveCombinationsOnChessboardBenchmarks { PieceCount = SmallestPieceCount };

@@ -25,14 +25,6 @@ public sealed partial class RectangleAreaBenchmarksTests
         Assert.Equal(harness.ClosedFormOverlapArithmetic(), harness.UnitGridCoverageCount());
     }
 
-    [Fact]
-    public void ClosedFormOverlapArithmetic_AgreesWithUnitGridCoverageCount()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.UnitGridCoverageCount(), harness.ClosedFormOverlapArithmetic());
-    }
-
     private static RectangleAreaBenchmarks BuildHarness()
     {
         var harness = new RectangleAreaBenchmarks { Side = SmallestSide };

@@ -25,14 +25,6 @@ public sealed partial class NumberOfCommonFactorsBenchmarksTests
         Assert.Equal(harness.LinearScan(), harness.DivisorEnumeration());
     }
 
-    [Fact]
-    public void LinearScan_AgreesWithDivisorEnumeration()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DivisorEnumeration(), harness.LinearScan());
-    }
-
     private static NumberOfCommonFactorsBenchmarks BuildHarness()
     {
         var harness = new NumberOfCommonFactorsBenchmarks { Magnitude = SmallestMagnitude };

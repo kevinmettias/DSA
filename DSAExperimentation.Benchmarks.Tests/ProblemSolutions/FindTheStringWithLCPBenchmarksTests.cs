@@ -24,14 +24,6 @@ public sealed partial class FindTheStringWithLCPBenchmarksTests
         Assert.Equal(harness.DisjointSet(), harness.DirectSweep());
     }
 
-    [Fact]
-    public void DisjointSet_AgreesWithDirectSweep()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.DirectSweep(), harness.DisjointSet());
-    }
-
     private static FindTheStringWithLCPBenchmarks BuildHarness()
     {
         var harness = new FindTheStringWithLCPBenchmarks { Length = SmallestLength };

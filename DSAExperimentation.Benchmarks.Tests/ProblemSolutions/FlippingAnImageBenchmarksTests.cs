@@ -30,16 +30,6 @@ public sealed partial class FlippingAnImageBenchmarksTests
             AnswerText.Of(harness.TwoPointerReverseAndInvert()));
     }
 
-    [Fact]
-    public void StackReverseAndInvert_AgreesWithTwoPointerReverseAndInvert()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.TwoPointerReverseAndInvert()),
-            AnswerText.Of(harness.StackReverseAndInvert()));
-    }
-
     private static FlippingAnImageBenchmarks BuildHarness()
     {
         var harness = new FlippingAnImageBenchmarks { Side = SmallestSide };

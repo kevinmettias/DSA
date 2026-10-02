@@ -30,16 +30,6 @@ public sealed partial class NumberOfDifferentSubsequencesGCDsBenchmarksTests
             harness.CountDifferentSubsequenceGcdsByWholeArrayScan());
     }
 
-    [Fact]
-    public void CountDifferentSubsequenceGcdsBySetMultiples_AgreesWithCountDifferentSubsequenceGcdsByWholeArrayScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            harness.CountDifferentSubsequenceGcdsByWholeArrayScan(),
-            harness.CountDifferentSubsequenceGcdsBySetMultiples());
-    }
-
     private static NumberOfDifferentSubsequencesGCDsBenchmarks BuildHarness()
     {
         var harness = new NumberOfDifferentSubsequencesGCDsBenchmarks { Length = SmallestLength };

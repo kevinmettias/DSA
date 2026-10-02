@@ -32,16 +32,6 @@ public sealed partial class StickersToSpellWordBenchmarksTests
         Assert.Equal(ExpectedMinStickers, naive);
     }
 
-    [Fact]
-    public void Memoized_AgreesWithNaive()
-    {
-        var harness = BuildHarness();
-        var memoized = harness.Memoized();
-
-        Assert.Equal(memoized, harness.Naive());
-        Assert.Equal(ExpectedMinStickers, memoized);
-    }
-
     private static StickersToSpellWordBenchmarks BuildHarness()
     {
         var harness = new StickersToSpellWordBenchmarks { PairCount = SmallestPairCount };

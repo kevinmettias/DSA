@@ -30,14 +30,6 @@ public sealed partial class MinimumInsertionsToBalanceAParenthesesStringBenchmar
         Assert.Equal(harness.StackOfOpeners(), harness.RunningCounter());
     }
 
-    [Fact]
-    public void StackOfOpeners_AgreesWithRunningCounter()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.RunningCounter(), harness.StackOfOpeners());
-    }
-
     private static MinimumInsertionsToBalanceAParenthesesStringBenchmarks BuildHarness()
     {
         var harness = new MinimumInsertionsToBalanceAParenthesesStringBenchmarks { Length = SmallestLength };

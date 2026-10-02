@@ -31,16 +31,6 @@ public sealed partial class RemoveDuplicatesFromSortedListIIBenchmarksTests
             AnswerText.Of(ValuesOf(harness.ArrayGroupFilter())));
     }
 
-    [Fact]
-    public void TwoPointerScan_AgreesWithArrayGroupFilter()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayGroupFilter())),
-            AnswerText.Of(ValuesOf(harness.TwoPointerScan())));
-    }
-
     private static RemoveDuplicatesFromSortedListIIBenchmarks BuildHarness()
     {
         var harness = new RemoveDuplicatesFromSortedListIIBenchmarks { Length = SmallestLength };

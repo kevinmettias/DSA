@@ -29,14 +29,6 @@ public sealed partial class WordBreakIIBenchmarksTests
     }
 
     [Fact]
-    public void TriePrunedMemoized_AgreesWithHashSetUnboundedScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TriePrunedMemoized(), harness.HashSetUnboundedScan());
-    }
-
-    [Fact]
     public void HashSetUnboundedScan_SingleDictionaryWord_FindsOneSentence() =>
         Assert.Equal(ExpectedSentenceCount, BuildHarness().HashSetUnboundedScan());
 

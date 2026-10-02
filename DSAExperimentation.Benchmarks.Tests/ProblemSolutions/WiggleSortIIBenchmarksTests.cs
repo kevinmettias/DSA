@@ -33,16 +33,6 @@ public sealed partial class WiggleSortIIBenchmarksTests
     }
 
     [Fact]
-    public void MergeSortInterleave_AgreesWithSelectionSortInterleave()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.MergeSortInterleave()),
-            AnswerText.Of(harness.SelectionSortInterleave()));
-    }
-
-    [Fact]
     public void SelectionSortInterleave_ProducesAWiggleArrangement()
     {
         var values = BuildHarness().SelectionSortInterleave();

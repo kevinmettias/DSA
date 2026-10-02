@@ -26,16 +26,6 @@ public sealed partial class PermutationsBenchmarksTests
             AnswerText.Of(harness.SpecializedRecursive()));
     }
 
-    [Fact]
-    public void Backtracking_AgreesWithSpecializedRecursive()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.SpecializedRecursive()),
-            AnswerText.Of(harness.Backtracking()));
-    }
-
     private static PermutationsBenchmarks BuildHarness()
     {
         var harness = new PermutationsBenchmarks { Length = SmallestLength };

@@ -23,14 +23,6 @@ public sealed partial class MaximizeTheDistanceBetweenPointsOnASquareBenchmarksT
         Assert.Equal(harness.LinearScan(), harness.SortedGreedy());
     }
 
-    [Fact]
-    public void SortedGreedy_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.SortedGreedy(), harness.LinearScan());
-    }
-
     private static MaximizeTheDistanceBetweenPointsOnASquareBenchmarks BuildHarness()
     {
         var harness = new MaximizeTheDistanceBetweenPointsOnASquareBenchmarks { PointCount = SmallestPointCount };

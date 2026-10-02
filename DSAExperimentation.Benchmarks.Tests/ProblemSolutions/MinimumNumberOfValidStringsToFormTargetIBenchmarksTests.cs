@@ -28,14 +28,6 @@ public sealed partial class MinimumNumberOfValidStringsToFormTargetIBenchmarksTe
         Assert.Equal(harness.ZFunctionAcrossWords(), harness.BruteForce());
     }
 
-    [Fact]
-    public void ZFunctionAcrossWords_AgreesWithBruteForce()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForce(), harness.ZFunctionAcrossWords());
-    }
-
     private static MinimumNumberOfValidStringsToFormTargetIBenchmarks BuildHarness()
     {
         var harness = new MinimumNumberOfValidStringsToFormTargetIBenchmarks { TargetLength = SmallestTargetLength };

@@ -31,16 +31,6 @@ public sealed partial class RemoveDuplicatesFromSortedListBenchmarksTests
             AnswerText.Of(ValuesOf(harness.DistinctFilter())));
     }
 
-    [Fact]
-    public void InPlaceScan_AgreesWithDistinctFilter()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.DistinctFilter())),
-            AnswerText.Of(ValuesOf(harness.InPlaceScan())));
-    }
-
     private static RemoveDuplicatesFromSortedListBenchmarks BuildHarness()
     {
         var harness = new RemoveDuplicatesFromSortedListBenchmarks { Length = SmallestLength };

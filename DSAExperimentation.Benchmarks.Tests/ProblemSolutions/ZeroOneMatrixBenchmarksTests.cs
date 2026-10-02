@@ -31,16 +31,6 @@ public sealed partial class ZeroOneMatrixBenchmarksTests
     }
 
     [Fact]
-    public void MultiSourceBfs_AgreesWithPerCellBfs()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(
-            AnswerText.Of(harness.MultiSourceBfs()),
-            AnswerText.Of(harness.PerCellBfs()));
-    }
-
-    [Fact]
     public void PerCellBfs_PinnedZeroCell_ReportsZeroDistance() =>
         Assert.Equal(ZeroCellDistance, BuildHarness().PerCellBfs()[PinnedZeroRow][PinnedZeroColumn]);
 
