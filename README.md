@@ -105,6 +105,27 @@ reports is the machine-comparable one; it is what a baseline is compared against
 replaces the pinned job rather than adding to it, so a run whose numbers you intend to keep should
 not pass one.
 
+### Checking a change against the recorded baseline
+
+`DSAExperimentation.Benchmarks/baseline.tsv` holds the last accepted timings for the
+strategy-swap suites, one line per arm. Two commands use it, and each runs the benchmarks
+unless `--report` points at reports that already exist:
+
+```sh
+# accept the current numbers as the baseline
+dotnet run -c Release --project DSAExperimentation.Benchmarks -- baseline record --filter "*StrategySwaps*"
+
+# compare a fresh run against it: exit 0 within tolerance, 1 past it, 2 if there is no verdict
+dotnet run -c Release --project DSAExperimentation.Benchmarks -- baseline compare --filter "*StrategySwaps*"
+```
+
+An arm counts as worse when its mean time or its allocation rises past `--tolerance`
+(default 0.10). The comparison also refuses rather than passing when the run was measured
+under a different job, or when an arm the baseline knows about is missing from it: a run
+that is not comparable to the baseline is not a run that agrees with it. The baseline's
+header records the filter and job that produced it, and its host, which is context for
+reading an old file rather than something checked.
+
 ## Layout
 
 | Project | Contents |

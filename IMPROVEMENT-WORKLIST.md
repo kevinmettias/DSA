@@ -94,26 +94,66 @@ that owes a direct test.
 
 ## P3 — Make benchmarking measurable
 
-Nothing statistically meaningful has ever been recorded.
-
-- Every artifact on disk is `Job=Dry` (or `Job=ShortRun`) — smoke runs from ad-hoc
-  `--job` flags. `Program.cs` is a bare `BenchmarkSwitcher`; no `IConfig`/`ManualConfig`
-  exists, so the default job is never the one captured.
-- No stored baseline and no JSON exporter. `Baseline = true` (1,073 arms) is BDN's in-run
-  ratio, not a baseline — so a regression is undetectable.
-- No CI and no runner script; benchmarks run only by hand.
-- No `[BenchmarkCategory]` anywhere, so results can't be sliced.
-- 27 classes have a single arm: 7 are a lone `Baseline = true` (ratio 1.00 by construction);
-  20 have one arm and no baseline.
-- 98 classes have no `[GlobalSetup]`; 26 have no `[Params]` — timed-region input
-  construction is not structurally prevented.
-
-**Action:** add a `ManualConfig` with a job worth recording; enable a JSON exporter and
-check in a baseline; add a runner script; tag classes with `[BenchmarkCategory]`; give the
-27 single-arm classes a counterpart arm.
-
 **Done when:** a documented command reproduces a run, its baseline is in the repo, and a
-deliberate slowdown in one arm is detectable by comparing against it.
+deliberate slowdown in one arm is detectable by comparing against it. — **the first three
+are met**; the tagging and the single-arm classes below are not.
+
+**One place a run is configured — DONE** (`4e270441`). `BenchmarkConfig.For(args)` pins the
+recording job as explicit counts (6 warmups, 15 iterations, 1 launch) rather than as BDN's
+`Default`, which is BDN's answer to give and has changed between versions, and adds
+`JsonExporter.Full`, the only machine-comparable export. The pin is dropped when the command
+line carries `--job`, `--job=` or `-j`, because BDN treats a command-line job as one MORE job:
+with an assembly-level `[Config]`, `--job dry` ran the dry job and the full one back to back.
+`BenchmarkConfigTests` covers that decision and nothing else, because it is the one that fails
+invisibly.
+
+**A baseline in the repo, and a command that checks a run against it — DONE.**
+`DSAExperimentation.Benchmarks/baseline.tsv` is one tab-separated line per arm, sorted by name,
+under a header naming the filter and job that produced it. `baseline record` and `baseline
+compare` read and write it (`--report` reads existing reports instead of running anything), and
+exit 0 within tolerance, 1 past it, 2 when there is no verdict. Text in, text out, so all of it
+is tested without a benchmark run; `BaselineCommand` owns the paths, `BenchmarkBaseline` owns
+the arithmetic.
+
+**The load-bearing proof, performed rather than asserted.** With `ReduceOrderBenchmarks.
+BreadthFirst` deliberately made to run its reduce twice, `baseline compare` reported that arm
+at 2.05x and 2.01x and **exited 1**, while the untouched `DepthFirst` arms stayed within
+tolerance and no other arm was named. `git hash-object` was `39d80d9d` before the mutation and
+`39d80d9d` after the restore.
+
+Two things the first real runs changed, both worth keeping because both were invisible in
+synthetic data:
+
+- **Allocation needs the same tolerance as time.** It is exact per RUN, not per operation:
+  BDN divides the run's total by an operation count it picks afresh, so an unmodified arm
+  reported 17,537,358 bytes and then 17,537,486 — while its *time* had improved 1.2%. The
+  first version called that a regression. Allocation now has to move past `--tolerance`
+  relative to the baseline, with no absolute floor, so an arm that allocated nothing and now
+  allocates something is still caught.
+- **The job does not end at the first space.** `...Recursive: Job-ABCDEF(IterationCount=15,
+  LaunchCount=1, WarmupCount=6) [Size=10000]` — cutting at the first space keeps
+  `(IterationCount=15,` and drops the counts. Worse, it fails *symmetrically*, so two different
+  jobs still look identical and the check passes while doing nothing. Two unit tests and a
+  hand-built fixture had agreed with the broken reader; only a real report disagreed.
+
+Two fresh control runs were made (unchanged code, same filter, exit 0 expected): the first
+found the allocation bug, the second was clean.
+
+**Still open:**
+
+- **No `[BenchmarkCategory]` anywhere** across 1,097 classes, so results still cannot be
+  sliced. One write per file; bulk multi-file rewrites are refused in this repo, so this wants
+  a scripted pass or a decision to tag by folder.
+- **27 classes still have a single arm** — 7 a lone `Baseline = true` (ratio 1.00 by
+  construction), 20 with one arm and no baseline. Same vertical slice P4 did for 8 problems,
+  27 times over: each wants a genuinely new textbook arm in its solution.
+  (`DeleteNodeInALinkedList` looks genuinely one-trick.) This count is `ProblemSolutions/`
+  only; `StrategySwaps/` was not scanned.
+- **README's "7,171 test methods"** counts `[Fact]`/`[Theory]` attributes; the three test
+  projects hold 7,058 today. Close enough to be a definitional difference, so it is flagged
+  rather than changed — the figure is a P0 doc-truth item.
+- 98 classes have no `[GlobalSetup]`; 26 have no `[Params]` — timed-region input construction
+  is not structurally prevented.
 
 ---
 

@@ -1,0 +1,26 @@
+# DSA benchmark baseline: one line per benchmark arm, sorted by name, so that a
+# change is one changed line in a diff. Record it on a machine doing nothing else.
+#
+# record	dotnet run -c Release --project DSAExperimentation.Benchmarks -- baseline record --filter "*StrategySwaps*"
+# compare	dotnet run -c Release --project DSAExperimentation.Benchmarks -- baseline compare --filter "*StrategySwaps*"
+# filter	*StrategySwaps*
+# job	(IterationCount=15, LaunchCount=1, WarmupCount=6)
+# host	Unknown processor | .NET 10.0.11 (10.0.1126.37416)
+# captured	2026-10-01
+# columns	name	meanNanoseconds	allocatedBytes
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Iterative(NodeCount: 10000)	1146583.255208	3209079
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Iterative(NodeCount: 200000)	53352022.857143	59463823
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Recursive(NodeCount: 10000)	127772.757394	280000
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Recursive(NodeCount: 200000)	2553063.828125	5600000
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.BreadthFirst(NodeCount: 10000)	408515.299479	1107891
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.BreadthFirst(NodeCount: 200000)	9602480.9375	21740698
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.DepthFirst(NodeCount: 10000)	468776.246745	942083
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.DepthFirst(NodeCount: 200000)	9280141.041667	17537325
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.AStar(GridSize: 20)	17222.064427	33984
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.AStar(GridSize: 80)	434122.252604	435666
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.Dijkstra(GridSize: 20)	36817.275798	39536
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.Dijkstra(GridSize: 80)	1006392.565104	778381
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Iterative(NodeCount: 1000)	54237.382813	317080
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Iterative(NodeCount: 3000)	221416.077474	785148
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Recursive(NodeCount: 1000)	10764.029948	31992
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Recursive(NodeCount: 3000)	33142.061942	95992
