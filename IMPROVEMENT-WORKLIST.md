@@ -6,7 +6,8 @@ should be re-checked before acting — one survey got a count wrong (it reported
 problems with no benchmark; the measured answer is 11).
 
 Scale for orientation: 6 projects, no `.sln`; 1,105 LeetCode problems; 1,105 coverage
-tests; 1,097 benchmark classes each with a companion test; ~10,346-line core library
+tests; 1,111 benchmark classes (1,106 one-per-problem, 4 in `StrategySwaps/`, plus the
+generic registry harness) each with a companion test; ~10,346-line core library
 (✓, across 211 files).
 
 ---
@@ -47,7 +48,7 @@ built to migrate the catalogue; the catalogue migrated, but not onto it.
 - **11** of 1,105 problems are registered (~30 generated arms).
 - `MinStack` is registered and declares **0 workloads** — no arm at all.
 - `IBoundWorkload` has exactly **one** implementation (private nested in `TypedLeetCodeProblem`).
-- All **1,097** hand-written `*Benchmarks.cs` classes still call solutions directly.
+- All **1,106** hand-written `*Benchmarks.cs` classes still call solutions directly.
 - The registered problems keep their hand-written classes too, so those 11 are double-covered.
 - A parallel split exists in validation: `Harness/LeetCodeAnswers` + `LeetCodeProblemBuilder`
   versus `LeetCodeCatalog/LeetCodeSolutionValidator` + `ILeetCodeTestCaseAdapter` + three
@@ -139,16 +140,22 @@ synthetic data:
 Two fresh control runs were made (unchanged code, same filter, exit 0 expected): the first
 found the allocation bug, the second was clean.
 
-**Still open:**
+**Still open** — both of these were survey-reported in the first draft and are now measured;
+both were wrong, and in the direction that matters:
 
-- **No `[BenchmarkCategory]` anywhere** across 1,097 classes, so results still cannot be
+- **No `[BenchmarkCategory]` anywhere** across 1,111 classes, so results still cannot be
   sliced. One write per file; bulk multi-file rewrites are refused in this repo, so this wants
   a scripted pass or a decision to tag by folder.
-- **27 classes still have a single arm** — 7 a lone `Baseline = true` (ratio 1.00 by
-  construction), 20 with one arm and no baseline. Same vertical slice P4 did for 8 problems,
-  27 times over: each wants a genuinely new textbook arm in its solution.
-  (`DeleteNodeInALinkedList` looks genuinely one-trick.) This count is `ProblemSolutions/`
-  only; `StrategySwaps/` was not scanned.
+- **48 classes have a single arm, not 27** — 1,106 per-problem classes plus 4 in
+  `StrategySwaps/` plus the generic `LeetCodeProblemBenchmarks` at the root (a registry
+  harness, not a per-problem class, so not a candidate). Of the 47 per-problem ones, **18
+  carry a lone `[Benchmark(Baseline = true)]`**, which reports a ratio of exactly 1.00 by
+  construction — not 7. 2026-10-01, by counting `[Benchmark` per file.
+- **At least two of the 47 are deliberate.** P4 explicitly decided `ImplementTrieBenchmarks`
+  and `BinarySearchTreeIteratorBenchmarks` stay single-arm, because those solutions return the
+  repo's own structures and a rival written in the harness would time something the
+  architecture does not have. So this is 45 candidates, not 47, and each needs the same
+  judgement rather than a blanket second arm.
 - **README's "7,171 test methods"** counts `[Fact]`/`[Theory]` attributes; the three test
   projects hold 7,058 today. Close enough to be a definitional difference, so it is flagged
   rather than changed — the figure is a P0 doc-truth item.
@@ -254,8 +261,8 @@ Not everything here is debt, and the worklist should not obscure that:
 - The tier order is enforced by tests that read the repo as text — `Architecture/LayeringTests.cs`,
   `Tier5WitnessTests.cs`, `RepositoryFiles.cs` — not by prose.
 - Corpus coverage is essentially complete: 1,105/1,105 problems have a per-problem test, and
-  1,097/1,097 benchmark classes have a companion test asserting their arms agree and their
-  workloads rebuild identically.
+  1,106/1,106 per-problem benchmark classes have a companion test asserting their arms agree
+  and their workloads rebuild identically.
 - Every `[Benchmark]` arm name appears in its test file, so the "naive baseline was never
   tested" gap §17.1 describes is closed for the hand-written classes.
 - The benchmark test project is doing real work — it caught the fact that a harness whose
