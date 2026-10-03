@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overall, against this repo's own Set<char> finding the first character missing its
 // opposite-case partner and recursing on the two halves - O(n^2) worst case, since no
 // nice substring can ever cross that character. A tiny 4-letter mixed-case alphabet
-// keeps both variants paying real work instead of exiting on an early mismatch.
+// keeps both variants paying real work instead of exiting on an early mismatch. Length
+// stops at LC 1763's 100-character cap.
 public class LongestNiceSubstringBenchmarks
 {
     private const string Alphabet = "aAbB";
@@ -18,7 +19,7 @@ public class LongestNiceSubstringBenchmarks
 
     private string _text = "";
 
-    [Params(30, 150)]
+    [Params(30, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

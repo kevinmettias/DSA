@@ -37,6 +37,17 @@ public sealed partial class LabeledGraphWorkloadsTests
         Assert.All(edges, edge => Assert.NotEqual(edge[0], edge[1]));
     }
 
+    // LC 3615 promises no duplicate edges; at this size and seed the extra-density draws do land on
+    // pairs already joined, so this is what the generator's drop of a repeated pair is for.
+    [Fact]
+    public void Build_EveryPair_IsJoinedByOneEdge()
+    {
+        var (edges, _) = LabeledGraphWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
+        var pairs = edges.Select(edge => (Math.Min(edge[0], edge[1]), Math.Max(edge[0], edge[1])));
+
+        Assert.Equal(edges.Length, pairs.Distinct().Count());
+    }
+
     // The generator writes a node's guaranteed edge as { node, earlier node }, and it is that edge
     // which keeps the graph connected - the shape both strategies' walks rely on.
     [Fact]

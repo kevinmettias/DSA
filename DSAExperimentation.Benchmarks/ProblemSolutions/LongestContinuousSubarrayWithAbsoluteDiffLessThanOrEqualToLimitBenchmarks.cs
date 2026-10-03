@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitSolution's, the
 // same methods the coverage test proves correct. Values are random over a narrow
 // range relative to Limit so windows run long enough for the baseline's O(n^2) cost
-// to actually show, rather than every start immediately violating the limit.
+// to actually show, rather than every start immediately violating the limit. The
+// range is [1, 2,000], inside LC 1438's 1 <= nums[i].
 public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenchmarks
 {
     private const int Limit = 100;
@@ -23,7 +24,7 @@ public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenc
     {
         var random = new Random(RandomSeed);
 
-        _values = [.. Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBound))];
+        _values = [.. Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBound + 1))];
     }
 
     [Benchmark(Baseline = true)]

@@ -4,12 +4,13 @@ using DSAExperimentation.LeetCode.LongestIncreasingSubsequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestIncreasingSubsequenceSolution's, the same
-// methods LongestIncreasingSubsequenceSolutionTests proves correct.
+// methods LongestIncreasingSubsequenceSolutionTests proves correct. Length stops at
+// LC 300's 2,500-element cap.
 public class LongestIncreasingSubsequenceBenchmarks
 {
     private int[] _values = [];
 
-    [Params(2_000, 5_000)]
+    [Params(2_000, 2_500)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LongestPalindromicSubstringSolutionTests proves correct. Text is drawn from a
 // tiny 4-letter alphabet rather than a full character range, so repeated runs are
 // common and ExpandAroundCenter actually pays its quadratic worst case instead of
-// exiting most expansions after one comparison.
+// exiting most expansions after one comparison. Length stops at LC 5's
+// 1,000-character cap.
 public class LongestPalindromicSubstringBenchmarks
 {
     private const int RandomSeed = 23;
@@ -14,7 +15,7 @@ public class LongestPalindromicSubstringBenchmarks
 
     private string _text = "";
 
-    [Params(500, 8_000)]
+    [Params(500, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

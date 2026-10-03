@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LongestBalancedSubarrayIISolutionTests proves correct. _nums alternates
 // even/odd values, the same workload shape LongestBalancedSubarrayIBenchmarks
 // uses, kept small enough for BOTH arms to finish - this is where BruteForce's
-// O(n^2) is meant to visibly lose to PrefixBalanceSegmentTree's O(n log^2 n).
+// O(n^2) is meant to visibly lose to PrefixBalanceSegmentTree's O(n log^2 n). The
+// values start at 2, inside LC 3721's [1, 10^5].
 public class LongestBalancedSubarrayIIBenchmarks
 {
     private int[] _nums = [];
@@ -15,7 +16,7 @@ public class LongestBalancedSubarrayIIBenchmarks
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _nums = Enumerable.Range(0, Length).Select(i => 2 * i + (i % 2)).ToArray();
+    public void Setup() => _nums = Enumerable.Range(0, Length).Select(i => 2 * (i + 1) + (i % 2)).ToArray();
 
     [Benchmark(Baseline = true)]
     public int BruteForce() => LongestBalancedSubarrayIISolution.FindLongestBalancedLengthByBruteForce(_nums);

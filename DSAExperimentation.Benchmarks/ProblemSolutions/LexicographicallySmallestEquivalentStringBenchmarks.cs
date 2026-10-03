@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // comparison is adjacency-list BFS over the 26 letters (a component list allocated per
 // group) against this repo's own DisjointSet(26) - O(1) Union per pair, O(a(26)) Find
 // per baseStr character, no per-component allocation. The three strings are LeetCode's
-// own input shape, so [GlobalSetup] only sizes and seeds them.
+// own input shape, so [GlobalSetup] only sizes and seeds them. Length stops at LC 1061's
+// 1,000-character cap.
 public class LexicographicallySmallestEquivalentStringBenchmarks
 {
     private const int RandomSeed = 1061; // LC problem number
@@ -17,7 +18,7 @@ public class LexicographicallySmallestEquivalentStringBenchmarks
 
     private string _s2 = "";
     private string _baseStr = "";
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

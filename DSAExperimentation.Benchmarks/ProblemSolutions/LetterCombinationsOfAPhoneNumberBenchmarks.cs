@@ -12,11 +12,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // than the answer LetterCombinationsByBacktracking actually produces; promoted
 // here to match, the same deliberate change ARCHITECTURE.md §17.8 records for
 // WordLadderII.
+//
+// DigitCount stops at LC 17's 4-digit cap; each '7' holds four letters, so the
+// answer still grows fourfold from one size to the next.
 public class LetterCombinationsOfAPhoneNumberBenchmarks
 {
     private string _digits = "";
 
-    [Params(3, 5)]
+    [Params(3, 4)]
     public int DigitCount { get; set; }
 
     [GlobalSetup]
