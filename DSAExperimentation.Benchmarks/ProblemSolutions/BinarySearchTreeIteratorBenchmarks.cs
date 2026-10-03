@@ -1,4 +1,3 @@
-﻿using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BinarySearchTreeIterator;
@@ -11,28 +10,36 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // this needs - the algorithm walks Left/Right structurally and never inspects
 // value order, so its input does not need to actually satisfy the BST property
 // to time correctly. [Benchmark] drains a fresh iterator end to end so every
-// next()/hasNext() pair across the tree is charged, not just the first.
+// next()/hasNext() pair across the tree is charged, not just the first, and returns
+// every value next() reported, in order.
 public class BinarySearchTreeIteratorBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
+
+    // Every value the drain reports; sized in setup so the drain allocates nothing.
+    private int[] _drained = [];
 
     [Params(200, 5_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
+    public void Setup()
+    {
+        _root = BinaryTrees.Balanced(NodeCount);
+        _drained = new int[NodeCount];
+    }
 
     [Benchmark(Baseline = true)]
-    public int DrainInOrder()
+    public int[] DrainInOrder()
     {
         var iterator = BinarySearchTreeIteratorSolution.CreateByLeftSpineStack(_root);
-        var last = 0;
+        var next = 0;
 
         while (iterator.HasNext())
         {
-            last = iterator.Next();
+            _drained[next++] = iterator.Next();
         }
 
-        return last;
+        return _drained;
     }
 }

@@ -8,6 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // stream through addNum() one call at a time - the LeetCode-shaped sequence itself, not a
 // batch construction - then reads getIntervals() once so the whole stream is charged, the
 // same "run the stateful object end to end" shape BinarySearchTreeIteratorBenchmarks uses.
+// That one getIntervals() call is the replay's only output, so it is what each arm returns.
 public class DataStreamAsDisjointIntervalsBenchmarks
 {
     private const int RandomSeed = 7;
@@ -29,18 +30,20 @@ public class DataStreamAsDisjointIntervalsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int FullRebuildEachCall() => Drain(DataStreamAsDisjointIntervalsSolution.CreateByFullRebuildEachCall());
+    public IReadOnlyList<(int Start, int End)> FullRebuildEachCall() =>
+        Drain(DataStreamAsDisjointIntervalsSolution.CreateByFullRebuildEachCall());
 
     [Benchmark]
-    public int IntervalSetMerge() => Drain(DataStreamAsDisjointIntervalsSolution.CreateByIntervalSetMerge());
+    public IReadOnlyList<(int Start, int End)> IntervalSetMerge() =>
+        Drain(DataStreamAsDisjointIntervalsSolution.CreateByIntervalSetMerge());
 
-    private int Drain(DataStreamAsDisjointIntervalsSolution.ISummaryRanges stream)
+    private IReadOnlyList<(int Start, int End)> Drain(DataStreamAsDisjointIntervalsSolution.ISummaryRanges stream)
     {
         foreach (var value in _values)
         {
             stream.AddNum(value);
         }
 
-        return stream.GetIntervals().Count;
+        return stream.GetIntervals();
     }
 }

@@ -17,29 +17,34 @@ public class CompleteBinaryTreeInserterBenchmarks
 
     private int[] _insertValues = [];
 
+    // The parent value every Insert reports, in order; sized in setup so the replay allocates nothing.
+    private int[] _parents = [];
+
     [Params(63, 1_023)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _insertValues = Enumerable.Range(NodeCount, InsertCount).ToArray();
+    public void Setup()
+    {
+        _insertValues = Enumerable.Range(NodeCount, InsertCount).ToArray();
+        _parents = new int[InsertCount];
+    }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRescanPerInsert() =>
+    public int[] NaiveRescanPerInsert() =>
         Replay(CompleteBinaryTreeInserterSolution.CreateByBfsRescan(BinaryTrees.Balanced(NodeCount)));
 
     [Benchmark]
-    public int QueueTrackedInserter() =>
+    public int[] QueueTrackedInserter() =>
         Replay(CompleteBinaryTreeInserterSolution.CreateByIncompleteQueue(BinaryTrees.Balanced(NodeCount)));
 
-    private int Replay(ICompleteBinaryTreeInserter inserter)
+    private int[] Replay(ICompleteBinaryTreeInserter inserter)
     {
-        var lastParent = 0;
-
-        foreach (var value in _insertValues)
+        for (var i = 0; i < _insertValues.Length; i++)
         {
-            lastParent = inserter.Insert(value);
+            _parents[i] = inserter.Insert(_insertValues[i]);
         }
 
-        return lastParent;
+        return _parents;
     }
 }

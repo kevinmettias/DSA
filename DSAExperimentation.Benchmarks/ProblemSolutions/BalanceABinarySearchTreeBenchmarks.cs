@@ -12,8 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // recursion. Fixtures.BinaryTrees.Skewed gives a maximally unbalanced (but
 // already-BST-ordered) input tree, built in [GlobalSetup] so its construction is
 // not charged to the measured balance. Each arm returns LeetCode's real answer -
-// the rebuilt root - and the harness walks it for a height, so the rebuild cannot
-// be eliminated as dead code.
+// the rebuilt root - as object?, since a public [Benchmark] method cannot name the
+// internal BinaryTreeNode<int> (CS0050).
 public class BalanceABinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -25,16 +25,10 @@ public class BalanceABinarySearchTreeBenchmarks
     public void Setup() => _root = BinaryTrees.Skewed(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public int RepeatedKthSmallestScan() =>
-        Height(BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(_root));
+    public object? RepeatedKthSmallestScan() =>
+        BalanceABinarySearchTreeSolution.BalanceByRepeatedKthSmallest(_root);
 
     [Benchmark]
-    public int InOrderTraversalCollectAndRebuild() =>
-        Height(BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(_root));
-
-    private static int Height(BinaryTreeNode<int>? node)
-        => node is null ? 0 : SubtreeHeight(node);
-
-    private static int SubtreeHeight(BinaryTreeNode<int> node) =>
-        1 + Math.Max(Height(node.Left), Height(node.Right));
+    public object? InOrderTraversalCollectAndRebuild() =>
+        BalanceABinarySearchTreeSolution.BalanceByInOrderTraversal(_root);
 }

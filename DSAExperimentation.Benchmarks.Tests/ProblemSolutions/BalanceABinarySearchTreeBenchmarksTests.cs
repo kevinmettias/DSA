@@ -1,13 +1,14 @@
+using DSAExperimentation.Algorithms.Metrics;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for BalanceABinarySearchTreeBenchmarks (ARCHITECTURE 17.9): its two arms are
-// BalanceABinarySearchTreeSolution's competing strategies for the same question - re-deriving the k-th smallest for
-// every rank against one in-order visit - so a harness whose arms disagree has collected two different value
-// orders. Both then rebuild by the identical midpoint split, so the height each reports is the whole observable,
-// and that height is also asserted against the minimum any tree of this node count admits: Setup's input is a
-// right-only chain of the ascending values 0..n-1, which the midpoint split turns into a minimum-height BST.
+// Harness coverage for BalanceABinarySearchTreeBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
+// pin: that the rebuilt tree is as short as any tree of its node count can be, a bound known without consulting
+// either arm. Setup's input is a right-only chain of the ascending values 0..n-1, which the midpoint split turns
+// into a minimum-height BST. Both arms return the rebuilt root as object? (the node type is internal, CS0050).
 public sealed partial class BalanceABinarySearchTreeBenchmarksTests
 {
     // The smaller of Setup's [Params(200, 2_000)] node counts.
@@ -18,26 +19,18 @@ public sealed partial class BalanceABinarySearchTreeBenchmarksTests
     private const int BinaryBranchingFactor = 2;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().RepeatedKthSmallestScan(), BuildHarness().RepeatedKthSmallestScan());
+    public void RepeatedKthSmallestScan_TwoHundredNodeSkewedTree_RebuildsAMinimumHeightTree() =>
+        Assert.Equal(MinimumBalancedHeight(SmallestNodeCount), HeightOf(BuildHarness().RepeatedKthSmallestScan()));
 
     [Fact]
-    public void RepeatedKthSmallestScan_TwoHundredNodeSkewedTree_AgreesWithInOrderTraversalCollectAndRebuild()
-    {
-        var harness = BuildHarness();
+    public void InOrderTraversalCollectAndRebuild_TwoHundredNodeSkewedTree_RebuildsAMinimumHeightTree() =>
+        Assert.Equal(MinimumBalancedHeight(SmallestNodeCount), HeightOf(BuildHarness().InOrderTraversalCollectAndRebuild()));
 
-        Assert.Equal(MinimumBalancedHeight(SmallestNodeCount), harness.RepeatedKthSmallestScan());
-        Assert.Equal(harness.InOrderTraversalCollectAndRebuild(), harness.RepeatedKthSmallestScan());
-    }
-
-    [Fact]
-    public void InOrderTraversalCollectAndRebuild_TwoHundredNodeSkewedTree_AgreesWithRepeatedKthSmallestScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(MinimumBalancedHeight(SmallestNodeCount), harness.InOrderTraversalCollectAndRebuild());
-        Assert.Equal(harness.RepeatedKthSmallestScan(), harness.InOrderTraversalCollectAndRebuild());
-    }
+    private static int HeightOf(object? answer) =>
+        TreeMetrics.Height<
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
+            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(
+            Assert.IsType<BinaryTreeNode<int>>(answer));
 
     private static BalanceABinarySearchTreeBenchmarks BuildHarness()
     {

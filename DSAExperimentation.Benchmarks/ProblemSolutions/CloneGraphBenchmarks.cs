@@ -7,10 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // returning a literal 1 - neither ever called the test's private recursive
 // clone. Both arms are now CloneGraphSolution's, over a ring graph (each node
 // connected to its next and previous neighbor) sized by NodeCount. Each arm
-// returns the cloned root's Value rather than the clone itself - Node is
-// internal to DSAExperimentation.LeetCode, so a public [Benchmark] method
-// cannot expose it directly (WordLadderII's arms reduce to .Count for the
-// same reason).
+// returns the cloned root itself as object? - Node is internal to
+// DSAExperimentation.LeetCode, so a public [Benchmark] method cannot name it
+// (CS0050).
 public class CloneGraphBenchmarks
 {
     private Node _graph = null!;
@@ -41,8 +40,8 @@ public class CloneGraphBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int DictionaryDfs() => CloneGraphSolution.CloneByDictionaryDfs(_graph)!.Value;
+    public object? DictionaryDfs() => CloneGraphSolution.CloneByDictionaryDfs(_graph);
 
     [Benchmark]
-    public int HashMapDfs() => CloneGraphSolution.CloneByHashMapDfs(_graph)!.Value;
+    public object? HashMapDfs() => CloneGraphSolution.CloneByHashMapDfs(_graph);
 }

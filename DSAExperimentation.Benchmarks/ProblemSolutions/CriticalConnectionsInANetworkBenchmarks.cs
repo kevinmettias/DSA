@@ -56,11 +56,10 @@ public class CriticalConnectionsInANetworkBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveEdgeRemovalScan() =>
-        CriticalConnectionsInANetworkSolution
-            .CriticalConnectionsByEdgeRemovalScan(NodeCount, _connections).Length;
+    public int[][] NaiveEdgeRemovalScan() =>
+        CriticalConnectionsInANetworkSolution.CriticalConnectionsByEdgeRemovalScan(NodeCount, _connections);
 
     [Benchmark]
-    public int LowLinkBridgeSearch() =>
-        CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(_network).Length;
+    public int[][] LowLinkBridgeSearch() =>
+        CriticalConnectionsInANetworkSolution.CriticalConnectionsByLowLinkSearch(_network);
 }

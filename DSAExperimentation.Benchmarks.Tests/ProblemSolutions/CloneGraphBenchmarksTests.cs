@@ -1,48 +1,50 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.CloneGraph;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for CloneGraphBenchmarks (ARCHITECTURE 17.9): its two arms are competing strategies
-// for the same question - a DFS whose original-to-clone memo is a BCL Dictionary against the same DFS
-// over the repo's own HashMap - so a harness whose arms disagree is timing two different problems.
-// Both arms reduce the clone to the root node's value, because the graph's node type is internal to
-// the solution tier and a public [Benchmark] cannot expose it, so an agreement between them is worth
-// the least of any class in this batch: it says the two walks agreed on the root, not what they
-// copied.
+// Harness coverage for CloneGraphBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: that the
+// clone is the ring Setup built, known from Setup's construction rather than from either arm. Both arms return the
+// cloned root as object? (the node type is internal to the solution tier, CS0050), so the tests walk it.
 public sealed partial class CloneGraphBenchmarksTests
 {
     private const int SmallestNodeCount = 10;
 
     // Setup numbers its ring's nodes 1..NodeCount in index order and returns nodes[0], so the graph's
-    // root - the only node either arm's answer is read from - carries value 1. The graph itself is
-    // private, so that value is also all a rebuild can be pinned to: a harness built from the same
-    // NodeCount must clone a root numbered 1, and the ring it belongs to must be the same ring.
+    // root carries value 1 and every other value is reachable from it.
     private const int RingRootValue = 1;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheRingRootedAtValueOne()
-    {
-        var first = BuildHarness();
-        var second = BuildHarness();
-
-        Assert.Equal(RingRootValue, first.DictionaryDfs());
-        Assert.Equal(RingRootValue, second.HashMapDfs());
-    }
+    public void DictionaryDfs_TenNodeRing_ClonesTheRingFromValueOne() =>
+        AssertClonesTheRing(BuildHarness().DictionaryDfs());
 
     [Fact]
-    public void DictionaryDfs_TenNodeRing_AgreesWithHashMapDfs()
-    {
-        var harness = BuildHarness();
+    public void HashMapDfs_TenNodeRing_ClonesTheRingFromValueOne() =>
+        AssertClonesTheRing(BuildHarness().HashMapDfs());
 
-        Assert.Equal(harness.HashMapDfs(), harness.DictionaryDfs());
+    private static void AssertClonesTheRing(object? answer)
+    {
+        var root = Assert.IsType<Node>(answer);
+
+        Assert.Equal(RingRootValue, root.Value);
+        Assert.Equal(Enumerable.Range(RingRootValue, SmallestNodeCount), ReachableValues(root).Order());
     }
 
-    [Fact]
-    public void HashMapDfs_TenNodeRing_AgreesWithDictionaryDfs()
+    // Each node reachable from the root, once, by reference - a record's value equality would merge nodes.
+    private static IEnumerable<int> ReachableValues(Node root)
     {
-        var harness = BuildHarness();
+        var seen = new HashSet<Node>(ReferenceEqualityComparer.Instance) { root };
+        var pending = new Queue<Node>([root]);
 
-        Assert.Equal(harness.DictionaryDfs(), harness.HashMapDfs());
+        while (pending.TryDequeue(out var node))
+        {
+            yield return node.Value;
+
+            foreach (var neighbor in node.Neighbors.Where(seen.Add))
+            {
+                pending.Enqueue(neighbor);
+            }
+        }
     }
 
     private static CloneGraphBenchmarks BuildHarness()

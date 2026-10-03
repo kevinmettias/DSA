@@ -15,6 +15,7 @@ internal static class ArmAgreement
     public static IReadOnlySet<Type> UnorderedAnswers { get; } = new HashSet<Type>
     {
         typeof(AccountsMergeBenchmarks),
+        typeof(CriticalConnectionsInANetworkBenchmarks),
         typeof(ErectTheFenceBenchmarks),
         typeof(FindModeInBinarySearchTreeBenchmarks),
         typeof(KClosestPointsToOriginBenchmarks),
@@ -35,6 +36,12 @@ internal static class ArmAgreement
         [typeof(RandomPickIndexBenchmarks)] = RandomDraw,
         [typeof(RandomPickWithBlacklistBenchmarks)] = RandomDraw,
         [typeof(ShuffleAnArrayBenchmarks)] = RandomDraw,
+        [typeof(AllOneDataStructureBenchmarks)] =
+            "GetMaxKey and GetMinKey may return any key at the extreme count, and the arms pick different keys from a tie.",
+        [typeof(AllPossibleFullBinaryTreesBenchmarks)] =
+            "LeetCode reads each tree on its own, and the memoized arm shares subtrees across trees the plain recursion builds afresh.",
+        [typeof(DeleteNodeInABSTBenchmarks)] =
+            "LeetCode accepts any valid BST without the key, and one arm rebuilds a balanced tree where the other deletes in place.",
         [typeof(InsertIntoABinarySearchTreeBenchmarks)] =
             "LeetCode accepts any valid tree, and each arm answers with the root of the different tree it builds.",
     };

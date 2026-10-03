@@ -1,4 +1,3 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructBinaryTreeFromPreorderAndPostorderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution's, the same methods
 // ...Tests proves correct. The comparison is how each node's left-subtree root is
 // located in postorder - a linear rescan of the live range against this repo's own
-// HashMap<TValue,TIndex> built once up front.
+// HashMap<TValue,TIndex> built once up front. Each arm returns the rebuilt root as
+// object?, since a public [Benchmark] method cannot name the internal
+// BinaryTreeNode<int> (CS0050).
 public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
 {
     private int[] _preorder = [];
@@ -36,27 +37,10 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearRescan()
-    {
-        var root = ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderScan(
-            _preorder, _postorder);
-
-        return Height(root);
-    }
+    public object? LinearRescan() =>
+        ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderScan(_preorder, _postorder);
 
     [Benchmark]
-    public int HashMapIndexed()
-    {
-        var root = ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(
-            _preorder, _postorder);
-
-        return Height(root);
-    }
-
-    private static int Height(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : NodeHeight(node);
-
-    // The node's own level on top of its taller subtree.
-    private static int NodeHeight(BinaryTreeNode<int> node) =>
-        1 + Math.Max(Height(node.Left), Height(node.Right));
+    public object? HashMapIndexed() =>
+        ConstructBinaryTreeFromPreorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(_preorder, _postorder);
 }

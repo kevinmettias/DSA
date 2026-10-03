@@ -1,46 +1,32 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for ConvertBSTToGreaterTreeBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - the hand-rolled reverse in-order walk against this
-// repo's ascending-only InOrderTraversal composed into the same transformation - so a harness whose
-// arms disagree is timing two different problems. Each arm returns the transformed root's value, an
-// int, so they are compared directly. That shared int is a proxy for the whole transformation: it
-// pins the one node whose new value depends on every other node's, but says nothing about the other
-// four hundred and ninety-nine, so this agreement is honest and weak, and no return type is changed
-// here to strengthen it. Setup builds the shared tree from a fixture with no seed of its
-// own, so the same NodeCount must rebuild the same tree, and its documented shape is that each arm
-// clones before transforming: a second call on the same harness must therefore read the same
-// untransformed values rather than re-transforming an already-transformed tree.
+// Harness coverage for ConvertBSTToGreaterTreeBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
+// pin, since it calls every arm on a harness nothing else has touched: the class's documented shape that each arm
+// clones the shared tree before transforming it. A second call on the same harness must therefore transform the
+// same untransformed values again, rather than re-transforming an already-transformed tree. Each arm returns the
+// transformed root as object? (the node type is internal, CS0050), so the two trees are compared by
+// AnswerGraphText's field walk.
 public sealed partial class ConvertBSTToGreaterTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameUntransformedTree()
+    public void ManualReverseInOrder_CalledTwiceOnOneHarness_TransformsTheSameUntransformedTree()
     {
-        Assert.Equal(BuildHarness().ManualReverseInOrder(), BuildHarness().ManualReverseInOrder());
-
         var harness = BuildHarness();
 
-        Assert.Equal(harness.ManualReverseInOrder(), harness.ManualReverseInOrder());
+        Assert.Equal(AnswerGraphText.Of(harness.ManualReverseInOrder()), AnswerGraphText.Of(harness.ManualReverseInOrder()));
     }
 
     [Fact]
-    public void ManualReverseInOrder_BalancedTree_AgreesWithInOrderTraversalHooks()
+    public void InOrderTraversalHooks_CalledTwiceOnOneHarness_TransformsTheSameUntransformedTree()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.InOrderTraversalHooks(), harness.ManualReverseInOrder());
-    }
-
-    [Fact]
-    public void InOrderTraversalHooks_BalancedTree_AgreesWithManualReverseInOrder()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ManualReverseInOrder(), harness.InOrderTraversalHooks());
+        Assert.Equal(AnswerGraphText.Of(harness.InOrderTraversalHooks()), AnswerGraphText.Of(harness.InOrderTraversalHooks()));
     }
 
     private static ConvertBSTToGreaterTreeBenchmarks BuildHarness()

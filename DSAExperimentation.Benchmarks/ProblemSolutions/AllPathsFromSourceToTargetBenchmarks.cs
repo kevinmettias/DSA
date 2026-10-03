@@ -9,9 +9,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sizes. Building that adjacency list is charged to [GlobalSetup], not to the
 // measured walk.
 //
-// Both arms previously only counted paths; they now build LeetCode's actual answer
-// and the harness takes .Count, so the measurement includes materializing 2^(n-2)
-// paths in both arms alike (ARCHITECTURE.md 17.8's precedent).
+// Both arms previously only counted paths; they now build and return LeetCode's
+// actual answer, so the measurement includes materializing 2^(n-2) paths in both
+// arms alike (ARCHITECTURE.md 17.8's precedent).
 public class AllPathsFromSourceToTargetBenchmarks
 {
     private int[][] _graph = [];
@@ -31,10 +31,10 @@ public class AllPathsFromSourceToTargetBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int SpecializedRecursive() =>
-        AllPathsFromSourceToTargetSolution.AllPathsByRecursiveWalk(_graph).Count;
+    public List<List<int>> SpecializedRecursive() =>
+        AllPathsFromSourceToTargetSolution.AllPathsByRecursiveWalk(_graph);
 
     [Benchmark]
-    public int Backtracking() =>
-        AllPathsFromSourceToTargetSolution.AllPathsByBacktracking(_graph).Count;
+    public List<List<int>> Backtracking() =>
+        AllPathsFromSourceToTargetSolution.AllPathsByBacktracking(_graph);
 }

@@ -16,8 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is hoisted into [GlobalSetup], and that is already LeetCode's own input shape.
 //
 // Both arms now return the surviving paths rather than a survivor count, because they
-// are the methods the tests assert (ARCHITECTURE §17.8's precedent); the harness takes
-// .Count so the result is still consumed.
+// are the methods the tests assert (ARCHITECTURE §17.8's precedent), and the harness
+// returns them as they are so the result is still consumed.
 public class DeleteDuplicateFoldersInSystemBenchmarks
 {
     private string[][] _paths = [];
@@ -29,10 +29,10 @@ public class DeleteDuplicateFoldersInSystemBenchmarks
     public void Setup() => _paths = FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount);
 
     [Benchmark(Baseline = true)]
-    public int BruteForcePairwiseComparison() =>
-        DeleteDuplicateFoldersInSystemSolution.DeleteDuplicateFoldersByPairwiseComparison(_paths).Count;
+    public List<string[]> BruteForcePairwiseComparison() =>
+        DeleteDuplicateFoldersInSystemSolution.DeleteDuplicateFoldersByPairwiseComparison(_paths);
 
     [Benchmark]
-    public int HashMapSignatureGrouping() =>
-        DeleteDuplicateFoldersInSystemSolution.DeleteDuplicateFoldersBySignatureGrouping(_paths).Count;
+    public List<string[]> HashMapSignatureGrouping() =>
+        DeleteDuplicateFoldersInSystemSolution.DeleteDuplicateFoldersBySignatureGrouping(_paths);
 }

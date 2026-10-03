@@ -17,7 +17,15 @@ public class BookingConcertTicketsInGroupsBenchmarks
     private const int RandomSeed = 2286; // LC problem number
     private const int OperationTypeCount = 2;
 
+    // Scatter's two answers, boxed once here so recording one allocates nothing in the replay.
+    private static readonly object Scattered = true;
+    private static readonly object NotScattered = false;
+
     private (bool IsGather, int GroupSize, int MaxRow)[] _operations = [];
+
+    // Every call's answer, in replay order: Gather's seating, or Scatter's success. Sized in setup
+    // so the replay allocates nothing beyond what the strategy itself returns.
+    private object[] _answers = [];
 
     [Params(200, 2_000)]
     public int RowCount { get; set; }
@@ -35,40 +43,30 @@ public class BookingConcertTicketsInGroupsBenchmarks
             var maxRow = random.Next(0, RowCount);
             _operations[i] = (isGather, groupSize, maxRow);
         }
+
+        _answers = new object[OperationCount];
     }
 
     [Benchmark(Baseline = true)]
-    public long RowScan() => Replay(new BookingConcertTicketsInGroupsSolution.BookMyShowByRowScan(RowCount, SeatsPerRow));
+    public object[] RowScan() => Replay(new BookingConcertTicketsInGroupsSolution.BookMyShowByRowScan(RowCount, SeatsPerRow));
 
     [Benchmark]
-    public long SegmentTreeBinarySearch() => Replay(new BookingConcertTicketsInGroupsSolution.BookMyShowBySegmentTreeBinarySearch(RowCount, SeatsPerRow));
+    public object[] SegmentTreeBinarySearch() => Replay(new BookingConcertTicketsInGroupsSolution.BookMyShowBySegmentTreeBinarySearch(RowCount, SeatsPerRow));
 
-    // Folds every answer into a checksum rather than discarding it, so the JIT
-    // cannot eliminate the replay as dead code - the same "return the real answer,
-    // not a weaker proxy" shape DesignTaskManagerBenchmarks already follows.
-    private long Replay(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy)
+    // Returns every call's answer in order, so the JIT cannot eliminate the replay
+    // as dead code and the arms are compared on everything they answered.
+    private object[] Replay(BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy)
     {
-        var checksum = 0L;
-
-        foreach (var (isGather, groupSize, maxRow) in _operations)
+        for (var i = 0; i < _operations.Length; i++)
         {
-            checksum += isGather ? GatherChecksum(strategy, groupSize, maxRow) : ScatterChecksum(strategy, groupSize, maxRow);
+            var (isGather, groupSize, maxRow) = _operations[i];
+            _answers[i] = isGather ? strategy.Gather(groupSize, maxRow) : ScatterAnswer(strategy, groupSize, maxRow);
         }
 
-        return checksum;
+        return _answers;
     }
 
-    private static long GatherChecksum(
+    private static object ScatterAnswer(
         BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int groupSize, int maxRow)
-    {
-        var seating = strategy.Gather(groupSize, maxRow);
-
-        return seating.Length == 0 ? 0 : SeatPairSum(seating);
-    }
-
-    private static long SeatPairSum(int[] seating) => seating[0] + seating[1];
-
-    private static long ScatterChecksum(
-        BookingConcertTicketsInGroupsSolution.IBookMyShowStrategy strategy, int groupSize, int maxRow)
-        => strategy.Scatter(groupSize, maxRow) ? 1 : 0;
+        => strategy.Scatter(groupSize, maxRow) ? Scattered : NotScattered;
 }

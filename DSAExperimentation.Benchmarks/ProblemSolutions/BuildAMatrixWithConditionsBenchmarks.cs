@@ -43,14 +43,13 @@ public class BuildAMatrixWithConditionsBenchmarks
         return values;
     }
 
-    // Both arms return the built matrix's row count - the value count when the
-    // conditions are satisfiable, as this workload's are - purely so the full
-    // placement is consumed rather than elided.
+    // Both arms return the built matrix itself, so the full placement is consumed
+    // rather than elided.
     [Benchmark(Baseline = true)]
-    public int NaiveRescanBothOrders() =>
-        BuildAMatrixWithConditionsSolution.BuildMatrixByNaiveRescan(_rowValues, _colValues).Length;
+    public int[][] NaiveRescanBothOrders() =>
+        BuildAMatrixWithConditionsSolution.BuildMatrixByNaiveRescan(_rowValues, _colValues);
 
     [Benchmark]
-    public int KahnsTopologicalSortBothOrders() =>
-        BuildAMatrixWithConditionsSolution.BuildMatrixByKahnsTopologicalSort(_rowValues, _colValues).Length;
+    public int[][] KahnsTopologicalSortBothOrders() =>
+        BuildAMatrixWithConditionsSolution.BuildMatrixByKahnsTopologicalSort(_rowValues, _colValues);
 }

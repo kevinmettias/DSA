@@ -5,26 +5,22 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for BinarySearchTreeIteratorBenchmarks (ARCHITECTURE 17.9): the class has a
 // single arm, so there is no second strategy to reconcile it against and the assertion has to come
-// from the arm's own declared contract instead - [Benchmark] drains a fresh iterator end to end and
-// reports the last value it saw. Fixtures.BinaryTrees.Balanced makes that value decisive: it builds
-// the complete tree in heap layout, node i's children at 2i + 1 and 2i + 2 with the value equal to
-// the index, so an in-order drain ends on the bottom of the right spine, which is the largest index
-// still inside the node count. Setup is unseeded but fully determined by NodeCount, so the same
-// NodeCount must rebuild the same tree and therefore report the same final value.
+// from the workload's construction instead - [Benchmark] drains a fresh iterator end to end and
+// returns every value it saw. Fixtures.BinaryTrees.Balanced makes the last of them decisive: it
+// builds the complete tree in heap layout, node i's children at 2i + 1 and 2i + 2 with the value
+// equal to the index, so an in-order drain visits every node once and ends on the bottom of the
+// right spine, which is the largest index still inside the node count.
 public sealed partial class BinarySearchTreeIteratorBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
 
     [Fact]
-    public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().DrainInOrder(), BuildHarness().DrainInOrder());
-
-    [Fact]
-    public void DrainInOrder_CompleteTreeWithTwoHundredNodes_EndsOnTheRightSpine()
+    public void DrainInOrder_CompleteTreeWithTwoHundredNodes_VisitsEveryNodeAndEndsOnTheRightSpine()
     {
-        var harness = BuildHarness();
+        var drained = BuildHarness().DrainInOrder();
 
-        Assert.Equal(RightSpineTerminal(SmallestNodeCount), harness.DrainInOrder());
+        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), drained.Order());
+        Assert.Equal(RightSpineTerminal(SmallestNodeCount), drained[^1]);
     }
 
     private static BinarySearchTreeIteratorBenchmarks BuildHarness()

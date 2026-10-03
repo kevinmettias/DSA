@@ -8,7 +8,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap,
 // the same method ...Tests proves correct. A balanced tree is built once via
 // Fixtures.BinaryTrees and flattened into its own preorder/inorder arrays in
-// [GlobalSetup], so only the reconstruction itself is measured.
+// [GlobalSetup], so only the reconstruction itself is measured. The arm returns the
+// rebuilt root as object?, since a public [Benchmark] method cannot name the internal
+// BinaryTreeNode<int> (CS0050).
 public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
 {
     private int[] _preorder = [];
@@ -62,16 +64,6 @@ public class ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks
     }
 
     [Benchmark]
-    public int PreorderIndexMap()
-    {
-        var tree = ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(_preorder, _inorder);
-        return CountNodes(tree);
-    }
-
-    private static int CountNodes(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : CountSubtree(node);
-
-    // One for this node plus every node beneath it.
-    private static int CountSubtree(BinaryTreeNode<int> node) =>
-        1 + CountNodes(node.Left) + CountNodes(node.Right);
+    public object? PreorderIndexMap() =>
+        ConstructBinaryTreeFromPreorderAndInorderTraversalSolution.BuildByPreorderIndexMap(_preorder, _inorder);
 }
