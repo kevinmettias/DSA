@@ -14,7 +14,8 @@ public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
     private int[] _preorder = [];
 
     private int[] _postorder = [];
-    [Params(200, 2_000)]
+    // LC 889's traversals hold at most 30 nodes, valued 1..n.
+    [Params(10, 30)]
     public int NodeCount { get; set; }
 
     // A left-skewed chain (every node's left child is its only child): preorder

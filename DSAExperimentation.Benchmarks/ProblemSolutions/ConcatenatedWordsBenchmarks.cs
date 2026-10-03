@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cost. Each arm is handed the prepared lookup structure its hoisted overload
 // takes - a Set for the DP scan, a Trie for the pruned walk - so dictionary
 // construction is charged to [GlobalSetup] rather than to the scan being
-// measured.
+// measured. LC 472 caps a word at 30 letters, so the tiled candidate stops at 30.
 public class ConcatenatedWordsBenchmarks
 {
     private const string DictionaryWord = "cat";
@@ -21,7 +21,7 @@ public class ConcatenatedWordsBenchmarks
 
     private Set<string> _dictionary = new();
     private Trie<bool> _trie = new();
-    [Params(600, 3000)]
+    [Params(6, 30)]
     public int Length { get; set; }
 
     [GlobalSetup]

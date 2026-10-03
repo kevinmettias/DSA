@@ -13,7 +13,8 @@ public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
 {
     private int[] _ascendingPreorder = [];
 
-    [Params(200, 2_000)]
+    // LC 1008's preorder holds at most 100 distinct values from 1 to 1,000.
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
@@ -22,7 +23,7 @@ public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
         // Strictly ascending is itself a valid BST preorder (a fully right-skewed
         // tree) - the adversarial input that makes every BinarySearchTree.Insert
         // walk the full height built so far instead of O(log n) on average.
-        _ascendingPreorder = Enumerable.Range(0, Length).ToArray();
+        _ascendingPreorder = Enumerable.Range(1, Length).ToArray();
     }
 
     [Benchmark(Baseline = true)]

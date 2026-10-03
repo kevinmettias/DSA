@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // being internal (CS0050) - must reach that height.
 public sealed partial class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarksTests
 {
-    private const int SmallestNodeCount = 200;
+    private const int SmallestNodeCount = 10;
 
     [Fact]
     public void LinearRescan_LeftSkewedChain_RebuildsAChainOfEveryNode() =>

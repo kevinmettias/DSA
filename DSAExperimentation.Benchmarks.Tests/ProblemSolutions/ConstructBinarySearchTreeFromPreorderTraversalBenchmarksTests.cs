@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // timing two different problems. Both arms report the built tree's root value, which for a BST built
 // from preorder is the array's first value, so the workload Setup builds is observable through it.
 //
-// Setup builds an ascending run from zero, which is both a valid BST preorder and the adversarial
+// Setup builds an ascending run from one, which is both a valid BST preorder and the adversarial
 // shape the comment names: a fully right-skewed chain, where each Insert walks the whole height built
 // so far. The same Length must rebuild the same ascending run, and its first value is the root both
 // arms must report.
@@ -18,8 +18,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // neither threw, not that they built the same tree underneath.
 public sealed partial class ConstructBinarySearchTreeFromPreorderTraversalBenchmarksTests
 {
-    private const int SmallestLength = 200;
-    private const int AscendingRunFirstValue = 0;
+    private const int SmallestLength = 10;
+    private const int AscendingRunFirstValue = 1;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameAscendingPreorder()

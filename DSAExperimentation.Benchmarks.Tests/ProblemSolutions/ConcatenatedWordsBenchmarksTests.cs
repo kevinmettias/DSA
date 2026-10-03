@@ -15,7 +15,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // word itself - means exactly one entry is a concatenation, and it is the tile.
 public sealed partial class ConcatenatedWordsBenchmarksTests
 {
-    private const int SmallestLength = 600;
+    private const int SmallestLength = 6;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWordsAndLookups()

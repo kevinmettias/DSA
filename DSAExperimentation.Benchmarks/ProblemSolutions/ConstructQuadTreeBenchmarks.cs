@@ -24,7 +24,8 @@ public class ConstructQuadTreeBenchmarks
 {
     private int[][] _grid = [];
 
-    [Params(16, 128)]
+    // LC 427's grid side is a power of two no larger than 2^6 = 64.
+    [Params(16, 64)]
     public int Size { get; set; }
 
     [GlobalSetup]

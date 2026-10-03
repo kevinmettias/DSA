@@ -14,7 +14,9 @@ public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
     private int[] _inorder = [];
 
     private int[] _postorder = [];
-    [Params(2_000, 8_000)]
+    // LC 106's tree holds at most 3,000 nodes; Balanced's values are the node indices, inside
+    // its [-3000, 3000].
+    [Params(2_000, 3_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
