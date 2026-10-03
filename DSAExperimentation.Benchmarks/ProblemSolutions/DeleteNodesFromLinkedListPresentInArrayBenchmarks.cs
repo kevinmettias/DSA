@@ -11,7 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overload; the list itself is rebuilt inside each [Benchmark] call rather than
 // shared, because both strategies splice .Next pointers in place - reusing one
 // pre-built list across iterations would let the first iteration's deletions
-// silently make every later iteration measure an already-filtered list.
+// silently make every later iteration measure an already-filtered list. The rebuild
+// is timed on purpose, and both arms pay it alike.
 public class DeleteNodesFromLinkedListPresentInArrayBenchmarks
 {
     private const int RandomSeed = 3217;

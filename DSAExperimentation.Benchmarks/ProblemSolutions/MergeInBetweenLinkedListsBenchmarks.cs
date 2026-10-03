@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // values and the splice window, but the lists themselves are rebuilt fresh inside
 // each benchmark method rather than cached, because the splice strategy rewires the
 // nodes it is handed - a cached chain would only be valid for the first measured
-// iteration.
+// iteration. The rebuild is timed on purpose, and the array arm, which only reads
+// its lists, pays it too so both arms carry the same cost.
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).

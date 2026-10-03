@@ -11,7 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // array cannot be hoisted into [GlobalSetup] and reused across iterations: a
 // merge from one iteration would consume the very structure the next iteration
 // needs. [GlobalSetup] therefore only seeds the raw per-list values, and each
-// [Benchmark] call rebuilds a fresh SinglyLinkedListNode<int>?[] from them.
+// [Benchmark] call rebuilds a fresh SinglyLinkedListNode<int>?[] from them. The
+// rebuild is timed on purpose, and FlattenSort, which only reads the lists, pays it
+// too so both arms carry the same cost.
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
 // a public [Benchmark] method cannot name it as a return type (CS0050).

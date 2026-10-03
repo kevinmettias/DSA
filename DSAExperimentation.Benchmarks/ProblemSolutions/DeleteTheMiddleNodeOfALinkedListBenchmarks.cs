@@ -12,8 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] prepares only the value array: the list itself is rebuilt inside
 // each [Benchmark] call rather than shared, because deleting is destructive and
 // one pre-built list would let the first iteration's splice make every later
-// iteration measure an already-shortened list - the same "fresh copy per
-// invocation" discipline SortAnArrayBenchmarks uses for its in-place sort.
+// iteration measure an already-shortened list. The rebuild is timed on purpose
+// because SlowFastPointers mutates its input, so both arms pay the same cost even
+// though CountThenRebuild only reads the list.
 public class DeleteTheMiddleNodeOfALinkedListBenchmarks
 {
     private const int RandomSeed = 2095; // LC problem number

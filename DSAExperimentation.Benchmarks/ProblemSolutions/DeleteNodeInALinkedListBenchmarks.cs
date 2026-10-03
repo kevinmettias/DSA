@@ -10,7 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // method rather than cached, because DeleteByNextValueCopy mutates the node it is
 // handed and splices its successor out - a cached list would only be valid for the
 // first measured iteration (mirrors RemoveLinkedListElementsBenchmarks' identical
-// rebuild-per-call precedent). The arm returns the rebuilt list's head as object?,
+// rebuild-per-call precedent). The rebuild and the walk to the target are timed on
+// purpose because the strategy mutates its input, and they are most of what the arm
+// costs: the deletion itself is O(1). The arm returns the rebuilt list's head as object?,
 // since the node type is internal (CS0050), so what the deletion left is its answer
 // rather than something the arm builds and drops.
 public class DeleteNodeInALinkedListBenchmarks
