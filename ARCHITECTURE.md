@@ -1348,9 +1348,11 @@ still about search cost — but this is a deliberate change in what is measured,
   harness, and every arm answers what the baseline answers. Answers are compared by walking their
   fields (`AnswerGraphText`), so node-returning arms and void arms that rewrite the harness are
   compared by shape and value. The per-problem knowledge it cannot learn by reflection lives in
-  `ArmAgreement`, each entry with its reason: answers LeetCode leaves unordered, random draws,
-  void arms that discard their result, arms that differ by design, workloads outside the problem's
-  contract. A `<Benchmark>Tests` companion exists only to assert what that check cannot — an
+  `ArmAgreement`, each entry with its reason: answers LeetCode leaves unordered, random draws, and
+  arms whose valid answers differ by design. An entry is for a difference the *problem* allows, not
+  for a harness defect — an arm that drops what it builds, a solution that seeds itself, a workload
+  outside the problem's contract are fixed instead, and each of those was. A `<Benchmark>Tests`
+  companion exists only to assert what that check cannot — an
   expected value derived independently of the arms, a property of the workload's shape, a size
   other than the smallest. A companion that compares arms only with each other restates the generic
   check under a different name; 620 such files were deleted on that basis, and none should be

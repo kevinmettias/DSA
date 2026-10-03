@@ -330,14 +330,19 @@ last-bits difference is absorbed by a general rule (doubles to 12 significant di
 the theory holds them to exact order — stricter than the problem; a future reordering arm
 fails loudly and costs one table entry.
 
-**Found by it, not fixed:**
+**Found by it — FIXED since:**
 
-- **`TopKFrequentElements`' workload ties 23 values at the top-10 boundary**, outside LC
+- **`TopKFrequentElements`' workload tied 23 values at the top-10 boundary**, outside LC
   347's "it is guaranteed that the answer is unique" — the same species as the old
-  AccountsMerge name collision. Its companion documents the tie and works around it with a
-  frequency oracle rather than calling it out.
-- **The 3 discarded-result void arms** are unobservable to any generic check. Returning the
-  rewritten structure (as the 60 `object?` arms do) would make them comparable.
+  AccountsMerge name collision. The workload now plants its answer (the values 0–9 each
+  outnumber every other value by construction, then a seeded shuffle), keeping the
+  distinct-value count at the old scale; the companion pins the planted set at both
+  benchmarked lengths, and setting the margin to 0 fails all four pins and the generic check.
+  It moved from "incomparable" to "unordered".
+- **The 3 discarded-result void arms** (`DeleteNodeInALinkedList`, `FlattenBinaryTreeToLinkedList`,
+  `InvertBinaryTree`) now return what they build as `object?`, as the 60 node-returning arms do,
+  and are held to exact agreement. Flatten's companion replays the solution methods rather than
+  the arms, so it stayed green when one arm was made to skip flattening; the generic check failed.
 
 **Step 2 — deletion manifest — DONE (`f924c5f0`, 620 files, 25,985 lines).** Built from
 assertion content with Roslyn, not from test names. A companion test method counts as
@@ -362,10 +367,15 @@ ways without touching the tree: a copy of the test project without the 620 files
 and passes 5,477 tests (7,117 − 1,640), and a full repo mirror without them gives the
 testing phase identical findings.
 
-**Found by the new row, not fixed:** `RandomPickIndexSolution` and
-`GenerateRandomPointInACircleSolution` each construct an unseeded `new Random()`, so even
-one arm answers differently on every run. `RandomPickWithBlacklistSolution` takes its seed
-as a parameter — the reproducible shape. Both are listed in `ArmAgreement.UnseededAnswers`.
+**Found by the new row — FIXED since:** `RandomPickIndexSolution` and
+`GenerateRandomPointInACircleSolution` each constructed an unseeded `new Random()`, so even
+one arm answered differently on every run. Every strategy now takes its seed from the caller,
+the shape `RandomPickWithBlacklistSolution` already had; `ArmAgreement.UnseededAnswers` is
+gone rather than left empty, so a future unseeded arm fails the row instead of being listed.
+
+`ArmAgreement` after these fixes: **10 unordered, 7 incomparable** (6 random draws and
+`InsertIntoABinarySearchTree`, whose arms build different valid trees by design), **1 excluded**
+— 18 entries, down from 21 plus the 2 unseeded.
 
 **The coverage gate depends on uncommitted nomos work.** The `check.exe` in
 `code-standards` is built from a working tree whose `csharp_test_coverage.go` carries an
