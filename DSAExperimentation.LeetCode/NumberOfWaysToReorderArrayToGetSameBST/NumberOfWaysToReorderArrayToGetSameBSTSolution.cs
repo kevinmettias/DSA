@@ -44,7 +44,6 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
 
         var (_, ways) = TreeFold.Fold<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             WaysAlgebra, (int Size, long Ways)>(tree.Root);
 
         return ExcludeOriginal(ways);

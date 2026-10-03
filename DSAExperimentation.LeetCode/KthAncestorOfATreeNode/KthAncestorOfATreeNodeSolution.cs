@@ -68,7 +68,6 @@ internal static class KthAncestorOfATreeNodeSolution
 
         TopDownTraversal.Walk<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             CollectAncestorIdsHooks, (int[] Ancestors, int[][] AncestorsById)>(
             nodes[0], ([], ancestorsById));
 

@@ -16,13 +16,11 @@ internal static class FoldTierBenchmarkFixtures
     public static int TreeTier(BinaryTreeNode<int> root)
         => TreeFold.Fold<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             SizeAlgebra<BinaryTreeNode<int>>, int>(root);
 
     public static int DagTier(BinaryTreeNode<int> root)
         => DagFold.Fold<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             SizeAlgebra<BinaryTreeNode<int>>, int>(root);
 
     // A tree has no cycle for CheckedFold to report, so its success flag is always true here and
@@ -31,7 +29,6 @@ internal static class FoldTierBenchmarkFixtures
     {
         CheckedFold.TryFold<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             SizeAlgebra<BinaryTreeNode<int>>, int>(root, out var size);
 
         return size;

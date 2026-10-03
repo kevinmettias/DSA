@@ -53,8 +53,7 @@ internal static class JumpGameVSolution
         // TrySort always succeeds here; the discard records that rather than
         // inventing an unreachable failure branch.
         _ = TopologicalSort.TrySort<
-            JumpNode, JumpTopology, ListChildren<JumpNode>,
-            NaturalChildOrder<JumpNode, ListChildren<JumpNode>>, ListChildren<JumpNode>>(
+            JumpNode, JumpTopology, ListChildren<JumpNode>>(
             nodes, out var ordering);
 
         return ComputeLongestPaths(ordering).Values.Max();

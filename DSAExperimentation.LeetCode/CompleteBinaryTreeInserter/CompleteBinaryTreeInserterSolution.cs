@@ -98,7 +98,6 @@ internal static class CompleteBinaryTreeInserterSolution
             var levels = new List<List<BinaryTreeNode<int>>>();
             LevelGroupedBreadthFirstTraversal.Walk<
                 BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
                 LevelHooks>(root, new LevelHooks(levels));
 
             foreach (var level in levels)

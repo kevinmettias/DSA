@@ -118,7 +118,6 @@ internal static class ShortestPathVisitingAllNodesSolution
     {
         var distances = Reduce.Graph<
             VisitStateNode, VisitStateTopology, ListChildren<VisitStateNode>,
-            NaturalChildOrder<VisitStateNode, ListChildren<VisitStateNode>>, ListChildren<VisitStateNode>,
             BreadthFirstReduceOrder<VisitStateNode>,
             DistanceMapReduceAlgebra<VisitStateNode>, Dictionary<VisitStateNode, int>>(startNode);
 

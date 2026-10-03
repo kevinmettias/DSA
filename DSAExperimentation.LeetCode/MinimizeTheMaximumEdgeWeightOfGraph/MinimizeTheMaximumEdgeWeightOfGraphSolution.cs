@@ -74,7 +74,6 @@ internal static class MinimizeTheMaximumEdgeWeightOfGraphSolution
 
         var distances = Reduce.Graph<
             EdgeWeightNode, EdgeWeightTopology, EdgeWeightChildren,
-            NaturalChildOrder<EdgeWeightNode, EdgeWeightChildren>, EdgeWeightChildren,
             BreadthFirstReduceOrder<EdgeWeightNode>,
             DistanceMapReduceAlgebra<EdgeWeightNode>, Dictionary<EdgeWeightNode, int>>(root);
 

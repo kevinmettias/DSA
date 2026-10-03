@@ -116,8 +116,7 @@ internal static class FrequenciesOfShortestSupersequencesSolution
         var nodesByLetter = BuildInducedLetterGraph(graph, doubledMask);
 
         return TopologicalSort.TrySort<
-            LetterNode, LetterTopology, ListChildren<LetterNode>,
-            NaturalChildOrder<LetterNode, ListChildren<LetterNode>>, ListChildren<LetterNode>>(
+            LetterNode, LetterTopology, ListChildren<LetterNode>>(
             nodesByLetter.Values, out _);
     }
 

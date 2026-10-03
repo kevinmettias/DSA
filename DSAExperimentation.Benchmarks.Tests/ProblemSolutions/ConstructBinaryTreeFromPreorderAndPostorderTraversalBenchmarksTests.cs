@@ -25,8 +25,7 @@ public sealed partial class ConstructBinaryTreeFromPreorderAndPostorderTraversal
 
     private static int HeightOf(object? answer) =>
         TreeMetrics.Height<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(
             Assert.IsType<BinaryTreeNode<int>>(answer));
 
     private static ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks BuildHarness()

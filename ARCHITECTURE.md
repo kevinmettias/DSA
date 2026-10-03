@@ -67,7 +67,12 @@ hypothetical in §4 below, where it becomes `Collections/Heap`.
 - `IEdges.cs`/`IChildOrder.cs` round out the representation contracts: edge-aware children
   (`ListEdges`, `EdgeTargets`) and order-independent-of-topology traversal (`NaturalChildOrder`,
   `ReverseChildOrder`, `ReversedChildren` — allocation-free reversal via index arithmetic over an
-  existing `IChildren`).
+  existing `IChildren`). Every engine entry point that takes the `TOrder, TOrderedChildren` pair
+  also has an overload without it, forwarding `NaturalChildOrder<TNode, TChildren>, TChildren` — the
+  topology's own order, which nearly every caller wants — so the pair is spelled out only where the
+  order is a real choice. The overloads differ in generic arity, so with type arguments always
+  explicit no call can bind the wrong one; the strategy and engine methods that implement an
+  interface (`IReduceOrderStrategy`, `IFoldEvaluationStrategy`, the walks) keep the pair.
 
 ### 3.2 Topology
 

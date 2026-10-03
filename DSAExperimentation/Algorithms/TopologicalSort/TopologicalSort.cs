@@ -58,6 +58,14 @@ internal static class TopologicalSort
         return sorted.Count == vertices.Count;
     }
 
+    // In the topology's own child order.
+    public static bool TrySort<TNode, TTopology, TChildren>(
+        IEnumerable<TNode> nodes, out List<TNode> ordering)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        => TrySort<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren>(nodes, out ordering);
+
     private static Dictionary<TNode, int> BuildInDegree<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         List<TNode> vertices)
         where TNode : class

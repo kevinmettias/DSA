@@ -82,8 +82,7 @@ internal static class FindEventualSafeStatesSolution
     public static int[] EventualSafeNodesByReversedKahnsTopologicalSort(List<SafeStateNode> nodes)
     {
         TopologicalSort.TrySort<
-            SafeStateNode, SafeStateTopology, ListChildren<SafeStateNode>,
-            NaturalChildOrder<SafeStateNode, ListChildren<SafeStateNode>>, ListChildren<SafeStateNode>>(
+            SafeStateNode, SafeStateTopology, ListChildren<SafeStateNode>>(
             nodes, out var ordering);
 
         return ordering.Select(node => node.Id).OrderBy(id => id).ToArray();

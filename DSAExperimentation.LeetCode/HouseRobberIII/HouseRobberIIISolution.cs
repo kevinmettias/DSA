@@ -32,8 +32,6 @@ internal static class HouseRobberIIISolution
             BinaryTreeNode<int>,
             BinaryTreeTopology<int>,
             BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
-            BinaryTreeChildren<int>,
             RobFoldAlgebra,
             (int Robbed, int NotRobbed)>(root);
 

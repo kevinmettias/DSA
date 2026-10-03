@@ -38,6 +38,18 @@ internal static class CheckedFold
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default, out result);
 
+    // In the topology's own child order.
+    public static bool TryFold<TNode, TTopology, TChildren, TAlgebra, TResult>(
+        TNode? root, out TResult result)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => TryFold<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TAlgebra, TResult>(
+            root, out result);
+
     public static bool TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, TAlgebra algebra, out TResult result)
         where TNode : class
@@ -61,4 +73,16 @@ internal static class CheckedFold
 
         return !memo.Aborted;
     }
+
+    // In the topology's own child order.
+    public static bool TryFold<TNode, TTopology, TChildren, TAlgebra, TResult>(
+        TNode? root, TAlgebra algebra, out TResult result)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => TryFold<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TAlgebra, TResult>(
+            root, algebra, out result);
 }

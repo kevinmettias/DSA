@@ -55,6 +55,14 @@ internal static class BridgesAndArticulationPoints
         return (state.Bridges, [.. state.ArticulationPoints]);
     }
 
+    // In the topology's own child order.
+    public static (List<(TNode A, TNode B)> Bridges, List<TNode> ArticulationPoints) Find<TNode, TTopology, TChildren>(
+        IEnumerable<TNode> nodes)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        => Find<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren>(nodes);
+
     private static void Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         TNode node, TNode? parent, LowLinkState<TNode> state)
         where TNode : class

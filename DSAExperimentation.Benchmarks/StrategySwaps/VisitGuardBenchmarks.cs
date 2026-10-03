@@ -23,7 +23,6 @@ public class VisitGuardBenchmarks
     public int Unguarded()
         => Reduce.Tree<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             DepthFirstReduceOrder<BinaryTreeNode<int>>, DistanceMapReduceAlgebra<BinaryTreeNode<int>>,
             Dictionary<BinaryTreeNode<int>, int>>(_root).Count;
 
@@ -31,7 +30,6 @@ public class VisitGuardBenchmarks
     public int Tracked()
         => Reduce.Graph<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             DepthFirstReduceOrder<BinaryTreeNode<int>>, DistanceMapReduceAlgebra<BinaryTreeNode<int>>,
             Dictionary<BinaryTreeNode<int>, int>>(_root).Count;
 }

@@ -71,8 +71,7 @@ internal static class MapSumPairsSolution
 
             return TreeFold.Fold<
                 LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-                NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-                SparseArrayChildren<LowercaseTrieNode<int>>, SumValuesAlgebra, int>(node);
+                SumValuesAlgebra, int>(node);
         }
 
         private static LowercaseTrieNode<int>? WalkTo(LowercaseTrieNode<int> root, string prefix)

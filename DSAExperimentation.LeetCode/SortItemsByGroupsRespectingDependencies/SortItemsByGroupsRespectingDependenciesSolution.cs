@@ -42,13 +42,11 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
     public static int[] SortItemsByKahnsTopologicalSort(List<ItemNode> items, List<GroupNode> groups)
     {
         var itemsSorted = TopologicalSort.TrySort<
-            ItemNode, ItemTopology, ListChildren<ItemNode>,
-            NaturalChildOrder<ItemNode, ListChildren<ItemNode>>, ListChildren<ItemNode>>(
+            ItemNode, ItemTopology, ListChildren<ItemNode>>(
             items, out var itemOrder);
 
         var groupsSorted = TopologicalSort.TrySort<
-            GroupNode, GroupTopology, ListChildren<GroupNode>,
-            NaturalChildOrder<GroupNode, ListChildren<GroupNode>>, ListChildren<GroupNode>>(
+            GroupNode, GroupTopology, ListChildren<GroupNode>>(
             groups, out var groupOrder);
 
         if (!itemsSorted || !groupsSorted)

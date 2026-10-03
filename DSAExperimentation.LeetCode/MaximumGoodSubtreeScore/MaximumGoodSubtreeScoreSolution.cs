@@ -140,7 +140,6 @@ internal static class MaximumGoodSubtreeScoreSolution
     {
         var (_, scoreSum) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             GoodSubtreeScoreAlgebra, (long[] Dp, long ScoreSum)>(root, new GoodSubtreeScoreAlgebra(vals));
 
         return (int)(scoreSum % ModularArithmetic.Modulo);

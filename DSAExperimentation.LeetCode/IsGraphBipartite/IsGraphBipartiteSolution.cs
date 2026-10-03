@@ -95,7 +95,6 @@ internal static class IsGraphBipartiteSolution
 
     public static bool IsBipartiteByBipartiteCheck(BipartiteGraph graph) =>
         BipartiteCheck.IsBipartite<
-            BipartiteNode, BipartiteTopology, ListChildren<BipartiteNode>,
-            NaturalChildOrder<BipartiteNode, ListChildren<BipartiteNode>>, ListChildren<BipartiteNode>>(
+            BipartiteNode, BipartiteTopology, ListChildren<BipartiteNode>>(
             graph.Nodes);
 }

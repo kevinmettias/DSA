@@ -27,6 +27,14 @@ internal static class DepthFirstTraversal
             TNode, TTopology, TChildren, TOrder, TOrderedChildren,
             DepthFirstReduceOrder<TNode>, HooksStep<TNode, THooks>, THooks>(root);
 
+    // In the topology's own child order.
+    public static THooks Walk<TNode, TTopology, TChildren, THooks>(TNode? root)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, IDepthFirstHooks<TNode>
+        => Walk<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, THooks>(root);
+
     public static THooks Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root, THooks hooks)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>
@@ -37,6 +45,14 @@ internal static class DepthFirstTraversal
         => Reduce.Tree<
             TNode, TTopology, TChildren, TOrder, TOrderedChildren,
             DepthFirstReduceOrder<TNode>, HooksStep<TNode, THooks>, THooks>(root, hooks);
+
+    // In the topology's own child order.
+    public static THooks Walk<TNode, TTopology, TChildren, THooks>(TNode? root, THooks hooks)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, IDepthFirstHooks<TNode>
+        => Walk<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, THooks>(root, hooks);
 
     public static THooks WalkGraph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root)
         where TNode : class
@@ -49,6 +65,14 @@ internal static class DepthFirstTraversal
             TNode, TTopology, TChildren, TOrder, TOrderedChildren,
             DepthFirstReduceOrder<TNode>, HooksStep<TNode, THooks>, THooks>(root);
 
+    // In the topology's own child order.
+    public static THooks WalkGraph<TNode, TTopology, TChildren, THooks>(TNode? root)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, IDepthFirstHooks<TNode>
+        => WalkGraph<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, THooks>(root);
+
     public static THooks WalkGraph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(
         TNode? root, THooks hooks)
         where TNode : class
@@ -58,6 +82,15 @@ internal static class DepthFirstTraversal
         where TOrderedChildren : struct, IChildren<TNode>
         where THooks : struct, IDepthFirstHooks<TNode>
         => WalkGraph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(root, hooks, []);
+
+    // In the topology's own child order.
+    public static THooks WalkGraph<TNode, TTopology, TChildren, THooks>(
+        TNode? root, THooks hooks)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, IDepthFirstHooks<TNode>
+        => WalkGraph<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, THooks>(root, hooks);
 
     // The multi-root overload - see Reduce.Graph's for the reasoning: visited is
     // supplied by the caller so it can be carried across several separate
@@ -76,6 +109,16 @@ internal static class DepthFirstTraversal
         => Reduce.Graph<
             TNode, TTopology, TChildren, TOrder, TOrderedChildren,
             DepthFirstReduceOrder<TNode>, HooksStep<TNode, THooks>, THooks>(root, hooks, visited);
+
+    // In the topology's own child order.
+    public static THooks WalkGraph<TNode, TTopology, TChildren, THooks>(
+        TNode? root, THooks hooks, HashSet<TNode> visited)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, IDepthFirstHooks<TNode>
+        => WalkGraph<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, THooks>(root, hooks, visited);
 
     // The reduce step a hook rides as: the hook value is the state, so each event runs on
     // the threaded copy and passes it on. Seed is where a walk with no hook of its own

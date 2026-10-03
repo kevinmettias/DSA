@@ -32,8 +32,7 @@ internal static class CourseScheduleIISolution
     public static int[] FindOrderByKahnsTopologicalSort(List<CourseNode> courses)
     {
         var canFinish = TopologicalSort.TrySort<
-            CourseNode, CourseTopology, ListChildren<CourseNode>,
-            NaturalChildOrder<CourseNode, ListChildren<CourseNode>>, ListChildren<CourseNode>>(
+            CourseNode, CourseTopology, ListChildren<CourseNode>>(
             courses, out var ordering);
 
         return canFinish ? CourseIds(ordering) : EmptyOrder();

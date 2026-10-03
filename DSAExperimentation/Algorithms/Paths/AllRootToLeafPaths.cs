@@ -32,6 +32,13 @@ internal static class AllRootToLeafPaths
         return output;
     }
 
+    // In the topology's own child order.
+    public static List<TNode[]> Find<TNode, TTopology, TChildren>(TNode? root)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        => Find<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren>(root);
+
     private static TNode[] SingletonPath<TNode>(TNode root)
         where TNode : class
         => [root];

@@ -43,8 +43,7 @@ internal static class LargestColorValueInADirectedGraphSolution
     public static int LargestPathValueByKahnsTopologicalSort(List<ColorGraphNode> nodes)
     {
         var sorted = TopologicalSort.TrySort<
-            ColorGraphNode, ColorGraphTopology, ListChildren<ColorGraphNode>,
-            NaturalChildOrder<ColorGraphNode, ListChildren<ColorGraphNode>>, ListChildren<ColorGraphNode>>(
+            ColorGraphNode, ColorGraphTopology, ListChildren<ColorGraphNode>>(
             nodes, out var ordering);
 
         if (!sorted)

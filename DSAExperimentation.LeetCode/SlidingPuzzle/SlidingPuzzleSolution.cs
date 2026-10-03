@@ -84,7 +84,6 @@ internal static class SlidingPuzzleSolution
 
         var distances = Reduce.Graph<
             PuzzleNode, PuzzleTopology, ListChildren<PuzzleNode>,
-            NaturalChildOrder<PuzzleNode, ListChildren<PuzzleNode>>, ListChildren<PuzzleNode>,
             BreadthFirstReduceOrder<PuzzleNode>,
             DistanceMapReduceAlgebra<PuzzleNode>, Dictionary<PuzzleNode, int>>(startNode);
 

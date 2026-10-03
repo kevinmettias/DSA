@@ -12,7 +12,6 @@ internal static class HammingDistances
     public static Dictionary<HammingNode, int> From(HammingNode root) =>
         Reduce.Graph<
             HammingNode, HammingTopology, ListChildren<HammingNode>,
-            NaturalChildOrder<HammingNode, ListChildren<HammingNode>>, ListChildren<HammingNode>,
             BreadthFirstReduceOrder<HammingNode>,
             DistanceMapReduceAlgebra<HammingNode>, Dictionary<HammingNode, int>>(root);
 }

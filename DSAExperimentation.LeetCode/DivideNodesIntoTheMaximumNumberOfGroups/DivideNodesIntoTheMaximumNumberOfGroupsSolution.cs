@@ -235,8 +235,7 @@ internal static class DivideNodesIntoTheMaximumNumberOfGroupsSolution
         var nodes = graph.Nodes;
 
         if (!BipartiteCheck.IsBipartite<
-            GroupNode, GroupTopology, ListChildren<GroupNode>,
-            NaturalChildOrder<GroupNode, ListChildren<GroupNode>>, ListChildren<GroupNode>>(nodes))
+            GroupNode, GroupTopology, ListChildren<GroupNode>>(nodes))
         {
             return LeetCodeAnswer.None;
         }
@@ -272,7 +271,6 @@ internal static class DivideNodesIntoTheMaximumNumberOfGroupsSolution
     {
         var distances = Reduce.Graph<
             GroupNode, GroupTopology, ListChildren<GroupNode>,
-            NaturalChildOrder<GroupNode, ListChildren<GroupNode>>, ListChildren<GroupNode>,
             BreadthFirstReduceOrder<GroupNode>,
             DistanceMapReduceAlgebra<GroupNode>, Dictionary<GroupNode, int>>(root);
 

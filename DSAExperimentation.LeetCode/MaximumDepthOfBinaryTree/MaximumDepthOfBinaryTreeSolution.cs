@@ -23,6 +23,5 @@ internal static class MaximumDepthOfBinaryTreeSolution
     // This repo's own height metric.
     public static int MaxDepthByTreeMetrics(BinaryTreeNode<int>? root) =>
         TreeMetrics.Height<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root);
 }

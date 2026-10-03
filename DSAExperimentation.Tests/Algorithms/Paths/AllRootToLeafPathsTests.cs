@@ -13,8 +13,7 @@ public sealed partial class AllRootToLeafPathsTests
         var root = TestTrees.NArySample();
 
         var paths = AllRootToLeafPaths.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root);
+            TestNode, TestTopology, ListChildren<TestNode>>(root);
 
         var asNames = paths.Select(path => string.Join("", path.Select(n => n.Name))).ToArray();
 
@@ -29,8 +28,7 @@ public sealed partial class AllRootToLeafPathsTests
         var root = TestTrees.SingleNode();
 
         var paths = AllRootToLeafPaths.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root);
+            TestNode, TestTopology, ListChildren<TestNode>>(root);
 
         Assert.Equal(new[] { "A" }, paths.Select(path => string.Join("", path.Select(n => n.Name))));
     }
@@ -39,16 +37,14 @@ public sealed partial class AllRootToLeafPathsTests
     public void Find_NullRoot_ReturnsNoPaths()
     {
         var paths = AllRootToLeafPaths.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(null);
+            TestNode, TestTopology, ListChildren<TestNode>>(null);
 
         Assert.Empty(paths);
     }
 
     private static List<TestNode[]> Find(TestNode root)
         => AllRootToLeafPaths.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root);
+            TestNode, TestTopology, ListChildren<TestNode>>(root);
 
     // CollectPathsHooks is private to AllRootToLeafPaths, so its two hooks are driven
     // through Find: Descend builds each child's path from its parent's, and Visit decides

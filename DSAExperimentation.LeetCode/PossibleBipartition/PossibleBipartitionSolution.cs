@@ -101,7 +101,6 @@ internal static class PossibleBipartitionSolution
 
     public static bool CanBipartitionByBipartiteCheck(DislikeGraph graph) =>
         BipartiteCheck.IsBipartite<
-            PersonNode, PersonTopology, ListChildren<PersonNode>,
-            NaturalChildOrder<PersonNode, ListChildren<PersonNode>>, ListChildren<PersonNode>>(
+            PersonNode, PersonTopology, ListChildren<PersonNode>>(
             graph.People);
 }

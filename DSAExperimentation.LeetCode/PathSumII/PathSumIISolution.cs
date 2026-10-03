@@ -26,8 +26,7 @@ internal static class PathSumIISolution
     // match instead of asking whether one exists.
     public static List<List<int>> FindPathsByAllRootToLeafPaths(BinaryTreeNode<int>? root, int targetSum) =>
         AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root)
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root)
             .Where(path => path.Sum(node => node.Value) == targetSum)
             .Select(path => path.Select(node => node.Value).ToList())
             .ToList();

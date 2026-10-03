@@ -101,7 +101,6 @@ internal static class MinimumOperationsToEqualizeBinaryStringSolution
 
         var distances = Reduce.Graph<
             EqualizeStateNode, EqualizeStateTopology, ListChildren<EqualizeStateNode>,
-            NaturalChildOrder<EqualizeStateNode, ListChildren<EqualizeStateNode>>, ListChildren<EqualizeStateNode>,
             BreadthFirstReduceOrder<EqualizeStateNode>,
             DistanceMapReduceAlgebra<EqualizeStateNode>, Dictionary<EqualizeStateNode, int>>(startNode);
 

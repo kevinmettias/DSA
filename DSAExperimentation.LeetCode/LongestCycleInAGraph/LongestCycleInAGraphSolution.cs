@@ -77,8 +77,7 @@ internal static class LongestCycleInAGraphSolution
     public static int LongestCycleByTarjanComponents(FunctionalGraph graph)
     {
         var components = StronglyConnectedComponents.Tarjan<
-            FunctionalGraphNode, FunctionalGraphTopology, ListChildren<FunctionalGraphNode>,
-            NaturalChildOrder<FunctionalGraphNode, ListChildren<FunctionalGraphNode>>, ListChildren<FunctionalGraphNode>>(
+            FunctionalGraphNode, FunctionalGraphTopology, ListChildren<FunctionalGraphNode>>(
             graph.Nodes);
 
         var longest = LeetCodeAnswer.None;

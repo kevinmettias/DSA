@@ -28,7 +28,6 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
     {
         var (_, ways) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             RoomWaysAlgebra, (long Size, long Ways)>(root);
 
         return (int)ways;
@@ -47,7 +46,6 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
     {
         var (_, ways) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             RoomWaysPrecomputedFactorialAlgebra, (long Size, long Ways)>(
             root, new RoomWaysPrecomputedFactorialAlgebra(FactorialTable.Build(roomCount)));
 

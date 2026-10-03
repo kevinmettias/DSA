@@ -111,7 +111,6 @@ internal static class MinimumNumberOfVisitedCellsInAGridSolution
 
         var distanceByNode = Reduce.Graph<
             JumpGridNode, JumpGridTopology, JumpGridChildren,
-            NaturalChildOrder<JumpGridNode, JumpGridChildren>, JumpGridChildren,
             BreadthFirstReduceOrder<JumpGridNode>,
             DistanceMapReduceAlgebra<JumpGridNode>, Dictionary<JumpGridNode, int>>(source);
 

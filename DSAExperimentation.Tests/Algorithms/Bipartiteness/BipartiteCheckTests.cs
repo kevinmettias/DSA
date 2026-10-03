@@ -25,8 +25,7 @@ public sealed partial class BipartiteCheckTests
         Connect(d, a);
 
         var result = BipartiteCheckOperations.IsBipartite<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c, d]);
 
         Assert.True(result);
@@ -43,8 +42,7 @@ public sealed partial class BipartiteCheckTests
         Connect(c, a);
 
         var result = BipartiteCheckOperations.IsBipartite<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
 
         Assert.False(result);
@@ -65,8 +63,7 @@ public sealed partial class BipartiteCheckTests
         Connect(z, x);
 
         var result = BipartiteCheckOperations.IsBipartite<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, x, y, z]);
 
         Assert.False(result);
@@ -78,8 +75,7 @@ public sealed partial class BipartiteCheckTests
         var a = new TestNode("A");
 
         var result = BipartiteCheckOperations.IsBipartite<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a]);
 
         Assert.True(result);
@@ -89,8 +85,7 @@ public sealed partial class BipartiteCheckTests
     public void IsBipartite_EmptyInput_ReturnsTrue()
     {
         var result = BipartiteCheckOperations.IsBipartite<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             []);
 
         Assert.True(result);

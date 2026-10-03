@@ -67,6 +67,5 @@ internal static class NumberOfRestrictedPathsFromFirstToLastNodeSolution
     public static long CountRestrictedPathsByDagFold(RestrictedPathGraph graph) =>
         DagFold.Fold<
             RestrictedPathNode, RestrictedPathChildTopology, ListChildren<RestrictedPathNode>,
-            NaturalChildOrder<RestrictedPathNode, ListChildren<RestrictedPathNode>>, ListChildren<RestrictedPathNode>,
             RestrictedPathCountAlgebra, long>(graph.First);
 }

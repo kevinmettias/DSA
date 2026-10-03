@@ -48,8 +48,7 @@ internal static class BuildAMatrixWithConditionsSolution
     private static bool TryKahnsOrder(List<ValueNode> values, out List<int> order)
     {
         var ordered = TopologicalSort.TrySort<
-            ValueNode, ValueTopology, ListChildren<ValueNode>,
-            NaturalChildOrder<ValueNode, ListChildren<ValueNode>>, ListChildren<ValueNode>>(
+            ValueNode, ValueTopology, ListChildren<ValueNode>>(
             values, out var ordering);
 
         order = ordered ? Ids(ordering) : new List<int>();

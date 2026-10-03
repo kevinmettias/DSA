@@ -83,7 +83,6 @@ internal static class RaceCarSolution
     {
         var distances = Reduce.Graph<
             RaceCarNode, RaceCarTopology, ListChildren<RaceCarNode>,
-            NaturalChildOrder<RaceCarNode, ListChildren<RaceCarNode>>, ListChildren<RaceCarNode>,
             BreadthFirstReduceOrder<RaceCarNode>,
             DistanceMapReduceAlgebra<RaceCarNode>, Dictionary<RaceCarNode, int>>(graph.Start);
 

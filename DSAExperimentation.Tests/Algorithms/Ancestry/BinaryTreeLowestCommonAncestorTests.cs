@@ -23,8 +23,7 @@ public sealed partial class BinaryTreeLowestCommonAncestorTests
         var seven = Child(Child(root.Right).Right);
 
         var lca = LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root, one, seven);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root, one, seven);
 
         Assert.Same(root, lca);
     }
@@ -37,8 +36,7 @@ public sealed partial class BinaryTreeLowestCommonAncestorTests
         var seven = Child(six.Right);
 
         var lca = LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root, six, seven);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root, six, seven);
 
         Assert.Same(six, lca);
     }
@@ -52,8 +50,7 @@ public sealed partial class BinaryTreeLowestCommonAncestorTests
         var three = Child(two.Right);
 
         var lca = LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root, one, three);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root, one, three);
 
         Assert.Same(two, lca);
     }

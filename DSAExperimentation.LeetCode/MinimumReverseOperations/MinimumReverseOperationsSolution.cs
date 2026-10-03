@@ -108,7 +108,6 @@ internal static class MinimumReverseOperationsSolution
 
         var distanceByNode = Reduce.Graph<
             PositionNode, ReversalTopology, ReversalChildren,
-            NaturalChildOrder<PositionNode, ReversalChildren>, ReversalChildren,
             BreadthFirstReduceOrder<PositionNode>,
             DistanceMapReduceAlgebra<PositionNode>, Dictionary<PositionNode, int>>(source);
 

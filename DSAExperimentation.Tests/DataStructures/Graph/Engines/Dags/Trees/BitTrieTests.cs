@@ -122,9 +122,7 @@ public sealed partial class BitTrieTests
         var trie = TrieHoldingZeroAndOne();
 
         var size = TreeMetrics.Size<
-            BitTrieNode, BitTrieTopology, BitTrieChildren,
-            NaturalChildOrder<BitTrieNode, BitTrieChildren>,
-            BitTrieChildren>(trie.Root);
+            BitTrieNode, BitTrieTopology, BitTrieChildren>(trie.Root);
 
         Assert.Equal(KnownValues.ExpectedNodeCount, size);
     }

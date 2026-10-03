@@ -28,7 +28,6 @@ internal static class SmallestSubtreeWithAllTheDeepestNodesSolution
     public static BinaryTreeNode<int>? SubtreeWithAllDeepestByTreeFold(BinaryTreeNode<int>? root)
         => TreeFold.Fold<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             DeepestSubtreeAlgebra, (int Depth, BinaryTreeNode<int>? Node)>(root).Node;
 
     private static (int Depth, BinaryTreeNode<int>? Node) DeepestSubtree(BinaryTreeNode<int>? node)

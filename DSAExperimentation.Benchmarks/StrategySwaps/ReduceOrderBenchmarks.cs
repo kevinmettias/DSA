@@ -31,7 +31,6 @@ public class ReduceOrderBenchmarks
         where TOrderStrategy : struct, IReduceOrderStrategy<BinaryTreeNode<int>>
         => Reduce.Tree<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             TOrderStrategy, DistanceMapReduceAlgebra<BinaryTreeNode<int>>, Dictionary<BinaryTreeNode<int>, int>>(
             _root).Count;
 }

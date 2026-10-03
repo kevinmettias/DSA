@@ -37,7 +37,6 @@ internal static class LongestPathWithDifferentAdjacentCharactersSolution
     public static int LongestPathByTreeFold(RootedTreeNode root, string labels)
         => TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             LongestPathAlgebra, PathState>(root, new LongestPathAlgebra(labels)).LongestPath;
 
     // Accumulates the running best-height, second-best-height, and best-path values

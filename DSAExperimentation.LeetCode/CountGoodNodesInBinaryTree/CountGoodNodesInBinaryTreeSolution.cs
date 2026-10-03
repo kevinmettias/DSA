@@ -33,7 +33,6 @@ internal static class CountGoodNodesInBinaryTreeSolution
 
         TopDownTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             GoodNodeHooks, (int MaxSoFar, Counter Good)>(root, (int.MinValue, counter));
 
         return counter.Count;

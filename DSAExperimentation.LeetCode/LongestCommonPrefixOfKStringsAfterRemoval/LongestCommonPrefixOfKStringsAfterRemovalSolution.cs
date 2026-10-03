@@ -133,8 +133,6 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     private static Dictionary<LowercaseTrieNode<int>, int> ReduceSubtreeWordCounts(LowercaseTrie<int> trie) =>
         Reduce.Tree<
             LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-            SparseArrayChildren<LowercaseTrieNode<int>>,
             DepthFirstReduceOrder<LowercaseTrieNode<int>>,
             SubtreeWordCountAlgebra, Dictionary<LowercaseTrieNode<int>, int>>(trie.Root);
 
@@ -142,8 +140,6 @@ internal static class LongestCommonPrefixOfKStringsAfterRemovalSolution
     private static Dictionary<LowercaseTrieNode<int>, int> ReduceNodeDepths(LowercaseTrie<int> trie) =>
         Reduce.Tree<
             LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-            SparseArrayChildren<LowercaseTrieNode<int>>,
             DepthFirstReduceOrder<LowercaseTrieNode<int>>,
             DistanceMapReduceAlgebra<LowercaseTrieNode<int>>, Dictionary<LowercaseTrieNode<int>, int>>(trie.Root);
 

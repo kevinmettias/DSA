@@ -21,7 +21,6 @@ public sealed partial class BreadthFirstTraversalTests
 
         BreadthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingVisitHooks>(TestTrees.NArySample(), new RecordingVisitHooks(visited));
 
         Assert.Equal(
@@ -36,7 +35,6 @@ public sealed partial class BreadthFirstTraversalTests
 
         BreadthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingVisitHooks>(null, new RecordingVisitHooks(visited));
 
         Assert.Empty(visited);
@@ -48,7 +46,6 @@ public sealed partial class BreadthFirstTraversalTests
     {
         var hooks = BreadthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountingVisitHooks>(TestTrees.NArySample(), new CountingVisitHooks());
 
         Assert.Equal(NArySampleNodeCount, hooks.Visited);
@@ -64,7 +61,6 @@ public sealed partial class BreadthFirstTraversalTests
 
         BreadthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingVisitHooks>(TestGraphs.CycleWithLeaf(), new RecordingVisitHooks(visited));
 
         Assert.Equal(new[] { ("A", 0), ("B", 1), ("D", 1), ("C", 2) }, visited);
@@ -77,7 +73,6 @@ public sealed partial class BreadthFirstTraversalTests
 
         BreadthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingVisitHooks>(null, new RecordingVisitHooks(visited));
 
         Assert.Empty(visited);
@@ -91,7 +86,6 @@ public sealed partial class BreadthFirstTraversalTests
 
         BreadthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingVisitHooks>(root, new RecordingVisitHooks(visited), [root]);
 
         Assert.Empty(visited);
@@ -116,7 +110,6 @@ public sealed partial class BreadthFirstTraversalTests
     {
         var hooks = BreadthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountingVisitHooks>(TestGraphs.CycleWithLeaf(), new CountingVisitHooks());
 
         Assert.Equal(CycleWithLeafNodeCount, hooks.Visited);
@@ -128,7 +121,6 @@ public sealed partial class BreadthFirstTraversalTests
 
         BreadthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingVisitHooks>(root, new RecordingVisitHooks(visited), seen);
 
         return visited;
@@ -144,11 +136,9 @@ public sealed partial class BreadthFirstTraversalTests
         {
             var tree = BreadthFirstTraversal.Walk<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountingVisitHooks>(TestTrees.NArySample());
             var graph = BreadthFirstTraversal.WalkGraph<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountingVisitHooks>(TestGraphs.CycleWithLeaf());
 
             Assert.Equal(NArySampleNodeCount, tree.Visited);
@@ -160,7 +150,6 @@ public sealed partial class BreadthFirstTraversalTests
         {
             var hooks = BreadthFirstTraversal.Walk<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountingVisitHooks>(TestTrees.NArySample(), new CountingVisitHooks());
 
             Assert.Equal(NArySampleNodeCount, hooks.Visited);

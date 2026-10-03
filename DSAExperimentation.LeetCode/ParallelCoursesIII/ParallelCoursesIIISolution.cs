@@ -36,8 +36,7 @@ internal static class ParallelCoursesIIISolution
     public static int MinimumTimeByKahnsTopologicalSortDp(List<CourseTimeNode> courses)
     {
         TopologicalSort.TrySort<
-            CourseTimeNode, CourseTimeTopology, ListChildren<CourseTimeNode>,
-            NaturalChildOrder<CourseTimeNode, ListChildren<CourseTimeNode>>, ListChildren<CourseTimeNode>>(
+            CourseTimeNode, CourseTimeTopology, ListChildren<CourseTimeNode>>(
             courses, out var ordering);
 
         var readyAt = courses.ToDictionary(course => course, _ => 0);

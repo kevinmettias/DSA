@@ -31,7 +31,6 @@ public sealed partial class SharedDescendantFoldTests
 
         var succeeded = CheckedFold.TryFold<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountCombineCallsFoldAlgebra, int>(a, new CountCombineCallsFoldAlgebra(counter), out var count);
 
         // The *value* still double-counts D (5: A=1 + B's count-of-2 + C's
@@ -58,7 +57,6 @@ public sealed partial class SharedDescendantFoldTests
 
         var count = DagFold.Fold<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountCombineCallsFoldAlgebra, int>(a, new CountCombineCallsFoldAlgebra(counter));
 
         Assert.Equal(5, count);

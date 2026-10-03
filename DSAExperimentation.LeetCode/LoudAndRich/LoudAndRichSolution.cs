@@ -29,8 +29,7 @@ internal static class LoudAndRichSolution
     public static int[] QuietestByTopologicalDpPass(List<PersonNode> people, int[] quiet)
     {
         TopologicalSort.TrySort<
-            PersonNode, PersonTopology, ListChildren<PersonNode>,
-            NaturalChildOrder<PersonNode, ListChildren<PersonNode>>, ListChildren<PersonNode>>(
+            PersonNode, PersonTopology, ListChildren<PersonNode>>(
             people, out var ordering);
 
         var answer = Enumerable.Range(0, people.Count).ToArray();

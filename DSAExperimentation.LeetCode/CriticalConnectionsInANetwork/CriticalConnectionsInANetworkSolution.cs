@@ -115,8 +115,7 @@ internal static class CriticalConnectionsInANetworkSolution
     public static int[][] CriticalConnectionsByLowLinkSearch(ServerNetwork network)
     {
         var (bridges, _) = BridgesAndArticulationPoints.Find<
-            ServerNode, ServerTopology, ListChildren<ServerNode>,
-            NaturalChildOrder<ServerNode, ListChildren<ServerNode>>, ListChildren<ServerNode>>(
+            ServerNode, ServerTopology, ListChildren<ServerNode>>(
             network.Servers);
 
         var critical = new int[bridges.Count][];

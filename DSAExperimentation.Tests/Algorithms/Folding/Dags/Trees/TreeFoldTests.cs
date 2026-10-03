@@ -18,8 +18,6 @@ public sealed partial class TreeFoldTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             CountNodesFoldAlgebra,
             int>(root);
 
@@ -32,8 +30,6 @@ public sealed partial class TreeFoldTests
         var count = TreeFold.Fold<
             TestNode,
             TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
             ListChildren<TestNode>,
             CountNodesFoldAlgebra,
             int>(null);
@@ -60,8 +56,6 @@ public sealed partial class TreeFoldTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             TStrategy,
             HeightAlgebra<TestNode>,
             int>(root);
@@ -72,8 +66,6 @@ public sealed partial class TreeFoldTests
         var count = TreeFold.Fold<
             TestNode,
             TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
             ListChildren<TestNode>,
             IterativeFoldEvaluation<TestNode>,
             CountNodesFoldAlgebra,

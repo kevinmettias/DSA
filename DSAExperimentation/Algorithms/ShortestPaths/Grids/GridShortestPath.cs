@@ -13,7 +13,6 @@ internal static class GridShortestPath
     {
         var distances = Reduce.Graph<
             GridNode, GridTopology, GridChildren,
-            NaturalChildOrder<GridNode, GridChildren>, GridChildren,
             BreadthFirstReduceOrder<GridNode>,
             DistanceMapReduceAlgebra<GridNode>, Dictionary<GridNode, int>>(start);
 

@@ -24,7 +24,6 @@ internal static class PathSumSolution
     // puzzle reduces to "does any of them sum to target".
     public static bool HasPathSumByPathEnumeration(BinaryTreeNode<int>? root, int targetSum) =>
         AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root)
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root)
             .Any(path => path.Sum(n => n.Value) == targetSum);
 }

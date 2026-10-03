@@ -15,8 +15,7 @@ public sealed partial class LowestCommonAncestorTests
         var g = root.Children[2].Children[0]; // D -> G
 
         var lca = LowestCommonAncestor.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root, e, g);
+            TestNode, TestTopology, ListChildren<TestNode>>(root, e, g);
 
         Assert.Same(root, lca);
     }
@@ -29,8 +28,7 @@ public sealed partial class LowestCommonAncestorTests
         var f = b.Children[1];
 
         var lca = LowestCommonAncestor.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root, b, f);
+            TestNode, TestTopology, ListChildren<TestNode>>(root, b, f);
 
         Assert.Same(b, lca);
     }
@@ -44,8 +42,7 @@ public sealed partial class LowestCommonAncestorTests
         var f = b.Children[1];
 
         var lca = LowestCommonAncestor.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root, e, f);
+            TestNode, TestTopology, ListChildren<TestNode>>(root, e, f);
 
         Assert.Same(b, lca);
     }

@@ -41,4 +41,12 @@ internal static class LevelGroupedBreadthFirstTraversal
 
         return hooks;
     }
+
+    // In the topology's own child order.
+    public static THooks Walk<TNode, TTopology, TChildren, THooks>(TNode? root, THooks hooks)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, ILevelGroupedHooks<TNode>
+        => Walk<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, THooks>(root, hooks);
 }

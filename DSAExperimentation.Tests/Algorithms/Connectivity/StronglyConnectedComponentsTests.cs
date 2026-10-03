@@ -31,8 +31,7 @@ public sealed partial class StronglyConnectedComponentsTests
         c.Children.Add(a);
 
         var components = StronglyConnectedComponentsOperations.Tarjan<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
         var normalized = Normalize(components);
 
@@ -49,8 +48,7 @@ public sealed partial class StronglyConnectedComponentsTests
         b.Children.Add(c);
 
         var components = StronglyConnectedComponentsOperations.Tarjan<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
         var normalized = Normalize(components);
 
@@ -76,8 +74,7 @@ public sealed partial class StronglyConnectedComponentsTests
         d.Children.Add(c);
 
         var components = StronglyConnectedComponentsOperations.Tarjan<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c, d]);
         var normalized = Normalize(components);
 
@@ -93,8 +90,7 @@ public sealed partial class StronglyConnectedComponentsTests
         a.Children.Add(a);
 
         var components = StronglyConnectedComponentsOperations.Tarjan<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a]);
         var normalized = Normalize(components);
 
@@ -112,8 +108,7 @@ public sealed partial class StronglyConnectedComponentsTests
         var c = new TestNode("C");
 
         var components = StronglyConnectedComponentsOperations.Tarjan<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
         var normalized = Normalize(components);
 
@@ -126,8 +121,7 @@ public sealed partial class StronglyConnectedComponentsTests
     public void Tarjan_EmptyInput_ReturnsEmptyResult()
     {
         var components = StronglyConnectedComponentsOperations.Tarjan<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             []);
 
         Assert.Empty(components);

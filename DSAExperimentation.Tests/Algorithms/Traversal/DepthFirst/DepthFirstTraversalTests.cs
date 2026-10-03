@@ -34,7 +34,6 @@ public sealed partial class DepthFirstTraversalTests
 
         DepthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingEnterExitHooks>(TestTrees.NArySample(), new RecordingEnterExitHooks(entered, exited));
 
         Assert.Equal(new[] { "A", "B", "E", "F", "C", "D", "G" }, entered.Select(v => v.Name));
@@ -50,7 +49,6 @@ public sealed partial class DepthFirstTraversalTests
     {
         var hooks = DepthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountingEnterExitHooks>(TestTrees.NArySample(), new CountingEnterExitHooks());
 
         Assert.Equal(NArySampleNodeCount, hooks.Entered);
@@ -62,7 +60,6 @@ public sealed partial class DepthFirstTraversalTests
     {
         var hooks = DepthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountingEnterExitHooks>(null, new CountingEnterExitHooks());
 
         Assert.Equal(0, hooks.Entered);
@@ -92,7 +89,6 @@ public sealed partial class DepthFirstTraversalTests
 
         DepthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingEnterExitHooks>(TestGraphs.CycleWithLeaf(), new RecordingEnterExitHooks(entered, exited));
 
         Assert.Equal(new[] { ("A", 0), ("B", 1), ("C", 2), ("D", 1) }, entered);
@@ -106,7 +102,6 @@ public sealed partial class DepthFirstTraversalTests
 
         DepthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingEnterHooks>(null, new RecordingEnterHooks(entered));
 
         Assert.Empty(entered);
@@ -120,7 +115,6 @@ public sealed partial class DepthFirstTraversalTests
 
         DepthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingEnterHooks>(root, new RecordingEnterHooks(entered), [root]);
 
         Assert.Empty(entered);
@@ -145,7 +139,6 @@ public sealed partial class DepthFirstTraversalTests
     {
         var hooks = DepthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountingEnterExitHooks>(TestGraphs.CycleWithLeaf(), new CountingEnterExitHooks());
 
         Assert.Equal(CycleWithLeafNodeCount, hooks.Entered);
@@ -161,7 +154,6 @@ public sealed partial class DepthFirstTraversalTests
 
         DepthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             THooks>(root, hooksOver(log));
 
         return log;
@@ -173,7 +165,6 @@ public sealed partial class DepthFirstTraversalTests
 
         DepthFirstTraversal.WalkGraph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingEnterHooks>(root, new RecordingEnterHooks(entered), visited);
 
         return entered;
@@ -189,11 +180,9 @@ public sealed partial class DepthFirstTraversalTests
         {
             var tree = DepthFirstTraversal.Walk<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountingEnterExitHooks>(TestTrees.NArySample());
             var graph = DepthFirstTraversal.WalkGraph<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountingEnterExitHooks>(TestGraphs.CycleWithLeaf());
 
             // Every node is entered and exited exactly once, so both counts start from zero.
@@ -212,7 +201,6 @@ public sealed partial class DepthFirstTraversalTests
         private static CountingEnterExitHooks WalkCounting()
             => DepthFirstTraversal.Walk<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 CountingEnterExitHooks>(TestTrees.NArySample(), new CountingEnterExitHooks());
     }
 }

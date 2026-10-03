@@ -70,9 +70,7 @@ internal static class CountVisitedNodesInADirectedGraphSolution
     public static int[] CountVisitedNodesBySccAndReverseBfs(FunctionalGraph graph)
     {
         var components = StronglyConnectedComponents.Tarjan<
-            FunctionalGraphNode, FunctionalGraphTopology, ListChildren<FunctionalGraphNode>,
-            NaturalChildOrder<FunctionalGraphNode, ListChildren<FunctionalGraphNode>>,
-            ListChildren<FunctionalGraphNode>>(graph.Nodes);
+            FunctionalGraphNode, FunctionalGraphTopology, ListChildren<FunctionalGraphNode>>(graph.Nodes);
 
         var walk = new ReverseWalk(new int[graph.Edges.Length], new bool[graph.Edges.Length], new RepoQueue());
 

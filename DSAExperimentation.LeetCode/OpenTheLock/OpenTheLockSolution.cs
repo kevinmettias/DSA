@@ -86,7 +86,6 @@ internal static class OpenTheLockSolution
 
         var distances = Reduce.Graph<
             LockNode, LockTopology, ListChildren<LockNode>,
-            NaturalChildOrder<LockNode, ListChildren<LockNode>>, ListChildren<LockNode>,
             BreadthFirstReduceOrder<LockNode>,
             DistanceMapReduceAlgebra<LockNode>, Dictionary<LockNode, int>>(startNode);
 

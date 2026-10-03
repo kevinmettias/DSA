@@ -25,8 +25,7 @@ internal static class DiameterOfBinaryTreeSolution
     // diameter-through-this-node together in a single TreeFold pass.
     public static int DiameterByTreeMetricsFold(BinaryTreeNode<int> root)
         => TreeMetrics.Diameter<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root);
 
     private static (int Height, int Diameter) DiameterVia(BinaryTreeNode<int>? node)
     {

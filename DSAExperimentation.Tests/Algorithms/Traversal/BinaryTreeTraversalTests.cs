@@ -24,8 +24,6 @@ public sealed partial class BinaryTreeTraversalTests
             BinaryTreeNode<int>,
             BinaryTreeTopology<int>,
             BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
-            BinaryTreeChildren<int>,
             RecordingBinaryTreeEnterHooks<int>>(
             BinaryTreeTrees.Sample(), new RecordingBinaryTreeEnterHooks<int>(entered));
 
@@ -43,8 +41,6 @@ public sealed partial class BinaryTreeTraversalTests
             BinaryTreeNode<int>,
             BinaryTreeTopology<int>,
             BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
-            BinaryTreeChildren<int>,
             RecordingBinaryTreeExitHooks<int>>(
             BinaryTreeTrees.Sample(), new RecordingBinaryTreeExitHooks<int>(exited));
 
@@ -61,8 +57,6 @@ public sealed partial class BinaryTreeTraversalTests
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>,
             BinaryTreeTopology<int>,
-            BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
             BinaryTreeChildren<int>,
             RecordingBinaryTreeLevelHooks<int>>(
             BinaryTreeTrees.Sample(), new RecordingBinaryTreeLevelHooks<int>(levels));

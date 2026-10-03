@@ -16,8 +16,7 @@ public sealed partial class TopologicalSortTests
         b.Children.Add(c);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c], out var ordering);
 
         Assert.True(succeeded);
@@ -40,8 +39,7 @@ public sealed partial class TopologicalSortTests
         c.Children.Add(d);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c, d], out var ordering);
 
         Assert.True(succeeded);
@@ -59,8 +57,7 @@ public sealed partial class TopologicalSortTests
         c.Children.Add(a);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c], out _);
 
         Assert.False(succeeded);
@@ -73,8 +70,7 @@ public sealed partial class TopologicalSortTests
         a.Children.Add(a);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a], out _);
 
         Assert.False(succeeded);
@@ -91,8 +87,7 @@ public sealed partial class TopologicalSortTests
         a.Children.Add(b);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a], out _);
 
         Assert.False(succeeded);
@@ -113,8 +108,7 @@ public sealed partial class TopologicalSortTests
         b.Children.Add(c);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [b, c], out var ordering);
 
         Assert.True(succeeded);
@@ -129,8 +123,7 @@ public sealed partial class TopologicalSortTests
         a.Children.Add(b);
 
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, a, b], out var ordering);
 
         Assert.True(succeeded);
@@ -141,8 +134,7 @@ public sealed partial class TopologicalSortTests
     public void TrySort_EmptyInput_ReturnsTrueWithEmptyOrdering()
     {
         var succeeded = TopologicalSortOperations.TrySort<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [], out var ordering);
 
         Assert.True(succeeded);

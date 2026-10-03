@@ -21,8 +21,7 @@ public sealed partial class BinaryTreeAllRootToLeafPathsTests
         var root = BinaryTreeTrees.Sample();
 
         var paths = AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root);
 
         var asValues = paths.Select(path => path.Select(n => n.Value).ToArray()).ToArray();
 
@@ -37,8 +36,7 @@ public sealed partial class BinaryTreeAllRootToLeafPathsTests
         var root = BinaryTreeTrees.SingleNode();
 
         var paths = AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root);
 
         Assert.Equal(new[] { new[] { 1 } }, paths.Select(path => path.Select(n => n.Value).ToArray()));
     }
@@ -47,8 +45,7 @@ public sealed partial class BinaryTreeAllRootToLeafPathsTests
     public void Find_NullRoot_ReturnsNoPaths()
     {
         var paths = AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(null);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(null);
 
         Assert.Empty(paths);
     }

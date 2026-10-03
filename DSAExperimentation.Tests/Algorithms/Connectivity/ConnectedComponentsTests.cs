@@ -16,7 +16,6 @@ public sealed partial class ConnectedComponentsTests
         // order it explores a component in.
         var count = ConnectedComponents.Count<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             BreadthFirstReduceOrder<TestNode>>(scrambled);
 
         Assert.Equal(3, count);
@@ -48,7 +47,6 @@ public sealed partial class ConnectedComponentsTests
     {
         var count = ConnectedComponents.Count<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>>([]);
 
         Assert.Equal(0, count);
@@ -74,7 +72,6 @@ public sealed partial class ConnectedComponentsTests
 
             var count = ConnectedComponents.Count<
                 TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
                 DepthFirstReduceOrder<TestNode>>([a, b, c]);
 
             Assert.Equal(1, count);

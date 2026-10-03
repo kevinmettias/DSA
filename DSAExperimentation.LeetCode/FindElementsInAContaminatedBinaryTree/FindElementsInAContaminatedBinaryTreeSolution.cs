@@ -66,7 +66,6 @@ internal static class FindElementsInAContaminatedBinaryTreeSolution
         public TopDownSetElements(BinaryTreeNode<int> root) =>
             TopDownTraversal.Walk<
                 BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
                 RecoverHooks, (int Value, Set<int> Found)>(root, (0, _values));
 
         public bool Find(int target) => _values.Has(target);

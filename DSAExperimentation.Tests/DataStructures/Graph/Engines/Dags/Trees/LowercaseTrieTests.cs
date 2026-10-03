@@ -136,9 +136,7 @@ public sealed partial class LowercaseTrieTests
         var trie = BuildTrie((Fixtures.CarKey, 1), (Fixtures.CardKey, Fixtures.CardValueForSizeTest));
 
         var size = TreeMetrics.Size<
-            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-            SparseArrayChildren<LowercaseTrieNode<int>>>(trie.Root);
+            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>>(trie.Root);
 
         Assert.Equal(Fixtures.ExpectedTreeSize, size);
     }
@@ -162,9 +160,7 @@ public sealed partial class LowercaseTrieTests
         var sharedPrefixNode = WalkTo(trie.Root, Fixtures.SharedPrefixOfCarAndCat);
 
         var lca = LowestCommonAncestor.Find<
-            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>,
-            NaturalChildOrder<LowercaseTrieNode<int>, SparseArrayChildren<LowercaseTrieNode<int>>>,
-            SparseArrayChildren<LowercaseTrieNode<int>>>(
+            LowercaseTrieNode<int>, LowercaseTrieTopology<int>, SparseArrayChildren<LowercaseTrieNode<int>>>(
                 trie.Root, carNode, catNode);
 
         Assert.Same(sharedPrefixNode, lca);

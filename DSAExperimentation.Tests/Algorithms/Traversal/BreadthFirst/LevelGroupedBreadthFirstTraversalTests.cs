@@ -46,7 +46,6 @@ public sealed partial class LevelGroupedBreadthFirstTraversalTests
     {
         var hooks = LevelGroupedBreadthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountingLevelHooks>(TestTrees.NArySample(), new CountingLevelHooks());
 
         Assert.Equal(NArySampleLevelCount, hooks.Levels);
@@ -58,7 +57,6 @@ public sealed partial class LevelGroupedBreadthFirstTraversalTests
 
         LevelGroupedBreadthFirstTraversal.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingLevelHooks>(root, new RecordingLevelHooks(levels));
 
         return levels;

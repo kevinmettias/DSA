@@ -93,8 +93,7 @@ internal static class CourseScheduleSolution
         }
 
         return TopologicalSort.TrySort<
-            CourseNode, CourseTopology, ListChildren<CourseNode>,
-            NaturalChildOrder<CourseNode, ListChildren<CourseNode>>, ListChildren<CourseNode>>(
+            CourseNode, CourseTopology, ListChildren<CourseNode>>(
             courses, out _);
     }
 }

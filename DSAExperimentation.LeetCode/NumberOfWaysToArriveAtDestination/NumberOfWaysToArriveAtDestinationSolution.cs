@@ -68,6 +68,5 @@ internal static class NumberOfWaysToArriveAtDestinationSolution
     public static long CountWaysByDagFold(WaysGraph graph) =>
         DagFold.Fold<
             WaysNode, WaysChildTopology, ListChildren<WaysNode>,
-            NaturalChildOrder<WaysNode, ListChildren<WaysNode>>, ListChildren<WaysNode>,
             WaysCountAlgebra, long>(graph.Start);
 }

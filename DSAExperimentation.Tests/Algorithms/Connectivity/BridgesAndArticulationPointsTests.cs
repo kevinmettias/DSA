@@ -42,8 +42,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         Connect(b, c);
 
         var (bridges, _) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
 
         Assert.Equal([new List<string> { "A", "B" }, new List<string> { "B", "C" }], NormalizeBridges(bridges));
@@ -59,8 +58,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         Connect(b, c);
 
         var (_, articulationPoints) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
 
         Assert.Equal(["B"], NormalizeArticulationPoints(articulationPoints));
@@ -77,8 +75,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         Connect(c, a);
 
         var (bridges, _) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
 
         Assert.Empty(bridges);
@@ -95,8 +92,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         Connect(c, a);
 
         var (_, articulationPoints) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c]);
 
         Assert.Empty(articulationPoints);
@@ -127,8 +123,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         var (a, b, c, d, e, f) = BuildTwoTrianglesJoinedByOneEdge();
 
         var (bridges, _) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c, d, e, f]);
 
         Assert.Equal([new List<string> { "C", "D" }], NormalizeBridges(bridges));
@@ -140,8 +135,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         var (a, b, c, d, e, f) = BuildTwoTrianglesJoinedByOneEdge();
 
         var (_, articulationPoints) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b, c, d, e, f]);
 
         Assert.Equal(["C", "D"], NormalizeArticulationPoints(articulationPoints));
@@ -161,8 +155,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         b.Children.Add(a);
 
         var (bridges, _) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b]);
 
         Assert.Empty(bridges);
@@ -179,8 +172,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         b.Children.Add(a);
 
         var (_, articulationPoints) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a, b]);
 
         Assert.Empty(articulationPoints);
@@ -205,8 +197,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         var (center, leafOne, leafTwo, leafThree) = BuildStarGraph();
 
         var (bridges, _) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [center, leafOne, leafTwo, leafThree]);
 
         Assert.Equal(
@@ -224,8 +215,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         var (center, leafOne, leafTwo, leafThree) = BuildStarGraph();
 
         var (_, articulationPoints) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [center, leafOne, leafTwo, leafThree]);
 
         Assert.Equal(["Center"], NormalizeArticulationPoints(articulationPoints));
@@ -237,8 +227,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         var a = new TestNode("A");
 
         var (bridges, _) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a]);
 
         Assert.Empty(bridges);
@@ -250,8 +239,7 @@ public sealed partial class BridgesAndArticulationPointsTests
         var a = new TestNode("A");
 
         var (_, articulationPoints) = BridgesAndArticulationPointsOperations.Find<
-            TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(
+            TestNode, TestTopology, ListChildren<TestNode>>(
             [a]);
 
         Assert.Empty(articulationPoints);

@@ -53,7 +53,6 @@ internal static class ShortestDistanceToTargetStringInACircularArraySolution
     {
         var distances = Reduce.Graph<
             CircularArrayNode, CircularArrayTopology, ListChildren<CircularArrayNode>,
-            NaturalChildOrder<CircularArrayNode, ListChildren<CircularArrayNode>>, ListChildren<CircularArrayNode>,
             BreadthFirstReduceOrder<CircularArrayNode>,
             DistanceMapReduceAlgebra<CircularArrayNode>, Dictionary<CircularArrayNode, int>>(graph.Nodes[startIndex]);
 

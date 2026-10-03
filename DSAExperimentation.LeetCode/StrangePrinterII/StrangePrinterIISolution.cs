@@ -32,8 +32,7 @@ internal static class StrangePrinterIISolution
 
     public static bool IsPrintableByKahnsTopologicalSort(List<ColorNode> colors) =>
         TopologicalSort.TrySort<
-            ColorNode, ColorTopology, ListChildren<ColorNode>,
-            NaturalChildOrder<ColorNode, ListChildren<ColorNode>>, ListChildren<ColorNode>>(
+            ColorNode, ColorTopology, ListChildren<ColorNode>>(
             colors, out _);
 
     // The textbook answer: keep a remaining-colors list and linearly scan it for a

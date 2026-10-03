@@ -30,6 +30,13 @@ internal static class LowestCommonAncestor
         where TOrderedChildren : struct, IChildren<TNode>
         => Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(root, first, second);
 
+    // In the topology's own child order.
+    public static TNode? Find<TNode, TTopology, TChildren>(TNode root, TNode first, TNode second)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        => Find<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren>(root, first, second);
+
     private static TNode? Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(TNode node, TNode first, TNode second)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>

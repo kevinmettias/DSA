@@ -33,6 +33,18 @@ internal static class TopDownTraversal
             root, initialState, 0, default);
     }
 
+    // In the topology's own child order.
+    public static void Walk<TNode, TTopology, TChildren, THooks, TState>(
+        TNode? root, TState initialState)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, ITopDownHooks<TNode, TState>
+        => Walk<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            THooks, TState>(
+            root, initialState);
+
     public static void WalkGraph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks, TState>(
         TNode? root, TState initialState)
         where TNode : class
@@ -51,4 +63,16 @@ internal static class TopDownTraversal
             TNode, TTopology, TChildren, TOrder, TOrderedChildren, TrackedVisitGuard<TNode>, THooks, TState>(
             root, initialState, 0, new TrackedVisitGuard<TNode>(new HashSet<TNode> { root }));
     }
+
+    // In the topology's own child order.
+    public static void WalkGraph<TNode, TTopology, TChildren, THooks, TState>(
+        TNode? root, TState initialState)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where THooks : struct, ITopDownHooks<TNode, TState>
+        => WalkGraph<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            THooks, TState>(
+            root, initialState);
 }

@@ -74,7 +74,6 @@ internal static class BinaryTreeLevelOrderTraversalIISolution
         var levels = new List<List<int>>();
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             LevelHooks>(root, new LevelHooks(levels));
 
         levels.Reverse();

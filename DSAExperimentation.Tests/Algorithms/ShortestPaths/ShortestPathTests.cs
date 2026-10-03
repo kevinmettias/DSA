@@ -96,8 +96,6 @@ public sealed partial class ShortestPathTests
             WeightedNode,
             EdgeTopologyAsGraphTopology<WeightedNode, WeightedTopology, ListEdges<WeightedNode, int>, int>,
             EdgeTargets<WeightedNode, int, ListEdges<WeightedNode, int>>,
-            NaturalChildOrder<WeightedNode, EdgeTargets<WeightedNode, int, ListEdges<WeightedNode, int>>>,
-            EdgeTargets<WeightedNode, int, ListEdges<WeightedNode, int>>,
             BreadthFirstReduceOrder<WeightedNode>,
             CountWeightedNodesReduceAlgebra,
             int>(a);

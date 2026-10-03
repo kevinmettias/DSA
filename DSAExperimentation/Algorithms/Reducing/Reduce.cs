@@ -31,6 +31,19 @@ internal static class Reduce
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(root, TAlgebra.Seed);
 
+    // In the topology's own child order.
+    public static TState Tree<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
+        TNode? root)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
+        => Tree<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TOrderStrategy, TAlgebra, TState>(
+            root);
+
     // An explicit starting state, for a reduce whose seed belongs to the call rather than to the
     // algebra alone - a traversal threading its own hook value through the walk is one. An empty
     // walk answers with that seed, not TAlgebra.Seed: the caller's starting state is what nothing
@@ -50,6 +63,19 @@ internal static class Reduce
                 TTopology, TChildren, TOrder, TOrderedChildren, UnguardedVisit<TNode>, TAlgebra, TState>(
                 root, seed, default);
 
+    // In the topology's own child order.
+    public static TState Tree<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
+        TNode? root, TState seed)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
+        => Tree<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TOrderStrategy, TAlgebra, TState>(
+            root, seed);
+
     public static TState Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)
         where TNode : class
@@ -61,6 +87,19 @@ internal static class Reduce
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
             root, TAlgebra.Seed, []);
+
+    // In the topology's own child order.
+    public static TState Graph<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
+        TNode? root)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
+        => Graph<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TOrderStrategy, TAlgebra, TState>(
+            root);
 
     // The multi-root overload: visited is supplied by the caller instead of
     // constructed fresh, so it can be carried across several separate top-level
@@ -89,4 +128,17 @@ internal static class Reduce
             : TOrderStrategy.Evaluate<
                 TTopology, TChildren, TOrder, TOrderedChildren, TrackedVisitGuard<TNode>, TAlgebra, TState>(
                 root, seed, new TrackedVisitGuard<TNode>(visited));
+
+    // In the topology's own child order.
+    public static TState Graph<TNode, TTopology, TChildren, TOrderStrategy, TAlgebra, TState>(
+        TNode? root, TState seed, HashSet<TNode> visited)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
+        => Graph<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TOrderStrategy, TAlgebra, TState>(
+            root, seed, visited);
 }

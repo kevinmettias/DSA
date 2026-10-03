@@ -52,6 +52,14 @@ internal static class BipartiteCheck
         return true;
     }
 
+    // In the topology's own child order.
+    public static bool IsBipartite<TNode, TTopology, TChildren>(
+        IEnumerable<TNode> nodes)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        => IsBipartite<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren>(nodes);
+
     private static bool TryColorComponent<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         TNode root, Dictionary<TNode, bool> color)
         where TNode : class

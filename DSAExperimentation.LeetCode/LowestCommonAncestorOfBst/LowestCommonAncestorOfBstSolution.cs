@@ -48,7 +48,6 @@ internal static class LowestCommonAncestorOfBstSolution
     public static BinaryTreeNode<int>? FindLcaByAncestryWalk(
         BinaryTreeNode<int> root, BinaryTreeNode<int> first, BinaryTreeNode<int> second) =>
         LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(
             root, first, second);
 }

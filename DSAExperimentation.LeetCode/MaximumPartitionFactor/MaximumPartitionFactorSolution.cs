@@ -95,8 +95,7 @@ internal static class MaximumPartitionFactorSolution
         RebuildConflictEdges(nodes, threshold);
 
         return BipartiteCheck.IsBipartite<
-            PartitionNode, PartitionTopology, ListChildren<PartitionNode>,
-            NaturalChildOrder<PartitionNode, ListChildren<PartitionNode>>, ListChildren<PartitionNode>>(nodes);
+            PartitionNode, PartitionTopology, ListChildren<PartitionNode>>(nodes);
     }
 
     private static void RebuildConflictEdges(List<PartitionNode> nodes, int threshold)

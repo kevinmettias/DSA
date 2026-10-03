@@ -14,7 +14,6 @@ public sealed partial class CheckedFoldTests
 
         var succeeded = CheckedFold.TryFold<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             CountNodesFoldAlgebra, int>(root, out _);
 
         Assert.False(succeeded);
@@ -126,6 +125,5 @@ public sealed partial class CheckedFoldTests
     private static bool TryFold(TestNode? root, List<string> combined, out string spelled)
         => CheckedFold.TryFold<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined), out spelled);
 }

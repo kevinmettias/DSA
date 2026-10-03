@@ -47,7 +47,6 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
 
         var table = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             CoinPointsAlgebra, long[]>(nodes[0], new CoinPointsAlgebra(coins, cost));
 
         return table[0];

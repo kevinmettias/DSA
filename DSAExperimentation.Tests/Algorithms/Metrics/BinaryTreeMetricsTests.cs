@@ -25,8 +25,7 @@ public sealed partial class BinaryTreeMetricsTests
         Assert.Equal(
             6,
             TreeMetrics.Size<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root));
     }
 
     [Fact]
@@ -37,8 +36,7 @@ public sealed partial class BinaryTreeMetricsTests
         Assert.Equal(
             3,
             TreeMetrics.Height<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root));
     }
 
     [Fact]
@@ -49,8 +47,7 @@ public sealed partial class BinaryTreeMetricsTests
         Assert.Equal(
             4,
             TreeMetrics.Diameter<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root));
     }
 
     [Fact]
@@ -59,8 +56,7 @@ public sealed partial class BinaryTreeMetricsTests
         var root = BinaryTreeTrees.Sample();
 
         var (height, size) = TreeMetrics.HeightAndSize<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root);
 
         Assert.Equal(3, height);
         Assert.Equal(6, size);
@@ -74,18 +70,15 @@ public sealed partial class BinaryTreeMetricsTests
         Assert.Equal(
             1,
             TreeMetrics.Size<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root));
         Assert.Equal(
             1,
             TreeMetrics.Height<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root));
         Assert.Equal(
             0,
             TreeMetrics.Diameter<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(root));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(root));
     }
 
     [Fact]
@@ -94,17 +87,14 @@ public sealed partial class BinaryTreeMetricsTests
         Assert.Equal(
             0,
             TreeMetrics.Size<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(null));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(null));
         Assert.Equal(
             0,
             TreeMetrics.Height<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(null));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(null));
         Assert.Equal(
             0,
             TreeMetrics.Diameter<
-                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-                NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(null));
+                BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(null));
     }
 }

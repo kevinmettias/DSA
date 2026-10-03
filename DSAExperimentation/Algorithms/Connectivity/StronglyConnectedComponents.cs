@@ -56,6 +56,14 @@ internal static class StronglyConnectedComponents
         return state.Components;
     }
 
+    // In the topology's own child order.
+    public static List<List<TNode>> Tarjan<TNode, TTopology, TChildren>(
+        IEnumerable<TNode> nodes)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        => Tarjan<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren>(nodes);
+
     private static void StrongConnect<TNode, TTopology, TChildren, TOrder, TOrderedChildren>(
         TNode node, TarjanState<TNode> state)
         where TNode : class

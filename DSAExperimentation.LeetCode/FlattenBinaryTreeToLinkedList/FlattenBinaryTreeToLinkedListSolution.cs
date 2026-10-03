@@ -31,7 +31,6 @@ internal static class FlattenBinaryTreeToLinkedListSolution
 
         TopDownTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             CollectPreorderHooks, List<BinaryTreeNode<int>>>(root, nodes);
 
         for (var i = 0; i < nodes.Count; i++)

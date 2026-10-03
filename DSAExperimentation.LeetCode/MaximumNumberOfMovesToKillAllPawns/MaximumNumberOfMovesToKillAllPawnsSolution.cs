@@ -240,7 +240,6 @@ internal static class MaximumNumberOfMovesToKillAllPawnsSolution
             var source = new GridNode(points[i].Row, points[i].Col, grid);
             var reach = Reduce.Graph<
                 GridNode, KnightTopology, KnightChildren,
-                NaturalChildOrder<GridNode, KnightChildren>, KnightChildren,
                 BreadthFirstReduceOrder<GridNode>,
                 DistanceMapReduceAlgebra<GridNode>, Dictionary<GridNode, int>>(source);
 

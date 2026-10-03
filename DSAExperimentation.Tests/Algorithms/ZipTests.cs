@@ -20,8 +20,6 @@ public sealed partial class ZipTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             ZipFoldAlgebra<TestNode, int, int, CountNodesFoldAlgebra, HeightAlgebra<TestNode>>,
             (int, int)>(root);
 
@@ -37,8 +35,6 @@ public sealed partial class ZipTests
         var (count, path) = Reduce.Tree<
             TestNode,
             TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
             ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             ZipReduceAlgebra<TestNode, int, string, CountNodesReduceAlgebra, PathReduceAlgebra>,

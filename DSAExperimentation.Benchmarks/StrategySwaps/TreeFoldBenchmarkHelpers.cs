@@ -12,6 +12,5 @@ internal static class TreeFoldBenchmarkFixtures
         where TStrategy : struct, IFoldEvaluationStrategy<BinaryTreeNode<int>>
         => TreeFold.Fold<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             TStrategy, SizeAlgebra<BinaryTreeNode<int>>, int>(root);
 }

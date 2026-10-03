@@ -41,6 +41,5 @@ public sealed partial class DagFoldTests
     private static string Fold(TestNode? root, List<string> combined)
         => DagFold.Fold<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined));
 }

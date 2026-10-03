@@ -28,7 +28,6 @@ public sealed partial class GridConnectedComponentsTests
 
         var islands = ConnectedComponents.Count<
             GridNode, GridTopology, GridChildren,
-            NaturalChildOrder<GridNode, GridChildren>, GridChildren,
             DepthFirstReduceOrder<GridNode>>(land);
 
         Assert.Equal(2, islands);

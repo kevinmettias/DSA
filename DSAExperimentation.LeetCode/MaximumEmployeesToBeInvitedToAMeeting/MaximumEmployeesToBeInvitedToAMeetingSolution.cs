@@ -180,12 +180,10 @@ internal static class MaximumEmployeesToBeInvitedToAMeetingSolution
         var nodes = graph.Nodes;
 
         var components = StronglyConnectedComponents.Tarjan<
-            EmployeeNode, EmployeeTopology, ListChildren<EmployeeNode>,
-            NaturalChildOrder<EmployeeNode, ListChildren<EmployeeNode>>, ListChildren<EmployeeNode>>(nodes);
+            EmployeeNode, EmployeeTopology, ListChildren<EmployeeNode>>(nodes);
 
         TopologicalSort.TrySort<
-            EmployeeNode, EmployeeTopology, ListChildren<EmployeeNode>,
-            NaturalChildOrder<EmployeeNode, ListChildren<EmployeeNode>>, ListChildren<EmployeeNode>>(
+            EmployeeNode, EmployeeTopology, ListChildren<EmployeeNode>>(
             nodes, out var ordering);
 
         var chainLength = ComputeChainLengths(nodes, ordering);

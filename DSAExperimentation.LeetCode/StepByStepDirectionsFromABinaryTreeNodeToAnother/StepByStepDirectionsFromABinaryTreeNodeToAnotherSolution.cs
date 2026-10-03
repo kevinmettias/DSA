@@ -147,8 +147,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
         BinaryTreeNode<int> root, BinaryTreeNode<int> start, BinaryTreeNode<int> dest)
     {
         var ancestor = LowestCommonAncestor.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(
             root, start, dest);
 
         // presumption: allow -- start and dest are always nodes of the tree rooted
@@ -160,8 +159,7 @@ internal static class StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution
 
     private static List<BinaryTreeNode<int>[]> FindLeafPaths(BinaryTreeNode<int> ancestor)
         => AllRootToLeafPaths.Find<
-            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>>(ancestor);
+            BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>>(ancestor);
 
     private static string BuildDownwardMoves(BinaryTreeNode<int>[] pathToDest)
     {

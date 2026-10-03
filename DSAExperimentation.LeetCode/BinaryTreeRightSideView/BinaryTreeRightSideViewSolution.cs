@@ -53,7 +53,6 @@ internal static class BinaryTreeRightSideViewSolution
 
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
-            NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
             Hooks>(root, new Hooks(rightmost));
 
         return rightmost;

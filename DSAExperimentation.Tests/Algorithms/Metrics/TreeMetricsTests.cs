@@ -16,7 +16,7 @@ public sealed partial class TreeMetricsTests
     {
         var root = TestTrees.NArySample();
 
-        Assert.Equal(7, TreeMetrics.Size<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root));
+        Assert.Equal(7, TreeMetrics.Size<TestNode, TestTopology, ListChildren<TestNode>>(root));
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public sealed partial class TreeMetricsTests
     {
         var root = TestTrees.NArySample();
 
-        Assert.Equal(3, TreeMetrics.Height<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root));
+        Assert.Equal(3, TreeMetrics.Height<TestNode, TestTopology, ListChildren<TestNode>>(root));
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public sealed partial class TreeMetricsTests
     {
         var root = TestTrees.NArySample();
 
-        Assert.Equal(4, TreeMetrics.Diameter<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root));
+        Assert.Equal(4, TreeMetrics.Diameter<TestNode, TestTopology, ListChildren<TestNode>>(root));
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public sealed partial class TreeMetricsTests
     {
         var root = TestTrees.NArySample();
 
-        var (height, size) = TreeMetrics.HeightAndSize<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root);
+        var (height, size) = TreeMetrics.HeightAndSize<TestNode, TestTopology, ListChildren<TestNode>>(root);
 
         Assert.Equal(3, height);
         Assert.Equal(7, size);
@@ -51,16 +51,16 @@ public sealed partial class TreeMetricsTests
     {
         var root = TestTrees.SingleNode();
 
-        Assert.Equal(1, TreeMetrics.Size<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root));
-        Assert.Equal(1, TreeMetrics.Height<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root));
-        Assert.Equal(0, TreeMetrics.Diameter<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(root));
+        Assert.Equal(1, TreeMetrics.Size<TestNode, TestTopology, ListChildren<TestNode>>(root));
+        Assert.Equal(1, TreeMetrics.Height<TestNode, TestTopology, ListChildren<TestNode>>(root));
+        Assert.Equal(0, TreeMetrics.Diameter<TestNode, TestTopology, ListChildren<TestNode>>(root));
     }
 
     [Fact]
     public void Metrics_NullRoot_ReturnZero()
     {
-        Assert.Equal(0, TreeMetrics.Size<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(null));
-        Assert.Equal(0, TreeMetrics.Height<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(null));
-        Assert.Equal(0, TreeMetrics.Diameter<TestNode, TestTopology, ListChildren<TestNode>, NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>>(null));
+        Assert.Equal(0, TreeMetrics.Size<TestNode, TestTopology, ListChildren<TestNode>>(null));
+        Assert.Equal(0, TreeMetrics.Height<TestNode, TestTopology, ListChildren<TestNode>>(null));
+        Assert.Equal(0, TreeMetrics.Diameter<TestNode, TestTopology, ListChildren<TestNode>>(null));
     }
 }

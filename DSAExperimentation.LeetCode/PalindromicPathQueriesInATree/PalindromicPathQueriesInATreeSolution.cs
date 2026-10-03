@@ -123,8 +123,7 @@ internal static class PalindromicPathQueriesInATreeSolution
         {
             var (startNode, endNode) = (queries[i][0], queries[i][1]);
             var lca = LowestCommonAncestor.Find<
-                RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-                NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>>(
+                RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>>(
                 nodes[0], nodes[startNode], nodes[endNode])!;
 
             var pathMask = mask[startNode] ^ mask[endNode] ^ LetterBit(nodeCharacters[lca.Id]);

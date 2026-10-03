@@ -29,14 +29,12 @@ public class ConnectedComponentsOrderBenchmarks
     public int DepthFirst()
         => ConnectedComponents.Count<
             GridNode, GridTopology, GridChildren,
-            NaturalChildOrder<GridNode, GridChildren>, GridChildren,
             DepthFirstReduceOrder<GridNode>>(_land);
 
     [Benchmark]
     public int BreadthFirst()
         => ConnectedComponents.Count<
             GridNode, GridTopology, GridChildren,
-            NaturalChildOrder<GridNode, GridChildren>, GridChildren,
             BreadthFirstReduceOrder<GridNode>>(_land);
 
     private static List<GridNode> IslandCells(int side) => LandCells(new Grid(IslandMap(side)));

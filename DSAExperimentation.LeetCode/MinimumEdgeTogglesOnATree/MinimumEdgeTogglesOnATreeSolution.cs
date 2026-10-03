@@ -90,7 +90,6 @@ internal static class MinimumEdgeTogglesOnATreeSolution
     {
         var (rootNeedsToggle, toggled) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
-            NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
             EdgeToggleAlgebra, (bool NeedsParentToggle, List<int> ToggledEdges)>(
             tree.Root, new EdgeToggleAlgebra(start, target, tree.ParentEdgeIndex));
 

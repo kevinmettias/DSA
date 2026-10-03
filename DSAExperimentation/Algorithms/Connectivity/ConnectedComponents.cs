@@ -46,6 +46,15 @@ internal static class ConnectedComponents
         return count;
     }
 
+    // In the topology's own child order.
+    public static int Count<TNode, TTopology, TChildren, TOrderStrategy>(
+        IEnumerable<TNode> nodes)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        => Count<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, TOrderStrategy>(nodes);
+
     // Marks a component's nodes as visited via the walk itself; the count comes
     // from how many times a fresh root was found above, not from anything this
     // algebra computes.

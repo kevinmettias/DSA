@@ -20,8 +20,6 @@ public sealed partial class ReduceTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             CountNodesReduceAlgebra,
             int>(root);
@@ -38,8 +36,6 @@ public sealed partial class ReduceTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             BreadthFirstReduceOrder<TestNode>,
             CountNodesReduceAlgebra,
             int>(root);
@@ -53,8 +49,6 @@ public sealed partial class ReduceTests
         var count = Reduce.Tree<
             TestNode,
             TestTopology,
-            ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
             ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             CountNodesReduceAlgebra,
@@ -84,8 +78,6 @@ public sealed partial class ReduceTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             TOrderStrategy,
             PathReduceAlgebra,
             string>(root);
@@ -104,8 +96,6 @@ public sealed partial class ReduceTests
             TestNode,
             TestTopology,
             ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>,
-            ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             ClosedBeforeOpenReduceAlgebra<ClosedBeforeMarker>,
             int>(root);
@@ -122,7 +112,6 @@ public sealed partial class ReduceTests
 
         var count = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             CountNodesReduceAlgebra, int>(root);
 
@@ -136,7 +125,6 @@ public sealed partial class ReduceTests
 
         var count = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             BreadthFirstReduceOrder<TestNode>,
             CountNodesReduceAlgebra, int>(root);
 
@@ -152,7 +140,6 @@ public sealed partial class ReduceTests
 
         var walk = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(root);
 
@@ -164,7 +151,6 @@ public sealed partial class ReduceTests
     {
         var walk = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(null);
 
@@ -179,7 +165,6 @@ public sealed partial class ReduceTests
 
         var walk = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(root, NestingReduceAlgebra.Seed, visited);
 
@@ -198,12 +183,10 @@ public sealed partial class ReduceTests
 
         var first = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(cycle, NestingReduceAlgebra.Seed, visited);
         var second = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(x, NestingReduceAlgebra.Seed, visited);
 
@@ -218,7 +201,6 @@ public sealed partial class ReduceTests
     {
         var walk = Reduce.Tree<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(TestTrees.NArySample(), ExplicitSeed);
 
@@ -232,7 +214,6 @@ public sealed partial class ReduceTests
     {
         var walk = Reduce.Tree<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(null, ExplicitSeed);
 
@@ -246,7 +227,6 @@ public sealed partial class ReduceTests
 
         var walk = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
-            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
             NestingReduceAlgebra, string>(root, ExplicitSeed, [root]);
 

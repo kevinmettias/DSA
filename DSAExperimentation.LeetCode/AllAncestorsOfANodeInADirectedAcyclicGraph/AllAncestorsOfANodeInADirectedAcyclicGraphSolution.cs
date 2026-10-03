@@ -106,8 +106,7 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
     public static List<List<int>> GetAncestorsByTopologicalDpPass(List<AncestorNode> nodes)
     {
         TopologicalSort.TrySort<
-            AncestorNode, AncestorTopology, ListChildren<AncestorNode>,
-            NaturalChildOrder<AncestorNode, ListChildren<AncestorNode>>, ListChildren<AncestorNode>>(
+            AncestorNode, AncestorTopology, ListChildren<AncestorNode>>(
             nodes, out var ordering);
 
         var ancestorSets = CreateEmptyAncestorSets(nodes.Count);

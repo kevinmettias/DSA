@@ -46,7 +46,6 @@ internal static class SmallestIntegerDivisibleByKSolution
     {
         var distances = Reduce.Graph<
             RemainderNode, RemainderTopology, ListChildren<RemainderNode>,
-            NaturalChildOrder<RemainderNode, ListChildren<RemainderNode>>, ListChildren<RemainderNode>,
             BreadthFirstReduceOrder<RemainderNode>,
             DistanceMapReduceAlgebra<RemainderNode>, Dictionary<RemainderNode, int>>(graph.Start);
 

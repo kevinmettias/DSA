@@ -24,6 +24,15 @@ internal static class DagFold
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default);
 
+    // In the topology's own child order.
+    public static TResult Fold<TNode, TTopology, TChildren, TAlgebra, TResult>(
+        TNode? root)
+        where TNode : class
+        where TTopology : struct, IDagTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => Fold<TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren, TAlgebra, TResult>(root);
+
     public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
         TNode? root, TAlgebra algebra)
         where TNode : class
@@ -37,4 +46,16 @@ internal static class DagFold
             : FoldRecursion.Visit<
                 TNode, TTopology, TChildren, TOrder, TOrderedChildren, MemoizedFold<TNode, TResult>, TAlgebra, TResult>(
                 root, new MemoizedFold<TNode, TResult>([]), algebra);
+
+    // In the topology's own child order.
+    public static TResult Fold<TNode, TTopology, TChildren, TAlgebra, TResult>(
+        TNode? root, TAlgebra algebra)
+        where TNode : class
+        where TTopology : struct, IDagTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => Fold<
+            TNode, TTopology, TChildren, NaturalChildOrder<TNode, TChildren>, TChildren,
+            TAlgebra, TResult>(
+            root, algebra);
 }
