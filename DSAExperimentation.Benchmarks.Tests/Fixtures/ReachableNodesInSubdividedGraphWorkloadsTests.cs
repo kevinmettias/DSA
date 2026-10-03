@@ -61,6 +61,17 @@ public sealed partial class ReachableNodesInSubdividedGraphWorkloadsTests
             (NodeCount - 1) + (NodeCount * ExtraEdgesPerNode));
     }
 
+    // LC 882 states every edge lower node first and allows no multiple edges, so no two rows may
+    // name the same pair.
+    [Fact]
+    public void BuildEdges_EveryEdge_NamesItsLowerNodeFirstAndAPairNoOtherEdgeNames()
+    {
+        var edges = ReachableNodesInSubdividedGraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed);
+
+        Assert.All(edges, edge => Assert.True(edge[0] < edge[1]));
+        Assert.Equal(edges.Length, edges.Select(edge => (edge[0], edge[1])).Distinct().Count());
+    }
+
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(

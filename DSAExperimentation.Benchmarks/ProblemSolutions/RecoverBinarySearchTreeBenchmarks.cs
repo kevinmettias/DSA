@@ -13,7 +13,7 @@ public class RecoverBinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(100, 5_000)]
+    [Params(100, 1_000)]
     public int Size { get; set; }
 
     [GlobalSetup]

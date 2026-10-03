@@ -16,7 +16,7 @@ public class RedundantConnectionIIBenchmarks
 
     private int[][] _edges = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

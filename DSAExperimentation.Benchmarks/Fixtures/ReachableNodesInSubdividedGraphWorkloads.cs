@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // A generated weight of w becomes a subdivision count of w - 1, so an edge costs
 // exactly w unit moves end to end - the weighting SubdividedGraph.Build applies in
 // reverse, and what keeps the subdivided graph's size comparable to the weighted one.
+//
+// LC 882 states every edge lower node first (0 <= ui < vi < n) and allows no multiple
+// edges, so a pair drawn twice keeps only the edge drawn first. The repeat's weight is
+// still drawn, so every later draw reads the same stream.
 internal static class ReachableNodesInSubdividedGraphWorkloads
 {
     // Exclusive upper bound passed to Random.Next(1, _): weights land in [1, 49], so
@@ -25,7 +29,9 @@ internal static class ReachableNodesInSubdividedGraphWorkloads
         AddBackboneEdges(nodeCount, random, edges);
         AddDensityEdges(nodeCount, extraEdgesPerNode, random, edges);
 
-        return [.. edges];
+        var firstEdgePerPair = edges.DistinctBy(edge => (edge[0], edge[1])).ToArray();
+
+        return firstEdgePerPair;
     }
 
     // Every node i > 0 gets a back edge to some earlier node j < i, which is what
@@ -40,7 +46,7 @@ internal static class ReachableNodesInSubdividedGraphWorkloads
     }
 
     // Extra random edges for density, skipping the self-loops an unconstrained draw
-    // would otherwise produce.
+    // would otherwise produce, each stated lower node first.
     private static void AddDensityEdges(int nodeCount, int extraEdgesPerNode, Random random, List<int[]> edges)
     {
         for (var i = 0; i < nodeCount; i++)
@@ -51,7 +57,9 @@ internal static class ReachableNodesInSubdividedGraphWorkloads
 
                 if (target != i)
                 {
-                    edges.Add([i, target, random.Next(1, EdgeWeightUpperBound) - 1]);
+                    var low = Math.Min(i, target);
+                    var high = Math.Max(i, target);
+                    edges.Add([low, high, random.Next(1, EdgeWeightUpperBound) - 1]);
                 }
             }
         }

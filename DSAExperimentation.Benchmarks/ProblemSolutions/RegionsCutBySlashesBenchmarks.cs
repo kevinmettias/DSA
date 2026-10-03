@@ -16,7 +16,7 @@ public class RegionsCutBySlashesBenchmarks
 
     private string[] _grid = [];
 
-    [Params(30, 150)]
+    [Params(10, 30)]
     public int GridSize { get; set; }
 
     [GlobalSetup]

@@ -18,7 +18,7 @@ public class RectangleAreaIIBenchmarks
 
     private int[][] _rectangles = [];
 
-    [Params(20, 300)]
+    [Params(20, 200)]
     public int RectangleCount { get; set; }
 
     [GlobalSetup]

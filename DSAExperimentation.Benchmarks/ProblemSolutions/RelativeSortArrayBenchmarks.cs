@@ -1,48 +1,30 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RelativeSortArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RelativeSortArraySolution's, the same methods
-// RelativeSortArraySolutionTests proves correct. _arr1 is half values drawn from _arr2
-// (exercises the ranked branch) and half values guaranteed outside _arr2's range
-// (exercises the unranked, sort-by-value-ascending branch and forces every
-// LinearScanComparerSort miss through a full m-length scan). With ReferenceLength
-// (m) fixed at 2,000, a BenchmarkDotNet --job Dry run shows the expected crossover:
-// LinearScanComparerSort ahead 2.63x at Length=200 (n log n * m hasn't yet outgrown
-// Array.Sort's much lower per-comparison constant factor), then HashMapMergeSort
-// ahead ~2.5x at Length=5,000, as the O(n log n * m) scan cost overtakes HashMap's
-// O(1)-lookup advantage - the same small-n-overhead-then-crossover shape several
-// other composed-vs-naive benchmarks in this repo show.
+// RelativeSortArraySolutionTests proves correct. RelativeSortArrayWorkloads builds the
+// arrays: _arr1 holds every _arr2 value, and the rest of it is half values drawn from
+// _arr2 (exercises the ranked branch) and half values past _arr2's range (exercises the
+// unranked, sort-by-value-ascending branch and forces every LinearScanComparerSort miss
+// through a full m-length scan). LC 1122 caps both arrays at 1,000 values from
+// [0, 1000], so Length stops at 1,000 and ReferenceLength (m) is 100, leaving the values
+// from 200 to 1,000 for the unranked half - the O(n log n * m) scan cost against
+// HashMap's O(1) lookups, at the sizes LeetCode poses.
 public class RelativeSortArrayBenchmarks
 {
-    private const int ReferenceLength = 2_000;
+    private const int ReferenceLength = 100;
     private const int RandomSeed = 1122; // LC problem number
-    private const int Arr2ValueStep = 2; // _arr2 holds every other integer
-    private const int CoinFlipBound = 2; // random.Next(0, CoinFlipBound) == 0 is a 50/50 draw
-    private const int OutOfReferenceRangeMin = 100_000;
-    private const int OutOfReferenceRangeMax = 200_000;
 
     private int[] _arr1 = [];
 
     private int[] _arr2 = [];
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _arr2 = Enumerable.Range(0, ReferenceLength).Select(i => i * Arr2ValueStep).ToArray();
-        _arr1 = Enumerable.Range(0, Length)
-            .Select(_ => IsFromReference(random)
-                ? ReferenceValue(random)
-                : random.Next(OutOfReferenceRangeMin, OutOfReferenceRangeMax))
-            .ToArray();
-    }
-
-    private static bool IsFromReference(Random random) => random.Next(0, CoinFlipBound) == 0;
-
-    private int ReferenceValue(Random random) => _arr2[random.Next(_arr2.Length)];
+    public void Setup() => (_arr1, _arr2) = RelativeSortArrayWorkloads.Build(Length, ReferenceLength, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public int[] LinearScanComparerSort() =>

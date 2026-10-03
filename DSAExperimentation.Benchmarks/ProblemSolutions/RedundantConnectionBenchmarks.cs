@@ -34,7 +34,8 @@ public class RedundantConnectionBenchmarks
 
     // Any edge between two distinct existing nodes closes a cycle, because the tree above
     // already connects every one of them - so the only work here is avoiding a duplicate of an
-    // edge the tree already carries.
+    // edge the tree already carries. Like every tree edge, it names its lower node first, as
+    // LC 684's 1 <= ai < bi requires.
     private static int[] ExtraEdge(Random random, List<int[]> edges)
     {
         var existing = edges.Select(edge => (edge[0], edge[1])).ToHashSet();
@@ -46,7 +47,10 @@ public class RedundantConnectionBenchmarks
 
             if (first != second && !existing.Contains((first, second)) && !existing.Contains((second, first)))
             {
-                return [first, second];
+                var low = Math.Min(first, second);
+                var high = Math.Max(first, second);
+
+                return [low, high];
             }
         }
     }

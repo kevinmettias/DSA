@@ -6,6 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods RegularExpressionMatchingSolutionTests proves correct. A repeated "a*" pattern
 // against a text with a mismatched trailing character forces both strategies to
 // explore the whole branching search space rather than short-circuiting early.
+// Repetitions stops at 9: the pattern runs to 2 * 9 + 1 = 19 characters, the longest
+// inside LC 10's 20.
 public class RegularExpressionMatchingBenchmarks
 {
     private const string RepeatedPatternUnit = "a*";
@@ -14,7 +16,7 @@ public class RegularExpressionMatchingBenchmarks
     private string _text = "";
     private string _pattern = "";
 
-    [Params(8, 14)]
+    [Params(8, 9)]
     public int Repetitions { get; set; }
 
     [GlobalSetup]

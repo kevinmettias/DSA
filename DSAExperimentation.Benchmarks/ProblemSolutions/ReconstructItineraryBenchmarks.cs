@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ReconstructItinerarySolution's, the same methods
 // ReconstructItinerarySolutionTests proves correct, run against a synthetic ticket graph large
 // enough to separate LinearScanSelection's O(k) scan-and-remove from HeapSelection's
-// O(log k) repo Heap push/pop.
+// O(log k) repo Heap push/pop. TicketCount stops at LC 332's 300 tickets.
 public class ReconstructItineraryBenchmarks
 {
     // LC problem number, reused as the deterministic ticket seed.
@@ -14,7 +14,7 @@ public class ReconstructItineraryBenchmarks
 
     private string[][] _tickets = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 300)]
     public int TicketCount { get; set; }
 
     [GlobalSetup]
