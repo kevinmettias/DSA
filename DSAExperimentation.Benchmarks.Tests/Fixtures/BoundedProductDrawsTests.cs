@@ -18,50 +18,46 @@ public sealed partial class BoundedProductDrawsTests
 
     [Fact]
     public void Factors_Count_ReturnsOneValuePerPosition() =>
-        Assert.Equal(Count, BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed)).Length);
+        Assert.Equal(Count, DrawFactors().Length);
 
     [Fact]
     public void Factors_EveryValue_IsOneOrAFactorBelowTheBound() =>
-        Assert.All(
-            BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed)),
-            value => Assert.InRange(value, 1, FactorBoundExclusive - 1));
+        Assert.All(DrawFactors(), value => Assert.InRange(value, 1, FactorBoundExclusive - 1));
 
     [Fact]
     public void Factors_Product_FitsInAnInt() =>
-        Assert.True(MagnitudeProduct(BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed))) <= int.MaxValue);
+        Assert.True(MagnitudeProduct(DrawFactors()) <= int.MaxValue);
 
     [Fact]
     public void Factors_SeededDraw_PlantsMoreThanOneFactor() =>
-        Assert.True(
-            BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed)).Count(value => value > 1)
-            >= FewestPlantedFactors);
+        Assert.True(DrawFactors().Count(value => value > 1) >= FewestPlantedFactors);
 
     [Fact]
     public void Factors_SameSeed_ReturnsTheSameValues() =>
-        Assert.Equal(
-            BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed)),
-            BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed)));
+        Assert.Equal(DrawFactors(), DrawFactors());
 
     [Fact]
     public void SignedFactors_EveryValue_KeepsItsMagnitudeBelowTheBound() =>
-        Assert.All(
-            BoundedProductDraws.SignedFactors(Count, FactorBoundExclusive, new Random(Seed)),
-            value => Assert.InRange(Math.Abs(value), 1, FactorBoundExclusive - 1));
+        Assert.All(DrawSignedFactors(), value => Assert.InRange(Math.Abs(value), 1, FactorBoundExclusive - 1));
 
     [Fact]
     public void SignedFactors_Product_FitsInAnInt() =>
-        Assert.True(
-            MagnitudeProduct(BoundedProductDraws.SignedFactors(Count, FactorBoundExclusive, new Random(Seed)))
-            <= int.MaxValue);
+        Assert.True(MagnitudeProduct(DrawSignedFactors()) <= int.MaxValue);
 
     [Fact]
     public void SignedFactors_SeededDraw_HoldsBothSigns()
     {
-        var values = BoundedProductDraws.SignedFactors(Count, FactorBoundExclusive, new Random(Seed));
+        var values = DrawSignedFactors();
 
         Assert.Contains(values, value => value < 0);
         Assert.Contains(values, value => value > 0);
     }
+
+    private static int[] DrawFactors() =>
+        BoundedProductDraws.Factors(Count, FactorBoundExclusive, new Random(Seed));
+
+    private static int[] DrawSignedFactors() =>
+        BoundedProductDraws.SignedFactors(Count, FactorBoundExclusive, new Random(Seed));
 
     private static BigInteger MagnitudeProduct(int[] values) =>
         values.Aggregate(BigInteger.One, (product, value) => product * Math.Abs(value));

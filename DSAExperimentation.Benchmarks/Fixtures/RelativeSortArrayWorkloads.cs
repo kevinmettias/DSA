@@ -10,8 +10,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 internal static class RelativeSortArrayWorkloads
 {
     private const int Arr2ValueStep = 2; // arr2 holds every other integer
-    private const int CoinFlipBound = 2; // random.Next(0, CoinFlipBound) == 0 is a 50/50 draw
-    private const int MaxValue = 1_000; // LC 1122: 0 <= arr1[i], arr2[i] <= 1000
+    private const int FromReferenceOdds = 2; // random.Next(0, FromReferenceOdds) == 0 is a 50/50 draw
+    private const int MaxArrayValue = 1_000; // LC 1122: 0 <= arr1[i], arr2[i] <= 1000
 
     public static (int[] Arr1, int[] Arr2) Build(int length, int referenceLength, int seed)
     {
@@ -26,7 +26,7 @@ internal static class RelativeSortArrayWorkloads
         {
             arr1[i] = IsFromReference(random)
                 ? ReferenceValue(arr2, random)
-                : random.Next(pastReferenceRange, MaxValue + 1);
+                : random.Next(pastReferenceRange, MaxArrayValue + 1);
         }
 
         var order = SeededSequences.ShuffledZeroTo(length, random);
@@ -34,7 +34,7 @@ internal static class RelativeSortArrayWorkloads
         return ([.. order.Select(slot => arr1[slot])], arr2);
     }
 
-    private static bool IsFromReference(Random random) => random.Next(0, CoinFlipBound) == 0;
+    private static bool IsFromReference(Random random) => random.Next(0, FromReferenceOdds) == 0;
 
     private static int ReferenceValue(int[] arr2, Random random) => arr2[random.Next(arr2.Length)];
 }

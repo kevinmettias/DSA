@@ -29,7 +29,9 @@ public class RotateListBenchmarks
 
     [GlobalSetup]
     public void Setup() =>
-        _values = Enumerable.Range(0, Length).Select(position => MinNodeValue + (position % NodeValueCount)).ToArray();
+        _values = Enumerable.Range(0, Length)
+            .Select(position => MinNodeValue + (position % NodeValueCount))
+            .ToArray();
 
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>

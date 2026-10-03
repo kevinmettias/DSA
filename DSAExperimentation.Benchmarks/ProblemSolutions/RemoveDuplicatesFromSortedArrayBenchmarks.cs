@@ -15,7 +15,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RemoveDuplicatesFromSortedArrayBenchmarks
 {
     private const int DuplicateRunLength = 3;
-    private const int MinValue = -100;
+    private const int LowestValue = -100;
     private const int DistinctValueCount = 201;
 
     private int[] _values = [];
@@ -29,7 +29,7 @@ public class RemoveDuplicatesFromSortedArrayBenchmarks
     {
         var fittingRunLength = RunLengthToFit(Length);
         var runLength = Math.Max(DuplicateRunLength, fittingRunLength);
-        _values = Enumerable.Range(0, Length).Select(i => MinValue + (i / runLength)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(i => LowestValue + (i / runLength)).ToArray();
         _nums = new int[Length];
     }
 

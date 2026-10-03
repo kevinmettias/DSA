@@ -4,14 +4,14 @@ using DSAExperimentation.LeetCode.RangeSumOfBST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RangeSumOfBSTSolution's, the same methods
-// RangeSumOfBSTSolutionTests proves correct. Low/High are deliberately narrow and near the
-// low end of the value domain, so pruning discards most of a large tree instead of
-// merely skipping a few leaves. Tree construction is charged to [GlobalSetup]. The
-// node values are 1..Length and Low is 1, as LC 938's values and bounds start at 1.
+// RangeSumOfBSTSolutionTests proves correct. RangeLow/RangeHigh are deliberately narrow and
+// near the low end of the value domain, so pruning discards most of a large tree instead
+// of merely skipping a few leaves. Tree construction is charged to [GlobalSetup]. The
+// node values are 1..Length and RangeLow is 1, as LC 938's values and bounds start at 1.
 public class RangeSumOfBSTBenchmarks
 {
-    private const int Low = 1;
-    private const int High = 20;
+    private const int RangeLow = 1;
+    private const int RangeHigh = 20;
     private const int RandomSeed = 938;
 
     private BinaryTreeNode<int>? _root;
@@ -22,7 +22,7 @@ public class RangeSumOfBSTBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var values = Enumerable.Range(Low, Length).ToArray();
+        var values = Enumerable.Range(RangeLow, Length).ToArray();
         var random = new Random(RandomSeed);
 
         // Fisher-Yates shuffle before insertion, so BinarySearchTree.Insert builds
@@ -45,9 +45,9 @@ public class RangeSumOfBSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int FullTreeScan() => RangeSumOfBSTSolution.RangeSumByFullScan(_root, Low, High);
+    public int FullTreeScan() => RangeSumOfBSTSolution.RangeSumByFullScan(_root, RangeLow, RangeHigh);
 
     [Benchmark]
     public int SearchTreePrunedWalk() =>
-        RangeSumOfBSTSolution.RangeSumBySearchTreePruning(_root, Low, High);
+        RangeSumOfBSTSolution.RangeSumBySearchTreePruning(_root, RangeLow, RangeHigh);
 }

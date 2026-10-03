@@ -20,7 +20,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class RemoveDuplicatesFromSortedListIIBenchmarks
 {
     private const int RunLengthDivisor = 2;
-    private const int MinValue = -100;
+    private const int LowestNodeValue = -100;
 
     private int[] _values = [];
 
@@ -29,7 +29,7 @@ public class RemoveDuplicatesFromSortedListIIBenchmarks
 
     [GlobalSetup]
     public void Setup() =>
-        _values = Enumerable.Range(0, Length).Select(i => MinValue + (i / RunLengthDivisor)).ToArray();
+        _values = Enumerable.Range(0, Length).Select(i => LowestNodeValue + (i / RunLengthDivisor)).ToArray();
 
     [Benchmark(Baseline = true)]
     public object? ArrayGroupFilter() =>

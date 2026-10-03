@@ -12,7 +12,7 @@ public sealed partial class RelativeSortArrayWorkloadsTests
     private const int Length = 1_000;
     private const int ReferenceLength = 100;
     private const int Seed = 1122; // LC problem number
-    private const int MaxValue = 1_000;
+    private const int MaxArrayValue = 1_000;
 
     [Fact]
     public void Build_Lengths_MatchTheRequestedArrays()
@@ -28,8 +28,8 @@ public sealed partial class RelativeSortArrayWorkloadsTests
     {
         var (arr1, arr2) = RelativeSortArrayWorkloads.Build(Length, ReferenceLength, Seed);
 
-        Assert.All(arr1, value => Assert.InRange(value, 0, MaxValue));
-        Assert.All(arr2, value => Assert.InRange(value, 0, MaxValue));
+        Assert.All(arr1, value => Assert.InRange(value, 0, MaxArrayValue));
+        Assert.All(arr2, value => Assert.InRange(value, 0, MaxArrayValue));
     }
 
     [Fact]
