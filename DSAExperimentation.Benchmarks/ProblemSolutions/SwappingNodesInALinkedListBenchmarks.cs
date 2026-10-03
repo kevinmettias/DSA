@@ -13,8 +13,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SwapNodesByTwoPointerWalk rewrites the Values of the list it is handed, so - as
 // in SwapNodesInPairsBenchmarks - the chain cannot be hoisted into [GlobalSetup]
 // and reused across iterations. [GlobalSetup] decides only how large the workload
-// is and which position kthPosition picks; each [Benchmark] call builds its own list,
-// so both arms pay the same construction and the measurement is of the search alone.
+// is and which position kthPosition picks; each [Benchmark] call builds its own list.
+// The rebuild is timed on purpose because the two-pointer strategy mutates its
+// input, and both arms pay the same construction, so what differs between them is
+// the search alone.
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).

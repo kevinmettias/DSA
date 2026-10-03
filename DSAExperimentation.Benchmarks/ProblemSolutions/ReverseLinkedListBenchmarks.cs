@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // values, but the list itself is rebuilt fresh inside the benchmark method
 // rather than cached, because the strategy mutates the list it is handed - a
 // cached list would only be valid for the first measured iteration (mirrors
-// ReverseLinkedListIIBenchmarks' identical constraint).
+// ReverseLinkedListIIBenchmarks' identical constraint). The rebuild is timed on
+// purpose because the strategy mutates its input.
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
 // so a public [Benchmark] method cannot name it as a return type (CS0050).

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hoists the workload values, but the list itself is rebuilt fresh inside each
 // benchmark method rather than cached, because both strategies splice nodes out of
 // the list they are handed - a cached list would only be valid for the first
-// measured iteration.
+// measured iteration. The rebuild is timed on purpose, and both arms pay it alike.
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).

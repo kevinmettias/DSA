@@ -10,7 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // workload values, but the list itself is rebuilt fresh inside the benchmark
 // method rather than cached, because the strategy mutates in place - a
 // cached list would only be valid for the first measured iteration (same
-// shape RotateListBenchmarks already uses).
+// shape RotateListBenchmarks already uses). The rebuild is timed on purpose
+// because the strategy mutates its input.
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal,
 // so a public [Benchmark] method cannot name it as a return type (CS0050).

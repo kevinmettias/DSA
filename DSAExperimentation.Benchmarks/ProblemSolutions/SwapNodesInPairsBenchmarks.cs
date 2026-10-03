@@ -10,7 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // iterations: a swap from one iteration would leave the next iteration a
 // different (and differently rooted) structure than the one being measured.
 // [GlobalSetup] therefore only seeds the raw values, and each [Benchmark] call
-// rebuilds a fresh list from them.
+// rebuilds a fresh list from them. The rebuild is timed on purpose, and
+// ArrayRoundTrip, which only reads its list, pays it too so both arms carry the same
+// cost.
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
 // a public [Benchmark] method cannot name it as a return type (CS0050).

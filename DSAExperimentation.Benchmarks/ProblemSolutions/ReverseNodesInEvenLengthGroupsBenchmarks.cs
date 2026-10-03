@@ -10,7 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SinglyLinkedListNode<T> pointer splicing with no array materialization at all.
 //
 // The pointer arm mutates the list it is handed, so each call builds its own list
-// from _values rather than reusing one a later iteration would find reversed.
+// from _values rather than reusing one a later iteration would find reversed. The
+// rebuild is timed on purpose, and the array arm, which only reads its list, pays it
+// too so both arms carry the same cost.
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).

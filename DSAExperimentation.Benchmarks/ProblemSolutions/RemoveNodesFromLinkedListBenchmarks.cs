@@ -11,8 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // inside each [Benchmark] call rather than shared, because both strategies splice
 // .Next pointers in place - reusing one pre-built list across iterations would let
 // the first iteration's removals leave every later iteration measuring an
-// already-non-increasing list. Both arms pay the identical construction cost, so the
-// comparison between them is unaffected.
+// already-non-increasing list. The construction is timed on purpose, and both arms
+// pay it identically, so the comparison between them is unaffected.
 public class RemoveNodesFromLinkedListBenchmarks
 {
     private const int RandomSeed = 2487; private int[] _values = [];
