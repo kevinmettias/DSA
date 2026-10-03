@@ -1338,6 +1338,23 @@ still about search cost — but this is a deliberate change in what is measured,
   `DataStructures/Graph/Engines/Dags/Trees`, `Algorithms/ShortestPaths` and both `Domain/` folders,
   clearing every finding with nothing waived. Two of those tests failed on first run — both were
   bugs in the tests, not the code, which is the point of writing them.
+- **A benchmark class's harness coverage is one generic check, plus a companion only where it pins
+  something.** A benchmark's arms are entry points the runner invokes; whether each arm answers
+  *correctly* is owed by the solution's own tests (§17.7), and what the harness owes is narrower:
+  that its arms time the same question on a reproducible input. `Benchmarks.Tests/BenchmarkArmsTests`
+  asserts that once for every class with a `[Benchmark]` method, found by reflection, so a new
+  benchmark is covered the moment it exists. At each `[Params]` member's smallest value, on a fresh
+  harness per arm: rebuilding the workload reproduces it, every arm answers the same on a rebuilt
+  harness, and every arm answers what the baseline answers. Answers are compared by walking their
+  fields (`AnswerGraphText`), so node-returning arms and void arms that rewrite the harness are
+  compared by shape and value. The per-problem knowledge it cannot learn by reflection lives in
+  `ArmAgreement`, each entry with its reason: answers LeetCode leaves unordered, random draws,
+  void arms that discard their result, arms that differ by design, workloads outside the problem's
+  contract. A `<Benchmark>Tests` companion exists only to assert what that check cannot — an
+  expected value derived independently of the arms, a property of the workload's shape, a size
+  other than the smallest. A companion that compares arms only with each other restates the generic
+  check under a different name; 620 such files were deleted on that basis, and none should be
+  re-added.
 - **Tier 1 and tier 2 owe direct unit tests, and the LeetCode tier is a layer on top, not a
   substitute.** A data structure or algorithm is not covered because some LeetCode solution happens
   to compose it: a coverage tree shaped that way can only tell you a problem's answer changed, not

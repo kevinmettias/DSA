@@ -7,7 +7,8 @@ problems with no benchmark; the measured answer is 11).
 
 Scale for orientation: 6 projects, one root `DSA.slnx`; 1,105 LeetCode problems; 1,105 coverage
 tests; 1,111 benchmark classes (1,106 one-per-problem, 4 in `StrategySwaps/`, plus the
-generic registry harness) each with a companion test; ~10,346-line core library
+generic registry harness), every one a case of the generic `BenchmarkArmsTests` and 497 of them
+also with a companion test that pins more; ~10,346-line core library
 (✓, across 211 files).
 
 ---
@@ -338,7 +339,7 @@ fails loudly and costs one table entry.
 - **The 3 discarded-result void arms** are unobservable to any generic check. Returning the
   rewritten structure (as the 60 `object?` arms do) would make them comparable.
 
-**Step 2 — deletion manifest — MEASURED (2026-10-02), not yet applied.** Built from
+**Step 2 — deletion manifest — DONE (`f924c5f0`, 620 files, 25,985 lines).** Built from
 assertion content with Roslyn, not from test names. A companion test method counts as
 subsumed only when every assertion is `Assert.Equal` of the *same* projection of two arm
 answers — `f(armA)` vs `f(armB)`, or `f(arm)` vs `f(arm)` on two separate harnesses — at
@@ -386,9 +387,12 @@ either binary and are P3's.
 
 **Remaining steps:**
 
-1. **Apply the deletion** — owner's call; bulk deletes are refused in auto mode.
-2. **Land or drop the nomos exemption**, which decides whether a waiver is needed.
-3. **`ARCHITECTURE.md` §17.7 / §17.9** describe the companion rule and need rewriting.
+1. ~~Apply the deletion~~ — done in `f924c5f0`; the tree passes 5,477 benchmark tests.
+2. **Land or drop the nomos exemption**, which decides whether a waiver is needed. Until it
+   lands, committed nomos reports the 620 deleted companions' classes as uncovered.
+3. ~~`ARCHITECTURE.md`~~ — done: the convention was written down nowhere, though 485 kept
+   companions cite "ARCHITECTURE 17.9" for it. §17.9 now carries it, which makes those
+   citations true rather than churning 485 comments.
 4. **The kept files still hold 629 arm-only methods beside their pinned ones** (of 1,376
    classified there); pruning those is a method-level bulk edit, a later pass.
 
@@ -404,9 +408,10 @@ Not everything here is debt, and the worklist should not obscure that:
 - The tier order is enforced by tests that read the repo as text — `Architecture/LayeringTests.cs`,
   `Tier5WitnessTests.cs`, `RepositoryFiles.cs` — not by prose.
 - Corpus coverage is essentially complete: 1,105/1,105 problems have a per-problem test, and
-  1,106/1,106 per-problem benchmark classes have a companion test asserting their arms agree
-  and their workloads rebuild identically.
-- Every `[Benchmark]` arm name appears in its test file, so the "naive baseline was never
-  tested" gap §17.1 describes is closed for the hand-written classes.
+  every benchmark class is a case of `BenchmarkArmsTests`, which asserts by reflection that its
+  arms agree and its workload and answers rebuild identically.
+- Every `[Benchmark]` arm is run and compared with its baseline by `BenchmarkArmsTests`, so
+  the "naive baseline was never tested" gap §17.1 describes is closed for the hand-written
+  classes — by construction now, rather than by each arm's name appearing in a companion.
 - The benchmark test project is doing real work — it caught the fact that a harness whose
   arms disagree is timing two different problems.
