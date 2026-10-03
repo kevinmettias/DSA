@@ -1,22 +1,19 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for InsertIntoABinarySearchTreeBenchmarks (ARCHITECTURE 17.9). Unlike the rest
-// of this tier, these two arms do NOT agree on the value they report and are not expected to:
-// LeetCode 701 accepts any resulting BST that stays ordered and holds every original value plus
-// the new one, and the solution's own comment says so, so the rebuilt-balanced arm's root is the
-// median of the value set while the repo-BST arm's root is whichever key was inserted first. The
-// root value each arm returns is a proxy for the whole tree, and the one thing the two arms do
-// share is the value set both are asked to produce - so each [Fact] asserts its arm's own root
-// against a value derived here from the fixture's documented shape (a shuffled stride-two
-// insertion order plus the odd new key), and then asserts that the same solution call this arm
-// makes over that same order builds a tree carrying exactly the expected values in order. Nothing
-// is changed to force the two roots together; a harness decision to report the value set instead
-// of the root belongs to the campaign owner, not here. Each arm rebuilds its own tree inside the
-// measured call, so one harness is safe to call twice in either order.
+// of this tier, these two arms do NOT build the same tree and are not expected to: LeetCode 701
+// accepts any resulting BST that stays ordered and holds every original value plus the new one,
+// and the solution's own comment says so, so the rebuilt-balanced arm's root is the median of the
+// value set while the repo-BST arm's root is whichever key was inserted first. Each arm returns the
+// root of the tree it built, and the one thing the two trees do share is the value set both are
+// asked to produce - so each [Fact] asserts its arm's root against a value derived here from the
+// fixture's documented shape (a shuffled stride-two insertion order plus the odd new key), and
+// then asserts that the same tree carries exactly the expected values in order. Each arm rebuilds
+// its own tree inside the measured call, so one harness is safe to call twice in either order.
 public sealed partial class InsertIntoABinarySearchTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
@@ -33,32 +30,30 @@ public sealed partial class InsertIntoABinarySearchTreeBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameInsertionOrder()
     {
-        Assert.Equal(BuildHarness().BinarySearchTreeInsert(), BuildHarness().BinarySearchTreeInsert());
-        Assert.Equal(BuildHarness().CollectSortInsertRebuild(), BuildHarness().CollectSortInsertRebuild());
+        Assert.Equal(
+            AnswerGraphText.Of(BuildHarness().BinarySearchTreeInsert()),
+            AnswerGraphText.Of(BuildHarness().BinarySearchTreeInsert()));
+        Assert.Equal(
+            AnswerGraphText.Of(BuildHarness().CollectSortInsertRebuild()),
+            AnswerGraphText.Of(BuildHarness().CollectSortInsertRebuild()));
     }
 
     [Fact]
     public void CollectSortInsertRebuild_RebuiltBalancedTree_RootsAtTheSortedMiddle()
     {
-        var harness = BuildHarness();
+        var root = Assert.IsType<BinaryTreeNode<int>>(BuildHarness().CollectSortInsertRebuild());
 
-        Assert.Equal(SortedMiddleValue(SmallestNodeCount), harness.CollectSortInsertRebuild());
-        Assert.Equal(
-            ExpectedTreeValues(SmallestNodeCount),
-            InOrderValues(InsertIntoABinarySearchTreeSolution.InsertByCollectSortRebuild(
-                InsertionOrder(SmallestNodeCount), NewValue)));
+        Assert.Equal(SortedMiddleValue(SmallestNodeCount), root.Value);
+        Assert.Equal(ExpectedTreeValues(SmallestNodeCount), InOrderValues(root));
     }
 
     [Fact]
     public void BinarySearchTreeInsert_PlainBstInsert_KeepsTheFirstInsertedKeyAsRoot()
     {
-        var harness = BuildHarness();
+        var root = Assert.IsType<BinaryTreeNode<int>>(BuildHarness().BinarySearchTreeInsert());
 
-        Assert.Equal(InsertionOrder(SmallestNodeCount)[0], harness.BinarySearchTreeInsert());
-        Assert.Equal(
-            ExpectedTreeValues(SmallestNodeCount),
-            InOrderValues(InsertIntoABinarySearchTreeSolution.InsertByBstInsert(
-                InsertionOrder(SmallestNodeCount), NewValue)));
+        Assert.Equal(InsertionOrder(SmallestNodeCount)[0], root.Value);
+        Assert.Equal(ExpectedTreeValues(SmallestNodeCount), InOrderValues(root));
     }
 
     private static InsertIntoABinarySearchTreeBenchmarks BuildHarness()

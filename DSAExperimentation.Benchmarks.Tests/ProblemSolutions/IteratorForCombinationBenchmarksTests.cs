@@ -4,14 +4,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for IteratorForCombinationBenchmarks (ARCHITECTURE 17.9): its two arms are
 // competing strategies for one question - enumerate every length-c combination of the first n
-// letters - so a harness whose arms disagree is timing two different problems.
-//
-// WEAK BY CONSTRUCTION: both arms are drained down to an int because the iterator type is
-// internal and a public [Benchmark] cannot return one, so what the arms report is the NUMBER of
-// combinations they produced, not which combinations. That number is C(n, c) for either strategy
-// whatever order it emits in, so agreement here witnesses "both walked a full combination space
-// of the right size" and nothing about the two orders matching. Asserting the honest thing; the
-// proxy is in the benchmark's return type, which a harness test may not change.
+// letters - and each returns every combination its iterator produced, in order. That the arms
+// agree is BenchmarkArmsTests' check; what this pins is independent of both arms: there are
+// C(n, c) combinations, and LC 1286 hands them out in lexicographical order.
 public sealed partial class IteratorForCombinationBenchmarksTests
 {
     private const int SmallestCharacterCount = 10;
@@ -25,25 +20,22 @@ public sealed partial class IteratorForCombinationBenchmarksTests
     {
         var expected = BinomialCoefficient(SmallestCharacterCount, SmallestCombinationLength);
 
-        Assert.Equal(expected, BuildHarness().BitmaskEnumeration());
-        Assert.Equal(expected, BuildHarness().BacktrackComposed());
+        Assert.Equal(expected, BuildHarness().BitmaskEnumeration().Count);
+        Assert.Equal(expected, BuildHarness().BacktrackComposed().Count);
     }
 
     [Fact]
-    public void BitmaskEnumeration_HalfLengthCombinations_AgreesWithBacktrackComposed()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BacktrackComposed(), harness.BitmaskEnumeration());
-    }
+    public void BitmaskEnumeration_HalfLengthCombinations_DrainsInLexicographicalOrder() =>
+        AssertStrictlyAscending(BuildHarness().BitmaskEnumeration());
 
     [Fact]
-    public void BacktrackComposed_HalfLengthCombinations_AgreesWithBitmaskEnumeration()
-    {
-        var harness = BuildHarness();
+    public void BacktrackComposed_HalfLengthCombinations_DrainsInLexicographicalOrder() =>
+        AssertStrictlyAscending(BuildHarness().BacktrackComposed());
 
-        Assert.Equal(harness.BitmaskEnumeration(), harness.BacktrackComposed());
-    }
+    private static void AssertStrictlyAscending(List<string> combinations) =>
+        Assert.All(
+            combinations.Zip(combinations.Skip(1)),
+            pair => Assert.True(string.CompareOrdinal(pair.First, pair.Second) < 0, $"{pair.First} before {pair.Second}"));
 
     private static IteratorForCombinationBenchmarks BuildHarness()
     {

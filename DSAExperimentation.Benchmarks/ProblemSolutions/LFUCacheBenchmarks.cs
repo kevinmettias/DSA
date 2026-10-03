@@ -17,30 +17,38 @@ public class LFUCacheBenchmarks
 
     private List<Func<ICache<int, int>, int?>> _script = new();
 
+    // What every get returned, in script order; a put returns nothing and adds nothing.
+    private List<int> _gets = [];
+
     [Params(200, 2_000)]
     public int Capacity { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _script = CacheReplayWorkloads.Build(Capacity, Seed);
+    public void Setup()
+    {
+        _script = CacheReplayWorkloads.Build(Capacity, Seed);
+        _gets = new List<int>(_script.Count);
+    }
 
     [Benchmark(Baseline = true)]
-    public long DictionaryLinearScan() => Replay(LFUCacheSolution.CreateByDictionaryLinearScan(Capacity));
+    public List<int> DictionaryLinearScan() => Replay(LFUCacheSolution.CreateByDictionaryLinearScan(Capacity));
 
     [Benchmark]
-    public long LfuCachePrimitive() => Replay(LFUCacheSolution.CreateByLfuCachePrimitive(Capacity));
+    public List<int> LfuCachePrimitive() => Replay(LFUCacheSolution.CreateByLfuCachePrimitive(Capacity));
 
-    // Sums every returned get value rather than discarding it, so the JIT
-    // can't eliminate the replay as dead code - the same "return the real
-    // answer, not a weaker proxy" shape LRUCacheBenchmarks already follows.
-    private long Replay(ICache<int, int> cache)
+    // Returns every get's answer in order - the replay's whole observable output.
+    private List<int> Replay(ICache<int, int> cache)
     {
-        var executedValueSum = 0L;
+        _gets.Clear();
 
         foreach (var op in _script)
         {
-            executedValueSum += op(cache) ?? 0;
+            if (op(cache) is { } value)
+            {
+                _gets.Add(value);
+            }
         }
 
-        return executedValueSum;
+        return _gets;
     }
 }

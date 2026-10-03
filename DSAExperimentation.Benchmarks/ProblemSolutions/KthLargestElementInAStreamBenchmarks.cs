@@ -18,36 +18,40 @@ public class KthLargestElementInAStreamBenchmarks
 
     private int[] _stream = [];
 
+    // What every Add returned, in stream order - what each arm returns.
+    private int[] _kthLargest = [];
+
     [Params(100, 1_000)]
     public int StreamLength { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _stream = KthLargestElementInAStreamWorkloads.BuildStream(
-        StreamLength, RandomSeed, StreamValueExclusiveBound);
+    public void Setup()
+    {
+        _stream = KthLargestElementInAStreamWorkloads.BuildStream(StreamLength, RandomSeed, StreamValueExclusiveBound);
+        _kthLargest = new int[_stream.Length];
+    }
 
     [Benchmark(Baseline = true)]
-    public int SortOnEveryAdd()
+    public int[] SortOnEveryAdd()
     {
         var stream = KthLargestElementInAStreamSolution.CreateBySortOnEveryAdd(K, []);
         return Replay(stream);
     }
 
     [Benchmark]
-    public int SizeKMinHeap()
+    public int[] SizeKMinHeap()
     {
         var stream = KthLargestElementInAStreamSolution.CreateBySizeKMinHeap(K, []);
         return Replay(stream);
     }
 
-    private int Replay(IKthLargestStream stream)
+    private int[] Replay(IKthLargestStream stream)
     {
-        var lastKthLargest = 0;
-
-        foreach (var value in _stream)
+        for (var i = 0; i < _stream.Length; i++)
         {
-            lastKthLargest = stream.Add(value);
+            _kthLargest[i] = stream.Add(_stream[i]);
         }
 
-        return lastKthLargest;
+        return _kthLargest;
     }
 }

@@ -19,6 +19,9 @@ public class MaximumFrequencyStackBenchmarks
 
     private (bool IsPush, int Value)[] _operations = [];
 
+    // What every Pop returned, in script order - what each arm returns; a Push returns nothing.
+    private int[] _popped = [];
+
     [Params(200, 3_000)]
     public int OperationCount { get; set; }
 
@@ -41,17 +44,18 @@ public class MaximumFrequencyStackBenchmarks
         }
 
         _operations = operations;
+        _popped = new int[operations.Count(operation => !operation.IsPush)];
     }
 
     [Benchmark(Baseline = true)]
-    public long RescanListOnEveryPop() => Replay(MaximumFrequencyStackSolution.CreateByListRescan());
+    public int[] RescanListOnEveryPop() => Replay(MaximumFrequencyStackSolution.CreateByListRescan());
 
     [Benchmark]
-    public long HashMapAndStackByFrequency() => Replay(MaximumFrequencyStackSolution.CreateByHashMapAndStack());
+    public int[] HashMapAndStackByFrequency() => Replay(MaximumFrequencyStackSolution.CreateByHashMapAndStack());
 
-    private long Replay(MaximumFrequencyStackSolution.IFreqStack freqStack)
+    private int[] Replay(MaximumFrequencyStackSolution.IFreqStack freqStack)
     {
-        long sum = 0;
+        var popCount = 0;
 
         foreach (var (isPush, value) in _operations)
         {
@@ -61,10 +65,10 @@ public class MaximumFrequencyStackBenchmarks
             }
             else
             {
-                sum += freqStack.Pop();
+                _popped[popCount++] = freqStack.Pop();
             }
         }
 
-        return sum;
+        return _popped;
     }
 }

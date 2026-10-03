@@ -5,11 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are IteratorForCombinationSolution's, the same methods
 // IteratorForCombinationSolutionTests proves correct. Each arm builds a fresh iterator - which
 // is where every strategy does its work, since both precompute the whole combination
-// list up front - and drains it so the result cannot be elided, the same shape
-// BinarySearchTreeIteratorBenchmarks uses (an iterator is internal, so a public
-// [Benchmark] cannot return one; draining to an int both consumes it and keeps the
-// arm a single call). The alphabet is the first CharacterCount letters and the
-// combination length is half of that, the widest point of the combination space.
+// list up front - and drains it, returning every combination Next produced in order. The
+// alphabet is the first CharacterCount letters and the combination length is half of that,
+// the widest point of the combination space.
 public class IteratorForCombinationBenchmarks
 {
     private const int CombinationLengthDivisor = 2;
@@ -17,6 +15,8 @@ public class IteratorForCombinationBenchmarks
     private string _characters = "";
 
     private int _combinationLength;
+
+    private List<string> _combinations = [];
     [Params(10, 16)]
     public int CharacterCount { get; set; }
 
@@ -25,32 +25,34 @@ public class IteratorForCombinationBenchmarks
     {
         _characters = new string(Enumerable.Range(0, CharacterCount).Select(i => (char)('a' + i)).ToArray());
         _combinationLength = CharacterCount / CombinationLengthDivisor;
+
+        // Every combination is a subset of the alphabet, so there are never more than 2^n of them.
+        _combinations = new List<string>(1 << CharacterCount);
     }
 
     [Benchmark(Baseline = true)]
-    public int BitmaskEnumeration()
+    public List<string> BitmaskEnumeration()
     {
         var iterator = IteratorForCombinationSolution.CreateByBitmaskEnumeration(_characters, _combinationLength);
         return Drain(iterator);
     }
 
     [Benchmark]
-    public int BacktrackComposed()
+    public List<string> BacktrackComposed()
     {
         var iterator = IteratorForCombinationSolution.CreateByBacktrackEngine(_characters, _combinationLength);
         return Drain(iterator);
     }
 
-    private static int Drain(IteratorForCombinationSolution.CombinationIterator iterator)
+    private List<string> Drain(IteratorForCombinationSolution.CombinationIterator iterator)
     {
-        var count = 0;
+        _combinations.Clear();
 
         while (iterator.HasNext())
         {
-            iterator.Next();
-            count++;
+            _combinations.Add(iterator.Next());
         }
 
-        return count;
+        return _combinations;
     }
 }

@@ -34,15 +34,13 @@ public class InsertIntoABinarySearchTreeBenchmarks
         _newValue = 1; // odd, so it always lands as a brand-new key between two existing even keys
     }
 
-    // Projects to the resulting root's value (BinaryTreeNode<int> itself is
-    // internal, and a [Benchmark] method must be public) purely so
-    // BenchmarkDotNet has a public return type to consume - the call being
-    // measured is still the one-line solution call.
+    // Each arm returns the root of the tree it built, as object because
+    // BinaryTreeNode<int> is internal and a [Benchmark] method must be public.
     [Benchmark(Baseline = true)]
-    public int? CollectSortInsertRebuild() =>
-        InsertIntoABinarySearchTreeSolution.InsertByCollectSortRebuild(_insertionOrder, _newValue)?.Value;
+    public object? CollectSortInsertRebuild() =>
+        InsertIntoABinarySearchTreeSolution.InsertByCollectSortRebuild(_insertionOrder, _newValue);
 
     [Benchmark]
-    public int? BinarySearchTreeInsert() =>
-        InsertIntoABinarySearchTreeSolution.InsertByBstInsert(_insertionOrder, _newValue)?.Value;
+    public object? BinarySearchTreeInsert() =>
+        InsertIntoABinarySearchTreeSolution.InsertByBstInsert(_insertionOrder, _newValue);
 }

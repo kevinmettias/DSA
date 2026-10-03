@@ -39,8 +39,8 @@ public class MergeIntervalsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BatchSortAndMerge() => MergeIntervalsSolution.MergeByBatchSortAndMerge(_intervals).Count;
+    public List<(int Start, int End)> BatchSortAndMerge() => MergeIntervalsSolution.MergeByBatchSortAndMerge(_intervals);
 
     [Benchmark]
-    public int IncrementalIntervalSet() => MergeIntervalsSolution.MergeByIntervalSet(_intervals).Count;
+    public List<(int Start, int End)> IncrementalIntervalSet() => MergeIntervalsSolution.MergeByIntervalSet(_intervals);
 }

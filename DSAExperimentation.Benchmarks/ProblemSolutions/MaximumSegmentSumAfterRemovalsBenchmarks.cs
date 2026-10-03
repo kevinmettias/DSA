@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumSegmentSumAfterRemovalsSolution's, the same
 // methods MaximumSegmentSumAfterRemovalsSolutionTests proves correct. The removal order is
 // a full shuffled permutation of the index range so neither arm gets a degenerate
-// suffix-first order that would keep every merge on one end; summing the returned
-// answer[] forces a full pass rather than one index's worth of work.
+// suffix-first order that would keep every merge on one end. Each arm returns the
+// answer[] itself.
 public class MaximumSegmentSumAfterRemovalsBenchmarks
 {
     private const int RandomSeed = 2382; // LC problem number
@@ -39,12 +39,12 @@ public class MaximumSegmentSumAfterRemovalsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long RescanAfterEachRemoval() =>
+    public long[] RescanAfterEachRemoval() =>
         MaximumSegmentSumAfterRemovalsSolution
-            .MaximumSegmentSumsByRescanAfterEachRemoval(_nums, _removeQueries).Sum();
+            .MaximumSegmentSumsByRescanAfterEachRemoval(_nums, _removeQueries);
 
     [Benchmark]
-    public long ReverseTimeDisjointSet() =>
+    public long[] ReverseTimeDisjointSet() =>
         MaximumSegmentSumAfterRemovalsSolution
-            .MaximumSegmentSumsByReverseTimeDisjointSet(_nums, _removeQueries).Sum();
+            .MaximumSegmentSumsByReverseTimeDisjointSet(_nums, _removeQueries);
 }

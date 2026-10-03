@@ -29,6 +29,9 @@ public class KthAncestorOfATreeNodeBenchmarks
     private int[] _parent = [];
 
     private (int Node, int K)[] _queries = [];
+
+    // Every query's answer, in query order - what each arm returns.
+    private int[] _ancestors = [];
     [Params(2_000, 20_000)]
     public int NodeCount { get; set; }
 
@@ -47,32 +50,32 @@ public class KthAncestorOfATreeNodeBenchmarks
         _queries = Enumerable.Range(0, QueryCount)
             .Select(_ => (Node: random.Next(NodeCount), K: random.Next(1, NodeCount)))
             .ToArray();
+        _ancestors = new int[QueryCount];
     }
 
     [Benchmark(Baseline = true)]
-    public long WalkParentArrayPerQuery()
+    public int[] WalkParentArrayPerQuery()
     {
-        var total = 0L;
-
-        foreach (var (node, k) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(_parent, node, k);
+            var (node, k) = _queries[i];
+            _ancestors[i] = KthAncestorOfATreeNodeSolution.GetKthAncestorByParentWalk(_parent, node, k);
         }
 
-        return total;
+        return _ancestors;
     }
 
     [Benchmark]
-    public long PrecomputedAncestorChains()
+    public int[] PrecomputedAncestorChains()
     {
         var chains = KthAncestorOfATreeNodeSolution.BuildAncestorChains(_parent);
-        var total = 0L;
 
-        foreach (var (node, k) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, k);
+            var (node, k) = _queries[i];
+            _ancestors[i] = KthAncestorOfATreeNodeSolution.GetKthAncestorByAncestorChains(chains, node, k);
         }
 
-        return total;
+        return _ancestors;
     }
 }

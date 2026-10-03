@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using DSAExperimentation.Benchmarks.Fixtures;
+﻿using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.IntersectionOfTwoLinkedLists;
 
@@ -21,10 +20,9 @@ public class IntersectionOfTwoLinkedListsBenchmarks
     public void Setup() =>
         (_headA, _headB) = IntersectionOfTwoLinkedListsWorkloads.Build(PrefixLength);
 
-    // SinglyLinkedListNode<T> is internal, so a public [Benchmark] method cannot
-    // return it directly (CS0050) - .Value surfaces a result that still depends on
-    // which node the walk actually found.
+    // Returns the node the walk found, as object because SinglyLinkedListNode<T>
+    // is internal and a public [Benchmark] method cannot name it (CS0050).
     [Benchmark]
-    public int TwoPointerWalk() =>
-        IntersectionOfTwoLinkedListsSolution.GetIntersectionNodeByTwoPointerWalk(_headA, _headB)?.Value ?? -1;
+    public object? TwoPointerWalk() =>
+        IntersectionOfTwoLinkedListsSolution.GetIntersectionNodeByTwoPointerWalk(_headA, _headB);
 }

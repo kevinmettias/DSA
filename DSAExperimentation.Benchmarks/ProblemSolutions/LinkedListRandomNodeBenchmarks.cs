@@ -19,38 +19,43 @@ public class LinkedListRandomNodeBenchmarks
 
     private SinglyLinkedListNode<int> _head = null!;
 
+    // Every value a call drew, in call order - what each arm returns.
+    private int[] _draws = [];
+
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _head = LinkedListRandomNodeWorkloads.Build(Length);
+    public void Setup()
+    {
+        _head = LinkedListRandomNodeWorkloads.Build(Length);
+        _draws = new int[CallCount];
+    }
 
     [Benchmark(Baseline = true)]
-    public long ReservoirSampling()
+    public int[] ReservoirSampling()
     {
         var random = new Random(1);
-        long sum = 0;
 
         for (var call = 0; call < CallCount; call++)
         {
-            sum += LinkedListRandomNodeSolution.GetRandomByReservoirSampling(_head, random);
+            _draws[call] = LinkedListRandomNodeSolution.GetRandomByReservoirSampling(_head, random);
         }
 
-        return sum;
+        return _draws;
     }
 
     [Benchmark]
-    public long DynamicArrayCache()
+    public int[] DynamicArrayCache()
     {
         var random = new Random(1);
         var cache = LinkedListRandomNodeSolution.CacheValues(_head);
-        long sum = 0;
 
         for (var call = 0; call < CallCount; call++)
         {
-            sum += LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(cache, random);
+            _draws[call] = LinkedListRandomNodeSolution.GetRandomByDynamicArrayCache(cache, random);
         }
 
-        return sum;
+        return _draws;
     }
 }

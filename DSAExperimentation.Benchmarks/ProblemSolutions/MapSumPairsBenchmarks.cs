@@ -21,6 +21,9 @@ public class MapSumPairsBenchmarks
 
     private int[] _values = [];
     private string[] _prefixes = [];
+
+    // What every Sum returned, in query order - what each arm returns.
+    private int[] _sums = [];
     [Params(5_000, 20_000)]
     public int KeyCount { get; set; }
 
@@ -31,34 +34,31 @@ public class MapSumPairsBenchmarks
         _keys = Enumerable.Range(0, KeyCount).Select(_ => RandomWord(random)).Distinct().ToArray();
         _values = _keys.Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
         _prefixes = _keys.Select(key => key[..PrefixLength]).ToArray();
+        _sums = new int[_prefixes.Length];
     }
 
     private static string RandomWord(Random random)
         => new(Enumerable.Range(0, KeyLength).Select(_ => (char)('a' + random.Next(AlphabetSize))).ToArray());
 
     [Benchmark(Baseline = true)]
-    public long DictionaryScan() => Replay(new MapSumPairsSolution.MapSumByDictionaryScan());
+    public int[] DictionaryScan() => Replay(new MapSumPairsSolution.MapSumByDictionaryScan());
 
     [Benchmark]
-    public long TrieFoldSum() => Replay(new MapSumPairsSolution.MapSumByTrieFold());
+    public int[] TrieFoldSum() => Replay(new MapSumPairsSolution.MapSumByTrieFold());
 
-    // Counts the total of every query rather than discarding each Sum result, so
-    // the JIT can't eliminate the replay as dead code - the same "return the real
-    // answer, not a weaker proxy" shape DesignSpreadsheetBenchmarks follows.
-    private long Replay(MapSumPairsSolution.IMapSumStrategy mapSum)
+    // Inserts every key, then returns every query's Sum in order; Insert returns nothing.
+    private int[] Replay(MapSumPairsSolution.IMapSumStrategy mapSum)
     {
         for (var i = 0; i < _keys.Length; i++)
         {
             mapSum.Insert(_keys[i], _values[i]);
         }
 
-        var total = 0L;
-
-        foreach (var prefix in _prefixes)
+        for (var i = 0; i < _prefixes.Length; i++)
         {
-            total += mapSum.Sum(prefix);
+            _sums[i] = mapSum.Sum(_prefixes[i]);
         }
 
-        return total;
+        return _sums;
     }
 }

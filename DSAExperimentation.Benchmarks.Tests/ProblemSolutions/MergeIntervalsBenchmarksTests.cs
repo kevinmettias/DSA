@@ -7,14 +7,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // each interval one at a time into this repo's own IntervalSet<TKey> - so a harness whose arms disagree
 // is timing two different problems.
 //
-// Agreement here is weak by construction. Both arms return only the merged list's Count, not the merged
-// intervals, so a green pair witnesses that the two strategies collapsed the input into the same NUMBER
-// of intervals, not that they produced the same intervals - an arm that shifted or split a boundary
-// while keeping the count would still pass. The input is non-empty (every generated interval has length
-// at least one) and Length is at least one, so at least one interval always survives, which is the one
-// independent bound the arms' shared count is also checked against. Neither arm mutates the interval
-// array, so one harness is safe to read twice in either order; Setup draws from one fixed seed, so the
-// same Length must rebuild the same intervals.
+// Each arm returns the merged intervals themselves, and BenchmarkArmsTests holds the two to the same
+// list. What this adds is the one bound independent of both arms: the input is non-empty (every
+// generated interval has length at least one) and Length is at least one, so at least one interval
+// always survives, and the merge can never return more intervals than it was given. Neither arm
+// mutates the interval array, so one harness is safe to read twice in either order; Setup draws from
+// one fixed seed, so the same Length must rebuild the same intervals.
 public sealed partial class MergeIntervalsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -27,28 +25,18 @@ public sealed partial class MergeIntervalsBenchmarksTests
         Assert.Equal(BuildHarness().BatchSortAndMerge(), BuildHarness().BatchSortAndMerge());
 
     [Fact]
-    public void BatchSortAndMerge_OverlappingSeededIntervals_AgreesWithIncrementalIntervalSet()
-    {
-        var harness = BuildHarness();
-
+    public void BatchSortAndMerge_OverlappingSeededIntervals_KeepsBetweenOneAndEveryInterval() =>
         Assert.InRange(
-            harness.BatchSortAndMerge(),
+            BuildHarness().BatchSortAndMerge().Count,
             MinimumMergedIntervalCount,
             SmallestLength);
-        Assert.Equal(harness.IncrementalIntervalSet(), harness.BatchSortAndMerge());
-    }
 
     [Fact]
-    public void IncrementalIntervalSet_OverlappingSeededIntervals_AgreesWithBatchSortAndMerge()
-    {
-        var harness = BuildHarness();
-
+    public void IncrementalIntervalSet_OverlappingSeededIntervals_KeepsBetweenOneAndEveryInterval() =>
         Assert.InRange(
-            harness.IncrementalIntervalSet(),
+            BuildHarness().IncrementalIntervalSet().Count,
             MinimumMergedIntervalCount,
             SmallestLength);
-        Assert.Equal(harness.BatchSortAndMerge(), harness.IncrementalIntervalSet());
-    }
 
     private static MergeIntervalsBenchmarks BuildHarness()
     {
