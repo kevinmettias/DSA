@@ -12,7 +12,7 @@ public class RotateStringBenchmarks
     private string _source = "";
 
     private string _goal = "";
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -8,19 +8,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods SearchInABinarySearchTreeSolutionTests proves correct. Both build their own
 // input from the same shuffled insertion order so tree height stays close to
 // O(log n) instead of the degenerate O(n) ascending-insertion case, the same
-// convention DeleteNodeInABSTBenchmarks already uses.
+// convention DeleteNodeInABSTBenchmarks already uses. The values are 1..NodeCount, as
+// LC 700's start at 1, and NodeCount stops at its 5,000 nodes; the target is the highest.
 public class SearchInABinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
     private int _target;
-    [Params(500, 20_000)]
+    [Params(500, 5_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var values = SeededSequences.ShuffledZeroTo(NodeCount, seed: 1);
+        var values = SeededSequences.ShuffledOneTo(NodeCount, seed: 1);
 
         var tree = new BinarySearchTree<int>();
 
@@ -32,7 +33,7 @@ public class SearchInABinarySearchTreeBenchmarks
         // presumption: allow -- values always has NodeCount >= 1 entries above, so
         // at least one Insert ran and Root is never null here.
         _root = tree.Root!;
-        _target = NodeCount - 1;
+        _target = NodeCount;
     }
 
     // Each arm returns the found node, the root of LeetCode's answer subtree, as

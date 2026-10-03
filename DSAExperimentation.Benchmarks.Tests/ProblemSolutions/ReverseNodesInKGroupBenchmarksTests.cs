@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // strategies for the same question - reversing each complete run with Array.Reverse over a
 // materialized array against splicing the same runs on the list's own pointers - so a harness whose
 // arms disagree is timing two different problems. [GlobalSetup] builds the values 1..Length in
-// order, so the same Length must rebuild the same chain; otherwise two published numbers were never
+// order - they wrap only past LC 25's highest value, 1,000, which the smallest length never reaches -
+// so the same Length must rebuild the same chain; otherwise two published numbers were never
 // comparable in the first place.
 //
 // The group size is fixed at four and Length is a multiple of it, so every group is complete and no

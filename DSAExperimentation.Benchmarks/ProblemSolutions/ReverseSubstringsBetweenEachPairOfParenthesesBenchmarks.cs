@@ -8,14 +8,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ReverseSubstringsBetweenEachPairOfParenthesesSolutionTests proves correct. The input is
 // LeetCode's own shape - a run of GroupCount sibling (non-nested) groups, so the
 // quadratic baseline's cost comes from re-splicing the string once per pair rather
-// than from nesting depth - and building it is charged to [GlobalSetup].
+// than from nesting depth - and building it is charged to [GlobalSetup]. Each group is
+// eight characters, so GroupCount stops at 250, a 2,000-character input, LC 1190's cap.
 public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
 {
     private const string GroupBody = "abcdef";
 
     private string _input = "";
 
-    [Params(500, 5_000)]
+    [Params(25, 250)]
     public int GroupCount { get; set; }
 
     [GlobalSetup]

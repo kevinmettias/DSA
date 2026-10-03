@@ -15,9 +15,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // fast on an early character mismatch - the same "force the real worst case"
 // convention TwoSumBenchmarks uses, here applied to StartsWith instead of a sum
 // target.
+//
+// WordLength stops at LC 1268's 1,000-letter search word. LC 1268 also caps the
+// catalog's total length at 2 * 10^4 letters, so it holds 19 products: 1,005 letters
+// each at the longest word, 19,095 in all. Its products are unique, so a suffix drawn
+// a second time is drawn again rather than kept.
 public class SearchSuggestionsSystemBenchmarks
 {
-    private const int ProductCount = 2_000;
+    private const int ProductCount = 19;
     private const int SuffixLength = 5;
     private const int CatalogSeed = 1;
     private static readonly char[] Alphabet = ['a', 'b', 'c', 'd'];
@@ -25,7 +30,7 @@ public class SearchSuggestionsSystemBenchmarks
     private string[] _products = [];
 
     private string _searchWord = "";
-    [Params(50, 400)]
+    [Params(50, 1_000)]
     public int WordLength { get; set; }
 
     [GlobalSetup]
@@ -33,13 +38,20 @@ public class SearchSuggestionsSystemBenchmarks
     {
         var random = new Random(CatalogSeed);
         var sharedPrefix = RandomWord(random, WordLength);
-        _products = new string[ProductCount];
+        var catalog = new HashSet<string>();
+        var products = new List<string>(ProductCount);
 
-        for (var i = 0; i < ProductCount; i++)
+        while (products.Count < ProductCount)
         {
-            _products[i] = sharedPrefix + RandomWord(random, SuffixLength);
+            var product = sharedPrefix + RandomWord(random, SuffixLength);
+
+            if (catalog.Add(product))
+            {
+                products.Add(product);
+            }
         }
 
+        _products = [.. products];
         _searchWord = sharedPrefix;
     }
 

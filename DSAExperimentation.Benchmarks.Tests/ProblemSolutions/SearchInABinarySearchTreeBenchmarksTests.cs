@@ -8,13 +8,13 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // same tree for the same key, so a harness whose arms disagree is timing two different problems.
 // Setup builds the tree from one shuffled insertion order seeded at 1 and aims at the highest
 // value, so the same NodeCount must rebuild the same tree - and since the tree holds every value
-// 0..NodeCount-1, that highest value is present and the node holding it is the answer both arms
+// 1..NodeCount, that highest value is present and the node holding it is the answer both arms
 // must return. Neither arm changes the tree, so one harness instance is safe to read twice in
 // either order.
 public sealed partial class SearchInABinarySearchTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
-    private const int HighestValue = SmallestNodeCount - 1;
+    private const int HighestValue = SmallestNodeCount;
 
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload()

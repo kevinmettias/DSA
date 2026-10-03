@@ -12,7 +12,7 @@ public class RotateImageBenchmarks
 
     private int[][] _matrix = [];
 
-    [Params(50, 300)]
+    [Params(5, 20)]
     public int Size { get; set; }
 
     [GlobalSetup]

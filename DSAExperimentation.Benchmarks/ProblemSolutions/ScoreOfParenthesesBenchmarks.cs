@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ScoreOfParenthesesSolutionTests proves correct. The O(n^2) depth rescan is the baseline
 // the O(n) sentinel-seeded Stack<int> fold is measured against; string generation
 // is charged to [GlobalSetup], and the generated string is already LeetCode's own
-// input shape so no hoisted overload is needed.
+// input shape so no hoisted overload is needed. PairCount stops at 25 pairs, a
+// 50-character string, LC 856's cap.
 public class ScoreOfParenthesesBenchmarks
 {
     // Nesting depth cap - see ScoreOfParenthesesWorkloads for why it exists.
@@ -18,7 +19,7 @@ public class ScoreOfParenthesesBenchmarks
 
     private string _expression = "";
 
-    [Params(100, 2_000)]
+    [Params(5, 25)]
     public int PairCount { get; set; }
 
     [GlobalSetup]

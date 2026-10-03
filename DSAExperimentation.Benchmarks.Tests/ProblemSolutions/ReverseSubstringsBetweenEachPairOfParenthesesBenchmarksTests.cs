@@ -16,7 +16,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // read back out of an arm.
 public sealed partial class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarksTests
 {
-    private const int SmallestGroupCount = 500;
+    private const int SmallestGroupCount = 25;
 
     // The body [GlobalSetup] writes into every sibling group, and its reversal.
     private const string GroupBody = "abcdef";

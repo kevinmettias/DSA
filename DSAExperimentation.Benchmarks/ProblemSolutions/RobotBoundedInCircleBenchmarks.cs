@@ -16,7 +16,7 @@ public class RobotBoundedInCircleBenchmarks
 
     private string _instructions = "";
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -13,17 +13,23 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
+//
+// Length stops at LC 61's 500 nodes. The node at position i holds i - 100, wrapping
+// back to -100 after 100, so every value stays inside LC 61's [-100, 100].
 public class RotateListBenchmarks
 {
     // Both benchmarks rotate by roughly a third of the list so they do equivalent work.
     private const int RotationDivisor = 3;
+    private const int MinNodeValue = -100;
+    private const int NodeValueCount = 201;
 
     private int[] _values = [];
 
-    [Params(200, 5_000)] public int Length { get; set; }
+    [Params(200, 500)] public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
+    public void Setup() =>
+        _values = Enumerable.Range(0, Length).Select(position => MinNodeValue + (position % NodeValueCount)).ToArray();
 
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>

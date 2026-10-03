@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // which is the decisive answer asserted here rather than read back out of an arm.
 public sealed partial class RotateStringBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>

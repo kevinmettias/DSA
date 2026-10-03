@@ -12,9 +12,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
+//
+// The node at position i holds i + 1, wrapping back to 1 after 1,000, the highest
+// value LC 25 allows.
 public class ReverseNodesInKGroupBenchmarks
 {
     private const int GroupSize = 4;
+    private const int HighestNodeValue = 1_000;
 
     private int[] _values = [];
 
@@ -22,7 +26,8 @@ public class ReverseNodesInKGroupBenchmarks
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(1, Length).ToArray();
+    public void Setup() =>
+        _values = Enumerable.Range(0, Length).Select(position => (position % HighestNodeValue) + 1).ToArray();
 
     [Benchmark(Baseline = true)]
     public object? ArrayGroupReverse() =>

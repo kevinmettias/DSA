@@ -15,7 +15,7 @@ public class RottingOrangesBenchmarks
 
     private int[][] _grid = [];
 
-    [Params(10, 25)]
+    [Params(5, 10)]
     public int Size { get; set; }
 
     [GlobalSetup]
