@@ -22,8 +22,10 @@ public sealed partial class GuessNumberHigherOrLowerIIBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedGuaranteedCost, harness.UnmemoizedRecursion());
-        Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
+        Assert.Equal(ExpectedGuaranteedCost, harness.UnmemoizedRecursion(SmallestHighestNumber));
+        Assert.Equal(
+            harness.MemoizedRecursion(SmallestHighestNumber),
+            harness.UnmemoizedRecursion(SmallestHighestNumber));
     }
 
     [Fact]
@@ -31,10 +33,12 @@ public sealed partial class GuessNumberHigherOrLowerIIBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedGuaranteedCost, harness.MemoizedRecursion());
-        Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
+        Assert.Equal(ExpectedGuaranteedCost, harness.MemoizedRecursion(SmallestHighestNumber));
+        Assert.Equal(
+            harness.UnmemoizedRecursion(SmallestHighestNumber),
+            harness.MemoizedRecursion(SmallestHighestNumber));
     }
 
     private static GuessNumberHigherOrLowerIIBenchmarks BuildHarness() =>
-        new() { HighestNumber = SmallestHighestNumber };
+        new();
 }

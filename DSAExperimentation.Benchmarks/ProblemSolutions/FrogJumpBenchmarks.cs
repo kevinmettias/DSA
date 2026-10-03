@@ -3,13 +3,17 @@ using DSAExperimentation.LeetCode.FrogJump;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FrogJumpSolution's, the same methods
-// FrogJumpSolutionTests proves correct. _stones is built as consecutive integers
+// FrogJumpSolutionTests proves correct. The stones are built as consecutive integers
 // (every jump delta from every reachable stone lands on another real stone)
 // with an unreachable final stone appended far away - the same "rig the
 // input so both strategies are forced through their full worst case" trick
 // TwoSumBenchmarks/JumpGameBenchmarks use, here forcing
 // CanCrossByRecursiveBruteForce through its full exponential search instead
 // of returning early on success.
+//
+// Sizes are per arm. That search stops at 16 stones; the hash-map DP only visits
+// each (stone, jump size) pair once and runs on to LC 403's own bound of 2,000 stones,
+// and the two are compared at the counts both run.
 public class FrogJumpBenchmarks
 {
     // Offset from StoneCount back to the value of the last consecutively-filled
@@ -20,27 +24,38 @@ public class FrogJumpBenchmarks
     // sits far enough away that no jump size can ever reach it.
     private const int UnreachableStoneGap = 1_000;
 
-    private int[] _stones = [];
+    private Dictionary<int, int[]> _stonesByCount = [];
 
-    [Params(10, 16)]
-    public int StoneCount { get; set; }
+    public static IEnumerable<int> BruteForceSizes => [10, 16];
 
+    public static IEnumerable<int> DynamicProgrammingSizes => [.. BruteForceSizes, 200, 2_000];
+
+    // Every stone count any arm runs is built here, outside the timed region; an arm looks
+    // its own up.
     [GlobalSetup]
-    public void Setup()
-    {
-        _stones = new int[StoneCount];
+    public void Setup() => _stonesByCount = DynamicProgrammingSizes.ToDictionary(count => count, BuildStones);
 
-        for (var i = 0; i < StoneCount - 1; i++)
+    private static int[] BuildStones(int stoneCount)
+    {
+        var stones = new int[stoneCount];
+
+        for (var i = 0; i < stoneCount - 1; i++)
         {
-            _stones[i] = i;
+            stones[i] = i;
         }
 
-        _stones[StoneCount - 1] = StoneCount - LastConsecutiveStoneOffset + UnreachableStoneGap;
+        stones[stoneCount - 1] = stoneCount - LastConsecutiveStoneOffset + UnreachableStoneGap;
+
+        return stones;
     }
 
     [Benchmark(Baseline = true)]
-    public bool CanCrossByRecursiveBruteForce() => FrogJumpSolution.CanCrossByRecursiveBruteForce(_stones);
+    [ArgumentsSource(nameof(BruteForceSizes))]
+    public bool CanCrossByRecursiveBruteForce(int stoneCount) =>
+        FrogJumpSolution.CanCrossByRecursiveBruteForce(_stonesByCount[stoneCount]);
 
     [Benchmark]
-    public bool CanCrossByHashMapDynamicProgramming() => FrogJumpSolution.CanCrossByHashMapDynamicProgramming(_stones);
+    [ArgumentsSource(nameof(DynamicProgrammingSizes))]
+    public bool CanCrossByHashMapDynamicProgramming(int stoneCount) =>
+        FrogJumpSolution.CanCrossByHashMapDynamicProgramming(_stonesByCount[stoneCount]);
 }

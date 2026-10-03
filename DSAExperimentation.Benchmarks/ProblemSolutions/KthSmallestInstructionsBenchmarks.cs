@@ -8,26 +8,43 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are prepared in [GlobalSetup] so the factorial-sized rank arithmetic is not
 // charged to either measured method - what is measured is enumerating C(2n, n)
 // routes against deciding 2n characters from cached binomial counts.
+//
+// Sizes are per arm. Enumerating C(2n, n) routes stops at an 8 x 8 destination; the
+// memoized greedy runs on to LC 1643's own bound of 15 x 15, and the two are compared at
+// the sizes both run.
 public class KthSmallestInstructionsBenchmarks
 {
-    private int[] _destination = [];
+    private Dictionary<int, (int[] Destination, long Rank)> _routeBySize = [];
 
-    private long _rank;
-    [Params(5, 8)]
-    public int Size { get; set; }
+    public static IEnumerable<int> EnumerateSizes => [5, 8];
 
+    public static IEnumerable<int> MemoizedGreedySizes => [.. EnumerateSizes, 12, 15];
+
+    // Every size any arm runs has its destination and median rank prepared here, outside the
+    // timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
-    {
-        _destination = KthSmallestInstructionsWorkloads.SquareDestination(Size);
-        _rank = KthSmallestInstructionsWorkloads.MedianRank(Size);
-    }
+    public void Setup() =>
+        _routeBySize = MemoizedGreedySizes.ToDictionary(
+            size => size,
+            size => (
+                KthSmallestInstructionsWorkloads.SquareDestination(size),
+                KthSmallestInstructionsWorkloads.MedianRank(size)));
 
     [Benchmark(Baseline = true)]
-    public string EnumerateAndSort() =>
-        KthSmallestInstructionsSolution.KthSmallestPathByEnumerateAndSort(_destination, _rank);
+    [ArgumentsSource(nameof(EnumerateSizes))]
+    public string EnumerateAndSort(int size)
+    {
+        var (destination, rank) = _routeBySize[size];
+
+        return KthSmallestInstructionsSolution.KthSmallestPathByEnumerateAndSort(destination, rank);
+    }
 
     [Benchmark]
-    public string MemoizedGreedy() =>
-        KthSmallestInstructionsSolution.KthSmallestPathByMemoizedGreedy(_destination, _rank);
+    [ArgumentsSource(nameof(MemoizedGreedySizes))]
+    public string MemoizedGreedy(int size)
+    {
+        var (destination, rank) = _routeBySize[size];
+
+        return KthSmallestInstructionsSolution.KthSmallestPathByMemoizedGreedy(destination, rank);
+    }
 }

@@ -23,9 +23,9 @@ public sealed partial class FindAllGoodStringsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameBounds()
     {
-        Assert.Equal(ExpectedGoodStringCount, BuildHarness().EnumerationScan());
+        Assert.Equal(ExpectedGoodStringCount, BuildHarness().EnumerationScan(SmallestLength));
 
-        Assert.Equal(BuildHarness().EnumerationScan(), BuildHarness().EnumerationScan());
+        Assert.Equal(BuildHarness().EnumerationScan(SmallestLength), BuildHarness().EnumerationScan(SmallestLength));
     }
 
     [Fact]
@@ -33,9 +33,9 @@ public sealed partial class FindAllGoodStringsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedGoodStringCount, harness.EnumerationScan());
+        Assert.Equal(ExpectedGoodStringCount, harness.EnumerationScan(SmallestLength));
 
-        Assert.Equal(harness.AutomatonDigitDp(), harness.EnumerationScan());
+        Assert.Equal(harness.AutomatonDigitDp(SmallestLength), harness.EnumerationScan(SmallestLength));
     }
 
     [Fact]
@@ -43,14 +43,14 @@ public sealed partial class FindAllGoodStringsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedGoodStringCount, harness.AutomatonDigitDp());
+        Assert.Equal(ExpectedGoodStringCount, harness.AutomatonDigitDp(SmallestLength));
 
-        Assert.Equal(harness.EnumerationScan(), harness.AutomatonDigitDp());
+        Assert.Equal(harness.EnumerationScan(SmallestLength), harness.AutomatonDigitDp(SmallestLength));
     }
 
     private static FindAllGoodStringsBenchmarks BuildHarness()
     {
-        var harness = new FindAllGoodStringsBenchmarks { Length = SmallestLength };
+        var harness = new FindAllGoodStringsBenchmarks();
         harness.Setup();
 
         return harness;

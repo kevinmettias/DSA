@@ -8,9 +8,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // nums.Length is fixed at 8 and only SlotCount (the sequence length) grows: the
 // backtracking arm is O(nums.Length^m), so even a modest jump in the slot count
-// already makes the branching-factor-8 tree considerably larger while staying fast
-// enough to benchmark, in contrast with the carry-digit DP arm, whose memoized state
-// space grows only linearly in the slot count.
+// already makes the branching-factor-8 tree considerably larger, in contrast with the
+// carry-digit DP arm, whose memoized state space grows only polynomially in the slot
+// count.
+//
+// Sizes are per arm. The backtracking arm stops at 6 slots; the carry-digit DP runs on
+// to LC 3539's own bound of 30, and the two are compared at the slot counts both run.
 public class FindSumOfArrayProductOfMagicalSequencesBenchmarks
 {
     private const int IndexCount = 8;
@@ -18,25 +21,33 @@ public class FindSumOfArrayProductOfMagicalSequencesBenchmarks
 
     private int[] _nums = [];
 
-    private int _requiredSetBits;
-    [Params(4, 6)]
-    public int SlotCount { get; set; }
+    private Dictionary<int, int> _requiredSetBitsBySlotCount = [];
 
+    public static IEnumerable<int> BacktrackSizes => [4, 6];
+
+    public static IEnumerable<int> CarryDigitDpSizes => [.. BacktrackSizes, 15, 30];
+
+    // nums is the same for every slot count; the set-bit target is derived for every slot
+    // count any arm runs, outside the timed region, and an arm looks its own up.
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(Seed);
         _nums = SeededDraws.Values(IndexCount, 1, 100_000_000, random);
-        _requiredSetBits = Math.Max(1, SlotCount / 2);
+        _requiredSetBitsBySlotCount = CarryDigitDpSizes.ToDictionary(
+            slotCount => slotCount,
+            slotCount => Math.Max(1, slotCount / 2));
     }
 
     [Benchmark(Baseline = true)]
-    public int BacktrackEnumeration() =>
+    [ArgumentsSource(nameof(BacktrackSizes))]
+    public int BacktrackEnumeration(int slotCount) =>
         FindSumOfArrayProductOfMagicalSequencesSolution.SumOfProductsByBacktrackEnumeration(
-            SlotCount, _requiredSetBits, _nums);
+            slotCount, _requiredSetBitsBySlotCount[slotCount], _nums);
 
     [Benchmark]
-    public int CarryDigitDp() =>
+    [ArgumentsSource(nameof(CarryDigitDpSizes))]
+    public int CarryDigitDp(int slotCount) =>
         FindSumOfArrayProductOfMagicalSequencesSolution.SumOfProductsByCarryDigitDp(
-            SlotCount, _requiredSetBits, _nums);
+            slotCount, _requiredSetBitsBySlotCount[slotCount], _nums);
 }

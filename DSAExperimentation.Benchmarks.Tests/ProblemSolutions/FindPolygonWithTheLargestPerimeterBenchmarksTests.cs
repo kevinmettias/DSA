@@ -13,20 +13,22 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the full perimeter rather than -1.
 public sealed partial class FindPolygonWithTheLargestPerimeterBenchmarksTests
 {
-    // The smaller of Setup's [Params(16, 20)] side counts, the one whose subset arm is affordable.
+    // The smaller of the side counts both arms run, 16 and 20, the one whose subset arm is affordable.
     private const int SmallestSideCount = 16;
 
     [Fact]
     public void Setup_SameSideCount_RebuildsTheSameLargestPerimeter() =>
-        Assert.Equal(BuildHarness().BruteForceSubsets(), BuildHarness().BruteForceSubsets());
+        Assert.Equal(
+            BuildHarness().BruteForceSubsets(SmallestSideCount),
+            BuildHarness().BruteForceSubsets(SmallestSideCount));
 
     [Fact]
     public void BruteForceSubsets_SeededSides_AgreesWithSortedRunningSum()
     {
         var harness = BuildHarness();
 
-        Assert.True(harness.BruteForceSubsets() > 0);
-        Assert.Equal(harness.SortedRunningSum(), harness.BruteForceSubsets());
+        Assert.True(harness.BruteForceSubsets(SmallestSideCount) > 0);
+        Assert.Equal(harness.SortedRunningSum(SmallestSideCount), harness.BruteForceSubsets(SmallestSideCount));
     }
 
     [Fact]
@@ -34,13 +36,13 @@ public sealed partial class FindPolygonWithTheLargestPerimeterBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.True(harness.SortedRunningSum() > 0);
-        Assert.Equal(harness.BruteForceSubsets(), harness.SortedRunningSum());
+        Assert.True(harness.SortedRunningSum(SmallestSideCount) > 0);
+        Assert.Equal(harness.BruteForceSubsets(SmallestSideCount), harness.SortedRunningSum(SmallestSideCount));
     }
 
     private static FindPolygonWithTheLargestPerimeterBenchmarks BuildHarness()
     {
-        var harness = new FindPolygonWithTheLargestPerimeterBenchmarks { SideCount = SmallestSideCount };
+        var harness = new FindPolygonWithTheLargestPerimeterBenchmarks();
         harness.Setup();
 
         return harness;

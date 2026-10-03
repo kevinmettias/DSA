@@ -22,21 +22,23 @@ public sealed partial class FrogJumpBenchmarksTests
     [Fact]
     public void Setup_SameStoneCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce()),
-            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce()));
+            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce(SmallestStoneCount)),
+            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce(SmallestStoneCount)));
 
     [Fact]
     public void CanCrossByRecursiveBruteForce_AgreesWithCanCrossByHashMapDynamicProgramming()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedCrossingVerdict, harness.CanCrossByRecursiveBruteForce());
-        Assert.Equal(harness.CanCrossByHashMapDynamicProgramming(), harness.CanCrossByRecursiveBruteForce());
+        Assert.Equal(ExpectedCrossingVerdict, harness.CanCrossByRecursiveBruteForce(SmallestStoneCount));
+        Assert.Equal(
+            harness.CanCrossByHashMapDynamicProgramming(SmallestStoneCount),
+            harness.CanCrossByRecursiveBruteForce(SmallestStoneCount));
     }
 
     private static FrogJumpBenchmarks BuildHarness()
     {
-        var harness = new FrogJumpBenchmarks { StoneCount = SmallestStoneCount };
+        var harness = new FrogJumpBenchmarks();
         harness.Setup();
 
         return harness;
