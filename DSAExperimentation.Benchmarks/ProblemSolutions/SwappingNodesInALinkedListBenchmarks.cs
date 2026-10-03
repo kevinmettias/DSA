@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -38,23 +38,11 @@ public class SwappingNodesInALinkedListBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? ArrayMaterializeSwap() =>
-        SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(BuildList(_values), _kthPosition);
+        SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(
+            LeetCodeWireFormat.ToLinkedList(_values), _kthPosition);
 
     [Benchmark]
     public object? LinkedListTwoPointerSwap() =>
-        SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(BuildList(_values), _kthPosition);
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(
+            LeetCodeWireFormat.ToLinkedList(_values), _kthPosition);
 }

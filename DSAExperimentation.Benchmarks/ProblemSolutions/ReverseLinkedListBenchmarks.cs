@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,19 +24,5 @@ public class ReverseLinkedListBenchmarks
 
     [Benchmark]
     public object? IterativeRewire() =>
-        ReverseLinkedListSolution.ReverseListByIterativeRewire(BuildList(_values));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        ReverseLinkedListSolution.ReverseListByIterativeRewire(LeetCodeWireFormat.ToLinkedList(_values));
 }

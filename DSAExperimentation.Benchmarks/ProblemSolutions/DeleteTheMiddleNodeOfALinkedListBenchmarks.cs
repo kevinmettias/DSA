@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -35,23 +35,11 @@ public class DeleteTheMiddleNodeOfALinkedListBenchmarks
     // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
     public object? CountThenRebuild() =>
-        DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(BuildList(_values));
+        DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(
+            LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
     public object? SlowFastPointers() =>
-        DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(BuildList(_values));
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        for (var i = 1; i < values.Length; i++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[i]);
-            tail = tail.Next;
-        }
-
-        return head;
-    }
+        DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(
+            LeetCodeWireFormat.ToLinkedList(_values));
 }

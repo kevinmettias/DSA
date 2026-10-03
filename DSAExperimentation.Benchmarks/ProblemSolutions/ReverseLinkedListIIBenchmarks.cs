@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseLinkedListII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,23 +27,14 @@ public class ReverseLinkedListIIBenchmarks
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>
         ReverseLinkedListIISolution.ReverseBetweenByArrayRebuild(
-            BuildList(_values), Length / QuarterLengthDivisor, Length * ThreeQuarterLengthNumerator / QuarterLengthDivisor);
+            LeetCodeWireFormat.ToLinkedList(_values),
+            Length / QuarterLengthDivisor,
+            Length * ThreeQuarterLengthNumerator / QuarterLengthDivisor);
 
     [Benchmark]
     public object? HeadInsertion() =>
         ReverseLinkedListIISolution.ReverseBetweenByHeadInsertion(
-            BuildList(_values), Length / QuarterLengthDivisor, Length * ThreeQuarterLengthNumerator / QuarterLengthDivisor);
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+            LeetCodeWireFormat.ToLinkedList(_values),
+            Length / QuarterLengthDivisor,
+            Length * ThreeQuarterLengthNumerator / QuarterLengthDivisor);
 }

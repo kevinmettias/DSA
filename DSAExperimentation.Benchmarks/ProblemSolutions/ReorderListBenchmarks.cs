@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReorderList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,22 +27,8 @@ public class ReorderListBenchmarks
     [Benchmark(Baseline = true)]
     public object? ReverseAndMergeInPlace()
     {
-        var head = BuildList(_values);
+        var head = LeetCodeWireFormat.ToLinkedList(_values);
         ReorderListSolution.ReorderByReverseAndMergeInPlace(head);
         return head;
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 }

@@ -1,5 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveZeroSumConsecutiveNodesFromLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -40,24 +40,10 @@ public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
     [Benchmark(Baseline = true)]
     public object? NestedRescan() =>
         RemoveZeroSumConsecutiveNodesFromLinkedListSolution
-            .RemoveZeroSumSublistsByNestedRescan(BuildList(_values));
+            .RemoveZeroSumSublistsByNestedRescan(LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
     public object? PrefixSumMap() =>
         RemoveZeroSumConsecutiveNodesFromLinkedListSolution
-            .RemoveZeroSumSublistsByPrefixSumMap(BuildList(_values));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+            .RemoveZeroSumSublistsByPrefixSumMap(LeetCodeWireFormat.ToLinkedList(_values));
 }

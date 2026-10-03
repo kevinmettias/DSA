@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedListII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,22 +26,11 @@ public class RemoveDuplicatesFromSortedListIIBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? ArrayGroupFilter() =>
-        RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByArrayGroupFilter(BuildList(_values));
+        RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByArrayGroupFilter(
+            LeetCodeWireFormat.ToLinkedList(_values));
 
     [Benchmark]
     public object? TwoPointerScan() =>
-        RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByTwoPointerScan(BuildList(_values));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        RemoveDuplicatesFromSortedListIISolution.DeleteDuplicatesByTwoPointerScan(
+            LeetCodeWireFormat.ToLinkedList(_values));
 }

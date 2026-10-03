@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveNthNodeFromEndOfList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,23 +26,10 @@ public class RemoveNthNodeFromEndOfListBenchmarks
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>
         RemoveNthNodeFromEndOfListSolution.RemoveByArrayRebuild(
-            BuildList(_values), Length / MiddlePositionDivisor);
+            LeetCodeWireFormat.ToLinkedList(_values), Length / MiddlePositionDivisor);
 
     [Benchmark]
     public object? TwoRunner() =>
         RemoveNthNodeFromEndOfListSolution.RemoveByTwoRunner(
-            BuildList(_values), Length / MiddlePositionDivisor);
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+            LeetCodeWireFormat.ToLinkedList(_values), Length / MiddlePositionDivisor);
 }

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RotateList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,22 +25,11 @@ public class RotateListBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>
-        RotateListSolution.RotateRightByArrayRebuild(BuildList(_values), Length / RotationDivisor);
+        RotateListSolution.RotateRightByArrayRebuild(
+            LeetCodeWireFormat.ToLinkedList(_values), Length / RotationDivisor);
 
     [Benchmark]
     public object? PointerRewire() =>
-        RotateListSolution.RotateRightByPointerRewire(BuildList(_values), Length / RotationDivisor);
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        RotateListSolution.RotateRightByPointerRewire(
+            LeetCodeWireFormat.ToLinkedList(_values), Length / RotationDivisor);
 }

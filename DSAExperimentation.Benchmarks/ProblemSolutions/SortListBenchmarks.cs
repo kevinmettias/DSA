@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SortList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -35,21 +36,7 @@ public class SortListBenchmarks
             (values[i], values[j]) = (values[j], values[i]);
         }
 
-        _head = BuildList(values);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        _head = LeetCodeWireFormat.ToLinkedList(values);
     }
 
     [Benchmark(Baseline = true)]

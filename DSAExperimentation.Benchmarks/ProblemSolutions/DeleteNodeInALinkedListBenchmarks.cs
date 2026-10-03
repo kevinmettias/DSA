@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteNodeInALinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,24 +26,10 @@ public class DeleteNodeInALinkedListBenchmarks
     [Benchmark]
     public object? NextValueCopy()
     {
-        var head = BuildList(_values);
+        var head = LeetCodeWireFormat.ToLinkedList(_values)!;
         var target = NodeAt(head, Length / 2);
 
         DeleteNodeInALinkedListSolution.DeleteByNextValueCopy(target);
-
-        return head;
-    }
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        for (var i = 1; i < values.Length; i++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[i]);
-            tail = tail.Next;
-        }
 
         return head;
     }

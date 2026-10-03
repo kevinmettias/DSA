@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.InsertionSortList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -40,19 +40,5 @@ public class InsertionSortListBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? DummyHeadInsertion() =>
-        InsertionSortListSolution.SortByDummyHeadInsertion(BuildList(_values));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        InsertionSortListSolution.SortByDummyHeadInsertion(LeetCodeWireFormat.ToLinkedList(_values));
 }

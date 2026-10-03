@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseNodesInKGroup;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,23 +24,11 @@ public class ReverseNodesInKGroupBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? ArrayGroupReverse() =>
-        ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(BuildList(_values), GroupSize);
+        ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(
+            LeetCodeWireFormat.ToLinkedList(_values), GroupSize);
 
     [Benchmark]
     public object? LinkedListGroupReverse() =>
-        ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(BuildList(_values), GroupSize);
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(
+            LeetCodeWireFormat.ToLinkedList(_values), GroupSize);
 }

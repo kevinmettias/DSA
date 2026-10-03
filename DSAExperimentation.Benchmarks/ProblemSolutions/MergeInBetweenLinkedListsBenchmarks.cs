@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeInBetweenLinkedLists;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -38,23 +38,16 @@ public class MergeInBetweenLinkedListsBenchmarks
     [Benchmark(Baseline = true)]
     public object ArraySpliceRebuild() =>
         MergeInBetweenLinkedListsSolution.MergeInBetweenByArrayRebuild(
-            BuildList(_list1Values), _fromIndex, _toIndex, BuildList(_list2Values));
+            LeetCodeWireFormat.ToLinkedList(_list1Values)!,
+            _fromIndex,
+            _toIndex,
+            LeetCodeWireFormat.ToLinkedList(_list2Values)!);
 
     [Benchmark]
     public object LinkedListSplice() =>
         MergeInBetweenLinkedListsSolution.MergeInBetweenByPointerSplice(
-            BuildList(_list1Values), _fromIndex, _toIndex, BuildList(_list2Values));
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next!;
-    }
+            LeetCodeWireFormat.ToLinkedList(_list1Values)!,
+            _fromIndex,
+            _toIndex,
+            LeetCodeWireFormat.ToLinkedList(_list2Values)!);
 }

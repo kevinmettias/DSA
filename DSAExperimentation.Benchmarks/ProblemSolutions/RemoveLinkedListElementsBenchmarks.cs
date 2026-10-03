@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveLinkedListElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -35,23 +35,11 @@ public class RemoveLinkedListElementsBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>
-        RemoveLinkedListElementsSolution.RemoveElementsByArrayRebuild(BuildList(_values), TargetValue);
+        RemoveLinkedListElementsSolution.RemoveElementsByArrayRebuild(
+            LeetCodeWireFormat.ToLinkedList(_values), TargetValue);
 
     [Benchmark]
     public object? DummyHeadSplice() =>
-        RemoveLinkedListElementsSolution.RemoveElementsByDummyHeadSplice(BuildList(_values), TargetValue);
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        RemoveLinkedListElementsSolution.RemoveElementsByDummyHeadSplice(
+            LeetCodeWireFormat.ToLinkedList(_values), TargetValue);
 }

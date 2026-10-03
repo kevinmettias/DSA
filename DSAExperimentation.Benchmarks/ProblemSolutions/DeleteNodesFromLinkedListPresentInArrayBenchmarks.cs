@@ -1,6 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteNodesFromLinkedListPresentInArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -37,23 +37,11 @@ public class DeleteNodesFromLinkedListPresentInArrayBenchmarks
     // so a public [Benchmark] method cannot name it as a return type (CS0050).
     [Benchmark(Baseline = true)]
     public object? ArrayScan() =>
-        DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListByArrayScan(_nums, BuildList(_headValues));
+        DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListByArrayScan(
+            _nums, LeetCodeWireFormat.ToLinkedList(_headValues));
 
     [Benchmark]
     public object? SetFilter() =>
-        DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListBySetFilter(_numsSet, BuildList(_headValues));
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        for (var i = 1; i < values.Length; i++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[i]);
-            tail = tail.Next;
-        }
-
-        return head;
-    }
+        DeleteNodesFromLinkedListPresentInArraySolution.ModifiedListBySetFilter(
+            _numsSet, LeetCodeWireFormat.ToLinkedList(_headValues));
 }
