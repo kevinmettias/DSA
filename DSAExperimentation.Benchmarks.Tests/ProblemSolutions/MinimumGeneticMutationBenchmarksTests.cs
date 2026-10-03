@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the chain from one seeded stream, so the same GeneCount must rebuild the same bank.
 public sealed partial class MinimumGeneticMutationBenchmarksTests
 {
-    private const int SmallestGeneCount = 200;
+    private const int SmallestGeneCount = 3;
 
     // The sentinel both strategies report when the target gene is in no gene's reach; the chain keeps
     // every value in the bank, so this is only the value a broken workload would collapse onto.

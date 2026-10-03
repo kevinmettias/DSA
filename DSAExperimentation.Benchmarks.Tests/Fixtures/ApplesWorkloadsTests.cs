@@ -48,6 +48,15 @@ public sealed partial class ApplesWorkloadsTests
     }
 
     [Fact]
+    public void Build_EveryPairOfShops_IsJoinedByAtMostOneRoad()
+    {
+        var (_, roads) = ApplesWorkloads.Build(ShopCount, ExtraRoadsPerShop, Seed);
+        var pairs = roads.Select(road => (Math.Min(road[0], road[1]), Math.Max(road[0], road[1])));
+
+        Assert.Equal(roads.Length, pairs.Distinct().Count());
+    }
+
+    [Fact]
     public void Build_SameSeed_ReturnsTheSameWorkload()
     {
         var (prices, roads) = ApplesWorkloads.Build(ShopCount, ExtraRoadsPerShop, Seed);

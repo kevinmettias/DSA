@@ -7,13 +7,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumCostTreeFromLeafValuesSolutionTests proves correct - the un-memoized
 // interval recursion vs. the O(n) monotonic-decreasing sweep. Length is kept modest
 // for the same reason MinimumScoreTriangulationOfPolygonBenchmarks' baseline sizes are:
-// the baseline's blowup is real.
+// the baseline's blowup is real. Leaf values are drawn from LC 1130's own [1, 15].
 public class MinimumCostTreeFromLeafValuesBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.
     private const int RandomSeed = 1130;
 
-    private const int MaxLeafValueExclusive = 100;
+    private const int MaxLeafValueExclusive = 16;
 
     private int[] _arr = [];
 

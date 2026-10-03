@@ -10,12 +10,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arrows), which hits brute force's true worst case - its outer "find the next
 // arrow" loop runs close to n times, each paying a full O(n) rescan - instead of the
 // few-arrows case where heavy overlap lets it finish in a handful of passes and look
-// artificially competitive.
+// artificially competitive. Each balloon ends 1 or 2 past its start, so xstart < xend
+// as LC 452 requires.
 public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
 {
     // LC 452.
     private const int RandomSeed = 452;
     private const int IntervalSpacing = 3;
+
+    // The largest end offset, inclusive.
     private const int EndOffsetUpperBound = 2;
 
     private (int Start, int End)[] _points = [];
@@ -28,7 +31,7 @@ public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
     {
         var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, Length)
-            .Select(i => (Start: i * IntervalSpacing, End: i * IntervalSpacing + random.Next(0, EndOffsetUpperBound)))
+            .Select(i => (Start: i * IntervalSpacing, End: i * IntervalSpacing + random.Next(1, EndOffsetUpperBound + 1)))
             .OrderBy(_ => random.Next())
             .ToArray();
     }

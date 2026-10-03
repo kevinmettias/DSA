@@ -4,7 +4,9 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // earlier shop j < i, guaranteeing the network is connected, then extra random
 // roads add density - FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenchmarks'
 // own spanning-plus-extra-edges shape, here also drawing a cost and a tax
-// multiplier per road instead of one plain weight.
+// multiplier per road instead of one plain weight. LC 3928's roads are two-way and
+// never repeated, so an extra road joining a pair of shops some road already joins,
+// in either direction, is dropped.
 internal static class ApplesWorkloads
 {
     private const int PriceUpperBound = 1_000_000_000;
@@ -58,11 +60,26 @@ internal static class ApplesWorkloads
                 if (target != i)
                 {
                     var road = BuildRoad(random, i, target);
-                    roads.Add(road);
+                    AddUnlessAlreadyJoined(roads, road);
                 }
             }
         }
     }
+
+    // The road is drawn before the repeat check, so a dropped road still consumes its cost
+    // and tax draws and every later road is drawn exactly as it was before the check existed.
+    private static void AddUnlessAlreadyJoined(List<int[]> roads, int[] road)
+    {
+        var isRepeat = roads.Exists(existing => IsSameShopPair(existing, road));
+
+        if (!isRepeat)
+        {
+            roads.Add(road);
+        }
+    }
+
+    private static bool IsSameShopPair(int[] first, int[] second) =>
+        (first[0] == second[0] && first[1] == second[1]) || (first[0] == second[1] && first[1] == second[0]);
 
     private static int[] BuildRoad(Random random, int fromShop, int toShop) =>
         [fromShop, toShop, random.Next(1, CostUpperBound), random.Next(1, TaxUpperBound + 1)];

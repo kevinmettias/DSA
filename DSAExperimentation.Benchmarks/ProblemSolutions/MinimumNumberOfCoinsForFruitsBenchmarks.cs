@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumNumberOfCoinsForFruitsSolutionTests proves correct. Random prices avoid
 // the window collapsing to a fixed small shape, so the segment-tree strategy's
 // O(log n) queries are actually exercised against the brute force's O(window)
-// rescans.
+// rescans. Length stops at LC 2944's own bound of 1,000 fruits.
 public class MinimumNumberOfCoinsForFruitsBenchmarks
 {
     private const int MaxPriceExclusive = 1_000;
@@ -15,7 +15,7 @@ public class MinimumNumberOfCoinsForFruitsBenchmarks
 
     private int[] _prices = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

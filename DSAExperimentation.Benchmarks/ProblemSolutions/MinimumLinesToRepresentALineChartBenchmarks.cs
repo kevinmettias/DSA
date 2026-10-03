@@ -23,17 +23,17 @@ public class MinimumLinesToRepresentALineChartBenchmarks
     {
         var random = new Random(RandomSeed);
 
-        // A shuffled 0..Length-1 range guarantees exactly Length distinct days, so every
+        // A shuffled 1..Length range guarantees exactly Length distinct days, so every
         // generated input actually has Length points instead of silently collapsing
-        // duplicates.
-        var days = Enumerable.Range(0, Length).ToArray();
+        // duplicates. Days and prices both start at LC 2280's own floor of 1.
+        var days = Enumerable.Range(1, Length).ToArray();
         for (var i = days.Length - 1; i > 0; i--)
         {
             var swapIndex = random.Next(i + 1);
             (days[i], days[swapIndex]) = (days[swapIndex], days[i]);
         }
 
-        _points = [.. days.Select(day => new[] { day, random.Next(0, PriceBound) })];
+        _points = [.. days.Select(day => new[] { day, random.Next(1, PriceBound) })];
     }
 
     [Benchmark(Baseline = true)]

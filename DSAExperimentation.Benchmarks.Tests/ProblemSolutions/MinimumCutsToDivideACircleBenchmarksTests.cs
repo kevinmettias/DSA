@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // count itself - a decisive value rather than a self-consistent one.
 public sealed partial class MinimumCutsToDivideACircleBenchmarksTests
 {
-    private const int SmallestSlices = 101;
+    private const int SmallestSlices = 11;
 
     [Fact]
     public void SimulateOneCutAtATime_OddSliceCount_NeedsOneCutPerSliceAndAgreesWithClosedFormParityCheck()

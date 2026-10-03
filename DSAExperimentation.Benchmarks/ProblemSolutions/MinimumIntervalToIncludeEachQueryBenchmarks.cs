@@ -17,7 +17,8 @@ public class MinimumIntervalToIncludeEachQueryBenchmarks
     // LC problem number, used as the deterministic random seed.
     private const int RandomSeed = 1851;
 
-    // Both interval endpoints and query values are drawn from the same [0, Count * this) space.
+    // Both interval endpoints and query values are drawn from the same [1, Count * this) space,
+    // starting at LC 1851's own floor of 1.
     private const int CoordinateSpaceMultiplier = 2;
 
     // Interval lengths are drawn from [0, Count / this) so intervals stay shorter than the full space.
@@ -36,12 +37,12 @@ public class MinimumIntervalToIncludeEachQueryBenchmarks
         _intervals = Enumerable.Range(0, Count)
             .Select(_ =>
             {
-                var left = random.Next(0, Count * CoordinateSpaceMultiplier);
+                var left = random.Next(1, Count * CoordinateSpaceMultiplier);
                 var right = left + random.Next(0, Count / MaxIntervalLengthDivisor);
                 return new[] { left, right };
             })
             .ToArray();
-        _queries = SeededDraws.Values(Count, 0, Count * CoordinateSpaceMultiplier, random);
+        _queries = SeededDraws.Values(Count, 1, Count * CoordinateSpaceMultiplier, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // MinimumNumberOfIncrementsOnSubarraysToFormTargetArraySolution's - the literal layer-by-layer
 // simulation of the increment operations (O(n * max(target))) against the O(n) single pass that
-// sums positive rises between consecutive elements. Random heights up to 50 give the simulation
-// enough layers to separate the two.
+// sums positive rises between consecutive elements. Random heights from 1 (LC 1526's own
+// floor) up to 50 give the simulation enough layers to separate the two.
 public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
 {
     private const int RandomSeed = 1526; // LC 1526
@@ -22,7 +22,7 @@ public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _target = SeededDraws.Values(Length, 0, MaxTargetHeight, random);
+        _target = SeededDraws.Values(Length, 1, MaxTargetHeight + 1, random);
     }
 
     [Benchmark(Baseline = true)]

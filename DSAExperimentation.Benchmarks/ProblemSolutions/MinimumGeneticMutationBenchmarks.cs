@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MinimumGeneticMutationSolution's. Same workload
 // shape as WordLadderBenchmarks, narrowed to the 4-letter DNA alphabet - which is
 // the whole measurable difference between LC 433 and LC 127, now that they share
-// DataStructures.Graph.Hamming.
+// DataStructures.Graph.Hamming. GeneCount stops at LC 433's own bound of 10 genes in
+// the bank.
 public class MinimumGeneticMutationBenchmarks
 {
     private const int GeneLength = 8;
@@ -19,7 +20,7 @@ public class MinimumGeneticMutationBenchmarks
     private string _endGene = "";
     // LC problem number
 
-    [Params(200, 2_000)]
+    [Params(3, 10)]
     public int GeneCount { get; set; }
 
     [GlobalSetup]
