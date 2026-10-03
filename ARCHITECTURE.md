@@ -1245,9 +1245,10 @@ walk.
 | Folder | Holds | Why it fixes content |
 | --- | --- | --- |
 | `Domain/Locks/` | `LockNode`, `LockTopology`, `LockGraph`, `LockWheels` | `LockWheels` pins `Count = 4`, `Modulus = 10`, `CombinationSpace = 10_000`. This is a concrete *instance*, not a shape — the general form would be "Cayley graph over Z_m^k with ±1 generators", and *that* would be a data structure. Still the thinnest of the judgment calls here. |
-| `Domain/Modular/` | `ModularArithmetic` | Modular exponentiation *is* a classic algorithm, but `1_000_000_007` is a **LeetCode reporting convention**, not a property of any algorithm. The problem domain fixes the modulus. |
+| `Domain/Modular/` | `ModularArithmetic`, `FactorialTable` | Modular exponentiation *is* a classic algorithm, but `1_000_000_007` is a **LeetCode reporting convention**, not a property of any algorithm. The problem domain fixes the modulus; `FactorialTable`'s nCr lookup is fixed by the same modulus. |
+| `Domain/SlidingPuzzle/` | `PuzzleNode`, `PuzzleTopology`, `PuzzleGraph` | Pins LC 773's 2x3 board: its blank-slide adjacency table and the 720 permutations of `"012345"`. A concrete instance in the same sense as `Domain/Locks/` — a sliding puzzle over an arbitrary m×n board would be a data structure; this one board is content. |
 
-Two folders, not five. That is the honest size of this tier, and a thin `Domain/` is the correct
+Three folders, not five. That is the honest size of this tier, and a thin `Domain/` is the correct
 outcome rather than a sign the tier is unnecessary: it is where a genuinely problem-pinned model
 goes, and it stays small precisely because the axes absorb almost everything else.
 
