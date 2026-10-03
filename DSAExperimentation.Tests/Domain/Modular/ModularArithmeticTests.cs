@@ -31,6 +31,11 @@ public sealed partial class ModularArithmeticTests
         Assert.Equal(1, power);
     }
 
+    // Power delegates to Algorithms/NumberTheory/ModularPower; a negative base must still come back
+    // as C#'s negative remainder, the value callers got before the delegation.
+    [Fact]
+    public void Power_NegativeBase_KeepsANegativeRemainder() => Assert.Equal(-8, ModularArithmetic.Power(-2, 3));
+
     [Fact]
     public void Power_ReducesItsBaseModuloFirst()
     {

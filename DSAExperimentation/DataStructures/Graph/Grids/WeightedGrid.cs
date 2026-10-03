@@ -8,8 +8,6 @@ internal static class WeightedGrid
 {
     private const int UnitWeight = 1;
 
-    private static readonly (int DeltaRow, int DeltaCol)[] Orthogonal = [(-1, 0), (1, 0), (0, -1), (0, 1)];
-
     private static readonly HashSet<(int Row, int Col)> NoWalls = [];
 
     public static Dictionary<(int Row, int Col), WeightedGridNode> Build(int rows, int cols) =>
@@ -48,7 +46,7 @@ internal static class WeightedGrid
     {
         foreach (var ((row, col), node) in nodes)
         {
-            foreach (var (deltaRow, deltaCol) in Orthogonal)
+            foreach (var (deltaRow, deltaCol) in GridDirections.Orthogonal)
             {
                 if (nodes.TryGetValue((row + deltaRow, col + deltaCol), out var neighbor))
                 {

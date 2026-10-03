@@ -673,7 +673,8 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
 | Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
 | Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie,RootedTreeNode,RootedTreeTopology,ParentArrayTree}.cs` (§13.7, §13.8, §13.9, §17.6) |
-| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridTopology,WeightedGridNode,WeightedGridTopology,WeightedGrid}.cs` (§17.6) |
+| Graph — Grids | `Graph/Grids/{Grid,GridNode,GridChildren,GridDirections,GridTopology,WeightedGridNode,WeightedGridTopology,WeightedGrid}.cs` (§17.6) |
+| Graph — Adjacency | `Graph/Adjacency/{AdjacencyNode,AdjacencyTopology,WeightedAdjacencyNode,WeightedAdjacencyTopology}.cs` — the general-graph sibling of `RootedTreeNode`/`RootedTreeTopology`, graph tier only: an adjacency list promises no acyclicity, so a DAG or tree witness over it is written by the caller who can vouch for one |
 | Graph — Hamming | `Graph/Hamming/{HammingNode,HammingTopology,HammingGraph,HammingSearch,Alphabet,StandardAlphabets}.cs` (§17.6) |
 | Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
 | Cache | `Cache/{ICache,CacheConstants}.cs`, `Cache/LruCache/LruCache.cs`, `Cache/LfuCache/LfuCache.cs` (§13.7) |
@@ -819,6 +820,7 @@ the distinguishing question is interface substitutability, not the topology axis
 | `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
 | `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
 | `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
+| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceedsSequence}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
 
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the

@@ -1,10 +1,13 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+
 namespace DSAExperimentation.Domain.Modular;
 
 // Arithmetic modulo 1e9+7 - LeetCode's own convention for "report the answer mod a
 // large prime", not a property of any algorithm, which is why this is domain code
 // rather than an Algorithms primitive. Every counting problem in the catalogue that
 // asks for a result "modulo 10^9 + 7" shares this constant and these two
-// operations.
+// operations. The exponentiation itself is the general algorithm in
+// Algorithms/NumberTheory/ModularPower; what this type adds is the modulus.
 internal static class ModularArithmetic
 {
     public const long Modulo = 1_000_000_007;
@@ -15,22 +18,5 @@ internal static class ModularArithmetic
 
     public static long Inverse(long value) => Power(value, Modulo - InverseExponentOffset);
 
-    public static long Power(long value, long exponent)
-    {
-        var result = 1L;
-        value %= Modulo;
-
-        while (exponent > 0)
-        {
-            if ((exponent & 1) == 1)
-            {
-                result = result * value % Modulo;
-            }
-
-            value = value * value % Modulo;
-            exponent >>= 1;
-        }
-
-        return result;
-    }
+    public static long Power(long value, long exponent) => ModularPower.Of(value, exponent, Modulo);
 }
