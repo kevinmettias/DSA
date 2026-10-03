@@ -8,13 +8,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every candidate window matches almost the whole prefix/suffix before failing on
 // the last character, forcing both strategies through their full worst case instead
 // of an early first-character mismatch making brute force look artificially
-// competitive.
+// competitive. Length stops at LC 3407's 50-letter subject, where the pattern is 27.
 public class SubstringMatchingPatternBenchmarks
 {
     private string _subject = "";
 
     private string _pattern = "";
-    [Params(50, 300)]
+    [Params(5, 50)]
     public int Length { get; set; }
 
     [GlobalSetup]

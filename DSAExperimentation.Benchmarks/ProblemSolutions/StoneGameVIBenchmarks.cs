@@ -6,14 +6,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // StoneGameVISolutionTests proves correct. Both run the identical O(n log n) greedy and
 // differ only in the sort primitive - the BCL's Array.Sort against this repo's own
 // MergeSort over an ArrayIndexedSequence - so the seeded value arrays are built
-// once in [GlobalSetup] and only the sort-and-tally is measured.
+// once in [GlobalSetup] and only the sort-and-tally is measured. Both players' values
+// are drawn from LC 1686's [1, 100].
 public class StoneGameVIBenchmarks
 {
     private const int RandomSeed = 1686; // LC problem number
-    private const int MaxStoneValue = 1_000; private int[] _aliceValues = [];
+    private const int MaxStoneValue = 100;
+
+    private int[] _aliceValues = [];
 
     private int[] _bobValues = [];
-    // exclusive upper bound passed to Random.Next
 
     [Params(200, 4_000)]
     public int Length { get; set; }
@@ -27,8 +29,8 @@ public class StoneGameVIBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            _aliceValues[i] = random.Next(1, MaxStoneValue);
-            _bobValues[i] = random.Next(1, MaxStoneValue);
+            _aliceValues[i] = random.Next(1, MaxStoneValue + 1);
+            _bobValues[i] = random.Next(1, MaxStoneValue + 1);
         }
     }
 

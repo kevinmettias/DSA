@@ -8,14 +8,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] rather than to the cycle check being measured. Colors form a
 // guaranteed-acyclic chain (every "must print before" edge points from a lower
 // color id to a higher one, capped fan-out) so both strategies run their full real
-// workload instead of an early cycle bailout.
+// workload instead of an early cycle bailout. ColorCount stops at LC 1591's 60 colors.
 public class StrangePrinterIIBenchmarks
 {
     private const int MaxFanOut = 3;
 
     private List<ColorNode> _colors = new();
 
-    [Params(50, 1_000)]
+    [Params(50, 60)]
     public int ColorCount { get; set; }
 
     [GlobalSetup]

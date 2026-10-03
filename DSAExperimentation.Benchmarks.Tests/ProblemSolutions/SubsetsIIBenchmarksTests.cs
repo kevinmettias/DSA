@@ -19,7 +19,7 @@ public sealed partial class SubsetsIIBenchmarksTests
 {
     // Mirrors SubsetsIIBenchmarks' own private DuplicateGroupSize.
     private const int DuplicateGroupSize = 2;
-    private const int SmallestLength = 10;
+    private const int SmallestLength = 5;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>

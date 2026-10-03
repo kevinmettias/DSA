@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SumOfSubarrayRangesSolutionTests proves correct. The workload is a uniformly random
 // signed array, so the brute-force arm's inner loop never settles early on a run
 // of equal extremes and each [Params] length measures the full O(n^2) walk against
-// the O(n) contribution sweep.
+// the O(n) contribution sweep. Length stops at LC 2104's 1,000.
 public class SumOfSubarrayRangesBenchmarks
 {
     private const int ValueMagnitude = 1_000;
@@ -15,7 +15,7 @@ public class SumOfSubarrayRangesBenchmarks
 
     private int[] _values = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

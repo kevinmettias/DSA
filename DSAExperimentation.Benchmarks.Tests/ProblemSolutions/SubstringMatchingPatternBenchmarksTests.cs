@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // agreement, since two arms that were wrong in the same way would still agree.
 public sealed partial class SubstringMatchingPatternBenchmarksTests
 {
-    private const int SmallestLength = 50;
+    private const int SmallestLength = 5;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>

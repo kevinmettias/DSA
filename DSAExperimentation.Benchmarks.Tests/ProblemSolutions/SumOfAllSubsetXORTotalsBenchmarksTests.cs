@@ -10,9 +10,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // so the total over all subsets is the bitwise OR of the drawn values scaled by 2^(Length-1).
 public sealed partial class SumOfAllSubsetXORTotalsBenchmarksTests
 {
-    // Mirrors SumOfAllSubsetXORTotalsBenchmarks' own private RandomSeed and MaxValueBitWidth.
+    // Mirrors SumOfAllSubsetXORTotalsBenchmarks' own private RandomSeed and MaxValue.
     private const int RandomSeed = 1863;
-    private const int MaxValueBitWidth = 20;
+    private const int MaxValue = 20;
     private const int SmallestLength = 10;
 
     [Fact]
@@ -37,13 +37,13 @@ public sealed partial class SumOfAllSubsetXORTotalsBenchmarksTests
         Assert.Equal(ExpectedXorTotal(), harness.Backtracking());
     }
 
-    // Mirrors [GlobalSetup]'s own draw of Length values from [1, 2^MaxValueBitWidth).
+    // Mirrors [GlobalSetup]'s own draw of Length values from [1, MaxValue].
     private static int[] WorkloadValues()
     {
         var random = new Random(RandomSeed);
 
         return Enumerable.Range(0, SmallestLength)
-            .Select(_ => random.Next(1, 1 << MaxValueBitWidth))
+            .Select(_ => random.Next(1, MaxValue + 1))
             .ToArray();
     }
 

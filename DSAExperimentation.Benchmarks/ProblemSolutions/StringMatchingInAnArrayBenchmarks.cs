@@ -3,10 +3,13 @@ using DSAExperimentation.LeetCode.StringMatchingInAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StringMatchingInAnArraySolution's, the same methods
-// StringMatchingInAnArraySolutionTests proves correct. Every word is a run of 'a's with a
-// trailing 'b' (a classic KMP-adversarial shape - most candidate start positions
-// match every character but the last), lengths strictly increasing so shorter words
-// are genuine substrings of longer ones.
+// StringMatchingInAnArraySolutionTests proves correct. Every word is a run of 'a's with
+// one trailing letter (a classic KMP-adversarial shape - most candidate start positions
+// match every character but the last). Words run from MinLength to LC 1408's longest,
+// 30 letters, in families of FamilySize that share a trailing letter - 'b', then 'c',
+// and so on - so within a family each shorter word is a genuine substring of every
+// longer one, and WordCount reaches LC 1408's 100 distinct words without a word past
+// 30 letters.
 //
 // Measured result is the interesting part: NaiveScan's raw char-index double loop
 // wins by a wide margin over PrefixFunctionSearch here, even though the
@@ -27,19 +30,27 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class StringMatchingInAnArrayBenchmarks
 {
     private const int MinLength = 6;
-    private const string TrailingLetter = "b";
+    private const int MaxLength = 30;
+    private const int FamilySize = MaxLength - MinLength + 1;
+    private const char FirstTrailingLetter = 'b';
 
     private string[] _words = [];
 
-    [Params(60, 150)]
+    [Params(60, 100)]
     public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
         => _words = Enumerable.Range(0, WordCount).Select(AdversarialWord).ToArray();
 
+    // Word index's family picks its trailing letter, and its place in the family its length.
     private static string AdversarialWord(int index)
-        => new string('a', MinLength + index - 1) + TrailingLetter;
+    {
+        var length = MinLength + (index % FamilySize);
+        var trailingLetter = (char)(FirstTrailingLetter + (index / FamilySize));
+
+        return new string('a', length - 1) + trailingLetter;
+    }
 
     [Benchmark(Baseline = true)]
     public List<string> NaiveNestedLoop() =>

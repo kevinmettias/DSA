@@ -10,11 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the identical shape PredictTheWinnerBenchmarks uses for its own interval-DP game
 // (LC 877 is LC 486's recurrence with a different win condition). PileCount is kept
 // modest for the same reason PredictTheWinnerBenchmarks documents: the un-memoized
-// baseline's blowup is real.
+// baseline's blowup is real. StoneGameWorkloads keeps the total odd, as LC 877 promises.
 public class StoneGameBenchmarks
 {
     private const int RandomSeed = 877; // LC problem number
-    private const int PileValueUpperBoundExclusive = 100;
 
     private int[] _piles = [];
 
@@ -22,11 +21,7 @@ public class StoneGameBenchmarks
     public int PileCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _piles = SeededDraws.Values(PileCount, 1, PileValueUpperBoundExclusive, random);
-    }
+    public void Setup() => _piles = StoneGameWorkloads.BuildPiles(PileCount, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public bool CanAliceWinByUnmemoizedRecursion() => StoneGameSolution.CanAliceWinByUnmemoizedRecursion(_piles);

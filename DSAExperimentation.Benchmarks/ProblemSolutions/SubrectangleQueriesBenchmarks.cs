@@ -5,16 +5,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are SubrectangleQueriesSolution's, the same classes
 // SubrectangleQueriesSolutionTests proves correct. [GlobalSetup] builds one fixed,
 // deterministic script of overlapping subrectangle overwrites; each arm then
-// replays it against a freshly constructed backing store, because the store's
-// construction cost is itself half of what this comparison is about (a jagged
-// int[][] versus a DynamicArray<T> of DynamicArray<T>) and because a store reused
-// across invocations would carry the previous invocation's mutations forward.
+// replays it against a backing store freshly built from one starting rectangle,
+// because the store's construction cost is itself half of what this comparison is
+// about (a jagged int[][] versus a DynamicArray<T> of DynamicArray<T>) and because a
+// store reused across invocations would carry the previous invocation's mutations
+// forward. The starting cells and every overwrite value are at least 1, as LC 1476's
+// [1, 10^9] requires, so the store is built through LeetCode's own rectangle
+// constructor rather than the zero-filled one.
 public class SubrectangleQueriesBenchmarks
 {
     private const int QueryCount = 200;
     private const int UpdateSeed = 1;
+    private const int StartingCellValue = 1;
 
     private (SubrectangleQueriesSolution.SubrectangleBounds Bounds, int Value)[] _updates = [];
+
+    private int[][] _rectangle = [];
 
     [Params(20, 100)]
     public int Size { get; set; }
@@ -23,6 +29,7 @@ public class SubrectangleQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(UpdateSeed);
+        _rectangle = [.. Enumerable.Range(0, Size).Select(_ => Enumerable.Repeat(StartingCellValue, Size).ToArray())];
         _updates = new (SubrectangleQueriesSolution.SubrectangleBounds, int)[QueryCount];
 
         for (var i = 0; i < QueryCount; i++)
@@ -31,15 +38,15 @@ public class SubrectangleQueriesBenchmarks
             var col1 = random.Next(0, Size);
             var row2 = random.Next(row1, Size);
             var col2 = random.Next(col1, Size);
-            _updates[i] = (new SubrectangleQueriesSolution.SubrectangleBounds(row1, col1, row2, col2), i);
+            _updates[i] = (new SubrectangleQueriesSolution.SubrectangleBounds(row1, col1, row2, col2), i + 1);
         }
     }
 
     [Benchmark(Baseline = true)]
-    public int ArrayBacked() => Replay(new SubrectangleQueriesSolution.SubrectangleQueriesByArrayBacked(Size, Size));
+    public int ArrayBacked() => Replay(new SubrectangleQueriesSolution.SubrectangleQueriesByArrayBacked(_rectangle));
 
     [Benchmark]
-    public int DynamicArrayBacked() => Replay(new SubrectangleQueriesSolution.SubrectangleQueriesByDynamicArrayBacked(Size, Size));
+    public int DynamicArrayBacked() => Replay(new SubrectangleQueriesSolution.SubrectangleQueriesByDynamicArrayBacked(_rectangle));
 
     // Returns the far-corner cell rather than discarding the result, so the JIT
     // cannot eliminate the replay as dead code.

@@ -3,16 +3,17 @@ using DSAExperimentation.LeetCode.Subsets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubsetsSolution's, the same methods SubsetsSolutionTests proves correct.
-// Element counts stay small because both arms materialize all 2^n subsets - the parameter counts
-// exponents, not raw input size, and 2^14 already returns 16384 lists. Values are distinct so
-// every subset is distinct, which keeps the two arms' outputs comparable element for element.
+// Both arms materialize all 2^n subsets - the parameter counts exponents, not raw input size - and
+// ElementCount stops at LC 78's 10 elements, 1,024 lists. Values are 1..ElementCount, distinct and
+// inside its [-10, 10], so every subset is distinct, which keeps the two arms' outputs comparable
+// element for element.
 public class SubsetsBenchmarks
 {
     private const int RandomSeed = 78; // LC problem number
 
     private int[] _values = [];
 
-    [Params(8, 14)]
+    [Params(8, 10)]
     public int ElementCount { get; set; }
 
     [GlobalSetup]
