@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FindTheLongestValidObstacleCourseAtEachPositionSolution's - the textbook O(n^2) DP
 // against patience sorting over this repo's own BinarySearch.UpperBound. The workload is
 // a fixed-seed random height sequence, so runs never fall into an all-increasing shape
-// that would let the DP's inner loop stay cheap.
+// that would let the DP's inner loop stay cheap. Heights are drawn from 1 up, LC
+// 1964's smallest.
 public class FindTheLongestValidObstacleCourseAtEachPositionBenchmarks
 {
     private const int RandomSeed = 1964; private int[] _obstacles = [];
@@ -21,7 +22,7 @@ public class FindTheLongestValidObstacleCourseAtEachPositionBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _obstacles = SeededDraws.Values(Length, 0, Length, random);
+        _obstacles = SeededDraws.Values(Length, 1, Length + 1, random);
     }
 
     [Benchmark(Baseline = true)]
