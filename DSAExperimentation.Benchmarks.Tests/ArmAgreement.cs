@@ -23,6 +23,7 @@ internal static class ArmAgreement
         typeof(SortCharactersByFrequencyBenchmarks),
         typeof(SubsetsBenchmarks),
         typeof(ThreeSumBenchmarks),
+        typeof(TopKFrequentElementsBenchmarks),
     };
 
     // Arms here answer differently by design, so the generic check only runs each one to completion.
@@ -36,8 +37,6 @@ internal static class ArmAgreement
         [typeof(ShuffleAnArrayBenchmarks)] = RandomDraw,
         [typeof(InsertIntoABinarySearchTreeBenchmarks)] =
             "LeetCode accepts any valid tree, and each arm answers with the root of the different tree it builds.",
-        [typeof(TopKFrequentElementsBenchmarks)] =
-            "The workload ties 23 values at the top-10 boundary, outside LC 347's guarantee of a unique answer.",
     };
 
     // Not a case at all: its arms are [ParamsSource] values naming registered problems rather than
