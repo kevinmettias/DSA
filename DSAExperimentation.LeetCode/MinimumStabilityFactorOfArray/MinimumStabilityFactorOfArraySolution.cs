@@ -29,8 +29,9 @@ namespace DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
 // also caps it at any L' >= L), so binary search applies directly.
 internal static class MinimumStabilityFactorOfArraySolution
 {
-    // gcd(0, x) = x, so 0 is the gcd of no values: where a running gcd starts folding from.
-    private const int EmptyGcd = 0;
+    // The gcd of no values - GcdOperation's identity, since gcd(0, x) = x - where a running gcd
+    // starts folding from.
+    private static int EmptyGcd => GcdOperation<int>.Identity;
 
     // Baseline: recomputes each window's gcd from scratch by scanning its L+1
     // elements (with an early exit once the running gcd hits 1) - "what you'd
