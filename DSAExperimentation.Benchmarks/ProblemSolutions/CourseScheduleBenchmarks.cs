@@ -24,9 +24,16 @@ public class CourseScheduleBenchmarks
 
         for (var course = 1; course < CourseCount; course++)
         {
+            // LC 207's prerequisite pairs are unique, so a course that draws the same prerequisite
+            // twice keeps it once; the draw still happens, so every later course's draws stay put.
+            var drawn = new HashSet<int>();
             for (var draw = 0; draw < PrerequisitesPerCourse && draw < course; draw++)
             {
-                prerequisites.Add([course, random.Next(0, course)]);
+                var prerequisite = random.Next(0, course);
+                if (drawn.Add(prerequisite))
+                {
+                    prerequisites.Add([course, prerequisite]);
+                }
             }
         }
 

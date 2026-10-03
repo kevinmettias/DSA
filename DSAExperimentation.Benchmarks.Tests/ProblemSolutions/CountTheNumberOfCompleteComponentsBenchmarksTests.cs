@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // asserted through that count being the documented clique count.
 public sealed partial class CountTheNumberOfCompleteComponentsBenchmarksTests
 {
-    private const int SmallestNodeCount = 250;
+    private const int SmallestNodeCount = 25;
 
     private const int CliqueSize = 25;
 

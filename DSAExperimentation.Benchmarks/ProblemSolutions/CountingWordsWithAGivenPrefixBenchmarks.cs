@@ -16,7 +16,8 @@ public class CountingWordsWithAGivenPrefixBenchmarks
 
     private string[] _words = [];
 
-    [Params(200, 5_000)]
+    // LC 2185 gives at most 100 words.
+    [Params(10, 100)]
     public int WordCount { get; set; }
 
     [GlobalSetup]

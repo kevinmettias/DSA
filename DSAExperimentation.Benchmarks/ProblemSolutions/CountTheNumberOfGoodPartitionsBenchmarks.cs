@@ -6,9 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are CountTheNumberOfGoodPartitionsSolution's, the same
 // methods CountTheNumberOfGoodPartitionsSolutionTests proves agree.
 //
-// A small 4-value alphabet forces repeat values often enough that most cut masks
-// are invalid, exercising the brute-force check's early-reject path instead of
-// degenerating to "every mask is good".
+// A small 4-value alphabet (1-4, since LC 2963's values start at 1) forces repeat
+// values often enough that most cut masks are invalid, exercising the brute-force
+// check's early-reject path instead of degenerating to "every mask is good".
 //
 // Sizes are per arm. Brute force enumerates 2^(n-1) masks and would not finish past
 // 20 elements, so it stops there; the merge strategy is O(n) regardless of how many
@@ -31,7 +31,7 @@ public class CountTheNumberOfGoodPartitionsBenchmarks
     public void Setup() =>
         _numsByLength = MergeSizes.ToDictionary(
             length => length,
-            length => SeededDraws.Values(length, 0, AlphabetSize, new Random(RandomSeed)));
+            length => SeededDraws.Values(length, 1, AlphabetSize + 1, new Random(RandomSeed)));
 
     [Benchmark(Baseline = true)]
     [ArgumentsSource(nameof(BruteForceSizes))]

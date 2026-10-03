@@ -16,8 +16,9 @@ public class CountTheNumberOfCompleteComponentsBenchmarks
 
     private int[][] _edges = [];
 
-    // NodeCount / CliqueSize disjoint cliques, each already complete.
-    [Params(250, 2_500)]
+    // NodeCount / CliqueSize disjoint cliques, each already complete; LC 2685's graph has at
+    // most 50 nodes, so that is one clique and then two.
+    [Params(25, 50)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

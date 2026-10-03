@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // every couple correctly never needs more than CoupleCount - 1 swaps.
 public sealed partial class CouplesHoldingHandsBenchmarksTests
 {
-    private const int SmallestCoupleCount = 200;
+    private const int SmallestCoupleCount = 10;
 
     private const int LargestMinimumSwaps = SmallestCoupleCount - 1;
 

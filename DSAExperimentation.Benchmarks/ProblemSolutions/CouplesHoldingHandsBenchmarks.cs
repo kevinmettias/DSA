@@ -12,7 +12,8 @@ public class CouplesHoldingHandsBenchmarks
 
     private int[] _row = [];
 
-    [Params(200, 5_000)]
+    // LC 765 seats at most 30 couples.
+    [Params(10, 30)]
     public int CoupleCount { get; set; }
 
     [GlobalSetup]
