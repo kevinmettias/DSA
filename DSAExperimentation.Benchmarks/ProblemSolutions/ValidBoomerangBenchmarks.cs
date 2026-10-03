@@ -11,14 +11,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // _triples deliberately includes near-collinear (but not exactly collinear) points
 // so the floating-point arm's epsilon comparison does real work instead of
-// trivially separating from the exact-collinear cases.
+// trivially separating from the exact-collinear cases. Point 1 is drawn far enough
+// from the edges that all three points stay inside LC 1037's [0, 100] square.
 public class ValidBoomerangBenchmarks
 {
     private const int RandomSeed = 1037; // LC problem number
-    private const int CoordinateBound = 1_000;
+    private const int MaxCoordinate = 100;
     private const int OffsetBound = 10;
     private const int AlternationModulus = 2;
     private const int Point3DisplacementMultiplier = 2;
+
+    // The farthest point 3 lands from point 1 on either axis: twice the offset, plus the
+    // one-unit nudge off the line.
+    private const int ReachFromFirstPoint = (Point3DisplacementMultiplier * OffsetBound) + 1;
 
     private int[][][] _triples = [];
 
@@ -33,8 +38,8 @@ public class ValidBoomerangBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            var x1 = random.Next(-CoordinateBound, CoordinateBound);
-            var y1 = random.Next(-CoordinateBound, CoordinateBound);
+            var x1 = random.Next(ReachFromFirstPoint, MaxCoordinate - ReachFromFirstPoint + 1);
+            var y1 = random.Next(ReachFromFirstPoint, MaxCoordinate - ReachFromFirstPoint + 1);
             var dx = random.Next(-OffsetBound, OffsetBound + 1);
             var dy = random.Next(-OffsetBound, OffsetBound + 1);
 

@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ValidParenthesisStringSolution's, the same methods
 // ValidParenthesisStringSolutionTests proves correct. _text is "(" + all '*' + ")", the
 // shape that maximizes the DP's reachable-set growth every step while the stack
-// sweep never even inspects its star stack's contents.
+// sweep never even inspects its star stack's contents. Length stops at LC 678's 100.
 public class ValidParenthesisStringBenchmarks
 {
     private const string OpenParenthesis = "(";
@@ -14,7 +14,7 @@ public class ValidParenthesisStringBenchmarks
 
     // one leading '(' + one trailing ')'
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

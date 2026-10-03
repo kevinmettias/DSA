@@ -14,8 +14,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // this harness can only witness the verdict and not the reachable set behind it.
 public sealed partial class ValidParenthesisStringBenchmarksTests
 {
-    // The smaller of Setup's [Params(200, 5_000)] lengths.
-    private const int SmallestLength = 200;
+    // The smaller of Setup's [Params(10, 100)] lengths.
+    private const int SmallestLength = 10;
 
     // Setup's documented outcome: the stars can all stand for the empty string.
     private const bool ExpectedIsValid = true;

@@ -14,7 +14,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (the same per-key-bucket shape DesignTwitterBenchmarks' _tweetsByUser already
 // uses), so a query only ever scans that one name's own times - O(tweets for that
 // name). Tweets are spread across NameCount distinct names so "that name's own
-// times" is a small slice of the total.
+// times" is a small slice of the total. Every tweet falls inside the one queried
+// window, which spans LC 1348's widest 10^4 seconds, and TweetCount stops at 9,999 so
+// the recordings and the query make its 10^4 calls.
 //
 // Harness only: both arms are TweetCountsPerFrequencySolution's, the same classes
 // TweetCountsPerFrequencySolutionTests proves correct. Each arm sums the returned buckets
@@ -22,17 +24,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class TweetCountsPerFrequencyBenchmarks
 {
     private const int NameCount = 200;
-    private const int SecondsPerHour = 3_600;
     private const int RandomSeed = 1348; // LC 1348
     private const string NamePrefix = "tweet";
-    private const int HourBucketCount = 10;
     private const int WindowStart = 0;
-    private const int WindowEnd = (HourBucketCount * SecondsPerHour) - 1;
+
+    // LC 1348's widest query window, endTime - startTime.
+    private const int MaxWindowSpan = 10_000;
+    private const int WindowEnd = WindowStart + MaxWindowSpan;
 
     private TweetCountsPerFrequencySolution.ITweetCountsStrategy _flatList = null!;
 
     private TweetCountsPerFrequencySolution.ITweetCountsStrategy _grouped = null!;
-    [Params(2_000, 20_000)]
+    [Params(2_000, 9_999)]
     public int TweetCount { get; set; }
 
     [GlobalSetup]
@@ -45,7 +48,7 @@ public class TweetCountsPerFrequencyBenchmarks
         for (var i = 0; i < TweetCount; i++)
         {
             var name = NamePrefix + random.Next(NameCount);
-            var time = random.Next(WindowStart, HourBucketCount * SecondsPerHour);
+            var time = random.Next(WindowStart, WindowEnd + 1);
 
             _flatList.RecordTweet(name, time);
             _grouped.RecordTweet(name, time);

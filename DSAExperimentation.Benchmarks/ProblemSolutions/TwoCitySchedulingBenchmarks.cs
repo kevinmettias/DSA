@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are TwoCitySchedulingSolution's, the same methods
 // TwoCitySchedulingSolutionTests proves correct. Each is handed the already-projected people
 // its hoisted overload takes, so building the workload is charged to [GlobalSetup]
-// rather than to the greedy being measured.
+// rather than to the greedy being measured. Length stops at LC 1029's 100 people.
 public class TwoCitySchedulingBenchmarks
 {
     private const int RandomSeed = 1029; // LC problem number
@@ -14,7 +14,7 @@ public class TwoCitySchedulingBenchmarks
     private (int ACost, int BCost)[] _people = [];
 
     // Kept even: costs.Length must be 2n per LC 1029's own constraint.
-    [Params(200, 4_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

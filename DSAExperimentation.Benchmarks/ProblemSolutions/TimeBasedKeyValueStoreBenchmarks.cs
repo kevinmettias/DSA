@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Length strictly increasing timestamps (the problem's own guarantee), charging that
 // construction to [GlobalSetup]; _queryTimestamp sits just past the final entry so
 // both strategies are forced through their full worst-case floor lookup, the same
-// "force the real worst case" convention OnlineElectionBenchmarks uses.
+// "force the real worst case" convention OnlineElectionBenchmarks uses. Timestamps start
+// at TimestampStep, inside LC 981's [1, 10^7].
 public class TimeBasedKeyValueStoreBenchmarks
 {
     private const int TimestampStep = 2;
@@ -32,7 +33,7 @@ public class TimeBasedKeyValueStoreBenchmarks
     {
         for (var i = 0; i < Length; i++)
         {
-            store.Set(Key, $"v{i}", i * TimestampStep);
+            store.Set(Key, $"v{i}", (i + 1) * TimestampStep);
         }
 
         return store;

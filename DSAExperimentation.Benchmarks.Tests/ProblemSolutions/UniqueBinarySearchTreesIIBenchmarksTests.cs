@@ -10,23 +10,23 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // different sets of trees.
 //
 // Each arm returns the list of trees it built. Their number is decisive - it is Catalan(8) = 1430
-// for the smaller parameter, the same constant UniqueBinarySearchTreesBenchmarks' counting sibling
-// is anchored to - and so is that no two of them share a shape, so both are asserted for each arm
-// rather than left to a shared wrong answer.
+// for the larger parameter, LC 95's own bound and the same constant UniqueBinarySearchTreesBenchmarks'
+// counting sibling is anchored to - and so is that no two of them share a shape, so both are asserted
+// for each arm rather than left to a shared wrong answer.
 public sealed partial class UniqueBinarySearchTreesIIBenchmarksTests
 {
-    // The smaller of the class's [Params(8, 12)] node counts.
-    private const int SmallestNodeCount = 8;
+    // The larger of the class's [Params(4, 8)] node counts, LC 95's n = 8.
+    private const int BoundNodeCount = 8;
 
     // Catalan(8) = 1430: the number of distinct BST shapes over 8 ordered keys.
     private const int ExpectedTreeCount = 1_430;
 
     [Fact]
-    public void PlainRecursion_SmallestNodeCount_BuildsEveryDistinctTree() =>
+    public void PlainRecursion_LeetCodeBoundNodeCount_BuildsEveryDistinctTree() =>
         AssertEveryDistinctTree(BuildHarness().PlainRecursion());
 
     [Fact]
-    public void MemoizedRange_SmallestNodeCount_BuildsEveryDistinctTree() =>
+    public void MemoizedRange_LeetCodeBoundNodeCount_BuildsEveryDistinctTree() =>
         AssertEveryDistinctTree(BuildHarness().MemoizedRange());
 
     // Each tree is rendered on its own, so a subtree the memoized arm shares between trees renders
@@ -39,5 +39,5 @@ public sealed partial class UniqueBinarySearchTreesIIBenchmarksTests
         Assert.Equal(ExpectedTreeCount, trees.Select(AnswerGraphText.Of).Distinct().Count());
     }
 
-    private static UniqueBinarySearchTreesIIBenchmarks BuildHarness() => new() { Nodes = SmallestNodeCount };
+    private static UniqueBinarySearchTreesIIBenchmarks BuildHarness() => new() { Nodes = BoundNodeCount };
 }

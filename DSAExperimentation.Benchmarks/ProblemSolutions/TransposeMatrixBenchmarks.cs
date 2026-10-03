@@ -3,9 +3,10 @@ using DSAExperimentation.LeetCode.TransposeMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TransposeMatrixSolution's. The square workload is built
-// once in [GlobalSetup] from a fixed seed, so only the flip itself is measured; at
-// Size=800 the source rows no longer fit in cache alongside the destination columns,
-// which is where the tiled arm is meant to pull ahead.
+// once in [GlobalSetup] from a fixed seed, so only the flip itself is measured. The
+// tiled arm is meant to pull ahead once the source rows no longer fit in cache
+// alongside the destination columns, but Size stops at 316, the largest square inside
+// LC 867's m * n <= 10^5 cells, whether or not that point is reached by then.
 public class TransposeMatrixBenchmarks
 {
     private const int MatrixValueUpperBoundExclusive = 1_000;
@@ -13,7 +14,7 @@ public class TransposeMatrixBenchmarks
 
     private int[][] _matrix = [];
 
-    [Params(100, 800)]
+    [Params(100, 316)]
     public int Size { get; set; }
 
     [GlobalSetup]

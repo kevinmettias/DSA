@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ValidArrangementOfPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,6 +8,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Hierholzer walk against the same walk over this repo's own
 // HashMap<int, Stack<int>>. Both are handed LeetCode's own input shape, generated
 // once in [GlobalSetup] so pair construction is not charged to the measured method.
+// ValidArrangementOfPairsWorkloads walks the pairs as one shuffled trail, so they are
+// distinct, never join a node to itself, and have the valid arrangement LC 2097
+// promises.
 public class ValidArrangementOfPairsBenchmarks
 {
     private const int NodeCount = 64;
@@ -18,16 +22,7 @@ public class ValidArrangementOfPairsBenchmarks
     public int PairCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _pairs = new int[PairCount][];
-
-        for (var i = 0; i < PairCount; i++)
-        {
-            _pairs[i] = [random.Next(0, NodeCount), random.Next(0, NodeCount)];
-        }
-    }
+    public void Setup() => _pairs = ValidArrangementOfPairsWorkloads.BuildPairs(PairCount, NodeCount, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public int[][] DictionaryWithList() =>

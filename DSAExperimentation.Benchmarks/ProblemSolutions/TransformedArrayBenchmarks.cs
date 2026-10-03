@@ -6,14 +6,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are TransformedArraySolution's, the same methods
 // TransformedArraySolutionTests proves correct. Shifts are drawn from the full [-Length,
 // Length] range so the step-walk baseline is forced through long walks rather
-// than the small shifts LeetCode's own examples use.
+// than the small shifts LeetCode's own examples use. Length stops at LC 3379's 100,
+// so every shift stays inside its [-100, 100].
 public class TransformedArrayBenchmarks
 {
     private const int Seed = 3379;
 
     private int[] _nums = [];
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
