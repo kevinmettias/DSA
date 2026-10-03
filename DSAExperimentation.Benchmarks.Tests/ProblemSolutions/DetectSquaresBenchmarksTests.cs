@@ -4,8 +4,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DetectSquaresBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: how many
 // squares the queries find, known from Setup's construction rather than from either arm. Setup builds a full lattice
-// from GridDimension alone, and each arm adds every lattice point once, then queries every point once, returning
-// each query's count.
+// from the grid dimension alone, and each arm adds every lattice point once, then queries every point once,
+// returning each query's count.
 public sealed partial class DetectSquaresBenchmarksTests
 {
     private const int SmallestGridDimension = 5;
@@ -14,15 +14,19 @@ public sealed partial class DetectSquaresBenchmarksTests
 
     [Fact]
     public void ListBased_FullLatticeQueries_FindsEverySquareOncePerCorner() =>
-        Assert.Equal(ExpectedCornerTally(SmallestGridDimension), BuildHarness().ListBased().Sum(count => (long)count));
+        Assert.Equal(
+            ExpectedCornerTally(SmallestGridDimension),
+            BuildHarness().ListBased(SmallestGridDimension).Sum(count => (long)count));
 
     [Fact]
     public void HashMapGroupedByX_FullLatticeQueries_FindsEverySquareOncePerCorner() =>
-        Assert.Equal(ExpectedCornerTally(SmallestGridDimension), BuildHarness().HashMapGroupedByX().Sum(count => (long)count));
+        Assert.Equal(
+            ExpectedCornerTally(SmallestGridDimension),
+            BuildHarness().HashMapGroupedByX(SmallestGridDimension).Sum(count => (long)count));
 
     private static DetectSquaresBenchmarks BuildHarness()
     {
-        var harness = new DetectSquaresBenchmarks { GridDimension = SmallestGridDimension };
+        var harness = new DetectSquaresBenchmarks();
         harness.Setup();
 
         return harness;
