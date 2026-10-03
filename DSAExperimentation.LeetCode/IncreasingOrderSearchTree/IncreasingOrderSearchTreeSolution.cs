@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
 //
 // IncreasingBstByInOrderHooks composes this repo's own
 // InOrderTraversal/IInOrderHooks over BinaryTreeNode<int>, threading the running
-// tail through AsyncLocal state - the same rewrite-during-walk composition
+// tail through the hook - the same rewrite-during-walk composition
 // ConvertBSTToGreaterTreeSolution and KthSmallestElementInABSTSolution use.
 //
 // IncreasingBstByRecursiveRelink is the textbook baseline it is measured against: a
@@ -59,25 +59,23 @@ internal static class IncreasingOrderSearchTreeSolution
     public static BinaryTreeNode<int>? IncreasingBstByInOrderHooks(BinaryTreeNode<int>? root)
     {
         var dummy = new BinaryTreeNode<int>(DummyHeadValue);
-        State.Tail.Value = dummy;
 
-        InOrderTraversal.Walk<int, RelinkHooks>(root);
+        InOrderTraversal.Walk(root, new RelinkHooks(dummy));
 
         return dummy.Right;
     }
 
-    private readonly struct RelinkHooks : IInOrderHooks<int>
+    // Hangs each visited node off the tail of the chain built so far and makes it the new tail.
+    // The tail is the hook's own state, so the struct is mutable by design.
+    private struct RelinkHooks(BinaryTreeNode<int> head) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        private BinaryTreeNode<int> _tail = head;
+
+        public void Visit(BinaryTreeNode<int> node, int depth)
         {
             node.Left = null;
-            State.Tail.Value!.Right = node;
-            State.Tail.Value = node;
+            _tail.Right = node;
+            _tail = node;
         }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Tail = new();
     }
 }

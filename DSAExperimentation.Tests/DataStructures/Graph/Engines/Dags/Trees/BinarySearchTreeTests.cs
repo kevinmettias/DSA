@@ -5,10 +5,6 @@ namespace DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees;
 
 public sealed partial class BinarySearchTreeTests
 {
-    private struct InsertOrderMarker;
-    private struct OneChildMarker;
-    private struct TwoChildMarker;
-
     [Fact]
     public void Count_StartsAtZeroOnAnEmptyTree()
         => Assert.Equal(0, new BinarySearchTree<int>().Count);
@@ -37,11 +33,7 @@ public sealed partial class BinarySearchTreeTests
             tree.Insert(value);
         }
 
-        InOrderTraversal.Walk<int, RecordingInOrderHooks<int, InsertOrderMarker>>(tree.Root);
-
-        Assert.Equal(
-            new[] { 1, 3, 4, 5, 7, 8, 9 },
-            RecordingInOrderHooks<int, InsertOrderMarker>.Visited.Select(v => v.Value));
+        Assert.Equal(new[] { 1, 3, 4, 5, 7, 8, 9 }, InOrderValues.Of(tree.Root));
         Assert.Equal(7, tree.Count);
     }
 
@@ -107,8 +99,7 @@ public sealed partial class BinarySearchTreeTests
 
         tree.TryDelete(3);
 
-        InOrderTraversal.Walk<int, RecordingInOrderHooks<int, OneChildMarker>>(tree.Root);
-        Assert.Equal(new[] { 4, 5 }, RecordingInOrderHooks<int, OneChildMarker>.Visited.Select(v => v.Value));
+        Assert.Equal(new[] { 4, 5 }, InOrderValues.Of(tree.Root));
         Assert.Equal(2, tree.Count);
     }
 
@@ -124,10 +115,7 @@ public sealed partial class BinarySearchTreeTests
 
         tree.TryDelete(5);
 
-        InOrderTraversal.Walk<int, RecordingInOrderHooks<int, TwoChildMarker>>(tree.Root);
-        Assert.Equal(
-            new[] { 3, 7, 8, 9 },
-            RecordingInOrderHooks<int, TwoChildMarker>.Visited.Select(v => v.Value));
+        Assert.Equal(new[] { 3, 7, 8, 9 }, InOrderValues.Of(tree.Root));
         Assert.Equal(4, tree.Count);
         Assert.Equal(7, Assert.IsType<BinaryTreeNode<int>>(tree.Root).Value);
     }

@@ -58,10 +58,10 @@ internal static class ConvertBSTToGreaterTreeSolution
     // Pass 1: the ascending InOrderTraversal collects every node value in sorted order.
     private static List<int> CollectAscendingValues(BinaryTreeNode<int>? root)
     {
-        State.Values.Value = [];
-        InOrderTraversal.Walk<int, CollectHooks>(root);
+        var ascending = new List<int>();
+        InOrderTraversal.Walk(root, new CollectHooks(ascending));
 
-        return State.Values.Value!;
+        return ascending;
     }
 
     // Turns the ascending values into, for each rank, the sum of every value at or above it.
@@ -82,31 +82,26 @@ internal static class ConvertBSTToGreaterTreeSolution
     // Pass 2: the same ascending walk reassigns each node by rank from the precomputed sums.
     private static BinaryTreeNode<int>? ApplySuffixSums(BinaryTreeNode<int>? root, int[] suffixSums)
     {
-        State.Index.Value = 0;
-        State.GreaterSums.Value = suffixSums;
-        InOrderTraversal.Walk<int, AssignHooks>(root);
+        InOrderTraversal.Walk(root, new AssignHooks(suffixSums));
 
         return root;
     }
 
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    private readonly struct CollectHooks(List<int> values) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
+        public void Visit(BinaryTreeNode<int> node, int depth) => values.Add(node.Value);
     }
 
-    private readonly struct AssignHooks : IInOrderHooks<int>
+    // Gives each node, in ascending order, the sum at its rank. The rank is the hook's own
+    // count, so the struct is mutable by design.
+    private struct AssignHooks(int[] greaterSums) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        private int _index;
+
+        public void Visit(BinaryTreeNode<int> node, int depth)
         {
-            node.Value = State.GreaterSums.Value![State.Index.Value];
-            State.Index.Value++;
+            node.Value = greaterSums[_index];
+            _index++;
         }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<List<int>?> Values = new();
-        public static readonly AsyncLocal<int> Index = new();
-        public static readonly AsyncLocal<int[]?> GreaterSums = new();
     }
 }

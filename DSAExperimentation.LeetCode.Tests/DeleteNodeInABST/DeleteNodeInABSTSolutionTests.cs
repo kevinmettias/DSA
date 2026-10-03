@@ -52,26 +52,13 @@ public sealed partial class DeleteNodeInABSTSolutionTests
 
     private static int[] InOrderValues(BinarySearchTree<int> tree)
     {
-        State.Values.Value = [];
-        InOrderTraversal.Walk<int, CollectHooks>(tree.Root);
-        return [.. CollectedValues()];
+        var values = new List<int>();
+        InOrderTraversal.Walk(tree.Root, new CollectHooks(values));
+        return [.. values];
     }
 
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    private readonly struct CollectHooks(List<int> values) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => CollectedValues().Add(node.Value);
-    }
-
-    // InOrderValues stores the list in State.Values on the line before it walks, and
-    // InOrderTraversal.Walk recurses through its hooks inline on that same thread - no
-    // await, no queue - so the AsyncLocal still carries it: InOrderValues reads that
-    // list back, and every Visit the walk makes adds to it.
-    private static List<int> CollectedValues() =>
-        State.Values.Value ?? throw new InvalidOperationException(
-            "State.Values is stored by InOrderValues before it walks, and InOrderTraversal.Walk runs inline on this thread.");
-
-    private static class State
-    {
-        public static readonly AsyncLocal<List<int>?> Values = new();
+        public void Visit(BinaryTreeNode<int> node, int depth) => values.Add(node.Value);
     }
 }

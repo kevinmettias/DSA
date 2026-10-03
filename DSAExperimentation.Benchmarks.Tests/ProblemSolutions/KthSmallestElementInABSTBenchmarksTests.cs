@@ -21,8 +21,8 @@ public sealed partial class KthSmallestElementInABSTBenchmarksTests
         Assert.Equal(ExpectedRankValue, BuildHarness().InOrderTraversalHooks());
     }
 
-    // The hook arm keeps its running rank in AsyncLocal state inside the solution, so a second
-    // walk on one harness reports the same rank only if the strategy resets that state first.
+    // The hook arm counts its running rank in a hook it builds per call, so a second walk on one
+    // harness reports the same rank only if nothing carries over from the first.
     [Fact]
     public void InOrderTraversalHooks_CalledTwiceOnOneHarness_ReportsTheSameRankBothTimes()
     {

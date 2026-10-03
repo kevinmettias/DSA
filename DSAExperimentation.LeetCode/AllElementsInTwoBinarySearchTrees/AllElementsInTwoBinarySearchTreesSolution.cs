@@ -49,9 +49,9 @@ internal static class AllElementsInTwoBinarySearchTreesSolution
 
     private static DynamicArray<int> CollectInOrder(BinaryTreeNode<int>? root)
     {
-        State.Values.Value = new DynamicArray<int>();
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-        return State.Values.Value;
+        var values = new DynamicArray<int>();
+        InOrderTraversal.Walk(root, new CollectHooks(values));
+        return values;
     }
 
     private static int[] MergeSorted(DynamicArray<int> first, DynamicArray<int> second)
@@ -92,16 +92,10 @@ internal static class AllElementsInTwoBinarySearchTreesSolution
         CollectAll(node.Right, values);
     }
 
-    // Hooks are static, so the buffer being filled lives in AsyncLocal state
-    // alongside the walk - the same arrangement KthSmallestElementInABSTSolution
-    // uses for its running rank.
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    // Appends each visited value to the buffer it was built with - ascending, since in-order
+    // visits a BST's values in order.
+    private readonly struct CollectHooks(DynamicArray<int> values) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Values = new();
+        public void Visit(BinaryTreeNode<int> node, int depth) => values.Add(node.Value);
     }
 }

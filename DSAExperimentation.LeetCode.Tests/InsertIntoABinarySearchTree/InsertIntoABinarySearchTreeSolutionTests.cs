@@ -39,27 +39,13 @@ public sealed partial class InsertIntoABinarySearchTreeSolutionTests
 
     private static int[] InOrderValues(BinaryTreeNode<int>? root)
     {
-        State.Values.Value = [];
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-        return [.. CollectedValues()];
+        var values = new List<int>();
+        InOrderTraversal.Walk(root, new CollectHooks(values));
+        return [.. values];
     }
 
-    // InOrderValues seeds the list on its own first line and is the only caller of the
-    // walk CollectHooks serves, so Visit always runs with a list already there and the
-    // read-back after the walk finds the same one. Both sites ask for it here rather
-    // than promising the compiler it is present.
-    private static List<int> CollectedValues() =>
-        State.Values.Value
-        ?? throw new InvalidOperationException(
-            "InOrderValues seeds State.Values before walking and is the only caller of CollectHooks");
-
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    private readonly struct CollectHooks(List<int> values) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => CollectedValues().Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<List<int>?> Values = new();
+        public void Visit(BinaryTreeNode<int> node, int depth) => values.Add(node.Value);
     }
 }

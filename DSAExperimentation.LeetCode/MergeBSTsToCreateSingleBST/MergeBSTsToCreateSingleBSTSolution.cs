@@ -134,13 +134,7 @@ internal static class MergeBSTsToCreateSingleBSTSolution
     }
 
     private static bool IsStrictlyAscendingByInOrderWalk(BinaryTreeNode<int> root)
-    {
-        State.Previous.Value = null;
-        State.IsAscending.Value = true;
-        InOrderTraversal.Walk<int, ValidateAscendingHooks>(root);
-
-        return State.IsAscending.Value;
-    }
+        => InOrderTraversal.Walk(root, new ValidateAscendingHooks()).IsAscending;
 
     // The plain recursive in-order walk IsStrictlyAscending collects with, kept here
     // rather than beside its caller to satisfy the repo's call-order convention.
@@ -309,26 +303,22 @@ internal static class MergeBSTsToCreateSingleBSTSolution
         }
     }
 
-    // Hooks are static, so the running comparison state lives in AsyncLocal
-    // alongside the walk - the same arrangement AllElementsInTwoBinarySearchTrees
-    // uses for its collected buffer.
-    private readonly struct ValidateAscendingHooks : IInOrderHooks<int>
+    // Remembers the previous value and whether every value so far rose strictly above the one
+    // before it. Mutable by design: the walk hands back the value it finished with.
+    private struct ValidateAscendingHooks() : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        private int? _previous;
+
+        public bool IsAscending { get; private set; } = true;
+
+        public void Visit(BinaryTreeNode<int> node, int depth)
         {
-            if (State.Previous.Value is { } previous && node.Value <= previous)
+            if (_previous is { } previous && node.Value <= previous)
             {
-                State.IsAscending.Value = false;
+                IsAscending = false;
             }
 
-            State.Previous.Value = node.Value;
+            _previous = node.Value;
         }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<int?> Previous = new();
-
-        public static readonly AsyncLocal<bool> IsAscending = new();
     }
 }

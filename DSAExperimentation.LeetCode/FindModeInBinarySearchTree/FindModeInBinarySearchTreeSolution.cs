@@ -48,19 +48,11 @@ internal static class FindModeInBinarySearchTreeSolution
         return modes.ToArray();
     }
 
-    // This repo's own InOrderTraversal/IInOrderHooks composition. Hooks are
-    // static, so the running value/streak/max/result live in AsyncLocal state
-    // alongside the walk.
+    // This repo's own InOrderTraversal/IInOrderHooks composition. The running value,
+    // streak, longest streak and modes live in the hook, which the walk hands back.
     public static int[] FindModeByInOrderTraversalStreak(BinaryTreeNode<int>? root)
     {
-        State.Modes.Value = new DynamicArray<int>();
-        State.CurrentValue.Value = 0;
-        State.CurrentCount.Value = 0;
-        State.MaxCount.Value = 0;
-
-        InOrderTraversal.Walk<int, ModeHooks>(root);
-
-        var modes = State.Modes.Value;
+        var modes = InOrderTraversal.Walk(root, new ModeHooks()).Modes;
         var result = new int[modes.Count];
 
         for (var i = 0; i < modes.Count; i++)
@@ -83,36 +75,37 @@ internal static class FindModeInBinarySearchTreeSolution
         CountFrequencies(node.Right, counts);
     }
 
-    private readonly struct ModeHooks : IInOrderHooks<int>
+    // Tracks the run of equal values the walk is in, the longest run so far, and every value
+    // whose run reached that length. Mutable by design: the walk hands back the value it
+    // finished with.
+    private struct ModeHooks() : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        private int _currentValue;
+        private int _currentCount;
+        private int _maxCount;
+
+        public DynamicArray<int> Modes { get; private set; } = new();
+
+        public void Visit(BinaryTreeNode<int> node, int depth)
         {
-            if (State.CurrentCount.Value == 0 || node.Value != State.CurrentValue.Value)
+            if (_currentCount == 0 || node.Value != _currentValue)
             {
-                State.CurrentValue.Value = node.Value;
-                State.CurrentCount.Value = 0;
+                _currentValue = node.Value;
+                _currentCount = 0;
             }
 
-            State.CurrentCount.Value++;
+            _currentCount++;
 
-            if (State.CurrentCount.Value > State.MaxCount.Value)
+            if (_currentCount > _maxCount)
             {
-                State.MaxCount.Value = State.CurrentCount.Value;
-                State.Modes.Value = new DynamicArray<int>();
-                State.Modes.Value.Add(node.Value);
+                _maxCount = _currentCount;
+                Modes = new DynamicArray<int>();
+                Modes.Add(node.Value);
             }
-            else if (State.CurrentCount.Value == State.MaxCount.Value)
+            else if (_currentCount == _maxCount)
             {
-                State.Modes.Value!.Add(node.Value);
+                Modes.Add(node.Value);
             }
         }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Modes = new();
-        public static readonly AsyncLocal<int> CurrentValue = new();
-        public static readonly AsyncLocal<int> CurrentCount = new();
-        public static readonly AsyncLocal<int> MaxCount = new();
     }
 }

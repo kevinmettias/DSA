@@ -31,11 +31,10 @@ internal static class BalanceABinarySearchTreeSolution
 
     public static BinaryTreeNode<int>? BalanceByInOrderTraversal(BinaryTreeNode<int>? root)
     {
-        State.Sorted.Value = new DynamicArray<int>();
+        var sorted = new DynamicArray<int>();
 
-        InOrderTraversal.Walk<int, CollectHooks>(root);
+        InOrderTraversal.Walk(root, new CollectHooks(sorted));
 
-        var sorted = State.Sorted.Value;
         return BuildFromDynamicArray(sorted, 0, sorted.Count - 1);
     }
 
@@ -124,15 +123,10 @@ internal static class BalanceABinarySearchTreeSolution
         };
     }
 
-    // Hooks are static, so the collected values live in AsyncLocal state alongside
-    // the walk - the same shape KthSmallestElementInABSTSolution's RankHooks uses.
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    // Appends each visited value to the buffer it was built with - ascending, since in-order
+    // visits a BST's values in order.
+    private readonly struct CollectHooks(DynamicArray<int> values) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Sorted.Value!.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Sorted = new();
+        public void Visit(BinaryTreeNode<int> node, int depth) => values.Add(node.Value);
     }
 }

@@ -32,14 +32,7 @@ internal static class MinimumAbsoluteDifferenceInBSTSolution
     // whole in-order sequence first - the same composition
     // RecoverBinarySearchTreeSolution uses.
     public static int GetMinimumDifferenceByInOrderHooks(BinaryTreeNode<int> root)
-    {
-        State.Prev.Value = null;
-        State.MinDiff.Value = int.MaxValue;
-
-        InOrderTraversal.Walk<int, DiffHooks>(root);
-
-        return State.MinDiff.Value;
-    }
+        => InOrderTraversal.Walk(root, new DiffHooks()).MinDiff;
 
     private static void CollectInOrder(BinaryTreeNode<int>? node, List<int> values)
     {
@@ -53,22 +46,22 @@ internal static class MinimumAbsoluteDifferenceInBSTSolution
         CollectInOrder(node.Right, values);
     }
 
-    private readonly struct DiffHooks : IInOrderHooks<int>
+    // Remembers the previous node and the smallest gap seen. Mutable by design: the walk hands
+    // back the value it finished with.
+    private struct DiffHooks() : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        private BinaryTreeNode<int>? _previous;
+
+        public int MinDiff { get; private set; } = int.MaxValue;
+
+        public void Visit(BinaryTreeNode<int> node, int depth)
         {
-            if (State.Prev.Value is { } prev)
+            if (_previous is { } previous)
             {
-                State.MinDiff.Value = Math.Min(State.MinDiff.Value, node.Value - prev.Value);
+                MinDiff = Math.Min(MinDiff, node.Value - previous.Value);
             }
 
-            State.Prev.Value = node;
+            _previous = node;
         }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Prev = new();
-        public static readonly AsyncLocal<int> MinDiff = new();
     }
 }

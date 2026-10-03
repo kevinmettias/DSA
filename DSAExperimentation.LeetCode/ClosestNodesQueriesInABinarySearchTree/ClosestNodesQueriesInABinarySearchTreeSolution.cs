@@ -45,9 +45,8 @@ internal static class ClosestNodesQueriesInABinarySearchTreeSolution
     // here reporting both neighbours rather than picking whichever is nearer.
     public static int[][] ClosestNodesByInOrderBinarySearch(BinaryTreeNode<int>? root, int[] queries)
     {
-        State.Values.Value = new DynamicArray<int>();
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-        var values = State.Values.Value;
+        var values = new DynamicArray<int>();
+        InOrderTraversal.Walk(root, new CollectHooks(values));
 
         var answer = new int[queries.Length][];
 
@@ -106,16 +105,10 @@ internal static class ClosestNodesQueriesInABinarySearchTreeSolution
     private static bool IsBetterCeiling(int value, int query, int ceiling) =>
         value >= query && (ceiling == LeetCodeAnswer.None || value < ceiling);
 
-    // Hooks are static, so the buffer being filled lives in AsyncLocal state
-    // alongside the walk - the same arrangement AllElementsInTwoBinarySearchTrees-
-    // Solution uses for its per-tree buffer.
-    private readonly struct CollectHooks : IInOrderHooks<int>
+    // Appends each visited value to the buffer it was built with - ascending, since in-order
+    // visits a BST's values in order.
+    private readonly struct CollectHooks(DynamicArray<int> values) : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => State.Values.Value!.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<DynamicArray<int>> Values = new();
+        public void Visit(BinaryTreeNode<int> node, int depth) => values.Add(node.Value);
     }
 }

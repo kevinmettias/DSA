@@ -15,30 +15,32 @@ namespace DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 // thing that would have justified a guarded tier - is exactly what this bypasses.
 internal static class InOrderTraversal
 {
-    public static void Walk<TValue, THooks>(BinaryTreeNode<TValue>? root)
+    public static THooks Walk<TValue, THooks>(BinaryTreeNode<TValue>? root, THooks hooks)
         where THooks : struct, IInOrderHooks<TValue>
     {
-        if (root is null)
+        if (root is not null)
         {
-            return;
+            Visit(root, 0, ref hooks);
         }
 
-        Visit<TValue, THooks>(root, 0);
+        return hooks;
     }
 
-    private static void Visit<TValue, THooks>(BinaryTreeNode<TValue> node, int depth)
+    // The hook travels by reference, so every visit acts on the one value Walk hands back rather
+    // than on a copy each frame would pass down and lose.
+    private static void Visit<TValue, THooks>(BinaryTreeNode<TValue> node, int depth, ref THooks hooks)
         where THooks : struct, IInOrderHooks<TValue>
     {
         if (node.Left is not null)
         {
-            Visit<TValue, THooks>(node.Left, depth + 1);
+            Visit(node.Left, depth + 1, ref hooks);
         }
 
-        THooks.Visit(node, depth);
+        hooks.Visit(node, depth);
 
         if (node.Right is not null)
         {
-            Visit<TValue, THooks>(node.Right, depth + 1);
+            Visit(node.Right, depth + 1, ref hooks);
         }
     }
 }

@@ -36,18 +36,14 @@ internal static class RecoverBinarySearchTreeSolution
     }
 
     // This repo's own InOrderTraversal/IInOrderHooks walking the tree with no
-    // intermediate list allocation. Hooks are static, so the two candidate nodes
-    // live in AsyncLocal state alongside the walk rather than captured locals.
+    // intermediate list allocation; the two candidate nodes live in the hook, which the
+    // walk hands back.
     public static void RecoverByInOrderHooks(BinaryTreeNode<int> root)
     {
-        State.Prev.Value = null;
-        State.First.Value = null;
-        State.Second.Value = null;
+        var scan = InOrderTraversal.Walk(root, new ScanHooks());
 
-        InOrderTraversal.Walk<int, ScanHooks>(root);
-
-        var first = State.First.Value!;
-        var second = State.Second.Value!;
+        var first = scan.First!;
+        var second = scan.Second!;
         (first.Value, second.Value) = (second.Value, first.Value);
     }
 
@@ -63,24 +59,25 @@ internal static class RecoverBinarySearchTreeSolution
         CollectInOrder(node.Right, values);
     }
 
-    private readonly struct ScanHooks : IInOrderHooks<int>
+    // Remembers the previous node and the first and last inversions it meets. Mutable by
+    // design: the walk hands back the value it finished with.
+    private struct ScanHooks : IInOrderHooks<int>
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
+        private BinaryTreeNode<int>? _previous;
+
+        public BinaryTreeNode<int>? First { get; private set; }
+
+        public BinaryTreeNode<int>? Second { get; private set; }
+
+        public void Visit(BinaryTreeNode<int> node, int depth)
         {
-            if (State.Prev.Value is { } prev && prev.Value > node.Value)
+            if (_previous is { } previous && previous.Value > node.Value)
             {
-                State.First.Value ??= prev;
-                State.Second.Value = node;
+                First ??= previous;
+                Second = node;
             }
 
-            State.Prev.Value = node;
+            _previous = node;
         }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Prev = new();
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> First = new();
-        public static readonly AsyncLocal<BinaryTreeNode<int>?> Second = new();
     }
 }

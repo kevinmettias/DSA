@@ -159,37 +159,26 @@ internal static class DesignMovieRentalSystemSolution
     }
 
     // In-order visits a BST's values in ascending order, so the first cap of them
-    // are the answer. IInOrderHooks.Visit is static and has no early-exit signal
-    // (see InOrderTraversal's own doc note), so the walk covers the whole tree and
-    // the cap only bounds what is kept - the same arrangement
-    // KthSmallestElementInABSTSolution uses, with the buffer in AsyncLocal state
-    // alongside the walk.
+    // are the answer. IInOrderHooks.Visit has no early-exit signal, so the walk
+    // covers the whole tree and the cap only bounds what is kept - the same
+    // arrangement KthSmallestElementInABSTSolution uses.
     private static List<TValue> CollectAscending<TValue>(BinaryTreeNode<TValue>? root, int cap)
         where TValue : IComparable<TValue>
     {
-        CollectState<TValue>.Values.Value = new List<TValue>();
-        CollectState<TValue>.Cap.Value = cap;
-        InOrderTraversal.Walk<TValue, CollectHooks<TValue>>(root);
-        return CollectState<TValue>.Values.Value;
+        var values = new List<TValue>();
+        InOrderTraversal.Walk(root, new CollectHooks<TValue>(values, cap));
+        return values;
     }
 
-    private readonly struct CollectHooks<TValue> : IInOrderHooks<TValue>
+    private readonly struct CollectHooks<TValue>(List<TValue> values, int cap) : IInOrderHooks<TValue>
         where TValue : IComparable<TValue>
     {
-        public static void Visit(BinaryTreeNode<TValue> node, int depth)
+        public void Visit(BinaryTreeNode<TValue> node, int depth)
         {
-            var values = CollectState<TValue>.Values.Value!;
-
-            if (values.Count < CollectState<TValue>.Cap.Value)
+            if (values.Count < cap)
             {
                 values.Add(node.Value);
             }
         }
-    }
-
-    private static class CollectState<TValue>
-    {
-        public static readonly AsyncLocal<List<TValue>> Values = new();
-        public static readonly AsyncLocal<int> Cap = new();
     }
 }

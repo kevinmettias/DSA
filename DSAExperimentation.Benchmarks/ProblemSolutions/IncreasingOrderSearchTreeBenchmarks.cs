@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // IncreasingOrderSearchTreeSolutionTests proves correct. A hand-rolled recursive in-order walk
 // (no repo primitive) threading a running tail node through recursive parameters and
 // return values, vs. this repo's own InOrderTraversal/IInOrderHooks doing the identical
-// Left=null/Right=tail relink through AsyncLocal-threaded state - the same
+// Left=null/Right=tail relink through a hook that carries the tail - the same
 // genuinely-distinct-walk-mechanics comparison KthSmallestElementInABSTBenchmarks
 // already makes for LC 230, not an asymptotic win (both are O(n)). [GlobalSetup]
 // inserts the shuffled source values into this repo's own BinarySearchTree<int> once,

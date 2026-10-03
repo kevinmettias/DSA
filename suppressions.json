@@ -373,13 +373,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/RecordingInOrderHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/SinglyLinkedList/CycleDetection.cs",
       "reason": "each ! is Floyd's tortoise-and-hare's own invariant, named inline as a `presumption: allow` comment beside each site and recorded here too since the default marker policy only honours safety-critical checks: head! in FindCycleStart is safe because FindMeetingPoint only returns non-null after its walk advanced at least once, which requires a non-null head; fromHead.Next!/fromMeetingPoint.Next! are safe because every node walked from head must reach the cycle FindMeetingPoint already proved exists (a singly linked node has exactly one successor, no branch off that path) and .Next never terminates once inside a cycle; slow! is safe because fast always leads slow by construction (two steps per iteration vs. one), so the loop condition proving fast/fast.Next non-null already proves slow reached that same position non-null on an earlier or equal iteration.",
@@ -845,20 +838,6 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/AllElementsInTwoBinarySearchTrees/AllElementsInTwoBinarySearchTreesSolution.cs",
-      "reason": "State.Values.Value! promises the AsyncLocal sink is populated: its Value is assigned immediately before the synchronous InOrderTraversal.Walk on the line above, the walk is the only caller of Visit, and Visit is the only reader, so between the walk starting and finishing the sink is never unset.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/BalanceABinarySearchTree/BalanceABinarySearchTreeSolution.cs",
-      "reason": "State.Sorted.Value! promises the AsyncLocal sink is populated: its Value is assigned immediately before the synchronous InOrderTraversal.Walk, the walk is the only caller of Visit, and Visit is the only reader, so the sink is never unset while the collect is running.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/BinaryTreeLevelOrderTraversal/BinaryTreeLevelOrderTraversalSolution.cs",
       "reason": "Each `Output.Value!` promises the AsyncLocal sink is populated. `LevelHooks.Output` is declared on line 87 and assigned by `BeginCapture` on line 91, which line 71 calls on the statement before the synchronous `LevelGroupedBreadthFirstTraversal.Walk` on lines 72-75; the walk is the only caller of `OnLevel`, and the only read from outside the hook is `return LevelHooks.CapturedLevels;` on line 76, which runs after that walk returns. The sink is therefore set before the walk starts and still set when it returns, and the two `!` - on line 89 in `CapturedLevels` and line 94 in `OnLevel` - sit inside exactly that window.",
       "owner": "@kmettias",
@@ -887,22 +866,8 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/ClosestNodesQueriesInABinarySearchTree/ClosestNodesQueriesInABinarySearchTreeSolution.cs",
-      "reason": "State.Values.Value! promises the AsyncLocal sink is populated: its Value is assigned immediately before the synchronous InOrderTraversal.Walk, the walk is the only caller of Visit, and Visit is the only reader, so the sink is never unset while the collect is running.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/CompleteBinaryTreeInserter/CompleteBinaryTreeInserterSolution.cs",
       "reason": "Each `Output.Value!` promises the AsyncLocal sink is populated. `BeginCapture` is called on line 98, on the statement before the synchronous `LevelGroupedBreadthFirstTraversal.Walk`; the walk is the only caller of `OnLevel`, and the only read from outside the hook is `foreach (var level in LevelHooks.CapturedLevels)` on line 104, which runs after that walk returns. The sink is therefore set before the walk starts and still set when it returns, so the reads on line 151 (`CapturedLevels`) and line 156 (`OnLevel`) are inside exactly that window.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/ConvertBSTToGreaterTree/ConvertBSTToGreaterTreeSolution.cs",
-      "reason": "each State.*.Value! promises its AsyncLocal sink is populated: Values is assigned on the statement before the collecting Walk and read after it, GreaterSums and Index are assigned before the assigning Walk whose Visit is the only reader - so no reader can run between a sink being unset and its walk finishing.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -943,22 +908,8 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/DesignMovieRentalSystem/DesignMovieRentalSystemSolution.cs",
-      "reason": "CollectState\u003cTValue\u003e.Values.Value! promises the AsyncLocal sink is populated: its Value is assigned on the statement before the synchronous InOrderTraversal.Walk, the walk is the only caller of Visit, and Visit is the only reader, so the sink is never unset while the collect is running.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/EncodeAndDecodeTinyURL/EncodeAndDecodeTinyURLSolution.cs",
       "reason": "longUrl! promises the short URL was minted by this instance: _shortToLong is written only by Encode, and Decode is only ever handed a URL Encode produced, so the key looked up here is always present. The check reports the ignore-the-bool TryGetValue idiom rather than an actual possibility of absence.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/FindModeInBinarySearchTree/FindModeInBinarySearchTreeSolution.cs",
-      "reason": "State.Modes.Value! promises the AsyncLocal sink is populated: its Value is assigned before the synchronous InOrderTraversal.Walk, and the sibling branch on line 102 already reads it without an assertion because that same walk is running - the two branches differ only in which count they compare, not in whether the sink exists.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -992,15 +943,8 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/IncreasingOrderSearchTree/IncreasingOrderSearchTreeSolution.cs",
-      "reason": "State.Tail.Value! promises the AsyncLocal tail marker is populated before the first Visit: the caller seeds Tail with the sentinel the walk relinks from, and each Visit reassigns it to the node just appended, so it is non-null at the top of every call including the first.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/KthSmallestElementInABST/KthSmallestElementInABSTSolution.cs",
-      "reason": "result! and State.Result.Value! promise the walk reached rank k: the recursive Visit and the RankHooks Visit both assign the collected node as soon as the running rank reaches k, and k is within the tree's own node count, so the assignment always happens before the walk returns.",
+      "reason": "result! (:19) and the returned RankHooks' Result! (:26) promise the walk reached rank k: the recursive Visit and RankHooks.Visit both assign the value as soon as the running rank reaches k, and k is within the tree's own node count, so the assignment always happens before the walk returns.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1105,7 +1049,7 @@
     {
       "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/RecoverBinarySearchTree/RecoverBinarySearchTreeSolution.cs",
-      "reason": "first! and second! are the two out-of-order nodes the scan assigns together on the iteration that detects an inversion, and the swap runs only after the scan found one - which the problem guarantees, since exactly one swap restores the tree. State.First/State.Second are the AsyncLocal equivalents the RankHooks-shaped scan assigns the same way.",
+      "reason": "first! and second! (:35) are the two out-of-order nodes the scan assigns together on the iteration that detects an inversion, and the swap runs only after the scan found one - which the problem guarantees, since exactly one swap restores the tree. scan.First! and scan.Second! (:45-46) are the same pair, assigned the same way by ScanHooks.Visit and read from the hook value the walk hands back.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2669,14 +2613,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/AllElementsInTwoBinarySearchTrees/AllElementsInTwoBinarySearchTreesSolution.cs",
-      "anchor": "`Values = ",
-      "reason": "`Values = new()` is declared in 4 independent units (AllElementsInTwoBinarySearchTrees/AllElementsInTwoBinarySearchTreesSolution.cs, ClosestNodesQueriesInABinarySearchTree/ClosestNodesQueriesInABinarySearchTreeSolution.cs, ConvertBSTToGreaterTree/ConvertBSTToGreaterTreeSolution.cs, DesignMovieRentalSystem/DesignMovieRentalSystemSolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 4 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/AmbiguousCoordinates/AmbiguousCoordinatesSolution.cs",
       "anchor": "`ZeroDigit = ",
       "reason": "`ZeroDigit = '0'` is declared in 2 independent units (AmbiguousCoordinates/AmbiguousCoordinatesSolution.cs, TheScoreOfStudentsSolvingMathExpression/TheScoreOfStudentsSolvingMathExpressionSolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
@@ -3008,14 +2944,6 @@
       "path": "DSAExperimentation.LeetCode/MinimizeMalwareSpreadII/MinimizeMalwareSpreadIISolution.cs",
       "anchor": "`Connected = ",
       "reason": "`Connected = 1` is declared in 2 independent units (MinimizeMalwareSpreadII/MinimizeMalwareSpreadIISolution.cs, MinimumNumberOfDaysToDisconnectIsland/MinimumNumberOfDaysToDisconnectIslandSolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/MinimumAbsoluteDifferenceInBST/MinimumAbsoluteDifferenceInBSTSolution.cs",
-      "anchor": "`Prev = ",
-      "reason": "`Prev = new()` is declared in 2 independent units (MinimumAbsoluteDifferenceInBST/MinimumAbsoluteDifferenceInBSTSolution.cs, RecoverBinarySearchTree/RecoverBinarySearchTreeSolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4764,6 +4692,62 @@
       "check": "check-mutable-struct",
       "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/CountingVisitHooks.cs",
       "reason": "The fixture exists to be mutable: it counts by value so a test can see that a breadth-first walk hands back the hook value it finished with, which a hook appending to a list it holds cannot show. Its setter is private and only Visit changes it, so the hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/KthSmallestElementInABST/KthSmallestElementInABSTSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the rank still owed and the value found by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/ConvertBSTToGreaterTree/ConvertBSTToGreaterTreeSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the rank it is assigning by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/RecoverBinarySearchTree/RecoverBinarySearchTreeSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the previous node and the two inverted ones by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/FindModeInBinarySearchTree/FindModeInBinarySearchTreeSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the current run, the longest run and the modes by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/IncreasingOrderSearchTree/IncreasingOrderSearchTreeSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the tail of the chain it is building by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/MergeBSTsToCreateSingleBST/MergeBSTsToCreateSingleBSTSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the previous value and whether the run is still ascending by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.LeetCode/MinimumAbsoluteDifferenceInBST/MinimumAbsoluteDifferenceInBSTSolution.cs",
+      "reason": "IInOrderHooks is an instance contract, and InOrderTraversal.Walk hands back the hook value every visit acted on; this hook keeps the previous node and the smallest gap by value, so the answer travels in that returned value with no allocation and no static or AsyncLocal slot. Its fields are private or privately set and change only inside Visit, so the `items[0].Field = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/CountingInOrderHooks.cs",
+      "reason": "The fixture exists to be mutable: it counts by value so a test can see that every in-order visit acted on the one hook value Walk hands back, rather than on a copy a recursive frame was given - which a hook appending to a list it holds cannot show. Its setter is private and only Visit changes it, so the hazard this rule names cannot be written outside the type.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     }
