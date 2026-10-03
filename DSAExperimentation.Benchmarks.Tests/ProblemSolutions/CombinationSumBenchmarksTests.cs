@@ -16,6 +16,12 @@ public sealed partial class CombinationSumBenchmarksTests
 {
     private const int SmallestTarget = 30;
 
+    // The harness's largest target, and how many combinations of 2, 3, 5 and 7 sum to it - counted
+    // by the coin-change recurrence (ways[s] += ways[s - c], one candidate at a time), which is
+    // inside the fewer-than-150 LC 39 promises its tests stay under.
+    private const int LargestTarget = 40;
+    private const int CombinationsSummingToLargestTarget = 90;
+
     [Fact]
     public void Setup_SameTarget_RebuildsTheSameCandidateWorkload()
     {
@@ -43,6 +49,16 @@ public sealed partial class CombinationSumBenchmarksTests
         Assert.Equal(
             AnswerGraphText.OfUnordered(harness.Backtracking()),
             AnswerGraphText.OfUnordered(harness.SpecializedRecursive()));
+    }
+
+    // BenchmarkArmsTests only builds the smallest target, so the largest one's count is pinned here.
+    [Fact]
+    public void Backtracking_LargestTarget_FindsFewerCombinationsThanLeetCodePromises()
+    {
+        var harness = new CombinationSumBenchmarks { Target = LargestTarget };
+        harness.Setup();
+
+        Assert.Equal(CombinationsSummingToLargestTarget, harness.Backtracking().Count);
     }
 
     private static CombinationSumBenchmarks BuildHarness()

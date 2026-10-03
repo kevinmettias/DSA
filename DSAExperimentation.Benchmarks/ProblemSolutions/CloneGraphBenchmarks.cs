@@ -14,7 +14,8 @@ public class CloneGraphBenchmarks
 {
     private Node _graph = null!;
 
-    [Params(10, 1_000)]
+    // LC 133's graph holds at most 100 nodes, valued 1..100.
+    [Params(10, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

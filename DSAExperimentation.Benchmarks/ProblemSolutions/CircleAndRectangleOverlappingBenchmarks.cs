@@ -5,9 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are CircleAndRectangleOverlappingSolution's, the same methods
 // CircleAndRectangleOverlappingSolutionTests proves correct - the brute-force O(width*height)
 // lattice-point scan against the O(1) closed-form clamp-and-distance check. The circle
-// is centred exactly on the rectangle's far corner with radius 0, so it only overlaps at
-// that single last-scanned lattice point, forcing the brute-force scan through its full
-// worst case instead of exiting early.
+// has LC 1401's smallest radius, 1, and is centred one unit past the rectangle's far
+// corner, so it only overlaps at that single last-scanned lattice point, forcing the
+// brute-force scan through its full worst case instead of exiting early.
 public class CircleAndRectangleOverlappingBenchmarks
 {
     private int _radius;
@@ -25,9 +25,9 @@ public class CircleAndRectangleOverlappingBenchmarks
         _x2 = Side;
         _y2 = Side;
 
-        _xCenter = Side;
+        _xCenter = Side + 1;
         _yCenter = Side;
-        _radius = 0;
+        _radius = 1;
     }
 
     [Benchmark(Baseline = true)]

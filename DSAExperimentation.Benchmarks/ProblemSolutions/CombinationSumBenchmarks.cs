@@ -10,7 +10,9 @@ public class CombinationSumBenchmarks
 
     private int[] _candidates = [];
 
-    [Params(30, 60)]
+    // LC 39's target is at most 40, and its tests promise fewer than 150 combinations: these
+    // candidates make 45 at 30 and 90 at 40.
+    [Params(30, 40)]
     public int Target { get; set; }
 
     [GlobalSetup]

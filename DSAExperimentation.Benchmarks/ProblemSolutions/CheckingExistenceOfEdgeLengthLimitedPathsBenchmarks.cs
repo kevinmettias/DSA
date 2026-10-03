@@ -30,13 +30,24 @@ public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
         var edgeCount = NodeCount * EdgeCountPerNodeMultiplier;
         var queryCount = NodeCount * QueryCountPerNodeMultiplier;
 
-        _edgeList = Enumerable.Range(0, edgeCount)
-            .Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount), random.Next(1, MaxEdgeWeight) })
-            .ToArray();
+        _edgeList = Enumerable.Range(0, edgeCount).Select(_ => DrawTriple(random)).ToArray();
+        _queries = Enumerable.Range(0, queryCount).Select(_ => DrawTriple(random)).ToArray();
+    }
 
-        _queries = Enumerable.Range(0, queryCount)
-            .Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount), random.Next(1, MaxEdgeWeight) })
-            .ToArray();
+    // One [from, to, weight] row, edge or query alike. LC 1697 never joins a node to itself in
+    // either, so a second endpoint drawn equal to the first moves on to the next node; the draws
+    // themselves stay in order, so every other row is the one the seed always gave.
+    private int[] DrawTriple(Random random)
+    {
+        var from = random.Next(NodeCount);
+        var to = random.Next(NodeCount);
+        var weight = random.Next(1, MaxEdgeWeight);
+        if (to == from)
+        {
+            to = (to + 1) % NodeCount;
+        }
+
+        return [from, to, weight];
     }
 
     [Benchmark(Baseline = true)]

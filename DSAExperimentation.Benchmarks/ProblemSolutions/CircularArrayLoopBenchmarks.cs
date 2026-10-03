@@ -9,6 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CircularArrayLoopBenchmarks
 {
     private const int SignChoiceCount = 2;
+    private const int MaxStepLength = 1_000;
 
     private int[] _values = [];
 
@@ -19,8 +20,11 @@ public class CircularArrayLoopBenchmarks
     public void Setup()
     {
         var random = new Random(1);
+
+        // A step's magnitude stays below the array length, and LC 457 caps it at 1,000 either way.
+        var magnitudeBoundExclusive = Math.Min(Length, MaxStepLength + 1);
         _values = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(1, Length) * (IsPositiveSign(random) ? 1 : -1))
+            .Select(_ => random.Next(1, magnitudeBoundExclusive) * (IsPositiveSign(random) ? 1 : -1))
             .ToArray();
     }
 

@@ -11,8 +11,9 @@ public sealed partial class CircleAndRectangleOverlappingBenchmarksTests
 {
     private const int SmallestSide = 60;
 
-    // Setup centres the circle on the rectangle's far corner, (Side, Side), with radius 0, so the
-    // corner point is the one place the two shapes meet and the answer is yes. The lattice scan
+    // Setup centres a radius-1 circle at (Side + 1, Side), one unit past the rectangle's far corner
+    // (Side, Side), so that corner is the one lattice point within reach and the answer is yes:
+    // every other point of the rectangle is at least the square root of two away. The lattice scan
     // visits that corner last, its bounds being inclusive on both sides, and the clamped point is
     // that same corner - which is exactly the case the harness builds the workload for, since it
     // forces the scan through the whole rectangle rather than exiting on an early point. A rebuilt
@@ -20,7 +21,7 @@ public sealed partial class CircleAndRectangleOverlappingBenchmarksTests
     private const bool ExpectedVerdict = true;
 
     [Fact]
-    public void Setup_SameSide_RebuildsTheZeroRadiusCircleOnTheFarCorner()
+    public void Setup_SameSide_RebuildsTheUnitCircleTouchingTheFarCorner()
     {
         var first = BuildHarness();
         var second = BuildHarness();
@@ -30,7 +31,7 @@ public sealed partial class CircleAndRectangleOverlappingBenchmarksTests
     }
 
     [Fact]
-    public void HasOverlapByLatticePointScan_ZeroRadiusCircleOnTheFarCorner_AgreesWithClampedDistance()
+    public void HasOverlapByLatticePointScan_UnitCircleTouchingTheFarCorner_AgreesWithClampedDistance()
     {
         var harness = BuildHarness();
 
@@ -38,7 +39,7 @@ public sealed partial class CircleAndRectangleOverlappingBenchmarksTests
     }
 
     [Fact]
-    public void HasOverlapByClampedDistance_ZeroRadiusCircleOnTheFarCorner_AgreesWithLatticePointScan()
+    public void HasOverlapByClampedDistance_UnitCircleTouchingTheFarCorner_AgreesWithLatticePointScan()
     {
         var harness = BuildHarness();
 

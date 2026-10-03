@@ -19,6 +19,10 @@ public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
 
     private const int MaxQueryOffset = 5;
 
+    // LC 2476's node values and queries both start at 1, so the tree's values sit this far above
+    // zero and the queries, which reach MaxQueryOffset past either end of them, never go below 1.
+    private const int ValueShift = MaxQueryOffset + 1;
+
     private BinaryTreeNode<int>? _root;
 
     private int[] _queries = [];
@@ -38,11 +42,12 @@ public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
 
         foreach (var value in values)
         {
-            tree.Insert(value);
+            tree.Insert(value + ValueShift);
         }
 
         _root = tree.Root;
-        _queries = SeededDraws.Values(NodeCount, -MaxQueryOffset, NodeCount + MaxQueryOffset, random);
+        _queries = SeededDraws.Values(
+            NodeCount, ValueShift - MaxQueryOffset, NodeCount + ValueShift + MaxQueryOffset, random);
     }
 
     [Benchmark(Baseline = true)]

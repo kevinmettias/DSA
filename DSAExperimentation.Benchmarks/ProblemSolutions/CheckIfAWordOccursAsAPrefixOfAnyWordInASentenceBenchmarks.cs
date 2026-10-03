@@ -17,7 +17,9 @@ public class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks
 
     private DynamicArray<string> _words = new();
 
-    [Params(200, 5_000)]
+    // LC 1455's sentence is at most 100 characters; this seed's 16 words come to 95, and a 17th
+    // would take it to 101.
+    [Params(4, 16)]
     public int WordCount { get; set; }
 
     [GlobalSetup]

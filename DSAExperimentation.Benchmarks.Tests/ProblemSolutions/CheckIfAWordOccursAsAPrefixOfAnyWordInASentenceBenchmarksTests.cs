@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -10,7 +11,14 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // between them says the two walks stopped at the same word.
 public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarksTests
 {
-    private const int SmallestWordCount = 200;
+    private const int SmallestWordCount = 4;
+
+    // The harness's largest sentence and the seed it is drawn from: sixteen words of three to seven
+    // letters and their fifteen separators must stay inside LC 1455's 100-character sentence.
+    private const int LargestWordCount = 16;
+    private const int SentenceSeed = 1455;
+    private const int MaxSentenceLength = 100;
+    private const int MaxSearchWordLength = 10;
 
     // The problem's own "no word starts with the search word" answer, and the value Setup's
     // workload must produce: the scenario's search word is longer than any generated word and
@@ -43,6 +51,18 @@ public sealed partial class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBench
 
         Assert.Equal(harness.StartsWithScan(), harness.TriePerWordHasPrefix());
     }
+
+    // BenchmarkArmsTests only builds the smallest size, so the largest one's length is pinned here.
+    [Fact]
+    public void Setup_LargestWordCount_BuildsASentenceInsideTheLengthBound() =>
+        Assert.InRange(
+            PrefixSentenceWorkloads.BuildSentence(LargestWordCount, SentenceSeed).Length,
+            1,
+            MaxSentenceLength);
+
+    [Fact]
+    public void UnmatchedSearchWord_Length_StaysInsideTheSearchWordBound() =>
+        Assert.InRange(PrefixSentenceScenario.UnmatchedSearchWord.Length, 1, MaxSearchWordLength);
 
     private static CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks BuildHarness()
     {
