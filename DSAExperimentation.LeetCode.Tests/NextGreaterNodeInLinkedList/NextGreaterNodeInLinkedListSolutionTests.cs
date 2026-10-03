@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.NextGreaterNodeInLinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.NextGreaterNodeInLinkedList;
@@ -26,7 +26,8 @@ public sealed partial class NextGreaterNodeInLinkedListSolutionTests
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            NextGreaterNodeInLinkedListSolution.NextLargerNodesByBruteForceScan(BuildList(values)));
+            NextGreaterNodeInLinkedListSolution.NextLargerNodesByBruteForceScan(
+                LeetCodeWireFormat.ToLinkedList(values)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -34,19 +35,6 @@ public sealed partial class NextGreaterNodeInLinkedListSolutionTests
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            NextGreaterNodeInLinkedListSolution.NextLargerNodesByMonotonicStackSweep(BuildList(values)));
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        foreach (var value in values[1..])
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return head;
-    }
+            NextGreaterNodeInLinkedListSolution.NextLargerNodesByMonotonicStackSweep(
+                LeetCodeWireFormat.ToLinkedList(values)));
 }

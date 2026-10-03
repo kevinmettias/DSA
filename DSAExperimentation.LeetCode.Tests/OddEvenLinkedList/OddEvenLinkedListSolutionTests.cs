@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.OddEvenLinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.OddEvenLinkedList;
@@ -21,37 +21,17 @@ public sealed partial class OddEvenLinkedListSolutionTests
     [MemberData(nameof(Examples))]
     public void GroupOddEvenByTwoListRebuild_LeetCodeExamples_InterleavesOddThenEvenIndices(
         int[] values, int[] expected) =>
-        Assert.Equal(expected, ToArray(OddEvenLinkedListSolution.GroupOddEvenByTwoListRebuild(Build(values))));
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                OddEvenLinkedListSolution.GroupOddEvenByTwoListRebuild(LeetCodeWireFormat.ToLinkedList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void GroupOddEvenByInPlaceRewire_LeetCodeExamples_InterleavesOddThenEvenIndices(
         int[] values, int[] expected) =>
-        Assert.Equal(expected, ToArray(OddEvenLinkedListSolution.GroupOddEvenByInPlaceRewire(Build(values))));
-
-    private static SinglyLinkedListNode<int>? Build(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return [.. values];
-    }
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                OddEvenLinkedListSolution.GroupOddEvenByInPlaceRewire(LeetCodeWireFormat.ToLinkedList(values))));
 }

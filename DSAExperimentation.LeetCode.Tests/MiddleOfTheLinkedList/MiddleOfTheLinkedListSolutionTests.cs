@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.MiddleOfTheLinkedList;
@@ -25,14 +26,16 @@ public sealed partial class MiddleOfTheLinkedListSolutionTests
     public void MiddleNodeBySlowFastTwoPointer_LeetCodeExamples_ReturnsMiddleNode(int[] values, int expected) =>
         Assert.Equal(
             expected,
-            MiddleValue(MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(BuildList(values))));
+            MiddleValue(
+                MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(LeetCodeWireFormat.ToLinkedList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MiddleNodeByCountThenWalk_LeetCodeExamples_ReturnsMiddleNode(int[] values, int expected) =>
         Assert.Equal(
             expected,
-            MiddleValue(MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(BuildList(values))));
+            MiddleValue(
+                MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(LeetCodeWireFormat.ToLinkedList(values))));
 
     // The answer is a node, not a value, so the tail beyond it is part of what was
     // returned: asserting the remaining values pins that the strategies hand back
@@ -41,49 +44,25 @@ public sealed partial class MiddleOfTheLinkedListSolutionTests
     [MemberData(nameof(Examples))]
     public void MiddleNodeBySlowFastTwoPointer_LeetCodeExamples_ReturnsNodeStillLinkedToItsTail(int[] values, int _)
     {
-        var middle = MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(BuildList(values));
+        var middle = MiddleOfTheLinkedListSolution.MiddleNodeBySlowFastTwoPointer(
+            LeetCodeWireFormat.ToLinkedList(values));
 
-        Assert.Equal(values[(values.Length / MidpointDivisor)..], ToArray(middle));
+        Assert.Equal(values[(values.Length / MidpointDivisor)..], LeetCodeWireFormat.FromLinkedList(middle));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MiddleNodeByCountThenWalk_LeetCodeExamples_ReturnsNodeStillLinkedToItsTail(int[] values, int _)
     {
-        var middle = MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(BuildList(values));
+        var middle = MiddleOfTheLinkedListSolution.MiddleNodeByCountThenWalk(
+            LeetCodeWireFormat.ToLinkedList(values));
 
-        Assert.Equal(values[(values.Length / MidpointDivisor)..], ToArray(middle));
+        Assert.Equal(values[(values.Length / MidpointDivisor)..], LeetCodeWireFormat.FromLinkedList(middle));
     }
 
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        foreach (var value in values[1..])
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return head;
-    }
-
-    // LC 876 answers null only for an empty list, and BuildList reads values[0] to build
-    // its head, so every row above hands both strategies a list with a middle node.
+    // LC 876 answers null only for an empty list, and every row above states at least
+    // one value, so both strategies are handed a list with a middle node.
     private static int MiddleValue(SinglyLinkedListNode<int>? middle) =>
         middle?.Value ?? throw new InvalidOperationException(
             "Every example above is a non-empty list, and the solution returns null only for an empty one.");
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
 }

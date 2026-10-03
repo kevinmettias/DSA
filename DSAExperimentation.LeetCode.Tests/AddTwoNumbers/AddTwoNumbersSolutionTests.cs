@@ -1,5 +1,5 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.AddTwoNumbers;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.Tests.AddTwoNumbers;
 
@@ -21,8 +21,9 @@ public sealed partial class AddTwoNumbersSolutionTests
     public void AddByDigitwiseListWalk_LeetCodeExamples_ReturnsDigitwiseSumInReverseOrder(
         int[] first, int[] second, int[] expected)
     {
-        var sum = AddTwoNumbersSolution.AddByDigitwiseListWalk(BuildList(first), BuildList(second));
-        var actual = ToArray(sum);
+        var sum = AddTwoNumbersSolution.AddByDigitwiseListWalk(
+            LeetCodeWireFormat.ToLinkedList(first), LeetCodeWireFormat.ToLinkedList(second));
+        var actual = LeetCodeWireFormat.FromLinkedList(sum);
 
         Assert.Equal(expected, actual);
     }
@@ -32,47 +33,10 @@ public sealed partial class AddTwoNumbersSolutionTests
     public void AddByBigIntegerConvertAndBack_LeetCodeExamples_ReturnsDigitwiseSumInReverseOrder(
         int[] first, int[] second, int[] expected)
     {
-        var sum = AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(BuildList(first), BuildList(second));
-        var actual = ToArray(sum);
+        var sum = AddTwoNumbersSolution.AddByBigIntegerConvertAndBack(
+            LeetCodeWireFormat.ToLinkedList(first), LeetCodeWireFormat.ToLinkedList(second));
+        var actual = LeetCodeWireFormat.FromLinkedList(sum);
 
         Assert.Equal(expected, actual);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        SinglyLinkedListNode<int>? tail = null;
-
-        foreach (var value in values)
-        {
-            var node = new SinglyLinkedListNode<int>(value);
-            head ??= node;
-            AppendAfter(tail, node);
-            tail = node;
-        }
-
-        return head;
-    }
-
-    // No previous node to link on the very first iteration (tail is still null) -
-    // head itself becomes that first node instead, back in BuildList.
-    private static void AppendAfter(SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int> node)
-    {
-        if (tail is not null)
-        {
-            tail.Next = node;
-        }
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

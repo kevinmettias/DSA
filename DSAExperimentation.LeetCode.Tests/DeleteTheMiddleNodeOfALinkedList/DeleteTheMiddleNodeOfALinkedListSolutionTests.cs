@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.DeleteTheMiddleNodeOfALinkedList;
@@ -6,9 +6,9 @@ namespace DSAExperimentation.LeetCode.Tests.DeleteTheMiddleNodeOfALinkedList;
 // Harness only. Both strategies are DeleteTheMiddleNodeOfALinkedListSolution's -
 // this file states LeetCode's published examples once and pins each strategy to
 // them. SinglyLinkedListNode<int> is internal, so it cannot appear in a public
-// TheoryData member; the examples travel as value arrays and BuildList
-// reconstructs a fresh list inside each test method, which every arm needs
-// anyway because deleting is destructive.
+// TheoryData member; the examples travel as value arrays and
+// LeetCodeWireFormat.ToLinkedList reconstructs a fresh list inside each test
+// method, which every arm needs anyway because deleting is destructive.
 public sealed partial class DeleteTheMiddleNodeOfALinkedListSolutionTests
 {
     public static TheoryData<int[], int[]> Examples =>
@@ -27,7 +27,9 @@ public sealed partial class DeleteTheMiddleNodeOfALinkedListSolutionTests
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            ToArray(DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(BuildList(values))));
+            LeetCodeWireFormat.FromLinkedList(
+                DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleByCountThenRebuild(
+                    LeetCodeWireFormat.ToLinkedList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -35,43 +37,7 @@ public sealed partial class DeleteTheMiddleNodeOfALinkedListSolutionTests
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            ToArray(DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(BuildList(values))));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        SinglyLinkedListNode<int>? tail = null;
-
-        foreach (var value in values)
-        {
-            var node = new SinglyLinkedListNode<int>(value);
-            head ??= node;
-            AppendAfter(tail, node);
-            tail = node;
-        }
-
-        return head;
-    }
-
-    // No previous node to link on the very first iteration (tail is still null) -
-    // head itself becomes that first node instead, back in BuildList.
-    private static void AppendAfter(SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int> node)
-    {
-        if (tail is not null)
-        {
-            tail.Next = node;
-        }
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+            LeetCodeWireFormat.FromLinkedList(
+                DeleteTheMiddleNodeOfALinkedListSolution.DeleteMiddleBySlowFastPointers(
+                    LeetCodeWireFormat.ToLinkedList(values))));
 }

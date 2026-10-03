@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SwapNodesInPairs;
 
 namespace DSAExperimentation.LeetCode.Tests.SwapNodesInPairs;
@@ -23,34 +23,16 @@ public sealed partial class SwapNodesInPairsSolutionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void SwapPairsByPointerRewiring_LeetCodeExamples_SwapsAdjacentPairs(int[] values, int[] expected) =>
-        Assert.Equal(expected, ToArray(SwapNodesInPairsSolution.SwapPairsByPointerRewiring(BuildList(values))));
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                SwapNodesInPairsSolution.SwapPairsByPointerRewiring(LeetCodeWireFormat.ToLinkedList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void SwapPairsByArrayRoundTrip_LeetCodeExamples_SwapsAdjacentPairs(int[] values, int[] expected) =>
-        Assert.Equal(expected, ToArray(SwapNodesInPairsSolution.SwapPairsByArrayRoundTrip(BuildList(values))));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(
+                SwapNodesInPairsSolution.SwapPairsByArrayRoundTrip(LeetCodeWireFormat.ToLinkedList(values))));
 }

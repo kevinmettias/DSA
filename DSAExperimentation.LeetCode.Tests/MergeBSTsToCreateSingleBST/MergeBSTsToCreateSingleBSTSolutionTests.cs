@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeBSTsToCreateSingleBST;
 
 namespace DSAExperimentation.LeetCode.Tests.MergeBSTsToCreateSingleBST;
@@ -44,115 +45,19 @@ public sealed partial class MergeBSTsToCreateSingleBSTSolutionTests
     public void CanMergeByLinearScan_LeetCodeExamples_ReturnsMergedBstOrNull(int?[][] trees, int?[] expected) =>
         Assert.Equal(
             expected,
-            LevelOrder(MergeBSTsToCreateSingleBSTSolution.CanMergeByLinearScan(BuildForest(trees))));
+            LeetCodeWireFormat.FromBinaryTree(
+                MergeBSTsToCreateSingleBSTSolution.CanMergeByLinearScan(BuildForest(trees))));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void CanMergeByHashMapIndex_LeetCodeExamples_ReturnsMergedBstOrNull(int?[][] trees, int?[] expected) =>
         Assert.Equal(
             expected,
-            LevelOrder(MergeBSTsToCreateSingleBSTSolution.CanMergeByHashMapIndex(BuildForest(trees))));
+            LeetCodeWireFormat.FromBinaryTree(
+                MergeBSTsToCreateSingleBSTSolution.CanMergeByHashMapIndex(BuildForest(trees))));
 
-    private static List<BinaryTreeNode<int>> BuildForest(int?[][] trees)
-    {
-        var forest = new List<BinaryTreeNode<int>>(trees.Length);
-
-        foreach (var levelOrder in trees)
-        {
-            forest.Add(BuildTree(levelOrder));
-        }
-
-        return forest;
-    }
-
-    // LeetCode's own level-order input shape: a BFS-ordered array with null standing
-    // in for a missing child.
-    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder)
-    {
-        var rootValue = levelOrder[0]
-            ?? throw new InvalidOperationException(
-                "every tree in the examples above starts with its root's value; a null first slot would mean an empty tree.");
-
-        var root = new BinaryTreeNode<int>(rootValue);
-        var queue = new Queue<BinaryTreeNode<int>>();
-        queue.Enqueue(root);
-        var cursor = 1;
-
-        while (cursor < levelOrder.Length)
-        {
-            var current = queue.Dequeue();
-            cursor = AttachChildren(current, levelOrder, queue, cursor);
-        }
-
-        return root;
-    }
-
-    // Attaches the next level-order entries as the left and then the right child of
-    // the node at the front of the queue, and returns the cursor past them.
-    private static int AttachChildren(
-        BinaryTreeNode<int> current, int?[] levelOrder, Queue<BinaryTreeNode<int>> queue, int cursor)
-    {
-        if (levelOrder[cursor] is { } leftValue)
-        {
-            current.Left = new BinaryTreeNode<int>(leftValue);
-            queue.Enqueue(current.Left);
-        }
-
-        cursor++;
-
-        if (cursor < levelOrder.Length && levelOrder[cursor] is { } rightValue)
-        {
-            current.Right = new BinaryTreeNode<int>(rightValue);
-            queue.Enqueue(current.Right);
-        }
-
-        return cursor + 1;
-    }
-
-    // The same shape back out, so an expected tree reads exactly as LeetCode prints
-    // it: trailing nulls trimmed, and an empty array for "no valid merge".
-    private static int?[] LevelOrder(BinaryTreeNode<int>? root)
-    {
-        if (root is null)
-        {
-            return [];
-        }
-
-        var values = CollectLevelOrderValues(root);
-
-        TrimTrailingNulls(values);
-
-        return [.. values];
-    }
-
-    private static List<int?> CollectLevelOrderValues(BinaryTreeNode<int> root)
-    {
-        var values = new List<int?>();
-        var queue = new Queue<BinaryTreeNode<int>?>();
-        queue.Enqueue(root);
-
-        while (queue.Count > 0)
-        {
-            var node = queue.Dequeue();
-            values.Add(node?.Value);
-
-            if (node is not null)
-            {
-                queue.Enqueue(node.Left);
-                queue.Enqueue(node.Right);
-            }
-        }
-
-        return values;
-    }
-
-    // LeetCode trims the trailing nulls of a level-order print, so an expected
-    // array ends at the last real value.
-    private static void TrimTrailingNulls(List<int?> values)
-    {
-        while (values.Count > 0 && values[^1] is null)
-        {
-            values.RemoveAt(values.Count - 1);
-        }
-    }
+    // Every tree in the examples above starts with its root's value, so none of them
+    // reads back as an empty tree.
+    private static List<BinaryTreeNode<int>> BuildForest(int?[][] trees) =>
+        [.. trees.Select(levelOrder => LeetCodeWireFormat.ToBinaryTree(levelOrder)!)];
 }

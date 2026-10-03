@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.PartitionList;
 
 namespace DSAExperimentation.LeetCode.Tests.PartitionList;
@@ -20,8 +20,9 @@ public sealed partial class PartitionListSolutionTests
     public void PartitionByArrayRebuild_LeetCodeExamples_PartitionsList(
         int[] values, int partitionValue, int[] expected)
     {
-        var partitioned = PartitionListSolution.PartitionByArrayRebuild(BuildList(values), partitionValue);
-        var actual = ToArray(partitioned);
+        var partitioned = PartitionListSolution.PartitionByArrayRebuild(
+            LeetCodeWireFormat.ToLinkedList(values), partitionValue);
+        var actual = LeetCodeWireFormat.FromLinkedList(partitioned);
 
         Assert.Equal(expected, actual);
     }
@@ -31,35 +32,10 @@ public sealed partial class PartitionListSolutionTests
     public void PartitionByPointerSplice_LeetCodeExamples_PartitionsList(
         int[] values, int partitionValue, int[] expected)
     {
-        var partitioned = PartitionListSolution.PartitionByPointerSplice(BuildList(values), partitionValue);
-        var actual = ToArray(partitioned);
+        var partitioned = PartitionListSolution.PartitionByPointerSplice(
+            LeetCodeWireFormat.ToLinkedList(values), partitionValue);
+        var actual = LeetCodeWireFormat.FromLinkedList(partitioned);
 
         Assert.Equal(expected, actual);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

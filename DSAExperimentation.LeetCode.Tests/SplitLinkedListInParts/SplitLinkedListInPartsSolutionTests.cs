@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SplitLinkedListInParts;
 
 namespace DSAExperimentation.LeetCode.Tests.SplitLinkedListInParts;
@@ -20,7 +21,7 @@ public sealed partial class SplitLinkedListInPartsSolutionTests
     public void SplitListToPartsByArrayRebuild_LeetCodeExamples_SplitsEvenlyWithEarlyPartsAbsorbingRemainder(
         int[] values, int partCount, int[]?[] expected)
     {
-        var head = Build(values);
+        var head = LeetCodeWireFormat.ToLinkedList(values);
         var parts = SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(head, partCount);
 
         AssertParts(parts, expected);
@@ -31,7 +32,7 @@ public sealed partial class SplitLinkedListInPartsSolutionTests
     public void SplitListToPartsByInPlaceRewire_LeetCodeExamples_SplitsEvenlyWithEarlyPartsAbsorbingRemainder(
         int[] values, int partCount, int[]?[] expected)
     {
-        var head = Build(values);
+        var head = LeetCodeWireFormat.ToLinkedList(values);
         var parts = SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(head, partCount);
 
         AssertParts(parts, expected);
@@ -49,34 +50,8 @@ public sealed partial class SplitLinkedListInPartsSolutionTests
             }
             else
             {
-                Assert.Equal(expected[i], ToArray(parts[i]));
+                Assert.Equal(expected[i], LeetCodeWireFormat.FromLinkedList(parts[i]));
             }
         }
-    }
-
-    private static SinglyLinkedListNode<int>? Build(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return [.. values];
     }
 }

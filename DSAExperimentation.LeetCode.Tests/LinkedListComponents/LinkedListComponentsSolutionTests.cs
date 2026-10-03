@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.LinkedListComponents;
 
 namespace DSAExperimentation.LeetCode.Tests.LinkedListComponents;
@@ -40,7 +40,8 @@ public sealed partial class LinkedListComponentsSolutionTests
     public void CountComponentsByLinearScan_LeetCodeExamples_ReturnsConnectedComponentCount(
         int[] values, int[] nums, int expected)
     {
-        var actual = LinkedListComponentsSolution.CountComponentsByLinearScan(BuildList(values), nums);
+        var actual = LinkedListComponentsSolution.CountComponentsByLinearScan(
+            LeetCodeWireFormat.ToLinkedList(values), nums);
 
         Assert.Equal(expected, actual);
     }
@@ -50,34 +51,9 @@ public sealed partial class LinkedListComponentsSolutionTests
     public void CountComponentsBySetMembership_LeetCodeExamples_ReturnsConnectedComponentCount(
         int[] values, int[] nums, int expected)
     {
-        var actual = LinkedListComponentsSolution.CountComponentsBySetMembership(BuildList(values), nums);
+        var actual = LinkedListComponentsSolution.CountComponentsBySetMembership(
+            LeetCodeWireFormat.ToLinkedList(values), nums);
 
         Assert.Equal(expected, actual);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        SinglyLinkedListNode<int>? tail = null;
-
-        foreach (var value in values)
-        {
-            var node = new SinglyLinkedListNode<int>(value);
-            head ??= node;
-            AppendAfter(tail, node);
-            tail = node;
-        }
-
-        return head;
-    }
-
-    // No previous node to link on the very first iteration (tail is still null) -
-    // head itself becomes that first node instead, back in BuildList.
-    private static void AppendAfter(SinglyLinkedListNode<int>? tail, SinglyLinkedListNode<int> node)
-    {
-        if (tail is not null)
-        {
-            tail.Next = node;
-        }
     }
 }

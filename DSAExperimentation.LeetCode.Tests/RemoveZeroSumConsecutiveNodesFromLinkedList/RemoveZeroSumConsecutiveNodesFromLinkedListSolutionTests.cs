@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveZeroSumConsecutiveNodesFromLinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.RemoveZeroSumConsecutiveNodesFromLinkedList;
@@ -27,8 +27,9 @@ public sealed partial class RemoveZeroSumConsecutiveNodesFromLinkedListSolutionT
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            ToArray(RemoveZeroSumConsecutiveNodesFromLinkedListSolution
-                .RemoveZeroSumSublistsByNestedRescan(BuildList(values))));
+            LeetCodeWireFormat.FromLinkedList(
+                RemoveZeroSumConsecutiveNodesFromLinkedListSolution
+                    .RemoveZeroSumSublistsByNestedRescan(LeetCodeWireFormat.ToLinkedList(values))));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -36,32 +37,7 @@ public sealed partial class RemoveZeroSumConsecutiveNodesFromLinkedListSolutionT
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            ToArray(RemoveZeroSumConsecutiveNodesFromLinkedListSolution
-                .RemoveZeroSumSublistsByPrefixSumMap(BuildList(values))));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+            LeetCodeWireFormat.FromLinkedList(
+                RemoveZeroSumConsecutiveNodesFromLinkedListSolution
+                    .RemoveZeroSumSublistsByPrefixSumMap(LeetCodeWireFormat.ToLinkedList(values))));
 }

@@ -1,5 +1,3 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.LinkedListInBinaryTree;
 
@@ -10,7 +8,7 @@ namespace DSAExperimentation.LeetCode.Tests.LinkedListInBinaryTree;
 // trees the original test used. Trees arrive in LeetCode's own level-order-with-null
 // array shape and lists as plain value arrays, because BinaryTreeNode<int> and
 // SinglyLinkedListNode<int> are internal and cannot appear in a public TheoryData
-// signature; LeetCodeWireFormat.ToBinaryTree and BuildList reconstruct them.
+// signature; LeetCodeWireFormat.ToBinaryTree and ToLinkedList reconstruct them.
 public sealed partial class LinkedListInBinaryTreeSolutionTests
 {
     // LC 1367's own example tree, shared by its three published cases.
@@ -39,7 +37,7 @@ public sealed partial class LinkedListInBinaryTreeSolutionTests
         SubPathExample example)
     {
         var matches = LinkedListInBinaryTreeSolution.IsSubPathByArraySliceWalk(
-            BuildList(example.HeadValues), LeetCodeWireFormat.ToBinaryTree(example.TreeValues));
+            LeetCodeWireFormat.ToLinkedList(example.HeadValues), LeetCodeWireFormat.ToBinaryTree(example.TreeValues));
 
         Assert.Equal(example.Expected, matches);
     }
@@ -50,23 +48,9 @@ public sealed partial class LinkedListInBinaryTreeSolutionTests
         SubPathExample example)
     {
         var matches = LinkedListInBinaryTreeSolution.IsSubPathByLinkedNodeWalk(
-            BuildList(example.HeadValues), LeetCodeWireFormat.ToBinaryTree(example.TreeValues));
+            LeetCodeWireFormat.ToLinkedList(example.HeadValues), LeetCodeWireFormat.ToBinaryTree(example.TreeValues));
 
         Assert.Equal(example.Expected, matches);
-    }
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        for (var i = 1; i < values.Length; i++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[i]);
-            tail = tail.Next;
-        }
-
-        return head;
     }
 
     // One example as one argument. The expected answer is a bool, and a bare `true` or

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseNodesInKGroup;
 
 namespace DSAExperimentation.LeetCode.Tests.ReverseNodesInKGroup;
@@ -22,8 +22,9 @@ public sealed partial class ReverseNodesInKGroupSolutionTests
     public void ReverseKGroupByPointerReversal_LeetCodeExamples_ReversesOnlyCompleteGroups(
         int[] values, int groupSize, int[] expected)
     {
-        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(BuildList(values), groupSize);
-        var actual = ToArray(reversed);
+        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByPointerReversal(
+            LeetCodeWireFormat.ToLinkedList(values), groupSize);
+        var actual = LeetCodeWireFormat.FromLinkedList(reversed);
 
         Assert.Equal(expected, actual);
     }
@@ -33,35 +34,10 @@ public sealed partial class ReverseNodesInKGroupSolutionTests
     public void ReverseKGroupByArrayReverse_LeetCodeExamples_ReversesOnlyCompleteGroups(
         int[] values, int groupSize, int[] expected)
     {
-        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(BuildList(values), groupSize);
-        var actual = ToArray(reversed);
+        var reversed = ReverseNodesInKGroupSolution.ReverseKGroupByArrayReverse(
+            LeetCodeWireFormat.ToLinkedList(values), groupSize);
+        var actual = LeetCodeWireFormat.FromLinkedList(reversed);
 
         Assert.Equal(expected, actual);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SortList;
 
 namespace DSAExperimentation.LeetCode.Tests.SortList;
@@ -24,31 +24,6 @@ public sealed partial class SortListSolutionTests
         int[] values, int[] expected) =>
         Assert.Equal(
             expected,
-            ToArray(SortListSolution.SortByMergeSortOverSequence(BuildList(values))));
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+            LeetCodeWireFormat.FromLinkedList(
+                SortListSolution.SortByMergeSortOverSequence(LeetCodeWireFormat.ToLinkedList(values))));
 }

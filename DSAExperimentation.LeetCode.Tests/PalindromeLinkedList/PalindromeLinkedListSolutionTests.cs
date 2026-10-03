@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.PalindromeLinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.PalindromeLinkedList;
@@ -24,7 +24,7 @@ public sealed partial class PalindromeLinkedListSolutionTests
     [MemberData(nameof(Examples))]
     public void IsPalindromeByStackReversal_LeetCodeExamples_ReturnsExpected(ListCase example)
     {
-        var head = BuildList(example.Values);
+        var head = LeetCodeWireFormat.ToLinkedList(example.Values);
         var isPalindrome = PalindromeLinkedListSolution.IsPalindromeByStackReversal(head);
 
         Assert.Equal(example.Expected, isPalindrome);
@@ -34,24 +34,10 @@ public sealed partial class PalindromeLinkedListSolutionTests
     [MemberData(nameof(Examples))]
     public void IsPalindromeByFastSlowReversal_LeetCodeExamples_ReturnsExpected(ListCase example)
     {
-        var head = BuildList(example.Values);
+        var head = LeetCodeWireFormat.ToLinkedList(example.Values);
         var isPalindrome = PalindromeLinkedListSolution.IsPalindromeByFastSlowReversal(head);
 
         Assert.Equal(example.Expected, isPalindrome);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 
     // One LeetCode example: the values of the list, in order, and whether they read the

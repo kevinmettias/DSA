@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeKSortedLists;
 
 namespace DSAExperimentation.LeetCode.Tests.MergeKSortedLists;
@@ -22,37 +23,17 @@ public sealed partial class MergeKSortedListsSolutionTests
     [Theory]
     [MemberData(nameof(Examples))]
     public void MergeListsByHeap_LeetCodeExamples_ReturnsOneSortedList(int[][] lists, int[] expected) =>
-        Assert.Equal(expected, ToArray(MergeKSortedListsSolution.MergeListsByHeap(BuildLists(lists))));
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(MergeKSortedListsSolution.MergeListsByHeap(BuildLists(lists))));
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void MergeListsByFlattenSort_LeetCodeExamples_ReturnsOneSortedList(int[][] lists, int[] expected) =>
-        Assert.Equal(expected, ToArray(MergeKSortedListsSolution.MergeListsByFlattenSort(BuildLists(lists))));
+        Assert.Equal(
+            expected,
+            LeetCodeWireFormat.FromLinkedList(MergeKSortedListsSolution.MergeListsByFlattenSort(BuildLists(lists))));
 
     private static SinglyLinkedListNode<int>?[] BuildLists(int[][] lists) =>
-        lists.Select(BuildList).ToArray();
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
-    }
+        lists.Select(LeetCodeWireFormat.ToLinkedList).ToArray();
 }

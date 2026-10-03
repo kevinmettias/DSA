@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.SwappingNodesInALinkedList;
@@ -32,9 +32,9 @@ public sealed partial class SwappingNodesInALinkedListSolutionTests
     public void SwapNodesByArrayMaterialize_LeetCodeExamples_SwapsKthFromFrontAndEnd(
         int[] values, int kthPosition, int[] expected)
     {
-        var head = BuildList(values);
+        var head = LeetCodeWireFormat.ToLinkedList(values);
         var swapped = SwappingNodesInALinkedListSolution.SwapNodesByArrayMaterialize(head, kthPosition);
-        var actual = ToArray(swapped);
+        var actual = LeetCodeWireFormat.FromLinkedList(swapped);
 
         Assert.Equal(expected, actual);
     }
@@ -44,36 +44,10 @@ public sealed partial class SwappingNodesInALinkedListSolutionTests
     public void SwapNodesByTwoPointerWalk_LeetCodeExamples_SwapsKthFromFrontAndEnd(
         int[] values, int kthPosition, int[] expected)
     {
-        var head = BuildList(values);
+        var head = LeetCodeWireFormat.ToLinkedList(values);
         var swapped = SwappingNodesInALinkedListSolution.SwapNodesByTwoPointerWalk(head, kthPosition);
-        var actual = ToArray(swapped);
+        var actual = LeetCodeWireFormat.FromLinkedList(swapped);
 
         Assert.Equal(expected, actual);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

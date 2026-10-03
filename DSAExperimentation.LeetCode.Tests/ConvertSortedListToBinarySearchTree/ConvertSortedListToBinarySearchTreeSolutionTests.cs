@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ConvertSortedListToBinarySearchTree;
 
 namespace DSAExperimentation.LeetCode.Tests.ConvertSortedListToBinarySearchTree;
@@ -25,36 +25,12 @@ public sealed partial class ConvertSortedListToBinarySearchTreeSolutionTests
     [MemberData(nameof(Examples))]
     public void BuildByMidpointRecursion_LeetCodeExamples_ProducesHeightBalancedBstInSortedOrder(int[] sortedValues)
     {
-        var head = BuildList(sortedValues);
+        var head = LeetCodeWireFormat.ToLinkedList(sortedValues);
 
         var root = ConvertSortedListToBinarySearchTreeSolution.BuildByMidpointRecursion(head);
 
         Assert.Equal(sortedValues, InOrder(root));
         Assert.True(IsHeightBalanced(root).IsBalanced);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        SinglyLinkedListNode<int>? tail = null;
-
-        foreach (var value in values)
-        {
-            var node = new SinglyLinkedListNode<int>(value);
-
-            if (tail is null)
-            {
-                head = node;
-            }
-            else
-            {
-                tail.Next = node;
-            }
-
-            tail = node;
-        }
-
-        return head;
     }
 
     // Both arms are values: a call that names the empty walk, and a call that names the

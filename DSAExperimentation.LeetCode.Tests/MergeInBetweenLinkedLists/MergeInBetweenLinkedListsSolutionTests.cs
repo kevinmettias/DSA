@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeInBetweenLinkedLists;
 
 namespace DSAExperimentation.LeetCode.Tests.MergeInBetweenLinkedLists;
@@ -47,9 +47,12 @@ public sealed partial class MergeInBetweenLinkedListsSolutionTests
         MergeBetweenExample example)
     {
         var merged = MergeInBetweenLinkedListsSolution.MergeInBetweenByArrayRebuild(
-            BuildList(example.List1), example.A, example.B, BuildList(example.List2));
+            LeetCodeWireFormat.ToLinkedList(example.List1)!,
+            example.A,
+            example.B,
+            LeetCodeWireFormat.ToLinkedList(example.List2)!);
 
-        Assert.Equal(example.Expected, ToArray(merged));
+        Assert.Equal(example.Expected, LeetCodeWireFormat.FromLinkedList(merged));
     }
 
     [Theory]
@@ -58,37 +61,12 @@ public sealed partial class MergeInBetweenLinkedListsSolutionTests
         MergeBetweenExample example)
     {
         var merged = MergeInBetweenLinkedListsSolution.MergeInBetweenByPointerSplice(
-            BuildList(example.List1), example.A, example.B, BuildList(example.List2));
+            LeetCodeWireFormat.ToLinkedList(example.List1)!,
+            example.A,
+            example.B,
+            LeetCodeWireFormat.ToLinkedList(example.List2)!);
 
-        Assert.Equal(example.Expected, ToArray(merged));
-    }
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        // The dummy is the splice point the loop hangs the first real node on; taking
-        // its Next drops the dummy from the list that is handed back.
-        return dummy.Next
-            ?? throw new InvalidOperationException(
-                "every example's list1 holds at least one node, so the loop above always links the dummy to a real head");
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
+        Assert.Equal(example.Expected, LeetCodeWireFormat.FromLinkedList(merged));
     }
 
     // One example as one argument: the five values that describe a single case. They

@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MaximumTwinSumOfALinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.MaximumTwinSumOfALinkedList;
@@ -40,7 +40,7 @@ public sealed partial class MaximumTwinSumOfALinkedListSolutionTests
         int[] values, int expected) =>
         Assert.Equal(
             expected,
-            MaximumTwinSumOfALinkedListSolution.PairSumByArrayIndexTwoPointer(BuildList(values)));
+            MaximumTwinSumOfALinkedListSolution.PairSumByArrayIndexTwoPointer(LeetCodeWireFormat.ToLinkedList(values)));
 
     [Theory]
     [MemberData(nameof(Examples))]
@@ -48,19 +48,5 @@ public sealed partial class MaximumTwinSumOfALinkedListSolutionTests
         int[] values, int expected) =>
         Assert.Equal(
             expected,
-            MaximumTwinSumOfALinkedListSolution.PairSumByDequeFrontBackDrain(BuildList(values)));
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        foreach (var value in values[1..])
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return head;
-    }
+            MaximumTwinSumOfALinkedListSolution.PairSumByDequeFrontBackDrain(LeetCodeWireFormat.ToLinkedList(values)));
 }

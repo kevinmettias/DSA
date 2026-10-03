@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DeleteNodeInALinkedList;
 
 namespace DSAExperimentation.LeetCode.Tests.DeleteNodeInALinkedList;
@@ -23,34 +24,20 @@ public sealed partial class DeleteNodeInALinkedListSolutionTests
     public void DeleteByNextValueCopy_LeetCodeExamples_RemovesTheGivenNode(
         int[] values, int nodeIndex, int[] expected)
     {
-        var head = BuildList(values);
+        var head = LeetCodeWireFormat.ToLinkedList(values)!;
         var target = NodeAt(head, nodeIndex);
 
         DeleteNodeInALinkedListSolution.DeleteByNextValueCopy(target);
 
-        Assert.Equal(expected, ToArray(head));
-    }
-
-    private static SinglyLinkedListNode<int> BuildList(int[] values)
-    {
-        var head = new SinglyLinkedListNode<int>(values[0]);
-        var tail = head;
-
-        for (var i = 1; i < values.Length; i++)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(values[i]);
-            tail = tail.Next;
-        }
-
-        return head;
+        Assert.Equal(expected, LeetCodeWireFormat.FromLinkedList(head));
     }
 
     private static SinglyLinkedListNode<int> NodeAt(SinglyLinkedListNode<int> head, int index)
     {
         var node = head;
 
-        // Every Examples row's nodeIndex stays below the length of the list BuildList
-        // builds for it, so this walk never steps off the tail.
+        // Every Examples row's nodeIndex stays below the length of the list
+        // LeetCodeWireFormat.ToLinkedList builds for it, so this walk never steps off the tail.
         for (var i = 0; i < index; i++)
         {
             node = node.Next
@@ -59,17 +46,5 @@ public sealed partial class DeleteNodeInALinkedListSolutionTests
         }
 
         return node;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }
