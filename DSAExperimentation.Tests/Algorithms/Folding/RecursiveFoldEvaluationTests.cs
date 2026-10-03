@@ -11,7 +11,7 @@ public sealed partial class RecursiveFoldEvaluationTests
 {
     private struct NaturalOrderMarker;
     private struct ReversedOrderMarker;
-    private struct EnterMarker;
+    private struct CombineOrderMarker;
     private struct SingleNodeMarker;
 
     // A -> [B, C, D], B -> [E, F], D -> [G] (TestTrees.NArySample)
@@ -24,13 +24,11 @@ public sealed partial class RecursiveFoldEvaluationTests
         => Assert.Equal("ADGCBFE", EvaluateReversed<ReversedOrderMarker>(TestTrees.NArySample()));
 
     [Fact]
-    public void Evaluate_EntersDepthFirstWithEachNodesDepth()
+    public void Evaluate_CombinesInPostOrder()
     {
-        Evaluate<EnterMarker>(TestTrees.NArySample());
+        Evaluate<CombineOrderMarker>(TestTrees.NArySample());
 
-        Assert.Equal(
-            new[] { ("A", 0), ("B", 1), ("E", 2), ("F", 2), ("C", 1), ("D", 1), ("G", 2) },
-            RecordingNamesFoldAlgebra<EnterMarker>.Entered);
+        Assert.Equal(["E", "F", "B", "C", "G", "D", "A"], RecordingNamesFoldAlgebra<CombineOrderMarker>.Combined);
     }
 
     [Fact]

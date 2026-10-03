@@ -3,9 +3,9 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 
 namespace DSAExperimentation.Algorithms.Folding;
 
-// How to *compute* a fold, not what it means - see the purity caveat on
-// IFoldAlgebra. Interchangeable strategies for pure algebras; NOT interchangeable
-// once Enter/Combine have observable side effects.
+// How to *compute* a fold, not what it means. Interchangeable for every algebra that
+// keeps IFoldAlgebra's one rule - a pure Combine - since the strategies differ only in
+// the order they call it.
 internal interface IFoldEvaluationStrategy<TNode>
     where TNode : class
 {

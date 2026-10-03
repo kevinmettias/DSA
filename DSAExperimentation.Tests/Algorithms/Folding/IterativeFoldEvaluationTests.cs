@@ -15,7 +15,7 @@ public sealed partial class IterativeFoldEvaluationTests
 
     private struct NaturalOrderMarker;
     private struct ReversedOrderMarker;
-    private struct EnterMarker;
+    private struct CombineOrderMarker;
 
     // A -> [B, C, D], B -> [E, F], D -> [G] (TestTrees.NArySample)
     //
@@ -29,16 +29,15 @@ public sealed partial class IterativeFoldEvaluationTests
     public void Evaluate_ReversedChildOrder_ReachesCombineReversed()
         => Assert.Equal("ADGCBFE", EvaluateReversed<ReversedOrderMarker>(TestTrees.NArySample()));
 
-    // Discovery is breadth-first, so Enter sees the levels in turn - the one place an
-    // impure algebra could tell this strategy from the recursive one.
+    // Nodes are discovered breadth-first - A, B, C, D, E, F, G - and combined in reverse, so
+    // every child is combined before its parent without a call stack. Combine order is the
+    // one place an impure algebra could tell this strategy from the recursive one.
     [Fact]
-    public void Evaluate_EntersBreadthFirstWithEachNodesDepth()
+    public void Evaluate_CombinesInReverseBreadthFirstOrder()
     {
-        Evaluate<EnterMarker>(TestTrees.NArySample());
+        Evaluate<CombineOrderMarker>(TestTrees.NArySample());
 
-        Assert.Equal(
-            new[] { ("A", 0), ("B", 1), ("C", 1), ("D", 1), ("E", 2), ("F", 2), ("G", 2) },
-            RecordingNamesFoldAlgebra<EnterMarker>.Entered);
+        Assert.Equal(["G", "F", "E", "D", "C", "B", "A"], RecordingNamesFoldAlgebra<CombineOrderMarker>.Combined);
     }
 
     [Fact]

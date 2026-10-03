@@ -13,12 +13,6 @@ internal readonly struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TA
     public static (TResultA A, TResultB B) Empty
         => (TAlgebraA.Empty, TAlgebraB.Empty);
 
-    public static void Enter(TNode node, int depth)
-    {
-        TAlgebraA.Enter(node, depth);
-        TAlgebraB.Enter(node, depth);
-    }
-
     public static (TResultA A, TResultB B) Combine(TNode node, IReadOnlyList<(TResultA A, TResultB B)> children)
     {
         var childrenA = new TResultA[children.Count];

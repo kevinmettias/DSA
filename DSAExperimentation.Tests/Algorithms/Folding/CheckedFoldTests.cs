@@ -10,7 +10,11 @@ public sealed partial class CheckedFoldTests
     private struct NullRootMarker;
     private struct TreeMarker;
     private struct DiamondMarker;
-    private struct DiamondEnterMarker;
+    private struct DiamondCombineMarker;
+    private struct CycleBelowRootMarker;
+    private struct SelfLoopMarker;
+    private struct EarlierChildCycleMarker;
+    private struct LaterChildCycleMarker;
 
     [Fact]
     public void TryFold_TrueCycle_ReturnsFalseInsteadOfThrowing()
@@ -56,15 +60,70 @@ public sealed partial class CheckedFoldTests
         Assert.Equal("ABDCD", spelled);
     }
 
+    // D is reached through B and again through C, but the second arrival reads the memo: D is
+    // combined once, before the B that needs it, and never again under C.
     [Fact]
-    public void TryFold_SharedDescendant_IsEnteredOnceAtTheDepthFirstReached()
+    public void TryFold_SharedDescendant_IsCombinedOnce()
     {
-        var succeeded = TryFold<DiamondEnterMarker>(TestGraphs.Diamond(), out _);
+        var succeeded = TryFold<DiamondCombineMarker>(TestGraphs.Diamond(), out _);
 
         Assert.True(succeeded);
-        Assert.Equal(
-            new[] { ("A", 0), ("B", 1), ("D", 2), ("C", 1) },
-            RecordingNamesFoldAlgebra<DiamondEnterMarker>.Entered);
+        Assert.Equal(["D", "B", "C", "A"], RecordingNamesFoldAlgebra<DiamondCombineMarker>.Combined);
+    }
+
+    // A -> B -> C -> B: the root is not on the cycle, so the failure has to travel up
+    // through A's own visit to reach TryFold.
+    [Fact]
+    public void TryFold_CycleBelowTheRoot_ReturnsFalse()
+    {
+        var a = new TestNode("A");
+        var b = new TestNode("B");
+        var c = new TestNode("C");
+        a.Children.Add(b);
+        b.Children.Add(c);
+        c.Children.Add(b);
+
+        Assert.False(TryFold<CycleBelowRootMarker>(a, out _));
+    }
+
+    [Fact]
+    public void TryFold_SelfLoop_ReturnsFalse()
+    {
+        var a = new TestNode("A");
+        a.Children.Add(a);
+
+        Assert.False(TryFold<SelfLoopMarker>(a, out _));
+    }
+
+    // A's children are B, which leads round the cycle back to A, then the leaf D. Once B's
+    // branch finds the cycle the walk unwinds: D is never visited, and nothing on the cyclic
+    // path is combined - a leaf D would have been the first node combined had it been reached.
+    [Fact]
+    public void TryFold_CycleUnderAnEarlierChild_NeverVisitsALaterSibling()
+    {
+        TryFold<EarlierChildCycleMarker>(TestGraphs.CycleWithLeaf(), out _);
+
+        Assert.Empty(RecordingNamesFoldAlgebra<EarlierChildCycleMarker>.Combined);
+    }
+
+    // A -> [L, B], B -> C -> B: the leaf L is folded before the cycle under B is found, and the
+    // walk stops there - A itself is never combined.
+    [Fact]
+    public void TryFold_CycleUnderALaterChild_StopsAfterTheEarlierChild()
+    {
+        var a = new TestNode("A");
+        var leaf = new TestNode("L");
+        var b = new TestNode("B");
+        var c = new TestNode("C");
+        a.Children.Add(leaf);
+        a.Children.Add(b);
+        b.Children.Add(c);
+        c.Children.Add(b);
+
+        var succeeded = TryFold<LaterChildCycleMarker>(a, out _);
+
+        Assert.False(succeeded);
+        Assert.Equal(["L"], RecordingNamesFoldAlgebra<LaterChildCycleMarker>.Combined);
     }
 
     private static bool TryFold<TMarker>(TestNode? root, out string spelled)
@@ -73,70 +132,4 @@ public sealed partial class CheckedFoldTests
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             RecordingNamesFoldAlgebra<TMarker>, string>(root, out spelled);
-
-    // VisitOutcome is private to CheckedFold; its Failure is what every level of the
-    // recursion hands back once a cycle is found, and TryFold's false is where it
-    // surfaces.
-    public sealed partial class VisitOutcomeTests
-    {
-        private struct CycleBelowRootMarker;
-        private struct SelfLoopMarker;
-        private struct ShortCircuitMarker;
-        private struct ShortCircuitCombineMarker;
-
-        [Fact]
-        public void Failure_CycleBelowTheRoot_PropagatesUpToTryFold()
-        {
-            // A -> B -> C -> B: the root is not on the cycle, so the failure has to
-            // travel up through A's own visit to reach TryFold.
-            var a = new TestNode("A");
-            var b = new TestNode("B");
-            var c = new TestNode("C");
-            a.Children.Add(b);
-            b.Children.Add(c);
-            c.Children.Add(b);
-
-            var succeeded = TryFold<CycleBelowRootMarker>(a, out _);
-
-            Assert.False(succeeded);
-        }
-
-        [Fact]
-        public void Failure_SelfLoop_IsACycle()
-        {
-            var a = new TestNode("A");
-            a.Children.Add(a);
-
-            var succeeded = TryFold<SelfLoopMarker>(a, out _);
-
-            Assert.False(succeeded);
-        }
-
-        [Fact]
-        public void Failure_StopsTheWalk_SoALaterSiblingIsNeverEntered()
-        {
-            // A's children are B (which leads round the cycle) then D. Once B's branch
-            // fails, A gives up instead of moving on to D.
-            var root = TestGraphs.CycleWithLeaf();
-
-            TryFold<ShortCircuitMarker>(root, out _);
-
-            Assert.Equal(
-                new[] { ("A", 0), ("B", 1), ("C", 2) },
-                RecordingNamesFoldAlgebra<ShortCircuitMarker>.Entered);
-        }
-
-        [Fact]
-        public void Failure_NothingOnTheCyclicPathIsCombined()
-        {
-            var root = TestGraphs.CycleWithLeaf();
-
-            CheckedFold.TryFold<
-                TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-                CountCombineCallsFoldAlgebra<ShortCircuitCombineMarker>, int>(root, out _);
-
-            Assert.Equal(0, CountCombineCallsFoldAlgebra<ShortCircuitCombineMarker>.CombineCalls);
-        }
-    }
 }

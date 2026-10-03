@@ -735,7 +735,7 @@ the distinguishing question is interface substitutability, not the topology axis
 | `Connectivity/` | `ConnectedComponents.cs` | flat — only one tier exists today |
 | `Paths/` | `AllRootToLeafPaths.cs` | flat — only one tier exists today |
 | `Metrics/` | `{DiameterAlgebra,HeightAlgebra,HeightDiameterState,SizeAlgebra,TreeMetrics}.cs` | flat — Tree is the only tier that exists today |
-| `Folding/` | `{CheckedFold,IFoldAlgebra,IFoldEvaluationStrategy,IterativeFoldEvaluation,RecursiveFoldEvaluation,ZipFoldAlgebra}.cs` (general tier) + `Dags/DagFold.cs` (DAG tier) + `Dags/Trees/TreeFold.cs` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
+| `Folding/` | `{CheckedFold,CycleCheckedFold,FoldRecursion,IFoldAlgebra,IFoldEvaluationStrategy,IFoldMemo,IterativeFoldEvaluation,MemoizedFold,RecursiveFoldEvaluation,UnmemoizedFold,ZipFoldAlgebra}.cs` (general tier; one recursion, `FoldRecursion`, with the memo policy as the only axis the three tiers differ by) + `Dags/DagFold.cs` (DAG tier) + `Dags/Trees/TreeFold.cs` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
 | `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
 | `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
 | `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
@@ -1537,8 +1537,8 @@ an exemption. It closed three ways: family-named test files were renamed after t
 (`FoldTests.cs` became `TreeFoldTests.cs`, `MetricsTests.cs` became `TreeMetricsTests.cs`);
 `TraversalTests.cs` and `GraphTests.cs` were split into one class per entry point; and the tests
 that were genuinely missing were written. A nested type is its own unit, so its members are named
-from a test class nested the same way — `CheckedFold.VisitOutcome.Failure` is named by
-`CheckedFoldTests.VisitOutcomeTests`, which drives it through `TryFold`.
+from a test class nested the same way — `BreadthFirstWalk.HooksStep.Enter` is named by
+`BreadthFirstWalkTests.HooksStepTests`, which drives it through the void `Walk` overload.
 
 What is left is `HooksStep.Seed` in `BreadthFirstWalk` and `DepthFirstWalk`, still waived one file
 at a time. It is dead rather than untested: each engine's void `Walk` overload starts from

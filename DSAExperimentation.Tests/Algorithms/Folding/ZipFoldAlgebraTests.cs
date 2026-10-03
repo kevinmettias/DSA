@@ -41,9 +41,4 @@ public sealed partial class ZipFoldAlgebraTests
         Assert.Equal(expectedSize, zipped.A);
         Assert.Equal(expectedHeight, zipped.B);
     }
-
-    [Fact]
-    public void Enter_ForwardsToBothAlgebrasWithoutThrowing() =>
-        Assert.Null(Record.Exception(
-            () => ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Enter(Node, 0)));
 }
