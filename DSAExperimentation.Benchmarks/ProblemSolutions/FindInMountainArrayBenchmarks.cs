@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // values and the descending slope only odd ones, so _target (deep in the
 // descending slope) can never resolve early via the ascending half - the linear
 // scan is forced through nearly the whole array on every invocation, instead of an
-// early exit making it look artificially competitive.
+// early exit making it look artificially competitive. LC 1095 caps the mountain at
+// 10^4 values, so the larger Length is that cap.
 public class FindInMountainArrayBenchmarks
 {
     private const int AscendingStep = 2;
@@ -18,7 +19,7 @@ public class FindInMountainArrayBenchmarks
     private int[] _mountain = [];
 
     private int _target;
-    [Params(1_000, 100_000)]
+    [Params(1_000, 10_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

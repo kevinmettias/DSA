@@ -16,7 +16,7 @@ public sealed partial class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningT
     // tree has one fewer edge than it has nodes.
     private const int MinClassifiedEdgeCount = SmallestNodeCount - 1;
 
-    // Setup adds a spanning chain plus extra random edges, dropping only the self-loops it draws.
+    // Setup adds a spanning chain plus extra random edges, dropping the self-loops and repeated pairs it draws.
     private const int MaxClassifiedEdgeCount =
         (SmallestNodeCount - 1) + (SmallestNodeCount * ExtraEdgeMultiplier);
 

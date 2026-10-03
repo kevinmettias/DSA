@@ -5,7 +5,8 @@ using DSAExperimentation.LeetCode.FindModeInBinarySearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindModeInBinarySearchTreeSolution's, the same
-// methods FindModeInBinarySearchTreeSolutionTests proves correct.
+// methods FindModeInBinarySearchTreeSolutionTests proves correct. LC 501 caps the
+// tree at 10^4 nodes, so the larger NodeCount is that cap.
 public class FindModeInBinarySearchTreeBenchmarks
 {
     // Average node count per distinct value, so the tree has realistic duplicate runs.
@@ -16,7 +17,7 @@ public class FindModeInBinarySearchTreeBenchmarks
 
     private BinaryTreeNode<int>? _root;
 
-    [Params(500, 20_000)]
+    [Params(500, 10_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

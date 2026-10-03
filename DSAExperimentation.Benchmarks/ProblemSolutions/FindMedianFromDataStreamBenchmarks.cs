@@ -13,7 +13,8 @@ public class FindMedianFromDataStreamBenchmarks
     // LC problem number, reused as the fixed benchmark-data seed.
     private const int RandomSeed = 295;
 
-    private const int MaxStreamValue = 1_000_000;
+    // The stream is drawn below this, inside LC 295's largest num, 10^5.
+    private const int MaxStreamValue = 100_000;
 
     private int[] _stream = [];
 

@@ -19,7 +19,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // set of all distinct values, not a seed-dependent subset.
 public sealed partial class FindModeInBinarySearchTreeBenchmarksTests
 {
-    // The smaller of Setup's [Params(500, 20_000)] node counts.
+    // The smaller of Setup's [Params(500, 10_000)] node counts.
     private const int SmallestNodeCount = 500;
 
     // The fixture's own copies per distinct value, restated so the expected mode set is derived

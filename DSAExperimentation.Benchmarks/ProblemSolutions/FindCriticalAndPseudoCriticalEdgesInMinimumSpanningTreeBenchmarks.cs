@@ -12,7 +12,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // A spanning chain guarantees connectivity; the extra random edges are what give
 // Kruskal real ties and cycles to resolve. Building the edge list and sorting it by
 // weight is input construction, so it is charged to [GlobalSetup] and handed to each
-// strategy's prepared-input overload.
+// strategy's prepared-input overload. LC 1489 caps a graph at 100 nodes and 200
+// edges and lists each pair once, so the larger NodeCount is 100, a drawn pair that
+// repeats an earlier one is skipped, and the extra edges stop at the 200th.
 //
 // Both arms return LeetCode's actual answer - the two index lists - rather than the
 // count of classified edges the previous benchmark measured. See the solution class
@@ -24,9 +26,11 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
     private const int MaxEdgeWeight = 1_000;
     private const int ExtraEdgeMultiplier = 3;
 
+    private const int MaxEdgeCount = 200;
+
     private WeightedEdgeList _graph = null!;
 
-    [Params(40, 150)]
+    [Params(40, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
@@ -51,6 +55,9 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 
     private void AddExtraRandomEdges(List<int[]> edges, Random random)
     {
+        var chainPairs = edges.Select(edge => (edge[0], edge[1]));
+        var listed = new HashSet<(int, int)>(chainPairs);
+
         for (var extra = 0; extra < NodeCount * ExtraEdgeMultiplier; extra++)
         {
             var a = random.Next(NodeCount);
@@ -58,8 +65,22 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 
             if (a != b)
             {
-                edges.Add([Math.Min(a, b), Math.Max(a, b), random.Next(1, MaxEdgeWeight)]);
+                // The weight is drawn whether or not the edge is kept, so every later draw stays
+                // where it was.
+                int[] edge = [Math.Min(a, b), Math.Max(a, b), random.Next(1, MaxEdgeWeight)];
+                AddIfUnlisted(edges, listed, edge);
             }
+        }
+    }
+
+    // Keeps an edge only while there is room under LC 1489's 200 and its pair is not listed yet.
+    private static void AddIfUnlisted(List<int[]> edges, HashSet<(int, int)> listed, int[] edge)
+    {
+        var hasRoom = edges.Count < MaxEdgeCount;
+
+        if (hasRoom && listed.Add((edge[0], edge[1])))
+        {
+            edges.Add(edge);
         }
     }
 

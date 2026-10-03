@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // is also subtraction's own worst case (gcd(1, max) costs max - 1 single-unit decrements).
 public sealed partial class FindGreatestCommonDivisorOfArrayBenchmarksTests
 {
-    // The smaller of Setup's [Params(200, 5_000)] lengths.
+    // The smaller of Setup's [Params(200, 1_000)] lengths.
     private const int SmallestLength = 200;
 
     // Setup's own guarantee: a minimum of 1 makes the gcd of the two extremes 1 for any maximum.

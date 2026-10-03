@@ -7,26 +7,26 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods FindGreatestCommonDivisorOfArraySolutionTests proves correct. The min/max scan is
 // the same O(n) work either way, so what the workload has to expose is the single
 // Gcd(min, max) call - _nums[0] is forced to 1 (subtraction's worst case:
-// gcd(1, max) forces exactly max-1 single-unit decrements) and MaxValueExclusive is
-// pushed well past LC 1979's own 1000-value bound, the same departure
-// NumberOfDifferentSubsequencesGCDsBenchmarks/CheckIfItIsAGoodArrayBenchmarks make,
-// because at the real bound subtraction's O(max) cost is too small to separate from
-// the shared O(n) scan.
+// gcd(1, max) forces exactly max-1 single-unit decrements). LC 1979 caps the array
+// at 1000 values of at most 1000, so the larger Length is that cap and those
+// decrements stop near 999, too few to separate subtraction's O(max) cost from the
+// shared O(n) scan; the gap is measured where LeetCode poses it anyway.
 public class FindGreatestCommonDivisorOfArrayBenchmarks
 {
     private const int RandomSeed = 1979;
-    private const int MaxValueExclusive = 2_000_000;
+    // One past LC 1979's largest value, 1000.
+    private const int NumberUpperBoundExclusive = 1_001;
 
     private int[] _nums = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
+        _nums = SeededDraws.Values(Length, 1, NumberUpperBoundExclusive, random);
         _nums[0] = 1;
     }
 

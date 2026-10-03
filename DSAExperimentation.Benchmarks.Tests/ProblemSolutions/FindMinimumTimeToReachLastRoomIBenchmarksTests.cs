@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // path to it is at least one move long, and each move costs a second.
 public sealed partial class FindMinimumTimeToReachLastRoomIBenchmarksTests
 {
-    // The smaller of Setup's [Params(20, 60)] grid sides.
+    // The smaller of Setup's [Params(20, 50)] grid sides.
     private const int SmallestSize = 20;
 
     [Fact]
