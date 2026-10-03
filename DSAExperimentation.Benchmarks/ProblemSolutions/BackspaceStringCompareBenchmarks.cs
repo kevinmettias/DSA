@@ -19,7 +19,8 @@ public class BackspaceStringCompareBenchmarks
     private string _firstText = "";
 
     private string _secondText = "";
-    [Params(200, 5_000)]
+    // LC 844's strings are at most 200 characters.
+    [Params(20, 200)]
     public int Length { get; set; }
 
     [GlobalSetup]

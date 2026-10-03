@@ -17,7 +17,8 @@ public class BaseballGameBenchmarks
 
     private string[] _ops = [];
 
-    [Params(200, 5_000)]
+    // LC 682 gives at most 1,000 operations.
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

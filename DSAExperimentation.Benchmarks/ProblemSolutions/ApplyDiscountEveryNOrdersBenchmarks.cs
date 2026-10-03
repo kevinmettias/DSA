@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // early exit making it look artificially competitive.
 public class ApplyDiscountEveryNOrdersBenchmarks
 {
-    private const int PricePerUnit = 10;
+    private const int PricePerUnit = 5;
     private const int DiscountEvery = 3;
     private const int DiscountPercent = 50;
 
@@ -20,7 +20,9 @@ public class ApplyDiscountEveryNOrdersBenchmarks
     private ApplyDiscountEveryNOrdersSolution.ICashier _hashMapLookup = null!;
     private int[] _billProductIds = [];
     private int[] _billAmounts = [];
-    [Params(200, 5_000)]
+    // LC 1357's catalogue holds at most 200 products, each priced at most 1,000, so product i
+    // costs 5i and the largest catalogue's last product costs exactly 1,000.
+    [Params(20, 200)]
     public int ProductCount { get; set; }
 
     [GlobalSetup]

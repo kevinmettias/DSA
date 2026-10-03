@@ -7,21 +7,18 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // square against four ray walks - so a harness whose arms disagree has searched two different boards. A rook
 // captures at most one pawn per direction, so the count is bounded by four and that bound is asserted as well
 // rather than resting on the arms agreeing with each other. Setup places the rook and the pawns on its row and
-// column from one fixed seed, so the same Size must rebuild the same board.
+// column from one fixed seed, so Setup must rebuild the same board every time.
 public sealed partial class AvailableCapturesForRookBenchmarksTests
 {
-    // The smaller of Setup's [Params(50, 500)] board sizes.
-    private const int SmallestSize = 50;
-
     // Four directions, at most one pawn captured in each before the rook is blocked.
     private const int MaxRookCaptures = 4;
 
     [Fact]
-    public void Setup_SameSize_RebuildsTheSameBoard() =>
+    public void Setup_RunTwice_RebuildsTheSameBoard() =>
         Assert.Equal(BuildHarness().FullBoardScan(), BuildHarness().FullBoardScan());
 
     [Fact]
-    public void FullBoardScan_FiftySquareBoard_AgreesWithDirectRayWalk()
+    public void FullBoardScan_EightByEightBoard_AgreesWithDirectRayWalk()
     {
         var harness = BuildHarness();
 
@@ -30,7 +27,7 @@ public sealed partial class AvailableCapturesForRookBenchmarksTests
     }
 
     [Fact]
-    public void DirectRayWalk_FiftySquareBoard_AgreesWithFullBoardScan()
+    public void DirectRayWalk_EightByEightBoard_AgreesWithFullBoardScan()
     {
         var harness = BuildHarness();
 
@@ -40,7 +37,7 @@ public sealed partial class AvailableCapturesForRookBenchmarksTests
 
     private static AvailableCapturesForRookBenchmarks BuildHarness()
     {
-        var harness = new AvailableCapturesForRookBenchmarks { Size = SmallestSize };
+        var harness = new AvailableCapturesForRookBenchmarks();
         harness.Setup();
 
         return harness;

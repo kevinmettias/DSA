@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the length alone with no random draw, so the same Length must rebuild the same operations.
 public sealed partial class BaseballGameBenchmarksTests
 {
-    // The smaller of Setup's [Params(200, 5_000)] script lengths.
+    // The smaller of Setup's [Params(200, 1_000)] script lengths.
     private const int SmallestLength = 200;
 
     [Fact]

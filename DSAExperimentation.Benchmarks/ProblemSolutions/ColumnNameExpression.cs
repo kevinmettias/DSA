@@ -3,7 +3,8 @@ using System.Text;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // The input BasicCalculatorIVBenchmarks' arms are fed: a sum of `length` distinct base-26
-// "spreadsheet column" variable names (a, b, ..., z, aa, ab, ...) joined by '+'. Every name it
+// "spreadsheet column" variable names (a, b, ..., z, aa, ab, ...) joined by " + ", since LC 770
+// separates every token by a single space. Every name it
 // emits is valid per LC 770's lowercase-letters-only variable grammar however large the
 // requested length grows, so the one generator serves every Length row the harness declares.
 // Pure and stateless: an int in, a string out, sharing nothing with the arms that consume it.
@@ -11,6 +12,8 @@ internal static class ColumnNameExpression
 {
     // Base-26 "spreadsheet column" alphabet size (a-z).
     private const int AlphabetSize = 26;
+
+    private const string Plus = " + ";
 
     internal static string Build(int length)
     {
@@ -20,7 +23,7 @@ internal static class ColumnNameExpression
         {
             if (i > 0)
             {
-                builder.Append('+');
+                builder.Append(Plus);
             }
 
             builder.Append(VariableName(i));

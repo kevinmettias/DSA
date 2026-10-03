@@ -1,27 +1,20 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.DataStructures;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for BinarySearchTreeIteratorBenchmarks (ARCHITECTURE 17.9): the class has a
 // single arm, so there is no second strategy to reconcile it against and the assertion has to come
 // from the workload's construction instead - [Benchmark] drains a fresh iterator end to end and
-// returns every value it saw. Fixtures.BinaryTrees.Balanced makes the last of them decisive: it
-// builds the complete tree in heap layout, node i's children at 2i + 1 and 2i + 2 with the value
-// equal to the index, so an in-order drain visits every node once and ends on the bottom of the
-// right spine, which is the largest index still inside the node count.
+// returns every value it saw. Setup labels each node of the complete tree with its in-order rank,
+// so the tree is a binary search tree over 0..n-1 and an in-order drain must report exactly those
+// values in ascending order - every node once, none out of place.
 public sealed partial class BinarySearchTreeIteratorBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
 
     [Fact]
-    public void DrainInOrder_CompleteTreeWithTwoHundredNodes_VisitsEveryNodeAndEndsOnTheRightSpine()
-    {
-        var drained = BuildHarness().DrainInOrder();
-
-        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), drained.Order());
-        Assert.Equal(RightSpineTerminal(SmallestNodeCount), drained[^1]);
-    }
+    public void DrainInOrder_CompleteSearchTreeWithTwoHundredNodes_ReportsEveryValueInAscendingOrder() =>
+        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), BuildHarness().DrainInOrder());
 
     private static BinarySearchTreeIteratorBenchmarks BuildHarness()
     {
@@ -29,29 +22,5 @@ public sealed partial class BinarySearchTreeIteratorBenchmarksTests
         harness.Setup();
 
         return harness;
-    }
-
-    // In-order visits a node's left subtree, then the node, then its right subtree, so the value it
-    // reports last is the one at the bottom of the right spine; in this fixture's heap layout that
-    // spine is the chain 0, 2, 6, 14, ... and it ends at the last index that still holds a node.
-    private static int RightSpineTerminal(int nodeCount)
-    {
-        var index = 0;
-
-        while (RightChild(index) < nodeCount)
-        {
-            index = RightChild(index);
-        }
-
-        return index;
-    }
-
-    // The fixture places node i's children at BranchingFactor * i + 1 and the index right after
-    // that, the same arithmetic Fixtures.BinaryTrees.Balanced itself writes out.
-    private static int RightChild(int index)
-    {
-        var leftChild = (AlgorithmConstants.BranchingFactor * index) + 1;
-
-        return leftChild + 1;
     }
 }

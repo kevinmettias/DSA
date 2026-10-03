@@ -14,8 +14,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // fixture admits; strengthening it further would mean changing what the benchmark feeds its arms.
 public sealed partial class BackspaceStringCompareBenchmarksTests
 {
-    // The smaller of Setup's [Params(200, 5_000)] keystroke-run lengths.
-    private const int SmallestLength = 200;
+    // The smaller of Setup's [Params(20, 200)] keystroke-run lengths.
+    private const int SmallestLength = 20;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>

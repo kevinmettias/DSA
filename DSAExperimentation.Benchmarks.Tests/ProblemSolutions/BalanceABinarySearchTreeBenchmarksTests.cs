@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for BalanceABinarySearchTreeBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
 // pin: that the rebuilt tree is as short as any tree of its node count can be, a bound known without consulting
-// either arm. Setup's input is a right-only chain of the ascending values 0..n-1, which the midpoint split turns
+// either arm. Setup's input is a right-only chain of the ascending values 1..n, which the midpoint split turns
 // into a minimum-height BST. Both arms return the rebuilt root as object? (the node type is internal, CS0050).
 public sealed partial class BalanceABinarySearchTreeBenchmarksTests
 {

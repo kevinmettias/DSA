@@ -8,25 +8,27 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RookSquare its hoisted overload takes, so locating the rook - an O(rows*cols)
 // scan that would swamp the ray walk it is meant to expose - is charged to
 // [GlobalSetup] rather than to the measured search.
+//
+// LC 999's board is always 8x8, so there is no size axis: the comparison is the
+// constant-factor cost of scanning all 64 squares against walking the rook's four rays.
 public class AvailableCapturesForRookBenchmarks
 {
     private const int PawnSpawnProbabilityDenominator = 4;
+    private const int SquaresPerSide = 8;
 
     private char[][] _board = [];
 
     private RookSquare _rook;
-    [Params(50, 500)]
-    public int Size { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
-        _board = Enumerable.Range(0, Size).Select(_ => Enumerable.Repeat('.', Size).ToArray()).ToArray();
-        _rook = new RookSquare(Size / AlgorithmConstants.HalvingFactor, Size / AlgorithmConstants.HalvingFactor);
+        _board = Enumerable.Range(0, SquaresPerSide).Select(_ => Enumerable.Repeat('.', SquaresPerSide).ToArray()).ToArray();
+        _rook = new RookSquare(SquaresPerSide / AlgorithmConstants.HalvingFactor, SquaresPerSide / AlgorithmConstants.HalvingFactor);
         _board[_rook.Row][_rook.Col] = 'R';
 
-        for (var col = 0; col < Size; col++)
+        for (var col = 0; col < SquaresPerSide; col++)
         {
             if (col != _rook.Col && random.Next(PawnSpawnProbabilityDenominator) == 0)
             {
@@ -34,7 +36,7 @@ public class AvailableCapturesForRookBenchmarks
             }
         }
 
-        for (var row = 0; row < Size; row++)
+        for (var row = 0; row < SquaresPerSide; row++)
         {
             if (row != _rook.Row && random.Next(PawnSpawnProbabilityDenominator) == 0)
             {

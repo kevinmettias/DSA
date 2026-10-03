@@ -10,8 +10,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // doubles, so the comparison carries the class's own named tolerance rather than exact equality.
 public sealed partial class ApplyDiscountEveryNOrdersBenchmarksTests
 {
-    // The smaller of Setup's [Params(200, 5_000)] catalogue sizes.
-    private const int SmallestProductCount = 200;
+    // The smaller of Setup's [Params(20, 200)] catalogue sizes.
+    private const int SmallestProductCount = 20;
 
     // Both arms sum the same per-product charges, so agreement is expected far below this; the
     // tolerance exists so a last-bit difference in the two accumulations cannot fail the harness
@@ -26,7 +26,7 @@ public sealed partial class ApplyDiscountEveryNOrdersBenchmarksTests
             RelativeTolerance);
 
     [Fact]
-    public void LinearScanLookup_TwoHundredProductBill_AgreesWithHashMapLookup()
+    public void LinearScanLookup_TwentyProductBill_AgreesWithHashMapLookup()
     {
         var harness = BuildHarness();
 
@@ -35,7 +35,7 @@ public sealed partial class ApplyDiscountEveryNOrdersBenchmarksTests
     }
 
     [Fact]
-    public void HashMapLookup_TwoHundredProductBill_AgreesWithLinearScanLookup()
+    public void HashMapLookup_TwentyProductBill_AgreesWithLinearScanLookup()
     {
         var harness = BuildHarness();
 

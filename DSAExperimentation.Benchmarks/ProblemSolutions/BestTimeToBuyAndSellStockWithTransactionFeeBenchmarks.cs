@@ -23,7 +23,8 @@ public class BestTimeToBuyAndSellStockWithTransactionFeeBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _prices = SeededDraws.Values(Length, 0, MaxPrice, random);
+        // LC 714's prices start at 1.
+        _prices = SeededDraws.Values(Length, 1, MaxPrice, random);
     }
 
     [Benchmark(Baseline = true)]

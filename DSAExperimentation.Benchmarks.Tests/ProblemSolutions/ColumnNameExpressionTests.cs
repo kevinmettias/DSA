@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // it is the pure, stateless generator BasicCalculatorIVBenchmarks' arms are fed, so it has no
 // competing arms to reconcile and no [Params] property. The assertion therefore comes from what its
 // own comment makes decisive - length distinct base-26 "spreadsheet column" names (a, b, ..., z, aa,
-// ab, ...) joined by '+', every one of them valid per LC 770's lowercase-letters-only variable
+// ab, ...) joined by " + ", every one of them valid per LC 770's lowercase-letters-only variable
 // grammar however large the requested length grows.
 public sealed partial class ColumnNameExpressionTests
 {
@@ -17,7 +17,7 @@ public sealed partial class ColumnNameExpressionTests
     // The whole rendering ThirtyNames' build produces, pinned so a wrong carry cannot hide behind a
     // correct join.
     private const string ThirtyNameExpression =
-        "a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+aa+ab+ac+ad";
+        "a + b + c + d + e + f + g + h + i + j + k + l + m + n + o + p + q + r + s + t + u + v + w + x + y + z + aa + ab + ac + ad";
 
     // LC 770's variable grammar: one or more lowercase letters, nothing else.
     private const string LowercaseNamePattern = "^[a-z]+$";
@@ -25,6 +25,15 @@ public sealed partial class ColumnNameExpressionTests
     // The name at index SingleLetterAlphabetSize - the first past the single-letter alphabet, where
     // the base-26 counter carries.
     private const string FirstTwoLetterName = "aa";
+
+    // LC 770 separates every token by a single space.
+    private const string Plus = " + ";
+
+    // BasicCalculatorIVBenchmarks' largest size, and the length its expression must come to: 26
+    // one-letter and 29 two-letter names are 84 letters, and 54 three-character separators add 162,
+    // which is 246 - inside LC 770's 250-character expression.
+    private const int FiftyFiveNames = 55;
+    private const int FiftyFiveNameExpressionLength = 246;
 
     [Fact]
     public void Build_ZeroLength_ReturnsAnEmptyExpression() =>
@@ -41,7 +50,7 @@ public sealed partial class ColumnNameExpressionTests
     [Fact]
     public void Build_TwoHundredNames_EmitsOnlyDistinctLowercaseNames()
     {
-        var names = ColumnNameExpression.Build(TwoHundredNames).Split('+');
+        var names = ColumnNameExpression.Build(TwoHundredNames).Split(Plus);
 
         Assert.Equal(TwoHundredNames, names.Length);
         Assert.Equal(TwoHundredNames, names.Distinct().Count());
@@ -55,5 +64,10 @@ public sealed partial class ColumnNameExpressionTests
     public void Build_PastTheSingleLetterAlphabet_ContinuesWithTheTwoLetterHandful() =>
         Assert.Equal(
             FirstTwoLetterName,
-            ColumnNameExpression.Build(SingleLetterAlphabetSize + 1).Split('+')[SingleLetterAlphabetSize]);
+            ColumnNameExpression.Build(SingleLetterAlphabetSize + 1).Split(Plus)[SingleLetterAlphabetSize]);
+
+    // The largest expression BasicCalculatorIVBenchmarks times has to stay inside LC 770's bound.
+    [Fact]
+    public void Build_FiftyFiveNames_StaysInsideTheExpressionLengthBound() =>
+        Assert.Equal(FiftyFiveNameExpressionLength, ColumnNameExpression.Build(FiftyFiveNames).Length);
 }

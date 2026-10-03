@@ -11,8 +11,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Setup builds that expression from the length alone, so the same Length must rebuild the same text.
 public sealed partial class BasicCalculatorIVBenchmarksTests
 {
-    // The smaller of Setup's [Params(200, 2_000)] variable counts.
-    private const int SmallestLength = 200;
+    // The smaller of Setup's [Params(5, 55)] variable counts.
+    private const int SmallestLength = 5;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
@@ -21,7 +21,7 @@ public sealed partial class BasicCalculatorIVBenchmarksTests
             AnswerGraphText.Of(BuildHarness().DictionaryPolynomial()));
 
     [Fact]
-    public void DictionaryPolynomial_TwoHundredVariableSum_AgreesWithHashMapMergeSort()
+    public void DictionaryPolynomial_FiveVariableSum_AgreesWithHashMapMergeSort()
     {
         var harness = BuildHarness();
         var terms = harness.DictionaryPolynomial();
@@ -31,7 +31,7 @@ public sealed partial class BasicCalculatorIVBenchmarksTests
     }
 
     [Fact]
-    public void HashMapMergeSort_TwoHundredVariableSum_AgreesWithDictionaryPolynomial()
+    public void HashMapMergeSort_FiveVariableSum_AgreesWithDictionaryPolynomial()
     {
         var harness = BuildHarness();
         var terms = harness.HashMapMergeSort();
