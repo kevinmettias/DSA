@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TopKFrequentWordsSolutionTests proves correct - a full sort with a tie-break comparer
 // (O(d log d) over d distinct words) vs. counting into this repo's own
 // HashMap<string,int> and keeping only the k "best" words in a size-k min-heap
-// (O(d log k)). Length stops at LC 692's 500 words, each "word" plus a LetterNames
+// (O(d log k)). Length stops at LC 692's 500 words, each "word" plus a LowercaseNames
 // suffix, so every word is lowercase letters only and at most 10 of them.
 public class TopKFrequentWordsBenchmarks
 {
@@ -30,7 +30,7 @@ public class TopKFrequentWordsBenchmarks
         // frequency skew (with genuine ties) emerges.
         _words = Enumerable.Range(0, Length)
             .Select(_ => random.Next(0, WordPoolSize))
-            .Select(index => WordPrefix + LetterNames.Of(index))
+            .Select(index => WordPrefix + LowercaseNames.Of(index))
             .ToArray();
     }
 
