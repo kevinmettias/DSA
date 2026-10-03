@@ -4,7 +4,7 @@ namespace DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperatio
 // replace s with the length-(n-1) string of (s[i]+s[i+1]) % 10 for consecutive
 // pairs, until exactly two digits remain, and report whether they're equal.
 //
-// s.Length is at most 10, so no repo primitive earns its place here - both
+// s.Length is at most 100, and no repo primitive earns its place here - both
 // strategies below are plain digit-array composition, the same "internals stay
 // BCL" the naive arm of every migrated problem already keeps. The two strategies
 // are genuinely different algorithms, not one primitive-composing and one
@@ -41,7 +41,10 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
     // 10. With k = s.Length - 2, position 0 and position 1 of that row are exactly
     // the two digits IsEqualByAdjacentSumReduction ends with - computed here by
     // building the coefficient row once instead of materializing every
-    // intermediate string.
+    // intermediate string. The row is built modulo 10: only the final digit is ever
+    // read, Pascal's rule is a sum, and a sum's last digit depends only on its terms'
+    // last digits. Built exactly, the row overflows an int from s.Length 36 on -
+    // C(34, 17) is already past int.MaxValue - and the answer silently goes wrong.
     public static bool IsEqualByPascalRowCoefficients(string digitString)
     {
         var digits = ToDigits(digitString);
@@ -60,7 +63,7 @@ internal static class CheckIfDigitsAreEqualInStringAfterOperationsISolution
         {
             for (var j = i; j > 0; j--)
             {
-                coefficients[j] += coefficients[j - 1];
+                coefficients[j] = (coefficients[j] + coefficients[j - 1]) % DecimalDigitModulus;
             }
         }
 

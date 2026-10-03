@@ -21,7 +21,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // benchmark's budget. The two are compared at the slot counts both run.
 public class MaximumAndSumOfArrayBenchmarks
 {
-    private const int MaxValueExclusive = 1 << 20;
+    // LC 2172's own bound on a value: 1 <= nums[i] <= 15.
+    private const int MaxValueExclusive = 16;
     private const int RandomSeed = 2172; // LC problem number
     private const int ElementsPerSlot = 2;
 

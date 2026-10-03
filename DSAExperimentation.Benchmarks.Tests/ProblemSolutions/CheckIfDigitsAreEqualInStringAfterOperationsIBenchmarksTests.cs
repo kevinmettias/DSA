@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the two strategies reached the same verdict on the same digit string.
 public sealed partial class CheckIfDigitsAreEqualInStringAfterOperationsIBenchmarksTests
 {
-    private const int SmallestLength = 3;
+    private const int SmallestLength = 10;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameDigitString()

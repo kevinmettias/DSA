@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are CheckIfDigitsAreEqualInStringAfterOperationsISolution's,
 // the same methods CheckIfDigitsAreEqualInStringAfterOperationsISolutionTests proves
 // correct. Neither strategy has anything worth hoisting out of the measured call -
-// parsing a <=10-character digit string is not meaningfully separable preprocessing
+// parsing a <=100-character digit string is not meaningfully separable preprocessing
 // - so [GlobalSetup] only builds the workload string.
 public class CheckIfDigitsAreEqualInStringAfterOperationsIBenchmarks
 {
@@ -15,8 +15,9 @@ public class CheckIfDigitsAreEqualInStringAfterOperationsIBenchmarks
 
     private string _digits = "";
 
-    // LC's own bound: 3 <= s.Length <= 10.
-    [Params(3, 10)]
+    // LC's own bound is 3 <= s.Length <= 100. The top size is the one that once broke the
+    // Pascal-row arm, whose exact binomials overflowed an int from length 36 on.
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
