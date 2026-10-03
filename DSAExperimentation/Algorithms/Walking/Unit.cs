@@ -1,6 +1,6 @@
 namespace DSAExperimentation.Algorithms.Walking;
 
-// Purely an implementation detail of the shared walk engines below - the result
-// type for a step that only runs for its side effects. Never appears in any public
-// signature; IDepthFirstHooks/IBreadthFirstHooks stay void.
+// The state type of a reduce that carries nothing - one run only for what the walk
+// itself does, as ConnectedComponents' reduce runs only to mark a component's nodes in
+// its visited set. Never appears in any public signature.
 internal readonly record struct Unit;

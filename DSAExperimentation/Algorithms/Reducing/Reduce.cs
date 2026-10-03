@@ -5,10 +5,11 @@ using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Reducing;
 
-// One entry point per topology tier - mirroring DepthFirstTraversal/
-// BreadthFirstTraversal's Walk/WalkGraph split: which guard gets wired in is chosen
-// by the compiler, not exposed as a caller-visible parameter, so an unguarded
-// reduce over a topology that doesn't prove unique ancestry is unrepresentable. Tree
+// One entry point per topology tier, and the gate DepthFirstTraversal/
+// BreadthFirstTraversal ride too, since each is a reduce whose state is its hook:
+// which guard gets wired in is chosen by the compiler, not exposed as a
+// caller-visible parameter, so an unguarded reduce over a topology that doesn't
+// prove unique ancestry is unrepresentable. Tree
 // only compiles against ITreeTopology and always uses UnguardedVisit; Graph is the
 // only path into a cyclic/shared topology, and it always pays for
 // TrackedVisitGuard.

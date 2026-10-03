@@ -1,16 +1,13 @@
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 using DSAExperimentation.Algorithms.Reducing;
-using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 
 namespace DSAExperimentation.Algorithms.Walking;
 
-// The single depth-first engine behind every DFS-shaped consumer: DepthFirstReduceOrder
-// (via the state-threading overload - IReduceAlgebra already has exactly this shape,
-// reused by both Reduce.Tree and Reduce.Graph regardless of which guard they pass
-// in), and DepthFirstTraversal.Walk/WalkGraph (via the void overload below). A
-// tree-only walk and a graph-safe walk differ by
-// exactly one thing - whether a child needs to be checked against a visited-set
+// The single depth-first engine behind every DFS-shaped consumer: Reduce.Tree and
+// Reduce.Graph reach it through DepthFirstReduceOrder, whichever guard they pass in,
+// and DepthFirstTraversal reaches it through Reduce, threading its hook as the state.
+// A tree-only walk and a graph-safe walk differ by exactly one thing - whether a child needs to be checked against a visited-set
 // before being walked - so that's the only axis exposed as a type parameter
 // (TGuard); everything else about the recursion is shared. Constrained on the
 // weaker IGraphTopology rather than ITreeTopology since both entry points share
@@ -46,41 +43,5 @@ internal static class DepthFirstWalk
         }
 
         return TStep.Exit(state, node, depth);
-    }
-
-    // Unit is the terminal object in the category of types - there's exactly one
-    // function from anything into it, so "run a void IDepthFirstHooks pair through
-    // the state-threading walk above" has exactly one sensible implementation. That
-    // canonical embedding lives here, once, beside the engine it specializes,
-    // rather than being rewritten at each consumer that wants void hooks.
-    internal static void Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, THooks>(
-        TNode node, int depth, TGuard guard)
-        where TNode : class
-        where TTopology : struct, IGraphTopology<TNode, TChildren>
-        where TChildren : struct, IChildren<TNode>
-        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
-        where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : struct, IVisitGuard<TNode>
-        where THooks : struct, IDepthFirstHooks<TNode>
-        => Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, HooksStep<TNode, THooks>, Unit>(
-            node, depth, default, guard);
-
-    private readonly struct HooksStep<TNode, THooks> : IReduceAlgebra<TNode, Unit>
-        where TNode : class
-        where THooks : struct, IDepthFirstHooks<TNode>
-    {
-        public static Unit Seed => default;
-
-        public static Unit Enter(Unit state, TNode node, int depth)
-        {
-            THooks.Enter(node, depth);
-            return default;
-        }
-
-        public static Unit Exit(Unit state, TNode node, int depth)
-        {
-            THooks.Exit(node, depth);
-            return default;
-        }
     }
 }

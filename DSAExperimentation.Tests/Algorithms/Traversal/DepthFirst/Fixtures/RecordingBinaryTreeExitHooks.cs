@@ -3,13 +3,13 @@ using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 
 namespace DSAExperimentation.Tests.Algorithms.Traversal.DepthFirst.Fixtures;
 
-// TMarker isolates static storage per test - same precedent as RecordingExitHooks.
-internal readonly struct RecordingBinaryTreeExitHooks<TValue, TMarker> : IDepthFirstHooks<BinaryTreeNode<TValue>>
-    where TMarker : struct
+// RecordingExitHooks over a BinaryTreeNode, recording each node's value.
+internal readonly struct RecordingBinaryTreeExitHooks<TValue>(List<(TValue Value, int Depth)> exited)
+    : IDepthFirstHooks<BinaryTreeNode<TValue>>
 {
-    private static readonly List<(TValue Value, int Depth)> Log = [];
+    public void Enter(BinaryTreeNode<TValue> node, int depth)
+    {
+    }
 
-    public static IReadOnlyList<(TValue Value, int Depth)> Exited => Log;
-
-    public static void Exit(BinaryTreeNode<TValue> node, int depth) => Log.Add((node.Value, depth));
+    public void Exit(BinaryTreeNode<TValue> node, int depth) => exited.Add((node.Value, depth));
 }

@@ -5,7 +5,10 @@ using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 
-// One entry point per topology tier - see DepthFirstTraversal for the reasoning.
+// One entry point per topology tier - see Reduce for the reasoning. TopDown keeps
+// that gate itself rather than riding Reduce's the way DepthFirstTraversal does: it
+// hands each child a state computed from its parent's, which a single threaded
+// accumulator cannot express (see ITopDownHooks).
 // Depth-first only: there's no BreadthFirst counterpart yet, since every problem
 // motivating this primitive (root-to-leaf state) is naturally depth-first, and
 // building one speculatively without a real use case would be exactly the kind of

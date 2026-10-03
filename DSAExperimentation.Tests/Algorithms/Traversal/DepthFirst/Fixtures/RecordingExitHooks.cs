@@ -3,15 +3,13 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Traversal.DepthFirst.Fixtures;
 
-// TMarker isolates static storage per test (a fresh nested marker type gives each
-// test its own backing list even though the hook type is otherwise identical), so
-// tests can run in parallel without sharing state.
-internal readonly struct RecordingExitHooks<TMarker> : IDepthFirstHooks<TestNode>
-    where TMarker : struct
+// Appends each exited node and its depth to the list it was built with, which each test
+// builds for itself, so no two tests share one. Enter is left empty: a post-order hook.
+internal readonly struct RecordingExitHooks(List<(string Name, int Depth)> exited) : IDepthFirstHooks<TestNode>
 {
-    private static readonly List<(string Name, int Depth)> Log = [];
+    public void Enter(TestNode node, int depth)
+    {
+    }
 
-    public static IReadOnlyList<(string Name, int Depth)> Exited => Log;
-
-    public static void Exit(TestNode node, int depth) => Log.Add((node.Name, depth));
+    public void Exit(TestNode node, int depth) => exited.Add((node.Name, depth));
 }

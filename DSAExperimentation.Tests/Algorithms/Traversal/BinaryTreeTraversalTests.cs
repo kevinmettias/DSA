@@ -15,14 +15,12 @@ namespace DSAExperimentation.Tests.Algorithms.Traversal;
 // sitting beside ConnectedComponentsTests.cs for a second concrete topology.
 public sealed partial class BinaryTreeTraversalTests
 {
-    private struct PreOrderMarker;
-    private struct PostOrderMarker;
     private struct LevelGroupMarker;
 
     [Fact]
     public void Dfs_Enter_FiresInPreOrder()
     {
-        var root = BinaryTreeTrees.Sample();
+        var entered = new List<(int Value, int Depth)>();
 
         DepthFirstTraversal.Walk<
             BinaryTreeNode<int>,
@@ -30,17 +28,18 @@ public sealed partial class BinaryTreeTraversalTests
             BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
             BinaryTreeChildren<int>,
-            RecordingBinaryTreeEnterHooks<int, PreOrderMarker>>(root);
+            RecordingBinaryTreeEnterHooks<int>>(
+            BinaryTreeTrees.Sample(), new RecordingBinaryTreeEnterHooks<int>(entered));
 
         Assert.Equal(
             new[] { 4, 2, 1, 3, 6, 7 },
-            RecordingBinaryTreeEnterHooks<int, PreOrderMarker>.Entered.Select(v => v.Value));
+            entered.Select(v => v.Value));
     }
 
     [Fact]
     public void Dfs_Exit_FiresInPostOrder()
     {
-        var root = BinaryTreeTrees.Sample();
+        var exited = new List<(int Value, int Depth)>();
 
         DepthFirstTraversal.Walk<
             BinaryTreeNode<int>,
@@ -48,11 +47,12 @@ public sealed partial class BinaryTreeTraversalTests
             BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
             BinaryTreeChildren<int>,
-            RecordingBinaryTreeExitHooks<int, PostOrderMarker>>(root);
+            RecordingBinaryTreeExitHooks<int>>(
+            BinaryTreeTrees.Sample(), new RecordingBinaryTreeExitHooks<int>(exited));
 
         Assert.Equal(
             new[] { 1, 3, 2, 7, 6, 4 },
-            RecordingBinaryTreeExitHooks<int, PostOrderMarker>.Exited.Select(v => v.Value));
+            exited.Select(v => v.Value));
     }
 
     [Fact]

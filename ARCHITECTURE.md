@@ -1542,20 +1542,21 @@ rooted-tree primitives, `Walking/**` (which had no tests at all), `TopDownTraver
 and both `Domain/` folders — taking the suite from ~2,900 to ~3,550 tests and retiring 35 waivers
 outright.
 
-**That backlog is closed except for one member in two files.** It was listed file by file in
+**That backlog is closed.** It was listed file by file in
 `suppressions.json`, each waiver naming its members and stating that it recorded debt rather than
 an exemption. It closed three ways: family-named test files were renamed after the type they test
 (`FoldTests.cs` became `TreeFoldTests.cs`, `MetricsTests.cs` became `TreeMetricsTests.cs`);
 `TraversalTests.cs` and `GraphTests.cs` were split into one class per entry point; and the tests
 that were genuinely missing were written. A nested type is its own unit, so its members are named
-from a test class nested the same way — `BreadthFirstWalk.HooksStep.Enter` is named by
-`BreadthFirstWalkTests.HooksStepTests`, which drives it through the void `Walk` overload.
+from a test class nested the same way — `BreadthFirstTraversal.HooksStep.Enter` is named by
+`BreadthFirstTraversalTests.HooksStepTests`, which drives it through the traversal's own entry
+points.
 
-What is left is `HooksStep.Seed` in `BreadthFirstWalk` and `DepthFirstWalk`, still waived one file
-at a time. It is dead rather than untested: each engine's void `Walk` overload starts from
-`default(Unit)` and never reads it, so it exists only because `IReduceAlgebra` declares `Seed`
-static abstract. No honest test can name a member nothing calls, which makes closing it a
-production decision — start that overload from `HooksStep`'s own `Seed`, or keep the waiver.
+The last member open was `HooksStep.Seed`, then nested in `BreadthFirstWalk` and `DepthFirstWalk`
+and dead: each engine's void `Walk` overload started from `default(Unit)` and never read it. It
+closed when traversal hooks became instance values that each traversal threads through `Reduce` as
+the state. `HooksStep` moved into the traversals, and their `(root)` overloads start from it, so
+`Seed` is now the starting hook of every walk handed no hook of its own, and a test names it.
 
 ### 18.4 The rule for new work
 

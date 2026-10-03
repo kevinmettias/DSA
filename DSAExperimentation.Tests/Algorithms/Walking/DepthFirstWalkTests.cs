@@ -1,6 +1,5 @@
 using DSAExperimentation.Algorithms.Walking;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
-using DSAExperimentation.Tests.Algorithms.Traversal.DepthFirst.Fixtures;
 using DSAExperimentation.Tests.Algorithms.Walking.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
@@ -130,60 +129,4 @@ public sealed partial class DepthFirstWalkTests
     }
 
     public readonly record struct WalkExample(GraphShape Shape, int StartDepth, string[] Names, int[] Depths);
-
-    // HooksStep is private to DepthFirstWalk: it is how the void Walk overload runs a
-    // pair of IDepthFirstHooks through the state-threading engine, so that overload is
-    // the way in. Its Seed is not tested because nothing reads it - the void overload
-    // starts the engine from default(Unit) directly.
-    public sealed partial class HooksStepTests
-    {
-        private struct EnterMarker;
-        private struct ExitMarker;
-        private struct StartDepthMarker;
-
-        //      A
-        //     / \
-        //    B   C
-        //   / \
-        //  D   E      (WalkGraphs.Tree)
-        [Fact]
-        public void Enter_FiresTheHooksEnterInPreOrderWithEachNodesDepth()
-        {
-            WalkWithHooks<EnterMarker>(WalkGraphs.Tree(), 0);
-
-            Assert.Equal(
-                new[] { ("A", 0), ("B", 1), ("D", 2), ("E", 2), ("C", 1) },
-                RecordingEnterExitHooks<EnterMarker>.Entered);
-        }
-
-        [Fact]
-        public void Exit_FiresTheHooksExitInPostOrderWithEachNodesDepth()
-        {
-            WalkWithHooks<ExitMarker>(WalkGraphs.Tree(), 0);
-
-            Assert.Equal(
-                new[] { ("D", 2), ("E", 2), ("B", 1), ("C", 1), ("A", 0) },
-                RecordingEnterExitHooks<ExitMarker>.Exited);
-        }
-
-        [Fact]
-        public void Enter_AndExit_ReportDepthRelativeToTheStartingDepth()
-        {
-            WalkWithHooks<StartDepthMarker>(WalkGraphs.Tree(), 3);
-
-            Assert.Equal(
-                new[] { ("A", 3), ("B", 4), ("D", 5), ("E", 5), ("C", 4) },
-                RecordingEnterExitHooks<StartDepthMarker>.Entered);
-            Assert.Equal(
-                new[] { ("D", 5), ("E", 5), ("B", 4), ("C", 4), ("A", 3) },
-                RecordingEnterExitHooks<StartDepthMarker>.Exited);
-        }
-
-        private static void WalkWithHooks<TMarker>(TestNode root, int startDepth)
-            where TMarker : struct
-            => DepthFirstWalk.Walk<
-                TestNode, TestTopology, ListChildren<TestNode>,
-                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-                UnguardedVisit<TestNode>, RecordingEnterExitHooks<TMarker>>(root, startDepth, default);
-    }
 }

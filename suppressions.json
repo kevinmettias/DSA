@@ -31,34 +31,6 @@
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/RecordingVisitHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingEnterExitHooks.cs",
-      "reason": "the static fields' owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingEnterHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingExitHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
       "path": "DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs",
       "reason": "the field is static because the hook it satisfies is static-abstract - ILevelGroupedHooks is implemented by a struct whose members are static, so no Hooks instance exists that could own the result buffer, and no restructuring of the hook can create one (the traversal takes THooks as a static-interface-generic parameter). What makes the sharing safe is AsyncLocal, not the field's placement: the list belongs to the flow that called Walk, LevelGroupedBreadthFirstTraversal runs to completion on that flow, and a second traversal started on another thread writes its own flow's list, never this one's - the same confinement the async-local hook buffers elsewhere in this tier rely on. The mutable-container half of the rule still sees the List, so the reason is recorded here rather than in the source, which this repository's markers policy (safety-only) refuses.",
       "owner": "@kmettias",
@@ -402,20 +374,6 @@
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingBinaryTreeEnterHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/RecordingBinaryTreeExitHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
       "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/RecordingInOrderHooks.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
       "owner": "@kmettias",
@@ -719,20 +677,6 @@
       "check": "check-test-coverage",
       "path": "DSAExperimentation.LeetCode/*/**",
       "reason": "Scoped to the problem folders, and to what the tier's own tests cannot name by construction. Each solution is now tested by <Problem>SolutionTests at the mirrored path in DSAExperimentation.LeetCode.Tests, so the check attributes every strategy directly, and LeetCodeStrategyCoverageTests fails if any <Operation>By<Strategy> member lacks a test method named for it - the strategies themselves are no longer behind this entry. (Its earlier reason, that solution and harness file names did not correspond, stopped being true with that rename; before it this entry absorbed about 4,590 findings.) Measured 2026-10-03 with the entry removed: 2,197 findings in 580 files, all on helpers that 17.3 and 17.7 test through the strategy that composes them. 1,775 are members of types nested inside a <Problem>Solution - the IRecurrence, topology, algebra and hook witnesses an engine calls back (Replay 286 times, GetChildren, GetEdges, Combine, Visit), and the per-strategy classes of design problems whose methods are LeetCode's own operation names (Push, Pop, Get, Book). 393 are the same kinds of witness in a problem folder's own file (RoomWaysAlgebra.cs). 29 are a solution class's public input-preparation helpers - the 17.4 hoisted-overload builders a benchmark's [GlobalSetup] calls (BuildHopGraph, BuildDistanceMatrix) - which LeetCodeStrategyCoverageTests does not yet require a named test for. 1,524 of the 2,197 are 'exercised by a test, and NO TEST NAMES IT'; the rest are contract or helper members reached only through the strategy. Files at the tier's root (LeetCodeAdjacency, LeetCodeIntervals) are outside this entry and carry tests of their own; Conventions/ is under its path and reports no finding.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/BreadthFirstWalk.cs",
-      "reason": "OPEN WORK, not an exemption. Only HooksStep.Seed is left unnamed here: Enter is named by BreadthFirstWalkTests.HooksStepTests, which drives the void Walk overload that HooksStep exists to serve. Seed is dead code rather than untested code - that overload starts the state-threading engine from default(Unit) and never reads HooksStep.Seed, which exists only because IReduceAlgebra declares Seed static abstract (making it throw leaves every DSAExperimentation.Tests and LeetCode.Tests test green). A test cannot honestly name a member nothing calls, so closing this is a production decision: start the void overload from HooksStep's own Seed, making it the walk's real starting state, or accept the interface obligation and keep this entry.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Walking/DepthFirstWalk.cs",
-      "reason": "OPEN WORK, not an exemption. Only HooksStep.Seed is left unnamed here: Enter and Exit are named by DepthFirstWalkTests.HooksStepTests, which drives the void Walk overload that HooksStep exists to serve. Seed is dead code rather than untested code - that overload starts the state-threading engine from default(Unit) and never reads HooksStep.Seed, which exists only because IReduceAlgebra declares Seed static abstract (making it throw leaves every DSAExperimentation.Tests and LeetCode.Tests test green). A test cannot honestly name a member nothing calls, so closing this is a production decision: start the void overload from HooksStep's own Seed, making it the walk's real starting state, or accept the interface obligation and keep this entry.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4806,6 +4750,20 @@
       "check": "check-mutable-struct",
       "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
       "reason": "ZipFoldAlgebra is not a readonly struct for the reason its fields are not readonly (see this file's check-readonly-fields entry): readonly would force a defensive copy of each zipped algebra on every Combine. Both fields are private and assigned only by the constructor, so the `items[0]._first = x` hazard this rule names cannot be written outside the type, and every fold engine takes the algebra by value, as IFoldAlgebra requires.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/DepthFirst/Fixtures/CountingEnterExitHooks.cs",
+      "reason": "The fixture exists to be mutable: it counts by value so a test can see that a depth-first walk hands back the hook value it finished with, the contract IDepthFirstHooks states and the one thing a hook that appends to a list it holds cannot show, since such a list fills whichever copy the walk returns. Its setters are private and only Enter and Exit change them, so the `items[0].Entered = x` hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/CountingVisitHooks.cs",
+      "reason": "The fixture exists to be mutable: it counts by value so a test can see that a breadth-first walk hands back the hook value it finished with, which a hook appending to a list it holds cannot show. Its setter is private and only Visit changes it, so the hazard this rule names cannot be written outside the type.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     }

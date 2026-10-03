@@ -13,20 +13,20 @@ namespace DSAExperimentation.Algorithms.Connectivity;
 // TarjanState.DiscoveryIndex.Count doubles as the running discovery counter (index assigned =
 // count before insertion), so no separate mutable counter needs threading through the
 // recursion. The five pieces of per-call mutable state are bundled into one record and passed
-// by reference rather than as five separate parameters - CheckedFold.cs's own recursion
-// threads its two scratch structures (completed, inProgress) as bare parameters, but that
-// shape hits this gate's own check-parameter-count limit once a fifth and sixth piece of
-// state (onStack, callStack, components) join discoveryIndex/lowLink, so this bundles instead.
+// by reference rather than as five separate parameters - the move CycleCheckedFold makes for
+// the fold's two scratch structures (completed, inProgress), and the one this gate's own
+// check-parameter-count limit forces here once a fifth and sixth piece of state (onStack,
+// callStack, components) join discoveryIndex/lowLink.
 //
 // Real C# recursion, not an explicit stack, matching DepthFirstWalk.cs's engine and
 // CheckedFold.cs's own "deliberately recursive-only" precedent: DepthFirstWalk's
-// IVisitGuard/IDepthFirstHooks engine can't be reused here regardless, since it has no
+// IVisitGuard/IReduceAlgebra engine can't be reused here regardless, since it has no
 // per-child-result callback and this needs to fold a child's low-link into its parent's
 // immediately after that child's recursive call returns. The SCC-accumulation stack is a
 // plain BCL Stack<TNode>, not this repo's own DataStructures/Stack - that type is reserved
 // for substituting the literal call stack of an iterative traversal (DepthFirstSearch.cs's
 // only use of it), and recursion already provides that here; this stack is just
-// Operations-internal bookkeeping, the same bucket CheckedFold's HashSet/Dictionary occupy.
+// Operations-internal bookkeeping, the same bucket CycleCheckedFold's HashSet/Dictionary occupy.
 //
 // Unenforced precondition, the same self-discovering shape ConnectedComponents.Count relies
 // on (undocumented there, stated explicitly here): nodes must include a representative from
