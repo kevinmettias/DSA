@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SerializeAndDeserializeBST;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBST;

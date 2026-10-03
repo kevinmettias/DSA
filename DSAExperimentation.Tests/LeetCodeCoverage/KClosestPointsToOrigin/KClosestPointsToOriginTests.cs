@@ -18,6 +18,9 @@ public sealed partial class KClosestPointsToOriginTests
             { [[-5, 4], [-6, -5], [4, 6]], 2, [[-5, 4], [4, 6]] },
             { [[2, 2]], 1, [[2, 2]] },
             { [[0, 1], [1, 0]], 2, [[0, 1], [1, 0]] },
+
+            // k equal to the point count: every point is returned, nothing is cut.
+            { [[1, 1], [2, 2]], 2, [[1, 1], [2, 2]] },
         };
 
     [Theory]

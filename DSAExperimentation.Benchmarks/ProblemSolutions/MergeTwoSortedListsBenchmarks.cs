@@ -1,15 +1,14 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeTwoSortedLists;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeTwoSortedListsSolution's, the same methods
 // MergeTwoSortedListsTests proves correct. Both arms relink the nodes they are handed, so the
-// lists are rebuilt from the value arrays inside each measurement - the same boundary conversion
-// MergeTwoSortedListsRegistration performs - rather than being merged a second time on nodes an
-// earlier iteration already spliced.
+// lists are rebuilt from the value arrays inside each measurement rather than being merged a
+// second time on nodes an earlier iteration already spliced.
 [MemoryDiagnoser]
 public class MergeTwoSortedListsBenchmarks
 {

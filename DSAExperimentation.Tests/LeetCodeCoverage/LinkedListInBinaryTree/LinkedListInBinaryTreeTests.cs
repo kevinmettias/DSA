@@ -1,6 +1,6 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.LinkedListInBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.LinkedListInBinaryTree;

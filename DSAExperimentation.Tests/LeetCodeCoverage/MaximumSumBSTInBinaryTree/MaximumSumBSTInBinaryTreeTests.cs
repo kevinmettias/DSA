@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MaximumSumBSTInBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumSumBSTInBinaryTree;

@@ -1,13 +1,14 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 
-namespace DSAExperimentation.LeetCode.Harness;
+namespace DSAExperimentation.LeetCode.Conventions;
 
 // LeetCode states a tree or a list as a flat array, and every problem taking one
 // used to re-implement that translation in its own test file. It is the same
 // translation every time, so it lives once here - which is also what lets a
-// registration's Case read like LeetCode's own example text rather than like tree
-// construction code.
+// test's examples read like LeetCode's own example text rather than like tree
+// construction code. FromBinaryTree is the same notation back out, so an expected
+// tree can be LeetCode's published output array.
 internal static class LeetCodeWireFormat
 {
     // LeetCode's level-order array, where null marks an absent child and the

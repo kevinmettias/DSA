@@ -24,6 +24,18 @@ public sealed partial class MinStackTests
                 ],
                 [null, null, null, -3, null, 0, -2]
             },
+
+            // Popping the minimum restores the one beneath it.
+            {
+                [
+                    MinStackOp.Push(5),
+                    MinStackOp.Push(1),
+                    MinStackOp.GetMin(),
+                    MinStackOp.Pop(),
+                    MinStackOp.GetMin(),
+                ],
+                [null, null, 1, null, 5]
+            },
             {
                 [
                     MinStackOp.Push(5),

@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;

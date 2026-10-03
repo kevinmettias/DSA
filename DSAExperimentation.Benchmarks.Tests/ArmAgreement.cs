@@ -39,10 +39,6 @@ internal static class ArmAgreement
             "LeetCode accepts any valid tree, and each arm answers with the root of the different tree it builds.",
     };
 
-    // Not a case at all: its arms are [ParamsSource] values naming registered problems rather than
-    // [Benchmark] methods, and LeetCodeProblemBenchmarksTests covers the properties it owes.
-    public static IReadOnlySet<Type> Excluded { get; } = new HashSet<Type> { typeof(LeetCodeProblemBenchmarks) };
-
     private const string RandomDraw =
         "The problem asks for a random draw, and each arm consumes the seeded generator differently.";
 }

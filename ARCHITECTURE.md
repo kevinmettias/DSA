@@ -1362,20 +1362,12 @@ still about search cost — but this is a deliberate change in what is measured,
   to compose it: a coverage tree shaped that way can only tell you a problem's answer changed, not
   which primitive broke. `DSAExperimentation.Tests/` mirrors the source tree for exactly this
   reason, and `Tests/Domain/**` was created in this pass to extend that mirror to tier 3.
-- **`Harness/IBoundWorkload.cs` is a named type, and `check-doc-schema` is why its rationale is
-  here rather than on the type.** The interface replaces the bare `Func<object?>` the harness used
-  to store, and that decision was first written as a `<remarks>` essay. `<remarks>` is C#'s
-  catch-all bucket: the check projects it as free prose rather than a section, because a type's doc
-  is otherwise only its summary plus the sections its signature implies (`<param>`/`<returns>`/
-  `<exception>`/`<example>`), and an essay is none of those. The rationale was moved here instead of
-  waived, because the reasoning is worth keeping: a stored callable is a collaborator — invoked
-  later, by code that cannot see what it closes over, and more than once per run — so the delegate
-  form had nowhere to state the three things `Run` promises. It returns the strategy's own answer
-  (`null` for a void-shaped one) rather than `null` meaning "unbound"; it may throw whatever the
-  strategy throws, since resolution happened in `Setup` and the body is the strategy alone; and it
-  repeats, every invocation independent, which is what makes it safe to time in a loop. The input it
-  closes over is built once and read-only thereafter, so a repeated `Run` cannot measure
-  construction instead of the strategy.
+- **A type's rationale goes in prose here, never in `<remarks>`, and `check-doc-schema` is why.**
+  `<remarks>` is C#'s catch-all bucket: the check projects it as free prose rather than a section,
+  because a type's doc is otherwise only its summary plus the sections its signature implies
+  (`<param>`/`<returns>`/`<exception>`/`<example>`), and an essay is none of those. The case that
+  established this was the registry harness's `IBoundWorkload`, whose design essay was moved here
+  rather than waived; the registry has since been retired (see §17.11), and the rule outlived it.
 - **Two advisories are accepted rather than fixed.** `check-transposable-parameters` on signatures
   like `LadderLengthByMutationQueue(string beginWord, string endWord, ...)` is reporting LeetCode's
   own problem signature, which the solution tier deliberately mirrors; and `check-type-nature` on
@@ -1388,12 +1380,30 @@ clear as those problems migrate.
 
 ### 17.10 Migration status
 
-The tier structure and every rule above are established and enforced by the pilot; the bulk of the
-catalogue has not moved yet. Migrated so far: `TwoSum`, `AddBinary`, `OpenTheLock`, `WordLadder`,
-`WordLadderII`, `MinimumGeneticMutation`, `MinimumTimeVisitingAllPoints`,
-`CountWaysToBuildRoomsInAnAntColony`. Every other problem still carries its solution inline in both
-harnesses, in the pre-§17 shape. A test or benchmark that has not been migrated is not evidence
-about what the convention is — §17.3 and §17.7 are.
+Complete. Every covered problem — 1,105 of them — has its `<Problem>Solution` in
+`DSAExperimentation.LeetCode/<Problem>/`, and its test and benchmark are harnesses over it. Count
+this by solution-file existence, not by the coverage manifest's tier tag, which under-reports.
+
+### 17.11 The registry harness, retired
+
+For a time a second harness shape existed beside the hand-written one: a problem could add a
+`<Problem>Registration` describing its strategies, cases and benchmark workloads, and one generic
+test and one generic benchmark class ran every registered arm. It was built to carry the migration,
+and the migration landed on the hand-written shape instead: ten problems were ever registered, each
+kept its hand-written test and benchmark as well, and nothing else used it.
+
+It was retired rather than finished, for two reasons. Finishing meant generating the 1,100
+hand-written benchmark classes from registrations — and a registration sized its workloads inside
+tier 4, which is the measurement decision §17.7 assigns to tier 5. And its one unique enforcement,
+that a solution's every strategy is asserted, now holds for every problem through
+`LeetCodeStrategyCoverageTests` rather than for the ten that were registered. The cases a
+registration carried beyond its problem's own test were ported into that test before deletion.
+
+What survived is the part every harness was already using: `DSAExperimentation.LeetCode/Conventions/`
+holds `LeetCodeWireFormat` (LeetCode's array notation for trees and lists, both directions) and
+`LeetCodeAnswers` (its answer-equality rules — exact, sequence, any-order, rows-in-any-order,
+within tolerance). A test or benchmark that needs either should call these rather than write its
+own `BuildList` or order-insensitive comparison.
 
 ## 18. Testing policy: every tier tests itself
 
@@ -1464,25 +1474,26 @@ whoever was editing remembered them. They are now asserted by
 — the benchmark project is not on the test project's reference list, and a reflection-only rule
 would be blind in precisely the place duplication happens.
 
-- **§17.2's tier order** — `LayeringTests`, already in place: a file may reference its own tier or a
-  lower one, with a named allow-list for the one deliberate inversion.
+- **§17.2's tier order** — `LayeringTests`: a file in `DSAExperimentation` may reference its own
+  tier or a lower one, with a named allow-list for the one deliberate inversion. The LeetCode tier
+  has no row: it is the top tier in a project of its own, so nothing it references can sit above
+  it, and a row for it could never fail.
 - **§17.7's "a harness holds assertions and workload sizing"** — `Tier5WitnessTests`. A type that
   implements a *structural* contract (`IGraphTopology`, `ITreeTopology`, `IFoldAlgebra`,
-  `IRandomAccessSequence`, `IHeapOrder`, …) is domain code wherever the file sits, so it may not be
-  declared in a test folder or in `Benchmarks/Fixtures/`. Hooks are deliberately excluded: a
-  recording `IInOrderHooks` that collects a traversal so a test can assert its order is an
-  assertion device, which is the first of the two things §17.7 allows.
-- **§17.3's "the solution class holds every strategy"** — `LeetCodeStrategyCoverageTests`. Each
-  registration must name exactly the strategies its sibling `<Problem>Solution` exposes, derived
-  from the `<Operation>By<Strategy>` naming so §17.4's two hoisted overloads collapse onto the one
-  strategy they share. Without it a solution can grow a third arm that no case asserts and no
-  benchmark measures — the same "the naive baseline was never tested" gap the reorg set out to
-  close, relocated from the test file to the registration.
+  `IRecurrence`, `IRandomAccessSequence`, `IHeapOrder`, …) is domain code wherever the file sits, so
+  it may not be declared in a test folder, a benchmark class or `Benchmarks/Fixtures/`. Traversal
+  hooks are excluded in a test, where a recording `IInOrderHooks` that collects a traversal so the
+  test can assert its order is an assertion device, and included in a benchmark, which asserts
+  nothing and so can only be using a hook as the algorithm. Base lists are read across lines, with
+  comments and strings blanked, because a contract on the line after the type's name is the usual
+  layout for a long generic one.
+- **§17.3's "the solution class holds every strategy" and §17.7's "one test method per strategy"**
+  — `LeetCodeStrategyCoverageTests`. Every non-private `<Operation>By<Strategy>` member of every
+  `<Problem>Solution` needs a test method in the problem's test namespace whose first
+  underscore-separated word is the member's name. This is the check the
+  `check-test-coverage` waiver over `DSAExperimentation.LeetCode/**` rests on; before it existed the
+  waiver's "complete by construction" was a claim, and `KthSmallestElementInABSTSolution` had no
+  caller at all.
 
-The witness rule is scoped to problems that have **already reached tier 4**, so it tightens on its
-own: converting a problem brings its harnesses under the rule in the same commit, and no list needs
-editing to keep pace. **56 files still declare a stranded witness** — 30 under
-`Tests/LeetCodeCoverage/**`, 18 in `Benchmarks/ProblemSolutions/`, and 8 in the shared
-`Benchmarks/Fixtures/` — and every one of them belongs to a problem the migration has not reached.
-The eight shared ones are listed individually in the test, each naming the problem that still holds
-it there, because that folder is flat and offers no path to key the rule on.
+Every harness file is in scope of the witness rule; the whole catalogue has reached tier 4, so
+there is no unmigrated problem for a harness to be waiting on.

@@ -737,20 +737,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-class-size",
-      "path": "DSAExperimentation.LeetCode/Harness/LeetCodeProblemRegistry.cs",
-      "reason": "Not a solution class: it is the one place that discovers every registered problem in the assembly and exposes the result to both harnesses. ARCHITECTURE.md 17.7 gives the harnesses exactly two jobs, assertions and workload sizing, and both must read the same discovered index - so the registry builds it once (Discover/DescribeAll/IsRegistration behind the Lazy BySlug) and projects it twice (CaseArms/WorkloadArms). Measured on a copy: the metric's two clusters are the index accessors (BySlug/All/Get) and the two projections, which reach the index through All rather than by touching the Lazy field, and deleting either side collapses the finding to zero. Both halves are the tier's one subject, the registered problems, and 17.1 names the split this check recommends as the defect it undid.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-class-size",
-      "path": "DSAExperimentation.LeetCode/Harness/TypedLeetCodeProblem.cs",
-      "reason": "Not a solution class: it is the typed half of LeetCodeProblem, holding one registration's lookup tables and answering the two operations the harnesses call over them. Measured on a copy: the metric's two clusters are the four published accessors (TitleSlug/StrategyNames/CaseNames/WorkloadArms) and the two operations (RunCase/BindWorkload), and deleting either side collapses the finding to zero. They are one subject - the accessors are what the registry enumerates and RunCase/BindWorkload are what the harnesses call on the enumerated arms; a problem that could be listed but not run, or run but not listed, is not one a harness can use. Resolve sits between them deliberately, taking the dictionary it searches as a parameter, which is what lets one helper serve both call sites rather than a sign of two responsibilities.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-test-coverage",
       "path": "DSAExperimentation.LeetCode/**",
       "reason": "Not a naming-convention exemption: the check accepts this repo's ordinary `Member_Scenario_Expectation` test names (DataStructures/Heap/Heap.cs passes with them). It fires here because a solution file is \u003cName\u003eSolution.cs while its harness is \u003cName\u003eTests.cs under Tests/LeetCodeCoverage/, so the file names do not correspond. The coverage itself is complete by construction - ARCHITECTURE.md 17.7 requires one test method per strategy, so every public strategy is asserted against LeetCode's published examples. Waived on the file-name correspondence alone; renaming 780+ harness folders to satisfy it would be churn, not coverage.",
@@ -912,13 +898,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-sealed-classes",
-      "path": "DSAExperimentation.Benchmarks/LeetCodeProblemBenchmarks.cs",
-      "reason": "BenchmarkDotNet discovers benchmark types by reflection and only accepts a benchmark class that is both public and unsealed - sealing one, or narrowing it to internal, makes BDN drop every benchmark method in it silently, with no error and no warning. Verified empirically on this repo: adding `sealed` to AddBinaryBenchmarks removed both of its benchmarks from `--list flat`, and removing the keyword put them back. There is therefore no honest rewrite for these two checks in a benchmark class: the accessibility and the sealedness are the harness contract, not a design choice.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-visibility-scope",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs",
       "reason": "BenchmarkDotNet discovers benchmark types by reflection and only accepts a benchmark class that is both public and unsealed - sealing one, or narrowing it to internal, makes BDN drop every benchmark method in it silently, with no error and no warning. Verified empirically on this repo: adding `sealed` to AddBinaryBenchmarks removed both of its benchmarks from `--list flat`, and removing the keyword put them back. There is therefore no honest rewrite for these two checks in a benchmark class: the accessibility and the sealedness are the harness contract, not a design choice.",
@@ -928,13 +907,6 @@
     {
       "check": "check-visibility-scope",
       "path": "DSAExperimentation.Benchmarks/StrategySwaps/*Benchmarks.cs",
-      "reason": "BenchmarkDotNet discovers benchmark types by reflection and only accepts a benchmark class that is both public and unsealed - sealing one, or narrowing it to internal, makes BDN drop every benchmark method in it silently, with no error and no warning. Verified empirically on this repo: adding `sealed` to AddBinaryBenchmarks removed both of its benchmarks from `--list flat`, and removing the keyword put them back. There is therefore no honest rewrite for these two checks in a benchmark class: the accessibility and the sealedness are the harness contract, not a design choice.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-visibility-scope",
-      "path": "DSAExperimentation.Benchmarks/LeetCodeProblemBenchmarks.cs",
       "reason": "BenchmarkDotNet discovers benchmark types by reflection and only accepts a benchmark class that is both public and unsealed - sealing one, or narrowing it to internal, makes BDN drop every benchmark method in it silently, with no error and no warning. Verified empirically on this repo: adding `sealed` to AddBinaryBenchmarks removed both of its benchmarks from `--list flat`, and removing the keyword put them back. There is therefore no honest rewrite for these two checks in a benchmark class: the accessibility and the sealedness are the harness contract, not a design choice.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
@@ -1218,13 +1190,6 @@
       "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/GuessNumberHigherOrLower/GuessNumberHigherOrLowerSolution.cs",
       "reason": "BinarySearch.Find's ! promises the binary search converged on the target: LeetCode guarantees pick lies in 1..n, NumberLineSequence covers exactly 1..n, and GuessComparer answers from pick, so the search always probes a value equal to the target and returns non-null.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/Harness/LeetCodeProblemRegistry.cs",
-      "reason": "Activator.CreateInstance(type)! promises a constructed registration rather than null: the type reaches this Select only through IsRegistration, which filters on the type being non-abstract, non-interface, non-generic-definition and having a public parameterless constructor - so construction cannot return null and cannot throw.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

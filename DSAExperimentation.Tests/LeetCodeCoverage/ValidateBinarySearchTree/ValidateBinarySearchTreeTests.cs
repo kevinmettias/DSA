@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ValidateBinarySearchTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ValidateBinarySearchTree;
@@ -19,6 +19,12 @@ public sealed partial class ValidateBinarySearchTreeTests
             { new TreeExample(Values: [2, 1, 3], Expected: true) },
             { new TreeExample(Values: [5, 1, 4, null, null, 3, 6], Expected: false) },
             { new TreeExample(Values: [], Expected: true) },
+            { new TreeExample(Values: [1], Expected: true) },
+
+            // The case a naive "left child < parent < right child" check passes and a
+            // real bounds check does not: 3 is below its own parent 4, but it sits in
+            // 5's right subtree.
+            { new TreeExample(Values: [5, 4, 6, null, null, 3, 7], Expected: false) },
         };
 
     [Theory]

@@ -31,6 +31,32 @@ public sealed partial class LRUCacheTests
                 ],
                 [null, null, 1, null, -1, null, -1, 3, 4]
             },
+
+            // Reading a key makes it the most recent, so the next eviction takes the
+            // other one.
+            {
+                2,
+                [
+                    LRUCacheOp.Put(1, 1),
+                    LRUCacheOp.Put(2, 2),
+                    LRUCacheOp.Get(1),
+                    LRUCacheOp.Put(3, 3),
+                    LRUCacheOp.Get(1),
+                ],
+                [null, null, 1, null, 1]
+            },
+
+            // Overwriting a key replaces its value without growing the cache, so a
+            // capacity-1 cache still holds it.
+            {
+                1,
+                [
+                    LRUCacheOp.Put(1, 1),
+                    LRUCacheOp.Put(1, 9),
+                    LRUCacheOp.Get(1),
+                ],
+                [null, null, 9]
+            },
         };
 
     [Theory]

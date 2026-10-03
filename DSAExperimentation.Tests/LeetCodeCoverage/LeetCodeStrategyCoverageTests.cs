@@ -1,25 +1,16 @@
 using System.Reflection;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage;
 
 // Section 17.3 says a solution class holds EVERY strategy for its problem, each
-// named <Operation>By<Strategy>; section 17.4 lets a strategy carry a second,
-// hoisted overload for a pre-built domain object. Nothing checked that the
-// registration then names them all - so a solution could grow a third arm that no
-// case asserts and no benchmark measures, which is the same "the naive baseline
-// was never tested" gap the five-tier reorg set out to close, only relocated from
-// the per-problem test file to the registration.
-//
-// The pairing is by namespace, which is what the file tree already asserts: one
-// problem folder holds one <Problem>Solution and one <Problem>Registration.
-//
-// The registration pairing reached ten problems. The rule below reaches every
-// solution class: section 17.7 asks for one test method per strategy, named for it,
-// and suppressions.json waives check-test-coverage over DSAExperimentation.LeetCode/**
-// on the strength of exactly that claim. Until this check existed the claim was
-// prose - KthSmallestElementInABSTSolution had no caller at all while its test
-// asserted a private copy of both walks, and the waiver hid it.
+// named <Operation>By<Strategy>, and section 17.7 asks for one test method per
+// strategy, named for it - so a solution cannot grow an arm that nothing asserts,
+// which is the "the naive baseline was never tested" gap the five-tier reorg set
+// out to close. suppressions.json waives check-test-coverage over
+// DSAExperimentation.LeetCode/** on the strength of exactly that claim. Until this
+// check existed the claim was prose - KthSmallestElementInABSTSolution had no caller
+// at all while its test asserted a private copy of both walks, and the waiver hid it.
 public sealed partial class LeetCodeStrategyCoverageTests
 {
     private const string StrategyInfix = "By";
@@ -111,65 +102,11 @@ public sealed partial class LeetCodeStrategyCoverageTests
     private static string TestNamespaceFor(Type solution)
         => $"{typeof(LeetCodeStrategyCoverageTests).Namespace}.{NamespaceOf(solution).Split('.')[^1]}";
 
-    public static TheoryData<string> RegisteredSolutions
-    {
-        get
-        {
-            var solutionTypeNames = new TheoryData<string>();
-
-            foreach (var (solution, _) in Pairs())
-            {
-                solutionTypeNames.Add(FullNameOf(solution));
-            }
-
-            return solutionTypeNames;
-        }
-    }
-
-    [Theory]
-    [MemberData(nameof(RegisteredSolutions))]
-    public void Registration_NamesEveryStrategyItsSolutionExposes(string solutionTypeName)
-    {
-        var (solution, registration) = Pairs().Single(pair => FullNameOf(pair.Solution) == solutionTypeName);
-        var problem = RegistrationOf(registration).Describe();
-        var exposed = StrategyNamesOf(solution);
-
-        Assert.True(
-            exposed.SetEquals(problem.StrategyNames),
-            $"{problem.TitleSlug}: {solution.Name} exposes [{Listed(exposed)}] but the registration names "
-            + $"[{Listed(problem.StrategyNames)}]. Every strategy is measured and asserted, or none of them is.");
-    }
-
-    // A pairing that found nothing would leave the theory above with no rows and
-    // still report green, which looks exactly like every registration passing.
-    [Fact]
-    public void EveryRegistration_IsPairedWithASolutionClass()
-    {
-        var paired = Pairs().Select(pair => pair.Registration).ToHashSet();
-        var unpaired = LeetCodeTypes().Where(IsRegistration).Where(type => !paired.Contains(type)).ToList();
-
-        Assert.Empty(unpaired.Select(type => type.FullName));
-        Assert.Equal(LeetCodeProblemRegistry.All.Count, paired.Count);
-    }
-
     private static string Listed(IEnumerable<string> names)
         => string.Join(", ", names.Order(StringComparer.Ordinal));
 
-    private static IEnumerable<(Type Solution, Type Registration)> Pairs()
-    {
-        var registrations = LeetCodeTypes()
-            .Where(IsRegistration)
-            .ToDictionary(NamespaceOf, type => type, StringComparer.Ordinal);
-
-        return LeetCodeTypes()
-            .Where(IsSolutionClass)
-            .Where(type => registrations.ContainsKey(NamespaceOf(type)))
-            .OrderBy(type => type.FullName, StringComparer.Ordinal)
-            .Select(type => (type, registrations[NamespaceOf(type)]));
-    }
-
     private static IEnumerable<Type> LeetCodeTypes()
-        => typeof(LeetCodeProblem).Assembly.GetTypes().Where(type => type.Namespace is not null);
+        => typeof(LeetCodeWireFormat).Assembly.GetTypes().Where(type => type.Namespace is not null);
 
     // The compiler cannot narrow a Type property through the lambda in LeetCodeTypes(),
     // so the two invariants it already established are stated here. Assembly.GetTypes()
@@ -184,30 +121,10 @@ public sealed partial class LeetCodeStrategyCoverageTests
         type.Namespace ?? throw new InvalidOperationException(
             $"{type.FullName} has no namespace, and LeetCodeTypes() admits only types that do.");
 
-    // IsRegistration admits a type only if it is non-abstract and assignable to
-    // ILeetCodeProblemRegistration, and Activator constructs such a type or throws, so
-    // the instance it returns is a registration. A null here would mean the filter
-    // above started admitting something else.
-    private static ILeetCodeProblemRegistration RegistrationOf(Type registration) =>
-        Activator.CreateInstance(registration) as ILeetCodeProblemRegistration
-        ?? throw new InvalidOperationException(
-            $"{registration.FullName} was paired as a problem registration but is not constructible as one.");
-
-    private static bool IsRegistration(Type type)
-        => type is { IsAbstract: false, IsInterface: false } && type.IsAssignableTo(typeof(ILeetCodeProblemRegistration));
-
     // A static class: abstract and sealed at the same time, which no other shape is.
     private static bool IsSolutionClass(Type type)
         => type is { IsClass: true, IsAbstract: true, IsSealed: true, IsNested: false }
             && type.Name.EndsWith(SolutionSuffix, StringComparison.Ordinal);
-
-    private static HashSet<string> StrategyNamesOf(Type solution)
-        => solution
-            .GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-            .Where(method => !method.IsSpecialName)
-            .Select(method => StrategyNameOf(method.Name))
-            .Where(name => name.Length > 0)
-            .ToHashSet(StringComparer.Ordinal);
 
     // <Operation>By<Strategy>, split at the first `By` that starts a new word - so
     // 17.4's two hoisted overloads collapse onto the one strategy name they share,

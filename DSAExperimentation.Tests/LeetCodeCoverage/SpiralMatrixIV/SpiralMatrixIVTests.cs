@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SpiralMatrixIV;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SpiralMatrixIV;

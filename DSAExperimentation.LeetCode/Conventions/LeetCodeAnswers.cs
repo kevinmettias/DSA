@@ -1,11 +1,11 @@
-namespace DSAExperimentation.LeetCode.Harness;
+namespace DSAExperimentation.LeetCode.Conventions;
 
 // The handful of answer-equality rules LeetCode problems actually use, written
-// once. These are named helpers a registration passes to MatchingAnswersWith
-// explicitly - NOT a default it inherits by saying nothing. That distinction is
-// the point: picking IsSetEqual over IsSequenceEqual is a statement about the
-// problem ("return the answer in any order"), and a registration that never had
-// to make it is a registration where nobody checked.
+// once, for any caller that has to decide whether an answer is right - the catalog
+// validator's adapters among them. They are named and picked explicitly, never a
+// default inherited by saying nothing: choosing IsSetEqual over IsSequenceEqual is a
+// statement about the problem ("return the answer in any order"), and a caller that
+// never had to make it is a caller where nobody checked.
 internal static class LeetCodeAnswers
 {
     // LeetCode's own stated tolerance for its floating-point answers.

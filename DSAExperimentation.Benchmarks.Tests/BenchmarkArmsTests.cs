@@ -69,7 +69,7 @@ public sealed partial class BenchmarkArmsTests
 
     private static TheoryData<string> CasesWhere(Func<Type, bool> includes) =>
         new(BenchmarkClass.All
-            .Where(benchmark => !ArmAgreement.Excluded.Contains(benchmark.Type) && includes(benchmark.Type))
+            .Where(benchmark => includes(benchmark.Type))
             .Select(benchmark => benchmark.Name));
 
     private static string AnswerOf(BenchmarkClass benchmark, MethodInfo arm)

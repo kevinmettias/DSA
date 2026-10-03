@@ -13,6 +13,11 @@ public sealed partial class MergeTwoSortedListsTests
             { [1, 2, 4], [1, 3, 4], [1, 1, 2, 3, 4, 4] },
             { [], [5, 6], [5, 6] },
             { [], [], [] },
+            { [], [0], [0] },
+
+            // One list entirely precedes the other, so the merge is a splice
+            // with no interleaving at all.
+            { [1, 2, 3], [7, 8, 9], [1, 2, 3, 7, 8, 9] },
         };
 
     [Theory]

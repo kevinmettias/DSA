@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MaximumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MaximumDepthOfBinaryTree;

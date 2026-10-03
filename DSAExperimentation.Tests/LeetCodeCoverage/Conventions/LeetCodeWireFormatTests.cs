@@ -1,11 +1,11 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.Conventions;
 
 // Every tree- and list-shaped problem's cases are stated in LeetCode's array
 // notation and pass through here, so a bug in this translation would show up as a
-// wrong answer in an unrelated problem's registration. The omitted-children rule
+// wrong answer in an unrelated problem's test. The omitted-children rule
 // is the part worth pinning down: LeetCode does NOT pad a missing node's slots,
 // so the array is not a 2i+1/2i+2 heap layout and indexing it as one silently
 // builds a different tree.

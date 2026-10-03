@@ -1,10 +1,10 @@
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 
-namespace DSAExperimentation.Tests.LeetCodeCoverage.Harness;
+namespace DSAExperimentation.Tests.LeetCodeCoverage.Conventions;
 
-// These comparers decide whether ~1100 problems' answers are right, so what they
-// REJECT matters more than what they accept: a comparer that says yes to
-// everything makes the whole harness green and meaningless. Every test below is
+// These comparers decide whether answers are right, so what they REJECT matters
+// more than what they accept: a comparer that says yes to everything makes every
+// check built on it green and meaningless. Every test below is
 // paired - one answer that must pass and one wrong answer that must not.
 public sealed partial class LeetCodeAnswersTests
 {

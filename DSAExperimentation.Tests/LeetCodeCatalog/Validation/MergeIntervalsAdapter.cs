@@ -1,5 +1,5 @@
 using System.Text.Json;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Tests.LeetCodeCatalog.Validation;
 

@@ -131,7 +131,7 @@ reading an old file rather than something checked.
 | Project | Contents |
 |---|---|
 | `DSAExperimentation` | The library: `DataStructures/`, `Algorithms/` and `Domain/` |
-| `DSAExperimentation.LeetCode` | One folder per problem, plus the registration harness |
+| `DSAExperimentation.LeetCode` | One folder per problem, plus `Conventions/`: LeetCode's array notation for trees and lists, and its answer-equality rules |
 | `DSAExperimentation.Tests` | Library, architecture and per-problem tests |
 | `DSAExperimentation.LeetCode.Tests` | Tests of the seams between problems and the library |
 | `DSAExperimentation.Benchmarks` | BenchmarkDotNet suites, one per problem, plus strategy-swap comparisons |

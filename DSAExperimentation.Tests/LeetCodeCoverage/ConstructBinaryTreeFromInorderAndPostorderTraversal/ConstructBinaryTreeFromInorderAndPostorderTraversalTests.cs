@@ -1,5 +1,5 @@
 using DSAExperimentation.LeetCode.ConstructBinaryTreeFromInorderAndPostorderTraversal;
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinaryTreeFromInorderAndPostorderTraversal;
 

@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeNodesInBetweenZeros;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.MergeNodesInBetweenZeros;

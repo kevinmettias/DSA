@@ -28,6 +28,10 @@ public sealed partial class PathWithMaximumProbabilityTests
 
             // A chain of certainties stays certain.
             { new MaxProbabilityCase(NodeCount: 4, Edges: [[0, 1], [1, 2], [2, 3]], SuccessProbabilities: [1.0, 1.0, 1.0], Start: 0, End: 3, Expected: 1.0) },
+
+            // Start equals end: the empty path succeeds with certainty. LeetCode's
+            // constraints say start != end, so this pins behaviour past them.
+            { new MaxProbabilityCase(NodeCount: 2, Edges: [[0, 1]], SuccessProbabilities: [0.5], Start: 0, End: 0, Expected: 1.0) },
         };
 
     [Theory]
