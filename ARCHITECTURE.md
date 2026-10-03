@@ -1257,7 +1257,7 @@ in a benchmark, because:
 
 The class name takes a `Solution` suffix rather than being bare `TwoSum`, which would collide with
 its own enclosing namespace segment — the §10.3/§15.3 wrinkle, avoided by construction here instead
-of aliased around 777 times.
+of aliased around once per problem.
 
 A problem folder may hold more than the solution file. A witness that answers *one* problem and
 nothing else belongs there too, not in `Domain/`: `LeetCode/CountWaysToBuildRoomsInAnAntColony/`
@@ -1433,14 +1433,14 @@ different map types.
 
 §6 records the repo's standing gate notes; these are the ones §17's own conventions create.
 
-- **`check-responsibility-extraction` is waived tier-wide over `DSAExperimentation/LeetCode/**`.**
+- **`check-responsibility-extraction` is waived tier-wide over `DSAExperimentation.LeetCode/*/*Solution.cs`.**
   The check reads three or more public declarations sharing a name prefix as a hidden module
-  boundary. §17.3's `<Operation>By<Strategy>` naming guarantees that prefix on every migrated
-  problem — `MinTurnsByMutationQueue`/`MinTurnsByReduceGraph`, each with a LeetCode-shaped and a
-  hoisted overload, is four declarations sharing `Min` — so the check would fire once per problem,
-  777 times, on the convention working as designed. The boundary it infers is already the file: the
-  shared prefix is the one operation the problem asks for, and splitting the strategies apart is
-  exactly the drift §17.1 exists to undo. This is a waiver on the *convention*, not on any one
+  boundary. §17.3's `<Operation>By<Strategy>` naming produces that prefix wherever a problem has
+  enough strategies or overloads — `MinTurnsByMutationQueue`/`MinTurnsByReduceGraph`, each with a
+  LeetCode-shaped and a hoisted overload, is four declarations sharing `Min` — so the check fires on
+  196 of the 1,105 solution files (measured 2026-10-03), on the convention working as designed. The
+  boundary it infers is already the file: the shared prefix is the one operation the problem asks
+  for, and splitting the strategies apart is exactly the drift §17.1 exists to undo. This is a waiver on the *convention*, not on any one
   file's shortcomings.
 - **`check-constant-placement` is waived on the two types whose subject IS their constants** —
   `Domain/Modular/ModularArithmetic.cs`, `Domain/Locks/LockWheels.cs` (both still in `Domain/`
