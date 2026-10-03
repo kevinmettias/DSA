@@ -4,7 +4,7 @@ using DSAExperimentation.Algorithms.Walking;
 
 namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 
-// Genuinely distinct from BreadthFirstTraversal<..., NodeVisit<...>>, not just a
+// Genuinely distinct from BreadthFirstTraversal, not just a
 // convenience wrapper over it: this buffers an entire depth before firing, since a
 // level isn't known to be complete until every node at that depth has been
 // discovered. Shares BreadthFirstWalk's frontier computation (NextLevel) rather than
@@ -13,7 +13,7 @@ namespace DSAExperimentation.Algorithms.Traversal.BreadthFirst;
 // fires once for the whole buffered list.
 internal static class LevelGroupedBreadthFirstTraversal
 {
-    public static void Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root)
+    public static THooks Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, THooks>(TNode? root, THooks hooks)
         where TNode : class
         where TTopology : struct, ITreeTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
@@ -23,7 +23,7 @@ internal static class LevelGroupedBreadthFirstTraversal
     {
         if (root is null)
         {
-            return;
+            return hooks;
         }
 
         var currentLevel = new List<TNode> { root };
@@ -31,12 +31,14 @@ internal static class LevelGroupedBreadthFirstTraversal
 
         while (currentLevel.Count > 0)
         {
-            THooks.OnLevel(currentLevel, depth);
+            hooks.OnLevel(currentLevel, depth);
 
             currentLevel = BreadthFirstWalk.NextLevel<
                 TNode, TTopology, TChildren, TOrder, TOrderedChildren, UnguardedVisit<TNode>>(
                 currentLevel, default);
             depth++;
         }
+
+        return hooks;
     }
 }

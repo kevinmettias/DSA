@@ -95,13 +95,13 @@ internal static class CompleteBinaryTreeInserterSolution
         {
             Root = root;
 
-            LevelHooks.BeginCapture();
+            var levels = new List<List<BinaryTreeNode<int>>>();
             LevelGroupedBreadthFirstTraversal.Walk<
                 BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
                 NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-                LevelHooks>(root);
+                LevelHooks>(root, new LevelHooks(levels));
 
-            foreach (var level in LevelHooks.CapturedLevels)
+            foreach (var level in levels)
             {
                 foreach (var node in level)
                 {
@@ -138,21 +138,8 @@ internal static class CompleteBinaryTreeInserterSolution
 
     // A witness for this problem alone: buffers each depth's nodes so the seeding
     // pass can scan them in level order for open child slots.
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
+    private readonly struct LevelHooks(List<List<BinaryTreeNode<int>>> levels) : ILevelGroupedHooks<BinaryTreeNode<int>>
     {
-        // Static because ILevelGroupedHooks is static-abstract - the walk takes the hook as a
-        // type argument and reaches it through the type, so no LevelHooks instance exists that
-        // could own this buffer - and AsyncLocal is what keeps it safe: the list belongs to the
-        // flow that started the Walk, so a seeding pass on another thread reads its own. Private,
-        // with BeginCapture/CapturedLevels the only way in and out: the buffer exists for this
-        // one seeding pass's start-and-read pair, so nothing outside the hook needs to name it.
-        private static readonly AsyncLocal<List<List<BinaryTreeNode<int>>>> Output = new();
-
-        public static List<List<BinaryTreeNode<int>>> CapturedLevels => Output.Value!;
-
-        public static void BeginCapture() => Output.Value = [];
-
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
-            Output.Value!.Add(level.ToList());
+        public void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) => levels.Add(level.ToList());
     }
 }

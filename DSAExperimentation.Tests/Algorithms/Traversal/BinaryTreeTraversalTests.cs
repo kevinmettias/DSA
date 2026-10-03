@@ -15,8 +15,6 @@ namespace DSAExperimentation.Tests.Algorithms.Traversal;
 // sitting beside ConnectedComponentsTests.cs for a second concrete topology.
 public sealed partial class BinaryTreeTraversalTests
 {
-    private struct LevelGroupMarker;
-
     [Fact]
     public void Dfs_Enter_FiresInPreOrder()
     {
@@ -58,7 +56,7 @@ public sealed partial class BinaryTreeTraversalTests
     [Fact]
     public void LevelGrouped_GroupsNodesByLevel()
     {
-        var root = BinaryTreeTrees.Sample();
+        var levels = new List<(int Depth, List<int> Values)>();
 
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>,
@@ -66,9 +64,8 @@ public sealed partial class BinaryTreeTraversalTests
             BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>,
             BinaryTreeChildren<int>,
-            RecordingBinaryTreeLevelHooks<int, LevelGroupMarker>>(root);
-
-        var levels = RecordingBinaryTreeLevelHooks<int, LevelGroupMarker>.Levels;
+            RecordingBinaryTreeLevelHooks<int>>(
+            BinaryTreeTrees.Sample(), new RecordingBinaryTreeLevelHooks<int>(levels));
 
         Assert.Equal(3, levels.Count);
 

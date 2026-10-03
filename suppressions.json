@@ -23,20 +23,6 @@
       "expires": "2026-11-22"
     },
     {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/RecordingLevelHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs",
-      "reason": "the field is static because the hook it satisfies is static-abstract - ILevelGroupedHooks is implemented by a struct whose members are static, so no Hooks instance exists that could own the result buffer, and no restructuring of the hook can create one (the traversal takes THooks as a static-interface-generic parameter). What makes the sharing safe is AsyncLocal, not the field's placement: the list belongs to the flow that called Walk, LevelGroupedBreadthFirstTraversal runs to completion on that flow, and a second traversal started on another thread writes its own flow's list, never this one's - the same confinement the async-local hook buffers elsewhere in this tier rely on. The mutable-container half of the rule still sees the List, so the reason is recorded here rather than in the source, which this repository's markers policy (safety-only) refuses.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
       "check": "check-folder-organization",
       "path": "DSAExperimentation/DataStructures",
       "reason": "ARCHITECTURE.md §13.3 documents this flat, one-folder-per-domain layout as the deliberate outcome of four successive reorgs (§13) - a data structure's identity is its representation/topology, so grouping domains under an intermediate category folder would recreate the domain-first tree the reorg explicitly undid.",
@@ -362,13 +348,6 @@
       "check": "check-naming-clarity",
       "path": "DSAExperimentation.Tests/Algorithms/Bipartiteness/BipartiteCheckTests.cs",
       "reason": "check-naming-clarity's Get-promises-a-value/Is-promises-a-boolean rule judges the TEST method's own (void) result kind, not the production method it names - so every MethodUnderTest_Scenario_Expected test named after the Is*-prefixed IsBipartite production method is flagged unconditionally, regardless of what the test actually asserts. This is the same xUnit-naming-convention collision already sanctioned for DisjointSetTests.cs and check-responsibility-extraction.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/RecordingBinaryTreeLevelHooks.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -838,36 +817,8 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeLevelOrderTraversal/BinaryTreeLevelOrderTraversalSolution.cs",
-      "reason": "Each `Output.Value!` promises the AsyncLocal sink is populated. `LevelHooks.Output` is declared on line 87 and assigned by `BeginCapture` on line 91, which line 71 calls on the statement before the synchronous `LevelGroupedBreadthFirstTraversal.Walk` on lines 72-75; the walk is the only caller of `OnLevel`, and the only read from outside the hook is `return LevelHooks.CapturedLevels;` on line 76, which runs after that walk returns. The sink is therefore set before the walk starts and still set when it returns, and the two `!` - on line 89 in `CapturedLevels` and line 94 in `OnLevel` - sit inside exactly that window.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeLevelOrderTraversalII/BinaryTreeLevelOrderTraversalIISolution.cs",
-      "reason": "The `Output.Value!` on line 98 promises the AsyncLocal sink is populated. `BeginCapture` is called on line 74, on the statement before the synchronous `LevelGroupedBreadthFirstTraversal.Walk`; the walk is the only caller of `OnLevel`, and the only read from outside the hook is `var levels = LevelHooks.CapturedLevels;` on line 80, which runs after that walk returns. The sink is therefore set before the walk starts and still set when it returns, so the reads on line 98 (`CapturedLevels`) and line 103 (`OnLevel`) are inside exactly that window.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs",
-      "reason": "each Result.Value! promises the AsyncLocal sink is populated: Hooks.Result.Value is assigned on the statement before the synchronous LevelGroupedBreadthFirstTraversal.Walk, the walk is the only caller of OnLevel, and the read on line 26 happens after that walk returns, so the sink is never unset on either side of the walk.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/BookingConcertTicketsInGroups/BookingConcertTicketsInGroupsSolution.cs",
       "reason": "FindLeftmostRowWithCapacity's ! promises the search found a row: it returns null only when no row at or after `row` has the requested capacity, and ScatterStep is only reached while guests remain unseated, which means some row in the range still has capacity to take one.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/CompleteBinaryTreeInserter/CompleteBinaryTreeInserterSolution.cs",
-      "reason": "Each `Output.Value!` promises the AsyncLocal sink is populated. `BeginCapture` is called on line 98, on the statement before the synchronous `LevelGroupedBreadthFirstTraversal.Walk`; the walk is the only caller of `OnLevel`, and the only read from outside the hook is `foreach (var level in LevelHooks.CapturedLevels)` on line 104, which runs after that walk returns. The sink is therefore set before the walk starts and still set when it returns, so the reads on line 151 (`CapturedLevels`) and line 156 (`OnLevel`) are inside exactly that window.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2573,14 +2524,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeLevelOrderTraversalII/BinaryTreeLevelOrderTraversalIISolution.cs",
-      "anchor": "`Output = ",
-      "reason": "`Output = new()` is declared in 5 independent units (BinaryTreeLevelOrderTraversal/BinaryTreeLevelOrderTraversalSolution.cs, BinaryTreeLevelOrderTraversalII/BinaryTreeLevelOrderTraversalIISolution.cs, CompleteBinaryTreeInserter/CompleteBinaryTreeInserterSolution.cs, PopulatingNextRightPointersInEachNode/PopulatingNextRightPointersInEachNodeSolution.cs and 1 more), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 5 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/CatAndMouseII/CatAndMouseIISolution.cs",
       "anchor": "`PlayerCount = ",
       "reason": "`PlayerCount = 2` is declared in 3 independent units (CatAndMouseII/CatAndMouseIISolution.cs, FindTheScoreDifferenceInAGame/FindTheScoreDifferenceInAGameSolution.cs, FindWinnerOnATicTacToeGame/FindWinnerOnATicTacToeGameSolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
@@ -3157,38 +3100,6 @@
       "path": "DSAExperimentation.LeetCode/PeaksInArrayII/PeakGapNode.cs",
       "message": "`Leaf` takes a bool among 2 parameters: the call site reads `Leaf(true, index)`, and a position is not a name. Give it a named enum (`PanelState.Open`), or package the parameters into an options record",
       "reason": "This site has no transposition hazard for the rule to prevent: `Leaf`'s parameters are `bool` and `int`, which are distinct types, so a transposed call `Leaf(index, isPeak)` is a compile error. The rule's complaint is that a position is not a name, illustrated as `Leaf(true, index)`; no call site in this repository passes a literal. Both real call sites pass a well-named local -- `PeakGapNode.Leaf(peak, i)` and `PeakGapNode.Leaf(peak, position)`, both in PeaksInArrayIISolution.cs -- so a reader at the call site already has the name the rule asks for. Left as written rather than introducing a two-member enum whose only content is `bool`.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeLevelOrderTraversalII/BinaryTreeLevelOrderTraversalIISolution.cs",
-      "message": "`static readonly` field holding `List` `Output` is mutable global state: anything can write it and nothing owns it; make it a constant, or give it an owner — and if it must stay, say why on the line",
-      "reason": "The field is `static` because the contract it exists to satisfy is static-abstract: `ILevelGroupedHooks\u003cBinaryTreeNode\u003cint\u003e\u003e` is passed to `LevelGroupedBreadthFirstTraversal.Walk` as a TYPE ARGUMENT, so the walk reaches the hook through the type, and no LevelHooks instance exists that could own the buffer -- as an instance field this does not compile, and as a constant it cannot be written by `OnLevel`. What the rule reads as mutable global state is `AsyncLocal\u003cList\u003cList\u003cint\u003e\u003e\u003e`: the mutable list is the PAYLOAD of a flow-local slot, so a traversal started on another thread or in another async flow reads its own list, and the field itself is `readonly` and never reassigned. That is the ownership the rule asks for -- the buffer is owned by the flow that started the walk, which is exactly its lifetime. The two named remedies are both unavailable: a constant cannot be written by the callback, and there is no owner object to hand it to. Precedent, re-verified independently for these rows: `DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs` carries this finding's waiver for the same engine and the same `AsyncLocal` buffer, and a byte-identical copy of that file placed in scratch reports the finding again (1) while the original reports it waived -- so the ledger entry is the entire difference, not a difference in the code. The declaration's own comment in this file states the same two facts.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.LeetCode/BinaryTreeLevelOrderTraversal/BinaryTreeLevelOrderTraversalSolution.cs",
-      "message": "`static readonly` field holding `List` `Output` is mutable global state: anything can write it and nothing owns it; make it a constant, or give it an owner — and if it must stay, say why on the line",
-      "reason": "The field is `static` because the contract it exists to satisfy is static-abstract: `ILevelGroupedHooks\u003cBinaryTreeNode\u003cint\u003e\u003e` is passed to `LevelGroupedBreadthFirstTraversal.Walk` as a TYPE ARGUMENT, so the walk reaches the hook through the type, and no LevelHooks instance exists that could own the buffer -- as an instance field this does not compile, and as a constant it cannot be written by `OnLevel`. What the rule reads as mutable global state is `AsyncLocal\u003cList\u003cList\u003cint\u003e\u003e\u003e`: the mutable list is the PAYLOAD of a flow-local slot, so a traversal started on another thread or in another async flow reads its own list, and the field itself is `readonly` and never reassigned. That is the ownership the rule asks for -- the buffer is owned by the flow that started the walk, which is exactly its lifetime. The two named remedies are both unavailable: a constant cannot be written by the callback, and there is no owner object to hand it to. Precedent, re-verified independently for these rows: `DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs` carries this finding's waiver for the same engine and the same `AsyncLocal` buffer, and a byte-identical copy of that file placed in scratch reports the finding again (1) while the original reports it waived -- so the ledger entry is the entire difference, not a difference in the code. The declaration's own comment in this file states the same two facts.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.LeetCode/CompleteBinaryTreeInserter/CompleteBinaryTreeInserterSolution.cs",
-      "message": "`static readonly` field holding `List` `Output` is mutable global state: anything can write it and nothing owns it; make it a constant, or give it an owner — and if it must stay, say why on the line",
-      "reason": "The field is `static` because the contract it exists to satisfy is static-abstract: `ILevelGroupedHooks\u003cBinaryTreeNode\u003cint\u003e\u003e` is passed to `LevelGroupedBreadthFirstTraversal.Walk` as a TYPE ARGUMENT, so the walk reaches the hook through the type, and no LevelHooks instance exists that could own the buffer -- as an instance field this does not compile, and as a constant it cannot be written by `OnLevel`. What the rule reads as mutable global state is `AsyncLocal\u003cList\u003cList\u003cint\u003e\u003e\u003e`: the mutable list is the PAYLOAD of a flow-local slot, so a traversal started on another thread or in another async flow reads its own list, and the field itself is `readonly` and never reassigned. That is the ownership the rule asks for -- the buffer is owned by the flow that started the walk, which is exactly its lifetime. The two named remedies are both unavailable: a constant cannot be written by the callback, and there is no owner object to hand it to. Precedent, re-verified independently for these rows: `DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs` carries this finding's waiver for the same engine and the same `AsyncLocal` buffer, and a byte-identical copy of that file placed in scratch reports the finding again (1) while the original reports it waived -- so the ledger entry is the entire difference, not a difference in the code. The declaration's own comment in this file states the same two facts.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
-      "path": "DSAExperimentation.LeetCode/PopulatingNextRightPointersInEachNodeII/PopulatingNextRightPointersInEachNodeIISolution.cs",
-      "message": "`static readonly` field holding `List` `Output` is mutable global state: anything can write it and nothing owns it; make it a constant, or give it an owner — and if it must stay, say why on the line",
-      "reason": "The field is `static` because the contract it exists to satisfy is static-abstract: `ILevelGroupedHooks\u003cBinaryTreeNode\u003cint\u003e\u003e` is passed to `LevelGroupedBreadthFirstTraversal.Walk` as a TYPE ARGUMENT, so the walk reaches the hook through the type, and no LevelHooks instance exists that could own the buffer -- as an instance field this does not compile, and as a constant it cannot be written by `OnLevel`. What the rule reads as mutable global state is `AsyncLocal\u003cList\u003cList\u003cint\u003e\u003e\u003e`: the mutable list is the PAYLOAD of a flow-local slot, so a traversal started on another thread or in another async flow reads its own list, and the field itself is `readonly` and never reassigned. That is the ownership the rule asks for -- the buffer is owned by the flow that started the walk, which is exactly its lifetime. The two named remedies are both unavailable: a constant cannot be written by the callback, and there is no owner object to hand it to. Precedent, re-verified independently for these rows: `DSAExperimentation.LeetCode/BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs` carries this finding's waiver for the same engine and the same `AsyncLocal` buffer, and a byte-identical copy of that file placed in scratch reports the finding again (1) while the original reports it waived -- so the ledger entry is the entire difference, not a difference in the code. The declaration's own comment in this file states the same two facts.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4596,6 +4507,13 @@
       "check": "check-mutable-struct",
       "path": "DSAExperimentation.Tests/DataStructures/Graph/Engines/Dags/Trees/Fixtures/CountingInOrderHooks.cs",
       "reason": "The fixture exists to be mutable: it counts by value so a test can see that every in-order visit acted on the one hook value Walk hands back, rather than on a copy a recursive frame was given - which a hook appending to a list it holds cannot show. Its setter is private and only Visit changes it, so the hazard this rule names cannot be written outside the type.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation.Tests/Algorithms/Traversal/BreadthFirst/Fixtures/CountingLevelHooks.cs",
+      "reason": "The fixture exists to be mutable: it counts by value so a test can see that the level-grouped walk hands back the hook value it finished with, which a hook appending to a list it holds cannot show. Its setter is private and only OnLevel changes it, so the hazard this rule names cannot be written outside the type.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     }

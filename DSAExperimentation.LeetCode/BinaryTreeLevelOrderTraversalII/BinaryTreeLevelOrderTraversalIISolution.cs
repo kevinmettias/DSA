@@ -71,13 +71,12 @@ internal static class BinaryTreeLevelOrderTraversalIISolution
     // is collecting each level's values and reversing the buffered result.
     public static List<List<int>> LevelOrderBottomByLevelGroupedTraversal(BinaryTreeNode<int>? root)
     {
-        LevelHooks.BeginCapture();
+        var levels = new List<List<int>>();
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            LevelHooks>(root);
+            LevelHooks>(root, new LevelHooks(levels));
 
-        var levels = LevelHooks.CapturedLevels;
         levels.Reverse();
         return levels;
     }
@@ -85,21 +84,9 @@ internal static class BinaryTreeLevelOrderTraversalIISolution
     // Answers this problem alone - collects each buffered level's values into the
     // shape LeetCode expects, nothing LevelGroupedBreadthFirstTraversal's other
     // callers would want.
-    private readonly struct LevelHooks : ILevelGroupedHooks<BinaryTreeNode<int>>
+    private readonly struct LevelHooks(List<List<int>> levels) : ILevelGroupedHooks<BinaryTreeNode<int>>
     {
-        // Static because ILevelGroupedHooks is static-abstract - the walk takes the hook as a
-        // type argument and reaches it through the type, so no LevelHooks instance exists that
-        // could own this buffer - and AsyncLocal is what keeps it safe: the list belongs to the
-        // flow that started the Walk, so a traversal on another thread reads its own. Private,
-        // with BeginCapture/CapturedLevels the only way in and out: the buffer exists for this
-        // one caller's start-and-read pair, so nothing outside the hook needs to name it.
-        private static readonly AsyncLocal<List<List<int>>> Output = new();
-
-        public static List<List<int>> CapturedLevels => Output.Value!;
-
-        public static void BeginCapture() => Output.Value = [];
-
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
-            Output.Value!.Add(level.Select(n => n.Value).ToList());
+        public void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
+            levels.Add(level.Select(n => n.Value).ToList());
     }
 }

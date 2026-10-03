@@ -10,9 +10,8 @@ namespace DSAExperimentation.LeetCode.BinaryTreeRightSideView;
 // Two strategies sit here. RightSideViewByLevelGroupedTraversal uses the repo's
 // LevelGroupedBreadthFirstTraversal, which already buffers a whole depth before
 // firing its hook, so "rightmost per level" is just "last element of each buffered
-// level" - the Hooks struct exists only because THooks must be a
-// static-interface-generic parameter, not an ordinary closure, so the result list
-// has to live behind an AsyncLocal instead of a captured local.
+// level" - the Hooks struct holds the result list it appends each level's last
+// value to.
 // RightSideViewByDepthFirstRightFirst takes the opposite tack: a depth-first walk
 // that visits each right child before its left, so the first node it reaches at any
 // depth is that level's rightmost.
@@ -50,33 +49,18 @@ internal static class BinaryTreeRightSideViewSolution
 
     public static List<int> RightSideViewByLevelGroupedTraversal(BinaryTreeNode<int>? root)
     {
-        Hooks.BeginCapture();
+        var rightmost = new List<int>();
 
         LevelGroupedBreadthFirstTraversal.Walk<
             BinaryTreeNode<int>, BinaryTreeTopology<int>, BinaryTreeChildren<int>,
             NaturalChildOrder<BinaryTreeNode<int>, BinaryTreeChildren<int>>, BinaryTreeChildren<int>,
-            Hooks>(root);
+            Hooks>(root, new Hooks(rightmost));
 
-        return Hooks.CapturedLevels;
+        return rightmost;
     }
 
-    private readonly struct Hooks : ILevelGroupedHooks<BinaryTreeNode<int>>
+    private readonly struct Hooks(List<int> rightmost) : ILevelGroupedHooks<BinaryTreeNode<int>>
     {
-        // Static because ILevelGroupedHooks is static-abstract - there is no Hooks instance
-        // that could own the buffer - and AsyncLocal is what keeps it safe: the list belongs
-        // to the flow that started the Walk, so a traversal on another thread reads its own.
-        // Private, with BeginCapture/CapturedLevels the only way in and out: the buffer exists
-        // for this one caller's start-and-read pair, so nothing outside the hook needs to name
-        // it. The AsyncLocal itself is the mechanism suppressions.json names against
-        // check-scope-discipline's static-state rule; keeping the field private narrows that
-        // claim to this type rather than widening it.
-        private static readonly AsyncLocal<List<int>> Result = new();
-
-        public static List<int> CapturedLevels => Result.Value!;
-
-        public static void BeginCapture() => Result.Value = [];
-
-        public static void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) =>
-            Result.Value!.Add(level[^1].Value);
+        public void OnLevel(IReadOnlyList<BinaryTreeNode<int>> level, int depth) => rightmost.Add(level[^1].Value);
     }
 }
