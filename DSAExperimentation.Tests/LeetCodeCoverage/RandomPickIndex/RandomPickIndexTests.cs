@@ -25,13 +25,13 @@ public sealed partial class RandomPickIndexTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByReservoirSampling(PickExample example)
+    public void RandomPickIndexByReservoirSampling_LeetCodeExamples_AlwaysReturnsAValidIndex(PickExample example)
         => AssertPicksAreValid(
             new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(example.Nums, Seed), example);
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByHashMapGrouping(PickExample example)
+    public void RandomPickIndexByHashMapGrouping_LeetCodeExamples_AlwaysReturnsAValidIndex(PickExample example)
         => AssertPicksAreValid(
             new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(example.Nums, Seed), example);
 

@@ -1,69 +1,58 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.SerializeAndDeserializeBST;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBST;
 
-// Harness only. Both round-trip strategies are SerializeAndDeserializeBSTSolution's
-// - this file just pins them to LeetCode's published examples via a preorder-value
-// sequence, building each example tree through this repo's own
-// BinarySearchTree<int>.Insert so its shape is always genuinely BST-ordered, and
-// comparing round-tripped shape by preorder traversal since the restored tree only
-// needs to be structurally identical, not reference-equal.
+// Harness only. Both codecs are SerializeAndDeserializeBSTSolution's. LeetCode leaves
+// the encoding free and judges only the round trip, so each codec is pinned from both
+// ends: a tree written and read back is the same tree, compared in LeetCode's own
+// level-order notation; and text read and written back is the same text. Every row is
+// a valid BST, which the values-only codec relies on.
 public sealed partial class SerializeAndDeserializeBSTTests
 {
-    public static TheoryData<int[]> Examples =>
+    // LeetCode's two published examples, a single node, and a two-level tree.
+    public static TheoryData<int?[]> Examples =>
         new()
         {
-            new int[] { },
-            new int[] { 42 },
-            new int[] { 5, 3, 2, 4, 6 },
+            { [2, 1, 3] },
+            { [] },
+            { [42] },
+            { [5, 3, 6, 2, 4] },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SerializeByNullMarkerQueueThenDeserializeByNullMarkerQueue_LeetCodeExamples_RoundTripsPreOrder(
-        int[] preOrder)
+    public void SerializeByNullMarkerQueue_LeetCodeExamples_RoundTripsThroughDeserializeByNullMarkerQueue(int?[] levelOrder)
     {
-        var root = BuildTree(preOrder);
+        var text = SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        var restored = SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
-            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(root));
-
-        Assert.Equal(PreOrder(root), PreOrder(restored));
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(text)));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SerializeByPreOrderValuesThenDeserializeByBstInsert_LeetCodeExamples_RoundTripsPreOrder(
-        int[] preOrder)
+    public void DeserializeByNullMarkerQueue_WhatSerializeByNullMarkerQueueWrote_WritesBackTheSameText(int?[] levelOrder)
     {
-        var root = BuildTree(preOrder);
+        var text = SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        var restored = SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
-            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(root));
-
-        Assert.Equal(PreOrder(root), PreOrder(restored));
+        Assert.Equal(text, SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(text)));
     }
 
-    private static BinaryTreeNode<int>? BuildTree(int[] preOrder)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SerializeByPreOrderValues_LeetCodeExamples_RoundTripsThroughDeserializeByBstInsert(int?[] levelOrder)
     {
-        var tree = new BinarySearchTree<int>();
+        var text = SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        foreach (var value in preOrder)
-        {
-            tree.Insert(value);
-        }
-
-        return tree.Root;
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(text)));
     }
 
-    private static int[] PreOrder(BinaryTreeNode<int>? root)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeserializeByBstInsert_WhatSerializeByPreOrderValuesWrote_WritesBackTheSameText(int?[] levelOrder)
     {
-        if (root is null)
-        {
-            return [];
-        }
+        var text = SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        return [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+        Assert.Equal(text, SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(text)));
     }
 }

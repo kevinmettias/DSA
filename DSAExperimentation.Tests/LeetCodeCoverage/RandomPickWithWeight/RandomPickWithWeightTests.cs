@@ -19,7 +19,7 @@ public sealed partial class RandomPickWithWeightTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByLinearScan(
+    public void RandomPickWithWeightByLinearScan_LeetCodeExamples_AlwaysReturnsAValidIndex(
         int[] weights, int seed, int[] validIndices, int trials)
         => AssertPicksAreValid(
             new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(weights, new Random(seed)),
@@ -28,7 +28,7 @@ public sealed partial class RandomPickWithWeightTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void PickIndex_LeetCodeExamples_AlwaysReturnsAValidIndexByBinarySearchUpperBound(
+    public void RandomPickWithWeightByBinarySearchUpperBound_LeetCodeExamples_AlwaysReturnsAValidIndex(
         int[] weights, int seed, int[] validIndices, int trials)
         => AssertPicksAreValid(
             new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(weights, new Random(seed)),
@@ -36,12 +36,12 @@ public sealed partial class RandomPickWithWeightTests
             trials);
 
     [Fact]
-    public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOftenByLinearScan()
+    public void RandomPickWithWeightByLinearScan_OneWeightFarLarger_LandsThereFarMoreOften()
         => AssertHeavilyWeightedIndexDominates(
             new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan([1, 999], new Random(3)));
 
     [Fact]
-    public void PickIndex_OneWeightFarLarger_LandsThereFarMoreOftenByBinarySearchUpperBound()
+    public void RandomPickWithWeightByBinarySearchUpperBound_OneWeightFarLarger_LandsThereFarMoreOften()
         => AssertHeavilyWeightedIndexDominates(
             new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound([1, 999], new Random(3)));
 

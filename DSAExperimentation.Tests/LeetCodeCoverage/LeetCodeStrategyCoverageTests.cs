@@ -13,10 +13,103 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage;
 //
 // The pairing is by namespace, which is what the file tree already asserts: one
 // problem folder holds one <Problem>Solution and one <Problem>Registration.
+//
+// The registration pairing reached ten problems. The rule below reaches every
+// solution class: section 17.7 asks for one test method per strategy, named for it,
+// and suppressions.json waives check-test-coverage over DSAExperimentation.LeetCode/**
+// on the strength of exactly that claim. Until this check existed the claim was
+// prose - KthSmallestElementInABSTSolution had no caller at all while its test
+// asserted a private copy of both walks, and the waiver hid it.
 public sealed partial class LeetCodeStrategyCoverageTests
 {
     private const string StrategyInfix = "By";
     private const string SolutionSuffix = "Solution";
+    private const char TestNameSeparator = '_';
+
+    public static TheoryData<string> SolutionClasses
+    {
+        get
+        {
+            var solutionTypeNames = new TheoryData<string>();
+
+            foreach (var solution in LeetCodeTypes().Where(IsSolutionClass).OrderBy(FullNameOf, StringComparer.Ordinal))
+            {
+                solutionTypeNames.Add(FullNameOf(solution));
+            }
+
+            return solutionTypeNames;
+        }
+    }
+
+    // A strategy is named by a test method whose name is the member's name or starts
+    // with it as the first underscore-separated word - the Member_Scenario_Expectation
+    // shape check-test-coverage also reads - in the test namespace that mirrors the
+    // solution's own problem folder.
+    [Theory]
+    [MemberData(nameof(SolutionClasses))]
+    public void EveryStrategy_IsNamedByATestMethodInItsProblemFolder(string solutionTypeName)
+    {
+        var solution = LeetCodeTypes().Single(type => FullNameOf(type) == solutionTypeName);
+        var strategies = StrategyMembersOf(solution);
+        var testMethods = TestMethodNamesFor(solution);
+        var unnamed = strategies.Where(strategy => !testMethods.Any(test => Names(test, strategy))).ToList();
+
+        Assert.NotEmpty(strategies);
+        Assert.True(
+            unnamed.Count == 0,
+            $"{solution.Name}: no test method in {TestNamespaceFor(solution)} is named for [{Listed(unnamed)}]. "
+            + "Section 17.7 asks for one test method per strategy, starting with the strategy's own name.");
+    }
+
+    // The theory above has one row per solution class, so a discovery that found none
+    // would report green while checking nothing.
+    [Fact]
+    public void SolutionClasses_AfterDiscovery_AreFound() => Assert.NotEmpty(SolutionClasses);
+
+    private static bool Names(string testMethod, string strategy)
+        => testMethod == strategy
+            || (testMethod.StartsWith(strategy, StringComparison.Ordinal)
+                && testMethod[strategy.Length] == TestNameSeparator);
+
+    // The non-private members a strategy name can sit on: a static method for a
+    // function-shaped problem, a nested type for a design problem whose strategies are
+    // whole classes. Compiler-generated members - lambdas, local functions - carry '<'
+    // in their names and are not the author's.
+    private static List<string> StrategyMembersOf(Type solution)
+    {
+        var methods = solution
+            .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            .Where(method => (method.IsPublic || method.IsAssembly) && !method.IsSpecialName)
+            .Select(method => method.Name);
+        var nestedTypes = solution
+            .GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(type => type.IsNestedPublic || type.IsNestedAssembly)
+            .Select(type => type.Name);
+
+        return methods
+            .Concat(nestedTypes)
+            .Where(name => !name.Contains('<') && StrategyNameOf(name).Length > 0)
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal)
+            .ToList();
+    }
+
+    private static List<string> TestMethodNamesFor(Type solution)
+    {
+        var testNamespace = TestNamespaceFor(solution);
+
+        return typeof(LeetCodeStrategyCoverageTests).Assembly
+            .GetTypes()
+            .Where(type => type.Namespace == testNamespace)
+            .SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static))
+            .Where(method => method.IsDefined(typeof(FactAttribute), inherit: true))
+            .Select(method => method.Name)
+            .ToList();
+    }
+
+    // DSAExperimentation.LeetCode.<Problem> is tested in <this namespace>.<Problem>.
+    private static string TestNamespaceFor(Type solution)
+        => $"{typeof(LeetCodeStrategyCoverageTests).Namespace}.{NamespaceOf(solution).Split('.')[^1]}";
 
     public static TheoryData<string> RegisteredSolutions
     {

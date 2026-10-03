@@ -31,7 +31,7 @@ public sealed partial class GenerateRandomPointInACircleTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RandPoint_LeetCodeExamplesByRejectionSampling_AlwaysLandsWithinTheCircleAndVaries(
+    public void GenerateRandomPointInACircleByRejectionSampling_LeetCodeExamples_AlwaysLandsWithinTheCircleAndVaries(
         RandPointCase example) =>
         AssertRandPointBehavesCorrectly(
             new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByRejectionSampling(
@@ -40,7 +40,7 @@ public sealed partial class GenerateRandomPointInACircleTests
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void RandPoint_LeetCodeExamplesByClosedFormPolar_AlwaysLandsWithinTheCircleAndVaries(
+    public void GenerateRandomPointInACircleByClosedFormPolar_LeetCodeExamples_AlwaysLandsWithinTheCircleAndVaries(
         RandPointCase example) =>
         AssertRandPointBehavesCorrectly(
             new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(

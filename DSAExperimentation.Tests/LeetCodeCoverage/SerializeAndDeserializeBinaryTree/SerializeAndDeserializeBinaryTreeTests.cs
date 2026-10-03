@@ -1,71 +1,60 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Harness;
 using DSAExperimentation.LeetCode.SerializeAndDeserializeBinaryTree;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.SerializeAndDeserializeBinaryTree;
 
-// Harness only. Both round-trip strategies are
-// SerializeAndDeserializeBinaryTreeSolution's - this file just pins them to
-// LeetCode's published examples via a preorder-sequence comparison, since the
-// restored tree only needs to be structurally identical, not reference-equal.
+// Harness only. Both codecs are SerializeAndDeserializeBinaryTreeSolution's. LeetCode
+// leaves the encoding free and judges only the round trip, so each codec is pinned
+// from both ends: a tree written and read back is the same tree, compared in
+// LeetCode's own level-order notation (which, unlike a value-only preorder, tells
+// two shapes with the same values apart); and text read and written back is the
+// same text.
 public sealed partial class SerializeAndDeserializeBinaryTreeTests
 {
-    // Each row is a preorder traversal with null children marked (null), matching
-    // the solution's own token grammar - value, then left, then right.
+    // LeetCode's two published examples, a single node, and a lopsided tree whose
+    // value-only preorder [1, 2, 3] it shares with a left-leaning chain.
     public static TheoryData<int?[]> Examples =>
         new()
         {
-            new int?[] { 1, 2, null, null, 3, 4, null, null, 5, null, null },
-            new int?[] { null },
-            new int?[] { 42, null, null },
+            { [1, 2, 3, null, null, 4, 5] },
+            { [] },
+            { [42] },
+            { [1, null, 2, 3] },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SerializeByStringConcatThenDeserializeByStringConcat_LeetCodeExamples_RoundTripsPreOrder(
-        int?[] preorder)
+    public void SerializeByStringConcat_LeetCodeExamples_RoundTripsThroughDeserializeByStringConcat(int?[] levelOrder)
     {
-        var root = BuildTree(preorder);
+        var text = SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        var restored = SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(
-            SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(root));
-
-        Assert.Equal(PreOrder(root), PreOrder(restored));
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(text)));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void SerializeByQueueThenDeserializeByQueue_LeetCodeExamples_RoundTripsPreOrder(int?[] preorder)
+    public void DeserializeByStringConcat_WhatSerializeByStringConcatWrote_WritesBackTheSameText(int?[] levelOrder)
     {
-        var root = BuildTree(preorder);
+        var text = SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        var restored = SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(
-            SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(root));
-
-        Assert.Equal(PreOrder(root), PreOrder(restored));
+        Assert.Equal(text, SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(text)));
     }
 
-    private static BinaryTreeNode<int>? BuildTree(int?[] preorder)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void SerializeByQueue_LeetCodeExamples_RoundTripsThroughDeserializeByQueue(int?[] levelOrder)
     {
-        // The read cursor is the recursion's own state, not this body's, so the local
-        // function names it as a parameter rather than capturing it from the enclosing block.
-        var index = 0;
+        var text = SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        return BuildFromPreorder(ref index);
-
-        BinaryTreeNode<int>? BuildFromPreorder(ref int index)
-        {
-            var value = preorder[index++];
-            return value is null ? null : new BinaryTreeNode<int>(value.Value) { Left = BuildFromPreorder(ref index), Right = BuildFromPreorder(ref index) };
-        }
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(text)));
     }
 
-    private static int[] PreOrder(BinaryTreeNode<int>? root)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void DeserializeByQueue_WhatSerializeByQueueWrote_WritesBackTheSameText(int?[] levelOrder)
     {
-        if (root is null)
-        {
-            return [];
-        }
+        var text = SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(LeetCodeWireFormat.ToBinaryTree(levelOrder));
 
-        return [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
+        Assert.Equal(text, SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(text)));
     }
 }
