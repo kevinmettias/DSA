@@ -23,7 +23,7 @@ public class RandomPickIndexBenchmarks
 
     private int[] _picks = [];
 
-    [Params(2_000, 50_000)]
+    [Params(2_000, 20_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

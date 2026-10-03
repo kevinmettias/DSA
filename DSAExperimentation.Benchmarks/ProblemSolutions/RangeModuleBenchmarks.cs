@@ -12,8 +12,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // IntervalSetBinarySearch instead composes this repo's own IntervalSet<int> with
 // BinarySearch.UpperBound over a Starts view to find the one candidate range that
 // could contain the query, O(log n) per query.
+//
+// Coordinates start at 1, LC 715's lowest left. Length ranges added and Length queries
+// make 10,000 calls at the larger size, LC 715's cap.
 public class RangeModuleBenchmarks
 {
+    private const int FirstCoordinate = 1;
     private const int RangeWidth = 2;
     private const int Stride = 4;
     private const int RandomSeed = 17;
@@ -33,7 +37,7 @@ public class RangeModuleBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            var start = i * Stride;
+            var start = FirstCoordinate + (i * Stride);
             var end = start + RangeWidth;
             _linearScan.AddRange(start, end);
             _intervalSetBinarySearch.AddRange(start, end);
@@ -44,7 +48,7 @@ public class RangeModuleBenchmarks
         _queries = Enumerable.Range(0, Length)
             .Select(_ =>
             {
-                var left = random.Next(0, span);
+                var left = FirstCoordinate + random.Next(0, span);
                 return (left, left + 1);
             })
             .ToArray();

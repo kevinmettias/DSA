@@ -7,20 +7,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] builds the random points and queries - LeetCode's own input shape,
 // which is what both arms take - so only the counting is measured; the sort the
 // pruning arm needs is part of that arm's own cost, which is the comparison.
-// Coordinates are spread far wider than the query radius (unlike LC 1828's own tight
-// [-1000,1000]/[1,500] constraints) specifically so the x-range prune actually
-// discards most points instead of barely narrowing the scan - the point this
-// benchmark exists to demonstrate.
+// Coordinates lie in LC 1828's own [0, 500] and radii in [1, 200), so a query's circle
+// spans well under the coordinate range and the x-range prune still discards part of
+// the scan - less of it than a spread wider than LeetCode poses would let it. PointCount
+// stops at LC 1828's 500 points, with as many queries.
 public class QueriesOnNumberOfPointsInsideACircleBenchmarks
 {
     private const int RandomSeed = 1828; // LC problem number
-    private const int CoordinateBound = 50_000;
+    private const int CoordinateBoundExclusive = 501;
     private const int QueryRadiusBoundExclusive = 200;
 
     private int[][] _points = [];
 
     private int[][] _queries = [];
-    [Params(1_000, 8_000)]
+    [Params(50, 500)]
     public int PointCount { get; set; }
 
     [GlobalSetup]
@@ -28,13 +28,13 @@ public class QueriesOnNumberOfPointsInsideACircleBenchmarks
     {
         var random = new Random(RandomSeed);
         _points = Enumerable.Range(0, PointCount)
-            .Select(_ => new[] { random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound) })
+            .Select(_ => new[] { random.Next(CoordinateBoundExclusive), random.Next(CoordinateBoundExclusive) })
             .ToArray();
         _queries = Enumerable.Range(0, PointCount)
             .Select(_ => new[]
             {
-                random.Next(-CoordinateBound, CoordinateBound),
-                random.Next(-CoordinateBound, CoordinateBound),
+                random.Next(CoordinateBoundExclusive),
+                random.Next(CoordinateBoundExclusive),
                 random.Next(1, QueryRadiusBoundExclusive),
             })
             .ToArray();

@@ -11,6 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Queue<(int,int)> - O(number of runs) memory and O(total next-calls + number of
 // runs) time. Construction stays inside each measured method deliberately: building
 // the iterator IS the difference between the two strategies.
+//
+// The queries drain the whole encoding, one Next per query, and LC 900 allows 1,000
+// calls to Next. This seed's query lengths, 1 to 49 apiece, reach TotalCount = 24,950 on
+// their 1,000th draw, so that is where TotalCount stops.
 public class RLEIteratorBenchmarks
 {
     private const int RunCount = 100;
@@ -24,7 +28,7 @@ public class RLEIteratorBenchmarks
 
     // What every Next returned, in query order - what each arm returns.
     private int[] _answers = [];
-    [Params(2_000, 200_000)]
+    [Params(2_000, 24_950)]
     public int TotalCount { get; set; }
 
     [GlobalSetup]

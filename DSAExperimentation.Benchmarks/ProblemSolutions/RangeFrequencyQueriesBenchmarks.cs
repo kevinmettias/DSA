@@ -15,7 +15,10 @@ public class RangeFrequencyQueriesBenchmarks
     // LC problem number, reused as the Random seed for reproducible benchmark input.
     private const int RandomSeed = 2080;
 
+    // The array and the queried values both hold ValueRange values from 1, LC 2080's lowest.
     private const int ValueRange = 50;
+    private const int MinValue = 1;
+    private const int ValueBoundExclusive = MinValue + ValueRange;
 
     private int[] _arr = [];
 
@@ -30,14 +33,14 @@ public class RangeFrequencyQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _arr = SeededDraws.Values(Length, 0, ValueRange, random);
+        _arr = SeededDraws.Values(Length, MinValue, ValueBoundExclusive, random);
 
         _queries = new (int Left, int Right, int Value)[QueryCount];
         for (var i = 0; i < QueryCount; i++)
         {
             var left = random.Next(0, Length);
             var right = random.Next(left, Length);
-            var value = random.Next(ValueRange);
+            var value = random.Next(MinValue, ValueBoundExclusive);
             _queries[i] = (left, right, value);
         }
 

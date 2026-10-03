@@ -13,7 +13,7 @@ public class RangeSumQueryMutableBenchmarks
 {
     private const int OperationCount = 500;
     private const int RandomSeed = 307; // LC problem number
-    private const int ValueBound = 1_000;
+    private const int ValueBound = 100; // LC 307: nums[i] and val in [-100, 100]
     private const int OperationTypeCount = 2;
 
     private int[] _initial = [];

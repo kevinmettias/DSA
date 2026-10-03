@@ -6,12 +6,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RandomFlipMatrixSolutionTests proves correct. Each arm builds its own 1 x Cells matrix (a
 // Design problem's whole point is a sequence of calls against one instance, so there
 // is no separate "prepare input" step to hoist into [GlobalSetup]) and drains it with
-// the same seeded Random, returning every cell Flip picked, in call order.
+// the same seeded Random, returning every cell Flip picked, in call order. Draining
+// flips every cell once, and LC 519 allows 1,000 calls to flip, so Cells stops at 1,000.
 public class RandomFlipMatrixBenchmarks
 {
     private int[][] _flips = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Cells { get; set; }
 
     [GlobalSetup]

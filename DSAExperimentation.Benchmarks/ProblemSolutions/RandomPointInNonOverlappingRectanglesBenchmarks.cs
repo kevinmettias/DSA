@@ -20,7 +20,7 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     private int[] _prefixAreas = [];
 
     private int[][] _points = [];
-    [Params(50, 2_000)]
+    [Params(50, 100)]
     public int RectangleCount { get; set; }
 
     [GlobalSetup]

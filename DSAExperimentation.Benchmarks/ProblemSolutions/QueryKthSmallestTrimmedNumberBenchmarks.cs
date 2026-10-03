@@ -16,7 +16,7 @@ public class QueryKthSmallestTrimmedNumberBenchmarks
     private string[] _nums = [];
 
     private int[][] _queries = [];
-    [Params(200, 3_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
