@@ -12,6 +12,9 @@ namespace DSAExperimentation.Tests.LeetCodeCoverage.RandomPickIndex;
 // gets returned across many calls.
 public sealed partial class RandomPickIndexTests
 {
+    // Fixed, as RandomPickWithBlacklistTests' scenarios fix theirs, so a failing replay replays.
+    private const int Seed = 1;
+
     public static TheoryData<PickExample> Examples =>
         new()
         {
@@ -24,13 +27,13 @@ public sealed partial class RandomPickIndexTests
     [MemberData(nameof(Examples))]
     public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByReservoirSampling(PickExample example)
         => AssertPicksAreValid(
-            new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(example.Nums), example);
+            new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(example.Nums, Seed), example);
 
     [Theory]
     [MemberData(nameof(Examples))]
     public void Pick_LeetCodeExamples_AlwaysReturnsAValidIndexByHashMapGrouping(PickExample example)
         => AssertPicksAreValid(
-            new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(example.Nums), example);
+            new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(example.Nums, Seed), example);
 
     private static void AssertPicksAreValid(
         RandomPickIndexSolution.IRandomPickIndex solution, PickExample example)

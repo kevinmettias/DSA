@@ -10,13 +10,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each [Benchmark] arm builds its own fresh instance from it (mirroring how a
 // real caller constructs a Solution once) before replaying the same PickCalls
 // script, returning the running total so the JIT can't eliminate the replay as
-// dead code.
+// dead code. Every instance is built with the same PickSeed, so a rebuilt
+// harness replays the same picks; the two arms still answer differently, because
+// each consumes the generator its own way.
 [MemoryDiagnoser]
 public class RandomPickIndexBenchmarks
 {
     private const int Target = 7;
     private const int PickCalls = 500;
     private const int ValueUpperBound = 50;
+    private const int PickSeed = 398; // LC problem number
 
     private int[] _nums = [];
 
@@ -31,10 +34,12 @@ public class RandomPickIndexBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long ReservoirSampling() => Replay(new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(_nums));
+    public long ReservoirSampling() =>
+        Replay(new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(_nums, PickSeed));
 
     [Benchmark]
-    public long HashMapGrouping() => Replay(new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(_nums));
+    public long HashMapGrouping() =>
+        Replay(new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(_nums, PickSeed));
 
     private static long Replay(RandomPickIndexSolution.IRandomPickIndex solution)
     {

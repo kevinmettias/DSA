@@ -10,7 +10,9 @@ namespace DSAExperimentation.LeetCode.RandomPickIndex;
 // instance - Pick alone, this time - so "every strategy for the problem" (§17.3)
 // takes the form of two classes implementing a shared IRandomPickIndex surface,
 // the same shape InsertDeleteGetRandomO1Solution already uses for its own
-// Design-category problem.
+// Design-category problem. Each strategy takes its seed from the caller, as
+// RandomPickWithBlacklistSolution's do, so the same calls against the same seed
+// pick the same indices and a replay is reproducible.
 internal static class RandomPickIndexSolution
 {
     internal interface IRandomPickIndex
@@ -25,9 +27,13 @@ internal static class RandomPickIndexSolution
     internal sealed class RandomPickIndexByReservoirSampling : IRandomPickIndex
     {
         private readonly int[] _nums;
-        private readonly Random _random = new();
+        private readonly Random _random;
 
-        public RandomPickIndexByReservoirSampling(int[] nums) => _nums = nums;
+        public RandomPickIndexByReservoirSampling(int[] nums, int seed)
+        {
+            _nums = nums;
+            _random = new Random(seed);
+        }
 
         public int Pick(int target)
         {
@@ -59,10 +65,12 @@ internal static class RandomPickIndexSolution
     internal sealed class RandomPickIndexByHashMapGrouping : IRandomPickIndex
     {
         private readonly HashMap<int, DynamicArray<int>> _indicesByValue = new();
-        private readonly Random _random = new();
+        private readonly Random _random;
 
-        public RandomPickIndexByHashMapGrouping(int[] nums)
+        public RandomPickIndexByHashMapGrouping(int[] nums, int seed)
         {
+            _random = new Random(seed);
+
             for (var i = 0; i < nums.Length; i++)
             {
                 if (!_indicesByValue.TryGetValue(nums[i], out var indices))

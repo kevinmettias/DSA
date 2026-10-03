@@ -15,9 +15,6 @@ public sealed partial class BenchmarkArmsTests
 
     public static TheoryData<string> BenchmarkClasses => CasesWhere(_ => true);
 
-    public static TheoryData<string> ReproducibleBenchmarkClasses =>
-        CasesWhere(type => !ArmAgreement.UnseededAnswers.Contains(type));
-
     public static TheoryData<string> ComparableBenchmarkClasses =>
         CasesWhere(type => !ArmAgreement.IncomparableAnswers.ContainsKey(type));
 
@@ -38,7 +35,7 @@ public sealed partial class BenchmarkArmsTests
     // A rebuilt workload is not enough on its own: an arm that also reads state the harness does not
     // hold - a static generator, a cache filled by an earlier call - answers differently anyway.
     [Theory]
-    [MemberData(nameof(ReproducibleBenchmarkClasses))]
+    [MemberData(nameof(BenchmarkClasses))]
     public void Arms_RebuiltHarness_AnswerTheSameAgain(string benchmarkName)
     {
         var benchmark = BenchmarkClass.Named(benchmarkName);

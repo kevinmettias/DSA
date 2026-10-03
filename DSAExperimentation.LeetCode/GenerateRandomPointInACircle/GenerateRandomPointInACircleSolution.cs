@@ -15,6 +15,8 @@ namespace DSAExperimentation.LeetCode.GenerateRandomPointInACircle;
 // structure on top of - each RandPoint() call is one self-contained draw over
 // System.Random, the same "Operations + open runtime object, no Representation
 // axis" shape ARCHITECTURE.md documents for Traversal/DepthFirst/DepthFirstSearch.
+// Each strategy takes its seed from the caller, as RandomPickWithBlacklistSolution's
+// do, so the same seed draws the same points and a replay is reproducible.
 internal static class GenerateRandomPointInACircleSolution
 {
     internal interface IRandomPointGenerator
@@ -27,9 +29,9 @@ internal static class GenerateRandomPointInACircleSolution
     // are discarded. Deliberately written without this repo's primitives, the
     // arm the closed-form single-draw strategy below has to justify itself
     // against.
-    internal sealed class GenerateRandomPointInACircleByRejectionSampling(double radius, double xCenter, double yCenter) : IRandomPointGenerator
+    internal sealed class GenerateRandomPointInACircleByRejectionSampling(double radius, double xCenter, double yCenter, int seed) : IRandomPointGenerator
     {
-        private readonly Random _random = new();
+        private readonly Random _random = new(seed);
 
         public double[] RandPoint()
         {
@@ -50,9 +52,9 @@ internal static class GenerateRandomPointInACircleSolution
     // circle on the first try - r = radius * sqrt(u) is what keeps the sample
     // uniform by AREA instead of clustering near the center, theta = u * 2*PI
     // picks the direction. No rejection loop, no wasted draws.
-    internal sealed class GenerateRandomPointInACircleByClosedFormPolar(double radius, double xCenter, double yCenter) : IRandomPointGenerator
+    internal sealed class GenerateRandomPointInACircleByClosedFormPolar(double radius, double xCenter, double yCenter, int seed) : IRandomPointGenerator
     {
-        private readonly Random _random = new();
+        private readonly Random _random = new(seed);
 
         public double[] RandPoint()
         {

@@ -18,6 +18,9 @@ public sealed partial class GenerateRandomPointInACircleTests
 {
     private const double ContainmentTolerance = 1e-9;
 
+    // Fixed, as RandomPickWithBlacklistTests' scenarios fix theirs, so a failing replay replays.
+    private const int Seed = 1;
+
     public static TheoryData<RandPointCase> Examples =>
         new()
         {
@@ -32,7 +35,7 @@ public sealed partial class GenerateRandomPointInACircleTests
         RandPointCase example) =>
         AssertRandPointBehavesCorrectly(
             new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByRejectionSampling(
-                example.Radius, example.XCenter, example.YCenter),
+                example.Radius, example.XCenter, example.YCenter, Seed),
             example);
 
     [Theory]
@@ -41,7 +44,7 @@ public sealed partial class GenerateRandomPointInACircleTests
         RandPointCase example) =>
         AssertRandPointBehavesCorrectly(
             new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(
-                example.Radius, example.XCenter, example.YCenter),
+                example.Radius, example.XCenter, example.YCenter, Seed),
             example);
 
     private static void AssertRandPointBehavesCorrectly(

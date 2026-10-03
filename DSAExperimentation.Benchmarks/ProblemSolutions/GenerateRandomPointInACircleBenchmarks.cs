@@ -10,23 +10,29 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // try. Each [Benchmark] arm builds its own fresh instance (mirroring how a real
 // caller constructs a Solution once) before replaying Draws RandPoint() calls,
 // summing the X coordinate so the JIT can't eliminate the replay as dead code.
+// Every instance is built with the same DrawSeed, so a rebuilt harness replays
+// the same points; the two arms still answer differently, because rejection
+// sampling spends a variable number of draws per point and the polar form two.
 [MemoryDiagnoser]
 public class GenerateRandomPointInACircleBenchmarks
 {
     private const double Radius = 10.0;
     private const double XCenter = 5.0;
     private const double YCenter = -3.0;
+    private const int DrawSeed = 478; // LC problem number
 
     [Params(1_000, 100_000)]
     public int Draws { get; set; }
 
     [Benchmark(Baseline = true)]
     public double RejectionSampling() =>
-        Replay(new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByRejectionSampling(Radius, XCenter, YCenter));
+        Replay(new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByRejectionSampling(
+            Radius, XCenter, YCenter, DrawSeed));
 
     [Benchmark]
     public double ClosedFormPolar() =>
-        Replay(new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(Radius, XCenter, YCenter));
+        Replay(new GenerateRandomPointInACircleSolution.GenerateRandomPointInACircleByClosedFormPolar(
+            Radius, XCenter, YCenter, DrawSeed));
 
     private double Replay(GenerateRandomPointInACircleSolution.IRandomPointGenerator generator)
     {
