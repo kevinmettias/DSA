@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -10,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the workload.
 //
 // Answers come back one per node in node order, and node i's mex belongs to node i, so
-// AnswerText.Of rather than OfUnorderedSet keeps each mex scored against its own node. The
+// AnswerGraphText.Of rather than OfUnordered keeps each mex scored against its own node. The
 // chain's values are also decisive enough to check the arms against directly rather than
 // against each other: see the two answers below.
 public sealed partial class SmallestMissingGeneticValueInEachSubtreeBenchmarksTests
@@ -29,8 +30,8 @@ public sealed partial class SmallestMissingGeneticValueInEachSubtreeBenchmarksTe
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameFamilyTree() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     [Fact]
     public void BruteForce_TwoHundredNodeChain_AgreesWithAncestorChainWithSkip()
@@ -38,9 +39,9 @@ public sealed partial class SmallestMissingGeneticValueInEachSubtreeBenchmarksTe
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.AncestorChainWithSkip()),
-            AnswerText.Of(harness.BruteForce()));
-        Assert.Equal(AnswerText.Of(ExpectedMexes()), AnswerText.Of(harness.BruteForce()));
+            AnswerGraphText.Of(harness.AncestorChainWithSkip()),
+            AnswerGraphText.Of(harness.BruteForce()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedMexes()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -49,9 +50,9 @@ public sealed partial class SmallestMissingGeneticValueInEachSubtreeBenchmarksTe
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BruteForce()),
-            AnswerText.Of(harness.AncestorChainWithSkip()));
-        Assert.Equal(AnswerText.Of(ExpectedMexes()), AnswerText.Of(harness.AncestorChainWithSkip()));
+            AnswerGraphText.Of(harness.BruteForce()),
+            AnswerGraphText.Of(harness.AncestorChainWithSkip()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedMexes()), AnswerGraphText.Of(harness.AncestorChainWithSkip()));
     }
 
     // The oracle Setup's own documentation settles: the root answers RootSubtreeAnswer and every

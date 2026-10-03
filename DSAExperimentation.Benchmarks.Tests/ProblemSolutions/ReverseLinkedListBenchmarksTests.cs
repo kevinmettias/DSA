@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -9,9 +10,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // independently of the arm: the answer is that same sequence rendered backwards, so the oracle below
 // is stated from the fixture's shape and not read back out of the arm.
 //
-// The arm returns the new head as object? (the node type is internal, CS0050) and AnswerText cannot
-// render a linked node - it is not an enumerable sequence - so each result is walked into its values
-// first. Both the arm and the Setup call rebuild the chain from the hoisted values inside the
+// The arm returns the new head as object? (the node type is internal, CS0050); the oracle states the
+// answer as plain values, so each result is walked into its values first. Both the arm and the Setup call rebuild the chain from the hoisted values inside the
 // measured call (the rewire mutates the nodes it is handed), so one harness is safe to call twice in
 // either order.
 public sealed partial class ReverseLinkedListBenchmarksTests
@@ -21,8 +21,8 @@ public sealed partial class ReverseLinkedListBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().IterativeRewire())),
-            AnswerText.Of(ValuesOf(BuildHarness().IterativeRewire())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().IterativeRewire())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().IterativeRewire())));
 
     [Fact]
     public void IterativeRewire_AscendingValues_ProducesTheDescendingSequence() =>

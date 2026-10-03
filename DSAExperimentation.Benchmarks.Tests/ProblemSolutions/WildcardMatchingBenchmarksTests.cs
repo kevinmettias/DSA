@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -14,8 +15,8 @@ public sealed partial class WildcardMatchingBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().IsMatchByGreedyTwoPointer()),
-            AnswerText.Of(BuildHarness().IsMatchByGreedyTwoPointer()));
+            AnswerGraphText.Of(BuildHarness().IsMatchByGreedyTwoPointer()),
+            AnswerGraphText.Of(BuildHarness().IsMatchByGreedyTwoPointer()));
 
     [Fact]
     public void IsMatchByGreedyTwoPointer_AgreesWithMemoizedDp()

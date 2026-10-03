@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,11 +18,11 @@ public sealed partial class PermutationsIVBenchmarksTests
     public void BigIntegerRank_AgreesWithFenwickOrderStatistics()
     {
         Assert.Equal(
-            AnswerText.Of(Harness(SmallestPermutationLength).FenwickOrderStatistics()),
-            AnswerText.Of(Harness(SmallestPermutationLength).BigIntegerRank()));
+            AnswerGraphText.Of(Harness(SmallestPermutationLength).FenwickOrderStatistics()),
+            AnswerGraphText.Of(Harness(SmallestPermutationLength).BigIntegerRank()));
         Assert.Equal(
-            AnswerText.Of(Harness(LargestPermutationLength).FenwickOrderStatistics()),
-            AnswerText.Of(Harness(LargestPermutationLength).BigIntegerRank()));
+            AnswerGraphText.Of(Harness(LargestPermutationLength).FenwickOrderStatistics()),
+            AnswerGraphText.Of(Harness(LargestPermutationLength).BigIntegerRank()));
     }
 
     private static PermutationsIVBenchmarks Harness(int permutationLength) =>

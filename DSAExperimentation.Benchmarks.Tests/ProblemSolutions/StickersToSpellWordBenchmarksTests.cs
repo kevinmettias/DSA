@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class StickersToSpellWordBenchmarksTests
     [Fact]
     public void Setup_SamePairCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().Naive()),
-            AnswerText.Of(BuildHarness().Naive()));
+            AnswerGraphText.Of(BuildHarness().Naive()),
+            AnswerGraphText.Of(BuildHarness().Naive()));
 
     [Fact]
     public void Naive_AgreesWithMemoized()

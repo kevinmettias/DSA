@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // are competing strategies for the same question - rebuilding each node's dfs string from scratch
 // against one tour that answers every node's query from two rolling hashes - so a harness whose arms
 // disagree is timing two different problems. Both arms answer with one flag per node in node order,
-// which is part of this answer: flag i belongs to node i, so AnswerText.Of and not OfUnorderedSet
+// which is part of this answer: flag i belongs to node i, so AnswerGraphText.Of and not OfUnordered
 // is the rendering that keeps each flag scored against its own node.
 public sealed partial class CheckIfDfsStringsArePalindromesBenchmarksTests
 {
@@ -23,7 +24,7 @@ public sealed partial class CheckIfDfsStringsArePalindromesBenchmarksTests
         // NodeCount must draw the same seeded character string over the same chain and answer with
         // the same 200 flags.
         Assert.Equal(SmallestNodeCount, first.BruteForce().Length);
-        Assert.Equal(AnswerText.Of(first.EulerTourRollingHash()), AnswerText.Of(second.EulerTourRollingHash()));
+        Assert.Equal(AnswerGraphText.Of(first.EulerTourRollingHash()), AnswerGraphText.Of(second.EulerTourRollingHash()));
     }
 
     [Fact]
@@ -31,7 +32,7 @@ public sealed partial class CheckIfDfsStringsArePalindromesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.EulerTourRollingHash()), AnswerText.Of(harness.BruteForce()));
+        Assert.Equal(AnswerGraphText.Of(harness.EulerTourRollingHash()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -39,7 +40,7 @@ public sealed partial class CheckIfDfsStringsArePalindromesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.BruteForce()), AnswerText.Of(harness.EulerTourRollingHash()));
+        Assert.Equal(AnswerGraphText.Of(harness.BruteForce()), AnswerGraphText.Of(harness.EulerTourRollingHash()));
     }
 
     private static CheckIfDfsStringsArePalindromesBenchmarks BuildHarness()

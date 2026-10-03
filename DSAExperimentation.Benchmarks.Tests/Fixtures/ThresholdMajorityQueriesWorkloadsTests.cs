@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -56,6 +57,6 @@ public sealed partial class ThresholdMajorityQueriesWorkloadsTests
     [Fact]
     public void BuildQueries_SameSeed_ReturnsTheSameQueries() =>
         Assert.Equal(
-            AnswerText.Of(ThresholdMajorityQueriesWorkloads.BuildQueries(ElementCount, Seed)),
-            AnswerText.Of(ThresholdMajorityQueriesWorkloads.BuildQueries(ElementCount, Seed)));
+            AnswerGraphText.Of(ThresholdMajorityQueriesWorkloads.BuildQueries(ElementCount, Seed)),
+            AnswerGraphText.Of(ThresholdMajorityQueriesWorkloads.BuildQueries(ElementCount, Seed)));
 }

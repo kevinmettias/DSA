@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,8 +17,8 @@ public sealed partial class AlternatingGroupsIIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     [Fact]
     public void BruteForce_ThousandTileCircle_AgreesWithRunLengthFenwick()
@@ -25,7 +26,7 @@ public sealed partial class AlternatingGroupsIIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.NotEmpty(harness.BruteForce());
-        Assert.Equal(AnswerText.Of(harness.RunLengthFenwick()), AnswerText.Of(harness.BruteForce()));
+        Assert.Equal(AnswerGraphText.Of(harness.RunLengthFenwick()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -34,7 +35,7 @@ public sealed partial class AlternatingGroupsIIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.NotEmpty(harness.RunLengthFenwick());
-        Assert.Equal(AnswerText.Of(harness.BruteForce()), AnswerText.Of(harness.RunLengthFenwick()));
+        Assert.Equal(AnswerGraphText.Of(harness.BruteForce()), AnswerGraphText.Of(harness.RunLengthFenwick()));
     }
 
     private static AlternatingGroupsIIIBenchmarks BuildHarness()

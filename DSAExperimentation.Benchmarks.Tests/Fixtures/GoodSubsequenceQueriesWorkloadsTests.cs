@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -46,6 +47,6 @@ public sealed partial class GoodSubsequenceQueriesWorkloadsTests
         var (repeatNums, repeatQueries) = GoodSubsequenceQueriesWorkloads.Build(Length, QueryCount, Seed);
 
         Assert.Equal(nums, repeatNums);
-        Assert.Equal(AnswerText.Of(queries), AnswerText.Of(repeatQueries));
+        Assert.Equal(AnswerGraphText.Of(queries), AnswerGraphText.Of(repeatQueries));
     }
 }

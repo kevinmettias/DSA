@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -57,6 +58,6 @@ public sealed partial class RestrictedPathWorkloadsTests
     [Fact]
     public void BuildTwoStepEdges_SameStepCount_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(RestrictedPathWorkloads.BuildTwoStepEdges(StepCount)),
-            AnswerText.Of(RestrictedPathWorkloads.BuildTwoStepEdges(StepCount)));
+            AnswerGraphText.Of(RestrictedPathWorkloads.BuildTwoStepEdges(StepCount)),
+            AnswerGraphText.Of(RestrictedPathWorkloads.BuildTwoStepEdges(StepCount)));
 }

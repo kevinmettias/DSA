@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,8 +24,8 @@ public sealed partial class SwappingNodesInALinkedListBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayMaterializeSwap())),
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayMaterializeSwap())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayMaterializeSwap())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayMaterializeSwap())));
 
     [Fact]
     public void ArrayMaterializeSwap_RunWithOnePositionPair_AgreesWithTheOtherArmAndTheSwapRule()
@@ -32,11 +33,11 @@ public sealed partial class SwappingNodesInALinkedListBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())),
-            AnswerText.Of(ValuesOf(harness.ArrayMaterializeSwap())));
+            AnswerGraphText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())),
+            AnswerGraphText.Of(ValuesOf(harness.ArrayMaterializeSwap())));
         Assert.Equal(
-            AnswerText.Of(ExpectedSwappedValues()),
-            AnswerText.Of(ValuesOf(harness.ArrayMaterializeSwap())));
+            AnswerGraphText.Of(ExpectedSwappedValues()),
+            AnswerGraphText.Of(ValuesOf(harness.ArrayMaterializeSwap())));
     }
 
     [Fact]
@@ -45,11 +46,11 @@ public sealed partial class SwappingNodesInALinkedListBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayMaterializeSwap())),
-            AnswerText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())));
+            AnswerGraphText.Of(ValuesOf(harness.ArrayMaterializeSwap())),
+            AnswerGraphText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())));
         Assert.Equal(
-            AnswerText.Of(ExpectedSwappedValues()),
-            AnswerText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())));
+            AnswerGraphText.Of(ExpectedSwappedValues()),
+            AnswerGraphText.Of(ValuesOf(harness.LinkedListTwoPointerSwap())));
     }
 
     private static SwappingNodesInALinkedListBenchmarks BuildHarness()

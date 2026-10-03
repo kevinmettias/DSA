@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -10,24 +11,24 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // prefix first) - and the pair is checked against each other.
 public sealed partial class PalindromePartitioningBenchmarksTests
 {
-    // LeetCode 131's answer for the benchmark's own "aab" workload, as AnswerText renders it.
+    // LeetCode 131's answer for the benchmark's own "aab" workload, as AnswerGraphText renders it.
     private const string ExpectedPartitions = "[[\"a\",\"a\",\"b\"],[\"aa\",\"b\"]]";
 
     [Fact]
     public void Backtracking_LeetCodeExample_ReturnsEveryPalindromePartition() =>
-        Assert.Equal(ExpectedPartitions, AnswerText.Of(new PalindromePartitioningBenchmarks().Backtracking()));
+        Assert.Equal(ExpectedPartitions, AnswerGraphText.Of(new PalindromePartitioningBenchmarks().Backtracking()));
 
     [Fact]
     public void PrecomputedPalindromeTable_LeetCodeExample_ReturnsEveryPalindromePartition() =>
         Assert.Equal(
             ExpectedPartitions,
-            AnswerText.Of(new PalindromePartitioningBenchmarks().PrecomputedPalindromeTable()));
+            AnswerGraphText.Of(new PalindromePartitioningBenchmarks().PrecomputedPalindromeTable()));
 
     [Fact]
     public void PrecomputedPalindromeTable_AgreesWithBacktracking()
     {
         var harness = new PalindromePartitioningBenchmarks();
 
-        Assert.Equal(AnswerText.Of(harness.Backtracking()), AnswerText.Of(harness.PrecomputedPalindromeTable()));
+        Assert.Equal(AnswerGraphText.Of(harness.Backtracking()), AnswerGraphText.Of(harness.PrecomputedPalindromeTable()));
     }
 }

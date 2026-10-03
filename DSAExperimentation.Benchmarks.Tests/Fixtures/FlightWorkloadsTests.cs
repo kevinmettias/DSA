@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -68,6 +69,6 @@ public sealed partial class FlightWorkloadsTests
     [Fact]
     public void BuildFlights_SameSeed_ReturnsTheSameNetwork() =>
         Assert.Equal(
-            AnswerText.Of(FlightWorkloads.BuildFlights(CityCount, Seed)),
-            AnswerText.Of(FlightWorkloads.BuildFlights(CityCount, Seed)));
+            AnswerGraphText.Of(FlightWorkloads.BuildFlights(CityCount, Seed)),
+            AnswerGraphText.Of(FlightWorkloads.BuildFlights(CityCount, Seed)));
 }

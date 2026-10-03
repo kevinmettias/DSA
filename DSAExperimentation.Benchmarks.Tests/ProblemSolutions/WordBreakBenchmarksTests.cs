@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -15,8 +16,8 @@ public sealed partial class WordBreakBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CanBreakByTrieMemoized()),
-            AnswerText.Of(BuildHarness().CanBreakByTrieMemoized()));
+            AnswerGraphText.Of(BuildHarness().CanBreakByTrieMemoized()),
+            AnswerGraphText.Of(BuildHarness().CanBreakByTrieMemoized()));
 
     [Fact]
     public void CanBreakByTrieMemoized_TiledDictionaryWord_SegmentsTheWholeSource() =>

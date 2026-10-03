@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -40,7 +41,7 @@ public sealed partial class CompatibilitySurveyWorkloadsTests
         var (repeatStudents, repeatMentors) =
             CompatibilitySurveyWorkloads.BuildAnswerSheets(GroupSize, QuestionCount, Seed);
 
-        Assert.Equal(AnswerText.Of(students), AnswerText.Of(repeatStudents));
-        Assert.Equal(AnswerText.Of(mentors), AnswerText.Of(repeatMentors));
+        Assert.Equal(AnswerGraphText.Of(students), AnswerGraphText.Of(repeatStudents));
+        Assert.Equal(AnswerGraphText.Of(mentors), AnswerGraphText.Of(repeatMentors));
     }
 }

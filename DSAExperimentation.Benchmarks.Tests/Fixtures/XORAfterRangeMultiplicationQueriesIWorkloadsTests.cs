@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -43,6 +44,6 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIWorkloadsTests
     [Fact]
     public void Build_SameSeed_ReturnsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(XORAfterRangeMultiplicationQueriesIWorkloads.Build(NodeCount, QueryCount, Seed)),
-            AnswerText.Of(XORAfterRangeMultiplicationQueriesIWorkloads.Build(NodeCount, QueryCount, Seed)));
+            AnswerGraphText.Of(XORAfterRangeMultiplicationQueriesIWorkloads.Build(NodeCount, QueryCount, Seed)),
+            AnswerGraphText.Of(XORAfterRangeMultiplicationQueriesIWorkloads.Build(NodeCount, QueryCount, Seed)));
 }

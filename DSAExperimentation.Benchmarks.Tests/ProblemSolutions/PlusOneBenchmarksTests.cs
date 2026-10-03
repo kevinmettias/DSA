@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,8 +17,8 @@ public sealed partial class PlusOneBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameDigits() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().ArrayWalk()),
-            AnswerText.Of(BuildHarness().ArrayWalk()));
+            AnswerGraphText.Of(BuildHarness().ArrayWalk()),
+            AnswerGraphText.Of(BuildHarness().ArrayWalk()));
 
     [Fact]
     public void ArrayWalk_AgreesWithDigitStack()
@@ -25,8 +26,8 @@ public sealed partial class PlusOneBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.DigitStack()),
-            AnswerText.Of(harness.ArrayWalk()));
+            AnswerGraphText.Of(harness.DigitStack()),
+            AnswerGraphText.Of(harness.ArrayWalk()));
     }
 
     [Fact]

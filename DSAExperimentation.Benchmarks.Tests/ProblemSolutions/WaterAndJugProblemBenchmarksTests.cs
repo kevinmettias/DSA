@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -14,8 +15,8 @@ public sealed partial class WaterAndJugProblemBenchmarksTests
     [Fact]
     public void Setup_SameCapacity_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CanMeasureWaterByGcdFormula()),
-            AnswerText.Of(BuildHarness().CanMeasureWaterByGcdFormula()));
+            AnswerGraphText.Of(BuildHarness().CanMeasureWaterByGcdFormula()),
+            AnswerGraphText.Of(BuildHarness().CanMeasureWaterByGcdFormula()));
 
     [Fact]
     public void CanMeasureWaterByStackSearch_AgreesWithDepthFirstSearch()

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,8 +18,8 @@ public sealed partial class AsteroidCollisionBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().RepeatedScan()),
-            AnswerText.Of(BuildHarness().RepeatedScan()));
+            AnswerGraphText.Of(BuildHarness().RepeatedScan()),
+            AnswerGraphText.Of(BuildHarness().RepeatedScan()));
 
     [Fact]
     public void RepeatedScan_TwoHundredAsteroidField_AgreesWithStackPass()
@@ -28,7 +29,7 @@ public sealed partial class AsteroidCollisionBenchmarksTests
 
         Assert.InRange(survivors.Length, 0, SmallestLength);
         Assert.True(IsFullyResolved(survivors));
-        Assert.Equal(AnswerText.Of(harness.StackPass()), AnswerText.Of(survivors));
+        Assert.Equal(AnswerGraphText.Of(harness.StackPass()), AnswerGraphText.Of(survivors));
     }
 
     [Fact]
@@ -39,7 +40,7 @@ public sealed partial class AsteroidCollisionBenchmarksTests
 
         Assert.InRange(survivors.Length, 0, SmallestLength);
         Assert.True(IsFullyResolved(survivors));
-        Assert.Equal(AnswerText.Of(harness.RepeatedScan()), AnswerText.Of(survivors));
+        Assert.Equal(AnswerGraphText.Of(harness.RepeatedScan()), AnswerGraphText.Of(survivors));
     }
 
     private static AsteroidCollisionBenchmarks BuildHarness()

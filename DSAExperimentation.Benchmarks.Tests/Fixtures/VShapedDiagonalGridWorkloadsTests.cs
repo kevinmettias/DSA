@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -40,6 +41,6 @@ public sealed partial class VShapedDiagonalGridWorkloadsTests
     [Fact]
     public void BuildGrid_SameSeed_ReturnsTheSameGrid() =>
         Assert.Equal(
-            AnswerText.Of(VShapedDiagonalGridWorkloads.BuildGrid(Size, Seed)),
-            AnswerText.Of(VShapedDiagonalGridWorkloads.BuildGrid(Size, Seed)));
+            AnswerGraphText.Of(VShapedDiagonalGridWorkloads.BuildGrid(Size, Seed)),
+            AnswerGraphText.Of(VShapedDiagonalGridWorkloads.BuildGrid(Size, Seed)));
 }

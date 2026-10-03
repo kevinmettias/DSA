@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -30,8 +31,8 @@ public sealed partial class CycleLengthQueriesInATreeBenchmarksTests
         Assert.Equal(SmallestQueriesCount, lengths.Length);
         Assert.All(lengths, length => Assert.InRange(length, MinimumCycleLength, MaximumCycleLength));
         Assert.Equal(
-            AnswerText.Of(BuildHarness().AncestorDictionaryWalk()),
-            AnswerText.Of(BuildHarness().AncestorDictionaryWalk()));
+            AnswerGraphText.Of(BuildHarness().AncestorDictionaryWalk()),
+            AnswerGraphText.Of(BuildHarness().AncestorDictionaryWalk()));
     }
 
     [Fact]
@@ -40,8 +41,8 @@ public sealed partial class CycleLengthQueriesInATreeBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.ParentIndexTwoPointerWalk()),
-            AnswerText.Of(harness.AncestorDictionaryWalk()));
+            AnswerGraphText.Of(harness.ParentIndexTwoPointerWalk()),
+            AnswerGraphText.Of(harness.AncestorDictionaryWalk()));
     }
 
     [Fact]
@@ -50,8 +51,8 @@ public sealed partial class CycleLengthQueriesInATreeBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.AncestorDictionaryWalk()),
-            AnswerText.Of(harness.ParentIndexTwoPointerWalk()));
+            AnswerGraphText.Of(harness.AncestorDictionaryWalk()),
+            AnswerGraphText.Of(harness.ParentIndexTwoPointerWalk()));
     }
 
     private static CycleLengthQueriesInATreeBenchmarks BuildHarness()

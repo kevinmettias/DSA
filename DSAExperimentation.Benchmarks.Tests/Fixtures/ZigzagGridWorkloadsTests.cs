@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -38,6 +39,6 @@ public sealed partial class ZigzagGridWorkloadsTests
     [Fact]
     public void BuildGrid_SameSeed_ReturnsTheSameGrid() =>
         Assert.Equal(
-            AnswerText.Of(ZigzagGridWorkloads.BuildGrid(Rows, Cols, Seed)),
-            AnswerText.Of(ZigzagGridWorkloads.BuildGrid(Rows, Cols, Seed)));
+            AnswerGraphText.Of(ZigzagGridWorkloads.BuildGrid(Rows, Cols, Seed)),
+            AnswerGraphText.Of(ZigzagGridWorkloads.BuildGrid(Rows, Cols, Seed)));
 }

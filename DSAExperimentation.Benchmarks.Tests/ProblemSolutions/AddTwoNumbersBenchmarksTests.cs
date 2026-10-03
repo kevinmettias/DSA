@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,11 +20,11 @@ public sealed partial class AddTwoNumbersBenchmarksTests
     public void Setup_SameLength_RebuildsTheSameDigitLists()
     {
         Assert.Equal(
-            AnswerText.Of(DigitsOf(BuildHarness().DigitwiseListWalk())),
-            AnswerText.Of(DigitsOf(BuildHarness().DigitwiseListWalk())));
+            AnswerGraphText.Of(DigitsOf(BuildHarness().DigitwiseListWalk())),
+            AnswerGraphText.Of(DigitsOf(BuildHarness().DigitwiseListWalk())));
         Assert.Equal(
-            AnswerText.Of(DigitsOf(BuildHarness().BigIntegerConvertAndBack())),
-            AnswerText.Of(DigitsOf(BuildHarness().BigIntegerConvertAndBack())));
+            AnswerGraphText.Of(DigitsOf(BuildHarness().BigIntegerConvertAndBack())),
+            AnswerGraphText.Of(DigitsOf(BuildHarness().BigIntegerConvertAndBack())));
     }
 
     // Adding two Length-digit lists cannot outgrow a single carry digit, so the sum is as long as its operands
@@ -35,7 +36,7 @@ public sealed partial class AddTwoNumbersBenchmarksTests
         var sum = DigitsOf(harness.DigitwiseListWalk());
 
         Assert.InRange(sum.Length, FewestDigits, DigitsGrownByTheCarry);
-        Assert.Equal(AnswerText.Of(sum), AnswerText.Of(DigitsOf(harness.BigIntegerConvertAndBack())));
+        Assert.Equal(AnswerGraphText.Of(sum), AnswerGraphText.Of(DigitsOf(harness.BigIntegerConvertAndBack())));
     }
 
     [Fact]
@@ -45,7 +46,7 @@ public sealed partial class AddTwoNumbersBenchmarksTests
         var sum = DigitsOf(harness.BigIntegerConvertAndBack());
 
         Assert.InRange(sum.Length, FewestDigits, DigitsGrownByTheCarry);
-        Assert.Equal(AnswerText.Of(sum), AnswerText.Of(DigitsOf(harness.DigitwiseListWalk())));
+        Assert.Equal(AnswerGraphText.Of(sum), AnswerGraphText.Of(DigitsOf(harness.DigitwiseListWalk())));
     }
 
     // Both arms hand back the internal node type through an object, so walking it into its digit sequence puts

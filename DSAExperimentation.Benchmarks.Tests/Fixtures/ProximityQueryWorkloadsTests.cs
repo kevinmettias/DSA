@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -68,15 +69,15 @@ public sealed partial class ProximityQueryWorkloadsTests
         var (nums, maxDiff) = ProximityQueryWorkloads.BuildNums(ValueCount, Seed);
         var (repeatNums, repeatMaxDiff) = ProximityQueryWorkloads.BuildNums(ValueCount, Seed);
 
-        Assert.Equal(AnswerText.Of(nums), AnswerText.Of(repeatNums));
+        Assert.Equal(AnswerGraphText.Of(nums), AnswerGraphText.Of(repeatNums));
         Assert.Equal(maxDiff, repeatMaxDiff);
     }
 
     [Fact]
     public void BuildQueries_SameSeed_ReturnsTheSameQueries() =>
         Assert.Equal(
-            AnswerText.Of(ProximityQueryWorkloads.BuildQueries(ValueCount, QueryCount, Seed)),
-            AnswerText.Of(ProximityQueryWorkloads.BuildQueries(ValueCount, QueryCount, Seed)));
+            AnswerGraphText.Of(ProximityQueryWorkloads.BuildQueries(ValueCount, QueryCount, Seed)),
+            AnswerGraphText.Of(ProximityQueryWorkloads.BuildQueries(ValueCount, QueryCount, Seed)));
 
     private static int ComponentCount(int[] nums, int maxDiff)
     {

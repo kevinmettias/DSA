@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -53,7 +54,7 @@ public sealed partial class ConsecutiveRunWorkloadsTests
         var (edges, labels) = ConsecutiveRunWorkloads.Build(NodeCount, Seed);
         var (repeatEdges, repeatLabels) = ConsecutiveRunWorkloads.Build(NodeCount, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
         Assert.Equal(labels, repeatLabels);
     }
 }

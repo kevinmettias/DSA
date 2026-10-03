@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -8,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // harness whose arms disagree is timing two different problems.
 //
 // Each arm answers with one point count per query, in the queries' original order, which is part of
-// this answer: count i belongs to query i, so AnswerText.Of and not OfUnorderedSet is the rendering
+// this answer: count i belongs to query i, so AnswerGraphText.Of and not OfUnordered is the rendering
 // that keeps each count scored against its own query. The per-query arm keeps its own visited
 // bitmap and never writes the grid, so one harness instance is safe to call twice in either order.
 public sealed partial class MaximumNumberOfPointsFromGridQueriesBenchmarksTests
@@ -25,7 +26,7 @@ public sealed partial class MaximumNumberOfPointsFromGridQueriesBenchmarksTests
         // through the counts it produces: the same QueriesCount must draw the same seeded grid and
         // query list and answer it identically.
         Assert.Equal(SmallestQueriesCount, first.FloodFillPerQuery().Length);
-        Assert.Equal(AnswerText.Of(first.MinHeapFloodFill()), AnswerText.Of(second.MinHeapFloodFill()));
+        Assert.Equal(AnswerGraphText.Of(first.MinHeapFloodFill()), AnswerGraphText.Of(second.MinHeapFloodFill()));
     }
 
     [Fact]
@@ -33,7 +34,7 @@ public sealed partial class MaximumNumberOfPointsFromGridQueriesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.MinHeapFloodFill()), AnswerText.Of(harness.FloodFillPerQuery()));
+        Assert.Equal(AnswerGraphText.Of(harness.MinHeapFloodFill()), AnswerGraphText.Of(harness.FloodFillPerQuery()));
     }
 
     [Fact]
@@ -41,7 +42,7 @@ public sealed partial class MaximumNumberOfPointsFromGridQueriesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.FloodFillPerQuery()), AnswerText.Of(harness.MinHeapFloodFill()));
+        Assert.Equal(AnswerGraphText.Of(harness.FloodFillPerQuery()), AnswerGraphText.Of(harness.MinHeapFloodFill()));
     }
 
     private static MaximumNumberOfPointsFromGridQueriesBenchmarks BuildHarness()

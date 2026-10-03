@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -26,8 +27,8 @@ public sealed partial class FindAllAnagramsInAStringBenchmarksTests
         Assert.All(indices, index => Assert.InRange(index, 0, MaxMatchIndex));
 
         Assert.Equal(
-            AnswerText.Of(BuildHarness().PerWindowFrequencyRebuild()),
-            AnswerText.Of(BuildHarness().PerWindowFrequencyRebuild()));
+            AnswerGraphText.Of(BuildHarness().PerWindowFrequencyRebuild()),
+            AnswerGraphText.Of(BuildHarness().PerWindowFrequencyRebuild()));
     }
 
     [Fact]
@@ -36,8 +37,8 @@ public sealed partial class FindAllAnagramsInAStringBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.SlidingWindowFrequencyMap()),
-            AnswerText.Of(harness.PerWindowFrequencyRebuild()));
+            AnswerGraphText.Of(harness.SlidingWindowFrequencyMap()),
+            AnswerGraphText.Of(harness.PerWindowFrequencyRebuild()));
     }
 
     [Fact]
@@ -46,8 +47,8 @@ public sealed partial class FindAllAnagramsInAStringBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.PerWindowFrequencyRebuild()),
-            AnswerText.Of(harness.SlidingWindowFrequencyMap()));
+            AnswerGraphText.Of(harness.PerWindowFrequencyRebuild()),
+            AnswerGraphText.Of(harness.SlidingWindowFrequencyMap()));
     }
 
     private static FindAllAnagramsInAStringBenchmarks BuildHarness()

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -14,8 +15,8 @@ public sealed partial class XOfAKindInADeckOfCardsBenchmarksTests
     [Fact]
     public void Setup_SameDeckSize_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().HasGroupsSizeXByDictionaryCount()),
-            AnswerText.Of(BuildHarness().HasGroupsSizeXByDictionaryCount()));
+            AnswerGraphText.Of(BuildHarness().HasGroupsSizeXByDictionaryCount()),
+            AnswerGraphText.Of(BuildHarness().HasGroupsSizeXByDictionaryCount()));
 
     [Fact]
     public void HasGroupsSizeXByDictionaryCount_AgreesWithHashMapCount()

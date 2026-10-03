@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SurroundedRegions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -31,7 +32,7 @@ public sealed partial class SurroundedRegionsBenchmarksTests
     {
         BuildHarness().BorderDepthFirstSearch();
 
-        Assert.Equal(AnswerText.Of(GradedBoard()), AnswerText.Of(GradedBoard()));
+        Assert.Equal(AnswerGraphText.Of(GradedBoard()), AnswerGraphText.Of(GradedBoard()));
     }
 
     [Fact]
@@ -41,7 +42,7 @@ public sealed partial class SurroundedRegionsBenchmarksTests
         harness.BorderDepthFirstSearch();
         harness.IterationSetup();
 
-        Assert.Equal(AnswerText.Of(GradedBoard()), AnswerText.Of(GradedBoard()));
+        Assert.Equal(AnswerGraphText.Of(GradedBoard()), AnswerGraphText.Of(GradedBoard()));
     }
 
     [Fact]
@@ -49,7 +50,7 @@ public sealed partial class SurroundedRegionsBenchmarksTests
     {
         BuildHarness().BorderDepthFirstSearch();
 
-        Assert.Equal(AnswerText.Of(ExpectedCapture()), AnswerText.Of(GradedBoard()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedCapture()), AnswerGraphText.Of(GradedBoard()));
     }
 
     [Fact]
@@ -57,12 +58,12 @@ public sealed partial class SurroundedRegionsBenchmarksTests
     {
         BuildHarness().BorderBreadthFirstSearch();
 
-        Assert.Equal(AnswerText.Of(ExpectedCapture()), AnswerText.Of(BreadthFirstGradedBoard()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedCapture()), AnswerGraphText.Of(BreadthFirstGradedBoard()));
     }
 
     [Fact]
     public void BorderBreadthFirstSearch_AgreesWithBorderDepthFirstSearch() =>
-        Assert.Equal(AnswerText.Of(GradedBoard()), AnswerText.Of(BreadthFirstGradedBoard()));
+        Assert.Equal(AnswerGraphText.Of(GradedBoard()), AnswerGraphText.Of(BreadthFirstGradedBoard()));
 
     private static SurroundedRegionsBenchmarks BuildHarness()
     {

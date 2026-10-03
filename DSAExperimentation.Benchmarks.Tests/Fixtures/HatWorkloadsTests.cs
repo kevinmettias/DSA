@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -38,6 +39,6 @@ public sealed partial class HatWorkloadsTests
     [Fact]
     public void BuildLikedHats_SameSeed_ReturnsTheSameLists() =>
         Assert.Equal(
-            AnswerText.Of(HatWorkloads.BuildLikedHats(PeopleCount, HatPoolSize, LikedHatsPerPerson, Seed)),
-            AnswerText.Of(HatWorkloads.BuildLikedHats(PeopleCount, HatPoolSize, LikedHatsPerPerson, Seed)));
+            AnswerGraphText.Of(HatWorkloads.BuildLikedHats(PeopleCount, HatPoolSize, LikedHatsPerPerson, Seed)),
+            AnswerGraphText.Of(HatWorkloads.BuildLikedHats(PeopleCount, HatPoolSize, LikedHatsPerPerson, Seed)));
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // two arms are competing strategies for the same question - one graph walk per query against a single
 // offline sweep of both sorted lists - so a harness whose arms disagree is timing two different
 // problems. Both arms answer with one bool per query in query order, which is part of this answer:
-// answer i belongs to query i, so AnswerText.Of and not OfUnorderedSet is the rendering that keeps
+// answer i belongs to query i, so AnswerGraphText.Of and not OfUnordered is the rendering that keeps
 // each verdict scored against its own query.
 public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarksTests
 {
@@ -26,7 +27,7 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarksT
         // produce: one verdict per drawn query is the shape the answer promises, and the same
         // NodeCount must draw the same seeded edges and queries and answer them identically.
         Assert.Equal(SmallestNodeCount * QueryCountPerNodeMultiplier, first.DfsPerQuery().Length);
-        Assert.Equal(AnswerText.Of(first.DfsPerQuery()), AnswerText.Of(second.OfflineDisjointSetSweep()));
+        Assert.Equal(AnswerGraphText.Of(first.DfsPerQuery()), AnswerGraphText.Of(second.OfflineDisjointSetSweep()));
     }
 
     [Fact]
@@ -34,7 +35,7 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarksT
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.OfflineDisjointSetSweep()), AnswerText.Of(harness.DfsPerQuery()));
+        Assert.Equal(AnswerGraphText.Of(harness.OfflineDisjointSetSweep()), AnswerGraphText.Of(harness.DfsPerQuery()));
     }
 
     [Fact]
@@ -42,7 +43,7 @@ public sealed partial class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarksT
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.DfsPerQuery()), AnswerText.Of(harness.OfflineDisjointSetSweep()));
+        Assert.Equal(AnswerGraphText.Of(harness.DfsPerQuery()), AnswerGraphText.Of(harness.OfflineDisjointSetSweep()));
     }
 
     private static CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks BuildHarness()

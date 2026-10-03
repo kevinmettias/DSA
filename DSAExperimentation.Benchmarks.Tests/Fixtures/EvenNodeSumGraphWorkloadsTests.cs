@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -65,7 +66,7 @@ public sealed partial class EvenNodeSumGraphWorkloadsTests
         var (repeatNums, repeatEdges) = EvenNodeSumGraphWorkloads.Build(NodeCount, Seed);
 
         Assert.Equal(nums, repeatNums);
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
     }
 
     private static (int Low, int High) EdgeKey(int[] edge) => (edge[0], edge[1]);

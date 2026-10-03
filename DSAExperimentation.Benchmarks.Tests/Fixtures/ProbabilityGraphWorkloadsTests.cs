@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -72,7 +73,7 @@ public sealed partial class ProbabilityGraphWorkloadsTests
         var (repeatEdges, repeatProbabilities) =
             ProbabilityGraphWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
         Assert.Equal(probabilities.Length, repeatProbabilities.Length);
         Assert.All(
             Enumerable.Range(0, probabilities.Length),

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.StrategySwaps;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.StrategySwaps;
 
@@ -12,8 +13,8 @@ public sealed partial class ReduceOrderBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BreadthFirst()),
-            AnswerText.Of(BuildHarness().BreadthFirst()));
+            AnswerGraphText.Of(BuildHarness().BreadthFirst()),
+            AnswerGraphText.Of(BuildHarness().BreadthFirst()));
 
     [Fact]
     public void BreadthFirst_AgreesWithDepthFirst()

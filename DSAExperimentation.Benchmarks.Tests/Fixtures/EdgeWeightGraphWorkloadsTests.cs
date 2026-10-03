@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -52,6 +53,6 @@ public sealed partial class EdgeWeightGraphWorkloadsTests
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(EdgeWeightGraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
-            AnswerText.Of(EdgeWeightGraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
+            AnswerGraphText.Of(EdgeWeightGraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
+            AnswerGraphText.Of(EdgeWeightGraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
 }

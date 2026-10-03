@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -18,8 +19,8 @@ public sealed partial class FindEdgesInShortestPathsBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameEdgeVerdicts() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForceDijkstra()),
-            AnswerText.Of(BuildHarness().BruteForceDijkstra()));
+            AnswerGraphText.Of(BuildHarness().BruteForceDijkstra()),
+            AnswerGraphText.Of(BuildHarness().BruteForceDijkstra()));
 
     [Fact]
     public void BruteForceDijkstra_ConnectedWeightedGraph_AgreesWithShortestPathDijkstra()
@@ -28,8 +29,8 @@ public sealed partial class FindEdgesInShortestPathsBenchmarksTests
 
         Assert.Contains(true, harness.BruteForceDijkstra());
         Assert.Equal(
-            AnswerText.Of(harness.ShortestPathDijkstra()),
-            AnswerText.Of(harness.BruteForceDijkstra()));
+            AnswerGraphText.Of(harness.ShortestPathDijkstra()),
+            AnswerGraphText.Of(harness.BruteForceDijkstra()));
     }
 
     [Fact]
@@ -39,8 +40,8 @@ public sealed partial class FindEdgesInShortestPathsBenchmarksTests
 
         Assert.Contains(true, harness.ShortestPathDijkstra());
         Assert.Equal(
-            AnswerText.Of(harness.BruteForceDijkstra()),
-            AnswerText.Of(harness.ShortestPathDijkstra()));
+            AnswerGraphText.Of(harness.BruteForceDijkstra()),
+            AnswerGraphText.Of(harness.ShortestPathDijkstra()));
     }
 
     private static FindEdgesInShortestPathsBenchmarks BuildHarness()

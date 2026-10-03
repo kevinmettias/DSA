@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // strategies for the same question - repeated string prepending against un-reversing the group
 // order through this repo's own Stack<string> - so a harness whose arms disagree is timing two
 // different problems. Both arms answer with the spelled number, a string, compared through
-// AnswerText so that the two renderings of an equal string are equal by value. This class has no
+// AnswerGraphText so that the two renderings of an equal string are equal by value. This class has no
 // [GlobalSetup]: Number is the whole input, so each [Fact] constructs the harness with the smaller
 // of the two [Params] values. That value is also the decisive part of the assertion - the two
 // [Params] values are a bare single-group number and Int32.MaxValue - so the smallest number's
@@ -27,7 +28,7 @@ public sealed partial class IntegerToEnglishWordsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.WordStack()), AnswerText.Of(harness.StringPrepend()));
+        Assert.Equal(AnswerGraphText.Of(harness.WordStack()), AnswerGraphText.Of(harness.StringPrepend()));
         Assert.Equal(ExpectedSpellingForSmallestNumber, harness.StringPrepend());
     }
 
@@ -36,7 +37,7 @@ public sealed partial class IntegerToEnglishWordsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.StringPrepend()), AnswerText.Of(harness.WordStack()));
+        Assert.Equal(AnswerGraphText.Of(harness.StringPrepend()), AnswerGraphText.Of(harness.WordStack()));
         Assert.Equal(ExpectedSpellingForSmallestNumber, harness.WordStack());
     }
 

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -47,8 +48,8 @@ public sealed partial class RectangleCornerWorkloadsTests
     [Fact]
     public void BuildCircles_SameSeed_ReturnsTheSameCircles() =>
         Assert.Equal(
-            AnswerText.Of(RectangleCornerWorkloads.BuildCircles(CircleCount, Seed)),
-            AnswerText.Of(RectangleCornerWorkloads.BuildCircles(CircleCount, Seed)));
+            AnswerGraphText.Of(RectangleCornerWorkloads.BuildCircles(CircleCount, Seed)),
+            AnswerGraphText.Of(RectangleCornerWorkloads.BuildCircles(CircleCount, Seed)));
 
     private static bool HasOverlappingPair(int[][] circles)
     {

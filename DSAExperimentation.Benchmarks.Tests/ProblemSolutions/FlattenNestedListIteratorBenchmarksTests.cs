@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -18,8 +19,8 @@ public sealed partial class FlattenNestedListIteratorBenchmarksTests
     [Fact]
     public void Setup_SameLeafCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().EagerFlatten()),
-            AnswerText.Of(BuildHarness().EagerFlatten()));
+            AnswerGraphText.Of(BuildHarness().EagerFlatten()),
+            AnswerGraphText.Of(BuildHarness().EagerFlatten()));
 
     [Fact]
     public void EagerFlatten_AgreesWithLazyStack()
@@ -27,7 +28,7 @@ public sealed partial class FlattenNestedListIteratorBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(ExpectedLeaves(), harness.EagerFlatten());
-        Assert.Equal(AnswerText.Of(harness.LazyStack()), AnswerText.Of(harness.EagerFlatten()));
+        Assert.Equal(AnswerGraphText.Of(harness.LazyStack()), AnswerGraphText.Of(harness.EagerFlatten()));
     }
 
     // [GlobalSetup] fills the list with pairs of consecutive integers, so the flattened sequence is

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -50,6 +51,6 @@ public sealed partial class IslandValueGridWorkloadsTests
     [Fact]
     public void BuildGrid_SameSeed_ReturnsTheSameGrid() =>
         Assert.Equal(
-            AnswerText.Of(IslandValueGridWorkloads.BuildGrid(Rows, Cols, Seed)),
-            AnswerText.Of(IslandValueGridWorkloads.BuildGrid(Rows, Cols, Seed)));
+            AnswerGraphText.Of(IslandValueGridWorkloads.BuildGrid(Rows, Cols, Seed)),
+            AnswerGraphText.Of(IslandValueGridWorkloads.BuildGrid(Rows, Cols, Seed)));
 }

@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -25,8 +26,8 @@ public sealed partial class DeleteNodesFromLinkedListPresentInArrayBenchmarksTes
             MinimumSurvivorCount,
             SmallestLength);
         Assert.Equal(
-            AnswerText.Of(Values(BuildHarness().ArrayScan())),
-            AnswerText.Of(Values(BuildHarness().ArrayScan())));
+            AnswerGraphText.Of(Values(BuildHarness().ArrayScan())),
+            AnswerGraphText.Of(Values(BuildHarness().ArrayScan())));
     }
 
     [Fact]
@@ -35,8 +36,8 @@ public sealed partial class DeleteNodesFromLinkedListPresentInArrayBenchmarksTes
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Values(harness.SetFilter())),
-            AnswerText.Of(Values(harness.ArrayScan())));
+            AnswerGraphText.Of(Values(harness.SetFilter())),
+            AnswerGraphText.Of(Values(harness.ArrayScan())));
     }
 
     [Fact]
@@ -45,8 +46,8 @@ public sealed partial class DeleteNodesFromLinkedListPresentInArrayBenchmarksTes
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Values(harness.ArrayScan())),
-            AnswerText.Of(Values(harness.SetFilter())));
+            AnswerGraphText.Of(Values(harness.ArrayScan())),
+            AnswerGraphText.Of(Values(harness.SetFilter())));
     }
 
     // Both arms report the surviving chain as that internal node type through an object, so the test

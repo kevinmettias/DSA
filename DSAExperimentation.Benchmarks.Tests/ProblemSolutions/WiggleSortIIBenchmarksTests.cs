@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class WiggleSortIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().SelectionSortInterleave()),
-            AnswerText.Of(BuildHarness().SelectionSortInterleave()));
+            AnswerGraphText.Of(BuildHarness().SelectionSortInterleave()),
+            AnswerGraphText.Of(BuildHarness().SelectionSortInterleave()));
 
     [Fact]
     public void SelectionSortInterleave_AgreesWithMergeSortInterleave()
@@ -28,8 +29,8 @@ public sealed partial class WiggleSortIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.SelectionSortInterleave()),
-            AnswerText.Of(harness.MergeSortInterleave()));
+            AnswerGraphText.Of(harness.SelectionSortInterleave()),
+            AnswerGraphText.Of(harness.MergeSortInterleave()));
     }
 
     [Fact]

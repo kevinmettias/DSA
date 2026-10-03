@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -54,7 +55,7 @@ public sealed partial class DisappearingNodesWorkloadsTests
         var (edges, disappear) = DisappearingNodesWorkloads.Build(NodeCount, Seed);
         var (repeatEdges, repeatDisappear) = DisappearingNodesWorkloads.Build(NodeCount, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
         Assert.Equal(disappear, repeatDisappear);
     }
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -45,6 +46,6 @@ public sealed partial class SurroundedRegionsWorkloadsTests
     [Fact]
     public void BuildBoard_SameSeed_ReturnsTheSameBoard() =>
         Assert.Equal(
-            AnswerText.Of(SurroundedRegionsWorkloads.BuildBoard(Size, Seed)),
-            AnswerText.Of(SurroundedRegionsWorkloads.BuildBoard(Size, Seed)));
+            AnswerGraphText.Of(SurroundedRegionsWorkloads.BuildBoard(Size, Seed)),
+            AnswerGraphText.Of(SurroundedRegionsWorkloads.BuildBoard(Size, Seed)));
 }

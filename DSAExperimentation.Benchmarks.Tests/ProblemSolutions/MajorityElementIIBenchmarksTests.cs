@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -8,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // must still name the same values. Setup seeds two disjoint values, each (Length / 3) + 1 times -
 // a strict third apiece - and fills the rest with noise disjoint from both, so exactly those two
 // values exceed the floor(n/3) frequency
-// and nothing else does, and the same Length must rebuild the same array. AnswerText.OfUnorderedSet
+// and nothing else does, and the same Length must rebuild the same array. AnswerGraphText.OfUnordered
 // renders that pair as a set because LC 229 fixes no order on the values it returns (its own
 // examples list them however the scan happens to find them), so the outer order here is genuinely
 // unfixed rather than a disagreement being papered over; each value's own rendering is unchanged.
@@ -21,20 +22,20 @@ public sealed partial class MajorityElementIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(BuildHarness().HashMapCount()),
-            AnswerText.OfUnorderedSet(BuildHarness().HashMapCount()));
+            AnswerGraphText.OfUnordered(BuildHarness().HashMapCount()),
+            AnswerGraphText.OfUnordered(BuildHarness().HashMapCount()));
 
     [Fact]
     public void HashMapCount_TwoSeededThirdsOverDisjointNoise_ReturnsBothSeededValues() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(ExpectedMajorityValues),
-            AnswerText.OfUnorderedSet(BuildHarness().HashMapCount()));
+            AnswerGraphText.OfUnordered(ExpectedMajorityValues),
+            AnswerGraphText.OfUnordered(BuildHarness().HashMapCount()));
 
     [Fact]
     public void ExtendedBoyerMooreVoting_TwoSeededThirdsOverDisjointNoise_ReturnsBothSeededValues() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(ExpectedMajorityValues),
-            AnswerText.OfUnorderedSet(BuildHarness().ExtendedBoyerMooreVoting()));
+            AnswerGraphText.OfUnordered(ExpectedMajorityValues),
+            AnswerGraphText.OfUnordered(BuildHarness().ExtendedBoyerMooreVoting()));
 
     [Fact]
     public void ExtendedBoyerMooreVoting_AgreesWithHashMapCount()
@@ -42,8 +43,8 @@ public sealed partial class MajorityElementIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.HashMapCount()),
-            AnswerText.OfUnorderedSet(harness.ExtendedBoyerMooreVoting()));
+            AnswerGraphText.OfUnordered(harness.HashMapCount()),
+            AnswerGraphText.OfUnordered(harness.ExtendedBoyerMooreVoting()));
     }
 
     private static MajorityElementIIBenchmarks BuildHarness()

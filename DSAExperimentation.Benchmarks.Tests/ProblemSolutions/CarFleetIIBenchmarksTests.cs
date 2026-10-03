@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // strategies for the same question - a per-car forward scan that re-examines every car ahead
 // against one monotonic stack sweep - so a harness whose arms disagree is timing two different
 // problems. Answers come back one per car in car order, which is part of this answer: collision
-// time i belongs to car i, so AnswerText.Of and not OfUnorderedSet is the rendering that keeps
+// time i belongs to car i, so AnswerGraphText.Of and not OfUnordered is the rendering that keeps
 // each time scored against its own car.
 public sealed partial class CarFleetIIBenchmarksTests
 {
@@ -31,11 +32,11 @@ public sealed partial class CarFleetIIBenchmarksTests
         var second = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Enumerable.Repeat(NoCollisionTime, SmallestLength)),
-            AnswerText.Of(first.BruteForcePerCar()));
+            AnswerGraphText.Of(Enumerable.Repeat(NoCollisionTime, SmallestLength)),
+            AnswerGraphText.Of(first.BruteForcePerCar()));
         Assert.Equal(
-            AnswerText.Of(first.MonotonicStackSweep()),
-            AnswerText.Of(second.MonotonicStackSweep()));
+            AnswerGraphText.Of(first.MonotonicStackSweep()),
+            AnswerGraphText.Of(second.MonotonicStackSweep()));
     }
 
     [Fact]

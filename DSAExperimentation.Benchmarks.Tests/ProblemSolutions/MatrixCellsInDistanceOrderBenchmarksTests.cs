@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -9,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // order, which is the whole of what LC 1030 pins: it accepts any ordering among equidistant cells,
 // and the two sorts are not tie-compatible - Array.Sort is unstable, MergeSort is stable, and they
 // start from different input orders, so the raw coordinate sequences genuinely differ from the fifth
-// cell onward on this fixture. AnswerText.Of on the raw coordinates would therefore compare two
+// cell onward on this fixture. AnswerGraphText.Of on the raw coordinates would therefore compare two
 // permutations the problem never fixed. What is compared instead is the quantity the problem does
 // fix - each cell's Manhattan distance from the center, in order - with the full grid coverage
 // checked separately, the same reading DSAExperimentation.Tests' own LC 1030 coverage uses.
@@ -24,11 +25,11 @@ public sealed partial class MatrixCellsInDistanceOrderBenchmarksTests
     public void Setup_SameSize_RebuildsTheSameWorkload()
     {
         Assert.Equal(
-            AnswerText.Of(DistancesOf(BuildHarness().ManhattanFormulaThenArraySort())),
-            AnswerText.Of(DistancesOf(BuildHarness().ManhattanFormulaThenArraySort())));
+            AnswerGraphText.Of(DistancesOf(BuildHarness().ManhattanFormulaThenArraySort())),
+            AnswerGraphText.Of(DistancesOf(BuildHarness().ManhattanFormulaThenArraySort())));
         Assert.Equal(
-            AnswerText.Of(DistancesOf(BuildHarness().GridBfsThenMergeSort())),
-            AnswerText.Of(DistancesOf(BuildHarness().GridBfsThenMergeSort())));
+            AnswerGraphText.Of(DistancesOf(BuildHarness().GridBfsThenMergeSort())),
+            AnswerGraphText.Of(DistancesOf(BuildHarness().GridBfsThenMergeSort())));
     }
 
     [Fact]
@@ -38,9 +39,9 @@ public sealed partial class MatrixCellsInDistanceOrderBenchmarksTests
         var byFormula = harness.ManhattanFormulaThenArraySort();
         var byGridBfs = harness.GridBfsThenMergeSort();
 
-        Assert.Equal(AnswerText.Of(DistancesOf(byGridBfs)), AnswerText.Of(DistancesOf(byFormula)));
-        Assert.Equal(AnswerText.OfUnorderedSet(EveryCell()), AnswerText.OfUnorderedSet(byFormula));
-        Assert.Equal(AnswerText.OfUnorderedSet(EveryCell()), AnswerText.OfUnorderedSet(byGridBfs));
+        Assert.Equal(AnswerGraphText.Of(DistancesOf(byGridBfs)), AnswerGraphText.Of(DistancesOf(byFormula)));
+        Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byFormula));
+        Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byGridBfs));
     }
 
     [Fact]
@@ -50,9 +51,9 @@ public sealed partial class MatrixCellsInDistanceOrderBenchmarksTests
         var byGridBfs = harness.GridBfsThenMergeSort();
         var byFormula = harness.ManhattanFormulaThenArraySort();
 
-        Assert.Equal(AnswerText.Of(DistancesOf(byFormula)), AnswerText.Of(DistancesOf(byGridBfs)));
-        Assert.Equal(AnswerText.OfUnorderedSet(EveryCell()), AnswerText.OfUnorderedSet(byGridBfs));
-        Assert.Equal(AnswerText.OfUnorderedSet(EveryCell()), AnswerText.OfUnorderedSet(byFormula));
+        Assert.Equal(AnswerGraphText.Of(DistancesOf(byFormula)), AnswerGraphText.Of(DistancesOf(byGridBfs)));
+        Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byGridBfs));
+        Assert.Equal(AnswerGraphText.OfUnordered(EveryCell()), AnswerGraphText.OfUnordered(byFormula));
     }
 
     private static IEnumerable<int> DistancesOf(int[][] cells) =>

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -26,8 +27,8 @@ public sealed partial class ReshapeTheMatrixBenchmarksTests
     [Fact]
     public void Setup_SameRows_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().LinearIndexDivMod()),
-            AnswerText.Of(BuildHarness().LinearIndexDivMod()));
+            AnswerGraphText.Of(BuildHarness().LinearIndexDivMod()),
+            AnswerGraphText.Of(BuildHarness().LinearIndexDivMod()));
 
     [Fact]
     public void LinearIndexDivMod_DoubledRows_AgreesWithCursorWalk()
@@ -37,7 +38,7 @@ public sealed partial class ReshapeTheMatrixBenchmarksTests
 
         Assert.Equal(ExpectedTargetRowCount, reshaped.Length);
         Assert.Equal(ExpectedTargetColumnCount, reshaped[0].Length);
-        Assert.Equal(AnswerText.Of(harness.CursorWalk()), AnswerText.Of(reshaped));
+        Assert.Equal(AnswerGraphText.Of(harness.CursorWalk()), AnswerGraphText.Of(reshaped));
     }
 
     [Fact]
@@ -48,7 +49,7 @@ public sealed partial class ReshapeTheMatrixBenchmarksTests
 
         Assert.Equal(ExpectedTargetRowCount, reshaped.Length);
         Assert.Equal(ExpectedTargetColumnCount, reshaped[0].Length);
-        Assert.Equal(AnswerText.Of(harness.LinearIndexDivMod()), AnswerText.Of(reshaped));
+        Assert.Equal(AnswerGraphText.Of(harness.LinearIndexDivMod()), AnswerGraphText.Of(reshaped));
     }
 
     private static ReshapeTheMatrixBenchmarks BuildHarness()

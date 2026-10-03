@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -29,8 +30,8 @@ public sealed partial class CourseScheduleIVBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.FloydWarshallAllPairs()),
-            AnswerText.Of(harness.BfsPerQuery()));
+            AnswerGraphText.Of(harness.FloydWarshallAllPairs()),
+            AnswerGraphText.Of(harness.BfsPerQuery()));
     }
 
     [Fact]
@@ -39,8 +40,8 @@ public sealed partial class CourseScheduleIVBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BfsPerQuery()),
-            AnswerText.Of(harness.FloydWarshallAllPairs()));
+            AnswerGraphText.Of(harness.BfsPerQuery()),
+            AnswerGraphText.Of(harness.FloydWarshallAllPairs()));
     }
 
     private static CourseScheduleIVBenchmarks BuildHarness()

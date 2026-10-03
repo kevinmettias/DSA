@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -51,6 +52,6 @@ public sealed partial class WaitCostGridWorkloadsTests
     [Fact]
     public void WithZeroOrigin_SameSeed_ReturnsTheSameGrid() =>
         Assert.Equal(
-            AnswerText.Of(WaitCostGridWorkloads.WithZeroOrigin(Size, WaitCeilingExclusive, Seed)),
-            AnswerText.Of(WaitCostGridWorkloads.WithZeroOrigin(Size, WaitCeilingExclusive, Seed)));
+            AnswerGraphText.Of(WaitCostGridWorkloads.WithZeroOrigin(Size, WaitCeilingExclusive, Seed)),
+            AnswerGraphText.Of(WaitCostGridWorkloads.WithZeroOrigin(Size, WaitCeilingExclusive, Seed)));
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class FindBuildingWhereAliceAndBobCanMeetBenchmarksTests
         Assert.Equal(SmallestLength, BuildHarness().BruteForce().Length);
 
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
     }
 
     [Fact]
@@ -29,8 +30,8 @@ public sealed partial class FindBuildingWhereAliceAndBobCanMeetBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.OfflineHeapSweep()),
-            AnswerText.Of(harness.BruteForce()));
+            AnswerGraphText.Of(harness.OfflineHeapSweep()),
+            AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -39,8 +40,8 @@ public sealed partial class FindBuildingWhereAliceAndBobCanMeetBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BruteForce()),
-            AnswerText.Of(harness.OfflineHeapSweep()));
+            AnswerGraphText.Of(harness.BruteForce()),
+            AnswerGraphText.Of(harness.OfflineHeapSweep()));
     }
 
     private static FindBuildingWhereAliceAndBobCanMeetBenchmarks BuildHarness()

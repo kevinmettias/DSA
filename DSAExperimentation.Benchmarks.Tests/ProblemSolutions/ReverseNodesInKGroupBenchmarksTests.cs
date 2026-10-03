@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -25,8 +26,8 @@ public sealed partial class ReverseNodesInKGroupBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayGroupReverse())),
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayGroupReverse())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayGroupReverse())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayGroupReverse())));
 
     [Fact]
     public void ArrayGroupReverse_FullGroupsOfFour_AgreesWithTheLinkedListPointerReversal()
@@ -36,8 +37,8 @@ public sealed partial class ReverseNodesInKGroupBenchmarksTests
 
         Assert.Equal(ExpectedGroupsReversed(SmallestLength), ValuesOf(reversed));
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.LinkedListGroupReverse())),
-            AnswerText.Of(ValuesOf(reversed)));
+            AnswerGraphText.Of(ValuesOf(harness.LinkedListGroupReverse())),
+            AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
     [Fact]
@@ -48,8 +49,8 @@ public sealed partial class ReverseNodesInKGroupBenchmarksTests
 
         Assert.Equal(ExpectedGroupsReversed(SmallestLength), ValuesOf(reversed));
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayGroupReverse())),
-            AnswerText.Of(ValuesOf(reversed)));
+            AnswerGraphText.Of(ValuesOf(harness.ArrayGroupReverse())),
+            AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
     private static int[] ValuesOf(object? head)

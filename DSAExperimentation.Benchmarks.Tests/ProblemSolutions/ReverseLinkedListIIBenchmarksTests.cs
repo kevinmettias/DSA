@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -27,8 +28,8 @@ public sealed partial class ReverseLinkedListIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayRebuild())),
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayRebuild())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRebuild())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRebuild())));
 
     [Fact]
     public void ArrayRebuild_QuarterToThreeQuarterRange_AgreesWithHeadInsertion()
@@ -37,7 +38,7 @@ public sealed partial class ReverseLinkedListIIBenchmarksTests
         var reversed = harness.ArrayRebuild();
 
         Assert.Equal(ExpectedSubRangeReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(AnswerText.Of(ValuesOf(harness.HeadInsertion())), AnswerText.Of(ValuesOf(reversed)));
+        Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.HeadInsertion())), AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
     [Fact]
@@ -47,7 +48,7 @@ public sealed partial class ReverseLinkedListIIBenchmarksTests
         var reversed = harness.HeadInsertion();
 
         Assert.Equal(ExpectedSubRangeReversed(SmallestLength), ValuesOf(reversed));
-        Assert.Equal(AnswerText.Of(ValuesOf(harness.ArrayRebuild())), AnswerText.Of(ValuesOf(reversed)));
+        Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.ArrayRebuild())), AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
     private static int[] ValuesOf(object? head)

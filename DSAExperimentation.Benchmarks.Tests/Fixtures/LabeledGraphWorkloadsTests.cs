@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -55,7 +56,7 @@ public sealed partial class LabeledGraphWorkloadsTests
         var (edges, label) = LabeledGraphWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
         var (repeatEdges, repeatLabel) = LabeledGraphWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
         Assert.Equal(label, repeatLabel);
     }
 }

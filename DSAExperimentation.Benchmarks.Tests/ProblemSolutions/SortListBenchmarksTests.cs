@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,14 +21,14 @@ public sealed partial class SortListBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())),
-            AnswerText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())));
 
     [Fact]
     public void MergeSortOverSequence_ShuffledAscendingRange_RebuildsTheRangeInOrder() =>
         Assert.Equal(
-            AnswerText.Of(Enumerable.Range(1, SmallestLength)),
-            AnswerText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())));
+            AnswerGraphText.Of(Enumerable.Range(1, SmallestLength)),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().MergeSortOverSequence())));
 
     private static SortListBenchmarks BuildHarness()
     {

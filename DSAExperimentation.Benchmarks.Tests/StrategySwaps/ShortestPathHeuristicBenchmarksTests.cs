@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.StrategySwaps;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.StrategySwaps;
 
@@ -15,8 +16,8 @@ public sealed partial class ShortestPathHeuristicBenchmarksTests
     [Fact]
     public void Setup_SameGridSize_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().Dijkstra()),
-            AnswerText.Of(BuildHarness().Dijkstra()));
+            AnswerGraphText.Of(BuildHarness().Dijkstra()),
+            AnswerGraphText.Of(BuildHarness().Dijkstra()));
 
     [Fact]
     public void Dijkstra_AgreesWithAStar()

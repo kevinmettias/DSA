@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class SmallestStringWithSwapsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameSourceAndPairs() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().AdjacencyListBfs()),
-            AnswerText.Of(BuildHarness().AdjacencyListBfs()));
+            AnswerGraphText.Of(BuildHarness().AdjacencyListBfs()),
+            AnswerGraphText.Of(BuildHarness().AdjacencyListBfs()));
 
     [Fact]
     public void AdjacencyListBfs_TwoHundredIndexSource_AgreesWithDisjointSetUnionFind()
@@ -28,7 +29,7 @@ public sealed partial class SmallestStringWithSwapsBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.AdjacencyListBfs();
 
-        Assert.Equal(AnswerText.Of(harness.DisjointSetUnionFind()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.DisjointSetUnionFind()), AnswerGraphText.Of(answer));
         Assert.Equal(SmallestLength, answer.Length);
     }
 
@@ -38,7 +39,7 @@ public sealed partial class SmallestStringWithSwapsBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.DisjointSetUnionFind();
 
-        Assert.Equal(AnswerText.Of(harness.AdjacencyListBfs()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.AdjacencyListBfs()), AnswerGraphText.Of(answer));
         Assert.Equal(SmallestLength, answer.Length);
     }
 

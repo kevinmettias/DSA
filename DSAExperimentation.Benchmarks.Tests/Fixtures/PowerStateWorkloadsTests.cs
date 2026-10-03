@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -69,7 +70,7 @@ public sealed partial class PowerStateWorkloadsTests
         var (edges, cost) = PowerStateWorkloads.Build(NodeCount, Seed);
         var (repeatEdges, repeatCost) = PowerStateWorkloads.Build(NodeCount, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
-        Assert.Equal(AnswerText.Of(cost), AnswerText.Of(repeatCost));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(cost), AnswerGraphText.Of(repeatCost));
     }
 }

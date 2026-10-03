@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,8 +22,8 @@ public sealed partial class SwapNodesInPairsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayRoundTrip())),
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayRoundTrip())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRoundTrip())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRoundTrip())));
 
     [Fact]
     public void ArrayRoundTrip_PairedRun_AgreesWithTheOtherArmAndThePairSwapRule()
@@ -30,11 +31,11 @@ public sealed partial class SwapNodesInPairsBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.PointerRewiring())),
-            AnswerText.Of(ValuesOf(harness.ArrayRoundTrip())));
+            AnswerGraphText.Of(ValuesOf(harness.PointerRewiring())),
+            AnswerGraphText.Of(ValuesOf(harness.ArrayRoundTrip())));
         Assert.Equal(
-            AnswerText.Of(ExpectedSwappedValues()),
-            AnswerText.Of(ValuesOf(harness.ArrayRoundTrip())));
+            AnswerGraphText.Of(ExpectedSwappedValues()),
+            AnswerGraphText.Of(ValuesOf(harness.ArrayRoundTrip())));
     }
 
     [Fact]
@@ -43,11 +44,11 @@ public sealed partial class SwapNodesInPairsBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayRoundTrip())),
-            AnswerText.Of(ValuesOf(harness.PointerRewiring())));
+            AnswerGraphText.Of(ValuesOf(harness.ArrayRoundTrip())),
+            AnswerGraphText.Of(ValuesOf(harness.PointerRewiring())));
         Assert.Equal(
-            AnswerText.Of(ExpectedSwappedValues()),
-            AnswerText.Of(ValuesOf(harness.PointerRewiring())));
+            AnswerGraphText.Of(ExpectedSwappedValues()),
+            AnswerGraphText.Of(ValuesOf(harness.PointerRewiring())));
     }
 
     private static SwapNodesInPairsBenchmarks BuildHarness()

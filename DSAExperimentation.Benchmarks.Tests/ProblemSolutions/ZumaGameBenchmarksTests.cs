@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,8 +17,8 @@ public sealed partial class ZumaGameBenchmarksTests
     [Fact]
     public void Setup_SameBoardRepeats_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForceDfs()),
-            AnswerText.Of(BuildHarness().BruteForceDfs()));
+            AnswerGraphText.Of(BuildHarness().BruteForceDfs()),
+            AnswerGraphText.Of(BuildHarness().BruteForceDfs()));
 
     [Fact]
     public void BruteForceDfs_AgreesWithQueueBfsDedup()

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,23 +21,23 @@ public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmark
     [Fact]
     public void Setup_SameElementCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     [Fact]
     public void IterationSetup_AfterAGradedRun_RePresentsThePristineWorkload()
     {
         var reference = BuildHarness();
         var graded = BuildHarness();
-        var expectedScan = AnswerText.Of(reference.BruteForce());
-        var expectedBuckets = AnswerText.Of(reference.FenwickBuckets());
+        var expectedScan = AnswerGraphText.Of(reference.BruteForce());
+        var expectedBuckets = AnswerGraphText.Of(reference.FenwickBuckets());
 
         graded.BruteForce();
         graded.FenwickBuckets();
         graded.IterationSetup();
 
-        Assert.Equal(expectedScan, AnswerText.Of(graded.BruteForce()));
-        Assert.Equal(expectedBuckets, AnswerText.Of(graded.FenwickBuckets()));
+        Assert.Equal(expectedScan, AnswerGraphText.Of(graded.BruteForce()));
+        Assert.Equal(expectedBuckets, AnswerGraphText.Of(graded.FenwickBuckets()));
     }
 
     [Fact]
@@ -44,7 +45,7 @@ public sealed partial class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmark
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.FenwickBuckets()), AnswerText.Of(harness.BruteForce()));
+        Assert.Equal(AnswerGraphText.Of(harness.FenwickBuckets()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     private static NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks BuildHarness()

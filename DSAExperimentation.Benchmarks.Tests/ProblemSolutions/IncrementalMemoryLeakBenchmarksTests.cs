@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // competing strategies for the same question - two ints and an if/else against routing the same
 // round-by-round allocation through this repo's own max-heap - so a harness whose arms disagree
 // is timing two different problems. Both arms answer with LeetCode 1860's own triple
-// [crashSecond, memory1, memory2], whose positions the problem pins, so AnswerText.Of is the
+// [crashSecond, memory1, memory2], whose positions the problem pins, so AnswerGraphText.Of is the
 // right rendering. This class has no [GlobalSetup] and nothing to seed: both sticks start from
 // the [Params] capacity, so each [Fact] constructs the harness with the smallest capacity and
 // calls both arms. Each arm's own arithmetic is then checked against the accounting the problem
@@ -36,7 +37,7 @@ public sealed partial class IncrementalMemoryLeakBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.Arithmetic();
 
-        Assert.Equal(AnswerText.Of(harness.HeapSimulation()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.HeapSimulation()), AnswerGraphText.Of(answer));
         Assert.Equal(TotalCapacity(), AllocatedPlusRemaining(answer));
     }
 
@@ -46,7 +47,7 @@ public sealed partial class IncrementalMemoryLeakBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.HeapSimulation();
 
-        Assert.Equal(AnswerText.Of(harness.Arithmetic()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.Arithmetic()), AnswerGraphText.Of(answer));
         Assert.Equal(TotalCapacity(), AllocatedPlusRemaining(answer));
     }
 

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -50,6 +51,6 @@ public sealed partial class MinimumCostPathWithEdgeReversalsWorkloadsTests
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(MinimumCostPathWithEdgeReversalsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
-            AnswerText.Of(MinimumCostPathWithEdgeReversalsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
+            AnswerGraphText.Of(MinimumCostPathWithEdgeReversalsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
+            AnswerGraphText.Of(MinimumCostPathWithEdgeReversalsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -68,6 +69,6 @@ public sealed partial class MinimumWeightedSubgraphWorkloadsTests
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(MinimumWeightedSubgraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
-            AnswerText.Of(MinimumWeightedSubgraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
+            AnswerGraphText.Of(MinimumWeightedSubgraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
+            AnswerGraphText.Of(MinimumWeightedSubgraphWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
 }

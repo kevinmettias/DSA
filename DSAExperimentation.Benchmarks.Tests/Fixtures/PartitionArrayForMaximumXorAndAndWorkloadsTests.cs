@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -40,6 +41,6 @@ public sealed partial class PartitionArrayForMaximumXorAndAndWorkloadsTests
     [Fact]
     public void BuildNums_SameSeed_ReturnsTheSameNums() =>
         Assert.Equal(
-            AnswerText.Of(PartitionArrayForMaximumXorAndAndWorkloads.BuildNums(ElementCount, Seed)),
-            AnswerText.Of(PartitionArrayForMaximumXorAndAndWorkloads.BuildNums(ElementCount, Seed)));
+            AnswerGraphText.Of(PartitionArrayForMaximumXorAndAndWorkloads.BuildNums(ElementCount, Seed)),
+            AnswerGraphText.Of(PartitionArrayForMaximumXorAndAndWorkloads.BuildNums(ElementCount, Seed)));
 }

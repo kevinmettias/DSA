@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -58,8 +59,8 @@ public sealed partial class PowerGridMaintenanceWorkloadsTests
     [Fact]
     public void BuildConnections_SameSeed_ReturnsTheSameConnections() =>
         Assert.Equal(
-            AnswerText.Of(PowerGridMaintenanceWorkloads.BuildConnections(StationCount, Seed)),
-            AnswerText.Of(PowerGridMaintenanceWorkloads.BuildConnections(StationCount, Seed)));
+            AnswerGraphText.Of(PowerGridMaintenanceWorkloads.BuildConnections(StationCount, Seed)),
+            AnswerGraphText.Of(PowerGridMaintenanceWorkloads.BuildConnections(StationCount, Seed)));
 
     [Fact]
     public void BuildQueries_QueryCount_ReturnsOneQueryPerPositionWithTwoFields()
@@ -101,6 +102,6 @@ public sealed partial class PowerGridMaintenanceWorkloadsTests
     [Fact]
     public void BuildQueries_SameSeed_ReturnsTheSameQueries() =>
         Assert.Equal(
-            AnswerText.Of(PowerGridMaintenanceWorkloads.BuildQueries(StationCount, QueryCount, Seed)),
-            AnswerText.Of(PowerGridMaintenanceWorkloads.BuildQueries(StationCount, QueryCount, Seed)));
+            AnswerGraphText.Of(PowerGridMaintenanceWorkloads.BuildQueries(StationCount, QueryCount, Seed)),
+            AnswerGraphText.Of(PowerGridMaintenanceWorkloads.BuildQueries(StationCount, QueryCount, Seed)));
 }

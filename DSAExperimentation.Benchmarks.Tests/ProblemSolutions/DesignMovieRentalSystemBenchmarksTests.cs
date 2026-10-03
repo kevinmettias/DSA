@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,21 +21,21 @@ public sealed partial class DesignMovieRentalSystemBenchmarksTests
     {
         Assert.Equal(SearchResultCap, BuildHarness().SortOnQuery().Count);
         Assert.Equal(
-            AnswerText.Of(BuildHarness().SortOnQuery()),
-            AnswerText.Of(BuildHarness().SortOnQuery()));
+            AnswerGraphText.Of(BuildHarness().SortOnQuery()),
+            AnswerGraphText.Of(BuildHarness().SortOnQuery()));
     }
 
     // search() answers with the five cheapest shops in price order, so the order is part of the
-    // answer rather than an artifact of how each arm collected it - AnswerText.Of pins it instead
-    // of the outer-order-agnostic OfUnorderedSet.
+    // answer rather than an artifact of how each arm collected it - AnswerGraphText.Of pins it instead
+    // of the outer-order-agnostic OfUnordered.
     [Fact]
     public void SortOnQuery_TargetMovieStockedByFiftyShops_AgreesWithBstMaintainedSorted()
     {
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BstMaintainedSorted()),
-            AnswerText.Of(harness.SortOnQuery()));
+            AnswerGraphText.Of(harness.BstMaintainedSorted()),
+            AnswerGraphText.Of(harness.SortOnQuery()));
     }
 
     [Fact]
@@ -43,8 +44,8 @@ public sealed partial class DesignMovieRentalSystemBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.SortOnQuery()),
-            AnswerText.Of(harness.BstMaintainedSorted()));
+            AnswerGraphText.Of(harness.SortOnQuery()),
+            AnswerGraphText.Of(harness.BstMaintainedSorted()));
     }
 
     private static DesignMovieRentalSystemBenchmarks BuildHarness()

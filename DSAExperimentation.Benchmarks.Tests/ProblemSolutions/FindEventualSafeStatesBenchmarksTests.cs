@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,18 +22,18 @@ public sealed partial class FindEventualSafeStatesBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameSafeNodeList() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().DfsThreeColoring()),
-            AnswerText.Of(BuildHarness().DfsThreeColoring()));
+            AnswerGraphText.Of(BuildHarness().DfsThreeColoring()),
+            AnswerGraphText.Of(BuildHarness().DfsThreeColoring()));
 
     [Fact]
     public void DfsThreeColoring_SafeForwardHalfAndRingCycle_ReturnsTheForwardHalfAscending()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedSafeNodes()), AnswerText.Of(harness.DfsThreeColoring()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedSafeNodes()), AnswerGraphText.Of(harness.DfsThreeColoring()));
         Assert.Equal(
-            AnswerText.Of(harness.ReversedKahnsTopologicalSort()),
-            AnswerText.Of(harness.DfsThreeColoring()));
+            AnswerGraphText.Of(harness.ReversedKahnsTopologicalSort()),
+            AnswerGraphText.Of(harness.DfsThreeColoring()));
     }
 
     [Fact]
@@ -40,10 +41,10 @@ public sealed partial class FindEventualSafeStatesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedSafeNodes()), AnswerText.Of(harness.ReversedKahnsTopologicalSort()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedSafeNodes()), AnswerGraphText.Of(harness.ReversedKahnsTopologicalSort()));
         Assert.Equal(
-            AnswerText.Of(harness.DfsThreeColoring()),
-            AnswerText.Of(harness.ReversedKahnsTopologicalSort()));
+            AnswerGraphText.Of(harness.DfsThreeColoring()),
+            AnswerGraphText.Of(harness.ReversedKahnsTopologicalSort()));
     }
 
     private static FindEventualSafeStatesBenchmarks BuildHarness()

@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -7,9 +8,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // - the dummy-headed insertion sort - so there is no second strategy to reconcile it against and
 // the assertion has to come from the arm's own declared contract instead. It returns the sorted
 // list's head as object (the node type is internal, so a public [Benchmark] method cannot name it
-// as a return type), which is the real answer rather than a proxy; AnswerText cannot render it,
-// because a linked node is not an enumerable sequence, so each result is walked into its values
-// first. That sequence is decisive: [GlobalSetup] shuffles the values 1..Length with a fixed seed,
+// as a return type), which is the real answer rather than a proxy. The expected answer is stated as
+// plain values, so each result is walked into its values first. That sequence is decisive: [GlobalSetup] shuffles the values 1..Length with a fixed seed,
 // so an insertion sort of them must return exactly 1..Length ascending - a value set the fixture
 // fixes and the arm cannot influence.
 public sealed partial class InsertionSortListBenchmarksTests
@@ -36,7 +36,7 @@ public sealed partial class InsertionSortListBenchmarksTests
         return harness;
     }
 
-    private static string RenderedValues(object? answer) => AnswerText.Of(ValuesOf(answer));
+    private static string RenderedValues(object? answer) => AnswerGraphText.Of(ValuesOf(answer));
 
     private static int[] ValuesOf(object? answer)
     {

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -47,6 +48,6 @@ public sealed partial class PolygonWorkloadsTests
     [Fact]
     public void BuildSides_SameSeed_ReturnsTheSameSides() =>
         Assert.Equal(
-            AnswerText.Of(PolygonWorkloads.BuildSides(SmallestSideCount, SmallestSideSeed)),
-            AnswerText.Of(PolygonWorkloads.BuildSides(SmallestSideCount, SmallestSideSeed)));
+            AnswerGraphText.Of(PolygonWorkloads.BuildSides(SmallestSideCount, SmallestSideSeed)),
+            AnswerGraphText.Of(PolygonWorkloads.BuildSides(SmallestSideCount, SmallestSideSeed)));
 }

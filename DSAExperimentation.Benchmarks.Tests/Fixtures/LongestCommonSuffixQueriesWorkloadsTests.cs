@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -41,7 +42,7 @@ public sealed partial class LongestCommonSuffixQueriesWorkloadsTests
         var containerWords = LongestCommonSuffixQueriesWorkloads.BuildWords(Count, random);
         var queryWords = LongestCommonSuffixQueriesWorkloads.BuildWords(Count, random);
 
-        Assert.NotEqual(AnswerText.Of(containerWords), AnswerText.Of(queryWords));
+        Assert.NotEqual(AnswerGraphText.Of(containerWords), AnswerGraphText.Of(queryWords));
     }
 
     [Fact]

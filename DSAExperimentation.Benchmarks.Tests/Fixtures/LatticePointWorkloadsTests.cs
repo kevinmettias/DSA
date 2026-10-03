@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -42,6 +43,6 @@ public sealed partial class LatticePointWorkloadsTests
     [Fact]
     public void InGrid_SameSeed_ReturnsTheSamePoints() =>
         Assert.Equal(
-            AnswerText.Of(LatticePointWorkloads.InGrid(Count, GridPadding, Seed)),
-            AnswerText.Of(LatticePointWorkloads.InGrid(Count, GridPadding, Seed)));
+            AnswerGraphText.Of(LatticePointWorkloads.InGrid(Count, GridPadding, Seed)),
+            AnswerGraphText.Of(LatticePointWorkloads.InGrid(Count, GridPadding, Seed)));
 }

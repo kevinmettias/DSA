@@ -1,6 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -23,8 +24,8 @@ public sealed partial class RecoverBinarySearchTreeWorkloadsTests
     [Fact]
     public void BuildCorruptedBst_InOrderReading_IsTheSortedRangeWithOnlyItsTwoExtremesSwapped() =>
         Assert.Equal(
-            AnswerText.Of(ExpectedInOrderValues()),
-            AnswerText.Of(InOrderValues(RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(Size))));
+            AnswerGraphText.Of(ExpectedInOrderValues()),
+            AnswerGraphText.Of(InOrderValues(RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(Size))));
 
     // The swap moves values, it does not add or drop one: the walk still carries the whole range exactly
     // once, which is what makes the violation pair the only thing wrong with the tree.

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class FinalPricesWithASpecialDiscountInAShopBenchmarksTest
         Assert.Equal(SmallestLength, BuildHarness().BruteForce().Length);
 
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
     }
 
     [Fact]
@@ -28,7 +29,7 @@ public sealed partial class FinalPricesWithASpecialDiscountInAShopBenchmarksTest
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.MonotonicStack()), AnswerText.Of(harness.BruteForce()));
+        Assert.Equal(AnswerGraphText.Of(harness.MonotonicStack()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -36,7 +37,7 @@ public sealed partial class FinalPricesWithASpecialDiscountInAShopBenchmarksTest
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.BruteForce()), AnswerText.Of(harness.MonotonicStack()));
+        Assert.Equal(AnswerGraphText.Of(harness.BruteForce()), AnswerGraphText.Of(harness.MonotonicStack()));
     }
 
     private static FinalPricesWithASpecialDiscountInAShopBenchmarks BuildHarness()

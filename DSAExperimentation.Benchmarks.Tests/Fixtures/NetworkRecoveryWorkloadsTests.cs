@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -70,7 +71,7 @@ public sealed partial class NetworkRecoveryWorkloadsTests
         var (edges, online) = NetworkRecoveryWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
         var (repeatEdges, repeatOnline) = NetworkRecoveryWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
         Assert.Equal(online, repeatOnline);
     }
 }

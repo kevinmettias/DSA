@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -60,7 +61,7 @@ public sealed partial class SubtreeOfAnotherTreeWorkloadsTests
         var chain = Nodes(SubtreeOfAnotherTreeWorkloads.BuildLeftChain(Length, DistinctLastValue));
         var repeat = Nodes(SubtreeOfAnotherTreeWorkloads.BuildLeftChain(Length, DistinctLastValue));
 
-        Assert.Equal(AnswerText.Of(chain.Select(node => node.Value)), AnswerText.Of(repeat.Select(node => node.Value)));
+        Assert.Equal(AnswerGraphText.Of(chain.Select(node => node.Value)), AnswerGraphText.Of(repeat.Select(node => node.Value)));
     }
 
     // Walks the left spine itself rather than reusing any traversal the benchmark owns, so the

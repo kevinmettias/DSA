@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,15 +17,15 @@ public sealed partial class ZigzagGridTraversalWithSkipBenchmarksTests
     [Fact]
     public void Setup_SameGridSize_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().IndexFormula()),
-            AnswerText.Of(BuildHarness().IndexFormula()));
+            AnswerGraphText.Of(BuildHarness().IndexFormula()),
+            AnswerGraphText.Of(BuildHarness().IndexFormula()));
 
     [Fact]
     public void IndexFormula_AgreesWithRowStack()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.IndexFormula()), AnswerText.Of(harness.RowStack()));
+        Assert.Equal(AnswerGraphText.Of(harness.IndexFormula()), AnswerGraphText.Of(harness.RowStack()));
     }
 
     [Fact]

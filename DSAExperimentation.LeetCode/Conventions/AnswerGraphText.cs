@@ -3,13 +3,16 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 
-namespace DSAExperimentation.Benchmarks.Tests;
+namespace DSAExperimentation.LeetCode.Conventions;
 
-// AnswerText renders an answer that is a value or a collection of values. A check run over every
-// benchmark also meets answers that are object graphs - a reversed list's head node, a built tree's
-// root, a quad tree, a copied list whose random pointers point back into itself - and harnesses
-// whose void arm answers by rewriting their own workload. This renders those by walking fields, so
-// two answers match only when the structures have the same shape and the same values. Each object
+// The one rendering every untyped answer comparison goes through: the generic benchmark arm check
+// and the companion tests beside it. LeetCodeAnswers holds the typed rules a caller picks when it
+// knows the answer's shape; this is for when it does not - an answer that is a value, a collection,
+// or an object graph: a reversed list's head node, a built tree's root, a quad tree, a copied list
+// whose random pointers point back into itself, or a harness whose void arm answers by rewriting its
+// own workload. Sequences render element by element, so an array and a list of equal values match
+// and a jagged array compares by content; anything else renders by walking its fields, so two
+// answers match only when the structures have the same shape and the same values. Each object
 // is written once; meeting it again writes a back-reference to the order it was first met in, which
 // keeps a cycle finite and still tells a tail that rejoins the head from one that rejoins the middle.
 // The walk keeps its own stack rather than recursing, because a long list would overflow the thread.

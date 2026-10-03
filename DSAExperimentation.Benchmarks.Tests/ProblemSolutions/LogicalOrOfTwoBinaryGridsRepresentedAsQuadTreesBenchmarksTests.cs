@@ -1,6 +1,7 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -10,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // recursive merge - so a harness whose arms disagree is timing two different problems. All three
 // return the merged QuadTreeNode as object? (CS0050), which is not comparable by value, so each is
 // projected with QuadTreeGrid.Materialize - the walk LC 558's own coverage test decodes its trees
-// with - into the grid the tree denotes, and AnswerText.Of renders that jagged grid element-wise.
+// with - into the grid the tree denotes, and AnswerGraphText.Of renders that jagged grid element-wise.
 // Assert.Equal on int[][] itself would fall back to reference equality for the inner arrays.
 //
 // Setup splits grid1 top/bottom and grid2 left/right, so the OR of the two documented grids is the
@@ -23,11 +24,11 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBench
     public void Setup_SameSize_RebuildsTheSameSplitGridsAndTheirOr()
     {
         Assert.Equal(
-            AnswerText.Of(ExpectedOrGrid()),
-            AnswerText.Of(Materialized(BuildHarness().BruteForceGridMaterialize())));
+            AnswerGraphText.Of(ExpectedOrGrid()),
+            AnswerGraphText.Of(Materialized(BuildHarness().BruteForceGridMaterialize())));
         Assert.Equal(
-            AnswerText.Of(Materialized(BuildHarness().DirectRecursiveMerge())),
-            AnswerText.Of(Materialized(BuildHarness().DirectRecursiveMerge())));
+            AnswerGraphText.Of(Materialized(BuildHarness().DirectRecursiveMerge())),
+            AnswerGraphText.Of(Materialized(BuildHarness().DirectRecursiveMerge())));
     }
 
     [Fact]
@@ -36,8 +37,8 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBench
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Materialized(harness.DirectRecursiveMerge())),
-            AnswerText.Of(Materialized(harness.BruteForceGridMaterialize())));
+            AnswerGraphText.Of(Materialized(harness.DirectRecursiveMerge())),
+            AnswerGraphText.Of(Materialized(harness.BruteForceGridMaterialize())));
     }
 
     [Fact]
@@ -46,8 +47,8 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBench
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Materialized(harness.BruteForceGridMaterialize())),
-            AnswerText.Of(Materialized(harness.FenwickGridMaterialize())));
+            AnswerGraphText.Of(Materialized(harness.BruteForceGridMaterialize())),
+            AnswerGraphText.Of(Materialized(harness.FenwickGridMaterialize())));
     }
 
     [Fact]
@@ -56,8 +57,8 @@ public sealed partial class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBench
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Materialized(harness.FenwickGridMaterialize())),
-            AnswerText.Of(Materialized(harness.DirectRecursiveMerge())));
+            AnswerGraphText.Of(Materialized(harness.FenwickGridMaterialize())),
+            AnswerGraphText.Of(Materialized(harness.DirectRecursiveMerge())));
     }
 
     // grid1 is 0 in its top half and 1 below it, grid2 is 0 in its left half and 1 to the right of

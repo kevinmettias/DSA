@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -11,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 //
 // The query array is private, but its length is exactly what the answer reports: both arms answer one
 // way count per query, in query order, so the documented QueryCount pins the result's own length.
-// AnswerText.Of rather than OfUnorderedSet - a value's position is the query it answers, and a set
+// AnswerGraphText.Of rather than OfUnordered - a value's position is the query it answers, and a set
 // rendering would score an answer against the wrong query.
 public sealed partial class CountWaysToMakeArrayWithProductBenchmarksTests
 {
@@ -22,8 +23,8 @@ public sealed partial class CountWaysToMakeArrayWithProductBenchmarksTests
     {
         Assert.Equal(SmallestQueryCount, BuildHarness().TrialDivisionPerQuery().Length);
         Assert.Equal(
-            AnswerText.Of(BuildHarness().TrialDivisionPerQuery()),
-            AnswerText.Of(BuildHarness().TrialDivisionPerQuery()));
+            AnswerGraphText.Of(BuildHarness().TrialDivisionPerQuery()),
+            AnswerGraphText.Of(BuildHarness().TrialDivisionPerQuery()));
     }
 
     [Fact]
@@ -32,8 +33,8 @@ public sealed partial class CountWaysToMakeArrayWithProductBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.SmallestPrimeFactorSieve()),
-            AnswerText.Of(harness.TrialDivisionPerQuery()));
+            AnswerGraphText.Of(harness.SmallestPrimeFactorSieve()),
+            AnswerGraphText.Of(harness.TrialDivisionPerQuery()));
     }
 
     [Fact]
@@ -42,8 +43,8 @@ public sealed partial class CountWaysToMakeArrayWithProductBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.TrialDivisionPerQuery()),
-            AnswerText.Of(harness.SmallestPrimeFactorSieve()));
+            AnswerGraphText.Of(harness.TrialDivisionPerQuery()),
+            AnswerGraphText.Of(harness.SmallestPrimeFactorSieve()));
     }
 
     private static CountWaysToMakeArrayWithProductBenchmarks BuildHarness()

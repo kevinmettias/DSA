@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -12,8 +13,8 @@ public sealed partial class WordSearchBenchmarksTests
     [Fact]
     public void Setup_SameBoard_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CanTraceWordByBruteForceDfs()),
-            AnswerText.Of(BuildHarness().CanTraceWordByBruteForceDfs()));
+            AnswerGraphText.Of(BuildHarness().CanTraceWordByBruteForceDfs()),
+            AnswerGraphText.Of(BuildHarness().CanTraceWordByBruteForceDfs()));
 
     [Fact]
     public void CanTraceWordByBruteForceDfs_AgreesWithBacktrack()

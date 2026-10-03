@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -57,8 +58,8 @@ public sealed partial class RectangleWorkloadsTests
         var (bottomLeft, topRight) = RectangleWorkloads.BuildRectangles(RectangleCount, Seed);
         var (repeatBottomLeft, repeatTopRight) = RectangleWorkloads.BuildRectangles(RectangleCount, Seed);
 
-        Assert.Equal(AnswerText.Of(bottomLeft), AnswerText.Of(repeatBottomLeft));
-        Assert.Equal(AnswerText.Of(topRight), AnswerText.Of(repeatTopRight));
+        Assert.Equal(AnswerGraphText.Of(bottomLeft), AnswerGraphText.Of(repeatBottomLeft));
+        Assert.Equal(AnswerGraphText.Of(topRight), AnswerGraphText.Of(repeatTopRight));
     }
 
     private static void AssertRectangle(int[] bottomLeft, int[] topRight)

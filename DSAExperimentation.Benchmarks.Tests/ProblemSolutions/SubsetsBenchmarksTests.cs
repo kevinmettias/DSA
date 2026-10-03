@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -14,8 +15,8 @@ public sealed partial class SubsetsBenchmarksTests
     [Fact]
     public void Setup_SameElementCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(BuildHarness().BitmaskEnumeration()),
-            AnswerText.OfUnorderedSet(BuildHarness().BitmaskEnumeration()));
+            AnswerGraphText.OfUnordered(BuildHarness().BitmaskEnumeration()),
+            AnswerGraphText.OfUnordered(BuildHarness().BitmaskEnumeration()));
 
     [Fact]
     public void BacktrackSearch_AgreesWithBitmaskEnumeration()
@@ -23,8 +24,8 @@ public sealed partial class SubsetsBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.BitmaskEnumeration()),
-            AnswerText.OfUnorderedSet(harness.BacktrackSearch()));
+            AnswerGraphText.OfUnordered(harness.BitmaskEnumeration()),
+            AnswerGraphText.OfUnordered(harness.BacktrackSearch()));
     }
 
     private static SubsetsBenchmarks BuildHarness()

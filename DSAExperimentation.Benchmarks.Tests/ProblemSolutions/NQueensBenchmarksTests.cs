@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,8 +18,8 @@ public sealed partial class NQueensBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BacktrackEngine()),
-            AnswerText.Of(harness.RecursiveDfs()));
+            AnswerGraphText.Of(harness.BacktrackEngine()),
+            AnswerGraphText.Of(harness.RecursiveDfs()));
     }
 
     [Fact]
@@ -27,8 +28,8 @@ public sealed partial class NQueensBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.RecursiveDfs()),
-            AnswerText.Of(harness.BacktrackEngine()));
+            AnswerGraphText.Of(harness.RecursiveDfs()),
+            AnswerGraphText.Of(harness.BacktrackEngine()));
     }
 
     private static NQueensBenchmarks BuildHarness() => new() { Size = EightQueens };

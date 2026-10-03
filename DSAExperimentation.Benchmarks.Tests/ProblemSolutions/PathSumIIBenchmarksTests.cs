@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,8 +17,8 @@ public sealed partial class PathSumIIBenchmarksTests
     [Fact]
     public void Setup_ExampleTree_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().RecursiveBacktrack()),
-            AnswerText.Of(BuildHarness().RecursiveBacktrack()));
+            AnswerGraphText.Of(BuildHarness().RecursiveBacktrack()),
+            AnswerGraphText.Of(BuildHarness().RecursiveBacktrack()));
 
     [Fact]
     public void RecursiveBacktrack_ExampleTree_AgreesWithAllRootToLeafPaths()
@@ -25,7 +26,7 @@ public sealed partial class PathSumIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(ExpectedMatchingPaths, harness.AllRootToLeafPaths().Count);
-        Assert.Equal(AnswerText.Of(harness.AllRootToLeafPaths()), AnswerText.Of(harness.RecursiveBacktrack()));
+        Assert.Equal(AnswerGraphText.Of(harness.AllRootToLeafPaths()), AnswerGraphText.Of(harness.RecursiveBacktrack()));
     }
 
     [Fact]
@@ -34,7 +35,7 @@ public sealed partial class PathSumIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(ExpectedMatchingPaths, harness.RecursiveBacktrack().Count);
-        Assert.Equal(AnswerText.Of(harness.RecursiveBacktrack()), AnswerText.Of(harness.AllRootToLeafPaths()));
+        Assert.Equal(AnswerGraphText.Of(harness.RecursiveBacktrack()), AnswerGraphText.Of(harness.AllRootToLeafPaths()));
     }
 
     private static PathSumIIBenchmarks BuildHarness()

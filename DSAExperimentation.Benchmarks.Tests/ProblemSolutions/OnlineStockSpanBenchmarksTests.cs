@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -15,8 +16,8 @@ public sealed partial class OnlineStockSpanBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().MonotonicStackSweep()),
-            AnswerText.Of(BuildHarness().MonotonicStackSweep()));
+            AnswerGraphText.Of(BuildHarness().MonotonicStackSweep()),
+            AnswerGraphText.Of(BuildHarness().MonotonicStackSweep()));
 
     [Fact]
     public void BruteForceBackwardScan_IncreasingPrices_SpanOfEveryDayIsItsDayNumber()
@@ -24,11 +25,11 @@ public sealed partial class OnlineStockSpanBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Enumerable.Range(1, SmallestLength)),
-            AnswerText.Of(harness.BruteForceBackwardScan()));
+            AnswerGraphText.Of(Enumerable.Range(1, SmallestLength)),
+            AnswerGraphText.Of(harness.BruteForceBackwardScan()));
         Assert.Equal(
-            AnswerText.Of(harness.MonotonicStackSweep()),
-            AnswerText.Of(harness.BruteForceBackwardScan()));
+            AnswerGraphText.Of(harness.MonotonicStackSweep()),
+            AnswerGraphText.Of(harness.BruteForceBackwardScan()));
     }
 
     [Fact]
@@ -37,11 +38,11 @@ public sealed partial class OnlineStockSpanBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Enumerable.Range(1, SmallestLength)),
-            AnswerText.Of(harness.MonotonicStackSweep()));
+            AnswerGraphText.Of(Enumerable.Range(1, SmallestLength)),
+            AnswerGraphText.Of(harness.MonotonicStackSweep()));
         Assert.Equal(
-            AnswerText.Of(harness.BruteForceBackwardScan()),
-            AnswerText.Of(harness.MonotonicStackSweep()));
+            AnswerGraphText.Of(harness.BruteForceBackwardScan()),
+            AnswerGraphText.Of(harness.MonotonicStackSweep()));
     }
 
     private static OnlineStockSpanBenchmarks BuildHarness()

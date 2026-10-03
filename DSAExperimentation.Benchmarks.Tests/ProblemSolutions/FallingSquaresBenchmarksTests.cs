@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class FallingSquaresBenchmarksTests
         Assert.Equal(SmallestSquareCount, BuildHarness().BruteForceOverlapScan().Count);
 
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForceOverlapScan()),
-            AnswerText.Of(BuildHarness().BruteForceOverlapScan()));
+            AnswerGraphText.Of(BuildHarness().BruteForceOverlapScan()),
+            AnswerGraphText.Of(BuildHarness().BruteForceOverlapScan()));
     }
 
     [Fact]
@@ -29,8 +30,8 @@ public sealed partial class FallingSquaresBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.LazySegmentTreeRangeMax()),
-            AnswerText.Of(harness.BruteForceOverlapScan()));
+            AnswerGraphText.Of(harness.LazySegmentTreeRangeMax()),
+            AnswerGraphText.Of(harness.BruteForceOverlapScan()));
     }
 
     [Fact]
@@ -39,8 +40,8 @@ public sealed partial class FallingSquaresBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BruteForceOverlapScan()),
-            AnswerText.Of(harness.LazySegmentTreeRangeMax()));
+            AnswerGraphText.Of(harness.BruteForceOverlapScan()),
+            AnswerGraphText.Of(harness.LazySegmentTreeRangeMax()));
     }
 
     private static FallingSquaresBenchmarks BuildHarness()

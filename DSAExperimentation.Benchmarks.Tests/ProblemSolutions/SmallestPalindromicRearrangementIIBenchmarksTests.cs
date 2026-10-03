@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,8 +21,8 @@ public sealed partial class SmallestPalindromicRearrangementIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSamePalindrome() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CountingGreedy()),
-            AnswerText.Of(BuildHarness().CountingGreedy()));
+            AnswerGraphText.Of(BuildHarness().CountingGreedy()),
+            AnswerGraphText.Of(BuildHarness().CountingGreedy()));
 
     [Fact]
     public void BacktrackingRank_TwentyCharacterPalindrome_AgreesWithCountingGreedy()
@@ -29,7 +30,7 @@ public sealed partial class SmallestPalindromicRearrangementIIBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.BacktrackingRank();
 
-        Assert.Equal(AnswerText.Of(harness.CountingGreedy()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.CountingGreedy()), AnswerGraphText.Of(answer));
         Assert.Equal(SmallestLength, answer.Length);
         Assert.Equal(answer, Reversed(answer));
     }
@@ -40,7 +41,7 @@ public sealed partial class SmallestPalindromicRearrangementIIBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.CountingGreedy();
 
-        Assert.Equal(AnswerText.Of(harness.BacktrackingRank()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.BacktrackingRank()), AnswerGraphText.Of(answer));
         Assert.Equal(SmallestLength, answer.Length);
         Assert.Equal(answer, Reversed(answer));
     }

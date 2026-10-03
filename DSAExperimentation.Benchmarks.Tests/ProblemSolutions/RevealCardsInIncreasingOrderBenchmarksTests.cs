@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,8 +22,8 @@ public sealed partial class RevealCardsInIncreasingOrderBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().ListRemoveAtSimulation()),
-            AnswerText.Of(BuildHarness().ListRemoveAtSimulation()));
+            AnswerGraphText.Of(BuildHarness().ListRemoveAtSimulation()),
+            AnswerGraphText.Of(BuildHarness().ListRemoveAtSimulation()));
 
     [Fact]
     public void ListRemoveAtSimulation_SeededDeck_AgreesWithQueueSimulation()
@@ -31,7 +32,7 @@ public sealed partial class RevealCardsInIncreasingOrderBenchmarksTests
         var ordered = harness.ListRemoveAtSimulation();
 
         Assert.True(IsRevealedInIncreasingOrder(ordered));
-        Assert.Equal(AnswerText.Of(harness.QueueSimulation()), AnswerText.Of(ordered));
+        Assert.Equal(AnswerGraphText.Of(harness.QueueSimulation()), AnswerGraphText.Of(ordered));
     }
 
     [Fact]
@@ -41,7 +42,7 @@ public sealed partial class RevealCardsInIncreasingOrderBenchmarksTests
         var ordered = harness.QueueSimulation();
 
         Assert.True(IsRevealedInIncreasingOrder(ordered));
-        Assert.Equal(AnswerText.Of(harness.ListRemoveAtSimulation()), AnswerText.Of(ordered));
+        Assert.Equal(AnswerGraphText.Of(harness.ListRemoveAtSimulation()), AnswerGraphText.Of(ordered));
     }
 
     // Runs the problem's own process over the candidate ordering: reveal the front, then move the

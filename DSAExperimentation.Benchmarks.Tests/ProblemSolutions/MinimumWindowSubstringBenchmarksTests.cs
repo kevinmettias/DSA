@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -25,8 +26,8 @@ public sealed partial class MinimumWindowSubstringBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameText() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     [Fact]
     public void BruteForce_TargetAbsentFromText_ReportsNoWindowAndAgreesWithSlidingWindowHashMap()
@@ -35,8 +36,8 @@ public sealed partial class MinimumWindowSubstringBenchmarksTests
 
         Assert.Equal(NoWindowAnswer, harness.BruteForce());
         Assert.Equal(
-            AnswerText.Of(harness.SlidingWindowHashMap()),
-            AnswerText.Of(harness.BruteForce()));
+            AnswerGraphText.Of(harness.SlidingWindowHashMap()),
+            AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -46,8 +47,8 @@ public sealed partial class MinimumWindowSubstringBenchmarksTests
 
         Assert.Equal(NoWindowAnswer, harness.SlidingWindowHashMap());
         Assert.Equal(
-            AnswerText.Of(harness.BruteForce()),
-            AnswerText.Of(harness.SlidingWindowHashMap()));
+            AnswerGraphText.Of(harness.BruteForce()),
+            AnswerGraphText.Of(harness.SlidingWindowHashMap()));
     }
 
     private static MinimumWindowSubstringBenchmarks BuildHarness()

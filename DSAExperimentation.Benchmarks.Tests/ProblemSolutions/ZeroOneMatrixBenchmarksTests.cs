@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,8 +18,8 @@ public sealed partial class ZeroOneMatrixBenchmarksTests
     [Fact]
     public void Setup_SameSize_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().PerCellBfs()),
-            AnswerText.Of(BuildHarness().PerCellBfs()));
+            AnswerGraphText.Of(BuildHarness().PerCellBfs()),
+            AnswerGraphText.Of(BuildHarness().PerCellBfs()));
 
     [Fact]
     public void PerCellBfs_AgreesWithMultiSourceBfs()
@@ -26,8 +27,8 @@ public sealed partial class ZeroOneMatrixBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.PerCellBfs()),
-            AnswerText.Of(harness.MultiSourceBfs()));
+            AnswerGraphText.Of(harness.PerCellBfs()),
+            AnswerGraphText.Of(harness.MultiSourceBfs()));
     }
 
     [Fact]

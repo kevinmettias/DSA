@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,8 +21,8 @@ public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarksT
     {
         Assert.Equal(SmallestCityCount - 1, BuildHarness().AllPairsBfsPerMask().Length);
         Assert.Equal(
-            AnswerText.Of(BuildHarness().AllPairsBfsPerMask()),
-            AnswerText.Of(BuildHarness().AllPairsBfsPerMask()));
+            AnswerGraphText.Of(BuildHarness().AllPairsBfsPerMask()),
+            AnswerGraphText.Of(BuildHarness().AllPairsBfsPerMask()));
     }
 
     [Fact]
@@ -29,7 +30,7 @@ public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarksT
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.DoubleBfsPerMask()), AnswerText.Of(harness.AllPairsBfsPerMask()));
+        Assert.Equal(AnswerGraphText.Of(harness.DoubleBfsPerMask()), AnswerGraphText.Of(harness.AllPairsBfsPerMask()));
     }
 
     [Fact]
@@ -37,10 +38,10 @@ public sealed partial class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarksT
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.AllPairsBfsPerMask()), AnswerText.Of(harness.DoubleBfsPerMask()));
+        Assert.Equal(AnswerGraphText.Of(harness.AllPairsBfsPerMask()), AnswerGraphText.Of(harness.DoubleBfsPerMask()));
     }
 
-    // AnswerText.Of rather than OfUnorderedSet: both arms report one bucket per distance, so a
+    // AnswerGraphText.Of rather than OfUnordered: both arms report one bucket per distance, so a
     // value's position is the distance it counts, not an arbitrary outer order.
     private static CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks BuildHarness()
     {

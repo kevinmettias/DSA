@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,8 +22,8 @@ public sealed partial class FrogJumpBenchmarksTests
     [Fact]
     public void Setup_SameStoneCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CanCrossByRecursiveBruteForce()),
-            AnswerText.Of(BuildHarness().CanCrossByRecursiveBruteForce()));
+            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce()),
+            AnswerGraphText.Of(BuildHarness().CanCrossByRecursiveBruteForce()));
 
     [Fact]
     public void CanCrossByRecursiveBruteForce_AgreesWithCanCrossByHashMapDynamicProgramming()

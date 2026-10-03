@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // disagree is timing two different problems, and both now return the built tree rather than a
 // height proxy.
 //
-// Both arms are declared as returning object, so rendering the answer through AnswerText would
+// Both arms are declared as returning object, so rendering the answer through AnswerGraphText would
 // compare two default ToString results - the type name - and pass no matter which tree either arm
 // built. Each answer is therefore rendered structurally instead. Setup pins the workload to
 // Enumerable.Range, an ascending run, and the maximum binary tree of an ascending run is fixed by

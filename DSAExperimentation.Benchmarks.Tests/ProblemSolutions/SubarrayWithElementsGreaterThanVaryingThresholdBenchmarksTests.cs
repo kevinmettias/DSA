@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -19,8 +20,8 @@ public sealed partial class SubarrayWithElementsGreaterThanVaryingThresholdBench
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().WindowMinimumScan()),
-            AnswerText.Of(BuildHarness().WindowMinimumScan()));
+            AnswerGraphText.Of(BuildHarness().WindowMinimumScan()),
+            AnswerGraphText.Of(BuildHarness().WindowMinimumScan()));
 
     [Fact]
     public void WindowMinimumScan_AgreesWithUnionFindOrder()

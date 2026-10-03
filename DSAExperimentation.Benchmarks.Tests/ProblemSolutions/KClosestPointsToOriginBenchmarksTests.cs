@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,15 +20,15 @@ public sealed partial class KClosestPointsToOriginBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSamePointCloud() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(BuildHarness().FullSort()),
-            AnswerText.OfUnorderedSet(BuildHarness().FullSort()));
+            AnswerGraphText.OfUnordered(BuildHarness().FullSort()),
+            AnswerGraphText.OfUnordered(BuildHarness().FullSort()));
 
     [Fact]
     public void FullSort_SeededPointCloud_AgreesWithSizeKMaxHeap()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.OfUnorderedSet(harness.SizeKMaxHeap()), AnswerText.OfUnorderedSet(harness.FullSort()));
+        Assert.Equal(AnswerGraphText.OfUnordered(harness.SizeKMaxHeap()), AnswerGraphText.OfUnordered(harness.FullSort()));
     }
 
     [Fact]
@@ -35,7 +36,7 @@ public sealed partial class KClosestPointsToOriginBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.OfUnorderedSet(harness.FullSort()), AnswerText.OfUnorderedSet(harness.SizeKMaxHeap()));
+        Assert.Equal(AnswerGraphText.OfUnordered(harness.FullSort()), AnswerGraphText.OfUnordered(harness.SizeKMaxHeap()));
     }
 
     private static KClosestPointsToOriginBenchmarks BuildHarness()

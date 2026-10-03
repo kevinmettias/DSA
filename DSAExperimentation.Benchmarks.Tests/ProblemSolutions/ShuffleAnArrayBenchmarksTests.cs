@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -28,8 +29,8 @@ public sealed partial class ShuffleAnArrayBenchmarksTests
         var second = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Sorted(first.RemoveRandomRemaining())),
-            AnswerText.Of(Sorted(second.RemoveRandomRemaining())));
+            AnswerGraphText.Of(Sorted(first.RemoveRandomRemaining())),
+            AnswerGraphText.Of(Sorted(second.RemoveRandomRemaining())));
     }
 
     [Fact]
@@ -38,11 +39,11 @@ public sealed partial class ShuffleAnArrayBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Sorted(harness.FisherYatesDynamicArray())),
-            AnswerText.Of(Sorted(harness.RemoveRandomRemaining())));
+            AnswerGraphText.Of(Sorted(harness.FisherYatesDynamicArray())),
+            AnswerGraphText.Of(Sorted(harness.RemoveRandomRemaining())));
         Assert.Equal(
-            AnswerText.Of(OriginalValues()),
-            AnswerText.Of(Sorted(harness.RemoveRandomRemaining())));
+            AnswerGraphText.Of(OriginalValues()),
+            AnswerGraphText.Of(Sorted(harness.RemoveRandomRemaining())));
     }
 
     [Fact]
@@ -51,11 +52,11 @@ public sealed partial class ShuffleAnArrayBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Sorted(harness.RemoveRandomRemaining())),
-            AnswerText.Of(Sorted(harness.FisherYatesDynamicArray())));
+            AnswerGraphText.Of(Sorted(harness.RemoveRandomRemaining())),
+            AnswerGraphText.Of(Sorted(harness.FisherYatesDynamicArray())));
         Assert.Equal(
-            AnswerText.Of(OriginalValues()),
-            AnswerText.Of(Sorted(harness.FisherYatesDynamicArray())));
+            AnswerGraphText.Of(OriginalValues()),
+            AnswerGraphText.Of(Sorted(harness.FisherYatesDynamicArray())));
     }
 
     private static IEnumerable<int> Sorted(int[] shuffled) => shuffled.OrderBy(value => value);

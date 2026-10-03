@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,8 +22,8 @@ public sealed partial class TypeOfTriangleBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedClassification), AnswerText.Of(harness.DirectComparison()));
-        Assert.Equal(AnswerText.Of(harness.MergeSort()), AnswerText.Of(harness.DirectComparison()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedClassification), AnswerGraphText.Of(harness.DirectComparison()));
+        Assert.Equal(AnswerGraphText.Of(harness.MergeSort()), AnswerGraphText.Of(harness.DirectComparison()));
     }
 
     [Fact]
@@ -30,8 +31,8 @@ public sealed partial class TypeOfTriangleBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedClassification), AnswerText.Of(harness.MergeSort()));
-        Assert.Equal(AnswerText.Of(harness.DirectComparison()), AnswerText.Of(harness.MergeSort()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedClassification), AnswerGraphText.Of(harness.MergeSort()));
+        Assert.Equal(AnswerGraphText.Of(harness.DirectComparison()), AnswerGraphText.Of(harness.MergeSort()));
     }
 
     private static TypeOfTriangleBenchmarks BuildHarness() => new();

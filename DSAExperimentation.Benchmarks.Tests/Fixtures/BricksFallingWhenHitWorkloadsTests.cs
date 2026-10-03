@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -58,7 +59,7 @@ public sealed partial class BricksFallingWhenHitWorkloadsTests
         var wall = BricksFallingWhenHitWorkloads.BuildWall(Size, Seed);
         var repeat = BricksFallingWhenHitWorkloads.BuildWall(Size, Seed);
 
-        Assert.Equal(AnswerText.Of(wall.Grid), AnswerText.Of(repeat.Grid));
-        Assert.Equal(AnswerText.Of(wall.Hits), AnswerText.Of(repeat.Hits));
+        Assert.Equal(AnswerGraphText.Of(wall.Grid), AnswerGraphText.Of(repeat.Grid));
+        Assert.Equal(AnswerGraphText.Of(wall.Hits), AnswerGraphText.Of(repeat.Hits));
     }
 }

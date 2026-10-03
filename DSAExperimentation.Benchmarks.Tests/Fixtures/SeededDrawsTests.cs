@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -53,8 +54,8 @@ public sealed partial class SeededDrawsTests
     [Fact]
     public void Pairs_SameSeed_ReturnsTheSamePairs() =>
         Assert.Equal(
-            AnswerText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, new Random(Seed))),
-            AnswerText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, new Random(Seed))));
+            AnswerGraphText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, new Random(Seed))),
+            AnswerGraphText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, new Random(Seed))));
 
     // The documented reason this helper takes a Random rather than a seed. A helper that rebuilt a
     // fresh Random from a seed inside would pass every test above and still quietly change the
@@ -66,7 +67,7 @@ public sealed partial class SeededDrawsTests
         SeededDraws.Values(Count, LowInclusive, HighExclusive, interleaved);
 
         Assert.NotEqual(
-            AnswerText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, interleaved)),
-            AnswerText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, new Random(Seed))));
+            AnswerGraphText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, interleaved)),
+            AnswerGraphText.Of(SeededDraws.Pairs(Count, LowInclusive, HighExclusive, new Random(Seed))));
     }
 }

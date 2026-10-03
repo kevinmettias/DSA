@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,15 +24,15 @@ public sealed partial class TwoSumIIInputArrayIsSortedBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BinarySearch()),
-            AnswerText.Of(BuildHarness().BinarySearch()));
+            AnswerGraphText.Of(BuildHarness().BinarySearch()),
+            AnswerGraphText.Of(BuildHarness().BinarySearch()));
 
     [Fact]
     public void BinarySearch_SmallestLength_FindsTheLastTwoPositions()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedIndices), AnswerText.Of(harness.BinarySearch()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedIndices), AnswerGraphText.Of(harness.BinarySearch()));
     }
 
     [Fact]
@@ -39,7 +40,7 @@ public sealed partial class TwoSumIIInputArrayIsSortedBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedIndices), AnswerText.Of(harness.TwoPointerSqueeze()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedIndices), AnswerGraphText.Of(harness.TwoPointerSqueeze()));
     }
 
     [Fact]
@@ -47,7 +48,7 @@ public sealed partial class TwoSumIIInputArrayIsSortedBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.BinarySearch()), AnswerText.Of(harness.TwoPointerSqueeze()));
+        Assert.Equal(AnswerGraphText.Of(harness.BinarySearch()), AnswerGraphText.Of(harness.TwoPointerSqueeze()));
     }
 
     private static TwoSumIIInputArrayIsSortedBenchmarks BuildHarness()

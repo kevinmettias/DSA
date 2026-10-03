@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,16 +24,16 @@ public sealed partial class FindFirstAndLastPositionOfElementInSortedArrayBenchm
     [Fact]
     public void Setup_SameLength_RebuildsTheSameTargetRange() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().LinearScan()),
-            AnswerText.Of(BuildHarness().LinearScan()));
+            AnswerGraphText.Of(BuildHarness().LinearScan()),
+            AnswerGraphText.Of(BuildHarness().LinearScan()));
 
     [Fact]
     public void LinearScan_TargetWithFourOccurrences_ReturnsItsClosedRun()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedTargetRange()), AnswerText.Of(harness.LinearScan()));
-        Assert.Equal(AnswerText.Of(harness.BinarySearchBounds()), AnswerText.Of(harness.LinearScan()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedTargetRange()), AnswerGraphText.Of(harness.LinearScan()));
+        Assert.Equal(AnswerGraphText.Of(harness.BinarySearchBounds()), AnswerGraphText.Of(harness.LinearScan()));
     }
 
     [Fact]
@@ -40,8 +41,8 @@ public sealed partial class FindFirstAndLastPositionOfElementInSortedArrayBenchm
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(ExpectedTargetRange()), AnswerText.Of(harness.BinarySearchBounds()));
-        Assert.Equal(AnswerText.Of(harness.LinearScan()), AnswerText.Of(harness.BinarySearchBounds()));
+        Assert.Equal(AnswerGraphText.Of(ExpectedTargetRange()), AnswerGraphText.Of(harness.BinarySearchBounds()));
+        Assert.Equal(AnswerGraphText.Of(harness.LinearScan()), AnswerGraphText.Of(harness.BinarySearchBounds()));
     }
 
     private static FindFirstAndLastPositionOfElementInSortedArrayBenchmarks BuildHarness()

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,8 +21,8 @@ public sealed partial class SmallestPalindromicRearrangementIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSamePalindrome() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CharArrayReverse()),
-            AnswerText.Of(BuildHarness().CharArrayReverse()));
+            AnswerGraphText.Of(BuildHarness().CharArrayReverse()),
+            AnswerGraphText.Of(BuildHarness().CharArrayReverse()));
 
     [Fact]
     public void CharArrayReverse_TwoHundredCharacterPalindrome_AgreesWithCharStack()
@@ -29,7 +30,7 @@ public sealed partial class SmallestPalindromicRearrangementIBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.CharArrayReverse();
 
-        Assert.Equal(AnswerText.Of(harness.CharStack()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.CharStack()), AnswerGraphText.Of(answer));
         Assert.Equal(SmallestLength, answer.Length);
         Assert.Equal(answer, Reversed(answer));
     }
@@ -40,7 +41,7 @@ public sealed partial class SmallestPalindromicRearrangementIBenchmarksTests
         var harness = BuildHarness();
         var answer = harness.CharStack();
 
-        Assert.Equal(AnswerText.Of(harness.CharArrayReverse()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.CharArrayReverse()), AnswerGraphText.Of(answer));
         Assert.Equal(SmallestLength, answer.Length);
         Assert.Equal(answer, Reversed(answer));
     }

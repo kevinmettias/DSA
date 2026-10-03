@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,8 +24,8 @@ public sealed partial class StringMatchingInAnArrayBenchmarksTests
     [Fact]
     public void Setup_SameWordCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().NaiveNestedLoop()),
-            AnswerText.Of(BuildHarness().NaiveNestedLoop()));
+            AnswerGraphText.Of(BuildHarness().NaiveNestedLoop()),
+            AnswerGraphText.Of(BuildHarness().NaiveNestedLoop()));
 
     [Fact]
     public void NaiveNestedLoop_AgreesWithKmpSubstringSearch()

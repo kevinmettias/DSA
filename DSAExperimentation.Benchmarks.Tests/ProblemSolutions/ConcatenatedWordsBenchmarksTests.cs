@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -8,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // lookup structures it feeds them from, so the same Length must rebuild the same tiled candidate,
 // the same Set and the same Trie; otherwise two published numbers were never comparable.
 //
-// AnswerText.Of, not OfUnorderedSet: the arms return a flat list of whole words, not a collection of
+// AnswerGraphText.Of, not OfUnordered: the arms return a flat list of whole words, not a collection of
 // groups, so there is no inner order for a set rendering to protect and no unfixed outer order to
 // paper over. The workload's documented shape - one long tiling of the dictionary word plus that
 // word itself - means exactly one entry is a concatenation, and it is the tile.
@@ -21,8 +22,8 @@ public sealed partial class ConcatenatedWordsBenchmarksTests
     {
         Assert.Single(BuildHarness().HashSetUnboundedScan());
         Assert.Equal(
-            AnswerText.Of(BuildHarness().HashSetUnboundedScan()),
-            AnswerText.Of(BuildHarness().HashSetUnboundedScan()));
+            AnswerGraphText.Of(BuildHarness().HashSetUnboundedScan()),
+            AnswerGraphText.Of(BuildHarness().HashSetUnboundedScan()));
     }
 
     [Fact]
@@ -30,7 +31,7 @@ public sealed partial class ConcatenatedWordsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.TriePrunedMemoized()), AnswerText.Of(harness.HashSetUnboundedScan()));
+        Assert.Equal(AnswerGraphText.Of(harness.TriePrunedMemoized()), AnswerGraphText.Of(harness.HashSetUnboundedScan()));
     }
 
     [Fact]
@@ -38,7 +39,7 @@ public sealed partial class ConcatenatedWordsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.HashSetUnboundedScan()), AnswerText.Of(harness.TriePrunedMemoized()));
+        Assert.Equal(AnswerGraphText.Of(harness.HashSetUnboundedScan()), AnswerGraphText.Of(harness.TriePrunedMemoized()));
     }
 
     private static ConcatenatedWordsBenchmarks BuildHarness()

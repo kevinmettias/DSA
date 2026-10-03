@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -52,7 +53,7 @@ public sealed partial class MaxProfitWorkloadsTests
         var (edges, score) = MaxProfitWorkloads.Build(NodeCount, Seed);
         var (repeatEdges, repeatScore) = MaxProfitWorkloads.Build(NodeCount, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
         Assert.Equal(score, repeatScore);
     }
 }

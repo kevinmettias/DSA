@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.StrategySwaps;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.StrategySwaps;
 
@@ -13,8 +14,8 @@ public sealed partial class SkewedTreeFoldBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().Recursive()),
-            AnswerText.Of(BuildHarness().Recursive()));
+            AnswerGraphText.Of(BuildHarness().Recursive()),
+            AnswerGraphText.Of(BuildHarness().Recursive()));
 
     [Fact]
     public void Recursive_AgreesWithIterative()

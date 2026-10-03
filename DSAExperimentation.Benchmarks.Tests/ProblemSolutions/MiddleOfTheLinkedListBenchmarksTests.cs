@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -24,8 +25,8 @@ public sealed partial class MiddleOfTheLinkedListBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(Values(BuildHarness().CountThenWalk())),
-            AnswerText.Of(Values(BuildHarness().CountThenWalk())));
+            AnswerGraphText.Of(Values(BuildHarness().CountThenWalk())),
+            AnswerGraphText.Of(Values(BuildHarness().CountThenWalk())));
 
     [Fact]
     public void CountThenWalk_SeededChain_AgreesWithSlowFastTwoPointer()
@@ -34,8 +35,8 @@ public sealed partial class MiddleOfTheLinkedListBenchmarksTests
 
         Assert.Equal(ExpectedTailNodeCount, Values(harness.CountThenWalk()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.SlowFastTwoPointer())),
-            AnswerText.Of(Values(harness.CountThenWalk())));
+            AnswerGraphText.Of(Values(harness.SlowFastTwoPointer())),
+            AnswerGraphText.Of(Values(harness.CountThenWalk())));
     }
 
     [Fact]
@@ -45,8 +46,8 @@ public sealed partial class MiddleOfTheLinkedListBenchmarksTests
 
         Assert.Equal(ExpectedTailNodeCount, Values(harness.SlowFastTwoPointer()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.CountThenWalk())),
-            AnswerText.Of(Values(harness.SlowFastTwoPointer())));
+            AnswerGraphText.Of(Values(harness.CountThenWalk())),
+            AnswerGraphText.Of(Values(harness.SlowFastTwoPointer())));
     }
 
     // Both arms report the middle node as that internal node type through an object, so the test reads

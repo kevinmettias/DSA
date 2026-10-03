@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,8 +24,8 @@ public sealed partial class MergeNodesInBetweenZerosBenchmarksTests
     [Fact]
     public void Setup_SameGroupCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(Values(BuildHarness().TwoPassValueBuffer())),
-            AnswerText.Of(Values(BuildHarness().TwoPassValueBuffer())));
+            AnswerGraphText.Of(Values(BuildHarness().TwoPassValueBuffer())),
+            AnswerGraphText.Of(Values(BuildHarness().TwoPassValueBuffer())));
 
     [Fact]
     public void TwoPassValueBuffer_DelimitedSeededList_AgreesWithSinglePassSum()
@@ -33,8 +34,8 @@ public sealed partial class MergeNodesInBetweenZerosBenchmarksTests
 
         Assert.Equal(ExpectedMergedNodeCount, Values(harness.TwoPassValueBuffer()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.SinglePassSum())),
-            AnswerText.Of(Values(harness.TwoPassValueBuffer())));
+            AnswerGraphText.Of(Values(harness.SinglePassSum())),
+            AnswerGraphText.Of(Values(harness.TwoPassValueBuffer())));
     }
 
     [Fact]
@@ -44,8 +45,8 @@ public sealed partial class MergeNodesInBetweenZerosBenchmarksTests
 
         Assert.Equal(ExpectedMergedNodeCount, Values(harness.SinglePassSum()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.TwoPassValueBuffer())),
-            AnswerText.Of(Values(harness.SinglePassSum())));
+            AnswerGraphText.Of(Values(harness.TwoPassValueBuffer())),
+            AnswerGraphText.Of(Values(harness.SinglePassSum())));
     }
 
     // Both arms report the merged chain as that internal node type through an object, so the test reads

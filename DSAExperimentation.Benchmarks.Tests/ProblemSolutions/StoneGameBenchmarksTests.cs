@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -18,8 +19,8 @@ public sealed partial class StoneGameBenchmarksTests
     [Fact]
     public void Setup_SamePileCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CanAliceWinByMemoizedRecursion()),
-            AnswerText.Of(BuildHarness().CanAliceWinByMemoizedRecursion()));
+            AnswerGraphText.Of(BuildHarness().CanAliceWinByMemoizedRecursion()),
+            AnswerGraphText.Of(BuildHarness().CanAliceWinByMemoizedRecursion()));
 
     [Fact]
     public void CanAliceWinByUnmemoizedRecursion_AgreesWithCanAliceWinByMemoizedRecursion()

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -54,8 +55,8 @@ public sealed partial class ShortestPathGraphsTests
     [Fact]
     public void BuildRandomConnectedGraph_SameSeed_ReturnsTheSameGraph() =>
         Assert.Equal(
-            AnswerText.Of(ShortestPathGraphs.BuildRandomConnectedGraph(NodeCount, Seed)),
-            AnswerText.Of(ShortestPathGraphs.BuildRandomConnectedGraph(NodeCount, Seed)));
+            AnswerGraphText.Of(ShortestPathGraphs.BuildRandomConnectedGraph(NodeCount, Seed)),
+            AnswerGraphText.Of(ShortestPathGraphs.BuildRandomConnectedGraph(NodeCount, Seed)));
 
     private static int ReachableCount(int[][] graph)
     {

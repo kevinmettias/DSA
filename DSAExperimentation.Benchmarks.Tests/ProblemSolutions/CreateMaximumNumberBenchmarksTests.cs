@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,8 +18,8 @@ public sealed partial class CreateMaximumNumberBenchmarksTests
     {
         Assert.Equal(SmallestLength, BuildHarness().NaiveSubsequenceScan().Length);
         Assert.Equal(
-            AnswerText.Of(BuildHarness().NaiveSubsequenceScan()),
-            AnswerText.Of(BuildHarness().NaiveSubsequenceScan()));
+            AnswerGraphText.Of(BuildHarness().NaiveSubsequenceScan()),
+            AnswerGraphText.Of(BuildHarness().NaiveSubsequenceScan()));
     }
 
     [Fact]
@@ -27,8 +28,8 @@ public sealed partial class CreateMaximumNumberBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.MonotonicStackSubsequence()),
-            AnswerText.Of(harness.NaiveSubsequenceScan()));
+            AnswerGraphText.Of(harness.MonotonicStackSubsequence()),
+            AnswerGraphText.Of(harness.NaiveSubsequenceScan()));
     }
 
     [Fact]
@@ -37,8 +38,8 @@ public sealed partial class CreateMaximumNumberBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.NaiveSubsequenceScan()),
-            AnswerText.Of(harness.MonotonicStackSubsequence()));
+            AnswerGraphText.Of(harness.NaiveSubsequenceScan()),
+            AnswerGraphText.Of(harness.MonotonicStackSubsequence()));
     }
 
     private static CreateMaximumNumberBenchmarks BuildHarness()

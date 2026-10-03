@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -25,7 +26,7 @@ public sealed partial class FillASpecialGridBenchmarksTests
         Assert.Equal(ExpectedSideLength, grid.Length);
         Assert.All(grid, row => Assert.Equal(ExpectedSideLength, row.Length));
 
-        Assert.Equal(AnswerText.Of(harness.BitQuadrantDigits()), AnswerText.Of(grid));
+        Assert.Equal(AnswerGraphText.Of(harness.BitQuadrantDigits()), AnswerGraphText.Of(grid));
     }
 
     [Fact]
@@ -37,7 +38,7 @@ public sealed partial class FillASpecialGridBenchmarksTests
         Assert.Equal(ExpectedSideLength, grid.Length);
         Assert.All(grid, row => Assert.Equal(ExpectedSideLength, row.Length));
 
-        Assert.Equal(AnswerText.Of(harness.RecursiveQuadrants()), AnswerText.Of(grid));
+        Assert.Equal(AnswerGraphText.Of(harness.RecursiveQuadrants()), AnswerGraphText.Of(grid));
     }
 
     private static FillASpecialGridBenchmarks BuildHarness() =>

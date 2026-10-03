@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -46,6 +47,6 @@ public sealed partial class SafeWalkGridWorkloadsTests
     [Fact]
     public void BuildGrid_SameSeed_ReturnsTheSameGrid() =>
         Assert.Equal(
-            AnswerText.Of(SafeWalkGridWorkloads.BuildGrid(GridSize, Seed)),
-            AnswerText.Of(SafeWalkGridWorkloads.BuildGrid(GridSize, Seed)));
+            AnswerGraphText.Of(SafeWalkGridWorkloads.BuildGrid(GridSize, Seed)),
+            AnswerGraphText.Of(SafeWalkGridWorkloads.BuildGrid(GridSize, Seed)));
 }

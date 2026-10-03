@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,8 +22,8 @@ public sealed partial class ConcatenatedDivisibilityBenchmarksTests
     {
         Assert.True(BuildHarness().Backtracking().Count is 0 or SmallestNumberCount);
         Assert.Equal(
-            AnswerText.Of(BuildHarness().Backtracking()),
-            AnswerText.Of(BuildHarness().Backtracking()));
+            AnswerGraphText.Of(BuildHarness().Backtracking()),
+            AnswerGraphText.Of(BuildHarness().Backtracking()));
     }
 
     [Fact]
@@ -30,7 +31,7 @@ public sealed partial class ConcatenatedDivisibilityBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.BitmaskMemo()), AnswerText.Of(harness.Backtracking()));
+        Assert.Equal(AnswerGraphText.Of(harness.BitmaskMemo()), AnswerGraphText.Of(harness.Backtracking()));
     }
 
     [Fact]
@@ -38,7 +39,7 @@ public sealed partial class ConcatenatedDivisibilityBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.Backtracking()), AnswerText.Of(harness.BitmaskMemo()));
+        Assert.Equal(AnswerGraphText.Of(harness.Backtracking()), AnswerGraphText.Of(harness.BitmaskMemo()));
     }
 
     private static ConcatenatedDivisibilityBenchmarks BuildHarness()

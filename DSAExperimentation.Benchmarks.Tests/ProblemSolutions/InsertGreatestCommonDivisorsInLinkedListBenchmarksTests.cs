@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -8,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // value buffer against one gcd node spliced between each original pair - so a harness whose arms
 // disagree is timing two different problems. Both arms return the resulting list's head as object
 // (the node type is internal, so a public [Benchmark] method cannot name it as a return type),
-// which is the real answer rather than a proxy, and AnswerText cannot render it: a linked node is
+// which is the real answer rather than a proxy. The expected answer is stated as plain values, so a linked node is
 // not an enumerable sequence, so each result is walked into its values first. The expected
 // sequence is derived from the fixture, not read back out of an arm: [GlobalSetup] builds the
 // values 1..Length in order, and two consecutive integers always have a greatest common divisor
@@ -60,7 +61,7 @@ public sealed partial class InsertGreatestCommonDivisorsInLinkedListBenchmarksTe
         return harness;
     }
 
-    private static string RenderedValues(object? answer) => AnswerText.Of(ValuesOf(answer));
+    private static string RenderedValues(object? answer) => AnswerGraphText.Of(ValuesOf(answer));
 
     private static int[] ValuesOf(object? answer)
     {

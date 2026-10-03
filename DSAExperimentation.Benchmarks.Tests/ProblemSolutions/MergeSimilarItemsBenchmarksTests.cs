@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -26,8 +27,8 @@ public sealed partial class MergeSimilarItemsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().LinearScan()),
-            AnswerText.Of(BuildHarness().LinearScan()));
+            AnswerGraphText.Of(BuildHarness().LinearScan()),
+            AnswerGraphText.Of(BuildHarness().LinearScan()));
 
     [Fact]
     public void LinearScan_DisjointSeededItems_AgreesWithHashMapAndMergeSort()
@@ -36,8 +37,8 @@ public sealed partial class MergeSimilarItemsBenchmarksTests
 
         Assert.Equal(ExpectedMergedItemCount, harness.LinearScan().Count);
         Assert.Equal(
-            AnswerText.Of(harness.HashMapAndMergeSort()),
-            AnswerText.Of(harness.LinearScan()));
+            AnswerGraphText.Of(harness.HashMapAndMergeSort()),
+            AnswerGraphText.Of(harness.LinearScan()));
     }
 
     [Fact]
@@ -47,8 +48,8 @@ public sealed partial class MergeSimilarItemsBenchmarksTests
 
         Assert.Equal(ExpectedMergedItemCount, harness.HashMapAndMergeSort().Count);
         Assert.Equal(
-            AnswerText.Of(harness.LinearScan()),
-            AnswerText.Of(harness.HashMapAndMergeSort()));
+            AnswerGraphText.Of(harness.LinearScan()),
+            AnswerGraphText.Of(harness.HashMapAndMergeSort()));
     }
 
     private static MergeSimilarItemsBenchmarks BuildHarness()

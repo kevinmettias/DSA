@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -48,7 +49,7 @@ public sealed partial class OverlappingSubstringGridWorkloadsTests
         var (grid, pattern) = OverlappingSubstringGridWorkloads.Build(GridSize, Seed);
         var (repeatGrid, repeatPattern) = OverlappingSubstringGridWorkloads.Build(GridSize, Seed);
 
-        Assert.Equal(AnswerText.Of(grid), AnswerText.Of(repeatGrid));
+        Assert.Equal(AnswerGraphText.Of(grid), AnswerGraphText.Of(repeatGrid));
         Assert.Equal(pattern, repeatPattern);
     }
 }

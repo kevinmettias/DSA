@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -56,8 +57,8 @@ public sealed partial class RoadAdditionQueryWorkloadsTests
     [Fact]
     public void BuildQueries_SameSeed_ReturnsTheSameQueries() =>
         Assert.Equal(
-            AnswerText.Of(RoadAdditionQueryWorkloads.BuildQueries(CityCount, ApproximateCount, Seed)),
-            AnswerText.Of(RoadAdditionQueryWorkloads.BuildQueries(CityCount, ApproximateCount, Seed)));
+            AnswerGraphText.Of(RoadAdditionQueryWorkloads.BuildQueries(CityCount, ApproximateCount, Seed)),
+            AnswerGraphText.Of(RoadAdditionQueryWorkloads.BuildQueries(CityCount, ApproximateCount, Seed)));
 
     private static bool IsNested(int[] first, int[] second) =>
         (second[0] <= first[0] && first[1] <= second[1])

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,11 +20,11 @@ public sealed partial class AddStringsBenchmarksTests
     public void Setup_SameLength_RebuildsTheSameWorkload()
     {
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CharArrayReverse()),
-            AnswerText.Of(BuildHarness().CharArrayReverse()));
+            AnswerGraphText.Of(BuildHarness().CharArrayReverse()),
+            AnswerGraphText.Of(BuildHarness().CharArrayReverse()));
         Assert.Equal(
-            AnswerText.Of(BuildHarness().StackDigits()),
-            AnswerText.Of(BuildHarness().StackDigits()));
+            AnswerGraphText.Of(BuildHarness().StackDigits()),
+            AnswerGraphText.Of(BuildHarness().StackDigits()));
     }
 
     // Adding two Length-digit operands cannot outgrow a single carry digit, so the sum is either as long as
@@ -42,7 +43,7 @@ public sealed partial class AddStringsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.StackDigits()), AnswerText.Of(harness.CharArrayReverse()));
+        Assert.Equal(AnswerGraphText.Of(harness.StackDigits()), AnswerGraphText.Of(harness.CharArrayReverse()));
     }
 
     [Fact]
@@ -50,7 +51,7 @@ public sealed partial class AddStringsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.CharArrayReverse()), AnswerText.Of(harness.StackDigits()));
+        Assert.Equal(AnswerGraphText.Of(harness.CharArrayReverse()), AnswerGraphText.Of(harness.StackDigits()));
     }
 
     private static AddStringsBenchmarks BuildHarness()

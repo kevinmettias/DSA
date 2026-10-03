@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,14 +24,14 @@ public sealed partial class ProductOfArrayExceptSelfBenchmarksTests
     [Fact]
     public void Setup_SeededNumbers_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().PrefixSuffixPass()),
-            AnswerText.Of(BuildHarness().PrefixSuffixPass()));
+            AnswerGraphText.Of(BuildHarness().PrefixSuffixPass()),
+            AnswerGraphText.Of(BuildHarness().PrefixSuffixPass()));
 
     [Fact]
     public void PrefixSuffixPass_SeededNumbers_MatchesTheIndependentlyMultipliedProducts() =>
         Assert.Equal(
-            AnswerText.Of(IndependentProductsExceptSelf(RebuildNumbers())),
-            AnswerText.Of(BuildHarness().PrefixSuffixPass()));
+            AnswerGraphText.Of(IndependentProductsExceptSelf(RebuildNumbers())),
+            AnswerGraphText.Of(BuildHarness().PrefixSuffixPass()));
 
     private static ProductOfArrayExceptSelfBenchmarks BuildHarness()
     {

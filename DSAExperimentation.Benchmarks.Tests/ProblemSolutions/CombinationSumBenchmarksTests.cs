@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -9,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the same Target must rebuild the same candidate workload; the combinations a candidate set can
 // make are exactly the ones that sum to Target, which is the shape asserted below.
 //
-// AnswerText.OfUnorderedSet, not Of: LeetCode leaves the order of the returned combination set
+// AnswerGraphText.OfUnordered, not Of: LeetCode leaves the order of the returned combination set
 // unspecified, while the order inside one combination is the ascending order the arms both build.
 public sealed partial class CombinationSumBenchmarksTests
 {
@@ -20,8 +21,8 @@ public sealed partial class CombinationSumBenchmarksTests
     {
         Assert.All(BuildHarness().SpecializedRecursive(), combination => Assert.Equal(SmallestTarget, combination.Sum()));
         Assert.Equal(
-            AnswerText.OfUnorderedSet(BuildHarness().Backtracking()),
-            AnswerText.OfUnorderedSet(BuildHarness().Backtracking()));
+            AnswerGraphText.OfUnordered(BuildHarness().Backtracking()),
+            AnswerGraphText.OfUnordered(BuildHarness().Backtracking()));
     }
 
     [Fact]
@@ -30,8 +31,8 @@ public sealed partial class CombinationSumBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.SpecializedRecursive()),
-            AnswerText.OfUnorderedSet(harness.Backtracking()));
+            AnswerGraphText.OfUnordered(harness.SpecializedRecursive()),
+            AnswerGraphText.OfUnordered(harness.Backtracking()));
     }
 
     [Fact]
@@ -40,8 +41,8 @@ public sealed partial class CombinationSumBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.Backtracking()),
-            AnswerText.OfUnorderedSet(harness.SpecializedRecursive()));
+            AnswerGraphText.OfUnordered(harness.Backtracking()),
+            AnswerGraphText.OfUnordered(harness.SpecializedRecursive()));
     }
 
     private static CombinationSumBenchmarks BuildHarness()

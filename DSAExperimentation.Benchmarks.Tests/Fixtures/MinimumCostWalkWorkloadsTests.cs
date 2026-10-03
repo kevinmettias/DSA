@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -65,7 +66,7 @@ public sealed partial class MinimumCostWalkWorkloadsTests
         var (edges, query) = MinimumCostWalkWorkloads.Build(NodeCount, QueryCount, Seed);
         var (repeatEdges, repeatQuery) = MinimumCostWalkWorkloads.Build(NodeCount, QueryCount, Seed);
 
-        Assert.Equal(AnswerText.Of(edges), AnswerText.Of(repeatEdges));
-        Assert.Equal(AnswerText.Of(query), AnswerText.Of(repeatQuery));
+        Assert.Equal(AnswerGraphText.Of(edges), AnswerGraphText.Of(repeatEdges));
+        Assert.Equal(AnswerGraphText.Of(query), AnswerGraphText.Of(repeatQuery));
     }
 }

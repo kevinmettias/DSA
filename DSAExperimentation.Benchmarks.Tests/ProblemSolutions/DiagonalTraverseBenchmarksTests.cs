@@ -1,11 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DiagonalTraverseBenchmarks (ARCHITECTURE 17.9): its two arms are competing
 // strategies for the same question - one cursor bouncing between the two directions against
 // grouping cells by diagonal and reversing every other group - so a harness whose arms disagree is
-// timing two different problems. AnswerText.Of, not OfUnorderedSet: the returned order IS the
+// timing two different problems. AnswerGraphText.Of, not OfUnordered: the returned order IS the
 // answer here, because reading the matrix in the zig-zag diagonal order is the whole question.
 // The matrix is Size x Size by construction, so the answer always holds exactly Size * Size entries.
 public sealed partial class DiagonalTraverseBenchmarksTests
@@ -20,7 +21,7 @@ public sealed partial class DiagonalTraverseBenchmarksTests
         var order = harness.DirectionToggleWalk();
 
         Assert.Equal(ExpectedDiagonalOrderLength, order.Length);
-        Assert.Equal(AnswerText.Of(order), AnswerText.Of(BuildHarness().DirectionToggleWalk()));
+        Assert.Equal(AnswerGraphText.Of(order), AnswerGraphText.Of(BuildHarness().DirectionToggleWalk()));
     }
 
     [Fact]
@@ -29,8 +30,8 @@ public sealed partial class DiagonalTraverseBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.DiagonalGroupsWithStackReversal()),
-            AnswerText.Of(harness.DirectionToggleWalk()));
+            AnswerGraphText.Of(harness.DiagonalGroupsWithStackReversal()),
+            AnswerGraphText.Of(harness.DirectionToggleWalk()));
     }
 
     [Fact]
@@ -39,8 +40,8 @@ public sealed partial class DiagonalTraverseBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.DirectionToggleWalk()),
-            AnswerText.Of(harness.DiagonalGroupsWithStackReversal()));
+            AnswerGraphText.Of(harness.DirectionToggleWalk()),
+            AnswerGraphText.Of(harness.DiagonalGroupsWithStackReversal()));
     }
 
     private static DiagonalTraverseBenchmarks BuildHarness()

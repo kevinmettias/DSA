@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -40,7 +41,7 @@ public sealed partial class NumberOfProvincesWorkloadsTests
     {
         var matrix = NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed);
 
-        Assert.Equal(AnswerText.Of(matrix), AnswerText.Of(Transpose(matrix)));
+        Assert.Equal(AnswerGraphText.Of(matrix), AnswerGraphText.Of(Transpose(matrix)));
         Assert.All(Enumerable.Range(0, CityCount), city => Assert.Equal(Connected, matrix[city][city]));
     }
 
@@ -74,8 +75,8 @@ public sealed partial class NumberOfProvincesWorkloadsTests
     [Fact]
     public void BuildAdjacencyMatrix_SameSeed_ReturnsTheSameMatrix() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed)),
-            AnswerText.Of(NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed)));
+            AnswerGraphText.Of(NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed)),
+            AnswerGraphText.Of(NumberOfProvincesWorkloads.BuildAdjacencyMatrix(CityCount, Seed)));
 
     private static int[][] Transpose(int[][] matrix) =>
     [

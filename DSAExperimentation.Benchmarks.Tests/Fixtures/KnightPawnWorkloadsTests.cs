@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -54,6 +55,6 @@ public sealed partial class KnightPawnWorkloadsTests
 
         Assert.Equal(kx, repeatKx);
         Assert.Equal(ky, repeatKy);
-        Assert.Equal(AnswerText.Of(positions), AnswerText.Of(repeatPositions));
+        Assert.Equal(AnswerGraphText.Of(positions), AnswerGraphText.Of(repeatPositions));
     }
 }

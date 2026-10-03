@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,8 +17,8 @@ public sealed partial class WordLadderIIBenchmarksTests
     [Fact]
     public void Setup_SameWordCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().MutationLayeredBfsBacktrack()),
-            AnswerText.Of(BuildHarness().MutationLayeredBfsBacktrack()));
+            AnswerGraphText.Of(BuildHarness().MutationLayeredBfsBacktrack()),
+            AnswerGraphText.Of(BuildHarness().MutationLayeredBfsBacktrack()));
 
     [Fact]
     public void MutationLayeredBfsBacktrack_AgreesWithReduceGraphBfsBacktrack()

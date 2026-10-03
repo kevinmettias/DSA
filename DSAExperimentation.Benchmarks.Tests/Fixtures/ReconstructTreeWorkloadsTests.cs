@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -44,8 +45,8 @@ public sealed partial class ReconstructTreeWorkloadsTests
     [Fact]
     public void BuildStarOfChainsPairs_Pairs_AreTheFullAncestorRelationOfTheDocumentedForest() =>
         Assert.Equal(
-            AnswerText.Of(ExpectedAncestorPairs()),
-            AnswerText.Of(ReconstructTreeWorkloads.BuildStarOfChainsPairs(NodeCount, ChainCount)));
+            AnswerGraphText.Of(ExpectedAncestorPairs()),
+            AnswerGraphText.Of(ReconstructTreeWorkloads.BuildStarOfChainsPairs(NodeCount, ChainCount)));
 
     // No pair may cross two chains: LC 1719's relation is within a chain plus the root, so a pair whose
     // ancestor is neither the root nor on the descendant's own chain is a relation the problem never

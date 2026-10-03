@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.NetworkDelayTime;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
@@ -79,20 +80,20 @@ public sealed partial class RandomWeightedGraphsTests
     [Fact]
     public void BuildEdges_AgreesWithBuildOnTheSameSeedAndDensity() =>
         Assert.Equal(
-            AnswerText.Of(Flatten(RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, Seed).Vertices)),
-            AnswerText.Of(RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
+            AnswerGraphText.Of(Flatten(RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, Seed).Vertices)),
+            AnswerGraphText.Of(RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
 
     [Fact]
     public void Build_SameSeed_ReturnsTheSameGraph() =>
         Assert.Equal(
-            AnswerText.Of(Flatten(RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, Seed).Vertices)),
-            AnswerText.Of(Flatten(RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, Seed).Vertices)));
+            AnswerGraphText.Of(Flatten(RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, Seed).Vertices)),
+            AnswerGraphText.Of(Flatten(RandomWeightedGraphs.Build(NodeCount, ExtraEdgesPerNode, Seed).Vertices)));
 
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
-            AnswerText.Of(RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
+            AnswerGraphText.Of(RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
+            AnswerGraphText.Of(RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
 
     // The graph is a record whose Edges list compares by reference, so equality between two builds is
     // read off the flattened edge list rather than off the node objects themselves.

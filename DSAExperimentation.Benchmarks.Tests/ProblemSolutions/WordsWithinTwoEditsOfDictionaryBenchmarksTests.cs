@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,15 +17,15 @@ public sealed partial class WordsWithinTwoEditsOfDictionaryBenchmarksTests
     [Fact]
     public void Setup_SameDictionarySize_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
 
     [Fact]
     public void BruteForce_AgreesWithTrieSearch()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.BruteForce()), AnswerText.Of(harness.TrieSearch()));
+        Assert.Equal(AnswerGraphText.Of(harness.BruteForce()), AnswerGraphText.Of(harness.TrieSearch()));
     }
 
     [Fact]

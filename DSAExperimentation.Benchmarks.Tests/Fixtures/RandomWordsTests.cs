@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -40,12 +41,12 @@ public sealed partial class RandomWordsTests
     [Fact]
     public void Build_SeedOverload_AgreesWithTheRandomOverloadOnTheSameSeed() =>
         Assert.Equal(
-            AnswerText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, new Random(Seed))),
-            AnswerText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, Seed)));
+            AnswerGraphText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, new Random(Seed))),
+            AnswerGraphText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, Seed)));
 
     [Fact]
     public void Build_RandomOverload_SameSeed_ReturnsTheSameWords() =>
         Assert.Equal(
-            AnswerText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, new Random(Seed))),
-            AnswerText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, new Random(Seed))));
+            AnswerGraphText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, new Random(Seed))),
+            AnswerGraphText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, new Random(Seed))));
 }

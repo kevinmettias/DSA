@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -51,6 +52,6 @@ public sealed partial class TimeWindowGraphWorkloadsTests
     [Fact]
     public void Build_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(TimeWindowGraphWorkloads.Build(NodeCount, Seed)),
-            AnswerText.Of(TimeWindowGraphWorkloads.Build(NodeCount, Seed)));
+            AnswerGraphText.Of(TimeWindowGraphWorkloads.Build(NodeCount, Seed)),
+            AnswerGraphText.Of(TimeWindowGraphWorkloads.Build(NodeCount, Seed)));
 }

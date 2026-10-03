@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,8 +18,8 @@ public sealed partial class AmbiguousCoordinatesBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().RebuildAndRescan()),
-            AnswerText.Of(BuildHarness().RebuildAndRescan()));
+            AnswerGraphText.Of(BuildHarness().RebuildAndRescan()),
+            AnswerGraphText.Of(BuildHarness().RebuildAndRescan()));
 
     [Fact]
     public void RebuildAndRescan_EightDigitRun_AgreesWithSliceAndCheckBoundary()
@@ -26,7 +27,7 @@ public sealed partial class AmbiguousCoordinatesBenchmarksTests
         var harness = BuildHarness();
 
         Assert.NotEmpty(harness.RebuildAndRescan());
-        Assert.Equal(AnswerText.Of(harness.SliceAndCheckBoundary()), AnswerText.Of(harness.RebuildAndRescan()));
+        Assert.Equal(AnswerGraphText.Of(harness.SliceAndCheckBoundary()), AnswerGraphText.Of(harness.RebuildAndRescan()));
     }
 
     [Fact]
@@ -35,7 +36,7 @@ public sealed partial class AmbiguousCoordinatesBenchmarksTests
         var harness = BuildHarness();
 
         Assert.NotEmpty(harness.SliceAndCheckBoundary());
-        Assert.Equal(AnswerText.Of(harness.RebuildAndRescan()), AnswerText.Of(harness.SliceAndCheckBoundary()));
+        Assert.Equal(AnswerGraphText.Of(harness.RebuildAndRescan()), AnswerGraphText.Of(harness.SliceAndCheckBoundary()));
     }
 
     private static AmbiguousCoordinatesBenchmarks BuildHarness()

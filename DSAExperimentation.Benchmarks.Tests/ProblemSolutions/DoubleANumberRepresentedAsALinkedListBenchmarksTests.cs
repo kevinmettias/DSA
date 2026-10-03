@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,7 +24,7 @@ public sealed partial class DoubleANumberRepresentedAsALinkedListBenchmarksTests
         var digits = DigitsOf(harness.BigIntegerConvertDoubleAndBack());
 
         Assert.InRange(digits.Length, SmallestLength, SmallestLength + DoubledDigitOverflowAllowance);
-        Assert.Equal(AnswerText.Of(digits), AnswerText.Of(DigitsOf(BuildHarness().BigIntegerConvertDoubleAndBack())));
+        Assert.Equal(AnswerGraphText.Of(digits), AnswerGraphText.Of(DigitsOf(BuildHarness().BigIntegerConvertDoubleAndBack())));
     }
 
     [Fact]
@@ -32,8 +33,8 @@ public sealed partial class DoubleANumberRepresentedAsALinkedListBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(DigitsOf(harness.StackDigitwiseDouble())),
-            AnswerText.Of(DigitsOf(harness.BigIntegerConvertDoubleAndBack())));
+            AnswerGraphText.Of(DigitsOf(harness.StackDigitwiseDouble())),
+            AnswerGraphText.Of(DigitsOf(harness.BigIntegerConvertDoubleAndBack())));
     }
 
     [Fact]
@@ -42,8 +43,8 @@ public sealed partial class DoubleANumberRepresentedAsALinkedListBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(DigitsOf(harness.BigIntegerConvertDoubleAndBack())),
-            AnswerText.Of(DigitsOf(harness.StackDigitwiseDouble())));
+            AnswerGraphText.Of(DigitsOf(harness.BigIntegerConvertDoubleAndBack())),
+            AnswerGraphText.Of(DigitsOf(harness.StackDigitwiseDouble())));
     }
 
     private static DoubleANumberRepresentedAsALinkedListBenchmarks BuildHarness()

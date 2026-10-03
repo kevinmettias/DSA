@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -70,6 +71,6 @@ public sealed partial class CopyListWithRandomPointerBenchmarksTests
     // Rendering the clone this way compares two builds without caring about node identity, which is
     // the only thing two separate clones never share.
     private static string Render(RandomLinkedListNode<int>? clone) =>
-        AnswerText.Of(Chain(clone).Select(node =>
+        AnswerGraphText.Of(Chain(clone).Select(node =>
             $"{node.Value}:{(node.Random is null ? NullRandomText : node.Random.Value.ToString())}"));
 }

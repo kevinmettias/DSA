@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.NumberOfPairsAfterIncrement;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
@@ -46,20 +47,20 @@ public sealed partial class NumberOfPairsAfterIncrementWorkloadsTests
     [Fact]
     public void BuildNums2_AtTheNums1Length_AgreesWithBuildNums1() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums1(Seed)),
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums2(Nums1Length, Seed)));
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums1(Seed)),
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums2(Nums1Length, Seed)));
 
     [Fact]
     public void BuildNums1_SameSeed_ReturnsTheSameNums() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums1(Seed)),
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums1(Seed)));
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums1(Seed)),
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums1(Seed)));
 
     [Fact]
     public void BuildNums2_SameSeed_ReturnsTheSameNums() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums2(Nums2Length, Seed)),
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums2(Nums2Length, Seed)));
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums2(Nums2Length, Seed)),
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildNums2(Nums2Length, Seed)));
 
     [Fact]
     public void BuildQueries_QueryCount_ReturnsOneQueryPerPosition() =>
@@ -93,8 +94,8 @@ public sealed partial class NumberOfPairsAfterIncrementWorkloadsTests
     [Fact]
     public void BuildQueries_SameSeed_ReturnsTheSameQueries() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildQueries(QueryCount, Nums2Length, Seed)),
-            AnswerText.Of(NumberOfPairsAfterIncrementWorkloads.BuildQueries(QueryCount, Nums2Length, Seed)));
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildQueries(QueryCount, Nums2Length, Seed)),
+            AnswerGraphText.Of(NumberOfPairsAfterIncrementWorkloads.BuildQueries(QueryCount, Nums2Length, Seed)));
 
     private static void AssertRangeAdd(PairQuery query, int nums2Length)
     {

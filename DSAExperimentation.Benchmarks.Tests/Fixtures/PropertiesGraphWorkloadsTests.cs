@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -53,8 +54,8 @@ public sealed partial class PropertiesGraphWorkloadsTests
     [Fact]
     public void BuildProperties_SameSeed_ReturnsTheSameProperties() =>
         Assert.Equal(
-            AnswerText.Of(PropertiesGraphWorkloads.BuildProperties(RowCount, ColumnCount, Seed)),
-            AnswerText.Of(PropertiesGraphWorkloads.BuildProperties(RowCount, ColumnCount, Seed)));
+            AnswerGraphText.Of(PropertiesGraphWorkloads.BuildProperties(RowCount, ColumnCount, Seed)),
+            AnswerGraphText.Of(PropertiesGraphWorkloads.BuildProperties(RowCount, ColumnCount, Seed)));
 
     private static IEnumerable<(int[] First, int[] Second)> RowPairs(int[][] properties) =>
         from first in Enumerable.Range(0, properties.Length)

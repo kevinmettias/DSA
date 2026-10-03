@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class StrangePrinterIIBenchmarksTests
     [Fact]
     public void Setup_SameColorCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().IsPrintableByKahnsTopologicalSort()),
-            AnswerText.Of(BuildHarness().IsPrintableByKahnsTopologicalSort()));
+            AnswerGraphText.Of(BuildHarness().IsPrintableByKahnsTopologicalSort()),
+            AnswerGraphText.Of(BuildHarness().IsPrintableByKahnsTopologicalSort()));
 
     [Fact]
     public void IsPrintableByNaiveRescan_AgreesWithIsPrintableByKahnsTopologicalSort()

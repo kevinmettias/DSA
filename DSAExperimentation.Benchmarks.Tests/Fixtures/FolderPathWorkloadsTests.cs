@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -45,8 +46,8 @@ public sealed partial class FolderPathWorkloadsTests
     [Fact]
     public void BuildIdenticalTopLevelFolders_SameCount_ReturnsTheSamePaths() =>
         Assert.Equal(
-            AnswerText.Of(FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount)),
-            AnswerText.Of(FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount)));
+            AnswerGraphText.Of(FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount)),
+            AnswerGraphText.Of(FolderPathWorkloads.BuildIdenticalTopLevelFolders(TopLevelCount)));
 
     private static string[] Path(int folder, params string[] nested) =>
         [TopLevelPrefix + folder, .. nested];

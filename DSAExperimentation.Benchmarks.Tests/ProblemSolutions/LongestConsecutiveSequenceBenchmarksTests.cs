@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -31,8 +32,8 @@ public sealed partial class LongestConsecutiveSequenceBenchmarksTests
         Assert.Equal(SmallestLength, nums.Length);
         Assert.All(nums, value => Assert.InRange(value, LowestFixtureValue, HighestFixtureValue));
         Assert.Equal(
-            AnswerText.Of(BuildHarness().SetRunExpansion()),
-            AnswerText.Of(BuildHarness().SetRunExpansion()));
+            AnswerGraphText.Of(BuildHarness().SetRunExpansion()),
+            AnswerGraphText.Of(BuildHarness().SetRunExpansion()));
     }
 
     [Fact]

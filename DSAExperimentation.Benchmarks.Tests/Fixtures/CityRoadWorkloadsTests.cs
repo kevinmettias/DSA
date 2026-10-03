@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -54,8 +55,8 @@ public sealed partial class CityRoadWorkloadsTests
     [Fact]
     public void BuildRoads_SameSeed_ReturnsTheSameRoads() =>
         Assert.Equal(
-            AnswerText.Of(CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, Seed)),
-            AnswerText.Of(CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, Seed)));
+            AnswerGraphText.Of(CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, Seed)),
+            AnswerGraphText.Of(CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, Seed)));
 
     private static bool IsConnectedToEarlierCity(int[] road, int city) =>
         (road[0] == city && road[1] < city) || (road[1] == city && road[0] < city);

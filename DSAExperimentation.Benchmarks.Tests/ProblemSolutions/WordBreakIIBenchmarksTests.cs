@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -17,8 +18,8 @@ public sealed partial class WordBreakIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().HashSetUnboundedScan()),
-            AnswerText.Of(BuildHarness().HashSetUnboundedScan()));
+            AnswerGraphText.Of(BuildHarness().HashSetUnboundedScan()),
+            AnswerGraphText.Of(BuildHarness().HashSetUnboundedScan()));
 
     [Fact]
     public void HashSetUnboundedScan_AgreesWithTriePrunedMemoized()

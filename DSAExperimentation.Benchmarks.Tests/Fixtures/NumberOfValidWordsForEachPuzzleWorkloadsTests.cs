@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -29,8 +30,8 @@ public sealed partial class NumberOfValidWordsForEachPuzzleWorkloadsTests
     [Fact]
     public void BuildWords_SameSeed_ReturnsTheSameWords() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildWords(WordCount, new Random(WordSeed))),
-            AnswerText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildWords(WordCount, new Random(WordSeed))));
+            AnswerGraphText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildWords(WordCount, new Random(WordSeed))),
+            AnswerGraphText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildWords(WordCount, new Random(WordSeed))));
 
     [Fact]
     public void BuildPuzzles_Count_ReturnsOnePuzzlePerPosition() =>
@@ -47,8 +48,8 @@ public sealed partial class NumberOfValidWordsForEachPuzzleWorkloadsTests
     [Fact]
     public void BuildPuzzles_SameSeed_ReturnsTheSamePuzzles() =>
         Assert.Equal(
-            AnswerText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, new Random(WordSeed))),
-            AnswerText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, new Random(WordSeed))));
+            AnswerGraphText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, new Random(WordSeed))),
+            AnswerGraphText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, new Random(WordSeed))));
 
     // The two entry kinds share one Random and `Next` consumes it once per slot, which the generator
     // names as that member's own contract: the sequence of calls IS the workload, so a caller must not
@@ -62,8 +63,8 @@ public sealed partial class NumberOfValidWordsForEachPuzzleWorkloadsTests
         NumberOfValidWordsForEachPuzzleWorkloads.BuildWords(WordCount, shared);
 
         Assert.NotEqual(
-            AnswerText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, new Random(WordSeed))),
-            AnswerText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, shared)));
+            AnswerGraphText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, new Random(WordSeed))),
+            AnswerGraphText.Of(NumberOfValidWordsForEachPuzzleWorkloads.BuildPuzzles(PuzzleCount, shared)));
     }
 
     private static void AssertDistinctLetters(string entry, int shortest, int longest)

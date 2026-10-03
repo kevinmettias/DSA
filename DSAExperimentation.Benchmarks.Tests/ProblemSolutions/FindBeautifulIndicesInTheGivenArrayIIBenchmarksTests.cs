@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -24,8 +25,8 @@ public sealed partial class FindBeautifulIndicesInTheGivenArrayIIBenchmarksTests
         Assert.Empty(BuildHarness().BruteForce());
 
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForce()),
-            AnswerText.Of(BuildHarness().BruteForce()));
+            AnswerGraphText.Of(BuildHarness().BruteForce()),
+            AnswerGraphText.Of(BuildHarness().BruteForce()));
     }
 
     [Fact]
@@ -35,7 +36,7 @@ public sealed partial class FindBeautifulIndicesInTheGivenArrayIIBenchmarksTests
 
         Assert.Empty(harness.BruteForce());
 
-        Assert.Equal(AnswerText.Of(harness.ZFunction()), AnswerText.Of(harness.BruteForce()));
+        Assert.Equal(AnswerGraphText.Of(harness.ZFunction()), AnswerGraphText.Of(harness.BruteForce()));
     }
 
     [Fact]
@@ -45,7 +46,7 @@ public sealed partial class FindBeautifulIndicesInTheGivenArrayIIBenchmarksTests
 
         Assert.Empty(harness.ZFunction());
 
-        Assert.Equal(AnswerText.Of(harness.BruteForce()), AnswerText.Of(harness.ZFunction()));
+        Assert.Equal(AnswerGraphText.Of(harness.BruteForce()), AnswerGraphText.Of(harness.ZFunction()));
     }
 
     private static FindBeautifulIndicesInTheGivenArrayIIBenchmarks BuildHarness()

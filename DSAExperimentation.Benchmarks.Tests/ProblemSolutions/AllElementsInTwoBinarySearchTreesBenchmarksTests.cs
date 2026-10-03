@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,8 +21,8 @@ public sealed partial class AllElementsInTwoBinarySearchTreesBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().CollectAllThenSort()),
-            AnswerText.Of(BuildHarness().CollectAllThenSort()));
+            AnswerGraphText.Of(BuildHarness().CollectAllThenSort()),
+            AnswerGraphText.Of(BuildHarness().CollectAllThenSort()));
 
     [Fact]
     public void CollectAllThenSort_ThreeHundredNodeTrees_AgreesWithInOrderTraversalMerge()
@@ -31,7 +32,7 @@ public sealed partial class AllElementsInTwoBinarySearchTreesBenchmarksTests
 
         Assert.Equal(ExpectedValueCount, answer.Length);
         Assert.True(IsAscending(answer));
-        Assert.Equal(AnswerText.Of(harness.InOrderTraversalMerge()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.InOrderTraversalMerge()), AnswerGraphText.Of(answer));
     }
 
     [Fact]
@@ -42,7 +43,7 @@ public sealed partial class AllElementsInTwoBinarySearchTreesBenchmarksTests
 
         Assert.Equal(ExpectedValueCount, answer.Length);
         Assert.True(IsAscending(answer));
-        Assert.Equal(AnswerText.Of(harness.CollectAllThenSort()), AnswerText.Of(answer));
+        Assert.Equal(AnswerGraphText.Of(harness.CollectAllThenSort()), AnswerGraphText.Of(answer));
     }
 
     private static AllElementsInTwoBinarySearchTreesBenchmarks BuildHarness()

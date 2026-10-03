@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -38,12 +39,12 @@ public sealed partial class PrefixSuffixPairWorkloadsTests
     [Fact]
     public void BuildWords_AgreesWithTheSharedGeneratorOnTheSameNarrowedAlphabet() =>
         Assert.Equal(
-            AnswerText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, Seed)),
-            AnswerText.Of(PrefixSuffixPairWorkloads.BuildWords(WordCount, MaxLength, Seed)));
+            AnswerGraphText.Of(RandomWords.Build(WordCount, Alphabet, MaxLength, Seed)),
+            AnswerGraphText.Of(PrefixSuffixPairWorkloads.BuildWords(WordCount, MaxLength, Seed)));
 
     [Fact]
     public void BuildWords_SameSeed_ReturnsTheSameWords() =>
         Assert.Equal(
-            AnswerText.Of(PrefixSuffixPairWorkloads.BuildWords(WordCount, MaxLength, Seed)),
-            AnswerText.Of(PrefixSuffixPairWorkloads.BuildWords(WordCount, MaxLength, Seed)));
+            AnswerGraphText.Of(PrefixSuffixPairWorkloads.BuildWords(WordCount, MaxLength, Seed)),
+            AnswerGraphText.Of(PrefixSuffixPairWorkloads.BuildWords(WordCount, MaxLength, Seed)));
 }

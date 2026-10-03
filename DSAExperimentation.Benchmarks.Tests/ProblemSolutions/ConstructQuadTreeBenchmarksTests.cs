@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -11,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // projection preserves the claim: LC 427's answer is a compression of the input grid, so two trees
 // that materialize to the same grid are the same answer to the question being timed.
 //
-// AnswerText.Of renders the materialized jagged grid element-wise; Assert.Equal on int[][] itself
+// AnswerGraphText.Of renders the materialized jagged grid element-wise; Assert.Equal on int[][] itself
 // would fall back to reference equality for the inner arrays and pass every time.
 //
 // Setup builds a grid split top/bottom into halves of 0s and 1s, so all four top-level quadrants are
@@ -27,10 +28,10 @@ public sealed partial class ConstructQuadTreeBenchmarksTests
     [Fact]
     public void Setup_SameSize_RebuildsTheSameTopBottomSplitGrid()
     {
-        Assert.Equal(AnswerText.Of(SplitGrid()), AnswerText.Of(Materialized(BuildHarness().BruteForceCellScan())));
+        Assert.Equal(AnswerGraphText.Of(SplitGrid()), AnswerGraphText.Of(Materialized(BuildHarness().BruteForceCellScan())));
         Assert.Equal(
-            AnswerText.Of(Materialized(BuildHarness().BruteForceCellScan())),
-            AnswerText.Of(Materialized(BuildHarness().BruteForceCellScan())));
+            AnswerGraphText.Of(Materialized(BuildHarness().BruteForceCellScan())),
+            AnswerGraphText.Of(Materialized(BuildHarness().BruteForceCellScan())));
     }
 
     [Fact]
@@ -39,8 +40,8 @@ public sealed partial class ConstructQuadTreeBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Materialized(harness.RowFenwickTreeQuery())),
-            AnswerText.Of(Materialized(harness.BruteForceCellScan())));
+            AnswerGraphText.Of(Materialized(harness.RowFenwickTreeQuery())),
+            AnswerGraphText.Of(Materialized(harness.BruteForceCellScan())));
     }
 
     [Fact]
@@ -49,8 +50,8 @@ public sealed partial class ConstructQuadTreeBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Materialized(harness.BruteForceCellScan())),
-            AnswerText.Of(Materialized(harness.RowFenwickTreeQuery())));
+            AnswerGraphText.Of(Materialized(harness.BruteForceCellScan())),
+            AnswerGraphText.Of(Materialized(harness.RowFenwickTreeQuery())));
     }
 
     private static int[][] SplitGrid()

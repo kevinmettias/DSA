@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -21,8 +22,8 @@ public sealed partial class DeleteTheMiddleNodeOfALinkedListBenchmarksTests
     {
         Assert.Equal(ExpectedRemainingNodeCount, Values(BuildHarness().CountThenRebuild()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(BuildHarness().CountThenRebuild())),
-            AnswerText.Of(Values(BuildHarness().CountThenRebuild())));
+            AnswerGraphText.Of(Values(BuildHarness().CountThenRebuild())),
+            AnswerGraphText.Of(Values(BuildHarness().CountThenRebuild())));
     }
 
     [Fact]
@@ -32,8 +33,8 @@ public sealed partial class DeleteTheMiddleNodeOfALinkedListBenchmarksTests
 
         Assert.Equal(ExpectedRemainingNodeCount, Values(harness.CountThenRebuild()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.SlowFastPointers())),
-            AnswerText.Of(Values(harness.CountThenRebuild())));
+            AnswerGraphText.Of(Values(harness.SlowFastPointers())),
+            AnswerGraphText.Of(Values(harness.CountThenRebuild())));
     }
 
     [Fact]
@@ -43,8 +44,8 @@ public sealed partial class DeleteTheMiddleNodeOfALinkedListBenchmarksTests
 
         Assert.Equal(ExpectedRemainingNodeCount, Values(harness.SlowFastPointers()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.CountThenRebuild())),
-            AnswerText.Of(Values(harness.SlowFastPointers())));
+            AnswerGraphText.Of(Values(harness.CountThenRebuild())),
+            AnswerGraphText.Of(Values(harness.SlowFastPointers())));
     }
 
     // Both arms report the surviving chain as that internal node type through an object, so the test

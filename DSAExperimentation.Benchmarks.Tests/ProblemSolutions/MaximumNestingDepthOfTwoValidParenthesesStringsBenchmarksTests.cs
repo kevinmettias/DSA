@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -8,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Stack<char> walk - so a harness whose arms disagree is timing two different problems.
 //
 // Each arm answers with one assignment per character of the sequence, which is part of this
-// answer: the value at index i belongs to character i, so AnswerText.Of and not OfUnorderedSet is
+// answer: the value at index i belongs to character i, so AnswerGraphText.Of and not OfUnordered is
 // the rendering that keeps each assignment scored against its own position.
 public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarksTests
 {
@@ -25,8 +26,8 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsBench
         // seeded sequence and split it identically.
         Assert.Equal(SmallestLength, first.RecomputeDepthPerPosition().Length);
         Assert.Equal(
-            AnswerText.Of(first.StackTrackedSinglePass()),
-            AnswerText.Of(second.StackTrackedSinglePass()));
+            AnswerGraphText.Of(first.StackTrackedSinglePass()),
+            AnswerGraphText.Of(second.StackTrackedSinglePass()));
     }
 
     [Fact]
@@ -35,8 +36,8 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsBench
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.StackTrackedSinglePass()),
-            AnswerText.Of(harness.RecomputeDepthPerPosition()));
+            AnswerGraphText.Of(harness.StackTrackedSinglePass()),
+            AnswerGraphText.Of(harness.RecomputeDepthPerPosition()));
     }
 
     [Fact]
@@ -45,8 +46,8 @@ public sealed partial class MaximumNestingDepthOfTwoValidParenthesesStringsBench
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.RecomputeDepthPerPosition()),
-            AnswerText.Of(harness.StackTrackedSinglePass()));
+            AnswerGraphText.Of(harness.RecomputeDepthPerPosition()),
+            AnswerGraphText.Of(harness.StackTrackedSinglePass()));
     }
 
     private static MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks BuildHarness()

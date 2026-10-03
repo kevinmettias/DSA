@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,8 +7,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // MaximumGeneticDifferenceQuerySolution's competing strategies for one question - the naive
 // per-query ancestor climb against one offline bit-trie DFS - so a harness whose arms disagree is
 // timing two different problems. Each arm answers one value per query in the queries' original
-// order, which is part of the answer: value i belongs to query i, so AnswerText.Of and not
-// OfUnorderedSet is the rendering that keeps each answer scored against its own query.
+// order, which is part of the answer: value i belongs to query i, so AnswerGraphText.Of and not
+// OfUnordered is the rendering that keeps each answer scored against its own query.
 public sealed partial class MaximumGeneticDifferenceQueryBenchmarksTests
 {
     private const int SmallestNodeCount = 200;
@@ -22,7 +23,7 @@ public sealed partial class MaximumGeneticDifferenceQueryBenchmarksTests
         // through the answers it produces: the same NodeCount must draw the same seeded query
         // list over the same chain parent[] and answer it identically.
         Assert.Equal(SmallestNodeCount, first.NaiveAncestorWalk().Length);
-        Assert.Equal(AnswerText.Of(first.BitTrieOfflineDfs()), AnswerText.Of(second.BitTrieOfflineDfs()));
+        Assert.Equal(AnswerGraphText.Of(first.BitTrieOfflineDfs()), AnswerGraphText.Of(second.BitTrieOfflineDfs()));
     }
 
     [Fact]
@@ -30,7 +31,7 @@ public sealed partial class MaximumGeneticDifferenceQueryBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.BitTrieOfflineDfs()), AnswerText.Of(harness.NaiveAncestorWalk()));
+        Assert.Equal(AnswerGraphText.Of(harness.BitTrieOfflineDfs()), AnswerGraphText.Of(harness.NaiveAncestorWalk()));
     }
 
     [Fact]
@@ -38,7 +39,7 @@ public sealed partial class MaximumGeneticDifferenceQueryBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.NaiveAncestorWalk()), AnswerText.Of(harness.BitTrieOfflineDfs()));
+        Assert.Equal(AnswerGraphText.Of(harness.NaiveAncestorWalk()), AnswerGraphText.Of(harness.BitTrieOfflineDfs()));
     }
 
     private static MaximumGeneticDifferenceQueryBenchmarks BuildHarness()

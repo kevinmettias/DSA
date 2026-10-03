@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -24,8 +25,8 @@ public sealed partial class CyclicallyRotatingAGridBenchmarksTests
             Enumerable.Range(0, SmallestSize * SmallestSize),
             rotated.SelectMany(row => row).Order());
         Assert.Equal(
-            AnswerText.Of(BuildHarness().StepwiseQueue()),
-            AnswerText.Of(BuildHarness().StepwiseQueue()));
+            AnswerGraphText.Of(BuildHarness().StepwiseQueue()),
+            AnswerGraphText.Of(BuildHarness().StepwiseQueue()));
     }
 
     [Fact]
@@ -33,7 +34,7 @@ public sealed partial class CyclicallyRotatingAGridBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.DequeRings()), AnswerText.Of(harness.StepwiseQueue()));
+        Assert.Equal(AnswerGraphText.Of(harness.DequeRings()), AnswerGraphText.Of(harness.StepwiseQueue()));
     }
 
     [Fact]
@@ -41,7 +42,7 @@ public sealed partial class CyclicallyRotatingAGridBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.StepwiseQueue()), AnswerText.Of(harness.DequeRings()));
+        Assert.Equal(AnswerGraphText.Of(harness.StepwiseQueue()), AnswerGraphText.Of(harness.DequeRings()));
     }
 
     private static CyclicallyRotatingAGridBenchmarks BuildHarness()

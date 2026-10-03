@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -26,6 +27,6 @@ public sealed partial class PolygonTriangulationWorkloadsTests
     [Fact]
     public void BuildVertexWeights_SameSeed_ReturnsTheSameWeights() =>
         Assert.Equal(
-            AnswerText.Of(PolygonTriangulationWorkloads.BuildVertexWeights(VertexCount, Seed)),
-            AnswerText.Of(PolygonTriangulationWorkloads.BuildVertexWeights(VertexCount, Seed)));
+            AnswerGraphText.Of(PolygonTriangulationWorkloads.BuildVertexWeights(VertexCount, Seed)),
+            AnswerGraphText.Of(PolygonTriangulationWorkloads.BuildVertexWeights(VertexCount, Seed)));
 }

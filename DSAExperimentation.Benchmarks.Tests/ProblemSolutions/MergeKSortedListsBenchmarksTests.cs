@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -28,8 +29,8 @@ public sealed partial class MergeKSortedListsBenchmarksTests
     [Fact]
     public void Setup_SameListCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(Values(BuildHarness().FlattenSort())),
-            AnswerText.Of(Values(BuildHarness().FlattenSort())));
+            AnswerGraphText.Of(Values(BuildHarness().FlattenSort())),
+            AnswerGraphText.Of(Values(BuildHarness().FlattenSort())));
 
     [Fact]
     public void FlattenSort_TiledValueLists_AgreesWithMergeByHeap()
@@ -37,11 +38,11 @@ public sealed partial class MergeKSortedListsBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
-            AnswerText.Of(Values(harness.FlattenSort())));
+            AnswerGraphText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
+            AnswerGraphText.Of(Values(harness.FlattenSort())));
         Assert.Equal(
-            AnswerText.Of(Values(harness.MergeByHeap())),
-            AnswerText.Of(Values(harness.FlattenSort())));
+            AnswerGraphText.Of(Values(harness.MergeByHeap())),
+            AnswerGraphText.Of(Values(harness.FlattenSort())));
     }
 
     [Fact]
@@ -50,11 +51,11 @@ public sealed partial class MergeKSortedListsBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
-            AnswerText.Of(Values(harness.MergeByHeap())));
+            AnswerGraphText.Of(Enumerable.Range(0, ExpectedMergedValueCount)),
+            AnswerGraphText.Of(Values(harness.MergeByHeap())));
         Assert.Equal(
-            AnswerText.Of(Values(harness.FlattenSort())),
-            AnswerText.Of(Values(harness.MergeByHeap())));
+            AnswerGraphText.Of(Values(harness.FlattenSort())),
+            AnswerGraphText.Of(Values(harness.MergeByHeap())));
     }
 
     // Both arms report the merged chain as that internal node type through an object, so the test reads

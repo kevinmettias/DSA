@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -16,8 +17,8 @@ public sealed partial class BasicCalculatorIVBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().DictionaryPolynomial()),
-            AnswerText.Of(BuildHarness().DictionaryPolynomial()));
+            AnswerGraphText.Of(BuildHarness().DictionaryPolynomial()),
+            AnswerGraphText.Of(BuildHarness().DictionaryPolynomial()));
 
     [Fact]
     public void DictionaryPolynomial_TwoHundredVariableSum_AgreesWithHashMapMergeSort()
@@ -26,7 +27,7 @@ public sealed partial class BasicCalculatorIVBenchmarksTests
         var terms = harness.DictionaryPolynomial();
 
         Assert.Equal(SmallestLength, terms.Count);
-        Assert.Equal(AnswerText.Of(harness.HashMapMergeSort()), AnswerText.Of(terms));
+        Assert.Equal(AnswerGraphText.Of(harness.HashMapMergeSort()), AnswerGraphText.Of(terms));
     }
 
     [Fact]
@@ -36,7 +37,7 @@ public sealed partial class BasicCalculatorIVBenchmarksTests
         var terms = harness.HashMapMergeSort();
 
         Assert.Equal(SmallestLength, terms.Count);
-        Assert.Equal(AnswerText.Of(harness.DictionaryPolynomial()), AnswerText.Of(terms));
+        Assert.Equal(AnswerGraphText.Of(harness.DictionaryPolynomial()), AnswerGraphText.Of(terms));
     }
 
     private static BasicCalculatorIVBenchmarks BuildHarness()

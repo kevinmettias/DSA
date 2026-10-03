@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -19,8 +20,8 @@ public sealed partial class StatisticsFromALargeSampleBenchmarksTests
     [Fact]
     public void Setup_SameAverageCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().ExpandAndIndex()),
-            AnswerText.Of(BuildHarness().ExpandAndIndex()));
+            AnswerGraphText.Of(BuildHarness().ExpandAndIndex()),
+            AnswerGraphText.Of(BuildHarness().ExpandAndIndex()));
 
     [Fact]
     public void ExpandAndIndex_AgreesWithCumulativeSumBinarySearch()

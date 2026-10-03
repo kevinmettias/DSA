@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -20,8 +21,8 @@ public sealed partial class CountVisitedNodesInADirectedGraphBenchmarksTests
     {
         Assert.Equal(EveryStartVisitsEveryNode(SmallestNodeCount), BuildHarness().PerStartWalk());
         Assert.Equal(
-            AnswerText.Of(BuildHarness().PerStartWalk()),
-            AnswerText.Of(BuildHarness().PerStartWalk()));
+            AnswerGraphText.Of(BuildHarness().PerStartWalk()),
+            AnswerGraphText.Of(BuildHarness().PerStartWalk()));
     }
 
     [Fact]
@@ -29,7 +30,7 @@ public sealed partial class CountVisitedNodesInADirectedGraphBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.SccPlusReverseBfs()), AnswerText.Of(harness.PerStartWalk()));
+        Assert.Equal(AnswerGraphText.Of(harness.SccPlusReverseBfs()), AnswerGraphText.Of(harness.PerStartWalk()));
     }
 
     [Fact]
@@ -37,10 +38,10 @@ public sealed partial class CountVisitedNodesInADirectedGraphBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.PerStartWalk()), AnswerText.Of(harness.SccPlusReverseBfs()));
+        Assert.Equal(AnswerGraphText.Of(harness.PerStartWalk()), AnswerGraphText.Of(harness.SccPlusReverseBfs()));
     }
 
-    // AnswerText.Of rather than OfUnorderedSet: both arms report one count per start node, so a
+    // AnswerGraphText.Of rather than OfUnordered: both arms report one count per start node, so a
     // value's position is the node it belongs to, not an arbitrary outer order.
     private static CountVisitedNodesInADirectedGraphBenchmarks BuildHarness()
     {

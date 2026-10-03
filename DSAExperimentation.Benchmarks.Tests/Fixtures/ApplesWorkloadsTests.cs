@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -53,7 +54,7 @@ public sealed partial class ApplesWorkloadsTests
         var (repeatPrices, repeatRoads) = ApplesWorkloads.Build(ShopCount, ExtraRoadsPerShop, Seed);
 
         Assert.Equal(prices, repeatPrices);
-        Assert.Equal(AnswerText.Of(roads), AnswerText.Of(repeatRoads));
+        Assert.Equal(AnswerGraphText.Of(roads), AnswerGraphText.Of(repeatRoads));
     }
 
     private static bool IsRoadToEarlierShop(int[] road, int shop) =>

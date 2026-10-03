@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -51,6 +52,6 @@ public sealed partial class FindEdgesInShortestPathsWorkloadsTests
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameEdges() =>
         Assert.Equal(
-            AnswerText.Of(FindEdgesInShortestPathsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
-            AnswerText.Of(FindEdgesInShortestPathsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
+            AnswerGraphText.Of(FindEdgesInShortestPathsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)),
+            AnswerGraphText.Of(FindEdgesInShortestPathsWorkloads.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed)));
 }

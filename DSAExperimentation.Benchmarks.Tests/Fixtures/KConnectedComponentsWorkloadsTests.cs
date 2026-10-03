@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -68,8 +69,8 @@ public sealed partial class KConnectedComponentsWorkloadsTests
     [Fact]
     public void BuildEdges_SameSeed_ReturnsTheSameGraph() =>
         Assert.Equal(
-            AnswerText.Of(KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed)),
-            AnswerText.Of(KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed)));
+            AnswerGraphText.Of(KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed)),
+            AnswerGraphText.Of(KConnectedComponentsWorkloads.BuildEdges(NodeCount, Seed)));
 
     private static (int Low, int High) Endpoints(int[] edge) =>
         edge[0] < edge[1] ? (edge[0], edge[1]) : (edge[1], edge[0]);

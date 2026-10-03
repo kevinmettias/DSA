@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -31,8 +32,8 @@ public sealed partial class FindAllPeopleWithSecretBenchmarksTests
         Assert.DoesNotContain(UnreachableChainTail, knowers);
 
         Assert.Equal(
-            AnswerText.Of(BuildHarness().RepeatedRelaxation()),
-            AnswerText.Of(BuildHarness().RepeatedRelaxation()));
+            AnswerGraphText.Of(BuildHarness().RepeatedRelaxation()),
+            AnswerGraphText.Of(BuildHarness().RepeatedRelaxation()));
     }
 
     [Fact]
@@ -41,8 +42,8 @@ public sealed partial class FindAllPeopleWithSecretBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.RootMergedWithKeyedDisjointSet()),
-            AnswerText.Of(harness.RepeatedRelaxation()));
+            AnswerGraphText.Of(harness.RootMergedWithKeyedDisjointSet()),
+            AnswerGraphText.Of(harness.RepeatedRelaxation()));
     }
 
     [Fact]
@@ -51,8 +52,8 @@ public sealed partial class FindAllPeopleWithSecretBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.RepeatedRelaxation()),
-            AnswerText.Of(harness.RootMergedWithKeyedDisjointSet()));
+            AnswerGraphText.Of(harness.RepeatedRelaxation()),
+            AnswerGraphText.Of(harness.RootMergedWithKeyedDisjointSet()));
     }
 
     private static FindAllPeopleWithSecretBenchmarks BuildHarness()

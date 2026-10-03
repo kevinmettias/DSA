@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -28,8 +29,8 @@ public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse())),
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayEvenLengthGroupReverse())));
 
     [Fact]
     public void ArrayEvenLengthGroupReverse_GrowingGroups_AgreesWithTheLinkedListPointerReversal()
@@ -39,8 +40,8 @@ public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
 
         Assert.Equal(ExpectedEvenLengthRunsReversed(SmallestLength), ValuesOf(reversed));
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.LinkedListEvenLengthGroupReverse())),
-            AnswerText.Of(ValuesOf(reversed)));
+            AnswerGraphText.Of(ValuesOf(harness.LinkedListEvenLengthGroupReverse())),
+            AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
     [Fact]
@@ -51,8 +52,8 @@ public sealed partial class ReverseNodesInEvenLengthGroupsBenchmarksTests
 
         Assert.Equal(ExpectedEvenLengthRunsReversed(SmallestLength), ValuesOf(reversed));
         Assert.Equal(
-            AnswerText.Of(ValuesOf(harness.ArrayEvenLengthGroupReverse())),
-            AnswerText.Of(ValuesOf(reversed)));
+            AnswerGraphText.Of(ValuesOf(harness.ArrayEvenLengthGroupReverse())),
+            AnswerGraphText.Of(ValuesOf(reversed)));
     }
 
     private static int[] ValuesOf(object? head)

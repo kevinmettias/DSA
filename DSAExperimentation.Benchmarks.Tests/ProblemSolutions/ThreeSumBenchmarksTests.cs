@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -23,8 +24,8 @@ public sealed partial class ThreeSumBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().MergeSortTwoPointers()),
-            AnswerText.Of(BuildHarness().MergeSortTwoPointers()));
+            AnswerGraphText.Of(BuildHarness().MergeSortTwoPointers()),
+            AnswerGraphText.Of(BuildHarness().MergeSortTwoPointers()));
 
     [Fact]
     public void BruteForce_SmallestLength_AgreesWithMergeSortTwoPointers()
@@ -32,8 +33,8 @@ public sealed partial class ThreeSumBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.MergeSortTwoPointers()),
-            AnswerText.OfUnorderedSet(harness.BruteForce()));
+            AnswerGraphText.OfUnordered(harness.MergeSortTwoPointers()),
+            AnswerGraphText.OfUnordered(harness.BruteForce()));
     }
 
     [Fact]
@@ -42,8 +43,8 @@ public sealed partial class ThreeSumBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.BruteForce()),
-            AnswerText.OfUnorderedSet(harness.MergeSortTwoPointers()));
+            AnswerGraphText.OfUnordered(harness.BruteForce()),
+            AnswerGraphText.OfUnordered(harness.MergeSortTwoPointers()));
     }
 
     private static ThreeSumBenchmarks BuildHarness()

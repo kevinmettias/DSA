@@ -1,6 +1,7 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RecoverBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -34,8 +35,8 @@ public sealed partial class RecoverBinarySearchTreeBenchmarksTests
         BuildHarness().ManualRecursiveScan();
 
         Assert.Equal(
-            AnswerText.Of(CorruptedInOrder(SmallestSize)),
-            AnswerText.Of(InOrderValues(RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(SmallestSize))));
+            AnswerGraphText.Of(CorruptedInOrder(SmallestSize)),
+            AnswerGraphText.Of(InOrderValues(RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(SmallestSize))));
     }
 
     [Fact]
@@ -49,8 +50,8 @@ public sealed partial class RecoverBinarySearchTreeBenchmarksTests
         harness.IterationSetup();
 
         Assert.Equal(
-            AnswerText.Of(CorruptedInOrder(SmallestSize)),
-            AnswerText.Of(InOrderValues(RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(SmallestSize))));
+            AnswerGraphText.Of(CorruptedInOrder(SmallestSize)),
+            AnswerGraphText.Of(InOrderValues(RecoverBinarySearchTreeWorkloads.BuildCorruptedBst(SmallestSize))));
     }
 
     [Fact]
@@ -62,7 +63,7 @@ public sealed partial class RecoverBinarySearchTreeBenchmarksTests
 
         RecoverBinarySearchTreeSolution.RecoverByManualRecursiveScan(tree);
 
-        Assert.Equal(AnswerText.Of(SortedValues(SmallestSize)), AnswerText.Of(InOrderValues(tree)));
+        Assert.Equal(AnswerGraphText.Of(SortedValues(SmallestSize)), AnswerGraphText.Of(InOrderValues(tree)));
     }
 
     [Fact]
@@ -74,7 +75,7 @@ public sealed partial class RecoverBinarySearchTreeBenchmarksTests
 
         RecoverBinarySearchTreeSolution.RecoverByInOrderHooks(tree);
 
-        Assert.Equal(AnswerText.Of(SortedValues(SmallestSize)), AnswerText.Of(InOrderValues(tree)));
+        Assert.Equal(AnswerGraphText.Of(SortedValues(SmallestSize)), AnswerGraphText.Of(InOrderValues(tree)));
     }
 
     private static int[] SortedValues(int size) => [.. Enumerable.Range(0, size)];

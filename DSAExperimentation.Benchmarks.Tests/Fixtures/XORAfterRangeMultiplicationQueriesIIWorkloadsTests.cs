@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -57,8 +58,8 @@ public sealed partial class XORAfterRangeMultiplicationQueriesIIWorkloadsTests
     [Fact]
     public void Build_SameSeed_ReturnsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NodeCount, QueryCount, Seed)),
-            AnswerText.Of(XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NodeCount, QueryCount, Seed)));
+            AnswerGraphText.Of(XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NodeCount, QueryCount, Seed)),
+            AnswerGraphText.Of(XORAfterRangeMultiplicationQueriesIIWorkloads.Build(NodeCount, QueryCount, Seed)));
 
     private static int SmallStrideCeiling => Math.Max(1, (int)Math.Sqrt(NodeCount));
 }

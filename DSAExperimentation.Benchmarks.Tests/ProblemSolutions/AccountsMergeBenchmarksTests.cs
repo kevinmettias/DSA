@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -13,8 +14,8 @@ public sealed partial class AccountsMergeBenchmarksTests
     [Fact]
     public void Setup_SameAccountCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().PairwiseEmailOverlapScan()),
-            AnswerText.Of(BuildHarness().PairwiseEmailOverlapScan()));
+            AnswerGraphText.Of(BuildHarness().PairwiseEmailOverlapScan()),
+            AnswerGraphText.Of(BuildHarness().PairwiseEmailOverlapScan()));
 
     [Fact]
     public void PairwiseEmailOverlapScan_AgreesWithUnionFindByEmail()
@@ -22,8 +23,8 @@ public sealed partial class AccountsMergeBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.UnionFindByEmail()),
-            AnswerText.OfUnorderedSet(harness.PairwiseEmailOverlapScan()));
+            AnswerGraphText.OfUnordered(harness.UnionFindByEmail()),
+            AnswerGraphText.OfUnordered(harness.PairwiseEmailOverlapScan()));
     }
 
     private static AccountsMergeBenchmarks BuildHarness()

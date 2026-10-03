@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -25,8 +26,8 @@ public sealed partial class DailyTemperaturesBenchmarksTests
         Assert.All(waitDays, wait => Assert.InRange(wait, ExpectedFinalWaitDays, SmallestLength - 1));
         Assert.Equal(ExpectedFinalWaitDays, waitDays[^1]);
         Assert.Equal(
-            AnswerText.Of(BuildHarness().BruteForceScan()),
-            AnswerText.Of(BuildHarness().BruteForceScan()));
+            AnswerGraphText.Of(BuildHarness().BruteForceScan()),
+            AnswerGraphText.Of(BuildHarness().BruteForceScan()));
     }
 
     [Fact]
@@ -35,8 +36,8 @@ public sealed partial class DailyTemperaturesBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.MonotonicStackSweep()),
-            AnswerText.Of(harness.BruteForceScan()));
+            AnswerGraphText.Of(harness.MonotonicStackSweep()),
+            AnswerGraphText.Of(harness.BruteForceScan()));
     }
 
     [Fact]
@@ -45,8 +46,8 @@ public sealed partial class DailyTemperaturesBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.BruteForceScan()),
-            AnswerText.Of(harness.MonotonicStackSweep()));
+            AnswerGraphText.Of(harness.BruteForceScan()),
+            AnswerGraphText.Of(harness.MonotonicStackSweep()));
     }
 
     private static DailyTemperaturesBenchmarks BuildHarness()

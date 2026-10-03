@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // repo's backtracking combinator with the duplicate-skipping candidate rule - so there is no second
 // strategy to reconcile it against and the assertion has to come from the workload instead. The arm
 // returns the multiset power set as an outer list whose order LeetCode 90 never fixes, which is the
-// one family OfUnorderedSet exists for; within each subset both the arm and the oracle below emit the
+// one family OfUnordered exists for; within each subset both the arm and the oracle below emit the
 // values ascending, so that inner order stays checked.
 //
 // The oracle is derived from what [GlobalSetup] lays down rather than read back out of the arm: Setup
@@ -23,14 +24,14 @@ public sealed partial class SubsetsIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(BuildHarness().BacktrackSkipDuplicates()),
-            AnswerText.OfUnorderedSet(BuildHarness().BacktrackSkipDuplicates()));
+            AnswerGraphText.OfUnordered(BuildHarness().BacktrackSkipDuplicates()),
+            AnswerGraphText.OfUnordered(BuildHarness().BacktrackSkipDuplicates()));
 
     [Fact]
     public void BacktrackSkipDuplicates_DuplicatePairs_ReturnsThePowerSetOfTheMultiset() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(ExpectedMultisetPowerSet()),
-            AnswerText.OfUnorderedSet(BuildHarness().BacktrackSkipDuplicates()));
+            AnswerGraphText.OfUnordered(ExpectedMultisetPowerSet()),
+            AnswerGraphText.OfUnordered(BuildHarness().BacktrackSkipDuplicates()));
 
     // Mirrors [GlobalSetup]'s own expression: DuplicateGroupSize copies of each value, in order.
     private static int[] WorkloadValues() =>
@@ -59,7 +60,7 @@ public sealed partial class SubsetsIIBenchmarksTests
 
             subset.Sort();
 
-            if (seen.Add(AnswerText.Of(subset)))
+            if (seen.Add(AnswerGraphText.Of(subset)))
             {
                 subsets.Add(subset);
             }

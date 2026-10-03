@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -8,8 +9,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // harness whose arms disagree is reading two different trees: both must return the same view.
 // Fixtures.BinaryTrees.Balanced makes the answer decisive: node values are their heap indices, so
 // level d holds indices [2^d - 1, 2^(d+1) - 2] and the right side view is the last index on each
-// level, clipped to the node count when the bottom level is partial. AnswerText.Of, not
-// OfUnorderedSet: one value per level with the levels in order is what a right side view is.
+// level, clipped to the node count when the bottom level is partial. AnswerGraphText.Of, not
+// OfUnordered: one value per level with the levels in order is what a right side view is.
 public sealed partial class BinaryTreeRightSideViewBenchmarksTests
 {
     private const int SmallestNodeCount = 255;
@@ -17,20 +18,20 @@ public sealed partial class BinaryTreeRightSideViewBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().LevelGroupedTraversal()),
-            AnswerText.Of(BuildHarness().LevelGroupedTraversal()));
+            AnswerGraphText.Of(BuildHarness().LevelGroupedTraversal()),
+            AnswerGraphText.Of(BuildHarness().LevelGroupedTraversal()));
 
     [Fact]
     public void LevelGroupedTraversal_CompleteTreeWithFullLevels_ReturnsTheRightmostIndexPerLevel() =>
         Assert.Equal(
-            AnswerText.Of(ExpectedRightSideView(SmallestNodeCount)),
-            AnswerText.Of(BuildHarness().LevelGroupedTraversal()));
+            AnswerGraphText.Of(ExpectedRightSideView(SmallestNodeCount)),
+            AnswerGraphText.Of(BuildHarness().LevelGroupedTraversal()));
 
     [Fact]
     public void DepthFirstRightFirst_CompleteTreeWithFullLevels_ReturnsTheRightmostIndexPerLevel() =>
         Assert.Equal(
-            AnswerText.Of(ExpectedRightSideView(SmallestNodeCount)),
-            AnswerText.Of(BuildHarness().DepthFirstRightFirst()));
+            AnswerGraphText.Of(ExpectedRightSideView(SmallestNodeCount)),
+            AnswerGraphText.Of(BuildHarness().DepthFirstRightFirst()));
 
     [Fact]
     public void DepthFirstRightFirst_AgreesWithLevelGroupedTraversal()
@@ -38,8 +39,8 @@ public sealed partial class BinaryTreeRightSideViewBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(harness.LevelGroupedTraversal()),
-            AnswerText.Of(harness.DepthFirstRightFirst()));
+            AnswerGraphText.Of(harness.LevelGroupedTraversal()),
+            AnswerGraphText.Of(harness.DepthFirstRightFirst()));
     }
 
     private static BinaryTreeRightSideViewBenchmarks BuildHarness()

@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -18,8 +19,8 @@ public sealed partial class SortAnArrayBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().InsertionSort()),
-            AnswerText.Of(BuildHarness().InsertionSort()));
+            AnswerGraphText.Of(BuildHarness().InsertionSort()),
+            AnswerGraphText.Of(BuildHarness().InsertionSort()));
 
     [Fact]
     public void InsertionSort_TwoHundredValues_AgreesWithMergeSortAscending()
@@ -27,7 +28,7 @@ public sealed partial class SortAnArrayBenchmarksTests
         var harness = BuildHarness();
 
         Assert.True(IsAscending(harness.InsertionSort()));
-        Assert.Equal(AnswerText.Of(harness.MergeSortAscending()), AnswerText.Of(harness.InsertionSort()));
+        Assert.Equal(AnswerGraphText.Of(harness.MergeSortAscending()), AnswerGraphText.Of(harness.InsertionSort()));
     }
 
     [Fact]
@@ -36,7 +37,7 @@ public sealed partial class SortAnArrayBenchmarksTests
         var harness = BuildHarness();
 
         Assert.True(IsAscending(harness.MergeSortAscending()));
-        Assert.Equal(AnswerText.Of(harness.InsertionSort()), AnswerText.Of(harness.MergeSortAscending()));
+        Assert.Equal(AnswerGraphText.Of(harness.InsertionSort()), AnswerGraphText.Of(harness.MergeSortAscending()));
     }
 
     private static SortAnArrayBenchmarks BuildHarness()

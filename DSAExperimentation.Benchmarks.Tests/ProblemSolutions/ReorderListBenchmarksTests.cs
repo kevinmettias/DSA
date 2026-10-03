@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -9,8 +10,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // chain L0 -> ... -> Ln-1 as L0 -> Ln-1 -> L1 -> Ln-2 -> ... has exactly one answer for the sequential
 // values Setup builds, and the oracle below derives that answer from the position pattern alone, never
 // from anything the arm produced. The arm returns the head as object (the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type, CS0050), which AnswerText cannot render -
-// a linked node is not an enumerable sequence - so the result is walked into its values first.
+// public [Benchmark] method cannot name it as a return type, CS0050); the oracle states the answer as
+// plain values, so the result is walked into its values first.
 public sealed partial class ReorderListBenchmarksTests
 {
     private const int SmallestLength = 1_000;
@@ -18,8 +19,8 @@ public sealed partial class ReorderListBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ReverseAndMergeInPlace())),
-            AnswerText.Of(ValuesOf(BuildHarness().ReverseAndMergeInPlace())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ReverseAndMergeInPlace())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ReverseAndMergeInPlace())));
 
     [Fact]
     public void ReverseAndMergeInPlace_SequentialValues_WeavesTheChainEndsInward()
@@ -27,8 +28,8 @@ public sealed partial class ReorderListBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.Of(EndsInwardOracle()),
-            AnswerText.Of(ValuesOf(harness.ReverseAndMergeInPlace())));
+            AnswerGraphText.Of(EndsInwardOracle()),
+            AnswerGraphText.Of(ValuesOf(harness.ReverseAndMergeInPlace())));
     }
 
     private static ReorderListBenchmarks BuildHarness()

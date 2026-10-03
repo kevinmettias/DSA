@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -36,8 +37,8 @@ public sealed partial class ItineraryWorkloadsTests
     [Fact]
     public void BuildTickets_SameSeed_ReturnsTheSameTickets() =>
         Assert.Equal(
-            AnswerText.Of(ItineraryWorkloads.BuildTickets(TicketCount, Seed)),
-            AnswerText.Of(ItineraryWorkloads.BuildTickets(TicketCount, Seed)));
+            AnswerGraphText.Of(ItineraryWorkloads.BuildTickets(TicketCount, Seed)),
+            AnswerGraphText.Of(ItineraryWorkloads.BuildTickets(TicketCount, Seed)));
 
     private static HashSet<string> AirportCodes() =>
         [StartAirportCode, .. Enumerable.Range(FirstGeneratedCode, LastGeneratedCode - FirstGeneratedCode + 1)

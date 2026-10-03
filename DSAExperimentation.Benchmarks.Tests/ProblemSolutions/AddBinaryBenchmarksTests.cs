@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -18,8 +19,8 @@ public sealed partial class AddBinaryBenchmarksTests
     {
         Assert.Equal(ExpectedCarriedSum, BuildHarness().CharArrayReverse());
         Assert.Equal(
-            AnswerText.Of(BuildHarness().StackBits()),
-            AnswerText.Of(BuildHarness().StackBits()));
+            AnswerGraphText.Of(BuildHarness().StackBits()),
+            AnswerGraphText.Of(BuildHarness().StackBits()));
     }
 
     [Fact]
@@ -31,7 +32,7 @@ public sealed partial class AddBinaryBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.StackBits()), AnswerText.Of(harness.CharArrayReverse()));
+        Assert.Equal(AnswerGraphText.Of(harness.StackBits()), AnswerGraphText.Of(harness.CharArrayReverse()));
     }
 
     [Fact]
@@ -39,7 +40,7 @@ public sealed partial class AddBinaryBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.CharArrayReverse()), AnswerText.Of(harness.StackBits()));
+        Assert.Equal(AnswerGraphText.Of(harness.CharArrayReverse()), AnswerGraphText.Of(harness.StackBits()));
     }
 
     // Both arms are handed the same all-ones pair, so the sum is fixed by arithmetic alone: n ones is 2^n - 1,

@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -26,8 +27,8 @@ public sealed partial class RepeatedDNASequencesBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(BuildHarness().FixedWindowSet()),
-            AnswerText.Of(BuildHarness().FixedWindowSet()));
+            AnswerGraphText.Of(BuildHarness().FixedWindowSet()),
+            AnswerGraphText.Of(BuildHarness().FixedWindowSet()));
 
     [Fact]
     public void FixedWindowSet_SeededSequence_ReportsEveryRepeatedTenMerOnceInFirstOccurrenceOrder()
@@ -37,7 +38,7 @@ public sealed partial class RepeatedDNASequencesBenchmarksTests
         var reported = harness.FixedWindowSet();
 
         Assert.NotEmpty(expected);
-        Assert.Equal(AnswerText.Of(expected), AnswerText.Of(reported));
+        Assert.Equal(AnswerGraphText.Of(expected), AnswerGraphText.Of(reported));
     }
 
     [Fact]
@@ -48,7 +49,7 @@ public sealed partial class RepeatedDNASequencesBenchmarksTests
         var reported = harness.RollingTwoBitMask();
 
         Assert.NotEmpty(expected);
-        Assert.Equal(AnswerText.Of(expected), AnswerText.Of(reported));
+        Assert.Equal(AnswerGraphText.Of(expected), AnswerGraphText.Of(reported));
     }
 
     [Fact]
@@ -56,7 +57,7 @@ public sealed partial class RepeatedDNASequencesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerText.Of(harness.FixedWindowSet()), AnswerText.Of(harness.RollingTwoBitMask()));
+        Assert.Equal(AnswerGraphText.Of(harness.FixedWindowSet()), AnswerGraphText.Of(harness.RollingTwoBitMask()));
     }
 
     private static RepeatedDNASequencesBenchmarks BuildHarness()

@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -24,8 +25,8 @@ public sealed partial class RotateListBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayRebuild())),
-            AnswerText.Of(ValuesOf(BuildHarness().ArrayRebuild())));
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRebuild())),
+            AnswerGraphText.Of(ValuesOf(BuildHarness().ArrayRebuild())));
 
     [Fact]
     public void ArrayRebuild_OneThirdRotation_AgreesWithPointerRewire()
@@ -34,7 +35,7 @@ public sealed partial class RotateListBenchmarksTests
         var rotated = harness.ArrayRebuild();
 
         Assert.Equal(ExpectedRotatedRight(SmallestLength), ValuesOf(rotated));
-        Assert.Equal(AnswerText.Of(ValuesOf(harness.PointerRewire())), AnswerText.Of(ValuesOf(rotated)));
+        Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.PointerRewire())), AnswerGraphText.Of(ValuesOf(rotated)));
     }
 
     [Fact]
@@ -44,7 +45,7 @@ public sealed partial class RotateListBenchmarksTests
         var rotated = harness.PointerRewire();
 
         Assert.Equal(ExpectedRotatedRight(SmallestLength), ValuesOf(rotated));
-        Assert.Equal(AnswerText.Of(ValuesOf(harness.ArrayRebuild())), AnswerText.Of(ValuesOf(rotated)));
+        Assert.Equal(AnswerGraphText.Of(ValuesOf(harness.ArrayRebuild())), AnswerGraphText.Of(ValuesOf(rotated)));
     }
 
     private static int[] ValuesOf(object? head)

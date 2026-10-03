@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -52,8 +53,8 @@ public sealed partial class PeakQueryWorkloadsTests
         var (nums, queries) = PeakQueryWorkloads.Build(Length, Seed);
         var (repeatNums, repeatQueries) = PeakQueryWorkloads.Build(Length, Seed);
 
-        Assert.Equal(AnswerText.Of(nums), AnswerText.Of(repeatNums));
-        Assert.Equal(AnswerText.Of(queries), AnswerText.Of(repeatQueries));
+        Assert.Equal(AnswerGraphText.Of(nums), AnswerGraphText.Of(repeatNums));
+        Assert.Equal(AnswerGraphText.Of(queries), AnswerGraphText.Of(repeatQueries));
     }
 
     private static void AssertQuery(int[] query, bool isRangeCount)

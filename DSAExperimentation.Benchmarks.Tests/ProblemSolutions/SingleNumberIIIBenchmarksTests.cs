@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -24,8 +25,8 @@ public sealed partial class SingleNumberIIIBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameValues() =>
         Assert.Equal(
-            AnswerText.OfUnorderedSet(BuildHarness().BruteForce()),
-            AnswerText.OfUnorderedSet(BuildHarness().BruteForce()));
+            AnswerGraphText.OfUnordered(BuildHarness().BruteForce()),
+            AnswerGraphText.OfUnordered(BuildHarness().BruteForce()));
 
     [Fact]
     public void BruteForce_TwoSeededSingletons_AgreesWithHashMapFrequencyCount()
@@ -33,11 +34,11 @@ public sealed partial class SingleNumberIIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.HashMapFrequencyCount()),
-            AnswerText.OfUnorderedSet(harness.BruteForce()));
+            AnswerGraphText.OfUnordered(harness.HashMapFrequencyCount()),
+            AnswerGraphText.OfUnordered(harness.BruteForce()));
         Assert.Equal(
-            AnswerText.OfUnorderedSet(SeededSingletons),
-            AnswerText.OfUnorderedSet(harness.BruteForce()));
+            AnswerGraphText.OfUnordered(SeededSingletons),
+            AnswerGraphText.OfUnordered(harness.BruteForce()));
     }
 
     [Fact]
@@ -46,11 +47,11 @@ public sealed partial class SingleNumberIIIBenchmarksTests
         var harness = BuildHarness();
 
         Assert.Equal(
-            AnswerText.OfUnorderedSet(harness.BruteForce()),
-            AnswerText.OfUnorderedSet(harness.HashMapFrequencyCount()));
+            AnswerGraphText.OfUnordered(harness.BruteForce()),
+            AnswerGraphText.OfUnordered(harness.HashMapFrequencyCount()));
         Assert.Equal(
-            AnswerText.OfUnorderedSet(SeededSingletons),
-            AnswerText.OfUnorderedSet(harness.HashMapFrequencyCount()));
+            AnswerGraphText.OfUnordered(SeededSingletons),
+            AnswerGraphText.OfUnordered(harness.HashMapFrequencyCount()));
     }
 
     private static SingleNumberIIIBenchmarks BuildHarness()

@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -25,8 +26,8 @@ public sealed partial class MergeInBetweenLinkedListsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
         Assert.Equal(
-            AnswerText.Of(Values(BuildHarness().ArraySpliceRebuild())),
-            AnswerText.Of(Values(BuildHarness().ArraySpliceRebuild())));
+            AnswerGraphText.Of(Values(BuildHarness().ArraySpliceRebuild())),
+            AnswerGraphText.Of(Values(BuildHarness().ArraySpliceRebuild())));
 
     [Fact]
     public void ArraySpliceRebuild_SeededLists_AgreesWithLinkedListSplice()
@@ -35,8 +36,8 @@ public sealed partial class MergeInBetweenLinkedListsBenchmarksTests
 
         Assert.Equal(ExpectedMergedNodeCount, Values(harness.ArraySpliceRebuild()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.LinkedListSplice())),
-            AnswerText.Of(Values(harness.ArraySpliceRebuild())));
+            AnswerGraphText.Of(Values(harness.LinkedListSplice())),
+            AnswerGraphText.Of(Values(harness.ArraySpliceRebuild())));
     }
 
     [Fact]
@@ -46,8 +47,8 @@ public sealed partial class MergeInBetweenLinkedListsBenchmarksTests
 
         Assert.Equal(ExpectedMergedNodeCount, Values(harness.LinkedListSplice()).Count);
         Assert.Equal(
-            AnswerText.Of(Values(harness.ArraySpliceRebuild())),
-            AnswerText.Of(Values(harness.LinkedListSplice())));
+            AnswerGraphText.Of(Values(harness.ArraySpliceRebuild())),
+            AnswerGraphText.Of(Values(harness.LinkedListSplice())));
     }
 
     // Both arms report the merged chain as that internal node type through an object, so the test reads
