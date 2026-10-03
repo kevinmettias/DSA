@@ -1,82 +1,56 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are PalindromicPathQueriesInATreeSolution's, the same
-// methods PalindromicPathQueriesInATreeSolutionTests proves correct. LcaBitmask is handed
-// the pre-built RootedTreeNode[] its hoisted overload takes, so building the tree
-// (never mutated by either query strategy, so safe to share across iterations) is
-// charged to [GlobalSetup] rather than to the queries being measured.
+// Harness only: both arms are PalindromicPathQueriesInATreeSolution's, the same methods
+// PalindromicPathQueriesInATreeSolutionTests proves correct. The workload is
+// PalindromicPathQueryWorkloads': a long, thin tree whose random paths run a sizable
+// fraction of its length, and one command per node, half updates and half queries.
+//
+// EulerFenwick is handed the TreeTour its hoisted overload takes, so laying the tree out
+// is charged to [GlobalSetup]; no command changes the tour, so iterations share it. The
+// ancestor walk roots the tree from edges[] inside the arm, one O(n) pass beside the
+// path-length walk every one of its queries pays. Sizes are per arm: the walk stops at
+// 10^4 nodes, where it is already quadratic, and the composed arm runs to LeetCode's
+// 5 * 10^4 nodes and 5 * 10^4 commands.
 public class PalindromicPathQueriesInATreeBenchmarks
 {
-    private const int RandomSeed = 3841;
-    private const int QueryCount = 2_000;
-    private const int AlphabetSize = 4; private int[] _parent = [];
+    private const int RandomSeed = 3841; // LeetCode problem number
 
-    private string _labels = "";
-    private int[][] _queries = [];
-    private RootedTreeNode[] _nodes = [];
-    // small alphabet so paths actually collide into palindromes sometimes
+    private Dictionary<int, (int[][] Edges, string Letters, string[] Commands, TreeTour Tour)> _workloadsBySize = [];
 
-    [Params(500, 20_000)]
-    public int NodeCount { get; set; }
+    public static IEnumerable<int> AncestorWalkSizes => [1_000, 10_000];
+
+    public static IEnumerable<int> EulerFenwickSizes => [.. AncestorWalkSizes, 50_000];
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-
-        _parent = BuildParentArray(random, NodeCount);
-        _labels = BuildLabels(random, NodeCount);
-        _queries = BuildQueries(random, QueryCount, NodeCount);
-        _nodes = ParentArrayTree.Build(_parent);
-    }
-
-    // The three generators draw from the one seeded Random in call order, so the
-    // parent, label and query streams stay exactly the streams Setup produced.
-    private static int[] BuildParentArray(Random random, int nodeCount)
-    {
-        var parent = new int[nodeCount];
-        parent[0] = -1;
-
-        for (var i = 1; i < nodeCount; i++)
-        {
-            parent[i] = random.Next(0, i);
-        }
-
-        return parent;
-    }
-
-    private static string BuildLabels(Random random, int nodeCount)
-    {
-        var letters = new char[nodeCount];
-
-        for (var i = 0; i < nodeCount; i++)
-        {
-            letters[i] = (char)('a' + random.Next(0, AlphabetSize));
-        }
-
-        return new string(letters);
-    }
-
-    private static int[][] BuildQueries(Random random, int queryCount, int nodeCount)
-    {
-        var queries = new int[queryCount][];
-
-        for (var i = 0; i < queryCount; i++)
-        {
-            queries[i] = [random.Next(0, nodeCount), random.Next(0, nodeCount)];
-        }
-
-        return queries;
-    }
+    public void Setup() => _workloadsBySize = EulerFenwickSizes.ToDictionary(size => size, BuildWorkload);
 
     [Benchmark(Baseline = true)]
-    public bool[] AncestorWalk() =>
-        PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByAncestorWalk(_parent, _labels, _queries);
+    [ArgumentsSource(nameof(AncestorWalkSizes))]
+    public bool[] AncestorWalk(int nodeCount)
+    {
+        var workload = _workloadsBySize[nodeCount];
+
+        return PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByAncestorWalk(
+            nodeCount, workload.Edges, workload.Letters, workload.Commands);
+    }
 
     [Benchmark]
-    public bool[] LcaBitmask() =>
-        PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByLcaBitmask(_nodes, _labels, _queries);
+    [ArgumentsSource(nameof(EulerFenwickSizes))]
+    public bool[] EulerFenwick(int nodeCount)
+    {
+        var workload = _workloadsBySize[nodeCount];
+
+        return PalindromicPathQueriesInATreeSolution.GetPalindromePathFlagsByEulerFenwick(
+            workload.Tour, workload.Letters, workload.Commands);
+    }
+
+    private static (int[][] Edges, string Letters, string[] Commands, TreeTour Tour) BuildWorkload(int nodeCount)
+    {
+        var (edges, letters, commands) = PalindromicPathQueryWorkloads.Build(nodeCount, RandomSeed);
+
+        return (edges, letters, commands, TreeTour.Build(nodeCount, edges));
+    }
 }
