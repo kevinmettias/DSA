@@ -20,7 +20,7 @@ public class RemoveNthNodeFromEndOfListBenchmarks
     private const int MiddlePositionDivisor = 2;
 
     private int[] _values = [];
-    [Params(200, 5_000)] public int Length { get; set; }
+    [Params(3, 30)] public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup() => _values = Enumerable.Range(1, Length).ToArray();

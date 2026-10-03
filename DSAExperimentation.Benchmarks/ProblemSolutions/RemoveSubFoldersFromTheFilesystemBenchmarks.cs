@@ -1,3 +1,4 @@
+using System.Text;
 using DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,6 +15,7 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     private const int MinBreadth = 2;
     private const int BreadthDivisor = 10;
     private const int MaxDepthExclusive = 5;
+    private const int AlphabetSize = 26;
     private const string FolderNamePrefix = "f";
     private const string PathSeparator = "/";
 
@@ -39,7 +41,8 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
 
             for (var d = 0; d < depth; d++)
             {
-                segments[d] = FolderNamePrefix + random.Next(0, breadth);
+                var segmentIndex = random.Next(0, breadth);
+                segments[d] = FolderNamePrefix + LetterName(segmentIndex);
             }
 
             var folder = PathSeparator + string.Join('/', segments);
@@ -49,6 +52,24 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
                 _folders[drawn.Count - 1] = folder;
             }
         }
+    }
+
+    // A segment's index spelled in base 26 with the letters a to z, since LC 1233's
+    // folders hold only lowercase letters and '/'. Like any positional numeral without
+    // leading zeros, distinct indices spell distinct names.
+    private static string LetterName(int index)
+    {
+        var letters = new StringBuilder();
+        var remaining = index;
+
+        do
+        {
+            letters.Insert(0, (char)('a' + (remaining % AlphabetSize)));
+            remaining /= AlphabetSize;
+        }
+        while (remaining > 0);
+
+        return letters.ToString();
     }
 
     [Benchmark(Baseline = true)]

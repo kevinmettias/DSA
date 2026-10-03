@@ -8,6 +8,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // tree of type-3 edges is generated first so both traversers are always fully
 // connected in the end (the interesting, non-trivial case), then extra random
 // single-owner edges give both strategies real redundant-edge-rejecting work to do.
+// Every edge names its lower node first and no (type, u, v) tuple repeats, as LC 1579
+// requires: a tuple drawn twice keeps its first copy, and since its type is still
+// drawn, every later draw reads the same stream.
 public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 {
     private const int RandomSeed = 1579; // LC problem number
@@ -42,10 +45,13 @@ public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
                 continue;
             }
 
-            edges.Add([random.Next(1, EdgeTypeUpperBoundExclusive), u, v]);
+            var low = Math.Min(u, v);
+            var high = Math.Max(u, v);
+            edges.Add([random.Next(1, EdgeTypeUpperBoundExclusive), low, high]);
         }
 
-        _edges = [.. edges];
+        var firstOfEachTuple = edges.DistinctBy(edge => (edge[0], edge[1], edge[2])).ToArray();
+        _edges = firstOfEachTuple;
     }
 
     [Benchmark(Baseline = true)]

@@ -14,17 +14,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
+//
+// Length stops at LC 82's 300 nodes, and the values climb in pairs from -100, its lowest
+// value, so 300 nodes reach 49, inside its [-100, 100].
 public class RemoveDuplicatesFromSortedListIIBenchmarks
 {
     private const int RunLengthDivisor = 2;
+    private const int MinValue = -100;
 
     private int[] _values = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 300)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(0, Length).Select(i => i / RunLengthDivisor).ToArray();
+    public void Setup() =>
+        _values = Enumerable.Range(0, Length).Select(i => MinValue + (i / RunLengthDivisor)).ToArray();
 
     [Benchmark(Baseline = true)]
     public object? ArrayGroupFilter() =>

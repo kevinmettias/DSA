@@ -1,4 +1,3 @@
-using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RevealCardsInIncreasingOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,6 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup]; each arm still does its own sort, because the sort is part of the
 // strategy and both pay the same O(n log n) for it - the difference measured here is
 // List<int>.RemoveAt(0)'s O(n) front removal against Queue<int>'s O(1) amortized one.
+// Length stops at LC 950's 1,000 cards, and since LC 950's values are unique, a value
+// drawn a second time is drawn again rather than dealt twice.
 public class RevealCardsInIncreasingOrderBenchmarks
 {
     private const int RandomSeed = 950; // LC problem number
@@ -15,14 +16,27 @@ public class RevealCardsInIncreasingOrderBenchmarks
 
     private int[] _deck = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _deck = SeededDraws.Values(Length, 1, CardValueUpperBound, random);
+        var dealt = new HashSet<int>();
+        var deck = new List<int>(Length);
+
+        while (deck.Count < Length)
+        {
+            var card = random.Next(1, CardValueUpperBound);
+
+            if (dealt.Add(card))
+            {
+                deck.Add(card);
+            }
+        }
+
+        _deck = [.. deck];
     }
 
     [Benchmark(Baseline = true)]

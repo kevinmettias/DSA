@@ -27,7 +27,7 @@ public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
 
     private int[] _values = [];
 
-    [Params(300, 3_000)]
+    [Params(300, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

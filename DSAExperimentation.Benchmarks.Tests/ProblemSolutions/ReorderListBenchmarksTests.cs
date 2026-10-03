@@ -52,8 +52,9 @@ public sealed partial class ReorderListBenchmarksTests
         return [.. values];
     }
 
-    // Setup values the chain 1..Length; the reorder takes the next unused value from the front, then
-    // the next unused value from the back, until the two ends meet.
+    // At the smallest length, 1,000 - no longer than LC 143's highest value, so nothing wraps - Setup
+    // values the chain 1..Length; the reorder takes the next unused value from the front, then the
+    // next unused value from the back, until the two ends meet.
     private static int[] EndsInwardOracle()
     {
         var reordered = new int[SmallestLength];

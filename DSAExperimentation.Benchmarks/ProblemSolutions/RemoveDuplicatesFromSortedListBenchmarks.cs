@@ -13,13 +13,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
+//
+// Length stops at LC 83's 300 nodes, whose values, climbing in threes from 0, reach 99,
+// inside its [-100, 100].
 public class RemoveDuplicatesFromSortedListBenchmarks
 {
     private const int DuplicateRunLength = 3;
 
     private int[] _values = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 300)]
     public int Length { get; set; }
 
     [GlobalSetup]

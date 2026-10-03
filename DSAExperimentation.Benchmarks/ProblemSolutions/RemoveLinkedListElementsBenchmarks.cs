@@ -15,8 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // public [Benchmark] method cannot name it as a return type (CS0050).
 public class RemoveLinkedListElementsBenchmarks
 {
-    private const int TargetValue = 0;
-    private const int NonTargetValue = 1;
+    // Both inside LC 203's node values of 1 to 50.
+    private const int TargetValue = 1;
+    private const int NonTargetValue = 2;
     private const int MatchRunLength = 3;
 
     private int[] _values = [];
