@@ -18,15 +18,19 @@ public sealed partial class ParallelCoursesIIBenchmarksTests
 
     [Fact]
     public void Setup_SameCourseCount_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().BruteForceRecursion(), BuildHarness().BruteForceRecursion());
+        Assert.Equal(
+            BuildHarness().BruteForceRecursion(SmallestCourseCount),
+            BuildHarness().BruteForceRecursion(SmallestCourseCount));
 
     [Fact]
     public void BruteForceRecursion_SmallestCourseCount_ReturnsTheFewestSemesters()
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedSemesterCount, harness.BruteForceRecursion());
-        Assert.Equal(harness.MemoizedRecursion(), harness.BruteForceRecursion());
+        Assert.Equal(ExpectedSemesterCount, harness.BruteForceRecursion(SmallestCourseCount));
+        Assert.Equal(
+            harness.MemoizedRecursion(SmallestCourseCount),
+            harness.BruteForceRecursion(SmallestCourseCount));
     }
 
     [Fact]
@@ -34,13 +38,15 @@ public sealed partial class ParallelCoursesIIBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedSemesterCount, harness.MemoizedRecursion());
-        Assert.Equal(harness.BruteForceRecursion(), harness.MemoizedRecursion());
+        Assert.Equal(ExpectedSemesterCount, harness.MemoizedRecursion(SmallestCourseCount));
+        Assert.Equal(
+            harness.BruteForceRecursion(SmallestCourseCount),
+            harness.MemoizedRecursion(SmallestCourseCount));
     }
 
     private static ParallelCoursesIIBenchmarks BuildHarness()
     {
-        var harness = new ParallelCoursesIIBenchmarks { CourseCount = SmallestCourseCount };
+        var harness = new ParallelCoursesIIBenchmarks();
         harness.Setup();
 
         return harness;

@@ -8,6 +8,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolutionTests proves correct - a
 // direct O(2^(2n)) scan of every size-n bitmask over the whole array against
 // meet-in-the-middle over each half's subset sums grouped by subset size.
+//
+// Sizes are per arm, counted in elements (always even, since LeetCode hands over 2n).
+// The full scan's 2^(2n) masks stop it at 20; meet-in-the-middle only enumerates
+// 2^n sums per half and runs on to LC 2035's own bound of 30 elements. The two are
+// compared at the sizes both run.
 public class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceBenchmarks
 {
     // LC problem number, reused as the deterministic random seed.
@@ -16,25 +21,28 @@ public class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceBenchmarks
     // Symmetric bound for the generated values' range: [-ValueBound, ValueBound).
     private const int ValueBound = 50;
 
-    private int[] _nums = [];
+    private Dictionary<int, int[]> _numsBySize = [];
 
-    [Params(16, 20)]
-    public int Length { get; set; }
+    public static IEnumerable<int> BaselineSizes => [16, 20];
 
+    public static IEnumerable<int> MeetInTheMiddleSizes => [.. BaselineSizes, 24, 30];
+
+    // Every size any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _nums = SeededDraws.Values(Length, -ValueBound, ValueBound, random);
-    }
+    public void Setup() =>
+        _numsBySize = MeetInTheMiddleSizes.ToDictionary(
+            length => length,
+            length => SeededDraws.Values(length, -ValueBound, ValueBound, new Random(RandomSeed)));
 
     [Benchmark(Baseline = true)]
-    public int BruteForceAllEqualSplits() =>
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public int BruteForceAllEqualSplits(int length) =>
         PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolution
-            .MinimumDifferenceByBruteForceEqualSplits(_nums);
+            .MinimumDifferenceByBruteForceEqualSplits(_numsBySize[length]);
 
     [Benchmark]
-    public int MeetInTheMiddleGroupedBySize() =>
+    [ArgumentsSource(nameof(MeetInTheMiddleSizes))]
+    public int MeetInTheMiddleGroupedBySize(int length) =>
         PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolution
-            .MinimumDifferenceByMeetInTheMiddle(_nums);
+            .MinimumDifferenceByMeetInTheMiddle(_numsBySize[length]);
 }
