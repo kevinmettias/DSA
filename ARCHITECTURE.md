@@ -1410,6 +1410,14 @@ a class like `BurstBalloonsBenchmarks` instead gives each arm its own sizes thro
 `[ArgumentsSource]`, shares the smallest ones so the arms are still compared, and builds every
 size's workload in `[GlobalSetup]`.
 
+Every size stays inside the problem's stated constraints. The benchmarks exist to make the
+solutions as fast as possible on the inputs LeetCode actually poses without giving up the
+abstractions they are built from, so a harness that times an input past those bounds is measuring
+a problem nobody asked, and is a defect to fix rather than a choice to record. That covers everything a harness controls: lengths, node and grid sizes, query and call
+counts, drawn value ranges, and guarantees such as "the answer fits in a 32-bit integer" - past
+that one, both arms overflow to the same wrong number and still agree. A fast arm that cannot
+show its growth inside the bound stops there anyway; its class comment says so.
+
 ### 17.8 One measurement changed on purpose
 
 `WordLadderIIBenchmarks` previously had both arms *count* shortest sequences rather than build
