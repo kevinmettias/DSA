@@ -11,24 +11,26 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so this is a technique comparison rather than an asymptotic-class split. The unit string
 // is repeated a different, coprime number of times into each input so the two lengths are
 // coprime multiples of a common divisor, forcing both strategies through their real work
-// instead of a same-length shortcut.
+// instead of a same-length shortcut. LC 1071 spells both strings in uppercase letters and
+// caps each at 1000 characters; the longer string is 13 units, so the larger UnitLength
+// is 76.
 public class GreatestCommonDivisorOfStringsBenchmarks
 {
-    private const int LowercaseAlphabetSize = 26;
+    private const int UppercaseAlphabetSize = 26;
     private const int Str1RepeatCount = 13;
     private const int Str2RepeatCount = 7;
 
     private string _str1 = "";
 
     private string _str2 = "";
-    [Params(20, 500)]
+    [Params(20, 76)]
     public int UnitLength { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(1);
-        var unit = new string(Enumerable.Range(0, UnitLength).Select(_ => (char)('a' + random.Next(LowercaseAlphabetSize))).ToArray());
+        var unit = new string(Enumerable.Range(0, UnitLength).Select(_ => (char)('A' + random.Next(UppercaseAlphabetSize))).ToArray());
         var str1Units = Enumerable.Repeat(unit, Str1RepeatCount);
         _str1 = string.Concat(str1Units);
         var str2Units = Enumerable.Repeat(unit, Str2RepeatCount);

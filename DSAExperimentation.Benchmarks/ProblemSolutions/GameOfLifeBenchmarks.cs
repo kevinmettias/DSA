@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are GameOfLifeSolution's, the same methods
 // GameOfLifeSolutionTests proves correct. Each iteration clones the pristine board
 // before advancing, since the solution mutates in place and [GlobalSetup]
-// runs once per benchmark, not once per invocation.
+// runs once per benchmark, not once per invocation. LC 289 caps the board at
+// 25 x 25, so the larger Size is that cap.
 public class GameOfLifeBenchmarks
 {
     // LC 289.
@@ -15,7 +16,7 @@ public class GameOfLifeBenchmarks
 
     private int[][] _board = [];
 
-    [Params(50, 300)]
+    [Params(5, 25)]
     public int Size { get; set; }
 
     [GlobalSetup]

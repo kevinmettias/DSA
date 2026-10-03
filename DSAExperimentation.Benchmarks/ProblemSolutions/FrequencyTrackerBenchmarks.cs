@@ -11,7 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the "no hashing at all" baseline (a raw List<int>, IndexOf deletes, and a sort per
 // query) against PairedHashMaps' two HashMap<TKey,TValue> instances, the same
 // contrast DesignHashMapBenchmarks already establishes for LC 706. Each arm returns
-// every hasFrequency answer, in query order.
+// every hasFrequency answer, in query order. Numbers are drawn from 1 up, LC 2671's
+// smallest.
 public class FrequencyTrackerBenchmarks
 {
     private const int Seed = 2671; // LC problem number
@@ -35,7 +36,7 @@ public class FrequencyTrackerBenchmarks
         var random = new Random(Seed);
         var valueRange = Math.Max(1, Length / DeleteCountDivisor);
 
-        _numbersToAdd = SeededDraws.Values(Length, 0, valueRange, random);
+        _numbersToAdd = SeededDraws.Values(Length, 1, valueRange + 1, random);
         _numbersToDelete = _numbersToAdd.Take(Length / DeleteCountDivisor).ToArray();
 
         var queryCount = Math.Max(MinQueryCount, Length / QueryCountDivisor);

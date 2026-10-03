@@ -12,6 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Every instance is built with the same DrawSeed, so a rebuilt harness replays
 // the same points; the two arms still answer differently, because rejection
 // sampling spends a variable number of draws per point and the polar form two.
+// LC 478 allows 3 * 10^4 randPoint calls, so the larger Draws is that cap.
 public class GenerateRandomPointInACircleBenchmarks
 {
     private const double Radius = 10.0;
@@ -23,7 +24,7 @@ public class GenerateRandomPointInACircleBenchmarks
     // nothing beyond what the generator itself returns.
     private double[][] _points = [];
 
-    [Params(1_000, 100_000)]
+    [Params(1_000, 30_000)]
     public int Draws { get; set; }
 
     [GlobalSetup]
