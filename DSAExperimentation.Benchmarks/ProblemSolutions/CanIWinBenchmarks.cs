@@ -8,21 +8,36 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // through their full worst-case search tree instead of an early exit on the first
 // invocation making the brute force look artificially fast (the same "force the
 // real worst case" convention TwoSumBenchmarks already uses).
+//
+// Sizes are per arm. The brute force re-explores every pick order, O(n!), so it stops
+// at 8 choosable numbers; the memoized arm solves each of the 2^n used-number masks
+// once and runs on to LC 464's own bound of 20. The two are compared at the sizes both
+// run.
 public class CanIWinBenchmarks
 {
     private const int GaussSumDivisor = 2;
 
-    private int _desiredTotal;
+    private Dictionary<int, int> _desiredTotalByMaxChoosable = [];
 
-    [Params(6, 8)]
-    public int MaxChoosableInteger { get; set; }
+    public static IEnumerable<int> BruteForceSizes => [6, 8];
 
+    public static IEnumerable<int> MemoizedSizes => [.. BruteForceSizes, 14, 20];
+
+    // Every size any arm runs has its desired total derived here, outside the timed region;
+    // an arm looks its own up.
     [GlobalSetup]
-    public void Setup() => _desiredTotal = MaxChoosableInteger * (MaxChoosableInteger + 1) / GaussSumDivisor;
+    public void Setup() =>
+        _desiredTotalByMaxChoosable = MemoizedSizes.ToDictionary(
+            maxChoosable => maxChoosable,
+            maxChoosable => maxChoosable * (maxChoosable + 1) / GaussSumDivisor);
 
     [Benchmark(Baseline = true)]
-    public bool CanWinByBruteForceRecursion() => CanIWinSolution.CanWinByBruteForceRecursion(MaxChoosableInteger, _desiredTotal);
+    [ArgumentsSource(nameof(BruteForceSizes))]
+    public bool CanWinByBruteForceRecursion(int maxChoosableInteger) =>
+        CanIWinSolution.CanWinByBruteForceRecursion(maxChoosableInteger, _desiredTotalByMaxChoosable[maxChoosableInteger]);
 
     [Benchmark]
-    public bool CanWinByMemoizedRecursion() => CanIWinSolution.CanWinByMemoizedRecursion(MaxChoosableInteger, _desiredTotal);
+    [ArgumentsSource(nameof(MemoizedSizes))]
+    public bool CanWinByMemoizedRecursion(int maxChoosableInteger) =>
+        CanIWinSolution.CanWinByMemoizedRecursion(maxChoosableInteger, _desiredTotalByMaxChoosable[maxChoosableInteger]);
 }

@@ -6,10 +6,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FindTheShortestSuperstringSolutionTests proves correct - the textbook permutation brute
 // force (O(n! * n)) against the bitmask-TSP DP built on this repo's own Memoizer
 // (O(2^n * n^2)). The overlap matrix is the prepared input both hoisted overloads
-// take, so it is built once in [GlobalSetup] and neither arm is charged for the
-// string-overlap preprocessing they share. Word count stays small ([6, 9]) because
-// n! overtakes 2^n * n^2 fast enough that the brute force would otherwise dominate
-// the run.
+// take, so it is built once per word count in [GlobalSetup] and neither arm is charged
+// for the string-overlap preprocessing they share.
+//
+// Sizes are per arm. n! overtakes 2^n * n^2 fast enough that the brute force would
+// dominate the run past 9 words, so it stops there; the bitmask DP runs on to LC 943's
+// own bound of 12 words, and the two are compared at the counts both run.
 //
 // [GlobalSetup] builds a word chain rather than a random word list, because LC 943
 // does not have one answer per input: several maximum-overlap orders can assemble to
@@ -24,8 +26,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // trailing window is kept distinct, so a pair can overlap by the maximum four only
 // when it is a consecutive pair of the chain: the chain order is then the single
 // highest-overlap tour and both arms have exactly one shortest superstring to return.
-// Word length, alphabet and seed are unchanged, and the arms still compare the same
-// two searches over the same prepared overlap matrix.
+// That holds at every word count, the DP's larger ones included, since the chain is
+// built the same way from the same seed whatever its length. Word length, alphabet and
+// seed are unchanged, and the arms still compare the same two searches over the same
+// prepared overlap matrix.
 public class FindTheShortestSuperstringBenchmarks
 {
     // LC problem number, reused as the deterministic word seed.
@@ -35,19 +39,19 @@ public class FindTheShortestSuperstringBenchmarks
     // The letters a word is drawn from, and so the width of each trailing window.
     private const string Alphabet = "ACGT";
 
-    private WordOverlaps _overlaps = null!;
+    private Dictionary<int, WordOverlaps> _overlapsByWordCount = [];
 
-    [Params(6, 9)]
-    public int WordCount { get; set; }
+    public static IEnumerable<int> PermutationSizes => [6, 9];
 
+    public static IEnumerable<int> MemoizedBitmaskSizes => [.. PermutationSizes, 11, 12];
+
+    // Every word count any arm runs has its chain built here, outside the timed region,
+    // each from its own generator on the same seed; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(WordSeed);
-        var answerWords = BuildUniqueAnswerWords(WordCount, random);
-
-        _overlaps = WordOverlaps.Build(answerWords);
-    }
+    public void Setup() =>
+        _overlapsByWordCount = MemoizedBitmaskSizes.ToDictionary(
+            wordCount => wordCount,
+            wordCount => WordOverlaps.Build(BuildUniqueAnswerWords(wordCount, new Random(WordSeed))));
 
     private static string[] BuildUniqueAnswerWords(int wordCount, Random random)
     {
@@ -93,7 +97,7 @@ public class FindTheShortestSuperstringBenchmarks
     {
         // Returns on the first letter whose candidate opens a trailing window no word has
         // claimed yet: Alphabet has four letters against a window of WordLength - 1, so
-        // 256 windows are reachable and at most WordCount + 1 of them are ever reserved.
+        // 256 windows are reachable and at most one more than the word count are ever reserved.
         while (true)
         {
             var candidate = TrailingWindow(previous) + NextLetter(random);
@@ -106,12 +110,14 @@ public class FindTheShortestSuperstringBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string BruteForcePermutations() =>
-        FindTheShortestSuperstringSolution.ShortestSuperstringByPermutations(_overlaps);
+    [ArgumentsSource(nameof(PermutationSizes))]
+    public string BruteForcePermutations(int wordCount) =>
+        FindTheShortestSuperstringSolution.ShortestSuperstringByPermutations(_overlapsByWordCount[wordCount]);
 
     [Benchmark]
-    public string MemoizedBitmaskDp() =>
-        FindTheShortestSuperstringSolution.ShortestSuperstringByMemoizedBitmask(_overlaps);
+    [ArgumentsSource(nameof(MemoizedBitmaskSizes))]
+    public string MemoizedBitmaskDp(int wordCount) =>
+        FindTheShortestSuperstringSolution.ShortestSuperstringByMemoizedBitmask(_overlapsByWordCount[wordCount]);
 
     private static char NextLetter(Random random) => Alphabet[random.Next(Alphabet.Length)];
 

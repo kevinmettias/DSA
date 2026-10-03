@@ -20,10 +20,10 @@ public sealed partial class ConcatenatedDivisibilityBenchmarksTests
     [Fact]
     public void Setup_SameNumberCount_RebuildsTheSameNumbersAndDivisor()
     {
-        Assert.True(BuildHarness().Backtracking().Count is 0 or SmallestNumberCount);
+        Assert.True(BuildHarness().Backtracking(SmallestNumberCount).Count is 0 or SmallestNumberCount);
         Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().Backtracking()),
-            AnswerGraphText.Of(BuildHarness().Backtracking()));
+            AnswerGraphText.Of(BuildHarness().Backtracking(SmallestNumberCount)),
+            AnswerGraphText.Of(BuildHarness().Backtracking(SmallestNumberCount)));
     }
 
     [Fact]
@@ -31,7 +31,9 @@ public sealed partial class ConcatenatedDivisibilityBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerGraphText.Of(harness.BitmaskMemo()), AnswerGraphText.Of(harness.Backtracking()));
+        Assert.Equal(
+            AnswerGraphText.Of(harness.BitmaskMemo(SmallestNumberCount)),
+            AnswerGraphText.Of(harness.Backtracking(SmallestNumberCount)));
     }
 
     [Fact]
@@ -39,12 +41,14 @@ public sealed partial class ConcatenatedDivisibilityBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(AnswerGraphText.Of(harness.Backtracking()), AnswerGraphText.Of(harness.BitmaskMemo()));
+        Assert.Equal(
+            AnswerGraphText.Of(harness.Backtracking(SmallestNumberCount)),
+            AnswerGraphText.Of(harness.BitmaskMemo(SmallestNumberCount)));
     }
 
     private static ConcatenatedDivisibilityBenchmarks BuildHarness()
     {
-        var harness = new ConcatenatedDivisibilityBenchmarks { NumberCount = SmallestNumberCount };
+        var harness = new ConcatenatedDivisibilityBenchmarks();
         harness.Setup();
 
         return harness;
