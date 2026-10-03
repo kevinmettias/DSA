@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hashing/allocation overhead, not algorithm class.
 //
 // The whole input is four ints, so there is nothing to hoist into [GlobalSetup]
-// beyond choosing them from the measured size.
+// beyond choosing them from the measured size, which stops at LC 885's 100 x 100.
 public class SpiralMatrixIIIBenchmarks
 {
 
@@ -21,7 +21,7 @@ public class SpiralMatrixIIIBenchmarks
     private int _cols;
     private int _rStart;
     private int _cStart;
-    [Params(20, 200)]
+    [Params(20, 100)]
     public int Size { get; set; }
 
     [GlobalSetup]

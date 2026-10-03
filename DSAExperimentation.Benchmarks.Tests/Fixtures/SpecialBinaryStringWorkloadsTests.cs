@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 // closure under wrapping and concatenation is what makes that hold for every draw.
 public sealed partial class SpecialBinaryStringWorkloadsTests
 {
-    private const int PairCount = 50;
+    private const int PairCount = 25;
     private const int Seed = 761; // LC problem number
     private const int OneBitCountPerPair = 1;
     private const int CharsPerPair = 2;

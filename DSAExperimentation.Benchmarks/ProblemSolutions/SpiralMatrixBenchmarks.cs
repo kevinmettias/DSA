@@ -6,12 +6,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SpiralMatrixSolutionTests proves correct - a visited-grid simulation
 // (O(rows*cols) extra memory for the visited flags) vs. the
 // four-boundary-pointer shrink (O(1) extra memory, no visited tracking at
-// all).
+// all). Size stops at LC 54's 10 x 10, whose cells 0..99 stay inside its
+// [-100, 100].
 public class SpiralMatrixBenchmarks
 {
     private int[][] _matrix = [];
 
-    [Params(20, 100)]
+    [Params(3, 10)]
     public int Size { get; set; }
 
     [GlobalSetup]

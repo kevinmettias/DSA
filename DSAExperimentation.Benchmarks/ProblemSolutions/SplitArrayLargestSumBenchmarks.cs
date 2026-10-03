@@ -4,7 +4,8 @@ using DSAExperimentation.LeetCode.SplitArrayLargestSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SplitArrayLargestSumSolution's, the same methods
-// SplitArrayLargestSumSolutionTests proves correct.
+// SplitArrayLargestSumSolutionTests proves correct. Length stops at LC 410's 1,000,
+// where the subarray count Length / KDivisor reaches its cap of 50.
 public class SplitArrayLargestSumBenchmarks
 {
     private const int RandomSeed = 410; // LC problem number
@@ -14,7 +15,7 @@ public class SplitArrayLargestSumBenchmarks
     private int _subarrayCount;
     // number of subarrays to split into, derived as a fraction of Length
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

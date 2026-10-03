@@ -10,7 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // route between the leftmost and rightmost leaf of a balanced tree - an ancestor
 // at the root, the worst case for either approach - and both are handed the
 // prepared nodes their hoisted overload takes, so tree construction and endpoint
-// selection are charged to [GlobalSetup] rather than to the search.
+// selection are charged to [GlobalSetup] rather than to the search. The tree is complete
+// and its node values are 1..NodeCount, the distinct [1, n] LC 2096 promises.
 public class StepByStepDirectionsFromABinaryTreeNodeToAnotherBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -23,7 +24,8 @@ public class StepByStepDirectionsFromABinaryTreeNodeToAnotherBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _root = BinaryTrees.Balanced(NodeCount);
+        int[] levelOrder = [.. Enumerable.Range(1, NodeCount)];
+        _root = BinaryTrees.Complete(levelOrder);
         _start = LeftmostLeaf(_root);
         _dest = RightmostLeaf(_root);
     }

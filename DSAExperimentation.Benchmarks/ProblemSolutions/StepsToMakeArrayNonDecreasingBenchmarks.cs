@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods StepsToMakeArrayNonDecreasingSolutionTests proves correct. Values are a random
 // sequence with repeats so removal rounds actually chain instead of finishing
 // after one pass, which is what makes the round-simulation baseline pay for its
-// extra passes.
+// extra passes. They are drawn from [1, Length], inside LC 2289's positive values.
 public class StepsToMakeArrayNonDecreasingBenchmarks
 {
     private const int RandomSeed = 2289; private int[] _nums = [];
@@ -21,7 +21,7 @@ public class StepsToMakeArrayNonDecreasingBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = SeededDraws.Values(Length, 0, Length, random);
+        _nums = SeededDraws.Values(Length, 1, Length + 1, random);
     }
 
     [Benchmark(Baseline = true)]

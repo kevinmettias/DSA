@@ -11,7 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one 'b') applied to a target built from repeated "ab" pairs, so every choice at
 // every step lands on the identical resulting state - maximal overlap, Length+1
 // distinct states total - while the naive strategy recomputes all 2^Length
-// equivalent choice paths from scratch.
+// equivalent choice paths from scratch. PairCount stops at 7: fourteen letters, the
+// most whole pairs LC 691's 15-letter target holds.
 public class StickersToSpellWordBenchmarks
 {
     private const string RepeatedPair = "ab";
@@ -20,7 +21,7 @@ public class StickersToSpellWordBenchmarks
 
     private PreparedStickers _input;
 
-    [Params(10, 16)]
+    [Params(3, 7)]
     public int PairCount { get; set; }
 
     [GlobalSetup]

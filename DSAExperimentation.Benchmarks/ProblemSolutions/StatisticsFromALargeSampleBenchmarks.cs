@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,15 +7,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods StatisticsFromALargeSampleSolutionTests proves correct. AverageCountPerValue
 // scales the total sample size while the bucket range stays fixed at [0, 255] -
 // the shape LeetCode itself fixes - so SampleExpansion's O(total) allocation grows
-// while CumulativeBinarySearch's stays O(256) regardless.
+// while CumulativeBinarySearch's stays O(256) regardless. The counts come from
+// StatisticsFromALargeSampleWorkloads, which keeps the sample's mode unique as LC 1093
+// promises.
 public class StatisticsFromALargeSampleBenchmarks
 {
-    private const int ValueRange = 256;
-
-    // Random counts are drawn from [1, AverageCountPerValue * MaxCountMultiplier],
-    // so the sampled mean lands near AverageCountPerValue.
-    private const int MaxCountMultiplier = 2;
-
     // Fixed seed so the bucket draw is identical from run to run.
     private const int CountSeed = 1;
 
@@ -24,16 +21,7 @@ public class StatisticsFromALargeSampleBenchmarks
     public int AverageCountPerValue { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(CountSeed);
-        _count = new long[ValueRange];
-
-        for (var i = 0; i < ValueRange; i++)
-        {
-            _count[i] = random.Next(1, (AverageCountPerValue * MaxCountMultiplier) + 1);
-        }
-    }
+    public void Setup() => _count = StatisticsFromALargeSampleWorkloads.BuildCounts(AverageCountPerValue, CountSeed);
 
     [Benchmark(Baseline = true)]
     public double[] ExpandAndIndex() =>

@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // count, so the same count must rebuild the same workload.
 public sealed partial class StickersToSpellWordBenchmarksTests
 {
-    private const int SmallestPairCount = 10;
+    private const int SmallestPairCount = 3;
 
     // The target is "ab" repeated SmallestPairCount times and every sticker covers exactly one
     // 'a' and one 'b', so SmallestPairCount stickers are necessary and sufficient - the

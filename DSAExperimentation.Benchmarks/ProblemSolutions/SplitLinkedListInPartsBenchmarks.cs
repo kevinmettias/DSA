@@ -10,14 +10,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // InPlaceRewire mutates the chain it walks. Both arms return the
 // SinglyLinkedListNode<int>?[] of parts itself, as object: that type is
 // internal, and a public [Benchmark] method on this public class cannot name
-// it (CS0050).
+// it (CS0050). Length stops at LC 725's 1,000 nodes, valued 0..999 inside its
+// [0, 1000].
 public class SplitLinkedListInPartsBenchmarks
 {
     private const int Parts = 7;
 
     private SinglyLinkedListNode<int> _head = null!;
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
