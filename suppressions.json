@@ -255,13 +255,6 @@
     },
     {
       "check": "check-function-cohesion",
-      "path": "DSAExperimentation.Tests/Algorithms/Folding/SharedDescendantFoldTests.cs",
-      "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Each of the 1 tests this entry waives performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-function-cohesion",
       "path": "DSAExperimentation.Tests/DataStructures/Heap/HeapArrayTests.cs",
       "reason": "check-function-cohesion's own doc calls this rule advisory: 'two clusters over different locals may still be one idea, and extraction has a cost that can outweigh the gain.' Of the 6 tests this entry waives, 5 performs one mutation (an add, a removal, a union, a write) and then asserts several independent postconditions of it (Count, the stored value, a second collection's state); the assertions share no local with each other because each reads a different facet of the same mutation, not because the test does two unrelated things. The remaining test is not that shape: `Count_ReflectsAddsFollowedByRemove` asserts between mutations because the count is the subject rather than the mutations: the name claims Count reflects a *sequence* of operations, so the test has to observe it partway through to show which operation moved it. Splitting one assertion per helper function would fragment a single, small, readable test for no reader benefit.",
       "owner": "@kmettias",
@@ -747,13 +740,6 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/KthSmallestElementInABSTBenchmarks.cs",
-      "reason": "both ! promise the in-order walk assigned the field it collects into: Visit (line 57) and RankHooks (line 66) set _recursiveResult / State.Result as soon as the running rank reaches k, and k is drawn from the same NodeCount the fixture builds the tree with, so that rank is always reached.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/LinkedListComponentsBenchmarks.cs",
       "reason": "dummy.Next! promises the rebuild appended at least one node after the sentinel: the builder loops over the workload's own value sequence, which every workload in this project builds non-empty, and the sentinel exists so the first append needs no special case.",
       "owner": "@kmettias",
@@ -1196,14 +1182,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/Fixtures/DnaSequenceWorkloads.cs",
-      "anchor": "`Alphabet = ",
-      "reason": "`Alphabet` is each declaring file's own value rather than one shared fact: the same name is also declared as `\"aAbB\"`, `\"ab\"`, `\"abc\"`, `\"abcd\"` and 8 more elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/Fixtures/EvenNodeSumGraphWorkloads.cs",
       "anchor": "`ExtraEdgesPerNode = ",
       "reason": "`ExtraEdgesPerNode` is each declaring file's own value rather than one shared fact: the same name is also declared as `2`, `3` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
@@ -1292,14 +1270,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/Fixtures/NumberOfPairsAfterIncrementWorkloads.cs",
-      "anchor": "`ValueExclusiveBound = ",
-      "reason": "`ValueExclusiveBound` is each declaring file's own value rather than one shared fact: the same name is also declared as `1_000_000` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/Fixtures/NumberOfValidWordsForEachPuzzleWorkloads.cs",
       "anchor": "`MinWordLength = ",
       "reason": "`MinWordLength` is each declaring file's own value rather than one shared fact: the same name is also declared as `2`, `4` elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
@@ -1335,22 +1305,6 @@
       "path": "DSAExperimentation.Benchmarks/Fixtures/PrefixSuffixPairWorkloads.cs",
       "anchor": "`Alphabet = ",
       "reason": "`Alphabet` is each declaring file's own value rather than one shared fact: the same name is also declared as `\"ACGT\"`, `\"aAbB\"`, `\"ab\"`, `\"abc\"` and 8 more elsewhere in the corpus, so this group agrees on a value its 5 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/Fixtures/ProbabilityGraphWorkloads.cs",
-      "anchor": "`EdgeProbabilityRange = ",
-      "reason": "`EdgeProbabilityRange = 0.49` is declared in 2 independent units (Fixtures/ProbabilityGraphWorkloads.cs, PathWithMaximumProbability/PathWithMaximumProbabilityRegistration.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/Fixtures/ProbabilityGraphWorkloads.cs",
-      "anchor": "`MinEdgeProbability = ",
-      "reason": "`MinEdgeProbability = 0.5` is declared in 2 independent units (Fixtures/ProbabilityGraphWorkloads.cs, PathWithMaximumProbability/PathWithMaximumProbabilityRegistration.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1452,14 +1406,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/AllAncestorsOfANodeInADirectedAcyclicGraphBenchmarks.cs",
-      "anchor": "`MaxFanOut = ",
-      "reason": "`MaxFanOut = 3` is declared in 8 independent units (ProblemSolutions/AllAncestorsOfANodeInADirectedAcyclicGraphBenchmarks.cs, ProblemSolutions/BuildAMatrixWithConditionsBenchmarks.cs, ProblemSolutions/CourseScheduleIIBenchmarks.cs, ProblemSolutions/LargestColorValueInADirectedGraphBenchmarks.cs and 4 more), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 8 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/AmbiguousCoordinatesBenchmarks.cs",
       "anchor": "`DigitRange = ",
       "reason": "`DigitRange = 10` is declared in 2 independent units (ProblemSolutions/AmbiguousCoordinatesBenchmarks.cs, ValidSudoku/ValidSudokuSolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
@@ -1551,14 +1497,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BurstBalloonsBenchmarks.cs",
       "anchor": "`RandomSeed = ",
       "reason": "`RandomSeed` is each declaring file's own value rather than one shared fact: the same name is also declared as `1011`, `1019`, `1020`, `1021` and 361 more elsewhere in the corpus, so this group agrees on a value its 30 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CapacityToShipPackagesWithinDDaysBenchmarks.cs",
-      "anchor": "`MaxWeightExclusive = ",
-      "reason": "`MaxWeightExclusive` is each declaring file's own value rather than one shared fact: the same name is also declared as `100`, `100_001` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1820,14 +1758,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignCircularDequeBenchmarks.cs",
-      "anchor": "`OperationCount = ",
-      "reason": "`OperationCount` is each declaring file's own value rather than one shared fact: the same name is also declared as `300`, `500` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignEventManagerBenchmarks.cs",
       "anchor": "`PriorityUpperBound = ",
       "reason": "`PriorityUpperBound = 1_000_000_000` is declared in 2 independent units (ProblemSolutions/DesignEventManagerBenchmarks.cs, ProblemSolutions/DesignTaskManagerBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
@@ -1839,14 +1769,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignGraphWithShortestPathCalculatorBenchmarks.cs",
       "anchor": "`ExtraEdgesPerNode = ",
       "reason": "`ExtraEdgesPerNode` is each declaring file's own value rather than one shared fact: the same name is also declared as `1`, `2` elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/DesignGraphWithShortestPathCalculatorBenchmarks.cs",
-      "anchor": "`QueryCount = ",
-      "reason": "`QueryCount` is each declaring file's own value rather than one shared fact: the same name is also declared as `15`, `1_000`, `1_000_000`, `2_000` and 3 more elsewhere in the corpus, so this group agrees on a value its 10 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1871,14 +1793,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/EncryptAndDecryptStringsBenchmarks.cs",
       "anchor": "`WordLength = ",
       "reason": "`WordLength` is each declaring file's own value rather than one shared fact: the same name is also declared as `200`, `4`, `5`, `50` and 4 more elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/ErectTheFenceBenchmarks.cs",
-      "anchor": "`CoordinateBound = ",
-      "reason": "`CoordinateBound` is each declaring file's own value rather than one shared fact: the same name is also declared as `1000`, `10_000`, `150`, `1_000_000` and 2 more elsewhere in the corpus, so this group agrees on a value its 5 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1911,14 +1825,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindMinimumTimeToFinishAllJobsBenchmarks.cs",
       "anchor": "`RandomSeed = ",
       "reason": "`RandomSeed` is each declaring file's own value rather than one shared fact: the same name is also declared as `1`, `1011`, `1019`, `1020` and 361 more elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindSubstringWithGivenHashValueBenchmarks.cs",
-      "anchor": "`Modulo = ",
-      "reason": "`Modulo` is each declaring file's own value rather than one shared fact: the same name is also declared as `10`, `ModularArithmetic.Modulo` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1964,14 +1870,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FourDivisorsBenchmarks.cs",
-      "anchor": "`MaxGeneratedNumber = ",
-      "reason": "`MaxGeneratedNumber = 20_000` is declared in 2 independent units (ProblemSolutions/FourDivisorsBenchmarks.cs, ProblemSolutions/ThreeDivisorsBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/GCDSortOfAnArrayBenchmarks.cs",
       "anchor": "`SharedPrimes = ",
       "reason": "`SharedPrimes` is each declaring file's own value rather than one shared fact: the same name is also declared as `[2` elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
@@ -2012,41 +1910,9 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/KthSmallestElementInABSTBenchmarks.cs",
-      "anchor": "`Remaining = ",
-      "reason": "`Remaining = new()` is declared in 2 independent units (KthSmallestElementInABST/KthSmallestElementInABSTSolution.cs, ProblemSolutions/KthSmallestElementInABSTBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/KthSmallestElementInABSTBenchmarks.cs",
-      "anchor": "`Result = ",
-      "reason": "`Result = new()` is declared in 3 independent units (BinaryTreeRightSideView/BinaryTreeRightSideViewSolution.cs, KthSmallestElementInABST/KthSmallestElementInABSTSolution.cs, ProblemSolutions/KthSmallestElementInABSTBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/LargestRectangleInHistogramBenchmarks.cs",
       "anchor": "`MaxHeight = ",
       "reason": "`MaxHeight` is each declaring file's own value rather than one shared fact: the same name is also declared as `1_000_000_000`, `50` elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/LargestTriangleAreaBenchmarks.cs",
-      "anchor": "`CoordinateUpperBound = ",
-      "reason": "`CoordinateUpperBound = 1_000` is declared in 2 independent units (ProblemSolutions/LargestTriangleAreaBenchmarks.cs, ProblemSolutions/MinimumCostOfAPathWithSpecialRoadsBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/LengthOfTheLongestIncreasingPathBenchmarks.cs",
-      "anchor": "`CoordinateBound = ",
-      "reason": "`CoordinateBound` is each declaring file's own value rather than one shared fact: the same name is also declared as `1000`, `10_000`, `150`, `1_000` and 2 more elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2116,14 +1982,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumNumberOfPointsFromGridQueriesBenchmarks.cs",
-      "anchor": "`ValueBound = ",
-      "reason": "`ValueBound` is each declaring file's own value rather than one shared fact: the same name is also declared as `100_000`, `10_000`, `1_000`, `50` and 1 more elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumPrimeDifferenceBenchmarks.cs",
       "anchor": "`MaxValueExclusive = ",
       "reason": "`MaxValueExclusive` is each declaring file's own value rather than one shared fact: the same name is also declared as `1 \u003c\u003c 16`, `1 \u003c\u003c 17`, `1 \u003c\u003c 20`, `10` and 21 more elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
@@ -2143,14 +2001,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumSubarrayBenchmarks.cs",
       "anchor": "`ValueMagnitude = ",
       "reason": "`ValueMagnitude` is each declaring file's own value rather than one shared fact: the same name is also declared as `10`, `1_000` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumSubarrayXORWithBoundedRangeBenchmarks.cs",
-      "anchor": "`Low = ",
-      "reason": "`Low` is each declaring file's own value rather than one shared fact: the same name is also declared as `1`, `100` elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2239,14 +2089,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumTimeToRevertWordToInitialStateIBenchmarks.cs",
       "anchor": "`K = ",
       "reason": "`K` is each declaring file's own value rather than one shared fact: the same name is also declared as `0`, `1 \u003c\u003c 15`, `10`, `100` and 16 more elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MostCommonWordBenchmarks.cs",
-      "anchor": "`WordPoolSize = ",
-      "reason": "`WordPoolSize = 500` is declared in 2 independent units (ProblemSolutions/MostCommonWordBenchmarks.cs, ProblemSolutions/TopKFrequentWordsBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2431,14 +2273,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/SingleNumberBenchmarks.cs",
       "anchor": "`SingletonValue = ",
       "reason": "`SingletonValue = -1` is declared in 2 independent units (ProblemSolutions/SingleNumberBenchmarks.cs, ProblemSolutions/SingleNumberIIBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/TweetCountsPerFrequencyBenchmarks.cs",
-      "anchor": "`SecondsPerHour = ",
-      "reason": "`SecondsPerHour = 3_600` is declared in 2 independent units (ProblemSolutions/TweetCountsPerFrequencyBenchmarks.cs, TweetCountsPerFrequency/TweetCountsPerFrequencySolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2908,14 +2742,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/ReverseBits/ReverseBitsSolution.cs",
-      "anchor": "`BitWidth = ",
-      "reason": "`BitWidth` is each declaring file's own value rather than one shared fact: the same name is also declared as `30` elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.LeetCode/SerializeAndDeserializeBST/SerializeAndDeserializeBSTSolution.cs",
       "anchor": "`NullMarker = ",
       "reason": "`NullMarker` is each declaring file's own value rather than one shared fact: the same name is also declared as `\"#null\"` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
@@ -3367,13 +3193,6 @@
       "check": "check-folder-organization",
       "path": "DSAExperimentation.LeetCode",
       "reason": "ARCHITECTURE.md §17's tiered solution layout: one folder per LeetCode problem, named after the problem, which is exactly what the 1106 subfolders are, and the root itself holds only the three conventions fixed by the problem set rather than by any algorithm - LeetCodeAnswer's reporting values, LeetCodeAdjacency's graph-shape layout and LeetCodeIntervals' interval-shape unpack. They sit at the root precisely because they belong to no single problem, and grouping the problem folders under intermediate categories is what that reorg explicitly rejected.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-folder-organization",
-      "path": "DSAExperimentation.LeetCode/Harness",
-      "reason": "one type per file (check-one-public-type), and the 16 files together are the single contract surface a problem folder registers against: the registration interface, the type-erased problem face, and the small value types naming a case, a strategy, a workload and a run outcome. All of them are read from the same registration-and-run call path, so there is no subsystem boundary inside the surface to group by - the splits available (naming, registration, outcome) would separate types that are only ever used together.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3992,14 +3811,6 @@
     },
     {
       "check": "check-boolean-predicate",
-      "path": "DSAExperimentation.LeetCode.Tests/InterleavingString/InterleavingStringSolutionTests.cs",
-      "message": "`Replay` answers",
-      "reason": "`Replay` is declared by `IRecurrence`, a repo primitive in the shared tier, and its return type is a generic parameter that happens to be `bool` in the instantiations here. The name describes the operation, not a boolean - `IRecurrence<TState, TResult>.Replay` returns `TResult`, and `IRandomAccessSequence<Element>.Get` returns `Element` - so it reads correctly at every other instantiation and the objection exists only for the one that returned a bool. Renaming it to satisfy this rule would make the generic contract worse (a `TryReplay` that usually returns a count), and it would edit the shared tier, which reports zero findings across all seven naming checks. Same shape as the Contract_Bound exclusion the check already makes; the C# front end cannot reach it because the declared return type is a generic parameter, not `bool`.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-boolean-predicate",
       "path": "DSAExperimentation.LeetCode/BookingConcertTicketsInGroups/BookingConcertTicketsInGroupsSolution.cs",
       "message": "`Scatter` answers",
       "reason": "`Scatter` is not this file's to choose: it is declared by `IBookMyShowStrategy` here, and every finding this covers is a class implementing that interface - `IBookMyShowStrategy` is the repo's own mirror of the problem's API, whose member names are LeetCode's (MyCircularDeque publishes `insertFront`, `insertLast`, `deleteFront`, `deleteLast`; MyCalendar publishes `book`; Skiplist publishes `search` and `erase`). This is precisely the case `symbols.Symbol.Contract_Bound` exists to decline, and the C# front end states why it cannot see it: \"implicit implementations of OTHER interfaces cannot be told apart from ordinary methods without resolving the interface, so they are not covered here\". Renaming the implementation alone does not compile; renaming the interface too would rename LeetCode's published API, which 17.3's mirror exists to preserve. Recorded as a gap in the front end's Contract_Bound projection, not as a defect in the name.",
@@ -4222,14 +4033,6 @@
       "path": "DSAExperimentation.Benchmarks.Tests/**",
       "message": "contains vague word `manager`",
       "reason": "manager here is LeetCode's own word for the problem, not a description this repo chose: the titles leetcode.com publishes are DesignAuthenticationManager, DesignEventManager, DesignTaskManager and SeatReservationManager, and 17.3 makes the folder, the solution class, the test class and the benchmark class each mirror that title so a problem can be found by the name it is actually known by. The names this waiver covers are derived from those mirrored types rather than written fresh - the four `<Title>BenchmarksTests` companions, one per title - so renaming any of them breaks the correspondence the tier exists to keep, and renaming the mirrored type itself breaks the folder/class/test correspondence that makes the catalogue navigable. `words.vague_exempt` is the blunter tool and is refused on the check's own advice ('too blunt ... it would also pardon `DataManager`'), so the waiver names the title-mirroring tree instead. Our own `Process*` methods, and every other vague name this repo wrote itself, are renamed rather than waived.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-naming-clarity",
-      "path": "DSAExperimentation.Benchmarks.Tests/**",
-      "message": "contains vague word `process`",
-      "reason": "process here is LeetCode's own word for the problem, not a description this repo chose: the title leetcode.com publishes is ProcessRestrictedFriendRequests, and 17.3 makes the folder, the solution class, the test class and the benchmark class each mirror that title so a problem can be found by the name it is actually known by. The one name this waiver covers is derived from that mirrored type rather than written fresh - ProcessRestrictedFriendRequestsBenchmarksTests, the harness companion for that title's benchmark - so renaming it breaks the correspondence the tier exists to keep, and renaming the mirrored type itself breaks the folder/class/test correspondence that makes the catalogue navigable. `words.vague_exempt` is the blunter tool and is refused on the check's own advice ('too blunt ... it would also pardon `DataManager`'), so the waiver names the title-mirroring tree instead. Every other vague name this repo wrote itself is renamed rather than waived.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4546,6 +4349,158 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumDepthOfBinaryTreeBenchmarks.cs",
       "anchor": "`MaxValue = ",
       "reason": "`MaxValue = 100` is declared in 2 independent units (ProblemSolutions/MaximumDepthOfBinaryTreeBenchmarks.cs, MaximumPrimeDifference/MaximumPrimeDifferenceSolution.cs) for unrelated quantities that happen to share a value: LC 104's node-value bound (-100 <= Node.val <= 100) and LC 3115's element bound (nums[i] <= 100). None is a shared type and the repository has no home to hoist it to - creating one would couple a benchmark harness to a solution's private bound. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BuildAMatrixWithConditionsBenchmarks.cs",
+      "anchor": "`MaxFanOut = ",
+      "reason": "`MaxFanOut = 3` is declared in 7 independent units (ProblemSolutions/BuildAMatrixWithConditionsBenchmarks.cs, ProblemSolutions/CourseScheduleIIBenchmarks.cs, ProblemSolutions/LargestColorValueInADirectedGraphBenchmarks.cs and 4 more), each a DAG workload choosing its own edge density for its own problem. None is a shared type and the repository has no home to hoist it to - creating one would give 7 unrelated benchmarks a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindXValueOfArrayIIBenchmarks.cs",
+      "anchor": "`QueryCount = ",
+      "reason": "`QueryCount = 200` is declared in 9 independent units (ProblemSolutions/FindXValueOfArrayIIBenchmarks.cs, ProblemSolutions/KthSmallestPathXORSumBenchmarks.cs, ProblemSolutions/MinimumCostWalkInWeightedGraphBenchmarks.cs and 6 more), each the number of queries one benchmark replays, chosen inside its own problem's query bound. The name takes other values elsewhere in the corpus, so no single hoisted constant could serve files that must be able to differ - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinCostToConnectAllPointsBenchmarks.cs",
+      "anchor": "`CoordinateBound = ",
+      "reason": "`CoordinateBound = 1_000` is declared in 2 independent units (ProblemSolutions/MinCostToConnectAllPointsBenchmarks.cs, ProblemSolutions/ValidSquareBenchmarks.cs), each the coordinate range its own benchmark draws points from. The name takes other values elsewhere in the corpus, so this is each file's own choice rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/NumberOf1Bits/NumberOf1BitsSolution.cs",
+      "anchor": "`BitWidth = ",
+      "reason": "`BitWidth = 32` is declared in 4 independent units (NumberOf1Bits/NumberOf1BitsSolution.cs, ReverseBits/ReverseBitsSolution.cs, SingleNumberII/SingleNumberIISolution.cs and 1 more), each the width of the 32-bit word its own problem hands it. The same name is also declared as 30 elsewhere in the corpus, so this is each file's own value rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/Fixtures/LargestComponentSizeByCommonFactorWorkloads.cs",
+      "anchor": "`MaxValue = ",
+      "reason": "`MaxValue = 100_000` is declared in 3 independent units (Fixtures/LargestComponentSizeByCommonFactorWorkloads.cs, ProblemSolutions/ShortestUnsortedContinuousSubarrayBenchmarks.cs, MaximizeCountOfDistinctPrimesAfterSplit/MaximizeCountOfDistinctPrimesAfterSplitSolution.cs), and in each it is the value bound its own problem states for its own input. Three problem statements sharing a bound is not one fact - hoisting it would tie unrelated problems to one constant that a change to any one problem's range would have to split again. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/Fixtures/LinkedListInBinaryTreeWorkloads.cs",
+      "anchor": "`MaxNodeValue = ",
+      "reason": "`MaxNodeValue = 100` is declared in 2 independent units (Fixtures/LinkedListInBinaryTreeWorkloads.cs, ProblemSolutions/MergeTwoSortedListsBenchmarks.cs), and in each it is that problem's own node-value bound: LC 1367 states 1 <= Node.val <= 100 and LC 21 states -100 <= Node.val <= 100, on their own. Two problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/Fixtures/PrefixSentenceWorkloads.cs",
+      "anchor": "`MinWordLength = ",
+      "reason": "`MinWordLength = 3` is declared in 3 independent units (Fixtures/PrefixSentenceWorkloads.cs, ProblemSolutions/CountingWordsWithAGivenPrefixBenchmarks.cs, ProblemSolutions/GroupsOfStringsBenchmarks.cs), each the shortest word its own workload draws for its own problem. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/Fixtures/RotatedSortedArrayWorkloads.cs",
+      "anchor": "`PivotDivisor = ",
+      "reason": "`PivotDivisor = 3` is declared in 2 independent units (Fixtures/RotatedSortedArrayWorkloads.cs, ProblemSolutions/SearchInRotatedSortedArrayBenchmarks.cs), each placing its own array's rotation point a third of the way along. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/CountLatticePointsInsideACircleBenchmarks.cs",
+      "anchor": "`MaxCoordinate = ",
+      "reason": "`MaxCoordinate = 100` is declared in 3 independent units (ProblemSolutions/CountLatticePointsInsideACircleBenchmarks.cs, ProblemSolutions/MaximumNumberOfVisiblePointsBenchmarks.cs, ProblemSolutions/ValidBoomerangBenchmarks.cs), and in each it is that problem's own coordinate bound, stated by LC 2249, LC 1610 and LC 1037 separately. Problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindAllAnagramsInAStringBenchmarks.cs",
+      "anchor": "`Alphabet = ",
+      "reason": "`Alphabet = \"abcdefghijklmnopqrstuvwxyz\"` is declared in 2 independent units (ProblemSolutions/FindAllAnagramsInAStringBenchmarks.cs, ProblemSolutions/ImplementTrieBenchmarks.cs), each the lowercase alphabet its own problem restricts input to. The name takes other values elsewhere in the corpus, where problems narrow it for their own workloads, so no single hoisted constant could serve them - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FindTheShortestSuperstringBenchmarks.cs",
+      "anchor": "`WordLength = ",
+      "reason": "`WordLength = 5` is declared in 2 independent units (ProblemSolutions/FindTheShortestSuperstringBenchmarks.cs, ProblemSolutions/WordLadderIIBenchmarks.cs), each the word length its own workload uses - for LC 126, its stated maximum. The name takes other values elsewhere in the corpus, so this is each file's own choice rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/FlattenBinaryTreeToLinkedListBenchmarks.cs",
+      "anchor": "`LowestValue = ",
+      "reason": "`LowestValue = -100` is declared in 2 independent units (ProblemSolutions/FlattenBinaryTreeToLinkedListBenchmarks.cs, ProblemSolutions/RemoveDuplicatesFromSortedArrayBenchmarks.cs), and in each it is that problem's own lower value bound, stated by LC 114 and LC 26 separately. Two problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/ImplementQueueUsingStacksBenchmarks.cs",
+      "anchor": "`MinPushedValue = ",
+      "reason": "`MinPushedValue = 1` is declared in 2 independent units (ProblemSolutions/ImplementQueueUsingStacksBenchmarks.cs, ProblemSolutions/ImplementStackUsingQueuesBenchmarks.cs), and in each it is that problem's own bound on pushed values: LC 232 and LC 225 each state 1 <= x <= 9 on their own. Two problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/ImplementQueueUsingStacksBenchmarks.cs",
+      "anchor": "`MaxPushedValueExclusive = ",
+      "reason": "`MaxPushedValueExclusive = 10` is declared in 2 independent units (ProblemSolutions/ImplementQueueUsingStacksBenchmarks.cs, ProblemSolutions/ImplementStackUsingQueuesBenchmarks.cs), and in each it is that problem's own bound on pushed values: LC 232 and LC 225 each state 1 <= x <= 9 on their own. Two problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/InsertGreatestCommonDivisorsInLinkedListBenchmarks.cs",
+      "anchor": "`MaxNodeValue = ",
+      "reason": "`MaxNodeValue = 1_000` is declared in 2 independent units (ProblemSolutions/InsertGreatestCommonDivisorsInLinkedListBenchmarks.cs, ProblemSolutions/ReorderListBenchmarks.cs), and in each it is that problem's own node-value bound, stated by LC 2807 and LC 143 separately. Two problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/LongestIncreasingSubsequenceIIBenchmarks.cs",
+      "anchor": "`K = ",
+      "reason": "`K = 5` is declared in 3 independent units (ProblemSolutions/LongestIncreasingSubsequenceIIBenchmarks.cs, ProblemSolutions/MinimumCostToDivideArrayIntoSubarraysBenchmarks.cs, ProblemSolutions/ShortestPathWithAtMostKConsecutiveIdenticalCharactersBenchmarks.cs), each the k parameter of its own problem, picked by its own benchmark. The name takes other values elsewhere in the corpus, so this is each file's own choice rather than one shared fact - the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MergeTwoSortedListsBenchmarks.cs",
+      "anchor": "`MinNodeValue = ",
+      "reason": "`MinNodeValue = -100` is declared in 2 independent units (ProblemSolutions/MergeTwoSortedListsBenchmarks.cs, ProblemSolutions/RotateListBenchmarks.cs), and in each it is that problem's own node-value bound, stated by LC 21 and LC 61 separately. Two problem statements sharing a bound is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/StoneGameVBenchmarks.cs",
+      "anchor": "`MaxStoneValue = ",
+      "reason": "`MaxStoneValue = 100` is declared in 2 independent units (ProblemSolutions/StoneGameVBenchmarks.cs, ProblemSolutions/StoneGameVIBenchmarks.cs), each the largest stone value its own workload draws: LC 1686's stated bound for one, a workload choice inside LC 1563's for the other. Two problems agreeing on a value is not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/MaximumGeneticDifferenceQuery/MaximumGeneticDifferenceQuerySolution.cs",
+      "anchor": "`MostSignificantBitIndex = ",
+      "reason": "`MostSignificantBitIndex = 31` is declared in 2 independent units (MaximumGeneticDifferenceQuery/MaximumGeneticDifferenceQuerySolution.cs, MaximumSubarrayXORWithBoundedRange/MaximumSubarrayXORWithBoundedRangeSolution.cs), each the starting bit of its own greedy walk down a BitTrie path. BitTrie keeps its own width private and each solution's walk is its own code, so the BitWidth = 32 group's reasoning applies: each file's own value, the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     }
