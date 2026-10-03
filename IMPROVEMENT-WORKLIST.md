@@ -338,20 +338,59 @@ fails loudly and costs one table entry.
 - **The 3 discarded-result void arms** are unobservable to any generic check. Returning the
   rewritten structure (as the 60 `object?` arms do) would make them comparable.
 
+**Step 2 — deletion manifest — MEASURED (2026-10-02), not yet applied.** Built from
+assertion content with Roslyn, not from test names. A companion test method counts as
+subsumed only when every assertion is `Assert.Equal` of the *same* projection of two arm
+answers — `f(armA)` vs `f(armB)`, or `f(arm)` vs `f(arm)` on two separate harnesses — at
+the smallest `[Params]` value, with no assertion inside a helper. Anything else keeps the
+file.
+
+| Companion files | Count | Why |
+| --- | --- | --- |
+| **Deletable** | **620** | every assertion is arm-vs-arm at the smallest parameters |
+| Pin something | 454 | an expected value, a shape, or an `Assert.True`/`InRange` the theory cannot replace |
+| `ArmAgreement` entry | 20 | the theory does not hold their arms to exact agreement |
+| Other parameters | 14 | they test at a size other than the smallest (e.g. PowerOfFour on both sides of 4^15) |
+| Not a companion | 7 | tests for helper types (`RankHooks`, `SeededRandomRand7`, …) |
+| Other | 2 | one asserts an arm twice on one harness; one file holds two classes |
+
+The 739 determinism methods compare an arm's *answer* on two fresh harnesses, which the
+theory's workload comparison did not strictly imply, so the theory gained a third row
+(`Arms_RebuiltHarness_AnswerTheSameAgain`) before the manifest was trusted. Verified two
+ways without touching the tree: a copy of the test project without the 620 files builds
+and passes 5,477 tests (7,117 − 1,640), and a full repo mirror without them gives the
+testing phase identical findings.
+
+**Found by the new row, not fixed:** `RandomPickIndexSolution` and
+`GenerateRandomPointInACircleSolution` each construct an unseeded `new Random()`, so even
+one arm answers differently on every run. `RandomPickWithBlacklistSolution` takes its seed
+as a parameter — the reproducible shape. Both are listed in `ArmAgreement.UnseededAnswers`.
+
+**The coverage gate depends on uncommitted nomos work.** The `check.exe` in
+`code-standards` is built from a working tree whose `csharp_test_coverage.go` carries an
+uncommitted exemption: members with a BenchmarkDotNet lifecycle attribute (`[Benchmark]`,
+`[GlobalSetup]`, `[Params]`, …) are runner entry points, not promises to a caller. Measured
+`check-test-coverage` live findings:
+
+| Tree | committed nomos (`f0d82072`) | working-tree `check.exe` |
+| --- | --- | --- |
+| repo today | 204 (all in `DSAExperimentation.Benchmarks/`) | 10 (`Baseline/`, P3) |
+| without the 620 | 1,843 | 10 |
+
+So with the exemption landed, the deletion needs no waiver — and the 194 benchmark findings
+the repo already carries under committed nomos disappear too. Without it, a glob waiver on
+`DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs` is the scoped form: all
+1,106 files it matches hold a `[Benchmark]` class the theory discovers, and it leaves out
+the four non-benchmark helpers in that folder. The 10 `Baseline/` findings are live under
+either binary and are P3's.
+
 **Remaining steps:**
 
-1. **Deletion manifest, by assertion content, not test names.** The "986 classes hold only
-   determinism and agreement tests" figure classified by method name and overstates: a
-   content heuristic finds **670** companions that assert only arm against arm and **447** that
-   pin a value or property somewhere (e.g. `LinkedListCycleIIBenchmarksTests`' agreement test
-   also asserts `HeadValue`). The theory cannot replace a pinned value. Companions of the 21
-   `ArmAgreement` classes stay. Bulk deletes are refused in auto mode, so this is a manifest
-   for the owner.
-2. **The coverage gate.** Deleting companions reintroduces `check-test-coverage` findings:
-   either a "complete by construction" glob waiver on
-   `DSAExperimentation.Benchmarks/ProblemSolutions/**` (precedent: the existing
-   `DSAExperimentation.LeetCode/**` waiver), or teach nomos to credit theory coverage.
+1. **Apply the deletion** — owner's call; bulk deletes are refused in auto mode.
+2. **Land or drop the nomos exemption**, which decides whether a waiver is needed.
 3. **`ARCHITECTURE.md` §17.7 / §17.9** describe the companion rule and need rewriting.
+4. **The kept files still hold 629 arm-only methods beside their pinned ones** (of 1,376
+   classified there); pruning those is a method-level bulk edit, a later pass.
 
 **Done when:** the companion tree holds only tests that pin something the theory cannot,
 the coverage gate accounts for the rest by a stated rule, and §17 describes that shape.
