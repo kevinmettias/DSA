@@ -26,14 +26,4 @@ public sealed partial class PalindromePartitioningIISolutionTests
     public void MinCutByIterativeDynamicProgramming_LeetCodeExamples_ReturnsMinimumCuts(
         string text, int expected) =>
         Assert.Equal(expected, PalindromePartitioningIISolution.MinCutByIterativeDynamicProgramming(text));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they return the same cut count on every example - not merely
-    // that each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinCut_AgreeOnEveryExample(string text, int expected) =>
-        Assert.Equal(
-            PalindromePartitioningIISolution.MinCutByMemoizedSuffixRecurrence(text),
-            PalindromePartitioningIISolution.MinCutByIterativeDynamicProgramming(text));
 }

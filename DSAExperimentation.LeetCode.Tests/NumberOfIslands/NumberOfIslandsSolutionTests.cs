@@ -54,14 +54,4 @@ public sealed partial class NumberOfIslandsSolutionTests
     public void CountIslandsByBreadthFirstSink_LeetCodeExamples_ReturnsComponentCount(
         char[][] grid, int expected) =>
         Assert.Equal(expected, NumberOfIslandsSolution.CountIslandsByBreadthFirstSink(grid));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same count on every example - not merely that each
-    // agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountIslands_AgreeOnEveryExample(char[][] grid, int expected) =>
-        Assert.Equal(
-            NumberOfIslandsSolution.CountIslandsByDepthFirstSink(grid),
-            NumberOfIslandsSolution.CountIslandsByBreadthFirstSink(grid));
 }

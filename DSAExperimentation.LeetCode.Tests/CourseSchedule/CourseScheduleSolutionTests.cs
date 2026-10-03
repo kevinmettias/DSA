@@ -36,16 +36,6 @@ public sealed partial class CourseScheduleSolutionTests
         Assert.Equal(example.Expected, canFinish);
     }
 
-    // The two arms are competing strategies for one question, so they must agree on the cyclic
-    // example as well as the acyclic ones - a colouring that never finds the cycle would pass
-    // every other case here.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CanFinish_AgreeOnEveryExample(CourseExample example) =>
-        Assert.Equal(
-            CourseScheduleSolution.CanFinishByTopologicalSort(example.NumCourses, example.Prerequisites),
-            CourseScheduleSolution.CanFinishByDepthFirstColoring(example.NumCourses, example.Prerequisites));
-
     // One LeetCode example: the course count, the prerequisite pairs in LeetCode's own
     // [a, b] = "take b before a" shape, and whether every course can be finished. Nested
     // because it is only ever used inside this test class - it is this harness's own

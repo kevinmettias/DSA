@@ -3,9 +3,9 @@ using DSAExperimentation.LeetCode.SurroundedRegions;
 namespace DSAExperimentation.LeetCode.Tests.SurroundedRegions;
 
 // Harness only: both border strategies live in SurroundedRegionsSolution - this file
-// pins them to LeetCode's published examples and to each other. Solve mutates its
-// board in place, so each example carries the input and the expected post-mutation
-// board, and the agreement check hands each arm its own clone of the input.
+// pins each to LeetCode's published examples. Solve mutates its board in place, so
+// each example carries the input and the expected post-mutation board, and each arm
+// is handed its own clone of the input.
 public sealed partial class SurroundedRegionsSolutionTests
 {
     public static TheoryData<char[][], char[][]> Examples =>
@@ -47,21 +47,6 @@ public sealed partial class SurroundedRegionsSolutionTests
         SurroundedRegionsSolution.SolveByBorderBreadthFirstSearch(board);
 
         Assert.Equal(expected, board);
-    }
-
-    // Both arms solve the board in place, so each gets its own clone of the input; the
-    // two clones must then agree.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Solve_AgreeOnEveryExample(char[][] board, char[][] expected)
-    {
-        var byDepthFirst = Clone(board);
-        var byBreadthFirst = Clone(board);
-
-        SurroundedRegionsSolution.SolveByBorderDepthFirstSearch(byDepthFirst);
-        SurroundedRegionsSolution.SolveByBorderBreadthFirstSearch(byBreadthFirst);
-
-        Assert.Equal(byDepthFirst, byBreadthFirst);
     }
 
     private static char[][] Clone(char[][] board) =>

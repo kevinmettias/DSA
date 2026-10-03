@@ -25,14 +25,4 @@ public sealed partial class SingleNumberIISolutionTests
     [MemberData(nameof(Examples))]
     public void FindSingleByTwoBitCounters_LeetCodeExamples_ReturnsTheUnpairedValue(int[] nums, int expected) =>
         Assert.Equal(expected, SingleNumberIISolution.FindSingleByTwoBitCounters(nums));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same survivor on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindSingle_AgreeOnEveryExample(int[] nums, int expected) =>
-        Assert.Equal(
-            SingleNumberIISolution.FindSingleByBitCountModThree(nums),
-            SingleNumberIISolution.FindSingleByTwoBitCounters(nums));
 }

@@ -33,16 +33,6 @@ public sealed partial class WordBreakSolutionTests
         Assert.Equal(example.Expected, canBreak);
     }
 
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they answer the same on every example - not merely that each
-    // agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CanBreak_AgreeOnEveryExample(SegmentCase example) =>
-        Assert.Equal(
-            WordBreakSolution.CanBreakByTrieMemoized(example.S, example.WordDict),
-            WordBreakSolution.CanBreakByIterativeReachability(example.S, example.WordDict));
-
     // One LeetCode example: the string to segment, the dictionary it may be cut into,
     // and whether some concatenation of dictionary words spells the whole string. Nested
     // because it is only ever used inside this test class - it is this harness's own

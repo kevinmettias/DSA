@@ -53,26 +53,6 @@ public sealed partial class LowestCommonAncestorOfBstSolutionTests
         Assert.Equal(expected, lca!.Value);
     }
 
-    // The two arms are competing strategies for one question, so they must agree on every example -
-    // including the two where one queried node is an ancestor of the other, the case a value-only
-    // walk is most likely to overshoot past the answer.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindLca_AgreeOnEveryExample(int first, int second, int expected)
-    {
-        var root = BuildClassicExampleTree();
-        var firstNode = FindNode(root, first);
-        var secondNode = FindNode(root, second);
-
-        var byAncestryWalk = LowestCommonAncestorOfBstSolution.FindLcaByAncestryWalk(root, firstNode, secondNode);
-        var byValueComparison = LowestCommonAncestorOfBstSolution.FindLcaByBstValueComparison(root, firstNode, secondNode);
-
-        // presumption: allow -- both arms are handed the same two nodes FindNode
-        // just located, so each either finds the same ancestor or is the arm under
-        // test having returned null; the equality below is what fails in that case.
-        Assert.Equal(byAncestryWalk!.Value, byValueComparison!.Value);
-    }
-
     private static BinaryTreeNode<int> BuildClassicExampleTree()
     {
         var tree = new BinarySearchTree<int>();

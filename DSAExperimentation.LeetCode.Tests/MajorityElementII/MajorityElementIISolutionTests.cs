@@ -28,15 +28,4 @@ public sealed partial class MajorityElementIISolutionTests
     public void MajorityByExtendedBoyerMooreVoting_LeetCodeExamples_ReturnsElementsOverNThirds(
         int[] nums, int[] expected) =>
         Assert.Equal(expected.Order(), MajorityElementIISolution.MajorityByExtendedBoyerMooreVoting(nums).Order());
-
-    // The two arms are competing strategies for one question, and the voting arm is the
-    // one that leans on the "at most two such values" bound the other ignores - so the
-    // property worth pinning is that both name the same set, not merely that each agrees
-    // with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Majority_AgreeOnEveryExample(int[] nums, int[] expected) =>
-        Assert.Equal(
-            MajorityElementIISolution.MajorityByHashMap(nums).Order(),
-            MajorityElementIISolution.MajorityByExtendedBoyerMooreVoting(nums).Order());
 }

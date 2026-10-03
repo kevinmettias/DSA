@@ -25,14 +25,4 @@ public sealed partial class MajorityElementSolutionTests
     [MemberData(nameof(Examples))]
     public void MajorityByBoyerMooreVoting_LeetCodeExamples_ReturnsMajorityElement(int[] nums, int expected) =>
         Assert.Equal(expected, MajorityElementSolution.MajorityByBoyerMooreVoting(nums));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same element on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Majority_AgreeOnEveryExample(int[] nums, int expected) =>
-        Assert.Equal(
-            MajorityElementSolution.MajorityByHashMap(nums),
-            MajorityElementSolution.MajorityByBoyerMooreVoting(nums));
 }

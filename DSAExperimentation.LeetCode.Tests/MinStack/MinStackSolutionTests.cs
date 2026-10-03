@@ -62,16 +62,6 @@ public sealed partial class MinStackSolutionTests
     public void CreateBySingleListScan_LeetCodeExamples_TracksRunningMinimum(MinStackOp[] operations, int?[] expected) =>
         Assert.Equal(expected, RunScript(MinStackSolution.CreateBySingleListScan(), operations));
 
-    // The two arms are competing strategies for one question, so they must answer the same script
-    // identically - including the tied-minimum example, where a value equal to the current minimum
-    // is pushed and then popped over a deeper one.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinStack_ArmsAgreeOnEveryExample(MinStackOp[] operations, int?[] expected) =>
-        Assert.Equal(
-            RunScript(MinStackSolution.CreateByStackPrimitive(), operations),
-            RunScript(MinStackSolution.CreateBySingleListScan(), operations));
-
     private static int?[] RunScript(MinStackSolution.IMinStackOperations stack, MinStackOp[] operations) =>
         [.. operations.Select(operation => operation.Apply(stack))];
 

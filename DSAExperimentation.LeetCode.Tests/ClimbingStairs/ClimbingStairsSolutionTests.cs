@@ -25,11 +25,4 @@ public sealed partial class ClimbingStairsSolutionTests
     public void CountWaysByIterativeRollingTotals_LeetCodeExamples_ReturnsDistinctClimbSequenceCount(
         int stepCount, int expected) =>
         Assert.Equal(expected, ClimbingStairsSolution.CountWaysByIterativeRollingTotals(stepCount));
-
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountWays_AgreeOnEveryExample(int stepCount, int expected) =>
-        Assert.Equal(
-            ClimbingStairsSolution.CountWaysByIterativeRollingTotals(stepCount),
-            ClimbingStairsSolution.CountWaysByMemoizedRecurrence(stepCount));
 }

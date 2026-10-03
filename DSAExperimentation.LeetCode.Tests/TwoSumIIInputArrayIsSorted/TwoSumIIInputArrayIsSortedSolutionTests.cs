@@ -36,14 +36,4 @@ public sealed partial class TwoSumIIInputArrayIsSortedSolutionTests
 
         Assert.Equal(expected, indices);
     }
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they report the same pair on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void TryFindIndices_AgreeOnEveryExample(int[] nums, int target, int[] expected) =>
-        Assert.Equal(
-            TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByBinarySearch(nums, target),
-            TwoSumIIInputArrayIsSortedSolution.TryFindIndicesByTwoPointerSqueeze(nums, target));
 }

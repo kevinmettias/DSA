@@ -41,20 +41,6 @@ public sealed partial class DistinctSubsequencesSolutionTests
         Assert.Equal(example.Expected, count);
     }
 
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they count the same subsequences on every example - not merely
-    // that each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void CountDistinctSubsequences_AgreeOnEveryExample(SubsequenceExample example) =>
-        Assert.Equal(
-            DistinctSubsequencesSolution.CountDistinctSubsequencesByMemoizedRecursion(
-                new SourceText(example.Source),
-                new TargetPattern(example.Target)),
-            DistinctSubsequencesSolution.CountDistinctSubsequencesByIterativeTable(
-                new SourceText(example.Source),
-                new TargetPattern(example.Target)));
-
     // One LeetCode example: the text being searched and the pattern counted inside it.
     // The two are the same type and the match is not symmetric, so the row names which
     // is which rather than leaving two interchangeable positions. Nested because it is

@@ -23,14 +23,4 @@ public sealed partial class NumberOf1BitsSolutionTests
     [MemberData(nameof(Examples))]
     public void CountByShiftAndMask_LeetCodeExamples_ReturnsSetBitCount(uint value, int expected) =>
         Assert.Equal(expected, NumberOf1BitsSolution.CountByShiftAndMask(value));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they count the same bits on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Count_AgreeOnEveryExample(uint value, int expected) =>
-        Assert.Equal(
-            NumberOf1BitsSolution.CountByBitClear(value),
-            NumberOf1BitsSolution.CountByShiftAndMask(value));
 }

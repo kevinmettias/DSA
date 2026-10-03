@@ -27,16 +27,6 @@ public sealed partial class PalindromePartitioningSolutionTests
         string text, string[][] expected) =>
         AssertSamePartitions(expected, PalindromePartitioningSolution.PartitionByPrecomputedPalindromeTable(text));
 
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they return the same partitions on every example - not merely
-    // that each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Partition_AgreeOnEveryExample(string text, string[][] expected) =>
-        AssertSamePartitionsBetween(
-            PalindromePartitioningSolution.PartitionByBacktracking(text),
-            PalindromePartitioningSolution.PartitionByPrecomputedPalindromeTable(text));
-
     private static void AssertSamePartitionsBetween(List<List<string>> first, List<List<string>> second)
     {
         var firstArrays = first.Select(x => x.ToArray()).ToArray();

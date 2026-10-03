@@ -25,14 +25,4 @@ public sealed partial class SingleNumberSolutionTests
     [MemberData(nameof(Examples))]
     public void FindUniqueBySetToggling_LeetCodeExamples_ReturnsTheUnpairedValue(int[] nums, int expected) =>
         Assert.Equal(expected, SingleNumberSolution.FindUniqueBySetToggling(nums));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same survivor on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindUnique_AgreeOnEveryExample(int[] nums, int expected) =>
-        Assert.Equal(
-            SingleNumberSolution.FindUniqueByXorFold(nums),
-            SingleNumberSolution.FindUniqueBySetToggling(nums));
 }

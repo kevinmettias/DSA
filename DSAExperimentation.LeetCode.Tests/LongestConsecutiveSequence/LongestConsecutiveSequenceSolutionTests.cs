@@ -24,14 +24,4 @@ public sealed partial class LongestConsecutiveSequenceSolutionTests
     [MemberData(nameof(Examples))]
     public void LongestConsecutiveBySortedScan_LeetCodeExamples_ReturnsLongestRun(int[] nums, int expected) =>
         Assert.Equal(expected, LongestConsecutiveSequenceSolution.LongestConsecutiveBySortedScan(nums));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same length on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void LongestConsecutive_AgreeOnEveryExample(int[] nums, int expected) =>
-        Assert.Equal(
-            LongestConsecutiveSequenceSolution.LongestConsecutiveBySetRunExpansion(nums),
-            LongestConsecutiveSequenceSolution.LongestConsecutiveBySortedScan(nums));
 }

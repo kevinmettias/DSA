@@ -25,14 +25,4 @@ public sealed partial class HouseRobberSolutionTests
     [MemberData(nameof(Examples))]
     public void RobByIterativeRollingTotals_LeetCodeExamples_ReturnsBestNonAdjacentSum(int[] nums, int expected) =>
         Assert.Equal(expected, HouseRobberSolution.RobByIterativeRollingTotals(nums));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same haul on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Rob_AgreeOnEveryExample(int[] nums, int expected) =>
-        Assert.Equal(
-            HouseRobberSolution.RobByMemoizedRecursion(nums),
-            HouseRobberSolution.RobByIterativeRollingTotals(nums));
 }

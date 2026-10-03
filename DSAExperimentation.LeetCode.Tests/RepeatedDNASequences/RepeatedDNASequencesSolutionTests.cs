@@ -28,14 +28,4 @@ public sealed partial class RepeatedDNASequencesSolutionTests
     public void FindByRollingTwoBitMask_LeetCodeExamples_ReturnsRepeatedWindowsInFirstAppearanceOrder(
         string sequence, string[] expected) =>
         Assert.Equal(expected, RepeatedDNASequencesSolution.FindByRollingTwoBitMask(sequence));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they report the same windows in the same order on every
-    // example - not merely that each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void FindRepeatedWindows_AgreeOnEveryExample(string sequence, string[] expected) =>
-        Assert.Equal(
-            RepeatedDNASequencesSolution.FindByFixedWindowSet(sequence),
-            RepeatedDNASequencesSolution.FindByRollingTwoBitMask(sequence));
 }

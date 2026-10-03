@@ -27,14 +27,4 @@ public sealed partial class HouseRobberIISolutionTests
     [MemberData(nameof(Examples))]
     public void RobByIterativeTwoPass_LeetCodeExamples_ReturnsCircularBest(int[] nums, int expected) =>
         Assert.Equal(expected, HouseRobberIISolution.RobByIterativeTwoPass(nums));
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they name the same haul on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void Rob_AgreeOnEveryExample(int[] nums, int expected) =>
-        Assert.Equal(
-            HouseRobberIISolution.RobByMemoizedRecursion(nums),
-            HouseRobberIISolution.RobByIterativeTwoPass(nums));
 }

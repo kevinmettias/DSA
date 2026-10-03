@@ -45,14 +45,4 @@ public sealed partial class MinimumDepthOfBinaryTreeSolutionTests
 
         Assert.Equal(expectedDepth, depth);
     }
-
-    // The two arms are competing strategies for one question, so the property worth
-    // pinning is that they return the same depth on every example - not merely that
-    // each agrees with the expectation beside it.
-    [Theory]
-    [MemberData(nameof(Examples))]
-    public void MinDepth_AgreeOnEveryExample(int?[] values, int expectedDepth) =>
-        Assert.Equal(
-            MinimumDepthOfBinaryTreeSolution.MinDepthByRecursion(LeetCodeWireFormat.ToBinaryTree(values)),
-            MinimumDepthOfBinaryTreeSolution.MinDepthByBreadthFirstSearch(LeetCodeWireFormat.ToBinaryTree(values)));
 }
