@@ -13,27 +13,34 @@ public class SortColorsBenchmarks
 
     private int[] _values = [];
 
+    // The array each arm copies _values into and sorts; allocated once in setup.
+    private int[] _copy = [];
+
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() =>
+    public void Setup()
+    {
         _values = Enumerable.Range(0, Length).Select(i => MaxColorValue - (i % ColorCount)).ToArray();
+        _copy = new int[Length];
+    }
 
-    // Each arm sorts its own copy in place and returns that copy.
+    // Each arm sorts a fresh copy in place and returns it. The copy is timed on purpose: both
+    // strategies mutate their input, so every arm pays the same O(n) copy.
     [Benchmark(Baseline = true)]
     public int[] ArraySort()
     {
-        var copy = (int[])_values.Clone();
-        SortColorsSolution.SortByArraySort(copy);
-        return copy;
+        _values.CopyTo(_copy, 0);
+        SortColorsSolution.SortByArraySort(_copy);
+        return _copy;
     }
 
     [Benchmark]
     public int[] ArrayIndexedDutchFlag()
     {
-        var copy = (int[])_values.Clone();
-        SortColorsSolution.SortByDutchFlagPartition(copy);
-        return copy;
+        _values.CopyTo(_copy, 0);
+        SortColorsSolution.SortByDutchFlagPartition(_copy);
+        return _copy;
     }
 }
