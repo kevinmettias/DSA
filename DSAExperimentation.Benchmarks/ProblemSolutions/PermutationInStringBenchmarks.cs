@@ -13,7 +13,7 @@ public class PermutationInStringBenchmarks
 
     // LC problem number
 
-    [Params(2_000, 20_000)]
+    [Params(2_000, 10_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

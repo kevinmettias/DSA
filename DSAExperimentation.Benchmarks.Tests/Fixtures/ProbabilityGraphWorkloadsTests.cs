@@ -64,6 +64,16 @@ public sealed partial class ProbabilityGraphWorkloadsTests
             (NodeCount - 1) * (1 + ExtraEdgesPerNode));
     }
 
+    // LC 1514 allows at most one edge between two nodes. Every edge is stated low-to-high, so a second
+    // edge between the same two nodes would repeat a row exactly.
+    [Fact]
+    public void Build_NoTwoEdges_JoinTheSamePairOfNodes()
+    {
+        var (edges, _) = ProbabilityGraphWorkloads.Build(NodeCount, ExtraEdgesPerNode, Seed);
+
+        Assert.Equal(edges.Length, edges.Select(edge => (edge[0], edge[1])).Distinct().Count());
+    }
+
     // The probabilities are doubles, so the repeat is compared inside a named tolerance rather than by
     // exact equality - the same reason the band above carries one.
     [Fact]

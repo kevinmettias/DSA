@@ -6,8 +6,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PopulatingNextRightPointersInEachNodeSolution's, the
 // same methods PopulatingNextRightPointersInEachNodeSolutionTests proves correct. Fixture
-// sizes are 2^k-1 so BinaryTrees.Balanced is a genuinely perfect tree, matching
-// this problem's guarantee.
+// sizes are 2^k-1 so the complete tree BinaryTrees.Complete builds is a genuinely perfect
+// tree, matching this problem's guarantee. Its level-order values wrap within LC 116's
+// [-1000, 1000] rather than counting up to NodeCount: both strategies key their maps on
+// node identity, so the values only have to stay in range.
 //
 // Each arm returns .Count of its next-pointer map - a proxy, and deliberately one of the
 // few left. The two strategies answer with different map types, the baseline a BCL
@@ -18,13 +20,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against LeetCode's examples meanwhile.
 public class PopulatingNextRightPointersInEachNodeBenchmarks
 {
+    // The values 0..1000, every one of them inside LC 116's [-1000, 1000].
+    private const int ValueSpan = 1_001;
+
     private BinaryTreeNode<int> _root = null!;
 
     [Params(63, 1_023)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
+    public void Setup() => _root = BinaryTrees.Complete(LevelOrderValues(NodeCount));
+
+    private static int[] LevelOrderValues(int nodeCount) =>
+        [.. Enumerable.Range(0, nodeCount).Select(index => index % ValueSpan)];
 
     [Benchmark(Baseline = true)]
     public int ManualQueueBfs() => PopulatingNextRightPointersInEachNodeSolution.ConnectByManualQueueBfs(_root).Count;

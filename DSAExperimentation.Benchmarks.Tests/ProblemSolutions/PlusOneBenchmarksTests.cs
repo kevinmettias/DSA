@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the carry cascades through every position; the same Length must rebuild that same operand.
 public sealed partial class PlusOneBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
 
     // The all-nines operand grows the number by exactly one digit.
     private const int GrownLength = SmallestLength + 1;

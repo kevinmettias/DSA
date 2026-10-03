@@ -11,8 +11,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Both arms return only .Count of that map, because BinaryTreeNode<int> is internal and a public
 // [Benchmark] method cannot return a type built over it. That is a proxy: two arms that linked the
 // nodes differently but visited the same number of them would still agree. The count is at least the
-// one thing the fixture pins - BinaryTrees.Balanced(n) allocates exactly n nodes - so each arm is
-// also asserted against that independently derived total, which an arm that dropped a node fails.
+// one thing the fixture pins - BinaryTrees.Complete over n values allocates exactly n nodes - so each
+// arm is also asserted against that independently derived total, which an arm that dropped a node
+// fails.
 public sealed partial class PopulatingNextRightPointersInEachNodeBenchmarksTests
 {
     private const int SmallestNodeCount = 63;

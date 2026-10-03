@@ -10,6 +10,10 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 //
 // Probabilities land in (0.5, 0.99], high enough that long paths stay competitive with
 // short ones so the search cannot be won by a trivially dominant single edge.
+//
+// LC 1514 allows at most one edge between two nodes, so a pair drawn twice keeps only
+// the edge drawn first. The repeat is still drawn, so every later draw reads the same
+// stream it did before repeats were dropped.
 internal static class ProbabilityGraphWorkloads
 {
     private const double MinEdgeProbability = 0.5;
@@ -36,7 +40,9 @@ internal static class ProbabilityGraphWorkloads
             }
         }
 
-        return ToLeetCodeShape(generated);
+        var firstEdgePerPair = generated.DistinctBy(edge => (edge.From, edge.To)).ToList();
+
+        return ToLeetCodeShape(firstEdgePerPair);
     }
 
     private static void AddEdge(List<GeneratedEdge> generated, int from, int to, Random random)

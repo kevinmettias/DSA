@@ -5,6 +5,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are PeekingIteratorSolution's, the same factories
 // PeekingIteratorSolutionTests proves correct. Both drive the same peek-then-next
 // pattern to full exhaustion, returning every Peek and Next answer in call order.
+//
+// The values are 1..Length, as LC 284's are at least 1. Length stops at 333: the drain
+// makes a HasNext, a Peek and a Next per element plus one final HasNext, 1,000 calls in
+// all, LC 284's cap.
 public class PeekingIteratorBenchmarks
 {
     // One Peek and one Next per element.
@@ -14,13 +18,13 @@ public class PeekingIteratorBenchmarks
 
     private int[] _answers = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 333)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _values = Enumerable.Range(0, Length).ToArray();
+        _values = Enumerable.Range(1, Length).ToArray();
         _answers = new int[_values.Length * AnswersPerElement];
     }
 

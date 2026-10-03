@@ -14,7 +14,7 @@ public class PathSumIIIBenchmarks
 
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

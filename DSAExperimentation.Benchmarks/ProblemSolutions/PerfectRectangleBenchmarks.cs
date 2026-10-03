@@ -6,12 +6,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PerfectRectangleSolutionTests proves correct. The input is a genuine GridSize x GridSize
 // unit-square tiling - a real perfect cover, not a rejected one - so neither
 // strategy short-circuits early on a detected overlap and both run their full
-// worst-case pass.
+// worst-case pass. GridSize stops at 141: its 19,881 squares are the largest square
+// tiling inside LC 391's 2 * 10^4 rectangles.
 public class PerfectRectangleBenchmarks
 {
     private int[][] _rectangles = [];
 
-    [Params(20, 150)]
+    [Params(20, 141)]
     public int GridSize { get; set; }
 
     [GlobalSetup]

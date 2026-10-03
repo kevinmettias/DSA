@@ -8,7 +8,7 @@ public class PermutationsBenchmarks
 {
     private int[] _values = [];
 
-    [Params(6, 8)]
+    [Params(3, 6)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -3,13 +3,14 @@ using DSAExperimentation.LeetCode.PathWithMinimumEffort;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathWithMinimumEffortSolution's, the same methods
-// PathWithMinimumEffortSolutionTests proves correct. Heights are random in [0, 10^6),
-// matching LeetCode's own constraint range, so equal-height ties are effectively
+// PathWithMinimumEffortSolutionTests proves correct. Heights are random in [1, 10^6),
+// inside LeetCode's own [1, 10^6] constraint range, so equal-height ties are effectively
 // absent and the binary search arm pays for a full re-scan per candidate.
 public class PathWithMinimumEffortBenchmarks
 {
     private const int RandomSeed = 1631; // LC 1631: Path With Minimum Effort
 
+    private const int MinHeight = 1;
     private const int HeightUpperBoundExclusive = 1_000_000;
 
     private int[][] _heights = [];
@@ -29,7 +30,7 @@ public class PathWithMinimumEffortBenchmarks
 
             for (var c = 0; c < Size; c++)
             {
-                _heights[r][c] = random.Next(0, HeightUpperBoundExclusive);
+                _heights[r][c] = random.Next(MinHeight, HeightUpperBoundExclusive);
             }
         }
     }

@@ -13,11 +13,11 @@ public sealed partial class PeekingIteratorBenchmarksTests
 {
     private const int SmallestLength = 200;
 
-    // Drain peeks then takes every element, so each of 0..Length-1 is answered twice in a row.
+    // Drain peeks then takes every element, so each of 1..Length is answered twice in a row.
     private const int AnswersPerElement = 2;
 
-    // The sum of those answers: each of 0..Length-1 twice.
-    private const long ExpectedDrainedTotal = (long)SmallestLength * (SmallestLength - 1);
+    // The sum of those answers: each of 1..Length twice.
+    private const long ExpectedDrainedTotal = (long)SmallestLength * (SmallestLength + 1);
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
@@ -42,7 +42,7 @@ public sealed partial class PeekingIteratorBenchmarksTests
     }
 
     private static int[] ExpectedAnswers() =>
-        [.. Enumerable.Range(0, SmallestLength).SelectMany(value => Enumerable.Repeat(value, AnswersPerElement))];
+        [.. Enumerable.Range(1, SmallestLength).SelectMany(value => Enumerable.Repeat(value, AnswersPerElement))];
 
     private static PeekingIteratorBenchmarks BuildHarness()
     {
