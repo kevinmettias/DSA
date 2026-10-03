@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // OfUnordered: one value per level with the levels in order is what a right side view is.
 public sealed partial class BinaryTreeRightSideViewBenchmarksTests
 {
-    private const int SmallestNodeCount = 255;
+    private const int SmallestNodeCount = 15;
 
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload() =>

@@ -23,7 +23,10 @@ internal static class FlightWorkloads
 
     // LeetCode's own flights shape: one [from, to, price] row per flight. A back
     // edge per city guarantees reachability from city 0, then a couple of extra
-    // random flights per city give the search real branching density.
+    // random flights per city give the search real branching density. LC 787 allows
+    // at most one flight between two cities - its n * (n - 1) / 2 cap on the flight
+    // count counts unordered pairs - so an extra flight joining an already-linked
+    // pair, in either direction, is dropped.
     public static int[][] BuildFlights(int cityCount, int seed)
     {
         var random = new Random(seed);
@@ -43,19 +46,34 @@ internal static class FlightWorkloads
         }
     }
 
+    // A self-loop is skipped before its price is drawn and a repeated pair after, so
+    // dropping a flight never moves a later flight's draws.
     private static void AddBranchingFlights(int cityCount, Random random, List<int[]> flights)
     {
+        var linkedPairs = flights.Select(flight => CityPair(flight[0], flight[1])).ToHashSet();
+
         for (var city = 0; city < cityCount; city++)
         {
             for (var extra = 0; extra < ExtraFlightsPerCity; extra++)
             {
                 var target = random.Next(cityCount);
-
-                if (target != city)
+                if (target == city)
                 {
-                    flights.Add([city, target, random.Next(1, MaxFlightPrice)]);
+                    continue;
                 }
+
+                int[] flight = [city, target, random.Next(1, MaxFlightPrice)];
+                var pair = CityPair(city, target);
+                if (!linkedPairs.Add(pair))
+                {
+                    continue;
+                }
+
+                flights.Add(flight);
             }
         }
     }
+
+    // The two cities a flight joins, whichever way it flies.
+    private static (int Lower, int Higher) CityPair(int from, int to) => (Math.Min(from, to), Math.Max(from, to));
 }

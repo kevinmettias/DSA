@@ -13,7 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class CapacityToShipPackagesWithinDDaysBenchmarks
 {
     private const int RandomSeed = 1011; // LC problem number
-    private const int MaxWeightExclusive = 1_000;
+    // LC 1011's weights are at most 500.
+    private const int MaxWeightExclusive = 501;
     private const int DaysDivisor = 20;
 
     private int[] _weights = [];

@@ -66,6 +66,19 @@ public sealed partial class FlightWorkloadsTests
         Assert.InRange(flights.Length, CityCount - 1, CityCount - 1 + (CityCount * ExtraFlightsPerCity));
     }
 
+    // LC 787 allows at most one flight between two cities, in either direction; this seed's raw
+    // draws join seven pairs twice, so the generator has to drop repeats rather than happen not to
+    // make them.
+    [Fact]
+    public void BuildFlights_EveryPairOfCities_IsJoinedByAtMostOneFlight()
+    {
+        var pairs = FlightWorkloads.BuildFlights(CityCount, Seed)
+            .Select(flight => (Math.Min(flight[0], flight[1]), Math.Max(flight[0], flight[1])))
+            .ToList();
+
+        Assert.Equal(pairs.Count, pairs.Distinct().Count());
+    }
+
     [Fact]
     public void BuildFlights_SameSeed_ReturnsTheSameNetwork() =>
         Assert.Equal(

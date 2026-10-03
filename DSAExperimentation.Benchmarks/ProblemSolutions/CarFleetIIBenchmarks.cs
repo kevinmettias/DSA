@@ -27,7 +27,8 @@ public class CarFleetIIBenchmarks
 
         for (var i = 0; i < Length; i++)
         {
-            _cars[i] = [i * PositionSpacing, i + 1];
+            // LC 1776's positions start at 1, so the first car sits one spacing in.
+            _cars[i] = [(i + 1) * PositionSpacing, i + 1];
         }
     }
 

@@ -14,10 +14,10 @@ public sealed partial class CarFleetIIBenchmarksTests
     private const int SmallestLength = 200;
 
     // The sentinel both strategies report for a car that never collides - and the value every car
-    // in this fleet gets. Setup builds cars[i] with position i * 10 and speed i + 1, so the car at
-    // the back of each pair is always the slower of the two and nothing ever catches anything: a
-    // rebuilt fleet must answer with this sentinel once per car. The fleet is a closed form over
-    // Length with no draw from any stream, so the same Length is the whole of what pins it.
+    // in this fleet gets. Setup builds cars[i] with position (i + 1) * 10 and speed i + 1, so the
+    // car at the back of each pair is always the slower of the two and nothing ever catches
+    // anything: a rebuilt fleet must answer with this sentinel once per car. The fleet is a closed
+    // form over Length with no draw from any stream, so the same Length is the whole of what pins it.
     private const double NoCollisionTime = -1;
 
     // Both arms run the identical catch-up division over the identical pair of cars, so they agree

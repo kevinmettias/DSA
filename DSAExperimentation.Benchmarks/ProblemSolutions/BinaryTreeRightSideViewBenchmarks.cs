@@ -14,7 +14,9 @@ public class BinaryTreeRightSideViewBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(255, 65_535)]
+    // LC 199's tree holds at most 100 nodes valued in [-100, 100]; Balanced's values are the node
+    // indices 0..NodeCount-1, so both stay inside it.
+    [Params(15, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

@@ -18,7 +18,8 @@ public class BuildAMatrixWithConditionsBenchmarks
     private List<ValueNode> _rowValues = new();
 
     private List<ValueNode> _colValues = new();
-    [Params(50, 1_000)]
+    // LC 2392's k is at most 400.
+    [Params(50, 400)]
     public int ValueCount { get; set; }
 
     [GlobalSetup]

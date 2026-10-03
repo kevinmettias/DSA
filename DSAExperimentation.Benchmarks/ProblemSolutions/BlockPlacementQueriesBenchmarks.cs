@@ -7,16 +7,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // obstacles at distinct random coordinates and half asks type-2 queries
 // against a random prefix - by the end of the run most obstacles are already
 // active, so both arms are answering over a genuinely populated obstacle set
-// rather than a mostly-empty one. Both Params sit past the crossover where
-// SegmentTreeMerge's own O(maxCoordinate) setup (three arrays plus two
-// DisjointSetForests sized ~3*QueryCount) stops outweighing LinearScan's O(m)-
-// per-query rescan - confirmed locally at QueryCount=5_000 (~1.2x faster) and
-// QueryCount=50_000 (~3x faster), the O(n log n) vs. O(n*m) gap widening with
-// scale as expected.
+// rather than a mostly-empty one. Coordinates run to 3 * QueryCount, capped at
+// 50,000 - LC 3161 bounds every x and sz by min(5 * 10^4, 3 * queries.length).
+// Both Params sit past the crossover where SegmentTreeMerge's own
+// O(maxCoordinate) setup (three arrays plus two DisjointSetForests sized to the
+// coordinate range) stops outweighing LinearScan's O(m)-per-query rescan -
+// confirmed locally at QueryCount=5_000 (~1.2x faster), the O(n log n) vs.
+// O(n*m) gap widening with scale as expected.
 public class BlockPlacementQueriesBenchmarks
 {
     private const int Seed = 3161;
     private const int CoordinateSpread = 3;
+    private const int MaxCoordinateBound = 50_000;
 
     private int[][] _queries = [];
 
@@ -27,7 +29,7 @@ public class BlockPlacementQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        var maxCoordinate = QueryCount * CoordinateSpread;
+        var maxCoordinate = Math.Min(MaxCoordinateBound, QueryCount * CoordinateSpread);
 
         _queries = BuildQueries(random, maxCoordinate, QueryCount);
     }

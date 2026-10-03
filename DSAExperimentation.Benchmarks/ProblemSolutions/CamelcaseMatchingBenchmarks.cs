@@ -19,7 +19,8 @@ public class CamelcaseMatchingBenchmarks
     private string[] _queries = [];
 
     private Regex _matcher = null!;
-    [Params(500, 10_000)]
+    // LC 1023 gives at most 100 queries.
+    [Params(10, 100)]
     public int QueryCount { get; set; }
 
     [GlobalSetup]

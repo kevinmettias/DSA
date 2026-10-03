@@ -21,7 +21,9 @@ public class CalculateAmountPaidInTaxesBenchmarks
 
     private ArraySequence<(int Upper, int Percent)> _bracketSequence;
     private int _income;
-    [Params(200, 5_000)]
+    // LC 2303 allows at most 100 brackets with uppers and income at most 1,000: bracket i's upper
+    // is 10i, so the largest table tops out at exactly 1,000 and income at 999.
+    [Params(10, 100)]
     public int BracketCount { get; set; }
 
     [GlobalSetup]
