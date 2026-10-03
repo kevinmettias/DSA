@@ -45,4 +45,13 @@ internal static class BinaryTrees
 
         return root;
     }
+
+    // A node-for-node copy, for a benchmark whose strategy rewrites Left/Right in place:
+    // the arm copies its setup tree on every invocation so each one starts from the same
+    // shape, and the copy is O(n) where rebuilding by insertion would be O(n log n).
+    public static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
+    {
+        Left = node.Left is null ? null : Clone(node.Left),
+        Right = node.Right is null ? null : Clone(node.Right),
+    };
 }

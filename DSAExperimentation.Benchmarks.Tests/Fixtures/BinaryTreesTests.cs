@@ -1,5 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -42,6 +43,21 @@ public sealed partial class BinaryTreesTests
     [Fact]
     public void Skewed_EveryNode_HasNoLeftChild() =>
         Assert.All(Nodes(BinaryTrees.Skewed(NodeCount)), node => Assert.Null(node.Left));
+
+    // A benchmark clones its setup tree because the strategy rewrites Left/Right in place, so the
+    // copy must keep the shape and share no node: rewiring the copy must leave the original alone.
+    [Fact]
+    public void Clone_BalancedTree_CopiesTheShapeIntoNodesTheOriginalDoesNotShare()
+    {
+        var original = BinaryTrees.Balanced(NodeCount);
+        var copy = BinaryTrees.Clone(original);
+
+        Assert.Equal(AnswerGraphText.Of(original), AnswerGraphText.Of(copy));
+        Assert.Empty(Nodes(copy).Intersect(Nodes(original), ReferenceEqualityComparer.Instance));
+
+        copy.Left = null;
+        Assert.Equal(NodeCount, CountNodes(original));
+    }
 
     private static int CountNodes(BinaryTreeNode<int>? node) =>
         node is null ? 0 : 1 + CountNodes(node.Left) + CountNodes(node.Right);

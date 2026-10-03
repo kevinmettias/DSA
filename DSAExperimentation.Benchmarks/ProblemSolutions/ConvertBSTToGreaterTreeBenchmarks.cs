@@ -30,14 +30,8 @@ public class ConvertBSTToGreaterTreeBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public object? ManualReverseInOrder() => ConvertBSTToGreaterTreeSolution.ConvertByReverseInOrder(Clone(_root));
+    public object? ManualReverseInOrder() => ConvertBSTToGreaterTreeSolution.ConvertByReverseInOrder(BinaryTrees.Clone(_root));
 
     [Benchmark]
-    public object? InOrderTraversalHooks() => ConvertBSTToGreaterTreeSolution.ConvertByInOrderHooks(Clone(_root));
-
-    private static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
-    {
-        Left = node.Left is null ? null : Clone(node.Left),
-        Right = node.Right is null ? null : Clone(node.Right),
-    };
+    public object? InOrderTraversalHooks() => ConvertBSTToGreaterTreeSolution.ConvertByInOrderHooks(BinaryTrees.Clone(_root));
 }

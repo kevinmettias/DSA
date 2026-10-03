@@ -31,7 +31,7 @@ public class FlattenBinaryTreeToLinkedListBenchmarks
     [Benchmark(Baseline = true)]
     public object? RecursiveSplice()
     {
-        var root = Clone(_root);
+        var root = BinaryTrees.Clone(_root);
         FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(root);
 
         return root;
@@ -40,15 +40,9 @@ public class FlattenBinaryTreeToLinkedListBenchmarks
     [Benchmark]
     public object? TopDownPreorderRelink()
     {
-        var root = Clone(_root);
+        var root = BinaryTrees.Clone(_root);
         FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(root);
 
         return root;
     }
-
-    private static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
-    {
-        Left = node.Left is null ? null : Clone(node.Left),
-        Right = node.Right is null ? null : Clone(node.Right),
-    };
 }

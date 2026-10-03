@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // inserts the shuffled source values into this repo's own BinarySearchTree<int> once,
 // and each [Benchmark] clones that tree, because both walks mutate the tree's Left/Right
 // pointers in place and would otherwise corrupt a later iteration - the same
-// per-invocation restore ConvertBSTToGreaterTreeBenchmarks does with its Clone. The
+// per-invocation restore ConvertBSTToGreaterTreeBenchmarks does with BinaryTrees.Clone. The
 // clone is timed on purpose, so every arm pays the same O(n) copy rather than the
 // O(n log n) of re-inserting every value. Each arm returns the relinked chain's root as
 // object?, since a public [Benchmark] method cannot name the internal
@@ -41,15 +41,9 @@ public class IncreasingOrderSearchTreeBenchmarks
 
     [Benchmark(Baseline = true)]
     public object? RecursiveRelink() =>
-        IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(Clone(_root));
+        IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(BinaryTrees.Clone(_root));
 
     [Benchmark]
     public object? InOrderTraversalHooks() =>
-        IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(Clone(_root));
-
-    private static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
-    {
-        Left = node.Left is null ? null : Clone(node.Left),
-        Right = node.Right is null ? null : Clone(node.Right),
-    };
+        IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(BinaryTrees.Clone(_root));
 }

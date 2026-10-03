@@ -41,26 +41,9 @@ internal static class MergeBinarySearchTreeWorkloads
 
         foreach (var tree in forest)
         {
-            clones.Add(CloneNode(tree));
+            clones.Add(BinaryTrees.Clone(tree));
         }
 
         return clones;
-    }
-
-    private static BinaryTreeNode<int> CloneNode(BinaryTreeNode<int> node)
-    {
-        var clone = new BinaryTreeNode<int>(node.Value);
-
-        if (node.Left is { } left)
-        {
-            clone.Left = CloneNode(left);
-        }
-
-        if (node.Right is { } right)
-        {
-            clone.Right = CloneNode(right);
-        }
-
-        return clone;
     }
 }

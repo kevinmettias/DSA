@@ -28,11 +28,5 @@ public class InvertBinaryTreeBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark]
-    public object? RecursiveSwap() => InvertBinaryTreeSolution.InvertByRecursiveSwap(Clone(_root));
-
-    private static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
-    {
-        Left = node.Left is null ? null : Clone(node.Left),
-        Right = node.Right is null ? null : Clone(node.Right),
-    };
+    public object? RecursiveSwap() => InvertBinaryTreeSolution.InvertByRecursiveSwap(BinaryTrees.Clone(_root));
 }
