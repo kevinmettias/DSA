@@ -3,18 +3,24 @@ using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 namespace DSAExperimentation.LeetCode.TrimABinarySearchTree;
 
 // LeetCode 669. Trim a Binary Search Tree: drop every node outside [low, high]
-// and return the root of what remains.
+// and return the root of what remains, keeping the relative structure of the
+// nodes that stay - a kept node's descendants remain its descendants.
 //
-// TrimByInPlaceMutation is the O(n) single-pass approach: an out-of-range node
-// is dropped by returning its in-range child's own trimmed result in its place -
-// the same "return the replacement subtree root, caller reassigns
-// node.Left/node.Right" shape BinarySearchTree.TryDelete already uses.
+// TrimByInPlaceMutation is the textbook recursion: an out-of-range node is
+// dropped by returning its in-range child's own trimmed result in its place - the
+// same "return the replacement subtree root, caller reassigns node.Left/Right"
+// shape BinarySearchTree.TryDelete already uses. It visits every node.
 //
-// TrimByCollectAndRebuild is the naive baseline it is measured against: a full
-// in-order walk collects every in-range value, then a fresh BinarySearchTree<int>
-// is rebuilt by reinserting them one at a time - paying an O(n) descent per
-// insert (O(n^2) worst case on an already-sorted/skewed sequence) instead of
-// reattaching nodes that are already there.
+// TrimByIterativeBoundaryWalk reads the BST order instead: everything strictly
+// inside the range is already correct, so only two paths can need work - the
+// left boundary, where a left child below `low` is replaced by its own right
+// subtree, and the right boundary, where a right child above `high` is replaced by
+// its left subtree. It visits O(height) nodes rather than all of them.
+//
+// A strategy that collects the in-range values and reinserts them into a fresh
+// tree used to sit here as the baseline. It kept the right values but not the
+// structure LC 669 requires - reinserting sorted values builds a chain - and its
+// tests compared only in-order values, which every BST with those values shares.
 internal static class TrimABinarySearchTreeSolution
 {
     public static BinaryTreeNode<int>? TrimByInPlaceMutation(BinaryTreeNode<int>? node, int low, int high)
@@ -39,35 +45,29 @@ internal static class TrimABinarySearchTreeSolution
         return node;
     }
 
-    public static BinaryTreeNode<int>? TrimByCollectAndRebuild(BinaryTreeNode<int>? node, int low, int high)
+    public static BinaryTreeNode<int>? TrimByIterativeBoundaryWalk(BinaryTreeNode<int>? root, int low, int high)
     {
-        var kept = new List<int>();
-        CollectInRange(node, low, high, kept);
-
-        var tree = new BinarySearchTree<int>();
-
-        foreach (var value in kept)
+        while (root is not null && (root.Value < low || root.Value > high))
         {
-            tree.Insert(value);
+            root = root.Value < low ? root.Right : root.Left;
         }
 
-        return tree.Root;
-    }
-
-    private static void CollectInRange(BinaryTreeNode<int>? node, int low, int high, List<int> kept)
-    {
-        if (node is null)
+        for (var node = root; node is not null; node = node.Left)
         {
-            return;
+            while (node.Left is { } left && left.Value < low)
+            {
+                node.Left = left.Right;
+            }
         }
 
-        CollectInRange(node.Left, low, high, kept);
-
-        if (node.Value >= low && node.Value <= high)
+        for (var node = root; node is not null; node = node.Right)
         {
-            kept.Add(node.Value);
+            while (node.Right is { } right && right.Value > high)
+            {
+                node.Right = right.Left;
+            }
         }
 
-        CollectInRange(node.Right, low, high, kept);
+        return root;
     }
 }

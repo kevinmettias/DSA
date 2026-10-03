@@ -1,80 +1,54 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.TrimABinarySearchTree;
 
 namespace DSAExperimentation.LeetCode.Tests.TrimABinarySearchTree;
 
-// Harness only. Both strategies are TrimABinarySearchTreeSolution's; this file
-// builds LeetCode's published examples via this repo's own
-// BinarySearchTree<int>.Insert and confirms what survives via
-// InOrderTraversal/IInOrderHooks (the same composition DeleteNodeInABSTTests
-// already uses), which also confirms the surviving values stay sorted.
+// Harness only. Both strategies are TrimABinarySearchTreeSolution's, asserted against
+// LeetCode's published examples in its own level-order notation. Comparing the whole
+// tree rather than its in-order values is the point: LC 669 requires the kept nodes to
+// keep their relative structure, and every BST holding the same values has the same
+// in-order sequence - a check on values alone passed a strategy that rebuilt the
+// survivors into a chain.
 public sealed partial class TrimABinarySearchTreeSolutionTests
 {
-    public static TheoryData<int[], int, int, int[]> Examples =>
+    public static TheoryData<TrimExample> Examples =>
         new()
         {
-            { [3, 0, 4, 2, 1], 1, 3, [1, 2, 3] },
-            { [1, 0, 2], 3, 5, [] },
+            { new TrimExample([1, 0, 2], Low: 1, High: 2, Expected: [1, null, 2]) },
+            { new TrimExample([3, 0, 4, null, 2, null, null, 1], Low: 1, High: 3, Expected: [3, 2, null, 1]) },
+
+            // Everything trimmed.
+            { new TrimExample([1, 0, 2], Low: 3, High: 5, Expected: []) },
+
+            // Both boundaries cut below the root: 2 goes from under 3, and 8 is replaced
+            // by its own left child 7, which keeps its place under 5.
+            { new TrimExample([5, 3, 8, 2, 4, 7, 9], Low: 3, High: 7, Expected: [5, 3, 7, null, 4]) },
+
+            // The root itself is out of range, so the answer is rooted further down.
+            { new TrimExample([5, 3, 8, 2, 4, 7, 9], Low: 6, High: 9, Expected: [8, 7, 9]) },
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TrimByInPlaceMutation_VariousRanges_DropsNodesOutsideRange(
-        int[] values, int low, int high, int[] expected)
+    public void TrimByInPlaceMutation_LeetCodeExamples_KeepsTheSurvivorsStructure(TrimExample example)
     {
-        var tree = BuildTree(values);
+        var trimmed = TrimABinarySearchTreeSolution.TrimByInPlaceMutation(
+            LeetCodeWireFormat.ToBinaryTree(example.LevelOrder), example.Low, example.High);
 
-        var trimmed = TrimABinarySearchTreeSolution.TrimByInPlaceMutation(tree.Root, low, high);
-
-        Assert.Equal(expected, InOrderValues(trimmed));
+        Assert.Equal(example.Expected, LeetCodeWireFormat.FromBinaryTree(trimmed));
     }
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void TrimByCollectAndRebuild_VariousRanges_DropsNodesOutsideRange(
-        int[] values, int low, int high, int[] expected)
+    public void TrimByIterativeBoundaryWalk_LeetCodeExamples_KeepsTheSurvivorsStructure(TrimExample example)
     {
-        var tree = BuildTree(values);
+        var trimmed = TrimABinarySearchTreeSolution.TrimByIterativeBoundaryWalk(
+            LeetCodeWireFormat.ToBinaryTree(example.LevelOrder), example.Low, example.High);
 
-        var trimmed = TrimABinarySearchTreeSolution.TrimByCollectAndRebuild(tree.Root, low, high);
-
-        Assert.Equal(expected, InOrderValues(trimmed));
+        Assert.Equal(example.Expected, LeetCodeWireFormat.FromBinaryTree(trimmed));
     }
 
-    private static BinarySearchTree<int> BuildTree(int[] values)
-    {
-        var tree = new BinarySearchTree<int>();
-
-        foreach (var value in values)
-        {
-            tree.Insert(value);
-        }
-
-        return tree;
-    }
-
-    private static int[] InOrderValues(BinaryTreeNode<int>? root)
-    {
-        State.Values.Value = [];
-        InOrderTraversal.Walk<int, CollectHooks>(root);
-        return [.. CurrentValues];
-    }
-
-    // InOrderValues installs the list and InOrderTraversal.Walk runs synchronously in
-    // the same execution context - it neither awaits nor queues - so the hooks and the
-    // read-back above always see the list that was installed a line earlier. The
-    // AsyncLocal is what keeps that list off the other test's parallel walk.
-    private static List<int> CurrentValues =>
-        State.Values.Value
-        ?? throw new InvalidOperationException("the walk runs only inside InOrderValues, which installs the list first");
-
-    private readonly struct CollectHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth) => CurrentValues.Add(node.Value);
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<List<int>?> Values = new();
-    }
+    // One LeetCode example: the tree in LeetCode's level order, the range to keep, and the
+    // trimmed tree in the same notation. Low and High are both ints, so each is named.
+    public readonly record struct TrimExample(int?[] LevelOrder, int Low, int High, int?[] Expected);
 }
