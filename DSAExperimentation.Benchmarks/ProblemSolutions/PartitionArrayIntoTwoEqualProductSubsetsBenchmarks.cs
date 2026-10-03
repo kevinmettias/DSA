@@ -19,7 +19,7 @@ public class PartitionArrayIntoTwoEqualProductSubsetsBenchmarks
 
     private int[] _nums = [];
 
-    [Params(12, 18)]
+    [Params(8, 12)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -16,7 +16,7 @@ public class PartitionEqualSubsetSumBenchmarks
     private int[] _nums = [];
 
     private int _half;
-    [Params(50, 400)]
+    [Params(50, 200)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -14,7 +14,7 @@ public class PalindromicSubstringsBenchmarks
 
     private string _text = "";
 
-    [Params(500, 8_000)]
+    [Params(500, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

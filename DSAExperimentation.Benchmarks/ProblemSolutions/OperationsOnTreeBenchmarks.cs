@@ -13,10 +13,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so tree construction and the lock state are charged to setup rather than to the
 // query being measured. The target is the last-created node, which in a heap-shaped
 // tree is a leaf with no children of its own.
+//
+// NodeCount stops at LC 1993's 2,000 nodes. Each query stands for one upgrade call, and
+// LC 1993 allows 2,000 lock, unlock and upgrade calls in all: the 286 locks setup makes
+// on the largest tree leave room for the 1,700 queries.
 public class OperationsOnTreeBenchmarks
 {
     private const int BranchingFactor = 4;
-    private const int QueryCount = 2_000;
+    private const int QueryCount = 1_700;
     private const int LockEveryNth = 7;
     private const int LockHolder = 1;
 
@@ -24,7 +28,7 @@ public class OperationsOnTreeBenchmarks
 
     private LockingTree _subtreeDepthFirstSearch = null!;
     private int _targetId;
-    [Params(2_000, 20_000)]
+    [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

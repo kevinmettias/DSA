@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // agreement, which is what keeps a shared "false" from passing as agreement.
 public sealed partial class PartitionToKEqualSumSubsetsBenchmarksTests
 {
-    private const int SmallestBucketCount = 3;
+    private const int SmallestBucketCount = 2;
 
     [Fact]
     public void Setup_SameBucketCount_RebuildsTheSameWorkload() =>

@@ -13,25 +13,31 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
+//
+// The values count down through zero - from Length / 2 - 1 to -Length / 2, so 99 to -100
+// at LC 86's 200-node cap, inside its [-100, 100] - and the partition value is zero,
+// their midpoint, so half the list moves ahead of the other half.
 public class PartitionListBenchmarks
 {
     private const int PartitionMidpointDivisor = 2;
+    private const int PartitionValue = 0;
 
     private int[] _values = [];
 
-    [Params(200, 5_000)]
+    [Params(20, 200)]
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _values = Enumerable.Range(0, Length).Reverse().ToArray();
+    public void Setup() =>
+        _values = Enumerable.Range(-Length / PartitionMidpointDivisor, Length).Reverse().ToArray();
 
     [Benchmark(Baseline = true)]
     public object? ArrayRebuild() =>
         PartitionListSolution.PartitionByArrayRebuild(
-            LeetCodeWireFormat.ToLinkedList(_values), Length / PartitionMidpointDivisor);
+            LeetCodeWireFormat.ToLinkedList(_values), PartitionValue);
 
     [Benchmark]
     public object? PointerSplice() =>
         PartitionListSolution.PartitionByPointerSplice(
-            LeetCodeWireFormat.ToLinkedList(_values), Length / PartitionMidpointDivisor);
+            LeetCodeWireFormat.ToLinkedList(_values), PartitionValue);
 }

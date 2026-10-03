@@ -5,15 +5,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are PartitionToKEqualSumSubsetsSolution's. _nums is
 // BucketCount interleaved copies of 1..NumbersPerSubset, so a perfect split always
 // exists (each subset re-assembles the copy it came from) but the shuffled
-// ordering still forces a real search rather than an immediate match.
+// ordering still forces a real search rather than an immediate match. LC 698 allows at
+// most 16 numbers and at most four copies of any one, so four buckets of 1..4 is its
+// largest such workload.
 public class PartitionToKEqualSumSubsetsBenchmarks
 {
-    private const int NumbersPerSubset = 6;
+    private const int NumbersPerSubset = 4;
     private const int RandomSeed = 2;
 
     private int[] _nums = [];
 
-    [Params(3, 5)]
+    [Params(2, 4)]
     public int BucketCount { get; set; }
 
     [GlobalSetup]

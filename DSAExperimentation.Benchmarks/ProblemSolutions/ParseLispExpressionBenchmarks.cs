@@ -17,6 +17,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // its own shrinking substring), so that cost dominates wall-clock time for
 // both. ScopeChain's allocation total still comes in lower at every size
 // because it alone avoids also duplicating every prior binding on top of it.
+//
+// Length stops at 88 nested lets, whose expression runs to 1,987 characters - the
+// deepest that fits LC 736's 2,000-character cap.
 public class ParseLispExpressionBenchmarks
 {
     private const string LetExpressionPrefix = "(let v";
@@ -24,7 +27,7 @@ public class ParseLispExpressionBenchmarks
 
     private string _expression = "";
 
-    [Params(50, 400)]
+    [Params(50, 88)]
     public int Length { get; set; }
 
     [GlobalSetup]

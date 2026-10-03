@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class PalindromeLinkedListBenchmarks
 {
     private const int RandomSeed = 234; // LC problem number
-    private const int MaxHalfValueExclusive = 1_000;
+    private const int MaxHalfValueExclusive = 10; // LC 234: 0 <= Node.val <= 9
 
     private SinglyLinkedListNode<int>? _head;
 

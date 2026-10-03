@@ -14,7 +14,7 @@ public class PartitionLabelsBenchmarks
 
     private string _text = "";
 
-    [Params(200, 5_000)]
+    [Params(200, 500)]
     public int Length { get; set; }
 
     [GlobalSetup]
