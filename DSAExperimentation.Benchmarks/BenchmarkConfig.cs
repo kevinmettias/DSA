@@ -24,9 +24,12 @@ namespace DSAExperimentation.Benchmarks;
 // the Markdown, HTML and CSV exports are for reading, and comparing two runs by eye is the practice
 // this replaces. It lands under BenchmarkDotNet.Artifacts/ beside the rest.
 //
-// MemoryDiagnoser is declared here as well as on individual classes. Duplicating it is harmless -
-// BenchmarkDotNet collapses repeat diagnosers - and it means a new benchmark class gets allocation
-// numbers without having to remember the attribute.
+// MemoryDiagnoser is declared here, once, so every benchmark class gets allocation numbers without
+// having to remember the attribute.
+//
+// Categories come from LibraryCategoryDiscoverer rather than from [BenchmarkCategory] on each class:
+// a benchmark is filed under its folder and under every library namespace its arms reach, so
+// `--anyCategories DataStructures.Heap` slices a run by the primitive it exercises.
 internal static class BenchmarkConfig
 {
     private const int WarmupCount = 6;
@@ -39,7 +42,8 @@ internal static class BenchmarkConfig
     {
         var config = ManualConfig.Create(DefaultConfig.Instance)
             .AddDiagnoser(MemoryDiagnoser.Default)
-            .AddExporter(JsonExporter.Full);
+            .AddExporter(JsonExporter.Full)
+            .WithCategoryDiscoverer(LibraryCategoryDiscoverer.Instance);
 
         if (!AsksForItsOwnJob(args))
         {

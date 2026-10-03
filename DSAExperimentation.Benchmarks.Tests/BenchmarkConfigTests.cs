@@ -33,4 +33,10 @@ public sealed partial class BenchmarkConfigTests
 
         Assert.Empty(BenchmarkConfig.For(args).GetJobs());
     }
+
+    // Without the discoverer every benchmark has no category at all and `--anyCategories` selects
+    // nothing, which looks like an empty run rather than a missing hook.
+    [Fact]
+    public void For_AnyArguments_CategorisesWithTheLibraryDiscoverer() =>
+        Assert.Same(LibraryCategoryDiscoverer.Instance, BenchmarkConfig.For([]).CategoryDiscoverer);
 }
