@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindSubarrayWithBitwiseORClosestToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class FindSubarrayWithBitwiseORClosestToKBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1 << 20)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, 1 << 20, random);
     }
 
     [Benchmark(Baseline = true)]

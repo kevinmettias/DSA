@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LastStoneWeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class LastStoneWeightBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _stones = Enumerable.Range(0, StoneCount).Select(_ => random.Next(1, MaxStoneWeightExclusive)).ToArray();
+        _stones = SeededDraws.Values(StoneCount, 1, MaxStoneWeightExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

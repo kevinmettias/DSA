@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.StoneGameIX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class StoneGameIXBenchmarks
     public void Setup()
     {
         var random = new Random(WorkloadSeed);
-        _stones = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxStoneValueExclusive)).ToArray();
+        _stones = SeededDraws.Values(Length, 1, MaxStoneValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

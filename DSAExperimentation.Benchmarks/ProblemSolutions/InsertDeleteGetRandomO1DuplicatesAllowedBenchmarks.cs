@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -33,7 +34,7 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
     {
         var random = new Random(1);
 
-        _insertOrder = Enumerable.Range(0, Count).Select(_ => random.Next(DistinctValues)).ToArray();
+        _insertOrder = SeededDraws.Values(Count, 0, DistinctValues, random);
         _removalOrder = (int[])_insertOrder.Clone();
         Shuffle(_removalOrder, random);
     }

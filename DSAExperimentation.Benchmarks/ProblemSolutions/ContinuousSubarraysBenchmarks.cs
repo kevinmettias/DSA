@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ContinuousSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class ContinuousSubarraysBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBound)).ToArray();
+        _values = SeededDraws.Values(Length, 0, ValueUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

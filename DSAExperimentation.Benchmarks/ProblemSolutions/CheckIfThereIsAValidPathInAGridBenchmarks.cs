@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CheckIfThereIsAValidPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class CheckIfThereIsAValidPathInAGridBenchmarks
     {
         var random = new Random(RandomSeed);
         _grid = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(1, StreetTypeUpperBound)).ToArray())
+            .Select(_ => SeededDraws.Values(Size, 1, StreetTypeUpperBound, random))
             .ToArray();
     }
 

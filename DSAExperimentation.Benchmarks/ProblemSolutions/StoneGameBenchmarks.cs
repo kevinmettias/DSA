@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.StoneGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class StoneGameBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _piles = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, PileValueUpperBoundExclusive)).ToArray();
+        _piles = SeededDraws.Values(PileCount, 1, PileValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

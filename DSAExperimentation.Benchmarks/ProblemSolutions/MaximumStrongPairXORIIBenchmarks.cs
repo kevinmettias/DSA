@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.MaximumStrongPairXORII;
 
@@ -25,7 +26,7 @@ public class MaximumStrongPairXORIIBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
 
         _sortedNums = new ArrayIndexedSequence<int>((int[])_nums.Clone());
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(_sortedNums);

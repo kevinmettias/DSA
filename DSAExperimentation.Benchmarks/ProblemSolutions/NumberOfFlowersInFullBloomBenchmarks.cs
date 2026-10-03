@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfFlowersInFullBloom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -32,7 +33,7 @@ public class NumberOfFlowersInFullBloomBenchmarks
             _flowers[i] = [start, start + length];
         }
 
-        _persons = Enumerable.Range(0, Count).Select(_ => random.Next(0, MaxTimeExclusive)).ToArray();
+        _persons = SeededDraws.Values(Count, 0, MaxTimeExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

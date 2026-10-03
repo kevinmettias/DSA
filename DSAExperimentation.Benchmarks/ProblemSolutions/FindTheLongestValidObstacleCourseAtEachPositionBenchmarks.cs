@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheLongestValidObstacleCourseAtEachPosition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,7 @@ public class FindTheLongestValidObstacleCourseAtEachPositionBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _obstacles = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
+        _obstacles = SeededDraws.Values(Length, 0, Length, random);
     }
 
     [Benchmark(Baseline = true)]

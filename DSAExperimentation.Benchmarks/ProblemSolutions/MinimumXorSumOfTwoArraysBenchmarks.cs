@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumXorSumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,8 +25,8 @@ public class MinimumXorSumOfTwoArraysBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1 << MaxValueBitWidth)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1 << MaxValueBitWidth)).ToArray();
+        _nums1 = SeededDraws.Values(Length, 0, 1 << MaxValueBitWidth, random);
+        _nums2 = SeededDraws.Values(Length, 0, 1 << MaxValueBitWidth, random);
     }
 
     [Benchmark(Baseline = true)]

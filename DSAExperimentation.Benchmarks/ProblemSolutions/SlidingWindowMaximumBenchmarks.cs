@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SlidingWindowMaximum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class SlidingWindowMaximumBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
+        _values = SeededDraws.Values(Length, -ValueBound, ValueBound, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -21,7 +21,7 @@ internal static class SingleNumberIIIWorkloads
     {
         var random = new Random(seed);
         var pairCount = length / ElementsPerPair - 1;
-        var pairs = Enumerable.Range(0, pairCount).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        var pairs = SeededDraws.Values(pairCount, 1, ValueUpperBound, random);
 
         var values = new List<int>(pairs.Length * ElementsPerPair + SingletonCount);
         values.AddRange(pairs);

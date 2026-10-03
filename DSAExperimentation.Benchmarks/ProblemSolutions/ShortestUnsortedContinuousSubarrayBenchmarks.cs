@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ShortestUnsortedContinuousSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,7 @@ public class ShortestUnsortedContinuousSubarrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBoundExclusive)).ToArray();
+        _values = SeededDraws.Values(Length, 0, ValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

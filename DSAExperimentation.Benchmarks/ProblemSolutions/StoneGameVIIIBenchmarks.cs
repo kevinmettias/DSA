@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.StoneGameVIII;
 
@@ -27,7 +28,7 @@ public class StoneGameVIIIBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var stones = Enumerable.Range(0, PileCount).Select(_ => random.Next(-StoneValueBound, StoneValueBound)).ToArray();
+        var stones = SeededDraws.Values(PileCount, -StoneValueBound, StoneValueBound, random);
         _prefix = StoneGameVIIISolution.BuildPrefixSums(stones);
     }
 

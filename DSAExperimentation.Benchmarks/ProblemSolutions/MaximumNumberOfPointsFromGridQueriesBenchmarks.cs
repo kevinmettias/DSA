@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfPointsFromGridQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -34,10 +35,10 @@ public class MaximumNumberOfPointsFromGridQueriesBenchmarks
         var random = new Random(RandomSeed);
 
         _grid = Enumerable.Range(0, Side)
-            .Select(_ => Enumerable.Range(0, Side).Select(_ => random.Next(ValueBound)).ToArray())
+            .Select(_ => SeededDraws.Values(Side, 0, ValueBound, random))
             .ToArray();
 
-        _queries = Enumerable.Range(0, QueriesCount).Select(_ => random.Next(ValueBound)).ToArray();
+        _queries = SeededDraws.Values(QueriesCount, 0, ValueBound, random);
     }
 
     [Benchmark(Baseline = true)]

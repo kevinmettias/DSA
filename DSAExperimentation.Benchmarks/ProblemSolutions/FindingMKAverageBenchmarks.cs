@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindingMKAverage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class FindingMKAverageBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _stream = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
+        _stream = SeededDraws.Values(Length, 1, MaxElementValue, random);
     }
 
     [Benchmark(Baseline = true)]

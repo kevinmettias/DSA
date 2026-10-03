@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.HowManyNumbersAreSmallerThanTheCurrentNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueExclusiveBound)).ToArray();
+        _values = SeededDraws.Values(Length, 0, ValueExclusiveBound, random);
     }
 
     [Benchmark(Baseline = true)]

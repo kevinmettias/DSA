@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumProductDifferenceBetweenTwoPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class MaximumProductDifferenceBetweenTwoPairsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(MinValueInclusive, MaxValueExclusive)).ToArray();
+        _values = SeededDraws.Values(Length, MinValueInclusive, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

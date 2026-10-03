@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
 
@@ -25,7 +26,7 @@ public class TimeNeededToBuyTicketsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _tickets = Enumerable.Range(0, Length).Select(_ => random.Next(MinTickets, MaxTicketsExclusive)).ToArray();
+        _tickets = SeededDraws.Values(Length, MinTickets, MaxTicketsExclusive, random);
         _targetPerson = Length / AlgorithmConstants.HalvingFactor;
     }
 

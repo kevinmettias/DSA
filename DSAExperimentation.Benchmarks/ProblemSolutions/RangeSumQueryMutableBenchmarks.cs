@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RangeSumQueryMutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class RangeSumQueryMutableBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _initial = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
+        _initial = SeededDraws.Values(Length, -ValueBound, ValueBound, random);
 
         _operations = new (bool IsUpdate, int A, int B)[OperationCount];
         for (var i = 0; i < OperationCount; i++)

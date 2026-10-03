@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.AssignCookies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,8 +22,8 @@ public class AssignCookiesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _greed = Enumerable.Range(0, Length).Select(_ => random.Next(1, RandomValueUpperBound)).ToArray();
-        _sizes = Enumerable.Range(0, Length).Select(_ => random.Next(1, RandomValueUpperBound)).ToArray();
+        _greed = SeededDraws.Values(Length, 1, RandomValueUpperBound, random);
+        _sizes = SeededDraws.Values(Length, 1, RandomValueUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

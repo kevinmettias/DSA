@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumNumberOfKConsecutiveBitFlips;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class MinimumNumberOfKConsecutiveBitFlipsBenchmarks
     public void Setup()
     {
         var random = new Random(BitSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(BitValueUpperBound)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, BitValueUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

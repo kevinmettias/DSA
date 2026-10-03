@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumPossibleMaximumWaitingTime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class MinimumPossibleMaximumWaitingTimeBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _demand = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxDemandExclusive)).ToArray();
+        _demand = SeededDraws.Values(Length, 1, MaxDemandExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumXOROfTwoNumbersInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +17,7 @@ public class MaximumXOROfTwoNumbersInAnArrayBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, int.MaxValue)).ToArray();
+        _values = SeededDraws.Values(Length, 0, int.MaxValue, random);
     }
 
     [Benchmark(Baseline = true)]

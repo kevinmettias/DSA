@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FourDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class FourDivisorsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxGeneratedNumber)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxGeneratedNumber, random);
     }
 
     [Benchmark(Baseline = true)]

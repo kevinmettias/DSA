@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignAStackWithIncrementOperation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -33,7 +34,7 @@ public class DesignAStackWithIncrementOperationBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _pushedValues = Enumerable.Range(0, PushCount).Select(_ => random.Next(1, MaxPushedValueExclusive)).ToArray();
+        _pushedValues = SeededDraws.Values(PushCount, 1, MaxPushedValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

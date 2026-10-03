@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.BoatsToSavePeople;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,7 @@ public class BoatsToSavePeopleBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _people = Enumerable.Range(0, Length).Select(_ => random.Next(1, Limit)).ToArray();
+        _people = SeededDraws.Values(Length, 1, Limit, random);
     }
 
     [Benchmark(Baseline = true)]

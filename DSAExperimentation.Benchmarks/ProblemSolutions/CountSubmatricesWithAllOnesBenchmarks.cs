@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountSubmatricesWithAllOnes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class CountSubmatricesWithAllOnesBenchmarks
     {
         var random = new Random(RandomSeed);
         _matrix = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, CellValueUpperBoundExclusive)).ToArray())
+            .Select(_ => SeededDraws.Values(Size, 0, CellValueUpperBoundExclusive, random))
             .ToArray();
     }
 

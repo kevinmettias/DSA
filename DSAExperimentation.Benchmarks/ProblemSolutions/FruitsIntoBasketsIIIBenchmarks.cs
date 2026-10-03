@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FruitsIntoBasketsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,8 +23,8 @@ public class FruitsIntoBasketsIIIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _fruits = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxCapacityExclusive)).ToArray();
-        _baskets = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxCapacityExclusive)).ToArray();
+        _fruits = SeededDraws.Values(Length, 1, MaxCapacityExclusive, random);
+        _baskets = SeededDraws.Values(Length, 1, MaxCapacityExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

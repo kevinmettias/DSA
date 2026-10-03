@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximizeAlternatingSumUsingSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,8 +23,7 @@ public class MaximizeAlternatingSumUsingSwapsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, ElementCount)
-            .Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        _nums = SeededDraws.Values(ElementCount, 1, ValueUpperBound, random);
         _swaps = Enumerable.Range(0, ElementCount / 2)
             .Select(_ => new[] { random.Next(ElementCount), random.Next(ElementCount) })
             .Where(swap => swap[0] != swap[1])

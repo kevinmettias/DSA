@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumIncrementsForTargetMultiplesInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class MinimumIncrementsForTargetMultiplesInAnArrayBenchmarks
     public void Setup()
     {
         var random = new Random(NumsSeed);
-        _nums = Enumerable.Range(0, NumsCount).Select(_ => random.Next(1, 10_000)).ToArray();
+        _nums = SeededDraws.Values(NumsCount, 1, 10_000, random);
         _lcmTable = TargetLcmTable.Build(Target);
     }
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ProductOfTheLastKNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,9 +26,7 @@ public class ProductOfTheLastKNumbersBenchmarks
     public void Setup()
     {
         var random = new Random(FactorSeed);
-        var values = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(1, MaxFactorValueExclusive))
-            .ToArray();
+        var values = SeededDraws.Values(Length, 1, MaxFactorValueExclusive, random);
 
         _rawStreamReplay = Seed(ProductOfTheLastKNumbersSolution.CreateByRawStreamReplay(), values);
         _prefixProductDivision =

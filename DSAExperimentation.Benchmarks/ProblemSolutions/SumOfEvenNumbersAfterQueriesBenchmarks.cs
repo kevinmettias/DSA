@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SumOfEvenNumbersAfterQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class SumOfEvenNumbersAfterQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueMagnitudeBound, ValueMagnitudeBound)).ToArray();
+        _nums = SeededDraws.Values(Length, -ValueMagnitudeBound, ValueMagnitudeBound, random);
         _queries = Enumerable.Range(0, Length)
             .Select(_ => new[] { random.Next(-ValueMagnitudeBound, ValueMagnitudeBound), random.Next(0, Length) })
             .ToArray();

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountPairsWithXorInARange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class CountPairsWithXorInARangeBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBound)).ToArray();
+        _values = SeededDraws.Values(Length, 0, ValueUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

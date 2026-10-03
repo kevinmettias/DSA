@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceBetweenElementsWithConstraint;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class MinimumAbsoluteDifferenceBetweenElementsWithConstraintBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
         _minimumIndexDistance = Length / 4;
     }
 

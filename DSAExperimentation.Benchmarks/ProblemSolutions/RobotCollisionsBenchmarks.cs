@@ -29,7 +29,7 @@ public class RobotCollisionsBenchmarks
         var random = new Random(Seed);
 
         _positions = SeededSequences.ShuffledOneTo(Length, random);
-        _healths = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxHealthExclusive)).ToArray();
+        _healths = SeededDraws.Values(Length, 1, MaxHealthExclusive, random);
         _directions = new string([.. Enumerable.Range(0, Length).Select(_ => IsLeftward(random) ? 'L' : 'R')]);
     }
 

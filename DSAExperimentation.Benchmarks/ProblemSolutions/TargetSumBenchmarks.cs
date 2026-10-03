@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TargetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class TargetSumBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, ElementCount).Select(_ => random.Next(1, RandomValueUpperBoundExclusive)).ToArray();
+        _nums = SeededDraws.Values(ElementCount, 1, RandomValueUpperBoundExclusive, random);
         _target = _nums.Sum() - (SignFlipMultiplier * _nums[0]);
     }
 

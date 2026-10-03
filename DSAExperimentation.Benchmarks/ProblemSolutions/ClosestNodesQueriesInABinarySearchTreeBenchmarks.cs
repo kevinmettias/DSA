@@ -42,9 +42,7 @@ public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
         }
 
         _root = tree.Root;
-        _queries = Enumerable.Range(0, NodeCount)
-            .Select(_ => random.Next(-MaxQueryOffset, NodeCount + MaxQueryOffset))
-            .ToArray();
+        _queries = SeededDraws.Values(NodeCount, -MaxQueryOffset, NodeCount + MaxQueryOffset, random);
     }
 
     [Benchmark(Baseline = true)]

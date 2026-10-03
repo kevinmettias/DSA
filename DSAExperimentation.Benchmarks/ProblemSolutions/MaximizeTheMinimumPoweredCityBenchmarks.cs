@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -30,9 +31,7 @@ public class MaximizeTheMinimumPoweredCityBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var stations = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(1, MaxStationValueExclusive))
-            .ToArray();
+        var stations = SeededDraws.Values(Length, 1, MaxStationValueExclusive, random);
 
         _plan = MaximizeTheMinimumPoweredCitySolution.PoweredCityPlan.From(stations, Range, ExtraStations);
     }

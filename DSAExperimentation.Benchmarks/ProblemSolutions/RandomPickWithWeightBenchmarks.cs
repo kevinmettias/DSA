@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RandomPickWithWeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class RandomPickWithWeightBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _weights = Enumerable.Range(0, WeightCount).Select(_ => random.Next(1, MaxWeightExclusive)).ToArray();
+        _weights = SeededDraws.Values(WeightCount, 1, MaxWeightExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

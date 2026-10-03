@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountWaysToChooseCoprimeIntegersFromRows;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class CountWaysToChooseCoprimeIntegersFromRowsBenchmarks
 
         for (var row = 0; row < Size; row++)
         {
-            _mat[row] = Enumerable.Range(0, Size).Select(_ => random.Next(1, MaxValueInclusive + 1)).ToArray();
+            _mat[row] = SeededDraws.Values(Size, 1, MaxValueInclusive + 1, random);
         }
     }
 

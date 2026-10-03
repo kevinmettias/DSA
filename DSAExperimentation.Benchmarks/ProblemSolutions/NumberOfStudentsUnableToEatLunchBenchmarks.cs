@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfStudentsUnableToEatLunch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,8 +27,8 @@ public class NumberOfStudentsUnableToEatLunchBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _students = Enumerable.Range(0, Length).Select(_ => random.Next(PreferenceUpperBound)).ToArray();
-        _sandwiches = Enumerable.Range(0, Length).Select(_ => random.Next(PreferenceUpperBound)).ToArray();
+        _students = SeededDraws.Values(Length, 0, PreferenceUpperBound, random);
+        _sandwiches = SeededDraws.Values(Length, 0, PreferenceUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

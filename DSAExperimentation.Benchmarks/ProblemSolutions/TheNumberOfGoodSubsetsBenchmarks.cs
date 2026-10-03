@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -29,9 +30,7 @@ public class TheNumberOfGoodSubsetsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var nums = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(MinValue, ValueUpperBoundExclusive))
-            .ToArray();
+        var nums = SeededDraws.Values(Length, MinValue, ValueUpperBoundExclusive, random);
 
         _candidates = GoodSubsetCandidates.Build(nums);
     }

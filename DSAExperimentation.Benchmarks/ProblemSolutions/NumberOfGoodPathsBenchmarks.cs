@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfGoodPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class NumberOfGoodPathsBenchmarks
         // approach's per-pair path walk has real same-value pairs to chase rather
         // than exiting immediately on "no duplicate value" checks.
         var random = new Random(RandomSeed);
-        _vals = Enumerable.Range(0, NodeCount).Select(_ => random.Next(1, NodeCount)).ToArray();
+        _vals = SeededDraws.Values(NodeCount, 1, NodeCount, random);
 
         _edges = BuildPathEdges(NodeCount);
     }

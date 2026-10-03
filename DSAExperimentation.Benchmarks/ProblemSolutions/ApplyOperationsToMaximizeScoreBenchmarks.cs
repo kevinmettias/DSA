@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class ApplyOperationsToMaximizeScoreBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(2, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 2, MaxValueExclusive, random);
         _operationCount = Length;
     }
 

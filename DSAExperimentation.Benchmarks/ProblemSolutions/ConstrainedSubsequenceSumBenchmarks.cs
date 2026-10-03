@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ConstrainedSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class ConstrainedSubsequenceSumBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueRange, ValueRange)).ToArray();
+        _nums = SeededDraws.Values(Length, -ValueRange, ValueRange, random);
     }
 
     [Benchmark(Baseline = true)]

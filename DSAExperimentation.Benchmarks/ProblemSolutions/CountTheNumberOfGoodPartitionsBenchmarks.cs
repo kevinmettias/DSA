@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class CountTheNumberOfGoodPartitionsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, ArrayLength).Select(_ => random.Next(AlphabetSize)).ToArray();
+        _nums = SeededDraws.Values(ArrayLength, 0, AlphabetSize, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumNumberOfMovesToSeatEveryone;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,8 +25,8 @@ public class MinimumNumberOfMovesToSeatEveryoneBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _seats = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxSeatPosition)).ToArray();
-        _students = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxSeatPosition)).ToArray();
+        _seats = SeededDraws.Values(Length, 1, MaxSeatPosition, random);
+        _students = SeededDraws.Values(Length, 1, MaxSeatPosition, random);
     }
 
     [Benchmark(Baseline = true)]

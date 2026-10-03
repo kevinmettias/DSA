@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindValueOfMysteriousFunctionClosestToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, 1 << ValueBitWidth)).ToArray();
+        _values = SeededDraws.Values(Length, 0, 1 << ValueBitWidth, random);
     }
 
     [Benchmark(Baseline = true)]

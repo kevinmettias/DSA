@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LargestRectangleInHistogram;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class LargestRectangleInHistogramBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _heights = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxHeight)).ToArray();
+        _heights = SeededDraws.Values(Length, 1, MaxHeight, random);
     }
 
     [Benchmark(Baseline = true)]

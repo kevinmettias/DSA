@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.DeleteNodesFromLinkedListPresentInArray;
@@ -27,7 +28,7 @@ public class DeleteNodesFromLinkedListPresentInArrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _headValues = Enumerable.Range(0, Length).Select(_ => random.Next(1, Length + 1)).ToArray();
+        _headValues = SeededDraws.Values(Length, 1, Length + 1, random);
         _nums = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).Take(Length / DeletedValueFraction).ToArray();
         _numsSet = new Set<int>(_nums);
     }

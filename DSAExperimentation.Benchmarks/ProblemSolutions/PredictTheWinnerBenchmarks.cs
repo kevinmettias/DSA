@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PredictTheWinner;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,9 +20,7 @@ public class PredictTheWinnerBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, ArrayLength)
-            .Select(_ => random.Next(1, MaxScoreValueExclusive))
-            .ToArray();
+        _nums = SeededDraws.Values(ArrayLength, 1, MaxScoreValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

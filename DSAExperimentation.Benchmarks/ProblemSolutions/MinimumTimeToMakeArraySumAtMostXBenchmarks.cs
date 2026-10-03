@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,8 +27,8 @@ public class MinimumTimeToMakeArraySumAtMostXBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBoundExclusive)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBoundExclusive)).ToArray();
+        _nums1 = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
+        _nums2 = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

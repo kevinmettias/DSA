@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.HIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +19,7 @@ public class HIndexBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _citations = Enumerable.Range(0, Length).Select(_ => random.Next(0, CitationCountExclusiveBound)).ToArray();
+        _citations = SeededDraws.Values(Length, 0, CitationCountExclusiveBound, random);
     }
 
     [Benchmark(Baseline = true)]

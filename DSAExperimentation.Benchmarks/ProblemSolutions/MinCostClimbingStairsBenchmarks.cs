@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinCostClimbingStairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class MinCostClimbingStairsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _cost = Enumerable.Range(0, StepCount).Select(_ => random.Next(1, CostUpperBound)).ToArray();
+        _cost = SeededDraws.Values(StepCount, 1, CostUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

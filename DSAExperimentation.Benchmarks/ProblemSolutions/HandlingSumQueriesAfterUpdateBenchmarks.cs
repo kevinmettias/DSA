@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.HandlingSumQueriesAfterUpdate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -28,8 +29,8 @@ public class HandlingSumQueriesAfterUpdateBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(0, 2)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxNums2ValueExclusive)).ToArray();
+        _nums1 = SeededDraws.Values(Length, 0, 2, random);
+        _nums2 = SeededDraws.Values(Length, 0, MaxNums2ValueExclusive, random);
         _queries = Enumerable.Range(0, Length).Select(i => BuildQuery(random, i)).ToArray();
     }
 

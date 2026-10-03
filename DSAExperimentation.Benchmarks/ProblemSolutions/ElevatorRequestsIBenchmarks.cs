@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ElevatorRequestsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class ElevatorRequestsIBenchmarks
     {
         var random = new Random(Seed);
         _floorCount = RequestCount;
-        _requests = Enumerable.Range(0, RequestCount).Select(_ => random.Next(0, _floorCount)).ToArray();
+        _requests = SeededDraws.Values(RequestCount, 0, _floorCount, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SingleNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class SingleNumberBenchmarks
     {
         var random = new Random(Seed);
         var pairCount = Length / ElementsPerPair;
-        var pairs = Enumerable.Range(0, pairCount).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        var pairs = SeededDraws.Values(pairCount, 1, ValueUpperBound, random);
 
         var values = new List<int>(pairs.Length * ElementsPerPair + 1);
         values.AddRange(pairs);

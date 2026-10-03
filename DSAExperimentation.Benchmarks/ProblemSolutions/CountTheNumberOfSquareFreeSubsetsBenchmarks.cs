@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class CountTheNumberOfSquareFreeSubsetsBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(MinValueInclusive, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, MinValueInclusive, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

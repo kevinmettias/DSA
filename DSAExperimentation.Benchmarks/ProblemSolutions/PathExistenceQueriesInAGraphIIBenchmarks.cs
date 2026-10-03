@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class PathExistenceQueriesInAGraphIIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed + NodeCount);
-        var nums = Enumerable.Range(0, NodeCount).Select(_ => random.Next(0, 100_000)).ToArray();
+        var nums = SeededDraws.Values(NodeCount, 0, 100_000, random);
         _graph = SortedByValueGraph.Build(nums);
         _queries = [.. Enumerable.Range(0, QueryCount).Select(_ => new[] { random.Next(NodeCount), random.Next(NodeCount) })];
     }

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountGoodSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,7 @@ public class CountGoodSubarraysBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

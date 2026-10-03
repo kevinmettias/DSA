@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.Finding3DigitEvenNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class Finding3DigitEvenNumbersBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _digits = Enumerable.Range(0, Length).Select(_ => random.Next(0, DigitRangeExclusive)).ToArray();
+        _digits = SeededDraws.Values(Length, 0, DigitRangeExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

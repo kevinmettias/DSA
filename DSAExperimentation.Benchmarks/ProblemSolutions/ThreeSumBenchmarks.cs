@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ThreeSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class ThreeSumBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(-Length, Length)).ToArray();
+        _values = SeededDraws.Values(Length, -Length, Length, random);
     }
 
     [Benchmark(Baseline = true)]

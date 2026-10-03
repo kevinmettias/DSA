@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.OnlineElection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class OnlineElectionBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _persons = Enumerable.Range(0, Length).Select(_ => random.Next(0, CandidateCount)).ToArray();
+        _persons = SeededDraws.Values(Length, 0, CandidateCount, random);
         _times = Enumerable.Range(0, Length).Select(i => i * TimeStep).ToArray();
         _queries = _times.Select(t => t + 1).ToArray();
     }

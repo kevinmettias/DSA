@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumTotalBeautyOfTheGardens;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -32,7 +33,7 @@ public class MaximumTotalBeautyOfTheGardensBenchmarks
     {
         var random = new Random(RandomSeed);
         _target = Length;
-        _flowers = Enumerable.Range(0, Length).Select(_ => random.Next(1, (_target * FlowerHeightRangeMultiplier) + 1)).ToArray();
+        _flowers = SeededDraws.Values(Length, 1, (_target * FlowerHeightRangeMultiplier) + 1, random);
 
         // Deliberately scarce, not generous: a budget on the order of target alone
         // (rather than enough to raise a whole large prefix near the cap) forces the

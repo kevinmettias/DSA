@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToTransportAllIndividuals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class MinimumTimeToTransportAllIndividualsBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _time = Enumerable.Range(0, IndividualCount).Select(_ => random.Next(1, 101)).ToArray();
+        _time = SeededDraws.Values(IndividualCount, 1, 101, random);
         _mul = Enumerable.Range(0, StageCount).Select(_ => 0.5 + (random.NextDouble() * 1.5)).ToArray();
         _graph = TransportGraph.Build(_time, Capacity, _mul);
     }

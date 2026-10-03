@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.OddEvenJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class OddEvenJumpBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, Length)).ToArray();
+        _values = SeededDraws.Values(Length, 1, Length, random);
     }
 
     [Benchmark(Baseline = true)]

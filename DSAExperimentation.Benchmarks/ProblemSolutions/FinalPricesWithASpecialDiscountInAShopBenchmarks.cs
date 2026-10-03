@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class FinalPricesWithASpecialDiscountInAShopBenchmarks
     public void Setup()
     {
         var random = new Random(PriceSeed);
-        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxPrice)).ToArray();
+        _prices = SeededDraws.Values(Length, 1, MaxPrice, random);
     }
 
     [Benchmark(Baseline = true)]

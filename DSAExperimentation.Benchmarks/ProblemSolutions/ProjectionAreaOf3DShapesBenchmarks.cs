@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ProjectionAreaOf3DShapes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class ProjectionAreaOf3DShapesBenchmarks
     {
         var random = new Random(RandomSeed);
         _grid = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, CellHeightBound)).ToArray())
+            .Select(_ => SeededDraws.Values(Size, 0, CellHeightBound, random))
             .ToArray();
     }
 

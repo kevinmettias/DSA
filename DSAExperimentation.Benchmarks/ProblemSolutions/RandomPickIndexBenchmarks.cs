@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RandomPickIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -28,7 +29,7 @@ public class RandomPickIndexBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBound)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, ValueUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

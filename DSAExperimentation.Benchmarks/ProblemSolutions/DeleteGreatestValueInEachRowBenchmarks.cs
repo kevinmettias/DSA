@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DeleteGreatestValueInEachRow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class DeleteGreatestValueInEachRowBenchmarks
     {
         var random = new Random(RandomSeed);
         _grid = Enumerable.Range(0, Rows)
-            .Select(_ => Enumerable.Range(0, Columns).Select(_ => random.Next(ValueBound)).ToArray())
+            .Select(_ => SeededDraws.Values(Columns, 0, ValueBound, random))
             .ToArray();
     }
 

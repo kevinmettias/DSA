@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class FindMinimumTimeToFinishAllJobsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _jobs = Enumerable.Range(0, JobCount).Select(_ => random.Next(1, MaxJobDuration)).ToArray();
+        _jobs = SeededDraws.Values(JobCount, 1, MaxJobDuration, random);
     }
 
     [Benchmark(Baseline = true)]

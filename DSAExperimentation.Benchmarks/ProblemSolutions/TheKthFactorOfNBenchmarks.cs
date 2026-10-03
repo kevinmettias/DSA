@@ -1,5 +1,6 @@
-using DSAExperimentation.LeetCode;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TheKthFactorOfN;
+using DSAExperimentation.LeetCode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -27,7 +28,7 @@ public class TheKthFactorOfNBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBoundExclusive)).ToArray();
+        _values = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

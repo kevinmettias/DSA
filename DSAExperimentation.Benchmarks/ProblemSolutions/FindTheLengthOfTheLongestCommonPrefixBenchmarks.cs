@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.FindTheLengthOfTheLongestCommonPrefix;
 
@@ -23,8 +24,8 @@ public class FindTheLengthOfTheLongestCommonPrefixBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _arr1 = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _arr2 = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _arr1 = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
+        _arr2 = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
         _trie = FindTheLengthOfTheLongestCommonPrefixSolution.BuildDigitTrie(_arr1);
     }
 

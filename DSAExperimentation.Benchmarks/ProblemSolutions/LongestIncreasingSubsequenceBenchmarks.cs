@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LongestIncreasingSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +16,7 @@ public class LongestIncreasingSubsequenceBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
+        _values = SeededDraws.Values(Length, 0, Length, random);
     }
 
     [Benchmark(Baseline = true)]

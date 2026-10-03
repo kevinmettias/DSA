@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DistinctPrimeFactorsOfProductOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class DistinctPrimeFactorsOfProductOfArrayBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(2, MaxValueInclusive + 1)).ToArray();
+        _values = SeededDraws.Values(Length, 2, MaxValueInclusive + 1, random);
     }
 
     [Benchmark(Baseline = true)]

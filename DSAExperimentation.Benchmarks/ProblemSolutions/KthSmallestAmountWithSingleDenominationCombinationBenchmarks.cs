@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCombination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class KthSmallestAmountWithSingleDenominationCombinationBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _coins = Enumerable.Range(0, CoinCount).Select(_ => random.Next(1, MaxCoinValueExclusive)).ToArray();
+        _coins = SeededDraws.Values(CoinCount, 1, MaxCoinValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

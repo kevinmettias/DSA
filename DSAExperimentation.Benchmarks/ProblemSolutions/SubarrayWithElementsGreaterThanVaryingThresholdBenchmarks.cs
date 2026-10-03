@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SubarrayWithElementsGreaterThanVaryingThreshold;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class SubarrayWithElementsGreaterThanVaryingThresholdBenchmarks
     public void Setup()
     {
         var random = new Random(ValueSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
         _threshold = Length * MaxValueExclusive + 1; // unreachable: no window can qualify
     }
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class ThreeSumWithMultiplicityBenchmarks
         // Values bounded to [0, 100], matching LC 923's own constraint - this small
         // range is what forces genuine multiplicities (repeated values), which is
         // the whole point of this problem versus plain 3Sum.
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, ValueUpperBoundExclusive)).ToArray();
+        _values = SeededDraws.Values(Length, 0, ValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

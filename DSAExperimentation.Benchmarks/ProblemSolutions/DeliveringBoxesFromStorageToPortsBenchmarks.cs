@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,8 +25,8 @@ public class DeliveringBoxesFromStorageToPortsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var ports = Enumerable.Range(0, Length).Select(_ => random.Next(1, SyntheticValueExclusiveUpperBound)).ToArray();
-        var weights = Enumerable.Range(0, Length).Select(_ => random.Next(1, SyntheticValueExclusiveUpperBound)).ToArray();
+        var ports = SeededDraws.Values(Length, 1, SyntheticValueExclusiveUpperBound, random);
+        var weights = SeededDraws.Values(Length, 1, SyntheticValueExclusiveUpperBound, random);
 
         _schedule = BoxDeliverySchedule.Build(
             [.. Enumerable.Range(0, Length).Select(i => new[] { ports[i], weights[i] })]);

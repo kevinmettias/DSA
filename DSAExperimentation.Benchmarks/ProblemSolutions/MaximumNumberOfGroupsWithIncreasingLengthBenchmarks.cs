@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfGroupsWithIncreasingLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class MaximumNumberOfGroupsWithIncreasingLengthBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _usageLimits = Enumerable.Range(0, Length).Select(_ => random.Next(1, UsageLimitUpperBoundExclusive)).ToArray();
+        _usageLimits = SeededDraws.Values(Length, 1, UsageLimitUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

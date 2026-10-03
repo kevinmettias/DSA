@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumSumQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -31,8 +32,8 @@ public class MaximumSumQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueRange)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueRange)).ToArray();
+        _nums1 = SeededDraws.Values(Length, 1, ValueRange, random);
+        _nums2 = SeededDraws.Values(Length, 1, ValueRange, random);
         _queries = Enumerable.Range(0, QueryCount)
             .Select(_ => new[] { random.Next(1, ValueRange), random.Next(1, ValueRange) })
             .ToArray();

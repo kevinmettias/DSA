@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SingleNumberII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class SingleNumberIIBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var triples = Enumerable.Range(0, TripleCount).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        var triples = SeededDraws.Values(TripleCount, 1, ValueUpperBound, random);
 
         var values = new List<int>((TripleCount * ElementsPerTriple) + 1);
 

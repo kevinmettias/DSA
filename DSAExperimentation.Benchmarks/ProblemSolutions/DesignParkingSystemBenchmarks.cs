@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignParkingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class DesignParkingSystemBenchmarks
     {
         var random = new Random(RandomSeed);
 
-        _requestedTypes = Enumerable.Range(0, Calls).Select(_ => random.Next(1, CarTypeUpperBoundExclusive)).ToArray();
+        _requestedTypes = SeededDraws.Values(Calls, 1, CarTypeUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.QueueReconstructionByHeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class QueueReconstructionByHeightBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var heights = Enumerable.Range(0, Length).Select(_ => random.Next(1, Length)).ToArray();
+        var heights = SeededDraws.Values(Length, 1, Length, random);
 
         _people = BuildPeople(random, heights);
     }

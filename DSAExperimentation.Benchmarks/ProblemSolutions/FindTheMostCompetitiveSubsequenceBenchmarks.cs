@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheMostCompetitiveSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class FindTheMostCompetitiveSubsequenceBenchmarks
     public void Setup()
     {
         var random = new Random(WorkloadSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, Length, random);
         _selectionLength = Length / SubsequenceLengthDivisor;
     }
 

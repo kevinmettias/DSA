@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class BestTimeToBuyAndSellStockVBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _prices = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

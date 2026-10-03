@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MergeTripletsToFormTargetTriplet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,9 +28,7 @@ public class MergeTripletsToFormTargetTripletBenchmarks
     {
         var random = new Random(RandomSeed);
         _triplets = Enumerable.Range(0, TripletCount)
-            .Select(_ => Enumerable.Range(0, TripletDimension)
-                .Select(_ => random.Next(0, ValueBoundExclusive))
-                .ToArray())
+            .Select(_ => SeededDraws.Values(TripletDimension, 0, ValueBoundExclusive, random))
             .ToArray();
     }
 

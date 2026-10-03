@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.KokoEatingBananas;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class KokoEatingBananasBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _piles = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxPileSizeExclusive)).ToArray();
+        _piles = SeededDraws.Values(Length, 1, MaxPileSizeExclusive, random);
         _hourBudget = Length * HoursPerBanana;
     }
 

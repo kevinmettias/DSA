@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class FindSumOfArrayProductOfMagicalSequencesBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, IndexCount).Select(_ => random.Next(1, 100_000_000)).ToArray();
+        _nums = SeededDraws.Values(IndexCount, 1, 100_000_000, random);
         _requiredSetBits = Math.Max(1, SlotCount / 2);
     }
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.IPO;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,8 +23,8 @@ public class IPOBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _profits = Enumerable.Range(0, ProjectCount).Select(_ => random.Next(1, MaxProfit)).ToArray();
-        _capitals = Enumerable.Range(0, ProjectCount).Select(_ => random.Next(0, MaxCapital)).ToArray();
+        _profits = SeededDraws.Values(ProjectCount, 1, MaxProfit, random);
+        _capitals = SeededDraws.Values(ProjectCount, 0, MaxCapital, random);
     }
 
     [Benchmark(Baseline = true)]

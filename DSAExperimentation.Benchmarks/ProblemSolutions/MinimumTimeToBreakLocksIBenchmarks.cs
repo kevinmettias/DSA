@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToBreakLocksI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class MinimumTimeToBreakLocksIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _strength = Enumerable.Range(0, LockCount).Select(_ => random.Next(1, MaxStrengthExclusive)).ToArray();
+        _strength = SeededDraws.Values(LockCount, 1, MaxStrengthExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

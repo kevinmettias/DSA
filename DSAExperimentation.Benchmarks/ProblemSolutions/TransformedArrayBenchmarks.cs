@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TransformedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class TransformedArrayBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-Length, Length + 1)).ToArray();
+        _nums = SeededDraws.Values(Length, -Length, Length + 1, random);
     }
 
     [Benchmark(Baseline = true)]

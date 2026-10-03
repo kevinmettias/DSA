@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ChalkboardXorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class ChalkboardXorGameBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1 << RandomValueBitWidth)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, 1 << RandomValueBitWidth, random);
     }
 
     [Benchmark(Baseline = true)]

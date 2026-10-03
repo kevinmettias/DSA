@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TrappingRainWater;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class TrappingRainWaterBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _heights = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxHeight)).ToArray();
+        _heights = SeededDraws.Values(Length, 0, MaxHeight, random);
     }
 
     [Benchmark(Baseline = true)]

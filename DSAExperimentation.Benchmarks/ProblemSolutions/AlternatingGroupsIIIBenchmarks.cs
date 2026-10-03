@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.AlternatingGroupsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class AlternatingGroupsIIIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _colors = Enumerable.Range(0, Length).Select(_ => random.Next(2)).ToArray();
+        _colors = SeededDraws.Values(Length, 0, 2, random);
 
         var queries = new int[Length][];
 

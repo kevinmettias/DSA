@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SortedGcdPairQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,10 +24,10 @@ public class SortedGcdPairQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValue + 1)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValue + 1, random);
 
         var pairCount = Length * (Length - 1) / 2;
-        _queries = Enumerable.Range(0, QueryCount).Select(_ => random.Next(pairCount)).ToArray();
+        _queries = SeededDraws.Values(QueryCount, 0, pairCount, random);
 
         _index = GcdPairCountIndex.Build(_nums);
     }

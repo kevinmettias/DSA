@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PartitionEqualSubsetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class PartitionEqualSubsetSumBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValue)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxElementValue, random);
         _half = _nums.Sum() / SubsetSumDivisor;
     }
 

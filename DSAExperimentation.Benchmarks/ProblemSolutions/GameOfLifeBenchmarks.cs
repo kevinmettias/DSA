@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.GameOfLife;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class GameOfLifeBenchmarks
     {
         var random = new Random(RandomSeed);
         _board = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, LiveCellExclusiveBound)).ToArray())
+            .Select(_ => SeededDraws.Values(Size, 0, LiveCellExclusiveBound, random))
             .ToArray();
     }
 

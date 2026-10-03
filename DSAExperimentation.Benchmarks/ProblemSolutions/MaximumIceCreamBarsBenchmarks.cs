@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumIceCreamBars;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class MaximumIceCreamBarsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _costs = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxCostExclusive)).ToArray();
+        _costs = SeededDraws.Values(Length, 1, MaxCostExclusive, random);
         _coins = (Length * MaxCostExclusive) / CoinsPerBarDivisor;
     }
 

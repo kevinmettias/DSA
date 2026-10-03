@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfCoinsYouCanGet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class MaximumNumberOfCoinsYouCanGetBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _piles = Enumerable.Range(0, PileCount).Select(_ => random.Next(1, MaxPileValueExclusive)).ToArray();
+        _piles = SeededDraws.Values(PileCount, 1, MaxPileValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

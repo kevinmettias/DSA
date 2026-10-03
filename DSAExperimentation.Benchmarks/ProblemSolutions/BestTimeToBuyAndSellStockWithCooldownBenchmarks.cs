@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithCooldown;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _prices = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxPrice)).ToArray();
+        _prices = SeededDraws.Values(Length, 0, MaxPrice, random);
     }
 
     [Benchmark(Baseline = true)]

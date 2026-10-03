@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FairDistributionOfCookies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class FairDistributionOfCookiesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _cookies = Enumerable.Range(0, BagCount).Select(_ => random.Next(1, MaxBagSize)).ToArray();
+        _cookies = SeededDraws.Values(BagCount, 1, MaxBagSize, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.HouseRobberV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,8 +26,8 @@ public class HouseRobberVBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, HouseCount).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _colors = Enumerable.Range(0, HouseCount).Select(_ => random.Next(1, ColorPoolSize + 1)).ToArray();
+        _nums = SeededDraws.Values(HouseCount, 1, MaxValueExclusive, random);
+        _colors = SeededDraws.Values(HouseCount, 1, ColorPoolSize + 1, random);
     }
 
     [Benchmark(Baseline = true)]

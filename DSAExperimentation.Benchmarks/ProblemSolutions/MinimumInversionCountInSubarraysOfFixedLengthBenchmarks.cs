@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumInversionCountInSubarraysOfFixedLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class MinimumInversionCountInSubarraysOfFixedLengthBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValue + 1)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValue + 1, random);
     }
 
     [Benchmark(Baseline = true)]

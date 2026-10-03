@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.JumpGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class JumpGameBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(Length / MinJumpLengthDivisor, Length)).ToArray();
+        _values = SeededDraws.Values(Length, Length / MinJumpLengthDivisor, Length, random);
         _values[^1] = 0;
     }
 

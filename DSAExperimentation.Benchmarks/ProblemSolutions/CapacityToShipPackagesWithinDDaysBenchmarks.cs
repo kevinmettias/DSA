@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class CapacityToShipPackagesWithinDDaysBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _weights = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxWeightExclusive)).ToArray();
+        _weights = SeededDraws.Values(Length, 1, MaxWeightExclusive, random);
         _days = Math.Max(1, Length / DaysDivisor);
     }
 

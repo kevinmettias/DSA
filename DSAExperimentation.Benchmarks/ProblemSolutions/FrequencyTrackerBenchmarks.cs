@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FrequencyTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -30,11 +31,11 @@ public class FrequencyTrackerBenchmarks
         var random = new Random(Seed);
         var valueRange = Math.Max(1, Length / DeleteCountDivisor);
 
-        _numbersToAdd = Enumerable.Range(0, Length).Select(_ => random.Next(valueRange)).ToArray();
+        _numbersToAdd = SeededDraws.Values(Length, 0, valueRange, random);
         _numbersToDelete = _numbersToAdd.Take(Length / DeleteCountDivisor).ToArray();
 
         var queryCount = Math.Max(MinQueryCount, Length / QueryCountDivisor);
-        _frequenciesToQuery = Enumerable.Range(0, queryCount).Select(_ => random.Next(1, valueRange + 1)).ToArray();
+        _frequenciesToQuery = SeededDraws.Values(queryCount, 1, valueRange + 1, random);
     }
 
     [Benchmark(Baseline = true)]

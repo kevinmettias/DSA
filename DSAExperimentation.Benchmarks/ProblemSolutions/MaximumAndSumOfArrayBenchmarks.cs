@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumAndSumOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -29,7 +30,7 @@ public class MaximumAndSumOfArrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, SlotCount * ElementsPerSlot).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(SlotCount * ElementsPerSlot, 1, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

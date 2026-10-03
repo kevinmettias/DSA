@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.HeightChecker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class HeightCheckerBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _heights = Enumerable.Range(0, Length).Select(_ => random.Next(1, HeightUpperBoundExclusive)).ToArray();
+        _heights = SeededDraws.Values(Length, 1, HeightUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

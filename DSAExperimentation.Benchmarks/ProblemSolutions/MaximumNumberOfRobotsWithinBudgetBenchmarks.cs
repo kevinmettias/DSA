@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfRobotsWithinBudget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,8 +25,8 @@ public class MaximumNumberOfRobotsWithinBudgetBenchmarks
     public void Setup()
     {
         var random = new Random(1);
-        _chargeTimes = Enumerable.Range(0, Length).Select(_ => random.Next(1, ChargeTimeBoundExclusive)).ToArray();
-        _runningCosts = Enumerable.Range(0, Length).Select(_ => random.Next(1, RunningCostBoundExclusive)).ToArray();
+        _chargeTimes = SeededDraws.Values(Length, 1, ChargeTimeBoundExclusive, random);
+        _runningCosts = SeededDraws.Values(Length, 1, RunningCostBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

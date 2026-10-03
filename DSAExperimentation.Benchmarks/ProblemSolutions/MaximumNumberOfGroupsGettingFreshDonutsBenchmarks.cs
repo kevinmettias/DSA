@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfGroupsGettingFreshDonuts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class MaximumNumberOfGroupsGettingFreshDonutsBenchmarks
     public void Setup()
     {
         var random = new Random(GroupSeed);
-        _groups = Enumerable.Range(0, GroupCount).Select(_ => random.Next(1, MaxGroupSizeExclusive)).ToArray();
+        _groups = SeededDraws.Values(GroupCount, 1, MaxGroupSizeExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

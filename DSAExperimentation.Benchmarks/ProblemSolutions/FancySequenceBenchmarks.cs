@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Domain.Modular;
 using DSAExperimentation.LeetCode.FancySequence;
 
@@ -32,7 +33,7 @@ public class FancySequenceBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _appendValues = Enumerable.Range(0, Length).Select(_ => random.Next(1, AppendedValueUpperBoundExclusive)).ToArray();
+        _appendValues = SeededDraws.Values(Length, 1, AppendedValueUpperBoundExclusive, random);
         _operations = Enumerable.Range(0, Length)
             .Select(i => (IsMultiply: i % AlternatingParityModulus == 0, Amount: random.Next(MinOperationAmount, MaxOperationAmountExclusive)))
             .ToArray();

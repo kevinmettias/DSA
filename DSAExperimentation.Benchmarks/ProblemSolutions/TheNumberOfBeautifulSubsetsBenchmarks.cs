@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TheNumberOfBeautifulSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +26,7 @@ public class TheNumberOfBeautifulSubsetsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

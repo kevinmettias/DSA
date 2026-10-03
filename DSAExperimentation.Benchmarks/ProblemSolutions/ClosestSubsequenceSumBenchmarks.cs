@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ClosestSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class ClosestSubsequenceSumBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueMagnitudeBound, ValueMagnitudeBound)).ToArray();
+        _nums = SeededDraws.Values(Length, -ValueMagnitudeBound, ValueMagnitudeBound, random);
     }
 
     [Benchmark(Baseline = true)]

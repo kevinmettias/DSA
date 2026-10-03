@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumOperationsToMakeBinaryArrayElementsEqualToOneI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,7 @@ public class MinimumOperationsToMakeBinaryArrayElementsEqualToOneIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, 2)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, 2, random);
         _nums[^1] = 1;
         _nums[^2] = 1;
         _nums[^3] = 1;

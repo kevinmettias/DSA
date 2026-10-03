@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PartitionArrayIntoTwoArraysToMinimizeSumDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
+        _nums = SeededDraws.Values(Length, -ValueBound, ValueBound, random);
     }
 
     [Benchmark(Baseline = true)]

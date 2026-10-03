@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumSumOfSubsequenceWithNonAdjacentElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class MaximumSumOfSubsequenceWithNonAdjacentElementsBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(-MaxAbsoluteValue, MaxAbsoluteValue)).ToArray();
+        _nums = SeededDraws.Values(Length, -MaxAbsoluteValue, MaxAbsoluteValue, random);
 
         var order = Enumerable.Range(0, Length).OrderBy(_ => random.Next()).ToArray();
         _queries = order.Select(position => new[] { position, random.Next(-MaxAbsoluteValue, MaxAbsoluteValue) }).ToArray();

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TheScoreOfStudentsSolvingMathExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -32,17 +33,13 @@ public class TheScoreOfStudentsSolvingMathExpressionBenchmarks
     public void Setup()
     {
         var random = new Random(WorkloadSeed);
-        var numbers = Enumerable.Range(0, NumberCount)
-            .Select(_ => random.Next(1, MaxDigitValueExclusive))
-            .ToArray();
+        var numbers = SeededDraws.Values(NumberCount, 1, MaxDigitValueExclusive, random);
         var ops = Enumerable.Range(0, NumberCount - 1)
             .Select(_ => IsPlus(random) ? '+' : '*')
             .ToArray();
 
         _expression = BuildExpression(numbers, ops);
-        _answers = Enumerable.Range(0, AnswerCount)
-            .Select(_ => random.Next(0, MaxAnswerExclusive))
-            .ToArray();
+        _answers = SeededDraws.Values(AnswerCount, 0, MaxAnswerExclusive, random);
     }
 
     private static bool IsPlus(Random random) => random.Next(0, OperatorChoiceCount) == 0;

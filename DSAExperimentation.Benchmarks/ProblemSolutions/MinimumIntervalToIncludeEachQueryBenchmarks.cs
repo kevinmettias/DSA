@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumIntervalToIncludeEachQuery;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -40,7 +41,7 @@ public class MinimumIntervalToIncludeEachQueryBenchmarks
                 return new[] { left, right };
             })
             .ToArray();
-        _queries = Enumerable.Range(0, Count).Select(_ => random.Next(0, Count * CoordinateSpaceMultiplier)).ToArray();
+        _queries = SeededDraws.Values(Count, 0, Count * CoordinateSpaceMultiplier, random);
     }
 
     [Benchmark(Baseline = true)]

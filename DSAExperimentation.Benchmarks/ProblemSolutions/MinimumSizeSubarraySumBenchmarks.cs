@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumSizeSubarraySum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class MinimumSizeSubarraySumBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxElementValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxElementValueExclusive, random);
         _target = _nums.Sum() + 1;
     }
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountAlmostEqualPairsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class CountAlmostEqualPairsIIBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        var nums = Enumerable.Range(0, Length).Select(_ => random.Next(MinValueInclusive, MaxValueExclusive)).ToArray();
+        var nums = SeededDraws.Values(Length, MinValueInclusive, MaxValueExclusive, random);
         _padded = CountAlmostEqualPairsIISolution.Pad(nums);
     }
 

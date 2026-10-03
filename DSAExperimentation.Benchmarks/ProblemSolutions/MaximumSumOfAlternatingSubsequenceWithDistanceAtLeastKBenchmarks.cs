@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, ValueUpperBound, random);
         _minimumDistance = Math.Max(1, Length / 10);
     }
 

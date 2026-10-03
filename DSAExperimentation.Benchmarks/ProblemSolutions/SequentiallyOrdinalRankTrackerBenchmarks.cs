@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SequentiallyOrdinalRankTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class SequentiallyOrdinalRankTrackerBenchmarks
     {
         var random = new Random(RandomSeed);
         _names = Enumerable.Range(0, OperationCount).Select(i => NamePrefix + i).ToArray();
-        _scores = Enumerable.Range(0, OperationCount).Select(_ => random.Next(0, ScoreExclusiveUpperBound)).ToArray();
+        _scores = SeededDraws.Values(OperationCount, 0, ScoreExclusiveUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

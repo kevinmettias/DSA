@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class MinStackBenchmarks
     {
         var random = new Random(RandomSeed);
 
-        _pushed = Enumerable.Range(0, Length).Select(_ => random.Next(ValueCeiling)).ToArray();
+        _pushed = SeededDraws.Values(Length, 0, ValueCeiling, random);
     }
 
     [Benchmark(Baseline = true)]

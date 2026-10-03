@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.Sorting;
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.CountElementsWithAtLeastKGreaterValues;
 
@@ -26,7 +27,7 @@ public class CountElementsWithAtLeastKGreaterValuesBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
 
         var sorted = (int[])_nums.Clone();
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(sorted));

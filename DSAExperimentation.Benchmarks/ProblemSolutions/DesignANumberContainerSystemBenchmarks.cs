@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignANumberContainerSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -41,7 +42,7 @@ public class DesignANumberContainerSystemBenchmarks
         _changeNumbers = Enumerable.Range(0, Count)
             .Concat(Enumerable.Range(0, churnCount).Select(_ => random.Next(0, Count)))
             .ToArray();
-        _findQueries = Enumerable.Range(0, Count).Select(_ => random.Next(0, Count)).ToArray();
+        _findQueries = SeededDraws.Values(Count, 0, Count, random);
     }
 
     [Benchmark(Baseline = true)]

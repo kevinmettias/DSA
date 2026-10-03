@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostToConnectTwoGroupsOfPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class MinimumCostToConnectTwoGroupsOfPointsBenchmarks
 
         for (var i = 0; i < GroupSize; i++)
         {
-            cost[i] = Enumerable.Range(0, GroupSize).Select(_ => random.Next(1, CostExclusiveBound)).ToArray();
+            cost[i] = SeededDraws.Values(GroupSize, 1, CostExclusiveBound, random);
         }
 
         _costs = ConnectionCosts.Build(cost);

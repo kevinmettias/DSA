@@ -1312,6 +1312,19 @@ seed and an input size is tier 5.
 types hide, only where workload generators live. Migrated test folders lose their `Fixtures/`
 subfolder entirely.
 
+Most of those generators serve one benchmark — 131 of 152 when this was measured — and that is the
+intended shape, not a failed attempt at sharing: a `<Problem>Workloads` generator is where one
+problem's workload, and the property its comment promises about it, are written down and tested.
+What *is* shared is what they are built from. A plain array of seeded values is
+`SeededDraws.Values(count, low, high, random)`, and an index permutation is `SeededSequences`;
+neither a benchmark nor a generator restates that pipeline inline.
+
+Sizing is per arm where the arms' costs differ in kind. `[Params]` applies to every arm of a class,
+so an exponential baseline used to cap a polynomial arm at a size where its growth could not show;
+a class like `BurstBalloonsBenchmarks` instead gives each arm its own sizes through
+`[ArgumentsSource]`, shares the smallest ones so the arms are still compared, and builds every
+size's workload in `[GlobalSetup]`.
+
 ### 17.8 One measurement changed on purpose
 
 `WordLadderIIBenchmarks` previously had both arms *count* shortest sequences rather than build

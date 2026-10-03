@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfPairsSatisfyingInequality;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,8 +23,8 @@ public class NumberOfPairsSatisfyingInequalityBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(-ValueBound, ValueBound)).ToArray();
+        _nums1 = SeededDraws.Values(Length, -ValueBound, ValueBound, random);
+        _nums2 = SeededDraws.Values(Length, -ValueBound, ValueBound, random);
         _diff = random.Next(0, ValueBound);
     }
 

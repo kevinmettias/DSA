@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TallestBillboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class TallestBillboardBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _rods = Enumerable.Range(0, RodCount).Select(_ => random.Next(1, MaxRodLength)).ToArray();
+        _rods = SeededDraws.Values(RodCount, 1, MaxRodLength, random);
     }
 
     [Benchmark(Baseline = true)]

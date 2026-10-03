@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RangeFrequencyQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,7 +27,7 @@ public class RangeFrequencyQueriesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _arr = Enumerable.Range(0, Length).Select(_ => random.Next(ValueRange)).ToArray();
+        _arr = SeededDraws.Values(Length, 0, ValueRange, random);
 
         _queries = new (int Left, int Right, int Value)[QueryCount];
         for (var i = 0; i < QueryCount; i++)

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ReshapeTheMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +28,7 @@ public class ReshapeTheMatrixBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _mat = Enumerable.Range(0, Rows).Select(_ => Enumerable.Range(0, Cols).Select(_ => random.Next(1, MaxCellValue)).ToArray()).ToArray();
+        _mat = Enumerable.Range(0, Rows).Select(_ => SeededDraws.Values(Cols, 1, MaxCellValue, random)).ToArray();
 
         // Same total cell count (Rows*Cols), reshaped into twice as many rows and half as many columns.
         _targetRows = Rows * ReshapeFactor;

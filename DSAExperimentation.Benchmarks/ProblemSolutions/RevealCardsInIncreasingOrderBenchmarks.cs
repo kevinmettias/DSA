@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RevealCardsInIncreasingOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class RevealCardsInIncreasingOrderBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _deck = Enumerable.Range(0, Length).Select(_ => random.Next(1, CardValueUpperBound)).ToArray();
+        _deck = SeededDraws.Values(Length, 1, CardValueUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

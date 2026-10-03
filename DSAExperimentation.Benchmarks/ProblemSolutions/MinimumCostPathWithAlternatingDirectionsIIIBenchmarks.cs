@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostPathWithAlternatingDirectionsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class MinimumCostPathWithAlternatingDirectionsIIIBenchmarks
     {
         var random = new Random(Seed);
         _penalty = [.. Enumerable.Range(0, Side).Select(_ =>
-            Enumerable.Range(0, Side).Select(_ => random.Next(0, MaxPenalty + 1)).ToArray())];
+            SeededDraws.Values(Side, 0, MaxPenalty + 1, random))];
     }
 
     [Benchmark(Baseline = true)]

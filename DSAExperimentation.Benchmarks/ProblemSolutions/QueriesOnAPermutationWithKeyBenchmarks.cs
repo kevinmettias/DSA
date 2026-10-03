@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.QueriesOnAPermutationWithKey;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,8 +22,7 @@ public class QueriesOnAPermutationWithKeyBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _queries = Enumerable.Range(0, PermutationSize)
-            .Select(_ => random.Next(FirstPermutationValue, PermutationSize + 1)).ToArray();
+        _queries = SeededDraws.Values(PermutationSize, FirstPermutationValue, PermutationSize + 1, random);
     }
 
     [Benchmark(Baseline = true)]

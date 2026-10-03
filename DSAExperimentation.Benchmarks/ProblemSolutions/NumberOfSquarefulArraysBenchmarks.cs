@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfSquarefulArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class NumberOfSquarefulArraysBenchmarks
     public void Setup()
     {
         var random = new Random(ValueSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBound)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, ValueUpperBound, random);
         Array.Sort(_nums);
     }
 

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MaximumScoreOfAGoodSubarray;
 
@@ -25,7 +26,7 @@ public class MaximumScoreOfAGoodSubarrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxNumValue)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, MaxNumValue, random);
         _requiredIndex = Length / AlgorithmConstants.HalvingFactor;
     }
 

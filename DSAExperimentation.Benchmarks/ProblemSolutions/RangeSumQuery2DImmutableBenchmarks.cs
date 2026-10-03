@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -30,7 +31,7 @@ public class RangeSumQuery2DImmutableBenchmarks
     {
         var random = new Random(RandomSeed);
         _matrix = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(-CellValueRange, CellValueRange)).ToArray())
+            .Select(_ => SeededDraws.Values(Size, -CellValueRange, CellValueRange, random))
             .ToArray();
 
         _queries = new (int Row1, int Col1, int Row2, int Col2)[QueryCount];

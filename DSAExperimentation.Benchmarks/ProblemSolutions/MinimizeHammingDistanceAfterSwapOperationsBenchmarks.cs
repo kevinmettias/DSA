@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimizeHammingDistanceAfterSwapOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -30,8 +31,8 @@ public class MinimizeHammingDistanceAfterSwapOperationsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _source = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _target = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _source = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
+        _target = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
 
         _allowedSwaps = new int[Length][];
         for (var i = 0; i < Length; i++)

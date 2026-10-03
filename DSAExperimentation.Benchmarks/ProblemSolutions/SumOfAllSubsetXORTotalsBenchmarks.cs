@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SumOfAllSubsetXORTotals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +21,7 @@ public class SumOfAllSubsetXORTotalsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(1, 1 << MaxValueBitWidth)).ToArray();
+        _values = SeededDraws.Values(Length, 1, 1 << MaxValueBitWidth, random);
     }
 
     [Benchmark(Baseline = true)]

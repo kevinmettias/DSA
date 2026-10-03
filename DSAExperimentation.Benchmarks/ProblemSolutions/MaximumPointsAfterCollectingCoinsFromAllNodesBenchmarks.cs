@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -33,7 +34,7 @@ public class MaximumPointsAfterCollectingCoinsFromAllNodesBenchmarks
             _edges[i - 1] = [i - 1, i];
         }
 
-        _coins = Enumerable.Range(0, NodeCount).Select(_ => random.Next(0, MaxCoinsExclusive)).ToArray();
+        _coins = SeededDraws.Values(NodeCount, 0, MaxCoinsExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

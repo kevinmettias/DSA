@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class SubsequencesWithAUniqueMiddleModeIBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(ValueRange)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, ValueRange, random);
     }
 
     [Benchmark(Baseline = true)]

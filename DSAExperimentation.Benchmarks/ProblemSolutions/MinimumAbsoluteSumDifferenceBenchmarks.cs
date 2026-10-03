@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,8 +22,8 @@ public class MinimumAbsoluteSumDifferenceBenchmarks
     public void Setup()
     {
         var random = new Random(ValueSeed);
-        _nums1 = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
-        _nums2 = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxValueExclusive)).ToArray();
+        _nums1 = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
+        _nums2 = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

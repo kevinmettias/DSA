@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DataStreamAsDisjointIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class DataStreamAsDisjointIntervalsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length * ValueRangeMultiplier)).ToArray();
+        _values = SeededDraws.Values(Length, 0, Length * ValueRangeMultiplier, random);
     }
 
     [Benchmark(Baseline = true)]

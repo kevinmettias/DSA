@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignAFoodRatingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -34,8 +35,8 @@ public class DesignAFoodRatingSystemBenchmarks
         var random = new Random(RandomSeed);
         _foods = Enumerable.Range(0, Count).Select(i => $"food{i}").ToArray();
         _cuisines = Enumerable.Range(0, Count).Select(_ => $"cuisine{random.Next(0, CuisineDomain)}").ToArray();
-        _initialRatings = Enumerable.Range(0, Count).Select(_ => random.Next(0, MaxRatingExclusive)).ToArray();
-        _changeRatings = Enumerable.Range(0, Count).Select(_ => random.Next(0, MaxRatingExclusive)).ToArray();
+        _initialRatings = SeededDraws.Values(Count, 0, MaxRatingExclusive, random);
+        _changeRatings = SeededDraws.Values(Count, 0, MaxRatingExclusive, random);
         _queryCuisines = Enumerable.Range(0, Count).Select(_ => $"cuisine{random.Next(0, CuisineDomain)}").ToArray();
     }
 

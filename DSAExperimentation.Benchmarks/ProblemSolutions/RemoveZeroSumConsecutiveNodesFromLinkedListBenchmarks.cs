@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.RemoveZeroSumConsecutiveNodesFromLinkedList;
 
@@ -33,9 +34,7 @@ public class RemoveZeroSumConsecutiveNodesFromLinkedListBenchmarks
     public void Setup()
     {
         var random = new Random(ValueSeed);
-        _values = Enumerable.Range(0, Length)
-            .Select(_ => random.Next(-NodeValueMagnitude, NodeValueExclusiveUpperBound))
-            .ToArray();
+        _values = SeededDraws.Values(Length, -NodeValueMagnitude, NodeValueExclusiveUpperBound, random);
     }
 
     [Benchmark(Baseline = true)]

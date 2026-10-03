@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountPrimeGapBalancedSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +20,7 @@ public class CountPrimeGapBalancedSubarraysBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(1, ValueUpperBoundExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

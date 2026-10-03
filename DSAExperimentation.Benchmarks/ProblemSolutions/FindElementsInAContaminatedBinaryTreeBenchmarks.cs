@@ -34,9 +34,7 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
         _root = BinaryTrees.Balanced(NodeCount);
 
         var random = new Random(TargetSeed);
-        _targets = Enumerable.Range(0, TargetSampleCount)
-            .Select(_ => random.Next(0, NodeCount * TargetRangeMultiplier))
-            .ToArray();
+        _targets = SeededDraws.Values(TargetSampleCount, 0, NodeCount * TargetRangeMultiplier, random);
     }
 
     [Benchmark(Baseline = true)]

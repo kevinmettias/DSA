@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -31,7 +32,7 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
     {
         var random = new Random(RandomSeed);
         _matrix = Enumerable.Range(0, Rows)
-            .Select(_ => Enumerable.Range(0, Cols).Select(_ => random.Next(MinCellValue, MaxCellValueExclusive)).ToArray())
+            .Select(_ => SeededDraws.Values(Cols, MinCellValue, MaxCellValueExclusive, random))
             .ToArray();
     }
 

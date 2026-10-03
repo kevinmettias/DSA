@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumNumberOfIncrementsOnSubarraysToFormTargetArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _target = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxTargetHeight)).ToArray();
+        _target = SeededDraws.Values(Length, 0, MaxTargetHeight, random);
     }
 
     [Benchmark(Baseline = true)]

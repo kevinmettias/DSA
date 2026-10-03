@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -22,7 +23,7 @@ public class MaximumSubarrayXORWithBoundedRangeBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, MaxValueExclusive)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, MaxValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

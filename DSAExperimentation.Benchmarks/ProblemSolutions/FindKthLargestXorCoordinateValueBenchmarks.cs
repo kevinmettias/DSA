@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class FindKthLargestXorCoordinateValueBenchmarks
     {
         var random = new Random(RandomSeed);
         _matrix = Enumerable.Range(0, Side)
-            .Select(_ => Enumerable.Range(0, Side).Select(_ => random.Next(1, MaxCoordinateValueExclusive)).ToArray())
+            .Select(_ => SeededDraws.Values(Side, 1, MaxCoordinateValueExclusive, random))
             .ToArray();
     }
 

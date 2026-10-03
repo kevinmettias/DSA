@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CreateSortedArrayThroughInstructions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +25,7 @@ public class CreateSortedArrayThroughInstructionsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _instructions = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxGeneratedValueExclusive)).ToArray();
+        _instructions = SeededDraws.Values(Length, 1, MaxGeneratedValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

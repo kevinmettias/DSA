@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostTreeFromLeafValues;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -23,7 +24,7 @@ public class MinimumCostTreeFromLeafValuesBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _arr = Enumerable.Range(0, Length).Select(_ => random.Next(1, MaxLeafValueExclusive)).ToArray();
+        _arr = SeededDraws.Values(Length, 1, MaxLeafValueExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PacificAtlanticWaterFlow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +22,7 @@ public class PacificAtlanticWaterFlowBenchmarks
     {
         var random = new Random(1);
         _heights = Enumerable.Range(0, Size)
-            .Select(_ => Enumerable.Range(0, Size).Select(_ => random.Next(0, MaxHeight)).ToArray())
+            .Select(_ => SeededDraws.Values(Size, 0, MaxHeight, random))
             .ToArray();
     }
 

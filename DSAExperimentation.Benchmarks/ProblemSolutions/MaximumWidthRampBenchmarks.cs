@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumWidthRamp;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +19,7 @@ public class MaximumWidthRampBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(0, Length).Select(_ => random.Next(0, Length)).ToArray();
+        _nums = SeededDraws.Values(Length, 0, Length, random);
     }
 
     [Benchmark(Baseline = true)]
