@@ -7,6 +7,8 @@ namespace DSAExperimentation.Tests.Algorithms.Reducing;
 
 public sealed partial class ReduceTests
 {
+    private const string ExplicitSeed = "#";
+
     private struct ClosedBeforeMarker;
 
     [Fact]
@@ -179,7 +181,7 @@ public sealed partial class ReduceTests
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
-            NestingReduceAlgebra, string>(root, visited);
+            NestingReduceAlgebra, string>(root, NestingReduceAlgebra.Seed, visited);
 
         Assert.Equal(NestingReduceAlgebra.Seed, walk);
         Assert.Single(visited);
@@ -198,15 +200,56 @@ public sealed partial class ReduceTests
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
-            NestingReduceAlgebra, string>(cycle, visited);
+            NestingReduceAlgebra, string>(cycle, NestingReduceAlgebra.Seed, visited);
         var second = Reduce.Graph<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             DepthFirstReduceOrder<TestNode>,
-            NestingReduceAlgebra, string>(x, visited);
+            NestingReduceAlgebra, string>(x, NestingReduceAlgebra.Seed, visited);
 
         Assert.Equal("*(A0(B1(C2))(D1))", first);
         Assert.Equal("*(X0)", second);
         Assert.Equal(5, visited.Count);
+    }
+
+    // An explicit seed replaces the algebra's own, so the walk text starts from it.
+    [Fact]
+    public void Tree_ExplicitSeed_StartsTheWalkFromIt()
+    {
+        var walk = Reduce.Tree<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>,
+            NestingReduceAlgebra, string>(TestTrees.NArySample(), ExplicitSeed);
+
+        Assert.StartsWith($"{ExplicitSeed}(A0", walk);
+    }
+
+    // An empty walk answers with the caller's seed, not the algebra's: a traversal threading its
+    // own hook value through Reduce must get that value back from a null root.
+    [Fact]
+    public void Tree_NullRootWithExplicitSeed_ReturnsThatSeed()
+    {
+        var walk = Reduce.Tree<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>,
+            NestingReduceAlgebra, string>(null, ExplicitSeed);
+
+        Assert.Equal(ExplicitSeed, walk);
+    }
+
+    [Fact]
+    public void Graph_RootAlreadyVisitedWithExplicitSeed_ReturnsThatSeed()
+    {
+        var root = TestGraphs.CycleWithLeaf();
+
+        var walk = Reduce.Graph<
+            TestNode, TestTopology, ListChildren<TestNode>,
+            NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+            DepthFirstReduceOrder<TestNode>,
+            NestingReduceAlgebra, string>(root, ExplicitSeed, [root]);
+
+        Assert.Equal(ExplicitSeed, walk);
     }
 }

@@ -38,7 +38,7 @@ internal static class ConnectedComponents
 
             Reduce.Graph<
                 TNode, TTopology, TChildren, TOrder, TOrderedChildren,
-                TOrderStrategy, NoOpReduceAlgebra<TNode>, Unit>(node, visited);
+                TOrderStrategy, NoOpReduceAlgebra<TNode>, Unit>(node, default, visited);
 
             count++;
         }

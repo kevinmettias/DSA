@@ -36,9 +36,9 @@ public sealed partial class DepthFirstReduceOrderTests
     }
 
     private static string Evaluate<TGuard>(TestNode root, TGuard guard)
-        where TGuard : IVisitGuard<TestNode>
+        where TGuard : struct, IVisitGuard<TestNode>
         => DepthFirstReduceOrder<TestNode>.Evaluate<
             TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            TGuard, NestingReduceAlgebra, string>(root, guard);
+            TGuard, NestingReduceAlgebra, string>(root, NestingReduceAlgebra.Seed, guard);
 }

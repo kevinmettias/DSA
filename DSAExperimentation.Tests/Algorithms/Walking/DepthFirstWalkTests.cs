@@ -66,16 +66,21 @@ public sealed partial class DepthFirstWalkTests
         Assert.Equal(["A", "C", "B", "E", "D"], visited.Select(v => v.Name));
     }
 
+    // The graph-safe guard is seeded with the root, which is already visited by
+    // definition; the tree-only shapes keep the unguarded visit they can rely on. Each
+    // branch names its guard's own type: the engine takes TGuard as a struct, so a guard
+    // chosen at run time behind the IVisitGuard interface is exactly what it refuses.
     private static List<(string Name, int Depth)> Walk(WalkExample example)
     {
         var root = Build(example.Shape);
-        var guard = GuardFor(root, example.Shape);
 
-        return WalkFrom(root, example.StartDepth, guard);
+        return IsTrackedGuardNeeded(example.Shape)
+            ? WalkFrom(root, example.StartDepth, new TrackedVisitGuard<TestNode>([root]))
+            : WalkFrom(root, example.StartDepth, new UnguardedVisit<TestNode>());
     }
 
     private static List<(string Name, int Depth)> WalkFrom<TGuard>(TestNode root, int startDepth, TGuard guard)
-        where TGuard : IVisitGuard<TestNode> =>
+        where TGuard : struct, IVisitGuard<TestNode> =>
         DepthFirstWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
@@ -83,24 +88,12 @@ public sealed partial class DepthFirstWalkTests
             root, startDepth, [], guard);
 
     private static List<(string Name, int Depth)> WalkReversed<TGuard>(TestNode root, int startDepth, TGuard guard)
-        where TGuard : IVisitGuard<TestNode> =>
+        where TGuard : struct, IVisitGuard<TestNode> =>
         DepthFirstWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             ReverseChildOrder<TestNode, ListChildren<TestNode>>, ReversedChildren<TestNode, ListChildren<TestNode>>,
             TGuard, RecordingWalkStep, List<(string Name, int Depth)>>(
             root, startDepth, [], guard);
-
-    // The graph-safe guard is seeded with the root, which is already visited by
-    // definition; the tree-only shapes keep the unguarded visit they can rely on.
-    private static IVisitGuard<TestNode> GuardFor(TestNode root, GraphShape shape)
-    {
-        if (IsTrackedGuardNeeded(shape))
-        {
-            return new TrackedVisitGuard<TestNode>([root]);
-        }
-
-        return new UnguardedVisit<TestNode>();
-    }
 
     private static bool IsTrackedGuardNeeded(GraphShape shape) =>
         shape == GraphShape.Cycle || shape == GraphShape.Diamond;

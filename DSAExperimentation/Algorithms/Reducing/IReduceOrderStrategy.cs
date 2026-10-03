@@ -21,11 +21,11 @@ internal interface IReduceOrderStrategy<TNode>
     where TNode : class
 {
     static abstract TState Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TGuard, TAlgebra, TState>(
-        TNode root, TGuard guard)
+        TNode root, TState seed, TGuard guard)
         where TTopology : struct, IGraphTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : IVisitGuard<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>;
 }

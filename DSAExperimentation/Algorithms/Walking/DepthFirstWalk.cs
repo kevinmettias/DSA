@@ -27,7 +27,7 @@ internal static class DepthFirstWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : IVisitGuard<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
         where TStep : struct, IReduceAlgebra<TNode, TState>
     {
         state = TStep.Enter(state, node, depth);
@@ -60,7 +60,7 @@ internal static class DepthFirstWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : IVisitGuard<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
         where THooks : struct, IDepthFirstHooks<TNode>
         => Walk<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TGuard, HooksStep<TNode, THooks>, Unit>(
             node, depth, default, guard);

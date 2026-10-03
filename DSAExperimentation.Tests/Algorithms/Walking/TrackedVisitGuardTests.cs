@@ -44,8 +44,8 @@ public sealed partial class TrackedVisitGuardTests
     [Fact]
     public void ShouldVisit_SharesOneSetAcrossEveryReferenceToTheGuard()
     {
-        // The guard is a reference type precisely so the visited set is shared
-        // rather than silently copied - that sharing is what stops a walk looping.
+        // The guard is a struct, but its one field is the set: a copy aliases the same
+        // HashSet rather than duplicating it - that sharing is what stops a walk looping.
         var visited = new HashSet<TestNode>();
         var guard = new TrackedVisitGuard<TestNode>(visited);
         var alias = guard;

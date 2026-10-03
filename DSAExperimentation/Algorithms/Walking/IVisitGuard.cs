@@ -2,10 +2,12 @@ namespace DSAExperimentation.Algorithms.Walking;
 
 // The one axis that actually differs between a tree-only walk and a graph-safe
 // walk: whether a child needs to be checked against a visited-set before being
-// recursed into or enqueued. Instance-dispatched rather than static-abstract like
+// recursed into or enqueued. Instance members rather than static-abstract like
 // TOrder/TStep - the graph-safe guard carries real state (the HashSet itself), so
 // it has to be a value threaded through the walk, not a witness selected purely by
-// type.
+// type. Every engine still constrains TGuard to struct, so each guard is a distinct
+// JIT instantiation and ShouldVisit is a direct, inlinable call - instance members
+// on a struct type parameter are dispatched as statically as static ones.
 //
 // Internal, like everything else in this chain: IReduceOrderStrategy.Evaluate is
 // generic over TGuard, and that interface is internal too, so there's no
@@ -13,9 +15,9 @@ namespace DSAExperimentation.Algorithms.Walking;
 // topology" - DepthFirstWalk/BreadthFirstWalk, the only things that actually
 // execute a walk against a topology, stay internal, so nothing outside this
 // assembly can reach one no matter which guard it names; and TrackedVisitGuard's
-// constructor stays internal too, so outside code cannot even construct a valid
-// one. Reduce.Tree/Reduce.Graph remain the only way in, and they still choose the
-// guard themselves.
+// constructor stays internal too, so outside code cannot construct a working one
+// (its default value holds no set and throws on first use). Reduce.Tree/Reduce.Graph
+// remain the only way in, and they still choose the guard themselves.
 internal interface IVisitGuard<TNode>
     where TNode : class
 {

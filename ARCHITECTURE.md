@@ -685,7 +685,8 @@ comment/generic bound, not a folder, until a second tier actually shows up.
   `ShortestPath.cs` in `Algorithms/` — even though `ShortestPath.cs` is its only consumer. Locality
   is real but secondary to axis-purity here, since axis-purity is the entire point of this reorg.
 - **`IVisitGuard`/`UnguardedVisit`/`TrackedVisitGuard`** superficially resemble a closed-set
-  Topology witness — the same `static abstract`, two-variant shape as `IHeapOrder` — but the actual
+  Topology witness — the same two-variant, struct-witness shape as `IHeapOrder`, though its member is
+  an instance method because the graph guard carries its visited set — but the actual
   discriminator is *what the closed choice is about*, not its shape (§9.1, §12.1): `IHeapOrder`
   decides a relation on stored data, while `IVisitGuard` decides how the *algorithm executes*
   (whether to track revisits) — the same execution-strategy axis as `IFoldEvaluationStrategy`/
@@ -1324,7 +1325,7 @@ Enforcement now comes from two places, chosen deliberately over a project-per-ti
 Splitting those three apart was considered and rejected for two reasons. First, every type in this
 repo is `internal`, and several designs depend on single-assembly encapsulation — `IVisitGuard`'s
 own doc comment argues that *"nothing outside this assembly can reach one… TrackedVisitGuard's
-constructor stays internal too, so outside code cannot even construct a valid one"*, which stops
+constructor stays internal too, so outside code cannot construct a working one"*, which stops
 being true the moment its consumers are a different assembly. Splitting would force that surface
 public or thread a dozen `InternalsVisibleTo` attributes through the tree.
 

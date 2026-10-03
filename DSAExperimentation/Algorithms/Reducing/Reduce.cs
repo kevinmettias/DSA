@@ -28,11 +28,26 @@ internal static class Reduce
         where TOrderedChildren : struct, IChildren<TNode>
         where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>
+        => Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(root, TAlgebra.Seed);
+
+    // An explicit starting state, for a reduce whose seed belongs to the call rather than to the
+    // algebra alone - a traversal threading its own hook value through the walk is one. An empty
+    // walk answers with that seed, not TAlgebra.Seed: the caller's starting state is what nothing
+    // was folded into.
+    public static TState Tree<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
+        TNode? root, TState seed)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
+        where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => root is null
-            ? TAlgebra.Seed
+            ? seed
             : TOrderStrategy.Evaluate<
                 TTopology, TChildren, TOrder, TOrderedChildren, UnguardedVisit<TNode>, TAlgebra, TState>(
-                root, default);
+                root, seed, default);
 
     public static TState Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
         TNode? root)
@@ -44,7 +59,7 @@ internal static class Reduce
         where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
-            root, []);
+            root, TAlgebra.Seed, []);
 
     // The multi-root overload: visited is supplied by the caller instead of
     // constructed fresh, so it can be carried across several separate top-level
@@ -52,11 +67,15 @@ internal static class Reduce
     // multi-source BFS) needs and the single-root overload above structurally
     // cannot express, since that one owns its guard's backing set for the
     // duration of exactly one call. A root already present in visited is treated
-    // as nothing to do (TAlgebra.Seed, no walk) - the caller's job is deciding
+    // as nothing to do (the seed, no walk) - the caller's job is deciding
     // whether that's expected (see ConnectedComponents, which checks first and
     // skips instead of calling this at all) or not.
+    //
+    // visited always comes last and never without a seed. A (root, visited) overload
+    // beside a (root, seed) one would let C#'s tie-break bind a HashSet<TNode> seed as
+    // the visited set - silently, not as an ambiguity error - so neither shape exists.
     public static TState Graph<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TOrderStrategy, TAlgebra, TState>(
-        TNode? root, HashSet<TNode> visited)
+        TNode? root, TState seed, HashSet<TNode> visited)
         where TNode : class
         where TTopology : struct, IGraphTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
@@ -65,8 +84,8 @@ internal static class Reduce
         where TOrderStrategy : struct, IReduceOrderStrategy<TNode>
         where TAlgebra : struct, IReduceAlgebra<TNode, TState>
         => root is null || !visited.Add(root)
-            ? TAlgebra.Seed
+            ? seed
             : TOrderStrategy.Evaluate<
                 TTopology, TChildren, TOrder, TOrderedChildren, TrackedVisitGuard<TNode>, TAlgebra, TState>(
-                root, new TrackedVisitGuard<TNode>(visited));
+                root, seed, new TrackedVisitGuard<TNode>(visited));
 }

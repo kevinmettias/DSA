@@ -24,7 +24,7 @@ internal static class TopDownWalk
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
-        where TGuard : IVisitGuard<TNode>
+        where TGuard : struct, IVisitGuard<TNode>
         where THooks : struct, ITopDownHooks<TNode, TState>
     {
         var children = TOrder.Apply(TTopology.GetChildren(node));

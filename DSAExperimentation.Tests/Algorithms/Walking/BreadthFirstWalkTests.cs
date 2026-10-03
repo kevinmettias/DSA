@@ -76,24 +76,30 @@ public sealed partial class BreadthFirstWalkTests
         Assert.Equal(["C", "B"], next.Select(n => n.Name));
     }
 
+    // The graph-safe guard is seeded with the root, which is already visited by
+    // definition; the tree-only shapes keep the unguarded visit they can rely on. Each
+    // branch names its guard's own type: the engines take TGuard as a struct, so a guard
+    // chosen at run time behind the IVisitGuard interface is exactly what they refuse.
     private static List<(string Name, int Depth)> Walk(GraphShape shape)
     {
         var root = Build(shape);
-        var guard = GuardFor(root, shape);
 
-        return WalkWith(root, guard);
+        return IsTrackedGuardNeeded(shape)
+            ? WalkWith(root, new TrackedVisitGuard<TestNode>([root]))
+            : WalkWith(root, new UnguardedVisit<TestNode>());
     }
 
     private static List<TestNode> NextLevel(GraphShape shape)
     {
         var root = Build(shape);
-        var guard = GuardFor(root, shape);
 
-        return NextLevelWith([root], guard);
+        return IsTrackedGuardNeeded(shape)
+            ? NextLevelWith([root], new TrackedVisitGuard<TestNode>([root]))
+            : NextLevelWith([root], new UnguardedVisit<TestNode>());
     }
 
     private static List<(string Name, int Depth)> WalkWith<TGuard>(TestNode root, TGuard guard)
-        where TGuard : IVisitGuard<TestNode> =>
+        where TGuard : struct, IVisitGuard<TestNode> =>
         BreadthFirstWalk.Walk<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
@@ -101,30 +107,18 @@ public sealed partial class BreadthFirstWalkTests
             root, [], guard);
 
     private static List<TestNode> NextLevelWith<TGuard>(List<TestNode> currentLevel, TGuard guard)
-        where TGuard : IVisitGuard<TestNode> =>
+        where TGuard : struct, IVisitGuard<TestNode> =>
         BreadthFirstWalk.NextLevel<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
             TGuard>(currentLevel, guard);
 
     private static List<TestNode> NextLevelReversed<TGuard>(List<TestNode> currentLevel, TGuard guard)
-        where TGuard : IVisitGuard<TestNode> =>
+        where TGuard : struct, IVisitGuard<TestNode> =>
         BreadthFirstWalk.NextLevel<
             TestNode, TestTopology, ListChildren<TestNode>,
             ReverseChildOrder<TestNode, ListChildren<TestNode>>, ReversedChildren<TestNode, ListChildren<TestNode>>,
             TGuard>(currentLevel, guard);
-
-    // The graph-safe guard is seeded with the root, which is already visited by
-    // definition; the tree-only shapes keep the unguarded visit they can rely on.
-    private static IVisitGuard<TestNode> GuardFor(TestNode root, GraphShape shape)
-    {
-        if (IsTrackedGuardNeeded(shape))
-        {
-            return new TrackedVisitGuard<TestNode>([root]);
-        }
-
-        return new UnguardedVisit<TestNode>();
-    }
 
     private static bool IsTrackedGuardNeeded(GraphShape shape) =>
         shape == GraphShape.Cycle || shape == GraphShape.Diamond;
@@ -199,7 +193,7 @@ public sealed partial class BreadthFirstWalkTests
         }
 
         private static void WalkWithHooks<TGuard, TMarker>(TestNode root, TGuard guard)
-            where TGuard : IVisitGuard<TestNode>
+            where TGuard : struct, IVisitGuard<TestNode>
             where TMarker : struct
             => BreadthFirstWalk.Walk<
                 TestNode, TestTopology, ListChildren<TestNode>,

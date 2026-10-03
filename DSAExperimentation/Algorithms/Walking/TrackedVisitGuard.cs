@@ -21,19 +21,23 @@ namespace DSAExperimentation.Algorithms.Walking;
 // means the walk engine notifying it when a child's subtree finishes, a cost every
 // guard (including the tree-only one) would pay on every call, for a distinction
 // only meaningful to a DFS-shaped walk. Not worth taxing the zero-cost path for.
-// A reference type, not a value type: this guard's entire purpose is one shared,
-// mutating HashSet threaded by identity through the whole walk. Wrapping that in a
-// struct would make every copy look like an independent value while secretly
-// aliasing the same set - the sharing is the point, so the type says so instead of
-// hiding it behind copy syntax.
-internal sealed class TrackedVisitGuard<TNode> : IVisitGuard<TNode>
+//
+// A readonly struct whose one field is the shared set, and every engine constrains
+// TGuard to struct. As a class, the guard made every graph walk run as code shared
+// across reference types, with ShouldVisit an interface call per child; as a struct,
+// each walk is JIT-specialized for this guard and ShouldVisit inlines, the same zero
+// cost UnguardedVisit gets on the tree tier, and a walk no longer allocates the guard.
+// Copies alias the one HashSet by design - the way ListChildren's copies alias its
+// List (11.2) - so threading the guard by value still shares the set, which is what
+// stops a walk looping. default(TrackedVisitGuard<TNode>) holds no set and throws on
+// first use; only Reduce and the traversal entry points construct one.
+internal readonly struct TrackedVisitGuard<TNode> : IVisitGuard<TNode>
     where TNode : class
 {
     private readonly HashSet<TNode> _visited;
 
-    // Internal: construction is the one remaining thing this type needs to keep out
-    // of outside hands, since a validly constructed guard is only useful paired with
-    // the internal engine anyway.
+    // Internal: a validly constructed guard is only useful paired with the internal
+    // engine, so construction stays out of outside hands.
     internal TrackedVisitGuard(HashSet<TNode> visited) => _visited = visited;
 
     public bool ShouldVisit(TNode node) => _visited.Add(node);
