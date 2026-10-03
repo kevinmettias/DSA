@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MinimumCostTreeFromLeafValuesSolution's, the same
 // methods MinimumCostTreeFromLeafValuesSolutionTests proves correct - the un-memoized
 // interval recursion vs. the O(n) monotonic-decreasing sweep. Length is kept modest
-// for the same reason MinimumScoreTriangulationOfPolygonBenchmarks' VertexCount is:
+// for the same reason MinimumScoreTriangulationOfPolygonBenchmarks' baseline sizes are:
 // the baseline's blowup is real.
 public class MinimumCostTreeFromLeafValuesBenchmarks
 {

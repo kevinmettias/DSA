@@ -7,23 +7,28 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // test proves correct. The comparison is the textbook O(n!) enumeration of every
 // arrangement against this repo's own Memoizer computing the identical count via
 // the unsigned-Stirling-number recurrence in O(StickCount*VisibleCount) states.
-// StickCount is kept modest for the same reason StoneGameVIIBenchmarks keeps
-// PileCount modest for its own exponential baseline - the brute force's factorial
-// blowup is real.
+//
+// Sizes are per arm. The brute force's factorial blowup is real, so it stops at 9
+// sticks (the same reason StoneGameVIIBenchmarks keeps its own exponential baseline
+// modest); the Stirling recurrence runs on to LC 1866's own bound of 1,000. The two
+// are compared at the sizes both run.
 public class NumberOfWaysToRearrangeSticksWithKSticksVisibleBenchmarks
 {
     private const int VisibleCount = 3;
 
-    [Params(8, 9)]
-    public int StickCount { get; set; }
+    public static IEnumerable<int> BaselineSizes => [8, 9];
+
+    public static IEnumerable<int> StirlingSizes => [.. BaselineSizes, 100, 1_000];
 
     [Benchmark(Baseline = true)]
-    public int BruteForcePermutations() =>
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public int BruteForcePermutations(int stickCount) =>
         NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
-            .RearrangeSticksByPermutationEnumeration(StickCount, VisibleCount);
+            .RearrangeSticksByPermutationEnumeration(stickCount, VisibleCount);
 
     [Benchmark]
-    public int MemoizedStirlingRecurrence() =>
+    [ArgumentsSource(nameof(StirlingSizes))]
+    public int MemoizedStirlingRecurrence(int stickCount) =>
         NumberOfWaysToRearrangeSticksWithKSticksVisibleSolution
-            .RearrangeSticksByMemoizedStirling(StickCount, VisibleCount);
+            .RearrangeSticksByMemoizedStirling(stickCount, VisibleCount);
 }

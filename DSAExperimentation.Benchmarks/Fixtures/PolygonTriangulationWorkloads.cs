@@ -1,10 +1,10 @@
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 1039 - a random scattering of vertex weights
-// around one convex polygon. Kept modest (<=14 in the benchmark's own [Params])
-// because MinimumScoreTriangulationOfPolygonSolution's un-memoized baseline is
-// genuinely exponential, the same reasoning BurstBalloonsWorkloads already records
-// for LC 312's identical interval recurrence.
+// around one convex polygon, at whatever count an arm asks for. The benchmark keeps
+// its genuinely exponential un-memoized baseline to 14 vertices and runs the memoized
+// arm on to LC 1039's bound of 50, the same split BurstBalloonsWorkloads records for
+// LC 312's identical interval recurrence.
 internal static class PolygonTriangulationWorkloads
 {
     private const int MaxVertexWeightExclusive = 100;

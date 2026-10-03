@@ -10,6 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead of an early exit making brute force look artificially competitive. The
 // triplet array is LeetCode's own input shape, so neither arm needs a hoisted
 // overload.
+//
+// Sizes are per arm. The subset search stops at 18 triplets; the linear scan runs on
+// to LC 1899's own bound of 100,000, where its O(n) growth can show, and the two are
+// compared at the sizes both run.
 public class MergeTripletsToFormTargetTripletBenchmarks
 {
     private const int RandomSeed = 1899; // LC problem number
@@ -18,25 +22,35 @@ public class MergeTripletsToFormTargetTripletBenchmarks
 
     private static readonly int[] Target = [1_000, 1_000, 1_000];
 
-    private int[][] _triplets = [];
+    private Dictionary<int, int[][]> _tripletsBySize = [];
 
-    [Params(12, 18)]
-    public int TripletCount { get; set; }
+    public static IEnumerable<int> BaselineSizes => [12, 18];
 
+    public static IEnumerable<int> LinearScanSizes => [.. BaselineSizes, 1_000, 100_000];
+
+    // Every size any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
+    public void Setup() =>
+        _tripletsBySize = LinearScanSizes.ToDictionary(tripletCount => tripletCount, BuildTriplets);
+
+    private static int[][] BuildTriplets(int tripletCount)
     {
         var random = new Random(RandomSeed);
-        _triplets = Enumerable.Range(0, TripletCount)
+
+        return Enumerable.Range(0, tripletCount)
             .Select(_ => SeededDraws.Values(TripletDimension, 0, ValueBoundExclusive, random))
             .ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public bool CanFormTargetByBruteForceSubsets() =>
-        MergeTripletsToFormTargetTripletSolution.CanFormTargetByBruteForceSubsets(_triplets, Target);
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public bool CanFormTargetByBruteForceSubsets(int tripletCount) =>
+        MergeTripletsToFormTargetTripletSolution.CanFormTargetByBruteForceSubsets(
+            _tripletsBySize[tripletCount], Target);
 
     [Benchmark]
-    public bool CanFormTargetBySetTrackedLinearScan() =>
-        MergeTripletsToFormTargetTripletSolution.CanFormTargetBySetTrackedLinearScan(_triplets, Target);
+    [ArgumentsSource(nameof(LinearScanSizes))]
+    public bool CanFormTargetBySetTrackedLinearScan(int tripletCount) =>
+        MergeTripletsToFormTargetTripletSolution.CanFormTargetBySetTrackedLinearScan(
+            _tripletsBySize[tripletCount], Target);
 }

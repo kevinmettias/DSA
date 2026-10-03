@@ -9,34 +9,47 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // neighbors are right/down, the classic Unique-Paths-shaped DAG with heavy path
 // overlap). NaiveRecursion re-walks every shared sub-path from scratch per candidate
 // start cell - here the call count itself, not just the returned value, grows with the
-// number of increasing paths, which is why Size stays modest. MemoizedRecurrence
-// dogfoods this repo's own Memoizer per start cell, collapsing shared sub-paths within
-// one start's search from exponential to polynomial.
+// number of increasing paths. MemoizedRecurrence dogfoods this repo's own Memoizer per
+// start cell, collapsing shared sub-paths within one start's search from exponential
+// to polynomial.
+//
+// Sizes are per arm. The naive arm stops at a side of 9; the memoized arm, whose fresh
+// memo per start cell makes it O(side^4) here, runs on to a side of 32, well inside
+// LC 2328's 10^5 cells. The two are compared at the sizes both run.
 public class NumberOfIncreasingPathsInAGridBenchmarks
 {
-    private int[,] _matrix = new int[0, 0];
+    private Dictionary<int, int[,]> _matrixBySize = [];
 
-    [Params(6, 9)]
-    public int Size { get; set; }
+    public static IEnumerable<int> BaselineSizes => [6, 9];
 
+    public static IEnumerable<int> MemoizedSizes => [.. BaselineSizes, 20, 32];
+
+    // Every size any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
-    {
-        _matrix = new int[Size, Size];
+    public void Setup() => _matrixBySize = MemoizedSizes.ToDictionary(size => size, BuildMatrix);
 
-        for (var row = 0; row < Size; row++)
+    private static int[,] BuildMatrix(int size)
+    {
+        var matrix = new int[size, size];
+
+        for (var row = 0; row < size; row++)
         {
-            for (var col = 0; col < Size; col++)
+            for (var col = 0; col < size; col++)
             {
-                _matrix[row, col] = row * Size + col;
+                matrix[row, col] = row * size + col;
             }
         }
+
+        return matrix;
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRecursion() => NumberOfIncreasingPathsInAGridSolution.CountPathsByNaiveRecursion(_matrix);
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public int NaiveRecursion(int size) =>
+        NumberOfIncreasingPathsInAGridSolution.CountPathsByNaiveRecursion(_matrixBySize[size]);
 
     [Benchmark]
-    public int MemoizedRecurrence() =>
-        NumberOfIncreasingPathsInAGridSolution.CountPathsByMemoizedRecurrence(_matrix);
+    [ArgumentsSource(nameof(MemoizedSizes))]
+    public int MemoizedRecurrence(int size) =>
+        NumberOfIncreasingPathsInAGridSolution.CountPathsByMemoizedRecurrence(_matrixBySize[size]);
 }
