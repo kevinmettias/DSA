@@ -2,44 +2,39 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for UniquePathsBenchmarks (ARCHITECTURE 17.9): its two arms are
-// UniquePathsSolution's competing strategies for the same question - the closed-form binomial
-// coefficient against the memoized grid recurrence - so a harness whose arms disagree is counting
-// two different grids. Both arms answer with LC 62's own quantity, so agreement is agreement on the
-// whole answer.
+// Harness coverage for UniquePathsBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the count at both published sizes. A path across an n x n
+// grid is n - 1 downs and n - 1 rights in any order, so there are C(2n - 2, n - 1) of them.
 //
-// On the smaller parameter the count is decisive: a 10 x 10 grid needs C(18, 9) = 48620 paths, and
-// that literal is asserted alongside the agreement rather than left to a shared wrong number.
-//
-// The larger parameter, 18, is outside LC 62's guarantee that the answer fits an int - C(34, 17) is
-// 2333606220 - and both arms return int, so they wrap to the same 32-bit value and still agree. That
-// is a property of the parameters the class publishes, not of this harness, so the [Params] values
-// are left exactly as they are and the observation is reported instead of acted on.
+// The larger size is the class's claim to stay inside LC 62's guarantee that the answer fits:
+// C(32, 16) is the count for 17, and at 18 the count, 2,333,606,220, would wrap in an int and both
+// arms would agree on the wrapped value.
 public sealed partial class UniquePathsBenchmarksTests
 {
-    // The smaller of the class's [Params(10, 18)] grid sizes.
     private const int SmallestSize = 10;
+    private const int LargestSize = 17;
 
-    // C(18, 9) = 48620: the paths across a 10 x 10 grid, 9 downs and 9 rights in any order.
-    private const int ExpectedPathCount = 48_620;
+    // C(18, 9): the paths across a 10 x 10 grid.
+    private const int SmallestGridPathCount = 48_620;
 
-    [Fact]
-    public void Combinatorics_SmallestSize_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedPathCount, harness.Combinatorics());
-        Assert.Equal(harness.MemoizedRecurrence(), harness.Combinatorics());
-    }
+    // C(32, 16): the paths across a 17 x 17 grid.
+    private const int LargestGridPathCount = 601_080_390;
 
     [Fact]
-    public void MemoizedRecurrence_SmallestSize_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
+    public void Combinatorics_SmallestSize_CountsEveryOrderOfDownsAndRights() =>
+        Assert.Equal(SmallestGridPathCount, BuildHarness(SmallestSize).Combinatorics());
 
-        Assert.Equal(ExpectedPathCount, harness.MemoizedRecurrence());
-        Assert.Equal(harness.Combinatorics(), harness.MemoizedRecurrence());
-    }
+    [Fact]
+    public void MemoizedRecurrence_SmallestSize_CountsEveryOrderOfDownsAndRights() =>
+        Assert.Equal(SmallestGridPathCount, BuildHarness(SmallestSize).MemoizedRecurrence());
 
-    private static UniquePathsBenchmarks BuildHarness() => new() { Size = SmallestSize };
+    [Fact]
+    public void Combinatorics_LargestSize_StaysInsideTheIntTheProblemPromises() =>
+        Assert.Equal(LargestGridPathCount, BuildHarness(LargestSize).Combinatorics());
+
+    [Fact]
+    public void MemoizedRecurrence_LargestSize_StaysInsideTheIntTheProblemPromises() =>
+        Assert.Equal(LargestGridPathCount, BuildHarness(LargestSize).MemoizedRecurrence());
+
+    private static UniquePathsBenchmarks BuildHarness(int size) => new() { Size = size };
 }
