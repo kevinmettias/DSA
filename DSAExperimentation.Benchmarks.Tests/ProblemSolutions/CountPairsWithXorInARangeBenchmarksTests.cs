@@ -19,7 +19,7 @@ public sealed partial class CountPairsWithXorInARangeBenchmarksTests
         var first = BuildHarness();
         var second = BuildHarness();
 
-        // The documented shape: values are spread over [0, 20_000) while the queried xor range is
+        // The documented shape: values are spread over [1, 20_000] while the queried xor range is
         // [100, 5_000], so real pairs land inside it - and none of them can be counted twice.
         Assert.InRange(first.PairwiseScan(), 1, MostIndexPairs);
         Assert.Equal(first.PairwiseScan(), second.PairwiseScan());

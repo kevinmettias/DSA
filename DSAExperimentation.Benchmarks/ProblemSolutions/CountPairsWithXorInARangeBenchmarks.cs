@@ -25,7 +25,8 @@ public class CountPairsWithXorInARangeBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(Length, 0, ValueUpperBound, random);
+        // LC 1803's values run from 1 to 2 * 10^4.
+        _values = SeededDraws.Values(Length, 1, ValueUpperBound + 1, random);
     }
 
     [Benchmark(Baseline = true)]

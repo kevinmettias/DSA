@@ -16,7 +16,7 @@ public sealed partial class CountPrefixAndSuffixPairsIBenchmarksTests
     // one Setup builds.
     private const int Seed = 3042;
 
-    private const int MaxWordLength = 50;
+    private const int MaxWordLength = 10;
 
     [Fact]
     public void Setup_SmallestWordCount_RebuildsTheSameWorkload()

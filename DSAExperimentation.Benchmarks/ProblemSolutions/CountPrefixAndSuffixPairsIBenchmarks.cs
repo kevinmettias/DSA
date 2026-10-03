@@ -15,13 +15,14 @@ public class CountPrefixAndSuffixPairsIBenchmarks
     private string[] _words = [];
 
     private RollingHash[] _hashes = [];
-    [Params(25, 100)]
+    // LC 3042 gives at most 50 words of at most 10 letters.
+    [Params(25, 50)]
     public int WordCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        _words = PrefixSuffixPairWorkloads.BuildWords(WordCount, maxLength: 50, seed: Seed);
+        _words = PrefixSuffixPairWorkloads.BuildWords(WordCount, maxLength: 10, seed: Seed);
         _hashes = CountPrefixAndSuffixPairsISolution.BuildHashes(_words);
     }
 

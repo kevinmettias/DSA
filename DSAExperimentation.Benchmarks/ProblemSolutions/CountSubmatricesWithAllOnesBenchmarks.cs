@@ -16,7 +16,8 @@ public class CountSubmatricesWithAllOnesBenchmarks
 
     private int[][] _matrix = [];
 
-    [Params(50, 300)]
+    // LC 1504's matrix is at most 150 x 150.
+    [Params(50, 150)]
     public int Size { get; set; }
 
     [GlobalSetup]

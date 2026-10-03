@@ -27,7 +27,8 @@ public class CountIntegersInIntervalsBenchmarks
         _ranges = Enumerable.Range(0, OperationCount)
             .Select(_ =>
             {
-                var left = random.Next(0, OperationCount * MaxRangeWidth);
+                // LC 2276's intervals start at 1.
+                var left = random.Next(1, (OperationCount * MaxRangeWidth) + 1);
                 var right = left + random.Next(0, MaxRangeWidth);
                 return (left, right);
             })

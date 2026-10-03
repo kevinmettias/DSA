@@ -7,11 +7,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(rows*cols*(rows+cols)) per-server row/column rescan against the O(rows*cols)
 // two-pass HashMap<int,int> tally.
 //
-// The two [Params] sizes were chosen to show the real crossover this Big-O gap
-// predicts, not just one side of it: a dry-run showed the rescan ~4.8x faster at
-// Size=100 (HashMap's per-call hashing/bucket overhead dominates when
-// rows*cols*(rows+cols) is still small) flipping to the tally ~2.7x faster at
-// Size=700 (cubic growth overtakes it).
+// A dry run once showed the rescan ~4.8x faster at Size=100, where HashMap's
+// per-call hashing/bucket overhead dominates while rows*cols*(rows+cols) is still
+// small. Size stops at LC 1267's 250 x 250 grid, so the rescan's cubic growth shows
+// only as far as that bound allows.
 public class CountServersThatCommunicateBenchmarks
 {
     // A cell becomes a server with 1-in-N odds.
@@ -21,7 +20,7 @@ public class CountServersThatCommunicateBenchmarks
 
     private int[][] _grid = [];
 
-    [Params(100, 700)]
+    [Params(100, 250)]
     public int Size { get; set; }
 
     [GlobalSetup]
