@@ -14,10 +14,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] materializes the amount script so random generation is charged to
 // setup rather than to the replay, and counts are seeded far above anything Calls
 // could withdraw, so every withdrawal succeeds and both arms do identical work per
-// call.
+// call. LC 2241 allows 5000 calls in all and 10^9 deposited notes in all: the
+// opening deposit is one call and a fifth of that note cap per denomination, so the
+// larger script is the 4999 withdrawals left.
 public class DesignAnATMMachineBenchmarks
 {
-    private const long InitialCountPerDenomination = 1_000_000_000L;
+    private const long InitialCountPerDenomination = 200_000_000L;
     private const int AmountGranularity = 100;
     private const int MaxAmountMultiplier = 1_000;
     private const int RandomSeed = 1;
@@ -29,7 +31,7 @@ public class DesignAnATMMachineBenchmarks
     // The notes every Withdraw hands back, in call order; sized in setup so the replay
     // allocates nothing beyond what the strategy itself returns.
     private long[][] _withdrawn = [];
-    [Params(1_000, 50_000)]
+    [Params(1_000, 4_999)]
     public int Calls { get; set; }
 
     [GlobalSetup]

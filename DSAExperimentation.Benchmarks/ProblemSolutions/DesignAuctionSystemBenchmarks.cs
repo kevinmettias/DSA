@@ -12,11 +12,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // construction, including tracking which pairs are still safe to reference, is
 // charged to setup rather than to the replay each [Benchmark] arm measures. Every
 // bid lands on one of a small fixed pool of itemIds, so both arms actually have to
-// pick a winner among several live bidders rather than a single one.
+// pick a winner among several live bidders rather than a single one. User and item
+// ids count from 1, LC 3815's smallest id.
 public class DesignAuctionSystemBenchmarks
 {
     private const int Seed = 3815;
     private const int ItemPoolSize = 50;
+
+    private const int FirstId = 1;
     private const int BidAmountUpperBound = 1_000_000_000;
 
     private List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> _script = new();
@@ -36,9 +39,9 @@ public class DesignAuctionSystemBenchmarks
         var script = new List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>>();
         var seededBids = new (int UserId, int ItemId)[bidCount];
 
-        for (var userId = 0; userId < bidCount; userId++)
+        for (var index = 0; index < bidCount; index++)
         {
-            SeedBid(script, seededBids, userId, random);
+            SeedBid(script, seededBids, index, random);
         }
 
         var removeCount = bidCount / 10;
@@ -58,12 +61,13 @@ public class DesignAuctionSystemBenchmarks
     private static void SeedBid(
         List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script,
         (int UserId, int ItemId)[] seededBids,
-        int userId,
+        int index,
         Random random)
     {
-        var itemId = userId % ItemPoolSize;
+        var userId = index + FirstId;
+        var itemId = (index % ItemPoolSize) + FirstId;
         var amount = random.Next(1, BidAmountUpperBound);
-        seededBids[userId] = (userId, itemId);
+        seededBids[index] = (userId, itemId);
         script.Add(strategy =>
         {
             strategy.AddBid(userId, itemId, amount);
@@ -114,20 +118,20 @@ public class DesignAuctionSystemBenchmarks
     // always has at least one bidder to find regardless of which item it lands on.
     private static void AppendGrowthRounds(List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script, int bidCount, Random random)
     {
-        var nextUserId = bidCount;
+        var nextUserId = bidCount + FirstId;
 
         for (var round = 0; round < bidCount; round++)
         {
             AppendAddBid(script, random, nextUserId++);
             AppendAddBid(script, random, nextUserId++);
-            var itemId = random.Next(0, ItemPoolSize);
+            var itemId = random.Next(FirstId, ItemPoolSize + FirstId);
             script.Add(strategy => strategy.GetHighestBidder(itemId));
         }
     }
 
     private static void AppendAddBid(List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script, Random random, int userId)
     {
-        var itemId = random.Next(0, ItemPoolSize);
+        var itemId = random.Next(FirstId, ItemPoolSize + FirstId);
         var amount = random.Next(1, BidAmountUpperBound);
         script.Add(strategy =>
         {

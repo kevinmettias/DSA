@@ -12,20 +12,20 @@ public sealed partial class DesignAuctionSystemBenchmarksTests
 {
     private const int SmallestInitialBidCount = 200;
 
-    // Every query reports a bidder id the script itself created - the lowest of which is zero, and
-    // none of which reaches three times the seeded count - or reports no bidder at all, which the
-    // replay counts as zero.
+    // Every query reports a bidder id the script itself created - the lowest of which is LC 3815's
+    // smallest id, one, and none of which passes three times the seeded count - or reports no bidder at
+    // all, which the replay counts as zero.
     private const long MinimumBidderIdSum = 0;
 
-    private const long MaximumBidderIdSum = (3L * SmallestInitialBidCount * SmallestInitialBidCount) - 1;
+    private const long MaximumBidderIdSum = 3L * SmallestInitialBidCount * SmallestInitialBidCount;
 
     [Fact]
     public void Setup_SameInitialBidCount_RebuildsTheSameCallScript()
     {
         // The growth rounds add two fresh bids before every query, so every query has a bidder to
-        // find. Every userId the script ever creates is below three times the seeded count - the
+        // find. Every userId the script ever creates is at most three times the seeded count - the
         // seeded range, then two more per round - which is the ceiling the summed report of the
-        // InitialBidCount queries has to stay under.
+        // InitialBidCount queries has to stay within.
         Assert.InRange(BuildHarness().LinearScan(), MinimumBidderIdSum, MaximumBidderIdSum);
         Assert.Equal(BuildHarness().LinearScan(), BuildHarness().LinearScan());
     }

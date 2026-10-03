@@ -1,14 +1,18 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DesignAnOrderedStreamBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin:
 // what the stream hands out across the whole script, known from Setup's construction rather than from either arm.
-// Setup builds an arrival order covering every id 1..Size and gives id i the value "v{i}", and each arm returns the
-// chunk every Insert handed back, in arrival order.
+// Setup builds an arrival order covering every id 1..Size and gives id i the five-letter value LowercaseNames.OfWidth
+// spells it as, and each arm returns the chunk every Insert handed back, in arrival order.
 public sealed partial class DesignAnOrderedStreamBenchmarksTests
 {
     private const int SmallestSize = 200;
+
+    // LC 1656's value length.
+    private const int ValueLength = 5;
 
     [Fact]
     public void ListBacked_ShuffledArrivalOrder_HandsOutEveryValueOnceInIdOrder() =>
@@ -24,7 +28,7 @@ public sealed partial class DesignAnOrderedStreamBenchmarksTests
     // mistyped an id - leaving a slot permanently null and the cursor stuck short of the end - could not.
     private static void AssertHandsOutEveryValueOnceInIdOrder(List<string>[] chunks) =>
         Assert.Equal(
-            Enumerable.Range(1, SmallestSize).Select(id => $"v{id}"),
+            Enumerable.Range(1, SmallestSize).Select(id => LowercaseNames.OfWidth(id, ValueLength)),
             chunks.SelectMany(chunk => chunk));
 
     private static DesignAnOrderedStreamBenchmarks BuildHarness()

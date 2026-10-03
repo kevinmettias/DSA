@@ -13,12 +13,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both strategies answer every query off the changed value. LinearScan rescans all
 // `Count` foods for the best-rated match in the queried cuisine on every call;
 // LazyDeletionHeap only ever pops the entries a rating change superseded, amortized
-// O(log n) per call.
+// O(log n) per call. Food and cuisine names are LowercaseNames after a fixed prefix,
+// since LC 2353 spells them in lowercase letters, and ratings start at its floor of 1.
 public class DesignAFoodRatingSystemBenchmarks
 {
     private const int RandomSeed = 2353;
     private const int CuisineDomain = 15;
     private const int MaxRatingExclusive = 100;
+
+    private const string FoodPrefix = "food";
+
+    private const string CuisinePrefix = "cuisine";
 
     private string[] _foods = [];
 
@@ -36,11 +41,11 @@ public class DesignAFoodRatingSystemBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _foods = Enumerable.Range(0, Count).Select(i => $"food{i}").ToArray();
-        _cuisines = Enumerable.Range(0, Count).Select(_ => $"cuisine{random.Next(0, CuisineDomain)}").ToArray();
-        _initialRatings = SeededDraws.Values(Count, 0, MaxRatingExclusive, random);
-        _changeRatings = SeededDraws.Values(Count, 0, MaxRatingExclusive, random);
-        _queryCuisines = Enumerable.Range(0, Count).Select(_ => $"cuisine{random.Next(0, CuisineDomain)}").ToArray();
+        _foods = Enumerable.Range(0, Count).Select(i => FoodPrefix + LowercaseNames.Of(i)).ToArray();
+        _cuisines = Enumerable.Range(0, Count).Select(_ => DrawCuisine(random)).ToArray();
+        _initialRatings = SeededDraws.Values(Count, 1, MaxRatingExclusive, random);
+        _changeRatings = SeededDraws.Values(Count, 1, MaxRatingExclusive, random);
+        _queryCuisines = Enumerable.Range(0, Count).Select(_ => DrawCuisine(random)).ToArray();
         _reported = new string[_queryCuisines.Length];
     }
 
@@ -49,6 +54,13 @@ public class DesignAFoodRatingSystemBenchmarks
 
     [Benchmark]
     public string[] LazyDeletionHeap() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLazyDeletionHeap(_foods, _cuisines, _initialRatings));
+
+    private static string DrawCuisine(Random random)
+    {
+        var cuisine = random.Next(0, CuisineDomain);
+
+        return CuisinePrefix + LowercaseNames.Of(cuisine);
+    }
 
     // Returns every reported food name, in query order, so the JIT can't eliminate
     // the replay as dead code.

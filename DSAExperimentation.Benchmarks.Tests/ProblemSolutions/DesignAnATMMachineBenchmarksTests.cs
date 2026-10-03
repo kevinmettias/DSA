@@ -5,8 +5,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for DesignAnATMMachineBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin:
 // that every withdrawal in the script succeeds, which follows from Setup's construction rather than from either
-// arm. Setup draws every amount from one fixed seed as a multiple of 100 and opens the machine with a billion notes
-// of each denomination, so no withdrawal can fail, and each arm returns the notes every Withdraw handed back.
+// arm. Setup draws every amount from one fixed seed as a multiple of 100 and opens the machine with two hundred
+// million notes of each denomination, so no withdrawal can fail, and each arm returns the notes every Withdraw handed
+// back.
 public sealed partial class DesignAnATMMachineBenchmarksTests
 {
     private const int SmallestCalls = 1_000;
@@ -33,7 +34,7 @@ public sealed partial class DesignAnATMMachineBenchmarksTests
     public void HashMapDispatch_ThousandWithdrawals_DispensesEveryRequestedAmount() =>
         AssertDispensesEveryRequestedAmount(BuildHarness().HashMapDispatch());
 
-    // A machine carrying a billion notes of each denomination can always make a whole number of
+    // A machine carrying two hundred million notes of each denomination can always make a whole number of
     // hundreds, so no withdrawal is LC 2241's [-1] refusal, and the money dispensed lands near the
     // middle of the draw rather than at the zero a greedy walk rejecting amounts it can cover would
     // leave behind.

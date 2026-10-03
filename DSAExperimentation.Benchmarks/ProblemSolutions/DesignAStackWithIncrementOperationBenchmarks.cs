@@ -14,7 +14,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the measured replay; both arms then apply the same small, realistic increment window
 // (IncrementWindow) PushCount times, so the gap measured here is the honest, real
 // price of reaching "the bottom bottomElementCount elements" through a strictly LIFO
-// primitive instead of an indexed one.
+// primitive instead of an indexed one. LC 1381 caps the stack's size and each method's
+// calls at 1000, so the larger PushCount is that cap.
 public class DesignAStackWithIncrementOperationBenchmarks
 {
     private const int IncrementWindow = 5;
@@ -27,7 +28,7 @@ public class DesignAStackWithIncrementOperationBenchmarks
 
     private int[] _pushedValues = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int PushCount { get; set; }
 
     [GlobalSetup]

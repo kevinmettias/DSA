@@ -6,10 +6,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are DesignANumberContainerSystemSolution's, the same
 // classes DesignANumberContainerSystemSolutionTests proves correct. [GlobalSetup] builds
 // the call script - each index first gets its own distinct number (a bijection over
-// [0, Count)), then ~20% of indices are reassigned to a different random number,
-// just enough churn to exercise the heap strategy's lazy discarding of now-stale
-// entries - so script construction is charged to setup rather than to the replay
-// each arm measures.
+// [1, Count], since LC 2349's indices and numbers start at 1), then ~20% of indices
+// are reassigned to a different random number, just enough churn to exercise the
+// heap strategy's lazy discarding of now-stale entries - so script construction is
+// charged to setup rather than to the replay each arm measures.
 //
 // With numbers this sparse (at most a couple of indices ever share one), a matching
 // index is roughly uniformly positioned across the whole assignment table, so
@@ -39,13 +39,13 @@ public class DesignANumberContainerSystemBenchmarks
         var random = new Random(RandomSeed);
         var churnCount = Count / ChurnDivisor;
 
-        _changeIndices = Enumerable.Range(0, Count)
-            .Concat(Enumerable.Range(0, churnCount).Select(_ => random.Next(0, Count)))
+        _changeIndices = Enumerable.Range(1, Count)
+            .Concat(Enumerable.Range(0, churnCount).Select(_ => random.Next(1, Count + 1)))
             .ToArray();
-        _changeNumbers = Enumerable.Range(0, Count)
-            .Concat(Enumerable.Range(0, churnCount).Select(_ => random.Next(0, Count)))
+        _changeNumbers = Enumerable.Range(1, Count)
+            .Concat(Enumerable.Range(0, churnCount).Select(_ => random.Next(1, Count + 1)))
             .ToArray();
-        _findQueries = SeededDraws.Values(Count, 0, Count, random);
+        _findQueries = SeededDraws.Values(Count, 1, Count + 1, random);
         _found = new int[_findQueries.Length];
     }
 

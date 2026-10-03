@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignAnOrderedStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,12 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already makes. Ids arrive in a fixed shuffled (not ascending) order so every
 // Insert does real cursor-walking work instead of the trivial
 // one-id-at-a-time-in-order case; [GlobalSetup] materializes that order and the
-// values, so shuffling and string formatting are charged to setup rather than to
-// the replay.
+// values, so shuffling and building strings are charged to setup rather than to the
+// replay. LC 1656 caps the stream at 1000 ids and makes every value five lowercase
+// letters, so the larger Size is that cap and id i's value is i in base 26.
 public class DesignAnOrderedStreamBenchmarks
 {
     // Fixed so both arms replay the identical arrival order every run.
     private const int ArrivalSeed = 1;
+
+    private const int ValueLength = 5;
 
     private int[] _order = [];
 
@@ -24,7 +28,7 @@ public class DesignAnOrderedStreamBenchmarks
     // The chunk every Insert hands back, in arrival order; sized in setup so the replay
     // allocates nothing beyond what the strategy itself returns.
     private List<string>[] _chunks = [];
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Size { get; set; }
 
     [GlobalSetup]
@@ -35,7 +39,7 @@ public class DesignAnOrderedStreamBenchmarks
 
         for (var i = 0; i < Size; i++)
         {
-            _values[i] = $"v{i + 1}";
+            _values[i] = LowercaseNames.OfWidth(i + 1, ValueLength);
         }
 
         _chunks = new List<string>[Size];
