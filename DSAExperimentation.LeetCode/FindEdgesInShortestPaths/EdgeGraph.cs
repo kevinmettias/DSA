@@ -1,3 +1,9 @@
+
+// One node per graph vertex; Edges holds both directions of every undirected edge from the
+// input, weighted by long since a path's total cost can exceed int range (n and w are each up
+// to 5*10^4/1e5).
+using EdgeGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
+
 namespace DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
 
 // The full weighted graph over nodeCount nodes, built once from LeetCode's own

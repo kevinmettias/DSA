@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using ServerNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using ServerTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 

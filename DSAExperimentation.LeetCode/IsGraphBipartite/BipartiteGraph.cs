@@ -1,3 +1,7 @@
+
+// One vertex of LC 785's undirected adjacency list.
+using BipartiteNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.IsGraphBipartite;
 
 // LC 785's int[][] adjacency, materialized as nodes. LeetCode's own input is

@@ -2,6 +2,11 @@ using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
+// LC 743's own directed, non-negative-weight edge list: Edges holds each node's out-edges as
+// (Weight, Target).
+using NetworkNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using NetworkTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
+
 namespace DSAExperimentation.LeetCode.NetworkDelayTime;
 
 // LeetCode 743. Network Delay Time: minutes for a signal sent from the source

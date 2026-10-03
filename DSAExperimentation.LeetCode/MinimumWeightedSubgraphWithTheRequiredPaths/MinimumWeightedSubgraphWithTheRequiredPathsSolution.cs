@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using RequiredPathsNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
+using RequiredPathsTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<long>;
 
 namespace DSAExperimentation.LeetCode.MinimumWeightedSubgraphWithTheRequiredPaths;
 

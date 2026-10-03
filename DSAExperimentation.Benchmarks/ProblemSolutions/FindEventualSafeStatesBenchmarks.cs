@@ -1,5 +1,6 @@
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindEventualSafeStates;
+using SafeStateNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

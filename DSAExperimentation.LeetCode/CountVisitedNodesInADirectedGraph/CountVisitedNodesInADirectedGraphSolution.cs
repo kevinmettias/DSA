@@ -1,6 +1,8 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
+using FunctionalGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using FunctionalGraphTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.CountVisitedNodesInADirectedGraph;
 

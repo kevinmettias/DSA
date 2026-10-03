@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using SubdividedGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using SubdividedGraphTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
 namespace DSAExperimentation.LeetCode.ReachableNodesInSubdividedGraph;
 

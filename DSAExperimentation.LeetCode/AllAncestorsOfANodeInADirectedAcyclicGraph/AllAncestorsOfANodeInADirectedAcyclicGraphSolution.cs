@@ -2,6 +2,12 @@ using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.HashMap;
 
+// Edges point ancestor -> descendant, which is the direction both strategies walk: Kahn's
+// algorithm wants in-degree to count unresolved ancestors, and the naive forward walk wants to
+// reach everything a start node is an ancestor of.
+using AncestorNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using AncestorTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
+
 namespace DSAExperimentation.LeetCode.AllAncestorsOfANodeInADirectedAcyclicGraph;
 
 // LeetCode 2192. All Ancestors of a Node in a Directed Acyclic Graph: for every
@@ -64,7 +70,7 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
     private static void PushUnvisitedChildren(
         AncestorNode node, HashSet<AncestorNode> visited, Stack<AncestorNode> stack)
     {
-        foreach (var child in node.Children)
+        foreach (var child in node.Neighbors)
         {
             if (visited.Add(child))
             {
@@ -132,7 +138,7 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
             // updated below.
             var nodeAncestors = ancestorSets[node.Id].Keys.ToList();
 
-            foreach (var child in node.Children)
+            foreach (var child in node.Neighbors)
             {
                 PropagateToChild(ancestorSets[child.Id], node.Id, nodeAncestors);
             }
@@ -176,7 +182,7 @@ internal static class AllAncestorsOfANodeInADirectedAcyclicGraphSolution
 
         foreach (var edge in edges)
         {
-            nodes[edge[0]].Children.Add(nodes[edge[1]]);
+            nodes[edge[0]].Neighbors.Add(nodes[edge[1]]);
         }
 
         return nodes;

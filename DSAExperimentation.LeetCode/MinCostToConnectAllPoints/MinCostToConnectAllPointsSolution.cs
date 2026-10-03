@@ -1,6 +1,13 @@
 using DSAExperimentation.Algorithms.MinimumSpanningTrees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// LC 1584's own vertex in the complete graph over the given points: one node per input index,
+// carrying the undirected Manhattan-distance edges to every other point as a symmetric
+// adjacency list (MinimumSpanningTree.Kruskal's own doc comment explains why discovering each
+// edge twice costs a little and changes nothing).
+using PointNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using PointTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
+
 namespace DSAExperimentation.LeetCode.MinCostToConnectAllPoints;
 
 // LeetCode 1584. Min Cost to Connect All Points: the minimum total edge weight

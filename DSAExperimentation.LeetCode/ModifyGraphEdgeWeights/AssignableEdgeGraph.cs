@@ -1,3 +1,9 @@
+
+// One node of LC 2699's undirected graph. Edges holds both directions of every road, and holds
+// them by value in a List so a weight can be reassigned in place by index - which is the whole
+// point of this problem, and which a list of (Weight, Target) value tuples allows.
+using AssignableEdgeNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.ModifyGraphEdgeWeights;
 
 // LC 2699's graph: the n nodes plus, for every input edge, the two List slots

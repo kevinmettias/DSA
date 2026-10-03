@@ -1,3 +1,12 @@
+
+// One node of LC 2360's graph, holding the single successor edges[i] names - or no successor at
+// all when edges[i] is -1, which is the one way this differs from LC 2127's
+// out-degree-exactly-one EmployeeNode. Neighbors is a list rather than a dedicated
+// at-most-one-child contract because ListChildren already reads a List<T>, and the out-degree
+// bound is a caller discipline FunctionalGraph.Build enforces rather than something the type
+// itself states.
+using FunctionalGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.LongestCycleInAGraph;
 
 // LC 2360's edges[] reshaped once into the node form the Tarjan strategy walks.
@@ -17,7 +26,7 @@ internal readonly record struct FunctionalGraph(List<FunctionalGraphNode> Nodes)
         {
             if (edges[i] != FunctionalGraphEdges.NoOutgoingEdge)
             {
-                nodes[i].Successors.Add(nodes[edges[i]]);
+                nodes[i].Neighbors.Add(nodes[edges[i]]);
             }
         }
 

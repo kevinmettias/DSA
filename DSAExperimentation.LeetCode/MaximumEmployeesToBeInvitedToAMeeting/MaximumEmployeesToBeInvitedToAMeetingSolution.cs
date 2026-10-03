@@ -1,6 +1,8 @@
 using DSAExperimentation.Algorithms.Connectivity;
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using EmployeeNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using EmployeeTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.MaximumEmployeesToBeInvitedToAMeeting;
 
@@ -202,7 +204,7 @@ internal static class MaximumEmployeesToBeInvitedToAMeetingSolution
 
         foreach (var node in ordering)
         {
-            var favorite = node.Successors[0];
+            var favorite = node.Neighbors[0];
             chainLength[favorite] = Math.Max(chainLength[favorite], chainLength[node] + 1);
         }
 

@@ -1,6 +1,12 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// LC 2642's own directed, non-negative-weight vertex. Edges is mutable because AddEdge is part
+// of LeetCode's own API here - the graph grows between queries, which is exactly why no query
+// result may be cached.
+using ShortestPathCalculatorNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using ShortestPathCalculatorTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
+
 namespace DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 
 // LeetCode 2642. Design Graph With Shortest Path Calculator: a directed,

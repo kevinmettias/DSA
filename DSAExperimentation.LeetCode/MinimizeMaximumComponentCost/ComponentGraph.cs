@@ -1,3 +1,8 @@
+
+// One node per LeetCode vertex id (0..nodeCount-1), its weighted edges wired in after
+// construction.
+using ComponentNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.MinimizeMaximumComponentCost;
 
 // Builds LeetCode's own (nodeCount, edges) shape into ComponentNodes wired both

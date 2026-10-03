@@ -1,3 +1,10 @@
+
+// One node per course, with Edges pointing prerequisite -> dependent. The weight is carried
+// only because the all-pairs primitive this problem composes is a shortest-path engine
+// (IEdgeTopology/IEdges are weighted contracts); every prerequisite edge costs the same, so the
+// distances it produces are only ever read as "finite or absent", never compared.
+using CourseNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.CourseScheduleIV;
 
 // The whole prerequisite network, built once from LeetCode's own numCourses +

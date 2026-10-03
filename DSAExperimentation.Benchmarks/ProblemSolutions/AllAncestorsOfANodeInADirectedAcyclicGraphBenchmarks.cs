@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.AllAncestorsOfANodeInADirectedAcyclicGraph;
+using AncestorNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -29,7 +30,7 @@ public class AllAncestorsOfANodeInADirectedAcyclicGraphBenchmarks
             var fanOut = Math.Min(MaxFanOut, NodeCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
-                _nodes[i].Children.Add(_nodes[i + f]);
+                _nodes[i].Neighbors.Add(_nodes[i + f]);
             }
         }
     }

@@ -1,6 +1,11 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// One index of LC 1345's implicit reachability graph: wired with a weight-1 edge to i+1, to
+// i-1, and to every other index holding the same value.
+using ValueHopNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using ValueHopTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
+
 namespace DSAExperimentation.LeetCode.JumpGameIV;
 
 // LeetCode 1345. Jump Game IV: minimum steps from index 0 to the last index,

@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.MinimumSpanningTrees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using ComponentNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using ComponentTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
 namespace DSAExperimentation.LeetCode.MinimizeMaximumComponentCost;
 

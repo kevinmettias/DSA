@@ -1,3 +1,8 @@
+
+// One person in LC 886's dislikes graph, with Neighbors holding every other person they refuse
+// to share a group with.
+using PersonNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.PossibleBipartition;
 
 // LC 886's (personCount, dislikes) input materialized as PersonNode objects.
@@ -24,7 +29,7 @@ internal sealed class DislikeGraph
     public static DislikeGraph Build(int personCount, int[][] dislikes)
     {
         var byId = LeetCodeAdjacency.OneBased<PersonNode>(
-            personCount, dislikes, id => new PersonNode(id), (person, _, farPerson, _) => person.Dislikes.Add(farPerson));
+            personCount, dislikes, id => new PersonNode(id), (person, _, farPerson, _) => person.Neighbors.Add(farPerson));
 
         return new DislikeGraph(byId[PersonNumbering.First..]);
     }

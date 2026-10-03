@@ -1,6 +1,14 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// Edges point "must come first" -> "must come after", the same in-degree-is-
+// unresolved-prerequisite-count shape LeetCode/CourseScheduleII's own CourseNode establishes: a
+// value's in-degree is how many values still have to be placed ahead of it. One fresh node set
+// is built per axis (row order, column order), since rowConditions and colConditions are
+// otherwise-unrelated edge sets over the same 1..k value range.
+using ValueNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using ValueTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
+
 namespace DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
 
 // LeetCode 2392. Build a Matrix With Conditions: place 1..k in a k x k matrix so
@@ -74,7 +82,7 @@ internal static class BuildAMatrixWithConditionsSolution
         var inDegree = values.ToDictionary(value => value, _ => 0);
         foreach (var value in values)
         {
-            foreach (var next in value.After)
+            foreach (var next in value.Neighbors)
             {
                 inDegree[next]++;
             }
@@ -104,7 +112,7 @@ internal static class BuildAMatrixWithConditionsSolution
         placed.Add(next);
         remaining.Remove(next);
 
-        foreach (var dependent in next.After)
+        foreach (var dependent in next.Neighbors)
         {
             inDegree[dependent]--;
         }
@@ -155,7 +163,7 @@ internal static class BuildAMatrixWithConditionsSolution
 
         foreach (var condition in conditions)
         {
-            values[condition[0] - 1].After.Add(values[condition[1] - 1]);
+            values[condition[0] - 1].Neighbors.Add(values[condition[1] - 1]);
         }
 
         return values;

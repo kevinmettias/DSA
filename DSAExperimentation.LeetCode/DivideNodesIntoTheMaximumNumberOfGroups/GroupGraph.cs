@@ -1,3 +1,8 @@
+
+// One node of LC 2493's undirected graph, with Neighbors holding every node it shares an edge
+// with.
+using GroupNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.DivideNodesIntoTheMaximumNumberOfGroups;
 
 // LC 2493's (n, edges) input materialized as GroupNode objects. The edges are

@@ -1,6 +1,11 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// Edges point prerequisite -> dependent course, matching Kahn's algorithm's own in-degree
+// bookkeeping: a course's in-degree is its remaining unresolved prerequisite count.
+using CourseNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using CourseTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
+
 namespace DSAExperimentation.LeetCode.CourseScheduleII;
 
 // LeetCode 210. Course Schedule II: the same Kahn's-algorithm question as Course
@@ -51,7 +56,7 @@ internal static class CourseScheduleIISolution
         var inDegree = courses.ToDictionary(course => course, _ => 0);
         foreach (var course in courses)
         {
-            foreach (var next in course.EnabledCourses)
+            foreach (var next in course.Neighbors)
             {
                 inDegree[next]++;
             }
@@ -80,7 +85,7 @@ internal static class CourseScheduleIISolution
         order.Add(next);
         remaining.Remove(next);
 
-        foreach (var dependent in next.EnabledCourses)
+        foreach (var dependent in next.Neighbors)
         {
             inDegree[dependent]--;
         }
@@ -101,7 +106,7 @@ internal static class CourseScheduleIISolution
         {
             var dependent = prerequisite[0];
             var required = prerequisite[1];
-            courses[required].EnabledCourses.Add(courses[dependent]);
+            courses[required].Neighbors.Add(courses[dependent]);
         }
 
         return courses;

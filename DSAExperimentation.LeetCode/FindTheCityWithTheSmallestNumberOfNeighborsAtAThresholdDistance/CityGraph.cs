@@ -1,3 +1,8 @@
+
+// One node per city; Edges holds both directions of every road, since LC 1334's roads are
+// undirected.
+using CityNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistance;
 
 // The full road network over all cityCount cities, built once from LeetCode's own

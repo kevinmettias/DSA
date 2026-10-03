@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.JumpGameIV;
+using ValueHopNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 

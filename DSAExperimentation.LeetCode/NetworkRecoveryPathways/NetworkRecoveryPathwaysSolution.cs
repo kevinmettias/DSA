@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using RecoveryNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
+using RecoveryTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<long>;
 
 namespace DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 

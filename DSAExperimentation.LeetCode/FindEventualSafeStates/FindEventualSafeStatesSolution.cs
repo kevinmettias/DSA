@@ -1,6 +1,15 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// Neighbors holds predecessors, not the original graph's own out-edges: TopologicalSort.TrySort's in-degree
+// bookkeeping needs edges pointing the direction Kahn's algorithm should peel from, and a node
+// is only "safe" once every one of its own out-edges has already been confirmed safe - so the
+// direction to close over here is "who points at me," mirroring CourseNode's own precedent of
+// orienting edges toward what Kahn's in-degree count actually needs, not the problem
+// statement's literal adjacency direction.
+using SafeStateNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using SafeStateTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
+
 namespace DSAExperimentation.LeetCode.FindEventualSafeStates;
 
 // LeetCode 802. Find Eventual Safe States: a node is safe iff every path out of it
@@ -95,7 +104,7 @@ internal static class FindEventualSafeStatesSolution
         {
             foreach (var next in graph[id])
             {
-                nodes[next].Predecessors.Add(nodes[id]);
+                nodes[next].Neighbors.Add(nodes[id]);
             }
         }
 

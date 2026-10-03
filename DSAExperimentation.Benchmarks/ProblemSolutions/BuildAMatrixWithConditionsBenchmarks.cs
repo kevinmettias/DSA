@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
+using ValueNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -36,7 +37,7 @@ public class BuildAMatrixWithConditionsBenchmarks
             var fanOut = Math.Min(MaxFanOut, valueCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
-                values[i].After.Add(values[i + f]);
+                values[i].Neighbors.Add(values[i + f]);
             }
         }
 

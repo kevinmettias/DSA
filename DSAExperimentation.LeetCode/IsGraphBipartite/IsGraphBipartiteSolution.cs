@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using BipartiteNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using BipartiteTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.IsGraphBipartite;
 

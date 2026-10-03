@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.Graph.Adjacency;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NetworkDelayTime;
 
@@ -23,9 +24,9 @@ public class ShortestPathAlgorithmBenchmarks
     private const int ExtraEdgesPerNode = 3;
     private const int RandomSeed = 42;
 
-    private List<NetworkNode> _vertices = new();
+    private List<WeightedAdjacencyNode<int>> _vertices = new();
 
-    private NetworkNode _source = null!;
+    private WeightedAdjacencyNode<int> _source = null!;
     [Params(50, 300)]
     public int NodeCount { get; set; }
 
@@ -39,13 +40,16 @@ public class ShortestPathAlgorithmBenchmarks
 
     [Benchmark(Baseline = true)]
     public int Dijkstra()
-        => NetworkDelayTimeSolution.MinutesToReachAllByDijkstra<NetworkNode, NetworkTopology>(_vertices, _source);
+        => NetworkDelayTimeSolution.MinutesToReachAllByDijkstra<
+            WeightedAdjacencyNode<int>, WeightedAdjacencyTopology<int>>(_vertices, _source);
 
     [Benchmark]
     public int BellmanFord()
-        => NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord<NetworkNode, NetworkTopology>(_vertices, _source);
+        => NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord<
+            WeightedAdjacencyNode<int>, WeightedAdjacencyTopology<int>>(_vertices, _source);
 
     [Benchmark]
     public int FloydWarshall()
-        => NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall<NetworkNode, NetworkTopology>(_vertices, _source);
+        => NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall<
+            WeightedAdjacencyNode<int>, WeightedAdjacencyTopology<int>>(_vertices, _source);
 }

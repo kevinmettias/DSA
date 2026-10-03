@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.SortItemsByGroupsRespectingDependencies;
+using GroupNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -52,7 +53,7 @@ public class SortItemsByGroupsRespectingDependenciesBenchmarks
 
         if (_items[from].GroupId != _items[to].GroupId)
         {
-            _groups[_items[from].GroupId].EnabledGroups.Add(_groups[_items[to].GroupId]);
+            _groups[_items[from].GroupId].Neighbors.Add(_groups[_items[to].GroupId]);
         }
     }
 

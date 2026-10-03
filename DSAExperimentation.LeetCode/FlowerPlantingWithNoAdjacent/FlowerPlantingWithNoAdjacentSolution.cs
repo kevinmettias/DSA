@@ -1,4 +1,6 @@
 using DSAExperimentation.DataStructures.Set;
+using GardenNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using GardenTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 

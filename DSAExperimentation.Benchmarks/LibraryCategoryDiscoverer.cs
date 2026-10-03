@@ -124,7 +124,7 @@ internal sealed class LibraryCategoryDiscoverer : ICategoryDiscoverer
         }
     }
 
-    // A type and every type argument it was built from, so ListEdges<NetworkNode, int> notes the
+    // A type and every type argument it was built from, so ListEdges<WeightedAdjacencyNode<int>, int> notes the
     // edge list's namespace and a Dijkstra over a library topology notes the topology's.
     private static void NoteLibraryNamespaces(Type type, SortedSet<string> reached)
     {

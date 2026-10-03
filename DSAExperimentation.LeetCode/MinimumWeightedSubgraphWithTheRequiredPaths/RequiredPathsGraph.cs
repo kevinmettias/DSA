@@ -1,3 +1,9 @@
+
+// One node per graph vertex; Edges holds the outgoing directed edges of whichever orientation
+// of the input graph this node belongs to, weighted by long since a path's total cost can
+// exceed int range (n and each weight are up to 10^5).
+using RequiredPathsNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
+
 namespace DSAExperimentation.LeetCode.MinimumWeightedSubgraphWithTheRequiredPaths;
 
 // LC 2203's directed weighted graph, held in both orientations at once because the

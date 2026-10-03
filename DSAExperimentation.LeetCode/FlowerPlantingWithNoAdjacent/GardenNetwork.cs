@@ -1,3 +1,8 @@
+
+// One garden in LC 1042's path graph, with Neighbors holding every garden reachable by a direct
+// path. Paths are bidirectional, so every listed pair is wired both ways.
+using GardenNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 
 // LC 1042's (gardenCount, paths) input materialized once as GardenNodes wired both
@@ -22,7 +27,7 @@ internal sealed class GardenNetwork
     public static GardenNetwork Build(int gardenCount, int[][] paths)
     {
         var byId = LeetCodeAdjacency.OneBased<GardenNode>(
-            gardenCount, paths, id => new GardenNode(id), (garden, _, farGarden, _) => garden.ConnectedGardens.Add(farGarden));
+            gardenCount, paths, id => new GardenNode(id), (garden, _, farGarden, _) => garden.Neighbors.Add(farGarden));
 
         return new GardenNetwork(byId[GardenNumbering.FirstGarden..]);
     }

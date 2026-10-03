@@ -1,6 +1,13 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// Edges point i -> j only for indices actually reachable by a single valid jump (arr[i]
+// strictly greater than arr[j] and every value strictly between them) - every edge therefore
+// drops in value, which is exactly what rules out cycles and lets TopologicalSort.TrySort
+// always succeed on this graph.
+using JumpNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using JumpTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
+
 namespace DSAExperimentation.LeetCode.JumpGameV;
 
 // LeetCode 1340. Jump Game V: from index i you may jump to index j (|i-j| <= d)
@@ -66,12 +73,12 @@ internal static class JumpGameVSolution
         {
             for (var j = i + 1; j <= Math.Min(arr.Length - 1, i + maxJumpDistance) && arr[j] < arr[i]; j++)
             {
-                nodes[i].ReachableIndices.Add(nodes[j]);
+                nodes[i].Neighbors.Add(nodes[j]);
             }
 
             for (var j = i - 1; j >= Math.Max(0, i - maxJumpDistance) && arr[j] < arr[i]; j--)
             {
-                nodes[i].ReachableIndices.Add(nodes[j]);
+                nodes[i].Neighbors.Add(nodes[j]);
             }
         }
 
@@ -86,7 +93,7 @@ internal static class JumpGameVSolution
         {
             longestPath.TryAdd(node, 1);
 
-            foreach (var next in node.ReachableIndices)
+            foreach (var next in node.Neighbors)
             {
                 var candidate = longestPath[node] + 1;
 

@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using ProbabilityNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<double>;
+using ProbabilityTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<double>;
 
 namespace DSAExperimentation.LeetCode.PathWithMaximumProbability;
 

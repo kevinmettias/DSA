@@ -1,3 +1,10 @@
+
+// One node per non-prime integer sharing startValue and targetValue's digit count. Edges hold
+// every reachable single-digit +-1 mutation that also lands on a non-prime value, weighted by
+// the mutated value itself - the transformation's own "cost of a move is the number you land
+// on" rule.
+using DigitStepNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.DigitOperationsToMakeTwoIntegersEqual;
 
 // Every non-prime integer with the given digit count, wired to every

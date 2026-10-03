@@ -1,6 +1,15 @@
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// LC 2662's own vertex: one of the finitely many points a route ever needs to turn at - the
+// start, the target, and each special road's two endpoints - carrying the outgoing weighted
+// edges of the graph the solution builds over them (a symmetric Manhattan-distance edge to
+// every other point, plus each special road's own one-way discounted edge). The coordinates
+// themselves stay in the solution's point-to-node map; a node only needs an identity, the same
+// way LC 1584's PointNode carries just its input index.
+using SpecialRoadNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using SpecialRoadTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
+
 namespace DSAExperimentation.LeetCode.MinimumCostOfAPathWithSpecialRoads;
 
 // LeetCode 2662. Minimum Cost of a Path With Special Roads: walking from (x1,y1) to

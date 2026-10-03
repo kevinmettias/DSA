@@ -1,3 +1,8 @@
+
+// One node per branch; Edges holds every road out of it, both directions of every undirected
+// road in the input.
+using BranchNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 
 // The full road network over all branchCount branches, built once - the domain model, not an answer to

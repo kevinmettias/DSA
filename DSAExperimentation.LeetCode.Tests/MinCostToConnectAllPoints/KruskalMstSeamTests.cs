@@ -1,6 +1,8 @@
 using DSAExperimentation.Algorithms.MinimumSpanningTrees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.LeetCode.MinCostToConnectAllPoints;
+using PointNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+using PointTopology = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyTopology<int>;
 
 namespace DSAExperimentation.LeetCode.Tests.MinCostToConnectAllPoints;
 

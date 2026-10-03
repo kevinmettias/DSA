@@ -1,5 +1,7 @@
 using DSAExperimentation.Algorithms.Bipartiteness;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using PersonNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using PersonTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
 
 namespace DSAExperimentation.LeetCode.PossibleBipartition;
 

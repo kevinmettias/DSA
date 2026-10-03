@@ -1,3 +1,7 @@
+
+// One server of LC 1192's undirected network.
+using ServerNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 
 // LC 1192's connection list, materialized as nodes. Each connection is stored as

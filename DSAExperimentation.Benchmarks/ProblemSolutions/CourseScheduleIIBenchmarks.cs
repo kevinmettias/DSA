@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.CourseScheduleII;
+using CourseNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -28,7 +29,7 @@ public class CourseScheduleIIBenchmarks
             var fanOut = Math.Min(MaxFanOut, CourseCount - 1 - i);
             for (var f = 1; f <= fanOut; f++)
             {
-                _courses[i].EnabledCourses.Add(_courses[i + f]);
+                _courses[i].Neighbors.Add(_courses[i + f]);
             }
         }
     }

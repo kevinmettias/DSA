@@ -1,3 +1,9 @@
+
+// One node per ORIGINAL graph vertex - never per subdivision node, which is the whole point of
+// LC 882's composed strategy: the subdivision chain along an edge is represented by that edge's
+// weight (cnt + 1 unit moves), not by cnt extra objects.
+using SubdividedGraphNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<int>;
+
 namespace DSAExperimentation.LeetCode.ReachableNodesInSubdividedGraph;
 
 // LC 882's ORIGINAL n-node graph, weighted so that one edge's weight is the number

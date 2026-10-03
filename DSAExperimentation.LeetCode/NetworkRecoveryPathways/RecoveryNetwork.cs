@@ -1,3 +1,8 @@
+
+// One node per graph vertex; Edges is rebuilt in place for each binary-search threshold
+// RecoveryNetwork.Rebuild tries.
+using RecoveryNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<long>;
+
 namespace DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 
 // The graph LC 3620 actually poses a query over, online-filtered once: any edge

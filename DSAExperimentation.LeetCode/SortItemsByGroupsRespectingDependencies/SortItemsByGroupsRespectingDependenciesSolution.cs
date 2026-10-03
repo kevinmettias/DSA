@@ -1,6 +1,11 @@
 using DSAExperimentation.Algorithms.TopologicalSort;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 
+// Edges point prerequisite-group -> dependent-group, derived from any item edge whose two
+// endpoints sit in different groups - ItemNode's own edge direction, one level up.
+using GroupNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+using GroupTopology = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyTopology;
+
 namespace DSAExperimentation.LeetCode.SortItemsByGroupsRespectingDependencies;
 
 // LeetCode 1203. Sort Items by Groups Respecting Dependencies: order every item so
@@ -69,7 +74,7 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
     public static int[] SortItemsByNaiveRescan(List<ItemNode> items, List<GroupNode> groups)
     {
         var itemOrder = NaiveRescanOrder(items, item => item.EnabledItems);
-        var groupOrder = NaiveRescanOrder(groups, group => group.EnabledGroups);
+        var groupOrder = NaiveRescanOrder(groups, group => group.Neighbors);
 
         if (itemOrder.Count != items.Count || groupOrder.Count != groups.Count)
         {
@@ -212,7 +217,7 @@ internal static class SortItemsByGroupsRespectingDependenciesSolution
 
                 if (groupIds[prerequisite] != groupIds[item])
                 {
-                    groups[groupIds[prerequisite]].EnabledGroups.Add(groups[groupIds[item]]);
+                    groups[groupIds[prerequisite]].Neighbors.Add(groups[groupIds[item]]);
                 }
             }
         }

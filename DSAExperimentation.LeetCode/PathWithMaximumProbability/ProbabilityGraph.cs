@@ -1,3 +1,9 @@
+
+// One node per labeled vertex. Edge weight is -log(probability), not the probability itself -
+// see PathWithMaximumProbabilitySolution for why that turns "maximize a product" into
+// ShortestPath.Dijkstra's own "minimize a non-negative sum".
+using ProbabilityNode = DSAExperimentation.DataStructures.Graph.Adjacency.WeightedAdjacencyNode<double>;
+
 namespace DSAExperimentation.LeetCode.PathWithMaximumProbability;
 
 // LC 1514's undirected input (n, edges, succProb) materialized once, in the two views

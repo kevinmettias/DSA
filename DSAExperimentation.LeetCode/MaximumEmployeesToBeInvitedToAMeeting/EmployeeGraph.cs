@@ -1,3 +1,11 @@
+
+// One employee, whose single successor is the colleague they favor: favorite[] gives every node
+// out-degree exactly one, which is what makes this a functional graph. Neighbors is a list
+// rather than a dedicated single-child contract for the same reason ColorGraphNode's is -
+// ListChildren already reads a List<T>, and the out-degree-1 constraint is a caller discipline
+// EmployeeGraph.Build enforces, not something the type itself states.
+using EmployeeNode = DSAExperimentation.DataStructures.Graph.Adjacency.AdjacencyNode;
+
 namespace DSAExperimentation.LeetCode.MaximumEmployeesToBeInvitedToAMeeting;
 
 // LC 2127's input reshaped once into the node form the graph strategy walks: one
@@ -19,7 +27,7 @@ internal readonly record struct EmployeeGraph(List<EmployeeNode> Nodes)
 
         for (var i = 0; i < favorite.Length; i++)
         {
-            nodes[i].Successors.Add(nodes[favorite[i]]);
+            nodes[i].Neighbors.Add(nodes[favorite[i]]);
         }
 
         return new EmployeeGraph(nodes);
