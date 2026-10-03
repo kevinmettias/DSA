@@ -9,8 +9,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sorting; the composed arm accumulates into this repo's HashMap<int, int> and
 // sorts the distinct values with this repo's MergeSort. Values are deliberately
 // all-distinct across both input arrays so the naive scan never finds an early
-// match and always pays its full-length walk - the same "force the real worst
-// case" trick TwoSumBenchmarks' unreachable target uses. That disjointness is why
+// match and always pays its full-length walk. That disjointness is why
 // Length stops at 500: two disjoint sets of 500 distinct values fill LC 2363's whole
 // value range [1, 1000].
 //

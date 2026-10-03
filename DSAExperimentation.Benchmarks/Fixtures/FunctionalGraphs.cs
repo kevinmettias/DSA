@@ -3,8 +3,7 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // Builds the worst case for both a naive per-start walk and Tarjan's SCC pass: one
 // single cycle spanning every node (edges[i] = (i + 1) % n). Every start node's naive
 // forward walk has to traverse the entire cycle before it revisits a node, so nothing
-// short-circuits early - the same "force the real worst case" reasoning
-// TwoSumBenchmarks' unreachable target already uses.
+// short-circuits early.
 internal static class FunctionalGraphs
 {
     public static int[] BuildSingleCycleEdges(int nodeCount)

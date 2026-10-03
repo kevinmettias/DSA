@@ -7,8 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods ShortestSubarrayWithSumAtLeastKSolutionTests proves correct. K is deliberately
 // unreachable (values are small and bounded, K is far larger than any possible
 // subarray sum) so BOTH strategies are forced through their full worst-case scan
-// instead of exiting early on the first short answer found - the same "_target is
-// deliberately unreachable" shape TwoSumBenchmarks uses.
+// instead of exiting early on the first short answer found; the answer is LC 862's -1.
 public class ShortestSubarrayWithSumAtLeastKBenchmarks
 {
     private const int K = 1_000_000;

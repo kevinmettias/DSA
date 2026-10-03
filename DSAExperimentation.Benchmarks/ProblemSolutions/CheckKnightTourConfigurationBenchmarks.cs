@@ -8,8 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the move -> cell lookup with a single O(n^2) pass before sweeping consecutive
 // pairs (O(n^2) overall). Both Params values are genuine, verified knight's tours
 // that begin at the top-left cell (not random shuffles) so no pair fails and
-// neither arm gets to exit early - the same "force the full worst-case walk"
-// intent TwoSumBenchmarks' unreachable target already uses. n itself is capped by
+// neither arm gets to exit early, so both walk the full tour. n itself is capped by
 // the problem's own constraint (n <= 7), so both sizes stay inside LeetCode's real
 // input domain.
 public class CheckKnightTourConfigurationBenchmarks

@@ -4,9 +4,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumWindowSubstringSolution's, the same methods
 // MinimumWindowSubstringSolutionTests proves correct. Target is deliberately built from
-// characters absent from _text (same "force the unreachable worst case" trick
-// TwoSumBenchmarks/LongestSubstringWithoutRepeatingCharactersBenchmarks already
-// use) so neither strategy ever satisfies "missing == 0" and early-exits -
+// characters absent from _text, so the answer is LC 76's empty string and neither
+// strategy ever satisfies "missing == 0" and early-exits -
 // BruteForce is forced through every O(n^2) start/end pair instead of breaking out
 // after a handful of characters, and SlidingWindowHashMap is forced through its
 // full single O(n) pass with the left pointer never advancing.

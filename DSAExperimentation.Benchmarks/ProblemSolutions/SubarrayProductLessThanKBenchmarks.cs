@@ -5,10 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are SubarrayProductLessThanKSolution's, the same methods
 // SubarrayProductLessThanKSolutionTests proves correct. nums are deliberately all 1s
 // (product never reaches K) so BruteForce's inner loop never breaks early and is
-// forced through its real O(n^2) worst case - the same "force the real worst case"
-// convention TwoSumBenchmarks (unreachable target) and
-// LongestSubstringWithoutRepeatingCharactersBenchmarks (all-distinct characters)
-// already establish.
+// forced through its real O(n^2) worst case.
 public class SubarrayProductLessThanKBenchmarks
 {
     private const int K = 2;

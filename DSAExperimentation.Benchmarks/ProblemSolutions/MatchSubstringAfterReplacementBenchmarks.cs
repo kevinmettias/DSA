@@ -8,9 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // two-step lookup through this repo's own HashMap<char, Set<char>> (primitive).
 // _sub's characters deliberately have no entry in _mappings, so every single start
 // position fails on its very first character comparison after a full scan of every
-// mapping - forcing both strategies through their true per-comparison worst case,
-// the same "unreachable target" convention TwoSumBenchmarks uses, just against the
-// mapping lookup instead of the sum check.
+// mapping - forcing both strategies through their true per-comparison worst case.
 public class MatchSubstringAfterReplacementBenchmarks
 {
     private const int SubLength = 20;

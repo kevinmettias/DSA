@@ -12,9 +12,7 @@ internal static class BinaryCodeTextWorkloads
     // Every code of the given length concatenated once, in order - not random data -
     // so the text deterministically contains ALL 2^codeLength codes. That denies the
     // per-code substring search any early "missing code" exit and forces its full
-    // worst-case 2^codeLength searches on every invocation, the same "force the full
-    // scan on both sides" intent TwoSum's unreachable target establishes for that
-    // benchmark.
+    // worst-case 2^codeLength searches on every invocation.
     public static string BuildCoveringText(int codeLength)
     {
         var total = 1 << codeLength;

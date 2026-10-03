@@ -6,8 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ReplaceWordsSolutionTests proves correct. Half the sentence words are built by prepending
 // a real dictionary root (forcing genuine prefix-match work in both strategies), the
 // other half are fully random (forcing a full, unmatched dictionary scan in the
-// baseline) - the same "don't let either strategy short-circuit trivially" intent
-// TwoSumBenchmarks' unreachable target uses.
+// baseline), so neither strategy short-circuits trivially.
 public class ReplaceWordsBenchmarks
 {
     private const int RootLength = 4;

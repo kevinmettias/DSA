@@ -5,11 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are FrogJumpSolution's, the same methods
 // FrogJumpSolutionTests proves correct. The stones are built as consecutive integers
 // (every jump delta from every reachable stone lands on another real stone)
-// with an unreachable final stone appended far away - the same "rig the
-// input so both strategies are forced through their full worst case" trick
-// TwoSumBenchmarks/JumpGameBenchmarks use, here forcing
-// CanCrossByRecursiveBruteForce through its full exponential search instead
-// of returning early on success.
+// with an unreachable final stone appended far away, so the answer is false and
+// CanCrossByRecursiveBruteForce is forced through its full exponential search
+// instead of returning early on success - the same trick JumpGameBenchmarks uses.
 //
 // Sizes are per arm. That search stops at 16 stones; the hash-map DP only visits
 // each (stone, jump size) pair once and runs on to LC 403's own bound of 2,000 stones,

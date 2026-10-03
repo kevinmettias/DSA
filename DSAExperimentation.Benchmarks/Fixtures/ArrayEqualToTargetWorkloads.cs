@@ -4,8 +4,7 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // rather than spanning the full 1-1e8 range LC allows, because the brute-force
 // simulation arm pays per unit of every diff it walks down to zero: a full-range delta
 // would make it take millions of steps per element and turn the "baseline" arm into a
-// timeout rather than a meaningful comparison, the same reasoning TwoSumBenchmarks
-// gives for tuning its own target.
+// timeout rather than a meaningful comparison.
 internal static class ArrayEqualToTargetWorkloads
 {
     private const int MinValue = 1;

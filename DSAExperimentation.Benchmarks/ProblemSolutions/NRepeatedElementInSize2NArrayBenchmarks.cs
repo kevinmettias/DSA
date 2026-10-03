@@ -24,8 +24,7 @@ public class NRepeatedElementInSize2NArrayBenchmarks
         // to burn a full wasted inner pass on every one of the n distinct leading
         // values (each is truly unique, so no j ever matches) before it reaches
         // the repeat, giving genuine O(n^2) worst-case behavior instead of an
-        // accidental near-instant match - the same "force the full scan" intent
-        // TwoSumBenchmarks achieves via an unreachable target.
+        // accidental near-instant match.
         var n = Length / ArrayLengthMultiplier;
         var values = new List<int>(Length);
 
