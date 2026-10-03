@@ -7,13 +7,16 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // plus buffered value against the repo's own queue, whose peek-and-dequeue pair is already the
 // contract - so a harness whose arms disagree is timing two different problems. Each arm builds its
 // own iterator inside the call, so one harness is safe to call in either order. Setup builds the
-// source sequence from Length alone, and the drain total each arm sums is fixed by that sequence,
-// so the tests pin the total as well as the agreement.
+// source sequence from Length alone, and every Peek and Next answer the drain returns is fixed by
+// that sequence, so the tests pin the answers themselves.
 public sealed partial class PeekingIteratorBenchmarksTests
 {
     private const int SmallestLength = 200;
 
-    // Drain sums Peek and Next on every element, so it adds each of 0..Length-1 twice.
+    // Drain peeks then takes every element, so each of 0..Length-1 is answered twice in a row.
+    private const int AnswersPerElement = 2;
+
+    // The sum of those answers: each of 0..Length-1 twice.
     private const long ExpectedDrainedTotal = (long)SmallestLength * (SmallestLength - 1);
 
     [Fact]
@@ -21,22 +24,25 @@ public sealed partial class PeekingIteratorBenchmarksTests
         Assert.Equal(BuildHarness().IndexTracked(), BuildHarness().IndexTracked());
 
     [Fact]
-    public void IndexTracked_SequentialValues_AgreesWithQueuePrimitive()
+    public void IndexTracked_SequentialValues_PeeksThenTakesEveryElement()
     {
-        var harness = BuildHarness();
+        var answers = BuildHarness().IndexTracked();
 
-        Assert.Equal(ExpectedDrainedTotal, harness.QueuePrimitive());
-        Assert.Equal(harness.QueuePrimitive(), harness.IndexTracked());
+        Assert.Equal(ExpectedAnswers(), answers);
+        Assert.Equal(ExpectedDrainedTotal, answers.Sum(answer => (long)answer));
     }
 
     [Fact]
-    public void QueuePrimitive_SequentialValues_AgreesWithIndexTracked()
+    public void QueuePrimitive_SequentialValues_PeeksThenTakesEveryElement()
     {
-        var harness = BuildHarness();
+        var answers = BuildHarness().QueuePrimitive();
 
-        Assert.Equal(ExpectedDrainedTotal, harness.IndexTracked());
-        Assert.Equal(harness.IndexTracked(), harness.QueuePrimitive());
+        Assert.Equal(ExpectedAnswers(), answers);
+        Assert.Equal(ExpectedDrainedTotal, answers.Sum(answer => (long)answer));
     }
+
+    private static int[] ExpectedAnswers() =>
+        [.. Enumerable.Range(0, SmallestLength).SelectMany(value => Enumerable.Repeat(value, AnswersPerElement))];
 
     private static PeekingIteratorBenchmarks BuildHarness()
     {

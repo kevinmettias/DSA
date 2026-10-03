@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Book call succeeds and the stored set grows to the full Length, isolating
 // the cost of the overlap CHECK itself. Drain feeds the whole generated event
 // sequence through Book() one call at a time - the LeetCode-shaped sequence
-// itself, not a batch construction - counting how many were accepted.
+// itself, not a batch construction - returning every Book answer in order.
 public class MyCalendarIBenchmarks
 {
     private const int EventWidth = 10;
@@ -16,33 +16,33 @@ public class MyCalendarIBenchmarks
 
     private (int Start, int End)[] _events = [];
 
+    private bool[] _booked = [];
+
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
     public void Setup()
-        => _events = Enumerable.Range(0, Length)
+    {
+        _events = Enumerable.Range(0, Length)
             .Select(i => (Start: i * Stride, End: i * Stride + EventWidth))
             .ToArray();
+        _booked = new bool[_events.Length];
+    }
 
     [Benchmark(Baseline = true)]
-    public int LinearScan() => Drain(MyCalendarISolution.CreateByLinearScan());
+    public bool[] LinearScan() => Drain(MyCalendarISolution.CreateByLinearScan());
 
     [Benchmark]
-    public int IntervalSetBinarySearch() => Drain(MyCalendarISolution.CreateByIntervalSet());
+    public bool[] IntervalSetBinarySearch() => Drain(MyCalendarISolution.CreateByIntervalSet());
 
-    private int Drain(MyCalendarISolution.ICalendar calendar)
+    private bool[] Drain(MyCalendarISolution.ICalendar calendar)
     {
-        var accepted = 0;
-
-        foreach (var (start, end) in _events)
+        for (var i = 0; i < _events.Length; i++)
         {
-            if (calendar.Book(start, end))
-            {
-                accepted++;
-            }
+            _booked[i] = calendar.Book(_events[i].Start, _events[i].End);
         }
 
-        return accepted;
+        return _booked;
     }
 }

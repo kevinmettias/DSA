@@ -20,6 +20,7 @@ internal static class ArmAgreement
         typeof(FindModeInBinarySearchTreeBenchmarks),
         typeof(KClosestPointsToOriginBenchmarks),
         typeof(MatrixCellsInDistanceOrderBenchmarks),
+        typeof(PalindromePairsBenchmarks),
         typeof(SingleNumberIIIBenchmarks),
         typeof(SortCharactersByFrequencyBenchmarks),
         typeof(SubsetsBenchmarks),
@@ -33,6 +34,8 @@ internal static class ArmAgreement
         [typeof(GenerateRandomPointInACircleBenchmarks)] = RandomDraw,
         [typeof(ImplementRand10UsingRand7Benchmarks)] = RandomDraw,
         [typeof(LinkedListRandomNodeBenchmarks)] = RandomDraw,
+        [typeof(RandomFlipMatrixBenchmarks)] =
+            "The problem asks for a random draw, and the arms map the same seeded draws onto the unflipped cells differently.",
         [typeof(RandomPickIndexBenchmarks)] = RandomDraw,
         [typeof(RandomPickWithBlacklistBenchmarks)] = RandomDraw,
         [typeof(ShuffleAnArrayBenchmarks)] = RandomDraw,

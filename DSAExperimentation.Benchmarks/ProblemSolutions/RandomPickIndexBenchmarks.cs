@@ -9,10 +9,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // workload array - not charging that generation to the measured method - and
 // each [Benchmark] arm builds its own fresh instance from it (mirroring how a
 // real caller constructs a Solution once) before replaying the same PickCalls
-// script, returning the running total so the JIT can't eliminate the replay as
-// dead code. Every instance is built with the same PickSeed, so a rebuilt
-// harness replays the same picks; the two arms still answer differently, because
-// each consumes the generator its own way.
+// script, returning every picked index in call order. Every instance is built
+// with the same PickSeed, so a rebuilt harness replays the same picks; the two
+// arms still answer differently, because each consumes the generator its own way.
 public class RandomPickIndexBenchmarks
 {
     private const int Target = 7;
@@ -22,6 +21,8 @@ public class RandomPickIndexBenchmarks
 
     private int[] _nums = [];
 
+    private int[] _picks = [];
+
     [Params(2_000, 50_000)]
     public int Length { get; set; }
 
@@ -30,25 +31,24 @@ public class RandomPickIndexBenchmarks
     {
         var random = new Random(1);
         _nums = SeededDraws.Values(Length, 0, ValueUpperBound, random);
+        _picks = new int[PickCalls];
     }
 
     [Benchmark(Baseline = true)]
-    public long ReservoirSampling() =>
+    public int[] ReservoirSampling() =>
         Replay(new RandomPickIndexSolution.RandomPickIndexByReservoirSampling(_nums, PickSeed));
 
     [Benchmark]
-    public long HashMapGrouping() =>
+    public int[] HashMapGrouping() =>
         Replay(new RandomPickIndexSolution.RandomPickIndexByHashMapGrouping(_nums, PickSeed));
 
-    private static long Replay(RandomPickIndexSolution.IRandomPickIndex solution)
+    private int[] Replay(RandomPickIndexSolution.IRandomPickIndex solution)
     {
-        long total = 0;
-
         for (var call = 0; call < PickCalls; call++)
         {
-            total += solution.Pick(Target);
+            _picks[call] = solution.Pick(Target);
         }
 
-        return total;
+        return _picks;
     }
 }

@@ -23,6 +23,9 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
 
     private QueenQuery[] _queries = [];
 
+    // Every query's move count, in batch order - what each arm returns.
+    private int[] _moves = [];
+
     [Params(1_000, 100_000)]
     public int BatchSize { get; set; }
 
@@ -31,6 +34,7 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
     {
         var random = new Random(Seed);
         _queries = new QueenQuery[BatchSize];
+        _moves = new int[BatchSize];
 
         for (var i = 0; i < BatchSize; i++)
         {
@@ -53,30 +57,28 @@ public class MinimumMovesToCaptureTheQueenBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int DestinationEnumeration()
+    public int[] DestinationEnumeration()
     {
-        var total = 0;
-
-        foreach (var (a, b, c, d, e, f) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += MinimumMovesToCaptureTheQueenSolution.MinMovesByDestinationEnumeration(
+            var (a, b, c, d, e, f) = _queries[i];
+            _moves[i] = MinimumMovesToCaptureTheQueenSolution.MinMovesByDestinationEnumeration(
                 new ChessSquare(a, b), new ChessSquare(c, d), new ChessSquare(e, f));
         }
 
-        return total;
+        return _moves;
     }
 
     [Benchmark]
-    public int LineOfSight()
+    public int[] LineOfSight()
     {
-        var total = 0;
-
-        foreach (var (a, b, c, d, e, f) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += MinimumMovesToCaptureTheQueenSolution.MinMovesByLineOfSight(
+            var (a, b, c, d, e, f) = _queries[i];
+            _moves[i] = MinimumMovesToCaptureTheQueenSolution.MinMovesByLineOfSight(
                 new ChessSquare(a, b), new ChessSquare(c, d), new ChessSquare(e, f));
         }
 
-        return total;
+        return _moves;
     }
 }

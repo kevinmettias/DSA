@@ -8,13 +8,13 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 //
 // The two arms are NOT comparable value for value, and no assertion here pretends otherwise. Each
 // solution class draws from its own unseeded Random, advanced a different number of times per call
-// (the reservoir arm once per array element, the grouping arm once per call), so equal running
-// totals would mean two different sampling procedures made the same draws - a property neither arm
-// has. What both genuinely share is the index set they sample: every Pick(7) must return an index
-// whose value is 7, so each arm's mean over PickCalls draws has to sit at the mean of that index
-// set. The tolerance is that mean's sampling noise, not numeric slack, and the assertion is weaker
-// than arm agreement: it witnesses that both arms sample the matching indices, not that they drew
-// the same ones. Reported as such.
+// (the reservoir arm once per array element, the grouping arm once per call), so equal picks would
+// mean two different sampling procedures made the same draws - a property neither arm has. What both
+// genuinely share is the index set they sample: every Pick(7) must return an index whose value is 7,
+// which each returned pick is checked against, and each arm's mean over PickCalls draws has to sit
+// at the mean of that index set. The tolerance is that mean's sampling noise, not numeric slack, and
+// the assertion is weaker than arm agreement: it witnesses that both arms sample the matching
+// indices, not that they drew the same ones. Reported as such.
 public sealed partial class RandomPickIndexBenchmarksTests
 {
     private const int SmallestLength = 2_000;
@@ -45,17 +45,23 @@ public sealed partial class RandomPickIndexBenchmarksTests
 
     [Fact]
     public void ReservoirSampling_SmallestLength_ReturnsIndicesOfTheTargetValue() =>
-        Assert.InRange(
-            MeanIndex(BuildHarness().ReservoirSampling()),
-            ExpectedMeanIndex() * (1 - RelativeTolerance),
-            ExpectedMeanIndex() * (1 + RelativeTolerance));
+        AssertPicksOfTheTarget(BuildHarness().ReservoirSampling());
 
     [Fact]
     public void HashMapGrouping_SmallestLength_ReturnsIndicesOfTheTargetValue() =>
+        AssertPicksOfTheTarget(BuildHarness().HashMapGrouping());
+
+    private static void AssertPicksOfTheTarget(int[] picks)
+    {
+        var workload = ExpectedWorkload();
+
+        Assert.Equal(PickCalls, picks.Length);
+        Assert.All(picks, index => Assert.Equal(Target, workload[index]));
         Assert.InRange(
-            MeanIndex(BuildHarness().HashMapGrouping()),
+            picks.Average(),
             ExpectedMeanIndex() * (1 - RelativeTolerance),
             ExpectedMeanIndex() * (1 + RelativeTolerance));
+    }
 
     private static int[] ExpectedWorkload()
     {
@@ -92,8 +98,6 @@ public sealed partial class RandomPickIndexBenchmarksTests
 
         return [.. indices];
     }
-
-    private static double MeanIndex(long sumOfIndices) => sumOfIndices / (double)PickCalls;
 
     private static RandomPickIndexBenchmarks BuildHarness()
     {

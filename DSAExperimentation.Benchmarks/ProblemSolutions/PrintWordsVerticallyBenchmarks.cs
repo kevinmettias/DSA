@@ -8,9 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // padded string and TrimEnd'ed (baseline) against this repo's own
 // DynamicArray<char> trimmed in place by popping its tail. Unlike the pre-refactor
 // version, which only accumulated each row's length so no output list had to be
-// built, both arms now return LeetCode's actual answer and the harness takes its
-// row count; the rows were being built either way, so the comparison is still
-// about the trimming.
+// built, both arms now return LeetCode's actual answer, the rows themselves; the
+// rows were being built either way, so the comparison is still about the trimming.
 //
 // Each arm is handed the prepared word list its hoisted overload takes, so the
 // sentence split is charged to [GlobalSetup] rather than to the measured method.
@@ -44,10 +43,10 @@ public class PrintWordsVerticallyBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListCharTrimEnd() =>
-        PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(_words).Count;
+    public List<string> ListCharTrimEnd() =>
+        PrintWordsVerticallySolution.PrintVerticallyByListTrimEnd(_words);
 
     [Benchmark]
-    public int DynamicArrayTrimTail() =>
-        PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(_words).Count;
+    public List<string> DynamicArrayTrimTail() =>
+        PrintWordsVerticallySolution.PrintVerticallyByDynamicArrayColumns(_words);
 }

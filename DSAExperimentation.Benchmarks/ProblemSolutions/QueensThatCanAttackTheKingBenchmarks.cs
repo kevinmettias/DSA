@@ -12,8 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one-off cost is exactly what it has to earn back.
 //
 // Both arms now return LeetCode's actual answer - the attacking queens' coordinates -
-// and the harness takes .Count, where previously both counted attackers without
-// building the list (§17.8's deliberate-measurement-change note).
+// where previously both counted attackers without building the list (§17.8's
+// deliberate-measurement-change note).
 public class QueensThatCanAttackTheKingBenchmarks
 {
     private const int BoardSize = 1_000;
@@ -48,10 +48,10 @@ public class QueensThatCanAttackTheKingBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanRayWalk() =>
-        QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(_queens, _board).Count;
+    public List<(int Row, int Col)> LinearScanRayWalk() =>
+        QueensThatCanAttackTheKingSolution.QueensAttackTheKingByLinearScan(_queens, _board);
 
     [Benchmark]
-    public int SetLookupRayWalk() =>
-        QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(_queens, _board).Count;
+    public List<(int Row, int Col)> SetLookupRayWalk() =>
+        QueensThatCanAttackTheKingSolution.QueensAttackTheKingBySetLookup(_queens, _board);
 }

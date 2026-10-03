@@ -40,8 +40,9 @@ public class PalindromePairsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce() => PalindromePairsSolution.FindPairsByBruteForce(_words).Count;
+    public List<(int First, int Second)> BruteForce() => PalindromePairsSolution.FindPairsByBruteForce(_words);
 
     [Benchmark]
-    public int HashMapComplementLookup() => PalindromePairsSolution.FindPairsByHashMapComplementLookup(_words).Count;
+    public List<(int First, int Second)> HashMapComplementLookup() =>
+        PalindromePairsSolution.FindPairsByHashMapComplementLookup(_words);
 }

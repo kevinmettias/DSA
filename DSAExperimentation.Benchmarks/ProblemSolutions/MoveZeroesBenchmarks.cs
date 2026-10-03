@@ -23,23 +23,24 @@ public class MoveZeroesBenchmarks
 
     private static int NonZeroValueAt(int index) => index + 1;
 
+    // Each arm rearranges its own copy in place and returns that copy.
     [Benchmark(Baseline = true)]
-    public int LinearScan()
+    public int[] LinearScan()
     {
         var nums = _values.ToArray();
 
         MoveZeroesSolution.MoveZeroesToEndByLinearScan(nums);
 
-        return nums[0];
+        return nums;
     }
 
     [Benchmark]
-    public int ArrayIndexedTwoPointer()
+    public int[] ArrayIndexedTwoPointer()
     {
         var nums = _values.ToArray();
 
         MoveZeroesSolution.MoveZeroesToEndByArrayIndexedTwoPointer(nums);
 
-        return nums[0];
+        return nums;
     }
 }

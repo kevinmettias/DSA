@@ -21,6 +21,9 @@ public class RLEIteratorBenchmarks
     private int[] _encoding = [];
 
     private int[] _queries = [];
+
+    // What every Next returned, in query order - what each arm returns.
+    private int[] _answers = [];
     [Params(2_000, 200_000)]
     public int TotalCount { get; set; }
 
@@ -30,6 +33,7 @@ public class RLEIteratorBenchmarks
         var random = new Random(RandomSeed);
         _encoding = BuildEncoding(random, TotalCount);
         _queries = BuildQueries(random, TotalCount);
+        _answers = new int[_queries.Length];
     }
 
     private static int[] BuildEncoding(Random random, int totalCount)
@@ -68,20 +72,18 @@ public class RLEIteratorBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int DecompressedArrayCursor() => Drain(RLEIteratorSolution.CreateByDecompressedArray(_encoding));
+    public int[] DecompressedArrayCursor() => Drain(RLEIteratorSolution.CreateByDecompressedArray(_encoding));
 
     [Benchmark]
-    public int RunLengthQueue() => Drain(RLEIteratorSolution.CreateByRunLengthQueue(_encoding));
+    public int[] RunLengthQueue() => Drain(RLEIteratorSolution.CreateByRunLengthQueue(_encoding));
 
-    private int Drain(IRleIterator iterator)
+    private int[] Drain(IRleIterator iterator)
     {
-        var last = -1;
-
-        foreach (var n in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            last = iterator.Next(n);
+            _answers[i] = iterator.Next(_queries[i]);
         }
 
-        return last;
+        return _answers;
     }
 }

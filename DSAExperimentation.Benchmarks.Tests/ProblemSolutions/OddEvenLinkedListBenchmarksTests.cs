@@ -1,41 +1,56 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for OddEvenLinkedListBenchmarks (ARCHITECTURE 17.9): both arms regroup the same
-// chain - one rebuilds it from two value buffers, the other rewires the existing nodes in place - so
-// a harness whose arms disagree is timing two different problems. Setup builds the chain 0..Length-1
-// once and each arm clones it before mutating, so one harness is safe to call twice in either order.
+// chain - one rebuilds it from two value buffers, the other rewires the existing nodes in place - and
+// return the regrouped list's head. Setup builds the chain 0..Length-1 once and each arm clones it
+// before mutating, so one harness is safe to call twice in either order.
 //
-// WEAK BY CONSTRUCTION, and reported as such: both arms return only the node count of the list they
-// produced, not the order the nodes ended up in, so agreement witnesses that both regroups consumed
-// the whole chain - an arm that dropped or duplicated a node is caught, an arm that grouped the
-// parities differently is not. The count is also checked against the built chain's length, which is
-// what makes the dropped-node case a real failure rather than a shared one.
+// Because node i holds the value i, the regrouped list is derivable from Length alone: the nodes at
+// odd positions (values 0, 2, 4, ...) in their original order, then the even positions (1, 3, 5, ...).
+// Each arm's list is checked against that, which catches a dropped or duplicated node and a parity
+// grouped the wrong way alike.
 public sealed partial class OddEvenLinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
 
+    // LC 328 numbers positions from one, so the first node is odd.
+    private const int PositionParity = 2;
+
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().TwoListRebuild(), BuildHarness().TwoListRebuild());
+        Assert.Equal(
+            AnswerGraphText.Of(BuildHarness().TwoListRebuild()),
+            AnswerGraphText.Of(BuildHarness().TwoListRebuild()));
 
     [Fact]
-    public void TwoListRebuild_SmallestLength_KeepsEveryNode()
-    {
-        var harness = BuildHarness();
+    public void TwoListRebuild_SmallestLength_KeepsEveryNode() =>
+        Assert.Equal(ExpectedValues(), ValuesOf(BuildHarness().TwoListRebuild()));
 
-        Assert.Equal(SmallestLength, harness.TwoListRebuild());
-        Assert.Equal(harness.InPlaceRewire(), harness.TwoListRebuild());
+    [Fact]
+    public void InPlaceRewire_SmallestLength_KeepsEveryNode() =>
+        Assert.Equal(ExpectedValues(), ValuesOf(BuildHarness().InPlaceRewire()));
+
+    private static int[] ExpectedValues()
+    {
+        var values = Enumerable.Range(0, SmallestLength).ToArray();
+
+        return [.. values.Where(value => value % PositionParity == 0), .. values.Where(value => value % PositionParity != 0)];
     }
 
-    [Fact]
-    public void InPlaceRewire_SmallestLength_KeepsEveryNode()
+    private static List<int> ValuesOf(object? head)
     {
-        var harness = BuildHarness();
+        var values = new List<int>();
 
-        Assert.Equal(SmallestLength, harness.InPlaceRewire());
-        Assert.Equal(harness.TwoListRebuild(), harness.InPlaceRewire());
+        for (var node = (SinglyLinkedListNode<int>?)head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values;
     }
 
     private static OddEvenLinkedListBenchmarks BuildHarness()

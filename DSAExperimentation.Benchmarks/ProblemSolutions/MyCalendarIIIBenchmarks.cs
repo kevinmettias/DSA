@@ -6,9 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MyCalendarIIISolutionTests proves correct. Random bookings feed the textbook brute
 // force (rescan every start point ever seen against every booking recorded so
 // far) against this repo's own HashMap<int,int> delta sweep + MergeSort.Sort
-// re-sort. Bookings never get removed, so the running max returned by the
-// final call already equals the max over the whole run, letting both arms
-// return one comparable int.
+// re-sort. Each arm returns the running max every Book call reported, in
+// booking order.
 public class MyCalendarIIIBenchmarks
 {
     // LC 732.
@@ -17,6 +16,8 @@ public class MyCalendarIIIBenchmarks
     private const int MaxBookingDuration = 20;
 
     private (int Start, int End)[] _bookings = [];
+
+    private int[] _maxOverlaps = [];
 
     [Params(50, 200)]
     public int Length { get; set; }
@@ -33,23 +34,22 @@ public class MyCalendarIIIBenchmarks
                 return (Start: start, End: end);
             })
             .ToArray();
+        _maxOverlaps = new int[_bookings.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceEventRescan() => Drain(MyCalendarIIISolution.CreateByBruteForceEventRescan());
+    public int[] BruteForceEventRescan() => Drain(MyCalendarIIISolution.CreateByBruteForceEventRescan());
 
     [Benchmark]
-    public int HashMapMergeSortSweep() => Drain(MyCalendarIIISolution.CreateByHashMapMergeSortSweep());
+    public int[] HashMapMergeSortSweep() => Drain(MyCalendarIIISolution.CreateByHashMapMergeSortSweep());
 
-    private int Drain(MyCalendarIIISolution.ICalendar calendar)
+    private int[] Drain(MyCalendarIIISolution.ICalendar calendar)
     {
-        var maxOverlap = 0;
-
-        foreach (var (start, end) in _bookings)
+        for (var i = 0; i < _bookings.Length; i++)
         {
-            maxOverlap = calendar.Book(start, end);
+            _maxOverlaps[i] = calendar.Book(_bookings[i].Start, _bookings[i].End);
         }
 
-        return maxOverlap;
+        return _maxOverlaps;
     }
 }
