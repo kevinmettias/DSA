@@ -74,7 +74,7 @@ public sealed partial class BenchmarkArmsTests
 
     private static string AnswerOf(BenchmarkClass benchmark, MethodInfo arm)
     {
-        var answer = BenchmarkClass.Run(benchmark.Prepare(arm), arm);
+        var answer = benchmark.Run(benchmark.Prepare(arm), arm);
 
         return ArmAgreement.UnorderedAnswers.Contains(benchmark.Type)
             ? AnswerGraphText.OfUnordered(answer)

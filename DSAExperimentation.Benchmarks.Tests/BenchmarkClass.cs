@@ -7,6 +7,11 @@ namespace DSAExperimentation.Benchmarks.Tests;
 // [Params] member at its smallest value, every [GlobalSetup] and [IterationSetup] that targets the
 // arm, then the arm itself on a harness nothing else has touched. A fresh harness per arm matters
 // because an arm may rewrite the workload in place, and the next arm must not inherit its result.
+//
+// An arm that takes its size as an argument - [Arguments] or an [ArgumentsSource], so that an
+// exponential baseline can stop at sizes a polynomial arm runs far past - is called with the
+// smallest size every arm of its class is measured at. Arms are only comparable on one workload,
+// so a class whose arms share no size is refused rather than compared at two different ones.
 internal sealed class BenchmarkClass
 {
     // A case is named by its class name less whichever of these suffixes it carries: xunit cuts a
@@ -20,6 +25,9 @@ internal sealed class BenchmarkClass
             .Select(type => new BenchmarkClass(type))
             .ToDictionary(benchmark => benchmark.Name));
 
+    // The size every arm is compared at, worked out once and only when an arm first runs.
+    private readonly Lazy<object?> _sharedArgument;
+
     private BenchmarkClass(Type type)
     {
         Type = type;
@@ -29,6 +37,7 @@ internal sealed class BenchmarkClass
             .FirstOrDefault(type.Name);
         Arms = [.. type.GetMethods().Where(IsArm).OrderBy(arm => arm.MetadataToken)];
         Baseline = Arms.FirstOrDefault(arm => arm.GetCustomAttribute<BenchmarkAttribute>() is { Baseline: true }) ?? Arms[0];
+        _sharedArgument = new Lazy<object?>(SmallestSharedArgument);
     }
 
     public static IEnumerable<BenchmarkClass> All => ByName.Value.Values.OrderBy(benchmark => benchmark.Name, StringComparer.Ordinal);
@@ -43,6 +52,9 @@ internal sealed class BenchmarkClass
     public MethodInfo Baseline { get; }
 
     public static BenchmarkClass Named(string name) => ByName.Value[name];
+
+    // A class outside the benchmark assembly, for testing this type's own rules on samples.
+    public static BenchmarkClass Of(Type type) => new(type);
 
     public object Prepare(MethodInfo arm)
     {
@@ -61,11 +73,74 @@ internal sealed class BenchmarkClass
         return harness;
     }
 
-    public static object? Run(object harness, MethodInfo arm)
+    public object? Run(object harness, MethodInfo arm)
     {
-        var answer = arm.Invoke(harness, BindingFlags.DoNotWrapExceptions, binder: null, parameters: null, culture: null);
+        var arguments = arm.GetParameters().Length == 0 ? null : new[] { _sharedArgument.Value };
+        var answer = arm.Invoke(harness, BindingFlags.DoNotWrapExceptions, binder: null, parameters: arguments, culture: null);
 
         return IsAnsweredByHarness(arm) ? harness : answer;
+    }
+
+    // The values one arm is measured at, from [Arguments] or an [ArgumentsSource] member - a
+    // property, field or method, static or on a harness. Only single-argument arms are supported:
+    // the argument is a size, and a second one would need a rule for which pairs to compare.
+    public IReadOnlyList<object?> ArgumentsOf(MethodInfo arm)
+    {
+        if (arm.GetParameters().Length > 1)
+        {
+            throw new NotSupportedException($"{Type.Name}.{arm.Name} takes more than one argument.");
+        }
+
+        var listed = arm.GetCustomAttributes<ArgumentsAttribute>().Select(arguments => arguments.Values.Single());
+        var sourced = arm.GetCustomAttribute<ArgumentsSourceAttribute>() is { } source
+            ? ValuesFrom(source.Name)
+            : [];
+
+        return [.. listed.Concat(sourced)];
+    }
+
+    private IEnumerable<object?> ValuesFrom(string memberName)
+    {
+        const BindingFlags Any = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+        var member = Type.GetMember(memberName, Any).Single();
+        var owner = member is MethodInfo { IsStatic: true } or PropertyInfo { GetMethod.IsStatic: true } or FieldInfo { IsStatic: true }
+            ? null
+            : Activator.CreateInstance(Type);
+
+        var values = member switch
+        {
+            MethodInfo method => method.Invoke(owner, null),
+            PropertyInfo property => property.GetValue(owner),
+            FieldInfo field => field.GetValue(owner),
+            _ => null,
+        };
+
+        return values is System.Collections.IEnumerable sequence
+            ? sequence.Cast<object?>()
+            : throw new NotSupportedException($"{Type.Name}.{memberName} does not yield a sequence of arguments.");
+    }
+
+    private object? SmallestSharedArgument()
+    {
+        var sized = Arms.Where(arm => arm.GetParameters().Length > 0).ToList();
+
+        if (sized.Count == 0)
+        {
+            return null;
+        }
+
+        if (sized.Count < Arms.Count)
+        {
+            throw new InvalidOperationException($"{Type.Name}: some arms take a size and some do not, so no one workload runs them all.");
+        }
+
+        var shared = sized
+            .Select(arm => ArgumentsOf(arm).ToHashSet())
+            .Aggregate((left, right) => [.. left.Intersect(right)]);
+
+        return shared.Count > 0
+            ? shared.Min()
+            : throw new InvalidOperationException($"{Type.Name}: its arms share no size, so no workload compares them.");
     }
 
     // A void arm answers by what it leaves in the harness, so the harness itself is its answer.
