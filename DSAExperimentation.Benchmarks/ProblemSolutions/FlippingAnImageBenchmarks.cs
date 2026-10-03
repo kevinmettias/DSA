@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (the textbook approach) vs. this repo's own LIFO Stack<int> reversing each row
 // while inverting each value as it comes back off the stack. Each iteration clones
 // the pristine image before flipping, since the solution rewrites in place and
-// [GlobalSetup] runs once per benchmark, not once per invocation.
+// [GlobalSetup] runs once per benchmark, not once per invocation. LC 832 caps the
+// image at 20 x 20, so the larger Side is that cap.
 public class FlippingAnImageBenchmarks
 {
     private const int RandomSeed = 4;
@@ -15,7 +16,7 @@ public class FlippingAnImageBenchmarks
 
     // pixels are binary: 0 or 1
 
-    [Params(50, 300)]
+    [Params(5, 20)]
     public int Side { get; set; }
 
     [GlobalSetup]

@@ -6,8 +6,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // BenchmarkArmsTests cannot pin: that the target sample both hits and misses, which follows from Setup's
 // construction rather than from either arm. Each arm returns every Find verdict, in target order.
 //
-// The tree is Fixtures' BinaryTrees.Balanced, a complete tree in heap layout, so node i recovers
-// exactly the value i and the found set is [0, NodeCount). Setup draws its targets from
+// The tree is a complete tree in heap layout with every value -1, LC 1261's contamination, so node i
+// recovers exactly the value i and the found set is [0, NodeCount). Setup draws its targets from
 // [0, 2 * NodeCount), so some targets must be found and some must miss on every run.
 public sealed partial class FindElementsInAContaminatedBinaryTreeBenchmarksTests
 {

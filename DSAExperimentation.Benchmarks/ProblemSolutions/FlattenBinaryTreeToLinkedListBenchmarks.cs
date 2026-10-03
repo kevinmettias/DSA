@@ -18,15 +18,29 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // friends make, since a public [Benchmark] method cannot name an internal return
 // type (CS0050). It returned void before, which dropped the only thing the two arms
 // could be compared on.
+//
+// LC 114 caps the tree at 2000 nodes valued -100..100, so the larger NodeCount is that
+// cap and the complete tree's level order cycles through those values.
 public class FlattenBinaryTreeToLinkedListBenchmarks
 {
+    private const int LowestValue = -100;
+
+    // How many values -100..100 holds.
+    private const int ValueCount = 201;
+
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(500, 20_000)]
+    [Params(500, 2_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
+    public void Setup()
+    {
+        var levelOrder = Enumerable.Range(0, NodeCount).Select(ValueAt).ToArray();
+        _root = BinaryTrees.Complete(levelOrder);
+    }
+
+    private static int ValueAt(int index) => LowestValue + (index % ValueCount);
 
     [Benchmark(Baseline = true)]
     public object? RecursiveSplice()

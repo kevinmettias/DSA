@@ -9,15 +9,14 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // call, because flattening is destructive - so the harness is the bare initializer plus Length.
 //
 // Each arm returns the flattened list's head as object? (the node type is internal, CS0050). The arm
-// builds a Length-node chain 0, 1, ... and hangs one single-node child valued -1 off each node but the
-// last, so a correct flatten splices each child straight after its parent: Length + (Length - 1) nodes
-// alternating chain value and -1, which catches a dropped, duplicated or misplaced splice.
+// builds a Length-node chain 1, 2, ... and hangs one single-node child valued Length plus its parent's
+// value off each node but the last, so a correct flatten splices each child straight after its parent:
+// Length + (Length - 1) nodes alternating chain value and child value, which catches a dropped,
+// duplicated or misplaced splice.
 public sealed partial class FlattenAMultilevelDoublyLinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
 
-    // The value the arm's own fixture gives every child node.
-    private const int ChildValue = -1;
 
     [Fact]
     public void BruteForceRescanFromHead_ChildOnEveryNodeButTheLast_SplicesEachChildAfterItsParent() =>
@@ -28,9 +27,9 @@ public sealed partial class FlattenAMultilevelDoublyLinkedListBenchmarksTests
         Assert.Equal(FlattenedValues(), ValuesOf(BuildHarness().StackBasedOnePass()));
 
     private static IEnumerable<int> FlattenedValues() =>
-        Enumerable.Range(0, SmallestLength - 1)
-            .SelectMany(value => new[] { value, ChildValue })
-            .Append(SmallestLength - 1);
+        Enumerable.Range(1, SmallestLength - 1)
+            .SelectMany(value => new[] { value, SmallestLength + value })
+            .Append(SmallestLength);
 
     private static List<int> ValuesOf(object? answer)
     {

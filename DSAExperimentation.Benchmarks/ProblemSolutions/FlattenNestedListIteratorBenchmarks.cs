@@ -6,14 +6,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategies FlattenNestedListIteratorSolutionTests proves correct. [GlobalSetup] builds
 // the nested-list workload itself - already exactly the List<NestedInteger> shape
 // both strategies' constructors take, so there is nothing further to hoist into a
-// second overload.
+// second overload. LC 341 caps the top-level list at 500 entries, and every entry
+// here is a pair of leaves, so the larger LeafCount is 1000.
 public class FlattenNestedListIteratorBenchmarks
 {
     private const int LeavesPerNestedPair = 2;
 
     private List<NestedInteger> _nestedList = new();
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int LeafCount { get; set; }
 
     [GlobalSetup]

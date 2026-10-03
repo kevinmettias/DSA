@@ -11,7 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // guaranteed. nums is almost entirely zeros with a single distinguishing 1 at the
 // very end, and the single group is the same shape at half the length - the classic
 // KMP-worst-case adversarial input, since the naive scan re-walks almost the whole
-// group at nearly every start position before failing on its last element.
+// group at nearly every start position before failing on its last element. LC 1764
+// caps nums at 1000 values, so the larger Length is that cap.
 public class FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks
 {
     private const int GroupLengthDivisor = 2; private int[] _nums = [];
@@ -19,7 +20,7 @@ public class FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks
     private int[][] _groups = [];
     // the group is built at half the length of nums
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
