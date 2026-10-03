@@ -6,21 +6,35 @@
 # filter	*StrategySwaps*
 # job	(IterationCount=15, LaunchCount=1, WarmupCount=6)
 # host	Unknown processor | .NET 10.0.11 (10.0.1126.37416)
-# captured	2026-10-01
+# captured	2026-10-03
 # columns	name	meanNanoseconds	allocatedBytes
-DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Iterative(NodeCount: 10000)	1146583.255208	3209079
-DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Iterative(NodeCount: 200000)	53352022.857143	59463823
-DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Recursive(NodeCount: 10000)	127772.757394	280000
-DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Recursive(NodeCount: 200000)	2553063.828125	5600000
-DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.BreadthFirst(NodeCount: 10000)	408515.299479	1107891
-DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.BreadthFirst(NodeCount: 200000)	9602480.9375	21740698
-DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.DepthFirst(NodeCount: 10000)	468776.246745	942083
-DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.DepthFirst(NodeCount: 200000)	9280141.041667	17537325
-DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.AStar(GridSize: 20)	17222.064427	33984
-DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.AStar(GridSize: 80)	434122.252604	435666
-DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.Dijkstra(GridSize: 20)	36817.275798	39536
-DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.Dijkstra(GridSize: 80)	1006392.565104	778381
-DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Iterative(NodeCount: 1000)	54237.382813	317080
-DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Iterative(NodeCount: 3000)	221416.077474	785148
-DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Recursive(NodeCount: 1000)	10764.029948	31992
-DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Recursive(NodeCount: 3000)	33142.061942	95992
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Iterative(NodeCount: 10000)	2149488.978795	3209080
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Iterative(NodeCount: 200000)	79760942.222222	59463795
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Recursive(NodeCount: 10000)	140226.330566	280000
+DSAExperimentation.Benchmarks.StrategySwaps.BalancedTreeFoldBenchmarks.Recursive(NodeCount: 200000)	3649254.520089	5600000
+DSAExperimentation.Benchmarks.StrategySwaps.ConnectedComponentsOrderBenchmarks.BreadthFirst(Side: 100)	730094.022042	969614
+DSAExperimentation.Benchmarks.StrategySwaps.ConnectedComponentsOrderBenchmarks.BreadthFirst(Side: 400)	16063826.442308	13176833
+DSAExperimentation.Benchmarks.StrategySwaps.ConnectedComponentsOrderBenchmarks.DepthFirst(Side: 100)	615259.373372	633422
+DSAExperimentation.Benchmarks.StrategySwaps.ConnectedComponentsOrderBenchmarks.DepthFirst(Side: 400)	13010329.791667	7885442
+DSAExperimentation.Benchmarks.StrategySwaps.FoldTierBenchmarks.DagTier(NodeCount: 10000)	593287.35026	1222088
+DSAExperimentation.Benchmarks.StrategySwaps.FoldTierBenchmarks.DagTier(NodeCount: 200000)	33409574.375	23138022
+DSAExperimentation.Benchmarks.StrategySwaps.FoldTierBenchmarks.GraphTier(NodeCount: 10000)	825649.973958	1222843
+DSAExperimentation.Benchmarks.StrategySwaps.FoldTierBenchmarks.GraphTier(NodeCount: 200000)	27477915.848214	23138968
+DSAExperimentation.Benchmarks.StrategySwaps.FoldTierBenchmarks.TreeTier(NodeCount: 10000)	133708.248465	280000
+DSAExperimentation.Benchmarks.StrategySwaps.FoldTierBenchmarks.TreeTier(NodeCount: 200000)	2852263.783482	5600000
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.BreadthFirst(NodeCount: 10000)	539705.917969	1107891
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.BreadthFirst(NodeCount: 200000)	24181208.333333	21738592
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.DepthFirst(NodeCount: 10000)	605338.151042	942083
+DSAExperimentation.Benchmarks.StrategySwaps.ReduceOrderBenchmarks.DepthFirst(NodeCount: 200000)	12158743.303571	17537620
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.AStar(GridSize: 20)	19810.197144	33984
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.AStar(GridSize: 80)	579424.99349	435665
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.Dijkstra(GridSize: 20)	48861.81071	39536
+DSAExperimentation.Benchmarks.StrategySwaps.ShortestPathHeuristicBenchmarks.Dijkstra(GridSize: 80)	1179354.447115	778381
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Iterative(NodeCount: 1000)	69605.681966	317080
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Iterative(NodeCount: 3000)	273747.542318	785149
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Recursive(NodeCount: 1000)	12988.94221	31992
+DSAExperimentation.Benchmarks.StrategySwaps.SkewedTreeFoldBenchmarks.Recursive(NodeCount: 3000)	40022.860514	95992
+DSAExperimentation.Benchmarks.StrategySwaps.VisitGuardBenchmarks.Tracked(NodeCount: 10000)	711607.421875	1615182
+DSAExperimentation.Benchmarks.StrategySwaps.VisitGuardBenchmarks.Tracked(NodeCount: 200000)	19567237.291667	30064110
+DSAExperimentation.Benchmarks.StrategySwaps.VisitGuardBenchmarks.Unguarded(NodeCount: 10000)	441346.731771	942134
+DSAExperimentation.Benchmarks.StrategySwaps.VisitGuardBenchmarks.Unguarded(NodeCount: 200000)	14240825.520833	17537412
