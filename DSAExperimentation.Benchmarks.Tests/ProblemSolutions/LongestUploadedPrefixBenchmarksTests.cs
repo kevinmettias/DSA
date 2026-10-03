@@ -2,45 +2,58 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for LongestUploadedPrefixBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - rescanning the upload flags from video 1 on every
-// query against the set behind a frontier that only advances - so a harness whose arms disagree
-// is timing two different problems. Each arm constructs its own server inside the call, so one
-// harness is safe to call twice in either order and the single-harness rule holds. Both arms
-// return the last reported prefix length, a scalar compared directly. Setup shuffles 1..VideoCount
-// from a fixed seed and uploads all of them, so the final answer is every video: that count is the
-// decisive value both arms must reach, and the same VideoCount must rebuild the same order.
+// Harness coverage for LongestUploadedPrefixBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins every answer the replay reports, from the workload's
+// construction alone.
+//
+// Setup shuffles 1..VideoCount from a fixed seed, so the order can be restated here, and the answer
+// after each upload is the longest run 1..k already uploaded - read off by keeping the highest
+// upload time over each prefix, with no frontier or rescan. Every video is uploaded, so the last
+// answer is VideoCount.
 public sealed partial class LongestUploadedPrefixBenchmarksTests
 {
     private const int SmallestVideoCount = 200;
-
-    // The shuffled order is a permutation of 1..VideoCount and the replay uploads all of it, so
-    // the prefix eventually covers every video.
-    private const int ExpectedLongestUploadedPrefix = SmallestVideoCount;
+    private const int RandomSeed = 2424;
 
     [Fact]
-    public void Setup_SmallestVideoCount_RebuildsTheSameWorkload()
-    {
-        Assert.Equal(ExpectedLongestUploadedPrefix, BuildHarness().SetFrontierAdvance());
-        Assert.Equal(BuildHarness().RescanArray(), BuildHarness().RescanArray());
-    }
+    public void RescanArray_ShuffledUploads_ReportsTheLongestPrefixAfterEveryUpload() =>
+        Assert.Equal(ExpectedLongest(), BuildHarness().RescanArray());
 
     [Fact]
-    public void RescanArray_SmallestVideoCount_AgreesWithSetFrontierAdvance()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedLongestUploadedPrefix, harness.RescanArray());
-        Assert.Equal(harness.SetFrontierAdvance(), harness.RescanArray());
-    }
+    public void SetFrontierAdvance_ShuffledUploads_ReportsTheLongestPrefixAfterEveryUpload() =>
+        Assert.Equal(ExpectedLongest(), BuildHarness().SetFrontierAdvance());
 
     [Fact]
-    public void SetFrontierAdvance_SmallestVideoCount_AgreesWithRescanArray()
-    {
-        var harness = BuildHarness();
+    public void Setup_ShuffledUploads_EndsWithEveryVideoInThePrefix() =>
+        Assert.Equal(SmallestVideoCount, BuildHarness().SetFrontierAdvance()[^1]);
 
-        Assert.Equal(ExpectedLongestUploadedPrefix, harness.SetFrontierAdvance());
-        Assert.Equal(harness.RescanArray(), harness.SetFrontierAdvance());
+    // Prefix 1..k is complete once its last-uploaded video arrives, at the latest upload time
+    // among videos 1..k; so the answer after upload t is the largest k whose latest time is <= t.
+    private static int[] ExpectedLongest()
+    {
+        var random = new Random(RandomSeed);
+        var order = Enumerable.Range(1, SmallestVideoCount).OrderBy(_ => random.Next()).ToArray();
+        var uploadTime = new int[SmallestVideoCount + 1];
+
+        for (var time = 0; time < order.Length; time++)
+        {
+            uploadTime[order[time]] = time;
+        }
+
+        var answers = new int[order.Length];
+        var latest = -1;
+
+        for (var k = 1; k <= SmallestVideoCount; k++)
+        {
+            latest = Math.Max(latest, uploadTime[k]);
+
+            for (var time = latest; time < order.Length; time++)
+            {
+                answers[time] = k;
+            }
+        }
+
+        return answers;
     }
 
     private static LongestUploadedPrefixBenchmarks BuildHarness()

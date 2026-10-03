@@ -9,12 +9,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n) total). Both replay the identical shuffled arrival order, querying after
 // every upload so the rescan really is charged once per call rather than once at
 // the end. [GlobalSetup] shuffles that order so building it is not charged to
-// either arm.
+// either arm. Each arm returns every Longest answer, one per upload.
 public class LongestUploadedPrefixBenchmarks
 {
-    private const int RandomSeed = 2424; private int[] _uploadOrder = [];
+    private const int RandomSeed = 2424; // LC problem number
 
-    // LC problem number
+    private int[] _uploadOrder = [];
+
+    private int[] _longest = [];
 
     [Params(200, 5_000)]
     public int VideoCount { get; set; }
@@ -24,24 +26,23 @@ public class LongestUploadedPrefixBenchmarks
     {
         var random = new Random(RandomSeed);
         _uploadOrder = Enumerable.Range(1, VideoCount).OrderBy(_ => random.Next()).ToArray();
+        _longest = new int[_uploadOrder.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public int RescanArray() => Replay(new LongestUploadedPrefixSolution.UploadedPrefixByRescanArray(VideoCount));
+    public int[] RescanArray() => Replay(new LongestUploadedPrefixSolution.UploadedPrefixByRescanArray(VideoCount));
 
     [Benchmark]
-    public int SetFrontierAdvance() => Replay(new LongestUploadedPrefixSolution.UploadedPrefixBySetFrontier());
+    public int[] SetFrontierAdvance() => Replay(new LongestUploadedPrefixSolution.UploadedPrefixBySetFrontier());
 
-    private int Replay(LongestUploadedPrefixSolution.IUploadedPrefix server)
+    private int[] Replay(LongestUploadedPrefixSolution.IUploadedPrefix server)
     {
-        var longest = 0;
-
-        foreach (var video in _uploadOrder)
+        for (var i = 0; i < _uploadOrder.Length; i++)
         {
-            server.Upload(video);
-            longest = server.Longest();
+            server.Upload(_uploadOrder[i]);
+            _longest[i] = server.Longest();
         }
 
-        return longest;
+        return _longest;
     }
 }

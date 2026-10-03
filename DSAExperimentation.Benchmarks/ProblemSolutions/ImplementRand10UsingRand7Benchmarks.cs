@@ -7,9 +7,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // established randomness-problem convention - see ShuffleAnArrayBenchmarks,
 // RandomPickIndexBenchmarks). NaiveModuloFold is the "fast but wrong" contrast, not
 // a correctness baseline; RejectionSampling is the actual LeetCode-accepted answer.
+// Each arm returns every value it drew, in call order.
 public class ImplementRand10UsingRand7Benchmarks
 {
     private IRand7 _rand7 = null!;
+
+    private int[] _draws = [];
 
     [Params(1_000, 100_000)]
     public int Calls { get; set; }
@@ -19,32 +22,29 @@ public class ImplementRand10UsingRand7Benchmarks
     {
         var random = new Random(1);
         _rand7 = new SeededRandomRand7(random);
+        _draws = new int[Calls];
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveModuloFold()
+    public int[] NaiveModuloFold()
     {
-        var last = 0;
-
         for (var i = 0; i < Calls; i++)
         {
-            last = ImplementRand10UsingRand7Solution.Rand10ByNaiveModuloFold(_rand7);
+            _draws[i] = ImplementRand10UsingRand7Solution.Rand10ByNaiveModuloFold(_rand7);
         }
 
-        return last;
+        return _draws;
     }
 
     [Benchmark]
-    public int RejectionSampling()
+    public int[] RejectionSampling()
     {
-        var last = 0;
-
         for (var i = 0; i < Calls; i++)
         {
-            last = ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(_rand7);
+            _draws[i] = ImplementRand10UsingRand7Solution.Rand10ByRejectionSampling(_rand7);
         }
 
-        return last;
+        return _draws;
     }
 
     // The harness's own Rand7: a seeded System.Random drawn from per call. The seed is

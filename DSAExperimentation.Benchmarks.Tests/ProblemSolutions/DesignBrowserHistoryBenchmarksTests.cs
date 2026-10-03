@@ -2,47 +2,32 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignBrowserHistoryBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a List<string> with a RemoveRange truncation
-// against this repo's own DynamicArray<string> popping the discarded tail one element at a time -
-// so a harness whose arms disagree is timing two different problems. Setup builds both url runs
-// from OperationCount, so the same OperationCount must rebuild the same visit script, and that
-// script's shape is what decides the url each arm reports at the end.
+// Harness coverage for DesignBrowserHistoryBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins every page the replay's Back calls land on, from the script
+// alone.
+//
+// Every iteration visits url<i>, steps one page back and visits branch<i>. The step back lands on
+// the page before url<i> - the home page the first time, branch<i-1> after that - and the branch
+// visit then discards url<i> as forward history. So the history only ever holds home and the
+// branches so far, growing by one page per iteration, and a Visit that appended without truncating
+// would leave url<i> behind for a later Back to land on.
 public sealed partial class DesignBrowserHistoryBenchmarksTests
 {
     private const int SmallestOperationCount = 200;
 
-    // Mirrors the benchmark's own home page: the replay's last Back call is the value each arm
-    // reports, so the test has to state which page that has to land on.
+    // Mirrors the benchmark's own home page and url format.
     private const string HomePageUrl = "home.com";
 
     [Fact]
-    public void Setup_SameOperationCount_RebuildsTheSameVisitScript()
-    {
-        // Every iteration visits one url, steps two pages back, then visits a branch url - so each
-        // iteration ends with the history truncated to [home, branch] and the cursor back on
-        // home. The last Back of the script therefore reports the home page, which Visit's
-        // truncation is what makes true: a Visit that appended instead would leave a longer
-        // history behind and report some other page instead.
-        Assert.Equal(HomePageUrl, BuildHarness().ListBacked());
-        Assert.Equal(BuildHarness().ListBacked(), BuildHarness().ListBacked());
-    }
+    public void ListBacked_VisitBackBranchCycle_LandsOnThePreviousBranchEachTime() =>
+        Assert.Equal(ExpectedBackPages(), BuildHarness().ListBacked());
 
     [Fact]
-    public void ListBacked_VisitBackBranchCycle_AgreesWithDynamicArrayBacked()
-    {
-        var harness = BuildHarness();
+    public void DynamicArrayBacked_VisitBackBranchCycle_LandsOnThePreviousBranchEachTime() =>
+        Assert.Equal(ExpectedBackPages(), BuildHarness().DynamicArrayBacked());
 
-        Assert.Equal(harness.DynamicArrayBacked(), harness.ListBacked());
-    }
-
-    [Fact]
-    public void DynamicArrayBacked_VisitBackBranchCycle_AgreesWithListBacked()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ListBacked(), harness.DynamicArrayBacked());
-    }
+    private static string[] ExpectedBackPages() =>
+        [HomePageUrl, .. Enumerable.Range(0, SmallestOperationCount - 1).Select(i => $"branch{i}.com")];
 
     private static DesignBrowserHistoryBenchmarks BuildHarness()
     {

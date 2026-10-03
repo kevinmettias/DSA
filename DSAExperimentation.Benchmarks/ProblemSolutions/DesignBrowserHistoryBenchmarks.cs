@@ -8,17 +8,22 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // truncate-then-append, the "array Representation primitive vs. the BCL
 // equivalent" comparison DesignCircularQueueBenchmarks already makes for
 // Deque<int>. [GlobalSetup] materializes the urls so string formatting is charged
-// to setup rather than to the replay; the replay itself is the pre-migration
-// Visit/Back/Visit cycle unchanged, so every iteration exercises both the
-// truncation path (discarding forward history) and plain append growth.
+// to setup rather than to the replay. Every iteration visits a url, steps one page
+// back and visits a branch url, so the branch truncates the url it stepped back
+// from and the history grows by one page per iteration: each iteration exercises
+// both the truncation path (discarding forward history) and append growth. Each arm
+// returns every page Back landed on, in call order.
 public class DesignBrowserHistoryBenchmarks
 {
     private const string HomePageUrl = "home.com";
-    private const int BackSteps = 2;
+    private const int BackSteps = 1;
 
     private string[] _visitUrls = [];
 
     private string[] _branchUrls = [];
+
+    private string[] _backPages = [];
+
     [Params(200, 5_000)]
     public int OperationCount { get; set; }
 
@@ -27,6 +32,7 @@ public class DesignBrowserHistoryBenchmarks
     {
         _visitUrls = BuildUrls("url", OperationCount);
         _branchUrls = BuildUrls("branch", OperationCount);
+        _backPages = new string[OperationCount];
     }
 
     private static string[] BuildUrls(string prefix, int count)
@@ -42,22 +48,20 @@ public class DesignBrowserHistoryBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string ListBacked() => Replay(new DesignBrowserHistorySolution.BrowserHistoryByListBacked(HomePageUrl));
+    public string[] ListBacked() => Replay(new DesignBrowserHistorySolution.BrowserHistoryByListBacked(HomePageUrl));
 
     [Benchmark]
-    public string DynamicArrayBacked() => Replay(new DesignBrowserHistorySolution.BrowserHistoryByDynamicArrayBacked(HomePageUrl));
+    public string[] DynamicArrayBacked() => Replay(new DesignBrowserHistorySolution.BrowserHistoryByDynamicArrayBacked(HomePageUrl));
 
-    private string Replay(DesignBrowserHistorySolution.IBrowserHistory history)
+    private string[] Replay(DesignBrowserHistorySolution.IBrowserHistory history)
     {
-        var last = HomePageUrl;
-
         for (var i = 0; i < OperationCount; i++)
         {
             history.Visit(_visitUrls[i]);
-            last = history.Back(BackSteps);
+            _backPages[i] = history.Back(BackSteps);
             history.Visit(_branchUrls[i]);
         }
 
-        return last;
+        return _backPages;
     }
 }

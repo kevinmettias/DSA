@@ -19,25 +19,29 @@ public class DesignATextEditorBenchmarks
     private const int ChunkLength = 5;
     private static readonly string Chunk = new('x', ChunkLength);
 
+    // Every CursorLeft report, in call order - what each arm returns.
+    private string[] _reported = [];
+
     [Params(200, 2_000)]
     public int OperationCount { get; set; }
 
+    [GlobalSetup]
+    public void Setup() => _reported = new string[OperationCount];
+
     [Benchmark(Baseline = true)]
-    public string ListBacked() => Replay(new DesignATextEditorSolution.TextEditorByListBacked());
+    public string[] ListBacked() => Replay(new DesignATextEditorSolution.TextEditorByListBacked());
 
     [Benchmark]
-    public string StackBacked() => Replay(new DesignATextEditorSolution.TextEditorByStackBacked());
+    public string[] StackBacked() => Replay(new DesignATextEditorSolution.TextEditorByStackBacked());
 
-    private string Replay(DesignATextEditorSolution.ITextEditor editor)
+    private string[] Replay(DesignATextEditorSolution.ITextEditor editor)
     {
-        var reported = string.Empty;
-
         for (var i = 0; i < OperationCount; i++)
         {
             editor.AddText(Chunk);
-            reported = editor.CursorLeft(ChunkLength);
+            _reported[i] = editor.CursorLeft(ChunkLength);
         }
 
-        return reported;
+        return _reported;
     }
 }

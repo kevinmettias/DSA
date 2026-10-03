@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // between two parsing strategies for the same formula: MultiplyByStringSplit is the
 // straightforward string.Split baseline (a heap-allocated array plus two substrings
 // per operand); MultiplyBySpanParse instead slices with ReadOnlySpan<char> and
-// int.Parse over spans, allocating nothing per operand.
+// int.Parse over spans, allocating nothing per operand. Each arm returns every pair's
+// product, in pair order.
 public class ComplexNumberMultiplicationBenchmarks
 {
     private const int RandomSeed = 7;
@@ -16,6 +17,8 @@ public class ComplexNumberMultiplicationBenchmarks
     private const int MaxComponentValueExclusive = 101;
 
     private (string A, string B)[] _pairs = [];
+
+    private string[] _products = [];
 
     [Params(200, 5_000)]
     public int Length { get; set; }
@@ -25,6 +28,7 @@ public class ComplexNumberMultiplicationBenchmarks
     {
         var random = new Random(RandomSeed);
         _pairs = new (string, string)[Length];
+        _products = new string[Length];
 
         for (var i = 0; i < Length; i++)
         {
@@ -37,28 +41,24 @@ public class ComplexNumberMultiplicationBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public string StringSplitParse()
+    public string[] StringSplitParse()
     {
-        var result = string.Empty;
-
-        foreach (var (a, b) in _pairs)
+        for (var i = 0; i < _pairs.Length; i++)
         {
-            result = ComplexNumberMultiplicationSolution.MultiplyByStringSplit(a, b);
+            _products[i] = ComplexNumberMultiplicationSolution.MultiplyByStringSplit(_pairs[i].A, _pairs[i].B);
         }
 
-        return result;
+        return _products;
     }
 
     [Benchmark]
-    public string SpanParse()
+    public string[] SpanParse()
     {
-        var result = string.Empty;
-
-        foreach (var (a, b) in _pairs)
+        for (var i = 0; i < _pairs.Length; i++)
         {
-            result = ComplexNumberMultiplicationSolution.MultiplyBySpanParse(a, b);
+            _products[i] = ComplexNumberMultiplicationSolution.MultiplyBySpanParse(_pairs[i].A, _pairs[i].B);
         }
 
-        return result;
+        return _products;
     }
 }

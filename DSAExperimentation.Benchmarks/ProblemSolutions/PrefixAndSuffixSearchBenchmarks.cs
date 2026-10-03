@@ -11,9 +11,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PrefixAndSuffixSearchSolutionTests proves correct; the precomputed arm is handed the
 // index its hoisted overload takes, built once in [GlobalSetup], so the one-time
 // precompute LeetCode's own constructor/query split represents isn't charged to
-// every measured query. Words are random fixed-length strings so a query's own word
-// is very unlikely to share its prefix+suffix combo with another random word,
-// keeping both strategies' answers aligned without affecting either one's cost.
+// every measured query. Words are random fixed-length strings, and each query is one
+// word's own prefix and suffix, so every query has an answer; both strategies report
+// the largest matching index, so they agree even when two words share a query. Each
+// arm returns every query's answer in query order.
 public class PrefixAndSuffixSearchBenchmarks
 {
     private const int RandomSeed = 745; // LC 745
@@ -27,6 +28,9 @@ public class PrefixAndSuffixSearchBenchmarks
 
     private (string Prefix, string Suffix)[] _queries = [];
     private HashMap<string, int> _index = new();
+
+    private int[] _answers = [];
+
     [Params(200, 2_000)]
     public int WordCount { get; set; }
 
@@ -39,33 +43,32 @@ public class PrefixAndSuffixSearchBenchmarks
             .ToArray();
         _queries = _words.Select(word => (word[..QueryAffixLength], word[^QueryAffixLength..])).ToArray();
         _index = PrefixAndSuffixSearchSolution.BuildPrefixSuffixIndex(_words);
+        _answers = new int[_queries.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public int LinearScanPerQuery()
+    public int[] LinearScanPerQuery()
     {
-        var found = -1;
-
-        foreach (var (prefix, suffix) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            found = PrefixAndSuffixSearchSolution.SearchByLinearScan(
+            var (prefix, suffix) = _queries[i];
+            _answers[i] = PrefixAndSuffixSearchSolution.SearchByLinearScan(
                 _words, new SearchPrefix(prefix), new SearchSuffix(suffix));
         }
 
-        return found;
+        return _answers;
     }
 
     [Benchmark]
-    public int PrecomputedHashMapLookup()
+    public int[] PrecomputedHashMapLookup()
     {
-        var found = -1;
-
-        foreach (var (prefix, suffix) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            found = PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(
+            var (prefix, suffix) = _queries[i];
+            _answers[i] = PrefixAndSuffixSearchSolution.SearchByPrecomputedHashMap(
                 _index, new SearchPrefix(prefix), new SearchSuffix(suffix));
         }
 
-        return found;
+        return _answers;
     }
 }
