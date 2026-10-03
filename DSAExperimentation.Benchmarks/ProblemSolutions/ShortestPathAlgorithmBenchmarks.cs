@@ -19,6 +19,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Deliberately at library level rather than under one LeetCode problem: LC 743 and LC 787 both
 // force this same algorithm choice, so the suite is named for the choice, not for either problem.
+// NodeCount stops at the 100 nodes both problems allow.
 public class ShortestPathAlgorithmBenchmarks
 {
     private const int ExtraEdgesPerNode = 3;
@@ -27,7 +28,7 @@ public class ShortestPathAlgorithmBenchmarks
     private List<WeightedAdjacencyNode<int>> _vertices = new();
 
     private WeightedAdjacencyNode<int> _source = null!;
-    [Params(50, 300)]
+    [Params(50, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

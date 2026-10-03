@@ -20,7 +20,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // of what pins it.
 public sealed partial class ShuffleAnArrayBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 5;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameOriginalArray()

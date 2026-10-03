@@ -1,4 +1,3 @@
-using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.Shift2DGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,15 +12,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both strategies take, so [GlobalSetup] only decides how large the workload is and
 // hands the finished input straight over; there is no construction left for a
 // hoisted overload to lift out of the measured methods.
+//
+// The grid stops at LC 1260's 50 x 50 and the shift is its largest k, 100 - fewer cells
+// than even the smaller grid holds, so both strategies do a genuine partial rotation
+// rather than a degenerate no-op or full cycle.
 public class Shift2DGridBenchmarks
 {
     private const int MaxCellValueExclusive = 1_000;
     private const int RandomSeed = 1;
 
+    // LC 1260's largest shift.
+    private const int ShiftCount = 100;
+
     private int[][] _grid = [];
 
-    private int _shiftCount;
-    [Params(20, 200)]
+    [Params(20, 50)]
     public int Size { get; set; }
 
     [GlobalSetup]
@@ -40,14 +45,11 @@ public class Shift2DGridBenchmarks
             }
         }
 
-        // Deliberately not a multiple of the grid's cell count, so both strategies
-        // do a genuine partial rotation rather than a degenerate no-op/full-cycle.
-        _shiftCount = (Size * Size / AlgorithmConstants.HalvingFactor) + 1;
     }
 
     [Benchmark(Baseline = true)]
-    public int[][] IndexArithmeticShift() => Shift2DGridSolution.ShiftGridByIndexArithmetic(_grid, _shiftCount);
+    public int[][] IndexArithmeticShift() => Shift2DGridSolution.ShiftGridByIndexArithmetic(_grid, ShiftCount);
 
     [Benchmark]
-    public int[][] DequeRotationShift() => Shift2DGridSolution.ShiftGridByDequeRotation(_grid, _shiftCount);
+    public int[][] DequeRotationShift() => Shift2DGridSolution.ShiftGridByDequeRotation(_grid, ShiftCount);
 }

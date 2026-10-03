@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // rebuild.
 public sealed partial class ShortestDistanceToTargetStringInACircularArrayBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
 
     // The fixture's target sits diametrically opposite StartIndex, so half the circle is the
     // shortest way round.

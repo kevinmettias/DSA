@@ -9,7 +9,7 @@ public sealed partial class CircularArrayWorkloadsTests
 {
     private const int Length = 32;
     private const int MiddlePositionDivisor = 2; // the target sits at Length / 2, opposite start index 0
-    private const string Filler = "filler-word";
+    private const string Filler = "fillerword";
 
     [Fact]
     public void BuildWords_Length_ReturnsOneWordPerPosition() =>

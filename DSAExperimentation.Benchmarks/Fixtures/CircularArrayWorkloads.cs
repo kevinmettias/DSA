@@ -10,7 +10,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // the BFS arm walks is CircularArrayGraph.Build's job, one tier down.
 internal static class CircularArrayWorkloads
 {
-    private const string Filler = "filler-word";
+    // Lowercase letters only, as LC 2515's words are.
+    private const string Filler = "fillerword";
 
     public static string[] BuildWords(int length)
     {

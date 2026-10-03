@@ -14,7 +14,7 @@ public class SerializeAndDeserializeBSTBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(500, 20_000)]
+    [Params(500, 10_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

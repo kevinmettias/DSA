@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SimplifiedFractionsSolutionTests proves correct. The naive/optimized split is within the
 // one real algorithmic choice the problem has - trial division
 // (O(min(numerator, denominator)) per pair) vs. the Euclidean algorithm
-// (O(log min(numerator, denominator))).
+// (O(log min(numerator, denominator))). DenominatorLimit stops at LC 1447's n = 100.
 //
 // Deliberate change in what is measured (§17.8's precedent): both arms previously
 // only counted coprime pairs to avoid materializing the result. They now return
@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arms equally and the comparison is still about gcd cost.
 public class SimplifiedFractionsBenchmarks
 {
-    [Params(200, 2_000)]
+    [Params(10, 100)]
     public int DenominatorLimit { get; set; }
 
     [Benchmark(Baseline = true)]

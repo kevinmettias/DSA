@@ -5,12 +5,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestUnsortedContinuousSubarraySolution's, the
 // same methods ShortestUnsortedContinuousSubarraySolutionTests proves correct. _values is
-// random, so a genuinely already-sorted array is astronomically unlikely and both
-// strategies do real work.
+// random across LC 581's whole [-10^5, 10^5], so a genuinely already-sorted array is
+// astronomically unlikely and both strategies do real work.
 public class ShortestUnsortedContinuousSubarrayBenchmarks
 {
     private const int RandomSeed = 581; // LC problem number
-    private const int ValueUpperBoundExclusive = 1_000_000;
+    private const int MinValue = -100_000;
+    private const int MaxValue = 100_000;
 
     private int[] _values = [];
 
@@ -21,7 +22,7 @@ public class ShortestUnsortedContinuousSubarrayBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(Length, 0, ValueUpperBoundExclusive, random);
+        _values = SeededDraws.Values(Length, MinValue, MaxValue + 1, random);
     }
 
     [Benchmark(Baseline = true)]

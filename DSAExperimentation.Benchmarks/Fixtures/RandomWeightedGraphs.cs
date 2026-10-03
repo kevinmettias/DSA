@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // "back edge" to some earlier node j < i (guaranteeing reachability from node 0),
 // plus extra random forward/back edges for density - so Dijkstra, Bellman-Ford,
 // and Floyd-Warshall are all comparing real, non-trivial shortest-path work on the
-// exact same graph instance.
+// exact same graph instance. No ordered pair of nodes is joined twice, which both
+// problems built on it promise (LC 743's unique pairs, LC 2642's no repeated edges).
 internal static class RandomWeightedGraphs
 {
     // Exclusive upper bound passed to Random.Next(1, _): edge weights land in [1, 49].
@@ -74,6 +75,18 @@ internal static class RandomWeightedGraphs
         return [.. edges];
     }
 
+    // A pair already joined keeps its first edge. The weight is drawn either way, so a dropped
+    // repeat never shifts a later draw.
     private static void AddEdge(WeightedAdjacencyNode<int> from, WeightedAdjacencyNode<int> to, Random random)
-        => from.Edges.Add((random.Next(1, EdgeWeightUpperBound), to));
+    {
+        var weight = random.Next(1, EdgeWeightUpperBound);
+        var isRepeat = from.Edges.Exists(edge => edge.Target.Id == to.Id);
+
+        if (isRepeat)
+        {
+            return;
+        }
+
+        from.Edges.Add((weight, to));
+    }
 }

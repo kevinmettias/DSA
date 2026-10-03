@@ -63,6 +63,16 @@ public sealed partial class RandomWeightedGraphsTests
         Assert.All(edges, edge => Assert.InRange(edge[WeightFieldIndex], MinEdgeWeight, EdgeWeightUpperBound - 1));
     }
 
+    // LC 743 and LC 2642 both promise that no ordered pair is joined twice; the extra edges are drawn
+    // at random, so a repeat is skipped rather than ruled out by the draw.
+    [Fact]
+    public void BuildEdges_EveryOrderedPair_IsJoinedAtMostOnce()
+    {
+        var edges = RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, Seed);
+
+        Assert.Equal(edges.Length, edges.Select(edge => (edge[0], edge[1])).Distinct().Count());
+    }
+
     [Fact]
     public void BuildEdges_EdgeCount_StaysBetweenTheSpanningBackboneAndTheDensityCap()
     {

@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each call seeds a fresh Random rather than sharing one built in [GlobalSetup]:
 // the strategy advances the generator it is handed, so a shared one would draw a
 // different shuffle every iteration. Seeding it is timed on purpose, and every arm
-// pays the same cost.
+// pays the same cost. Length stops at LC 384's 50 elements.
 public class ShuffleAnArrayBenchmarks
 {
     private int[] _original = [];
 
-    [Params(200, 5_000)]
+    [Params(5, 50)]
     public int Length { get; set; }
 
     [GlobalSetup]

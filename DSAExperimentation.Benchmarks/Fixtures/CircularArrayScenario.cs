@@ -8,6 +8,6 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // built. Owned here so both the builder and the benchmark read one definition.
 internal static class CircularArrayScenario
 {
-    public const string Target = "target-word";
+    public const string Target = "targetword";
     public const int StartIndex = 0;
 }

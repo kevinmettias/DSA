@@ -9,21 +9,23 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every REVERSED word; a word only needs its own encoding when its reversed node is
 // a trie leaf). Words are generated from a small shared-suffix pool so real suffix
 // redundancy exists for all three strategies to exploit, not just coincidental
-// overlap. The input is LeetCode's own string[] shape, so there is nothing to hoist
-// beyond generating it.
+// overlap. A prefix of at most two letters on the pool's longest suffix ("ation")
+// makes LC 820's longest word of 7 letters, and Length stops at its 2,000 words. The
+// input is LeetCode's own string[] shape, so there is nothing to hoist beyond
+// generating it.
 public class ShortEncodingOfWordsBenchmarks
 {
     // LC problem number, used as the RNG seed.
     private const int RandomSeed = 820;
 
-    private const int MaxPrefixLength = 5;
+    private const int MaxPrefixLength = 2;
     private const int AlphabetSize = 26;
     private static readonly string[] SuffixPool =
         ["e", "me", "time", "bell", "ing", "ation", "tion", "er", "ed", "s"];
 
     private string[] _words = [];
 
-    [Params(500, 5_000)]
+    [Params(500, 2_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
@@ -35,7 +37,7 @@ public class ShortEncodingOfWordsBenchmarks
         while (words.Count < Length)
         {
             var suffix = SuffixPool[random.Next(SuffixPool.Length)];
-            var prefixLength = random.Next(0, MaxPrefixLength);
+            var prefixLength = random.Next(0, MaxPrefixLength + 1);
             var prefix = new char[prefixLength];
 
             for (var i = 0; i < prefixLength; i++)

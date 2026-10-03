@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CircularArrayGraph, where each node's two edges stand in for "one step left" /
 // "one step right" around the circle. The target sits diametrically opposite
 // startIndex (CircularArrayWorkloads), so neither approach gets to short-circuit
-// on an immediate neighbor match.
+// on an immediate neighbor match. Length stops at LC 2515's 100 words.
 //
 // The BFS arm is handed a prepared CircularArrayGraph so node construction is
 // charged to [GlobalSetup] rather than to the search (#17.4); the scan arm takes
@@ -21,7 +21,7 @@ public class ShortestDistanceToTargetStringInACircularArrayBenchmarks
     private string[] _words = [];
 
     private CircularArrayGraph _graph;
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

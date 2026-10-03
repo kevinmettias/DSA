@@ -9,10 +9,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // to setup and only the replay is measured. Add and Get alternate every step, the
 // shape the judge's own interleaved calls take - which is also what makes the
 // re-sort baseline O(n^2 log n) over a full run against the two-heap tracker's
-// O(n log n).
+// O(n log n). Each name is "loc" plus LetterNames' name for its step, so it stays
+// inside LC 2102's lowercase-letters-only names of at most 10 letters, and scores
+// are drawn from its [1, 10^5].
 public class SequentiallyOrdinalRankTrackerBenchmarks
 {
-    private const int ScoreExclusiveUpperBound = 1_000_000;
+    private const int MinScore = 1;
+    private const int MaxScore = 100_000;
     private const int RandomSeed = 1;
     private const string NamePrefix = "loc";
 
@@ -29,8 +32,8 @@ public class SequentiallyOrdinalRankTrackerBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _names = Enumerable.Range(0, OperationCount).Select(i => NamePrefix + i).ToArray();
-        _scores = SeededDraws.Values(OperationCount, 0, ScoreExclusiveUpperBound, random);
+        _names = Enumerable.Range(0, OperationCount).Select(i => NamePrefix + LetterNames.Of(i)).ToArray();
+        _scores = SeededDraws.Values(OperationCount, MinScore, MaxScore + 1, random);
         _ranked = new string[OperationCount];
     }
 

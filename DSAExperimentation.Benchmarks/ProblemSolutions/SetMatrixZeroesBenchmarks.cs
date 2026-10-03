@@ -13,7 +13,7 @@ public class SetMatrixZeroesBenchmarks
 
     private int[][] _matrix = [];
 
-    [Params(50, 300)]
+    [Params(50, 200)]
     public int Size { get; set; }
 
     [GlobalSetup]
