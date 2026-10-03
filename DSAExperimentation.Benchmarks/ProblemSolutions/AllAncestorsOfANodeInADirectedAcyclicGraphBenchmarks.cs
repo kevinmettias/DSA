@@ -11,9 +11,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Edges point from a lower id to a higher one with a capped fan-out, so the
 // relation is a guaranteed-acyclic DAG whose transitive closure is dense - the
 // same generation shape CourseScheduleIIBenchmarks and LoudAndRichBenchmarks use.
+// The fan-out is two rather than their three because LC 2192 caps the edge list at
+// 2,000: at its 1,000-node bound a fan-out of two gives 1,997 edges, and three would
+// give 2,994.
 public class AllAncestorsOfANodeInADirectedAcyclicGraphBenchmarks
 {
-    private const int MaxFanOut = 3;
+    private const int MaxFanOut = 2;
 
     private List<AncestorNode> _nodes = new();
 

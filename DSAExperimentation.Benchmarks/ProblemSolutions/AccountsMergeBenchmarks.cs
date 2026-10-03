@@ -24,6 +24,7 @@ public class AccountsMergeBenchmarks
     private const int EmailsPerPerson = 4;
     private const int MinEmailsPerAccount = 2;
     private const int EmailCountRange = 3;
+    private const int AlphabetSize = 26;
 
     private string[][] _accounts = [];
 
@@ -49,8 +50,14 @@ public class AccountsMergeBenchmarks
             .Select(_ => $"user{owner}_{random.Next(EmailsPerPerson)}@mail.com")
             .Distinct();
 
-        return [$"Person{owner}", .. emails];
+        return [OwnerName(owner), .. emails];
     }
+
+    // LC 721 says a name is English letters only, so the owner's index is spelled as two base-26
+    // letters (Personaa, Personab, ...) rather than digits; two letters cover the 200 owners that
+    // LC 721's bound of 1,000 accounts can draw.
+    private static string OwnerName(int owner) =>
+        $"Person{(char)('a' + (owner / AlphabetSize))}{(char)('a' + (owner % AlphabetSize))}";
 
     [Benchmark(Baseline = true)]
     public List<string[]> PairwiseEmailOverlapScan() =>

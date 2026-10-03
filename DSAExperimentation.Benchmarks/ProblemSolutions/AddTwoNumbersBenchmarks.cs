@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.AddTwoNumbers;
 
@@ -18,7 +19,8 @@ public class AddTwoNumbersBenchmarks
     private SinglyLinkedListNode<int> _first = null!;
 
     private SinglyLinkedListNode<int> _second = null!;
-    [Params(200, 5_000)]
+    // LC 2 gives each list 1 to 100 nodes.
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
@@ -29,18 +31,17 @@ public class AddTwoNumbersBenchmarks
         _second = BuildRandomDigitList(random, Length);
     }
 
-    // Digit values only need to be in [0, 10) to exercise both strategies' carry
-    // handling under load - LC 2's "no leading zero" constraint is a correctness
-    // concern already covered by AddTwoNumbersSolutionTests, not a perf-harness one.
+    // LC 2 stores a number least-significant digit first and promises it has no leading
+    // zero, so every digit but the last is drawn from 0-9 and the last - the most
+    // significant - from 1-9.
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
-        var tail = head;
+        var lowerDigits = SeededDraws.Values(length - 1, 0, DecimalBase, random);
+        var head = new SinglyLinkedListNode<int>(random.Next(1, DecimalBase));
 
-        for (var i = 1; i < length; i++)
+        for (var i = lowerDigits.Length - 1; i >= 0; i--)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
-            tail = tail.Next;
+            head = new SinglyLinkedListNode<int>(lowerDigits[i]) { Next = head };
         }
 
         return head;

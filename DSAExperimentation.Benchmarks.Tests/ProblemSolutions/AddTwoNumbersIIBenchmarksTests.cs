@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the sum list itself as object? (the node type is internal, CS0050), so the tests read its digits back out.
 public sealed partial class AddTwoNumbersIIBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
     private const int FewestDigits = 1;
     private const int DigitsGrownByTheCarry = SmallestLength + 1;
 

@@ -15,7 +15,8 @@ public class AllOneDataStructureBenchmarks
 {
     private const int RandomSeed = 432; // LC problem number
     private const string KeyPrefix = "key";
-    private const char KeyNumberPad = '0';
+    private const char FirstLetter = 'a';
+    private const int AlphabetSize = 26;
     private const int OpsCapacityMultiplier = 4;
     private const int IncOpType = 0;
     private const int GetMaxKeyOpType = 2;
@@ -43,19 +44,46 @@ public class AllOneDataStructureBenchmarks
         _reported = new string[_ops.Count(op => op.Type != IncOpType)];
     }
 
-    // The Length distinct keys the script seeds, zero-padded to one width so every generated key
-    // has the same length - a choice from when the replay summed the reported keys' lengths, kept
-    // so the workload stays the one already measured. LC 432 pins GetMaxKey/GetMinKey only to
-    // return SOME key at the extreme count; a bucket holds every key at a tied count, and the
-    // dictionary-scan arm and the bucketed arm legitimately pick different members of it, which is
-    // why ArmAgreement lists this class among the answers that differ by design.
+    // The Length distinct keys the script seeds. LC 432's keys are lowercase letters only, so each
+    // is "key" followed by its index spelled in base-26 letters ('a' standing for zero), padded to
+    // one width so every key has the same length: six characters at 5,000 keys, inside LC 432's
+    // ten. LC 432 pins GetMaxKey/GetMinKey only to return SOME key at the extreme count; a bucket
+    // holds every key at a tied count, and the dictionary-scan arm and the bucketed arm
+    // legitimately pick different members of it, which is why ArmAgreement lists this class among
+    // the answers that differ by design.
     private string[] BuildKeys()
     {
-        var keyNumberWidth = Length.ToString().Length;
+        var letterWidth = LettersToSpell(Length);
 
         return Enumerable.Range(0, Length)
-            .Select(i => KeyPrefix + i.ToString().PadLeft(keyNumberWidth, KeyNumberPad))
+            .Select(i => KeyPrefix + SpellInLetters(i, letterWidth))
             .ToArray();
+    }
+
+    // How many base-26 letters it takes to give each of `count` indices its own spelling.
+    private static int LettersToSpell(int count)
+    {
+        var width = 1;
+        for (var spellable = AlphabetSize; spellable < count; spellable *= AlphabetSize)
+        {
+            width++;
+        }
+
+        return width;
+    }
+
+    // The index written in base 26, most significant letter first, padded with 'a' to `width` letters.
+    private static string SpellInLetters(int index, int width)
+    {
+        var letters = new char[width];
+        var remaining = index;
+        for (var position = width - 1; position >= 0; position--)
+        {
+            letters[position] = (char)(FirstLetter + (remaining % AlphabetSize));
+            remaining /= AlphabetSize;
+        }
+
+        return new string(letters);
     }
 
     // The Inc calls that seed every key at count 1, so the rounds that follow meet keys that

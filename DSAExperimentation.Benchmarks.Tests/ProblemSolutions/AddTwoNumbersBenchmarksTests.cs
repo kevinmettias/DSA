@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // both operands from one fixed seed, so the same Length must rebuild the same two lists.
 public sealed partial class AddTwoNumbersBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
     private const int FewestDigits = 1;
     private const int DigitsGrownByTheCarry = SmallestLength + 1;
 

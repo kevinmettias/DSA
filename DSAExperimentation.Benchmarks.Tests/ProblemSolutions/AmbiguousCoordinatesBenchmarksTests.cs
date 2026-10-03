@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // seed, so the same Length must rebuild the same run.
 public sealed partial class AmbiguousCoordinatesBenchmarksTests
 {
-    // The smaller of Setup's [Params(8, 16)] digit-run lengths.
+    // The smaller of Setup's [Params(8, 10)] digit-run lengths.
     private const int SmallestLength = 8;
 
     [Fact]

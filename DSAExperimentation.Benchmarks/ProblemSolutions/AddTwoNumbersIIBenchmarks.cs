@@ -6,10 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are AddTwoNumbersIISolution's, the same methods
 // AddTwoNumbersIISolutionTests proves correct. Each arm returns the sum list itself
 // as object?, since a public [Benchmark] method cannot name the internal
-// SinglyLinkedListNode<int> (CS0050). Digit values only
-// need to be in [0, 10) to exercise both strategies' carry handling under load -
-// LC 445's "no leading zero" constraint is a correctness concern already covered by
-// AddTwoNumbersIISolutionTests, not a perf-harness one.
+// SinglyLinkedListNode<int> (CS0050). LC 445 stores a number most-significant digit
+// first and promises it has no leading zero, so each list's head is drawn from 1-9
+// and every later digit from 0-9.
 public class AddTwoNumbersIIBenchmarks
 {
     private const int RandomSeed = 445; // LC problem number
@@ -18,7 +17,8 @@ public class AddTwoNumbersIIBenchmarks
     private SinglyLinkedListNode<int> _first = null!;
 
     private SinglyLinkedListNode<int> _second = null!;
-    [Params(200, 5_000)]
+    // LC 445 gives each list 1 to 100 nodes.
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
@@ -31,7 +31,7 @@ public class AddTwoNumbersIIBenchmarks
 
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));
+        var head = new SinglyLinkedListNode<int>(random.Next(1, DecimalBase));
         var tail = head;
 
         for (var i = 1; i < length; i++)

@@ -20,7 +20,9 @@ public class AmbiguousCoordinatesBenchmarks
 
     private string _coordinates = "";
 
-    [Params(8, 16)]
+    // LC 816's string is at most 12 characters including its two parentheses, so the digit run
+    // stops at 10.
+    [Params(8, 10)]
     public int Length { get; set; }
 
     [GlobalSetup]
