@@ -38,9 +38,6 @@ internal static class ArmAgreement
             "LeetCode accepts any valid tree, and each arm answers with the root of the different tree it builds.",
         [typeof(TopKFrequentElementsBenchmarks)] =
             "The workload ties 23 values at the top-10 boundary, outside LC 347's guarantee of a unique answer.",
-        [typeof(DeleteNodeInALinkedListBenchmarks)] = DiscardedResult,
-        [typeof(FlattenBinaryTreeToLinkedListBenchmarks)] = DiscardedResult,
-        [typeof(InvertBinaryTreeBenchmarks)] = DiscardedResult,
     };
 
     // These solutions construct an unseeded Random of their own, so even one arm answers differently on
@@ -61,7 +58,4 @@ internal static class ArmAgreement
 
     private const string UnseededDraw =
         "The problem asks for a random draw, and the solution draws from an unseeded Random it constructs itself.";
-
-    private const string DiscardedResult =
-        "The void arm rewrites a copy it then drops, leaving nothing in the harness to compare.";
 }

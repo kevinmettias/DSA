@@ -14,8 +14,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both strategies mutate the tree they are handed, so each [Benchmark] clones the
 // shared tree first (the ConvertBSTToGreaterTree convention for a mutate-in-place
 // problem) rather than re-flattening an already-flattened tree on every later
-// invocation. Returns void, not BinaryTreeNode<int> - the node type is internal,
-// so a public [Benchmark] method cannot name it as a return type (CS0050).
+// invocation. Each arm returns the flattened clone as object? rather than the
+// internal BinaryTreeNode<int> - the accommodation ReverseLinkedList, SortList and
+// friends make, since a public [Benchmark] method cannot name an internal return
+// type (CS0050). It returned void before, which dropped the only thing the two arms
+// could be compared on.
 [MemoryDiagnoser]
 public class FlattenBinaryTreeToLinkedListBenchmarks
 {
@@ -28,12 +31,22 @@ public class FlattenBinaryTreeToLinkedListBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public void RecursiveSplice() =>
-        FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(Clone(_root));
+    public object? RecursiveSplice()
+    {
+        var root = Clone(_root);
+        FlattenBinaryTreeToLinkedListSolution.FlattenByRecursiveSplice(root);
+
+        return root;
+    }
 
     [Benchmark]
-    public void TopDownPreorderRelink() =>
-        FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(Clone(_root));
+    public object? TopDownPreorderRelink()
+    {
+        var root = Clone(_root);
+        FlattenBinaryTreeToLinkedListSolution.FlattenByTopDownPreorderRelink(root);
+
+        return root;
+    }
 
     private static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
     {

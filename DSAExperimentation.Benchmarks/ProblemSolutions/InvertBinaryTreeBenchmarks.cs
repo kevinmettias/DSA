@@ -14,9 +14,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The strategy mutates the tree it is handed, so each invocation clones the
 // shared tree first (the FlattenBinaryTreeToLinkedList convention for a
 // mutate-in-place problem) rather than re-inverting an already-inverted tree on
-// every later call. Returns void, not BinaryTreeNode<int> - the node type is
-// internal, so a public [Benchmark] method cannot name it as a return type
-// (CS0050).
+// every later call. Returns the inverted clone as object? rather than the internal
+// BinaryTreeNode<int> - the accommodation ReverseLinkedList, SortList and friends
+// make, since a public [Benchmark] method cannot name an internal return type
+// (CS0050). It returned void before, which dropped the arm's only answer.
 [MemoryDiagnoser]
 public class InvertBinaryTreeBenchmarks
 {
@@ -29,7 +30,7 @@ public class InvertBinaryTreeBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark]
-    public void RecursiveSwap() => InvertBinaryTreeSolution.InvertByRecursiveSwap(Clone(_root));
+    public object? RecursiveSwap() => InvertBinaryTreeSolution.InvertByRecursiveSwap(Clone(_root));
 
     private static BinaryTreeNode<int> Clone(BinaryTreeNode<int> node) => new(node.Value)
     {

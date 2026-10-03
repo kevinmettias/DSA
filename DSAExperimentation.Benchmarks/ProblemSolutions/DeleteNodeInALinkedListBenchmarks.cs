@@ -10,7 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // method rather than cached, because DeleteByNextValueCopy mutates the node it is
 // handed and splices its successor out - a cached list would only be valid for the
 // first measured iteration (mirrors RemoveLinkedListElementsBenchmarks' identical
-// rebuild-per-call precedent).
+// rebuild-per-call precedent). The arm returns the rebuilt list's head as object?,
+// since the node type is internal (CS0050), so what the deletion left is its answer
+// rather than something the arm builds and drops.
 [MemoryDiagnoser]
 public class DeleteNodeInALinkedListBenchmarks
 {
@@ -23,12 +25,14 @@ public class DeleteNodeInALinkedListBenchmarks
     public void Setup() => _values = Enumerable.Range(0, Length).ToArray();
 
     [Benchmark]
-    public void NextValueCopy()
+    public object? NextValueCopy()
     {
         var head = BuildList(_values);
         var target = NodeAt(head, Length / 2);
 
         DeleteNodeInALinkedListSolution.DeleteByNextValueCopy(target);
+
+        return head;
     }
 
     private static SinglyLinkedListNode<int> BuildList(int[] values)
