@@ -68,6 +68,39 @@ internal static class LeetCodeWireFormat
         return child;
     }
 
+    // The same shape back out, exactly as LeetCode prints a tree answer: level order,
+    // null for an absent child of a present node, nothing for the children of an
+    // absent one, and the trailing nulls of the last level trimmed. An expected tree
+    // can therefore be stated as LeetCode's published output array and compared
+    // with one Assert.Equal, which a field-by-field walk would need a helper for.
+    public static int?[] FromBinaryTree(BinaryTreeNode<int>? root)
+    {
+        var values = new List<int?>();
+        var pending = new Queue<BinaryTreeNode<int>?>();
+        pending.Enqueue(root);
+
+        while (pending.Count > 0)
+        {
+            var node = pending.Dequeue();
+            values.Add(node?.Value);
+
+            if (node is not null)
+            {
+                pending.Enqueue(node.Left);
+                pending.Enqueue(node.Right);
+            }
+        }
+
+        var length = values.Count;
+
+        while (length > 0 && values[length - 1] is null)
+        {
+            length--;
+        }
+
+        return [.. values.Take(length)];
+    }
+
     public static SinglyLinkedListNode<int>? ToLinkedList(int[] values)
     {
         SinglyLinkedListNode<int>? head = null;

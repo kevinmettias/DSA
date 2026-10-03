@@ -1,75 +1,47 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Harness;
+using DSAExperimentation.LeetCode.KthSmallestElementInABST;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.KthSmallestElementInABST;
 
-// LeetCode 230. Kth Smallest Element in a BST: an in-order walk of a BST visits
-// values in ascending order, so the kth value visited is the answer - this repo's
-// own InOrderTraversal/IInOrderHooks over BinaryTreeNode<int>, the same
-// composition RecoverBinarySearchTreeTests already uses, not a hand-rolled
-// recursive walk. IInOrderHooks.Visit has no early-exit signal, so the hook keeps
-// counting down past the found node and simply stops overwriting the result once
-// State.Result.Value is set.
+// Harness only: both strategies live in KthSmallestElementInABSTSolution and are
+// asserted against LeetCode's published examples, given in LeetCode's own
+// level-order-with-null array shape. BinaryTreeNode<int> is internal, so it stays
+// out of the public TheoryData signature and LeetCodeWireFormat.ToBinaryTree builds
+// the tree from that shape inside each test.
 public sealed partial class KthSmallestElementInABSTTests
 {
-    [Fact]
-    public void KthSmallest_FirstRank_ReturnsMinimumValue()
-    {
-        // [3,1,4,null,2], rank = 1 -> 1
-        var root = new BinaryTreeNode<int>(3) { Left = new(1) { Right = new(2) }, Right = new(4) };
-
-        var actual = KthSmallest(root, 1);
-        Assert.Equal(1, actual);
-    }
-
-    [Fact]
-    public void KthSmallest_ThirdRankInLargerTree_ReturnsInOrderValue()
-    {
-        // [5,3,6,2,4,null,null,1], rank = 3 -> 3
-        var root = new BinaryTreeNode<int>(5)
+    public static TheoryData<RankExample> Examples =>
+        new()
         {
-            Left = new(3) { Left = new(2) { Left = new(1) }, Right = new(4) },
-            Right = new(6),
+            // [3,1,4,null,2], k = 1 -> 1
+            { new RankExample([3, 1, 4, null, 2], Rank: 1, Expected: 1) },
+
+            // [5,3,6,2,4,null,null,1], k = 3 -> 3
+            { new RankExample([5, 3, 6, 2, 4, null, null, 1], Rank: 3, Expected: 3) },
         };
 
-        var actual = KthSmallest(root, 3);
-        Assert.Equal(3, actual);
-    }
-
-    private static int KthSmallest(BinaryTreeNode<int> root, int rank)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthSmallestByRecursiveWalk_LeetCodeExamples_ReturnsKthInOrderValue(RankExample example)
     {
-        State.Remaining.Value = rank;
-        State.Result.Value = null;
+        var actual = KthSmallestElementInABSTSolution.KthSmallestByRecursiveWalk(
+            LeetCodeWireFormat.ToBinaryTree(example.LevelOrder), example.Rank);
 
-        InOrderTraversal.Walk<int, RankHooks>(root);
-
-        // Both Facts above pass a rank no larger than their tree's node count, so the walk
-        // reaches that rank and RankHooks sets Result before returning.
-        return State.Result.Value
-            ?? throw new InvalidOperationException(
-                $"the tree has fewer than {rank} nodes, so the in-order walk never reached rank {rank}");
+        Assert.Equal(example.Expected, actual);
     }
 
-    private readonly struct RankHooks : IInOrderHooks<int>
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void KthSmallestByInOrderTraversal_LeetCodeExamples_ReturnsKthInOrderValue(RankExample example)
     {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
-        {
-            if (State.Result.Value is not null)
-            {
-                return;
-            }
+        var actual = KthSmallestElementInABSTSolution.KthSmallestByInOrderTraversal(
+            LeetCodeWireFormat.ToBinaryTree(example.LevelOrder), example.Rank);
 
-            State.Remaining.Value--;
-
-            if (State.Remaining.Value == 0)
-            {
-                State.Result.Value = node.Value;
-            }
-        }
+        Assert.Equal(example.Expected, actual);
     }
 
-    private static class State
-    {
-        public static readonly AsyncLocal<int> Remaining = new();
-        public static readonly AsyncLocal<int?> Result = new();
-    }
+    // One LeetCode example: the tree in LeetCode's level-order shape, the rank asked for,
+    // and the value at that rank. Rank and Expected are both ints, so each is named rather
+    // than left as an interchangeable position.
+    public readonly record struct RankExample(int?[] LevelOrder, int Rank, int Expected);
 }

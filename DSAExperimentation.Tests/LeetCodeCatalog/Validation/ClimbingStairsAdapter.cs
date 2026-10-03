@@ -1,4 +1,5 @@
 using System.Text.Json;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCatalog.Validation;
 
@@ -8,5 +9,5 @@ internal readonly struct ClimbingStairsAdapter : ILeetCodeTestCaseAdapter<int, i
 
     public int ParseExpectedOutput(string rawExpectedOutput) => JsonSerializer.Deserialize<int>(rawExpectedOutput);
 
-    public bool IsMatch(int actual, int expected) => actual == expected;
+    public bool IsMatch(int actual, int expected) => LeetCodeAnswers.IsExactlyEqual(actual, expected);
 }

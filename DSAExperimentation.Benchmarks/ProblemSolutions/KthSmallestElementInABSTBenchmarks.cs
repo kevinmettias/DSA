@@ -1,6 +1,7 @@
 using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.KthSmallestElementInABST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -21,8 +22,7 @@ public class KthSmallestElementInABSTBenchmarks
     private BinaryTreeNode<int>? _root;
 
     private int _targetRank;
-    private int _recursiveRemaining;
-    private int? _recursiveResult;
+
     [Params(500, 20_000)]
     public int NodeCount { get; set; }
 
@@ -43,66 +43,8 @@ public class KthSmallestElementInABSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RecursiveInOrderWalk()
-    {
-        _recursiveRemaining = _targetRank;
-        _recursiveResult = null;
-        Visit(_root);
-        return _recursiveResult!.Value;
-    }
+    public int RecursiveInOrderWalk() => KthSmallestElementInABSTSolution.KthSmallestByRecursiveWalk(_root, _targetRank);
 
     [Benchmark]
-    public int InOrderTraversalHooks()
-    {
-        State.Remaining.Value = _targetRank;
-        State.Result.Value = null;
-        InOrderTraversal.Walk<int, RankHooks>(_root);
-        return State.Result.Value!.Value;
-    }
-
-    private void Visit(BinaryTreeNode<int>? node)
-    {
-        if (node is null)
-        {
-            return;
-        }
-
-        Visit(node.Left);
-
-        if (_recursiveResult is null)
-        {
-            _recursiveRemaining--;
-
-            if (_recursiveRemaining == 0)
-            {
-                _recursiveResult = node.Value;
-            }
-        }
-
-        Visit(node.Right);
-    }
-
-    private readonly struct RankHooks : IInOrderHooks<int>
-    {
-        public static void Visit(BinaryTreeNode<int> node, int depth)
-        {
-            if (State.Result.Value is not null)
-            {
-                return;
-            }
-
-            State.Remaining.Value--;
-
-            if (State.Remaining.Value == 0)
-            {
-                State.Result.Value = node.Value;
-            }
-        }
-    }
-
-    private static class State
-    {
-        public static readonly AsyncLocal<int> Remaining = new();
-        public static readonly AsyncLocal<int?> Result = new();
-    }
+    public int InOrderTraversalHooks() => KthSmallestElementInABSTSolution.KthSmallestByInOrderTraversal(_root, _targetRank);
 }

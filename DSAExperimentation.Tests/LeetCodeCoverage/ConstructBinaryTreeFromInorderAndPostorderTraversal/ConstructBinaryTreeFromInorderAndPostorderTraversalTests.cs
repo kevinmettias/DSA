@@ -1,68 +1,32 @@
-using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.DataStructures.HashMap;
+using DSAExperimentation.LeetCode.ConstructBinaryTreeFromInorderAndPostorderTraversal;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.ConstructBinaryTreeFromInorderAndPostorderTraversal;
 
+// Harness only: BuildByPostorderIndexMap lives in
+// ConstructBinaryTreeFromInorderAndPostorderTraversalSolution. Each example's expected
+// tree is LeetCode's published output in its own level-order notation, and the built
+// tree is printed back into that notation to compare.
 public sealed partial class ConstructBinaryTreeFromInorderAndPostorderTraversalTests
 {
-    [Fact]
-    public void BuildTree_ClassicExample_ReconstructsBinaryTree()
-    {
-        var root = Build([9, 3, 15, 20, 7], [9, 15, 7, 20, 3]);
-        Assert.Equal([3, 9, 20, 15, 7], PreOrder(root));
-    }
-
-    private static BinaryTreeNode<int>? Build(int[] inorder, int[] postorder)
-    {
-        var walk = new PostorderWalk(postorder, InorderIndex(inorder));
-        var post = postorder.Length - 1;
-
-        return BuildRange(0, inorder.Length - 1, walk, ref post);
-    }
-
-    // The postorder cursor is the recursion's own state, not Build's, so it arrives as a
-    // parameter and moves down the postorder array as each root is consumed.
-    private static BinaryTreeNode<int>? BuildRange(int low, int high, PostorderWalk walk, ref int post)
-    {
-        if (low > high)
+    public static TheoryData<TraversalExample> Examples =>
+        new()
         {
-            return null;
-        }
-
-        var value = walk.Postorder[post--];
-        walk.InorderIndex.TryGetValue(value, out var mid);
-        return new BinaryTreeNode<int>(value)
-        {
-            Right = BuildRange(mid + 1, high, walk, ref post),
-            Left = BuildRange(low, mid - 1, walk, ref post),
+            { new TraversalExample([9, 3, 15, 20, 7], [9, 15, 7, 20, 3], [3, 9, 20, null, null, 15, 7]) },
+            { new TraversalExample([-1], [-1], [-1]) },
         };
-    }
 
-    // Where each value sits in the inorder walk, which is what turns a postorder root into
-    // the boundary between its left and right subtrees.
-    private static HashMap<int, int> InorderIndex(int[] inorder)
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void BuildByPostorderIndexMap_LeetCodeExamples_ReconstructsBinaryTree(TraversalExample example)
     {
-        var positions = new HashMap<int, int>();
-        for (var i = 0; i < inorder.Length; i++)
-        {
-            positions.Set(inorder[i], i);
-        }
+        var root = ConstructBinaryTreeFromInorderAndPostorderTraversalSolution.BuildByPostorderIndexMap(
+            example.Inorder, example.Postorder);
 
-        return positions;
+        Assert.Equal(example.Expected, LeetCodeWireFormat.FromBinaryTree(root));
     }
 
-    private static int[] PreOrder(BinaryTreeNode<int>? root)
-    {
-        if (root is null)
-        {
-            return [];
-        }
-
-        return [root.Value, .. PreOrder(root.Left), .. PreOrder(root.Right)];
-    }
-
-    // The postorder values the recursion consumes and the inorder index that splits each of
-    // them into two subtrees. Both are read at every step, so they travel as the one thing
-    // the recursion is walking.
-    private readonly record struct PostorderWalk(int[] Postorder, HashMap<int, int> InorderIndex);
+    // One LeetCode example: the two traversals given, and the tree they determine in
+    // LeetCode's level-order notation. The two traversals share a type, so each is named.
+    public readonly record struct TraversalExample(int[] Inorder, int[] Postorder, int?[] Expected);
 }

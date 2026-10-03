@@ -49,6 +49,25 @@ public sealed partial class LeetCodeWireFormatTests
     }
 
     [Fact]
+    public void FromBinaryTree_OnANullRoot_ReturnsAnEmptyArray() => Assert.Empty(LeetCodeWireFormat.FromBinaryTree(null));
+
+    // Both directions on the two shapes that distinguish LeetCode's notation: an absent
+    // node's children omitted rather than padded, and the last level's trailing nulls
+    // trimmed rather than printed.
+    public static TheoryData<int?[]> PrintedTrees =>
+        new()
+        {
+            { [3, 9, 20, null, null, 15, 7] },
+            { [1, null, 2, 3] },
+            { [5, 3, 6, 2, 4, null, null, 1] },
+        };
+
+    [Theory]
+    [MemberData(nameof(PrintedTrees))]
+    public void FromBinaryTree_AfterToBinaryTree_ReturnsLeetCodesOwnArray(int?[] levelOrder) =>
+        Assert.Equal(levelOrder, LeetCodeWireFormat.FromBinaryTree(LeetCodeWireFormat.ToBinaryTree(levelOrder)));
+
+    [Fact]
     public void ToLinkedList_ThenBack_RoundTripsTheValuesInOrder() => Assert.Equal([1, 2, 4], LeetCodeWireFormat.FromLinkedList(LeetCodeWireFormat.ToLinkedList([1, 2, 4])));
 
     [Fact]

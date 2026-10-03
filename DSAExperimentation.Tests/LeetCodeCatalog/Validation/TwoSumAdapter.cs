@@ -1,4 +1,5 @@
 using System.Text.Json;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCatalog.Validation;
 
@@ -25,5 +26,5 @@ internal readonly struct TwoSumAdapter : ILeetCodeTestCaseAdapter<(int[] Nums, i
     // scraped expected-output line.
     public int[] ParseExpectedOutput(string rawExpectedOutput) => JsonSerializer.Deserialize<int[]>(rawExpectedOutput)!;
 
-    public bool IsMatch(int[] actual, int[] expected) => actual.Order().SequenceEqual(expected.Order());
+    public bool IsMatch(int[] actual, int[] expected) => LeetCodeAnswers.IsSetEqual(actual, expected);
 }

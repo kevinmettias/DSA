@@ -1,4 +1,5 @@
 using System.Text.Json;
+using DSAExperimentation.LeetCode.Harness;
 
 namespace DSAExperimentation.Tests.LeetCodeCatalog.Validation;
 
@@ -16,6 +17,5 @@ internal readonly struct MergeIntervalsAdapter : ILeetCodeTestCaseAdapter<int[][
 
     public int[][] ParseExpectedOutput(string rawExpectedOutput) => JsonSerializer.Deserialize<int[][]>(rawExpectedOutput)!;
 
-    public bool IsMatch(int[][] actual, int[][] expected)
-        => actual.Length == expected.Length && actual.Zip(expected).All(pair => pair.First.SequenceEqual(pair.Second));
+    public bool IsMatch(int[][] actual, int[][] expected) => LeetCodeAnswers.IsSequenceOfSequencesEqual(actual, expected);
 }
