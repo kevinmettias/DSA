@@ -1,124 +1,83 @@
-using DSAExperimentation.DataStructures.Heap;
-
 namespace DSAExperimentation.LeetCode.FindTheScoreDifferenceInAGame;
 
-// nums has even length. Two players, starting with player 1, alternate turns:
-// each turn, mark the smallest still-unmarked value (ties broken by the smallest
-// index), plus its two array neighbors if they exist and are still unmarked, and
-// add the CHOSEN value (not the neighbors') to the current player's score. Every
-// element ends up marked - the smallest-value rule is a fixed simulation, not a
-// choice either player makes - so the answer is simply player1Score minus
-// player2Score.
+// LeetCode 3847. Find the Score Difference in a Game: two players, the first one
+// active. For each game i in order, the active and inactive players swap roles if
+// nums[i] is odd, swap again if i is a 6th game (indices 5, 11, 17, ...), and then
+// the active player gains nums[i]. Return the first player's total minus the
+// second's.
+//
+// Both strategies are one O(n) pass; they differ in what the pass keeps. The
+// simulation keeps who is active and both totals, as the statement tells it. The
+// parity pass keeps only whether an odd number of swaps has happened, and adds
+// nums[i] into one running difference with the sign that parity gives it.
 internal static class FindTheScoreDifferenceInAGameSolution
 {
+    // Every 6th game swaps the players: games 5, 11, 17, ...
+    private const int SwapPeriod = 6;
+
     private const int PlayerCount = 2;
 
-    // The textbook answer: a fresh O(n) scan for the smallest unmarked value on
-    // every turn, O(n^2) overall - the arm the min-heap strategy below has to
-    // beat.
-    public static int ScoreDifferenceByLinearScan(int[] nums)
+    // The statement's own rules, step for step: the active player's index (0 for the
+    // first player, 1 for the second), moved by each swap, and a running total per player.
+    public static int ScoreDifferenceByRoleSimulation(int[] nums)
     {
-        var marked = new bool[nums.Length];
-        var scores = new int[PlayerCount];
-        var turn = 0;
-        var remaining = nums.Length;
+        var totals = new int[PlayerCount];
+        var activePlayer = 0;
 
-        while (remaining > 0)
+        for (var game = 0; game < nums.Length; game++)
         {
-            var index = SmallestUnmarkedIndex(nums, marked);
-            remaining -= MarkAndCountNewlyMarked(marked, index);
-            scores[turn] += nums[index];
-            turn = 1 - turn;
+            activePlayer = ActivePlayerAfterSwaps(activePlayer, nums[game], game);
+            totals[activePlayer] += nums[game];
         }
 
-        return scores[0] - scores[1];
+        return totals[0] - totals[1];
     }
 
-    private static int SmallestUnmarkedIndex(int[] nums, bool[] marked)
+    // Each swap hands play to the other player: once for odd points, and once more on a
+    // 6th game.
+    private static int ActivePlayerAfterSwaps(int activePlayer, int points, int game)
     {
-        var best = -1;
+        var player = activePlayer;
 
-        for (var i = 0; i < nums.Length; i++)
+        if (IsOdd(points))
         {
-            if (!marked[i] && IsNewSmallest(nums, i, best))
-            {
-                best = i;
-            }
+            player = OtherPlayer(player);
         }
 
-        return best;
+        if (IsSwapGame(game))
+        {
+            player = OtherPlayer(player);
+        }
+
+        return player;
     }
 
-    // The first candidate found starts the search; after that a value has to be strictly
-    // smaller to take the title.
-    private static bool IsNewSmallest(int[] nums, int index, int bestIndex) =>
-        bestIndex < 0 || nums[index] < nums[bestIndex];
+    private static bool IsOdd(int points) => (points & 1) == 1;
 
-    // Composed: push every (value, index) pair into this repo's Heap once -
-    // MinHeapOrder needs nothing beyond ValueTuple's own built-in lexicographic
-    // IComparable, which already orders by Value first and Index second, exactly
-    // this game's own tie-break rule - then repeatedly pop the true global
-    // minimum. A popped entry whose index is already marked is stale (its value
-    // was the smallest UNMARKED at push time, not necessarily at pop time) and
-    // simply discarded; every entry is pushed once and popped at most once, so
-    // this is the standard lazy-deletion heap pattern PowerGridMaintenanceSolution
-    // also uses, O(n log n) overall against the scan's O(n^2). The heap is built
-    // fresh inside this method rather than hoisted to a prepared-input overload:
-    // TryPop drains it, so a shared instance could not survive a second benchmark
-    // iteration the way a read-only prepared input can.
-    public static int ScoreDifferenceByMinHeap(int[] nums)
+    private static int OtherPlayer(int player) => PlayerCount - 1 - player;
+
+    // The first player is active exactly when an even number of swaps has happened, so
+    // game i adds nums[i] to the difference when that count is even and subtracts it
+    // when odd: one parity bit and one signed sum, with no branch on who is active.
+    public static int ScoreDifferenceBySwapParity(int[] nums)
     {
-        var heap = new Heap<(int Value, int Index), MinHeapOrder<(int Value, int Index)>>();
+        var swapParity = 0;
+        var difference = 0;
 
-        for (var i = 0; i < nums.Length; i++)
+        for (var game = 0; game < nums.Length; game++)
         {
-            heap.Push((nums[i], i));
-        }
+            swapParity ^= nums[game] & 1;
 
-        var marked = new bool[nums.Length];
-        var scores = new int[PlayerCount];
-        var turn = 0;
-
-        while (heap.TryPop(out var entry))
-        {
-            if (marked[entry.Index])
+            if (IsSwapGame(game))
             {
-                continue;
+                swapParity ^= 1;
             }
 
-            turn = PlayTurn(marked, scores, turn, entry);
+            difference += (1 - (2 * swapParity)) * nums[game];
         }
 
-        return scores[0] - scores[1];
+        return difference;
     }
 
-    // One turn of the fixed simulation, taken from a live (value, index) pair: mark
-    // that slot and its two array neighbors, score the value for the player to move,
-    // and hand play to the other player.
-    private static int PlayTurn(bool[] marked, int[] scores, int turn, (int Value, int Index) entry)
-    {
-        MarkAndCountNewlyMarked(marked, entry.Index);
-        scores[turn] += entry.Value;
-
-        return 1 - turn;
-    }
-
-    private static int MarkAndCountNewlyMarked(bool[] marked, int index) =>
-        Mark(marked, index) + Mark(marked, index - 1) + Mark(marked, index + 1);
-
-    private static int Mark(bool[] marked, int index)
-    {
-        if (HasNoUnmarkedSlot(marked, index))
-        {
-            return 0;
-        }
-
-        marked[index] = true;
-        return 1;
-    }
-
-    // An index that does not name a slot in the array, or names one already marked, has
-    // nothing left for this turn to mark.
-    private static bool HasNoUnmarkedSlot(bool[] marked, int index) =>
-        index < 0 || index >= marked.Length || marked[index];
+    private static bool IsSwapGame(int game) => (game + 1) % SwapPeriod == 0;
 }
