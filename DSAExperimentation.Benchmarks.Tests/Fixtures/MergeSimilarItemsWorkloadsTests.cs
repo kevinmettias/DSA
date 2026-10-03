@@ -14,10 +14,8 @@ public sealed partial class MergeSimilarItemsWorkloadsTests
     private const int FirstOddValue = 1;
     private const int ItemFieldCount = 2; // Value, Weight
 
-    // LC 2363's value range, and the largest length whose two disjoint value sets still fit in it.
-    private const int MinValue = 1;
+    // LC 2363's largest value; its smallest is 1, the first odd value.
     private const int MaxValue = 1_000;
-    private const int LargestLengthInRange = 500;
 
     [Fact]
     public void BuildDisjointValues_Length_ReturnsOneItemPerRequestedPositionInEachArray()
@@ -55,10 +53,12 @@ public sealed partial class MergeSimilarItemsWorkloadsTests
     [Fact]
     public void BuildDisjointValues_LargestLengthInRange_FillsOneThroughOneThousandExactly()
     {
-        var (items1, items2) = MergeSimilarItemsWorkloads.BuildDisjointValues(LargestLengthInRange);
+        // Two disjoint sets of this length hold MaxValue values between them.
+        var largestLengthInRange = MaxValue / Stride;
+        var (items1, items2) = MergeSimilarItemsWorkloads.BuildDisjointValues(largestLengthInRange);
         var values = items1.Concat(items2).Select(item => item[0]).Order();
 
-        Assert.Equal(Enumerable.Range(MinValue, MaxValue - MinValue + 1), values);
+        Assert.Equal(Enumerable.Range(FirstOddValue, MaxValue), values);
     }
 
     [Fact]

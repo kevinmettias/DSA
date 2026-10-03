@@ -10,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MinimizeManhattanDistancesBenchmarks
 {
     private const int Seed = 3102;
-    private const int MinCoordinate = 1;
     private const int MaxCoordinateExclusive = 2_000_000;
 
     private int[][] _points = [];
@@ -29,7 +28,7 @@ public class MinimizeManhattanDistancesBenchmarks
     {
         var random = new Random(Seed);
         _points = Enumerable.Range(0, PointCount)
-            .Select(_ => new[] { random.Next(MinCoordinate, MaxCoordinateExclusive), random.Next(MinCoordinate, MaxCoordinateExclusive) })
+            .Select(_ => new[] { random.Next(1, MaxCoordinateExclusive), random.Next(1, MaxCoordinateExclusive) })
             .ToArray();
 
         var (sortedByU, sortedByV) = MinimizeManhattanDistancesSolution.BuildSortedTransforms(_points);

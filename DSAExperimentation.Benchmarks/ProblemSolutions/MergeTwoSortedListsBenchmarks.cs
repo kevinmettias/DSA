@@ -14,7 +14,7 @@ public class MergeTwoSortedListsBenchmarks
 {
     private const int RandomSeed = 21; // LC problem number
     private const int MinNodeValue = -100;
-    private const int MaxNodeValueExclusive = 101;
+    private const int MaxNodeValue = 100;
 
     private int[] _first = [];
     private int[] _second = [];
@@ -27,8 +27,8 @@ public class MergeTwoSortedListsBenchmarks
     {
         var random = new Random(RandomSeed);
 
-        _first = SeededDraws.Values(Length, MinNodeValue, MaxNodeValueExclusive, random).Order().ToArray();
-        _second = SeededDraws.Values(Length, MinNodeValue, MaxNodeValueExclusive, random).Order().ToArray();
+        _first = SeededDraws.Values(Length, MinNodeValue, MaxNodeValue + 1, random).Order().ToArray();
+        _second = SeededDraws.Values(Length, MinNodeValue, MaxNodeValue + 1, random).Order().ToArray();
     }
 
     [Benchmark(Baseline = true)]
