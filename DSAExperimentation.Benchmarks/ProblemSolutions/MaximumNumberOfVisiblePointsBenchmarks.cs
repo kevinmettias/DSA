@@ -8,13 +8,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Algorithms.Sorting.MergeSort once and then a single O(n) two-pointer sweep over the
 // angle-doubled array. _points is generated so none land exactly on Location (that
 // case short-circuits to O(1) and would understate both strategies' real windowed-
-// comparison cost); [GlobalSetup] owns that construction.
+// comparison cost); [GlobalSetup] owns that construction. Every coordinate stays in
+// LC 1610's [0, 100], with Location at the centre so points surround it on all sides.
 public class MaximumNumberOfVisiblePointsBenchmarks
 {
     private const int Angle = 30;
-    private const int CoordinateBound = 1_000;
+    private const int MaxCoordinate = 100;
+    private const int Center = MaxCoordinate / 2;
     private const int RandomSeed = 1;
-    private static readonly int[] Location = [0, 0];
+    private static readonly int[] Location = [Center, Center];
 
     private int[][] _points = [];
 
@@ -33,9 +35,9 @@ public class MaximumNumberOfVisiblePointsBenchmarks
 
             do
             {
-                x = random.Next(-CoordinateBound, CoordinateBound);
-                y = random.Next(-CoordinateBound, CoordinateBound);
-            } while (x == 0 && y == 0);
+                x = random.Next(0, MaxCoordinate + 1);
+                y = random.Next(0, MaxCoordinate + 1);
+            } while (x == Center && y == Center);
 
             _points[i] = [x, y];
         }

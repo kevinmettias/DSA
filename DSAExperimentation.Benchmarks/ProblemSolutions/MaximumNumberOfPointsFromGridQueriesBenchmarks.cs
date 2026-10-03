@@ -16,11 +16,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DeleteGreatestValueInEachRowBenchmarks already demonstrate for their own problems.
 //
 // [GlobalSetup] builds the grid and the query list, which is exactly the argument
-// shape both strategies take, so no §17.4 hoisted overload applies here.
+// shape both strategies take, so no §17.4 hoisted overload applies here. Cells and
+// queries are drawn from LC 2503's [1, 10^6].
 public class MaximumNumberOfPointsFromGridQueriesBenchmarks
 {
     private const int RandomSeed = 2503;
     private const int Side = 60;
+    private const int MinValue = 1;
     private const int ValueBound = 1_000_000;
 
     private int[][] _grid = [];
@@ -35,10 +37,10 @@ public class MaximumNumberOfPointsFromGridQueriesBenchmarks
         var random = new Random(RandomSeed);
 
         _grid = Enumerable.Range(0, Side)
-            .Select(_ => SeededDraws.Values(Side, 0, ValueBound, random))
+            .Select(_ => SeededDraws.Values(Side, MinValue, ValueBound + 1, random))
             .ToArray();
 
-        _queries = SeededDraws.Values(QueriesCount, 0, ValueBound, random);
+        _queries = SeededDraws.Values(QueriesCount, MinValue, ValueBound + 1, random);
     }
 
     [Benchmark(Baseline = true)]

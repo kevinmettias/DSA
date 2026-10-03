@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DepthFirstSearch.Traverse walking each water component's reachable cells, the
 // same contrast MaxAreaOfIslandBenchmarks draws for LC 695. Each strategy clones
 // the shared grid fixture internally before sinking cells, so repeated benchmark
-// invocations each start from the true input.
+// invocations each start from the true input. Side stops at LC 2658's 10 x 10 cap.
 public class MaximumNumberOfFishInAGridBenchmarks
 {
     private const int RandomSeed = 2658; // LC problem number
@@ -17,7 +17,7 @@ public class MaximumNumberOfFishInAGridBenchmarks
 
     private int[][] _grid = [];
 
-    [Params(30, 120)]
+    [Params(3, 10)]
     public int Side { get; set; }
 
     [GlobalSetup]

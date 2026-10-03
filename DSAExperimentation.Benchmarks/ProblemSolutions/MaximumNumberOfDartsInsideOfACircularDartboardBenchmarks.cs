@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfDartsInsideOfACircularDartboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods MaximumNumberOfDartsInsideOfACircularDartboardSolutionTests proves correct.
 // They run identical O(n^3) candidate-center geometry and differ only in the buffer the
 // candidates are grown in - a plain BCL List<(double, double)> against this repo's own
-// DynamicArray<(double, double)>. The dart cloud is generated once in [GlobalSetup].
+// DynamicArray<(double, double)>. The dart cloud (MaximumNumberOfDartsWorkloads, every
+// dart unique as LC 1453 promises) is generated once in [GlobalSetup].
 public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
 {
     private const int Radius = 50;
@@ -19,13 +21,7 @@ public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
     public int DartCount { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _darts = Enumerable.Range(0, DartCount)
-            .Select(_ => new[] { random.Next(-CoordinateRange, CoordinateRange), random.Next(-CoordinateRange, CoordinateRange) })
-            .ToArray();
-    }
+    public void Setup() => _darts = MaximumNumberOfDartsWorkloads.BuildDarts(DartCount, CoordinateRange, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public int PairwiseCandidateCentersWithList() =>

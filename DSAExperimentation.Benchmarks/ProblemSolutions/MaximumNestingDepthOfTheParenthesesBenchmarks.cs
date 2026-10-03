@@ -10,6 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a sibling parentheses-depth problem. Neither needs anything hoisted beyond the
 // string LeetCode itself hands in, so [GlobalSetup] only sizes and seeds the
 // balanced expression, reusing the generator LC 856 and LC 1021 already measure with.
+// Each pair is two characters, so PairCount stops at 50: a 100-character string, LC
+// 1614's cap.
 public class MaximumNestingDepthOfTheParenthesesBenchmarks
 {
     private const int MaxDepthCap = 20;
@@ -18,7 +20,7 @@ public class MaximumNestingDepthOfTheParenthesesBenchmarks
 
     // LeetCode problem number
 
-    [Params(1_000, 20_000)]
+    [Params(5, 50)]
     public int PairCount { get; set; }
 
     [GlobalSetup]
