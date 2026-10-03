@@ -780,13 +780,6 @@
     },
     {
       "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Folding/Dags/Trees/TreeFold.cs",
-      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Fold. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
       "path": "DSAExperimentation/Algorithms/Folding/IterativeFoldEvaluation.cs",
       "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Evaluate. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
       "owner": "@kmettias",
@@ -796,13 +789,6 @@
       "check": "check-test-coverage",
       "path": "DSAExperimentation/Algorithms/Folding/RecursiveFoldEvaluation.cs",
       "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Evaluate. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/Metrics/TreeMetrics.cs",
-      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Diameter, Height, HeightAndSize, Size. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -831,13 +817,6 @@
       "check": "check-test-coverage",
       "path": "DSAExperimentation/Algorithms/Reducing/Reduce.cs",
       "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Graph, Tree. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-test-coverage",
-      "path": "DSAExperimentation/Algorithms/ShortestPaths/Grids/GridShortestPath.cs",
-      "reason": "OPEN WORK, not an exemption. The repo's standing requirement is that every data structure and algorithm carries its own direct unit tests, with the LeetCode tier as a layer on top rather than a substitute (ARCHITECTURE.md 17.9). These members are currently exercised only transitively - through a family-named test file, or through a consumer - so no test names them: Distance. The fix is to write a \u003cName\u003eTests.cs beside this file with methods named for these members, which does clear the finding (verified on 15 files in this pass); this waiver records the debt so the gate keeps reporting genuinely new regressions in the meantime.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },

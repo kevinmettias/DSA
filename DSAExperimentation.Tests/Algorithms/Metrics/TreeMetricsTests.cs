@@ -4,7 +4,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Metrics;
 
-public sealed partial class MetricsTests
+public sealed partial class TreeMetricsTests
 {
     // A -> [B, C, D], B -> [E, F], D -> [G]
     // Heights: E=F=G=C=1, B=D=2, A=3.

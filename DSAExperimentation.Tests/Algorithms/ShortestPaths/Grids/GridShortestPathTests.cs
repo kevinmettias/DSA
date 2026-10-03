@@ -3,7 +3,7 @@ using DSAExperimentation.DataStructures.Graph.Grids;
 
 namespace DSAExperimentation.Tests.Algorithms.ShortestPaths.Grids;
 
-public sealed partial class GridTests
+public sealed partial class GridShortestPathTests
 {
     // . . .
     // . # .

@@ -13,7 +13,7 @@ internal static class WeightedGrids
     // . . .
     // . # .
     // . . .
-    // Same wall-detour shape as GridTests' GridWithCenterWall, rebuilt as
+    // Same wall-detour shape as GridShortestPathTests' GridWithCenterWall, rebuilt as
     // unit-weight IEdgeTopology instead of IGraphTopology: every edge crosses open
     // cells only, so the straight Manhattan distance from (1,0) to (1,2) (2)
     // undercounts the true shortest path (4) - proving AStar's heuristic only ever

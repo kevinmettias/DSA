@@ -6,7 +6,7 @@ using DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Fixtures;
 namespace DSAExperimentation.Tests.Algorithms.Metrics;
 
 // Proves BinaryTreeTopology/BinaryTreeChildren correctly close TreeMetrics' generics
-// - same precedent as MetricsTests.cs's own TestTopology-based cases, against
+// - same precedent as TreeMetricsTests.cs's own TestTopology-based cases, against
 // BinaryTreeTrees.Sample():
 //       4
 //      / \

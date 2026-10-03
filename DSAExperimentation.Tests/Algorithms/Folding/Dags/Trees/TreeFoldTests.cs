@@ -5,9 +5,9 @@ using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.Tests.Algorithms.Folding.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
-namespace DSAExperimentation.Tests.Algorithms.Folding;
+namespace DSAExperimentation.Tests.Algorithms.Folding.Dags.Trees;
 
-public sealed partial class FoldTests
+public sealed partial class TreeFoldTests
 {
     [Fact]
     public void Fold_CountsNodes()
