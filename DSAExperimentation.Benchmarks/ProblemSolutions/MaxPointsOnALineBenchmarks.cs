@@ -5,7 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaxPointsOnALineSolution's, the same methods
 // MaxPointsOnALineSolutionTests proves correct. _points is drawn uniformly at random
 // over a wide coordinate range, so the answer stays small (2-3) and neither
-// strategy gets to short-circuit on an early large find.
+// strategy gets to short-circuit on an early large find. Length stops at LC 149's
+// 300-point cap; at both sizes the seeded draw repeats no point, as LC requires.
 public class MaxPointsOnALineBenchmarks
 {
     private const int RandomSeed = 149; // LC problem number
@@ -13,7 +14,7 @@ public class MaxPointsOnALineBenchmarks
 
     private int[][] _points = [];
 
-    [Params(600, 1500)]
+    [Params(30, 300)]
     public int Length { get; set; }
 
     [GlobalSetup]

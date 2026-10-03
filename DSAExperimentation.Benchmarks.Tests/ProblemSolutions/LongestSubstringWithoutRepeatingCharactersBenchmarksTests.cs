@@ -6,15 +6,16 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // its two arms are competing strategies for the same question - the O(n^2) scan whose inner loop
 // breaks on the first repeat against the sliding window over a last-seen map - so a harness whose
 // arms disagree is timing two different problems. Both arms return the substring length, a scalar
-// compared directly. Setup builds the text from all-distinct characters, so no window ever breaks
-// early and the answer is the whole length: that length is the decisive value both arms must
-// reach, and the same Length must rebuild the text.
+// compared directly. Setup cycles through the 95 printable ASCII characters (' ' through '~'), so
+// every window of 95 is repeat-free and every longer one repeats its first character: the answer
+// is 95, the decisive value both arms must reach, and the same Length must rebuild the text.
 public sealed partial class LongestSubstringWithoutRepeatingCharactersBenchmarksTests
 {
     private const int SmallestLength = 200;
 
-    // Setup's characters are all distinct, so the whole text is a repeat-free substring.
-    private const int ExpectedLongestRepeatFreeLength = SmallestLength;
+    // ' ' through '~' is 95 characters; the smallest text is longer than one full cycle, so the
+    // longest repeat-free substring is exactly one cycle.
+    private const int ExpectedLongestRepeatFreeLength = '~' - ' ' + 1;
 
     [Fact]
     public void Setup_SmallestLength_RebuildsTheSameWorkload()

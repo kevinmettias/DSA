@@ -5,9 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeAlternatingSumUsingSwapsSolution's, the same
 // methods MaximizeAlternatingSumUsingSwapsSolutionTests proves correct. Setup wires up
-// roughly ElementCount/2 random swap pairs over ElementCount indices, so the
-// workload has a handful of nontrivial connected components rather than
-// ElementCount singletons.
+// roughly ElementCount/2 random swap pairs over ElementCount indices
+// (MaximizeAlternatingSumUsingSwapsWorkloads), so the workload has a handful of
+// nontrivial connected components rather than ElementCount singletons.
 public class MaximizeAlternatingSumUsingSwapsBenchmarks
 {
     private const int RandomSeed = 3695; // LC problem number
@@ -24,10 +24,7 @@ public class MaximizeAlternatingSumUsingSwapsBenchmarks
     {
         var random = new Random(RandomSeed);
         _nums = SeededDraws.Values(ElementCount, 1, ValueUpperBound, random);
-        _swaps = Enumerable.Range(0, ElementCount / 2)
-            .Select(_ => new[] { random.Next(ElementCount), random.Next(ElementCount) })
-            .Where(swap => swap[0] != swap[1])
-            .ToArray();
+        _swaps = MaximizeAlternatingSumUsingSwapsWorkloads.BuildSwaps(ElementCount, random);
     }
 
     [Benchmark(Baseline = true)]

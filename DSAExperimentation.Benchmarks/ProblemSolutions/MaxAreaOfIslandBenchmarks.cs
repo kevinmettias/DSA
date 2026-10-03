@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (the textbook approach) vs. this repo's own DepthFirstSearch.Traverse walking
 // each island's reachable land cells. Each strategy clones the shared grid
 // fixture internally before mutating it, so repeated benchmark invocations each
-// start from the true input.
+// start from the true input. Side stops at LC 695's 50 x 50 cap.
 public class MaxAreaOfIslandBenchmarks
 {
     private const int RandomSeed = 3;
@@ -15,7 +15,7 @@ public class MaxAreaOfIslandBenchmarks
 
     private int[][] _grid = [];
 
-    [Params(30, 120)]
+    [Params(30, 50)]
     public int Side { get; set; }
 
     [GlobalSetup]

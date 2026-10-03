@@ -5,14 +5,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MatchsticksToSquareSolution's. _matchsticks is four
 // interleaved copies of 1..SticksPerSide, so a perfect split always exists (each
 // side re-assembles the copy it came from) but the shuffled ordering still forces
-// a real search rather than an immediate match.
+// a real search rather than an immediate match. SticksPerSide stops at 3: four
+// copies make 12 sticks, the most this construction fits inside LC 473's 15-stick cap.
 public class MatchsticksToSquareBenchmarks
 {
     private const int SquareSideCount = 4;
 
     private int[] _matchsticks = [];
 
-    [Params(6, 8)]
+    [Params(2, 3)]
     public int SticksPerSide { get; set; }
 
     [GlobalSetup]

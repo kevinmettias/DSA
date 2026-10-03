@@ -4,14 +4,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxChunksToMakeSortedIISolution's, the same methods
 // MaxChunksToMakeSortedIISolutionTests proves correct. Values are a random permutation so
-// no candidate boundary is confirmed or ruled out on the very next element.
+// no candidate boundary is confirmed or ruled out on the very next element. Length
+// stops at LC 768's 2,000-element cap.
 public class MaxChunksToMakeSortedIIBenchmarks
 {
     private const int RandomSeed = 768; private int[] _values = [];
 
     // LC problem number
 
-    [Params(200, 5_000)]
+    [Params(200, 2_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

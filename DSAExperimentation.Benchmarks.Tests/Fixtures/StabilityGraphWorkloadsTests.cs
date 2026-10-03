@@ -61,6 +61,17 @@ public sealed partial class StabilityGraphWorkloadsTests
         Assert.All(optionalEdges, edge => Assert.NotEqual(edge[0], edge[1]));
     }
 
+    // LC 3600 promises no duplicate edges; at this size and seed the optional draws do land on pairs
+    // already joined, so this is what the generator's drop of a repeated pair is for.
+    [Fact]
+    public void Build_EveryPair_IsJoinedByOneEdge()
+    {
+        var (edges, _) = StabilityGraphWorkloads.Build(NodeCount, Seed);
+        var pairs = edges.Select(edge => (Math.Min(edge[0], edge[1]), Math.Max(edge[0], edge[1])));
+
+        Assert.Equal(edges.Length, pairs.Distinct().Count());
+    }
+
     [Fact]
     public void Build_NodeCount_ReturnsTheMustEdgesPlusAtMostTwoOptionalEdgesPerNode()
     {

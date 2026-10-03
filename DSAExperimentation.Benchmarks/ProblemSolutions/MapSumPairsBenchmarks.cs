@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // insert-then-sum replay each [Benchmark] arm measures. Each query prefix is a
 // real leading substring of one of the inserted keys, guaranteeing at least one
 // match instead of letting either strategy bail out early on "no keys share this
-// prefix."
+// prefix." Every key is inserted and then summed by its own prefix, two calls per
+// key, so KeyCount stops at 25 to stay inside LC 677's 50-call cap.
 public class MapSumPairsBenchmarks
 {
     private const int KeyLength = 8;
@@ -24,7 +25,7 @@ public class MapSumPairsBenchmarks
 
     // What every Sum returned, in query order - what each arm returns.
     private int[] _sums = [];
-    [Params(5_000, 20_000)]
+    [Params(5, 25)]
     public int KeyCount { get; set; }
 
     [GlobalSetup]

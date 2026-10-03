@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // per-node allocation overhead stops dominating at small n. The matrix LeetCode's
 // own signature takes (int[][]) is exactly what [GlobalSetup] builds, so there is
 // no separate hoisted overload to add here - construction is already charged to
-// setup, not to either measured method.
+// setup, not to either measured method. Rows stops at LC 363's 100-row cap.
 public class MaxSumOfRectangleNoLargerThanKBenchmarks
 {
     private const int K = 50;
@@ -24,7 +24,7 @@ public class MaxSumOfRectangleNoLargerThanKBenchmarks
 
     private int[][] _matrix = [];
 
-    [Params(200, 3_000)]
+    [Params(10, 100)]
     public int Rows { get; set; }
 
     [GlobalSetup]

@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // from a stream beyond the shuffle seed, so the same SticksPerSide rebuilds the same matchsticks.
 public sealed partial class MatchsticksToSquareBenchmarksTests
 {
-    private const int SmallestSticksPerSide = 6;
+    private const int SmallestSticksPerSide = 2;
 
     // Four copies of the same run, one per side, so the side sums are equal and the square exists.
     private const bool ExpectedSquareVerdict = true;

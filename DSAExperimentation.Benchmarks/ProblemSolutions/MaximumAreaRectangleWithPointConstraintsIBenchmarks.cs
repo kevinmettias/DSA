@@ -16,9 +16,9 @@ public class MaximumAreaRectangleWithPointConstraintsIBenchmarks
     private int[][] _points = [];
 
     private Set<(int X, int Y)> _corners = new();
-    // Part I's own constraints keep n tiny - both arms are polynomial-in-n but the
-    // quadruple scan is O(n^5), so sizes stay small enough for it to finish.
-    [Params(4, 8)]
+    // Part I's own constraints keep n tiny - at most 10 points - so GridSide stops at 3:
+    // 9 points, the largest square grid inside that cap.
+    [Params(2, 3)]
     public int GridSide { get; set; }
 
     [GlobalSetup]

@@ -19,6 +19,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same defect AccountsMergeBenchmarks' duplicate-email-with-different-owner
 // generator had. A permutation gives every person a distinct value, so the
 // least quiet person is unique and both arms answer the same question.
+// PersonCount stops at LC 851's 500-person cap.
 public class LoudAndRichBenchmarks
 {
     private const int RandomSeed = 5;
@@ -27,7 +28,7 @@ public class LoudAndRichBenchmarks
     private int[] _quiet = [];
 
     private List<PersonNode> _people = new();
-    [Params(50, 1_000)]
+    [Params(50, 500)]
     public int PersonCount { get; set; }
 
     [GlobalSetup]
