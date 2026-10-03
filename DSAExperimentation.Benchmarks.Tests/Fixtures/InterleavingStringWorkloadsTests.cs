@@ -34,7 +34,14 @@ public sealed partial class InterleavingStringWorkloadsTests
 
         for (var i = 0; i < target.Length; i++)
         {
-            Assert.Equal(target[i], fromFirst[i] ? first[nextFirst++] : second[nextSecond++]);
+            if (fromFirst[i])
+            {
+                Assert.Equal(first[nextFirst++], target[i]);
+            }
+            else
+            {
+                Assert.Equal(second[nextSecond++], target[i]);
+            }
         }
 
         Assert.Equal((first.Length, second.Length), (nextFirst, nextSecond));

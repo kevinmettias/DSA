@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MaximumDepthOfBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -24,7 +23,7 @@ public class MaximumDepthOfBinaryTreeBenchmarks
     public void Setup()
     {
         var levelOrder = SeededDraws.Values(NodeCount, MinValue, MaxValue + 1, new Random(RandomSeed));
-        _root = LeetCodeWireFormat.ToBinaryTree(Array.ConvertAll(levelOrder, value => (int?)value));
+        _root = BinaryTrees.Complete(levelOrder);
     }
 
     [Benchmark(Baseline = true)]

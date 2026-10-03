@@ -27,6 +27,19 @@ public sealed partial class BinaryTreesTests
     public void Balanced_NodeCount_KeepsTheDepthAtTheLogarithmicBound() =>
         Assert.Equal(FloorLogarithm(NodeCount), Height(BinaryTrees.Balanced(NodeCount)));
 
+    // A gapless level order is exactly what LeetCode's wire format would carry for a complete tree,
+    // so reading the built tree back through it must return the same values in the same order.
+    [Fact]
+    public void Complete_GaplessLevelOrder_BuildsTheTreeLeetCodesFormatDescribes()
+    {
+        int[] levelOrder = [.. Enumerable.Range(-NodeCount, NodeCount).Reverse()];
+
+        var root = BinaryTrees.Complete(levelOrder);
+
+        Assert.Equal(levelOrder.Select(value => (int?)value), LeetCodeWireFormat.FromBinaryTree(root));
+        Assert.Equal(FloorLogarithm(levelOrder.Length), Height(root));
+    }
+
     [Fact]
     public void Skewed_NodeCount_ReturnsARightOnlyChainWithThatManyNodes()
     {

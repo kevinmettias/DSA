@@ -32,20 +32,28 @@ internal static class WordSearchWorkloads
     // reaches the asked length.
     private static (int Row, int Column)[] SelfAvoidingWalk(int side, int length, Random random)
     {
-        while (true)
+        var path = WalkUntilStuck(side, length, random);
+
+        while (path.Count < length)
         {
-            var path = new List<(int Row, int Column)> { (random.Next(side), random.Next(side)) };
-
-            while (path.Count < length && NextSteps(path, side) is { Count: > 0 } open)
-            {
-                path.Add(open[random.Next(open.Count)]);
-            }
-
-            if (path.Count == length)
-            {
-                return [.. path];
-            }
+            path = WalkUntilStuck(side, length, random);
         }
+
+        return [.. path];
+    }
+
+    // One walk from a seeded start, extended one seeded open neighbour at a time until it reaches
+    // the asked length or has no open neighbour left.
+    private static List<(int Row, int Column)> WalkUntilStuck(int side, int length, Random random)
+    {
+        var path = new List<(int Row, int Column)> { (random.Next(side), random.Next(side)) };
+
+        while (path.Count < length && NextSteps(path, side) is { Count: > 0 } open)
+        {
+            path.Add(open[random.Next(open.Count)]);
+        }
+
+        return path;
     }
 
     private static List<(int Row, int Column)> NextSteps(List<(int Row, int Column)> path, int side) =>

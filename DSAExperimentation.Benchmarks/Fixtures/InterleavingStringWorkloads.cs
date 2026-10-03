@@ -19,11 +19,14 @@ internal static class InterleavingStringWorkloads
         var firstPositions = SeededSequences.ShuffledZeroTo(SourceCount * sourceLength, random).Take(sourceLength).ToHashSet();
         var fromFirst = Enumerable.Range(0, SourceCount * sourceLength).Select(firstPositions.Contains).ToArray();
         var target = new char[fromFirst.Length];
-        var (nextFirst, nextSecond) = (0, 0);
+        var firstLetters = new Queue<char>(first);
+        var secondLetters = new Queue<char>(second);
 
         for (var i = 0; i < target.Length; i++)
         {
-            target[i] = fromFirst[i] ? first[nextFirst++] : second[nextSecond++];
+            var takeFirst = fromFirst[i];
+            var letters = takeFirst ? firstLetters : secondLetters;
+            target[i] = letters.Dequeue();
         }
 
         return (first, second, new string(target), fromFirst);

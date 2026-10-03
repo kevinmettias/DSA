@@ -62,7 +62,6 @@ public sealed partial class UniquePathsIIIBenchmarksTests
     private static int IndependentPathCount(int[][] grid)
     {
         var cells = grid.SelectMany(row => row).ToArray();
-        var everyCell = (1 << cells.Length) - 1;
         var obstacles = Enumerable.Range(0, cells.Length)
             .Where(cell => cells[cell] == UniquePathsIIIWorkloads.Obstacle)
             .Aggregate(0, (used, cell) => used | (1 << cell));
@@ -74,6 +73,8 @@ public sealed partial class UniquePathsIIIBenchmarksTests
         {
             if (cells[cell] == UniquePathsIIIWorkloads.End)
             {
+                var everyCell = (1 << cells.Length) - 1;
+
                 return used == everyCell ? 1 : 0;
             }
 

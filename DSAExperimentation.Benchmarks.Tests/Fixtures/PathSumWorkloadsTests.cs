@@ -32,7 +32,7 @@ public sealed partial class PathSumWorkloadsTests
     {
         var (root, targetSum) = Build();
 
-        Assert.All(LeetCodeWireFormat.FromBinaryTree(root), value => Assert.InRange(value!.Value, MinValue, MaxValue));
+        Assert.All(LeetCodeWireFormat.FromBinaryTree(root).OfType<int>(), value => Assert.InRange(value, MinValue, MaxValue));
         Assert.InRange(targetSum, MinValue, MaxValue);
     }
 

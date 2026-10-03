@@ -15,22 +15,20 @@ internal static class UniquePathsIIIWorkloads
     // The start and the end take the first two seeded cells; obstacles take the ones after them.
     private const int EndpointCount = 2;
 
+    // Cells are numbered row by row, so cell c is row c / columns, column c % columns.
     public static int[][] BuildGrid(int rows, int columns, int obstacleCount, Random random)
     {
-        var grid = Enumerable.Range(0, rows).Select(_ => new int[columns]).ToArray();
         var cells = SeededSequences.ShuffledZeroTo(rows * columns, random);
+        var markers = new int[rows * columns];
 
-        Place(grid, cells[0], Start);
-        Place(grid, cells[1], End);
+        markers[cells[0]] = Start;
+        markers[cells[1]] = End;
 
         foreach (var cell in cells[EndpointCount..(EndpointCount + obstacleCount)])
         {
-            Place(grid, cell, Obstacle);
+            markers[cell] = Obstacle;
         }
 
-        return grid;
+        return [.. markers.Chunk(columns)];
     }
-
-    private static void Place(int[][] grid, int cell, int marker) =>
-        grid[cell / grid[0].Length][cell % grid[0].Length] = marker;
 }

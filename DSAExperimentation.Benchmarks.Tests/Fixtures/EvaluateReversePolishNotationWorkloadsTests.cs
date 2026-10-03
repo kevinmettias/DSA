@@ -1,5 +1,6 @@
 using System.Globalization;
 using DSAExperimentation.Benchmarks.Fixtures;
+using static DSAExperimentation.Benchmarks.Fixtures.EvaluateReversePolishNotationWorkloads;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -46,7 +47,7 @@ public sealed partial class EvaluateReversePolishNotationWorkloadsTests
     private static (string[] Tokens, int Value) Build() =>
         EvaluateReversePolishNotationWorkloads.Build(OperandCount, new Random(Seed));
 
-    private static bool IsOperand(string token) => token is not ("+" or "-" or "*" or "/");
+    private static bool IsOperand(string token) => token is not (Plus or Minus or Times or Divide);
 
     // Evaluates the tokens in 64-bit arithmetic, asserting along the way that every operator finds two
     // values, that no division is by zero, that every result fits a 32-bit int, and that exactly one
@@ -66,7 +67,7 @@ public sealed partial class EvaluateReversePolishNotationWorkloadsTests
             Assert.True(values.Count >= OperandsPerOperator);
             var right = values.Pop();
             var left = values.Pop();
-            Assert.False(token == "/" && right == 0);
+            Assert.False(token == Divide && right == 0);
             var value = Apply(token, left, right);
             Assert.InRange(value, int.MinValue, int.MaxValue);
             values.Push(value);
@@ -77,9 +78,9 @@ public sealed partial class EvaluateReversePolishNotationWorkloadsTests
 
     private static long Apply(string token, long left, long right) => token switch
     {
-        "+" => left + right,
-        "-" => left - right,
-        "*" => left * right,
+        Plus => left + right,
+        Minus => left - right,
+        Times => left * right,
         _ => left / right,
     };
 }

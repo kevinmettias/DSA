@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Globalization;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
@@ -16,7 +15,13 @@ internal static class EvaluateReversePolishNotationWorkloads
     private const int IntermediateBound = 1_000_000;
     private const int OperandsPerOperator = 2;
 
-    private static readonly string[] Operators = ["+", "-", "*", "/"];
+    // LC 150's four operator tokens.
+    public const string Plus = "+";
+    public const string Minus = "-";
+    public const string Times = "*";
+    public const string Divide = "/";
+
+    private static readonly string[] Operators = [Plus, Minus, Times, Divide];
 
     public static (string[] Tokens, int Value) Build(int operandCount, Random random)
     {
@@ -26,11 +31,10 @@ internal static class EvaluateReversePolishNotationWorkloads
 
         while (operandsLeft > 0 || values.Count > 1)
         {
-            if (operandsLeft > 0 && (values.Count < OperandsPerOperator || random.Next(OperandsPerOperator) == 0))
+            if (ShouldPushOperand(operandsLeft, values.Count, random))
             {
-                var operand = random.Next(-MaxOperand, MaxOperand + 1);
-                tokens.Add(operand.ToString(CultureInfo.InvariantCulture));
-                values.Push(operand);
+                var operand = PushOperand(values, random);
+                tokens.Add(operand);
                 operandsLeft--;
                 continue;
             }
@@ -45,9 +49,30 @@ internal static class EvaluateReversePolishNotationWorkloads
         return ([.. tokens], (int)values.Pop());
     }
 
+    // An operand is due while operands remain and the stack cannot feed an operator yet, and
+    // otherwise on a seeded coin flip; the coin is only drawn when both are possible.
+    private static bool ShouldPushOperand(int operandsLeft, int stackDepth, Random random)
+    {
+        if (operandsLeft == 0)
+        {
+            return false;
+        }
+
+        return stackDepth < OperandsPerOperator || random.Next(OperandsPerOperator) == 0;
+    }
+
+    private static string PushOperand(Stack<long> values, Random random)
+    {
+        var operand = random.Next(-MaxOperand, MaxOperand + 1);
+        values.Push(operand);
+
+        return operand.ToString(CultureInfo.InvariantCulture);
+    }
+
     // Tries the operators from a seeded starting point and takes the first whose result stays in
     // bounds. One of + and - always does: for operands of the same sign their difference, and for
-    // opposite signs their sum, is no larger in magnitude than the larger operand.
+    // opposite signs their sum, is no larger in magnitude than the larger operand - so the loop
+    // returns before its end, and the fallback below is the + or - it would have found.
     private static (string Token, long Value) PickOperator(long left, long right, Random random)
     {
         var start = random.Next(Operators.Length);
@@ -62,15 +87,30 @@ internal static class EvaluateReversePolishNotationWorkloads
             }
         }
 
-        throw new UnreachableException("One of + and - always stays within the bound.");
+        if (Math.Abs(left + right) <= Math.Abs(left - right))
+        {
+            return (Plus, left + right);
+        }
+
+        return (Minus, left - right);
     }
 
-    // LC 150's division truncates toward zero, as long division does; null marks a division by zero.
     private static long? Apply(string token, long left, long right) => token switch
     {
-        "+" => left + right,
-        "-" => left - right,
-        "*" => left * right,
-        _ => right == 0 ? null : left / right,
+        Plus => left + right,
+        Minus => left - right,
+        Times => left * right,
+        _ => TruncatedQuotient(left, right),
     };
+
+    // LC 150's division truncates toward zero, as long division does; null marks a division by zero.
+    private static long? TruncatedQuotient(long left, long right)
+    {
+        if (right == 0)
+        {
+            return null;
+        }
+
+        return left / right;
+    }
 }

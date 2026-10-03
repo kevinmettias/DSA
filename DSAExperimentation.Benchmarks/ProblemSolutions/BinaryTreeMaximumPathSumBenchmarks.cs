@@ -1,7 +1,6 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BinaryTreeMaximumPathSum;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -30,7 +29,7 @@ public class BinaryTreeMaximumPathSumBenchmarks
     public void Setup()
     {
         var levelOrder = SeededDraws.Values(NodeCount, MinValue, MaxValue + 1, new Random(RandomSeed));
-        _root = LeetCodeWireFormat.ToBinaryTree(Array.ConvertAll(levelOrder, value => (int?)value));
+        _root = BinaryTrees.Complete(levelOrder);
     }
 
     [Benchmark(Baseline = true)]

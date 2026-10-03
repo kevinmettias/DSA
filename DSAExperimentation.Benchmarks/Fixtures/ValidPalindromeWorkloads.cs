@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 125: a string of printable ASCII that is a
@@ -14,8 +16,6 @@ internal static class ValidPalindromeWorkloads
     // One character in this many is punctuation or a space.
     private const int NoiseInterval = 4;
 
-    private const int Halves = 2;
-
     // A letter is cased up when a draw over this many choices comes up zero.
     private const int CaseChoices = 2;
 
@@ -24,12 +24,19 @@ internal static class ValidPalindromeWorkloads
         var noiseCount = length / NoiseInterval;
         var core = MirroredCore(length - noiseCount, random);
         var noisePositions = SeededSequences.ShuffledZeroTo(length, random).Take(noiseCount).ToHashSet();
+        var noiseIndices = SeededDraws.Values(noiseCount, 0, Noise.Length, random);
+        var noiseLetters = Array.ConvertAll(noiseIndices, index => Noise[index]);
+        var noise = new Queue<char>(noiseLetters);
+        var coreLetters = new Queue<char>(core);
         var text = new char[length];
-        var nextCore = 0;
 
+        // Nothing else draws between the noise characters, so drawing them all here, in position
+        // order, gives the same characters as drawing each one where it lands.
         for (var i = 0; i < length; i++)
         {
-            text[i] = noisePositions.Contains(i) ? Noise[random.Next(Noise.Length)] : core[nextCore++];
+            var isNoise = noisePositions.Contains(i);
+            var letters = isNoise ? noise : coreLetters;
+            text[i] = letters.Dequeue();
         }
 
         return new string(text);
@@ -41,7 +48,7 @@ internal static class ValidPalindromeWorkloads
     {
         var core = new char[length];
 
-        for (var i = 0; i < (length + 1) / Halves; i++)
+        for (var i = 0; i < (length + 1) / AlgorithmConstants.HalvingFactor; i++)
         {
             core[i] = Alphanumerics[random.Next(Alphanumerics.Length)];
             core[length - 1 - i] = core[i];
@@ -49,7 +56,10 @@ internal static class ValidPalindromeWorkloads
 
         for (var i = 0; i < length; i++)
         {
-            core[i] = random.Next(CaseChoices) == 0 ? char.ToUpperInvariant(core[i]) : core[i];
+            if (random.Next(CaseChoices) == 0)
+            {
+                core[i] = char.ToUpperInvariant(core[i]);
+            }
         }
 
         return core;

@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.SameTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -32,9 +31,8 @@ public class SameTreeBenchmarks
     public void Setup()
     {
         var levelOrder = SeededDraws.Values(NodeCount, MinValue, MaxValue + 1, new Random(RandomSeed));
-        var wireFormat = Array.ConvertAll(levelOrder, value => (int?)value);
-        _firstTree = LeetCodeWireFormat.ToBinaryTree(wireFormat);
-        _secondTree = LeetCodeWireFormat.ToBinaryTree(wireFormat);
+        _firstTree = BinaryTrees.Complete(levelOrder);
+        _secondTree = BinaryTrees.Complete(levelOrder);
     }
 
     [Benchmark(Baseline = true)]

@@ -4516,6 +4516,62 @@
       "reason": "The fixture exists to be mutable: it counts by value so a test can see that the level-grouped walk hands back the hook value it finished with, which a hook appending to a list it holds cannot show. Its setter is private and only OnLevel changes it, so the hazard this rule names cannot be written outside the type.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
+    },
+    {
+      "check": "check-test-coverage",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/*Benchmarks.cs",
+      "anchor": "public static IEnumerable<int>",
+      "reason": "Each `public static IEnumerable<int> <Arm>Sizes` is the size list one benchmark arm names through `[ArgumentsSource(nameof(...))]` (ARCHITECTURE 17.7). BenchmarkDotNet reads it to enumerate the arm's cases, and BenchmarkArmsTests runs every one through BenchmarkClass.ArgumentsOf to find the size the arms share, so each is executed under test - but by reflection from the attribute, and no test method could name it without restating the class's sizes. The anchor confines this to those size-source declarations, the only members in these files with that signature: 142 findings across the 71 classes with per-arm sizes on 2026-10-03. The local nomos exemption for BenchmarkDotNet entry points lists ArgumentsSource, but that attribute sits on the arm, not on the provider it names.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/Fixtures/InterleavingStringWorkloads.cs",
+      "anchor": "`Alphabet = ",
+      "reason": "`Alphabet = \"ab\"` is declared in 3 independent units (Fixtures/InterleavingStringWorkloads.cs, Fixtures/LongestCommonSuffixQueriesWorkloads.cs, Fixtures/OverlappingSubstringGridWorkloads.cs), each a workload generator for one problem that narrows its own alphabet to two letters for its own reason - here, so the two sources often agree with the target's next letter and a wrong choice survives a while before failing. None is a shared type and the repository has no home to hoist it to - creating one would give 3 unrelated generators a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
+      "anchor": "`MinValue = ",
+      "reason": "`MinValue = -10_000` is declared in 2 independent units (ProblemSolutions/BalancedBinaryTreeBenchmarks.cs, ProblemSolutions/SameTreeBenchmarks.cs), and in each it is that problem's own node-value constraint: LC 110 and LC 100 each state -10^4 <= Node.val <= 10^4 on their own. Two problem statements sharing a bound is not one fact - hoisting it would tie two unrelated workloads to one constant that a change to either problem's range would have to split again. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
+      "anchor": "`MaxValue = ",
+      "reason": "`MaxValue = 10_000` is declared in 2 independent units (ProblemSolutions/BalancedBinaryTreeBenchmarks.cs, ProblemSolutions/SameTreeBenchmarks.cs), and in each it is that problem's own node-value constraint: LC 110 and LC 100 each state -10^4 <= Node.val <= 10^4 on their own. Two problem statements sharing a bound is not one fact - hoisting it would tie two unrelated workloads to one constant that a change to either problem's range would have to split again. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BinaryTreeLevelOrderTraversalBenchmarks.cs",
+      "anchor": "`MinValue = ",
+      "reason": "`MinValue = -1_000` is declared in 3 independent units (ProblemSolutions/BinaryTreeLevelOrderTraversalBenchmarks.cs, ProblemSolutions/BinaryTreeLevelOrderTraversalIIBenchmarks.cs, ProblemSolutions/BinaryTreeMaximumPathSumBenchmarks.cs), and in each it is that problem's own node-value constraint: LC 102, LC 107 and LC 124 each state -1000 <= Node.val <= 1000 on their own. Problem statements sharing a bound is not one fact - hoisting it would tie unrelated workloads to one constant that a change to any one problem's range would have to split again. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BinaryTreeLevelOrderTraversalBenchmarks.cs",
+      "anchor": "`MaxValue = ",
+      "reason": "`MaxValue = 1_000` is declared in 3 independent units (ProblemSolutions/BinaryTreeLevelOrderTraversalBenchmarks.cs, ProblemSolutions/BinaryTreeLevelOrderTraversalIIBenchmarks.cs, ProblemSolutions/BinaryTreeMaximumPathSumBenchmarks.cs), and in each it is that problem's own node-value constraint: LC 102, LC 107 and LC 124 each state -1000 <= Node.val <= 1000 on their own. Problem statements sharing a bound is not one fact - hoisting it would tie unrelated workloads to one constant that a change to any one problem's range would have to split again. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaximumDepthOfBinaryTreeBenchmarks.cs",
+      "anchor": "`MaxValue = ",
+      "reason": "`MaxValue = 100` is declared in 2 independent units (ProblemSolutions/MaximumDepthOfBinaryTreeBenchmarks.cs, MaximumPrimeDifference/MaximumPrimeDifferenceSolution.cs) for unrelated quantities that happen to share a value: LC 104's node-value bound (-100 <= Node.val <= 100) and LC 3115's element bound (nums[i] <= 100). None is a shared type and the repository has no home to hoist it to - creating one would couple a benchmark harness to a solution's private bound. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
     }
   ]
 }

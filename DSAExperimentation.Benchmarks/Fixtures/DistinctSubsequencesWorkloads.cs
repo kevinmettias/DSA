@@ -19,16 +19,7 @@ internal static class DistinctSubsequencesWorkloads
 
     public static (string Source, string Target) Build(int sourceLength, Random random)
     {
-        var target = new char[sourceLength - DoubledLetterCount];
-
-        for (var i = 0; i < target.Length; i++)
-        {
-            // A draw from every letter but the last stands in for the last when it repeats the
-            // previous letter, which keeps each draw uniform over the letters that do not.
-            var letter = Letters[random.Next(Letters.Length - 1)];
-            target[i] = i > 0 && letter == target[i - 1] ? Letters[^1] : letter;
-        }
-
+        var target = DrawTarget(sourceLength - DoubledLetterCount, random);
         var doubled = SeededSequences.ShuffledZeroTo(target.Length, random).Take(DoubledLetterCount).ToHashSet();
         var source = new List<char>(sourceLength);
 
@@ -43,5 +34,26 @@ internal static class DistinctSubsequencesWorkloads
         }
 
         return (new string([.. source]), new string(target));
+    }
+
+    // A draw from every letter but the last stands in for the last when it repeats the previous
+    // letter, which keeps each draw uniform over the letters that do not.
+    private static char[] DrawTarget(int length, Random random)
+    {
+        var target = new char[length];
+
+        for (var i = 0; i < target.Length; i++)
+        {
+            var letter = Letters[random.Next(Letters.Length - 1)];
+
+            if (i > 0 && letter == target[i - 1])
+            {
+                letter = Letters[^1];
+            }
+
+            target[i] = letter;
+        }
+
+        return target;
     }
 }

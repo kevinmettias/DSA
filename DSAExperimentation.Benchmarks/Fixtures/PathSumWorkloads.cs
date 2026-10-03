@@ -1,5 +1,5 @@
+using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
@@ -16,31 +16,28 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // the target is at most 399 in magnitude, so a planted leaf needs at most 999.
 internal static class PathSumWorkloads
 {
-    // Even values are twice a draw from [-MaxHalfValue, MaxHalfValue].
+    // Even values are twice a draw from [-MaxHalfValue, MaxHalfValue]: the draw is the value halved.
     private const int MaxHalfValue = 25;
 
     // The target is one more than twice a draw from [-MaxHalfTarget, MaxHalfTarget).
     private const int MaxHalfTarget = 200;
 
-    // In a gapless level order, node i's children sit at ChildrenPerNode * i + 1 and the slot after it.
-    private const int ChildrenPerNode = 2;
-
     public static (BinaryTreeNode<int> Root, int TargetSum) Build(int nodeCount, int matchingPaths, Random random)
     {
-        var levelOrder = Array.ConvertAll(
-            SeededDraws.Values(nodeCount, -MaxHalfValue, MaxHalfValue + 1, random),
-            half => ChildrenPerNode * half);
-        var targetSum = (ChildrenPerNode * random.Next(-MaxHalfTarget, MaxHalfTarget)) + 1;
+        var halves = SeededDraws.Values(nodeCount, -MaxHalfValue, MaxHalfValue + 1, random);
+        var levelOrder = Array.ConvertAll(halves, half => AlgorithmConstants.HalvingFactor * half);
+        var targetSum = (AlgorithmConstants.HalvingFactor * random.Next(-MaxHalfTarget, MaxHalfTarget)) + 1;
 
         foreach (var leaf in LeavesLeftToRight(nodeCount).TakeLast(matchingPaths))
         {
             levelOrder[leaf] = targetSum - AncestorSum(levelOrder, leaf);
         }
 
-        return (LeetCodeWireFormat.ToBinaryTree(Array.ConvertAll(levelOrder, value => (int?)value))!, targetSum);
+        return (BinaryTrees.Complete(levelOrder), targetSum);
     }
 
     // A left-first depth-first walk over the level-order indices, keeping the ones with no children.
+    // In a gapless level order, node i's children sit at BranchingFactor * i + 1 and the slot after it.
     private static List<int> LeavesLeftToRight(int nodeCount)
     {
         var leaves = new List<int>();
@@ -50,7 +47,7 @@ internal static class PathSumWorkloads
         while (pending.Count > 0)
         {
             var node = pending.Pop();
-            var left = (ChildrenPerNode * node) + 1;
+            var left = (AlgorithmConstants.BranchingFactor * node) + 1;
 
             if (left >= nodeCount)
             {
@@ -58,15 +55,21 @@ internal static class PathSumWorkloads
                 continue;
             }
 
-            if (left + 1 < nodeCount)
-            {
-                pending.Push(left + 1);
-            }
-
-            pending.Push(left);
+            PushChildren(pending, left, nodeCount);
         }
 
         return leaves;
+    }
+
+    // The right child goes on first, so the left one - and its whole subtree - is walked before it.
+    private static void PushChildren(Stack<int> pending, int left, int nodeCount)
+    {
+        if (left + 1 < nodeCount)
+        {
+            pending.Push(left + 1);
+        }
+
+        pending.Push(left);
     }
 
     private static int AncestorSum(int[] levelOrder, int node)
@@ -76,7 +79,7 @@ internal static class PathSumWorkloads
 
         while (current > 0)
         {
-            current = (current - 1) / ChildrenPerNode;
+            current = (current - 1) / AlgorithmConstants.BranchingFactor;
             sum += levelOrder[current];
         }
 

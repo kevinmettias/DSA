@@ -7,14 +7,15 @@ internal static class BinaryTrees
 {
     // A complete, perfectly balanced tree - the easy case for both fold strategies,
     // recursion depth stays O(log n).
-    public static BinaryTreeNode<int> Balanced(int nodeCount)
-    {
-        var nodes = new BinaryTreeNode<int>[nodeCount];
+    public static BinaryTreeNode<int> Balanced(int nodeCount) => Complete([.. Enumerable.Range(0, nodeCount)]);
 
-        for (var i = 0; i < nodeCount; i++)
-        {
-            nodes[i] = new BinaryTreeNode<int>(i);
-        }
+    // The complete tree LeetCode's gapless level-order array describes: node i's children
+    // are the values at 2i + 1 and 2i + 2. A level order holds at least the root, so the
+    // tree is never empty.
+    public static BinaryTreeNode<int> Complete(int[] levelOrder)
+    {
+        var nodeCount = levelOrder.Length;
+        var nodes = Array.ConvertAll(levelOrder, value => new BinaryTreeNode<int>(value));
 
         for (var i = 0; i < nodeCount; i++)
         {
