@@ -5,9 +5,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are RemoveSubFoldersFromTheFilesystemSolution's, the same
 // methods RemoveSubFoldersFromTheFilesystemSolutionTests proves correct - the O(n^2) pairwise
 // "does any other folder prefix me" check against the O(n log n) MergeSort-then-scan.
-// [GlobalSetup] builds the random folder tree; each arm takes .Count so the two
-// return the same comparable measurement while still producing LeetCode's real answer
-// (the pre-migration arms only ever counted, and never built, the surviving list).
+// [GlobalSetup] builds the random folder tree; each arm returns LeetCode's real
+// answer, the surviving folders (the pre-migration arms only ever counted, and never
+// built, the surviving list).
 public class RemoveSubFoldersFromTheFilesystemBenchmarks
 {
     private const int RandomSeed = 1233; // LC problem number
@@ -27,9 +27,12 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
     {
         var random = new Random(RandomSeed);
         var breadth = Math.Max(MinBreadth, Length / BreadthDivisor);
+        var drawn = new HashSet<string>();
         _folders = new string[Length];
 
-        for (var i = 0; i < Length; i++)
+        // LC 1233 guarantees every folder in the list is unique, so a path drawn a second
+        // time is drawn again rather than kept.
+        while (drawn.Count < Length)
         {
             var depth = random.Next(1, MaxDepthExclusive);
             var segments = new string[depth];
@@ -39,17 +42,22 @@ public class RemoveSubFoldersFromTheFilesystemBenchmarks
                 segments[d] = FolderNamePrefix + random.Next(0, breadth);
             }
 
-            _folders[i] = PathSeparator + string.Join('/', segments);
+            var folder = PathSeparator + string.Join('/', segments);
+
+            if (drawn.Add(folder))
+            {
+                _folders[drawn.Count - 1] = folder;
+            }
         }
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForcePairwisePrefixCheck() =>
+    public List<string> BruteForcePairwisePrefixCheck() =>
         RemoveSubFoldersFromTheFilesystemSolution
-            .RemoveSubfoldersByPairwisePrefixCheck(_folders).Count;
+            .RemoveSubfoldersByPairwisePrefixCheck(_folders);
 
     [Benchmark]
-    public int MergeSortThenScan() =>
+    public List<string> MergeSortThenScan() =>
         RemoveSubFoldersFromTheFilesystemSolution
-            .RemoveSubfoldersByMergeSortThenScan(_folders).Count;
+            .RemoveSubfoldersByMergeSortThenScan(_folders);
 }

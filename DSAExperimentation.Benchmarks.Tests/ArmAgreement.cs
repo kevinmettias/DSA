@@ -21,6 +21,7 @@ internal static class ArmAgreement
         typeof(KClosestPointsToOriginBenchmarks),
         typeof(MatrixCellsInDistanceOrderBenchmarks),
         typeof(PalindromePairsBenchmarks),
+        typeof(RemoveSubFoldersFromTheFilesystemBenchmarks),
         typeof(SingleNumberIIIBenchmarks),
         typeof(SortCharactersByFrequencyBenchmarks),
         typeof(SubsetsBenchmarks),
