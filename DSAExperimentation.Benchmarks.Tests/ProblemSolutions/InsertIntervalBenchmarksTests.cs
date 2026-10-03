@@ -2,47 +2,54 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for InsertIntervalBenchmarks (ARCHITECTURE 17.9). Both arms are competing
-// strategies for the same question - append-and-sort-then-merge against this repo's own
-// IntervalSet, which already maintains the merged invariant on every Add - so they are asserted
-// to agree. Both arms return only the resulting interval count, a proxy rather than the merged
-// intervals themselves: two strategies that merged into differently-shaped intervals but landed
-// on the same count would still agree, and no return type is changed here to strengthen it. The
-// count is nonetheless decisive on its own, because the fixture fixes it: intervals i is
-// [3i, 3i+1] and the new interval is [Length, 2 * Length], so at Length = 200 the new interval
-// [200, 400] swallows the chain of intervals 67..133 - whose starts 201..399 all fall inside it -
-// and nothing else, since interval 66 ends at 199 and interval 134 starts at 402. That leaves the
-// 67 intervals before the chain, the one merged block, and the 66 after it. Setup is seeded by
-// construction rather than by a Random, so the same Length must rebuild the same intervals and
-// the same new interval.
+// Harness coverage for InsertIntervalBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: the
+// merged intervals themselves, which the fixture fixes without consulting either arm. Interval i is [3i, 3i+1] and
+// the new interval is [Length, 2 * Length], so at Length = 200 the new interval [200, 400] swallows the chain of
+// intervals 67..133 - whose starts 201..399 all fall inside it, the last ending at 400 - and nothing else, since
+// interval 66 ends at 199 and interval 134 starts at 402. That leaves the 67 intervals before the chain, the one
+// merged block [200, 400], and the 66 after it: 134 in all. Each arm returns the merged intervals.
 public sealed partial class InsertIntervalBenchmarksTests
 {
     private const int SmallestLength = 200;
 
+    // The fixture's spacing: interval i is [Spacing * i, Spacing * i + 1].
+    private const int IntervalSpacing = 3;
+
     // 67 intervals before the swallowed chain, one merged block, 66 after it.
     private const int ExpectedMergedIntervalCount = 134;
 
-    [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(BuildHarness().ListInsertAndMerge(), BuildHarness().ListInsertAndMerge());
+    private const int FirstSwallowedInterval = 67;
+    private const int FirstIntervalAfterTheBlock = 134;
+
+    // The new interval [Length, 2 * Length] at the smallest Length.
+    private const int NewIntervalStart = SmallestLength;
+    private const int NewIntervalEnd = 2 * SmallestLength;
 
     [Fact]
-    public void ListInsertAndMerge_MergedIntervalCount_AgreesWithIntervalSetAdd()
+    public void ListInsertAndMerge_NewIntervalSwallowsAChain_MergesItIntoOneBlock()
     {
-        var harness = BuildHarness();
+        var merged = BuildHarness().ListInsertAndMerge();
 
-        Assert.Equal(harness.IntervalSetAdd(), harness.ListInsertAndMerge());
-        Assert.Equal(ExpectedMergedIntervalCount, harness.ListInsertAndMerge());
+        Assert.Equal(ExpectedMergedIntervalCount, merged.Count);
+        Assert.Equal(ExpectedIntervals(), merged);
     }
 
     [Fact]
-    public void IntervalSetAdd_MergedIntervalCount_AgreesWithListInsertAndMerge()
+    public void IntervalSetAdd_NewIntervalSwallowsAChain_MergesItIntoOneBlock()
     {
-        var harness = BuildHarness();
+        var merged = BuildHarness().IntervalSetAdd();
 
-        Assert.Equal(harness.ListInsertAndMerge(), harness.IntervalSetAdd());
-        Assert.Equal(ExpectedMergedIntervalCount, harness.IntervalSetAdd());
+        Assert.Equal(ExpectedMergedIntervalCount, merged.Count);
+        Assert.Equal(ExpectedIntervals(), merged);
     }
+
+    private static IEnumerable<(int Start, int End)> ExpectedIntervals() =>
+        Enumerable.Range(0, FirstSwallowedInterval).Select(FixtureInterval)
+            .Append((NewIntervalStart, NewIntervalEnd))
+            .Concat(Enumerable.Range(FirstIntervalAfterTheBlock, SmallestLength - FirstIntervalAfterTheBlock).Select(FixtureInterval));
+
+    private static (int Start, int End) FixtureInterval(int index) =>
+        (index * IntervalSpacing, (index * IntervalSpacing) + 1);
 
     private static InsertIntervalBenchmarks BuildHarness()
     {

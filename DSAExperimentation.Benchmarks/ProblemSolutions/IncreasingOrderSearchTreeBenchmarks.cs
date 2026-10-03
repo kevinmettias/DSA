@@ -15,7 +15,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // shuffle-inserted BST from them via this repo's own BinarySearchTree<int>, because
 // both walks mutate the tree's Left/Right pointers in place and would otherwise
 // corrupt a later iteration - the same per-invocation restore ConvertBSTToGreaterTree-
-// Benchmarks does with its Clone.
+// Benchmarks does with its Clone. Each arm returns the relinked chain's root as
+// object?, since a public [Benchmark] method cannot name the internal
+// BinaryTreeNode<int> (CS0050).
 public class IncreasingOrderSearchTreeBenchmarks
 {
     private int[] _shuffledValues = [];
@@ -30,12 +32,12 @@ public class IncreasingOrderSearchTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int RecursiveRelink() =>
-        IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(BuildTree())!.Value;
+    public object? RecursiveRelink() =>
+        IncreasingOrderSearchTreeSolution.IncreasingBstByRecursiveRelink(BuildTree());
 
     [Benchmark]
-    public int InOrderTraversalHooks() =>
-        IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(BuildTree())!.Value;
+    public object? InOrderTraversalHooks() =>
+        IncreasingOrderSearchTreeSolution.IncreasingBstByInOrderHooks(BuildTree());
 
     private BinaryTreeNode<int> BuildTree()
     {

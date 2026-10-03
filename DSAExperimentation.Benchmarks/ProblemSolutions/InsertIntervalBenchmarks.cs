@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.InsertInterval;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are InsertIntervalSolution's, the same methods
-// InsertIntervalSolutionTests proves correct.
+// InsertIntervalSolutionTests proves correct. Each arm returns the merged intervals.
 public class InsertIntervalBenchmarks
 {
     private const int IntervalSpacing = 3;
@@ -23,8 +23,10 @@ public class InsertIntervalBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListInsertAndMerge() => InsertIntervalSolution.InsertByListSortAndMerge(_intervals, _newInterval).Count;
+    public List<(int Start, int End)> ListInsertAndMerge() =>
+        InsertIntervalSolution.InsertByListSortAndMerge(_intervals, _newInterval);
 
     [Benchmark]
-    public int IntervalSetAdd() => InsertIntervalSolution.InsertByIntervalSet(_intervals, _newInterval).Count;
+    public List<(int Start, int End)> IntervalSetAdd() =>
+        InsertIntervalSolution.InsertByIntervalSet(_intervals, _newInterval);
 }

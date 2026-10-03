@@ -3,10 +3,8 @@ using DSAExperimentation.LeetCode.GroupAnagrams;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GroupAnagramsSolution's, the same methods
-// GroupAnagramsSolutionTests proves correct. Each arm reports the built group count
-// rather than the groups themselves, so the result isn't discarded as dead
-// code without materializing a potentially large object graph on every
-// iteration.
+// GroupAnagramsSolutionTests proves correct. Each arm returns the groups the
+// strategy built, so the result isn't discarded as dead code.
 public class GroupAnagramsBenchmarks
 {
     private const int SourceWordCount = 2;
@@ -27,8 +25,8 @@ public class GroupAnagramsBenchmarks
     private static bool IsFirstWord(int index) => index % SourceWordCount == 0;
 
     [Benchmark(Baseline = true)]
-    public int DictionaryGroup() => GroupAnagramsSolution.GroupByDictionary(_values).Count;
+    public List<List<string>> DictionaryGroup() => GroupAnagramsSolution.GroupByDictionary(_values);
 
     [Benchmark]
-    public int HashMapGroup() => GroupAnagramsSolution.GroupByHashMap(_values).Count;
+    public List<List<string>> HashMapGroup() => GroupAnagramsSolution.GroupByHashMap(_values);
 }

@@ -12,8 +12,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the point of including it is that the reusable primitive is available and correct.
 //
 // Each arm takes the explicit-bound overload so the measured search space is the
-// [Params] value, and .Count so the three return the same comparable measurement
-// while still building LeetCode's real answer (the pre-migration arms only counted).
+// [Params] value, and returns LeetCode's real answer, the solving pairs (the
+// pre-migration arms only counted).
 public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
 {
     // Doubling factor for the largest reachable sum (Bound + Bound).
@@ -40,19 +40,19 @@ public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceEveryPair() =>
+    public List<(int X, int Y)> BruteForceEveryPair() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBruteForce(Sum, _targetValue, Bound).Count;
+            .FindSolutionsByBruteForce(Sum, _targetValue, Bound);
 
     [Benchmark]
-    public int TwoPointer() =>
+    public List<(int X, int Y)> TwoPointer() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByTwoPointer(Sum, _targetValue, Bound).Count;
+            .FindSolutionsByTwoPointer(Sum, _targetValue, Bound);
 
     [Benchmark]
-    public int BinarySearchPerRow() =>
+    public List<(int X, int Y)> BinarySearchPerRow() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBinarySearchPerRow(Sum, _targetValue, Bound).Count;
+            .FindSolutionsByBinarySearchPerRow(Sum, _targetValue, Bound);
 
     // LeetCode example 1's function_id, f(x, y) = x + y, as a named implementation
     // because the three arms now take an ICustomFunction and C# converts no lambda to an

@@ -10,7 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // construction is charged to setup and only the replay is measured. SortedScanList is
 // the "no hashing at all" baseline (a raw List<int>, IndexOf deletes, and a sort per
 // query) against PairedHashMaps' two HashMap<TKey,TValue> instances, the same
-// contrast DesignHashMapBenchmarks already establishes for LC 706.
+// contrast DesignHashMapBenchmarks already establishes for LC 706. Each arm returns
+// every hasFrequency answer, in query order.
 public class FrequencyTrackerBenchmarks
 {
     private const int Seed = 2671; // LC problem number
@@ -22,6 +23,9 @@ public class FrequencyTrackerBenchmarks
 
     private int[] _numbersToDelete = [];
     private int[] _frequenciesToQuery = [];
+
+    // Every hasFrequency answer; sized in setup so the replay allocates nothing.
+    private bool[] _answers = [];
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -36,15 +40,16 @@ public class FrequencyTrackerBenchmarks
 
         var queryCount = Math.Max(MinQueryCount, Length / QueryCountDivisor);
         _frequenciesToQuery = SeededDraws.Values(queryCount, 1, valueRange + 1, random);
+        _answers = new bool[_frequenciesToQuery.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public int SortedScanList() => Replay(FrequencyTrackerSolution.CreateBySortedScanList());
+    public bool[] SortedScanList() => Replay(FrequencyTrackerSolution.CreateBySortedScanList());
 
     [Benchmark]
-    public int PairedHashMaps() => Replay(FrequencyTrackerSolution.CreateByPairedHashMaps());
+    public bool[] PairedHashMaps() => Replay(FrequencyTrackerSolution.CreateByPairedHashMaps());
 
-    private int Replay(FrequencyTrackerSolution.IFrequencyTracker tracker)
+    private bool[] Replay(FrequencyTrackerSolution.IFrequencyTracker tracker)
     {
         foreach (var number in _numbersToAdd)
         {
@@ -56,16 +61,11 @@ public class FrequencyTrackerBenchmarks
             tracker.DeleteOne(number);
         }
 
-        var trueCount = 0;
-
-        foreach (var frequency in _frequenciesToQuery)
+        for (var i = 0; i < _frequenciesToQuery.Length; i++)
         {
-            if (tracker.HasFrequency(frequency))
-            {
-                trueCount++;
-            }
+            _answers[i] = tracker.HasFrequency(_frequenciesToQuery[i]);
         }
 
-        return trueCount;
+        return _answers;
     }
 }

@@ -23,6 +23,9 @@ public class ImplementMagicDictionaryBenchmarks
     private string[] _dictionary = [];
 
     private string[] _searchWords = [];
+
+    // Every Search verdict, in search-word order; sized in setup so the replay allocates nothing.
+    private bool[] _verdicts = [];
     [Params(10_000, 30_000)]
     public int DictionarySize { get; set; }
 
@@ -32,6 +35,7 @@ public class ImplementMagicDictionaryBenchmarks
         var random = new Random(RandomSeed);
         _dictionary = Enumerable.Range(0, DictionarySize).Select(_ => RandomWord(random)).Distinct().ToArray();
         _searchWords = _dictionary.Select(word => OneCharacterAway(word, random)).ToArray();
+        _verdicts = new bool[_searchWords.Length];
     }
 
     private static string RandomWord(Random random)
@@ -46,25 +50,20 @@ public class ImplementMagicDictionaryBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce() => Replay(ImplementMagicDictionarySolution.CreateByBruteForce());
+    public bool[] BruteForce() => Replay(ImplementMagicDictionarySolution.CreateByBruteForce());
 
     [Benchmark]
-    public int TrieSearch() => Replay(ImplementMagicDictionarySolution.CreateByTrieSearch());
+    public bool[] TrieSearch() => Replay(ImplementMagicDictionarySolution.CreateByTrieSearch());
 
-    private int Replay(ImplementMagicDictionarySolution.IMagicDictionary magicDictionary)
+    private bool[] Replay(ImplementMagicDictionarySolution.IMagicDictionary magicDictionary)
     {
         magicDictionary.BuildDict(_dictionary);
 
-        var matches = 0;
-
-        foreach (var searchWord in _searchWords)
+        for (var i = 0; i < _searchWords.Length; i++)
         {
-            if (magicDictionary.Search(searchWord))
-            {
-                matches++;
-            }
+            _verdicts[i] = magicDictionary.Search(_searchWords[i]);
         }
 
-        return matches;
+        return _verdicts;
     }
 }

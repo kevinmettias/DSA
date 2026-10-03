@@ -6,19 +6,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods FlattenAMultilevelDoublyLinkedListSolutionTests proves correct. Each [Benchmark] rebuilds
 // a fresh copy since flattening is destructive (Child pointers are cleared in place),
 // matching RotateImageBenchmarks' per-invocation Clone convention - so list construction
-// stays outside [GlobalSetup] deliberately, same as the pre-migration benchmark.
+// stays outside [GlobalSetup] deliberately, same as the pre-migration benchmark. Each arm
+// returns the flattened list's head as object?, since a public [Benchmark] method cannot
+// name the internal Node (CS0050).
 public class FlattenAMultilevelDoublyLinkedListBenchmarks
 {
     [Params(200, 5_000)]
     public int Length { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRescanFromHead() =>
-        CountNodes(FlattenAMultilevelDoublyLinkedListSolution.FlattenByBruteForceRescan(BuildList(Length)));
+    public object? BruteForceRescanFromHead() =>
+        FlattenAMultilevelDoublyLinkedListSolution.FlattenByBruteForceRescan(BuildList(Length));
 
     [Benchmark]
-    public int StackBasedOnePass() =>
-        CountNodes(FlattenAMultilevelDoublyLinkedListSolution.FlattenByStack(BuildList(Length)));
+    public object? StackBasedOnePass() =>
+        FlattenAMultilevelDoublyLinkedListSolution.FlattenByStack(BuildList(Length));
 
     private static Node BuildList(int length)
     {
@@ -40,16 +42,5 @@ public class FlattenAMultilevelDoublyLinkedListBenchmarks
         }
 
         return head;
-    }
-
-    private static int CountNodes(Node? head)
-    {
-        var count = 0;
-        for (var node = head; node is not null; node = node.Next)
-        {
-            count++;
-        }
-
-        return count;
     }
 }

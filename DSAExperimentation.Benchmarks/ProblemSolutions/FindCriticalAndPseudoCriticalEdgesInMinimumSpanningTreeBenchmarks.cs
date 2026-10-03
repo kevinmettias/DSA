@@ -15,8 +15,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategy's prepared-input overload.
 //
 // Both arms return LeetCode's actual answer - the two index lists - rather than the
-// count of classified edges the previous benchmark measured; the harness takes the
-// lengths. See the solution class for the strategies themselves.
+// count of classified edges the previous benchmark measured. See the solution class
+// for the strategies themselves.
 public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 {
     // 1489 is the LeetCode problem number, reused here as a fixed benchmark seed.
@@ -64,22 +64,10 @@ public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveBfsConnectivity()
-    {
-        var (critical, pseudoCritical) =
-            FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution
-                .ClassifyEdgesByBfsConnectivity(_graph);
-
-        return critical.Length + pseudoCritical.Length;
-    }
+    public (int[] Critical, int[] PseudoCritical) NaiveBfsConnectivity() =>
+        FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution.ClassifyEdgesByBfsConnectivity(_graph);
 
     [Benchmark]
-    public int DisjointSetKruskal()
-    {
-        var (critical, pseudoCritical) =
-            FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution
-                .ClassifyEdgesByDisjointSet(_graph);
-
-        return critical.Length + pseudoCritical.Length;
-    }
+    public (int[] Critical, int[] PseudoCritical) DisjointSetKruskal() =>
+        FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution.ClassifyEdgesByDisjointSet(_graph);
 }

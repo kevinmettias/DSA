@@ -1,35 +1,48 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FlattenAMultilevelDoublyLinkedListBenchmarks (ARCHITECTURE 17.9): its two arms
-// are competing strategies for the same question, so a harness whose arms disagree is timing two
-// different problems. The class has no [GlobalSetup] - each arm rebuilds its own list inside the
+// Harness coverage for FlattenAMultilevelDoublyLinkedListBenchmarks (ARCHITECTURE 17.9), for what
+// BenchmarkArmsTests cannot pin: the flattened order, known from the fixture's own structure rather
+// than from either arm. The class has no [GlobalSetup] - each arm rebuilds its own list inside the
 // call, because flattening is destructive - so the harness is the bare initializer plus Length.
 //
-// The agreement is weak by construction and the assertions say so: both arms return only the *count*
-// of nodes in the flattened list, never the flattened list itself, so the count is a proxy for the
-// answer rather than the answer. The count is still pinned to the fixture's own structure - the arm
-// builds a Length-node chain and hangs one single-node child off each node but the last, so a correct
-// flatten leaves exactly Length + (Length - 1) nodes - which catches a dropped or duplicated splice
-// but not two arms that both splice the same wrong nodes.
+// Each arm returns the flattened list's head as object? (the node type is internal, CS0050). The arm
+// builds a Length-node chain 0, 1, ... and hangs one single-node child valued -1 off each node but the
+// last, so a correct flatten splices each child straight after its parent: Length + (Length - 1) nodes
+// alternating chain value and -1, which catches a dropped, duplicated or misplaced splice.
 public sealed partial class FlattenAMultilevelDoublyLinkedListBenchmarksTests
 {
     private const int SmallestLength = 200;
 
-    // Each of the first Length - 1 nodes of the arm's own chain carries one child node.
-    private const int ChildCount = SmallestLength - 1;
+    // The value the arm's own fixture gives every child node.
+    private const int ChildValue = -1;
 
     [Fact]
-    public void BruteForceRescanFromHead_AgreesWithStackBasedOnePass()
+    public void BruteForceRescanFromHead_ChildOnEveryNodeButTheLast_SplicesEachChildAfterItsParent() =>
+        Assert.Equal(FlattenedValues(), ValuesOf(BuildHarness().BruteForceRescanFromHead()));
+
+    [Fact]
+    public void StackBasedOnePass_ChildOnEveryNodeButTheLast_SplicesEachChildAfterItsParent() =>
+        Assert.Equal(FlattenedValues(), ValuesOf(BuildHarness().StackBasedOnePass()));
+
+    private static IEnumerable<int> FlattenedValues() =>
+        Enumerable.Range(0, SmallestLength - 1)
+            .SelectMany(value => new[] { value, ChildValue })
+            .Append(SmallestLength - 1);
+
+    private static List<int> ValuesOf(object? answer)
     {
-        var harness = BuildHarness();
+        var values = new List<int>();
 
-        Assert.Equal(ExpectedFlattenedNodeCount, harness.BruteForceRescanFromHead());
-        Assert.Equal(harness.StackBasedOnePass(), harness.BruteForceRescanFromHead());
+        for (var node = Assert.IsType<Node>(answer); node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return values;
     }
-
-    private static int ExpectedFlattenedNodeCount => SmallestLength + ChildCount;
 
     private static FlattenAMultilevelDoublyLinkedListBenchmarks BuildHarness() =>
         new() { Length = SmallestLength };

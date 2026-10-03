@@ -7,9 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // workload is a straight-line dependency chain (recipe i needs recipe i-1), which is
 // where the naive sweep's rescanning costs the most: it has to walk every
 // still-unmade recipe again after each pass, while Kahn's algorithm touches each
-// dependency edge once. Both arms now build LeetCode's actual answer - the list of
-// makeable recipes - and the harness takes .Count, where the previous arms only
-// counted.
+// dependency edge once. Both arms now build and return LeetCode's actual answer -
+// the list of makeable recipes - where the previous arms only counted.
 public class FindAllPossibleRecipesFromGivenSuppliesBenchmarks
 {
     private const string InitialSupply = "s";
@@ -36,12 +35,12 @@ public class FindAllPossibleRecipesFromGivenSuppliesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int FixedPointSweep() =>
+    public List<string> FixedPointSweep() =>
         FindAllPossibleRecipesFromGivenSuppliesSolution
-            .FindAllRecipesByFixedPointSweep(_recipes, _ingredients, _supplies).Count;
+            .FindAllRecipesByFixedPointSweep(_recipes, _ingredients, _supplies);
 
     [Benchmark]
-    public int KahnsAlgorithm() =>
+    public List<string> KahnsAlgorithm() =>
         FindAllPossibleRecipesFromGivenSuppliesSolution
-            .FindAllRecipesByKahnsAlgorithm(_recipes, _ingredients, _supplies).Count;
+            .FindAllRecipesByKahnsAlgorithm(_recipes, _ingredients, _supplies);
 }

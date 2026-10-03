@@ -14,20 +14,27 @@ public class ImplementStackUsingQueuesBenchmarks
 {
     private const int Seed = 225;
 
-    private List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int>> _script = new();
+    private List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int?>> _script = new();
+
+    // Every value Pop answers, in order - one per round; sized in setup so the replay allocates nothing.
+    private int[] _popped = [];
 
     [Params(200, 2_000)]
     public int Count { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _script = BuildScript(Count, new Random(Seed));
+    public void Setup()
+    {
+        _script = BuildScript(Count, new Random(Seed));
+        _popped = new int[Count];
+    }
 
     // Count pushes fill the stack from empty, then every round pops one
     // element and pushes a fresh one - net-zero size change, so the stack
     // never underflows and never needs to grow past Count.
-    private static List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int>> BuildScript(int count, Random random)
+    private static List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int?>> BuildScript(int count, Random random)
     {
-        var script = new List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int>>();
+        var script = new List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int?>>();
 
         for (var i = 0; i < count; i++)
         {
@@ -45,32 +52,35 @@ public class ImplementStackUsingQueuesBenchmarks
         return script;
     }
 
-    private static void AppendPush(List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int>> script, int value) =>
+    private static void AppendPush(List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int?>> script, int value) =>
         script.Add(stack =>
         {
             stack.Push(value);
-            return 0;
+            return null;
         });
 
     [Benchmark(Baseline = true)]
-    public long BuiltInQueue() => Replay(ImplementStackUsingQueuesSolution.CreateByBuiltInQueue());
+    public int[] BuiltInQueue() => Replay(ImplementStackUsingQueuesSolution.CreateByBuiltInQueue());
 
     [Benchmark]
-    public long QueuePrimitive() => Replay(ImplementStackUsingQueuesSolution.CreateByQueuePrimitive());
+    public int[] QueuePrimitive() => Replay(ImplementStackUsingQueuesSolution.CreateByQueuePrimitive());
 
-    // Sums every returned value rather than discarding it, so the JIT can't
-    // eliminate the replay as dead code - the same "return the real answer,
-    // not a weaker proxy" shape OpenTheLockBenchmarks/LRUCacheBenchmarks
-    // already follow.
-    private long Replay(ImplementStackUsingQueuesSolution.IStackOperations stack)
+    // Returns every popped value, in order, rather than discarding it, so the JIT
+    // can't eliminate the replay as dead code - the same "return the real answer,
+    // not a weaker proxy" shape OpenTheLockBenchmarks/LRUCacheBenchmarks already
+    // follow. A push answers nothing, which its script entry reports as null.
+    private int[] Replay(ImplementStackUsingQueuesSolution.IStackOperations stack)
     {
-        var sum = 0L;
+        var next = 0;
 
         foreach (var op in _script)
         {
-            sum += op(stack);
+            if (op(stack) is { } popped)
+            {
+                _popped[next++] = popped;
+            }
         }
 
-        return sum;
+        return _popped;
     }
 }

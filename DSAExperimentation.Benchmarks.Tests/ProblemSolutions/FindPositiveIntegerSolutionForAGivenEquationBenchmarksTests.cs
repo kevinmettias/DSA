@@ -2,12 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for FindPositiveIntegerSolutionForAGivenEquationBenchmarks (ARCHITECTURE 17.9):
-// all three arms are competing strategies for the same question - the every-pair brute force, the
-// two-pointer walk and this repo's own BinarySearch.Find applied per row - so a harness whose arms
-// disagree has solved two different equations. Each arm returns how many pairs solve it, and every
-// arm walks x ascending and finds at most one y per x, so the arms are compared directly on that
-// count and each is asserted against the count the workload's own arithmetic makes decisive.
+// Harness coverage for FindPositiveIntegerSolutionForAGivenEquationBenchmarks (ARCHITECTURE 17.9), for what
+// BenchmarkArmsTests cannot pin: which pairs solve the equation, known from Setup's construction rather than from
+// any arm. Each arm returns the solving pairs, and every arm walks x ascending and finds at most one y per x.
 //
 // Setup pins the target one below the largest reachable sum (Bound + Bound), which the arms' own
 // sum oracle can only hit with the two pairs straddling it - (Bound - 1, Bound) and (Bound, Bound -
@@ -22,48 +19,20 @@ public sealed partial class FindPositiveIntegerSolutionForAGivenEquationBenchmar
     private const int ExpectedSolutionCount = 2;
 
     [Fact]
-    public void Setup_SameBound_RebuildsTheSameSolutionCount()
-    {
-        Assert.Equal(ExpectedSolutionCount, BuildHarness().BruteForceEveryPair());
-
-        Assert.Equal(BuildHarness().BruteForceEveryPair(), BuildHarness().BruteForceEveryPair());
-    }
+    public void BruteForceEveryPair_TargetOneBelowTheLargestSum_FindsTheTwoStraddlingPairs() =>
+        Assert.Equal(StraddlingPairs(), BuildHarness().BruteForceEveryPair());
 
     [Fact]
-    public void BruteForceEveryPair_TargetOneBelowTheLargestSum_AgreesWithTwoPointer()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSolutionCount, harness.BruteForceEveryPair());
-        Assert.Equal(harness.TwoPointer(), harness.BruteForceEveryPair());
-    }
+    public void TwoPointer_TargetOneBelowTheLargestSum_FindsTheTwoStraddlingPairs() =>
+        Assert.Equal(StraddlingPairs(), BuildHarness().TwoPointer());
 
     [Fact]
-    public void TwoPointer_TargetOneBelowTheLargestSum_AgreesWithBruteForceEveryPair()
-    {
-        var harness = BuildHarness();
+    public void BinarySearchPerRow_TargetOneBelowTheLargestSum_FindsTheTwoStraddlingPairs() =>
+        Assert.Equal(StraddlingPairs(), BuildHarness().BinarySearchPerRow());
 
-        Assert.Equal(ExpectedSolutionCount, harness.TwoPointer());
-        Assert.Equal(harness.BruteForceEveryPair(), harness.TwoPointer());
-    }
-
-    [Fact]
-    public void BinarySearchPerRow_TargetOneBelowTheLargestSum_AgreesWithBruteForceEveryPair()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSolutionCount, harness.BinarySearchPerRow());
-        Assert.Equal(harness.BruteForceEveryPair(), harness.BinarySearchPerRow());
-    }
-
-    [Fact]
-    public void Evaluate_AllThreeArmsProbeTheSameSumFunction_AgreeOnTheSolutionCount()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BruteForceEveryPair(), harness.BinarySearchPerRow());
-        Assert.Equal(harness.BruteForceEveryPair(), harness.TwoPointer());
-    }
+    // x ascending, as every arm walks it.
+    private static (int X, int Y)[] StraddlingPairs() =>
+        [(SmallestBound - 1, SmallestBound), (SmallestBound, SmallestBound - 1)];
 
     private static FindPositiveIntegerSolutionForAGivenEquationBenchmarks BuildHarness()
     {
@@ -74,10 +43,10 @@ public sealed partial class FindPositiveIntegerSolutionForAGivenEquationBenchmar
     }
 
     // The benchmark hoists one ICustomFunction - its own private nested SumFunction, f(x, y) = x + y -
-    // and all three arms answer through it, so every count above is a statement about that oracle rather
+    // and all three arms answer through it, so every answer above is a statement about that oracle rather
     // than about a sum computed inline. Its companion is this nested class, named for the type that
     // declares Evaluate and carrying the test that addresses it: the arithmetic is reachable only
-    // through the arms, and it is the arithmetic the counts depend on.
+    // through the arms, and it is the arithmetic the answers depend on.
     public sealed partial class SumFunctionTests
     {
         [Fact]
@@ -85,9 +54,9 @@ public sealed partial class FindPositiveIntegerSolutionForAGivenEquationBenchmar
         {
             var harness = BuildHarness();
 
-            Assert.Equal(ExpectedSolutionCount, harness.BruteForceEveryPair());
-            Assert.Equal(ExpectedSolutionCount, harness.TwoPointer());
-            Assert.Equal(ExpectedSolutionCount, harness.BinarySearchPerRow());
+            Assert.Equal(ExpectedSolutionCount, harness.BruteForceEveryPair().Count);
+            Assert.Equal(ExpectedSolutionCount, harness.TwoPointer().Count);
+            Assert.Equal(ExpectedSolutionCount, harness.BinarySearchPerRow().Count);
         }
     }
 }

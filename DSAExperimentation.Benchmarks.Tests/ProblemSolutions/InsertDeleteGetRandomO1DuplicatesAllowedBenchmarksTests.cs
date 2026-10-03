@@ -2,48 +2,36 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks (ARCHITECTURE 17.9).
-// Both arms are competing strategies for the same question - a BCL List scanned on every insert
-// and shifted on every removal against a per-value occurrence list - so they are asserted to
-// agree. Each arm replays the same fixed script against an instance it builds inside the call (a
-// Design problem's whole shape is a sequence of mutating calls against one instance), so one
-// harness is safe to call twice in either order. Each arm returns the collection's surviving
-// Count, a proxy for the collection itself: the removal order is a copy of the insertion order,
-// so the script removes exactly the multiset it inserted and the honest claim is not merely that
-// the arms agree but that both emptied the collection - with the fixture's narrow value range
-// that means every duplicate occurrence was found and consumed, which a count-only agreement
-// alone would not catch.
+// Harness coverage for InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks (ARCHITECTURE 17.9), for what
+// BenchmarkArmsTests cannot pin: that the script empties the collection, which follows from Setup's construction
+// rather than from either arm. Each arm replays the same fixed script against an instance it builds inside the call
+// and returns every Insert verdict, then every Remove verdict. The removal order is a shuffled copy of the insertion
+// order, so it carries exactly the same multiplicities and every removal finds an occurrence left to consume - with
+// the fixture's narrow value range that means every duplicate occurrence was found and consumed. LC 381's Insert
+// answers true only for a value not already present, so at most one insert per distinct value answers true.
 public sealed partial class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarksTests
 {
     private const int SmallestCount = 200;
 
-    // The removal order is a shuffled copy of the insertion order, so it carries exactly the same
-    // multiplicities and every inserted occurrence is removed again.
-    private const int ExpectedSurvivingCount = 0;
+    // The benchmark draws every inserted value from this many distinct values.
+    private const int DistinctValues = 10;
 
     [Fact]
-    public void Setup_SameCount_RebuildsTheSameScript()
-    {
-        Assert.Equal(BuildHarness().ListScan(), BuildHarness().ListScan());
-        Assert.Equal(BuildHarness().LinkedOccurrences(), BuildHarness().LinkedOccurrences());
-    }
+    public void ListScan_InsertThenRemoveEveryOccurrence_EmptiesTheCollection() =>
+        AssertEmptiesTheCollection(BuildHarness().ListScan());
 
     [Fact]
-    public void ListScan_SurvivingCount_AgreesWithLinkedOccurrences()
+    public void LinkedOccurrences_InsertThenRemoveEveryOccurrence_EmptiesTheCollection() =>
+        AssertEmptiesTheCollection(BuildHarness().LinkedOccurrences());
+
+    private static void AssertEmptiesTheCollection(bool[] verdicts)
     {
-        var harness = BuildHarness();
+        var inserts = verdicts[..SmallestCount];
+        var removals = verdicts[SmallestCount..];
 
-        Assert.Equal(harness.LinkedOccurrences(), harness.ListScan());
-        Assert.Equal(ExpectedSurvivingCount, harness.ListScan());
-    }
-
-    [Fact]
-    public void LinkedOccurrences_SurvivingCount_AgreesWithListScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.ListScan(), harness.LinkedOccurrences());
-        Assert.Equal(ExpectedSurvivingCount, harness.LinkedOccurrences());
+        Assert.InRange(inserts.Count(isNew => isNew), 1, DistinctValues);
+        Assert.Equal(SmallestCount, removals.Length);
+        Assert.DoesNotContain(false, removals);
     }
 
     private static InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks BuildHarness()

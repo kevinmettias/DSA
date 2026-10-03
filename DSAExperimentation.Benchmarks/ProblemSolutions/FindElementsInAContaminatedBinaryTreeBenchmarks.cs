@@ -25,6 +25,9 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
     private BinaryTreeNode<int> _root = null!;
 
     private int[] _targets = [];
+
+    // Every Find verdict, in target order; sized in setup so the queries allocate nothing.
+    private bool[] _found = [];
     [Params(200, 2_000)]
     public int NodeCount { get; set; }
 
@@ -35,28 +38,24 @@ public class FindElementsInAContaminatedBinaryTreeBenchmarks
 
         var random = new Random(TargetSeed);
         _targets = SeededDraws.Values(TargetSampleCount, 0, NodeCount * TargetRangeMultiplier, random);
+        _found = new bool[_targets.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public int ListRecoverThenLinearScan() =>
-        CountFound(FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(_root));
+    public bool[] ListRecoverThenLinearScan() =>
+        FindAll(FindElementsInAContaminatedBinaryTreeSolution.CreateByListScan(_root));
 
     [Benchmark]
-    public int TopDownRecoverThenSetLookup() =>
-        CountFound(FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(_root));
+    public bool[] TopDownRecoverThenSetLookup() =>
+        FindAll(FindElementsInAContaminatedBinaryTreeSolution.CreateByTopDownSet(_root));
 
-    private int CountFound(IFindElements elements)
+    private bool[] FindAll(IFindElements elements)
     {
-        var found = 0;
-
-        foreach (var target in _targets)
+        for (var i = 0; i < _targets.Length; i++)
         {
-            if (elements.Find(target))
-            {
-                found++;
-            }
+            _found[i] = elements.Find(_targets[i]);
         }
 
-        return found;
+        return _found;
     }
 }

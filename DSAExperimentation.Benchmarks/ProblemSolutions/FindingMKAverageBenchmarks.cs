@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FindingMKAverageSolutionTests proves correct. [GlobalSetup] builds one fixed element
 // stream, so stream construction is charged to setup and only the replay - an
 // addElement plus a calculateMKAverage per element, identical for both arms - is
-// measured.
+// measured. Each arm returns every MK average the replay calculated, in order.
 public class FindingMKAverageBenchmarks
 {
     private const int WindowSize = 99;
@@ -19,6 +19,9 @@ public class FindingMKAverageBenchmarks
 
     private int[] _stream = [];
 
+    // Every MK average the replay calculates; sized in setup so the replay allocates nothing.
+    private int[] _averages = [];
+
     [Params(500, 5_000)]
     public int Length { get; set; }
 
@@ -27,33 +30,31 @@ public class FindingMKAverageBenchmarks
     {
         var random = new Random(RandomSeed);
         _stream = SeededDraws.Values(Length, 1, MaxElementValue, random);
+        _averages = new int[_stream.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public long SortingSlidingWindow()
+    public int[] SortingSlidingWindow()
     {
         var mkAverage = FindingMKAverageSolution.CreateBySortingSlidingWindow(WindowSize, TrimCount);
         return Replay(mkAverage);
     }
 
     [Benchmark]
-    public long FenwickOrderStatistics()
+    public int[] FenwickOrderStatistics()
     {
         var mkAverage = FindingMKAverageSolution.CreateByFenwickOrderStatistics(WindowSize, TrimCount);
         return Replay(mkAverage);
     }
 
-    private long Replay(FindingMKAverageSolution.IMKAverage mkAverage)
+    private int[] Replay(FindingMKAverageSolution.IMKAverage mkAverage)
     {
-        var checksum = 0L;
-
-        foreach (var value in _stream)
+        for (var i = 0; i < _stream.Length; i++)
         {
-            mkAverage.AddElement(value);
-            var result = mkAverage.CalculateMKAverage();
-            checksum += result < 0 ? 0 : result;
+            mkAverage.AddElement(_stream[i]);
+            _averages[i] = mkAverage.CalculateMKAverage();
         }
 
-        return checksum;
+        return _averages;
     }
 }

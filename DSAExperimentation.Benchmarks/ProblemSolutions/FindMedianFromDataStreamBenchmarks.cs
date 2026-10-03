@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // factories FindMedianFromDataStreamSolutionTests proves correct, replaying the same
 // interleaved AddNum/FindMedian stream - a sort-on-every-query baseline
 // (O(n log n) per query) vs. the two-heap approach (O(log n) per insert, O(1)
-// per query).
+// per query). Each arm returns every median the stream reported, in order.
 public class FindMedianFromDataStreamBenchmarks
 {
     // LC problem number, reused as the fixed benchmark-data seed.
@@ -17,29 +17,33 @@ public class FindMedianFromDataStreamBenchmarks
 
     private int[] _stream = [];
 
+    // Every median FindMedian reports; sized in setup so the replay allocates nothing.
+    private double[] _medians = [];
+
     [Params(100, 1_000)]
     public int StreamLength { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _stream = FindMedianFromDataStreamWorkloads.BuildStream(
-        StreamLength, RandomSeed, MaxStreamValue);
+    public void Setup()
+    {
+        _stream = FindMedianFromDataStreamWorkloads.BuildStream(StreamLength, RandomSeed, MaxStreamValue);
+        _medians = new double[_stream.Length];
+    }
 
     [Benchmark(Baseline = true)]
-    public double SortOnEveryQuery() => Replay(FindMedianFromDataStreamSolution.CreateBySortOnEveryQuery());
+    public double[] SortOnEveryQuery() => Replay(FindMedianFromDataStreamSolution.CreateBySortOnEveryQuery());
 
     [Benchmark]
-    public double TwoHeaps() => Replay(FindMedianFromDataStreamSolution.CreateByTwoHeaps());
+    public double[] TwoHeaps() => Replay(FindMedianFromDataStreamSolution.CreateByTwoHeaps());
 
-    private double Replay(IMedianFinder medianFinder)
+    private double[] Replay(IMedianFinder medianFinder)
     {
-        var lastMedian = 0.0;
-
-        foreach (var value in _stream)
+        for (var i = 0; i < _stream.Length; i++)
         {
-            medianFinder.AddNum(value);
-            lastMedian = medianFinder.FindMedian();
+            medianFinder.AddNum(_stream[i]);
+            _medians[i] = medianFinder.FindMedian();
         }
 
-        return lastMedian;
+        return _medians;
     }
 }

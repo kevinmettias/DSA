@@ -9,11 +9,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is no separate "prepare input" step to hoist into [GlobalSetup] beyond the
 // insert/removal order arrays themselves - [GlobalSetup] builds those (so shuffling
 // isn't charged to the measured method) and each [Benchmark] arm constructs its own
-// instance and replays the same insert-then-remove script, returning the surviving
-// Count so the JIT can't eliminate the replay as dead code. _insertOrder is drawn from
-// a narrow value range so most values collide with earlier ones, forcing real
-// duplicate chains for Remove to walk past in the ListScan arm instead of an
-// artificially duplicate-free input.
+// instance and replays the same insert-then-remove script, returning every Insert and
+// Remove verdict, in call order, so the JIT can't eliminate the replay as dead code.
+// _insertOrder is drawn from a narrow value range so most values collide with earlier
+// ones, forcing real duplicate chains for Remove to walk past in the ListScan arm
+// instead of an artificially duplicate-free input.
 public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
 {
     // A small, fixed value range - not scaled with Count - so the average duplicate
@@ -26,6 +26,9 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
     private int[] _insertOrder = [];
 
     private int[] _removalOrder = [];
+
+    // Every Insert verdict, then every Remove verdict; sized in setup so the replay allocates nothing.
+    private bool[] _verdicts = [];
     [Params(200, 20_000)]
     public int Count { get; set; }
 
@@ -37,6 +40,7 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
         _insertOrder = SeededDraws.Values(Count, 0, DistinctValues, random);
         _removalOrder = (int[])_insertOrder.Clone();
         Shuffle(_removalOrder, random);
+        _verdicts = new bool[_insertOrder.Length + _removalOrder.Length];
     }
 
     private static void Shuffle(int[] items, Random random)
@@ -49,23 +53,25 @@ public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListScan() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan());
+    public bool[] ListScan() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByListScan());
 
     [Benchmark]
-    public int LinkedOccurrences() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences());
+    public bool[] LinkedOccurrences() => Replay(new InsertDeleteGetRandomO1DuplicatesAllowedSolution.RandomizedCollectionByLinkedOccurrences());
 
-    private int Replay(InsertDeleteGetRandomO1DuplicatesAllowedSolution.IRandomizedCollection collection)
+    private bool[] Replay(InsertDeleteGetRandomO1DuplicatesAllowedSolution.IRandomizedCollection collection)
     {
+        var next = 0;
+
         foreach (var value in _insertOrder)
         {
-            collection.Insert(value);
+            _verdicts[next++] = collection.Insert(value);
         }
 
         foreach (var value in _removalOrder)
         {
-            collection.Remove(value);
+            _verdicts[next++] = collection.Remove(value);
         }
 
-        return collection.Count;
+        return _verdicts;
     }
 }
