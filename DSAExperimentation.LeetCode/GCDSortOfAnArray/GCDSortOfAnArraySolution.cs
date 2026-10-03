@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.Sequence;
@@ -31,7 +32,6 @@ namespace DSAExperimentation.LeetCode.GCDSortOfAnArray;
 // is sized to max(nums) + 1 rather than to nums.Length.
 internal static class GCDSortOfAnArraySolution
 {
-    private const int SmallestPrimeFactor = 2;
 
     // The naive arm: literal pairwise gcd adjacency over a hand-rolled parent array,
     // sorted with Array.Sort. Internals are deliberately all BCL.
@@ -109,36 +109,13 @@ internal static class GCDSortOfAnArraySolution
 
         foreach (var value in nums)
         {
-            foreach (var factor in PrimeFactors(value))
+            foreach (var factor in PrimeFactorization.Distinct(value))
             {
                 components.Union(value, factor);
             }
         }
 
         return components;
-    }
-
-    private static IEnumerable<int> PrimeFactors(int value)
-    {
-        for (var factor = SmallestPrimeFactor; factor * factor <= value; factor++)
-        {
-            if (value % factor != 0)
-            {
-                continue;
-            }
-
-            yield return factor;
-
-            while (value % factor == 0)
-            {
-                value /= factor;
-            }
-        }
-
-        if (value > 1)
-        {
-            yield return value;
-        }
     }
 
     private static int[] SortedCopy(int[] nums)

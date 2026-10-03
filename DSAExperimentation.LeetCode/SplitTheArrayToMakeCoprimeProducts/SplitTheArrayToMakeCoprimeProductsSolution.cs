@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.HashMap;
 
@@ -14,7 +15,6 @@ namespace DSAExperimentation.LeetCode.SplitTheArrayToMakeCoprimeProducts;
 // element carrying a prime seen so far sit?" and never multiplies anything.
 internal static class SplitTheArrayToMakeCoprimeProductsSolution
 {
-    private const int SmallestPrime = 2;
 
     // The textbook answer: a running BigInteger left product and the complementary
     // right product, taking a gcd at every candidate split. Deliberately BCL-only,
@@ -61,7 +61,7 @@ internal static class SplitTheArrayToMakeCoprimeProductsSolution
 
         for (var i = 0; i < nums.Length - 1; i++)
         {
-            foreach (var factor in PrimeFactors(nums[i]))
+            foreach (var factor in PrimeFactorization.Distinct(nums[i]))
             {
                 lastOccurrence.TryGetValue(factor, out var last);
                 boundary = Math.Max(boundary, last);
@@ -84,7 +84,7 @@ internal static class SplitTheArrayToMakeCoprimeProductsSolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            foreach (var factor in PrimeFactors(nums[i]))
+            foreach (var factor in PrimeFactorization.Distinct(nums[i]))
             {
                 lastOccurrence.Set(factor, i);
             }
@@ -93,30 +93,4 @@ internal static class SplitTheArrayToMakeCoprimeProductsSolution
         return lastOccurrence;
     }
 
-    // Trial division up to the square root, yielding each distinct prime once; a
-    // remainder above 1 after the loop is itself the last prime factor.
-    private static IEnumerable<int> PrimeFactors(int value)
-    {
-        var remaining = value;
-
-        for (var factor = SmallestPrime; factor * factor <= remaining; factor++)
-        {
-            if (remaining % factor != 0)
-            {
-                continue;
-            }
-
-            yield return factor;
-
-            while (remaining % factor == 0)
-            {
-                remaining /= factor;
-            }
-        }
-
-        if (remaining > 1)
-        {
-            yield return remaining;
-        }
-    }
 }

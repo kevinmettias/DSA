@@ -22,9 +22,8 @@ namespace DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
 // (sum of dp[j] for earlier j with a strictly smaller value), and the Fenwick tree
 // over coordinate-compressed values turns that sum into one prefix query -
 // Algorithms.Searching.BinarySearch.LowerBound supplies each value's compressed
-// rank, the same composition MinimumStabilityFactorOfArray's GcdOperation doc
-// comment points to for "the Query-with-a-custom-operation extensibility point
-// this type exists for", here applied to Fenwick instead of SegmentTree.
+// rank - the custom-operation extension point MinimumStabilityFactorOfArray uses
+// with the core GcdOperation, here applied to Fenwick instead of SegmentTree.
 internal static class SumOfBeautifulSubsequencesSolution
 {
     // The textbook baseline: walk every subset via bitmask, keep only the strictly

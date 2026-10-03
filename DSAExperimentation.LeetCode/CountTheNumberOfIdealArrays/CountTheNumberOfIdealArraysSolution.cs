@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.Domain.Modular;
@@ -85,13 +86,12 @@ internal static class CountTheNumberOfIdealArraysSolution
         return product * BinomialMod(exponent + arrayLength - 1, exponent) % ModularArithmetic.Modulo;
     }
 
-    // Build one smallest-prime-factor table over maxValue, using this repo's own
-    // DynamicArray<int> as the sieve buffer - the same Sieve-of-Eratosthenes
-    // composite-marking pattern CountWaysToMakeArrayWithProduct establishes for LC
-    // 1735 - so every value afterwards factors in O(log value).
+    // Build one smallest-prime-factor table over maxValue with this repo's own
+    // PrimeSieve - the same table CountWaysToMakeArrayWithProduct builds for LC 1735 -
+    // so every value afterwards factors in O(log value).
     public static int IdealArraysBySmallestPrimeFactorSieve(int arrayLength, int maxValue)
     {
-        var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(maxValue);
+        var smallestPrimeFactor = PrimeSieve.BuildSmallestPrimeFactors(maxValue);
         var total = 0L;
 
         for (var value = 1; value <= maxValue; value++)
@@ -103,58 +103,14 @@ internal static class CountTheNumberOfIdealArraysSolution
         return (int)total;
     }
 
-    // spf[i] holds i's smallest prime factor (spf[i] == i means i is prime, or 1).
-    private static DynamicArray<int> BuildSmallestPrimeFactorSieve(int max)
-    {
-        var spf = InitializeIdentitySieve(max);
-        MarkSmallestPrimeFactors(spf, max);
-        return spf;
-    }
-
-    private static DynamicArray<int> InitializeIdentitySieve(int max)
-    {
-        var spf = new DynamicArray<int>();
-
-        for (var i = 0; i <= max; i++)
-        {
-            spf.Add(i);
-        }
-
-        return spf;
-    }
-
-    private static void MarkSmallestPrimeFactors(DynamicArray<int> spf, int max)
-    {
-        for (var i = SmallestPrime; (long)i * i <= max; i++)
-        {
-            if (spf.Get(i) != i)
-            {
-                continue;
-            }
-
-            MarkMultiples(spf, i, max);
-        }
-    }
-
-    private static void MarkMultiples(DynamicArray<int> spf, int prime, int max)
-    {
-        for (var multiple = prime * prime; multiple <= max; multiple += prime)
-        {
-            if (spf.Get(multiple) == multiple)
-            {
-                spf.Set(multiple, prime);
-            }
-        }
-    }
-
-    private static long CountEndingAtBySieve(int value, int arrayLength, DynamicArray<int> smallestPrimeFactor)
+    private static long CountEndingAtBySieve(int value, int arrayLength, int[] smallestPrimeFactor)
     {
         var remaining = value;
         var product = 1L;
 
         while (remaining > 1)
         {
-            var factor = smallestPrimeFactor.Get(remaining);
+            var factor = smallestPrimeFactor[remaining];
             var exponent = 0;
 
             while (remaining % factor == 0)

@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.SegmentTree;
 
@@ -5,17 +6,17 @@ namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 
 // LC 3901's own prepared-input witness for the composed strategy - the
 // "graph already built" role LockGraph plays for OpenTheLock's ReduceGraph arm,
-// or SegmentTree<int,GcdOperation> plays bare for MinimumStabilityFactorOfArray.
+// or SegmentTree<int, GcdOperation<int>> plays bare for MinimumStabilityFactorOfArray.
 // A subsequence's gcd can only equal `modulus` exactly when every element it draws
 // from is a multiple of `modulus`, so this tracks nums divided by `modulus` wherever
-// it divides the element (0 - GcdOperation's identity - everywhere else, so a
+// it divides the element (0 - GcdOperation<int>'s identity - everywhere else, so a
 // non-multiple never contaminates a range's combined gcd) alongside a running count
 // of how many positions are multiples at all: two SegmentTree<int,TOperation> instantiations
 // answering "range gcd" and "range multiple-count" in O(log n) apiece, both point
 // updated together on every query so CountGoodSubseqBySegmentTreeGcd never rescans
 // the whole array except in the one case explained on HasGoodSubsequenceByRangeQuery.
 internal sealed class GoodSubsequenceIndex(
-    SegmentTree<int, GcdOperation> gcdTree,
+    SegmentTree<int, GcdOperation<int>> gcdTree,
     SegmentTree<int, SumOperation<int>> multipleCountTree,
     int[] divided,
     int modulus)
@@ -23,7 +24,7 @@ internal sealed class GoodSubsequenceIndex(
     // The three views GoodSubsequenceQueriesSolution reads by name, kept as
     // properties over the primary constructor's own values. The modulus has no
     // reader outside this type, so it stays a plain primary constructor parameter.
-    public SegmentTree<int, GcdOperation> GcdTree => gcdTree;
+    public SegmentTree<int, GcdOperation<int>> GcdTree => gcdTree;
 
     public SegmentTree<int, SumOperation<int>> MultipleCountTree => multipleCountTree;
 
@@ -42,7 +43,7 @@ internal sealed class GoodSubsequenceIndex(
         }
 
         return new GoodSubsequenceIndex(
-            new SegmentTree<int, GcdOperation>(divided),
+            new SegmentTree<int, GcdOperation<int>>(divided),
             new SegmentTree<int, SumOperation<int>>(multiples),
             divided,
             modulus);

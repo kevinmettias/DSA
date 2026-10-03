@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 namespace DSAExperimentation.LeetCode.FindGreatestCommonDivisorOfArray;
 
 // LeetCode 1979. Find Greatest Common Divisor of Array: the greatest common
@@ -51,7 +52,7 @@ internal static class FindGreatestCommonDivisorOfArraySolution
     {
         var (min, max) = MinAndMax(nums);
 
-        return EuclideanGcd(min, max);
+        return GreatestCommonDivisor.Of(min, max);
     }
 
     // One pass for both ends. A single-element array has min == max, and gcd(x, x)
@@ -69,7 +70,4 @@ internal static class FindGreatestCommonDivisorOfArraySolution
 
         return (min, max);
     }
-
-    private static int EuclideanGcd(int firstValue, int secondValue) =>
-        secondValue == 0 ? firstValue : EuclideanGcd(secondValue, firstValue % secondValue);
 }

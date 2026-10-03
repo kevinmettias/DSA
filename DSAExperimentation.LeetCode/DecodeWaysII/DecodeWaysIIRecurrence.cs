@@ -1,3 +1,4 @@
+
 namespace DSAExperimentation.LeetCode.DecodeWaysII;
 
 // The values LC 639's decode recurrence is written in terms of: how many codes each
@@ -10,10 +11,6 @@ namespace DSAExperimentation.LeetCode.DecodeWaysII;
 // should not have to step over the counts first.
 internal static class DecodeWaysIIRecurrence
 {
-    // Every running total the recurrence produces is reduced mod this, as LeetCode
-    // requires.
-    public const long Mod = 1_000_000_007;
-
     // A pair is two characters, read in base ten.
     public const int PairLength = 2;
     public const int DecimalBase = 10;

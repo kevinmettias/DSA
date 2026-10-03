@@ -90,17 +90,14 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     // last carry can fully drain. This repo's own Memoizer turns the recursion into a
     // DP over (bitPosition, slotsLeft, setBitsNeeded, carry); the weight for a count
     // split is "choose c of what's left" (the classic telescoping identity for
-    // m!/(c_0!...c_{n-1}!)), read from a factorial table built with this repo's own
-    // ModularArithmetic.Inverse - the same technique RoomWaysPrecomputedFactorialAlgebra
-    // uses for LC 1916, but this problem's own since no other solution shares it.
+    // m!/(c_0!...c_{n-1}!)), read from this repo's own FactorialTable - the table
+    // RoomWaysPrecomputedFactorialAlgebra reads for LC 1916.
     public static int SumOfProductsByCarryDigitDp(int sequenceLength, int requiredSetBits, int[] nums)
     {
         var maxBit = nums.Length + CarryDrainSteps(sequenceLength);
-        var factorial = BuildFactorial(sequenceLength);
         var digits = (
             Nums: nums,
-            Factorial: factorial,
-            InverseFactorial: BuildInverseFactorial(factorial),
+            Table: FactorialTable.Build(sequenceLength),
             MaxBit: maxBit);
 
         var total = Memoizer.Memoize<(int, int, int, int), long>(
@@ -125,31 +122,6 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
         return steps;
     }
 
-    private static long[] BuildFactorial(int upTo)
-    {
-        var factorial = new long[upTo + 1];
-        factorial[0] = 1;
-
-        for (var i = 1; i <= upTo; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % ModularArithmetic.Modulo;
-        }
-
-        return factorial;
-    }
-
-    private static long[] BuildInverseFactorial(long[] factorial)
-    {
-        var inverseFactorial = new long[factorial.Length];
-
-        for (var i = 0; i < factorial.Length; i++)
-        {
-            inverseFactorial[i] = ModularArithmetic.Inverse(factorial[i]);
-        }
-
-        return inverseFactorial;
-    }
-
     // Past the last bit position the sweep only succeeded if every slot was placed,
     // every set bit asked for was produced, and nothing was left to carry.
     private static bool IsExactSolution(int remaining, int need, int carry)
@@ -162,7 +134,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
     /// only when every slot was placed, every set bit produced, and nothing left to carry.
     /// </summary>
     private sealed class CarryDigitSweep(
-        (int[] Nums, long[] Factorial, long[] InverseFactorial, int MaxBit) digits)
+        (int[] Nums, FactorialTable Table, int MaxBit) digits)
         : IRecurrence<(int Bit, int Remaining, int Need, int Carry), long>
     {
         /// <inheritdoc/>
@@ -205,7 +177,7 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
                 return 0;
             }
 
-            var ways = Choose(digits.Factorial, digits.InverseFactorial, remaining, count);
+            var ways = digits.Table.Choose(remaining, count);
             var valuePower = bit < digits.Nums.Length ? ModularArithmetic.Power(digits.Nums[bit], count) : 1;
             var weight = ways * valuePower % ModularArithmetic.Modulo;
             var sub = rest.Replay((bit + 1, remaining - count, nextNeed, total >> 1), rest);
@@ -214,7 +186,4 @@ internal static class FindSumOfArrayProductOfMagicalSequencesSolution
         }
     }
 
-    private static long Choose(long[] factorial, long[] inverseFactorial, int itemCount, int selectedCount) =>
-        factorial[itemCount] * inverseFactorial[selectedCount] % ModularArithmetic.Modulo
-        * inverseFactorial[itemCount - selectedCount] % ModularArithmetic.Modulo;
 }

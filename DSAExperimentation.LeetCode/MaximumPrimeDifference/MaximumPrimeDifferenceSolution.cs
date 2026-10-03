@@ -1,3 +1,5 @@
+using DSAExperimentation.Algorithms.NumberTheory;
+
 namespace DSAExperimentation.LeetCode.MaximumPrimeDifference;
 
 // LeetCode 3115. Maximum Prime Difference: the maximum distance between the
@@ -76,7 +78,7 @@ internal static class MaximumPrimeDifferenceSolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            if (isComposite.Get(nums[i]))
+            if (isComposite[nums[i]])
             {
                 continue;
             }

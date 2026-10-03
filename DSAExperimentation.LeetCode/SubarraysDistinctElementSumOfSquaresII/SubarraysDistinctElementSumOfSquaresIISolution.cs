@@ -1,5 +1,5 @@
 using DSAExperimentation.DataStructures.HashMap;
-
+using DSAExperimentation.Domain.Modular;
 using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
 
 namespace DSAExperimentation.LeetCode.SubarraysDistinctElementSumOfSquaresII;
@@ -12,8 +12,6 @@ namespace DSAExperimentation.LeetCode.SubarraysDistinctElementSumOfSquaresII;
 // each other without either restating the algorithm.
 internal static class SubarraysDistinctElementSumOfSquaresIISolution
 {
-    private const long Mod = 1_000_000_007;
-
     // Textbook O(n^2): for each start l, grow r rightward tracking distinct count
     // in a plain HashSet, adding its square to the running total. The arm the
     // Fenwick-tree strategy has to beat.
@@ -28,7 +26,7 @@ internal static class SubarraysDistinctElementSumOfSquaresIISolution
             for (var right = left; right < nums.Length; right++)
             {
                 seen.Add(nums[right]);
-                answer = (answer + ((long)seen.Count * seen.Count)) % Mod;
+                answer = (answer + ((long)seen.Count * seen.Count)) % ModularArithmetic.Modulo;
             }
         }
 
@@ -64,7 +62,7 @@ internal static class SubarraysDistinctElementSumOfSquaresIISolution
             sumOfSquares += (2 * rangeSumBefore) + rangeLength;
 
             tree.RangeAdd(left, right, 1);
-            answer = (answer + sumOfSquares) % Mod;
+            answer = (answer + sumOfSquares) % ModularArithmetic.Modulo;
         }
 
         return answer;

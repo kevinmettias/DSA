@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 namespace DSAExperimentation.LeetCode.MirrorReflection;
 
 // LeetCode 858. Mirror Reflection: a laser fired from the south-west corner of a
@@ -45,7 +46,7 @@ internal static class MirrorReflectionSolution
     // The same k and m, reached in one Euclidean reduction instead of roomSide steps.
     public static int ReceptorByGcdReduction(int roomSide, int rayHeight)
     {
-        var divisor = Gcd(roomSide, rayHeight);
+        var divisor = GreatestCommonDivisor.Of(roomSide, rayHeight);
         var crossings = roomSide / divisor;
         var rooms = rayHeight / divisor;
 
@@ -72,8 +73,6 @@ internal static class MirrorReflectionSolution
     // A crossing count the parity divisor divides exactly - the whole of the reading
     // above.
     private static bool IsEven(long value) => value % ParityDivisor == 0;
-
-    private static int Gcd(int left, int right) => right == 0 ? left : Gcd(right, left % right);
 
     // The two parity readings Receptor branches on - each is a state of one crossing
     // count, named so the call site reads `Parity.Odd` rather than `true`.

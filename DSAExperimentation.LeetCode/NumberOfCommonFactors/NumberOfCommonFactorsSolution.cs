@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Set;
 
 namespace DSAExperimentation.LeetCode.NumberOfCommonFactors;
@@ -40,7 +41,7 @@ internal static class NumberOfCommonFactorsSolution
     // size rather than a running total. O(sqrt(gcd) + log min(a, b)).
     public static int CountCommonFactorsByDivisorEnumeration(int first, int second)
     {
-        var greatestCommonDivisor = GreatestCommonDivisor(first, second);
+        var greatestCommonDivisor = GreatestCommonDivisor.Of(first, second);
         var divisors = new Set<int>();
 
         for (var i = 1; (long)i * i <= greatestCommonDivisor; i++)
@@ -53,16 +54,5 @@ internal static class NumberOfCommonFactorsSolution
         }
 
         return divisors.Count;
-    }
-
-    // Euclid's algorithm: plain arithmetic, with no data structure of its own.
-    private static int GreatestCommonDivisor(int first, int second)
-    {
-        while (second != 0)
-        {
-            (first, second) = (second, first % second);
-        }
-
-        return first;
     }
 }

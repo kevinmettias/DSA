@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.MaxPointsOnALine;
@@ -140,7 +141,7 @@ internal static class MaxPointsOnALineSolution
     // always hash to the same bucket.
     private static SlopeKey ReducedSlope(int dx, int dy)
     {
-        var divisor = Gcd(Math.Abs(dx), Math.Abs(dy));
+        var divisor = GreatestCommonDivisor.Of(dx, dy);
         dx /= divisor;
         dy /= divisor;
 
@@ -157,7 +158,4 @@ internal static class MaxPointsOnALineSolution
     // does not - the same line, opposite direction - so it is the one negated.
     private static bool IsBackwardFacing(int dx, int dy)
         => dx < 0 || (dx == 0 && dy < 0);
-
-    private static int Gcd(int firstOperand, int secondOperand) =>
-        secondOperand == 0 ? firstOperand : Gcd(secondOperand, firstOperand % secondOperand);
 }

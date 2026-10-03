@@ -1,19 +1,13 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 
-namespace DSAExperimentation.LeetCode.MaximumPrimeDifference;
+namespace DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 
-// The sieve of Eratosthenes over a value bound: slot i is true when i is composite,
-// so "is slot i clear" is the primality test, for every value up to the bound at
-// once and in O(bound log log bound) rather than one value per trial division.
+// The sieve of Eratosthenes over a value bound: slot i is true when i is composite, so "is slot i
+// clear" is the primality test, for every value up to the bound at once.
 //
-// LeetCode states the values a problem has to test with a constraint on their
-// magnitude, and every problem that must decide primality over all of them at once
-// crosses off multiples the same way, so the sieve is declared once, here, and
-// reused rather than copied - the same arrangement SqrtX's SquareExceedsSequence
-// has with FourDivisors, ClosestDivisors and ThreeDivisors. MaximumPrimeDifference
-// is where it is declared and the first caller; MostFrequentPrime,
-// ClosestPrimeNumbersInRange and MaximizeCountOfDistinctPrimesAfterSplit each hold
-// only the bound their own problem states and call in for the tracker.
+// Kept local rather than taken from the core's PrimeSieve because this problem's baseline arm
+// reaches it as well as its composed arm (ARCHITECTURE section 17.5): the two arms share one
+// sieve, so neither can move to a library primitive without the other.
 internal static class PrimeSieve
 {
     // The whole tracker for [0, bound], one flag per value - what CountPrimes names a

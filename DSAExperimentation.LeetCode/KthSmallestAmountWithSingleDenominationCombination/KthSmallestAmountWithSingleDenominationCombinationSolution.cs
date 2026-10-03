@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.Heap;
 
 namespace DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCombination;
@@ -132,7 +133,7 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
             }
 
             coinsInSubset++;
-            lcm = Lcm(lcm, coins[i]);
+            lcm = LeastCommonMultiple.Of(lcm, (long)coins[i]);
 
             if (lcm > limit)
             {
@@ -143,18 +144,5 @@ internal static class KthSmallestAmountWithSingleDenominationCombinationSolution
         var subsetSizeIsOdd = coinsInSubset % 2 == 1;
 
         return subsetSizeIsOdd ? multiplesOfLcm : -multiplesOfLcm;
-    }
-
-    private static long Lcm(long firstNumber, long secondNumber) =>
-        firstNumber / Gcd(firstNumber, secondNumber) * secondNumber;
-
-    private static long Gcd(long firstNumber, long secondNumber)
-    {
-        while (secondNumber != 0)
-        {
-            (firstNumber, secondNumber) = (secondNumber, firstNumber % secondNumber);
-        }
-
-        return firstNumber;
     }
 }

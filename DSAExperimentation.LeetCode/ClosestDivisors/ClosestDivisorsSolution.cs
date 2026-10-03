@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.SqrtX;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.ClosestDivisors;
 
@@ -10,17 +9,12 @@ namespace DSAExperimentation.LeetCode.ClosestDivisors;
 // differ only in how they find the largest divisor at or below sqrt(candidate), whose
 // partner is necessarily the closest possible pair for that candidate. The baseline
 // scans the whole range; the composed strategy anchors at floor(sqrt(candidate)) via
-// BinarySearch.LowerBound over SqrtX's SquareExceedsSequence - LC 69's own monotone
-// "does i^2 exceed x" witness, reused rather than copied - then walks down a few
-// steps to the first exact divisor.
+// IntegerSquareRoot.Floor - LC 69's own binary search, promoted to the library - then walks
+// down a few steps to the first exact divisor.
 internal static class ClosestDivisorsSolution
 {
     // LeetCode asks about num + 1 and num + 2, so the second candidate is +2.
     private const int SecondCandidateOffset = 2;
-
-    // ceil(sqrt(int.MaxValue)): caps the binary-search anchor so squaring an index
-    // can never overflow the search range.
-    private const int SqrtAnchorCeiling = 46_341;
 
     // The textbook answer: for each candidate, walk every i from 1 upward and keep
     // the tightest (i, candidate / i) pair found - O(candidate) per candidate, plain
@@ -56,8 +50,7 @@ internal static class ClosestDivisorsSolution
 
     private static (int First, int Second) AnchoredPairFor(int candidate)
     {
-        var sequence = new SquareExceedsSequence(candidate, Math.Min(candidate, SqrtAnchorCeiling) + 1);
-        var divisor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
+        var divisor = IntegerSquareRoot.Floor(candidate);
 
         while (candidate % divisor != 0)
         {

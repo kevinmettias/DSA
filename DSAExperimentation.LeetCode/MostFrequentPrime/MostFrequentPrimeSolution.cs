@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumPrimeDifference;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.MostFrequentPrime;
 
@@ -73,7 +73,7 @@ internal static class MostFrequentPrimeSolution
 
         foreach (var value in GenerateCandidateNumbers(mat))
         {
-            if (!isComposite.Get(value))
+            if (!isComposite[value])
             {
                 frequency[value] = frequency.GetValueOrDefault(value) + 1;
             }

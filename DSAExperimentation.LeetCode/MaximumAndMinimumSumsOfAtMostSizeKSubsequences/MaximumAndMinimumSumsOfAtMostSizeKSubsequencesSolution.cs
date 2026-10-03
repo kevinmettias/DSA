@@ -65,10 +65,10 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
         return sum;
     }
 
-    // This repo's ModularArithmetic.Inverse turns each row sum into a direct
-    // C(i,j) lookup against a precomputed factorial/inverse-factorial table -
-    // the same reverse-fill trick RoomWaysPrecomputedFactorialAlgebra uses, one
-    // Inverse call total instead of one per row.
+    // This repo's own FactorialTable turns each row sum into direct C(i,j) lookups
+    // against one precomputed factorial/inverse-factorial table - the table
+    // RoomWaysPrecomputedFactorialAlgebra reads, one Inverse call total instead of
+    // one per row.
     public static long SumByFactorialCombinatorics(int[] nums, int maxLength)
     {
         var sorted = SortedCopy(nums);
@@ -79,60 +79,31 @@ internal static class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution
 
     private static long[] CappedRowSumsByFactorial(int elementCount, int maxLength)
     {
-        var (factorial, inverseFactorial) = FactorialTables(elementCount);
+        var table = FactorialTable.Build(elementCount - 1);
         var capped = new long[elementCount];
 
         for (var i = 0; i < elementCount; i++)
         {
-            capped[i] = CappedBinomialRowSum(factorial, inverseFactorial, i, maxLength);
+            capped[i] = CappedBinomialRowSum(table, i, maxLength);
         }
 
         return capped;
     }
 
-    // Factorials and inverse factorials up to elementCount: one
-    // ModularArithmetic.Inverse call seeds the top entry and every lower one falls out
-    // of it.
-    private static (long[] Factorial, long[] InverseFactorial) FactorialTables(int elementCount)
-    {
-        var factorial = new long[elementCount];
-        var inverseFactorial = new long[elementCount];
-        factorial[0] = 1;
-
-        for (var i = 1; i < elementCount; i++)
-        {
-            factorial[i] = factorial[i - 1] * i % Modulo;
-        }
-
-        inverseFactorial[elementCount - 1] = ModularArithmetic.Inverse(factorial[elementCount - 1]);
-
-        for (var i = elementCount - 2; i >= 0; i--)
-        {
-            inverseFactorial[i] = inverseFactorial[i + 1] * (i + 1) % Modulo;
-        }
-
-        return (factorial, inverseFactorial);
-    }
-
     // The factored counterpart of CappedRowSum: the same sum of C(i, 0) through
     // C(i, min(i, k-1)), each term read straight off the tables.
-    private static long CappedBinomialRowSum(
-        long[] factorial, long[] inverseFactorial, int rowIndex, int maxLength)
+    private static long CappedBinomialRowSum(FactorialTable table, int rowIndex, int maxLength)
     {
         var cap = Math.Min(rowIndex, maxLength - 1);
         var sum = 0L;
 
         for (var j = 0; j <= cap; j++)
         {
-            sum = (sum + Binomial(factorial, inverseFactorial, rowIndex, j)) % Modulo;
+            sum = (sum + table.Choose(rowIndex, j)) % Modulo;
         }
 
         return sum;
     }
-
-    // C(total, choose) straight off the two precomputed tables.
-    private static long Binomial(long[] factorial, long[] inverseFactorial, int total, int choose) =>
-        factorial[total] * inverseFactorial[choose] % Modulo * inverseFactorial[total - choose] % Modulo;
 
     private static int[] SortedCopy(int[] nums)
     {

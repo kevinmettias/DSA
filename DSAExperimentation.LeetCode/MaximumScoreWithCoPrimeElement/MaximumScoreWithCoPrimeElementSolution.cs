@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 namespace DSAExperimentation.LeetCode.MaximumScoreWithCoPrimeElement;
 
 // LeetCode 3953. Maximum Score with Co-Prime Element: pick a final value v for
@@ -69,7 +70,7 @@ internal static class MaximumScoreWithCoPrimeElementSolution
     public static int MaximumScoreByDivisorSieve(int[] nums, int maxVal)
     {
         var limit = Math.Max(maxVal, nums.Length == 0 ? 1 : nums.Max());
-        var smallestPrimeFactor = BuildSmallestPrimeFactorSieve(limit);
+        var smallestPrimeFactor = PrimeSieve.BuildSmallestPrimeFactors(limit);
         var divisorCount = BuildDivisorCountSieve(nums, limit);
         var n = nums.Length;
         var best = int.MinValue;
@@ -88,29 +89,6 @@ internal static class MaximumScoreWithCoPrimeElementSolution
         }
 
         return best;
-    }
-
-    private static int[] BuildSmallestPrimeFactorSieve(int limit)
-    {
-        var smallestPrimeFactor = new int[limit + 1];
-
-        for (var candidate = 2; candidate <= limit; candidate++)
-        {
-            if (smallestPrimeFactor[candidate] != 0)
-            {
-                continue;
-            }
-
-            for (var multiple = candidate; multiple <= limit; multiple += candidate)
-            {
-                if (smallestPrimeFactor[multiple] == 0)
-                {
-                    smallestPrimeFactor[multiple] = candidate;
-                }
-            }
-        }
-
-        return smallestPrimeFactor;
     }
 
     // divisorCount[d] = how many elements of nums are divisible by d, built by

@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.CountNumberOfTrapezoidsII;
@@ -138,7 +139,7 @@ internal static class CountNumberOfTrapezoidsIISolution
         var second = (X: points[secondIndex][0], Y: points[secondIndex][1]);
         var dx = second.X - first.X;
         var dy = second.Y - first.Y;
-        var gcd = Gcd(dx, dy);
+        var gcd = GreatestCommonDivisor.Of(dx, dy);
         var (a, b) = (dx / gcd, dy / gcd);
 
         if (IsInOppositeHalfPlane(a, b))
@@ -154,16 +155,6 @@ internal static class CountNumberOfTrapezoidsIISolution
             CountThenIncrement(lookups.LookupLineLength, (a, b, c, length));
 
         return (counted, duplicate);
-    }
-
-    private static int Gcd(int left, int right)
-    {
-        while (right != 0)
-        {
-            (left, right) = (right, left % right);
-        }
-
-        return Math.Abs(left);
     }
 
     // Canonical directions point the positive-x way: directionX > 0, or

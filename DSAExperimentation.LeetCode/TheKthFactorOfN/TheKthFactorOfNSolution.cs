@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.SqrtX;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.TheKthFactorOfN;
 
@@ -8,10 +7,9 @@ namespace DSAExperimentation.LeetCode.TheKthFactorOfN;
 //
 // Both strategies answer the same question and differ only in how much of the range
 // they walk. The baseline trial-divides every candidate from 1 to `number`. The
-// composed strategy anchors at floor(sqrt(number)) with one BinarySearch.LowerBound
-// over SqrtX's monotone SquareExceedsSequence - LC 69's own "does i^2 exceed x"
-// witness, reused rather than copied, the same technique FourDivisors and
-// ClosestDivisors use - then counts divisors off in sorted order: ascending up to the
+// composed strategy anchors at floor(sqrt(number)) with IntegerSquareRoot.Floor - LC 69's
+// own binary search, promoted to the library, the same anchor FourDivisors and
+// ClosestDivisors take - then counts divisors off in sorted order: ascending up to the
 // anchor, and past it by walking the anchor back down to 1 and reporting each partner
 // `number` / divisor (also ascending, since `number` / divisor grows as divisor
 // shrinks).
@@ -20,9 +18,6 @@ namespace DSAExperimentation.LeetCode.TheKthFactorOfN;
 // prepared-input overload - there is no input structure to build.
 internal static class TheKthFactorOfNSolution
 {
-    // ceil(sqrt(int.MaxValue)): caps the binary-search anchor so squaring an index can
-    // never overflow the search range.
-    private const int SqrtAnchorCeiling = 46_341;
 
     // The textbook answer: trial-divide `number` by every candidate from 1 upward,
     // counting factors off until the `rank`-th appears. Deliberately written without
@@ -48,7 +43,7 @@ internal static class TheKthFactorOfNSolution
     // never more than O(sqrt(number)) divisibility tests instead of a full scan.
     public static int KthFactorByBinarySearchAnchor(int number, int rank)
     {
-        var anchor = SqrtAnchor(number);
+        var anchor = IntegerSquareRoot.Floor(number);
         var remaining = rank;
 
         if (TryFindAtOrBelowAnchor(number, anchor, ref remaining, out var found))
@@ -57,14 +52,6 @@ internal static class TheKthFactorOfNSolution
         }
 
         return TryFindAboveAnchor(number, anchor, ref remaining, out found) ? found : LeetCodeAnswer.None;
-    }
-
-    // floor(sqrt(number)): the first index whose square exceeds `number`, less one.
-    private static int SqrtAnchor(int number)
-    {
-        var sequence = new SquareExceedsSequence(number, Math.Min(number, SqrtAnchorCeiling) + 1);
-
-        return BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
     }
 
     // The small half of the divisor list, already in ascending order.

@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.SqrtX;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.FourDivisors;
 
@@ -8,9 +7,8 @@ namespace DSAExperimentation.LeetCode.FourDivisors;
 //
 // Both strategies answer the same per-number question and differ only in where the
 // divisor walk starts. The baseline scans 1..num. The composed strategy anchors at
-// floor(sqrt(num)) with one BinarySearch.LowerBound over SqrtX's monotone
-// SquareExceedsSequence - LC 69's own "does i^2 exceed x" witness, reused rather than
-// copied, the same technique ClosestDivisors uses for LC 1362 - then walks down,
+// floor(sqrt(num)) with IntegerSquareRoot.Floor - LC 69's own binary search, promoted to
+// the library, the same anchor ClosestDivisors takes for LC 1362 - then walks down,
 // collecting both members of each divisor pair and bailing out the moment a fifth
 // divisor appears.
 internal static class FourDivisorsSolution
@@ -19,10 +17,6 @@ internal static class FourDivisorsSolution
 
     // A divisor below sqrt(num) and its partner above it are two distinct divisors.
     private const int DistinctDivisorPairCount = 2;
-
-    // ceil(sqrt(int.MaxValue)): caps the binary-search anchor so squaring an index can
-    // never overflow the search range.
-    private const int SqrtAnchorCeiling = 46_341;
 
     // The textbook answer: trial-divide every number by 1..num, plain BCL arithmetic
     // with no search structure at all, giving up as soon as a fifth divisor appears.
@@ -79,8 +73,7 @@ internal static class FourDivisorsSolution
 
     private static int AnchoredDivisorSumIfExactlyFour(int num)
     {
-        var sequence = new SquareExceedsSequence(num, Math.Min(num, SqrtAnchorCeiling) + 1);
-        var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
+        var anchor = IntegerSquareRoot.Floor(num);
 
         var tally = new DivisorTally();
 

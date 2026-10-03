@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
@@ -6,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumStabilityFactorOfArraySolution's, the same
 // methods MinimumStabilityFactorOfArraySolutionTests proves correct. The composed arm is
-// handed a prebuilt SegmentTree<int,GcdOperation>, so the O(n log n) tree build is
+// handed a prebuilt SegmentTree<int, GcdOperation<int>>, so the O(n log n) tree build is
 // charged to [GlobalSetup] rather than the binary search being measured.
 public class MinimumStabilityFactorOfArrayBenchmarks
 {
@@ -15,7 +16,7 @@ public class MinimumStabilityFactorOfArrayBenchmarks
 
     private int[] _nums = [];
 
-    private SegmentTree<int, GcdOperation> _gcdTree = null!;
+    private SegmentTree<int, GcdOperation<int>> _gcdTree = null!;
     [Params(200, 2_000)]
     public int Length { get; set; }
 
@@ -23,7 +24,7 @@ public class MinimumStabilityFactorOfArrayBenchmarks
     public void Setup()
     {
         _nums = StabilityFactorWorkloads.Build(Length, seed: Seed);
-        _gcdTree = new SegmentTree<int, GcdOperation>(_nums);
+        _gcdTree = new SegmentTree<int, GcdOperation<int>>(_nums);
     }
 
     [Benchmark(Baseline = true)]

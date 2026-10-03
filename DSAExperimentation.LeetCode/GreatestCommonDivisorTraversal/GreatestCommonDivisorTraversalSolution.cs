@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.DataStructures.HashMap;
 
@@ -26,7 +27,6 @@ namespace DSAExperimentation.LeetCode.GreatestCommonDivisorTraversal;
 // length greater than one that contains a 1 is always false, on both arms.
 internal static class GreatestCommonDivisorTraversalSolution
 {
-    private const int SmallestPrimeFactor = 2;
 
     // The naive arm: decide adjacency by computing a gcd for every pair, and union
     // through a hand-rolled parent array. Internals are deliberately all BCL - this is
@@ -97,7 +97,7 @@ internal static class GreatestCommonDivisorTraversalSolution
 
         for (var i = 0; i < nums.Length; i++)
         {
-            foreach (var factor in PrimeFactors(nums[i]))
+            foreach (var factor in PrimeFactorization.Distinct(nums[i]))
             {
                 if (firstIndexWithFactor.TryGetValue(factor, out var owner))
                 {
@@ -108,29 +108,6 @@ internal static class GreatestCommonDivisorTraversalSolution
                     firstIndexWithFactor.Set(factor, i);
                 }
             }
-        }
-    }
-
-    private static IEnumerable<int> PrimeFactors(int value)
-    {
-        for (var factor = SmallestPrimeFactor; factor * factor <= value; factor++)
-        {
-            if (value % factor != 0)
-            {
-                continue;
-            }
-
-            yield return factor;
-
-            while (value % factor == 0)
-            {
-                value /= factor;
-            }
-        }
-
-        if (value > 1)
-        {
-            yield return value;
         }
     }
 

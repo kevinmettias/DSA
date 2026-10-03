@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.SegmentTree;
 
 namespace DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
@@ -28,6 +29,9 @@ namespace DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
 // also caps it at any L' >= L), so binary search applies directly.
 internal static class MinimumStabilityFactorOfArraySolution
 {
+    // gcd(0, x) = x, so 0 is the gcd of no values: where a running gcd starts folding from.
+    private const int EmptyGcd = 0;
+
     // Baseline: recomputes each window's gcd from scratch by scanning its L+1
     // elements (with an early exit once the running gcd hits 1) - "what you'd
     // write without this repo" (ARCHITECTURE.md 17.5), no range-query structure at
@@ -77,11 +81,11 @@ internal static class MinimumStabilityFactorOfArraySolution
 
     private static int WindowGcd(int[] nums, int start, int windowLength)
     {
-        var gcd = GcdOperation.Identity;
+        var gcd = EmptyGcd;
 
         for (var offset = 0; offset <= windowLength; offset++)
         {
-            gcd = GcdOperation.Combine(gcd, nums[start + offset]);
+            gcd = Gcd(gcd, nums[start + offset]);
 
             if (gcd == 1)
             {
@@ -92,14 +96,14 @@ internal static class MinimumStabilityFactorOfArraySolution
         return gcd;
     }
 
-    // Composed: builds a SegmentTree<int,GcdOperation> once so every window's gcd
+    // Composed: builds a SegmentTree<int, GcdOperation<int>> once so every window's gcd
     // is an O(log n) range query instead of an O(windowLength) rescan - the
     // Query-with-a-custom-ICombineOperation extensibility point
     // DataStructures.SegmentTree.SegmentTree<Element,TOperation> exists for.
     public static int MinStabilityBySegmentTreeGcd(int[] nums, int maxC) =>
-        MinStabilityBySegmentTreeGcd(new SegmentTree<int, GcdOperation>(nums), maxC);
+        MinStabilityBySegmentTreeGcd(new SegmentTree<int, GcdOperation<int>>(nums), maxC);
 
-    public static int MinStabilityBySegmentTreeGcd(SegmentTree<int, GcdOperation> gcdTree, int maxC)
+    public static int MinStabilityBySegmentTreeGcd(SegmentTree<int, GcdOperation<int>> gcdTree, int maxC)
     {
         var (low, high) = (0, gcdTree.Count);
 
@@ -120,7 +124,7 @@ internal static class MinimumStabilityFactorOfArraySolution
         return low;
     }
 
-    private static int CutsNeededByRangeQuery(SegmentTree<int, GcdOperation> gcdTree, int windowLength)
+    private static int CutsNeededByRangeQuery(SegmentTree<int, GcdOperation<int>> gcdTree, int windowLength)
     {
         var cuts = 0;
         var lastCut = -1;
@@ -140,5 +144,18 @@ internal static class MinimumStabilityFactorOfArraySolution
         }
 
         return cuts;
+    }
+
+    // Euclid's algorithm, written out here rather than taken from the core GcdOperation: the
+    // brute-force baseline reaches it through WindowGcd, and a baseline arm composes nothing of this
+    // repository's own (ARCHITECTURE section 17.5).
+    private static int Gcd(int left, int right)
+    {
+        while (right != 0)
+        {
+            (left, right) = (right, left % right);
+        }
+
+        return left;
     }
 }

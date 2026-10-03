@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using System.Numerics;
 using DSAExperimentation.DataStructures.Set;
 
@@ -78,34 +79,13 @@ internal static class DistinctPrimeFactorsOfProductOfArraySolution
 
         foreach (var num in nums)
         {
-            AddPrimeFactors(num, primes);
+            foreach (var prime in PrimeFactorization.Distinct(num))
+            {
+                primes.TryAdd(prime);
+            }
         }
 
         return primes.Count;
     }
 
-    private static void AddPrimeFactors(int value, Set<int> primes)
-    {
-        var remaining = value;
-
-        for (var divisor = SmallestPrime; divisor * divisor <= remaining; divisor++)
-        {
-            if (remaining % divisor != 0)
-            {
-                continue;
-            }
-
-            primes.TryAdd(divisor);
-
-            while (remaining % divisor == 0)
-            {
-                remaining /= divisor;
-            }
-        }
-
-        if (remaining > 1)
-        {
-            primes.TryAdd(remaining);
-        }
-    }
 }

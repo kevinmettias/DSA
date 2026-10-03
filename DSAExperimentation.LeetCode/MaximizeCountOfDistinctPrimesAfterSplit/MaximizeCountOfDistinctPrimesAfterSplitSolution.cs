@@ -1,6 +1,5 @@
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.DataStructures.Set;
-using DSAExperimentation.LeetCode.MaximumPrimeDifference;
 
 namespace DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 
@@ -10,10 +9,8 @@ namespace DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 // primes in nums[k..n-1]).
 //
 // Both strategies share the same Sieve of Eratosthenes over every value
-// nums/queries can ever hold - PrimeSieve, declared in MaximumPrimeDifference's
-// folder and reused rather than copied, the same arrangement SqrtX's
-// SquareExceedsSequence has with FourDivisors, ClosestDivisors and
-// ThreeDivisors - and differ only in how they answer "best split" per query:
+// nums/queries can ever hold - this folder's own PrimeSieve - and differ only in
+// how they answer "best split" per query:
 // the brute-force arm re-scans both sides from scratch with a fresh Set<int>
 // for every candidate k, while the composed arm precomputes one prefix pass and
 // folds a single suffix pass into it, each side counted through this repo's own

@@ -14,13 +14,16 @@ namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 // case the witness itself has length n and is disqualified, and the question
 // becomes whether dropping any single element still leaves a combined gcd of 1.
 //
-// Both strategies share that reduction and the same GcdOperation; they differ
+// Both strategies share that reduction and the same gcd; they differ
 // only in how a query's post-update gcd/multiple-count are obtained - an O(n)
 // rescan from scratch, or two persistent SegmentTree instances point-updated in
 // O(log n) and range-queried in O(log n), falling back to a scan only for the
 // one case a range query alone cannot decide (see HasGoodSubsequenceByRangeQuery).
 internal static class GoodSubsequenceQueriesSolution
 {
+    // gcd(0, x) = x, so 0 is the gcd of no values: where a running gcd starts folding from.
+    private const int EmptyGcd = 0;
+
     // The textbook answer: no persistent structure, every query rescans nums'
     // modulus-divided values from scratch in O(n) - "what you'd write without this
     // repo" (ARCHITECTURE.md 17.5).
@@ -51,7 +54,7 @@ internal static class GoodSubsequenceQueriesSolution
     private static bool HasGoodSubsequenceByScan(int[] divided)
     {
         var multiplesCount = 0;
-        var gcd = GcdOperation.Identity;
+        var gcd = EmptyGcd;
 
         foreach (var value in divided)
         {
@@ -60,7 +63,7 @@ internal static class GoodSubsequenceQueriesSolution
                 multiplesCount++;
             }
 
-            gcd = GcdOperation.Combine(gcd, value);
+            gcd = Gcd(gcd, value);
         }
 
         if (multiplesCount == 0 || gcd != 1)
@@ -123,7 +126,7 @@ internal static class GoodSubsequenceQueriesSolution
     // Whether some single index can be dropped from divided (every entry already
     // a multiple of modulus) while the rest still combine to a gcd of 1: a standard
     // prefix/suffix gcd sweep, shared by both strategies exactly the way LC
-    // 3605's GcdOperation.Combine is - not itself a second strategy, just the one
+    // 3605's own Gcd is - not itself a second strategy, just the one
     // subroutine both arms need for this one case.
     private static bool HasRemovableIndex(int[] divided)
     {
@@ -136,7 +139,7 @@ internal static class GoodSubsequenceQueriesSolution
 
         for (var i = 0; i < n; i++)
         {
-            if (GcdOperation.Combine(prefix[i], suffix[i + 1]) == 1)
+            if (Gcd(prefix[i], suffix[i + 1]) == 1)
             {
                 return true;
             }
@@ -150,11 +153,11 @@ internal static class GoodSubsequenceQueriesSolution
     // case for the sweep above to spell out.
     private static void BuildPrefixCommonDivisors(int[] prefix, int[] divided)
     {
-        prefix[0] = GcdOperation.Identity;
+        prefix[0] = EmptyGcd;
 
         for (var i = 0; i < divided.Length; i++)
         {
-            prefix[i + 1] = GcdOperation.Combine(prefix[i], divided[i]);
+            prefix[i + 1] = Gcd(prefix[i], divided[i]);
         }
     }
 
@@ -163,11 +166,11 @@ internal static class GoodSubsequenceQueriesSolution
     // prefix above.
     private static void BuildSuffixCommonDivisors(int[] suffix, int[] divided)
     {
-        suffix[divided.Length] = GcdOperation.Identity;
+        suffix[divided.Length] = EmptyGcd;
 
         for (var i = divided.Length - 1; i >= 0; i--)
         {
-            suffix[i] = GcdOperation.Combine(suffix[i + 1], divided[i]);
+            suffix[i] = Gcd(suffix[i + 1], divided[i]);
         }
     }
 
@@ -182,5 +185,18 @@ internal static class GoodSubsequenceQueriesSolution
         }
 
         return value / modulus;
+    }
+
+    // Euclid's algorithm, written out here rather than taken from the core GcdOperation: the
+    // brute-force baseline reaches it through HasGoodSubsequenceByScan and HasRemovableIndex, and a baseline arm composes nothing of this
+    // repository's own (ARCHITECTURE section 17.5).
+    private static int Gcd(int left, int right)
+    {
+        while (right != 0)
+        {
+            (left, right) = (right, left % right);
+        }
+
+        return left;
     }
 }

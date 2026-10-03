@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 namespace DSAExperimentation.LeetCode.CheckIfPointIsReachable;
 
 // LeetCode 2543. Check if Point Is Reachable: starting from (1, 1), the allowed
@@ -87,7 +88,7 @@ internal static class CheckIfPointIsReachableSolution
     // gcd is a power of two.
     public static bool IsReachableByGcd(int targetX, int targetY)
     {
-        var gcd = EuclideanGcd(targetX, targetY);
+        var gcd = GreatestCommonDivisor.Of(targetX, targetY);
 
         return IsPowerOfTwo(gcd);
     }
@@ -97,7 +98,4 @@ internal static class CheckIfPointIsReachableSolution
     // so the gcd is too and the degenerate zero this trick also accepts cannot
     // arise.
     private static bool IsPowerOfTwo(int value) => (value & (value - 1)) == 0;
-
-    private static int EuclideanGcd(int dividend, int divisor) =>
-        divisor == 0 ? dividend : EuclideanGcd(divisor, dividend % divisor);
 }

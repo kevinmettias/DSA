@@ -1,5 +1,4 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.LeetCode.SqrtX;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.ThreeDivisors;
 
@@ -9,10 +8,9 @@ namespace DSAExperimentation.LeetCode.ThreeDivisors;
 //
 // Both strategies answer that same question and differ only in where the divisor
 // walk starts. The baseline trial-divides every candidate from 1 to num. The
-// composed strategy anchors at floor(sqrt(num)) with one BinarySearch.LowerBound
-// over SqrtX's monotone SquareExceedsSequence - LC 69's own "does i^2 exceed x"
-// witness, reused rather than copied, the same technique FourDivisors (LC 1390),
-// ClosestDivisors (LC 1362) and TheKthFactorOfN (LC 1492) use - then walks down
+// composed strategy anchors at floor(sqrt(num)) with IntegerSquareRoot.Floor - LC 69's own
+// binary search, promoted to the library, the same anchor FourDivisors (LC 1390),
+// ClosestDivisors (LC 1362) and TheKthFactorOfN (LC 1492) take - then walks down
 // collecting both members of each divisor pair, bailing out the moment a fourth
 // divisor appears, so any number that is not a prime square stops paying almost
 // immediately instead of scanning all the way to 1.
@@ -25,10 +23,6 @@ internal static class ThreeDivisorsSolution
 
     // A divisor below sqrt(num) and its partner above it are two distinct divisors.
     private const int DistinctDivisorPairCount = 2;
-
-    // ceil(sqrt(int.MaxValue)): caps the binary-search anchor so squaring an index can
-    // never overflow the search range.
-    private const int SqrtAnchorCeiling = 46_341;
 
     // The textbook answer: trial-divide num by every candidate from 1 upward, plain
     // BCL arithmetic with no search structure at all, giving up as soon as a fourth
@@ -61,8 +55,7 @@ internal static class ThreeDivisorsSolution
     // with its partner.
     public static bool IsThreeByBinarySearchAnchor(int num)
     {
-        var sequence = new SquareExceedsSequence(num, Math.Min(num, SqrtAnchorCeiling) + 1);
-        var anchor = BinarySearch.LowerBound<int, SquareExceedsSequence>(sequence, 1) - 1;
+        var anchor = IntegerSquareRoot.Floor(num);
 
         var count = 0;
 

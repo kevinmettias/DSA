@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.DynamicProgramming;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.DecodeWaysII;
 
@@ -29,11 +30,11 @@ internal static class DecodeWaysIISolution
                 continue;
             }
 
-            dp[i] = SingleWays(digits[i]) * dp[i + 1] % DecodeWaysIIRecurrence.Mod;
+            dp[i] = SingleWays(digits[i]) * dp[i + 1] % ModularArithmetic.Modulo;
 
             if (i + 1 < digits.Length)
             {
-                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % DecodeWaysIIRecurrence.Mod;
+                dp[i] = (dp[i] + (PairWays(digits[i], digits[i + 1]) * dp[i + DecodeWaysIIRecurrence.PairLength])) % ModularArithmetic.Modulo;
             }
         }
 
@@ -96,12 +97,12 @@ internal static class DecodeWaysIISolution
                 return 0;
             }
 
-            var total = SingleWays(digits[index]) * rest.Replay(index + 1, rest) % DecodeWaysIIRecurrence.Mod;
+            var total = SingleWays(digits[index]) * rest.Replay(index + 1, rest) % ModularArithmetic.Modulo;
 
             if (index + 1 < digits.Length)
             {
                 var paired = PairWays(digits[index], digits[index + 1]) * rest.Replay(index + DecodeWaysIIRecurrence.PairLength, rest);
-                total = (total + paired) % DecodeWaysIIRecurrence.Mod;
+                total = (total + paired) % ModularArithmetic.Modulo;
             }
 
             return total;

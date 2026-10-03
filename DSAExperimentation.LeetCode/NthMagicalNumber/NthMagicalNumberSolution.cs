@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.Domain.Modular;
 
@@ -43,7 +44,7 @@ internal static class NthMagicalNumberSolution
     // steps inside it.
     public static int NthMagicalNumberByBinarySearch(int rank, int firstFactor, int secondFactor)
     {
-        var lcm = (long)firstFactor / Gcd(firstFactor, secondFactor) * secondFactor;
+        var lcm = LeastCommonMultiple.Of((long)firstFactor, secondFactor);
         var upperBound = checked((int)((long)rank * Math.Min(firstFactor, secondFactor)));
         var sequence = new MagicalCountSequence(rank, firstFactor, secondFactor, lcm, upperBound);
 
@@ -51,6 +52,4 @@ internal static class NthMagicalNumberSolution
 
         return (int)(x % ModularArithmetic.Modulo);
     }
-
-    private static int Gcd(int first, int second) => second == 0 ? first : Gcd(second, first % second);
 }

@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.DataStructures.HashMap;
 
 namespace DSAExperimentation.LeetCode.CountArrayPairsDivisibleByK;
@@ -45,7 +46,7 @@ internal static class CountArrayPairsDivisibleByKSolution
 
         foreach (var num in nums)
         {
-            var group = Gcd(num, divisor);
+            var group = GreatestCommonDivisor.Of(num, divisor);
             groupCounts.TryGetValue(group, out var existing);
             groupCounts.Set(group, existing + 1);
         }
@@ -97,7 +98,4 @@ internal static class CountArrayPairsDivisibleByKSolution
     // The buckets plus the divisor they were computed against, carried together so the
     // pairing walk takes one argument rather than three interchangeable ones.
     private readonly record struct GcdGroups(List<int> Keys, HashMap<int, int> Counts, int Divisor);
-
-    private static int Gcd(int firstOperand, int secondOperand) =>
-        secondOperand == 0 ? firstOperand : Gcd(secondOperand, firstOperand % secondOperand);
 }

@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 namespace DSAExperimentation.LeetCode.CheckIfItIsAGoodArray;
 
 // LeetCode 1250. Check If It Is a Good Array: decide whether some
@@ -61,7 +62,7 @@ internal static class CheckIfItIsAGoodArraySolution
 
         foreach (var value in nums)
         {
-            gcd = EuclideanGcd(gcd, value);
+            gcd = GreatestCommonDivisor.Of(gcd, value);
 
             if (gcd == 1)
             {
@@ -71,7 +72,4 @@ internal static class CheckIfItIsAGoodArraySolution
 
         return gcd == 1;
     }
-
-    private static int EuclideanGcd(int firstValue, int secondValue) =>
-        secondValue == 0 ? firstValue : EuclideanGcd(secondValue, firstValue % secondValue);
 }

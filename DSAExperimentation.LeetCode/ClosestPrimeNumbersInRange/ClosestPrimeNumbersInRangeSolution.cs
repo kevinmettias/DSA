@@ -1,4 +1,4 @@
-using DSAExperimentation.LeetCode.MaximumPrimeDifference;
+using DSAExperimentation.Algorithms.NumberTheory;
 
 namespace DSAExperimentation.LeetCode.ClosestPrimeNumbersInRange;
 
@@ -68,7 +68,7 @@ internal static class ClosestPrimeNumbersInRangeSolution
 
         for (var candidate = Math.Max(left, SmallestPrime); candidate <= right; candidate++)
         {
-            if (!isComposite.Get(candidate))
+            if (!isComposite[candidate])
             {
                 scan.Observe(candidate);
             }

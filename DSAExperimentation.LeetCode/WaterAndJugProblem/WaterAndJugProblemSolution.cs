@@ -1,3 +1,4 @@
+using DSAExperimentation.Algorithms.NumberTheory;
 using DSAExperimentation.Algorithms.Traversal.DepthFirst;
 
 namespace DSAExperimentation.LeetCode.WaterAndJugProblem;
@@ -88,7 +89,7 @@ internal static class WaterAndJugProblemSolution
             return false;
         }
 
-        return target % Gcd(jugX, jugY) == 0;
+        return target % GreatestCommonDivisor.Of(jugX, jugY) == 0;
     }
 
     private static IEnumerable<(int X, int Y)> Successors((int X, int Y) state, int jugX, int jugY)
@@ -104,7 +105,4 @@ internal static class WaterAndJugProblemSolution
         var pourYtoX = Math.Min(state.Y, jugX - state.X);
         yield return (state.X + pourYtoX, state.Y - pourYtoX);
     }
-
-    private static int Gcd(int firstValue, int secondValue) =>
-        secondValue == 0 ? firstValue : Gcd(secondValue, firstValue % secondValue);
 }
