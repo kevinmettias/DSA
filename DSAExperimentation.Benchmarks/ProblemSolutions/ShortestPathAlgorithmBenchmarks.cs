@@ -25,9 +25,9 @@ public class ShortestPathAlgorithmBenchmarks
     private const int ExtraEdgesPerNode = 3;
     private const int RandomSeed = 42;
 
-    private List<WeightedGraphNode> _vertices = new();
+    private List<NetworkNode> _vertices = new();
 
-    private WeightedGraphNode _source = null!;
+    private NetworkNode _source = null!;
     [Params(50, 300)]
     public int NodeCount { get; set; }
 
@@ -41,13 +41,13 @@ public class ShortestPathAlgorithmBenchmarks
 
     [Benchmark(Baseline = true)]
     public int Dijkstra()
-        => NetworkDelayTimeSolution.MinutesToReachAllByDijkstra<WeightedGraphNode, WeightedGraphTopology>(_vertices, _source);
+        => NetworkDelayTimeSolution.MinutesToReachAllByDijkstra<NetworkNode, NetworkTopology>(_vertices, _source);
 
     [Benchmark]
     public int BellmanFord()
-        => NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord<WeightedGraphNode, WeightedGraphTopology>(_vertices, _source);
+        => NetworkDelayTimeSolution.MinutesToReachAllByBellmanFord<NetworkNode, NetworkTopology>(_vertices, _source);
 
     [Benchmark]
     public int FloydWarshall()
-        => NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall<WeightedGraphNode, WeightedGraphTopology>(_vertices, _source);
+        => NetworkDelayTimeSolution.MinutesToReachAllByFloydWarshall<NetworkNode, NetworkTopology>(_vertices, _source);
 }

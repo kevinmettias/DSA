@@ -1,29 +1,28 @@
+using System.Text.RegularExpressions;
+
 namespace DSAExperimentation.Tests.Architecture;
 
 // Enforces ARCHITECTURE.md section 17.7, which until now was only prose: a
 // harness holds assertions and workload sizing, and nothing else. The types that
 // encode a problem's STRUCTURE - the topology a graph engine walks, the algebra a
-// fold evaluates, the virtual sequence a binary search bisects - are tier 1 to 3,
-// and a copy of one sitting in a test folder or in Benchmarks/Fixtures is exactly
-// the duplication section 17.1 set out to remove: the same witness written twice
-// because a test and a benchmark cannot see each other's copy. FunctionalGraph-
-// Topology once existed three times for that reason; the ledger below is now empty
-// because the last of those copies moved down a tier with its problem.
+// fold evaluates, the recurrence a memoizer replays, the virtual sequence a binary
+// search bisects - are tier 1 to 4, and a copy of one sitting in a test folder or in
+// Benchmarks/Fixtures is exactly the duplication section 17.1 set out to remove: the
+// same witness written twice because a test and a benchmark cannot see each other's
+// copy. FunctionalGraphTopology once existed three times for that reason.
 //
-// Hooks are deliberately NOT on the list below. A recording IInOrderHooks that
-// collects a traversal so a test can assert its order is an assertion device,
-// which is the first of the two things 17.7 allows; a topology is not.
+// Hooks are a witness in a benchmark and not in a test. A recording IInOrderHooks
+// that collects a traversal so a test can assert its order is an assertion device,
+// which is the first of the two things 17.7 allows. A benchmark asserts nothing, so
+// a hook there is the algorithm itself - KthSmallestElementInABSTBenchmarks once
+// timed its own RankHooks while the solution's went untested.
 //
-// The per-problem rule is scoped to problems that have already reached tier 4, so
-// it tightens on its own as the migration proceeds: converting a problem brings
-// its harnesses under the rule in the same commit, and nothing here needs editing
-// to keep pace. Only the SHARED benchmark fixture folder needs a ledger, because
-// it is flat and its stragglers sit in no folder that could key the rule.
+// Every harness file is in scope: the whole catalogue has reached tier 4, so there
+// is no unmigrated problem left for a harness to be waiting on.
 public sealed partial class Tier5WitnessTests
 {
     private const string BenchmarksProject = "DSAExperimentation.Benchmarks";
     private const string TestsProject = "DSAExperimentation.Tests";
-    private const string SolutionTier = "DSAExperimentation.LeetCode";
     private const string BenchmarkSuffix = "Benchmarks.cs";
     private const string FixturesFolder = "Fixtures";
 
@@ -55,16 +54,37 @@ public sealed partial class Tier5WitnessTests
         "IScaledGroupOperation",
         "IRandomAccessSequence",
         "IIndexedSequence",
+        "IRecurrence",
     ];
 
-    // Witnesses stranded in the shared benchmark fixture folder, each with the
-    // unmigrated problem it belongs to. Every one of these moves down a tier when
-    // that problem is converted - delete the line then, which is what makes the
-    // staleness check below a burn-down list rather than a permanent allowance.
-    private static readonly Dictionary<string, string> SharedFixtureStragglers = [];
+    // The traversal engines' callbacks: an assertion device in a test, the algorithm
+    // in a benchmark.
+    private static readonly string[] TraversalHooks =
+    [
+        "IBreadthFirstHooks",
+        "IDepthFirstHooks",
+        "IInOrderHooks",
+        "ILevelGroupedHooks",
+        "ITopDownHooks",
+    ];
+
+    private static readonly string[] MeasurementWitnesses = [.. StructuralWitnesses, .. TraversalHooks];
+
+    // A comment or a string literal, either of which can spell out a declaration
+    // that is not one. A string is kept as an empty pair of quotes so the code
+    // around it still reads as code.
+    private static readonly Regex CommentOrString = new(
+        @"(?<string>@""(?:[^""]|"""")*""|""(?:[^""\\\n]|\\.)*""|'(?:[^'\\\n]|\\.)*')|//[^\n]*|/\*.*?\*/",
+        RegexOptions.Singleline);
+
+    // `where T : class` followed by a second `where` clause is a constraint, not a type
+    // named "where".
+    private static readonly Regex TypeDeclaration = new(@"\b(?:class|struct|record|interface)\s+(?!where\b)[A-Za-z_]\w*");
+
+    private static readonly Regex Constraint = new(@"\bwhere\b");
 
     [Fact]
-    public void EveryMigratedProblem_LeavesNoStructuralWitnessInItsHarnesses()
+    public void EveryHarness_DeclaresNoWitness()
     {
         var offences = StrandedWitnessesInHarnesses();
         var report = string.Join(Environment.NewLine, offences);
@@ -77,32 +97,20 @@ public sealed partial class Tier5WitnessTests
         var root = RepositoryFiles.Root();
         var offences = new List<string>();
 
-        foreach (var (file, relative, problem) in HarnessFiles(root))
+        foreach (var harness in HarnessFiles(root))
         {
-            var solutionDirectory = Path.Combine(root, SolutionTier, problem);
-
-            // A problem still waiting its turn keeps the old shape by design. It
-            // comes under this rule the moment tier 4 gains its folder, which is
-            // also the moment the witness has somewhere to go.
-            if (Directory.Exists(solutionDirectory))
-            {
-                offences.AddRange(StrandedWitnessesIn((file, relative, problem)));
-            }
+            offences.AddRange(
+                WitnessesIn(harness.File, harness.Contracts)
+                    .Select(witness =>
+                        $"{harness.Relative}: declares a {witness}, which encodes {harness.Subject}'s structure and "
+                        + "belongs beside the engine that consumes it, not in a tier 5 harness."));
         }
 
         return offences;
     }
 
     [Fact]
-    public void SharedBenchmarkFixtures_HoldOnlyWorkloadGeneratorsAndListedStragglers()
-    {
-        var offences = UnlistedWitnessesInSharedFixtures();
-        var report = string.Join(Environment.NewLine, offences);
-
-        Assert.True(offences.Count == 0, report);
-    }
-
-    private static List<string> UnlistedWitnessesInSharedFixtures()
+    public void SharedBenchmarkFixtures_HoldOnlyWorkloadGenerators()
     {
         var root = RepositoryFiles.Root();
         var fixtures = Path.Combine(root, BenchmarksProject, FixturesFolder);
@@ -110,52 +118,55 @@ public sealed partial class Tier5WitnessTests
 
         foreach (var file in RepositoryFiles.SourceFilesIn(fixtures))
         {
-            if (!SharedFixtureStragglers.ContainsKey(Path.GetFileName(file)))
-            {
-                var relative = RepositoryFiles.PathFromRoot(root, file);
+            var relative = RepositoryFiles.PathFromRoot(root, file);
 
-                offences.AddRange(UnlistedWitnessesIn((file, relative)));
-            }
+            offences.AddRange(
+                WitnessesIn(file, MeasurementWitnesses)
+                    .Select(witness =>
+                        $"{relative}: declares a {witness}. Benchmarks/Fixtures holds workload generators - a seed "
+                        + "and a size - not the structure they build."));
         }
 
-        return offences;
+        Assert.True(offences.Count == 0, string.Join(Environment.NewLine, offences));
+    }
+
+    // The scans above report "no offences" over whatever they find, so a scan that
+    // found no files - a renamed folder, a moved project - would pass while checking
+    // nothing.
+    [Fact]
+    public void HarnessScan_OverTheRepository_FindsBothTestAndBenchmarkHarnesses()
+    {
+        var harnesses = HarnessFiles(RepositoryFiles.Root()).ToList();
+
+        Assert.Contains(harnesses, harness => harness.Contracts == StructuralWitnesses);
+        Assert.Contains(harnesses, harness => harness.Contracts == MeasurementWitnesses);
+    }
+
+    // A base list that starts on the line after its type's name - the usual layout
+    // for a long generic contract - is still a base list.
+    [Fact]
+    public void WitnessesIn_BaseListOnTheNextLine_FindsTheWitness()
+    {
+        var source = "private sealed class CanBuild(string target)\n    : IRecurrence<(int First, int Second), bool>\n{\n}";
+
+        Assert.Equal(["IRecurrence"], WitnessesInSource(source, StructuralWitnesses));
     }
 
     [Fact]
-    public void SharedFixtureStragglers_AreAllStillPresent()
+    public void WitnessesIn_WitnessOnlyInAConstraintOrAComment_FindsNone()
     {
-        // A straggler that has moved down a tier is good news, but leaving its
-        // line here would silently re-admit a file of that name later.
-        var fixtures = Path.Combine(RepositoryFiles.Root(), BenchmarksProject, FixturesFolder);
+        var source = "// class Fake : IRecurrence<int, int>\n"
+            + "internal static class Runner\n{\n"
+            + "    public static int Run<TRule>() where TRule : IRecurrence<int, int> => 0;\n}";
 
-        foreach (var (fileName, owner) in SharedFixtureStragglers)
-        {
-            var fixturePath = Path.Combine(fixtures, fileName);
-
-            Assert.True(
-                File.Exists(fixturePath),
-                $"{fileName} is listed as a witness still stranded by {owner}, but it is gone - delete the line.");
-        }
+        Assert.Empty(WitnessesInSource(source, StructuralWitnesses));
     }
 
-    // The three positions travel as one value: they arrive together from HarnessFiles
-    // and mean nothing apart, and spelled as three adjacent strings a transposed call
-    // site would compile and blame the wrong file for the wrong problem.
-    private static IEnumerable<string> StrandedWitnessesIn((string File, string Relative, string Problem) harness)
-        => WitnessesIn(harness.File)
-            .Select(witness =>
-                $"{harness.Relative}: declares a {witness}, which encodes {harness.Problem}'s structure and belongs "
-                + "beside the engine that consumes it, not in a tier 5 harness.");
-
-    private static IEnumerable<string> UnlistedWitnessesIn((string File, string Relative) harness)
-        => WitnessesIn(harness.File)
-            .Select(witness =>
-                $"{harness.Relative}: declares a {witness}. Benchmarks/Fixtures holds workload generators - a seed "
-                + "and a size - not the structure they build.");
-
-    // Every harness file that belongs to one identifiable problem: the test folder
-    // named after it, and the single benchmark file named after it.
-    private static IEnumerable<(string File, string Relative, string Problem)> HarnessFiles(string root)
+    // Every harness file that belongs to one identifiable subject: each file under a
+    // problem's test folder, and each benchmark class - named for a problem, or for a
+    // library-level choice such as ShortestPathAlgorithm. Tests may declare hooks as
+    // assertion devices; benchmarks may not.
+    private static IEnumerable<HarnessFile> HarnessFiles(string root)
     {
         var coverage = Path.Combine(root, TestsProject, "LeetCodeCoverage");
         var solutions = Path.Combine(root, BenchmarksProject, "ProblemSolutions");
@@ -166,7 +177,7 @@ public sealed partial class Tier5WitnessTests
 
             if (segments.Length > 1)
             {
-                yield return (file, RepositoryFiles.PathFromRoot(root, file), segments[0]);
+                yield return new HarnessFile(file, RepositoryFiles.PathFromRoot(root, file), segments[0], StructuralWitnesses);
             }
         }
 
@@ -176,56 +187,68 @@ public sealed partial class Tier5WitnessTests
 
             if (name.EndsWith(BenchmarkSuffix, StringComparison.Ordinal))
             {
-                yield return (file, RepositoryFiles.PathFromRoot(root, file), name[..^BenchmarkSuffix.Length]);
+                yield return new HarnessFile(
+                    file, RepositoryFiles.PathFromRoot(root, file), name[..^BenchmarkSuffix.Length], MeasurementWitnesses);
             }
         }
     }
 
-    private static IEnumerable<string> WitnessesIn(string file)
-        => File.ReadLines(file)
-            .Select(BaseListOf)
-            .SelectMany(baseList => StructuralWitnesses.Where(witness => IsNamedInBaseList((baseList, witness))))
-            .Distinct();
+    private static IEnumerable<string> WitnessesIn(string file, string[] contracts)
+        => WitnessesInSource(File.ReadAllText(file), contracts);
 
-    // The base list of a type declared on this line, or empty when the line
-    // declares no type.
-    private static string BaseListOf(string line)
+    // Read across lines rather than line by line: the base list is whatever follows
+    // the declaration's first top-level colon, up to its body or its terminating
+    // semicolon, wherever the line breaks fall.
+    private static List<string> WitnessesInSource(string source, string[] contracts)
     {
-        var trimmed = line.TrimStart();
-        var colon = trimmed.IndexOf(':');
+        var code = CommentOrString.Replace(source, match => match.Groups["string"].Success ? "\"\"" : string.Empty);
 
-        if (HasNoTypeDeclaration(trimmed, colon))
-        {
-            return string.Empty;
-        }
-
-        var baseList = trimmed[(colon + 1)..];
-        var constraint = baseList.IndexOf(" where ", StringComparison.Ordinal);
-
-        if (constraint < 0)
-        {
-            return baseList;
-        }
-
-        return WithoutConstraint(baseList, constraint);
+        return TypeDeclaration.Matches(code)
+            .Select(declaration => BaseListAfter(code, declaration.Index + declaration.Length))
+            .SelectMany(baseList => contracts.Where(contract => IsNamedInBaseList((baseList, contract))))
+            .Distinct()
+            .ToList();
     }
 
-    // A comment, a line with no colon, and a line whose head names no type all have
-    // the same answer: there is no base list here to read.
-    private static bool HasNoTypeDeclaration(string trimmed, int colon)
-        => trimmed.StartsWith("//", StringComparison.Ordinal)
-            || colon < 0
-            || !HasTypeDeclaration(trimmed[..colon]);
+    private static string BaseListAfter(string code, int headerStart)
+    {
+        var depth = 0;
+        var colon = -1;
+        var end = headerStart;
 
-    // Generic constraints are cut away before any name inside them is read: a method
+        for (; end < code.Length; end++)
+        {
+            var character = code[end];
+
+            if (character is '(' or '<' or '[')
+            {
+                depth++;
+            }
+            else if (character is ')' or '>' or ']')
+            {
+                depth--;
+            }
+            else if (depth == 0 && character is '{' or ';')
+            {
+                break;
+            }
+            else if (depth == 0 && character == ':' && colon < 0)
+            {
+                colon = end;
+            }
+        }
+
+        return colon < 0 ? string.Empty : WithoutConstraint(code[(colon + 1)..end]);
+    }
+
+    // Generic constraints are cut away before any name inside them is read: a type
     // whose `where` clause accepts a witness does not write one.
-    private static string WithoutConstraint(string baseList, int constraint)
-        => baseList[..constraint];
+    private static string WithoutConstraint(string baseList)
+    {
+        var constraint = Constraint.Match(baseList);
 
-    private static bool HasTypeDeclaration(string head)
-        => head.Contains("class ", StringComparison.Ordinal)
-            || head.Contains("struct ", StringComparison.Ordinal)
-            || head.Contains("record ", StringComparison.Ordinal);
+        return constraint.Success ? baseList[..constraint.Index] : baseList;
+    }
 
     // The pair travels as one value: the witness name is compared against the base
     // list it was found in, and as two adjacent strings a transposed call would
@@ -271,4 +294,9 @@ public sealed partial class Tier5WitnessTests
 
     private static bool IsIdentifierPart(char character)
         => char.IsLetterOrDigit(character) || character is '_' or '.';
+
+    // One harness file: the path to read, the root-relative path a finding names it by,
+    // the subject it measures or asserts, and the contracts it may not implement. Four
+    // positions, two of them strings that a transposed call would swap silently.
+    private readonly record struct HarnessFile(string File, string Relative, string Subject, string[] Contracts);
 }

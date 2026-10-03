@@ -1,4 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
+using DSAExperimentation.LeetCode.NetworkDelayTime;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
@@ -95,12 +96,12 @@ public sealed partial class RandomWeightedGraphsTests
 
     // The graph is a record whose Edges list compares by reference, so equality between two builds is
     // read off the flattened edge list rather than off the node objects themselves.
-    private static List<int[]> Flatten(List<WeightedGraphNode> vertices) =>
+    private static List<int[]> Flatten(List<NetworkNode> vertices) =>
     [
         .. vertices.SelectMany(vertex => vertex.Edges.Select(edge => new[] { vertex.Id, edge.Target.Id, edge.Weight })),
     ];
 
-    private static List<(int From, int To)> DirectedEdges(List<WeightedGraphNode> vertices) =>
+    private static List<(int From, int To)> DirectedEdges(List<NetworkNode> vertices) =>
     [
         .. vertices.SelectMany(vertex => vertex.Edges.Select(edge => (vertex.Id, edge.Target.Id))),
     ];

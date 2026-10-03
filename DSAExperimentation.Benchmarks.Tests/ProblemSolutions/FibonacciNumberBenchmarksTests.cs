@@ -35,6 +35,10 @@ public sealed partial class FibonacciNumberBenchmarksTests
         Assert.Equal(harness.NaiveRecursion(), harness.MemoizedTopDown());
     }
 
+    [Fact]
+    public void IterativeRollingPair_TwentiethTerm_ReturnsLeetCodesValue() =>
+        Assert.Equal(ExpectedTerm, BuildHarness().IterativeRollingPair());
+
     private static FibonacciNumberBenchmarks BuildHarness() =>
         new() { SequenceIndex = SmallestSequenceIndex };
 }

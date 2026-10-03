@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are BestTimeToBuyAndSellStockWithCooldownSolution's, the
 // same methods BestTimeToBuyAndSellStockWithCooldownTests proves correct. Length is
 // kept modest (<=28) specifically because the un-memoized baseline's blowup is real,
-// the same reasoning FibonacciBenchmarks.cs's NaiveRecursive already documents.
+// the same reasoning FibonacciNumberBenchmarks already documents.
 [MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockWithCooldownBenchmarks
 {

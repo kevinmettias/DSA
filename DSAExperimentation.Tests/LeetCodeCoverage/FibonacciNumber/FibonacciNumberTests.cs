@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.FibonacciNumber;
 
 namespace DSAExperimentation.Tests.LeetCodeCoverage.FibonacciNumber;
 
-// Harness only. Both strategies are FibonacciNumberSolution's - this file just pins
+// Harness only. Every strategy is FibonacciNumberSolution's - this file just pins
 // them to LeetCode's published examples, including the naive baseline, which was
 // never asserted before this migration.
 public sealed partial class FibonacciNumberTests
@@ -25,4 +25,9 @@ public sealed partial class FibonacciNumberTests
     [MemberData(nameof(Examples))]
     public void FibByMemoizedTopDown_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
         Assert.Equal(expected, FibonacciNumberSolution.FibByMemoizedTopDown(sequenceIndex));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FibByIterativeRollingPair_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByIterativeRollingPair(sequenceIndex));
 }

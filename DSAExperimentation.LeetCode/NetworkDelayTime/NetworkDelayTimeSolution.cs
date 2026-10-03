@@ -17,9 +17,8 @@ namespace DSAExperimentation.LeetCode.NetworkDelayTime;
 // Each strategy's prepared-input overload stays generic over TNode/TTopology rather
 // than fixing NetworkNode/NetworkTopology: the reduction ("every node reached? take
 // the max; otherwise -1") is exactly as generic as ShortestPath.Dijkstra itself, and
-// staying generic lets ShortestPathAlgorithmBenchmarks hand these methods the same
-// random WeightedGraphNode graph several other LeetCode problems' benchmarks already
-// share, instead of forcing yet another copy of that representation into this tier.
+// staying generic keeps the strategies honest about what they depend on: an edge
+// topology, not this problem's node type.
 internal static class NetworkDelayTimeSolution
 {
     // The textbook single-source choice for non-negative weights, and the one the

@@ -8,7 +8,8 @@ namespace DSAExperimentation.LeetCode.FibonacciNumber;
 // solution has to justify itself against; FibByMemoizedTopDown expresses the same
 // recurrence directly through this repo's Memoizer as O(n) top-down DP - the same
 // ClimbingStairsTests precedent, minus the "+1 shift" Climbing Stairs applies on top
-// of the same shape.
+// of the same shape. FibByIterativeRollingPair is the O(n)-time, O(1)-space loop a
+// memo table does not need to exist to beat.
 internal static class FibonacciNumberSolution
 {
     // Offset back to the second predecessor in the recurrence fib(n-1) + fib(n-2).
@@ -28,6 +29,25 @@ internal static class FibonacciNumberSolution
 
     public static int FibByMemoizedTopDown(int sequenceIndex) =>
         Memoizer.Memoize<int, int>(sequenceIndex, new SumOfTwoPredecessors());
+
+    // The same recurrence rolled forward bottom-up, keeping only the two predecessors
+    // the next value needs.
+    public static int FibByIterativeRollingPair(int sequenceIndex)
+    {
+        if (sequenceIndex <= 1)
+        {
+            return sequenceIndex;
+        }
+
+        var (previous, current) = (0, 1);
+
+        for (var index = SecondPredecessorOffset; index <= sequenceIndex; index++)
+        {
+            (previous, current) = (current, SumOfPredecessors(previous, current));
+        }
+
+        return current;
+    }
 
     // The recurrence, as a named type: 0 and 1 are themselves, and every later value is
     // the sum of its two predecessors.

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are GuessNumberHigherOrLowerIISolution's, the same methods
 // GuessNumberHigherOrLowerIITests proves correct. HighestNumber is kept modest
 // specifically because the un-memoized baseline's blowup is real, the same reasoning
-// BurstBalloonsBenchmarks/FibonacciBenchmarks already document.
+// BurstBalloonsBenchmarks/FibonacciNumberBenchmarks already document.
 [MemoryDiagnoser]
 public class GuessNumberHigherOrLowerIIBenchmarks
 {

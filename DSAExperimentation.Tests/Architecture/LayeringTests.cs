@@ -29,33 +29,42 @@ public sealed partial class LayeringTests
     private static readonly Regex Reference = new(
         @"^using(?:\s+\w+\s*=)?\s+DSAExperimentation\.(\w+)", RegexOptions.Multiline);
 
-    public static TheoryData<SourceRoot> SourceRoots =>
-        new()
-        {
-            { new SourceRoot(ProjectDirectory: "DSAExperimentation", FixedTier: "") },
-            { new SourceRoot(ProjectDirectory: "DSAExperimentation.LeetCode", FixedTier: "LeetCode") },
-        };
+    // The one project laid out in tier folders. DSAExperimentation.LeetCode is the top
+    // tier in a project of its own, so nothing it could reference sits above it - a row
+    // for it here could never fail, and the boundary it does have is the compiler's.
+    private const string FrameworkProject = "DSAExperimentation";
 
-    [Theory]
-    [MemberData(nameof(SourceRoots))]
-    public void EveryFile_ReferencesItsOwnTierOrALowerOne(SourceRoot sourceRoot)
+    [Fact]
+    public void EveryFile_ReferencesItsOwnTierOrALowerOne()
     {
-        var offences = InversionsUnder(sourceRoot);
+        var offences = Inversions();
         var report = string.Join(Environment.NewLine, offences);
 
         Assert.True(offences.Count == 0, report);
     }
 
-    private static List<string> InversionsUnder(SourceRoot sourceRoot)
+    // A sweep that found no tiered file would report no inversions while checking nothing.
+    [Fact]
+    public void TierSweep_OverTheFrameworkProject_FindsFilesInEveryLowerTier()
+    {
+        var root = RepositoryFiles.Root();
+        var tiersFound = RepositoryFiles.SourceFilesIn(Path.Combine(root, FrameworkProject))
+            .Select(file => TierOf(RepositoryFiles.PathFromRoot(root, file)))
+            .OfType<string>()
+            .ToHashSet();
+
+        Assert.Equal(Tiers[..^1], Tiers.Where(tiersFound.Contains));
+    }
+
+    private static List<string> Inversions()
     {
         var root = RepositoryFiles.Root();
         var offences = new List<string>();
-        var projectDirectory = Path.Combine(root, sourceRoot.ProjectDirectory);
 
-        foreach (var file in RepositoryFiles.SourceFilesIn(projectDirectory))
+        foreach (var file in RepositoryFiles.SourceFilesIn(Path.Combine(root, FrameworkProject)))
         {
             var relative = RepositoryFiles.PathFromRoot(root, file);
-            var tier = TierUnder(sourceRoot, relative);
+            var tier = TierOf(relative);
 
             if (tier is not null)
             {
@@ -94,17 +103,10 @@ public sealed partial class LayeringTests
             "LeetCode solutions belong in DSAExperimentation.LeetCode, not the framework project.");
     }
 
-    // The tier a file sits in: the source root's own fixed tier where it declares one (a
-    // project whose whole body is a single tier), otherwise the tier folder its path
-    // names directly, and null when the path names no such folder.
-    private static string? TierUnder(SourceRoot sourceRoot, string relative)
+    // The tier folder a framework file's path names directly, or null when it names none.
+    private static string? TierOf(string relative)
     {
-        if (sourceRoot.FixedTier.Length > 0)
-        {
-            return sourceRoot.FixedTier;
-        }
-
-        var segments = relative[(sourceRoot.ProjectDirectory.Length + 1)..].Split('/');
+        var segments = relative[(FrameworkProject.Length + 1)..].Split('/');
 
         if (segments.Length <= 1 || !Tiers.Contains(segments[0]))
         {
@@ -145,12 +147,6 @@ public sealed partial class LayeringTests
 
         return relative[(slash + 1)..];
     }
-
-    // One source root the sweep walks: the project directory, and the tier its files are all
-    // in where the whole project is a single tier (empty for a project laid out in tier
-    // folders). The two positions are both `string` and mean different things, so each is
-    // named rather than left interchangeable.
-    public readonly record struct SourceRoot(string ProjectDirectory, string FixedTier);
 
     // One source file under a tier project, named three ways: the absolute path to read, the
     // root-relative path a finding states it by, and the tier its location puts it in. Three

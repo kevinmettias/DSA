@@ -1,3 +1,5 @@
+using DSAExperimentation.LeetCode.NetworkDelayTime;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Builds a connected, non-negative-weight random graph shaped like the Network
@@ -11,7 +13,7 @@ internal static class RandomWeightedGraphs
     // Exclusive upper bound passed to Random.Next(1, _): edge weights land in [1, 49].
     private const int EdgeWeightUpperBound = 50;
 
-    public static (List<WeightedGraphNode> Vertices, WeightedGraphNode Source) Build(
+    public static (List<NetworkNode> Vertices, NetworkNode Source) Build(
         int nodeCount, int extraEdgesPerNode, int seed)
     {
         var random = new Random(seed);
@@ -23,10 +25,10 @@ internal static class RandomWeightedGraphs
         return (nodes, nodes[0]);
     }
 
-    private static List<WeightedGraphNode> CreateNodes(int nodeCount)
-        => Enumerable.Range(0, nodeCount).Select(id => new WeightedGraphNode(id)).ToList();
+    private static List<NetworkNode> CreateNodes(int nodeCount)
+        => Enumerable.Range(0, nodeCount).Select(id => new NetworkNode(id)).ToList();
 
-    private static void AddBackEdges(List<WeightedGraphNode> nodes, int nodeCount, Random random)
+    private static void AddBackEdges(List<NetworkNode> nodes, int nodeCount, Random random)
     {
         for (var i = 1; i < nodeCount; i++)
         {
@@ -35,7 +37,7 @@ internal static class RandomWeightedGraphs
         }
     }
 
-    private static void AddExtraEdges(List<WeightedGraphNode> nodes, int nodeCount, int extraEdgesPerNode, Random random)
+    private static void AddExtraEdges(List<NetworkNode> nodes, int nodeCount, int extraEdgesPerNode, Random random)
     {
         for (var i = 0; i < nodeCount; i++)
         {
@@ -71,6 +73,6 @@ internal static class RandomWeightedGraphs
         return [.. edges];
     }
 
-    private static void AddEdge(WeightedGraphNode from, WeightedGraphNode to, Random random)
+    private static void AddEdge(NetworkNode from, NetworkNode to, Random random)
         => from.Edges.Add((random.Next(1, EdgeWeightUpperBound), to));
 }

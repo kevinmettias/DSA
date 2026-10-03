@@ -3,7 +3,7 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // Benchmark workload sizing for LC 312 - a random scattering of balloon values. Kept
 // modest (<=14 in the benchmark's own [Params]) because BurstBalloonsSolution's
 // un-memoized baseline is genuinely exponential, the same reasoning
-// FibonacciBenchmarks.cs's NaiveRecursive already documents.
+// FibonacciNumberBenchmarks already documents.
 internal static class BurstBalloonsWorkloads
 {
     private const int MaxBalloonValueExclusive = 100;

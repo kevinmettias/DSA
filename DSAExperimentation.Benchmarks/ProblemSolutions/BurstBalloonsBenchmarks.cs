@@ -9,8 +9,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PaddedBalloons its hoisted overload takes, so the boundary-padding pass is
 // charged to [GlobalSetup] rather than to the recursion being measured.
 // BalloonCount is kept modest (<=14) specifically because the un-memoized
-// baseline's blowup is real, the same reasoning FibonacciBenchmarks.cs's
-// NaiveRecursive already documents.
+// baseline's blowup is real, the same reasoning FibonacciNumberBenchmarks
+// already documents.
 [MemoryDiagnoser]
 public class BurstBalloonsBenchmarks
 {

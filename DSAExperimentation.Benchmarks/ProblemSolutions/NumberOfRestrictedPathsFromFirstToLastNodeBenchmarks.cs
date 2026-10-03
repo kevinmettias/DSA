@@ -14,7 +14,7 @@ public class NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks
 {
     private RestrictedPathGraph _graph = null!;
 
-    // Kept modest (<=30), same reasoning as FibonacciBenchmarks: NaiveDfs's blowup
+    // Kept modest (<=30), same reasoning as FibonacciNumberBenchmarks: NaiveDfs's blowup
     // here really is O(golden-ratio^StepCount).
     [Params(20, 30)]
     public int StepCount { get; set; }
