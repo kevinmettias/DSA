@@ -11,12 +11,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // so the same RequestCount must rebuild the same walk.
 public sealed partial class ElevatorRequestsIBenchmarksTests
 {
-    private const int SmallestRequestCount = 100;
+    private const int SmallestRequestCount = 10;
     private const int MinimumTravelForRequestsBelowTheFloorCount = 1;
     private const int MaximumTravelForTheSmallestRequestCount = SmallestRequestCount * (SmallestRequestCount - 1);
 
     [Fact]
-    public void Setup_HundredRequestsBelowFloorOneHundred_TravelStaysInsideTheFloorBoundAndRebuildsTheSameWorkload()
+    public void Setup_TenRequestsBelowFloorTen_TravelStaysInsideTheFloorBoundAndRebuildsTheSameWorkload()
     {
         var harness = BuildHarness();
         var total = harness.InlineAbsoluteDifference();

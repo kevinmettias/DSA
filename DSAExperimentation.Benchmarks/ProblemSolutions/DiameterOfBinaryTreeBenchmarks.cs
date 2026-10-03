@@ -8,6 +8,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DiameterOfBinaryTreeSolution for what each strategy does.
 public class DiameterOfBinaryTreeBenchmarks
 {
+    // How many values the nodes cycle through: 0..100.
+    private const int NodeValueCount = 101;
+
     private BinaryTreeNode<int> _root = null!;
 
     [Params(200, 2_000)]
@@ -18,7 +21,8 @@ public class DiameterOfBinaryTreeBenchmarks
     // shows up for real on an unbalanced tree - a random-parent tree stays
     // O(log n) deep, which lets the naive approach's real cost degrade to
     // O(n log n) and hide the split TreeMetrics.Diameter's genuine O(n) is
-    // actually being compared against.
+    // actually being compared against. Node values cycle through 0..100, inside
+    // LC 543's -100..100; the diameter never reads them.
     [GlobalSetup]
     public void Setup()
     {
@@ -27,7 +31,7 @@ public class DiameterOfBinaryTreeBenchmarks
 
         for (var i = 1; i < NodeCount; i++)
         {
-            current.Left = new BinaryTreeNode<int>(i);
+            current.Left = new BinaryTreeNode<int>(i % NodeValueCount);
             current = current.Left;
         }
     }

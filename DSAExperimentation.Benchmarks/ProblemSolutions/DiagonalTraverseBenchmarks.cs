@@ -3,12 +3,13 @@ using DSAExperimentation.LeetCode.DiagonalTraverse;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DiagonalTraverseSolution's, the same methods
-// DiagonalTraverseSolutionTests proves correct.
+// DiagonalTraverseSolutionTests proves correct. LC 498 caps the matrix at 10^4
+// cells, so the larger Size is 100.
 public class DiagonalTraverseBenchmarks
 {
     private int[][] _matrix = [];
 
-    [Params(50, 300)]
+    [Params(50, 100)]
     public int Size { get; set; }
 
     [GlobalSetup]

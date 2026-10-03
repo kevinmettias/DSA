@@ -12,11 +12,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // _orders is ValueCount interleaved copies of 1..OrdersPerValue and every stock
 // bucket holds their shared sum, so a valid distribution always exists - each
-// bucket can be exactly refilled by re-assembling the copy it came from - but the
-// shuffled ordering still forces a real search rather than an immediate match.
+// bucket can be exactly refilled by re-assembling the copy it came from. LC 1655
+// caps the orders at 10, so each value contributes two, and the larger ValueCount's
+// ten orders are that cap. Both arms place the largest order first, which on these
+// buckets finds the distribution without backtracking, so what they compare is the
+// search machinery rather than a deep search.
 public class DistributeRepeatingIntegersBenchmarks
 {
-    private const int OrdersPerValue = 6;
+    private const int OrdersPerValue = 2;
 
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
     private const int RandomSeed = 1655;

@@ -6,9 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ElevatorRequestsISolution's - open-coded
 // Math.Abs against Algorithms.ShortestPaths' ManhattanHeuristic witness,
 // applied purely for its distance computation on a one-column grid rather
-// than an actual search. LC 4020 caps floorCount and requests.Length at 100; this
-// scales past that ceiling only to confirm neither arm regresses, since both
-// are the same O(m) walk.
+// than an actual search. LC 4020 caps floorCount and requests.Length at 100, so the
+// larger RequestCount is that cap; both arms are the same O(m) walk.
 public class ElevatorRequestsIBenchmarks
 {
     private const int Seed = 4020;
@@ -16,7 +15,7 @@ public class ElevatorRequestsIBenchmarks
     private int _floorCount;
 
     private int[] _requests = [];
-    [Params(100, 5_000)]
+    [Params(10, 100)]
     public int RequestCount { get; set; }
 
     [GlobalSetup]

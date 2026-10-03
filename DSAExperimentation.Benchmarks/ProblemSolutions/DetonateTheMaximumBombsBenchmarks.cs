@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DepthFirstSearch.Traverse. Both are handed LeetCode's own input shape, generated
 // once in [GlobalSetup]. The radius range is deliberately wide enough relative to
 // the grid that blasts genuinely chain, so both arms walk real components rather
-// than bouncing off isolated bombs.
+// than bouncing off isolated bombs. LC 2101 caps the bombs at 100 and starts every
+// coordinate at 1, so the larger BombCount is 100 and positions run 1..1000.
 public class DetonateTheMaximumBombsBenchmarks
 {
     private const int GridSize = 1_000;
@@ -17,7 +18,7 @@ public class DetonateTheMaximumBombsBenchmarks
 
     private int[][] _bombs = [];
 
-    [Params(50, 300)]
+    [Params(50, 100)]
     public int BombCount { get; set; }
 
     [GlobalSetup]
@@ -28,7 +29,7 @@ public class DetonateTheMaximumBombsBenchmarks
 
         for (var i = 0; i < BombCount; i++)
         {
-            _bombs[i] = [random.Next(0, GridSize), random.Next(0, GridSize), random.Next(1, MaxRadius)];
+            _bombs[i] = [random.Next(1, GridSize + 1), random.Next(1, GridSize + 1), random.Next(1, MaxRadius)];
         }
     }
 

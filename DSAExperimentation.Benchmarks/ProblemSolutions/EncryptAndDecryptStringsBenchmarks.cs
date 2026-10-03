@@ -16,7 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DictionarySize drives both the per-call cost of the rescan arm and the one-time
 // build cost of the precomputed table; DecryptCalls stays fixed so the gap widens
 // purely with dictionary size, the same "force the real worst case" shape
-// TwoSumBenchmarks uses.
+// TwoSumBenchmarks uses. LC 2227 caps the dictionary at 100 words, so the larger
+// DictionarySize is that cap.
 public class EncryptAndDecryptStringsBenchmarks
 {
     private const int DecryptCalls = 100;
@@ -32,7 +33,7 @@ public class EncryptAndDecryptStringsBenchmarks
 
     // Every count Decrypt reports, in query order; sized in setup so the replay allocates nothing.
     private int[] _matches = [];
-    [Params(50, 2_000)]
+    [Params(50, 100)]
     public int DictionarySize { get; set; }
 
     [GlobalSetup]

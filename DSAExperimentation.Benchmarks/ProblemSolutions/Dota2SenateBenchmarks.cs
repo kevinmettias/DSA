@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Dota2SenateSolutionTests proves correct. Every 'R' seat first, every 'D' seat after, so
 // early rounds of the circular-rescan baseline each skip past nearly the whole
 // opposing block before finding their target - the O(n^2) worst case that strategy
-// is deliberately shaped to hit.
+// is deliberately shaped to hit. LC 649 caps the senate at 10^4 seats, so the
+// larger SenatorCount is that cap.
 public class Dota2SenateBenchmarks
 {
     // Splits SenatorCount in half so the input is exactly one full block of each party.
@@ -14,7 +15,7 @@ public class Dota2SenateBenchmarks
 
     private string _senate = "";
 
-    [Params(500, 20_000)]
+    [Params(500, 10_000)]
     public int SenatorCount { get; set; }
 
     [GlobalSetup]
