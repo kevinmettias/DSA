@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same strategies CountAllValidPickupAndDeliveryOptionsSolutionTests proves correct.
 public class CountAllValidPickupAndDeliveryOptionsBenchmarks
 {
-    [Params(100, 10_000)]
+    // LC 1359 asks about at most 500 orders.
+    [Params(100, 500)]
     public int Orders { get; set; }
 
     [Benchmark(Baseline = true)]

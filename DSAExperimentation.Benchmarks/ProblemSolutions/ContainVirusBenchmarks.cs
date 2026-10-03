@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ContainVirus;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,11 +7,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ContainVirusSolutionTests proves correct. Each strategy clones the workload grid itself,
 // so [GlobalSetup] only has to build it once per [Params] value rather than per
 // iteration.
+//
+// LC 749 promises that each round exactly one region threatens the most uninfected
+// cells. The seed is the first from LC 749's own number on whose grids at both sizes
+// that holds - 749 itself ties a round at each - and ContainVirusWorkloadsTests
+// replays both grids to check it.
 public class ContainVirusBenchmarks
 {
-    private const int RandomSeed = 749; // LeetCode problem number
-
-    private const double InfectionSeedProbability = 0.15;
+    private const int RandomSeed = 752;
 
     private int[][] _grid = [];
 
@@ -18,22 +22,7 @@ public class ContainVirusBenchmarks
     public int Side { get; set; }
 
     [GlobalSetup]
-    public void Setup()
-    {
-        var random = new Random(RandomSeed);
-        _grid = new int[Side][];
-
-        for (var r = 0; r < Side; r++)
-        {
-            _grid[r] = new int[Side];
-
-            for (var c = 0; c < Side; c++)
-            {
-                var isInfected = random.NextDouble() < InfectionSeedProbability;
-                _grid[r][c] = isInfected ? 1 : 0;
-            }
-        }
-    }
+    public void Setup() => _grid = ContainVirusWorkloads.BuildGrid(Side, RandomSeed);
 
     [Benchmark(Baseline = true)]
     public int NaiveRecursiveFloodFill() => ContainVirusSolution.MinimumWallsByNaiveRecursiveFloodFill(_grid);

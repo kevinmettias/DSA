@@ -16,7 +16,8 @@ public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
 
     private SinglyLinkedListNode<int> _head = null!;
 
-    [Params(200, 5_000)]
+    // LC 1290's list holds at most 30 bits, which is also what keeps its value inside an int.
+    [Params(10, 30)]
     public int Length { get; set; }
 
     [GlobalSetup]

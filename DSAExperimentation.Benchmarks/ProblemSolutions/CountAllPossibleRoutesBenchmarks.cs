@@ -13,7 +13,8 @@ public class CountAllPossibleRoutesBenchmarks
 {
     private const int Start = 0;
     private const int Finish = 3;
-    private static readonly int[] Locations = [0, 1, 2, 3];
+    // LC 1575's locations start at 1.
+    private static readonly int[] Locations = [1, 2, 3, 4];
 
     public static IEnumerable<int> NaiveSizes => [8, 12];
 

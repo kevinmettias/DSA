@@ -18,7 +18,8 @@ public class CopyListWithRandomPointerBenchmarks
 
     private RandomLinkedListNode<int> _head = null!;
 
-    [Params(200, 5_000)]
+    // LC 138's list holds at most 1,000 nodes.
+    [Params(200, 1_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

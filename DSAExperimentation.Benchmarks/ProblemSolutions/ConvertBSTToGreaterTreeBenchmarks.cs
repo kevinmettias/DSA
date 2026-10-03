@@ -23,11 +23,13 @@ public class ConvertBSTToGreaterTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(500, 20_000)]
+    // LC 538's tree holds at most 10^4 nodes and is promised to be a BST, so it is
+    // CompleteSearchTrees' in-order-ranked complete tree rather than Balanced's heap.
+    [Params(500, 10_000)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
+    public void Setup() => _root = CompleteSearchTrees.InOrderRanked(NodeCount);
 
     [Benchmark(Baseline = true)]
     public object? ManualReverseInOrder() => ConvertBSTToGreaterTreeSolution.ConvertByReverseInOrder(BinaryTrees.Clone(_root));

@@ -24,7 +24,8 @@ public class ContinuousSubarraysBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _values = SeededDraws.Values(Length, 0, ValueUpperBound, random);
+        // LC 2762's values start at 1; the draw spans the same 40 values either way.
+        _values = SeededDraws.Values(Length, 1, ValueUpperBound + 1, random);
     }
 
     [Benchmark(Baseline = true)]
