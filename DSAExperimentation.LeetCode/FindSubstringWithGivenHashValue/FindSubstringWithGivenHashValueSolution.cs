@@ -18,10 +18,9 @@ namespace DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 // O(1).
 //
 // LeetCode guarantees an answer exists, so the "no window matches" branch never
-// fires on real input - but it is reachable (a benchmark deliberately asks for an
-// unreachable hash value so neither strategy can exit early), which is why both
-// strategies use this repo's ordinary Try shape instead of throwing, matching
-// TwoSumSolution.TryFindIndicesBy* under exactly the same benchmark trick.
+// fires on LeetCode's input. It is still reachable by any caller that passes a hash
+// no window has, so both strategies use this repo's ordinary Try shape instead of
+// throwing, as TwoSumSolution.TryFindIndicesBy* does.
 internal static class FindSubstringWithGivenHashValueSolution
 {
     // LC 2156's own character value, injected into RollingHash through the same

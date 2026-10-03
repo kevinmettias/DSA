@@ -5,11 +5,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindInMountainArraySolution's, the same methods
 // FindInMountainArraySolutionTests proves correct. The ascending slope holds only even
-// values and the descending slope only odd ones, so _target (deep in the
-// descending slope) can never resolve early via the ascending half - the linear
-// scan is forced through nearly the whole array on every invocation, instead of an
-// early exit making it look artificially competitive. LC 1095 caps the mountain at
-// 10^4 values, so the larger Length is that cap.
+// values and the descending slope, which starts one below the peak, only odd ones, so
+// _target (second from the end) appears nowhere on the ascending half and its only
+// index is Length - 2: the linear scan is forced through nearly the whole array on
+// every invocation, instead of an early exit making it look artificially competitive.
+// The last value is 3, inside LC 1095's non-negative values, and LC caps the mountain
+// at 10^4 values, so the larger Length is that cap.
 public class FindInMountainArrayBenchmarks
 {
     private const int AscendingStep = 2;
@@ -19,6 +20,7 @@ public class FindInMountainArrayBenchmarks
     private int[] _mountain = [];
 
     private int _target;
+
     [Params(1_000, 10_000)]
     public int Length { get; set; }
 
@@ -33,7 +35,9 @@ public class FindInMountainArrayBenchmarks
             _mountain[i] = AscendingStep * i;
         }
 
-        for (var i = peakIndex + 1; i < Length; i++)
+        _mountain[peakIndex + 1] = _mountain[peakIndex] - 1;
+
+        for (var i = peakIndex + 2; i < Length; i++)
         {
             _mountain[i] = _mountain[i - 1] - DescendingStep;
         }
