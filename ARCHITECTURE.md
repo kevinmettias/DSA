@@ -830,10 +830,12 @@ needs a placement call rather than a mechanical rule (a second, test-only trie f
 superseded by the production `LowercaseTrie`, has been deleted): `TestNode`/`TestTopology`/`TestTrees` anchor at
 `Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
 referenced cross-tree by `Algorithms/`-side test classes — harmless for test-only code. A handful
-of cross-cutting tests that exercise more than one utility together (`GraphTests.cs`, `ZipTests.cs`
-— Fold+Reduce+Traversal in one file; `SharedDescendantFoldTests.cs` — comparing fold tiers) sit
-unfoldered at `Tests/Algorithms/` root or their utility's own root, rather than being forced into
-one utility's subfolder.
+of cross-cutting tests that exercise more than one utility together (`ZipTests.cs` — Fold+Reduce
+in one file; `SharedDescendantFoldTests.cs` — comparing fold tiers) sit unfoldered at
+`Tests/Algorithms/` root or their utility's own root, rather than being forced into one utility's
+subfolder. `GraphTests.cs` used to be a third; each of its tests drove exactly one graph-safe entry
+point, so §18 dissolved it into those entry points' own test classes, and its cyclic sample now
+lives beside `TestTrees` as `TestGraphs`.
 
 ### 13.4 `suppressions.json`
 
@@ -1471,13 +1473,20 @@ rooted-tree primitives, `Walking/**` (which had no tests at all), `TopDownTraver
 and both `Domain/` folders — taking the suite from ~2,900 to ~3,550 tests and retiring 35 waivers
 outright.
 
-**24 source files (38 members) still owe direct tests.** They are listed individually in
-`suppressions.json`, each waiver naming the exact members and stating plainly that it records debt
-rather than an exemption — so the gate keeps reporting genuinely new regressions while the backlog
-stays visible and countable. The largest remaining clusters are the fold/reduce engines
-(`TreeFold`, `DagFold`, `CheckedFold`, `Reduce`), the three `Traversal` entry points, and
-`TreeMetrics`; all of these do have real tests today, in family-named files like `FoldTests.cs` and
-`MetricsTests.cs`, which is why they are last in the queue rather than first.
+**That backlog is closed except for one member in two files.** It was listed file by file in
+`suppressions.json`, each waiver naming its members and stating that it recorded debt rather than
+an exemption. It closed three ways: family-named test files were renamed after the type they test
+(`FoldTests.cs` became `TreeFoldTests.cs`, `MetricsTests.cs` became `TreeMetricsTests.cs`);
+`TraversalTests.cs` and `GraphTests.cs` were split into one class per entry point; and the tests
+that were genuinely missing were written. A nested type is its own unit, so its members are named
+from a test class nested the same way — `CheckedFold.VisitOutcome.Failure` is named by
+`CheckedFoldTests.VisitOutcomeTests`, which drives it through `TryFold`.
+
+What is left is `HooksStep.Seed` in `BreadthFirstWalk` and `DepthFirstWalk`, still waived one file
+at a time. It is dead rather than untested: each engine's void `Walk` overload starts from
+`default(Unit)` and never reads it, so it exists only because `IReduceAlgebra` declares `Seed`
+static abstract. No honest test can name a member nothing calls, which makes closing it a
+production decision — start that overload from `HooksStep`'s own `Seed`, or keep the waiver.
 
 ### 18.4 The rule for new work
 
