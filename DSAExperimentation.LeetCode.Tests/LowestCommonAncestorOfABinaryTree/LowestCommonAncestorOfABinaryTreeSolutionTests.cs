@@ -1,27 +1,44 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.LowestCommonAncestorOfABinaryTree;
 
 namespace DSAExperimentation.LeetCode.Tests.LowestCommonAncestorOfABinaryTree;
 
 // Harness only. The strategy is LowestCommonAncestorOfABinaryTreeSolution's - this
-// file just pins it to LeetCode's published examples plus a couple of added cases,
-// against a fresh copy of LeetCode's own example tree.
+// file just pins it to LeetCode's published examples plus a couple of added cases.
+// A row states its tree as LeetCode's level-order array and p and q by value -
+// LeetCode guarantees every value is unique, so a value names exactly one node -
+// and each run rebuilds a fresh tree from that array.
 public sealed partial class LowestCommonAncestorOfABinaryTreeSolutionTests
 {
-    public static TheoryData<int, int, int> Examples =>
+    private const string EmptyTreeRow = "an Examples row states an empty tree, which LeetCode's constraints rule out";
+
+    // The tree LeetCode's examples 1 and 2 share:
+    //            3
+    //          /   \
+    //         5     1
+    //        / \   / \
+    //       6   2 0   8
+    //          / \
+    //         7   4
+    private static readonly int?[] SharedExampleTree = [3, 5, 1, 6, 2, 0, 8, null, null, 7, 4];
+
+    public static TheoryData<int?[], int, int, int> Examples =>
         new()
         {
-            { 5, 1, 3 }, // LeetCode's example 1: nodes in different subtrees of the root
-            { 5, 4, 5 }, // LeetCode's example 2: one node is an ancestor of the other
-            { 7, 4, 2 }, // both nodes leaves of the same immediate parent
-            { 6, 4, 5 }, // diverges partway down, not at the root
+            { SharedExampleTree, 5, 1, 3 }, // LeetCode's example 1: nodes in different subtrees of the root
+            { SharedExampleTree, 5, 4, 5 }, // LeetCode's example 2: one node is an ancestor of the other
+            { [1, 2], 1, 2, 1 }, // LeetCode's example 3: the root and its only child
+            { SharedExampleTree, 7, 4, 2 }, // both nodes leaves of the same immediate parent
+            { SharedExampleTree, 6, 4, 5 }, // diverges partway down, not at the root
         };
 
     [Theory]
     [MemberData(nameof(Examples))]
-    public void FindLcaByAncestryWalk_LeetCodeExamples_ReturnsTheAncestor(int first, int second, int expected)
+    public void FindLcaByAncestryWalk_LeetCodeExamples_ReturnsTheAncestor(
+        int?[] levelOrder, int first, int second, int expected)
     {
-        var root = BuildClassicExampleTree();
+        var root = BuildTree(levelOrder);
         var firstNode = FindNode(root, first);
         var secondNode = FindNode(root, second);
 
@@ -35,35 +52,18 @@ public sealed partial class LowestCommonAncestorOfABinaryTreeSolutionTests
         Assert.Equal(expected, Assert.IsType<BinaryTreeNode<int>>(lca).Value);
     }
 
-    private static BinaryTreeNode<int> BuildClassicExampleTree()
-    {
-        // LeetCode's own example tree:
-        //            3
-        //          /   \
-        //         5     1
-        //        / \   / \
-        //       6   2 0   8
-        //          / \
-        //         7   4
-        var six = new BinaryTreeNode<int>(6);
-        var seven = new BinaryTreeNode<int>(7);
-        var four = new BinaryTreeNode<int>(4);
-        var two = new BinaryTreeNode<int>(2) { Left = seven, Right = four };
-        var five = new BinaryTreeNode<int>(5) { Left = six, Right = two };
-        var zero = new BinaryTreeNode<int>(0);
-        var eight = new BinaryTreeNode<int>(8);
-        var one = new BinaryTreeNode<int>(1) { Left = zero, Right = eight };
+    // LeetCode's constraints give every tree at least two nodes, so each row's array
+    // has a root; an empty one could only be a mistake in that TheoryData.
+    private static BinaryTreeNode<int> BuildTree(int?[] levelOrder) =>
+        LeetCodeWireFormat.ToBinaryTree(levelOrder) ?? throw new InvalidOperationException(EmptyTreeRow);
 
-        return new BinaryTreeNode<int>(3) { Left = five, Right = one };
-    }
-
-    // Every pair the Examples rows above name is drawn from
-    // BuildClassicExampleTree's tree, so a walk from its root always finds them; a
-    // value absent from the tree could only be a mistake in that TheoryData.
+    // Every pair the Examples rows above name is drawn from that row's own tree, so a
+    // walk from its root always finds them; a value absent from the tree could only be
+    // a mistake in that TheoryData.
     private static BinaryTreeNode<int> FindNode(BinaryTreeNode<int> root, int value) =>
         TryFindNode(root, value)
         ?? throw new InvalidOperationException(
-            $"the Examples rows name only nodes of the example tree, but {value} is not in it");
+            $"the Examples rows name only nodes of their own tree, but {value} is not in it");
 
     private static BinaryTreeNode<int>? TryFindNode(BinaryTreeNode<int>? node, int value)
     {

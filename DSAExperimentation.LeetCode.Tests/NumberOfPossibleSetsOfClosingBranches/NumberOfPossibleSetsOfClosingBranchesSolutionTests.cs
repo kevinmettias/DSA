@@ -11,7 +11,9 @@ public sealed partial class NumberOfPossibleSetsOfClosingBranchesSolutionTests
     public static TheoryData<int, int[][], int, long> Examples =>
         new()
         {
+            // LeetCode examples 1-3, as (n, roads, maxDistance, expected).
             { 3, [[0, 1, 2], [1, 2, 10], [0, 2, 10]], 5, 5 },
+            { 3, [[0, 1, 20], [0, 1, 10], [1, 2, 2], [0, 2, 2]], 5, 7 },
             { 1, [], 10, 2 },
         };
 

@@ -9,7 +9,13 @@ public sealed partial class BaseballGameSolutionTests
     public static TheoryData<string[], int> Examples =>
         new()
         {
+            // LeetCode examples 1-3.
             { ["5", "2", "C", "D", "+"], 30 },
+            { ["5", "-2", "4", "C", "D", "9", "+", "+"], 27 },
+            { ["1", "C"], 0 },
+
+            // Plain scores only: 1 + 2 + 3. Then -3, its double -6, 9, and -6 + 9 = 3,
+            // summing to 3.
             { ["1", "2", "3"], 6 },
             { ["-3", "D", "9", "+"], 3 },
         };

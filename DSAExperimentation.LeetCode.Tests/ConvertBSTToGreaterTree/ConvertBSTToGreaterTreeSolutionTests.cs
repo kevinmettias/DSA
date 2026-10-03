@@ -15,9 +15,17 @@ public sealed partial class ConvertBSTToGreaterTreeSolutionTests
     public static TheoryData<TreeExample> Examples =>
         new()
         {
-            // [0, null, 1] -> [1, null, 1]
+            // LeetCode example 1.
+            {
+                new TreeExample(
+                    [4, 1, 6, 0, 2, 5, 7, null, null, null, 3, null, null, null, 8],
+                    [30, 36, 21, 36, 35, 26, 15, null, null, null, 33, null, null, null, 8])
+            },
+
+            // LeetCode example 2: [0, null, 1] -> [1, null, 1]
             { new TreeExample([0, null, 1], [1, null, 1]) },
 
+            // A complete tree, summed by hand:
             //       5                  29
             //      / \                /  \
             //     3   8      ->     36    17

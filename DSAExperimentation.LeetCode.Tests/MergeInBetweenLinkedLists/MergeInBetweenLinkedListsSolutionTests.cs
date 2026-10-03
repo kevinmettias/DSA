@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeInBetweenLinkedLists;
 
@@ -9,10 +10,21 @@ namespace DSAExperimentation.LeetCode.Tests.MergeInBetweenLinkedLists;
 // rewires the nodes it is handed.
 public sealed partial class MergeInBetweenLinkedListsSolutionTests
 {
+    private const string EmptyListRow = "an Examples row states an empty list, which LeetCode's constraints rule out";
+
     public static TheoryData<MergeBetweenExample> Examples =>
         new()
         {
             // LeetCode example 1.
+            {
+                new MergeBetweenExample(
+                    List1: [10, 1, 13, 6, 9, 5], A: 3, B: 4,
+                    List2: [1000000, 1000001, 1000002],
+                    Expected: [10, 1, 13, 1000000, 1000001, 1000002, 5])
+            },
+
+            // Example 1's a, b and list2 over list1 = [0..5], so each kept value names its
+            // own position.
             {
                 new MergeBetweenExample(
                     List1: [0, 1, 2, 3, 4, 5], A: 3, B: 4,
@@ -47,10 +59,10 @@ public sealed partial class MergeInBetweenLinkedListsSolutionTests
         MergeBetweenExample example)
     {
         var merged = MergeInBetweenLinkedListsSolution.MergeInBetweenByArrayRebuild(
-            LeetCodeWireFormat.ToLinkedList(example.List1)!,
+            ToNonEmptyList(example.List1),
             example.A,
             example.B,
-            LeetCodeWireFormat.ToLinkedList(example.List2)!);
+            ToNonEmptyList(example.List2));
 
         Assert.Equal(example.Expected, LeetCodeWireFormat.FromLinkedList(merged));
     }
@@ -61,13 +73,18 @@ public sealed partial class MergeInBetweenLinkedListsSolutionTests
         MergeBetweenExample example)
     {
         var merged = MergeInBetweenLinkedListsSolution.MergeInBetweenByPointerSplice(
-            LeetCodeWireFormat.ToLinkedList(example.List1)!,
+            ToNonEmptyList(example.List1),
             example.A,
             example.B,
-            LeetCodeWireFormat.ToLinkedList(example.List2)!);
+            ToNonEmptyList(example.List2));
 
         Assert.Equal(example.Expected, LeetCodeWireFormat.FromLinkedList(merged));
     }
+
+    // LeetCode's constraints give list1 at least three nodes and list2 at least one, so
+    // ToLinkedList returns a head for every row; an empty row would be a mistake in Examples.
+    private static SinglyLinkedListNode<int> ToNonEmptyList(int[] values) =>
+        LeetCodeWireFormat.ToLinkedList(values) ?? throw new InvalidOperationException(EmptyListRow);
 
     // One example as one argument: the five values that describe a single case. They
     // travel together - a row IS one case - and passed separately they made a

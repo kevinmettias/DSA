@@ -9,9 +9,13 @@ public sealed partial class ValidSquareSolutionTests
     public static TheoryData<SquareExample> Examples =>
         new()
         {
+            // LeetCode examples 1-3.
             { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [1, 0], P4: [0, 1], Expected: true) },
-            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 0], P4: [1, -1], Expected: true) },
             { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [1, 0], P4: [0, 12], Expected: false) },
+            { new SquareExample(P1: [1, 0], P2: [-1, 0], P3: [0, 1], P4: [0, -1], Expected: true) },
+
+            // A square tilted 45 degrees, four collinear points, and four copies of one point.
+            { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 0], P4: [1, -1], Expected: true) },
             { new SquareExample(P1: [0, 0], P2: [1, 1], P3: [2, 2], P4: [3, 3], Expected: false) },
             { new SquareExample(P1: [5, 5], P2: [5, 5], P3: [5, 5], P4: [5, 5], Expected: false) },
         };

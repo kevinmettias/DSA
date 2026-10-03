@@ -11,6 +11,7 @@ public sealed partial class AccountsMergeSolutionTests
     public static TheoryData<string[][], string[][]> Examples =>
         new()
         {
+            // LeetCode examples 1 and 2.
             {
                 new[]
                 {
@@ -26,6 +27,26 @@ public sealed partial class AccountsMergeSolutionTests
                     new[] { "John", "johnnybravo@mail.com" },
                 }
             },
+            {
+                new[]
+                {
+                    new[] { "Gabe", "Gabe0@m.co", "Gabe3@m.co", "Gabe1@m.co" },
+                    new[] { "Kevin", "Kevin3@m.co", "Kevin5@m.co", "Kevin0@m.co" },
+                    new[] { "Ethan", "Ethan5@m.co", "Ethan4@m.co", "Ethan0@m.co" },
+                    new[] { "Hanzo", "Hanzo3@m.co", "Hanzo1@m.co", "Hanzo0@m.co" },
+                    new[] { "Fern", "Fern5@m.co", "Fern1@m.co", "Fern0@m.co" },
+                },
+                new[]
+                {
+                    new[] { "Ethan", "Ethan0@m.co", "Ethan4@m.co", "Ethan5@m.co" },
+                    new[] { "Gabe", "Gabe0@m.co", "Gabe1@m.co", "Gabe3@m.co" },
+                    new[] { "Hanzo", "Hanzo0@m.co", "Hanzo1@m.co", "Hanzo3@m.co" },
+                    new[] { "Kevin", "Kevin0@m.co", "Kevin3@m.co", "Kevin5@m.co" },
+                    new[] { "Fern", "Fern0@m.co", "Fern1@m.co", "Fern5@m.co" },
+                }
+            },
+
+            // Two people, no shared email: nothing merges.
             {
                 new[]
                 {
