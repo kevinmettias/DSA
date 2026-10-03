@@ -3,29 +3,42 @@ using DSAExperimentation.LeetCode.CountIncreasingQuadruplets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountIncreasingQuadrupletsSolution's, the same
-// methods CountIncreasingQuadrupletsSolutionTests proves correct. Params stay small on
-// purpose - the O(n^4) baseline would otherwise dominate the run, so both arms
-// are measured on the same modest permutation sizes rather than letting the
-// baseline set an unreasonably tiny Length just for itself.
+// methods CountIncreasingQuadrupletsSolutionTests proves correct.
+//
+// Sizes are per arm. The O(n^4) baseline would dominate the run past a modest
+// permutation, so it stops at 16 elements; the O(n^2 log n) Fenwick sweep runs on to
+// 2,000, half LC 2552's own bound of 4,000, and the two are compared at the sizes both
+// run.
 public class CountIncreasingQuadrupletsBenchmarks
 {
-    private const int RandomSeed = 2552; private int[] _nums = [];
+    private const int RandomSeed = 2552; // LeetCode problem number
 
-    // LeetCode problem number
+    private Dictionary<int, int[]> _numsByLength = [];
 
-    [Params(8, 16)]
-    public int Length { get; set; }
+    public static IEnumerable<int> BruteForceSizes => [8, 16];
 
+    public static IEnumerable<int> FenwickSizes => [.. BruteForceSizes, 200, 2_000];
+
+    // Every length any arm runs is shuffled here, outside the timed region, each from its
+    // own generator on the same seed; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
+    public void Setup() =>
+        _numsByLength = FenwickSizes.ToDictionary(length => length, BuildPermutation);
+
+    private static int[] BuildPermutation(int length)
     {
         var random = new Random(RandomSeed);
-        _nums = Enumerable.Range(1, Length).OrderBy(_ => random.Next()).ToArray();
+
+        return Enumerable.Range(1, length).OrderBy(_ => random.Next()).ToArray();
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForce() => CountIncreasingQuadrupletsSolution.CountQuadrupletsByBruteForce(_nums);
+    [ArgumentsSource(nameof(BruteForceSizes))]
+    public long BruteForce(int length) =>
+        CountIncreasingQuadrupletsSolution.CountQuadrupletsByBruteForce(_numsByLength[length]);
 
     [Benchmark]
-    public long FenwickTreeSweep() => CountIncreasingQuadrupletsSolution.CountQuadrupletsByFenwickTreeSweep(_nums);
+    [ArgumentsSource(nameof(FenwickSizes))]
+    public long FenwickTreeSweep(int length) =>
+        CountIncreasingQuadrupletsSolution.CountQuadrupletsByFenwickTreeSweep(_numsByLength[length]);
 }

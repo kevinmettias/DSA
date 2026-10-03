@@ -19,8 +19,8 @@ public sealed partial class CountSequencesToKBenchmarksTests
         // The documented shape: the target is fixed at 1, which leaving every element unchanged
         // always reaches, so both arms do real search work instead of short-circuiting on an
         // unreachable target.
-        Assert.InRange(first.BruteForceSearch(), 1L, long.MaxValue);
-        Assert.Equal(first.BruteForceSearch(), second.BruteForceSearch());
+        Assert.InRange(first.BruteForceSearch(SmallestLength), 1L, long.MaxValue);
+        Assert.Equal(first.BruteForceSearch(SmallestLength), second.BruteForceSearch(SmallestLength));
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public sealed partial class CountSequencesToKBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.PrimeExponentMemo(), harness.BruteForceSearch());
+        Assert.Equal(harness.PrimeExponentMemo(SmallestLength), harness.BruteForceSearch(SmallestLength));
     }
 
     [Fact]
@@ -36,12 +36,12 @@ public sealed partial class CountSequencesToKBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForceSearch(), harness.PrimeExponentMemo());
+        Assert.Equal(harness.BruteForceSearch(SmallestLength), harness.PrimeExponentMemo(SmallestLength));
     }
 
     private static CountSequencesToKBenchmarks BuildHarness()
     {
-        var harness = new CountSequencesToKBenchmarks { Length = SmallestLength };
+        var harness = new CountSequencesToKBenchmarks();
         harness.Setup();
 
         return harness;

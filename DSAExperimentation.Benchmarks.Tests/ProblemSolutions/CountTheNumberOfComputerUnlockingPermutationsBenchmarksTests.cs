@@ -22,8 +22,10 @@ public sealed partial class CountTheNumberOfComputerUnlockingPermutationsBenchma
     [Fact]
     public void Setup_SameComputerCount_RebuildsTheSameSolvableWorkload()
     {
-        Assert.Equal(ExpectedUnlockOrders, BuildHarness().FactorialFormula());
-        Assert.Equal(BuildHarness().FactorialFormula(), BuildHarness().FactorialFormula());
+        Assert.Equal(ExpectedUnlockOrders, BuildHarness().FactorialFormula(SmallestComputerCount));
+        Assert.Equal(
+            BuildHarness().FactorialFormula(SmallestComputerCount),
+            BuildHarness().FactorialFormula(SmallestComputerCount));
     }
 
     [Fact]
@@ -31,7 +33,7 @@ public sealed partial class CountTheNumberOfComputerUnlockingPermutationsBenchma
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.FactorialFormula(), harness.Backtracking());
+        Assert.Equal(harness.FactorialFormula(SmallestComputerCount), harness.Backtracking(SmallestComputerCount));
     }
 
     [Fact]
@@ -39,12 +41,12 @@ public sealed partial class CountTheNumberOfComputerUnlockingPermutationsBenchma
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.Backtracking(), harness.FactorialFormula());
+        Assert.Equal(harness.Backtracking(SmallestComputerCount), harness.FactorialFormula(SmallestComputerCount));
     }
 
     private static CountTheNumberOfComputerUnlockingPermutationsBenchmarks BuildHarness()
     {
-        var harness = new CountTheNumberOfComputerUnlockingPermutationsBenchmarks { ComputerCount = SmallestComputerCount };
+        var harness = new CountTheNumberOfComputerUnlockingPermutationsBenchmarks();
         harness.Setup();
 
         return harness;

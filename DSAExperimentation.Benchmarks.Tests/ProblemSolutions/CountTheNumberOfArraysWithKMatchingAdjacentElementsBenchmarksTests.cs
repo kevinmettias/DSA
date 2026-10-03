@@ -21,8 +21,8 @@ public sealed partial class CountTheNumberOfArraysWithKMatchingAdjacentElementsB
     [Fact]
     public void Setup_SameArrayLength_RebuildsTheSameMatchCount()
     {
-        Assert.InRange(BuildHarness().BruteForce(), 0, ArrayCount);
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
+        Assert.InRange(BuildHarness().BruteForce(SmallestArrayLength), 0, ArrayCount);
+        Assert.Equal(BuildHarness().BruteForce(SmallestArrayLength), BuildHarness().BruteForce(SmallestArrayLength));
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public sealed partial class CountTheNumberOfArraysWithKMatchingAdjacentElementsB
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.ModularCombinatorics(), harness.BruteForce());
+        Assert.Equal(harness.ModularCombinatorics(SmallestArrayLength), harness.BruteForce(SmallestArrayLength));
     }
 
     [Fact]
@@ -38,15 +38,12 @@ public sealed partial class CountTheNumberOfArraysWithKMatchingAdjacentElementsB
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForce(), harness.ModularCombinatorics());
+        Assert.Equal(harness.BruteForce(SmallestArrayLength), harness.ModularCombinatorics(SmallestArrayLength));
     }
 
     private static CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks BuildHarness()
     {
-        var harness = new CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks
-        {
-            ArrayLength = SmallestArrayLength,
-        };
+        var harness = new CountTheNumberOfArraysWithKMatchingAdjacentElementsBenchmarks();
         harness.Setup();
 
         return harness;

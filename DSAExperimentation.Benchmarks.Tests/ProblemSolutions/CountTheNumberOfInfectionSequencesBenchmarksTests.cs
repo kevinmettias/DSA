@@ -26,10 +26,12 @@ public sealed partial class CountTheNumberOfInfectionSequencesBenchmarksTests
     public void Setup_SameQueueLength_RebuildsTheSameSickSet()
     {
         Assert.InRange(
-            BuildHarness().GapCombinatorics(),
+            BuildHarness().GapCombinatorics(SmallestQueueLength),
             FewestInfectionSequences,
             OrderingsOfUninfected(SmallestQueueLength));
-        Assert.Equal(BuildHarness().GapCombinatorics(), BuildHarness().GapCombinatorics());
+        Assert.Equal(
+            BuildHarness().GapCombinatorics(SmallestQueueLength),
+            BuildHarness().GapCombinatorics(SmallestQueueLength));
     }
 
     [Fact]
@@ -37,7 +39,7 @@ public sealed partial class CountTheNumberOfInfectionSequencesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.GapCombinatorics(), harness.BruteForceSimulation());
+        Assert.Equal(harness.GapCombinatorics(SmallestQueueLength), harness.BruteForceSimulation(SmallestQueueLength));
     }
 
     [Fact]
@@ -45,12 +47,12 @@ public sealed partial class CountTheNumberOfInfectionSequencesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForceSimulation(), harness.GapCombinatorics());
+        Assert.Equal(harness.BruteForceSimulation(SmallestQueueLength), harness.GapCombinatorics(SmallestQueueLength));
     }
 
     private static CountTheNumberOfInfectionSequencesBenchmarks BuildHarness()
     {
-        var harness = new CountTheNumberOfInfectionSequencesBenchmarks { QueueLength = SmallestQueueLength };
+        var harness = new CountTheNumberOfInfectionSequencesBenchmarks();
         harness.Setup();
 
         return harness;

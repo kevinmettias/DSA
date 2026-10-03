@@ -27,9 +27,12 @@ public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSamePermutationWithinTheIndexBound()
     {
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
+        Assert.Equal(BuildHarness().BruteForce(SmallestLength), BuildHarness().BruteForce(SmallestLength));
 
-        Assert.InRange(BuildHarness().FenwickTreeSweep(), FewestQuadruplets, FourIndexSelections(SmallestLength));
+        Assert.InRange(
+            BuildHarness().FenwickTreeSweep(SmallestLength),
+            FewestQuadruplets,
+            FourIndexSelections(SmallestLength));
     }
 
     [Fact]
@@ -37,7 +40,7 @@ public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.FenwickTreeSweep(), harness.BruteForce());
+        Assert.Equal(harness.FenwickTreeSweep(SmallestLength), harness.BruteForce(SmallestLength));
     }
 
     [Fact]
@@ -45,12 +48,12 @@ public sealed partial class CountIncreasingQuadrupletsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForce(), harness.FenwickTreeSweep());
+        Assert.Equal(harness.BruteForce(SmallestLength), harness.FenwickTreeSweep(SmallestLength));
     }
 
     private static CountIncreasingQuadrupletsBenchmarks BuildHarness()
     {
-        var harness = new CountIncreasingQuadrupletsBenchmarks { Length = SmallestLength };
+        var harness = new CountIncreasingQuadrupletsBenchmarks();
         harness.Setup();
 
         return harness;

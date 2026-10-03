@@ -22,8 +22,8 @@ public sealed partial class CountNumberOfBalancedPermutationsBenchmarksTests
 
         // The documented shape: num holds SmallestLength digits, so the answer can never exceed
         // the SmallestLength! distinct permutations they can be arranged into.
-        Assert.InRange(first.BruteForce(), 0L, MostSixDigitPermutations);
-        Assert.Equal(first.BruteForce(), second.BruteForce());
+        Assert.InRange(first.BruteForce(SmallestLength), 0L, MostSixDigitPermutations);
+        Assert.Equal(first.BruteForce(SmallestLength), second.BruteForce(SmallestLength));
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public sealed partial class CountNumberOfBalancedPermutationsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.DigitCountDp(), harness.BruteForce());
+        Assert.Equal(harness.DigitCountDp(SmallestLength), harness.BruteForce(SmallestLength));
     }
 
     [Fact]
@@ -39,12 +39,12 @@ public sealed partial class CountNumberOfBalancedPermutationsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForce(), harness.DigitCountDp());
+        Assert.Equal(harness.BruteForce(SmallestLength), harness.DigitCountDp(SmallestLength));
     }
 
     private static CountNumberOfBalancedPermutationsBenchmarks BuildHarness()
     {
-        var harness = new CountNumberOfBalancedPermutationsBenchmarks { Length = SmallestLength };
+        var harness = new CountNumberOfBalancedPermutationsBenchmarks();
         harness.Setup();
 
         return harness;

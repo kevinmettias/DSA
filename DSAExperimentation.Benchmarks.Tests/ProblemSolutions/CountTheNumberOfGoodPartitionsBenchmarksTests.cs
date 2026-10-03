@@ -25,8 +25,8 @@ public sealed partial class CountTheNumberOfGoodPartitionsBenchmarksTests
     [Fact]
     public void Setup_SameArrayLength_RebuildsTheSameArray()
     {
-        Assert.InRange(BuildHarness().BruteForce(), FewestPartitions, PartitionCount);
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
+        Assert.InRange(BuildHarness().BruteForce(SmallestArrayLength), FewestPartitions, PartitionCount);
+        Assert.Equal(BuildHarness().BruteForce(SmallestArrayLength), BuildHarness().BruteForce(SmallestArrayLength));
     }
 
     [Fact]
@@ -34,7 +34,7 @@ public sealed partial class CountTheNumberOfGoodPartitionsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.LastOccurrenceMerge(), harness.BruteForce());
+        Assert.Equal(harness.LastOccurrenceMerge(SmallestArrayLength), harness.BruteForce(SmallestArrayLength));
     }
 
     [Fact]
@@ -42,12 +42,12 @@ public sealed partial class CountTheNumberOfGoodPartitionsBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForce(), harness.LastOccurrenceMerge());
+        Assert.Equal(harness.BruteForce(SmallestArrayLength), harness.LastOccurrenceMerge(SmallestArrayLength));
     }
 
     private static CountTheNumberOfGoodPartitionsBenchmarks BuildHarness()
     {
-        var harness = new CountTheNumberOfGoodPartitionsBenchmarks { ArrayLength = SmallestArrayLength };
+        var harness = new CountTheNumberOfGoodPartitionsBenchmarks();
         harness.Setup();
 
         return harness;

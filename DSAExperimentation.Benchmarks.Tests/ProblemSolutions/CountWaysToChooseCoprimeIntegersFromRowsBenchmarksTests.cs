@@ -20,8 +20,8 @@ public sealed partial class CountWaysToChooseCoprimeIntegersFromRowsBenchmarksTe
     [Fact]
     public void Setup_SameSize_RebuildsTheSameMatrix()
     {
-        Assert.InRange(BuildHarness().BruteForce(), 0, SelectionCount);
-        Assert.Equal(BuildHarness().BruteForce(), BuildHarness().BruteForce());
+        Assert.InRange(BuildHarness().BruteForce(SmallestSize), 0, SelectionCount);
+        Assert.Equal(BuildHarness().BruteForce(SmallestSize), BuildHarness().BruteForce(SmallestSize));
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public sealed partial class CountWaysToChooseCoprimeIntegersFromRowsBenchmarksTe
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.GcdCountingDp(), harness.BruteForce());
+        Assert.Equal(harness.GcdCountingDp(SmallestSize), harness.BruteForce(SmallestSize));
     }
 
     [Fact]
@@ -37,12 +37,12 @@ public sealed partial class CountWaysToChooseCoprimeIntegersFromRowsBenchmarksTe
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.BruteForce(), harness.GcdCountingDp());
+        Assert.Equal(harness.BruteForce(SmallestSize), harness.GcdCountingDp(SmallestSize));
     }
 
     private static CountWaysToChooseCoprimeIntegersFromRowsBenchmarks BuildHarness()
     {
-        var harness = new CountWaysToChooseCoprimeIntegersFromRowsBenchmarks { Size = SmallestSize };
+        var harness = new CountWaysToChooseCoprimeIntegersFromRowsBenchmarks();
         harness.Setup();
 
         return harness;

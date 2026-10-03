@@ -20,8 +20,8 @@ public sealed partial class CountAllPossibleRoutesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.MemoizedTopDown(), harness.NaiveRecursion());
-        Assert.Equal(RoutesWithinEightFuel, harness.NaiveRecursion());
+        Assert.Equal(harness.MemoizedTopDown(SmallestFuel), harness.NaiveRecursion(SmallestFuel));
+        Assert.Equal(RoutesWithinEightFuel, harness.NaiveRecursion(SmallestFuel));
     }
 
     [Fact]
@@ -29,10 +29,10 @@ public sealed partial class CountAllPossibleRoutesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.NaiveRecursion(), harness.MemoizedTopDown());
-        Assert.Equal(RoutesWithinEightFuel, harness.MemoizedTopDown());
+        Assert.Equal(harness.NaiveRecursion(SmallestFuel), harness.MemoizedTopDown(SmallestFuel));
+        Assert.Equal(RoutesWithinEightFuel, harness.MemoizedTopDown(SmallestFuel));
     }
 
     private static CountAllPossibleRoutesBenchmarks BuildHarness() =>
-        new() { Fuel = SmallestFuel };
+        new();
 }
