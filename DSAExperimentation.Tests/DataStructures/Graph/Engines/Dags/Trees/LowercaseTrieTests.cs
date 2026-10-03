@@ -38,6 +38,20 @@ public sealed partial class LowercaseTrieTests
         Assert.False(trie.HasKey(Fixtures.DogKey));
     }
 
+    // "car" lies on the path "card" already built, so setting it must mark that interior node as a
+    // key of its own - and before it is set, the same node must not answer as one just because a
+    // longer key passes through it.
+    [Fact]
+    public void HasKey_KeyThatIsAPrefixOfAnotherKey_IsMarkedIndependently()
+    {
+        var cardOnly = BuildTrie((Fixtures.CardKey, Fixtures.CardValue));
+        var cardThenCar = BuildTrie((Fixtures.CardKey, Fixtures.CardValue), (Fixtures.CarKey, Fixtures.CarValue));
+
+        Assert.False(cardOnly.HasKey(Fixtures.CarKey));
+        Assert.True(cardThenCar.HasKey(Fixtures.CarKey));
+        Assert.True(cardThenCar.HasKey(Fixtures.CardKey));
+    }
+
     [Fact]
     public void TryGetValue_UnknownKey_ReturnsFalseAndDefault()
     {

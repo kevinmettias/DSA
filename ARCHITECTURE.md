@@ -729,9 +729,9 @@ alphabet: `Graph/Engines/Dags/Trees/{LowercaseTrieNode,LowercaseTrieTopology,Low
 the general `Trie<TValue>`'s bounded-alphabet sibling (26 lowercase English letters, `Set`/`HasKey`/
 `TryGetValue`/`HasPrefix`-compatible), backed by `SparseArrayChildren` — already in this repo,
 already doc-commented "e.g. a trie node's per-character children" (§3.1), and already rehearsed
-non-generically as a test-only fixture (`Tests/DataStructures/Graph/Contracts/Ordering/{TrieNode,
-TrieTopology,TrieTrees}.cs`, predating this promotion) before this reorg made it a real, `TValue`-
-generic, production Operations type. `LowercaseTrieTests.cs` proves the witness is real, not just a
+non-generically as a test-only fixture before this reorg made it a real, `TValue`-generic,
+production Operations type. That fixture has since been deleted: everything it checked is now
+checked against the real type (`LowercaseTrieTests`, `SparseArrayChildrenTests`). `LowercaseTrieTests.cs` proves the witness is real, not just a
 satisfied interface, with two facades reusing generic Tree-tier engines unmodified: `TreeMetrics.Size`
 counts every node across a shared-prefix chain, and `LowestCommonAncestor.Find` over a trie topology
 *is* longest-common-prefix — the node where two keys diverge is exactly the node reached by walking
@@ -748,6 +748,17 @@ the same bounded-alphabet shape `BitTrie`/`LowercaseTrie` do, but its runtime ma
 would earn a witness, not the automaton itself; `SuffixAutomaton`'s transition graph is a DAG, not
 a tree, though its suffix-link parent pointers form a separate, real tree that's a plausible
 witness candidate in its own right. None of the three is done.
+
+`Trie<TValue>` and `LowercaseTrie<TValue>` each carry their own copy of the key walk behind `Set`/
+`HasKey`/`TryGetValue`/`HasPrefix`, and that duplication is deliberate. Every way to share it costs
+something this architecture refuses to pay. A common node base class for `HasValue`/`Value` would be
+the first class inheritance in `DataStructures/`, against §6's composition rule and §13.7's "an
+interface, not a shared base class". A shared child-step witness would be one Representation
+contract spanning two domains, which §5 step 5 forbids: replicate the pattern, not the type. And a
+generic walk over a reference-typed node with a struct step witness gets shared canonical code
+whenever `TValue` is a reference type, which turns today's inline slot index into a dictionary
+lookup per character. The two loops are a dozen lines each; what differs between them (a `HashMap`
+step vs a validated slot index) is exactly the Representation difference this section is about.
 
 ### 13.9 Seventh reorg — `BitTrie` promoted to a real `ITreeTopology` witness
 
@@ -812,11 +823,9 @@ the distinguishing question is interface substitutability, not the topology axis
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the
 `Recording*Hooks` fixtures split across `Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/`
-by which hook interface each implements. Two Graph test-fixture groups from the first reorg still
-needed a placement call rather than a mechanical rule: the Trie fixtures
-(`TrieNode`/`TrieTopology`/`TrieTrees`/`WordCountFoldAlgebra`/`TrieTests`) travel together to
-`Tests/DataStructures/Graph/Contracts/Ordering/`, since their star subject (`SparseArrayChildren`)
-is Representation; `TestNode`/`TestTopology`/`TestTrees` anchor at
+by which hook interface each implements. One Graph test-fixture group from the first reorg still
+needs a placement call rather than a mechanical rule (a second, test-only trie fixture group,
+superseded by the production `LowercaseTrie`, has been deleted): `TestNode`/`TestTopology`/`TestTrees` anchor at
 `Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
 referenced cross-tree by `Algorithms/`-side test classes — harmless for test-only code. A handful
 of cross-cutting tests that exercise more than one utility together (`GraphTests.cs`, `ZipTests.cs`
