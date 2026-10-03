@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumAddToMakeParenthesesValidSolutionTests proves correct - a running-counter
 // balance walk that stores nothing vs. this repo's Stack<char> holding each
 // unmatched opener explicitly. The random bracket string is built once in
-// [GlobalSetup], so only the walk itself is measured.
+// [GlobalSetup], so only the walk itself is measured. Length stops at LC 921's own
+// bound of 1,000 characters.
 public class MinimumAddToMakeParenthesesValidBenchmarks
 {
     private const int RandomSeed = 921; // LC problem number
@@ -14,7 +15,7 @@ public class MinimumAddToMakeParenthesesValidBenchmarks
 
     // picks between '(' and ')'
 
-    [Params(1_000, 20_000)]
+    [Params(100, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

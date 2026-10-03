@@ -17,7 +17,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Length must rebuild the same chain.
 public sealed partial class MiddleOfTheLinkedListBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
 
     // Even length, so the middle is the second of the two: exactly half the chain remains from it.
     private const int ExpectedTailNodeCount = SmallestLength / 2;

@@ -7,15 +7,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MiddleOfTheLinkedListSolutionTests proves correct. CountThenWalk is the naive two-pass
 // approach (count the list, then walk length/2 steps from the head);
 // SlowFastTwoPointer lands on the same node in a single pass. Both are O(n), but
-// the baseline touches every node twice.
+// the baseline touches every node twice. Length stops at LC 876's own bound of 100
+// nodes, with values drawn from its [1, 100].
 public class MiddleOfTheLinkedListBenchmarks
 {
     private const int RandomSeed = 876; // LC problem number
-    private const int MaxNodeValueExclusive = 1_000;
+    private const int MinNodeValue = 1;
+    private const int MaxNodeValueExclusive = 101;
 
     private SinglyLinkedListNode<int> _head = null!;
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
@@ -27,12 +29,12 @@ public class MiddleOfTheLinkedListBenchmarks
 
     private static SinglyLinkedListNode<int> BuildRandomList(Random random, int length)
     {
-        var head = new SinglyLinkedListNode<int>(random.Next(0, MaxNodeValueExclusive));
+        var head = new SinglyLinkedListNode<int>(random.Next(MinNodeValue, MaxNodeValueExclusive));
         var tail = head;
 
         for (var i = 1; i < length; i++)
         {
-            tail.Next = new SinglyLinkedListNode<int>(random.Next(0, MaxNodeValueExclusive));
+            tail.Next = new SinglyLinkedListNode<int>(random.Next(MinNodeValue, MaxNodeValueExclusive));
             tail = tail.Next;
         }
 

@@ -34,10 +34,14 @@ public class MinimizeHammingDistanceAfterSwapOperationsBenchmarks
         _source = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
         _target = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
 
+        // Each swap's second index is a nonzero step past its first, wrapping around, so
+        // the pair always names two distinct indices as LC 1722 requires.
         _allowedSwaps = new int[Length][];
         for (var i = 0; i < Length; i++)
         {
-            _allowedSwaps[i] = [random.Next(Length), random.Next(Length)];
+            var first = random.Next(Length);
+            var step = random.Next(1, Length);
+            _allowedSwaps[i] = [first, (first + step) % Length];
         }
     }
 

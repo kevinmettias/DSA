@@ -4,15 +4,16 @@ using DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSubarrayXORWithBoundedRangeSolution's, the
-// same methods MaximumSubarrayXORWithBoundedRangeSolutionTests proves correct. High is set
-// well below the generated value ceiling so a meaningful fraction of positions
-// break a run, rather than the whole array degenerating into a single valid run.
+// same methods MaximumSubarrayXORWithBoundedRangeSolutionTests proves correct. Values
+// are drawn below LC 3845's own 2^15 ceiling, and High is set well below that
+// ceiling so a meaningful fraction of positions break a run, rather than the whole
+// array degenerating into a single valid run.
 public class MaximumSubarrayXORWithBoundedRangeBenchmarks
 {
     private const int RandomSeed = 3845;
-    private const int MaxValueExclusive = 1 << 16;
+    private const int MaxValueExclusive = 1 << 15;
     private const int Low = 0;
-    private const int High = 60_000;
+    private const int High = 30_000;
 
     private int[] _nums = [];
 

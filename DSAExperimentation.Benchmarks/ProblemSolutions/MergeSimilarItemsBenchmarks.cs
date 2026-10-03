@@ -10,7 +10,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sorts the distinct values with this repo's MergeSort. Values are deliberately
 // all-distinct across both input arrays so the naive scan never finds an early
 // match and always pays its full-length walk - the same "force the real worst
-// case" trick TwoSumBenchmarks' unreachable target uses.
+// case" trick TwoSumBenchmarks' unreachable target uses. That disjointness is why
+// Length stops at 500: two disjoint sets of 500 distinct values fill LC 2363's whole
+// value range [1, 1000].
 //
 // Both arms now return LeetCode's actual answer rather than just its length, the
 // same deliberate change ARCHITECTURE.md #17.8 records for WordLadderII: they are
@@ -22,7 +24,7 @@ public class MergeSimilarItemsBenchmarks
     private int[][] _items1 = [];
 
     private int[][] _items2 = [];
-    [Params(200, 1_000)]
+    [Params(200, 500)]
     public int Length { get; set; }
 
     [GlobalSetup]

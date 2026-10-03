@@ -5,11 +5,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MinimizeManhattanDistancesSolution's, the same
 // methods MinimizeManhattanDistancesSolutionTests proves correct. The transform arm is
 // handed the already-sorted u/v arrays, so the O(n log n) sort is charged to
-// [GlobalSetup] and only the O(n) per-removal sweep is measured.
+// [GlobalSetup] and only the O(n) per-removal sweep is measured. Coordinates are
+// drawn from [1, 2,000,000), inside LC 3102's 1 <= x, y <= 10^8.
 public class MinimizeManhattanDistancesBenchmarks
 {
     private const int Seed = 3102;
-    private const int CoordinateBound = 1_000_000;
+    private const int MinCoordinate = 1;
+    private const int MaxCoordinateExclusive = 2_000_000;
 
     private int[][] _points = [];
 
@@ -27,7 +29,7 @@ public class MinimizeManhattanDistancesBenchmarks
     {
         var random = new Random(Seed);
         _points = Enumerable.Range(0, PointCount)
-            .Select(_ => new[] { random.Next(-CoordinateBound, CoordinateBound), random.Next(-CoordinateBound, CoordinateBound) })
+            .Select(_ => new[] { random.Next(MinCoordinate, MaxCoordinateExclusive), random.Next(MinCoordinate, MaxCoordinateExclusive) })
             .ToArray();
 
         var (sortedByU, sortedByV) = MinimizeManhattanDistancesSolution.BuildSortedTransforms(_points);

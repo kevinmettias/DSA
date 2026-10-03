@@ -5,14 +5,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumRepeatingSubstringSolution's, the same methods
 // MaximumRepeatingSubstringSolutionTests proves correct. sequence is built from Word
 // repeated end to end so both strategies are forced through every increasing
-// candidate length instead of failing on the very first repeat.
+// candidate length instead of failing on the very first repeat. Length stops at
+// LC 1668's own bound of 100 characters.
 public class MaximumRepeatingSubstringBenchmarks
 {
     private const string Word = "ab";
 
     private string _sequence = "";
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

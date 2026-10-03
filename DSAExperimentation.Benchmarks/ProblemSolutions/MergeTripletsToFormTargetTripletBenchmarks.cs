@@ -17,6 +17,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class MergeTripletsToFormTargetTripletBenchmarks
 {
     private const int RandomSeed = 1899; // LC problem number
+
+    // Triplet values are drawn from [1, 999): LC 1899's own floor of 1, and below the
+    // target's 1,000 so no triplet can ever reach it.
+    private const int MinValue = 1;
     private const int ValueBoundExclusive = 999;
     private const int TripletDimension = 3;
 
@@ -38,7 +42,7 @@ public class MergeTripletsToFormTargetTripletBenchmarks
         var random = new Random(RandomSeed);
 
         return Enumerable.Range(0, tripletCount)
-            .Select(_ => SeededDraws.Values(TripletDimension, 0, ValueBoundExclusive, random))
+            .Select(_ => SeededDraws.Values(TripletDimension, MinValue, ValueBoundExclusive, random))
             .ToArray();
     }
 

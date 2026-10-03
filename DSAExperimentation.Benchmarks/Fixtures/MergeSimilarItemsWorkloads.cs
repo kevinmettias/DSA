@@ -4,7 +4,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // no value ever repeats across the two arrays and neither arm gets an early-exit
 // shortcut from a shared value - the naive linear scan always pays its full-length
 // walk. Every weight is 1, because which weights are summed is irrelevant to the
-// cost of finding them.
+// cost of finding them. Together the two arrays hold exactly 1 through 2 * length,
+// so LC 2363's 1 <= value <= 1000 holds up to a length of 500.
 internal static class MergeSimilarItemsWorkloads
 {
     private const int Weight = 1;
@@ -13,8 +14,12 @@ internal static class MergeSimilarItemsWorkloads
     // items2 the odds - two disjoint value sets of the requested length.
     private const int Stride = 2;
 
+    // LC 2363's values start at 1, so the evens start at 2.
+    private const int FirstEvenValue = 2;
+    private const int FirstOddValue = 1;
+
     public static (int[][] Items1, int[][] Items2) BuildDisjointValues(int length) =>
-        (BuildPairs(length, firstValue: 0), BuildPairs(length, firstValue: 1));
+        (BuildPairs(length, FirstEvenValue), BuildPairs(length, FirstOddValue));
 
     private static int[][] BuildPairs(int length, int firstValue)
     {

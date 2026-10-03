@@ -4,7 +4,8 @@ using DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MedianOfTwoSortedArraysSolution's, the same methods
-// MedianOfTwoSortedArraysSolutionTests proves correct.
+// MedianOfTwoSortedArraysSolutionTests proves correct. TotalLength stops at LC 4's own
+// bound of m + n <= 2,000, split evenly so each array stays inside its own 1,000.
 public class MedianOfTwoSortedArraysBenchmarks
 {
     private const int RandomSeed = 11;
@@ -13,7 +14,7 @@ public class MedianOfTwoSortedArraysBenchmarks
     private int[] _nums1 = [];
 
     private int[] _nums2 = [];
-    [Params(2_000, 40_000)]
+    [Params(200, 2_000)]
     public int TotalLength { get; set; }
 
     [GlobalSetup]
