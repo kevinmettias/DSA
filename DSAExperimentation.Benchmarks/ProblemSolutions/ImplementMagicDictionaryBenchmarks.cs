@@ -11,7 +11,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // charged to setup, replay is what gets measured" shape LRUCacheBenchmarks
 // already uses for its own instance-API problem. O(words * dictionarySize *
 // wordLength) vs. O(dictionarySize * wordLength) to build the trie once plus
-// O(words * wordLength * alphabetSize) to search it.
+// O(words * wordLength * alphabetSize) to search it. DictionarySize stops at LC 676's
+// 100-word cap, which also keeps the one-search-per-word batch inside its 100 search
+// calls.
 public class ImplementMagicDictionaryBenchmarks
 {
     private const int WordLength = 8;
@@ -26,7 +28,7 @@ public class ImplementMagicDictionaryBenchmarks
 
     // Every Search verdict, in search-word order; sized in setup so the replay allocates nothing.
     private bool[] _verdicts = [];
-    [Params(10_000, 30_000)]
+    [Params(10, 100)]
     public int DictionarySize { get; set; }
 
     [GlobalSetup]

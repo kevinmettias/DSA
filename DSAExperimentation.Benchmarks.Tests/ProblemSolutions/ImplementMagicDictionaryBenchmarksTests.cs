@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // two-character change, and a length mismatch.
 public sealed partial class ImplementMagicDictionaryBenchmarksTests
 {
-    private const int SmallestDictionarySize = 10_000;
+    private const int SmallestDictionarySize = 10;
 
     private static readonly string[] DiscriminatingDictionary = ["hello", "leetcode", "aaaa", "ab"];
 

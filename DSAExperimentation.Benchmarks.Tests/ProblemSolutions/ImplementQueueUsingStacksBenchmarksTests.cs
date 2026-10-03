@@ -14,7 +14,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // agree only if the measured queue is genuinely FIFO.
 public sealed partial class ImplementQueueUsingStacksBenchmarksTests
 {
-    private const int SmallestOperationCount = 200;
+    private const int SmallestOperationCount = 10;
 
     // The seed [GlobalSetup] builds its script from, restated here because the script itself is
     // private to the harness.
@@ -22,6 +22,10 @@ public sealed partial class ImplementQueueUsingStacksBenchmarksTests
 
     // The script's three rolls: 0 pushes the next value, 1 peeks, 2 pops.
     private const int OperationKindCount = 3;
+
+    // The band [GlobalSetup] draws pushed values from: LC 232's [1, 9].
+    private const int MinPushedValue = 1;
+    private const int MaxPushedValueExclusive = 10;
 
     [Fact]
     public void TwoStackTransfer_InterleavedScript_MatchesBclQueueReference()
@@ -55,7 +59,7 @@ public sealed partial class ImplementQueueUsingStacksBenchmarksTests
 
             if (roll == 0)
             {
-                reference.Enqueue(random.Next(0, operationCount + 1));
+                reference.Enqueue(random.Next(MinPushedValue, MaxPushedValueExclusive));
                 pending++;
             }
             else if (roll == 1)

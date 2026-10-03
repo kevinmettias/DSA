@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms pick the same guess every round, so both converge on the identical secret
 // in the identical number of rounds - only the filtering cost differs.
 //
-// WordCount intentionally runs past LeetCode's own 100-word cap: match-count
-// filtering converges in single-digit rounds regardless of pool size, so the
-// per-round penalty - not the round count - is what needs a large pool to separate
-// from constant overhead. The generated pool is LeetCode's own string[] shape, so the
-// only thing hoisted into [GlobalSetup] is generating it; a fresh SecretWordMaster is
-// constructed per invocation because the guess counter is per-run state.
+// WordCount stops at LeetCode's own 100-word cap. Match-count filtering converges in
+// single-digit rounds regardless of pool size, so it is the per-round penalty, not the
+// round count, that grows with the pool. The generated pool is LeetCode's own string[]
+// shape, so the only thing hoisted into [GlobalSetup] is generating it; a fresh
+// SecretWordMaster is constructed per invocation because the guess counter is per-run
+// state.
 public class GuessTheWordBenchmarks
 {
     private const int RandomSeed = 843; // LC problem number
@@ -26,7 +26,7 @@ public class GuessTheWordBenchmarks
     private string[] _wordList = [];
 
     private string _secret = "";
-    [Params(100, 1_000)]
+    [Params(10, 100)]
     public int WordCount { get; set; }
 
     [GlobalSetup]

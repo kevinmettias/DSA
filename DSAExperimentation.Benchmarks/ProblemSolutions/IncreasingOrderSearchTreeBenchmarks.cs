@@ -18,12 +18,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // clone is timed on purpose, so every arm pays the same O(n) copy rather than the
 // O(n log n) of re-inserting every value. Each arm returns the relinked chain's root as
 // object?, since a public [Benchmark] method cannot name the internal
-// BinaryTreeNode<int> (CS0050).
+// BinaryTreeNode<int> (CS0050). NodeCount stops at LC 897's 100-node cap.
 public class IncreasingOrderSearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(500, 20_000)]
+    [Params(10, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

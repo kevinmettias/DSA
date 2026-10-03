@@ -9,17 +9,20 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // traffic and only the queue backing the rotation differs between arms, the
 // same "script construction charged to setup, replay is what gets measured"
 // shape LRUCacheBenchmarks/DesignTaskManagerBenchmarks already use for their
-// own instance-API problems.
+// own instance-API problems. The script makes 3 * Count calls, so Count stops at 33
+// to stay inside LC 225's 100-call cap, and pushed values are drawn from its [1, 9].
 public class ImplementStackUsingQueuesBenchmarks
 {
     private const int Seed = 225;
+    private const int MinPushedValue = 1;
+    private const int MaxPushedValueExclusive = 10;
 
     private List<Func<ImplementStackUsingQueuesSolution.IStackOperations, int?>> _script = new();
 
     // Every value Pop answers, in order - one per round; sized in setup so the replay allocates nothing.
     private int[] _popped = [];
 
-    [Params(200, 2_000)]
+    [Params(3, 33)]
     public int Count { get; set; }
 
     [GlobalSetup]
@@ -38,14 +41,14 @@ public class ImplementStackUsingQueuesBenchmarks
 
         for (var i = 0; i < count; i++)
         {
-            var value = random.Next(0, count);
+            var value = random.Next(MinPushedValue, MaxPushedValueExclusive);
             AppendPush(script, value);
         }
 
         for (var round = 0; round < count; round++)
         {
             script.Add(stack => stack.Pop());
-            var value = random.Next(0, count);
+            var value = random.Next(MinPushedValue, MaxPushedValueExclusive);
             AppendPush(script, value);
         }
 

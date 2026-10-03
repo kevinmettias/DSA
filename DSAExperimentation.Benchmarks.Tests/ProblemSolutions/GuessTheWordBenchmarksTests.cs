@@ -15,7 +15,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // harness is safe to call twice in either order.
 public sealed partial class GuessTheWordBenchmarksTests
 {
-    private const int SmallestWordCount = 100;
+    private const int SmallestWordCount = 10;
     private const int RandomSeed = 843;
     private const int WordLength = 6;
     private const int MiddleIndexDivisor = 2;

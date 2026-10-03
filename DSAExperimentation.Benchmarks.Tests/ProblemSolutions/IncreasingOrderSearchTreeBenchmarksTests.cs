@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // left child, rooted at the lowest shuffled value - LC 897 makes the smallest value the root.
 public sealed partial class IncreasingOrderSearchTreeBenchmarksTests
 {
-    private const int SmallestNodeCount = 500;
+    private const int SmallestNodeCount = 10;
 
     // SeededSequences.ShuffledOneTo starts at one, so the ascending chain starts here too.
     private const int LowestShuffledValue = 1;

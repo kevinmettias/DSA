@@ -5,6 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HeightCheckerSolution's - the textbook O(n^2)
 // insertion sort of a copy against this repo's MergeSort over ArrayIndexedSequence.
+// Length stops at LC 1051's 100-student cap, short of where the quadratic baseline
+// pulls clearly away.
 public class HeightCheckerBenchmarks
 {
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.
@@ -15,7 +17,7 @@ public class HeightCheckerBenchmarks
 
     private int[] _heights = [];
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

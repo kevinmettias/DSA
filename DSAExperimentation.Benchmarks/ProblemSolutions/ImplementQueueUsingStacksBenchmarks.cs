@@ -10,10 +10,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arm returns every value pop and peek answered, in order - the same "return the
 // real answer, not a weaker proxy" shape LRUCacheBenchmarks/
 // BinarySearchTreeIteratorBenchmarks already follow. A push answers nothing,
-// which its script entry reports as null.
+// which its script entry reports as null. OperationCount stops at LC 232's 100-call
+// cap, and pushed values are drawn from its [1, 9].
 public class ImplementQueueUsingStacksBenchmarks
 {
     private const int Seed = 232;
+    private const int MinPushedValue = 1;
+    private const int MaxPushedValueExclusive = 10;
 
     private List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int?>> _script = new();
 
@@ -22,7 +25,7 @@ public class ImplementQueueUsingStacksBenchmarks
     // cleared by each replay.
     private List<int> _answers = [];
 
-    [Params(200, 2_000)]
+    [Params(10, 100)]
     public int OperationCount { get; set; }
 
     [GlobalSetup]
@@ -40,7 +43,7 @@ public class ImplementQueueUsingStacksBenchmarks
 
         for (var i = 0; i < operationCount; i++)
         {
-            pending = AppendNextOperation(script, pending, random, operationCount);
+            pending = AppendNextOperation(script, pending, random);
         }
 
         return script;
@@ -51,14 +54,14 @@ public class ImplementQueueUsingStacksBenchmarks
     // been pushed and not yet popped.
     private static int AppendNextOperation(
         List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int?>> script,
-        int pending, Random random, int operationCount)
+        int pending, Random random)
     {
         var roll = pending > 0 ? random.Next(0, 3) : 0;
         var nextPending = pending;
 
         if (roll == 0)
         {
-            AppendPush(script, random, operationCount);
+            AppendPush(script, random);
             nextPending++;
         }
         else if (roll == 1)
@@ -77,9 +80,9 @@ public class ImplementQueueUsingStacksBenchmarks
     // A push entry carrying the value it pushes, so the replay exercises real
     // values rather than one constant.
     private static void AppendPush(
-        List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int?>> script, Random random, int operationCount)
+        List<Func<ImplementQueueUsingStacksSolution.TwoStackQueue, int?>> script, Random random)
     {
-        var value = random.Next(0, operationCount + 1);
+        var value = random.Next(MinPushedValue, MaxPushedValueExclusive);
         script.Add(queue =>
         {
             queue.Push(value);

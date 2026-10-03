@@ -7,14 +7,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are HouseRobberIIISolution's, the same methods
 // HouseRobberIIISolutionTests proves correct - a hand-rolled post-order recursion vs. this
 // repo's generic TreeFold engine closed over RobFoldAlgebra, over a random full
-// binary tree of the given depth.
+// binary tree of the given depth. Depth 12 (8,191 nodes) is the deepest full tree
+// inside LC 337's 10^4-node bound.
 public class HouseRobberIIIBenchmarks
 {
     private const int Seed = 1;
 
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(10, 15)]
+    [Params(10, 12)]
     public int Depth { get; set; }
 
     [GlobalSetup]
