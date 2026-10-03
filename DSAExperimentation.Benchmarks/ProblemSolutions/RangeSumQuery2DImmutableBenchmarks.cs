@@ -3,14 +3,13 @@ using DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are RangeSumQuery2DImmutableSolution's, the same factories
-// RangeSumQuery2DImmutableSolutionTests proves correct - a brute-force cell scan baseline (sums every
-// cell in the region directly, O(rows*cols) per SumRegion call) vs. one
-// FenwickTree<int,SumOperation<int>> built per row (O(rows*cols*log(cols)) once), so SumRegion
-// afterward walks only the covered rows and does an O(log cols) FenwickTree.Query per row instead
-// of rescanning every cell. [GlobalSetup] builds the random matrix and query batch; each
-// [Benchmark] arm's own factory call (construction included) plus the full query replay is what
-// gets measured, the same shape LRUCacheBenchmarks uses for its own design problem.
+// Harness only: all three arms are RangeSumQuery2DImmutableSolution's, the same factories
+// RangeSumQuery2DImmutableSolutionTests proves correct - a brute-force cell scan baseline (O(rows *
+// cols) per SumRegion call), one FenwickTree<int,SumOperation<int>> per row (an O(log cols) query per
+// covered row), and the prefix-sum table LeetCode's O(1) requirement asks for (four lookups per
+// call). [GlobalSetup] builds the random matrix and query batch; each arm's own factory call
+// (construction included) plus the full query replay is what gets measured, the same shape
+// LRUCacheBenchmarks uses for its own design problem.
 public class RangeSumQuery2DImmutableBenchmarks
 {
     private const int QueryCount = 200;
@@ -26,6 +25,7 @@ public class RangeSumQuery2DImmutableBenchmarks
 
     // Every SumRegion answer, in query order - what each arm returns.
     private int[] _sums = [];
+
     [Params(20, 200)]
     public int Size { get; set; }
 
@@ -55,6 +55,9 @@ public class RangeSumQuery2DImmutableBenchmarks
 
     [Benchmark]
     public int[] RowFenwickTreeQuery() => Replay(RangeSumQuery2DImmutableSolution.CreateByRowFenwickTree(_matrix));
+
+    [Benchmark]
+    public int[] PrefixSums() => Replay(RangeSumQuery2DImmutableSolution.CreateByPrefixSums(_matrix));
 
     private int[] Replay(INumMatrix numMatrix)
     {
