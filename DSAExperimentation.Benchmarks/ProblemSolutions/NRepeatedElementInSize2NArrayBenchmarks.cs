@@ -4,14 +4,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NRepeatedElementInSize2NArraySolution's, the same methods
 // NRepeatedElementInSize2NArraySolutionTests proves correct. The O(n^2) pairwise scan is the
-// baseline the O(n) Set<int> pass has to beat.
+// baseline the O(n) Set<int> pass has to beat. Length stops at 10,000, LC 961's own
+// bound of n <= 5,000, whose distinct values 1..n stay inside its nums[i] <= 10^4.
 public class NRepeatedElementInSize2NArrayBenchmarks
 {
     private const int ArrayLengthMultiplier = 2;
 
     private int[] _values = [];
 
-    [Params(200, 20_000)]
+    [Params(200, 10_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -7,10 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rather than only counting solutions as the pre-migration arms did.
 public class NQueensBenchmarks
 {
-    // The search tree grows super-exponentially in Size, so the spread is multiplicative
-    // rather than the arithmetic one most benchmarks here use: these three values are roughly
-    // an order of magnitude apart in work, and 12 would put a single iteration into minutes.
-    [Params(6, 8, 10)]
+    // The search tree grows super-exponentially in Size, so even these close sizes are far
+    // apart in work. Size stops at LC 51's own bound of 9.
+    [Params(6, 8, 9)]
     public int Size { get; set; }
 
     [Benchmark(Baseline = true)]

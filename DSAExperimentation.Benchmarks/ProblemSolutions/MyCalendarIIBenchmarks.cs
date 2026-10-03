@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // double-books with its immediate predecessor only, never a triple. Drain
 // feeds the whole generated event sequence through Book() one call at a
 // time - the LeetCode-shaped sequence itself, not a batch construction -
-// returning every Book answer in order.
+// returning every Book answer in order. Length stops at LC 731's own bound of 1,000
+// calls to Book.
 public class MyCalendarIIBenchmarks
 {
     private const int EventWidth = 10;
@@ -18,7 +19,7 @@ public class MyCalendarIIBenchmarks
 
     private bool[] _booked = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Book call succeeds and the stored set grows to the full Length, isolating
 // the cost of the overlap CHECK itself. Drain feeds the whole generated event
 // sequence through Book() one call at a time - the LeetCode-shaped sequence
-// itself, not a batch construction - returning every Book answer in order.
+// itself, not a batch construction - returning every Book answer in order. Length
+// stops at LC 729's own bound of 1,000 calls to Book.
 public class MyCalendarIBenchmarks
 {
     private const int EventWidth = 10;
@@ -18,7 +19,7 @@ public class MyCalendarIBenchmarks
 
     private bool[] _booked = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

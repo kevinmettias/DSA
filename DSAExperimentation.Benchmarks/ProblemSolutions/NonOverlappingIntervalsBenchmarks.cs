@@ -11,12 +11,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rounds. SortByEndThenGreedyScan can pass _intervals as it is: the sort strategy
 // reads it through IntervalEndOrder.SortedByEnd, which sorts a copy, so every
 // BenchmarkDotNet iteration starts from the same unsorted, shuffled workload
-// without the harness having to clone it first.
+// without the harness having to clone it first. Each interval ends 1 or 2 past its
+// start, so starti < endi as LC 435 requires.
 public class NonOverlappingIntervalsBenchmarks
 {
     // LC 435.
     private const int RandomSeed = 435;
     private const int IntervalSpacing = 3;
+
+    // The largest end offset, inclusive.
     private const int EndOffsetUpperBound = 2;
 
     private (int Start, int End)[] _intervals = [];
@@ -29,7 +32,7 @@ public class NonOverlappingIntervalsBenchmarks
     {
         var random = new Random(RandomSeed);
         _intervals = Enumerable.Range(0, Length)
-            .Select(i => (Start: i * IntervalSpacing, End: i * IntervalSpacing + random.Next(0, EndOffsetUpperBound)))
+            .Select(i => (Start: i * IntervalSpacing, End: i * IntervalSpacing + random.Next(1, EndOffsetUpperBound + 1)))
             .OrderBy(_ => random.Next())
             .ToArray();
     }

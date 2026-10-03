@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NumberOfCommonFactorsSolutionTests proves correct. _first/_second are random within
 // [Magnitude/2, Magnitude], so their gcd stays small relative to Magnitude on
 // average - exactly the shape where the sqrt(gcd) reduction pays off over the
-// min(a, b) baseline.
+// min(a, b) baseline. Magnitude stops at LC 2427's own bound of a, b <= 1,000.
 public class NumberOfCommonFactorsBenchmarks
 {
     private const int RandomSeed = 2427; // LC problem number
@@ -17,7 +17,7 @@ public class NumberOfCommonFactorsBenchmarks
     private int _first;
     private int _second;
 
-    [Params(10_000, 1_000_000)]
+    [Params(100, 1_000)]
     public int Magnitude { get; set; }
 
     [GlobalSetup]

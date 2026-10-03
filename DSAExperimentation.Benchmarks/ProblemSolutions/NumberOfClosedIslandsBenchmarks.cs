@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // this repo's own DepthFirstSearch.Traverse walking each water component and
 // checking whether any cell it came back with lands on the grid's edge. Each
 // strategy clones the shared grid fixture internally before filling it, so
-// repeated invocations each start from the true input.
+// repeated invocations each start from the true input. Side stops at LC 1254's own
+// bound of 100.
 public class NumberOfClosedIslandsBenchmarks
 {
     private const int RandomSeed = 7;
@@ -17,7 +18,7 @@ public class NumberOfClosedIslandsBenchmarks
 
     private int[][] _grid = [];
 
-    [Params(30, 120)]
+    [Params(30, 100)]
     public int Side { get; set; }
 
     [GlobalSetup]

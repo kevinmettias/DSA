@@ -6,9 +6,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NQueensIISolutionTests proves correct.
 public class NQueensIIBenchmarks
 {
-    // Counting only, with no board ever materialised, so this arm can afford two sizes past
-    // where NQueensBenchmarks stops. Super-exponential in Size all the same - 14 is minutes.
-    [Params(8, 10, 12)]
+    // Counting only, with no board ever materialised, but still super-exponential in Size.
+    // Size stops at LC 52's own bound of 9, where NQueensBenchmarks also stops.
+    [Params(8, 9)]
     public int Size { get; set; }
 
     [Benchmark(Baseline = true)]

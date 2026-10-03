@@ -5,7 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are NextGreaterElementISolution's, the same methods
 // NextGreaterElementISolutionTests proves correct. nums2 is a random permutation of
 // distinct values so no query short-circuits on an early match, forcing
-// PerQueryRescan through its full worst-case inner scan.
+// PerQueryRescan through its full worst-case inner scan. Length stops at LC 496's own
+// bound of 1,000 for both arrays.
 public class NextGreaterElementIBenchmarks
 {
     private const int RandomSeed = 496; private int[] _nums1 = [];
@@ -13,7 +14,7 @@ public class NextGreaterElementIBenchmarks
     private int[] _nums2 = [];
     // LC problem number
 
-    [Params(200, 2_500)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]
