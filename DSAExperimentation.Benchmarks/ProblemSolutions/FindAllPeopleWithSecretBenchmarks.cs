@@ -18,9 +18,9 @@ public class FindAllPeopleWithSecretBenchmarks
     private const int ChainCount = 2; // one reachable chain, one unreachable chain
     private const int ReservedIdCount = 2; // person 0 + FirstPerson
     private const int UnreachableChainHeadCount = 1; // unreachable chain's own head id
-    private const int SeedMeetingTime = 0;
-    private const int ReachableChainTime = 1;
-    private const int UnreachableChainTime = 2;
+    private const int SeedMeetingTime = 1;
+    private const int ReachableChainTime = 2;
+    private const int UnreachableChainTime = 3;
 
     private MeetingSchedule _schedule;
 
@@ -30,8 +30,9 @@ public class FindAllPeopleWithSecretBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        // Person 0 and FirstPerson meet at time 0 (LC 2092's own initial
-        // condition), then two long same-timestamp chains at times 1 and 2 - one
+        // Person 0 and FirstPerson meet at time 1, the earliest LC 2092 allows,
+        // restating its own initial condition, then two long same-timestamp chains
+        // at times 2 and 3 - one
         // starting at FirstPerson, one starting at an otherwise-unreached person -
         // so both benchmarked methods must walk every hop of a ChainLength-long
         // component per group. Id budget: person 0 + FirstPerson (2) + the

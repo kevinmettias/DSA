@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // character of the text is an extra character. The same Length must rebuild the same text.
 public sealed partial class ExtraCharactersInAStringBenchmarksTests
 {
-    private const int SmallestLength = 300;
+    private const int SmallestLength = 10;
 
     // Setup's characters never appear in the dictionary, so no word can cover any of them and the
     // minimum extra characters is the whole length.

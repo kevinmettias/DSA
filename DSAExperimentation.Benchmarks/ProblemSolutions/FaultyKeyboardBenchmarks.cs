@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FaultyKeyboardSolutionTests proves correct. Every other character is 'i' so both arms
 // are forced through the worst case: FinalStringByReversal pays for a real
 // reversal on roughly half the string's length (degrading toward O(n^2)), while
-// FinalStringByDeque never reverses anything at all.
+// FinalStringByDeque never reverses anything at all. LC 2810 caps the string at 100
+// characters, so the larger Length is that cap.
 public class FaultyKeyboardBenchmarks
 {
     private const int Seed = 1;
@@ -17,7 +18,7 @@ public class FaultyKeyboardBenchmarks
 
     private string _input = "";
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

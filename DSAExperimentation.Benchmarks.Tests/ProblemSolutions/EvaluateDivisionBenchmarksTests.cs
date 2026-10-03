@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // compared under a named relative tolerance rather than by exact equality.
 public sealed partial class EvaluateDivisionBenchmarksTests
 {
-    private const int SmallestVariableCount = 200;
+    private const int SmallestVariableCount = 6;
     private const double EdgeWeight = 2.0;
     private const int ChainEdgeCount = SmallestVariableCount - 1;
 
@@ -33,7 +33,7 @@ public sealed partial class EvaluateDivisionBenchmarksTests
     }
 
     [Fact]
-    public void DictionaryBased_TwoHundredVariableChain_AgreesWithHashMapStackComposed()
+    public void DictionaryBased_SixVariableChain_AgreesWithHashMapStackComposed()
     {
         var harness = BuildHarness();
 
@@ -41,7 +41,7 @@ public sealed partial class EvaluateDivisionBenchmarksTests
     }
 
     [Fact]
-    public void HashMapStackComposed_TwoHundredVariableChain_AgreesWithDictionaryBased()
+    public void HashMapStackComposed_SixVariableChain_AgreesWithDictionaryBased()
     {
         var harness = BuildHarness();
 

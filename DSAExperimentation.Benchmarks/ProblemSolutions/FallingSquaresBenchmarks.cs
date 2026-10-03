@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every earlier square's footprint for overlap" brute force vs. the O(n log n)
 // coordinate-compression + LazySegmentTree approach. Footprints are randomly
 // overlapping so both strategies pay their full worst-case cost rather than
-// degenerating to disjoint, non-interacting squares.
+// degenerating to disjoint, non-interacting squares. Left edges start at 1, LC 699's
+// smallest.
 public class FallingSquaresBenchmarks
 {
     private const int PositionRangeMultiplier = 2;
@@ -25,7 +26,7 @@ public class FallingSquaresBenchmarks
 
         for (var i = 0; i < SquareCount; i++)
         {
-            var left = random.Next(0, SquareCount * PositionRangeMultiplier);
+            var left = random.Next(1, (SquareCount * PositionRangeMultiplier) + 1);
             var size = random.Next(1, MaxSquareSize);
             _positions[i] = [left, size];
         }

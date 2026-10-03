@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // disagree is replaying two different streams. Both arms return only a count of the true answers,
 // which is a proxy: agreement witnesses that the two strategies agreed on every one of the streamed
 // answers, but the count alone could also match on a stream where neither ever said true. Setup
-// draws every arrival from [0, 1_000) and the window is 20 long with a single value that would fill
+// draws every arrival from [1, 1_000) and the window is 20 long with a single value that would fill
 // it, so the documented "Value is rare in the stream" workload answers false throughout; the same
 // Length must rebuild the same stream.
 public sealed partial class FindConsecutiveIntegersFromADataStreamBenchmarksTests
@@ -16,7 +16,7 @@ public sealed partial class FindConsecutiveIntegersFromADataStreamBenchmarksTest
     private const int SmallestLength = 2_000;
 
     // Twenty consecutive arrivals of the single tracked value would be needed to fill the window;
-    // with every arrival drawn from [0, 1_000) that never happens over the seeded stream.
+    // with every arrival drawn from [1, 1_000) that never happens over the seeded stream.
     private const int ExpectedConsecutiveRunCount = 0;
 
     [Fact]

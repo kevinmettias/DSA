@@ -10,7 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // an incrementally maintained match count (O(n)). [GlobalSetup] generates the streamed
 // values, so stream generation is charged to setup rather than to the replay each arm
 // measures. `Value` is rare in the stream, so the window almost never gives either arm
-// a chance to short-circuit early.
+// a chance to short-circuit early. Every arrival is drawn from 1..999, inside LC
+// 2526's floor of 1.
 public class FindConsecutiveIntegersFromADataStreamBenchmarks
 {
     private const int RandomSeed = 2526; // LC problem number
@@ -27,7 +28,7 @@ public class FindConsecutiveIntegersFromADataStreamBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(Length, 0, ValueBoundExclusive, random);
+        _values = SeededDraws.Values(Length, 1, ValueBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

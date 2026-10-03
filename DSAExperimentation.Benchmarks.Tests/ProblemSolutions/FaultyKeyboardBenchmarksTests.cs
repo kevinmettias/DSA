@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // that leaked an 'i' or dropped a character would miss, and the same Length must rebuild it.
 public sealed partial class FaultyKeyboardBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
 
     // Index 0 is non-'i', and the odd indices 1..Length-1 are all non-'i' - Length / 2 of them.
     private const int ExpectedFinalLength = (SmallestLength / 2) + 1;

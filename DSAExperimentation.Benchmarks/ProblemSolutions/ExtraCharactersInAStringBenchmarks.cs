@@ -7,14 +7,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // characters that never form a dictionary word, so neither arm gets an early exact-match
 // shortcut - both are forced through their full per-start scan strategy, which is
 // exactly the difference being measured: a full-length substring sweep against a trie
-// walk that stops at the first dead prefix.
+// walk that stops at the first dead prefix. LC 2707 caps the string at 50 characters,
+// so the larger Length is that cap.
 public class ExtraCharactersInAStringBenchmarks
 {
     private static readonly string[] Dictionary = ["ab", "cd", "ef", "gh", "ij"];
 
     private string _text = "";
 
-    [Params(300, 1_500)]
+    [Params(10, 50)]
     public int Length { get; set; }
 
     [GlobalSetup]

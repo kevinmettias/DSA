@@ -9,7 +9,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own Stack<int>, the same brute-force-vs-primitive shape TwoSumBenchmarks makes.
 // Prices are random with no forced worst case, matching the distribution
 // LeetCode's own constraints describe; the price array is LeetCode's own argument
-// shape, so [GlobalSetup] hands it to both arms directly.
+// shape, so [GlobalSetup] hands it to both arms directly. LC 1475 caps the prices at
+// 500, so the larger Length is that cap.
 public class FinalPricesWithASpecialDiscountInAShopBenchmarks
 {
     private const int MaxPrice = 1_000;
@@ -20,7 +21,7 @@ public class FinalPricesWithASpecialDiscountInAShopBenchmarks
 
     private int[] _prices = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 500)]
     public int Length { get; set; }
 
     [GlobalSetup]

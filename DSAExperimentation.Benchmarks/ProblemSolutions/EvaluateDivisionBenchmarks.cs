@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are EvaluateDivisionSolution's, the same methods
 // EvaluateDivisionSolutionTests proves correct. The variables form one long chain (v0/v1 =
 // 2.0, v1/v2 = 2.0, ...) so every query below walks the full chain instead of an
-// early exit.
+// early exit. LC 399 allows 20 equations, so the longer chain has 21 variables.
 public class EvaluateDivisionBenchmarks
 {
     private const double EdgeWeight = 2.0;
@@ -15,7 +15,7 @@ public class EvaluateDivisionBenchmarks
 
     private string _firstVariable = "";
     private string _lastVariable = "";
-    [Params(200, 5_000)]
+    [Params(6, 21)]
     public int VariableCount { get; set; }
 
     [GlobalSetup]
