@@ -950,13 +950,6 @@
     },
     {
       "check": "check-presumption",
-      "path": "DSAExperimentation.LeetCode/PalindromicPathQueriesInATree/PalindromicPathQueriesInATreeSolution.cs",
-      "reason": "LowestCommonAncestor.Find's ! promises the two queried nodes have an ancestor: LeetCode guarantees u and v are nodes of the tree rooted at nodes[0], so the search always has both reachable from the root it is given and cannot return null - the same guarantee the waived LowestCommonAncestorOfBst test names.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/PopulatingNextRightPointersInEachNode/PopulatingNextRightPointersInEachNodeSolution.cs",
       "reason": "previous! is the last node of the level just drained, which the drain loop's own `previous is not null` guard establishes before the assignment; the two Output.Value! sites rest on the AsyncLocal sink being assigned on the statement before the synchronous LevelGroupedBreadthFirstTraversal.Walk, whose OnLevel is the only reader.",
       "owner": "@kmettias",
@@ -4494,6 +4487,14 @@
       "path": "DSAExperimentation.LeetCode/MaximumGeneticDifferenceQuery/MaximumGeneticDifferenceQuerySolution.cs",
       "anchor": "`MostSignificantBitIndex = ",
       "reason": "`MostSignificantBitIndex = 31` is declared in 2 independent units (MaximumGeneticDifferenceQuery/MaximumGeneticDifferenceQuerySolution.cs, MaximumSubarrayXORWithBoundedRange/MaximumSubarrayXORWithBoundedRangeSolution.cs), each the starting bit of its own greedy walk down a BitTrie path. BitTrie keeps its own width private and each solution's walk is its own code, so the BitWidth = 32 group's reasoning applies: each file's own value, the parallel vocabulary the rule's own doc routes to this ledger.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-duplicate-constant",
+      "path": "DSAExperimentation.LeetCode/PalindromicPathQueriesInATree/TreeTour.cs",
+      "anchor": "`Root = ",
+      "reason": "`Root = 0` is declared in 2 independent units (PalindromicPathQueriesInATree/TreeTour.cs, ReachableNodesWithRestrictions/ReachableNodesWithRestrictionsSolution.cs), each the node its own solution starts its own walk from: LC 2368 names node 0 itself, and LC 3841's tree is undirected, so TreeTour picks 0 to root its tour. Two walks that happen to start at the same index are not one fact. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     }

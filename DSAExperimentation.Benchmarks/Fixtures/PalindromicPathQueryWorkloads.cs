@@ -1,3 +1,6 @@
+using DSAExperimentation.DataStructures.Graph.Hamming;
+using DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
+
 namespace DSAExperimentation.Benchmarks.Fixtures;
 
 // Benchmark workload sizing for LC 3841 - how big the tree is, how its letters are
@@ -23,10 +26,9 @@ internal static class PalindromicPathQueryWorkloads
 {
     public const int AttachmentWindow = 8;
     public const int LetterCount = 3;
-    public const string UpdateVerb = "update";
+    public const string UpdateVerb = PalindromicPathQueriesInATreeSolution.UpdateVerb;
     public const string QueryVerb = "query";
 
-    private const char FirstLetter = 'a';
     private const int CoinFaces = 2;
 
     public static (int[][] Edges, string Letters, string[] Commands) Build(int nodeCount, int seed)
@@ -71,9 +73,10 @@ internal static class PalindromicPathQueryWorkloads
 
     private static string DrawLetters(int count, Random random)
     {
-        var codes = SeededDraws.Values(count, FirstLetter, FirstLetter + LetterCount, random);
+        var indices = SeededDraws.Values(count, 0, LetterCount, random);
+        var alphabet = StandardAlphabets.LowercaseLatin.Characters;
 
-        return new string(Array.ConvertAll(codes, code => (char)code));
+        return new string(Array.ConvertAll(indices, index => alphabet[index]));
     }
 
     // A fair coin: heads on one of CoinFaces equally likely draws.

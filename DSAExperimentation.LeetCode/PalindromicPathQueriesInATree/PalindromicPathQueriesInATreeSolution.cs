@@ -17,7 +17,9 @@ namespace DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
 internal static class PalindromicPathQueriesInATreeSolution
 {
     private const int AtMostOneOddLetter = 1;
-    private const string UpdateVerb = "update";
+    // LeetCode's word for a letter change; any other command is a query. The benchmark's
+    // workload spells its commands with this same word.
+    internal const string UpdateVerb = "update";
     private const char WordSeparator = ' ';
     private const int VerbWord = 0;
     private const int NodeWord = 1;
