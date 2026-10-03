@@ -4,28 +4,27 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // small shared pool, so real overlaps - and therefore real merge work - occur, the same
 // "force genuine matches, not coincidental ones" intent AccountsMergeBenchmarks' own
 // generator uses. The values are a seeded sample of the pool-smooth numbers in
-// [2, 10^5]: inside LC 952's value range, and unique as it requires.
+// [2, 10^5]: inside LC 952's value range, and unique as it requires. Which primes make
+// the pool is the harness's choice, so it is handed in.
 internal static class LargestComponentSizeByCommonFactorWorkloads
 {
     private const int MaxValue = 100_000;
 
-    private static readonly int[] SharedPrimes = [2, 3, 5, 7, 11, 13];
-
-    public static int[] Build(int length, int seed)
+    public static int[] Build(int length, int[] primePool, int seed)
     {
-        var smoothValues = SmoothValues();
+        var smoothValues = SmoothValues(primePool);
         var order = SeededSequences.ShuffledZeroTo(smoothValues.Length, seed);
 
         return [.. order.Take(length).Select(index => smoothValues[index])];
     }
 
-    // Every value in [2, MaxValue] with no prime factor outside SharedPrimes, ascending. Each
+    // Every value in [2, MaxValue] with no prime factor outside primePool, ascending. Each
     // prime in turn multiplies every value found so far by each of its powers that still fits.
-    private static int[] SmoothValues()
+    private static int[] SmoothValues(int[] primePool)
     {
         var values = new SortedSet<int> { 1 };
 
-        foreach (var prime in SharedPrimes)
+        foreach (var prime in primePool)
         {
             foreach (var value in values.ToArray())
             {

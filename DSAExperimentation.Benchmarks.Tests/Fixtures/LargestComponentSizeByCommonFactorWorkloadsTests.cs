@@ -35,7 +35,7 @@ public sealed partial class LargestComponentSizeByCommonFactorWorkloadsTests
     public void Build_SameSeed_ReturnsTheSameValues() =>
         Assert.Equal(Build(), Build());
 
-    private static int[] Build() => LargestComponentSizeByCommonFactorWorkloads.Build(Length, Seed);
+    private static int[] Build() => LargestComponentSizeByCommonFactorWorkloads.Build(Length, SharedPrimes, Seed);
 
     // What is left of value once every shared prime is divided out of it: one exactly when the
     // pool covers all of its factors.
