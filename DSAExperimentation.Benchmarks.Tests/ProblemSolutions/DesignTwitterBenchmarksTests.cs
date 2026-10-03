@@ -2,11 +2,9 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignTwitterBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - concatenating every followed source's history and sorting it
-// against a k-way merge of the same histories - so a harness whose arms disagree is timing two
-// different problems. Setup builds the whole call script from one fixed seed, so the same
-// FollowedUsers must rebuild the same script, and that script has to leave a full feed behind.
+// Harness coverage for DesignTwitterBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: which
+// tweets the feed holds, known from Setup's construction rather than from either arm. Setup builds the whole call
+// script from one fixed seed, and each arm returns the feed the replay reads at the end.
 public sealed partial class DesignTwitterBenchmarksTests
 {
     private const int SmallestFollowedUsers = 50;
@@ -20,36 +18,19 @@ public sealed partial class DesignTwitterBenchmarksTests
 
     private const int TotalTweetCount = SmallestFollowedUsers * TweetsPerSource;
 
-    // The feed holds the last FeedSize tweet ids posted, so its sum is FeedSize * TotalTweetCount
-    // less the ids 0 through FeedSize - 1 those newest tweets displace.
-    private const int ExpectedFeedSum = (FeedSize * TotalTweetCount) - ((FeedSize * (FeedSize + 1)) / 2);
+    [Fact]
+    public void GatherAllAndSort_InterleavedSourceScript_ReadsTheNewestTweetsNewestFirst() =>
+        Assert.Equal(NewestTweetIds(), BuildHarness().GatherAllAndSort());
 
     [Fact]
-    public void Setup_SameFollowedUsers_RebuildsTheSameFollowAndTweetScript()
-    {
-        // Tweet ids are posted in increasing order, one per source drawn at random, so the newest
-        // FeedSize of them are the ids the script posted last whatever order the sources came out
-        // in. A feed that gathered only one source, or that sorted the wrong way, reports a
-        // different sum than the whole script's own newest ids do.
-        Assert.Equal(ExpectedFeedSum, BuildHarness().GatherAllAndSort());
-        Assert.Equal(BuildHarness().GatherAllAndSort(), BuildHarness().GatherAllAndSort());
-    }
+    public void HeapKWayMerge_InterleavedSourceScript_ReadsTheNewestTweetsNewestFirst() =>
+        Assert.Equal(NewestTweetIds(), BuildHarness().HeapKWayMerge());
 
-    [Fact]
-    public void GatherAllAndSort_InterleavedSourceScript_AgreesWithHeapKWayMerge()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HeapKWayMerge(), harness.GatherAllAndSort());
-    }
-
-    [Fact]
-    public void HeapKWayMerge_InterleavedSourceScript_AgreesWithGatherAllAndSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.GatherAllAndSort(), harness.HeapKWayMerge());
-    }
+    // Tweet ids are posted in increasing order, one per source drawn at random, so the newest
+    // FeedSize of them are the ids the script posted last whatever order the sources came out in.
+    // A feed that gathered only one source, or that sorted the wrong way, holds different ids.
+    private static IEnumerable<int> NewestTweetIds() =>
+        Enumerable.Range(TotalTweetCount - FeedSize, FeedSize).Reverse();
 
     private static DesignTwitterBenchmarks BuildHarness()
     {

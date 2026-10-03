@@ -19,10 +19,10 @@ public class ExpressionAddOperatorsBenchmarks
     public string Number { get; set; } = "";
 
     [Benchmark(Baseline = true)]
-    public int RecursiveBacktrack() =>
-        ExpressionAddOperatorsSolution.AddOperatorsByBacktracking(Number, UnreachableTarget).Count;
+    public List<string> RecursiveBacktrack() =>
+        ExpressionAddOperatorsSolution.AddOperatorsByBacktracking(Number, UnreachableTarget);
 
     [Benchmark]
-    public int TraverseComposed() =>
-        ExpressionAddOperatorsSolution.AddOperatorsByDepthFirstSearchTraverse(Number, UnreachableTarget).Count;
+    public List<string> TraverseComposed() =>
+        ExpressionAddOperatorsSolution.AddOperatorsByDepthFirstSearchTraverse(Number, UnreachableTarget);
 }

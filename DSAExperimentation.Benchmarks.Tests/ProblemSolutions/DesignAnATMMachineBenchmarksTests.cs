@@ -1,13 +1,12 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignAnATMMachineBenchmarks (ARCHITECTURE 17.9): its two arms are
-// competing strategies for the same question - a raw five-slot array reached by index against
-// this repo's own HashMap keyed by banknote value - so a harness whose arms disagree is timing
-// two different problems. Setup draws every amount from one fixed seed and opens the machine with
-// a billion notes of each denomination, so the same Calls must rebuild the same amount script,
-// and every withdrawal in it must succeed - which is what each arm's returned total sums.
+// Harness coverage for DesignAnATMMachineBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin:
+// that every withdrawal in the script succeeds, which follows from Setup's construction rather than from either
+// arm. Setup draws every amount from one fixed seed as a multiple of 100 and opens the machine with a billion notes
+// of each denomination, so no withdrawal can fail, and each arm returns the notes every Withdraw handed back.
 public sealed partial class DesignAnATMMachineBenchmarksTests
 {
     private const int SmallestCalls = 1_000;
@@ -23,38 +22,32 @@ public sealed partial class DesignAnATMMachineBenchmarksTests
     // units of the granularity every requested amount is a multiple of.
     private const long WholeAmountRemainder = 0;
 
-    [Fact]
-    public void Setup_SameCallCount_RebuildsTheSameAmountScript()
-    {
-        var total = BuildHarness().FiveSlotArrayDispatch();
+    // LC 2241's banknote values, in the order Withdraw reports how many of each it dispensed.
+    private static readonly long[] Denominations = [20, 50, 100, 200, 500];
 
-        // Both facts the reading depends on are visible in the returned total. Every amount is a
-        // multiple of AmountGranularity and a machine carrying a billion notes of each
-        // denomination can always make one, so a complete replay reports the requested amount to
-        // the note - a whole number of hundreds - and lands near the middle of the draw rather
-        // than at the zero a greedy walk rejecting amounts it can cover would leave behind.
+    [Fact]
+    public void FiveSlotArrayDispatch_ThousandWithdrawals_DispensesEveryRequestedAmount() =>
+        AssertDispensesEveryRequestedAmount(BuildHarness().FiveSlotArrayDispatch());
+
+    [Fact]
+    public void HashMapDispatch_ThousandWithdrawals_DispensesEveryRequestedAmount() =>
+        AssertDispensesEveryRequestedAmount(BuildHarness().HashMapDispatch());
+
+    // A machine carrying a billion notes of each denomination can always make a whole number of
+    // hundreds, so no withdrawal is LC 2241's [-1] refusal, and the money dispensed lands near the
+    // middle of the draw rather than at the zero a greedy walk rejecting amounts it can cover would
+    // leave behind.
+    private static void AssertDispensesEveryRequestedAmount(long[][] withdrawn)
+    {
+        Assert.All(withdrawn, notes => Assert.NotEqual(LeetCodeAnswer.None, notes[0]));
+
+        var total = withdrawn.Sum(notes => notes.Zip(Denominations, (count, value) => count * value).Sum());
+
         Assert.Equal(WholeAmountRemainder, total % AmountGranularity);
         Assert.InRange(
             total,
             SmallestCalls * MiddleHalfLowMultiplier * AmountGranularity,
             SmallestCalls * MiddleHalfHighMultiplier * AmountGranularity);
-        Assert.Equal(total, BuildHarness().FiveSlotArrayDispatch());
-    }
-
-    [Fact]
-    public void FiveSlotArrayDispatch_ThousandWithdrawals_AgreesWithHashMapDispatch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashMapDispatch(), harness.FiveSlotArrayDispatch());
-    }
-
-    [Fact]
-    public void HashMapDispatch_ThousandWithdrawals_AgreesWithFiveSlotArrayDispatch()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.FiveSlotArrayDispatch(), harness.HashMapDispatch());
     }
 
     private static DesignAnATMMachineBenchmarks BuildHarness()

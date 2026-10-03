@@ -1,4 +1,3 @@
-using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.DesignAnATMMachine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -26,6 +25,10 @@ public class DesignAnATMMachineBenchmarks
     private long[] _amounts = [];
 
     private long[] _openingDeposit = [];
+
+    // The notes every Withdraw hands back, in call order; sized in setup so the replay
+    // allocates nothing beyond what the strategy itself returns.
+    private long[][] _withdrawn = [];
     [Params(1_000, 50_000)]
     public int Calls { get; set; }
 
@@ -40,28 +43,24 @@ public class DesignAnATMMachineBenchmarks
         // identically for both variants instead of diverging on a failed withdrawal.
         _amounts = Enumerable.Range(0, Calls).Select(_ => (long)random.Next(1, MaxAmountMultiplier) * AmountGranularity).ToArray();
         _openingDeposit = Enumerable.Repeat(InitialCountPerDenomination, DesignAnATMMachineSolution.DenominationCount).ToArray();
+        _withdrawn = new long[Calls][];
     }
 
     [Benchmark(Baseline = true)]
-    public long FiveSlotArrayDispatch() => Replay(new DesignAnATMMachineSolution.AtmByFiveSlotArray());
+    public long[][] FiveSlotArrayDispatch() => Replay(new DesignAnATMMachineSolution.AtmByFiveSlotArray());
 
     [Benchmark]
-    public long HashMapDispatch() => Replay(new DesignAnATMMachineSolution.AtmByHashMap());
+    public long[][] HashMapDispatch() => Replay(new DesignAnATMMachineSolution.AtmByHashMap());
 
-    private long Replay(DesignAnATMMachineSolution.IAtm atm)
+    private long[][] Replay(DesignAnATMMachineSolution.IAtm atm)
     {
         atm.Deposit(_openingDeposit);
 
-        var totalWithdrawn = 0L;
-
-        foreach (var amount in _amounts)
+        for (var i = 0; i < _amounts.Length; i++)
         {
-            if (atm.Withdraw(amount)[0] != LeetCodeAnswer.None)
-            {
-                totalWithdrawn += amount;
-            }
+            _withdrawn[i] = atm.Withdraw(_amounts[i]);
         }
 
-        return totalWithdrawn;
+        return _withdrawn;
     }
 }

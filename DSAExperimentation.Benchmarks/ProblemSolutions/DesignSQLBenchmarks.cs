@@ -23,6 +23,9 @@ public class DesignSQLBenchmarks
     private int[] _columns = [];
     private string[][] _rows = [];
     private int[] _deleteIds = [];
+
+    // Every cell SelectCell reads, in call order; sized in setup so the replay allocates nothing.
+    private string[] _cells = [];
     [Params(500, 4_000)]
     public int RowCount { get; set; }
 
@@ -35,28 +38,27 @@ public class DesignSQLBenchmarks
             .Select(i => Enumerable.Range(0, ColumnCount).Select(c => $"r{i}c{c}").ToArray())
             .ToArray();
         _deleteIds = Enumerable.Range(1, RowCount).Where(id => id % 2 == 0).ToArray();
+        _cells = new string[_rows.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public long ListScanTable() => Replay(new DesignSQLSolution.SqlByListScan(_names, _columns));
+    public string[] ListScanTable() => Replay(new DesignSQLSolution.SqlByListScan(_names, _columns));
 
     [Benchmark]
-    public long HashMapTable() => Replay(new DesignSQLSolution.SqlByHashMapTables(_names, _columns));
+    public string[] HashMapTable() => Replay(new DesignSQLSolution.SqlByHashMapTables(_names, _columns));
 
-    // Sums the length of every cell read rather than discarding it, so the JIT
-    // cannot eliminate the replay as dead code.
-    private long Replay(DesignSQLSolution.ISqlStrategy sql)
+    // Returns every cell read, in order, so the JIT cannot eliminate the replay as
+    // dead code.
+    private string[] Replay(DesignSQLSolution.ISqlStrategy sql)
     {
         foreach (var row in _rows)
         {
             sql.InsertRow(TableName, row);
         }
 
-        var readLength = 0L;
-
         for (var rowId = 1; rowId <= _rows.Length; rowId++)
         {
-            readLength += sql.SelectCell(TableName, rowId, 1).Length;
+            _cells[rowId - 1] = sql.SelectCell(TableName, rowId, 1);
         }
 
         foreach (var rowId in _deleteIds)
@@ -64,6 +66,6 @@ public class DesignSQLBenchmarks
             sql.DeleteRow(TableName, rowId);
         }
 
-        return readLength;
+        return _cells;
     }
 }

@@ -17,11 +17,19 @@ public class DesignSpreadsheetBenchmarks
 
     private List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> _script = new();
 
+    // Every value GetValue reports, in call order - the script makes one GetValue call per cell -
+    // sized in setup so the replay allocates nothing.
+    private int[] _values = [];
+
     [Params(200, 2_000)]
     public int CellCount { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _script = BuildScript(CellCount, new Random(Seed));
+    public void Setup()
+    {
+        _script = BuildScript(CellCount, new Random(Seed));
+        _values = new int[CellCount];
+    }
 
     private static List<Func<DesignSpreadsheetSolution.ISpreadsheetStrategy, int?>> BuildScript(int cellCount, Random random)
     {
@@ -90,24 +98,27 @@ public class DesignSpreadsheetBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long Dictionary() => Replay(new DesignSpreadsheetSolution.SpreadsheetByDictionary(CellCount));
+    public int[] Dictionary() => Replay(new DesignSpreadsheetSolution.SpreadsheetByDictionary(CellCount));
 
     [Benchmark]
-    public long HashMap() => Replay(new DesignSpreadsheetSolution.SpreadsheetByHashMap(CellCount));
+    public int[] HashMap() => Replay(new DesignSpreadsheetSolution.SpreadsheetByHashMap(CellCount));
 
-    // Sums every GetValue result rather than discarding it, so the JIT can't
-    // eliminate the replay as dead code - the same "return the real answer, not a
-    // weaker proxy" shape DesignTaskManagerBenchmarks already follows.
-    private long Replay(DesignSpreadsheetSolution.ISpreadsheetStrategy strategy)
+    // Returns every GetValue result, in order, so the JIT can't eliminate the replay
+    // as dead code. SetCell and ResetCell answer nothing, which their script steps
+    // report as null.
+    private int[] Replay(DesignSpreadsheetSolution.ISpreadsheetStrategy strategy)
     {
-        var sum = 0L;
+        var next = 0;
 
         foreach (var op in _script)
         {
-            sum += op(strategy) ?? 0;
+            if (op(strategy) is { } value)
+            {
+                _values[next++] = value;
+            }
         }
 
-        return sum;
+        return _values;
     }
 
     private static string RandomCell(int cellCount, Random random)

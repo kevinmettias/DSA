@@ -29,6 +29,9 @@ public class EncryptAndDecryptStringsBenchmarks
     private string[] _values = [];
     private string[] _dictionary = [];
     private string[] _queries = [];
+
+    // Every count Decrypt reports, in query order; sized in setup so the replay allocates nothing.
+    private int[] _matches = [];
     [Params(50, 2_000)]
     public int DictionarySize { get; set; }
 
@@ -49,39 +52,38 @@ public class EncryptAndDecryptStringsBenchmarks
             .. Enumerable.Range(0, DecryptCalls)
                 .Select(_ => encrypter.Encrypt(_dictionary[random.Next(_dictionary.Length)])),
         ];
+        _matches = new int[_queries.Length];
     }
 
     private static string RandomWord(Random random)
         => new([.. Enumerable.Range(0, WordLength).Select(_ => (char)('a' + random.Next(AlphabetSize)))]);
 
     [Benchmark(Baseline = true)]
-    public int RecomputeEveryDecrypt()
+    public int[] RecomputeEveryDecrypt()
     {
         var encrypter = EncryptAndDecryptStringsSolution.CreateByDictionaryRescan(_keys, _values, _dictionary);
 
-        return TotalMatches(encrypter);
+        return DecryptAll(encrypter);
     }
 
     [Benchmark]
-    public int PrecomputedFrequencyMap()
+    public int[] PrecomputedFrequencyMap()
     {
         var encrypter = EncryptAndDecryptStringsSolution.CreateByPrecomputedFrequency(_keys, _values, _dictionary);
 
-        return TotalMatches(encrypter);
+        return DecryptAll(encrypter);
     }
 
     private static string NextLetterPair(int index)
         => new([(char)('a' + index), (char)('a' + ((index + 1) % AlphabetSize))]);
 
-    private int TotalMatches(EncryptAndDecryptStringsSolution.IEncrypter encrypter)
+    private int[] DecryptAll(EncryptAndDecryptStringsSolution.IEncrypter encrypter)
     {
-        var matches = 0;
-
-        foreach (var query in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            matches += encrypter.Decrypt(query);
+            _matches[i] = encrypter.Decrypt(_queries[i]);
         }
 
-        return matches;
+        return _matches;
     }
 }

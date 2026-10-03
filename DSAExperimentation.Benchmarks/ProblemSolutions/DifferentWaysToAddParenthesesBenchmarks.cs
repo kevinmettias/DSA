@@ -24,10 +24,10 @@ public class DifferentWaysToAddParenthesesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int PlainRecursion() =>
-        DifferentWaysToAddParenthesesSolution.DiffWaysToComputeByPlainRecursion(_expression).Count;
+    public List<int> PlainRecursion() =>
+        DifferentWaysToAddParenthesesSolution.DiffWaysToComputeByPlainRecursion(_expression);
 
     [Benchmark]
-    public int MemoizedSubstring() =>
-        DifferentWaysToAddParenthesesSolution.DiffWaysToComputeByMemoizedSubstring(_expression).Count;
+    public List<int> MemoizedSubstring() =>
+        DifferentWaysToAddParenthesesSolution.DiffWaysToComputeByMemoizedSubstring(_expression);
 }

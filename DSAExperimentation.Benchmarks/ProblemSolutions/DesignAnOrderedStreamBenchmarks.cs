@@ -20,6 +20,10 @@ public class DesignAnOrderedStreamBenchmarks
     private int[] _order = [];
 
     private string[] _values = [];
+
+    // The chunk every Insert hands back, in arrival order; sized in setup so the replay
+    // allocates nothing beyond what the strategy itself returns.
+    private List<string>[] _chunks = [];
     [Params(200, 5_000)]
     public int Size { get; set; }
 
@@ -33,6 +37,8 @@ public class DesignAnOrderedStreamBenchmarks
         {
             _values[i] = $"v{i + 1}";
         }
+
+        _chunks = new List<string>[Size];
     }
 
     private static int[] ShuffledIds(int size, int seed)
@@ -50,20 +56,19 @@ public class DesignAnOrderedStreamBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ListBacked() => Replay(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(Size));
+    public List<string>[] ListBacked() => Replay(new DesignAnOrderedStreamSolution.OrderedStreamByListBacked(Size));
 
     [Benchmark]
-    public int DynamicArrayBacked() => Replay(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(Size));
+    public List<string>[] DynamicArrayBacked() => Replay(new DesignAnOrderedStreamSolution.OrderedStreamByDynamicArrayBacked(Size));
 
-    private int Replay(DesignAnOrderedStreamSolution.IOrderedStream stream)
+    private List<string>[] Replay(DesignAnOrderedStreamSolution.IOrderedStream stream)
     {
-        var emitted = 0;
-
-        foreach (var id in _order)
+        for (var i = 0; i < _order.Length; i++)
         {
-            emitted += stream.Insert(id, _values[id - 1]).Count;
+            var id = _order[i];
+            _chunks[i] = stream.Insert(id, _values[id - 1]);
         }
 
-        return emitted;
+        return _chunks;
     }
 }

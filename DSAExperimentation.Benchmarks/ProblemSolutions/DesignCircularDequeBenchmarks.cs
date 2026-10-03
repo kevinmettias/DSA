@@ -1,4 +1,5 @@
 using DSAExperimentation.LeetCode.DesignCircularDeque;
+using ChurnStep = (bool? DeletedFront, bool InsertedLast, bool? DeletedLast, bool InsertedFront, int Front, int Rear);
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -12,41 +13,38 @@ public class DesignCircularDequeBenchmarks
 {
     private const int OperationCount = 50_000;
 
+    // Every answer each churn step observed, in call order. A Delete is null on a step where
+    // IsFull answered that the deque still had room, so IsFull's answers are recorded too.
+    // Sized in setup so the churn allocates nothing.
+    private ChurnStep[] _steps = [];
+
     [Params(8, 512)]
     public int Capacity { get; set; }
 
+    [GlobalSetup]
+    public void Setup() => _steps = new ChurnStep[OperationCount];
+
     [Benchmark(Baseline = true)]
-    public long ArrayBacked() => RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByArrayBacked(Capacity));
+    public ChurnStep[] ArrayBacked() =>
+        RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByArrayBacked(Capacity));
 
     [Benchmark]
-    public long DequeBacked() => RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByDequeBacked(Capacity));
+    public ChurnStep[] DequeBacked() =>
+        RunChurnCycle(new DesignCircularDequeSolution.CircularDequeByDequeBacked(Capacity));
 
-    // Sums every returned value rather than discarding it, so the JIT can't
-    // eliminate the churn as dead code - the same "return the real answer, not a
-    // weaker proxy" shape OpenTheLockBenchmarks/DesignCircularQueueBenchmarks
-    // already follow.
-    private static long RunChurnCycle(DesignCircularDequeSolution.ICircularDeque deque)
+    // Returns every answer the churn observed rather than discarding it, so the JIT
+    // can't eliminate the churn as dead code and the arms are compared on all of it.
+    private ChurnStep[] RunChurnCycle(DesignCircularDequeSolution.ICircularDeque deque)
     {
-        var sum = 0L;
-
         for (var i = 0; i < OperationCount; i++)
         {
-            if (deque.IsFull())
-            {
-                sum += deque.DeleteFront() ? 1 : 0;
-            }
-
-            sum += deque.InsertLast(i) ? 1 : 0;
-
-            if (deque.IsFull())
-            {
-                sum += deque.DeleteLast() ? 1 : 0;
-            }
-
-            sum += deque.InsertFront(i) ? 1 : 0;
-            sum += deque.GetFront() + deque.GetRear();
+            bool? deletedFront = deque.IsFull() ? deque.DeleteFront() : null;
+            var insertedLast = deque.InsertLast(i);
+            bool? deletedLast = deque.IsFull() ? deque.DeleteLast() : null;
+            var insertedFront = deque.InsertFront(i);
+            _steps[i] = (deletedFront, insertedLast, deletedLast, insertedFront, deque.GetFront(), deque.GetRear());
         }
 
-        return sum;
+        return _steps;
     }
 }

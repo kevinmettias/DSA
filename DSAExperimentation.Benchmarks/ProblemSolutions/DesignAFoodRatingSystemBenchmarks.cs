@@ -26,6 +26,9 @@ public class DesignAFoodRatingSystemBenchmarks
     private int[] _initialRatings = [];
     private int[] _changeRatings = [];
     private string[] _queryCuisines = [];
+
+    // Every name HighestRated reports, in query order; sized in setup so the replay allocates nothing.
+    private string[] _reported = [];
     [Params(200, 3_000)]
     public int Count { get; set; }
 
@@ -38,30 +41,29 @@ public class DesignAFoodRatingSystemBenchmarks
         _initialRatings = SeededDraws.Values(Count, 0, MaxRatingExclusive, random);
         _changeRatings = SeededDraws.Values(Count, 0, MaxRatingExclusive, random);
         _queryCuisines = Enumerable.Range(0, Count).Select(_ => $"cuisine{random.Next(0, CuisineDomain)}").ToArray();
+        _reported = new string[_queryCuisines.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLinearScan(_foods, _cuisines, _initialRatings));
+    public string[] LinearScan() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLinearScan(_foods, _cuisines, _initialRatings));
 
     [Benchmark]
-    public long LazyDeletionHeap() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLazyDeletionHeap(_foods, _cuisines, _initialRatings));
+    public string[] LazyDeletionHeap() => Replay(new DesignAFoodRatingSystemSolution.FoodRatingsByLazyDeletionHeap(_foods, _cuisines, _initialRatings));
 
-    // Sums the length of every reported food name rather than discarding the
-    // answer, so the JIT can't eliminate the replay as dead code.
-    private long Replay(DesignAFoodRatingSystemSolution.IFoodRatingStrategy strategy)
+    // Returns every reported food name, in query order, so the JIT can't eliminate
+    // the replay as dead code.
+    private string[] Replay(DesignAFoodRatingSystemSolution.IFoodRatingStrategy strategy)
     {
         for (var i = 0; i < _foods.Length; i++)
         {
             strategy.ChangeRating(_foods[i], _changeRatings[i]);
         }
 
-        var reportedNameLengthSum = 0L;
-
-        foreach (var cuisine in _queryCuisines)
+        for (var i = 0; i < _queryCuisines.Length; i++)
         {
-            reportedNameLengthSum += strategy.HighestRated(cuisine).Length;
+            _reported[i] = strategy.HighestRated(_queryCuisines[i]);
         }
 
-        return reportedNameLengthSum;
+        return _reported;
     }
 }

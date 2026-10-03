@@ -2,11 +2,10 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignSpreadsheetBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - a BCL dictionary of cells against this repo's own HashMap -
-// so a harness whose arms disagree is timing two different problems. Setup builds the whole call
-// script from one fixed seed, so the same CellCount must rebuild the same script, and that script
-// has to leave every cell and literal it reads inside the range it drew them from.
+// Harness coverage for DesignSpreadsheetBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot pin: a
+// bound on every value the replay reads, which follows from the script's construction rather than from either arm.
+// Setup builds the whole call script from one fixed seed, and each arm returns every value GetValue reported, in
+// order.
 public sealed partial class DesignSpreadsheetBenchmarksTests
 {
     private const int SmallestCellCount = 200;
@@ -15,37 +14,24 @@ public sealed partial class DesignSpreadsheetBenchmarksTests
     // it, and a formula is at most two such values added together.
     private const int ValueUpperBound = 100_000;
 
-    private const long MinimumValueSum = 0;
+    private const int FormulaTermCount = 2;
 
-    private const long MaximumValueSum = 2L * ValueUpperBound * SmallestCellCount;
-
-    [Fact]
-    public void Setup_SameCellCount_RebuildsTheSameCallScript()
-    {
-        // A cell value and a formula's literal are both drawn from zero up to ValueUpperBound, and
-        // every formula is either two cells or one cell and one literal - so each of the
-        // CellCount reads reports a non-negative number below twice that ceiling, and the summed
-        // report of them all stays inside the band. Nothing else about the script is readable
-        // through the public surface.
-        Assert.InRange(BuildHarness().Dictionary(), MinimumValueSum, MaximumValueSum);
-        Assert.Equal(BuildHarness().Dictionary(), BuildHarness().Dictionary());
-    }
+    private const int MinimumValue = 0;
 
     [Fact]
-    public void Dictionary_SetAndFormulaScript_AgreesWithHashMap()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashMap(), harness.Dictionary());
-    }
+    public void Dictionary_SetAndFormulaScript_ReadsOnlySumsOfTwoDrawnValues() =>
+        AssertReadsOnlySumsOfTwoDrawnValues(BuildHarness().Dictionary());
 
     [Fact]
-    public void HashMap_SetAndFormulaScript_AgreesWithDictionary()
-    {
-        var harness = BuildHarness();
+    public void HashMap_SetAndFormulaScript_ReadsOnlySumsOfTwoDrawnValues() =>
+        AssertReadsOnlySumsOfTwoDrawnValues(BuildHarness().HashMap());
 
-        Assert.Equal(harness.Dictionary(), harness.HashMap());
-    }
+    // A cell value and a formula's literal are both drawn from zero up to ValueUpperBound, and every
+    // formula is either two cells or one cell and one literal - so each of the CellCount reads reports
+    // a non-negative number below twice that ceiling. Nothing else about the script is readable
+    // through the public surface.
+    private static void AssertReadsOnlySumsOfTwoDrawnValues(int[] values) =>
+        Assert.All(values, value => Assert.InRange(value, MinimumValue, (FormulaTermCount * ValueUpperBound) - 1));
 
     private static DesignSpreadsheetBenchmarks BuildHarness()
     {

@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // proves correct. Both share the identical Seat() gap scan, so what is being compared
 // is Leave(seatNumber): the baseline's O(n) List<T>.Remove scan versus this repo's
 // O(log n) BinarySearch.LowerBound locate. Drain seats Length students, then has every
-// one of them leave in the order they arrived, so both arms run the same call script.
+// one of them leave in the order they arrived, so both arms run the same call script,
+// and returns every seat Seat() handed out, in order.
 // The room itself is stateful and must be rebuilt per invocation, so [GlobalSetup] only
 // fixes the workload SIZE (ARCHITECTURE.md §17.7).
 public class ExamRoomBenchmarks
@@ -24,13 +25,13 @@ public class ExamRoomBenchmarks
     public void Setup() => _seatCount = Length + RoomCapacityPadding;
 
     [Benchmark(Baseline = true)]
-    public int LinearScanList() => Drain(ExamRoomSolution.CreateByLinearScanList(_seatCount));
+    public int[] LinearScanList() => Drain(ExamRoomSolution.CreateByLinearScanList(_seatCount));
 
     [Benchmark]
-    public int BinarySearchDynamicArray()
+    public int[] BinarySearchDynamicArray()
         => Drain(ExamRoomSolution.CreateByBinarySearchDynamicArray(_seatCount));
 
-    private int Drain(ExamRoomSolution.IExamRoom room)
+    private int[] Drain(ExamRoomSolution.IExamRoom room)
     {
         var assigned = new int[Length];
 
@@ -44,6 +45,6 @@ public class ExamRoomBenchmarks
             room.Leave(seat);
         }
 
-        return assigned[Length - 1];
+        return assigned;
     }
 }

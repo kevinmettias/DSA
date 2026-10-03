@@ -1,5 +1,4 @@
 using DSAExperimentation.Benchmarks.Fixtures;
-using DSAExperimentation.Domain.Modular;
 using DSAExperimentation.LeetCode.FancySequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // addAll/multAll operations across the whole live prefix - so workload construction is
 // charged to setup and only the replay is measured. Every index is read back
 // afterwards, so both strategies pay their full workload instead of an early exit
-// making the rescan look artificially competitive.
+// making the rescan look artificially competitive, and each arm returns every value
+// read, in index order.
 public class FancySequenceBenchmarks
 {
     private const int RandomSeed = 1622; // LC problem number
@@ -26,6 +26,9 @@ public class FancySequenceBenchmarks
     private int[] _appendValues = [];
 
     private (bool IsMultiply, int Amount)[] _operations = [];
+
+    // Every value GetIndex reads back; sized in setup so the replay allocates nothing.
+    private int[] _values = [];
     [Params(200, 2_000)]
     public int Length { get; set; }
 
@@ -37,27 +40,26 @@ public class FancySequenceBenchmarks
         _operations = Enumerable.Range(0, Length)
             .Select(i => (IsMultiply: i % AlternatingParityModulus == 0, Amount: random.Next(MinOperationAmount, MaxOperationAmountExclusive)))
             .ToArray();
+        _values = new int[Length];
     }
 
     [Benchmark(Baseline = true)]
-    public long ArrayRescan() => Replay(FancySequenceSolution.CreateByArrayRescan(Length));
+    public int[] ArrayRescan() => Replay(FancySequenceSolution.CreateByArrayRescan(Length));
 
     [Benchmark]
-    public long LazySegmentTreeAffine() => Replay(FancySequenceSolution.CreateByLazySegmentTreeAffine(Length));
+    public int[] LazySegmentTreeAffine() => Replay(FancySequenceSolution.CreateByLazySegmentTreeAffine(Length));
 
-    private long Replay(FancySequenceSolution.IFancySequence fancy)
+    private int[] Replay(FancySequenceSolution.IFancySequence fancy)
     {
         AppendAll(fancy);
         ReplayOperations(fancy);
 
-        var sum = 0L;
-
         for (var i = 0; i < Length; i++)
         {
-            sum = (sum + fancy.GetIndex(i)) % ModularArithmetic.Modulo;
+            _values[i] = fancy.GetIndex(i);
         }
 
-        return sum;
+        return _values;
     }
 
     // The fixed append workload, in order.

@@ -53,21 +53,20 @@ public class DesignTwitterBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int GatherAllAndSort() => Replay(new DesignTwitterSolution.TwitterByGatherAllAndSort());
+    public List<int> GatherAllAndSort() => Replay(new DesignTwitterSolution.TwitterByGatherAllAndSort());
 
     [Benchmark]
-    public int HeapKWayMerge() => Replay(new DesignTwitterSolution.TwitterByHeapKWayMerge());
+    public List<int> HeapKWayMerge() => Replay(new DesignTwitterSolution.TwitterByHeapKWayMerge());
 
-    // Sums the returned feed's tweetIds rather than discarding them, so the JIT
-    // can't eliminate the replay as dead code - the same "return the real answer,
-    // not a weaker proxy" shape DesignAuctionSystemBenchmarks already follows.
-    private int Replay(DesignTwitterSolution.ITwitterStrategy strategy)
+    // Returns the feed itself - the replay's only output, since Follow and PostTweet
+    // answer nothing - so the JIT can't eliminate the replay as dead code.
+    private List<int> Replay(DesignTwitterSolution.ITwitterStrategy strategy)
     {
         foreach (var op in _script)
         {
             op(strategy);
         }
 
-        return strategy.GetNewsFeed(SelfUserId).Sum();
+        return strategy.GetNewsFeed(SelfUserId);
     }
 }

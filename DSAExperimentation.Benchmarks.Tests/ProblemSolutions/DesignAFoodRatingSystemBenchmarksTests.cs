@@ -2,15 +2,11 @@ using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for DesignAFoodRatingSystemBenchmarks (ARCHITECTURE 17.9): its two arms are competing
-// strategies for the same question - rescanning every food on each highest-rated query against a
-// per-cuisine heap that discards superseded ratings lazily - so a harness whose arms disagree is timing
-// two different problems. Setup builds the constructor's foods/cuisines/ratings, one superseding rating
-// per food and the query cuisines, from one fixed seed. Each arm builds its own subject inside the call
-// and replays the same script over it, so a single harness is safe to call in either order. The reading
-// is the summed length of every reported food name - the harness's own aggregate, chosen so the replay
-// cannot be eliminated as dead code - which is bounded by one reported name per query rather than being
-// the whole answer; the same Count must rebuild the same script and with it the same sum.
+// Harness coverage for DesignAFoodRatingSystemBenchmarks (ARCHITECTURE 17.9), for what BenchmarkArmsTests cannot
+// pin: a bound on every reported name that follows from the workload's construction rather than from either arm.
+// Setup builds the constructor's foods/cuisines/ratings, one superseding rating per food and the query cuisines,
+// from one fixed seed, and each arm returns the name HighestRated reported for every query, in order. Setup names
+// its foods "food{i}", so no reported name is longer than that over a Count below four digits.
 public sealed partial class DesignAFoodRatingSystemBenchmarksTests
 {
     private const int SmallestCount = 200;
@@ -19,34 +15,18 @@ public sealed partial class DesignAFoodRatingSystemBenchmarksTests
     private const int MaxReportedNameLength = 8;
 
     // A cuisine with nothing rated reports no name at all.
-    private const int MinimumReportedNameLengthSum = 0;
-    private const int MaximumReportedNameLengthSum = SmallestCount * MaxReportedNameLength;
+    private const int MinimumReportedNameLength = 0;
 
     [Fact]
-    public void Setup_SameCount_RebuildsTheSameWorkload()
-    {
-        Assert.InRange(
-            BuildHarness().LinearScan(),
-            MinimumReportedNameLengthSum,
-            MaximumReportedNameLengthSum);
-        Assert.Equal(BuildHarness().LinearScan(), BuildHarness().LinearScan());
-    }
+    public void LinearScan_TwoHundredSeededFoods_ReportsOnlyFoodNames() =>
+        AssertReportsOnlyFoodNames(BuildHarness().LinearScan());
 
     [Fact]
-    public void LinearScan_TwoHundredSeededFoods_AgreesWithLazyDeletionHeap()
-    {
-        var harness = BuildHarness();
+    public void LazyDeletionHeap_TwoHundredSeededFoods_ReportsOnlyFoodNames() =>
+        AssertReportsOnlyFoodNames(BuildHarness().LazyDeletionHeap());
 
-        Assert.Equal(harness.LazyDeletionHeap(), harness.LinearScan());
-    }
-
-    [Fact]
-    public void LazyDeletionHeap_TwoHundredSeededFoods_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScan(), harness.LazyDeletionHeap());
-    }
+    private static void AssertReportsOnlyFoodNames(string[] reported) =>
+        Assert.All(reported, name => Assert.InRange(name.Length, MinimumReportedNameLength, MaxReportedNameLength));
 
     private static DesignAFoodRatingSystemBenchmarks BuildHarness()
     {

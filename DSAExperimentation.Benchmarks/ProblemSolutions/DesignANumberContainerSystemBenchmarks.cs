@@ -27,6 +27,9 @@ public class DesignANumberContainerSystemBenchmarks
 
     private int[] _changeNumbers = [];
     private int[] _findQueries = [];
+
+    // Every index Find reports, in query order; sized in setup so the replay allocates nothing.
+    private int[] _found = [];
     [Params(200, 3_000)]
     public int Count { get; set; }
 
@@ -43,30 +46,29 @@ public class DesignANumberContainerSystemBenchmarks
             .Concat(Enumerable.Range(0, churnCount).Select(_ => random.Next(0, Count)))
             .ToArray();
         _findQueries = SeededDraws.Values(Count, 0, Count, random);
+        _found = new int[_findQueries.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new DesignANumberContainerSystemSolution.NumberContainersByLinearScan());
+    public int[] LinearScan() => Replay(new DesignANumberContainerSystemSolution.NumberContainersByLinearScan());
 
     [Benchmark]
-    public long LazyDeletionHeap() => Replay(new DesignANumberContainerSystemSolution.NumberContainersByLazyDeletionHeap());
+    public int[] LazyDeletionHeap() => Replay(new DesignANumberContainerSystemSolution.NumberContainersByLazyDeletionHeap());
 
-    // Sums every reported index rather than discarding it, so the JIT can't
-    // eliminate the replay as dead code.
-    private long Replay(DesignANumberContainerSystemSolution.INumberContainerStrategy strategy)
+    // Returns every reported index, in query order, so the JIT can't eliminate the
+    // replay as dead code.
+    private int[] Replay(DesignANumberContainerSystemSolution.INumberContainerStrategy strategy)
     {
         for (var i = 0; i < _changeIndices.Length; i++)
         {
             strategy.Change(_changeIndices[i], _changeNumbers[i]);
         }
 
-        var foundIndexSum = 0L;
-
-        foreach (var number in _findQueries)
+        for (var i = 0; i < _findQueries.Length; i++)
         {
-            foundIndexSum += strategy.Find(number);
+            _found[i] = strategy.Find(_findQueries[i]);
         }
 
-        return foundIndexSum;
+        return _found;
     }
 }
