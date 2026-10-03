@@ -8,12 +8,11 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // different problems. Setup is a pure function of ItemCount and hands each arm its own hoisted
 // graphs, so the same ItemCount must rebuild the same acyclic two-level graph.
 //
-// WEAK BY CONSTRUCTION, and reported as such: each arm reports only the length of the order it
-// produced, not the order itself, so agreement witnesses that both sorts placed every item - an
-// arm that dropped an item is caught, an arm that placed the same items in a different valid
-// order is not. The length is also asserted against the item count, which is what makes the
-// comparison decisive rather than two arms sharing a wrong total: Setup wires only lower-id to
-// higher-id edges, so both graphs are acyclic and every item must come back.
+// Each arm returns the order it produced, and on this workload only one order is valid: Setup wires
+// only lower-id to higher-id edges, so both graphs are acyclic and every item must come back, and
+// every item i below the last has an edge to i + 1, so the item ids must come back as 0..n-1 in
+// order. Each arm is asserted against that order, which catches a dropped item and a misplaced one
+// alike, rather than two arms sharing a wrong answer.
 public sealed partial class SortItemsByGroupsRespectingDependenciesBenchmarksTests
 {
     private const int SmallestItemCount = 50;
@@ -26,21 +25,17 @@ public sealed partial class SortItemsByGroupsRespectingDependenciesBenchmarksTes
         Assert.Equal(BuildHarness().NaiveRescanTwoLevelSort(), BuildHarness().NaiveRescanTwoLevelSort());
 
     [Fact]
-    public void NaiveRescanTwoLevelSort_FiftyItemsInFiveGroups_AgreesWithKahnsTwoLevelSort()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedSortedItemCount, harness.NaiveRescanTwoLevelSort());
-        Assert.Equal(harness.KahnsTwoLevelSort(), harness.NaiveRescanTwoLevelSort());
-    }
+    public void NaiveRescanTwoLevelSort_FiftyItemsInFiveGroups_PlacesEveryItemInIdOrder() =>
+        AssertTheOnlyValidOrder(BuildHarness().NaiveRescanTwoLevelSort());
 
     [Fact]
-    public void KahnsTwoLevelSort_FiftyItemsInFiveGroups_AgreesWithNaiveRescanTwoLevelSort()
-    {
-        var harness = BuildHarness();
+    public void KahnsTwoLevelSort_FiftyItemsInFiveGroups_PlacesEveryItemInIdOrder() =>
+        AssertTheOnlyValidOrder(BuildHarness().KahnsTwoLevelSort());
 
-        Assert.Equal(ExpectedSortedItemCount, harness.KahnsTwoLevelSort());
-        Assert.Equal(harness.NaiveRescanTwoLevelSort(), harness.KahnsTwoLevelSort());
+    private static void AssertTheOnlyValidOrder(int[] order)
+    {
+        Assert.Equal(ExpectedSortedItemCount, order.Length);
+        Assert.Equal(Enumerable.Range(0, SmallestItemCount), order);
     }
 
     private static SortItemsByGroupsRespectingDependenciesBenchmarks BuildHarness()

@@ -9,10 +9,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // is timing two different problems. Setup's words are strictly increasing in length, so the
 // same word count must rebuild the same workload.
 //
-// Both arms return the contained-word count rather than the list, so agreement witnesses that
-// both found the same NUMBER of contained words, not that they agree word for word. The
-// derived expectation below pins that count to the fixture's own structure, which is what keeps
-// the check from being satisfied by two arms that are both wrong in the same way.
+// Both arms return the contained words themselves. The derived expectation below pins them to
+// the fixture's own structure, which is what keeps the check from being satisfied by two arms
+// that are both wrong in the same way; LC 1408 accepts the words in any order, so they are
+// compared as a set.
 public sealed partial class StringMatchingInAnArrayBenchmarksTests
 {
     private const int SmallestWordCount = 60;
@@ -21,6 +21,10 @@ public sealed partial class StringMatchingInAnArrayBenchmarksTests
     // exactly when i < j: all but the single longest word are contained in another one.
     private const int ExpectedContainedWordCount = SmallestWordCount - 1;
 
+    // Restated from the benchmark's generator.
+    private const int MinLength = 6;
+    private const string TrailingLetter = "b";
+
     [Fact]
     public void Setup_SameWordCount_RebuildsTheSameWorkload() =>
         Assert.Equal(
@@ -28,13 +32,20 @@ public sealed partial class StringMatchingInAnArrayBenchmarksTests
             AnswerGraphText.Of(BuildHarness().NaiveNestedLoop()));
 
     [Fact]
-    public void NaiveNestedLoop_AgreesWithKmpSubstringSearch()
-    {
-        var harness = BuildHarness();
-        var naive = harness.NaiveNestedLoop();
+    public void NaiveNestedLoop_AdversarialWords_FindsEveryWordButTheLongest() =>
+        AssertEveryWordButTheLongest(BuildHarness().NaiveNestedLoop());
 
-        Assert.Equal(naive, harness.KmpSubstringSearch());
-        Assert.Equal(ExpectedContainedWordCount, naive);
+    [Fact]
+    public void KmpSubstringSearch_AdversarialWords_FindsEveryWordButTheLongest() =>
+        AssertEveryWordButTheLongest(BuildHarness().KmpSubstringSearch());
+
+    private static void AssertEveryWordButTheLongest(List<string> contained)
+    {
+        var expected = Enumerable.Range(0, ExpectedContainedWordCount)
+            .Select(index => new string('a', MinLength + index - 1) + TrailingLetter);
+
+        Assert.Equal(ExpectedContainedWordCount, contained.Count);
+        Assert.Equal(expected.Order(StringComparer.Ordinal), contained.Order(StringComparer.Ordinal));
     }
 
     private static StringMatchingInAnArrayBenchmarks BuildHarness()

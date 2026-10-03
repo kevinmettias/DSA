@@ -1,4 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -9,12 +11,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // clones the chain before mutating it, so the same Length must rebuild the same values and one
 // harness is safe to call twice in either order.
 //
-// WEAK BY CONSTRUCTION, and reported as such: each arm reports only how many of its parts are
-// non-null, not the parts themselves, so agreement witnesses that both splits consumed the chain
-// - an arm that dropped a node is caught, an arm that cut the parts at different places is not.
-// The count is also asserted against the requested part count, which is what makes it decisive
-// for that much: Length is far larger than the part count, so every part must be non-empty and
-// the count must equal the part count exactly.
+// Each arm returns the parts themselves, and they are derivable from Length alone: node i holds
+// the value i, and LC 725 cuts the chain into consecutive parts whose sizes differ by at most one,
+// the larger ones first. Length is far larger than the part count, so every part is non-empty.
+// Each arm is asserted against those parts, which catches a dropped node and a misplaced cut alike.
 public sealed partial class SplitLinkedListInPartsBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -24,24 +24,50 @@ public sealed partial class SplitLinkedListInPartsBenchmarksTests
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameChain() =>
-        Assert.Equal(BuildHarness().ArrayRebuild(), BuildHarness().ArrayRebuild());
+        Assert.Equal(AnswerGraphText.Of(BuildHarness().ArrayRebuild()), AnswerGraphText.Of(BuildHarness().ArrayRebuild()));
 
     [Fact]
-    public void ArrayRebuild_TwoHundredNodes_AgreesWithInPlaceRewire()
-    {
-        var harness = BuildHarness();
+    public void ArrayRebuild_TwoHundredNodes_CutsEqualConsecutiveParts() =>
+        AssertExpectedParts(BuildHarness().ArrayRebuild());
 
-        Assert.Equal(ExpectedPartCount, harness.ArrayRebuild());
-        Assert.Equal(harness.InPlaceRewire(), harness.ArrayRebuild());
+    [Fact]
+    public void InPlaceRewire_TwoHundredNodes_CutsEqualConsecutiveParts() =>
+        AssertExpectedParts(BuildHarness().InPlaceRewire());
+
+    private static void AssertExpectedParts(object? answer)
+    {
+        var parts = Assert.IsType<SinglyLinkedListNode<int>?[]>(answer);
+
+        Assert.Equal(ExpectedPartCount, parts.Count(part => part is not null));
+        Assert.Equal(ExpectedParts(), parts.Select(ValuesOf));
     }
 
-    [Fact]
-    public void InPlaceRewire_TwoHundredNodes_AgreesWithArrayRebuild()
+    private static IEnumerable<int[]> ExpectedParts()
     {
-        var harness = BuildHarness();
+        var shortPartSize = SmallestLength / ExpectedPartCount;
+        var longPartCount = SmallestLength % ExpectedPartCount;
+        var start = 0;
 
-        Assert.Equal(ExpectedPartCount, harness.InPlaceRewire());
-        Assert.Equal(harness.ArrayRebuild(), harness.InPlaceRewire());
+        for (var part = 0; part < ExpectedPartCount; part++)
+        {
+            var size = part < longPartCount ? shortPartSize + 1 : shortPartSize;
+
+            yield return [.. Enumerable.Range(start, size)];
+
+            start += size;
+        }
+    }
+
+    private static int[] ValuesOf(SinglyLinkedListNode<int>? head)
+    {
+        var values = new List<int>();
+
+        for (var node = head; node is not null; node = node.Next)
+        {
+            values.Add(node.Value);
+        }
+
+        return [.. values];
     }
 
     private static SplitLinkedListInPartsBenchmarks BuildHarness()

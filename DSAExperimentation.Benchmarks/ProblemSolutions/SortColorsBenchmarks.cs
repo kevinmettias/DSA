@@ -20,19 +20,20 @@ public class SortColorsBenchmarks
     public void Setup() =>
         _values = Enumerable.Range(0, Length).Select(i => MaxColorValue - (i % ColorCount)).ToArray();
 
+    // Each arm sorts its own copy in place and returns that copy.
     [Benchmark(Baseline = true)]
-    public int ArraySort()
+    public int[] ArraySort()
     {
         var copy = (int[])_values.Clone();
         SortColorsSolution.SortByArraySort(copy);
-        return copy[0];
+        return copy;
     }
 
     [Benchmark]
-    public int ArrayIndexedDutchFlag()
+    public int[] ArrayIndexedDutchFlag()
     {
         var copy = (int[])_values.Clone();
         SortColorsSolution.SortByDutchFlagPartition(copy);
-        return copy[0];
+        return copy;
     }
 }

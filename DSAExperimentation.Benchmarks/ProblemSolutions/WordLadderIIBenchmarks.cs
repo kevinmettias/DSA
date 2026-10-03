@@ -37,14 +37,14 @@ public class WordLadderIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int MutationLayeredBfsBacktrack() =>
+    public List<string[]> MutationLayeredBfsBacktrack() =>
         WordLadderIISolution.FindLaddersByLayeredMutation(
             new WordLadderIISolution.BeginWord(_beginWord),
             new WordLadderIISolution.EndWord(_endWord),
-            _wordSet).Count;
+            _wordSet);
 
     [Benchmark]
-    public int ReduceGraphBfsBacktrack() =>
+    public List<string[]> ReduceGraphBfsBacktrack() =>
         WordLadderIISolution.FindLaddersByReduceGraph(
-            _graph, new WordLadderIISolution.EndWord(_endWord)).Count;
+            _graph, new WordLadderIISolution.EndWord(_endWord));
 }

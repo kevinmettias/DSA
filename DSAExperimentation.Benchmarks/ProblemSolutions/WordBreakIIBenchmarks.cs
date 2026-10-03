@@ -25,10 +25,10 @@ public class WordBreakIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int HashSetUnboundedScan() =>
-        WordBreakIISolution.SentencesByHashSetScan(_source, Dictionary).Count;
+    public List<string> HashSetUnboundedScan() =>
+        WordBreakIISolution.SentencesByHashSetScan(_source, Dictionary);
 
     [Benchmark]
-    public int TriePrunedMemoized() =>
-        WordBreakIISolution.SentencesByTrieMemoized(_source, Dictionary).Count;
+    public List<string> TriePrunedMemoized() =>
+        WordBreakIISolution.SentencesByTrieMemoized(_source, Dictionary);
 }

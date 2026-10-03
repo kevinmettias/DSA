@@ -32,8 +32,8 @@ public class WordSearchIIBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int PerWordBruteForce() => WordSearchIISolution.FindWordsByBruteForceDfs(_board, _words).Count;
+    public HashSet<string> PerWordBruteForce() => WordSearchIISolution.FindWordsByBruteForceDfs(_board, _words);
 
     [Benchmark]
-    public int TriePrunedSearch() => WordSearchIISolution.FindWordsByTrieBacktrack(_board, _words).Count;
+    public HashSet<string> TriePrunedSearch() => WordSearchIISolution.FindWordsByTrieBacktrack(_board, _words);
 }

@@ -1,4 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -7,13 +9,11 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // from them against reattaching the nodes that are already there - so a harness whose arms disagree
 // is timing two different problems.
 //
-// Both arms return only the surviving node COUNT, because BinaryTreeNode<int> is internal and a
-// public [Benchmark] method cannot return it (CS0050): the count is a projection, so agreement here
-// witnesses "both kept the same number of nodes", not that they kept the same nodes. The class
-// comment is what makes the expected count decisive - low/high span the tree's whole value range,
-// so no node is out of range and every one of Setup's inserted nodes survives under both
-// approaches - so the count is asserted against that quantity rather than only against the other
-// arm.
+// Both arms return the trimmed tree's root. The class comment is what makes the expected tree
+// decisive - low/high span the tree's whole value range, so no node is out of range and every one of
+// Setup's inserted nodes survives under both approaches - and LC 669 forbids a trim from changing
+// the relative structure of the nodes it keeps, so the answer must be Setup's own tree, unchanged.
+// Each arm is asserted against that tree, rebuilt here the way Setup builds it.
 //
 // Setup inserts 0..NodeCount-1 into a BinarySearchTree<int>, so the same NodeCount must rebuild the
 // same tree. TrimByInPlaceMutation mutates the shared tree in place, but with the whole range in
@@ -30,25 +30,35 @@ public sealed partial class TrimABinarySearchTreeBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameTree()
     {
-        Assert.Equal(BuildHarness().CollectAndRebuild(), BuildHarness().CollectAndRebuild());
-        Assert.Equal(ExpectedSurvivingNodeCount, BuildHarness().InPlaceTrim());
+        Assert.Equal(AnswerGraphText.Of(BuildHarness().CollectAndRebuild()), AnswerGraphText.Of(BuildHarness().CollectAndRebuild()));
+        Assert.Equal(ExpectedSurvivingNodeCount, CountNodes(BuildHarness().InPlaceTrim()));
     }
 
     [Fact]
-    public void CollectAndRebuild_SmallestNodeCount_AgreesWithInPlaceTrim()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.InPlaceTrim(), harness.CollectAndRebuild());
-    }
+    public void CollectAndRebuild_WholeValueRange_KeepsSetupsTreeUnchanged() =>
+        Assert.Equal(SetupTree(), AnswerGraphText.Of(BuildHarness().CollectAndRebuild()));
 
     [Fact]
-    public void InPlaceTrim_SmallestNodeCount_AgreesWithCollectAndRebuild()
-    {
-        var harness = BuildHarness();
+    public void InPlaceTrim_WholeValueRange_KeepsSetupsTreeUnchanged() =>
+        Assert.Equal(SetupTree(), AnswerGraphText.Of(BuildHarness().InPlaceTrim()));
 
-        Assert.Equal(harness.CollectAndRebuild(), harness.InPlaceTrim());
+    // [GlobalSetup]'s tree, restated: 0..NodeCount-1 inserted in ascending order.
+    private static string SetupTree()
+    {
+        var tree = new BinarySearchTree<int>();
+
+        for (var value = 0; value < SmallestNodeCount; value++)
+        {
+            tree.Insert(value);
+        }
+
+        return AnswerGraphText.Of(tree.Root);
     }
+
+    private static int CountNodes(object? root) => CountSubtree((BinaryTreeNode<int>?)root);
+
+    private static int CountSubtree(BinaryTreeNode<int>? node) =>
+        node is null ? 0 : 1 + CountSubtree(node.Left) + CountSubtree(node.Right);
 
     private static TrimABinarySearchTreeBenchmarks BuildHarness()
     {

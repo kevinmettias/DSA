@@ -1,4 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -7,12 +9,10 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // range recursion against the memoized one - so a harness whose arms disagree is building two
 // different sets of trees.
 //
-// The arms report only .Count of the built list, which LC 95's own tests already pin the trees
-// through; here the reported number is the whole of what the arms return, so agreement witnesses
-// that both strategies built the same NUMBER of trees on the same key range, not that they built
-// the same trees. The count is still decisive - it is Catalan(8) = 1430 for the smaller parameter,
-// the same constant UniqueBinarySearchTreesBenchmarks' counting sibling is anchored to - so the
-// literal is asserted alongside the agreement rather than left to a shared wrong number.
+// Each arm returns the list of trees it built. Their number is decisive - it is Catalan(8) = 1430
+// for the smaller parameter, the same constant UniqueBinarySearchTreesBenchmarks' counting sibling
+// is anchored to - and so is that no two of them share a shape, so both are asserted for each arm
+// rather than left to a shared wrong answer.
 public sealed partial class UniqueBinarySearchTreesIIBenchmarksTests
 {
     // The smaller of the class's [Params(8, 12)] node counts.
@@ -22,21 +22,21 @@ public sealed partial class UniqueBinarySearchTreesIIBenchmarksTests
     private const int ExpectedTreeCount = 1_430;
 
     [Fact]
-    public void PlainRecursion_SmallestNodeCount_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(ExpectedTreeCount, harness.PlainRecursion());
-        Assert.Equal(harness.MemoizedRange(), harness.PlainRecursion());
-    }
+    public void PlainRecursion_SmallestNodeCount_BuildsEveryDistinctTree() =>
+        AssertEveryDistinctTree(BuildHarness().PlainRecursion());
 
     [Fact]
-    public void MemoizedRange_SmallestNodeCount_AgreesWithTheSiblingArm()
-    {
-        var harness = BuildHarness();
+    public void MemoizedRange_SmallestNodeCount_BuildsEveryDistinctTree() =>
+        AssertEveryDistinctTree(BuildHarness().MemoizedRange());
 
-        Assert.Equal(ExpectedTreeCount, harness.MemoizedRange());
-        Assert.Equal(harness.PlainRecursion(), harness.MemoizedRange());
+    // Each tree is rendered on its own, so a subtree the memoized arm shares between trees renders
+    // in full in every tree that holds it.
+    private static void AssertEveryDistinctTree(object? answer)
+    {
+        var trees = Assert.IsType<List<BinaryTreeNode<int>?>>(answer);
+
+        Assert.Equal(ExpectedTreeCount, trees.Count);
+        Assert.Equal(ExpectedTreeCount, trees.Select(AnswerGraphText.Of).Distinct().Count());
     }
 
     private static UniqueBinarySearchTreesIIBenchmarks BuildHarness() => new() { Nodes = SmallestNodeCount };

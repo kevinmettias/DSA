@@ -1,6 +1,5 @@
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TheKthFactorOfN;
-using DSAExperimentation.LeetCode;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
@@ -21,6 +20,9 @@ public class TheKthFactorOfNBenchmarks
 
     private int[] _values = [];
 
+    // Every number's k-th factor, or -1 when it has fewer, in input order - what each arm returns.
+    private int[] _factors = [];
+
     [Params(1_000, 10_000)]
     public int Length { get; set; }
 
@@ -29,33 +31,28 @@ public class TheKthFactorOfNBenchmarks
     {
         var random = new Random(RandomSeed);
         _values = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
+        _factors = new int[_values.Length];
     }
 
     [Benchmark(Baseline = true)]
-    public int FullRangeScan()
+    public int[] FullRangeScan()
     {
-        var total = 0;
-
-        foreach (var n in _values)
+        for (var i = 0; i < _values.Length; i++)
         {
-            var factor = TheKthFactorOfNSolution.KthFactorByFullRangeScan(n, UnreachableK);
-            total += factor == LeetCodeAnswer.None ? 0 : factor;
+            _factors[i] = TheKthFactorOfNSolution.KthFactorByFullRangeScan(_values[i], UnreachableK);
         }
 
-        return total;
+        return _factors;
     }
 
     [Benchmark]
-    public int BinarySearchAnchored()
+    public int[] BinarySearchAnchored()
     {
-        var total = 0;
-
-        foreach (var n in _values)
+        for (var i = 0; i < _values.Length; i++)
         {
-            var factor = TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(n, UnreachableK);
-            total += factor == LeetCodeAnswer.None ? 0 : factor;
+            _factors[i] = TheKthFactorOfNSolution.KthFactorByBinarySearchAnchor(_values[i], UnreachableK);
         }
 
-        return total;
+        return _factors;
     }
 }

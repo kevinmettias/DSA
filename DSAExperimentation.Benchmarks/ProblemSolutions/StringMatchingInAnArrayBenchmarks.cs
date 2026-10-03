@@ -20,10 +20,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // primitive's real advantage only shows up once text/pattern are long enough to
 // amortize that per-call overhead - well past this problem's own bounds.
 //
-// Both arms now build LC 1408's actual answer - the list of contained words - rather
-// than only counting them, and the harness takes .Count; the same deliberate change
-// §17.8 records for WordLadderII. The extra work is one List<string> add per
-// contained word, identical in both arms.
+// Both arms now build and return LC 1408's actual answer - the list of contained
+// words - rather than only counting them; the same deliberate change §17.8 records
+// for WordLadderII. The extra work is one List<string> add per contained word,
+// identical in both arms.
 public class StringMatchingInAnArrayBenchmarks
 {
     private const int MinLength = 6;
@@ -42,10 +42,10 @@ public class StringMatchingInAnArrayBenchmarks
         => new string('a', MinLength + index - 1) + TrailingLetter;
 
     [Benchmark(Baseline = true)]
-    public int NaiveNestedLoop() =>
-        StringMatchingInAnArraySolution.FindContainedWordsByNaiveScan(_words).Count;
+    public List<string> NaiveNestedLoop() =>
+        StringMatchingInAnArraySolution.FindContainedWordsByNaiveScan(_words);
 
     [Benchmark]
-    public int KmpSubstringSearch() =>
-        StringMatchingInAnArraySolution.FindContainedWordsByPrefixFunctionSearch(_words).Count;
+    public List<string> KmpSubstringSearch() =>
+        StringMatchingInAnArraySolution.FindContainedWordsByPrefixFunctionSearch(_words);
 }

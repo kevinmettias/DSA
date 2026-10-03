@@ -57,10 +57,10 @@ public class SortItemsByGroupsRespectingDependenciesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NaiveRescanTwoLevelSort() =>
-        SortItemsByGroupsRespectingDependenciesSolution.SortItemsByNaiveRescan(_items, _groups).Length;
+    public int[] NaiveRescanTwoLevelSort() =>
+        SortItemsByGroupsRespectingDependenciesSolution.SortItemsByNaiveRescan(_items, _groups);
 
     [Benchmark]
-    public int KahnsTwoLevelSort() =>
-        SortItemsByGroupsRespectingDependenciesSolution.SortItemsByKahnsTopologicalSort(_items, _groups).Length;
+    public int[] KahnsTwoLevelSort() =>
+        SortItemsByGroupsRespectingDependenciesSolution.SortItemsByKahnsTopologicalSort(_items, _groups);
 }

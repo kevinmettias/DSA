@@ -27,30 +27,13 @@ public class TrimABinarySearchTreeBenchmarks
         _root = tree.Root!;
     }
 
+    // Each arm returns the trimmed tree's root, as object because BinaryTreeNode<int>
+    // is internal and a public [Benchmark] method can't name it (CS0050).
     [Benchmark(Baseline = true)]
-    public int CollectAndRebuild()
-    {
-        var trimmed = TrimABinarySearchTreeSolution.TrimByCollectAndRebuild(_root, 0, NodeCount - 1);
-
-        return CountNodes(trimmed);
-    }
+    public object? CollectAndRebuild() =>
+        TrimABinarySearchTreeSolution.TrimByCollectAndRebuild(_root, 0, NodeCount - 1);
 
     [Benchmark]
-    public int InPlaceTrim()
-    {
-        var trimmed = TrimABinarySearchTreeSolution.TrimByInPlaceMutation(_root, 0, NodeCount - 1);
-
-        return CountNodes(trimmed);
-    }
-
-    // BinaryTreeNode<int> is internal, so a public [Benchmark] method can't return
-    // it directly (CS0050) - this projects the result to a public int just to give
-    // BenchmarkDotNet a return value, the same role WordLadderIIBenchmarks' .Count
-    // plays per ARCHITECTURE.md §17.8. It is not a second copy of either strategy.
-    private static int CountNodes(BinaryTreeNode<int>? node)
-        => node is null ? 0 : SubtreeSize(node);
-
-    // The node itself plus both of its subtrees, counted the same way.
-    private static int SubtreeSize(BinaryTreeNode<int> node) =>
-        1 + CountNodes(node.Left) + CountNodes(node.Right);
+    public object? InPlaceTrim() =>
+        TrimABinarySearchTreeSolution.TrimByInPlaceMutation(_root, 0, NodeCount - 1);
 }

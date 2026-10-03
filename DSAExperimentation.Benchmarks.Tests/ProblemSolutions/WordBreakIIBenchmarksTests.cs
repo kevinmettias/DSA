@@ -5,15 +5,17 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for WordBreakIIBenchmarks (ARCHITECTURE 17.9): both arms are competing
 // segmentation strategies for one source and one dictionary, so a harness whose arms disagree is
-// timing two different problems. Note what the arms agree ON: each returns the COUNT of sentences,
-// not the sentences themselves, so agreement witnesses that both found the same number of
-// segmentations and cannot witness that they are the same segmentations. The workload is a source
-// tiling one dictionary word, whose only segmentation is that tiling - the decisive count the
-// assertions below pin, so the weak comparison is anchored to something independent.
+// timing two different problems. Each arm returns the sentences themselves. The workload is a
+// source tiling one dictionary word, whose only segmentation is that tiling - one sentence, the
+// word repeated with single spaces between - which the assertions below pin, so the comparison is
+// anchored to something independent of both arms.
 public sealed partial class WordBreakIIBenchmarksTests
 {
     private const int SmallestLength = 600;
     private const int ExpectedSentenceCount = 1;
+
+    // Restated from the benchmark: the one dictionary word the source tiles.
+    private const string RepeatedWord = "cat";
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>
@@ -22,20 +24,18 @@ public sealed partial class WordBreakIIBenchmarksTests
             AnswerGraphText.Of(BuildHarness().HashSetUnboundedScan()));
 
     [Fact]
-    public void HashSetUnboundedScan_AgreesWithTriePrunedMemoized()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HashSetUnboundedScan(), harness.TriePrunedMemoized());
-    }
-
-    [Fact]
     public void HashSetUnboundedScan_SingleDictionaryWord_FindsOneSentence() =>
-        Assert.Equal(ExpectedSentenceCount, BuildHarness().HashSetUnboundedScan());
+        AssertTheTilingSentence(BuildHarness().HashSetUnboundedScan());
 
     [Fact]
     public void TriePrunedMemoized_SingleDictionaryWord_FindsOneSentence() =>
-        Assert.Equal(ExpectedSentenceCount, BuildHarness().TriePrunedMemoized());
+        AssertTheTilingSentence(BuildHarness().TriePrunedMemoized());
+
+    private static void AssertTheTilingSentence(List<string> sentences)
+    {
+        Assert.Equal(ExpectedSentenceCount, sentences.Count);
+        Assert.Equal(string.Join(' ', Enumerable.Repeat(RepeatedWord, SmallestLength / RepeatedWord.Length)), sentences[0]);
+    }
 
     private static WordBreakIIBenchmarks BuildHarness()
     {

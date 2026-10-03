@@ -19,9 +19,16 @@ public class StockPriceFluctuationBenchmarks
     // competitive.
     private const int CorrectionStride = 3;
 
+    // A Maximum and a Minimum after every update.
+    private const int QueriesPerUpdate = 2;
+
     private int[] _timestamps = [];
 
     private int[] _prices = [];
+
+    // Every Maximum and Minimum answer in call order, then the closing Current - what each arm
+    // returns; an Update returns nothing.
+    private int[] _answers = [];
     [Params(200, 2_000)]
     public int UpdateCount { get; set; }
 
@@ -31,6 +38,7 @@ public class StockPriceFluctuationBenchmarks
         var random = new Random(RandomSeed);
         _timestamps = new int[UpdateCount];
         _prices = new int[UpdateCount];
+        _answers = new int[(UpdateCount * QueriesPerUpdate) + 1];
 
         BuildUpdateScript(random);
     }
@@ -58,23 +66,24 @@ public class StockPriceFluctuationBenchmarks
         => timestamps[random.Next(count)];
 
     [Benchmark(Baseline = true)]
-    public int FullScanEveryQuery() => Replay(StockPriceFluctuationSolution.CreateByFullScan());
+    public int[] FullScanEveryQuery() => Replay(StockPriceFluctuationSolution.CreateByFullScan());
 
     [Benchmark]
-    public int LazyDeletionTwoHeaps() => Replay(StockPriceFluctuationSolution.CreateByLazyDeletionTwoHeaps());
+    public int[] LazyDeletionTwoHeaps() => Replay(StockPriceFluctuationSolution.CreateByLazyDeletionTwoHeaps());
 
-    private int Replay(StockPriceFluctuationSolution.IStockPrice stockPrice)
+    private int[] Replay(StockPriceFluctuationSolution.IStockPrice stockPrice)
     {
-        var lastMax = 0;
-        var lastMin = 0;
+        var answered = 0;
 
         for (var i = 0; i < _timestamps.Length; i++)
         {
             stockPrice.Update(_timestamps[i], _prices[i]);
-            lastMax = stockPrice.Maximum();
-            lastMin = stockPrice.Minimum();
+            _answers[answered++] = stockPrice.Maximum();
+            _answers[answered++] = stockPrice.Minimum();
         }
 
-        return stockPrice.Current() + lastMax + lastMin;
+        _answers[answered] = stockPrice.Current();
+
+        return _answers;
     }
 }

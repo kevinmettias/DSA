@@ -7,11 +7,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods SplitLinkedListInPartsSolutionTests proves correct. Each benchmark method
 // clones the shared fixture first (OddEvenLinkedListBenchmarks precedent)
 // since [GlobalSetup] runs once per benchmark, not once per invocation, and
-// InPlaceRewire mutates the chain it walks. Both arms report the non-null
-// part count rather than the SinglyLinkedListNode<int>?[] itself: that type
-// is internal, and a public [Benchmark] method on this public class cannot
-// return it (CS0050) - the same constraint OddEvenLinkedListBenchmarks
-// resolves the same way, by counting instead of returning the chain.
+// InPlaceRewire mutates the chain it walks. Both arms return the
+// SinglyLinkedListNode<int>?[] of parts itself, as object: that type is
+// internal, and a public [Benchmark] method on this public class cannot name
+// it (CS0050).
 public class SplitLinkedListInPartsBenchmarks
 {
     private const int Parts = 7;
@@ -39,22 +38,12 @@ public class SplitLinkedListInPartsBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int ArrayRebuild()
-    {
-        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Clone(_head), Parts);
-
-        return CountNonNullParts(parts);
-    }
+    public object? ArrayRebuild() =>
+        SplitLinkedListInPartsSolution.SplitListToPartsByArrayRebuild(Clone(_head), Parts);
 
     [Benchmark]
-    public int InPlaceRewire()
-    {
-        var parts = SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Clone(_head), Parts);
-
-        return CountNonNullParts(parts);
-    }
-
-    private static int CountNonNullParts(SinglyLinkedListNode<int>?[] parts) => parts.Count(p => p is not null);
+    public object? InPlaceRewire() =>
+        SplitLinkedListInPartsSolution.SplitListToPartsByInPlaceRewire(Clone(_head), Parts);
 
     private static SinglyLinkedListNode<int> Clone(SinglyLinkedListNode<int> head)
     {

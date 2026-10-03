@@ -27,6 +27,7 @@ internal static class ArmAgreement
         typeof(SubsetsBenchmarks),
         typeof(ThreeSumBenchmarks),
         typeof(TopKFrequentElementsBenchmarks),
+        typeof(UniqueBinarySearchTreesIIBenchmarks),
     };
 
     // Arms here answer differently by design, so the generic check only runs each one to completion.
