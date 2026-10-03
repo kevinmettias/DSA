@@ -26,8 +26,8 @@ public sealed partial class CherryPickupBenchmarksTests
         var first = BuildHarness();
         var second = BuildHarness();
 
-        Assert.Equal(ExpectedCherries, first.UnmemoizedRecursion());
-        Assert.Equal(ExpectedCherries, second.MemoizedRecursion());
+        Assert.Equal(ExpectedCherries, first.UnmemoizedRecursion(SmallestSize));
+        Assert.Equal(ExpectedCherries, second.MemoizedRecursion(SmallestSize));
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public sealed partial class CherryPickupBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.MemoizedRecursion(), harness.UnmemoizedRecursion());
+        Assert.Equal(harness.MemoizedRecursion(SmallestSize), harness.UnmemoizedRecursion(SmallestSize));
     }
 
     [Fact]
@@ -43,12 +43,12 @@ public sealed partial class CherryPickupBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.UnmemoizedRecursion(), harness.MemoizedRecursion());
+        Assert.Equal(harness.UnmemoizedRecursion(SmallestSize), harness.MemoizedRecursion(SmallestSize));
     }
 
     private static CherryPickupBenchmarks BuildHarness()
     {
-        var harness = new CherryPickupBenchmarks { Size = SmallestSize };
+        var harness = new CherryPickupBenchmarks();
         harness.Setup();
 
         return harness;

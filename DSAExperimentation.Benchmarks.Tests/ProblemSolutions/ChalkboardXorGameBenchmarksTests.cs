@@ -23,13 +23,13 @@ public sealed partial class ChalkboardXorGameBenchmarksTests
 
         Assert.Equal(
             (
-                first.CanAliceWinByBruteForceRecursion(),
-                first.CanAliceWinByMemoizedRecursion(),
-                first.CanAliceWinByXorParityFormula()),
+                first.CanAliceWinByBruteForceRecursion(SmallestLength),
+                first.CanAliceWinByMemoizedRecursion(SmallestLength),
+                first.CanAliceWinByXorParityFormula(SmallestLength)),
             (
-                second.CanAliceWinByBruteForceRecursion(),
-                second.CanAliceWinByMemoizedRecursion(),
-                second.CanAliceWinByXorParityFormula()));
+                second.CanAliceWinByBruteForceRecursion(SmallestLength),
+                second.CanAliceWinByMemoizedRecursion(SmallestLength),
+                second.CanAliceWinByXorParityFormula(SmallestLength)));
     }
 
     [Fact]
@@ -37,8 +37,12 @@ public sealed partial class ChalkboardXorGameBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.CanAliceWinByMemoizedRecursion(), harness.CanAliceWinByBruteForceRecursion());
-        Assert.Equal(harness.CanAliceWinByXorParityFormula(), harness.CanAliceWinByBruteForceRecursion());
+        Assert.Equal(
+            harness.CanAliceWinByMemoizedRecursion(SmallestLength),
+            harness.CanAliceWinByBruteForceRecursion(SmallestLength));
+        Assert.Equal(
+            harness.CanAliceWinByXorParityFormula(SmallestLength),
+            harness.CanAliceWinByBruteForceRecursion(SmallestLength));
     }
 
     [Fact]
@@ -46,8 +50,12 @@ public sealed partial class ChalkboardXorGameBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.CanAliceWinByBruteForceRecursion(), harness.CanAliceWinByMemoizedRecursion());
-        Assert.Equal(harness.CanAliceWinByXorParityFormula(), harness.CanAliceWinByMemoizedRecursion());
+        Assert.Equal(
+            harness.CanAliceWinByBruteForceRecursion(SmallestLength),
+            harness.CanAliceWinByMemoizedRecursion(SmallestLength));
+        Assert.Equal(
+            harness.CanAliceWinByXorParityFormula(SmallestLength),
+            harness.CanAliceWinByMemoizedRecursion(SmallestLength));
     }
 
     [Fact]
@@ -55,13 +63,17 @@ public sealed partial class ChalkboardXorGameBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.CanAliceWinByBruteForceRecursion(), harness.CanAliceWinByXorParityFormula());
-        Assert.Equal(harness.CanAliceWinByMemoizedRecursion(), harness.CanAliceWinByXorParityFormula());
+        Assert.Equal(
+            harness.CanAliceWinByBruteForceRecursion(SmallestLength),
+            harness.CanAliceWinByXorParityFormula(SmallestLength));
+        Assert.Equal(
+            harness.CanAliceWinByMemoizedRecursion(SmallestLength),
+            harness.CanAliceWinByXorParityFormula(SmallestLength));
     }
 
     private static ChalkboardXorGameBenchmarks BuildHarness()
     {
-        var harness = new ChalkboardXorGameBenchmarks { Length = SmallestLength };
+        var harness = new ChalkboardXorGameBenchmarks();
         harness.Setup();
 
         return harness;

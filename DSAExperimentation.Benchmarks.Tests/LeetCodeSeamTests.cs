@@ -18,8 +18,8 @@ namespace DSAExperimentation.Benchmarks.Tests;
 // workload through the same public Fixtures builder the harness's [GlobalSetup] uses,
 // calls the strategy the arm is named after, and asserts the harness arm returns
 // exactly that answer. The workload builders are the seed-free ones, so the input is
-// reproducible from the public [Params] value alone and no private constant has to be
-// restated here.
+// reproducible from the public [Params] value or arm argument alone and no private
+// constant has to be restated here.
 public sealed partial class LeetCodeSeamTests
 {
     private const int SmallestLength = 200;
@@ -72,7 +72,7 @@ public sealed partial class LeetCodeSeamTests
 
         Assert.Equal(
             CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesByCodeSubstringSearch(text, SmallestCodeLength),
-            harness.HasAllCodesByCodeSubstringSearch());
+            harness.HasAllCodesByCodeSubstringSearch(SmallestCodeLength));
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public sealed partial class LeetCodeSeamTests
 
         Assert.Equal(
             CheckIfAStringContainsAllBinaryCodesOfSizeKSolution.HasAllCodesBySlidingBitmask(text, SmallestCodeLength),
-            harness.HasAllCodesBySlidingBitmask());
+            harness.HasAllCodesBySlidingBitmask(SmallestCodeLength));
     }
 
     private static BasicCalculatorBenchmarks BuildBasicCalculatorHarness()
@@ -104,7 +104,7 @@ public sealed partial class LeetCodeSeamTests
 
     private static CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks BuildAllBinaryCodesHarness()
     {
-        var harness = new CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks { CodeLength = SmallestCodeLength };
+        var harness = new CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks();
         harness.Setup();
 
         return harness;

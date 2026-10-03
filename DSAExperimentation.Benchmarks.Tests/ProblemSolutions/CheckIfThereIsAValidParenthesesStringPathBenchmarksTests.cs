@@ -25,8 +25,8 @@ public sealed partial class CheckIfThereIsAValidParenthesesStringPathBenchmarksT
         var first = BuildHarness();
         var second = BuildHarness();
 
-        Assert.Equal(ExpectedVerdict, first.HasValidPathByUnmemoizedRecursion());
-        Assert.Equal(ExpectedVerdict, second.HasValidPathByMemoizedRecursion());
+        Assert.Equal(ExpectedVerdict, first.HasValidPathByUnmemoizedRecursion(SmallestSize));
+        Assert.Equal(ExpectedVerdict, second.HasValidPathByMemoizedRecursion(SmallestSize));
     }
 
     [Fact]
@@ -34,7 +34,9 @@ public sealed partial class CheckIfThereIsAValidParenthesesStringPathBenchmarksT
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.HasValidPathByMemoizedRecursion(), harness.HasValidPathByUnmemoizedRecursion());
+        Assert.Equal(
+            harness.HasValidPathByMemoizedRecursion(SmallestSize),
+            harness.HasValidPathByUnmemoizedRecursion(SmallestSize));
     }
 
     [Fact]
@@ -42,12 +44,14 @@ public sealed partial class CheckIfThereIsAValidParenthesesStringPathBenchmarksT
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.HasValidPathByUnmemoizedRecursion(), harness.HasValidPathByMemoizedRecursion());
+        Assert.Equal(
+            harness.HasValidPathByUnmemoizedRecursion(SmallestSize),
+            harness.HasValidPathByMemoizedRecursion(SmallestSize));
     }
 
     private static CheckIfThereIsAValidParenthesesStringPathBenchmarks BuildHarness()
     {
-        var harness = new CheckIfThereIsAValidParenthesesStringPathBenchmarks { Size = SmallestSize };
+        var harness = new CheckIfThereIsAValidParenthesesStringPathBenchmarks();
         harness.Setup();
 
         return harness;

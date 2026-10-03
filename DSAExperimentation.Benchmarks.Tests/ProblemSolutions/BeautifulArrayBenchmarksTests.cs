@@ -10,14 +10,15 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // conquer arm returns the one its parity recursion builds. Neither is wrong, so disagreeing here is not a defect
 // and there is nothing for the root-cause rule to fix. What the harness asserts instead is the property the
 // problem actually pins, independently re-derived: each arm's answer is a permutation of 1..length in which no
-// element is the arithmetic mean of one before it and one after, at BOTH [Params] sizes - the larger one being
-// exactly where the two answers diverge, so a test that quietly compared them would fail for the wrong reason.
+// element is the arithmetic mean of one before it and one after, at BOTH sizes the two arms share - the larger
+// one being exactly where the two answers diverge, so a test that quietly compared them would fail for the wrong
+// reason.
 public sealed partial class BeautifulArrayBenchmarksTests
 {
-    // The smaller of [Params(6, 8)] lengths.
+    // The smaller of the two lengths both arms run, 6 and 8.
     private const int SmallestLength = 6;
 
-    // The larger [Params] value, where the solution documents the two answers first diverging.
+    // The larger shared length, where the solution documents the two answers first diverging.
     private const int LargestLength = 8;
 
     // 2 * a[k] == a[i] + a[j] is the averaging rule the whole problem is about.
@@ -30,18 +31,16 @@ public sealed partial class BeautifulArrayBenchmarksTests
     [Fact]
     public void PrunedBacktrackingSearch_SixAndEightElementPermutations_ReturnsBeautifulArrays()
     {
-        Assert.True(IsBeautiful(Harness(SmallestLength).PrunedBacktrackingSearch(), SmallestLength));
-        Assert.True(IsBeautiful(Harness(LargestLength).PrunedBacktrackingSearch(), LargestLength));
+        Assert.True(IsBeautiful(new BeautifulArrayBenchmarks().PrunedBacktrackingSearch(SmallestLength), SmallestLength));
+        Assert.True(IsBeautiful(new BeautifulArrayBenchmarks().PrunedBacktrackingSearch(LargestLength), LargestLength));
     }
 
     [Fact]
     public void MemoizedDivideAndConquer_SixAndEightElementPermutations_ReturnsBeautifulArrays()
     {
-        Assert.True(IsBeautiful(Harness(SmallestLength).MemoizedDivideAndConquer(), SmallestLength));
-        Assert.True(IsBeautiful(Harness(LargestLength).MemoizedDivideAndConquer(), LargestLength));
+        Assert.True(IsBeautiful(new BeautifulArrayBenchmarks().MemoizedDivideAndConquer(SmallestLength), SmallestLength));
+        Assert.True(IsBeautiful(new BeautifulArrayBenchmarks().MemoizedDivideAndConquer(LargestLength), LargestLength));
     }
-
-    private static BeautifulArrayBenchmarks Harness(int length) => new() { Length = length };
 
     // LC 932's contract, re-derived rather than read off either arm: every value from 1 to length
     // appears exactly once, and no triple i < k < j averages.

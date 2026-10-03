@@ -23,8 +23,8 @@ public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmark
         var first = BuildHarness();
         var second = BuildHarness();
 
-        Assert.Equal(ExpectedVerdict, first.HasAllCodesByCodeSubstringSearch());
-        Assert.Equal(ExpectedVerdict, second.HasAllCodesBySlidingBitmask());
+        Assert.Equal(ExpectedVerdict, first.HasAllCodesByCodeSubstringSearch(SmallestCodeLength));
+        Assert.Equal(ExpectedVerdict, second.HasAllCodesBySlidingBitmask(SmallestCodeLength));
     }
 
     [Fact]
@@ -32,7 +32,9 @@ public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmark
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.HasAllCodesBySlidingBitmask(), harness.HasAllCodesByCodeSubstringSearch());
+        Assert.Equal(
+            harness.HasAllCodesBySlidingBitmask(SmallestCodeLength),
+            harness.HasAllCodesByCodeSubstringSearch(SmallestCodeLength));
     }
 
     [Fact]
@@ -40,12 +42,14 @@ public sealed partial class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmark
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.HasAllCodesByCodeSubstringSearch(), harness.HasAllCodesBySlidingBitmask());
+        Assert.Equal(
+            harness.HasAllCodesByCodeSubstringSearch(SmallestCodeLength),
+            harness.HasAllCodesBySlidingBitmask(SmallestCodeLength));
     }
 
     private static CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks BuildHarness()
     {
-        var harness = new CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks { CodeLength = SmallestCodeLength };
+        var harness = new CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks();
         harness.Setup();
 
         return harness;
