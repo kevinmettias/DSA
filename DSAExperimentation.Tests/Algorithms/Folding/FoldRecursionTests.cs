@@ -5,24 +5,11 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.Folding;
 
-// The one recursion every recursive fold tier runs, driven directly with each memo policy so the
+// The one recursion the memoizing fold tiers run, driven directly with each memo policy so the
 // axis that distinguishes the tiers is visible on its own: over the diamond A -> [B, C], B -> [D],
-// C -> [D], only the memoizing policies combine the shared D once.
+// C -> [D], both policies combine the shared D once, and only the cycle check can abort.
 public sealed partial class FoldRecursionTests
 {
-    // Nothing is remembered, so D is combined under B and again under C - correct for a tree,
-    // where no node has two parents, and the reason this policy is reserved for the tree tier.
-    [Fact]
-    public void Visit_Unmemoized_CombinesASharedDescendantOncePerPath()
-    {
-        var combined = new List<string>();
-
-        var spelled = Visit<UnmemoizedFold<TestNode, string>>(TestGraphs.Diamond(), default, combined);
-
-        Assert.Equal("ABDCD", spelled);
-        Assert.Equal(["D", "B", "D", "C", "A"], combined);
-    }
-
     [Fact]
     public void Visit_Memoized_CombinesASharedDescendantOnce()
     {

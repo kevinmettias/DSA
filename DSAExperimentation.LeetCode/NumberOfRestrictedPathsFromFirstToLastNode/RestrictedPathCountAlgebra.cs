@@ -23,8 +23,9 @@ internal readonly struct RestrictedPathCountAlgebra : IFoldAlgebra<RestrictedPat
 
         var total = 0L;
 
-        foreach (var child in children)
+        for (var i = 0; i < children.Count; i++)
         {
+            var child = children[i];
             total = (total + child) % ModularArithmetic.Modulo;
         }
 

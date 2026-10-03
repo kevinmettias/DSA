@@ -15,7 +15,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 // only public surface for it. See DagFold for the trusted counterpart that skips the
 // cycle defense entirely once IDagTopology promises it's unnecessary.
 //
-// The recursion itself is FoldRecursion's, shared with the DAG and tree tiers; what
+// The recursion itself is FoldRecursion's, shared with the DAG tier; what
 // makes this the graph tier is the policy it hands that recursion, CycleCheckedFold.
 // A cycle aborts the walk at once - no later sibling is visited and nothing on the
 // cyclic path is combined - and the result is meaningful only when TryFold returns true,

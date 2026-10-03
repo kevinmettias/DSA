@@ -4791,7 +4791,7 @@
       "check": "check-function-size",
       "path": "DSAExperimentation/Algorithms/Folding/FoldRecursion.cs",
       "message": "distinct sections",
-      "reason": "Visit is the one fold recursion every tier runs, so each helper split out of it would be one more stack frame per level of every fold. The pre-unification CheckedFold spent three frames per level (Visit, Descend, CollectChildResults) and overflowed the default stack on the 3,000-node chain in SkewedFoldTierBenchmarks; keeping recall, open, the child loop and combine in one method is what lets every tier fold that chain. FoldRecursion's own comment records the same reason.",
+      "reason": "Visit is the one fold recursion the DAG and graph tiers run, so each helper split out of it would be one more stack frame per level of every fold. The pre-unification CheckedFold spent three frames per level (Visit, Descend, CollectChildResults) and overflowed the default stack on the 3,000-node chain in SkewedFoldTierBenchmarks; keeping recall, open, the child loop and combine in one method is what lets every tier fold that chain. FoldRecursion's own comment records the same reason.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     },

@@ -119,8 +119,9 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
             var totalSize = 0;
             var ways = 1L;
 
-            foreach (var child in children)
+            for (var i = 0; i < children.Count; i++)
             {
+                var child = children[i];
                 totalSize += child.Size;
                 ways = ways * child.Ways % ModularArithmetic.Modulo;
             }

@@ -24,16 +24,18 @@ internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Si
         var size = 1L;
         var ways = 1L;
 
-        foreach (var (childSize, childWays) in children)
+        for (var i = 0; i < children.Count; i++)
         {
+            var (childSize, childWays) = children[i];
             ways = ways * childWays % ModularArithmetic.Modulo;
             size += childSize;
         }
 
         ways = ways * Factorial(size - 1) % ModularArithmetic.Modulo;
 
-        foreach (var (childSize, _) in children)
+        for (var i = 0; i < children.Count; i++)
         {
+            var childSize = children[i].Size;
             ways = ways * ModularArithmetic.Inverse(Factorial(childSize)) % ModularArithmetic.Modulo;
         }
 

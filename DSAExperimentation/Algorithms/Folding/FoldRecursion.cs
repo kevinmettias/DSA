@@ -3,13 +3,14 @@ using DSAExperimentation.DataStructures.Graph.Contracts.Topologies;
 
 namespace DSAExperimentation.Algorithms.Folding;
 
-// The one recursion every recursive fold tier runs: recall a finished node, open it, fold its
-// children in TOrder, Combine, close it. The tiers differ only in TMemo - what must be remembered
-// about nodes already met - so that is the only axis exposed, the way the walk engines expose only
-// TGuard. Constrained on the weakest IGraphTopology because all three tiers share it; the tier gate
-// stays at the entry points (RecursiveFoldEvaluation for trees, DagFold, CheckedFold), each choosing
-// the policy its topology bound has earned, so a tree can never be folded without the promise that
-// makes skipping the memo safe.
+// The one recursion the memoizing fold tiers run: recall a finished node, open it, fold its
+// children in TOrder, Combine, close it. DagFold and CheckedFold differ only in TMemo - what must be
+// remembered about nodes already met - so that is the only axis exposed, the way the walk engines
+// expose only TGuard. Constrained on the weakest IGraphTopology because both tiers share it; the
+// tier gate stays at the entry points, each choosing the policy its topology bound has earned. The
+// tree tier, which remembers nothing, keeps its own recursion (see RecursiveFoldEvaluation): with a
+// reference-type TNode this method is shared generic code, and a policy call is a runtime lookup
+// there, not an inlined constant.
 //
 // It returns TResult rather than a success flag: the JIT never inlines a recursion into itself, so a
 // bool/out signature would tax every tree-fold call. A cycle is reported through the policy

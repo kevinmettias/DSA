@@ -34,8 +34,9 @@ internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<Root
         var merged = EmptyDp();
         var childScoreSum = 0L;
 
-        foreach (var (childDp, scoreSum) in children)
+        for (var i = 0; i < children.Count; i++)
         {
+            var (childDp, scoreSum) = children[i];
             merged = MergeDisjoint(merged, childDp);
             childScoreSum += scoreSum;
         }

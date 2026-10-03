@@ -18,8 +18,9 @@ internal readonly struct RobFoldAlgebra : IFoldAlgebra<BinaryTreeNode<int>, (int
         var robbed = node.Value;
         var notRobbed = 0;
 
-        foreach (var child in children)
+        for (var i = 0; i < children.Count; i++)
         {
+            var child = children[i];
             robbed += child.NotRobbed;
             notRobbed += Math.Max(child.Robbed, child.NotRobbed);
         }
