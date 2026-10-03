@@ -22,9 +22,19 @@ internal static class DagFold
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default);
+
+    public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode? root, TAlgebra algebra)
+        where TNode : class
+        where TTopology : struct, IDagTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => root is null
-            ? TAlgebra.Empty
+            ? algebra.Empty
             : FoldRecursion.Visit<
                 TNode, TTopology, TChildren, TOrder, TOrderedChildren, MemoizedFold<TNode, TResult>, TAlgebra, TResult>(
-                root, new MemoizedFold<TNode, TResult>([]));
+                root, new MemoizedFold<TNode, TResult>([]), algebra);
 }

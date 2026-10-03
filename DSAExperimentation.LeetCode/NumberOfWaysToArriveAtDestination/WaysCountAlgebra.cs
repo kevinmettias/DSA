@@ -12,9 +12,9 @@ namespace DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 // the solution rather than in Domain (RoomWaysAlgebra's own precedent).
 internal readonly struct WaysCountAlgebra : IFoldAlgebra<WaysNode, long>
 {
-    public static long Empty => 0;
+    public long Empty => 0;
 
-    public static long Combine(WaysNode node, IReadOnlyList<long> children)
+    public long Combine(WaysNode node, IReadOnlyList<long> children)
     {
         if (node.Dist == 0)
         {

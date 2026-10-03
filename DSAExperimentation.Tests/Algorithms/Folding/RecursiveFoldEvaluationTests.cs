@@ -9,43 +9,38 @@ namespace DSAExperimentation.Tests.Algorithms.Folding;
 // null-root check in front of it.
 public sealed partial class RecursiveFoldEvaluationTests
 {
-    private struct NaturalOrderMarker;
-    private struct ReversedOrderMarker;
-    private struct CombineOrderMarker;
-    private struct SingleNodeMarker;
-
     // A -> [B, C, D], B -> [E, F], D -> [G] (TestTrees.NArySample)
     [Fact]
     public void Evaluate_CombinesEachNodeWithItsChildrenInChildOrder()
-        => Assert.Equal("ABEFCDG", Evaluate<NaturalOrderMarker>(TestTrees.NArySample()));
+        => Assert.Equal("ABEFCDG", Evaluate(TestTrees.NArySample(), []));
 
     [Fact]
     public void Evaluate_ReversedChildOrder_ReachesCombineReversed()
-        => Assert.Equal("ADGCBFE", EvaluateReversed<ReversedOrderMarker>(TestTrees.NArySample()));
+        => Assert.Equal("ADGCBFE", EvaluateReversed(TestTrees.NArySample(), []));
 
     [Fact]
     public void Evaluate_CombinesInPostOrder()
     {
-        Evaluate<CombineOrderMarker>(TestTrees.NArySample());
+        var combined = new List<string>();
 
-        Assert.Equal(["E", "F", "B", "C", "G", "D", "A"], RecordingNamesFoldAlgebra<CombineOrderMarker>.Combined);
+        Evaluate(TestTrees.NArySample(), combined);
+
+        Assert.Equal(["E", "F", "B", "C", "G", "D", "A"], combined);
     }
 
     [Fact]
     public void Evaluate_SingleNode_CombinesItWithNoChildren()
-        => Assert.Equal("A", Evaluate<SingleNodeMarker>(TestTrees.SingleNode()));
+        => Assert.Equal("A", Evaluate(TestTrees.SingleNode(), []));
 
-    private static string Evaluate<TMarker>(TestNode root)
-        where TMarker : struct
+    private static string Evaluate(TestNode root, List<string> combined)
         => RecursiveFoldEvaluation<TestNode>.Evaluate<
             TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingNamesFoldAlgebra<TMarker>, string>(root);
+            RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined));
 
-    private static string EvaluateReversed<TMarker>(TestNode root)
-        where TMarker : struct
+    private static string EvaluateReversed(TestNode root, List<string> combined)
         => RecursiveFoldEvaluation<TestNode>.Evaluate<
             TestTopology, ListChildren<TestNode>,
             ReverseChildOrder<TestNode, ListChildren<TestNode>>, ReversedChildren<TestNode, ListChildren<TestNode>>,
-            RecordingNamesFoldAlgebra<TMarker>, string>(root);
+            RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined));
 }

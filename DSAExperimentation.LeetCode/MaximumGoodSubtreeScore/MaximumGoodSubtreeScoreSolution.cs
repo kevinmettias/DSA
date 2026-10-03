@@ -138,12 +138,10 @@ internal static class MaximumGoodSubtreeScoreSolution
 
     public static int GoodSubtreeScoreSumByBitmaskTreeFold(RootedTreeNode root, int[] vals)
     {
-        GoodSubtreeScoreAlgebra.Prepare(vals);
-
         var (_, scoreSum) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
-            GoodSubtreeScoreAlgebra, (long[] Dp, long ScoreSum)>(root);
+            GoodSubtreeScoreAlgebra, (long[] Dp, long ScoreSum)>(root, new GoodSubtreeScoreAlgebra(vals));
 
         return (int)(scoreSum % ModularArithmetic.Modulo);
     }

@@ -18,27 +18,17 @@ namespace DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
 // This algebra answers one LeetCode problem and nothing else, which is why it lives
 // beside the solution rather than in Domain (ARCHITECTURE.md 17.3), the same shape
 // CountWaysToBuildRoomsInAnAntColony's RoomWaysAlgebra already takes.
-internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, (long[] Dp, long ScoreSum)>
+internal readonly struct GoodSubtreeScoreAlgebra(int[] vals) : IFoldAlgebra<RootedTreeNode, (long[] Dp, long ScoreSum)>
 {
     private const int DigitCount = 10;
     private const int MaskCount = 1 << DigitCount;
     private const long Unreachable = long.MinValue / 2;
 
-    // IFoldAlgebra is static-abstract: the algebra IS the type argument, so no instance of it
-    // exists to own per-call input, and a plain static would let two folds running on different
-    // threads read each other's values mid-walk. The AsyncLocal gives the values an owner - the
-    // calling flow - so each fold sees only the values its own Prepare was handed.
-    private static readonly AsyncLocal<int[]> Vals = new();
+    // The caller states every node's value up front as the algebra's own field, indexed
+    // by RootedTreeNode.Id, so each fold reads only the values it was handed.
+    public (long[] Dp, long ScoreSum) Empty => (EmptyDp(), 0);
 
-    public static (long[] Dp, long ScoreSum) Empty => (EmptyDp(), 0);
-
-    // The caller states every node's value up front, indexed by RootedTreeNode.Id -
-    // the same "external state stashed before the fold starts" shape
-    // RoomWaysPrecomputedFactorialAlgebra.Prepare uses, since a static-abstract
-    // algebra carries no instance state of its own.
-    public static void Prepare(int[] vals) => Vals.Value = vals;
-
-    public static (long[] Dp, long ScoreSum) Combine(
+    public (long[] Dp, long ScoreSum) Combine(
         RootedTreeNode node, IReadOnlyList<(long[] Dp, long ScoreSum)> children)
     {
         var merged = EmptyDp();
@@ -97,10 +87,10 @@ internal readonly struct GoodSubtreeScoreAlgebra : IFoldAlgebra<RootedTreeNode, 
     // merged through the same disjoint-mask knapsack as a real child, so a value
     // whose own digits repeat (its mask computation fails) simply leaves nothing
     // beyond the always-present empty choice.
-    private static long[] OwnValueDp(RootedTreeNode node)
+    private long[] OwnValueDp(RootedTreeNode node)
     {
         var dp = EmptyDp();
-        var value = Vals.Value[node.Id];
+        var value = vals[node.Id];
 
         if (TryDigitMask(value, out var mask))
         {

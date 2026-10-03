@@ -36,10 +36,20 @@ internal static class CheckedFold
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default, out result);
+
+    public static bool TryFold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode? root, TAlgebra algebra, out TResult result)
+        where TNode : class
+        where TTopology : struct, IGraphTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
         if (root is null)
         {
-            result = TAlgebra.Empty;
+            result = algebra.Empty;
             return true;
         }
 
@@ -47,7 +57,7 @@ internal static class CheckedFold
 
         result = FoldRecursion.Visit<
             TNode, TTopology, TChildren, TOrder, TOrderedChildren, CycleCheckedFold<TNode, TResult>, TAlgebra, TResult>(
-            root, memo);
+            root, memo, algebra);
 
         return !memo.Aborted;
     }

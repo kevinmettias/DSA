@@ -45,12 +45,10 @@ internal static class MaximumPointsAfterCollectingCoinsFromAllNodesSolution
         var parent = BuildParentArray(coins.Length, edges);
         var nodes = ParentArrayTree.Build(parent);
 
-        CoinPointsAlgebra.Prepare(coins, cost);
-
         var table = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
-            CoinPointsAlgebra, long[]>(nodes[0]);
+            CoinPointsAlgebra, long[]>(nodes[0], new CoinPointsAlgebra(coins, cost));
 
         return table[0];
     }

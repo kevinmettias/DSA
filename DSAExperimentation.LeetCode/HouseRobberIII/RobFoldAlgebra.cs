@@ -10,9 +10,9 @@ namespace DSAExperimentation.LeetCode.HouseRobberIII;
 // it lives beside the solution rather than in Algorithms/Folding.
 internal readonly struct RobFoldAlgebra : IFoldAlgebra<BinaryTreeNode<int>, (int Robbed, int NotRobbed)>
 {
-    public static (int Robbed, int NotRobbed) Empty => (0, 0);
+    public (int Robbed, int NotRobbed) Empty => (0, 0);
 
-    public static (int Robbed, int NotRobbed) Combine(
+    public (int Robbed, int NotRobbed) Combine(
         BinaryTreeNode<int> node, IReadOnlyList<(int Robbed, int NotRobbed)> children)
     {
         var robbed = node.Value;

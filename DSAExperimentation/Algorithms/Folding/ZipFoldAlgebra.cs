@@ -4,16 +4,24 @@ namespace DSAExperimentation.Algorithms.Folding;
 // ones. This works with zero changes to TreeFold/RecursiveFoldEvaluation/
 // IterativeFoldEvaluation because IFoldAlgebra<TNode, TResult> never assumed TResult
 // was a scalar - a tuple is just another TResult, so "zip two algebras" is itself
-// just another algebra, not a new traversal concept.
-internal readonly struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TAlgebraB>
+// just another algebra, not a new traversal concept. Each algebra rides along as a
+// field, so two algebras that carry runtime values zip as easily as two stateless
+// ones; the default value zips the two algebras' defaults.
+//
+// A plain struct, not a readonly one: calling an algebra's members through a readonly
+// field of a generic struct type makes a defensive copy on every Combine.
+internal struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TAlgebraB>(TAlgebraA first, TAlgebraB second)
     : IFoldAlgebra<TNode, (TResultA A, TResultB B)>
     where TAlgebraA : struct, IFoldAlgebra<TNode, TResultA>
     where TAlgebraB : struct, IFoldAlgebra<TNode, TResultB>
 {
-    public static (TResultA A, TResultB B) Empty
-        => (TAlgebraA.Empty, TAlgebraB.Empty);
+    private TAlgebraA _first = first;
+    private TAlgebraB _second = second;
 
-    public static (TResultA A, TResultB B) Combine(TNode node, IReadOnlyList<(TResultA A, TResultB B)> children)
+    public (TResultA A, TResultB B) Empty
+        => (_first.Empty, _second.Empty);
+
+    public (TResultA A, TResultB B) Combine(TNode node, IReadOnlyList<(TResultA A, TResultB B)> children)
     {
         var childrenA = new TResultA[children.Count];
         var childrenB = new TResultB[children.Count];
@@ -24,6 +32,6 @@ internal readonly struct ZipFoldAlgebra<TNode, TResultA, TResultB, TAlgebraA, TA
             childrenB[i] = children[i].B;
         }
 
-        return (TAlgebraA.Combine(node, childrenA), TAlgebraB.Combine(node, childrenB));
+        return (_first.Combine(node, childrenA), _second.Combine(node, childrenB));
     }
 }

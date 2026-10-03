@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
@@ -44,12 +45,11 @@ internal static class CountWaysToBuildRoomsInAnAntColonySolution
     // which a benchmark already knows and would otherwise have to recount.
     public static int WaysToBuildOrderByPrecomputedFactorials(RootedTreeNode root, int roomCount)
     {
-        RoomWaysPrecomputedFactorialAlgebra.Prepare(roomCount);
-
         var (_, ways) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
-            RoomWaysPrecomputedFactorialAlgebra, (long Size, long Ways)>(root);
+            RoomWaysPrecomputedFactorialAlgebra, (long Size, long Ways)>(
+            root, new RoomWaysPrecomputedFactorialAlgebra(FactorialTable.Build(roomCount)));
 
         return (int)ways;
     }

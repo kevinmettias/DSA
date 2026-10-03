@@ -88,12 +88,11 @@ internal static class MinimumEdgeTogglesOnATreeSolution
 
     public static int[] MinTogglesByTreeFold(ToggleTree tree, string start, string target)
     {
-        EdgeToggleAlgebra.Prepare(start, target, tree.ParentEdgeIndex);
-
         var (rootNeedsToggle, toggled) = TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
-            EdgeToggleAlgebra, (bool NeedsParentToggle, List<int> ToggledEdges)>(tree.Root);
+            EdgeToggleAlgebra, (bool NeedsParentToggle, List<int> ToggledEdges)>(
+            tree.Root, new EdgeToggleAlgebra(start, target, tree.ParentEdgeIndex));
 
         if (rootNeedsToggle)
         {

@@ -10,8 +10,8 @@ namespace DSAExperimentation.LeetCode.MapSumPairs;
 // which is why it lives beside the solution rather than in Algorithms/Folding.
 internal readonly struct SumValuesAlgebra : IFoldAlgebra<LowercaseTrieNode<int>, int>
 {
-    public static int Empty => 0;
+    public int Empty => 0;
 
-    public static int Combine(LowercaseTrieNode<int> node, IReadOnlyList<int> children)
+    public int Combine(LowercaseTrieNode<int> node, IReadOnlyList<int> children)
         => (node.HasValue ? node.Value : 0) + children.Sum();
 }

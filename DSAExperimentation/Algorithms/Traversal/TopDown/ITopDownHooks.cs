@@ -9,12 +9,13 @@ namespace DSAExperimentation.Algorithms.Traversal.TopDown;
 // (a running sum, a decreasing budget, the path so far) actually need and
 // IReduceAlgebra structurally cannot express.
 //
-// No Seed/Empty-style static starting value the way IFoldAlgebra/IReduceAlgebra
-// have: the state a root starts with is exactly the kind of thing this primitive
-// exists to carry (see AllRootToLeafPaths, which seeds it with a fresh, per-call
-// output list) - baking it into a static-abstract property would reintroduce the
-// same runtime-parameterization wall LowestCommonAncestor hit with IFoldAlgebra.
-// TopDownTraversal.Walk/WalkGraph take it as an ordinary parameter instead.
+// No Seed-style static starting value the way IReduceAlgebra has: the state a root
+// starts with is exactly the kind of thing this primitive exists to carry (see
+// AllRootToLeafPaths, which seeds it with a fresh, per-call output list), and a
+// static-abstract property, fixed by TYPE, has no channel to a per-call value.
+// TopDownTraversal.Walk/WalkGraph take it as an ordinary parameter instead. The hooks
+// themselves stay static-abstract, unlike IFoldAlgebra's instance members: every
+// runtime value they need arrives through Visit's and Descend's own parameters.
 internal interface ITopDownHooks<TNode, TState>
     where TNode : class
 {

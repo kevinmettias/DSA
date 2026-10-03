@@ -8,12 +8,12 @@ public sealed partial class SizeAlgebraTests
     private static readonly TestNode Node = new("A");
 
     [Fact]
-    public void Empty_IsZeroSoAnAbsentSubtreeContributesNothing() => Assert.Equal(0, SizeAlgebra<TestNode>.Empty);
+    public void Empty_IsZeroSoAnAbsentSubtreeContributesNothing() => Assert.Equal(0, default(SizeAlgebra<TestNode>).Empty);
 
     [Fact]
     public void Combine_Leaf_CountsOnlyItself()
     {
-        var combined = SizeAlgebra<TestNode>.Combine(Node, []);
+        var combined = default(SizeAlgebra<TestNode>).Combine(Node, []);
 
         Assert.Equal(1, combined);
     }
@@ -21,7 +21,7 @@ public sealed partial class SizeAlgebraTests
     [Fact]
     public void Combine_AddsOneToTheSumOfItsChildrenSizes()
     {
-        var combined = SizeAlgebra<TestNode>.Combine(Node, [2, 3]);
+        var combined = default(SizeAlgebra<TestNode>).Combine(Node, [2, 3]);
 
         Assert.Equal(1 + 2 + 3, combined);
     }
@@ -29,7 +29,7 @@ public sealed partial class SizeAlgebraTests
     [Fact]
     public void Combine_ManyChildren_SumsThemAll()
     {
-        var combined = SizeAlgebra<TestNode>.Combine(Node, [1, 1, 1]);
+        var combined = default(SizeAlgebra<TestNode>).Combine(Node, [1, 1, 1]);
 
         Assert.Equal(1 + 1 + 1 + 1, combined);
     }

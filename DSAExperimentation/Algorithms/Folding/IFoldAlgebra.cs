@@ -11,9 +11,18 @@ namespace DSAExperimentation.Algorithms.Folding;
 // fold tier can expose an order of its own to an algebra. RecursiveFoldEvaluation and
 // IterativeFoldEvaluation call Combine in different orders (post-order, reverse
 // breadth-first), which only an impure Combine could notice.
+//
+// Members are instance members on a struct type parameter. A runtime value an algebra
+// needs - a label string, a factorial table, a node's coin values - is a field of the
+// algebra handed to the fold rather than a static set beforehand: every engine takes
+// TAlgebra as a struct, so each algebra is its own JIT instantiation and Combine is still
+// a direct, inlinable call (the IVisitGuard precedent). A stateless algebra is passed as
+// its default value by each entry point's (root) overload. Pass an algebra by value,
+// never through `in` or a readonly field: a defensive copy would drop what its fields
+// accumulate, so a counter an algebra must keep lives behind a reference it holds.
 internal interface IFoldAlgebra<TNode, TResult>
 {
-    static abstract TResult Empty { get; }
+    TResult Empty { get; }
 
-    static abstract TResult Combine(TNode node, IReadOnlyList<TResult> children);
+    TResult Combine(TNode node, IReadOnlyList<TResult> children);
 }

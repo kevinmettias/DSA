@@ -7,15 +7,6 @@ namespace DSAExperimentation.Tests.Algorithms.Folding;
 
 public sealed partial class CheckedFoldTests
 {
-    private struct NullRootMarker;
-    private struct TreeMarker;
-    private struct DiamondMarker;
-    private struct DiamondCombineMarker;
-    private struct CycleBelowRootMarker;
-    private struct SelfLoopMarker;
-    private struct EarlierChildCycleMarker;
-    private struct LaterChildCycleMarker;
-
     [Fact]
     public void TryFold_TrueCycle_ReturnsFalseInsteadOfThrowing()
     {
@@ -32,17 +23,17 @@ public sealed partial class CheckedFoldTests
     [Fact]
     public void TryFold_NullRoot_SucceedsWithEmpty()
     {
-        var succeeded = TryFold<NullRootMarker>(null, out var spelled);
+        var succeeded = TryFold(null, [], out var spelled);
 
         Assert.True(succeeded);
-        Assert.Equal(RecordingNamesFoldAlgebra<NullRootMarker>.Empty, spelled);
+        Assert.Equal("", spelled);
     }
 
     // A -> [B, C, D], B -> [E, F], D -> [G] (TestTrees.NArySample)
     [Fact]
     public void TryFold_Tree_CombinesEachNodeWithItsChildrenInOrder()
     {
-        var succeeded = TryFold<TreeMarker>(TestTrees.NArySample(), out var spelled);
+        var succeeded = TryFold(TestTrees.NArySample(), [], out var spelled);
 
         Assert.True(succeeded);
         Assert.Equal("ABEFCDG", spelled);
@@ -54,7 +45,7 @@ public sealed partial class CheckedFoldTests
         // D is reached a second time through C only after B's visit has finished with
         // it, so it is memoized rather than in progress: no cycle, and its result appears
         // under both parents.
-        var succeeded = TryFold<DiamondMarker>(TestGraphs.Diamond(), out var spelled);
+        var succeeded = TryFold(TestGraphs.Diamond(), [], out var spelled);
 
         Assert.True(succeeded);
         Assert.Equal("ABDCD", spelled);
@@ -65,10 +56,12 @@ public sealed partial class CheckedFoldTests
     [Fact]
     public void TryFold_SharedDescendant_IsCombinedOnce()
     {
-        var succeeded = TryFold<DiamondCombineMarker>(TestGraphs.Diamond(), out _);
+        var combined = new List<string>();
+
+        var succeeded = TryFold(TestGraphs.Diamond(), combined, out _);
 
         Assert.True(succeeded);
-        Assert.Equal(["D", "B", "C", "A"], RecordingNamesFoldAlgebra<DiamondCombineMarker>.Combined);
+        Assert.Equal(["D", "B", "C", "A"], combined);
     }
 
     // A -> B -> C -> B: the root is not on the cycle, so the failure has to travel up
@@ -83,7 +76,7 @@ public sealed partial class CheckedFoldTests
         b.Children.Add(c);
         c.Children.Add(b);
 
-        Assert.False(TryFold<CycleBelowRootMarker>(a, out _));
+        Assert.False(TryFold(a, [], out _));
     }
 
     [Fact]
@@ -92,7 +85,7 @@ public sealed partial class CheckedFoldTests
         var a = new TestNode("A");
         a.Children.Add(a);
 
-        Assert.False(TryFold<SelfLoopMarker>(a, out _));
+        Assert.False(TryFold(a, [], out _));
     }
 
     // A's children are B, which leads round the cycle back to A, then the leaf D. Once B's
@@ -101,9 +94,11 @@ public sealed partial class CheckedFoldTests
     [Fact]
     public void TryFold_CycleUnderAnEarlierChild_NeverVisitsALaterSibling()
     {
-        TryFold<EarlierChildCycleMarker>(TestGraphs.CycleWithLeaf(), out _);
+        var combined = new List<string>();
 
-        Assert.Empty(RecordingNamesFoldAlgebra<EarlierChildCycleMarker>.Combined);
+        TryFold(TestGraphs.CycleWithLeaf(), combined, out _);
+
+        Assert.Empty(combined);
     }
 
     // A -> [L, B], B -> C -> B: the leaf L is folded before the cycle under B is found, and the
@@ -111,6 +106,8 @@ public sealed partial class CheckedFoldTests
     [Fact]
     public void TryFold_CycleUnderALaterChild_StopsAfterTheEarlierChild()
     {
+        var combined = new List<string>();
+
         var a = new TestNode("A");
         var leaf = new TestNode("L");
         var b = new TestNode("B");
@@ -120,16 +117,15 @@ public sealed partial class CheckedFoldTests
         b.Children.Add(c);
         c.Children.Add(b);
 
-        var succeeded = TryFold<LaterChildCycleMarker>(a, out _);
+        var succeeded = TryFold(a, combined, out _);
 
         Assert.False(succeeded);
-        Assert.Equal(["L"], RecordingNamesFoldAlgebra<LaterChildCycleMarker>.Combined);
+        Assert.Equal(["L"], combined);
     }
 
-    private static bool TryFold<TMarker>(TestNode? root, out string spelled)
-        where TMarker : struct
+    private static bool TryFold(TestNode? root, List<string> combined, out string spelled)
         => CheckedFold.TryFold<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingNamesFoldAlgebra<TMarker>, string>(root, out spelled);
+            RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined), out spelled);
 }

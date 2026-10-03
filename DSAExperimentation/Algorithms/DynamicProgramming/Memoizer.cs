@@ -1,13 +1,14 @@
 namespace DSAExperimentation.Algorithms.DynamicProgramming;
 
-// Not an IFoldAlgebra/IReduceAlgebra: LowestCommonAncestor's own doc comment already
-// explains why a static-abstract algebra can't close over a runtime value, and a
-// memoized recurrence needs that channel twice over - once for the recurrence body
-// itself (arbitrary caller logic: a Fibonacci-shaped, knapsack-shaped, or edit-
+// Not an IFoldAlgebra over DagFold, though a memoized recurrence is a fold over its
+// subproblem DAG, and not an IReduceAlgebra either: both engines walk a topology
+// witness, whose members are static-abstract - fixed by TYPE, with no channel to a
+// runtime value - while a recurrence's sub-states are arbitrary caller logic that
+// usually depends on the call's input (a Fibonacci-shaped, knapsack-shaped, or edit-
 // distance-shaped recurrence share no closed catalogue this library could
-// enumerate), and again for the cache its own recursive calls thread through
-// (mutable runtime state a static-abstract member can never own). So this is written
-// directly, the same "bespoke, take the varying part as an ordinary parameter" move
+// enumerate). An instance IFoldAlgebra can carry that input, but only into Combine,
+// after the topology has already chosen the children. So this is written directly,
+// the same "bespoke, take the varying part as an ordinary parameter" move
 // LCA/Dijkstra already make.
 //
 // DepthFirstSearch.cs is the closer precedent, not Fold/Reduce: it's generic over a

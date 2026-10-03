@@ -35,14 +35,10 @@ internal static class LongestPathWithDifferentAdjacentCharactersSolution
         => LongestPathByTreeFold(ParentArrayTree.Build(parent)[0], labels);
 
     public static int LongestPathByTreeFold(RootedTreeNode root, string labels)
-    {
-        LongestPathAlgebra.Prepare(labels);
-
-        return TreeFold.Fold<
+        => TreeFold.Fold<
             RootedTreeNode, RootedTreeTopology, ListChildren<RootedTreeNode>,
             NaturalChildOrder<RootedTreeNode, ListChildren<RootedTreeNode>>, ListChildren<RootedTreeNode>,
-            LongestPathAlgebra, PathState>(root).LongestPath;
-    }
+            LongestPathAlgebra, PathState>(root, new LongestPathAlgebra(labels)).LongestPath;
 
     // Accumulates the running best-height, second-best-height, and best-path values
     // as LongestPathVia folds over one node's children.

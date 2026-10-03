@@ -4,6 +4,8 @@ using DSAExperimentation.Algorithms.Folding;
 
 namespace DSAExperimentation.Algorithms.Folding.Dags.Trees;
 
+// Each shape comes in two forms: (root) folds with the algebra's default value, which is all a
+// stateless algebra needs; (root, algebra) hands over an algebra carrying runtime values.
 internal static class TreeFold
 {
     // Defaults to recursive evaluation. Safe to override TStrategy with
@@ -15,9 +17,18 @@ internal static class TreeFold
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
         where TOrderedChildren : struct, IChildren<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, default);
+
+    public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(TNode? root, TAlgebra algebra)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => Fold<
             TNode, TTopology, TChildren, TOrder, TOrderedChildren,
-            RecursiveFoldEvaluation<TNode>, TAlgebra, TResult>(root);
+            RecursiveFoldEvaluation<TNode>, TAlgebra, TResult>(root, algebra);
 
     public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TStrategy, TAlgebra, TResult>(
         TNode? root)
@@ -28,7 +39,18 @@ internal static class TreeFold
         where TOrderedChildren : struct, IChildren<TNode>
         where TStrategy : struct, IFoldEvaluationStrategy<TNode>
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
+        => Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TStrategy, TAlgebra, TResult>(root, default);
+
+    public static TResult Fold<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TStrategy, TAlgebra, TResult>(
+        TNode? root, TAlgebra algebra)
+        where TNode : class
+        where TTopology : struct, ITreeTopology<TNode, TChildren>
+        where TChildren : struct, IChildren<TNode>
+        where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
+        where TOrderedChildren : struct, IChildren<TNode>
+        where TStrategy : struct, IFoldEvaluationStrategy<TNode>
+        where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => root is null
-            ? TAlgebra.Empty
-            : TStrategy.Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root);
+            ? algebra.Empty
+            : TStrategy.Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(root, algebra);
 }

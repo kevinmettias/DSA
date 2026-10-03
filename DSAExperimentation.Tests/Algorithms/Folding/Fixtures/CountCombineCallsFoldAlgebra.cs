@@ -4,19 +4,21 @@ using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 namespace DSAExperimentation.Tests.Algorithms.Folding.Fixtures;
 
 // Counts how many times Combine actually fires - used to prove DagFold memoizes a
-// shared descendant instead of recomputing it once per incoming path.
-internal readonly struct CountCombineCallsFoldAlgebra<TMarker> : IFoldAlgebra<TestNode, int>
-    where TMarker : struct
+// shared descendant instead of recomputing it once per incoming path. The count lives
+// in a CombineCounter the algebra holds by reference: the fold threads the algebra by
+// value, so a counter field on the struct itself would be counted on a copy.
+internal readonly struct CountCombineCallsFoldAlgebra(CombineCounter counter) : IFoldAlgebra<TestNode, int>
 {
-    private static int _combineCalls;
+    public int Empty => 0;
 
-    public static int CombineCalls => _combineCalls;
-
-    public static int Empty => 0;
-
-    public static int Combine(TestNode node, IReadOnlyList<int> children)
+    public int Combine(TestNode node, IReadOnlyList<int> children)
     {
-        _combineCalls++;
+        counter.Calls++;
         return 1 + children.Sum();
     }
+}
+
+internal sealed class CombineCounter
+{
+    public int Calls { get; set; }
 }

@@ -3,7 +3,8 @@ namespace DSAExperimentation.Algorithms.Reducing;
 // The IReduceAlgebra counterpart to ZipFoldAlgebra: runs two reduce algebras
 // together in one traversal by threading a paired state through both, made possible
 // the same way - TState was never assumed to be a scalar, so a tuple of two states
-// is just another TState.
+// is just another TState. Unlike ZipFoldAlgebra it holds no fields: IReduceAlgebra's
+// members are static, so the two algebras are fixed by type alone.
 internal readonly struct ZipReduceAlgebra<TNode, TStateA, TStateB, TAlgebraA, TAlgebraB>
     : IReduceAlgebra<TNode, (TStateA A, TStateB B)>
     where TAlgebraA : struct, IReduceAlgebra<TNode, TStateA>

@@ -8,9 +8,6 @@ namespace DSAExperimentation.Tests.Algorithms.Folding;
 
 public sealed partial class SharedDescendantFoldTests
 {
-    private struct DiamondMarker;
-    private struct CheckedDiamondMarker;
-
     // A -> B, A -> C, B -> D, C -> D: D is a shared descendant, not a cycle -
     // shared by DagFold and CheckedFold's tests below.
     private static TestNode DiamondSample()
@@ -30,11 +27,12 @@ public sealed partial class SharedDescendantFoldTests
     public void CheckedFold_SharedDescendant_IsCombinedOnce()
     {
         var a = DiamondSample();
+        var counter = new CombineCounter();
 
         var succeeded = CheckedFold.TryFold<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            CountCombineCallsFoldAlgebra<DiamondMarker>, int>(a, out var count);
+            CountCombineCallsFoldAlgebra, int>(a, new CountCombineCallsFoldAlgebra(counter), out var count);
 
         // The *value* still double-counts D (5: A=1 + B's count-of-2 + C's
         // count-of-2, since D is genuinely reachable via both paths) -
@@ -45,7 +43,7 @@ public sealed partial class SharedDescendantFoldTests
         // recomputing, so the call count is 4, not 5.
         Assert.True(succeeded);
         Assert.Equal(5, count);
-        Assert.Equal(4, CountCombineCallsFoldAlgebra<DiamondMarker>.CombineCalls);
+        Assert.Equal(4, counter.Calls);
     }
 
     [Fact]
@@ -56,13 +54,14 @@ public sealed partial class SharedDescendantFoldTests
         // expected. Same diamond, same result as CheckedFold above, just via the
         // trusted (unchecked) path that IDagTopology unlocks.
         var a = DiamondSample();
+        var counter = new CombineCounter();
 
         var count = DagFold.Fold<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            CountCombineCallsFoldAlgebra<CheckedDiamondMarker>, int>(a);
+            CountCombineCallsFoldAlgebra, int>(a, new CountCombineCallsFoldAlgebra(counter));
 
         Assert.Equal(5, count);
-        Assert.Equal(4, CountCombineCallsFoldAlgebra<CheckedDiamondMarker>.CombineCalls);
+        Assert.Equal(4, counter.Calls);
     }
 }

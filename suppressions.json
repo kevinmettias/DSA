@@ -17,13 +17,6 @@
     },
     {
       "check": "check-scope-discipline",
-      "path": "DSAExperimentation.Tests/Algorithms/Folding/Fixtures/CountCombineCallsFoldAlgebra.cs",
-      "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-scope-discipline",
       "path": "DSAExperimentation.Tests/Algorithms/Reducing/Fixtures/ClosedBeforeOpenReduceAlgebra.cs",
       "reason": "the static field's owner is the closed generic type itself - TMarker gives each test its own JIT-specialized storage slot so parallel tests never share state; it is not global in the sense this check warns about.",
       "owner": "@kmettias",
@@ -152,13 +145,6 @@
       "check": "check-presumption",
       "path": "DSAExperimentation/DataStructures/DynamicArray/DynamicArray.cs",
       "reason": "TryGet's default! is the standard TryGetValue/TryParse out-parameter contract (only meaningful when the method returns true); named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-presumption",
-      "path": "DSAExperimentation/Algorithms/Folding/CheckedFold.cs",
-      "reason": "VisitOutcome\u003cTValue\u003e.Failure's default! is the standard TryGetValue/TryParse out-parameter contract extended to a private recursion-internal result type - Result is only meaningful when Success is true; named inline as a `presumption: allow` comment, recorded here too since the default marker policy only honours safety-critical checks.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3532,14 +3518,7 @@
     {
       "check": "check-transposable-parameters",
       "path": "DSAExperimentation.LeetCode/MinimumEdgeTogglesOnATree/MinimumEdgeTogglesOnATreeSolution.cs",
-      "reason": "Toggling is an involution, so an edge set turns `start` into `target` iff it turns `target` into `start`. Verified against the bodies: all three arms (:26 brute-force DFS, :95 and :102 tree fold) read the two strings ONLY through the comparison `start[node] != target[node]`, which is symmetric, and return the same sorted edge indices either way. The two strings do have distinct meanings - the colouring read versus the colouring wanted - but the result does not depend on that direction. A distinct type per position would assert a directionality the operation does not have, which is why this is waived rather than rewritten.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-transposable-parameters",
-      "path": "DSAExperimentation.LeetCode/MinimumEdgeTogglesOnATree/EdgeToggleAlgebra.cs",
-      "reason": "`Prepare` (:37) only stores the pair, and the algebra reads them solely through `inputs.Start[node.Id] != inputs.Target[node.Id]` (:44) - a symmetric expression, with no other use of either string anywhere in the file. `Prepare` is not a member of IFoldAlgebra (which declares only Empty, Enter and Combine), so no contract binds it. A distinct type per position would assert a directionality the operation does not have, which is why this is waived rather than rewritten.",
+      "reason": "Toggling is an involution, so an edge set turns `start` into `target` iff it turns `target` into `start`. Verified against the bodies: all three arms (:26 brute-force DFS, :82 and :89 tree fold) read the two strings ONLY through the comparison `start[node] != target[node]`, which is symmetric, and return the same sorted edge indices either way. The two strings do have distinct meanings - the colouring read versus the colouring wanted - but the result does not depend on that direction. A distinct type per position would assert a directionality the operation does not have, which is why this is waived rather than rewritten.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3692,14 +3671,6 @@
       "path": "DSAExperimentation.LeetCode/DecodeWaysII/DecodeWaysIIRecurrence.cs",
       "anchor": "`Mod = ",
       "reason": "`Mod = 1_000_000_007` is the standard competitive-programming prime rather than one problem's fact: `SubarraysDistinctElementSumOfSquaresIISolution` declares the same value privately for the same reason, and the corpus carries further `Modulo`/`Modulus` constants holding 1337, 10, 5 and 2 - each problem's own modulus, stated beside the arithmetic that has to reduce with it - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.LeetCode/MaximumPointsAfterCollectingCoinsFromAllNodes/CoinPointsAlgebra.cs",
-      "anchor": "`Inputs = ",
-      "reason": "`Inputs` is one problem's own hook slot rather than a shared fact: both it and `EdgeToggleAlgebra` declare `private static readonly AsyncLocal\u003cTInputs\u003e Inputs = new()` because each is the thread-local bridge between that problem's registration and its strategies, and the two hold different input types for different problems. Sharing one slot would make two problems' concurrent runs overwrite each other's input - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -4821,6 +4792,20 @@
       "path": "DSAExperimentation/Algorithms/Folding/FoldRecursion.cs",
       "message": "distinct sections",
       "reason": "Visit is the one fold recursion every tier runs, so each helper split out of it would be one more stack frame per level of every fold. The pre-unification CheckedFold spent three frames per level (Visit, Descend, CollectChildResults) and overflowed the default stack on the 3,000-node chain in SkewedFoldTierBenchmarks; keeping recall, open, the child loop and combine in one method is what lets every tier fold that chain. FoldRecursion's own comment records the same reason.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-readonly-fields",
+      "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
+      "reason": "_first and _second hold the two zipped algebras, and Combine and Empty call each one's instance members through them. Through a readonly field of a generic struct type the compiler copies the algebra before every call, because it cannot prove the type argument's members are readonly; assignable fields are what make each call a direct call on the stored algebra - IFoldAlgebra's rule that an algebra is never reached through `in` or a readonly field. Only the constructor assigns them. ZipFoldAlgebra's own comment records the same reason.",
+      "owner": "@kmettias",
+      "expires": "2027-01-01"
+    },
+    {
+      "check": "check-mutable-struct",
+      "path": "DSAExperimentation/Algorithms/Folding/ZipFoldAlgebra.cs",
+      "reason": "ZipFoldAlgebra is not a readonly struct for the reason its fields are not readonly (see this file's check-readonly-fields entry): readonly would force a defensive copy of each zipped algebra on every Combine. Both fields are private and assigned only by the constructor, so the `items[0]._first = x` hazard this rule names cannot be written outside the type, and every fold engine takes the algebra by value, as IFoldAlgebra requires.",
       "owner": "@kmettias",
       "expires": "2027-01-01"
     }

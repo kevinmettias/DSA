@@ -10,30 +10,28 @@ namespace DSAExperimentation.Tests.Algorithms.Folding;
 // C -> [D], only the memoizing policies combine the shared D once.
 public sealed partial class FoldRecursionTests
 {
-    private struct UnmemoizedDiamondMarker;
-    private struct MemoizedDiamondMarker;
-    private struct CycleCheckedDiamondMarker;
-    private struct CycleCheckedCycleMarker;
-
     // Nothing is remembered, so D is combined under B and again under C - correct for a tree,
     // where no node has two parents, and the reason this policy is reserved for the tree tier.
     [Fact]
     public void Visit_Unmemoized_CombinesASharedDescendantOncePerPath()
     {
-        var spelled = Visit<UnmemoizedFold<TestNode, string>, UnmemoizedDiamondMarker>(TestGraphs.Diamond(), default);
+        var combined = new List<string>();
+
+        var spelled = Visit<UnmemoizedFold<TestNode, string>>(TestGraphs.Diamond(), default, combined);
 
         Assert.Equal("ABDCD", spelled);
-        Assert.Equal(["D", "B", "D", "C", "A"], RecordingNamesFoldAlgebra<UnmemoizedDiamondMarker>.Combined);
+        Assert.Equal(["D", "B", "D", "C", "A"], combined);
     }
 
     [Fact]
     public void Visit_Memoized_CombinesASharedDescendantOnce()
     {
-        var spelled = Visit<MemoizedFold<TestNode, string>, MemoizedDiamondMarker>(
-            TestGraphs.Diamond(), new MemoizedFold<TestNode, string>([]));
+        var combined = new List<string>();
+
+        var spelled = Visit(TestGraphs.Diamond(), new MemoizedFold<TestNode, string>([]), combined);
 
         Assert.Equal("ABDCD", spelled);
-        Assert.Equal(["D", "B", "C", "A"], RecordingNamesFoldAlgebra<MemoizedDiamondMarker>.Combined);
+        Assert.Equal(["D", "B", "C", "A"], combined);
     }
 
     // A shared descendant is finished before its second parent reaches it, so the cycle check
@@ -41,31 +39,32 @@ public sealed partial class FoldRecursionTests
     [Fact]
     public void Visit_CycleChecked_SharedDescendantIsNotACycle()
     {
+        var combined = new List<string>();
         var memo = new CycleCheckedFold<TestNode, string>();
 
-        var spelled = Visit<CycleCheckedFold<TestNode, string>, CycleCheckedDiamondMarker>(TestGraphs.Diamond(), memo);
+        var spelled = Visit(TestGraphs.Diamond(), memo, combined);
 
         Assert.False(memo.Aborted);
         Assert.Equal("ABDCD", spelled);
-        Assert.Equal(["D", "B", "C", "A"], RecordingNamesFoldAlgebra<CycleCheckedDiamondMarker>.Combined);
+        Assert.Equal(["D", "B", "C", "A"], combined);
     }
 
     [Fact]
     public void Visit_CycleChecked_TrueCycleAbortsBeforeCombiningAnything()
     {
+        var combined = new List<string>();
         var memo = new CycleCheckedFold<TestNode, string>();
 
-        Visit<CycleCheckedFold<TestNode, string>, CycleCheckedCycleMarker>(TestGraphs.CycleWithLeaf(), memo);
+        Visit(TestGraphs.CycleWithLeaf(), memo, combined);
 
         Assert.True(memo.Aborted);
-        Assert.Empty(RecordingNamesFoldAlgebra<CycleCheckedCycleMarker>.Combined);
+        Assert.Empty(combined);
     }
 
-    private static string Visit<TMemo, TMarker>(TestNode root, TMemo memo)
+    private static string Visit<TMemo>(TestNode root, TMemo memo, List<string> combined)
         where TMemo : struct, IFoldMemo<TestNode, string>
-        where TMarker : struct
         => FoldRecursion.Visit<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            TMemo, RecordingNamesFoldAlgebra<TMarker>, string>(root, memo);
+            TMemo, RecordingNamesFoldAlgebra, string>(root, memo, new RecordingNamesFoldAlgebra(combined));
 }

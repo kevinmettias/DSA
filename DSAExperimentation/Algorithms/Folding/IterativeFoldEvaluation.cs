@@ -13,7 +13,8 @@ namespace DSAExperimentation.Algorithms.Folding;
 internal readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrategy<TNode>
     where TNode : class
 {
-    public static TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(TNode root)
+    public static TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode root, TAlgebra algebra)
         where TTopology : struct, ITreeTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
@@ -24,7 +25,7 @@ internal readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrateg
 
         DiscoverNodes<TTopology, TChildren, TOrder, TOrderedChildren>(root, state);
 
-        return CombineBottomUp<TAlgebra, TResult>(root, state);
+        return CombineBottomUp<TAlgebra, TResult>(root, state, algebra);
     }
 
     private static void DiscoverNodes<TTopology, TChildren, TOrder, TOrderedChildren>(
@@ -64,7 +65,7 @@ internal readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrateg
         state.ChildrenByNode[node] = children;
     }
 
-    private static TResult CombineBottomUp<TAlgebra, TResult>(TNode root, DiscoveryState state)
+    private static TResult CombineBottomUp<TAlgebra, TResult>(TNode root, DiscoveryState state, TAlgebra algebra)
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
     {
         var results = new Dictionary<TNode, TResult>();
@@ -80,7 +81,7 @@ internal readonly struct IterativeFoldEvaluation<TNode> : IFoldEvaluationStrateg
                 childResults[j] = results[children[j]];
             }
 
-            results[node] = TAlgebra.Combine(node, childResults);
+            results[node] = algebra.Combine(node, childResults);
         }
 
         return results[root];

@@ -13,21 +13,17 @@ public sealed partial class IterativeFoldEvaluationTests
     // recursed once per level would overflow before reaching the bottom.
     private const int DeeperThanTheCallStack = 100_000;
 
-    private struct NaturalOrderMarker;
-    private struct ReversedOrderMarker;
-    private struct CombineOrderMarker;
-
     // A -> [B, C, D], B -> [E, F], D -> [G] (TestTrees.NArySample)
     //
     // The bottom-up pass walks nodes in reverse discovery order, but each node's children
     // still reach Combine in the order the child-order witness gave them.
     [Fact]
     public void Evaluate_CombinesEachNodeWithItsChildrenInChildOrder()
-        => Assert.Equal("ABEFCDG", Evaluate<NaturalOrderMarker>(TestTrees.NArySample()));
+        => Assert.Equal("ABEFCDG", Evaluate(TestTrees.NArySample(), []));
 
     [Fact]
     public void Evaluate_ReversedChildOrder_ReachesCombineReversed()
-        => Assert.Equal("ADGCBFE", EvaluateReversed<ReversedOrderMarker>(TestTrees.NArySample()));
+        => Assert.Equal("ADGCBFE", EvaluateReversed(TestTrees.NArySample(), []));
 
     // Nodes are discovered breadth-first - A, B, C, D, E, F, G - and combined in reverse, so
     // every child is combined before its parent without a call stack. Combine order is the
@@ -35,9 +31,11 @@ public sealed partial class IterativeFoldEvaluationTests
     [Fact]
     public void Evaluate_CombinesInReverseBreadthFirstOrder()
     {
-        Evaluate<CombineOrderMarker>(TestTrees.NArySample());
+        var combined = new List<string>();
 
-        Assert.Equal(["G", "F", "E", "D", "C", "B", "A"], RecordingNamesFoldAlgebra<CombineOrderMarker>.Combined);
+        Evaluate(TestTrees.NArySample(), combined);
+
+        Assert.Equal(["G", "F", "E", "D", "C", "B", "A"], combined);
     }
 
     [Fact]
@@ -48,24 +46,22 @@ public sealed partial class IterativeFoldEvaluationTests
         var count = IterativeFoldEvaluation<TestNode>.Evaluate<
             TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            CountNodesFoldAlgebra, int>(root);
+            CountNodesFoldAlgebra, int>(root, default);
 
         Assert.Equal(DeeperThanTheCallStack, count);
     }
 
-    private static string Evaluate<TMarker>(TestNode root)
-        where TMarker : struct
+    private static string Evaluate(TestNode root, List<string> combined)
         => IterativeFoldEvaluation<TestNode>.Evaluate<
             TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingNamesFoldAlgebra<TMarker>, string>(root);
+            RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined));
 
-    private static string EvaluateReversed<TMarker>(TestNode root)
-        where TMarker : struct
+    private static string EvaluateReversed(TestNode root, List<string> combined)
         => IterativeFoldEvaluation<TestNode>.Evaluate<
             TestTopology, ListChildren<TestNode>,
             ReverseChildOrder<TestNode, ListChildren<TestNode>>, ReversedChildren<TestNode, ListChildren<TestNode>>,
-            RecordingNamesFoldAlgebra<TMarker>, string>(root);
+            RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined));
 
     // A single path of the given length: every node has exactly one child but the last.
     private static TestNode Chain(int length)

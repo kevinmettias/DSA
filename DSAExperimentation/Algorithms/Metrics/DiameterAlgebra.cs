@@ -7,10 +7,10 @@ namespace DSAExperimentation.Algorithms.Metrics;
 // this node" sums the two tallest child heights rather than a fixed left/right pair.
 internal readonly struct DiameterAlgebra<TNode> : IFoldAlgebra<TNode, HeightDiameterState>
 {
-    public static HeightDiameterState Empty
+    public HeightDiameterState Empty
         => new(Height: 0, Diameter: 0);
 
-    public static HeightDiameterState Combine(TNode node, IReadOnlyList<HeightDiameterState> children)
+    public HeightDiameterState Combine(TNode node, IReadOnlyList<HeightDiameterState> children)
     {
         var scan = ScanChildren(children);
         var height = 1 + scan.LargestHeight;

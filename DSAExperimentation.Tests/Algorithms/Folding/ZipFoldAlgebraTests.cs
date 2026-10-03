@@ -9,13 +9,13 @@ public sealed partial class ZipFoldAlgebraTests
     private static readonly TestNode Node = new("A");
 
     private static (int A, int B) Combine(IReadOnlyList<(int, int)> children) =>
-        ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Combine(Node, children);
+        default(ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>).Combine(Node, children);
 
     [Fact]
     public void Empty_PairsTheTwoAlgebrasOwnEmptyValues() =>
         Assert.Equal(
-            (SizeAlgebra<TestNode>.Empty, HeightAlgebra<TestNode>.Empty),
-            ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>.Empty);
+            (default(SizeAlgebra<TestNode>).Empty, default(HeightAlgebra<TestNode>).Empty),
+            default(ZipFoldAlgebra<TestNode, int, int, SizeAlgebra<TestNode>, HeightAlgebra<TestNode>>).Empty);
 
     [Fact]
     public void Combine_Leaf_RunsBothAlgebrasIndependently() => Assert.Equal((1, 1), Combine([]));
@@ -35,8 +35,8 @@ public sealed partial class ZipFoldAlgebraTests
 
         var zipped = Combine(children);
 
-        var expectedSize = SizeAlgebra<TestNode>.Combine(Node, [4, 2]);
-        var expectedHeight = HeightAlgebra<TestNode>.Combine(Node, [2, 3]);
+        var expectedSize = default(SizeAlgebra<TestNode>).Combine(Node, [4, 2]);
+        var expectedHeight = default(HeightAlgebra<TestNode>).Combine(Node, [2, 3]);
 
         Assert.Equal(expectedSize, zipped.A);
         Assert.Equal(expectedHeight, zipped.B);

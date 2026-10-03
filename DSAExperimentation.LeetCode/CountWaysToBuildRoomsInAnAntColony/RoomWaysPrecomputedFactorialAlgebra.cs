@@ -4,28 +4,19 @@ using DSAExperimentation.Domain.Modular;
 
 namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 
-// The same multinomial fold as RoomWaysAlgebra, with the factorials hoisted:
-// Prepare(n) builds one Domain.Modular FactorialTable, O(n) total with a single
-// modular-inverse call, so every Combine is O(children) instead of O(subtree
-// size). The table is established by the caller before folding begins and never
-// re-touched during the walk - the same "external state stashed before the fold
-// starts" shape a static-abstract algebra has to use, since it can carry no
-// instance state of its own. It is held in an AsyncLocal rather than in plain
-// static fields so the table belongs to the flow that called Prepare: two folds on
-// different threads get their own, instead of overwriting each other's mid-walk.
-internal readonly struct RoomWaysPrecomputedFactorialAlgebra : IFoldAlgebra<RootedTreeNode, (long Size, long Ways)>
+// The same multinomial fold as RoomWaysAlgebra, with the factorials hoisted: the
+// caller builds one Domain.Modular FactorialTable, O(n) total with a single
+// modular-inverse call, and hands it to the algebra, so every Combine is
+// O(children) instead of O(subtree size). The table is a field of the algebra the
+// fold is given, so each fold carries its own and the table travels whole - a
+// Combine can never pair one table's factorials with another's inverse factorials.
+internal readonly struct RoomWaysPrecomputedFactorialAlgebra(FactorialTable table)
+    : IFoldAlgebra<RootedTreeNode, (long Size, long Ways)>
 {
-    // The table travels whole, so a Combine can never pair one Prepare call's
-    // factorials with another's inverse factorials.
-    private static readonly AsyncLocal<FactorialTable> Table = new();
+    public (long Size, long Ways) Empty => (0, 1);
 
-    public static (long Size, long Ways) Empty => (0, 1);
-
-    public static void Prepare(int maxSize) => Table.Value = FactorialTable.Build(maxSize);
-
-    public static (long Size, long Ways) Combine(RootedTreeNode node, IReadOnlyList<(long Size, long Ways)> children)
+    public (long Size, long Ways) Combine(RootedTreeNode node, IReadOnlyList<(long Size, long Ways)> children)
     {
-        var table = Table.Value;
         var size = 1L;
         var ways = 1L;
 

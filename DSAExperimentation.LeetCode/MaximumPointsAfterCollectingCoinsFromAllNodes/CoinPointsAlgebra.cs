@@ -15,22 +15,19 @@ namespace DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNo
 // HalvingDepth.Max caps h: coins[i] <= 1e4 < 2^14, so coins[node] >> h is already 0
 // for every h at or past HalvingDepth.Max, and folding h any deeper cannot change a
 // further-halved contribution - the same "once it can't move the answer, stop
-// tracking it more finely" reasoning RoomWaysPrecomputedFactorialAlgebra's own
-// Prepare(n) table bound uses, just against a value magnitude instead of a tree size.
-// Coins/cost are external per-node data a static-abstract algebra cannot carry as
-// instance state, so Prepare stashes them the same way
-// RoomWaysPrecomputedFactorialAlgebra.Prepare stashes its factorial table before
-// folding begins - in an AsyncLocal, so the stash belongs to the calling flow and a
-// concurrent fold of the same problem cannot overwrite it part-way through the walk.
+// tracking it more finely" reasoning RoomWaysPrecomputedFactorialAlgebra's
+// factorial table bound uses, just against a value magnitude instead of a tree size.
+// Coins and cost are per-node input the algebra holds as its own field, widened to
+// long once when it is built, so each fold reads only the coins it was handed.
 internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]>
 {
-    private static readonly AsyncLocal<CoinInputs> Inputs = new();
+    private readonly CoinInputs _inputs;
 
     private readonly record struct CoinInputs(long[] Coins, long Cost);
 
-    public static long[] Empty => new long[HalvingDepth.Max + 1];
+    public long[] Empty => new long[HalvingDepth.Max + 1];
 
-    public static void Prepare(int[] coins, int cost)
+    public CoinPointsAlgebra(int[] coins, int cost)
     {
         var stored = new long[coins.Length];
         for (var i = 0; i < coins.Length; i++)
@@ -38,12 +35,12 @@ internal readonly struct CoinPointsAlgebra : IFoldAlgebra<RootedTreeNode, long[]
             stored[i] = coins[i];
         }
 
-        Inputs.Value = new CoinInputs(stored, cost);
+        _inputs = new CoinInputs(stored, cost);
     }
 
-    public static long[] Combine(RootedTreeNode node, IReadOnlyList<long[]> children)
+    public long[] Combine(RootedTreeNode node, IReadOnlyList<long[]> children)
     {
-        var inputs = Inputs.Value;
+        var inputs = _inputs;
         var coins = inputs.Coins[node.Id];
         var result = new long[HalvingDepth.Max + 1];
 

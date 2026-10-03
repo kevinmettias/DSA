@@ -15,9 +15,9 @@ namespace DSAExperimentation.LeetCode.SmallestSubtreeWithAllTheDeepestNodes;
 internal readonly struct DeepestSubtreeAlgebra
     : IFoldAlgebra<BinaryTreeNode<int>, (int Depth, BinaryTreeNode<int>? Node)>
 {
-    public static (int Depth, BinaryTreeNode<int>? Node) Empty => (-1, null);
+    public (int Depth, BinaryTreeNode<int>? Node) Empty => (-1, null);
 
-    public static (int Depth, BinaryTreeNode<int>? Node) Combine(
+    public (int Depth, BinaryTreeNode<int>? Node) Combine(
         BinaryTreeNode<int> node, IReadOnlyList<(int Depth, BinaryTreeNode<int>? Node)> children)
     {
         if (children.Count == 0)

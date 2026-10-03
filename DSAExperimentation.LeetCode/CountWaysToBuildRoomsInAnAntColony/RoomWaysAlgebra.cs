@@ -17,9 +17,9 @@ namespace DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 // which is why it lives beside the solution rather than in Domain.
 internal readonly struct RoomWaysAlgebra : IFoldAlgebra<RootedTreeNode, (long Size, long Ways)>
 {
-    public static (long Size, long Ways) Empty => (0, 1);
+    public (long Size, long Ways) Empty => (0, 1);
 
-    public static (long Size, long Ways) Combine(RootedTreeNode node, IReadOnlyList<(long Size, long Ways)> children)
+    public (long Size, long Ways) Combine(RootedTreeNode node, IReadOnlyList<(long Size, long Ways)> children)
     {
         var size = 1L;
         var ways = 1L;

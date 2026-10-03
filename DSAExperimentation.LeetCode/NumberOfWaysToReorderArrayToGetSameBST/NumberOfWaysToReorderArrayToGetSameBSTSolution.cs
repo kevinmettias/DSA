@@ -107,9 +107,9 @@ internal static class NumberOfWaysToReorderArrayToGetSameBSTSolution
     // The algebra answers this problem alone, so it lives beside the solution.
     private readonly struct WaysAlgebra : IFoldAlgebra<BinaryTreeNode<int>, (int Size, long Ways)>
     {
-        public static (int Size, long Ways) Empty => (0, 1);
+        public (int Size, long Ways) Empty => (0, 1);
 
-        public static (int Size, long Ways) Combine(BinaryTreeNode<int> node, IReadOnlyList<(int Size, long Ways)> children)
+        public (int Size, long Ways) Combine(BinaryTreeNode<int> node, IReadOnlyList<(int Size, long Ways)> children)
         {
             if (children.Count == 0)
             {

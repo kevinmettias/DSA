@@ -9,7 +9,8 @@ namespace DSAExperimentation.Algorithms.Folding;
 internal interface IFoldEvaluationStrategy<TNode>
     where TNode : class
 {
-    static abstract TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(TNode root)
+    static abstract TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode root, TAlgebra algebra)
         where TTopology : struct, ITreeTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>

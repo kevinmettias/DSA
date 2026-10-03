@@ -15,7 +15,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 // bool/out signature would tax every tree-fold call. A cycle is reported through the policy
 // instead. Aborted is a constant false for the tree and DAG policies, so its check after each child
 // folds away; under CycleCheckedFold the walk unwinds at once and later siblings are never visited.
-// An aborted walk returns TAlgebra.Empty, which means nothing there - CheckedFold reads failure
+// An aborted walk returns the algebra's Empty, which means nothing there - CheckedFold reads failure
 // from Aborted - but is a real TResult, so no null is ever promised away.
 //
 // One method, deliberately, though it reads as four steps: each helper split out of it would be
@@ -24,7 +24,7 @@ namespace DSAExperimentation.Algorithms.Folding;
 internal static class FoldRecursion
 {
     internal static TResult Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TMemo, TAlgebra, TResult>(
-        TNode node, TMemo memo)
+        TNode node, TMemo memo, TAlgebra algebra)
         where TNode : class
         where TTopology : struct, IGraphTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
@@ -40,7 +40,7 @@ internal static class FoldRecursion
 
         if (!memo.TryOpen(node))
         {
-            return TAlgebra.Empty;
+            return algebra.Empty;
         }
 
         var orderedChildren = TOrder.Apply(TTopology.GetChildren(node));
@@ -49,15 +49,15 @@ internal static class FoldRecursion
         for (var i = 0; i < orderedChildren.Count; i++)
         {
             childResults[i] = Visit<TNode, TTopology, TChildren, TOrder, TOrderedChildren, TMemo, TAlgebra, TResult>(
-                orderedChildren.Get(i), memo);
+                orderedChildren.Get(i), memo, algebra);
 
             if (memo.Aborted)
             {
-                return TAlgebra.Empty;
+                return algebra.Empty;
             }
         }
 
-        var result = TAlgebra.Combine(node, childResults);
+        var result = algebra.Combine(node, childResults);
         memo.Close(node, result);
 
         return result;

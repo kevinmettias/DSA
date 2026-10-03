@@ -10,7 +10,8 @@ namespace DSAExperimentation.Algorithms.Folding;
 internal readonly struct RecursiveFoldEvaluation<TNode> : IFoldEvaluationStrategy<TNode>
     where TNode : class
 {
-    public static TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(TNode root)
+    public static TResult Evaluate<TTopology, TChildren, TOrder, TOrderedChildren, TAlgebra, TResult>(
+        TNode root, TAlgebra algebra)
         where TTopology : struct, ITreeTopology<TNode, TChildren>
         where TChildren : struct, IChildren<TNode>
         where TOrder : struct, IChildOrder<TNode, TChildren, TOrderedChildren>
@@ -18,5 +19,5 @@ internal readonly struct RecursiveFoldEvaluation<TNode> : IFoldEvaluationStrateg
         where TAlgebra : struct, IFoldAlgebra<TNode, TResult>
         => FoldRecursion.Visit<
             TNode, TTopology, TChildren, TOrder, TOrderedChildren, UnmemoizedFold<TNode, TResult>, TAlgebra, TResult>(
-            root, default);
+            root, default, algebra);
 }

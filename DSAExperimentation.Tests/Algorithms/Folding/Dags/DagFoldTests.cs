@@ -9,39 +9,38 @@ namespace DSAExperimentation.Tests.Algorithms.Folding.Dags;
 // wherever DagFold asks for a DAG - and nothing stops it being pointed at a diamond.
 public sealed partial class DagFoldTests
 {
-    private struct NullRootMarker;
-    private struct TreeMarker;
-    private struct DiamondMarker;
-
     [Fact]
     public void Fold_NullRoot_ReturnsEmpty()
-        => Assert.Equal(RecordingNamesFoldAlgebra<NullRootMarker>.Empty, Fold<NullRootMarker>(null));
+        => Assert.Equal("", Fold(null, []));
 
     // A -> [B, C, D], B -> [E, F], D -> [G] (TestTrees.NArySample)
     [Fact]
     public void Fold_Tree_CombinesEachNodeWithItsChildrenInOrder()
     {
-        var spelled = Fold<TreeMarker>(TestTrees.NArySample());
+        var combined = new List<string>();
+
+        var spelled = Fold(TestTrees.NArySample(), combined);
 
         Assert.Equal("ABEFCDG", spelled);
-        Assert.Equal(["E", "F", "B", "C", "G", "D", "A"], RecordingNamesFoldAlgebra<TreeMarker>.Combined);
+        Assert.Equal(["E", "F", "B", "C", "G", "D", "A"], combined);
     }
 
     [Fact]
     public void Fold_SharedDescendant_CombinesItOnceAndReusesItsResult()
     {
+        var combined = new List<string>();
+
         // D's result appears under both parents, but the second arrival reads the memo:
         // D is combined once, for the path that reached it first.
-        var spelled = Fold<DiamondMarker>(TestGraphs.Diamond());
+        var spelled = Fold(TestGraphs.Diamond(), combined);
 
         Assert.Equal("ABDCD", spelled);
-        Assert.Equal(["D", "B", "C", "A"], RecordingNamesFoldAlgebra<DiamondMarker>.Combined);
+        Assert.Equal(["D", "B", "C", "A"], combined);
     }
 
-    private static string Fold<TMarker>(TestNode? root)
-        where TMarker : struct
+    private static string Fold(TestNode? root, List<string> combined)
         => DagFold.Fold<
             TestNode, TestTopology, ListChildren<TestNode>,
             NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
-            RecordingNamesFoldAlgebra<TMarker>, string>(root);
+            RecordingNamesFoldAlgebra, string>(root, new RecordingNamesFoldAlgebra(combined));
 }

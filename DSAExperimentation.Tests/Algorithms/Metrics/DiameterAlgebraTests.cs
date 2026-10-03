@@ -14,48 +14,48 @@ public sealed partial class DiameterAlgebraTests
     {
         var expected = State(0, 0);
 
-        Assert.Equal(expected, DiameterAlgebra<TestNode>.Empty);
+        Assert.Equal(expected, default(DiameterAlgebra<TestNode>).Empty);
     }
 
     [Fact]
     public void Combine_Leaf_IsHeightOneAndDiameterZero()
     {
         var expected = State(1, 0);
-        var combined = DiameterAlgebra<TestNode>.Combine(Node, []);
+        var combined = default(DiameterAlgebra<TestNode>).Combine(Node, []);
 
         Assert.Equal(expected, combined);
     }
 
     [Fact]
-    public void Combine_HeightIsOneMoreThanTheTallestChild() => Assert.Equal(4, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0), State(1, 0)]).Height);
+    public void Combine_HeightIsOneMoreThanTheTallestChild() => Assert.Equal(4, default(DiameterAlgebra<TestNode>).Combine(Node, [State(3, 0), State(1, 0)]).Height);
 
     [Fact]
     public void Combine_TwoChildren_DiameterJoinsTheTwoTallestBranches()
     {
         // A path down one branch and up the other passes through this node.
-        Assert.Equal(3 + 2, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0), State(2, 0)]).Diameter);
+        Assert.Equal(3 + 2, default(DiameterAlgebra<TestNode>).Combine(Node, [State(3, 0), State(2, 0)]).Diameter);
     }
 
     [Fact]
-    public void Combine_OneChild_DiameterIsThatBranchesHeightAlone() => Assert.Equal(3, DiameterAlgebra<TestNode>.Combine(Node, [State(3, 0)]).Diameter);
+    public void Combine_OneChild_DiameterIsThatBranchesHeightAlone() => Assert.Equal(3, default(DiameterAlgebra<TestNode>).Combine(Node, [State(3, 0)]).Diameter);
 
     [Fact]
     public void Combine_KeepsAChildsDiameterWhenItBeatsThePathThroughThisNode()
     {
         // A wide subtree hanging off a shallow branch: 9 must survive.
-        Assert.Equal(9, DiameterAlgebra<TestNode>.Combine(Node, [State(2, 9), State(1, 0)]).Diameter);
+        Assert.Equal(9, default(DiameterAlgebra<TestNode>).Combine(Node, [State(2, 9), State(1, 0)]).Diameter);
     }
 
     [Fact]
     public void Combine_ThreeChildren_UsesOnlyTheTwoTallest() =>
-        Assert.Equal(5 + 4, DiameterAlgebra<TestNode>.Combine(
+        Assert.Equal(5 + 4, default(DiameterAlgebra<TestNode>).Combine(
             Node, [State(5, 0), State(4, 0), State(3, 0)]).Diameter);
 
     [Fact]
     public void Combine_IsUnaffectedByChildOrder()
     {
-        var ascending = DiameterAlgebra<TestNode>.Combine(Node, [State(1, 0), State(4, 0), State(3, 0)]);
-        var descending = DiameterAlgebra<TestNode>.Combine(Node, [State(4, 0), State(3, 0), State(1, 0)]);
+        var ascending = default(DiameterAlgebra<TestNode>).Combine(Node, [State(1, 0), State(4, 0), State(3, 0)]);
+        var descending = default(DiameterAlgebra<TestNode>).Combine(Node, [State(4, 0), State(3, 0), State(1, 0)]);
 
         Assert.Equal(ascending, descending);
     }

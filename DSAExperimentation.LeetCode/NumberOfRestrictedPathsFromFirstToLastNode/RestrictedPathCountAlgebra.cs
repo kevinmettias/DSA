@@ -12,9 +12,9 @@ namespace DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode
 // than in Domain (RoomWaysAlgebra's own precedent).
 internal readonly struct RestrictedPathCountAlgebra : IFoldAlgebra<RestrictedPathNode, long>
 {
-    public static long Empty => 0;
+    public long Empty => 0;
 
-    public static long Combine(RestrictedPathNode node, IReadOnlyList<long> children)
+    public long Combine(RestrictedPathNode node, IReadOnlyList<long> children)
     {
         if (node.Dist == 0)
         {
