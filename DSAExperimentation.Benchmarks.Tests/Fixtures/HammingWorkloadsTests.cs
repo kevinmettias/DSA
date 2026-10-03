@@ -3,10 +3,10 @@ using DSAExperimentation.DataStructures.Graph.Hamming;
 
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
-// Harness coverage for HammingWorkloads (ARCHITECTURE 17.7). The reading depends on a chain of
+// Harness coverage for HammingWorkloads (ARCHITECTURE 17.7). The reading depends on a walk of
 // single-character mutations over the DNA alphabet, starting from one fixed value and ending at a
 // value a genuine shortest transformation sequence exists for, so every strategy does real BFS work
-// instead of failing fast.
+// instead of failing fast - with each word listed once, as LC 126/127 promise.
 public sealed partial class HammingWorkloadsTests
 {
     private const int ValueCount = 64;
@@ -15,16 +15,24 @@ public sealed partial class HammingWorkloadsTests
     private const int MutationCount = 1;
     private const int ChainStart = 0;
 
+    // A walk over DNA strings revisits a word now and then, so the list can be shorter than the
+    // steps taken - never longer - and both chain ends are still in it.
     [Fact]
-    public void BuildChain_ValueCount_ReturnsOneValuePerStepAndPinsTheChainEnds()
+    public void BuildChain_ValueCount_ListsAtMostOneValuePerStepAndKeepsTheChainEnds()
     {
         var (values, first, last) =
             HammingWorkloads.BuildChain(ValueCount, ValueLength, StandardAlphabets.Dna, Seed);
 
-        Assert.Equal(ValueCount, values.Length);
+        Assert.InRange(values.Length, MutationCount + 1, ValueCount);
         Assert.Equal(values[ChainStart], first);
-        Assert.Equal(values[^MutationCount], last);
+        Assert.Contains(last, values);
     }
+
+    [Fact]
+    public void BuildChain_EveryValue_IsListedOnce() =>
+        Assert.Equal(
+            BuildChain().Length,
+            BuildChain().Distinct().Count());
 
     [Fact]
     public void BuildChain_EveryValue_StaysOnTheAlphabetAtTheRequestedLength()
@@ -37,17 +45,17 @@ public sealed partial class HammingWorkloadsTests
             value => Assert.All(value, character => Assert.Contains(character, StandardAlphabets.Dna.Characters)));
     }
 
-    // One position mutated per step is the chain's whole claim: consecutive values differ in exactly
-    // one position, which is what makes the step a single-character mutation and keeps a shortest
-    // transformation sequence between the two ends a real one.
+    // Each word entered the list as one mutation of the word the walk stood on, whose first copy is
+    // earlier in the list, so every word after the first is one position away from some earlier word:
+    // that is what keeps a real transformation sequence from the first word to every other.
     [Fact]
-    public void BuildChain_EveryConsecutivePair_DiffersInExactlyOnePosition()
+    public void BuildChain_EveryLaterValue_IsOneMutationFromAnEarlierValue()
     {
-        var (values, _, _) = HammingWorkloads.BuildChain(ValueCount, ValueLength, StandardAlphabets.Dna, Seed);
+        var values = BuildChain();
 
-        foreach (var step in Enumerable.Range(1, ValueCount - 1))
+        foreach (var index in Enumerable.Range(1, values.Length - 1))
         {
-            Assert.Equal(MutationCount, DifferingPositions(values[step - 1], values[step]));
+            Assert.Contains(values[..index], earlier => DifferingPositions(earlier, values[index]) == MutationCount);
         }
     }
 
@@ -62,6 +70,9 @@ public sealed partial class HammingWorkloadsTests
         Assert.Equal(first, repeatFirst);
         Assert.Equal(last, repeatLast);
     }
+
+    private static string[] BuildChain() =>
+        HammingWorkloads.BuildChain(ValueCount, ValueLength, StandardAlphabets.Dna, Seed).Values;
 
     private static int DifferingPositions(string left, string right) =>
         left.Where((character, position) => character != right[position]).Count();

@@ -32,7 +32,13 @@ internal static class HammingWorkloads
             values.Add(new string(current));
         }
 
-        return ([.. values], values[0], values[^1]);
+        // The walk can step back onto a word it already visited, and LC 126/127 promise a list of
+        // unique words, so each word is kept once, at its first visit. A later step out of a
+        // revisited word still connects through that first copy, so no path is lost - the list can
+        // just come out a few words shorter than count.
+        string[] distinct = [.. values.Distinct()];
+
+        return (distinct, distinct[0], values[^1]);
     }
 
     // A character of the alphabet other than `current`: an index drawn from the alphabet shortened by
