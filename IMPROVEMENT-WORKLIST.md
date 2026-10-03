@@ -172,6 +172,38 @@ flagged 84 classes (the review's ~20 and 66 arms).
 - The rest were not rebuilds: a `readonly record struct` wrapper, or a strategy's own precompute
   that the class charges on purpose.
 
+### Every benchmark inside LeetCode's constraints — DONE except one
+
+The owner's rule, now in §17.7 (`92387476`): a harness that runs past its problem's stated
+constraints is a defect, because the benchmarks exist to make the solutions as fast as possible on
+the inputs LeetCode actually poses. All 1,105 per-problem classes were checked against the
+constraints cached with their problems - sizes, call and query counts, drawn value ranges, and
+guarantees - by six agents on alphabetical slices, in 47 commits, most titled "Keep / Hold /
+Bound … inside … LeetCode's bounds". 398 classes changed, 706 were already inside, and 1 is open:
+
+- Sizes past the bound: AddTwoNumbers ran 5,000 nodes against 100, OrderlyQueue 100,000 characters
+  against 1,000, KthAncestorOfATreeNode a million queries against 5 · 10^4.
+- Values outside the stated range: zero where LeetCode requires at least 1, `"word123"` tokens where
+  only letters are allowed, node values and coordinates past their bounds.
+- Broken guarantees: repeated edges where multi-edges are forbidden, duplicate values where they must
+  be distinct, workloads with no unique answer where one is promised (TwoSum, GasStation,
+  MostCommonWord now plant theirs), and answers past `int` (CombinationSumIV and DecodeWays, besides
+  UniquePaths), where both arms overflow to the same wrong number and the arm check passes.
+- Inside the bounds some fast arms can no longer show their asymptotic gap (OrderlyQueue,
+  DesignLinkedList, FindGreatestCommonDivisorOfArray); each comment says so. Keeping the existing
+  smallest size, so companion pins stayed valid, left a few close pairs (SortColors 200 and 300).
+- Workloads that did not measure what their comments said, found along the way: ParsingABooleanExpression
+  timed the one-character expression `t` at both depths, RegularExpressionMatching's pattern
+  matched its own text so the recursion never searched, and FindInMountainArray's target sat at
+  index 2 (`27eb4084`, `fd323eae`). Hamming chains handed LC 126/127 repeated words (`f250ac66`).
+
+Open, a decision for the owner: EscapeALargeMaze. LC 1036 always poses a 10^6 × 10^6 grid with at
+most 200 blocked cells; the harness times 500 and 2,000 boards because its full-board flood-fill
+baseline cannot run on 10^12 cells. Dropping that baseline would leave one arm at LeetCode's real
+size. Also open, smaller: FindElementsInAContaminatedBinaryTree's arms write recovered values into
+the shared tree, so from the second invocation the input is no longer all -1 (the recovery never
+reads the old values, so the work is the same).
+
 ### Shared generators — DONE
 
 258 inline `Enumerable.Range(0,n).Select(_ => r.Next(a,b)).ToArray()` draws - the review's count
@@ -216,15 +248,47 @@ using) removed from 1,111 files.
   bit trie does not promise. Removed and rewritten (`34adab38`).
 - UniquePaths timed an 18 × 18 grid whose count, 2,333,606,220, is past `int.MaxValue` and LC 62's
   promise, so both arms wrapped to the same wrong number and agreed on it; it stops at 17 now and
-  pins both counts (`13761e7c`). 21 more classes, noticed while reading about 300 of them, run past
-  a bound LeetCode states without overflowing - AmbiguousCoordinates (16 digits against 10),
-  MatchsticksToSquare (32 sticks against 15), ZumaGame (36 against 16), SortColors (5,000 against
-  300), IncreasingOrderSearchTree (20,000 nodes against 100) among them. Harmless for timing, but
-  §17.7 does not say whether a harness may exceed the problem's bounds, and nobody has scanned the
-  other 800. Open: decide, then either record the rule or trim.
+  pins both counts (`13761e7c`). That case led to the rule and the sweep in "Every benchmark inside
+  LeetCode's constraints" above.
 - DesignATextEditor's script walks the cursor back over every chunk it adds, so every report is
   the empty window and its full answer tells the arms apart only by length. Open: a script that
   leaves text left of the cursor.
+- Solutions that answered a different problem. MaximumSubarrayXORWithBoundedRange took a
+  `[low, high]` range where LC 3845 takes a spread bound k, and its tests pinned hand-made examples
+  of the invented problem, so everything passed; it is rewritten against LeetCode's statement
+  (`59b66a04`). An audit then ran every public strategy of 91 solutions - all 56 numbered 3700 and
+  up, and every one whose tests held none of LeetCode's example inputs - on LeetCode's published
+  examples:
+  - LC 3847 solved a different game (a two-player LC 2593) and failed all three examples; rewritten
+    (`5baa1f3b`).
+  - LC 3841 answered a static-tree version with no updates, in a signature that cannot take
+    LeetCode's input; rewritten to LeetCode's mixed update/query commands (`91260f0b`, `1dc17d5f`).
+  - LC 713's log-sum strategy counted subarrays whose product equals k, by rounding; replaced by an
+    exact sliding window (`4977e421`).
+  - LC 304 requires `sumRegion` in O(1) and neither strategy met it; a prefix-sum table joins them
+    (`65a4178e`).
+  - 18 correct solutions' tests left out some or all of LeetCode's examples; they state them now
+    (`0e24bf42`, `3a533a55`).
+
+  Open: the other solutions were screened only by whether their tests contain a published
+  example's numbers (762 checkable, 38 did not); 277 problems whose examples carry fewer than three
+  numbers were not screened at all. LC 3943's own header says neither strategy is optimal at
+  LeetCode's limits.
+- That rewrite is the third private copy of one technique: a `BitTrie` plus a `HashMap` of live
+  counts per node, so values can be retired from a trie that has no Remove (CountPairsWithXorInARange
+  and MaximumGeneticDifferenceQuery are the others). Open: a counted bit trie in the core library
+  would replace all three. The LC 3841 rewrite found the same for trees: a pre-order with subtree
+  ranges is hand-written in it, ShortestPathInAWeightedTree and KthSmallestPathXORSum, and the core
+  `LowestCommonAncestor.Find` is O(n) per query and recursive, so LC 3841 answers its LCA with a
+  range-minimum over that tour instead. Open: an Euler-tour primitive with an O(log n) LCA.
+- `DSAExperimentation.Benchmarks/baseline.tsv` (`042cdaef`) predates seven fold, reduce and
+  traversal commits (`b2d7514c` through `d57a8a57`), after which the tree-fold StrategySwaps arms run
+  13-17% faster, so it is stale in the faster direction: a slowdown back to the old speed would pass. Open: re-record it with
+  `baseline record --filter "*StrategySwaps*"` on a machine doing nothing else - not done on
+  2026-10-03 because another repository's test run held about 2.6 cores.
+- The constraint sweep emptied 25 waivers and created 19 duplicate-constant groups; the ledger now
+  matches the tree, checked by running each check with its waivers stripped (`e57be372`).
+  `check-duplicate-constant` has no live finding and no unused waiver.
 
 ---
 
