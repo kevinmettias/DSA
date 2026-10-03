@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.RemoveNthNodeFromEndOfList;
 
@@ -19,27 +20,13 @@ internal static class RemoveNthNodeFromEndOfListSolution
     // remains. O(Length) extra space, where the two-runner walk below needs none.
     public static SinglyLinkedListNode<int>? RemoveByArrayRebuild(SinglyLinkedListNode<int>? head, int positionsFromEnd)
     {
-        var values = ToArray(head);
+        var values = LeetCodeWireFormat.FromLinkedList(head);
         var index = values.Length - positionsFromEnd;
         var remaining = new int[values.Length - 1];
         Array.Copy(values, 0, remaining, 0, index);
         Array.Copy(values, index + 1, remaining, index, values.Length - index - 1);
 
-        return BuildList(remaining);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        return LeetCodeWireFormat.ToLinkedList(remaining);
     }
 
     // The standard two-runner walk: advance fast `positionsFromEnd` nodes ahead of slow,
@@ -64,17 +51,5 @@ internal static class RemoveNthNodeFromEndOfListSolution
 
         slow.Next = slow.Next?.Next;
         return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

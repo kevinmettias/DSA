@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.RotateList;
 
@@ -18,7 +19,7 @@ internal static class RotateListSolution
     public static SinglyLinkedListNode<int>? RotateRightByArrayRebuild(
         SinglyLinkedListNode<int>? head, int rotationCount)
     {
-        var values = ToArray(head);
+        var values = LeetCodeWireFormat.FromLinkedList(head);
 
         if (values.Length == 0)
         {
@@ -29,28 +30,14 @@ internal static class RotateListSolution
 
         if (shift == 0)
         {
-            return BuildList(values);
+            return LeetCodeWireFormat.ToLinkedList(values);
         }
 
         var rotated = new int[values.Length];
         Array.Copy(values, values.Length - shift, rotated, 0, shift);
         Array.Copy(values, 0, rotated, shift, values.Length - shift);
 
-        return BuildList(rotated);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        return LeetCodeWireFormat.ToLinkedList(rotated);
     }
 
     // The standard walk: find the length and current tail in one pass, then cut
@@ -126,17 +113,5 @@ internal static class RotateListSolution
         tail.Next = head;
 
         return newHead;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

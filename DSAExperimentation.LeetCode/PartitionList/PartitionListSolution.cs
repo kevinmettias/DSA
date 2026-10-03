@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.PartitionList;
 
@@ -18,24 +19,10 @@ internal static class PartitionListSolution
     // space, where the splice walk below needs none.
     public static SinglyLinkedListNode<int>? PartitionByArrayRebuild(SinglyLinkedListNode<int>? head, int partitionValue)
     {
-        var values = ToArray(head);
+        var values = LeetCodeWireFormat.FromLinkedList(head);
         var partitioned = values.Where(value => value < partitionValue).Concat(values.Where(value => value >= partitionValue));
 
-        return BuildList(partitioned);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        return LeetCodeWireFormat.ToLinkedList([.. partitioned]);
     }
 
     // The standard walk: thread each node onto a "before" or "after" chain as it is
@@ -80,17 +67,5 @@ internal static class PartitionListSolution
         }
 
         return tails;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

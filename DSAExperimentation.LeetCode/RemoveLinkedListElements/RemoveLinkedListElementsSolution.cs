@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.RemoveLinkedListElements;
 
@@ -20,21 +21,7 @@ internal static class RemoveLinkedListElementsSolution
     // itself against.
     public static SinglyLinkedListNode<int>? RemoveElementsByArrayRebuild(
         SinglyLinkedListNode<int>? head, int val)
-        => BuildList(ToArray(head).Where(value => value != val));
-
-    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
-    }
+        => LeetCodeWireFormat.ToLinkedList([.. LeetCodeWireFormat.FromLinkedList(head).Where(value => value != val)]);
 
     // LeetCode's own idiomatic answer: a dummy node in front of head lets the walk
     // splice out a match - head included - by rewiring the previous node's Next,
@@ -58,17 +45,5 @@ internal static class RemoveLinkedListElementsSolution
         }
 
         return dummy.Next;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

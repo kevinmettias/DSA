@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.ReverseLinkedListII;
 
@@ -21,24 +22,10 @@ internal static class ReverseLinkedListIISolution
     public static SinglyLinkedListNode<int>? ReverseBetweenByArrayRebuild(
         SinglyLinkedListNode<int>? head, int left, int right)
     {
-        var values = ToArray(head);
+        var values = LeetCodeWireFormat.FromLinkedList(head);
         Array.Reverse(values, left - 1, right - left + 1);
 
-        return BuildList(values);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        return LeetCodeWireFormat.ToLinkedList(values);
     }
 
     // The standard walk: a dummy node ahead of the list lets position 1 be
@@ -83,17 +70,5 @@ internal static class ReverseLinkedListIISolution
         }
 
         return before;
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }

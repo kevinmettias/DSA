@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.SwapNodesInPairs;
 
@@ -39,22 +40,10 @@ internal static class SwapNodesInPairsSolution
     // justify itself against.
     public static SinglyLinkedListNode<int>? SwapPairsByArrayRoundTrip(SinglyLinkedListNode<int>? head)
     {
-        var array = CollectValues(head);
+        var array = LeetCodeWireFormat.FromLinkedList(head);
         SwapAdjacentEntries(array);
 
-        return BuildList(array);
-    }
-
-    private static int[] CollectValues(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
+        return LeetCodeWireFormat.ToLinkedList(array);
     }
 
     private static void SwapAdjacentEntries(int[] array)
@@ -63,19 +52,5 @@ internal static class SwapNodesInPairsSolution
         {
             (array[i], array[i + 1]) = (array[i + 1], array[i]);
         }
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] array)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in array)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
     }
 }

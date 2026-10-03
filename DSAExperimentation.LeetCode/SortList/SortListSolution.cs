@@ -1,6 +1,7 @@
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.SortList;
 
@@ -16,40 +17,9 @@ internal static class SortListSolution
 {
     public static SinglyLinkedListNode<int>? SortByMergeSortOverSequence(SinglyLinkedListNode<int>? head)
     {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        var array = values.ToArray();
+        var array = LeetCodeWireFormat.FromLinkedList(head);
         MergeSort.Sort<int, ArrayIndexedSequence<int>>(new ArrayIndexedSequence<int>(array));
 
-        return BuildList(array);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(int[] values)
-    {
-        SinglyLinkedListNode<int>? head = null;
-        SinglyLinkedListNode<int>? tail = null;
-
-        foreach (var value in values)
-        {
-            var node = new SinglyLinkedListNode<int>(value);
-
-            if (tail is null)
-            {
-                head = node;
-            }
-            else
-            {
-                tail.Next = node;
-            }
-
-            tail = node;
-        }
-
-        return head;
+        return LeetCodeWireFormat.ToLinkedList(array);
     }
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.SinglyLinkedList;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedListII;
 
@@ -18,26 +19,12 @@ internal static class RemoveDuplicatesFromSortedListIISolution
     // below has to justify itself against.
     public static SinglyLinkedListNode<int>? DeleteDuplicatesByArrayGroupFilter(SinglyLinkedListNode<int>? head)
     {
-        var survivors = ToArray(head)
+        var survivors = LeetCodeWireFormat.FromLinkedList(head)
             .GroupBy(value => value)
             .Where(group => group.Count() == 1)
             .Select(group => group.Key);
 
-        return BuildList(survivors);
-    }
-
-    private static SinglyLinkedListNode<int>? BuildList(IEnumerable<int> values)
-    {
-        var dummy = new SinglyLinkedListNode<int>(0);
-        var tail = dummy;
-
-        foreach (var value in values)
-        {
-            tail.Next = new SinglyLinkedListNode<int>(value);
-            tail = tail.Next;
-        }
-
-        return dummy.Next;
+        return LeetCodeWireFormat.ToLinkedList([.. survivors]);
     }
 
     // One pass with a dummy head and a previous/current pair: walk past every run
@@ -79,17 +66,5 @@ internal static class RemoveDuplicatesFromSortedListIISolution
         }
 
         return (current, duplicated);
-    }
-
-    private static int[] ToArray(SinglyLinkedListNode<int>? head)
-    {
-        var values = new List<int>();
-
-        for (var node = head; node is not null; node = node.Next)
-        {
-            values.Add(node.Value);
-        }
-
-        return values.ToArray();
     }
 }
