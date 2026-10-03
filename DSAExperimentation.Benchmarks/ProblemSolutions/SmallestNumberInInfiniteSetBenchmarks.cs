@@ -21,6 +21,10 @@ public class SmallestNumberInInfiniteSetBenchmarks
 
     private (int Type, int Num)[] _ops = [];
 
+    // What every PopSmallest returned, in script order - what each arm returns; an AddBack
+    // returns nothing.
+    private int[] _popped = [];
+
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -43,17 +47,18 @@ public class SmallestNumberInInfiniteSetBenchmarks
         }
 
         _ops = [.. ops];
+        _popped = new int[_ops.Count(op => op.Type == PopOpType)];
     }
 
     [Benchmark(Baseline = true)]
-    public long ListScanPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateByListScan());
+    public int[] ListScanPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateByListScan());
 
     [Benchmark]
-    public long HeapAndSetPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet());
+    public int[] HeapAndSetPerOperation() => Replay(SmallestNumberInInfiniteSetSolution.CreateByHeapAndSet());
 
-    private long Replay(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
+    private int[] Replay(SmallestNumberInInfiniteSetSolution.ISmallestInfiniteSet set)
     {
-        var checksum = 0L;
+        var popCount = 0;
 
         foreach (var (type, num) in _ops)
         {
@@ -63,9 +68,9 @@ public class SmallestNumberInInfiniteSetBenchmarks
                 continue;
             }
 
-            checksum += set.PopSmallest();
+            _popped[popCount++] = set.PopSmallest();
         }
 
-        return checksum;
+        return _popped;
     }
 }

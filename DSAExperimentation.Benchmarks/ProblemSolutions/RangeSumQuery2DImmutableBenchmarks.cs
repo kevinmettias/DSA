@@ -23,6 +23,9 @@ public class RangeSumQuery2DImmutableBenchmarks
     private int[][] _matrix = [];
 
     private (int Row1, int Col1, int Row2, int Col2)[] _queries = [];
+
+    // Every SumRegion answer, in query order - what each arm returns.
+    private int[] _sums = [];
     [Params(20, 200)]
     public int Size { get; set; }
 
@@ -43,26 +46,24 @@ public class RangeSumQuery2DImmutableBenchmarks
             var col2 = random.Next(col1, Size);
             _queries[i] = (row1, col1, row2, col2);
         }
+
+        _sums = new int[QueryCount];
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceCellScan() => Replay(RangeSumQuery2DImmutableSolution.CreateByBruteForceCellScan(_matrix));
+    public int[] BruteForceCellScan() => Replay(RangeSumQuery2DImmutableSolution.CreateByBruteForceCellScan(_matrix));
 
     [Benchmark]
-    public long RowFenwickTreeQuery() => Replay(RangeSumQuery2DImmutableSolution.CreateByRowFenwickTree(_matrix));
+    public int[] RowFenwickTreeQuery() => Replay(RangeSumQuery2DImmutableSolution.CreateByRowFenwickTree(_matrix));
 
-    // Sums every returned region sum rather than discarding it, so the JIT can't eliminate the
-    // replay as dead code - the same "return the real answer, not a weaker proxy" shape
-    // OpenTheLockBenchmarks/LRUCacheBenchmarks already follow.
-    private long Replay(INumMatrix numMatrix)
+    private int[] Replay(INumMatrix numMatrix)
     {
-        var total = 0L;
-
-        foreach (var (row1, col1, row2, col2) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += numMatrix.SumRegion(row1, col1, row2, col2);
+            var (row1, col1, row2, col2) = _queries[i];
+            _sums[i] = numMatrix.SumRegion(row1, col1, row2, col2);
         }
 
-        return total;
+        return _sums;
     }
 }

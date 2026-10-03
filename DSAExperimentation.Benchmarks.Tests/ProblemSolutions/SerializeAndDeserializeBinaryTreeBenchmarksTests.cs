@@ -1,18 +1,16 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SerializeAndDeserializeBinaryTreeBenchmarks (ARCHITECTURE 17.9): both arms
-// round-trip the same tree through their own grammar, so a harness whose arms disagree is timing two
-// different round trips. Setup builds the seeded BinaryTrees.Balanced tree, which is documented to
-// hold exactly NodeCount nodes in heap layout, so the rebuilt tree must hold that many again; the
-// Setup test asserts that count against the size Setup was asked for rather than only against the
-// other arm, so it catches a grammar that loses or duplicates a node.
-//
-// Weak with respect to shape, and reported as such with this batch: an arm's only public answer is
-// the rebuilt tree's node count, so agreement witnesses that both grammars preserved the node count,
-// not that either rebuilt the same tree. Strengthening it would mean returning the tree itself,
-// which is not this harness's call.
+// round-trip the same tree through their own grammar and return the rebuilt tree, so a harness whose
+// arms disagree is timing two different round trips. Setup builds the BinaryTrees.Balanced tree,
+// which is documented to hold exactly NodeCount nodes in heap layout, and a round trip is only
+// correct when it rebuilds that tree exactly - so each arm's tree is asserted against a fresh
+// BinaryTrees.Balanced of the same size, which catches a grammar that loses, duplicates or moves a
+// node without needing the arms to agree on it.
 public sealed partial class SerializeAndDeserializeBinaryTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 2_000;
@@ -20,25 +18,15 @@ public sealed partial class SerializeAndDeserializeBinaryTreeBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload()
     {
-        Assert.Equal(BuildHarness().QueueRoundTrip(), BuildHarness().QueueRoundTrip());
-        Assert.Equal(SmallestNodeCount, BuildHarness().QueueRoundTrip());
+        Assert.Equal(AnswerGraphText.Of(BuildHarness().QueueRoundTrip()), AnswerGraphText.Of(BuildHarness().QueueRoundTrip()));
+        Assert.Equal(OriginalTree(), AnswerGraphText.Of(BuildHarness().QueueRoundTrip()));
     }
 
     [Fact]
-    public void QueueRoundTrip_BalancedHeapLayoutTree_AgreesWithStringConcatRoundTrip()
-    {
-        var harness = BuildHarness();
+    public void StringConcatRoundTrip_BalancedHeapLayoutTree_RebuildsTheOriginalTree() =>
+        Assert.Equal(OriginalTree(), AnswerGraphText.Of(BuildHarness().StringConcatRoundTrip()));
 
-        Assert.Equal(harness.StringConcatRoundTrip(), harness.QueueRoundTrip());
-    }
-
-    [Fact]
-    public void StringConcatRoundTrip_BalancedHeapLayoutTree_AgreesWithQueueRoundTrip()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.QueueRoundTrip(), harness.StringConcatRoundTrip());
-    }
+    private static string OriginalTree() => AnswerGraphText.Of(BinaryTrees.Balanced(SmallestNodeCount));
 
     private static SerializeAndDeserializeBinaryTreeBenchmarks BuildHarness()
     {

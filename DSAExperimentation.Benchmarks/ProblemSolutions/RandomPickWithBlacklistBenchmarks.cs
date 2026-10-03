@@ -23,6 +23,9 @@ public class RandomPickWithBlacklistBenchmarks
 
     private int[] _blacklist = [];
 
+    // Every value a Pick returned, in call order - what each arm returns.
+    private int[] _picks = [];
+
     [Params(2_000, 100_000)]
     public int RangeSize { get; set; }
 
@@ -31,10 +34,11 @@ public class RandomPickWithBlacklistBenchmarks
     {
         var blacklistSize = RangeSize - WhitelistSize;
         _blacklist = Enumerable.Range(0, blacklistSize).ToArray();
+        _picks = new int[PickCalls];
     }
 
     [Benchmark(Baseline = true)]
-    public long RejectionSampling()
+    public int[] RejectionSampling()
     {
         var randomPick = RandomPickWithBlacklistSolution.CreateByRejectionSampling(RangeSize, _blacklist, Seed);
 
@@ -42,22 +46,20 @@ public class RandomPickWithBlacklistBenchmarks
     }
 
     [Benchmark]
-    public long SetHashMapRemap()
+    public int[] SetHashMapRemap()
     {
         var randomPick = RandomPickWithBlacklistSolution.CreateBySetHashMapRemap(RangeSize, _blacklist, Seed);
 
         return Replay(randomPick);
     }
 
-    private static long Replay(RandomPickWithBlacklistSolution.IRandomPick randomPick)
+    private int[] Replay(RandomPickWithBlacklistSolution.IRandomPick randomPick)
     {
-        long total = 0;
-
         for (var call = 0; call < PickCalls; call++)
         {
-            total += randomPick.Pick();
+            _picks[call] = randomPick.Pick();
         }
 
-        return total;
+        return _picks;
     }
 }

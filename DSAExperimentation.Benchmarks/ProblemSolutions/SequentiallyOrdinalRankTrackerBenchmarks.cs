@@ -19,6 +19,9 @@ public class SequentiallyOrdinalRankTrackerBenchmarks
     private string[] _names = [];
 
     private int[] _scores = [];
+
+    // What every Get returned, in call order - what each arm returns; an Add returns nothing.
+    private string[] _ranked = [];
     [Params(100, 1_000)]
     public int OperationCount { get; set; }
 
@@ -28,26 +31,25 @@ public class SequentiallyOrdinalRankTrackerBenchmarks
         var random = new Random(RandomSeed);
         _names = Enumerable.Range(0, OperationCount).Select(i => NamePrefix + i).ToArray();
         _scores = SeededDraws.Values(OperationCount, 0, ScoreExclusiveUpperBound, random);
+        _ranked = new string[OperationCount];
     }
 
     [Benchmark(Baseline = true)]
-    public string ResortEveryGet() =>
+    public string[] ResortEveryGet() =>
         Replay(SequentiallyOrdinalRankTrackerSolution.CreateByResortEveryGet());
 
     [Benchmark]
-    public string TwoHeapTracker() =>
+    public string[] TwoHeapTracker() =>
         Replay(SequentiallyOrdinalRankTrackerSolution.CreateByTwoHeaps());
 
-    private string Replay(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
+    private string[] Replay(SequentiallyOrdinalRankTrackerSolution.IRankTracker tracker)
     {
-        var lastRank = string.Empty;
-
         for (var i = 0; i < OperationCount; i++)
         {
             tracker.Add(_names[i], _scores[i]);
-            lastRank = tracker.Get();
+            _ranked[i] = tracker.Get();
         }
 
-        return lastRank;
+        return _ranked;
     }
 }

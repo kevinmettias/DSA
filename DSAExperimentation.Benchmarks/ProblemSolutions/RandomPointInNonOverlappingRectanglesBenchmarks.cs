@@ -7,8 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is handed the prepared prefix-sum array its hoisted overload takes, so building
 // it is charged to [GlobalSetup] rather than to the picks being measured. Both
 // draw from a fresh, identically-seeded Random per invocation so neither benefits
-// from a luckier draw order; the summed coordinates avoid materializing an int[]
-// per pick while still exercising the real point both arms return.
+// from a luckier draw order; each returns every point it picked, in call order.
 public class RandomPointInNonOverlappingRectanglesBenchmarks
 {
     private const int PickCalls = 500;
@@ -19,6 +18,8 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     private int[][] _rects = [];
 
     private int[] _prefixAreas = [];
+
+    private int[][] _points = [];
     [Params(50, 2_000)]
     public int RectangleCount { get; set; }
 
@@ -28,6 +29,7 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
         var random = new Random(RandomSeed);
         _rects = new int[RectangleCount][];
         _prefixAreas = new int[RectangleCount];
+        _points = new int[PickCalls][];
         var running = 0;
 
         for (var i = 0; i < RectangleCount; i++)
@@ -43,34 +45,30 @@ public class RandomPointInNonOverlappingRectanglesBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan()
+    public int[][] LinearScan()
     {
         var random = new Random(1);
-        long total = 0;
 
         for (var call = 0; call < PickCalls; call++)
         {
-            var point =
+            _points[call] =
                 RandomPointInNonOverlappingRectanglesSolution.PickByLinearScan(_rects, _prefixAreas, random);
-            total += point[0] + point[1];
         }
 
-        return total;
+        return _points;
     }
 
     [Benchmark]
-    public long BinarySearchUpperBound()
+    public int[][] BinarySearchUpperBound()
     {
         var random = new Random(1);
-        long total = 0;
 
         for (var call = 0; call < PickCalls; call++)
         {
-            var point = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(
+            _points[call] = RandomPointInNonOverlappingRectanglesSolution.PickByBinarySearchUpperBound(
                 _rects, _prefixAreas, random);
-            total += point[0] + point[1];
         }
 
-        return total;
+        return _points;
     }
 }

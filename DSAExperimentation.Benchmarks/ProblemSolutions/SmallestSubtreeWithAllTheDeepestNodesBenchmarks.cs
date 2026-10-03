@@ -10,9 +10,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // over DeepestSubtreeAlgebra. The tree is built complete (heap-shaped) so recursion
 // depth stays O(log n) at both sizes.
 //
-// Each arm reports the answer node's .Value rather than the node itself: a public
-// [Benchmark] method cannot expose the internal BinaryTreeNode<int>, and the int is
-// still enough to force the full (depth, node) computation through to a result.
+// Each arm returns the answer node itself, as object because a public [Benchmark]
+// method cannot expose the internal BinaryTreeNode<int>.
 public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -24,10 +23,10 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public int HandRolledRecursion() =>
-        SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByRecursion(_root)!.Value;
+    public object? HandRolledRecursion() =>
+        SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByRecursion(_root);
 
     [Benchmark]
-    public int TreeFoldWithAlgebra() =>
-        SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByTreeFold(_root)!.Value;
+    public object? TreeFoldWithAlgebra() =>
+        SmallestSubtreeWithAllTheDeepestNodesSolution.SubtreeWithAllDeepestByTreeFold(_root);
 }

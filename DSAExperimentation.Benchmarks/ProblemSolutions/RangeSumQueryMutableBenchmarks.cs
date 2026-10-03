@@ -19,6 +19,9 @@ public class RangeSumQueryMutableBenchmarks
     private int[] _initial = [];
 
     private (bool IsUpdate, int A, int B)[] _operations = [];
+
+    // Every SumRange answer, in script order - what each arm returns; an Update returns nothing.
+    private int[] _sums = [];
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -42,20 +45,19 @@ public class RangeSumQueryMutableBenchmarks
                 _operations[i] = (false, left, right);
             }
         }
+
+        _sums = new int[_operations.Count(operation => !operation.IsUpdate)];
     }
 
     [Benchmark(Baseline = true)]
-    public long ArrayRescan() => Replay(RangeSumQueryMutableSolution.CreateByArrayRescan(_initial));
+    public int[] ArrayRescan() => Replay(RangeSumQueryMutableSolution.CreateByArrayRescan(_initial));
 
     [Benchmark]
-    public long SegmentTreeQuery() => Replay(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(_initial));
+    public int[] SegmentTreeQuery() => Replay(RangeSumQueryMutableSolution.CreateBySegmentTreeQuery(_initial));
 
-    // Sums every returned SumRange result rather than discarding it, so the JIT can't eliminate
-    // the replay as dead code - the same "return the real answer, not a weaker proxy" shape
-    // OpenTheLockBenchmarks/LRUCacheBenchmarks already follow.
-    private long Replay(INumArray numArray)
+    private int[] Replay(INumArray numArray)
     {
-        var total = 0L;
+        var answered = 0;
 
         foreach (var (isUpdate, a, b) in _operations)
         {
@@ -65,10 +67,10 @@ public class RangeSumQueryMutableBenchmarks
             }
             else
             {
-                total += numArray.SumRange(a, b);
+                _sums[answered++] = numArray.SumRange(a, b);
             }
         }
 
-        return total;
+        return _sums;
     }
 }

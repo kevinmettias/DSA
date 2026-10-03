@@ -1,18 +1,15 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SerializeAndDeserializeBSTBenchmarks (ARCHITECTURE 17.9): both arms round-trip
-// the same tree through their own grammar, so a harness whose arms disagree is timing two different
-// trees - or the same tree two different ways. Setup inserts the shuffled values 0..NodeCount-1, so
-// the tree holds exactly NodeCount nodes and the rebuilt tree must hold that many again; the Setup
-// test asserts that count against the size Setup was asked for, which catches a grammar that loses
-// or duplicates a node without needing the arms to agree on it.
-//
-// Weak with respect to shape, and reported as such with this batch: an arm's only public answer is
-// the rebuilt tree's node count, so agreement witnesses that both grammars preserved the node count,
-// not that either rebuilt the same tree. Strengthening it would mean returning the tree itself,
-// which is not this harness's call.
+// the same tree through their own grammar and return the rebuilt tree, so a harness whose arms
+// disagree rebuilt two different trees - which BenchmarkArmsTests checks. Setup inserts the shuffled
+// values 0..NodeCount-1, so the rebuilt tree must be a search tree holding exactly those values: its
+// in-order walk is 0..NodeCount-1, asserted against the size Setup was asked for, which catches a
+// grammar that loses, duplicates or misorders a node without needing the arms to agree on it.
 public sealed partial class SerializeAndDeserializeBSTBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
@@ -20,25 +17,15 @@ public sealed partial class SerializeAndDeserializeBSTBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload()
     {
-        Assert.Equal(BuildHarness().NullMarkerQueueRoundTrip(), BuildHarness().NullMarkerQueueRoundTrip());
-        Assert.Equal(SmallestNodeCount, BuildHarness().NullMarkerQueueRoundTrip());
+        Assert.Equal(
+            AnswerGraphText.Of(BuildHarness().NullMarkerQueueRoundTrip()),
+            AnswerGraphText.Of(BuildHarness().NullMarkerQueueRoundTrip()));
+        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), InOrderValues(BuildHarness().NullMarkerQueueRoundTrip()));
     }
 
     [Fact]
-    public void NullMarkerQueueRoundTrip_ShuffledBst_AgreesWithPreOrderValueOnlyRoundTrip()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.PreOrderValueOnlyRoundTrip(), harness.NullMarkerQueueRoundTrip());
-    }
-
-    [Fact]
-    public void PreOrderValueOnlyRoundTrip_ShuffledBst_AgreesWithNullMarkerQueueRoundTrip()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.NullMarkerQueueRoundTrip(), harness.PreOrderValueOnlyRoundTrip());
-    }
+    public void PreOrderValueOnlyRoundTrip_ShuffledBst_RebuildsEveryValueInOrder() =>
+        Assert.Equal(Enumerable.Range(0, SmallestNodeCount), InOrderValues(BuildHarness().PreOrderValueOnlyRoundTrip()));
 
     private static SerializeAndDeserializeBSTBenchmarks BuildHarness()
     {
@@ -46,5 +33,25 @@ public sealed partial class SerializeAndDeserializeBSTBenchmarksTests
         harness.Setup();
 
         return harness;
+    }
+
+    private static List<int> InOrderValues(object? root)
+    {
+        var values = new List<int>();
+        AppendInOrder(values, (BinaryTreeNode<int>?)root);
+
+        return values;
+    }
+
+    private static void AppendInOrder(List<int> values, BinaryTreeNode<int>? node)
+    {
+        if (node is null)
+        {
+            return;
+        }
+
+        AppendInOrder(values, node.Left);
+        values.Add(node.Value);
+        AppendInOrder(values, node.Right);
     }
 }

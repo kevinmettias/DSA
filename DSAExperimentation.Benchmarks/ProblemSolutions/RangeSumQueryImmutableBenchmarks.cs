@@ -22,6 +22,9 @@ public class RangeSumQueryImmutableBenchmarks
     private int[] _nums = [];
 
     private (int Left, int Right)[] _queries = [];
+
+    // Every sumRange answer, in query order - what each arm returns.
+    private int[] _sums = [];
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -38,32 +41,31 @@ public class RangeSumQueryImmutableBenchmarks
             var right = random.Next(left, Length);
             _queries[i] = (left, right);
         }
+
+        _sums = new int[QueryCount];
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceRescan()
+    public int[] BruteForceRescan()
     {
-        var total = 0L;
-
-        foreach (var (left, right) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(_nums, left, right);
+            _sums[i] = RangeSumQueryImmutableSolution.SumRangeByBruteForceRescan(_nums, _queries[i].Left, _queries[i].Right);
         }
 
-        return total;
+        return _sums;
     }
 
     [Benchmark]
-    public long FenwickTreeQuery()
+    public int[] FenwickTreeQuery()
     {
         var tree = new FenwickTree<int, SumOperation<int>>(_nums);
-        var total = 0L;
 
-        foreach (var (left, right) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += RangeSumQueryImmutableSolution.SumRangeByFenwickTree(tree, left, right);
+            _sums[i] = RangeSumQueryImmutableSolution.SumRangeByFenwickTree(tree, _queries[i].Left, _queries[i].Right);
         }
 
-        return total;
+        return _sums;
     }
 }

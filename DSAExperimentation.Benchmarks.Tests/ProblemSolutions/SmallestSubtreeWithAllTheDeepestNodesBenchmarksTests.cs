@@ -1,5 +1,7 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -10,35 +12,27 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // a closed form with no draw from any stream, so the same NodeCount is the whole of what pins
 // it.
 //
-// Both arms report the answer node's own value rather than the node, and Setup's tree gives
-// node i the value i, so the two ints agreeing means the two arms picked the same node. The
-// tree is complete, which makes the expected node derivable from the fixture's own layout:
-// see the oracle below, which is what both arms are additionally checked against.
+// Both arms return the answer node itself, and Setup's tree gives node i the value i, so the
+// node's value names which node an arm picked. The tree is complete, which makes the expected
+// node derivable from the fixture's own layout: see the oracle below, which is what both arms
+// are checked against.
 public sealed partial class SmallestSubtreeWithAllTheDeepestNodesBenchmarksTests
 {
     private const int SmallestNodeCount = 2_000;
 
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameTree() =>
-        Assert.Equal(BuildHarness().HandRolledRecursion(), BuildHarness().HandRolledRecursion());
+        Assert.Equal(
+            AnswerGraphText.Of(BuildHarness().HandRolledRecursion()),
+            AnswerGraphText.Of(BuildHarness().HandRolledRecursion()));
 
     [Fact]
-    public void HandRolledRecursion_TwoThousandNodeCompleteTree_AgreesWithTreeFoldWithAlgebra()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.TreeFoldWithAlgebra(), harness.HandRolledRecursion());
-        Assert.Equal(ExpectedDeepestSubtreeValue(), harness.TreeFoldWithAlgebra());
-    }
+    public void HandRolledRecursion_TwoThousandNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
+        Assert.Equal(ExpectedDeepestSubtreeValue(), Assert.IsType<BinaryTreeNode<int>>(BuildHarness().HandRolledRecursion()).Value);
 
     [Fact]
-    public void TreeFoldWithAlgebra_TwoThousandNodeCompleteTree_AgreesWithHandRolledRecursion()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.HandRolledRecursion(), harness.TreeFoldWithAlgebra());
-        Assert.Equal(ExpectedDeepestSubtreeValue(), harness.HandRolledRecursion());
-    }
+    public void TreeFoldWithAlgebra_TwoThousandNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
+        Assert.Equal(ExpectedDeepestSubtreeValue(), Assert.IsType<BinaryTreeNode<int>>(BuildHarness().TreeFoldWithAlgebra()).Value);
 
     // The smallest subtree holding every deepest node is the lowest common ancestor of the
     // deepest level's two endpoints, since a complete tree fills that level contiguously. Setup

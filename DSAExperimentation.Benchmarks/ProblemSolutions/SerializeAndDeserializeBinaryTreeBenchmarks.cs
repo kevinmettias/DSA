@@ -6,10 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SerializeAndDeserializeBinaryTreeSolution's, the same
 // methods SerializeAndDeserializeBinaryTreeSolutionTests proves correct. Each arm builds the
-// serialized string and then rebuilds the tree from it in full; CountNodes only
-// exists to give a [Benchmark] method (which must be public) a public return value
-// for an internal BinaryTreeNode<int>, the same technique
-// ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks uses.
+// serialized string, rebuilds the tree from it in full and returns the rebuilt root, as
+// object because BinaryTreeNode<int> is internal and a [Benchmark] method must be public.
 public class SerializeAndDeserializeBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -21,18 +19,12 @@ public class SerializeAndDeserializeBinaryTreeBenchmarks
     public void Setup() => _root = BinaryTrees.Balanced(NodeCount);
 
     [Benchmark(Baseline = true)]
-    public int StringConcatRoundTrip() =>
-        CountNodes(SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(
-            SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(_root)));
+    public object? StringConcatRoundTrip() =>
+        SerializeAndDeserializeBinaryTreeSolution.DeserializeByStringConcat(
+            SerializeAndDeserializeBinaryTreeSolution.SerializeByStringConcat(_root));
 
     [Benchmark]
-    public int QueueRoundTrip() =>
-        CountNodes(SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(
-            SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(_root)));
-
-    private static int CountNodes(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : NodesInSubtree(node);
-
-    private static int NodesInSubtree(BinaryTreeNode<int> node) =>
-        1 + CountNodes(node.Left) + CountNodes(node.Right);
+    public object? QueueRoundTrip() =>
+        SerializeAndDeserializeBinaryTreeSolution.DeserializeByQueue(
+            SerializeAndDeserializeBinaryTreeSolution.SerializeByQueue(_root));
 }

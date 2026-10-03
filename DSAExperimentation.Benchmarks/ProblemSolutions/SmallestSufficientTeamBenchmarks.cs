@@ -37,10 +37,10 @@ public class SmallestSufficientTeamBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForceRecursion() =>
-        SmallestSufficientTeamSolution.SmallestTeamByBruteForceRecursion(_masks).Length;
+    public int[] BruteForceRecursion() =>
+        SmallestSufficientTeamSolution.SmallestTeamByBruteForceRecursion(_masks);
 
     [Benchmark]
-    public int MemoizedRecursion() =>
-        SmallestSufficientTeamSolution.SmallestTeamByMemoizedBitmask(_masks).Length;
+    public int[] MemoizedRecursion() =>
+        SmallestSufficientTeamSolution.SmallestTeamByMemoizedBitmask(_masks);
 }

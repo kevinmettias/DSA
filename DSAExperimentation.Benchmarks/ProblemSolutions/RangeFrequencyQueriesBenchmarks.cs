@@ -20,6 +20,9 @@ public class RangeFrequencyQueriesBenchmarks
     private int[] _arr = [];
 
     private (int Left, int Right, int Value)[] _queries = [];
+
+    // Every query's frequency, in query order - what each arm returns.
+    private int[] _frequencies = [];
     [Params(200, 5_000)]
     public int Length { get; set; }
 
@@ -37,32 +40,33 @@ public class RangeFrequencyQueriesBenchmarks
             var value = random.Next(ValueRange);
             _queries[i] = (left, right, value);
         }
+
+        _frequencies = new int[QueryCount];
     }
 
     [Benchmark(Baseline = true)]
-    public long BruteForceRescan()
+    public int[] BruteForceRescan()
     {
-        var total = 0L;
-
-        foreach (var (left, right, value) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += RangeFrequencyQueriesSolution.QueryByBruteForceRescan(_arr, left, right, value);
+            var (left, right, value) = _queries[i];
+            _frequencies[i] = RangeFrequencyQueriesSolution.QueryByBruteForceRescan(_arr, left, right, value);
         }
 
-        return total;
+        return _frequencies;
     }
 
     [Benchmark]
-    public long HashMapWithBinarySearch()
+    public int[] HashMapWithBinarySearch()
     {
         var indicesByValue = RangeFrequencyQueriesSolution.BuildValueIndex(_arr);
-        var total = 0L;
 
-        foreach (var (left, right, value) in _queries)
+        for (var i = 0; i < _queries.Length; i++)
         {
-            total += RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(indicesByValue, left, right, value);
+            var (left, right, value) = _queries[i];
+            _frequencies[i] = RangeFrequencyQueriesSolution.QueryByBinarySearchIndex(indicesByValue, left, right, value);
         }
 
-        return total;
+        return _frequencies;
     }
 }

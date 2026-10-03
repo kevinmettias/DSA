@@ -10,12 +10,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // them. The arms themselves are still not comparable value for value, and no assertion pretends
 // otherwise: rejection sampling redraws from [0, RangeSize) until it escapes the blacklist, while
 // the remap arm draws once from [0, whitelistBound), so the two consume their identical seeded
-// streams completely differently and equal totals would mean two different sampling procedures
+// streams completely differently and equal picks would mean two different sampling procedures
 // made the same draws. What both genuinely share is the whitelist they sample - [RangeSize -
-// WhitelistSize, RangeSize) - so each arm's mean over PickCalls draws has to sit at the middle of
-// that interval. The tolerance is the sampling noise of that mean, and the assertion is weaker
-// than arm agreement: it witnesses that both arms return whitelisted values, not that they drew
-// the same ones. Reported as such.
+// WhitelistSize, RangeSize) - so every pick an arm returns has to lie in it, and each arm's mean
+// over PickCalls draws has to sit at the middle of that interval. The tolerance is the sampling
+// noise of that mean, and the assertion is weaker than arm agreement: it witnesses that both arms
+// return whitelisted values, not that they drew the same ones. Reported as such.
 public sealed partial class RandomPickWithBlacklistBenchmarksTests
 {
     private const int SmallestRangeSize = 2_000;
@@ -43,19 +43,21 @@ public sealed partial class RandomPickWithBlacklistBenchmarksTests
 
     [Fact]
     public void RejectionSampling_SmallestRangeSize_DrawsFromTheWhitelistOnly() =>
-        Assert.InRange(
-            Mean(BuildHarness().RejectionSampling()),
-            ExpectedWhitelistMean * (1 - RelativeTolerance),
-            ExpectedWhitelistMean * (1 + RelativeTolerance));
+        AssertWhitelistedPicks(BuildHarness().RejectionSampling());
 
     [Fact]
     public void SetHashMapRemap_SmallestRangeSize_DrawsFromTheWhitelistOnly() =>
+        AssertWhitelistedPicks(BuildHarness().SetHashMapRemap());
+
+    private static void AssertWhitelistedPicks(int[] picks)
+    {
+        Assert.Equal(PickCalls, picks.Length);
+        Assert.All(picks, pick => Assert.InRange(pick, SmallestWhitelistValue, LargestWhitelistValue));
         Assert.InRange(
-            Mean(BuildHarness().SetHashMapRemap()),
+            picks.Average(),
             ExpectedWhitelistMean * (1 - RelativeTolerance),
             ExpectedWhitelistMean * (1 + RelativeTolerance));
-
-    private static double Mean(long sumOfPicks) => sumOfPicks / (double)PickCalls;
+    }
 
     private static RandomPickWithBlacklistBenchmarks BuildHarness()
     {

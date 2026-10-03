@@ -1,4 +1,6 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
+using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
@@ -6,9 +8,9 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // same tree for the same key, so a harness whose arms disagree is timing two different problems.
 // Setup builds the tree from one shuffled insertion order seeded at 1 and aims at the highest
 // value, so the same NodeCount must rebuild the same tree - and since the tree holds every value
-// 0..NodeCount-1, that highest value is present and its own value is the answer both arms must
-// return. Each arm only projects the found node's value out, so one harness instance is safe to
-// read twice in either order.
+// 0..NodeCount-1, that highest value is present and the node holding it is the answer both arms
+// must return. Neither arm changes the tree, so one harness instance is safe to read twice in
+// either order.
 public sealed partial class SearchInABinarySearchTreeBenchmarksTests
 {
     private const int SmallestNodeCount = 500;
@@ -17,25 +19,13 @@ public sealed partial class SearchInABinarySearchTreeBenchmarksTests
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameWorkload()
     {
-        Assert.Equal(BuildHarness().LinearScan(), BuildHarness().LinearScan());
-        Assert.Equal(HighestValue, BuildHarness().LinearScan());
+        Assert.Equal(AnswerGraphText.Of(BuildHarness().LinearScan()), AnswerGraphText.Of(BuildHarness().LinearScan()));
+        Assert.Equal(HighestValue, Assert.IsType<BinaryTreeNode<int>>(BuildHarness().LinearScan()).Value);
     }
 
     [Fact]
-    public void LinearScan_SeededTree_AgreesWithBinarySearchTreeDescent()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.BinarySearchTreeDescent(), harness.LinearScan());
-    }
-
-    [Fact]
-    public void BinarySearchTreeDescent_SeededTree_AgreesWithLinearScan()
-    {
-        var harness = BuildHarness();
-
-        Assert.Equal(harness.LinearScan(), harness.BinarySearchTreeDescent());
-    }
+    public void BinarySearchTreeDescent_SeededTree_FindsTheHighestValue() =>
+        Assert.Equal(HighestValue, Assert.IsType<BinaryTreeNode<int>>(BuildHarness().BinarySearchTreeDescent()).Value);
 
     private static SearchInABinarySearchTreeBenchmarks BuildHarness()
     {

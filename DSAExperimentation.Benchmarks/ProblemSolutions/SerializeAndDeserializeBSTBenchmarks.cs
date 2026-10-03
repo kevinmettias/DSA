@@ -7,10 +7,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods SerializeAndDeserializeBSTSolutionTests proves correct. The workload tree is
 // built once in GlobalSetup - via a manual, non-repo insert over a shuffled
 // insertion order - so neither arm's timing is charged for tree construction, only
-// for the round trip through its own serialization grammar. CountNodes only exists
-// to give a [Benchmark] method (which must be public) a public return value for an
-// internal BinaryTreeNode<int>, the same technique
-// SerializeAndDeserializeBinaryTreeBenchmarks uses.
+// for the round trip through its own serialization grammar. Each arm returns the
+// rebuilt tree's root, as object because BinaryTreeNode<int> is internal and a
+// [Benchmark] method must be public.
 public class SerializeAndDeserializeBSTBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
@@ -76,18 +75,12 @@ public class SerializeAndDeserializeBSTBenchmarks
     }
 
     [Benchmark(Baseline = true)]
-    public int NullMarkerQueueRoundTrip() =>
-        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
-            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root)));
+    public object? NullMarkerQueueRoundTrip() =>
+        SerializeAndDeserializeBSTSolution.DeserializeByNullMarkerQueue(
+            SerializeAndDeserializeBSTSolution.SerializeByNullMarkerQueue(_root));
 
     [Benchmark]
-    public int PreOrderValueOnlyRoundTrip() =>
-        CountNodes(SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
-            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root)));
-
-    private static int CountNodes(BinaryTreeNode<int>? node) =>
-        node is null ? 0 : CountSubtreeNodes(node);
-
-    private static int CountSubtreeNodes(BinaryTreeNode<int> node) =>
-        1 + CountNodes(node.Left) + CountNodes(node.Right);
+    public object? PreOrderValueOnlyRoundTrip() =>
+        SerializeAndDeserializeBSTSolution.DeserializeByBstInsert(
+            SerializeAndDeserializeBSTSolution.SerializeByPreOrderValues(_root));
 }

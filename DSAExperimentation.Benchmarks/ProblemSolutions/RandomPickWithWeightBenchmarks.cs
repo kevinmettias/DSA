@@ -11,8 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // real caller constructs a Solution once, and charging the prefix-sum
 // construction that instance performs to the same measurement, exactly like
 // RandomPickIndexBenchmarks charges its HashMap construction) before replaying
-// the same PickCalls script from the same seeded draw sequence, returning the
-// running total so the JIT can't eliminate the replay as dead code.
+// the same PickCalls script from the same seeded draw sequence, returning every
+// picked index in call order.
 public class RandomPickWithWeightBenchmarks
 {
     private const int PickCalls = 500;
@@ -20,6 +20,8 @@ public class RandomPickWithWeightBenchmarks
     private const int MaxWeightExclusive = 100;
 
     private int[] _weights = [];
+
+    private int[] _picks = [];
 
     [Params(50, 2_000)]
     public int WeightCount { get; set; }
@@ -29,24 +31,23 @@ public class RandomPickWithWeightBenchmarks
     {
         var random = new Random(RandomSeed);
         _weights = SeededDraws.Values(WeightCount, 1, MaxWeightExclusive, random);
+        _picks = new int[PickCalls];
     }
 
     [Benchmark(Baseline = true)]
-    public long LinearScan() => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(_weights, new Random(1)));
+    public int[] LinearScan() => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByLinearScan(_weights, new Random(1)));
 
     [Benchmark]
-    public long BinarySearchUpperBound()
+    public int[] BinarySearchUpperBound()
         => Replay(new RandomPickWithWeightSolution.RandomPickWithWeightByBinarySearchUpperBound(_weights, new Random(1)));
 
-    private static long Replay(RandomPickWithWeightSolution.IRandomPickWithWeight solution)
+    private int[] Replay(RandomPickWithWeightSolution.IRandomPickWithWeight solution)
     {
-        long total = 0;
-
         for (var call = 0; call < PickCalls; call++)
         {
-            total += solution.PickIndex();
+            _picks[call] = solution.PickIndex();
         }
 
-        return total;
+        return _picks;
     }
 }
