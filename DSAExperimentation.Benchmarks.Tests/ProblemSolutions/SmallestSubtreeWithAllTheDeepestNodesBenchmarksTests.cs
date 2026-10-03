@@ -18,7 +18,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // are checked against.
 public sealed partial class SmallestSubtreeWithAllTheDeepestNodesBenchmarksTests
 {
-    private const int SmallestNodeCount = 2_000;
+    private const int SmallestNodeCount = 50;
 
     [Fact]
     public void Setup_SameNodeCount_RebuildsTheSameTree() =>
@@ -27,11 +27,11 @@ public sealed partial class SmallestSubtreeWithAllTheDeepestNodesBenchmarksTests
             AnswerGraphText.Of(BuildHarness().HandRolledRecursion()));
 
     [Fact]
-    public void HandRolledRecursion_TwoThousandNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
+    public void HandRolledRecursion_FiftyNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
         Assert.Equal(ExpectedDeepestSubtreeValue(), Assert.IsType<BinaryTreeNode<int>>(BuildHarness().HandRolledRecursion()).Value);
 
     [Fact]
-    public void TreeFoldWithAlgebra_TwoThousandNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
+    public void TreeFoldWithAlgebra_FiftyNodeCompleteTree_PicksTheDeepestLevelsAncestor() =>
         Assert.Equal(ExpectedDeepestSubtreeValue(), Assert.IsType<BinaryTreeNode<int>>(BuildHarness().TreeFoldWithAlgebra()).Value);
 
     // The smallest subtree holding every deepest node is the lowest common ancestor of the

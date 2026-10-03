@@ -9,7 +9,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // than a second strategy to reconcile - there was only ever one algorithm here,
 // written once in the test and never actually exercised by the benchmark. The
 // mod-three sweep scans the array once per bit; the two-bit-counter arm scans it
-// once in total.
+// once in total. The tripled values are distinct, so each appears exactly three times,
+// as LC 137 promises.
 public class SingleNumberIIBenchmarks
 {
     private const int RandomSeed = 137;
@@ -26,7 +27,7 @@ public class SingleNumberIIBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var triples = SeededDraws.Values(TripleCount, 1, ValueUpperBound, random);
+        var triples = SeededDraws.DistinctValues(TripleCount, 1, ValueUpperBound, random);
 
         var values = new List<int>((TripleCount * ElementsPerTriple) + 1);
 

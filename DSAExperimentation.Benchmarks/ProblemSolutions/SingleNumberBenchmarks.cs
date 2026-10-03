@@ -7,11 +7,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SingleNumberSolutionTests proves correct. Values are paired up and shuffled so every
 // element but one cancels; the singleton's position is randomized by the shuffle
 // rather than fixed at an end. The XOR fold cancels in place while the set arm
-// adds and removes every pair through a HashSet.
+// adds and removes every pair through a HashSet. The paired values are distinct and
+// inside LC 136's [-3 * 10^4, 3 * 10^4], so each appears exactly twice, as the
+// problem promises.
 public class SingleNumberBenchmarks
 {
     private const int ElementsPerPair = 2;
-    private const int ValueUpperBound = 1_000_000;
+    private const int MaxPairedValue = 30_000;
     private const int Seed = 136;
     private const int SingletonValue = -1;
 
@@ -25,7 +27,7 @@ public class SingleNumberBenchmarks
     {
         var random = new Random(Seed);
         var pairCount = Length / ElementsPerPair;
-        var pairs = SeededDraws.Values(pairCount, 1, ValueUpperBound, random);
+        var pairs = SeededDraws.DistinctValues(pairCount, 1, MaxPairedValue + 1, random);
 
         var values = new List<int>(pairs.Length * ElementsPerPair + 1);
         values.AddRange(pairs);

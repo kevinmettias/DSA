@@ -35,6 +35,33 @@ public sealed partial class SeededDrawsTests
             SeededDraws.Values(Count, LowInclusive, HighExclusive, new Random(Seed)),
             SeededDraws.Values(Count, LowInclusive, HighExclusive, new Random(Seed)));
 
+    // A range barely wider than the count, so the plain draw repeats and the distinct one has to skip.
+    private const int NarrowHighExclusive = LowInclusive + Count + 1;
+
+    [Fact]
+    public void DistinctValues_NarrowRange_ReturnsCountDistinctValuesInsideTheRange()
+    {
+        var values = SeededDraws.DistinctValues(Count, LowInclusive, NarrowHighExclusive, new Random(Seed));
+
+        Assert.Equal(Count, values.Distinct().Count());
+        Assert.All(values, value => Assert.InRange(value, LowInclusive, NarrowHighExclusive - 1));
+    }
+
+    // Skipping only repeats means a draw that never repeated is Values' draw, value for value.
+    [Fact]
+    public void DistinctValues_WideRangeWithNoRepeat_MatchesValues()
+    {
+        var plain = SeededDraws.Values(Count, LowInclusive, HighExclusive, new Random(Seed));
+
+        Assert.Equal(Count, plain.Distinct().Count());
+        Assert.Equal(plain, SeededDraws.DistinctValues(Count, LowInclusive, HighExclusive, new Random(Seed)));
+    }
+
+    [Fact]
+    public void DistinctValues_RangeSmallerThanCount_Throws() =>
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => SeededDraws.DistinctValues(Count, LowInclusive, LowInclusive + Count - 1, new Random(Seed)));
+
     [Fact]
     public void Pairs_Count_ReturnsOnePairOfDrawsPerPosition()
     {

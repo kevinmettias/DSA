@@ -10,10 +10,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // construction is charged to setup and only the replay is measured. The contrast is a
 // List<int>'s O(n) minimum scan plus O(n) Contains per operation against
 // Heap<Element, MinHeapOrder<Element>> + Set<Element>'s O(log n) pop and O(1) duplicate
-// rejection.
+// rejection. The script is CallCount calls long, up to LC 2336's 1,000 calls in total,
+// which also keeps every added-back number inside its [1, 1000].
 public class SmallestNumberInInfiniteSetBenchmarks
 {
-    private const int OpsCapacityMultiplier = 2;
     private const int PopOpType = 0;
     private const int AddBackOpType = 1;
     private const int RandomSeed = 2336; // LC problem number
@@ -25,22 +25,25 @@ public class SmallestNumberInInfiniteSetBenchmarks
     // returns nothing.
     private int[] _popped = [];
 
-    [Params(200, 5_000)]
-    public int Length { get; set; }
+    [Params(100, 1_000)]
+    public int CallCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        var ops = new List<(int Type, int Num)>(Length * OpsCapacityMultiplier);
+        var ops = new List<(int Type, int Num)>(CallCount);
         var producedSoFar = 0;
 
-        for (var i = 0; i < Length; i++)
+        // Every round adds a call, so the script reaches CallCount calls and stops there.
+        while (ops.Count < CallCount)
         {
             ops.Add((PopOpType, 0));
             producedSoFar++;
 
-            if (producedSoFar > 1 && random.Next(AddBackOneInEvery) == 0)
+            var mayAddBack = producedSoFar > 1 && ops.Count < CallCount;
+
+            if (mayAddBack && random.Next(AddBackOneInEvery) == 0)
             {
                 ops.Add((AddBackOpType, random.Next(1, producedSoFar)));
             }

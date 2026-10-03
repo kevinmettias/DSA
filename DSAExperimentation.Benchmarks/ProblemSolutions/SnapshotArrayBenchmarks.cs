@@ -5,10 +5,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are SnapshotArraySolution's, the same strategies
 // SnapshotArraySolutionTests proves correct. Setup seeds each array's single index with
 // Length snapshots, one Set per Snap - the worst case for history size - and
-// charges that construction to [GlobalSetup]; _querySnapId sits just past the final
-// snapshot so both strategies are forced through their full worst-case floor
-// lookup, the same "force the real worst case" convention
-// TimeBasedKeyValueStoreBenchmarks uses.
+// charges that construction to [GlobalSetup]; _querySnapId is the final snapshot's id -
+// the latest LC 1146 allows, since a snap_id must name a snap already taken - so both
+// strategies are forced through their full worst-case floor lookup, the same "force the
+// real worst case" convention TimeBasedKeyValueStoreBenchmarks uses.
 public class SnapshotArrayBenchmarks
 {
     private const int ValueScaleFactor = 2;
@@ -27,7 +27,7 @@ public class SnapshotArrayBenchmarks
     {
         _linearFloorScan = Seed(SnapshotArraySolution.CreateByLinearFloorScan(IndexCount));
         _binarySearchFloor = Seed(SnapshotArraySolution.CreateByBinarySearchFloor(IndexCount));
-        _querySnapId = Length + 1;
+        _querySnapId = Length - 1;
     }
 
     private SnapshotArraySolution.ISnapshotArray Seed(SnapshotArraySolution.ISnapshotArray snapshotArray)

@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods SmallestSubtreeWithAllTheDeepestNodesSolutionTests proves correct - a
 // hand-rolled (depth, node) recursion vs. this repo's own TreeFold engine closed
 // over DeepestSubtreeAlgebra. The tree is built complete (heap-shaped) so recursion
-// depth stays O(log n) at both sizes.
+// depth stays O(log n) at both sizes, and NodeCount stops at LC 865's 500 nodes, whose
+// values 0..499 stay inside its unique [0, 500].
 //
 // Each arm returns the answer node itself, as object because a public [Benchmark]
 // method cannot expose the internal BinaryTreeNode<int>.
@@ -16,7 +17,7 @@ public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
 
-    [Params(2_000, 20_000)]
+    [Params(50, 500)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]

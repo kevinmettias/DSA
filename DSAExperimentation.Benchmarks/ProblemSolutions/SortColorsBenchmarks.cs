@@ -5,7 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are SortColorsSolution's, the same methods
 // SortColorsSolutionTests proves correct. The workload is already color-sorted in
 // descending order (2, 1, 0, 2, 1, 0, ...) so both strategies do real work over
-// the whole length rather than short-circuiting on an already-ascending run.
+// the whole length rather than short-circuiting on an already-ascending run. Length
+// stops at LC 75's 300.
 public class SortColorsBenchmarks
 {
     private const int MaxColorValue = 2;
@@ -16,7 +17,7 @@ public class SortColorsBenchmarks
     // The array each arm copies _values into and sorts; allocated once in setup.
     private int[] _copy = [];
 
-    [Params(200, 5_000)]
+    [Params(200, 300)]
     public int Length { get; set; }
 
     [GlobalSetup]

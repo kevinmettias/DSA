@@ -9,6 +9,10 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 public sealed partial class SingleNumberIIIWorkloadsTests
 {
     private const int Length = 200;
+
+    // SingleNumberIIIBenchmarks' larger size, where a draw of pairs from a range without skipping
+    // repeats did collide.
+    private const int LargestBenchmarkLength = 5_000;
     private const int Seed = 260; // LC problem number
     private const int ElementsPerPair = 2;
     private const int SingletonCount = 2;
@@ -38,6 +42,15 @@ public sealed partial class SingleNumberIIIWorkloadsTests
         Assert.Equal(
             SingletonCount + (((Length - SingletonCount) / ElementsPerPair) * ElementsPerPair),
             values.Length);
+    }
+
+    [Fact]
+    public void BuildValues_LargestBenchmarkLength_ContainsOnlySingletonsAndPairs()
+    {
+        var values = SingleNumberIIIWorkloads.BuildValues(LargestBenchmarkLength, Seed);
+        var appearances = values.CountBy(value => value).Select(group => group.Value);
+
+        Assert.All(appearances, count => Assert.InRange(count, 1, PairedAppearanceCount));
     }
 
     [Fact]

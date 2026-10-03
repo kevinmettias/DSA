@@ -18,6 +18,32 @@ internal static class SeededDraws
     public static int[] Values(int count, int lowInclusive, int highExclusive, Random random) =>
         Enumerable.Range(0, count).Select(_ => random.Next(lowInclusive, highExclusive)).ToArray();
 
+    // Values with every repeat skipped and drawn again, for a problem that promises its values
+    // distinct - or builds pairs and triples from them, where a repeat would put one value in the
+    // array four or six times. Up to the first repeat the draws are exactly Values', so a workload
+    // that never drew one is unchanged. The range must hold count values.
+    public static int[] DistinctValues(int count, int lowInclusive, int highExclusive, Random random)
+    {
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(count, highExclusive - lowInclusive);
+
+        var drawn = new HashSet<int>(count);
+        var values = new List<int>(count);
+
+        // Ends once count distinct values are in hand, which the range check above makes reachable.
+        while (values.Count < count)
+        {
+            var value = random.Next(lowInclusive, highExclusive);
+            var isFirstDraw = drawn.Add(value);
+
+            if (isFirstDraw)
+            {
+                values.Add(value);
+            }
+        }
+
+        return [.. values];
+    }
+
     // Two independent draws of the same quantity, which is the shape of LC 2940's
     // pair of building indices and LC 1707's (xor operand, limit) pair.
     public static int[][] Pairs(int count, int lowInclusive, int highExclusive, Random random) =>

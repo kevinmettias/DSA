@@ -7,13 +7,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of the (Power, Value) pairs against this repo's own MergeSort over
 // ArrayIndexedSequence. Both arms recompute the same Collatz powers first, so the
 // comparison isolates the sorting strategy rather than the power computation. k is the
-// range length, so each arm reports the last pair in sorted order.
+// range length, so each arm reports the last pair in sorted order. RangeLength stops at
+// LC 1387's hi = 1000.
 public class SortIntegersByThePowerValueBenchmarks
 {
     // The measured range is always [1, RangeLength].
     private const int Lo = 1;
 
-    [Params(200, 5_000)]
+    [Params(200, 1_000)]
     public int RangeLength { get; set; }
 
     [Benchmark(Baseline = true)]
