@@ -7,14 +7,14 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // push/pop-timing backtracking against the single greedy stack sweep - so a harness whose arms
 // disagree is answering two different questions about LC 946.
 //
-// Setup builds _popped through the shared StackSequenceWorkloads fixture's BuildValidPopOrder, so
-// the pair really is a valid one: the backtracking arm has to search rather than fail on its first
-// branch, and LC 946's answer is true. That decisive literal is asserted alongside the arms'
-// agreement so a shared wrong verdict cannot pass. Both arms return bool, so this harness witnesses
-// the verdict only, not the interleaving behind it.
+// Setup builds each popped order through the shared StackSequenceWorkloads fixture's
+// BuildValidPopOrder, so the pair really is a valid one: the backtracking arm has to search rather
+// than fail on its first branch, and LC 946's answer is true. That decisive literal is asserted
+// alongside the arms' agreement so a shared wrong verdict cannot pass. Both arms return bool, so this
+// harness witnesses the verdict only, not the interleaving behind it.
 public sealed partial class ValidateStackSequencesBenchmarksTests
 {
-    // The smaller of Setup's [Params(10, 16)] lengths.
+    // The smallest length both arms run.
     private const int SmallestLength = 10;
 
     // Setup's documented outcome: the popped order was built as a valid one for the pushed array.
@@ -23,8 +23,10 @@ public sealed partial class ValidateStackSequencesBenchmarksTests
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload()
     {
-        Assert.Equal(BuildHarness().IsValidByGreedyStackSweep(), BuildHarness().IsValidByGreedyStackSweep());
-        Assert.Equal(ExpectedIsValid, BuildHarness().IsValidByGreedyStackSweep());
+        Assert.Equal(
+            BuildHarness().IsValidByGreedyStackSweep(SmallestLength),
+            BuildHarness().IsValidByGreedyStackSweep(SmallestLength));
+        Assert.Equal(ExpectedIsValid, BuildHarness().IsValidByGreedyStackSweep(SmallestLength));
     }
 
     [Fact]
@@ -32,8 +34,10 @@ public sealed partial class ValidateStackSequencesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.IsValidByGreedyStackSweep(), harness.IsValidByBacktrackingSearch());
-        Assert.Equal(ExpectedIsValid, harness.IsValidByBacktrackingSearch());
+        Assert.Equal(
+            harness.IsValidByGreedyStackSweep(SmallestLength),
+            harness.IsValidByBacktrackingSearch(SmallestLength));
+        Assert.Equal(ExpectedIsValid, harness.IsValidByBacktrackingSearch(SmallestLength));
     }
 
     [Fact]
@@ -41,13 +45,15 @@ public sealed partial class ValidateStackSequencesBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.IsValidByBacktrackingSearch(), harness.IsValidByGreedyStackSweep());
-        Assert.Equal(ExpectedIsValid, harness.IsValidByGreedyStackSweep());
+        Assert.Equal(
+            harness.IsValidByBacktrackingSearch(SmallestLength),
+            harness.IsValidByGreedyStackSweep(SmallestLength));
+        Assert.Equal(ExpectedIsValid, harness.IsValidByGreedyStackSweep(SmallestLength));
     }
 
     private static ValidateStackSequencesBenchmarks BuildHarness()
     {
-        var harness = new ValidateStackSequencesBenchmarks { Length = SmallestLength };
+        var harness = new ValidateStackSequencesBenchmarks();
         harness.Setup();
 
         return harness;

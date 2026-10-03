@@ -9,26 +9,39 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prepared SumGameState its hoisted overload takes, so reducing a board to
 // (leftBlanks, rightBlanks, difference) is charged to [GlobalSetup] rather than to
 // the search being measured.
+//
+// Sizes are per arm, counted in blanks per side. Branching is 10 digits per remaining
+// blank, so the unmemoized tree is O(10^(2 * blanks)) and stops at 3 per side, in the
+// millions of calls rather than billions. The memoized arm's (blanks, blanks,
+// difference) states grow only polynomially and run on to 32 per side. The closed form
+// is O(1) whatever the board, so it stays at the sizes every arm shares.
 public class SumGameBenchmarks
 {
-    private SumGameState _board;
+    private Dictionary<int, SumGameState> _boardBySize = [];
 
-    // Kept modest: branching is 10 digits per remaining blank, so the unmemoized
-    // tree is already O(10^(2 * BlanksPerSide)) - 4 and 6 total blanks keep
-    // CanAliceWinByBruteForceRecursion in the thousands-to-millions of calls, not
-    // billions.
-    [Params(2, 3)]
-    public int BlanksPerSide { get; set; }
+    public static IEnumerable<int> BaselineSizes => [2, 3];
 
+    public static IEnumerable<int> MemoizedSizes => [.. BaselineSizes, 8, 32];
+
+    // Every size any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup() => _board = new SumGameState(BlanksPerSide, BlanksPerSide, SumDifference: 0);
+    public void Setup() =>
+        _boardBySize = MemoizedSizes.ToDictionary(
+            blanksPerSide => blanksPerSide,
+            blanksPerSide => new SumGameState(blanksPerSide, blanksPerSide, SumDifference: 0));
 
     [Benchmark(Baseline = true)]
-    public bool CanAliceWinByBruteForceRecursion() => SumGameSolution.CanAliceWinByBruteForceRecursion(_board);
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public bool CanAliceWinByBruteForceRecursion(int blanksPerSide) =>
+        SumGameSolution.CanAliceWinByBruteForceRecursion(_boardBySize[blanksPerSide]);
 
     [Benchmark]
-    public bool CanAliceWinByMemoizedRecursion() => SumGameSolution.CanAliceWinByMemoizedRecursion(_board);
+    [ArgumentsSource(nameof(MemoizedSizes))]
+    public bool CanAliceWinByMemoizedRecursion(int blanksPerSide) =>
+        SumGameSolution.CanAliceWinByMemoizedRecursion(_boardBySize[blanksPerSide]);
 
     [Benchmark]
-    public bool CanAliceWinByClosedForm() => SumGameSolution.CanAliceWinByClosedForm(_board);
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public bool CanAliceWinByClosedForm(int blanksPerSide) =>
+        SumGameSolution.CanAliceWinByClosedForm(_boardBySize[blanksPerSide]);
 }

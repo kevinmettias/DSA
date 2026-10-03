@@ -3,9 +3,9 @@ using DSAExperimentation.Benchmarks.Fixtures;
 namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 
 // Harness coverage for SumOfBeautifulSubsequencesWorkloads (ARCHITECTURE 17.7). The LC 3671 reading
-// is kept small enough that the brute-force arm's 2^n subsequence enumeration still finishes an
-// iteration, which is the one property this fixture has to hold - the divisor-sieve arm's own
-// asymptotic edge only shows up at sizes a bitmask baseline could never join it at.
+// is built at whatever length an arm asks for - up to 16 for the brute-force arm's 2^n subsequence
+// enumeration, on to 10^4 for the divisor-sieve arm - so what this fixture has to hold is values in
+// bound and varied enough to give the sieve real divisors, checked here at the brute force's largest.
 public sealed partial class SumOfBeautifulSubsequencesWorkloadsTests
 {
     private const int Size = 16;

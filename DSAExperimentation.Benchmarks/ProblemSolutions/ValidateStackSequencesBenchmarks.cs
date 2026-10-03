@@ -9,29 +9,46 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n) greedy sweep through this repo's own Stack<int>. The pushed/popped pair is a
 // genuinely valid one, built once in [GlobalSetup], so the backtracking arm has to
 // search rather than fail fast.
+//
+// Sizes are per arm. The backtracking search stops at 16; the greedy sweep runs on to
+// LC 946's own bound of 1,000. The two are compared at the sizes both run.
 public class ValidateStackSequencesBenchmarks
 {
     // LC problem number, reused as the deterministic interleaving seed.
     private const int RandomSeed = 946;
 
-    private int[] _pushed = [];
+    private Dictionary<int, (int[] Pushed, int[] Popped)> _sequencesBySize = [];
 
-    private int[] _popped = [];
-    [Params(10, 16)]
-    public int Length { get; set; }
+    public static IEnumerable<int> BaselineSizes => [10, 16];
 
+    public static IEnumerable<int> GreedySweepSizes => [.. BaselineSizes, 100, 1_000];
+
+    // Every size any arm runs is built here, outside the timed region; an arm looks its own up.
     [GlobalSetup]
-    public void Setup()
+    public void Setup() => _sequencesBySize = GreedySweepSizes.ToDictionary(length => length, BuildSequences);
+
+    private static (int[] Pushed, int[] Popped) BuildSequences(int length)
     {
-        _pushed = StackSequenceWorkloads.BuildPushed(Length);
-        _popped = StackSequenceWorkloads.BuildValidPopOrder(_pushed, RandomSeed);
+        var pushed = StackSequenceWorkloads.BuildPushed(length);
+
+        return (pushed, StackSequenceWorkloads.BuildValidPopOrder(pushed, RandomSeed));
     }
 
     [Benchmark(Baseline = true)]
-    public bool IsValidByBacktrackingSearch() =>
-        ValidateStackSequencesSolution.IsValidByBacktrackingSearch(_pushed, _popped);
+    [ArgumentsSource(nameof(BaselineSizes))]
+    public bool IsValidByBacktrackingSearch(int length)
+    {
+        var (pushed, popped) = _sequencesBySize[length];
+
+        return ValidateStackSequencesSolution.IsValidByBacktrackingSearch(pushed, popped);
+    }
 
     [Benchmark]
-    public bool IsValidByGreedyStackSweep() =>
-        ValidateStackSequencesSolution.IsValidByGreedyStackSweep(_pushed, _popped);
+    [ArgumentsSource(nameof(GreedySweepSizes))]
+    public bool IsValidByGreedyStackSweep(int length)
+    {
+        var (pushed, popped) = _sequencesBySize[length];
+
+        return ValidateStackSequencesSolution.IsValidByGreedyStackSweep(pushed, popped);
+    }
 }

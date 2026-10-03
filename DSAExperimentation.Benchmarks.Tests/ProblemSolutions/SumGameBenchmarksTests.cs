@@ -25,13 +25,13 @@ public sealed partial class SumGameBenchmarksTests
 
         Assert.Equal(
             (
-                first.CanAliceWinByBruteForceRecursion(),
-                first.CanAliceWinByMemoizedRecursion(),
-                first.CanAliceWinByClosedForm()),
+                first.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide),
+                first.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide),
+                first.CanAliceWinByClosedForm(SmallestBlanksPerSide)),
             (
-                second.CanAliceWinByBruteForceRecursion(),
-                second.CanAliceWinByMemoizedRecursion(),
-                second.CanAliceWinByClosedForm()));
+                second.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide),
+                second.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide),
+                second.CanAliceWinByClosedForm(SmallestBlanksPerSide)));
     }
 
     [Fact]
@@ -39,9 +39,13 @@ public sealed partial class SumGameBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.CanAliceWinByMemoizedRecursion(), harness.CanAliceWinByBruteForceRecursion());
-        Assert.Equal(harness.CanAliceWinByClosedForm(), harness.CanAliceWinByBruteForceRecursion());
-        Assert.False(harness.CanAliceWinByBruteForceRecursion());
+        Assert.Equal(
+            harness.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide),
+            harness.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide));
+        Assert.Equal(
+            harness.CanAliceWinByClosedForm(SmallestBlanksPerSide),
+            harness.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide));
+        Assert.False(harness.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide));
     }
 
     [Fact]
@@ -49,9 +53,13 @@ public sealed partial class SumGameBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.CanAliceWinByBruteForceRecursion(), harness.CanAliceWinByMemoizedRecursion());
-        Assert.Equal(harness.CanAliceWinByClosedForm(), harness.CanAliceWinByMemoizedRecursion());
-        Assert.False(harness.CanAliceWinByMemoizedRecursion());
+        Assert.Equal(
+            harness.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide),
+            harness.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide));
+        Assert.Equal(
+            harness.CanAliceWinByClosedForm(SmallestBlanksPerSide),
+            harness.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide));
+        Assert.False(harness.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide));
     }
 
     [Fact]
@@ -59,14 +67,18 @@ public sealed partial class SumGameBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(harness.CanAliceWinByBruteForceRecursion(), harness.CanAliceWinByClosedForm());
-        Assert.Equal(harness.CanAliceWinByMemoizedRecursion(), harness.CanAliceWinByClosedForm());
-        Assert.False(harness.CanAliceWinByClosedForm());
+        Assert.Equal(
+            harness.CanAliceWinByBruteForceRecursion(SmallestBlanksPerSide),
+            harness.CanAliceWinByClosedForm(SmallestBlanksPerSide));
+        Assert.Equal(
+            harness.CanAliceWinByMemoizedRecursion(SmallestBlanksPerSide),
+            harness.CanAliceWinByClosedForm(SmallestBlanksPerSide));
+        Assert.False(harness.CanAliceWinByClosedForm(SmallestBlanksPerSide));
     }
 
     private static SumGameBenchmarks BuildHarness()
     {
-        var harness = new SumGameBenchmarks { BlanksPerSide = SmallestBlanksPerSide };
+        var harness = new SumGameBenchmarks();
         harness.Setup();
 
         return harness;

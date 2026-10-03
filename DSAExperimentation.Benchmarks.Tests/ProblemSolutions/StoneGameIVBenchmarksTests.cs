@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // question - whether the player to move wins LC 1510 from a given stone count - one by plain
 // un-memoized recursion, one by memoizing the remaining count, so a harness whose arms disagree
 // is timing two different problems. This class has no [GlobalSetup]: the workload is the
-// [Params] stone count itself.
+// stone count each arm is called with.
 public sealed partial class StoneGameIVBenchmarksTests
 {
     private const int SmallestStoneCount = 16;
@@ -19,12 +19,11 @@ public sealed partial class StoneGameIVBenchmarksTests
     public void CanAliceWinByUnmemoizedRecursion_AgreesWithCanAliceWinByMemoizedRecursion()
     {
         var harness = BuildHarness();
-        var unmemoized = harness.CanAliceWinByUnmemoizedRecursion();
+        var unmemoized = harness.CanAliceWinByUnmemoizedRecursion(SmallestStoneCount);
 
-        Assert.Equal(unmemoized, harness.CanAliceWinByMemoizedRecursion());
+        Assert.Equal(unmemoized, harness.CanAliceWinByMemoizedRecursion(SmallestStoneCount));
         Assert.Equal(ExpectedAliceWins, unmemoized);
     }
 
-    private static StoneGameIVBenchmarks BuildHarness() =>
-        new() { StoneCount = SmallestStoneCount };
+    private static StoneGameIVBenchmarks BuildHarness() => new();
 }
