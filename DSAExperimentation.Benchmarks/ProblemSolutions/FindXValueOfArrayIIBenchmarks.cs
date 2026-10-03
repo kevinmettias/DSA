@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindXValueOfArrayII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindXValueOfArrayIISolution's, the same methods
-// FindXValueOfArrayIITests proves correct. k is fixed at the maximum LeetCode
+// FindXValueOfArrayIISolutionTests proves correct. k is fixed at the maximum LeetCode
 // allows (5), the segment tree's least favorable case since every node's Counts
 // matrix is 5x5 - the workload choice that actually stresses the strategy this
 // benchmark exists to justify.

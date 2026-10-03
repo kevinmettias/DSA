@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.ReachableNodesWithRestrictions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReachableNodesWithRestrictionsSolution's, the same
-// methods ReachableNodesWithRestrictionsTests proves correct. Each is handed the
+// methods ReachableNodesWithRestrictionsSolutionTests proves correct. Each is handed the
 // prepared restriction Set its hoisted overload takes, so building the membership
 // structure is charged to [GlobalSetup] rather than to the count being measured -
 // leaving the flood fill's adjacency copy against the union-find's edge pass as the

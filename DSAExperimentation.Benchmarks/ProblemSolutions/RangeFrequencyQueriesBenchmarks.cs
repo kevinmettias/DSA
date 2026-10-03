@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RangeFrequencyQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RangeFrequencyQueriesSolution's, the same methods
-// RangeFrequencyQueriesTests proves correct, run over a fixed batch of queries -
+// RangeFrequencyQueriesSolutionTests proves correct, run over a fixed batch of queries -
 // RangeFreqQuery's index is built once per arm and queried QueryCount times against
 // it, the pattern LeetCode's own class exposes, so the comparison is "build one
 // index + QueryCount O(log n) lookups" against "no build + QueryCount O(n) rescans".

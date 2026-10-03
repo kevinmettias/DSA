@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumOperationsToEqualizeSubarrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumOperationsToEqualizeSubarraysSolution's,
-// the same methods MinimumOperationsToEqualizeSubarraysTests proves correct.
+// the same methods MinimumOperationsToEqualizeSubarraysSolutionTests proves correct.
 // The merge-sort tree and run-id index are built once via the solution's own
 // BuildIndex and charged to [GlobalSetup] through the MergeSortTree arm's
 // hoisted overload, so only the per-query answering is measured - the same

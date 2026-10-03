@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheDuplicateNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheDuplicateNumberSolution's, the same methods
-// FindTheDuplicateNumberTests proves correct - the canonical O(n^2) all-pairs brute
+// FindTheDuplicateNumberSolutionTests proves correct - the canonical O(n^2) all-pairs brute
 // force vs. treating nums[i] as a pointer from node i to node nums[i] and handing the
 // resulting implicit linked list to this repo's own Floyd's-algorithm
 // CycleDetection.FindCycleStart. _values is 1..Length with Length itself appended

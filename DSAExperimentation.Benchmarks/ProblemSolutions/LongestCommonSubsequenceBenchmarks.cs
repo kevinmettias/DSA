@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestCommonSubsequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestCommonSubsequenceSolution's, the same methods
-// LongestCommonSubsequenceTests proves correct. Tabulation is plain bottom-up 2D
+// LongestCommonSubsequenceSolutionTests proves correct. Tabulation is plain bottom-up 2D
 // array filling against this repo's Memoizer running the same suffix-pair recurrence
 // EditDistanceBenchmarks/MaximumLengthOfRepeatedSubarrayBenchmarks already use - both
 // O(n*m), just walking the table from opposite directions. Both strings are

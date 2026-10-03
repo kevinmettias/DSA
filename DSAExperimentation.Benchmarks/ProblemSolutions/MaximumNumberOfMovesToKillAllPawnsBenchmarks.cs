@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfMovesToKillAllPawns;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfMovesToKillAllPawnsSolution's, the
-// same methods MaximumNumberOfMovesToKillAllPawnsTests proves correct. The
+// same methods MaximumNumberOfMovesToKillAllPawnsSolutionTests proves correct. The
 // composed arm is handed the prepared KnightDistances its hoisted overload takes,
 // so every knight-distance BFS is charged to [GlobalSetup] rather than the
 // minimax being measured.

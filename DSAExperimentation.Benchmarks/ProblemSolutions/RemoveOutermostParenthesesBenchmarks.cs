@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveOutermostParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveOutermostParenthesesSolution's, the same methods
-// RemoveOutermostParenthesesTests proves correct - a plain running-depth counter
+// RemoveOutermostParenthesesSolutionTests proves correct - a plain running-depth counter
 // (baseline) against this repo's own Stack<char> holding each unmatched opener.
 // Neither needs anything hoisted beyond the string LeetCode itself hands in, so
 // [GlobalSetup] only sizes and seeds the balanced expression.

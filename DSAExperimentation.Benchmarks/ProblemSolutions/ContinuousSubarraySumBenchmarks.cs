@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ContinuousSubarraySum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ContinuousSubarraySumSolution's, the same methods
-// ContinuousSubarraySumTests proves correct. K is chosen larger than any possible
+// ContinuousSubarraySumSolutionTests proves correct. K is chosen larger than any possible
 // total sum of the generated values, so every prefix sum's remainder is just the
 // prefix sum itself - strictly increasing since every value is positive, so no two
 // prefix sums (nor the seeded {0: -1} entry, since every prefix sum stays positive)

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfTotalStrengthOfWizardsSolution's, the same
-// methods SumOfTotalStrengthOfWizardsTests proves correct. _strength is a random
+// methods SumOfTotalStrengthOfWizardsSolutionTests proves correct. _strength is a random
 // permutation so the brute-force arm's inner loop always runs its full remaining
 // length - with every value distinct there is no run of equal minimums to let it
 // settle early.

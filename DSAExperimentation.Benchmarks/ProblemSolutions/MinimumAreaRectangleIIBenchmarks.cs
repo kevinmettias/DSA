@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumAreaRectangleII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumAreaRectangleIISolution's, the same methods
-// MinimumAreaRectangleIITests proves correct. The points are drawn from a grid
+// MinimumAreaRectangleIISolutionTests proves correct. The points are drawn from a grid
 // barely larger than the point count, so rectangles - rotated ones included - are
 // plentiful and both arms do real work. Length is kept modest because the
 // quadruple-scan baseline is O(n^4), the same reasoning

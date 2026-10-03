@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfBeautifulIntegersInTheRange;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfBeautifulIntegersInTheRangeSolution's, the
-// same methods NumberOfBeautifulIntegersInTheRangeTests proves correct
+// same methods NumberOfBeautifulIntegersInTheRangeSolutionTests proves correct
 // (TwoSumBenchmarks precedent). CountByDigitDpMemo's cost depends only on High's
 // own digit count (~constant here, both Params share the same digit length), while
 // CountByBruteForce walks every integer in [Low, High] - RangeSize is what

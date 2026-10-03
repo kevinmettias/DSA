@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumIceCreamBars;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumIceCreamBarsSolution's, the same methods
-// MaximumIceCreamBarsTests proves correct - an O(n^2) repeated-selection scan
+// MaximumIceCreamBarsSolutionTests proves correct - an O(n^2) repeated-selection scan
 // against one MergeSort followed by a single greedy pass. _coins is sized to roughly
 // a quarter of the bars' total cost so both strategies are forced to scan well past
 // the cheapest few bars instead of exiting after one or two purchases. The cost

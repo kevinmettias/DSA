@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximumSumOfSubsequenceWithNonAdjacentElementsSolution's, the same methods
-// MaximumSumOfSubsequenceWithNonAdjacentElementsTests proves correct. Every
+// MaximumSumOfSubsequenceWithNonAdjacentElementsSolutionTests proves correct. Every
 // index gets exactly one query (a full rewrite of the array, in a random
 // order) - the case that most separates the two strategies, since the
 // baseline rescans all of Length on every single one of those Length queries

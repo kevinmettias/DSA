@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfVisiblePointsSolution's, the same
-// methods MaximumNumberOfVisiblePointsTests proves correct - the canonical O(n^2)
+// methods MaximumNumberOfVisiblePointsSolutionTests proves correct - the canonical O(n^2)
 // brute force against sort-then-slide, which uses this repo's own
 // Algorithms.Sorting.MergeSort once and then a single O(n) two-pointer sweep over the
 // angle-doubled array. _points is generated so none land exactly on Location (that

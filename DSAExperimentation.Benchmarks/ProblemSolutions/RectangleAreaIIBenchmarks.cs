@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RectangleAreaII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RectangleAreaIISolution's, the same methods
-// RectangleAreaIITests proves correct. CoordinateCompressionCellCheck compresses
+// RectangleAreaIISolutionTests proves correct. CoordinateCompressionCellCheck compresses
 // x and y into O(n) distinct coordinates each and checks every one of the O(n^2)
 // resulting cells against every rectangle, O(n^3); SweepLineWithIntervalSet
 // walks the O(n) x-slabs once and merges each slab's active rectangles' y-ranges

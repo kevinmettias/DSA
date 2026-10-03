@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MiddleOfTheLinkedListSolution's, the same methods
-// MiddleOfTheLinkedListTests proves correct. CountThenWalk is the naive two-pass
+// MiddleOfTheLinkedListSolutionTests proves correct. CountThenWalk is the naive two-pass
 // approach (count the list, then walk length/2 steps from the head);
 // SlowFastTwoPointer lands on the same node in a single pass. Both are O(n), but
 // the baseline touches every node twice.

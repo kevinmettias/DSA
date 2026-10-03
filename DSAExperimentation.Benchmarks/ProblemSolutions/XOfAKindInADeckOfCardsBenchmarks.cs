@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.XOfAKindInADeckOfCards;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are XOfAKindInADeckOfCardsSolution's, the same methods
-// XOfAKindInADeckOfCardsTests proves correct - the BCL's Dictionary tally vs. this
+// XOfAKindInADeckOfCardsSolutionTests proves correct - the BCL's Dictionary tally vs. this
 // repo's own HashMap<int, int>, the "same algorithm, BCL structures vs. repo
 // structures" contrast HandOfStraightsBenchmarks already draws.
 public class XOfAKindInADeckOfCardsBenchmarks

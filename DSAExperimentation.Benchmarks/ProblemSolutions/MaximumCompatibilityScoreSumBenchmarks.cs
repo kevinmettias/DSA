@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumCompatibilityScoreSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumCompatibilityScoreSumSolution's, the same methods
-// MaximumCompatibilityScoreSumTests proves correct - the textbook unmemoized bitmask
+// MaximumCompatibilityScoreSumSolutionTests proves correct - the textbook unmemoized bitmask
 // recursion over (student, usedMentorMask) against the identical recursion routed
 // through this repo's own Memoizer. Each arm is handed the prepared
 // CompatibilityScoreMatrix its hoisted overload takes, so building the score table is

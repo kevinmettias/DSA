@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SpiralMatrixII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SpiralMatrixIISolution's, the same methods
-// SpiralMatrixIITests proves correct. Both visit exactly Size^2 cells - the gap is
+// SpiralMatrixIISolutionTests proves correct. Both visit exactly Size^2 cells - the gap is
 // per-cell overhead, not algorithm class.
 public class SpiralMatrixIIBenchmarks
 {

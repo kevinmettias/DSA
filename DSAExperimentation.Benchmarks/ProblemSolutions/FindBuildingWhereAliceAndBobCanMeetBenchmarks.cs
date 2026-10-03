@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindBuildingWhereAliceAndBobCanMeet;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindBuildingWhereAliceAndBobCanMeetSolution's, the
-// same methods FindBuildingWhereAliceAndBobCanMeetTests proves correct. Neither
+// same methods FindBuildingWhereAliceAndBobCanMeetSolutionTests proves correct. Neither
 // strategy needs a prepared representation beyond LeetCode's own heights/queries
 // shape - unlike a strategy built on a reusable graph or a sorted array, the
 // offline heap sweep's own "preparation" (bucketing each query at its hi index)

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignMemoryAllocator;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignMemoryAllocatorSolution's, the same classes
-// DesignMemoryAllocatorTests proves correct. The two strategies share the identical
+// DesignMemoryAllocatorSolutionTests proves correct. The two strategies share the identical
 // Allocate (a leftmost-free-run scan over a plain int[] memory array - every
 // accepted solution does this, so it is not the axis being compared) and differ only
 // in Free: the array-scan arm rescans the whole memory array for every unit still

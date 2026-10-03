@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckIfThereIsAValidParenthesesStringPath;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfThereIsAValidParenthesesStringPathSolution's,
-// the same methods CheckIfThereIsAValidParenthesesStringPathTests proves agree.
+// the same methods CheckIfThereIsAValidParenthesesStringPathSolutionTests proves agree.
 //
 // The grid is all '(' so nothing short-circuits the un-memoized arm's full
 // right/down branching early - the balance only ever grows, never goes negative, so

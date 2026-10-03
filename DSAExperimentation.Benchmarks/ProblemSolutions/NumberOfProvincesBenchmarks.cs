@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfProvinces;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfProvincesSolution's, the same methods
-// NumberOfProvincesTests proves correct. Both still touch every cell of the n x n
+// NumberOfProvincesSolutionTests proves correct. Both still touch every cell of the n x n
 // matrix, so this is not a different asymptotic class - Union-Find's edge is
 // near-constant-time merging via path compression/union-by-rank instead of DFS's
 // own recursion and visited-array bookkeeping.

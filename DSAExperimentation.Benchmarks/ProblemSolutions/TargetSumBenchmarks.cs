@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.TargetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are TargetSumSolution's, the same methods TargetSumTests
+// Harness only: both arms are TargetSumSolution's, the same methods TargetSumSolutionTests
 // proves correct. ElementCount is kept modest specifically because the unmemoized
 // baseline's 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents.
 public class TargetSumBenchmarks

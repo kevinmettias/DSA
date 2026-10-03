@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfWaysToArriveAtDestinationSolution's, the same
-// methods NumberOfWaysToArriveAtDestinationTests proves correct. Each is handed the
+// methods NumberOfWaysToArriveAtDestinationSolutionTests proves correct. Each is handed the
 // prepared WaysGraph its hoisted overload takes, so the shared Dijkstra distance
 // labelling is charged to [GlobalSetup] and the measured difference stays purely
 // how the shortest-time journeys are counted afterwards.

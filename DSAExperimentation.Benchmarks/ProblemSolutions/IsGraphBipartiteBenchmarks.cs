@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.IsGraphBipartite;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IsGraphBipartiteSolution's, the same methods
-// IsGraphBipartiteTests proves correct - a hand-rolled iterative DFS 2-coloring
+// IsGraphBipartiteSolutionTests proves correct - a hand-rolled iterative DFS 2-coloring
 // over the problem's own int[][] adjacency (a plain sbyte[] color array, an
 // explicit Stack<int>) against this repo's BipartiteCheck.IsBipartite, a
 // multi-root BFS 2-coloring composed from IGraphTopology/ListChildren/

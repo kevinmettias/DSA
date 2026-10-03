@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SetMatrixZeroes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SetMatrixZeroesSolution's, the same methods
-// SetMatrixZeroesTests proves correct. Each iteration clones the pristine
+// SetMatrixZeroesSolutionTests proves correct. Each iteration clones the pristine
 // matrix before zeroing, since the solution mutates in place and
 // [GlobalSetup] runs once per benchmark, not once per invocation.
 public class SetMatrixZeroesBenchmarks

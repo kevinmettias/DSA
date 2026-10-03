@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumPairRemovalToSortArrayIISolution's, the
-// same methods MinimumPairRemovalToSortArrayIITests proves correct. A wide,
+// same methods MinimumPairRemovalToSortArrayIISolutionTests proves correct. A wide,
 // uniformly random value range keeps the array genuinely out of order at every
 // scale, so both arms have real merge work to do rather than finishing in the
 // first few operations.

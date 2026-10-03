@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.FlattenBinaryTreeToLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FlattenBinaryTreeToLinkedListSolution's, the same
-// methods FlattenBinaryTreeToLinkedListTests proves correct. The original
+// methods FlattenBinaryTreeToLinkedListSolutionTests proves correct. The original
 // benchmark's two [Benchmark] arms were unimplemented stubs (each just returned
 // the literal 1, ignoring the tree entirely), so there was nothing to preserve
 // from them beyond the fact that this problem wants two arms.

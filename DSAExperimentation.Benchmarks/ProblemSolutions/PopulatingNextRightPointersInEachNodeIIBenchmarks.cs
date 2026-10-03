@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNodeII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PopulatingNextRightPointersInEachNodeIISolution's, the
-// same methods PopulatingNextRightPointersInEachNodeIITests proves correct.
+// same methods PopulatingNextRightPointersInEachNodeIISolutionTests proves correct.
 // BinaryTrees.Skewed (a right-only chain, one node per level) is the extreme
 // non-perfect shape - proof that neither strategy needs perfect-tree-specific code
 // to stay correct here.

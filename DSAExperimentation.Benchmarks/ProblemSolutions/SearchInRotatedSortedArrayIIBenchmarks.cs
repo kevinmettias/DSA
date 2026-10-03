@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SearchInRotatedSortedArrayIISolution's, the same
-// methods SearchInRotatedSortedArrayIITests proves correct. RotatedSortedArrayWorkloads
+// methods SearchInRotatedSortedArrayIISolutionTests proves correct. RotatedSortedArrayWorkloads
 // builds the array - rotated, with a bounded band of duplicates stamped across both
 // ends, shared with LC 154's sibling harness - so the trim loop does real, but small,
 // work relative to Length: large enough to exercise duplicate handling, small enough

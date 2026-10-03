@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ImplementStackUsingQueues;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ImplementStackUsingQueuesSolution's, the same
-// factories ImplementStackUsingQueuesTests proves correct. [GlobalSetup]
+// factories ImplementStackUsingQueuesSolutionTests proves correct. [GlobalSetup]
 // builds one fixed call script - Count pushes filling the stack, then Count
 // rounds of alternating pop/push - so every run replays identical LIFO
 // traffic and only the queue backing the rotation differs between arms, the

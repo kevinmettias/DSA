@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PathSumII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathSumIISolution's, the same methods
-// PathSumIITests proves correct. The original benchmark's two arms counted
+// PathSumIISolutionTests proves correct. The original benchmark's two arms counted
 // matching paths instead of building them - weaker than the test's own helper,
 // which already built LeetCode's real answer - so both arms here return the
 // paths themselves, same as the tree and target below.

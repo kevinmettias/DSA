@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PartitionEqualSubsetSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PartitionEqualSubsetSumSolution's, the same methods
-// PartitionEqualSubsetSumTests proves correct. Each arm takes the prepared-input
+// PartitionEqualSubsetSumSolutionTests proves correct. Each arm takes the prepared-input
 // overload with `half` already computed, so that summation is charged to
 // [GlobalSetup] rather than to the search being measured.
 public class PartitionEqualSubsetSumBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumLinesToRepresentALineChart;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumLinesToRepresentALineChartSolution's, the same
-// methods MinimumLinesToRepresentALineChartTests proves correct - the BCL's Array.Sort
+// methods MinimumLinesToRepresentALineChartSolutionTests proves correct - the BCL's Array.Sort
 // plus floating-point slope division against this repo's own MergeSort over
 // ArrayIndexedSequence plus the exact cross-product test. [GlobalSetup] generates the
 // point set in LeetCode's own jagged int[][] shape, so both arms are handed the prepared

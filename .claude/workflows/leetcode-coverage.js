@@ -136,14 +136,25 @@ function buildConventionSharedTiers() {
 // Items 3-4: the test and benchmark harnesses.
 function buildConventionHarnesses() {
   return (
-    `3. DSAExperimentation.Tests/LeetCodeCoverage/<Name>/<Name>Tests.cs - HARNESS ONLY, no algorithm ` +
-    `whatsoever. A \`public sealed class <Name>Tests\` with LeetCode's published examples stated ONCE as ` +
+    `3. DSAExperimentation.LeetCode.Tests/<Name>/<Name>SolutionTests.cs (namespace ` +
+    `DSAExperimentation.LeetCode.Tests.<Name>) - HARNESS ONLY, no algorithm whatsoever. A ` +
+    `\`public sealed partial class <Name>SolutionTests\` with LeetCode's published examples stated ONCE as ` +
     `\`public static TheoryData<...> Examples\`, then ONE \`[Theory] [MemberData(nameof(Examples))]\` ` +
-    `method PER STRATEGY, so a failure names the strategy that broke. No Fixtures/ subfolder - if you were ` +
-    `about to create one, that type belongs in Domain/ or the LeetCode/ problem folder instead.\n` +
+    `method PER STRATEGY whose name STARTS with the strategy member's name ` +
+    `(\`<Operation>By<Strategy>_LeetCodeExamples_...\`) - LeetCodeStrategyCoverageTests fails otherwise. ` +
+    `Never re-implement the algorithm privately in the test, and never add a theory that only checks the ` +
+    `strategies agree - each one is already asserted against the expected value. Build trees and lists with ` +
+    `LeetCodeWireFormat (DSAExperimentation.LeetCode.Conventions) and compare order-free answers with ` +
+    `LeetCodeAnswers - do not write a private BuildList/BuildTree/order-insensitive comparer. No Fixtures/ ` +
+    `subfolder - if you were about to create one, that type belongs in Domain/ or the LeetCode/ problem ` +
+    `folder instead.\n` +
     `4. DSAExperimentation.Benchmarks/ProblemSolutions/<Name>Benchmarks.cs - HARNESS ONLY. [Benchmark] ` +
-    `methods that are one-line calls into <Name>Solution, one per strategy, with [Params] input sizes and a ` +
-    `[GlobalSetup] that builds the workload. Only workload SIZING/seeding may live in ` +
+    `methods that are one-line calls into <Name>Solution, one per strategy, each RETURNING THE STRATEGY'S ` +
+    `FULL ANSWER (never a proxy such as .Length, .Count, [0] or a checksum - BenchmarkArmsTests compares ` +
+    `arms by their answers), with [Params] input sizes and a [GlobalSetup] that builds the workload outside ` +
+    `the timed region. No [MemoryDiagnoser], no [BenchmarkCategory] and no using of ` +
+    `BenchmarkDotNet.Attributes - BenchmarkConfig and the project's global using supply all three. Only ` +
+    `workload SIZING/seeding may live in ` +
     `DSAExperimentation.Benchmarks/Fixtures/ (see LockWorkloads, HammingWorkloads, WeightedGridWorkloads); ` +
     `what it builds FROM is Domain code.\n\n`
   )
@@ -154,10 +165,8 @@ function buildConventionReferenceShape() {
   return (
     `Read these as the reference shape before writing anything - they are migrated and correct:\n` +
     `- DSAExperimentation.LeetCode/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads)\n` +
-    `- DSAExperimentation.Tests/LeetCodeCoverage/OpenTheLock/OpenTheLockTests.cs\n` +
-    `- DSAExperimentation.Benchmarks/ProblemSolutions/OpenTheLockBenchmarks.cs\n` +
-    `Most existing tests/benchmarks are NOT yet migrated and still carry their algorithm inline in both ` +
-    `files - do not copy that shape, and do not treat it as evidence about the convention.\n\n`
+    `- DSAExperimentation.LeetCode.Tests/OpenTheLock/OpenTheLockSolutionTests.cs\n` +
+    `- DSAExperimentation.Benchmarks/ProblemSolutions/OpenTheLockBenchmarks.cs\n\n`
   )
 }
 
@@ -166,7 +175,7 @@ function buildNamingGuidance() {
     `Naming: PascalCase derived from the problem title (e.g. "House Robber II" -> HouseRobberII, keep roman ` +
     `numerals as-is). If the title starts with a digit (e.g. "3Sum", "132 Pattern"), spell out a natural C# ` +
     `identifier instead (ThreeSum, OneThreeTwoPattern) - use judgment, it just needs to be a valid, readable C# ` +
-    `identifier. Check DSAExperimentation.LeetCode/ and DSAExperimentation.Tests/LeetCodeCoverage/ first for a ` +
+    `identifier. Check DSAExperimentation.LeetCode/ and DSAExperimentation.LeetCode.Tests/ first for a ` +
     `folder that already covers this exact problem BY CONTENT (not just by name) and report it as already done ` +
     `if so, without duplicating it.\n\n` +
     `TESTING POLICY (ARCHITECTURE.md section 18): every data structure and algorithm carries its OWN direct ` +
@@ -264,12 +273,12 @@ const verifyReport = await agent(
   `repo root:\n` +
   `  dotnet build DSAExperimentation/DSAExperimentation.csproj -c Release\n` +
   `  dotnet build DSAExperimentation.LeetCode/DSAExperimentation.LeetCode.csproj -c Release\n` +
-  `  dotnet build DSAExperimentation.Tests/DSAExperimentation.Tests.csproj -c Release\n` +
-  `  dotnet test DSAExperimentation.Tests/DSAExperimentation.Tests.csproj --filter FullyQualifiedName~LeetCodeCoverage -c Release --no-build\n` +
+  `  dotnet build DSAExperimentation.LeetCode.Tests/DSAExperimentation.LeetCode.Tests.csproj -c Release\n` +
+  `  dotnet test DSAExperimentation.LeetCode.Tests/DSAExperimentation.LeetCode.Tests.csproj -c Release --no-build\n` +
   `  dotnet build DSAExperimentation.Benchmarks/DSAExperimentation.Benchmarks.csproj -c Release\n` +
   `(the last one just confirms the new benchmark classes compile - do NOT actually run BenchmarkDotNet jobs, ` +
   `that's too slow for this pass). Report whether the test-project build succeeded, whether the ` +
-  `LeetCodeCoverage-filtered tests passed, whether the benchmarks project built, and if anything failed, a ` +
+  `solution-tier tests passed, whether the benchmarks project built, and if anything failed, a ` +
   `concise summary of the first few real failures (file/line/message) - not the full raw log.`,
   { phase: 'Verify', schema: VERIFY_SCHEMA },
 )

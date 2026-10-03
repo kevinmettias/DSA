@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AccountsMerge;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AccountsMergeSolution's, the same methods
-// AccountsMergeTests proves correct - each now builds the actual merged accounts
+// AccountsMergeSolutionTests proves correct - each now builds the actual merged accounts
 // LeetCode asks for, rather than only counting the merged groups as the original
 // pair of arms did. Emails are drawn from a shared per-person pool so real overlaps -
 // and therefore real merge work - actually occur, the same "force genuine matches,

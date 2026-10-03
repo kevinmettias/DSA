@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidArrangementOfPairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidArrangementOfPairsSolution's, the same methods
-// ValidArrangementOfPairsTests proves correct - the BCL Dictionary<int, List<int>>
+// ValidArrangementOfPairsSolutionTests proves correct - the BCL Dictionary<int, List<int>>
 // Hierholzer walk against the same walk over this repo's own
 // HashMap<int, Stack<int>>. Both are handed LeetCode's own input shape, generated
 // once in [GlobalSetup] so pair construction is not charged to the measured method.

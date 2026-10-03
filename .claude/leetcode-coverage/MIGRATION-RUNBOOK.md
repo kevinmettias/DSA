@@ -17,7 +17,7 @@ After (ARCHITECTURE.md §17):
 
 ```
 DSAExperimentation.LeetCode/<Name>/<Name>Solution.cs   every strategy, <Operation>By<Strategy>
-DSAExperimentation.Tests/.../<Name>Tests.cs            harness: TheoryData Examples + 1 method per strategy
+DSAExperimentation.LeetCode.Tests/<Name>/<Name>SolutionTests.cs  harness: TheoryData Examples + 1 method per strategy
 DSAExperimentation.Benchmarks/.../<Name>Benchmarks.cs  harness: 1 one-line [Benchmark] per strategy
 ```
 

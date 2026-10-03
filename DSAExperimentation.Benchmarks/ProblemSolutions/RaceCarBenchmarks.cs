@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.RaceCar;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are RaceCarSolution's, the same methods RaceCarTests
+// Harness only: both arms are RaceCarSolution's, the same methods RaceCarSolutionTests
 // proves correct - the textbook mutate-the-tuple BFS (Queue<(int,int)> plus a
 // HashSet<(int,int)> visited set, generating each of the two candidate commands on
 // the fly) against this repo's own BFS, Reduce.Graph + DistanceMapReduceAlgebra

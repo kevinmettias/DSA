@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStock;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockSolution's, the same
-// methods BestTimeToBuyAndSellStockTests proves correct. Neither strategy has an
+// methods BestTimeToBuyAndSellStockSolutionTests proves correct. Neither strategy has an
 // early exit, so the random price distribution only affects the answer, not how
 // much work either arm does.
 public class BestTimeToBuyAndSellStockBenchmarks

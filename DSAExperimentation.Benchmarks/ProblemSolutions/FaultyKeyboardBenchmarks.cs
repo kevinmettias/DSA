@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FaultyKeyboard;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FaultyKeyboardSolution's, the same methods
-// FaultyKeyboardTests proves correct. Every other character is 'i' so both arms
+// FaultyKeyboardSolutionTests proves correct. Every other character is 'i' so both arms
 // are forced through the worst case: FinalStringByReversal pays for a real
 // reversal on roughly half the string's length (degrading toward O(n^2)), while
 // FinalStringByDeque never reverses anything at all.

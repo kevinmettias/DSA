@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumCostToConnectTwoGroupsOfPoints;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToConnectTwoGroupsOfPointsSolution's, the
-// same methods MinimumCostToConnectTwoGroupsOfPointsTests proves correct - the
+// same methods MinimumCostToConnectTwoGroupsOfPointsSolutionTests proves correct - the
 // textbook unmemoized (index, connectedMask) recursion against the same recurrence
 // routed through this repo's own Memoizer. Each is handed the prepared
 // ConnectionCosts its hoisted overload takes, so generating the matrix and reducing

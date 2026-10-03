@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CoinChange;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CoinChangeSolution's, the same methods
-// CoinChangeTests proves correct.
+// CoinChangeSolutionTests proves correct.
 public class CoinChangeBenchmarks
 {
     private static readonly int[] Coins = [1, 5, 10, 25];

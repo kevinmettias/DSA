@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WordBreakII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordBreakIISolution's, the same methods
-// WordBreakIITests proves correct. _source tiles a single short dictionary word so
+// WordBreakIISolutionTests proves correct. _source tiles a single short dictionary word so
 // both strategies reach the identical unique sentence, isolating the
 // segmentation-scan cost itself rather than sentence-construction cost.
 public class WordBreakIIBenchmarks

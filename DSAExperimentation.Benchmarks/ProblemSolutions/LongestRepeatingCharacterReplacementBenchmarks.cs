@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestRepeatingCharacterReplacementSolution's, the
-// same methods LongestRepeatingCharacterReplacementTests proves correct. _text is
+// same methods LongestRepeatingCharacterReplacementSolutionTests proves correct. _text is
 // a single repeated character so BruteForce's inner loop never breaks early
 // (every window is trivially already-repeating), forcing its full O(n^2) worst
 // case instead of bottoming out after a handful of characters.

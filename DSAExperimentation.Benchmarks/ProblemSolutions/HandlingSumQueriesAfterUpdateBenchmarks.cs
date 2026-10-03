@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.HandlingSumQueriesAfterUpdate;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HandlingSumQueriesAfterUpdateSolution's, the same
-// methods HandlingSumQueriesAfterUpdateTests proves correct - re-scanning a mutable
+// methods HandlingSumQueriesAfterUpdateSolutionTests proves correct - re-scanning a mutable
 // bit array on every flip and every "add p per current one" query (baseline, the
 // naive approach the problem is designed to make too slow) vs. this repo's own
 // LazySegmentTree<int, bool, FlipCountOperation> answering both the range flip and

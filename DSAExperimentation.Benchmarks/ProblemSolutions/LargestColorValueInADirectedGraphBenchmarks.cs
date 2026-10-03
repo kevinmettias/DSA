@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LargestColorValueInADirectedGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LargestColorValueInADirectedGraphSolution's, the
-// same methods LargestColorValueInADirectedGraphTests proves correct. Each arm is
+// same methods LargestColorValueInADirectedGraphSolutionTests proves correct. Each arm is
 // handed the prepared List<ColorGraphNode> its hoisted overload takes, so graph
 // construction is charged to [GlobalSetup] rather than to the DP being measured.
 // Nodes form a guaranteed-acyclic DAG (every edge points from a lower id to a

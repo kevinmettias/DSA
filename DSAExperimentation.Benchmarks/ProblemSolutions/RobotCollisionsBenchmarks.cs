@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RobotCollisions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RobotCollisionsSolution's, the same methods
-// RobotCollisionsTests proves correct. They sort positions identically, via
+// RobotCollisionsSolutionTests proves correct. They sort positions identically, via
 // this repo's own MergeSort over an ArrayIndexedSequence, so the measurement
 // is entirely about collision resolution - one adjacent pair per full rescan
 // from the front, vs. a single left-to-right sweep over this repo's own

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveDuplicatesFromSortedArraySolution's, the same
-// methods RemoveDuplicatesFromSortedArrayTests proves correct. Both strategies
+// methods RemoveDuplicatesFromSortedArraySolutionTests proves correct. Both strategies
 // mutate the array they are handed, so each call gets its own copy of _values
 // rather than reusing one shared array a later iteration would find already
 // compacted.

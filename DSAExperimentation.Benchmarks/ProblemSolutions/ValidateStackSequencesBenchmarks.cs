@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ValidateStackSequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidateStackSequencesSolution's, the same methods
-// ValidateStackSequencesTests proves correct - exhaustive push/pop-timing
+// ValidateStackSequencesSolutionTests proves correct - exhaustive push/pop-timing
 // backtracking (O(2^n) worst case, undoing a branch on failure) against the single
 // O(n) greedy sweep through this repo's own Stack<int>. The pushed/popped pair is a
 // genuinely valid one, built once in [GlobalSetup], so the backtracking arm has to

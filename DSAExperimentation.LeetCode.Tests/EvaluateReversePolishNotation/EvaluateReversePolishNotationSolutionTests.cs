@@ -1,0 +1,22 @@
+using DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
+
+namespace DSAExperimentation.LeetCode.Tests.EvaluateReversePolishNotation;
+
+// Harness only. The operand-stack evaluation is
+// EvaluateReversePolishNotationSolution's; this file pins it to LeetCode's
+// published examples.
+public sealed partial class EvaluateReversePolishNotationSolutionTests
+{
+    public static TheoryData<string[], int> Examples =>
+        new()
+        {
+            { ["2", "1", "+", "3", "*"], 9 },
+            { ["4", "13", "5", "/", "+"], 6 },
+            { ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"], 22 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void EvaluateByOperandStack_LeetCodeExamples_ReturnsExpressionValue(string[] tokens, int expected) =>
+        Assert.Equal(expected, EvaluateReversePolishNotationSolution.EvaluateByOperandStack(tokens));
+}

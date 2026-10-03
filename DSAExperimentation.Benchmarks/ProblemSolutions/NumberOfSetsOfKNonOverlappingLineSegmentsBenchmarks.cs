@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // NumberOfSetsOfKNonOverlappingLineSegmentsSolution's, the same methods
-// NumberOfSetsOfKNonOverlappingLineSegmentsTests proves correct. The problem's whole
+// NumberOfSetsOfKNonOverlappingLineSegmentsSolutionTests proves correct. The problem's whole
 // input is two integers, so [GlobalSetup] only picks k from the point count.
 public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
 {

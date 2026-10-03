@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestStringWithSwaps;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestStringWithSwapsSolution's, the same methods
-// SmallestStringWithSwapsTests proves correct. Adjacency-list BFS (build a graph over
+// SmallestStringWithSwapsSolutionTests proves correct. Adjacency-list BFS (build a graph over
 // the string's own indices from every swap pair, then BFS from each unvisited index to
 // find its component) vs. this repo's own DisjointSet(n) - O(1) Union per pair and
 // O(a(n)) Find per index, with no per-component allocation for the walk itself. Same

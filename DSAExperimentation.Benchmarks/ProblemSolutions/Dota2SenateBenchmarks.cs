@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Dota2Senate;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are Dota2SenateSolution's, the same methods
-// Dota2SenateTests proves correct. Every 'R' seat first, every 'D' seat after, so
+// Dota2SenateSolutionTests proves correct. Every 'R' seat first, every 'D' seat after, so
 // early rounds of the circular-rescan baseline each skip past nearly the whole
 // opposing block before finding their target - the O(n^2) worst case that strategy
 // is deliberately shaped to hit.

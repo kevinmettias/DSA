@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ReplaceNonCoprimeNumbersInArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReplaceNonCoprimeNumbersInArraySolution's, the same
-// methods ReplaceNonCoprimeNumbersInArrayTests proves correct. RepeatedFullRescan
+// methods ReplaceNonCoprimeNumbersInArraySolutionTests proves correct. RepeatedFullRescan
 // sweeps the whole remaining list from the front for a mergeable adjacent pair and
 // restarts after every single merge; StackCascadingMerge keeps only the merged
 // prefix on this repo's own Stack<long>, where cascading is just "keep peeking and

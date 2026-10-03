@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SingleNumberII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SingleNumberIISolution's, the same methods
-// SingleNumberIITests proves correct. Pre-migration this class was an untested
+// SingleNumberIISolutionTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (Baseline() => 1, PrimitiveComposed() => 1) rather
 // than a second strategy to reconcile - there was only ever one algorithm here,
 // written once in the test and never actually exercised by the benchmark. The

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNonZeroProductOfTheArrayElementsSolution's, the
-// same methods MinimumNonZeroProductOfTheArrayElementsTests proves correct. The
+// same methods MinimumNonZeroProductOfTheArrayElementsSolutionTests proves correct. The
 // parameter is LeetCode's own p rather than a stand-in exponent, so both arms compute
 // the real answer; p = 15 and p = 21 put the pair count at 16,383 and 1,048,575, the
 // 10^4 / 10^6 workload sizes this comparison was always run at. That is as large as

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfValidStringsToFormTargetISolution's,
-// the same methods MinimumNumberOfValidStringsToFormTargetITests proves correct.
+// the same methods MinimumNumberOfValidStringsToFormTargetISolutionTests proves correct.
 // A small 4-letter alphabet keeps words and target overlapping heavily, so
 // BruteForce's nested comparison actually does the character-by-character work
 // its complexity implies rather than bailing out on the first character.

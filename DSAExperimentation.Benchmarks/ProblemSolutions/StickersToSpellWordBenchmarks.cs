@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StickersToSpellWord;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StickersToSpellWordSolution's, the same methods
-// StickersToSpellWordTests proves correct. Each arm is handed the prepared input
+// StickersToSpellWordSolutionTests proves correct. Each arm is handed the prepared input
 // its hoisted overload takes, so per-sticker letter counting and target sorting is
 // charged to [GlobalSetup] rather than to the recursion being measured.
 //

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestSubarrayWithSumAtLeastK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestSubarrayWithSumAtLeastKSolution's, the same
-// methods ShortestSubarrayWithSumAtLeastKTests proves correct. K is deliberately
+// methods ShortestSubarrayWithSumAtLeastKSolutionTests proves correct. K is deliberately
 // unreachable (values are small and bounded, K is far larger than any possible
 // subarray sum) so BOTH strategies are forced through their full worst-case scan
 // instead of exiting early on the first short answer found - the same "_target is

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignMovieRentalSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignMovieRentalSystemSolution's, the same classes
-// DesignMovieRentalSystemTests proves correct. search() is the operation worth
+// DesignMovieRentalSystemSolutionTests proves correct. search() is the operation worth
 // measuring - the sort-on-query system filters the whole catalogue down to the
 // queried movie and sorts that subset from scratch, O(m log m), while the
 // binary-search-tree system keeps each movie's copies ordered as they are inserted

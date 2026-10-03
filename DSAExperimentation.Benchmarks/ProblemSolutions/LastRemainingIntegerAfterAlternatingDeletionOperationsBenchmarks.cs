@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // LastRemainingIntegerAfterAlternatingDeletionOperationsSolution's, the same
-// methods LastRemainingIntegerAfterAlternatingDeletionOperationsTests proves
+// methods LastRemainingIntegerAfterAlternatingDeletionOperationsSolutionTests proves
 // correct. StartingCount stays far below LC's own 10^15 upper bound - the O(n)
 // list simulation would not finish otherwise; the head/step closed form is
 // O(log n) regardless.

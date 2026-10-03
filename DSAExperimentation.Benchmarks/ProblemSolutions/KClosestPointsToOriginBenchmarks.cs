@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.KClosestPointsToOrigin;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KClosestPointsToOriginSolution's, the same methods
-// KClosestPointsToOriginTests proves correct. The point cloud is generated once in
+// KClosestPointsToOriginSolutionTests proves correct. The point cloud is generated once in
 // [GlobalSetup]; it is already LeetCode's own input shape, so each arm is handed it
 // directly and only the selection is measured - a full O(n log n) sort of every point
 // against an O(n log k) size-k max-heap that never orders more than k of them.

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfValidWordsForEachPuzzle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfValidWordsForEachPuzzleSolution's, the same
-// methods NumberOfValidWordsForEachPuzzleTests proves correct. The words and
+// methods NumberOfValidWordsForEachPuzzleSolutionTests proves correct. The words and
 // puzzles are LeetCode's own input shape, so generating them is charged to
 // [GlobalSetup] and each measured arm is handed them as-is.
 public class NumberOfValidWordsForEachPuzzleBenchmarks

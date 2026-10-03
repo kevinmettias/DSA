@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestSufficientTeam;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestSufficientTeamSolution's, the same methods
-// SmallestSufficientTeamTests proves correct, each handed the SkillMasks its hoisted
+// SmallestSufficientTeamSolutionTests proves correct, each handed the SkillMasks its hoisted
 // overload takes so mask construction is charged to [GlobalSetup] rather than to the
 // search being measured.
 //

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Maximum Length of Repeated Subarray (LC 718): harness only, both arms are
 // MaximumLengthOfRepeatedSubarraySolution's, the same methods
-// MaximumLengthOfRepeatedSubarrayTests proves correct. Both arrays are identical,
+// MaximumLengthOfRepeatedSubarraySolutionTests proves correct. Both arrays are identical,
 // all-one-value arrays (the same shape as LeetCode's own official all-zeros example)
 // so EVERY starting pair walks all the way to the end - brute force's genuine O(n^3)
 // worst case, forced deliberately rather than left to chance, the same "force the

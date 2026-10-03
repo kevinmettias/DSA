@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WordSearch;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordSearchSolution's, the same methods
-// WordSearchTests proves correct.
+// WordSearchSolutionTests proves correct.
 public class WordSearchBenchmarks
 {
     private const string TargetWord = "ABCCED";

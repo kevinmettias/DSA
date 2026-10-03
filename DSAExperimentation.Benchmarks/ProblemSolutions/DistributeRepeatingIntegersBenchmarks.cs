@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DistributeRepeatingIntegers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistributeRepeatingIntegersSolution's, the same
-// methods DistributeRepeatingIntegersTests proves correct - a hand-written
+// methods DistributeRepeatingIntegersSolutionTests proves correct - a hand-written
 // recursion against this repo's generic Backtrack.TrySearch closed over the
 // identical choose/explore/unchoose steps. Each arm is handed the prepared stock
 // counts its hoisted overload takes, so collapsing nums into per-value counts is

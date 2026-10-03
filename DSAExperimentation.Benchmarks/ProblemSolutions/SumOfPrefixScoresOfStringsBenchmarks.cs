@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfPrefixScoresOfStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfPrefixScoresOfStringsSolution's, the same
-// methods SumOfPrefixScoresOfStringsTests proves correct. [GlobalSetup] generates
+// methods SumOfPrefixScoresOfStringsSolutionTests proves correct. [GlobalSetup] generates
 // the word list - LeetCode's own input shape, so it is handed straight to each
 // strategy and no prepared-input overload is needed - leaving each arm to measure
 // only the scoring.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidPalindrome;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidPalindromeSolution's, the same methods
-// ValidPalindromeTests proves correct. Pre-migration this class was an untested
+// ValidPalindromeSolutionTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`)
 // rather than a second strategy to reconcile. The operand is punctuation and
 // casing noise around a true palindrome, so neither arm can resolve on the

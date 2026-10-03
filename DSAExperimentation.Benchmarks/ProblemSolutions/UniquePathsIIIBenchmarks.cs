@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.UniquePathsIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are UniquePathsIIISolution's, the same methods
-// UniquePathsIIITests proves correct. The search tree's size is far more sensitive
+// UniquePathsIIISolutionTests proves correct. The search tree's size is far more sensitive
 // to obstacle layout than to raw grid dimensions - a Hamiltonian-path count can blow
 // up combinatorially even on a small board - so, the same reasoning
 // NQueensBenchmarks/SudokuSolverBenchmarks already give for fixing their own

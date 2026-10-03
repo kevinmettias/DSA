@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfSquarefulArrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfSquarefulArraysSolution's, the same methods
-// NumberOfSquarefulArraysTests proves correct - generate every distinct permutation
+// NumberOfSquarefulArraysSolutionTests proves correct - generate every distinct permutation
 // and filter at the leaves, against Backtrack.Search with the perfect-square
 // adjacency folded into candidate enumeration so an invalid prefix is abandoned
 // immediately.

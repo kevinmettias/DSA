@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution's, the same
-// methods CountCellsInOverlappingHorizontalAndVerticalSubstringsTests proves
+// methods CountCellsInOverlappingHorizontalAndVerticalSubstringsSolutionTests proves
 // correct.
 public class CountCellsInOverlappingHorizontalAndVerticalSubstringsBenchmarks
 {

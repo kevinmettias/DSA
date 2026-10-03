@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestSubstringOfOneRepeatingCharacter;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestSubstringOfOneRepeatingCharacterSolution's, the
-// same methods LongestSubstringOfOneRepeatingCharacterTests proves correct. A raw
+// same methods LongestSubstringOfOneRepeatingCharacterSolutionTests proves correct. A raw
 // char[] rescanned end to end after every point update (O(n) per query) against this
 // repo's own SegmentTree<RunSegment,RunAggregate> (O(log n) Update, O(1) Query since
 // every query spans the tree's full range). [GlobalSetup] generates the string and

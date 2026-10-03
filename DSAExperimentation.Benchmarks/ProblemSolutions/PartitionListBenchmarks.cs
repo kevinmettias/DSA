@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PartitionList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PartitionListSolution's, the same methods
-// PartitionListTests proves correct. [GlobalSetup] hoists the workload values, but
+// PartitionListSolutionTests proves correct. [GlobalSetup] hoists the workload values, but
 // the list itself is rebuilt fresh inside each benchmark method rather than cached,
 // because the splice strategy mutates the list it is handed - a cached list would
 // only be valid for the first measured iteration.

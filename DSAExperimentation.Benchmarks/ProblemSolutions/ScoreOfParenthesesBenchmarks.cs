@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ScoreOfParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ScoreOfParenthesesSolution's, the same methods
-// ScoreOfParenthesesTests proves correct. The O(n^2) depth rescan is the baseline
+// ScoreOfParenthesesSolutionTests proves correct. The O(n^2) depth rescan is the baseline
 // the O(n) sentinel-seeded Stack<int> fold is measured against; string generation
 // is charged to [GlobalSetup], and the generated string is already LeetCode's own
 // input shape so no hoisted overload is needed.

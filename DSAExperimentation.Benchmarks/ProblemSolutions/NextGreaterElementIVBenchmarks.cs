@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NextGreaterElementIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NextGreaterElementIVSolution's, the same methods
-// NextGreaterElementIVTests proves correct. [GlobalSetup] generates the value array
+// NextGreaterElementIVSolutionTests proves correct. [GlobalSetup] generates the value array
 // - LeetCode's own input shape, handed straight to each strategy, so no
 // prepared-input overload is needed - leaving each arm to measure only the sweep.
 //

@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.StoneGameIX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameIXSolution's, the same methods StoneGameIXTests
+// Harness only: both arms are StoneGameIXSolution's, the same methods StoneGameIXSolutionTests
 // proves correct. A full negamax over the remaining (count0, count1, count2,
 // runningSumMod3) state - O(n^3) states, memoized by this repo's own
 // Memoizer<TState,TResult> - vs. bucketing stones by value mod 3 and reading the answer

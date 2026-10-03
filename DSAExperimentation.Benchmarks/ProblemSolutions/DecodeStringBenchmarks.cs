@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DecodeString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DecodeStringSolution's, the same methods
-// DecodeStringTests proves correct.
+// DecodeStringSolutionTests proves correct.
 public class DecodeStringBenchmarks
 {
     private string _encoded = "";

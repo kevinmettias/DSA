@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.BinarySearchTreeIterator;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is BinarySearchTreeIteratorSolution's left-spine
-// stack, the same class BinarySearchTreeIteratorTests proves correct against.
+// stack, the same class BinarySearchTreeIteratorSolutionTests proves correct against.
 // Fixtures.BinaryTrees.Balanced already builds the complete-binary-tree shape
 // this needs - the algorithm walks Left/Right structurally and never inspects
 // value order, so its input does not need to actually satisfy the BST property

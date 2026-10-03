@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MedianOfTwoSortedArraysSolution's, the same methods
-// MedianOfTwoSortedArraysTests proves correct.
+// MedianOfTwoSortedArraysSolutionTests proves correct.
 public class MedianOfTwoSortedArraysBenchmarks
 {
     private const int RandomSeed = 11;

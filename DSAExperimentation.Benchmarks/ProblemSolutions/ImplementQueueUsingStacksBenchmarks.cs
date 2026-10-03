@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ImplementQueueUsingStacks;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is ImplementQueueUsingStacksSolution's
-// two-stack queue, the same class ImplementQueueUsingStacksTests proves
+// two-stack queue, the same class ImplementQueueUsingStacksSolutionTests proves
 // correct against. [GlobalSetup] builds one fixed call script of interleaved
 // push/pop/peek calls (never popping/peeking past what has actually been
 // pushed), so script construction is not charged to the measured replay -

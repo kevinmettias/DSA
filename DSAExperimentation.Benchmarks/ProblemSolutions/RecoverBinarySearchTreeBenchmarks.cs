@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.RecoverBinarySearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RecoverBinarySearchTreeSolution's, the same methods
-// RecoverBinarySearchTreeTests proves correct. Both strategies mutate the tree they
+// RecoverBinarySearchTreeSolutionTests proves correct. Both strategies mutate the tree they
 // are handed - LeetCode's actual recoverTree operation - so [IterationSetup] rebuilds
 // a fresh corrupted BST before every iteration rather than reusing the one
 // [GlobalSetup] built, which a single successful recovery would leave sorted.

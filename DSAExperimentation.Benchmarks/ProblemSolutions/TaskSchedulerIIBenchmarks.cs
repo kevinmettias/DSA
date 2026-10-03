@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TaskSchedulerII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TaskSchedulerIISolution's, the same methods
-// TaskSchedulerIITests proves correct.
+// TaskSchedulerIISolutionTests proves correct.
 //
 // Every task id is distinct, so the backward scan never finds a match and always runs
 // all the way to the start - the same "force the real worst case" trick

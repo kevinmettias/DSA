@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CheckIfDigitsAreEqualInStringAfterOperationsI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfDigitsAreEqualInStringAfterOperationsISolution's,
-// the same methods CheckIfDigitsAreEqualInStringAfterOperationsITests proves
+// the same methods CheckIfDigitsAreEqualInStringAfterOperationsISolutionTests proves
 // correct. Neither strategy has anything worth hoisting out of the measured call -
 // parsing a <=10-character digit string is not meaningfully separable preprocessing
 // - so [GlobalSetup] only builds the workload string.

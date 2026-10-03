@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignAuctionSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAuctionSystemSolution's, the same classes
-// DesignAuctionSystemTests proves correct. Unlike DesignTaskManager, LC 3815's own
+// DesignAuctionSystemSolutionTests proves correct. Unlike DesignTaskManager, LC 3815's own
 // AuctionSystem() constructor takes no initial state, so there is no separate
 // "prepared input" to hoist a seed through - [GlobalSetup] instead builds one
 // fixed, valid call script that starts with the seeding addBid calls themselves,

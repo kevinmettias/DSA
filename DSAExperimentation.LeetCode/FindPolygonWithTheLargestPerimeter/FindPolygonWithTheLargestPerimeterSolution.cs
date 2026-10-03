@@ -52,7 +52,7 @@ internal static class FindPolygonWithTheLargestPerimeterSolution
     }
 
     // Sort with this repo's own MergeSort over an ArrayIndexedSequence<int> -
-    // the same composition SortAnArrayTests already proves out for LC 912 -
+    // the same composition SortAnArraySolutionTests already proves out for LC 912 -
     // then a single greedy scan from the largest side down: dropping
     // sorted[i] only happens when it is at least half of what's left, so
     // every drop at least halves the remaining total and the scan itself is

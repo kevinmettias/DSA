@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindInMountainArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindInMountainArraySolution's, the same methods
-// FindInMountainArrayTests proves correct. The ascending slope holds only even
+// FindInMountainArraySolutionTests proves correct. The ascending slope holds only even
 // values and the descending slope only odd ones, so _target (deep in the
 // descending slope) can never resolve early via the ascending half - the linear
 // scan is forced through nearly the whole array on every invocation, instead of an

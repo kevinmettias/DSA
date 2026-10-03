@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SlidingPuzzle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SlidingPuzzleSolution's, the same methods
-// SlidingPuzzleTests proves correct. ReduceGraphBfs is handed the prepared
+// SlidingPuzzleSolutionTests proves correct. ReduceGraphBfs is handed the prepared
 // PuzzleGraph its hoisted overload takes, so the 720-node board-permutation
 // graph is built once in [GlobalSetup] rather than on every measured call.
 // StartState varies how many slides separate the board from "123450" (LC's

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DeleteDuplicateFoldersInSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DeleteDuplicateFoldersInSystemSolution's, the same
-// methods DeleteDuplicateFoldersInSystemTests proves correct - the definition-literal
+// methods DeleteDuplicateFoldersInSystemSolutionTests proves correct - the definition-literal
 // O(n^2) pairwise "is this subtree structurally identical to that one" brute force
 // against a single post-order pass that canonically serializes each non-leaf subtree
 // and groups repeats in a HashMap<string,int>.

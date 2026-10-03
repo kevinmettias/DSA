@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfTasksYouCanAssignSolution's, the same
-// methods MaximumNumberOfTasksYouCanAssignTests proves correct - a linear walk down
+// methods MaximumNumberOfTasksYouCanAssignSolutionTests proves correct - a linear walk down
 // "try k = maxK, maxK - 1, ..." against this repo's own BinarySearch.LowerBound over
 // an on-demand IRandomAccessSequence<bool> feasibility sequence, the same shape
 // KokoEatingBananasBenchmarks measures, so the comparison is O(maxK) feasibility

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TimeBasedKeyValueStore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TimeBasedKeyValueStoreSolution's, the same strategies
-// TimeBasedKeyValueStoreTests proves correct. Setup seeds each store with one key's
+// TimeBasedKeyValueStoreSolutionTests proves correct. Setup seeds each store with one key's
 // Length strictly increasing timestamps (the problem's own guarantee), charging that
 // construction to [GlobalSetup]; _queryTimestamp sits just past the final entry so
 // both strategies are forced through their full worst-case floor lookup, the same

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LastDayWhereYouCanStillCrossSolution's, the same
-// methods LastDayWhereYouCanStillCrossTests proves correct, each handed the prepared
+// methods LastDayWhereYouCanStillCrossSolutionTests proves correct, each handed the prepared
 // FloodSchedule its hoisted overload takes so turning the flood order into a grid is
 // charged to [GlobalSetup] rather than to the bisection being measured. Flood order
 // is a seeded random permutation of every cell, matching the problem's own guarantee

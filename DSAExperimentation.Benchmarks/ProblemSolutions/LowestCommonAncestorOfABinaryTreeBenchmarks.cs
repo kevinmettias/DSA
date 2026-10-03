@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.LowestCommonAncestorOfABinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the arm is LowestCommonAncestorOfABinaryTreeSolution's, the same
-// method LowestCommonAncestorOfABinaryTreeTests proves correct. Queries the
+// method LowestCommonAncestorOfABinaryTreeSolutionTests proves correct. Queries the
 // leftmost and rightmost leaf of a balanced tree - an LCA at the root, the worst
 // case for the search.
 //

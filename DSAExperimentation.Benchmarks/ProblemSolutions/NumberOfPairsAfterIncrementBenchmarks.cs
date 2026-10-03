@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfPairsAfterIncrement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfPairsAfterIncrementSolution's, the same
-// methods NumberOfPairsAfterIncrementTests proves correct. Each is handed the
+// methods NumberOfPairsAfterIncrementSolutionTests proves correct. Each is handed the
 // already-parsed PairQuery stream its hoisted overload takes, so int[][]
 // parsing is charged to [GlobalSetup] rather than to the search being measured;
 // nums1/nums2 themselves are cheap arrays with nothing to hoist beyond their own

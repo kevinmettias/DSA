@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SubrectangleQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubrectangleQueriesSolution's, the same classes
-// SubrectangleQueriesTests proves correct. [GlobalSetup] builds one fixed,
+// SubrectangleQueriesSolutionTests proves correct. [GlobalSetup] builds one fixed,
 // deterministic script of overlapping subrectangle overwrites; each arm then
 // replays it against a freshly constructed backing store, because the store's
 // construction cost is itself half of what this comparison is about (a jagged

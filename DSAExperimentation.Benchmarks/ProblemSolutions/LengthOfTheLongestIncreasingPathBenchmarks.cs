@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LengthOfTheLongestIncreasingPath;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LengthOfTheLongestIncreasingPathSolution's, the same
-// methods LengthOfTheLongestIncreasingPathTests proves correct. BruteForce is O(n^2),
+// methods LengthOfTheLongestIncreasingPathSolutionTests proves correct. BruteForce is O(n^2),
 // so PointCount stays modest enough for it to still finish - SegmentTreeSweep is the
 // O(n log n) arm this problem's own 10^5 bound actually needs.
 public class LengthOfTheLongestIncreasingPathBenchmarks

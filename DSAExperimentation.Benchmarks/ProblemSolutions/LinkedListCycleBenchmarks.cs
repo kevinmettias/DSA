@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LinkedListCycle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LinkedListCycleSolution's, the same methods
-// LinkedListCycleTests proves correct. [GlobalSetup] builds a Length-node list
+// LinkedListCycleSolutionTests proves correct. [GlobalSetup] builds a Length-node list
 // whose tail rejoins the head, forcing both strategies to walk the full cycle
 // before they can answer; neither strategy mutates the list, so it is built once
 // and shared across iterations.

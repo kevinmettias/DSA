@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolution's, the
 // same methods
-// LexicographicallySmallestStringAfterDeletingDuplicateCharactersTests proves
+// LexicographicallySmallestStringAfterDeletingDuplicateCharactersSolutionTests proves
 // correct. The workload is drawn from a small alphabet (5 letters) so almost
 // every letter has many duplicate occurrences to consider deleting - a workload
 // over the full 26-letter alphabet would let most letters appear once and give

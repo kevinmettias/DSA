@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FillASpecialGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FillASpecialGridSolution's, the same methods
-// FillASpecialGridTests proves correct. Both visit exactly size^2 cells - the gap
+// FillASpecialGridSolutionTests proves correct. Both visit exactly size^2 cells - the gap
 // is recursion/allocation overhead against a closed-form per-cell computation,
 // not algorithm class.
 public class FillASpecialGridBenchmarks

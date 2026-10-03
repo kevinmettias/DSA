@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PermutationSequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PermutationSequenceSolution's, the same methods
-// PermutationSequenceTests proves correct. The rank is fixed at digitCount! - the
+// PermutationSequenceSolutionTests proves correct. The rank is fixed at digitCount! - the
 // lexicographically last permutation - so BacktrackEnumeration is always forced
 // through its full worst case instead of an early exit on a small rank making it look
 // artificially competitive.

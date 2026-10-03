@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeTheNumberOfPartitionsAfterOperations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeTheNumberOfPartitionsAfterOperationsSolution's,
-// the same methods MaximizeTheNumberOfPartitionsAfterOperationsTests proves correct
+// the same methods MaximizeTheNumberOfPartitionsAfterOperationsSolutionTests proves correct
 // (TwoSumBenchmarks precedent). BruteForceRecolor re-walks the whole string for
 // every one of ~25 * Length candidate recolorings; BitmaskMemo instead shares work
 // across candidates via Memoizer's cache, so Length is kept modest enough for the

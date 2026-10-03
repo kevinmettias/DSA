@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CountNonDecreasingSubarraysAfterKOperations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNonDecreasingSubarraysAfterKOperationsSolution's,
-// the same methods CountNonDecreasingSubarraysAfterKOperationsTests proves correct.
+// the same methods CountNonDecreasingSubarraysAfterKOperationsSolutionTests proves correct.
 // Neither strategy needs anything prepared beyond the array itself, so
 // [GlobalSetup] only charges workload construction.
 public class CountNonDecreasingSubarraysAfterKOperationsBenchmarks

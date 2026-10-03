@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfKConsecutiveBitFlips;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfKConsecutiveBitFlipsSolution's, the
-// same methods MinimumNumberOfKConsecutiveBitFlipsTests proves correct - the
+// same methods MinimumNumberOfKConsecutiveBitFlipsSolutionTests proves correct - the
 // textbook rewrite of each k-length window (O(n*k)) against the single sweep whose
 // active-flip parity comes from this repo's own Queue<TElement> (O(n), with the
 // queue never holding more than k entries).

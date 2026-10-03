@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MostFrequentPrime;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MostFrequentPrimeSolution's, the same methods
-// MostFrequentPrimeTests proves correct. Grid construction is charged to
+// MostFrequentPrimeSolutionTests proves correct. Grid construction is charged to
 // [GlobalSetup]; the sieve arm still builds its own sieve inside the
 // measured call, since that precompute is sized from the grid itself and is
 // the composition being measured, not input construction.

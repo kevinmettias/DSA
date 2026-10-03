@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MirrorReflection;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MirrorReflectionSolution's, the same methods
-// MirrorReflectionTests proves correct - naive O(roomSide) step-by-step unfolding
+// MirrorReflectionSolutionTests proves correct - naive O(roomSide) step-by-step unfolding
 // against the O(log(min(roomSide, rayHeight))) Euclidean-GCD closed form.
 // LaserHeight = RoomSide - 1 keeps every pair coprime (consecutive integers always
 // are), forcing the simulation through its full O(roomSide) worst case instead of an

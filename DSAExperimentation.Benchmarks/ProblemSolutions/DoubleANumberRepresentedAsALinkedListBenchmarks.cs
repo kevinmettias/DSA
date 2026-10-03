@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.DoubleANumberRepresentedAsALinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DoubleANumberRepresentedAsALinkedListSolution's, the
-// same methods DoubleANumberRepresentedAsALinkedListTests proves correct. Neither
+// same methods DoubleANumberRepresentedAsALinkedListSolutionTests proves correct. Neither
 // strategy mutates or reverses the input, so the digit list is built once in
 // [GlobalSetup] and shared by both arms. The first digit is kept in [1, 10) so the
 // workload never carries a leading zero, LC 2816's own input guarantee.

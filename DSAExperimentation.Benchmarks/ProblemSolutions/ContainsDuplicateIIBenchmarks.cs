@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ContainsDuplicateII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ContainsDuplicateIISolution's, the same methods
-// ContainsDuplicateIITests proves correct. Values are a random permutation of
+// ContainsDuplicateIISolutionTests proves correct. Values are a random permutation of
 // distinct integers, so no duplicate ever exists and both strategies are forced
 // through their full worst-case scan instead of an early exit making brute force
 // look artificially competitive.

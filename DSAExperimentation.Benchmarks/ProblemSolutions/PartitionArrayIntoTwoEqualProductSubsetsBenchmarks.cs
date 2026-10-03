@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PartitionArrayIntoTwoEqualProductSubsets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PartitionArrayIntoTwoEqualProductSubsetsSolution's,
-// the same methods PartitionArrayIntoTwoEqualProductSubsetsTests proves correct.
+// the same methods PartitionArrayIntoTwoEqualProductSubsetsSolutionTests proves correct.
 //
 // Target sits well below the workload's full product rather than at either
 // extreme: too small and every branch is pruned after its very first element

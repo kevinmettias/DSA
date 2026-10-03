@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfMusicPlaylists;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfMusicPlaylistsSolution's, the same methods
-// NumberOfMusicPlaylistsTests proves correct - bottom-up tabulation over the
+// NumberOfMusicPlaylistsSolutionTests proves correct - bottom-up tabulation over the
 // (length, unique) table vs. the Memoizer-driven top-down recursion over the same
 // state, both O(Goal * SongCount). replayGap is fixed below Goal/SongCount's params
 // (LeetCode's own n/2 <= goal - k <= n constraint isn't required for either

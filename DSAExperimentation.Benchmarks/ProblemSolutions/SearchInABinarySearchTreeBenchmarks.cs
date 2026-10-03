@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.SearchInABinarySearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only. Both arms are SearchInABinarySearchTreeSolution's, the same
-// methods SearchInABinarySearchTreeTests proves correct. Both build their own
+// methods SearchInABinarySearchTreeSolutionTests proves correct. Both build their own
 // input from the same shuffled insertion order so tree height stays close to
 // O(log n) instead of the degenerate O(n) ascending-insertion case, the same
 // convention DeleteNodeInABSTBenchmarks already uses.

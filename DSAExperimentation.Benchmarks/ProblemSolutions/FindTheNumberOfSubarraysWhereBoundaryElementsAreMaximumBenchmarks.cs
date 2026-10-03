@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumSolution's, the same
-// methods FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumTests proves
+// methods FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumSolutionTests proves
 // correct. Nothing needs hoisting into [GlobalSetup] beyond the array itself -
 // unlike a graph problem, neither strategy has a separate prepared-input shape to
 // be handed.

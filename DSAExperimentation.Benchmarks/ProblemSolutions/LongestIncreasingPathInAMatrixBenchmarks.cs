@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestIncreasingPathInAMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestIncreasingPathInAMatrixSolution's, the same
-// methods LongestIncreasingPathInAMatrixTests proves correct, run over a strictly
+// methods LongestIncreasingPathInAMatrixSolutionTests proves correct, run over a strictly
 // row-major-increasing Size x Size matrix (so every cell's only increasing neighbors
 // are right/down, the classic Unique-Paths-shaped DAG with heavy path overlap).
 // NaiveRecursion re-explores every shared sub-path from scratch per candidate start

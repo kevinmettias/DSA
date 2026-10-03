@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PerfectRectangle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PerfectRectangleSolution's, the same methods
-// PerfectRectangleTests proves correct. The input is a genuine GridSize x GridSize
+// PerfectRectangleSolutionTests proves correct. The input is a genuine GridSize x GridSize
 // unit-square tiling - a real perfect cover, not a rejected one - so neither
 // strategy short-circuits early on a detected overlap and both run their full
 // worst-case pass.

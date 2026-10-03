@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CyclicallyRotatingAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CyclicallyRotatingAGridSolution's, the same methods
-// CyclicallyRotatingAGridTests proves correct. [GlobalSetup] fills the template
+// CyclicallyRotatingAGridSolutionTests proves correct. [GlobalSetup] fills the template
 // grid once; each strategy copies it internally, which is the same per-call clone
 // both arms already paid before the migration, so what the comparison shows is the
 // O(k)-per-ring stepwise walk against the same walk with k reduced modulo each

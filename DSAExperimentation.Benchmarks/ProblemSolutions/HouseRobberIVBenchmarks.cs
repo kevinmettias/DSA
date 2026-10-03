@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.HouseRobberIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HouseRobberIVSolution's, the same methods
-// HouseRobberIVTests proves correct - one sweeping every candidate capability in
+// HouseRobberIVSolutionTests proves correct - one sweeping every candidate capability in
 // O(range * n), the other bisecting the same monotone predicate in
 // O(n * log range).
 public class HouseRobberIVBenchmarks

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumDeletionsToMakeAlternatingSubstringSolution's, the same methods
-// MinimumDeletionsToMakeAlternatingSubstringTests proves correct.
+// MinimumDeletionsToMakeAlternatingSubstringSolutionTests proves correct.
 //
 // Every query is type-2 (a full range query, never a flip), forcing
 // DirectScan through its O(r - l) rescan on every single one - the arm the

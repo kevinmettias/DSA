@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountTheNumberOfInfectionSequencesSolution's, the
-// same methods CountTheNumberOfInfectionSequencesTests proves agree.
+// same methods CountTheNumberOfInfectionSequencesSolutionTests proves agree.
 //
 // sick = [0, n-1] leaves a single interior run spanning the whole middle of the
 // line - the run shape where the brute-force simulation branches hardest (two

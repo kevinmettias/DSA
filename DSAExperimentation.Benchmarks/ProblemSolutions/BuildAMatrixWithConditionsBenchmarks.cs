@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BuildAMatrixWithConditionsSolution's, the same
-// methods BuildAMatrixWithConditionsTests proves correct. Each arm is handed the
+// methods BuildAMatrixWithConditionsSolutionTests proves correct. Each arm is handed the
 // prepared row and column value lists its hoisted overload takes, so building the
 // two condition graphs is charged to [GlobalSetup] rather than to the sorts being
 // measured - the same shape CourseScheduleIIBenchmarks uses. Conditions form a

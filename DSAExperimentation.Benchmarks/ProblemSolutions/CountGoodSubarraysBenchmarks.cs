@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountGoodSubarrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountGoodSubarraysSolution's, the same methods
-// CountGoodSubarraysTests proves correct. Values are drawn from a wide range so
+// CountGoodSubarraysSolutionTests proves correct. Values are drawn from a wide range so
 // the running-OR run list actually grows across several bit widths instead of
 // collapsing to a single run immediately.
 public class CountGoodSubarraysBenchmarks

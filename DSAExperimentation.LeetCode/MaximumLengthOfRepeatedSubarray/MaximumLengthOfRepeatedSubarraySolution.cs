@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.MaximumLengthOfRepeatedSubarray;
 //
 // FindLengthByMemoizedSuffixPairDp instead runs a single memoized walk over
 // suffix-pair states (i, j) via this repo's Memoizer - the same two-sequence-DP shape
-// EditDistanceTests/DistinctSubsequencesTests already use. Each state returns both
+// EditDistanceSolutionTests/DistinctSubsequencesSolutionTests already use. Each state returns both
 // "the exact match run starting here" and "the best run found anywhere from here
 // onward," so a distinct (i, j) state's match-run length is computed once and every
 // later reference to it (from an earlier diagonal, or a neighboring row/column)

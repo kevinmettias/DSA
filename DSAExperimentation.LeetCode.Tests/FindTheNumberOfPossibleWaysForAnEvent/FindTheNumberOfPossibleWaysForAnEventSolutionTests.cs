@@ -1,0 +1,40 @@
+using DSAExperimentation.LeetCode.FindTheNumberOfPossibleWaysForAnEvent;
+
+namespace DSAExperimentation.LeetCode.Tests.FindTheNumberOfPossibleWaysForAnEvent;
+
+// Harness only. Both counting strategies are
+// FindTheNumberOfPossibleWaysForAnEventSolution's - this file just pins them to
+// LeetCode's published examples.
+public sealed partial class FindTheNumberOfPossibleWaysForAnEventSolutionTests
+{
+    public static TheoryData<int, int, int, int> Examples =>
+        new()
+        {
+            { 1, 2, 3, 6 },
+            { 5, 2, 1, 32 },
+            { 3, 3, 4, 684 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfWaysByBruteForceEnumeration_LeetCodeExamples_ReturnsWaysModuloLargePrime(
+        int performerCount, int stageCount, int maxScore, int expected)
+    {
+        var actual =
+            FindTheNumberOfPossibleWaysForAnEventSolution.NumberOfWaysByBruteForceEnumeration(
+                performerCount, stageCount, maxScore);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfWaysByStagePartitionMemo_LeetCodeExamples_ReturnsWaysModuloLargePrime(
+        int performerCount, int stageCount, int maxScore, int expected)
+    {
+        var actual = FindTheNumberOfPossibleWaysForAnEventSolution.NumberOfWaysByStagePartitionMemo(
+            performerCount, stageCount, maxScore);
+
+        Assert.Equal(expected, actual);
+    }
+}

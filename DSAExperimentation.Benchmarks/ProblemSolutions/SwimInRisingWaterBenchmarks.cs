@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SwimInRisingWater;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SwimInRisingWaterSolution's, the same methods
-// SwimInRisingWaterTests proves correct. Grid values are a random permutation
+// SwimInRisingWaterSolutionTests proves correct. Grid values are a random permutation
 // of 0..n*n-1, matching the problem's own constraint that every elevation from
 // 0 to n^2-1 appears exactly once.
 public class SwimInRisingWaterBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SpecialPermutations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SpecialPermutationsSolution's, the same methods
-// SpecialPermutationsTests proves correct - enumerate all n! orderings with
+// SpecialPermutationsSolutionTests proves correct - enumerate all n! orderings with
 // this repo's own Backtrack.Search and check the adjacency rule once each one
 // is complete (so Length has to stay small enough for this arm to finish) vs.
 // threading (Remaining, Last) through this repo's own Memoizer, visiting each

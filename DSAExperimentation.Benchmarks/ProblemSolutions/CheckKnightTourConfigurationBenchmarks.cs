@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckKnightTourConfiguration;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckKnightTourConfigurationSolution's, the same
-// methods CheckKnightTourConfigurationTests proves correct. Re-scanning the whole
+// methods CheckKnightTourConfigurationSolutionTests proves correct. Re-scanning the whole
 // n x n board to locate each move value (O(n^4) across all n^2 moves) vs. building
 // the move -> cell lookup with a single O(n^2) pass before sweeping consecutive
 // pairs (O(n^2) overall). Both Params values are genuine, verified knight's tours

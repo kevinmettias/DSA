@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestNiceSubstring;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestNiceSubstringSolution's, the same methods
-// LongestNiceSubstringTests proves correct. BruteForceAllSubstrings builds a fresh
+// LongestNiceSubstringSolutionTests proves correct. BruteForceAllSubstrings builds a fresh
 // 128-entry presence table for each of the O(n^2) substrings and rescans it, O(n^3)
 // overall, against this repo's own Set<char> finding the first character missing its
 // opposite-case partner and recursing on the two halves - O(n^2) worst case, since no

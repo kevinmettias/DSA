@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.MinimumSizeSubarraySum;
 // two-pointer/every-subarray scan, composing two existing production primitives
 // (BinarySearch.LowerBound, ArraySequence<int>) instead of a hand-rolled scan, the
 // same search-on-a-derived-monotonic-sequence idiom
-// MedianOfTwoSortedArraysTests already established.
+// MedianOfTwoSortedArraysSolutionTests already established.
 internal static class MinimumSizeSubarraySumSolution
 {
     // The textbook baseline: every subarray start i, extending right until the sum

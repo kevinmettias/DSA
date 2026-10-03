@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidParenthesesSolution's, the same methods
-// ValidParenthesesTests proves correct. The workload is always a properly nested string -
+// ValidParenthesesSolutionTests proves correct. The workload is always a properly nested string -
 // the case LeetCode's own examples call valid, and the one where the stack scan actually
 // has to hold a frontier - so the ratio isolates the cost of the scan itself rather than
 // of an early exit on a malformed input.

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SerializeAndDeserializeBST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SerializeAndDeserializeBSTSolution's, the same
-// methods SerializeAndDeserializeBSTTests proves correct. The workload tree is
+// methods SerializeAndDeserializeBSTSolutionTests proves correct. The workload tree is
 // built once in GlobalSetup - via a manual, non-repo insert over a shuffled
 // insertion order - so neither arm's timing is charged for tree construction, only
 // for the round trip through its own serialization grammar. CountNodes only exists

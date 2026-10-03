@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CouplesHoldingHands;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CouplesHoldingHandsSolution's, the same methods
-// CouplesHoldingHandsTests proves correct. The row is a random permutation of
+// CouplesHoldingHandsSolutionTests proves correct. The row is a random permutation of
 // every seat so most couples start scattered instead of already paired.
 public class CouplesHoldingHandsBenchmarks
 {

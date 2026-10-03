@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfIntegersWithPopcountDepthEqualToKIISolution's,
-// the same methods NumberOfIntegersWithPopcountDepthEqualToKIITests proves
+// the same methods NumberOfIntegersWithPopcountDepthEqualToKIISolutionTests proves
 // correct (OpenTheLockBenchmarks precedent for the hoisted prepared-input
 // overload - PopcountDepthFenwickIndex here plays LockGraph's role). Building
 // the index is real, isolable setup cost, so [IterationSetup] rebuilds it

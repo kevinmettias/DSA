@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeTheMaximumOfTwoArraysSolution's, the same
-// methods MinimizeTheMaximumOfTwoArraysTests proves correct - a hand-rolled lo/hi
+// methods MinimizeTheMaximumOfTwoArraysSolutionTests proves correct - a hand-rolled lo/hi
 // bisection against BinarySearch.LowerBound over an on-demand feasibility sequence.
 // Both binary-search the same monotone predicate over the same range, so what is
 // measured is the cost of routing it through the reusable IRandomAccessSequence

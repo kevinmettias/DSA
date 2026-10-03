@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DeleteNodeInALinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is DeleteNodeInALinkedListSolution's, the same
-// method DeleteNodeInALinkedListTests proves correct. [GlobalSetup] hoists the
+// method DeleteNodeInALinkedListSolutionTests proves correct. [GlobalSetup] hoists the
 // workload values, but the list itself is rebuilt fresh inside the benchmark
 // method rather than cached, because DeleteByNextValueCopy mutates the node it is
 // handed and splices its successor out - a cached list would only be valid for the

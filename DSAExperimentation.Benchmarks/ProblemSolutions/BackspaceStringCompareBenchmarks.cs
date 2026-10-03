@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BackspaceStringCompare;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BackspaceStringCompareSolution's, the same methods
-// BackspaceStringCompareTests proves correct - the BCL's own Stack<char> replaying
+// BackspaceStringCompareSolutionTests proves correct - the BCL's own Stack<char> replaying
 // each string's keystrokes vs. this repo's own DynamicArray-backed Stack<char>
 // doing exactly the same push-on-letter/pop-on-'#' replay, the same "same
 // algorithm, BCL structure vs. repo structure" contrast OpenTheLockBenchmarks

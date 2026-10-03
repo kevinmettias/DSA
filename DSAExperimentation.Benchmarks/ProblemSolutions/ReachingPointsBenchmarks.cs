@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ReachingPoints;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReachingPointsSolution's, the same methods
-// ReachingPointsTests proves correct. TargetY is fixed small so growing TargetX makes
+// ReachingPointsSolutionTests proves correct. TargetY is fixed small so growing TargetX makes
 // the subtractive reduction's step count grow with it, while the modulo reduction's
 // stays flat.
 public class ReachingPointsBenchmarks

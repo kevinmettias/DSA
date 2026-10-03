@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.LongestCommonPrefixOfKStringsAfterRemoval;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestCommonPrefixOfKStringsAfterRemovalSolution's,
-// the same methods LongestCommonPrefixOfKStringsAfterRemovalTests proves correct.
+// the same methods LongestCommonPrefixOfKStringsAfterRemovalSolutionTests proves correct.
 // [GlobalSetup] builds the trie once, so the composed arm's measured call is only
 // the two Reduce.Tree passes plus the per-word answer walk - trie construction is
 // charged to setup exactly like OpenTheLockBenchmarks charges LockGraph.Build

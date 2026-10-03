@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CheapestFlightsWithinKStops;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheapestFlightsWithinKStopsSolution's, the same
-// methods CheapestFlightsWithinKStopsTests proves correct - the textbook
+// methods CheapestFlightsWithinKStopsSolutionTests proves correct - the textbook
 // unmemoized DFS over every path with at most K+1 edges (exponential in K) against
 // this repo's ShortestPath.Dijkstra run over a layered (city, edgesUsed) state
 // expansion of the same flight list. Each arm is handed the prepared input its

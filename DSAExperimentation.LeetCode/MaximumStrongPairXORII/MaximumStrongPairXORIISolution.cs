@@ -24,12 +24,12 @@ namespace DSAExperimentation.LeetCode.MaximumStrongPairXORII;
 //     LC 421's Maximum XOR of Two Numbers - insert the whole slice into one
 //     BitTrie (DataStructures/Graph/Engines/Dags/Trees/BitTrie.cs) and query
 //     every element against it, the same composition
-//     MaximumXOROfTwoNumbersInAnArrayTests uses.
+//     MaximumXOROfTwoNumbersInAnArraySolutionTests uses.
 //   - Between adjacent buckets, only y <= 2x qualifies; because x only grows
 //     walking the lower bucket left-to-right, the set of eligible y's in the
 //     upper bucket only grows too (never shrinks), so a second BitTrie can be
 //     filled by a monotonic two-pointer sweep - insert-only, the same
-//     offline-sweep shape MaximumXORWithAnElementFromArrayTests uses for LC
+//     offline-sweep shape MaximumXORWithAnElementFromArraySolutionTests uses for LC
 //     1707, just keyed by "2x" instead of a query's own limit.
 // Insert-only is why this composes with BitTrie as it stands: BitTrie has no
 // delete, so a single shared trie over a window that must also shrink (the more

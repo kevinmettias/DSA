@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumInversionCountInSubarraysOfFixedLengthSolution's, the same methods
-// MinimumInversionCountInSubarraysOfFixedLengthTests proves correct.
+// MinimumInversionCountInSubarraysOfFixedLengthSolutionTests proves correct.
 //
 // WindowLength stays fixed and small so the O(n * k^2) brute force still
 // finishes at both Length values; the Fenwick sliding window is O(n log n)

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RobotReturnToOrigin;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RobotReturnToOriginSolution's, the same methods
-// RobotReturnToOriginTests proves correct. The move string is built once in
+// RobotReturnToOriginSolutionTests proves correct. The move string is built once in
 // [GlobalSetup] so its random generation isn't charged to either arm.
 public class RobotReturnToOriginBenchmarks
 {

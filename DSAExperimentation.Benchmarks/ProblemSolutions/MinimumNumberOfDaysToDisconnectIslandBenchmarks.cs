@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfDaysToDisconnectIsland;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfDaysToDisconnectIslandSolution's, the
-// same methods MinimumNumberOfDaysToDisconnectIslandTests proves correct. The
+// same methods MinimumNumberOfDaysToDisconnectIslandSolutionTests proves correct. The
 // baseline is a hand-rolled recursive flood fill counting connected land components
 // (the textbook approach, no repo primitive) against this repo's own
 // DepthFirstSearch.Traverse doing the same count - the same primitive

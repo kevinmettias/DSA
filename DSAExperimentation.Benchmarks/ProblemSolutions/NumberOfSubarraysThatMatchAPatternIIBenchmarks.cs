@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfSubarraysThatMatchAPatternII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfSubarraysThatMatchAPatternIISolution's,
-// the same methods NumberOfSubarraysThatMatchAPatternIITests proves correct.
+// the same methods NumberOfSubarraysThatMatchAPatternIISolutionTests proves correct.
 // NumsLength is scaled up from Part I's benchmark (20/100) to actually
 // exercise the gap the O(n + m) ZFunction strategy exists to close, while
 // staying well short of this problem's own 10^6 bound so BruteForce's O(n*m)

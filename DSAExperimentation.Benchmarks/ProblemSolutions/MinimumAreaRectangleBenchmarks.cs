@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumAreaRectangle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumAreaRectangleSolution's, the same methods
-// MinimumAreaRectangleTests proves correct. The points are drawn from a grid barely
+// MinimumAreaRectangleSolutionTests proves correct. The points are drawn from a grid barely
 // larger than the point count, so rectangles are plentiful and both arms do real
 // corner-confirmation work. Point construction is charged to [GlobalSetup].
 public class MinimumAreaRectangleBenchmarks

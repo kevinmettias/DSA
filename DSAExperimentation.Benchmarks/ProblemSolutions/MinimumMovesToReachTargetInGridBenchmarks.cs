@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumMovesToReachTargetInGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumMovesToReachTargetInGridSolution's, the same
-// methods MinimumMovesToReachTargetInGridTests proves correct. MoveCount stays small
+// methods MinimumMovesToReachTargetInGridSolutionTests proves correct. MoveCount stays small
 // enough that the bounded forward BFS baseline is still tractable at all - the whole
 // point being that the composed backward reduction does not share that ceiling.
 public class MinimumMovesToReachTargetInGridBenchmarks

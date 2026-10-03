@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheNumberOfSubsequencesWithEqualGcdSolution's,
-// the same methods FindTheNumberOfSubsequencesWithEqualGcdTests proves correct
+// the same methods FindTheNumberOfSubsequencesWithEqualGcdSolutionTests proves correct
 // (TwoSumBenchmarks precedent). Brute force is a genuine 3^n choice tree (each
 // element: join seq1, join seq2, or join neither), so Length stays small enough
 // for that arm to finish in reasonable time

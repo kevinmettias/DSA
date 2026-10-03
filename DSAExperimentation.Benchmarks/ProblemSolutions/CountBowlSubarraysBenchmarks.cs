@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CountBowlSubarrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountBowlSubarraysSolution's, the same methods
-// CountBowlSubarraysTests proves correct. Neither strategy needs anything
+// CountBowlSubarraysSolutionTests proves correct. Neither strategy needs anything
 // prepared beyond the array itself, so [GlobalSetup] only charges workload
 // construction.
 public class CountBowlSubarraysBenchmarks

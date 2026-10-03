@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignParkingSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignParkingSystemSolution's, the same classes
-// DesignParkingSystemTests proves correct - the naive three-field if/else dispatch
+// DesignParkingSystemSolutionTests proves correct - the naive three-field if/else dispatch
 // against this repo's own HashMap<int, int> keyed by car type. Both are O(1) per call
 // regardless of key-space size; the point here is confirming the HashMap-backed
 // version pays no meaningful overhead over three raw fields for what is, in this

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BlockPlacementQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BlockPlacementQueriesSolution's, the same
-// methods BlockPlacementQueriesTests proves correct. Half the workload places
+// methods BlockPlacementQueriesSolutionTests proves correct. Half the workload places
 // obstacles at distinct random coordinates and half asks type-2 queries
 // against a random prefix - by the end of the run most obstacles are already
 // active, so both arms are answering over a genuinely populated obstacle set

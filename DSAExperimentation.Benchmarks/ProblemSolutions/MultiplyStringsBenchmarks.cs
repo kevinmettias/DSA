@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MultiplyStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MultiplyStringsSolution's, the same methods
-// MultiplyStringsTests proves correct - the shortcut most people reach for
+// MultiplyStringsSolutionTests proves correct - the shortcut most people reach for
 // first (parse both operands as a machine integer and multiply directly) vs.
 // this repo's Stack<char>-based digit-by-digit multiply/add. Only the latter
 // stays correct once the product would overflow a long, which is exactly why

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SurroundedRegions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SurroundedRegionsSolution's, the same methods
-// SurroundedRegionsTests proves correct. Solve mutates the board it is
+// SurroundedRegionsSolutionTests proves correct. Solve mutates the board it is
 // handed - LeetCode's actual solve operation - so [IterationSetup] rebuilds
 // a fresh random board before every iteration rather than reusing the one
 // [GlobalSetup] built, which a single capture pass would leave stable. The two

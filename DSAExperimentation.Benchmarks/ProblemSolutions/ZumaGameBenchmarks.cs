@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.ZumaGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are ZumaGameSolution's, the same methods ZumaGameTests
+// Harness only: both arms are ZumaGameSolution's, the same methods ZumaGameSolutionTests
 // proves correct. _board repeats "RRWW" (no run >=3 initially, per LC488's own
 // precondition), so different insertion positions inside the same "WW"/"RR" run
 // genuinely collapse to the identical resulting state - exactly the redundancy

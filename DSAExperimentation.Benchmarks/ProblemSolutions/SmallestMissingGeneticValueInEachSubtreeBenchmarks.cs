@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SmallestMissingGeneticValueInEachSubtree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestMissingGeneticValueInEachSubtreeSolution's, the
-// same methods SmallestMissingGeneticValueInEachSubtreeTests proves correct. The
+// same methods SmallestMissingGeneticValueInEachSubtreeSolutionTests proves correct. The
 // workload is a chain-shaped family tree with genetic value 1 planted at the deepest
 // leaf - the worst case for rescanning every node's subtree from scratch (O(n^2), each
 // of the n nodes paying for its own DFS) and the best case for the ancestor-chain walk

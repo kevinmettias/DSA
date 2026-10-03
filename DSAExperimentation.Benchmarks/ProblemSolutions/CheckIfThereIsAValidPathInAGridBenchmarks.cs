@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckIfThereIsAValidPathInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfThereIsAValidPathInAGridSolution's, the same
-// methods CheckIfThereIsAValidPathInAGridTests proves correct - a hand-rolled
+// methods CheckIfThereIsAValidPathInAGridSolutionTests proves correct - a hand-rolled
 // recursive DFS over a bool[,] visited array vs. this repo's own
 // DepthFirstSearch.Traverse over a bespoke street-opening successor function. Both
 // walk the identical street-compatibility rule, so the comparison isolates the

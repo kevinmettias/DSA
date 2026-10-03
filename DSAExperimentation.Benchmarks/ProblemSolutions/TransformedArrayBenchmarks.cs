@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TransformedArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TransformedArraySolution's, the same methods
-// TransformedArrayTests proves correct. Shifts are drawn from the full [-Length,
+// TransformedArraySolutionTests proves correct. Shifts are drawn from the full [-Length,
 // Length] range so the step-walk baseline is forced through long walks rather
 // than the small shifts LeetCode's own examples use.
 public class TransformedArrayBenchmarks

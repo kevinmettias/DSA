@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TheNumberOfWeakCharactersInTheGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TheNumberOfWeakCharactersInTheGameSolution's, the same
-// methods TheNumberOfWeakCharactersInTheGameTests proves correct - the literal O(n^2)
+// methods TheNumberOfWeakCharactersInTheGameSolutionTests proves correct - the literal O(n^2)
 // pairwise check against sorting via this repo's own MergeSort and making one linear
 // pass. Each arm is handed the prepared CharacterRoster its hoisted overload takes, so
 // reading LeetCode's int[][] rows into attack/defense pairs is charged to [GlobalSetup]

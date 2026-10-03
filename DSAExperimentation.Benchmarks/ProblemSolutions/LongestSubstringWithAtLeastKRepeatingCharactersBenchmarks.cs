@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // LongestSubstringWithAtLeastKRepeatingCharactersSolution's, the same methods
-// LongestSubstringWithAtLeastKRepeatingCharactersTests proves correct.
+// LongestSubstringWithAtLeastKRepeatingCharactersSolutionTests proves correct.
 public class LongestSubstringWithAtLeastKRepeatingCharactersBenchmarks
 {
     // LC problem number, reused as the deterministic seed.

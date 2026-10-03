@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MajorityElement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MajorityElementSolution's, the same methods
-// MajorityElementTests proves correct. The majority value fills just over half
+// MajorityElementSolutionTests proves correct. The majority value fills just over half
 // the array and the rest is random noise disjoint from it, shuffled together, so
 // the HashMap count has to walk most of the array before any key crosses the
 // n/2 threshold - while the voting arm has to walk all of it, never once being

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolution's, the same methods
-// MaximumProductOfTheLengthOfTwoPalindromicSubsequencesTests proves correct. LeetCode caps
+// MaximumProductOfTheLengthOfTwoPalindromicSubsequencesSolutionTests proves correct. LeetCode caps
 // s.Length at 12, so the intended solution is genuinely exponential and what is measured is
 // hand-rolled bitmask enumeration against this repo's own Backtrack.Search choose/explore/
 // unchoose walk over the identical 2^n subsequence space. The string is drawn once in

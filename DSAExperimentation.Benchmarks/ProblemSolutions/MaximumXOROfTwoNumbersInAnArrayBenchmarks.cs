@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumXOROfTwoNumbersInAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumXOROfTwoNumbersInAnArraySolution's, the same
-// methods MaximumXOROfTwoNumbersInAnArrayTests proves correct - the textbook O(n^2)
+// methods MaximumXOROfTwoNumbersInAnArraySolutionTests proves correct - the textbook O(n^2)
 // pairwise scan vs. this repo's own BitTrie greedy walk, O(n).
 public class MaximumXOROfTwoNumbersInAnArrayBenchmarks
 {

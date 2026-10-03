@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ProductOfArrayExceptSelf;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the one arm is ProductOfArrayExceptSelfSolution's, the same
-// method ProductOfArrayExceptSelfTests proves correct. The prior benchmark was
+// method ProductOfArrayExceptSelfSolutionTests proves correct. The prior benchmark was
 // a compile-smoke placeholder with no real workload; this backfills it with the
 // prefix/suffix pass over a random array, including negative values and zero.
 public class ProductOfArrayExceptSelfBenchmarks

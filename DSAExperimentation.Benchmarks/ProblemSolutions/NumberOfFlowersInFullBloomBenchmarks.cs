@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfFlowersInFullBloom;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfFlowersInFullBloomSolution's, the same
-// methods NumberOfFlowersInFullBloomTests proves correct. [GlobalSetup] builds the
+// methods NumberOfFlowersInFullBloomSolutionTests proves correct. [GlobalSetup] builds the
 // flower intervals and the arrival times - LeetCode's own input shape, so nothing
 // further is prepared for the measured methods; splitting and sorting the endpoint
 // arrays is the composed arm's own cost and stays inside it.

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumTimeToVisitACellInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeToVisitACellInAGridSolution's, the same
-// methods MinimumTimeToVisitACellInAGridTests proves correct (TwoSumBenchmarks
+// methods MinimumTimeToVisitACellInAGridSolutionTests proves correct (TwoSumBenchmarks
 // precedent). WaitCostGridWorkloads builds the grid - (0,0) always 0 and every other
 // cell demanding a random, sometimes-large wait - and grid[0][1] is then cleared,
 // since row 0 and column 0 both count up from 0 and the problem guarantees that cell

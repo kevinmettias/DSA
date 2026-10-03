@@ -154,7 +154,7 @@ function buildProcedureFixturePlacement() {
 // brings with it.
 function buildProcedureHarnesses() {
   return (
-    `6. Rewrite the test as a HARNESS ONLY, no algorithm: \`public sealed class <Name>Tests\` with LeetCode's ` +
+    `6. Rewrite the test as a HARNESS ONLY, no algorithm: \`public sealed class <Name>SolutionTests\` with LeetCode's ` +
     `examples stated ONCE as \`public static TheoryData<...> Examples\`, then ONE ` +
     `\`[Theory] [MemberData(nameof(Examples))]\` method PER STRATEGY so a failure names the strategy that ` +
     `broke. KEEP every example the original test asserted and add cases if the original was thin. Delete the ` +
@@ -173,7 +173,7 @@ function buildReferencesAndLimits() {
   return (
     `REFERENCE PAIRS - already migrated and correct, read one before writing anything:\n` +
     `- DSAExperimentation.LeetCode/OpenTheLock/OpenTheLockSolution.cs (two strategies, hoisted overloads, ` +
-    `domain graph) + its Tests/LeetCodeCoverage/OpenTheLock + Benchmarks/ProblemSolutions pair;\n` +
+    `domain graph) + its LeetCode.Tests/OpenTheLock + Benchmarks/ProblemSolutions pair;\n` +
     `- DSAExperimentation.LeetCode/AddBinary/AddBinarySolution.cs (simplest possible shape);\n` +
     `- DSAExperimentation.LeetCode/CountWaysToBuildRoomsInAnAntColony/ (problem-specific algebras kept ` +
     `beside the solution).\n\n` +
@@ -241,7 +241,7 @@ const selection = await agent(
   `"\n\n` +
   `The first line is the total remaining; the JSON that follows is the batch. For each batch entry derive ` +
   `\`name\`, the PascalCase problem folder, from testPath - it is the second-to-last path segment (e.g. ` +
-  `"DSAExperimentation.Tests/LeetCodeCoverage/TwoSum/TwoSumTests.cs" -> "TwoSum"). If testPath is null, ` +
+  `"DSAExperimentation.LeetCode.Tests/TwoSum/TwoSumSolutionTests.cs" -> "TwoSum"). If testPath is null, ` +
   `derive it from the title the way ARCHITECTURE.md and existing folders do. Report the batch and the total. ` +
   `Do not modify any file.`,
   { phase: 'Select', schema: SELECT_SCHEMA },
@@ -280,7 +280,7 @@ const verifyReport = await agent(
   `  dotnet build DSAExperimentation/DSAExperimentation.csproj -c Release\n` +
   `  dotnet build DSAExperimentation.LeetCode/DSAExperimentation.LeetCode.csproj -c Release\n` +
   `  dotnet build DSAExperimentation.Benchmarks/DSAExperimentation.Benchmarks.csproj -c Release\n` +
-  `  dotnet test DSAExperimentation.Tests/DSAExperimentation.Tests.csproj -c Release\n` +
+  `  dotnet test DSA.slnx -c Release\n` +
   `(the benchmarks build only confirms the harnesses compile - do NOT run BenchmarkDotNet jobs, far too ` +
   `slow for this pass). Run the FULL test suite, not a filtered subset: this migration moves types between ` +
   `tiers, so a regression can surface anywhere, and Tests/Architecture/LayeringTests.cs is what catches a ` +

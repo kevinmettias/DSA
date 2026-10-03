@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumTimeToBreakLocksI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeToBreakLocksISolution's, the same
-// methods MinimumTimeToBreakLocksITests proves correct. LockCount is capped
+// methods MinimumTimeToBreakLocksISolutionTests proves correct. LockCount is capped
 // at 8 - LC 3376's own constraint - so the permutation baseline's n! blowup
 // is still measurable rather than practically infinite.
 public class MinimumTimeToBreakLocksIBenchmarks

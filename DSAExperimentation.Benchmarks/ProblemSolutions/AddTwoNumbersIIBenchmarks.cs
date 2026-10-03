@@ -4,13 +4,13 @@ using DSAExperimentation.LeetCode.AddTwoNumbersII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AddTwoNumbersIISolution's, the same methods
-// AddTwoNumbersIITests proves correct. CountDigits only exists to give a
+// AddTwoNumbersIISolutionTests proves correct. CountDigits only exists to give a
 // [Benchmark] method (which must be public) a public return value for an internal
 // SinglyLinkedListNode<int>, the same technique
 // SerializeAndDeserializeBinaryTreeBenchmarks' CountNodes uses. Digit values only
 // need to be in [0, 10) to exercise both strategies' carry handling under load -
 // LC 445's "no leading zero" constraint is a correctness concern already covered by
-// AddTwoNumbersIITests, not a perf-harness one.
+// AddTwoNumbersIISolutionTests, not a perf-harness one.
 public class AddTwoNumbersIIBenchmarks
 {
     private const int RandomSeed = 445; // LC problem number

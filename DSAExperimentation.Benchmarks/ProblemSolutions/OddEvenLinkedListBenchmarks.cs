@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.OddEvenLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OddEvenLinkedListSolution's, the same methods
-// OddEvenLinkedListTests proves correct. Each iteration clones the pristine list
+// OddEvenLinkedListSolutionTests proves correct. Each iteration clones the pristine list
 // first (SetMatrixZeroesBenchmarks precedent), since [GlobalSetup] runs once per
 // benchmark, not once per invocation, and the in-place strategy mutates its input.
 public class OddEvenLinkedListBenchmarks

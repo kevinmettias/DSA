@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ClosestDivisors;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClosestDivisorsSolution's, the same methods
-// ClosestDivisorsTests proves correct - the textbook O(candidate) full-range divisor
+// ClosestDivisorsSolutionTests proves correct - the textbook O(candidate) full-range divisor
 // scan against BinarySearch.LowerBound anchoring at floor(sqrt(candidate)) (the same
 // technique SqrtXBenchmarks uses for LC 69) followed by a short walk down to the
 // first exact divisor.

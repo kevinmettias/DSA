@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DeleteGreatestValueInEachRow;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DeleteGreatestValueInEachRowSolution's, the same
-// methods DeleteGreatestValueInEachRowTests proves correct. The problem's own
+// methods DeleteGreatestValueInEachRowSolutionTests proves correct. The problem's own
 // repeated simulation (O(Rows*Columns^2), and nothing short-circuits a round's
 // full "find this row's current max" scan) against MergeSort over
 // ArrayIndexedSequence sorting each row once plus a single column-wise max pass

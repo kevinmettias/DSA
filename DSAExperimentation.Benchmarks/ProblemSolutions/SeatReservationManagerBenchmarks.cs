@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SeatReservationManager;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SeatReservationManagerSolution's, the same classes
-// SeatReservationManagerTests proves correct - the naive bool[]-scan-for-the-
+// SeatReservationManagerSolutionTests proves correct - the naive bool[]-scan-for-the-
 // smallest-free-seat manager against this repo's Heap<int,MinHeapOrder<int>>
 // holding only released seats behind a monotonic "next fresh seat" counter. Both
 // replay the identical script - OperationCount reserves, then unreserving every

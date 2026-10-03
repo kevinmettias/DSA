@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfDifferentSubsequencesGCDs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfDifferentSubsequencesGCDsSolution's, the same
-// methods NumberOfDifferentSubsequencesGCDsTests proves correct. Rescanning the
+// methods NumberOfDifferentSubsequencesGCDsSolutionTests proves correct. Rescanning the
 // whole array for every candidate gcd (O(max * n)) vs. walking only each candidate's
 // multiples through this repo's own Set<int> for O(1) presence checks
 // (O(max log max), harmonic). MaxValueExclusive is held fixed across both [Params]

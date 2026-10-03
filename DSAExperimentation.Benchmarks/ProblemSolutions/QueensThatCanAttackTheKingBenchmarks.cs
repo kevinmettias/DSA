@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are QueensThatCanAttackTheKingSolution's, the same methods
-// QueensThatCanAttackTheKingTests proves correct. They ray-walk the same 8 queen-move
+// QueensThatCanAttackTheKingSolutionTests proves correct. They ray-walk the same 8 queen-move
 // directions and differ only in how "is this square occupied" is answered per step:
 // a rescan of the raw queens array, or one O(1) lookup in this repo's own
 // Set<(int Row, int Col)>. Each is handed the prepared KingBoard its hoisted overload

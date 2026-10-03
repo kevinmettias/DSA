@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumDepthOfBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumDepthOfBinaryTreeSolution's, the same
-// methods MaximumDepthOfBinaryTreeTests proves correct.
+// methods MaximumDepthOfBinaryTreeSolutionTests proves correct.
 public class MaximumDepthOfBinaryTreeBenchmarks
 {
     private const int RootValue = 3;

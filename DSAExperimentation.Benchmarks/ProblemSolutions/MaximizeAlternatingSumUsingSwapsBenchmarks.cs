@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeAlternatingSumUsingSwaps;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeAlternatingSumUsingSwapsSolution's, the same
-// methods MaximizeAlternatingSumUsingSwapsTests proves correct. Setup wires up
+// methods MaximizeAlternatingSumUsingSwapsSolutionTests proves correct. Setup wires up
 // roughly ElementCount/2 random swap pairs over ElementCount indices, so the
 // workload has a handful of nontrivial connected components rather than
 // ElementCount singletons.

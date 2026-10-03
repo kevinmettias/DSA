@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RectangleArea;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RectangleAreaSolution's, the same methods
-// RectangleAreaTests proves correct. Rectangle 2 is offset by half of rectangle
+// RectangleAreaSolutionTests proves correct. Rectangle 2 is offset by half of rectangle
 // 1's side along both axes, so the two always overlap and the overlap region
 // scales with Side, keeping both strategies honest as Side grows.
 public class RectangleAreaBenchmarks

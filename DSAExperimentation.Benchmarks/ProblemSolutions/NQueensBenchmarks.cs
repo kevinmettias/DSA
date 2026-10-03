@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.NQueens;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are NQueensSolution's, the same methods NQueensTests
+// Harness only: both arms are NQueensSolution's, the same methods NQueensSolutionTests
 // proves correct. Both build LeetCode's actual answer shape - the list of boards -
 // rather than only counting solutions as the pre-migration arms did.
 public class NQueensBenchmarks

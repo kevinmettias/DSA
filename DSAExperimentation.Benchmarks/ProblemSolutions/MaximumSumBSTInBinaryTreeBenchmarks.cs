@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MaximumSumBSTInBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSumBSTInBinaryTreeSolution's, the same methods
-// MaximumSumBSTInBinaryTreeTests proves correct. The baseline revalidates and re-sums
+// MaximumSumBSTInBinaryTreeSolutionTests proves correct. The baseline revalidates and re-sums
 // each node's whole subtree independently (O(n) work at every one of n nodes, so
 // O(n^2)) against the single bottom-up pass (O(n)). Fixtures.BinaryTrees.Skewed's
 // strictly increasing right-only chain is itself a valid BST end to end, the same

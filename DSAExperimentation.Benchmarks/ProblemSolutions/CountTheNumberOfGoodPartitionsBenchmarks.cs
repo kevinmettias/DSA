@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountTheNumberOfGoodPartitionsSolution's, the same
-// methods CountTheNumberOfGoodPartitionsTests proves agree.
+// methods CountTheNumberOfGoodPartitionsSolutionTests proves agree.
 //
 // A small 4-value alphabet forces repeat values often enough that most cut masks
 // are invalid, exercising the brute-force check's early-reject path instead of

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SpiralMatrixIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SpiralMatrixIVSolution's, the same methods
-// SpiralMatrixIVTests proves correct - the direction-vector walk that carries a
+// SpiralMatrixIVSolutionTests proves correct - the direction-vector walk that carries a
 // second m x n visited matrix against the boundary-shrinking walk that decides a
 // turn once per side. Both are O(m * n) time; MemoryDiagnoser is what separates
 // them. [GlobalSetup] builds a list exactly as long as the grid (workload sizing),

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolution's, the same methods
-// RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests proves correct - playing
+// RemoveColoredPiecesIfBothNeighborsAreTheSameColorSolutionTests proves correct - playing
 // the game out move by move against recognizing that a run of length L always yields
 // exactly max(L - 2, 0) moves and counting both budgets in one grouping pass.
 public class RemoveColoredPiecesIfBothNeighborsAreTheSameColorBenchmarks

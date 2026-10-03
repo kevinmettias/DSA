@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TrappingRainWaterII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TrappingRainWaterIISolution's, the same methods
-// TrappingRainWaterIITests proves correct.
+// TrappingRainWaterIISolutionTests proves correct.
 public class TrappingRainWaterIIBenchmarks
 {
     private const int RandomSeed = 407; // LC 407: Trapping Rain Water II

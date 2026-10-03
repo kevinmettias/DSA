@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CreateMaximumNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CreateMaximumNumberSolution's, the same methods
-// CreateMaximumNumberTests proves correct.
+// CreateMaximumNumberSolutionTests proves correct.
 public class CreateMaximumNumberBenchmarks
 {
     private const int RandomSeed = 321; // LeetCode problem number

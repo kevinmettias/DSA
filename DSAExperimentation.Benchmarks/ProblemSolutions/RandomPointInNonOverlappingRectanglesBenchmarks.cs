@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RandomPointInNonOverlappingRectangles;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RandomPointInNonOverlappingRectanglesSolution's, the
-// same methods RandomPointInNonOverlappingRectanglesTests proves correct. Each arm
+// same methods RandomPointInNonOverlappingRectanglesSolutionTests proves correct. Each arm
 // is handed the prepared prefix-sum array its hoisted overload takes, so building
 // it is charged to [GlobalSetup] rather than to the picks being measured. Both
 // draw from a fresh, identically-seeded Random per invocation so neither benefits

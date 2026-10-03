@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SellingPiecesOfWood;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SellingPiecesOfWoodSolution's, the same methods
-// SellingPiecesOfWoodTests proves agree. They share one recurrence and differ only
+// SellingPiecesOfWoodSolutionTests proves agree. They share one recurrence and differ only
 // in whether recursive calls go through Memoizer's cache, so the measurement
 // isolates memoization itself - the same un-memoized-vs-Memoizer shape
 // MinimumScoreTriangulationOfPolygonBenchmarks and NumberOfWaysOfCuttingAPizzaBenchmarks

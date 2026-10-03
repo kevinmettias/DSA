@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BoatsToSavePeople;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BoatsToSavePeopleSolution's, the same methods
-// BoatsToSavePeopleTests proves correct. Weights are drawn from the whole range
+// BoatsToSavePeopleSolutionTests proves correct. Weights are drawn from the whole range
 // below the limit, so most people have a partner who fits and brute force pays a
 // full rescan per boat instead of sending everyone alone.
 public class BoatsToSavePeopleBenchmarks

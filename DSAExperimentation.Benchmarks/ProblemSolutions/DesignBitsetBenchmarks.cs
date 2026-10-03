@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignBitset;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignBitsetSolution's, the same classes
-// DesignBitsetTests proves correct. Each [Benchmark] fixes/unfixes a scattered
+// DesignBitsetSolutionTests proves correct. Each [Benchmark] fixes/unfixes a scattered
 // subset of indices, then runs Size flip() calls (each followed by a count() read,
 // so the flag's effect is actually observed) - the operation flip() exists
 // specifically to make O(1) instead of O(size), so the eager baseline pays

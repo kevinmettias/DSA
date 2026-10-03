@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GreatestCommonDivisorTraversal;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GreatestCommonDivisorTraversalSolution's, the same methods
-// GreatestCommonDivisorTraversalTests proves correct. Values are drawn once in
+// GreatestCommonDivisorTraversalSolutionTests proves correct. Values are drawn once in
 // [GlobalSetup] as products of a small shared prime pool, so real overlaps - and
 // therefore real union work - actually occur on both arms. What is measured is the
 // O(n^2) pairwise gcd sweep against the O(n*sqrt(maxValue)) per-factor union.

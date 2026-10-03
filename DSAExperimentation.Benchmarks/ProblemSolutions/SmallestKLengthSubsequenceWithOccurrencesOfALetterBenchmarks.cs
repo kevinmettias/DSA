@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // SmallestKLengthSubsequenceWithOccurrencesOfALetterSolution's, the same methods
-// SmallestKLengthSubsequenceWithOccurrencesOfALetterTests proves correct.
+// SmallestKLengthSubsequenceWithOccurrencesOfALetterSolutionTests proves correct.
 // [GlobalSetup] builds the random lowercase string and picks the subsequence length, so
 // the comparison is between the O(n*k) naive rescan - which restarts the window scan for
 // every one of the subsequenceLength output characters - and the single O(n)

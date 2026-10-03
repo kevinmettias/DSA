@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CalculateAmountPaidInTaxes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CalculateAmountPaidInTaxesSolution's, the same methods
-// CalculateAmountPaidInTaxesTests proves correct. A single forward pass is already
+// CalculateAmountPaidInTaxesSolutionTests proves correct. A single forward pass is already
 // the optimal shape here - there is no O(n^2) brute force to fall back to - so this
 // is a "Representation swap should cost nothing" comparison, LeetCode's own int[][]
 // indexed directly against the same brackets behind IRandomAccessSequence<T>'s Get.

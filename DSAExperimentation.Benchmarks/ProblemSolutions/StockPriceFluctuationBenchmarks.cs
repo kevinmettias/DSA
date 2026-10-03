@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StockPriceFluctuation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StockPriceFluctuationSolution's, the same factories
-// StockPriceFluctuationTests proves correct. [GlobalSetup] builds the interleaved
+// StockPriceFluctuationSolutionTests proves correct. [GlobalSetup] builds the interleaved
 // update script - including the corrections that overwrite an already-recorded
 // timestamp - so the comparison is between rescanning every stored price on each
 // Maximum/Minimum query and the two-heap-with-lazy-deletion strategy that discards a

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TheScoreOfStudentsSolvingMathExpression;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TheScoreOfStudentsSolvingMathExpressionSolution's, the
-// same methods TheScoreOfStudentsSolvingMathExpressionTests proves correct. Plain
+// same methods TheScoreOfStudentsSolvingMathExpressionSolutionTests proves correct. Plain
 // recursion with no caching - every (left, right) sub-interval recomputed from scratch
 // each time a different split path reaches it, the same overlapping-subproblems blowup
 // matrix chain multiplication has - vs. the identical recurrence over this repo's own

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StoneGameII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StoneGameIISolution's, the same methods
-// StoneGameIITests proves correct. UnmemoizedRecursion is plain minimax over
+// StoneGameIISolutionTests proves correct. UnmemoizedRecursion is plain minimax over
 // (index, M) - exponential, since the same state recurs through many different
 // pick-sequences reaching it - against this repo's own Memoizer<TState,TResult>
 // caching that exact pair, the identical shape StoneGameBenchmarks/

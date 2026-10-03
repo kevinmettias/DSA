@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.BinaryTreeRightSideView;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BinaryTreeRightSideViewSolution's, the same methods
-// BinaryTreeRightSideViewTests proves correct. A balanced tree keeps every level
+// BinaryTreeRightSideViewSolutionTests proves correct. A balanced tree keeps every level
 // populated, so the buffered-level BFS does real width-proportional work at every
 // depth instead of degenerating to a single-node-per-level walk, while the
 // right-first DFS follows one root-to-leaf path down and backfills the levels it

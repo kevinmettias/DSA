@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ProjectionAreaOf3DShapes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are ProjectionAreaOf3DShapesSolution's, the same
-// methods ProjectionAreaOf3DShapesTests proves correct. Every strategy takes
+// methods ProjectionAreaOf3DShapesSolutionTests proves correct. Every strategy takes
 // LeetCode's own int[][] grid, which [GlobalSetup] already builds, so no hoisted
 // overload is needed - grid construction is never charged to a measured call. All
 // three are O(rows * cols), so what this isolates is redundant-pass overhead rather

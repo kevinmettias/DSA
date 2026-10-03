@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are XORAfterRangeMultiplicationQueriesIISolution's, the
-// same methods XORAfterRangeMultiplicationQueriesIITests proves correct. nums and
+// same methods XORAfterRangeMultiplicationQueriesIISolutionTests proves correct. nums and
 // queries are built once in [GlobalSetup]; both arms take LeetCode's own array
 // shape directly, so there is nothing further to hoist.
 public class XORAfterRangeMultiplicationQueriesIIBenchmarks

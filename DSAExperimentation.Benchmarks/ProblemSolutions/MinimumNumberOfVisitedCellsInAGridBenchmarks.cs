@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfVisitedCellsInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfVisitedCellsInAGridSolution's, the same
-// methods MinimumNumberOfVisitedCellsInAGridTests proves correct. BruteForceScan
+// methods MinimumNumberOfVisitedCellsInAGridSolutionTests proves correct. BruteForceScan
 // scans the entire rest of a popped cell's row and its entire column (O(rows + cols)
 // per pop), while ReduceGraph composes this repo's own Reduce.Graph over
 // JumpGridTopology, whose JumpGridChildren computes only the O(v) cells actually

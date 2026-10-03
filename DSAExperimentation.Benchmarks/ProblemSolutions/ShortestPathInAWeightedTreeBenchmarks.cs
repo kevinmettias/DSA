@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestPathInAWeightedTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestPathInAWeightedTreeSolution's, the same
-// methods ShortestPathInAWeightedTreeTests proves correct. Each node i > 0
+// methods ShortestPathInAWeightedTreeSolutionTests proves correct. Each node i > 0
 // attaches to a uniformly random earlier node, the same randomized-parent shape
 // MaximumPointsAfterCollectingCoinsFromAllNodesBenchmarks' Setup comment
 // contrasts with a worst-case chain - here it is deliberate rather than a

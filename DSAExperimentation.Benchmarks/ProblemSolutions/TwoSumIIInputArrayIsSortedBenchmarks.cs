@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TwoSumIIInputArrayIsSorted;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TwoSumIIInputArrayIsSortedSolution's, the same
-// methods TwoSumIIInputArrayIsSortedTests proves correct. nums is 0..Length-1
+// methods TwoSumIIInputArrayIsSortedSolutionTests proves correct. nums is 0..Length-1
 // with target chosen so the only valid pair is the last two elements - every
 // earlier index's complement is out of the array's value range entirely, so the
 // binary-search arm has to run (and fail a search) almost Length times before it

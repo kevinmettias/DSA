@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.IsomorphicStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IsomorphicStringsSolution's, the same methods
-// IsomorphicStringsTests proves correct. The workload is a guaranteed-
+// IsomorphicStringsSolutionTests proves correct. The workload is a guaranteed-
 // isomorphic pair (a random substitution cipher applied to the source) so
 // neither strategy exits early on a mismatch.
 public class IsomorphicStringsBenchmarks

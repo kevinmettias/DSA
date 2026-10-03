@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DataStreamAsDisjointIntervals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DataStreamAsDisjointIntervalsSolution's, the same strategies
-// DataStreamAsDisjointIntervalsTests proves correct. Drain feeds the whole generated value
+// DataStreamAsDisjointIntervalsSolutionTests proves correct. Drain feeds the whole generated value
 // stream through addNum() one call at a time - the LeetCode-shaped sequence itself, not a
 // batch construction - then reads getIntervals() once so the whole stream is charged, the
 // same "run the stateful object end to end" shape BinarySearchTreeIteratorBenchmarks uses.

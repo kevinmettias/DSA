@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfPeopleAwareOfASecretSolution's, the same
-// methods NumberOfPeopleAwareOfASecretTests proves correct. [GlobalSetup] picks
+// methods NumberOfPeopleAwareOfASecretSolutionTests proves correct. [GlobalSetup] picks
 // the delay/forget pair (workload sizing) so the sharing window stays a fixed
 // fraction of n - which is what makes the sliding-window baseline effectively
 // O(n^2) against the Fenwick arm's O(n log n). The inputs are three integers, so

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfEffectiveSubsequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfEffectiveSubsequencesSolution's, the
-// same methods NumberOfEffectiveSubsequencesTests proves correct.
+// same methods NumberOfEffectiveSubsequencesSolutionTests proves correct.
 public class NumberOfEffectiveSubsequencesBenchmarks
 {
     private const int Seed = 3757;

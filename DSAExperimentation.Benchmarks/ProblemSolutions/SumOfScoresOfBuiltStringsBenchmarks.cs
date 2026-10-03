@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfScoresOfBuiltStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfScoresOfBuiltStringsSolution's, the same
-// methods SumOfScoresOfBuiltStringsTests proves correct - the O(n^2) suffix
+// methods SumOfScoresOfBuiltStringsSolutionTests proves correct - the O(n^2) suffix
 // comparison against this repo's own ZFunction.Compute, O(n).
 //
 // A two-letter alphabet is used deliberately: it maximizes self-overlap, which is

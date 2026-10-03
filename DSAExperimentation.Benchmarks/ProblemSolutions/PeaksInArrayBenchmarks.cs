@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PeaksInArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PeaksInArraySolution's, the same methods
-// PeaksInArrayTests proves correct. Queries alternate type-1 range counts over
+// PeaksInArraySolutionTests proves correct. Queries alternate type-1 range counts over
 // windows spanning most of the array with type-2 point updates, so the O(n)
 // rescan the brute-force arm pays per range query has real work to do at every
 // step, against the Fenwick-tree arm's O(log n) query and O(log n) update.

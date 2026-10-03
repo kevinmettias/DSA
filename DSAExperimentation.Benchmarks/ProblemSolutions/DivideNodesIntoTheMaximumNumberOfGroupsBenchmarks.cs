@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // DivideNodesIntoTheMaximumNumberOfGroupsSolution's, the same methods
-// DivideNodesIntoTheMaximumNumberOfGroupsTests proves correct - the hand-rolled
+// DivideNodesIntoTheMaximumNumberOfGroupsSolutionTests proves correct - the hand-rolled
 // adjacency-array walks against BipartiteCheck + KeyedDisjointSet + Reduce.Graph.
 // Each arm is handed the prepared input its hoisted overload takes, so building
 // the graph is charged to [GlobalSetup] rather than to the search being measured.

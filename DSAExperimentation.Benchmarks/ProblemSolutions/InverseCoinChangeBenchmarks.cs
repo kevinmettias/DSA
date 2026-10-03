@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.InverseCoinChange;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are InverseCoinChangeSolution's, the same methods
-// InverseCoinChangeTests proves correct. _numWays is built by simulating the
+// InverseCoinChangeSolutionTests proves correct. _numWays is built by simulating the
 // real forward DP over a random denomination set (seeded, so both arms see
 // the same reconstructible array every run) rather than random ints, since a
 // value neither strategy can ever match would return [] on the very first

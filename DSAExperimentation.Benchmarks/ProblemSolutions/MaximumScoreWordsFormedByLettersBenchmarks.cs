@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumScoreWordsFormedByLetters;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumScoreWordsFormedByLettersSolution's, the same
-// methods MaximumScoreWordsFormedByLettersTests proves correct. A hand-specialized
+// methods MaximumScoreWordsFormedByLettersSolutionTests proves correct. A hand-specialized
 // include/skip recursion over the word list vs. this repo's own Backtrack.Search
 // closed over the identical choose/explore/unchoose steps - the same comparison
 // PartitionToKEqualSumSubsetsBenchmarks already makes for LC 698, here choosing

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // LongestSubstringWithoutRepeatingCharactersSolution's, the same methods
-// LongestSubstringWithoutRepeatingCharactersTests proves correct. _text is
+// LongestSubstringWithoutRepeatingCharactersSolutionTests proves correct. _text is
 // deliberately built from all-distinct characters (no repeat anywhere) so BOTH
 // strategies are forced through their full worst-case scan - a small,
 // repeat-heavy alphabet would let BruteForce's inner loop break out after only a

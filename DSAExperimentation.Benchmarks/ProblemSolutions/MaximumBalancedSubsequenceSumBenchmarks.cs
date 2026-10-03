@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumBalancedSubsequenceSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumBalancedSubsequenceSumSolution's, the same
-// methods MaximumBalancedSubsequenceSumTests proves correct. Mirrors
+// methods MaximumBalancedSubsequenceSumSolutionTests proves correct. Mirrors
 // CountOfSmallerNumbersAfterSelfBenchmarks' shape - the textbook O(n^2) pairwise
 // scan against an O(n log n) sweep through a repo index structure, this time a
 // SegmentTree<long,MaxOperation<long>> instead of a FenwickTree<int,SumOperation<int>>.

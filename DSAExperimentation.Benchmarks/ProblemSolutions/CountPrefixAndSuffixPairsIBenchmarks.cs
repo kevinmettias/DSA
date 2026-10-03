@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountPrefixAndSuffixPairsISolution's, the same
-// methods CountPrefixAndSuffixPairsITests proves correct. Each word's RollingHash
+// methods CountPrefixAndSuffixPairsISolutionTests proves correct. Each word's RollingHash
 // is built once in [GlobalSetup], so the rolling-hash arm is only ever charged
 // for the O(1) prefix/suffix comparisons themselves.
 public class CountPrefixAndSuffixPairsIBenchmarks

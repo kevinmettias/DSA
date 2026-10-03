@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ManhattanDistancesOfAllArrangementsOfPieces;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ManhattanDistancesOfAllArrangementsOfPiecesSolution's,
-// the same methods ManhattanDistancesOfAllArrangementsOfPiecesTests proves correct.
+// the same methods ManhattanDistancesOfAllArrangementsOfPiecesSolutionTests proves correct.
 // The grid is fixed and small - SumByBruteForceArrangements enumerates C(m*n, k)
 // arrangements outright, so PieceCount is the only axis that can move without
 // making the baseline arm impractical. SumByPairwiseDistanceFormula would happily

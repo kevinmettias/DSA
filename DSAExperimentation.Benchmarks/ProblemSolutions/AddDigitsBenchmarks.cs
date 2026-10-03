@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.AddDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are AddDigitsSolution's, the same methods AddDigitsTests
+// Harness only: both arms are AddDigitsSolution's, the same methods AddDigitsSolutionTests
 // proves correct.
 public class AddDigitsBenchmarks
 {

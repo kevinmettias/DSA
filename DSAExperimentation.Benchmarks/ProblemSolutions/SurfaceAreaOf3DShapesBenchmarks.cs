@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SurfaceAreaOf3DShapes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SurfaceAreaOf3DShapesSolution's, the same methods
-// SurfaceAreaOf3DShapesTests proves correct. The square grid is built once in
+// SurfaceAreaOf3DShapesSolutionTests proves correct. The square grid is built once in
 // [GlobalSetup] from a fixed seed so only the face-summing pass is measured; the
 // padded arm's own border allocation stays inside the measured method because paying
 // for it once is precisely the trade it makes against the baseline's per-cell

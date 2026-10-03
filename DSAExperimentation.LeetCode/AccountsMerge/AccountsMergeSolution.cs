@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.AccountsMerge;
 // an O(accounts^2 * emails^2) pairwise scan comparing every account against every
 // other, or first-seen-owner union-find (a HashMap<email,accountIndex> unions the
 // moment a second account reaches an already-seen email) in O(totalEmails) - the
-// same RedundantConnectionTests union-on-shared-element shape applied to emails
+// same RedundantConnectionSolutionTests union-on-shared-element shape applied to emails
 // instead of graph edges.
 internal static class AccountsMergeSolution
 {

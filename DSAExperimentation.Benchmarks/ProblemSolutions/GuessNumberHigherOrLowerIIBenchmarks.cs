@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GuessNumberHigherOrLowerII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GuessNumberHigherOrLowerIISolution's, the same methods
-// GuessNumberHigherOrLowerIITests proves correct. HighestNumber is kept modest
+// GuessNumberHigherOrLowerIISolutionTests proves correct. HighestNumber is kept modest
 // specifically because the un-memoized baseline's blowup is real, the same reasoning
 // BurstBalloonsBenchmarks/FibonacciNumberBenchmarks already document.
 public class GuessNumberHigherOrLowerIIBenchmarks

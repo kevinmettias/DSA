@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumSwapsToMakeSequencesIncreasing;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumSwapsToMakeSequencesIncreasingSolution's, the
-// same methods MinimumSwapsToMakeSequencesIncreasingTests proves correct - the
+// same methods MinimumSwapsToMakeSequencesIncreasingSolutionTests proves correct - the
 // textbook flat keep[i]/swap[i] tabulation against this repo's own Memoizer closing
 // over a two-state (index, wasSwapped) recurrence. Values at index i are always
 // {2i, 2i+1} in random order, so both keep and swap stay valid transitions at every

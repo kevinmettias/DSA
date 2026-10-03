@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestWordInDictionary;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestWordInDictionarySolution's, the same methods
-// LongestWordInDictionaryTests proves correct. Setup grows each word from the
+// LongestWordInDictionarySolutionTests proves correct. Setup grows each word from the
 // previous one character at a time (occasionally starting a fresh chain), the same
 // "build real matches, not coincidental collisions" intent ReplaceWordsBenchmarks'
 // half-real-root generator uses - which guarantees most words are genuinely

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumCostToBuyApplesII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToBuyApplesIISolution's, the same
-// methods MinimumCostToBuyApplesIITests proves correct. Each arm is handed the
+// methods MinimumCostToBuyApplesIISolutionTests proves correct. Each arm is handed the
 // same prepared AppleNetwork, built once in [GlobalSetup] from the random road
 // network ApplesWorkloads generates, so graph construction is charged to setup
 // and only the per-source shortest-path engine differs between arms

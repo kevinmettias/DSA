@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfIntegersWithPopcountDepthEqualToKISolution's,
-// the same methods NumberOfIntegersWithPopcountDepthEqualToKITests proves
+// the same methods NumberOfIntegersWithPopcountDepthEqualToKISolutionTests proves
 // correct (CountKReducibleNumbersLessThanNBenchmarks precedent). UpperBound stays
 // small - brute force simulates every integer up to it, so it would not finish at
 // the real problem's upperBound of 10^15, even though the combinatorial arm scales

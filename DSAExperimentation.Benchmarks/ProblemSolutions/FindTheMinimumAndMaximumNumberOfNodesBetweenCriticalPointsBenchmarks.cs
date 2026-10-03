@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsSolution's, the same
-// methods FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsTests proves
+// methods FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsSolutionTests proves
 // correct. [GlobalSetup] builds the zigzag chain (workload sizing), so each
 // measured call is only the walk - LeetCode's own input shape is already the
 // prepared repo object here, so neither strategy needs a hoisted overload.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfPossibleSetsOfClosingBranchesSolution's, the
-// same methods NumberOfPossibleSetsOfClosingBranchesTests proves agree. Each arm
+// same methods NumberOfPossibleSetsOfClosingBranchesSolutionTests proves agree. Each arm
 // gets the prepared input its hoisted overload takes - a distance matrix for the
 // hand-rolled Floyd-Warshall, a built BranchNetwork for AllPairsShortestPaths - so
 // road-network construction is charged to [GlobalSetup] rather than to the 2^n

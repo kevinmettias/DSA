@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SplitLinkedListInParts;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SplitLinkedListInPartsSolution's, the same
-// methods SplitLinkedListInPartsTests proves correct. Each benchmark method
+// methods SplitLinkedListInPartsSolutionTests proves correct. Each benchmark method
 // clones the shared fixture first (OddEvenLinkedListBenchmarks precedent)
 // since [GlobalSetup] runs once per benchmark, not once per invocation, and
 // InPlaceRewire mutates the chain it walks. Both arms report the non-null

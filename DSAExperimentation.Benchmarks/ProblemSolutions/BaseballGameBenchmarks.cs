@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BaseballGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Baseball Game (LC 682): harness only - both arms are BaseballGameSolution's,
-// the same methods BaseballGameTests proves correct. _ops never emits "C" so
+// the same methods BaseballGameSolutionTests proves correct. _ops never emits "C" so
 // both strategies grow monotonically, keeping the comparison about push/peek/pop
 // cost rather than the shared "C" underflow path.
 public class BaseballGameBenchmarks

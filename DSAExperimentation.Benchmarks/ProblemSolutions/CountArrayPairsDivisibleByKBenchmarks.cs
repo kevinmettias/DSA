@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountArrayPairsDivisibleByK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountArrayPairsDivisibleByKSolution's, the same methods
-// CountArrayPairsDivisibleByKTests proves correct. The workload is a random array of
+// CountArrayPairsDivisibleByKSolutionTests proves correct. The workload is a random array of
 // values below 1_000 checked against k = 100, so the distinct Gcd(value, 100) groups
 // stay bounded by that k's divisor count however long the array grows - which is the
 // whole comparison: O(n^2) elementwise against O(n + d^2) group-wise.

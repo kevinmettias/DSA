@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.StoneGameV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameVSolution's, the same methods StoneGameVTests
+// Harness only: both arms are StoneGameVSolution's, the same methods StoneGameVSolutionTests
 // proves correct. UnmemoizedRecursion is plain interval recursion over (left, right) -
 // the same range gets re-entered from many different parent splits (Best(0, 3) is
 // reachable both directly and as the kept half of several larger ranges), so the call

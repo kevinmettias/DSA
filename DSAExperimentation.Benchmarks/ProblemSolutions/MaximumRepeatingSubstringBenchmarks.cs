@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumRepeatingSubstring;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumRepeatingSubstringSolution's, the same methods
-// MaximumRepeatingSubstringTests proves correct. sequence is built from Word
+// MaximumRepeatingSubstringSolutionTests proves correct. sequence is built from Word
 // repeated end to end so both strategies are forced through every increasing
 // candidate length instead of failing on the very first repeat.
 public class MaximumRepeatingSubstringBenchmarks

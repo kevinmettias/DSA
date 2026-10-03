@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestWellPerformingInterval;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestWellPerformingIntervalSolution's, the same
-// methods LongestWellPerformingIntervalTests proves correct. Hours alternate 9
+// methods LongestWellPerformingIntervalSolutionTests proves correct. Hours alternate 9
 // ("tiring", +1) vs. 6 ("not tiring", -1) by an unweighted coin flip, which keeps
 // the running score oscillating near zero for its whole length - the scenario that
 // makes the HashMap actually earn repeated lookups instead of only ever growing, and

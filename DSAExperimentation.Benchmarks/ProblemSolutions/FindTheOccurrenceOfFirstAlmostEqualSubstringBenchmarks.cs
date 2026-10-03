@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // FindTheOccurrenceOfFirstAlmostEqualSubstringSolution's, the same methods
-// FindTheOccurrenceOfFirstAlmostEqualSubstringTests proves correct. text is
+// FindTheOccurrenceOfFirstAlmostEqualSubstringSolutionTests proves correct. text is
 // all 'a', pattern is all 'a' except its final two characters - every window
 // mismatches at exactly two positions, both late in the pattern, so the
 // brute force has to scan almost the whole pattern before finding its second

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OnlineMajorityElementInSubarraySolution's, the same
-// classes OnlineMajorityElementInSubarrayTests proves correct - a naive per-query
+// classes OnlineMajorityElementInSubarraySolutionTests proves correct - a naive per-query
 // O(range) tally against this repo's own HashMap<int, DynamicArray<int>> position
 // index, which counts a candidate's occurrences in O(log n) via
 // BinarySearch.LowerBound/UpperBound over a DynamicArraySequence<int> view. Both

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SequentiallyOrdinalRankTracker;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SequentiallyOrdinalRankTrackerSolution's, the same
-// factories SequentiallyOrdinalRankTrackerTests proves correct. [GlobalSetup]
+// factories SequentiallyOrdinalRankTrackerSolutionTests proves correct. [GlobalSetup]
 // builds the location names and their scores, so workload construction is charged
 // to setup and only the replay is measured. Add and Get alternate every step, the
 // shape the judge's own interleaved calls take - which is also what makes the

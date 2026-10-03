@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RottingOranges;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RottingOrangesSolution's, the same methods
-// RottingOrangesTests proves correct. The baseline re-walks an independent BFS
+// RottingOrangesSolutionTests proves correct. The baseline re-walks an independent BFS
 // outward from every fresh orange - a freshly allocated visited grid and BCL Queue
 // each time - while the composed arm seeds one shared frontier, this repo's own
 // Queue<TElement>, with every already-rotten orange at once: O(rows*cols) total

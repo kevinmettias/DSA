@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountConnectedComponentsInLCMGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountConnectedComponentsInLCMGraphSolution's, the
-// same methods CountConnectedComponentsInLCMGraphTests proves correct. nums is a
+// same methods CountConnectedComponentsInLCMGraphSolutionTests proves correct. nums is a
 // deterministic set of distinct values in [1, Threshold] so both arms actually
 // have work to connect, rather than the pairwise scan degenerating to n isolated
 // components.

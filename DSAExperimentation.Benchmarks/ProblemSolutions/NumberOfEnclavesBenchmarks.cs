@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfEnclaves;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfEnclavesSolution's, the same methods
-// NumberOfEnclavesTests proves correct - a hand-specialized recursive border
+// NumberOfEnclavesSolutionTests proves correct - a hand-specialized recursive border
 // flood fill (the textbook approach) vs. this repo's own
 // DepthFirstSearch.Traverse walking each border-connected land component. Each
 // strategy clones the shared grid fixture internally before sinking anything, so

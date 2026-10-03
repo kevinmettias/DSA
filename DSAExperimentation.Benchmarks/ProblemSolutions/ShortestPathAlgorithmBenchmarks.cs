@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The "which shortest-path algorithm" choice a problem like Network Delay Time
 // (LC 743) or Cheapest Flights Within K Stops (LC 787) actually forces: all three
 // arms are NetworkDelayTimeSolution's own strategies, the same methods
-// NetworkDelayTimeTests proves correct, called through their generic prepared-input
+// NetworkDelayTimeSolutionTests proves correct, called through their generic prepared-input
 // overload so graph construction is charged to [GlobalSetup] rather than to the
 // search being measured. All three answer the same single-source-distances question
 // on the same non-negative-weight graph, so this is a genuine algorithm swap, not an

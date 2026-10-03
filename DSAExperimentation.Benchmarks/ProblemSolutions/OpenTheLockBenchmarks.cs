@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.OpenTheLock;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OpenTheLockSolution's, the same methods
-// OpenTheLockTests proves correct. Each arm is handed the prepared input its
+// OpenTheLockSolutionTests proves correct. Each arm is handed the prepared input its
 // hoisted overload takes - a deadend Set for the mutation walk, a built LockGraph
 // for the Reduce.Graph walk - so graph construction is charged to [GlobalSetup]
 // rather than to the search being measured.

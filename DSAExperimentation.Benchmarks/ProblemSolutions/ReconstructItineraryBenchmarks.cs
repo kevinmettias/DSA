@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReconstructItinerary;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReconstructItinerarySolution's, the same methods
-// ReconstructItineraryTests proves correct, run against a synthetic ticket graph large
+// ReconstructItinerarySolutionTests proves correct, run against a synthetic ticket graph large
 // enough to separate LinearScanSelection's O(k) scan-and-remove from HeapSelection's
 // O(log k) repo Heap push/pop.
 public class ReconstructItineraryBenchmarks

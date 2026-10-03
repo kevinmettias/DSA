@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.SumGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: all three arms are SumGameSolution's, the same methods SumGameTests
+// Harness only: all three arms are SumGameSolution's, the same methods SumGameSolutionTests
 // proves correct - the unmemoized minimax that re-explores every digit-fill order
 // reaching the same reduced state, that recursion routed through this repo's own
 // Memoizer, and the closed form the recursion collapses to. Each arm is handed the

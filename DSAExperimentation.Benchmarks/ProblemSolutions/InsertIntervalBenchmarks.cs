@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.InsertInterval;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are InsertIntervalSolution's, the same methods
-// InsertIntervalTests proves correct.
+// InsertIntervalSolutionTests proves correct.
 public class InsertIntervalBenchmarks
 {
     private const int IntervalSpacing = 3;

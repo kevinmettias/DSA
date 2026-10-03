@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FancySequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FancySequenceSolution's, the same factories
-// FancySequenceTests proves correct - re-scanning and rewriting every element on each
+// FancySequenceSolutionTests proves correct - re-scanning and rewriting every element on each
 // addAll/multAll (baseline, the naive approach the problem is designed to make too
 // slow) vs. this repo's own LazySegmentTree applying the same affine transform as one
 // O(log n) lazy range-update (FallingSquaresBenchmarks' own LazySegmentTree-vs-rescan

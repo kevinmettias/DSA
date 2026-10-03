@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.SerializeAndDeserializeBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SerializeAndDeserializeBinaryTreeSolution's, the same
-// methods SerializeAndDeserializeBinaryTreeTests proves correct. Each arm builds the
+// methods SerializeAndDeserializeBinaryTreeSolutionTests proves correct. Each arm builds the
 // serialized string and then rebuilds the tree from it in full; CountNodes only
 // exists to give a [Benchmark] method (which must be public) a public return value
 // for an internal BinaryTreeNode<int>, the same technique

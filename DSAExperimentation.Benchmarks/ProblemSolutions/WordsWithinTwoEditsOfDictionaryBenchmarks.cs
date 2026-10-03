@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordsWithinTwoEditsOfDictionarySolution's, the same
-// methods WordsWithinTwoEditsOfDictionaryTests proves correct. [GlobalSetup] builds
+// methods WordsWithinTwoEditsOfDictionarySolutionTests proves correct. [GlobalSetup] builds
 // the dictionary and the query batch - LeetCode's own input shape, handed straight
 // to each strategy, so no prepared-input overload is needed - leaving each arm to
 // measure only the matching.

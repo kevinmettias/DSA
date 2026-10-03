@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfAllSubsetXORTotals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfAllSubsetXORTotalsSolution's, the same methods
-// SumOfAllSubsetXORTotalsTests proves correct. [GlobalSetup] draws the values so
+// SumOfAllSubsetXORTotalsSolutionTests proves correct. [GlobalSetup] draws the values so
 // generating them is not charged to the measured enumeration; the array itself is
 // LeetCode's own input shape, so neither arm needs a hoisted overload.
 public class SumOfAllSubsetXORTotalsBenchmarks

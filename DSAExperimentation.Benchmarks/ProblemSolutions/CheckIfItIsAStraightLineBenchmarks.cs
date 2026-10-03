@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckIfItIsAStraightLine;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfItIsAStraightLineSolution's, the same methods
-// CheckIfItIsAStraightLineTests proves correct. The O(n^3) "check every triple of
+// CheckIfItIsAStraightLineSolutionTests proves correct. The O(n^3) "check every triple of
 // points" brute force vs. the O(n) single-pass cross-product check anchored on the
 // first two points. _coordinates is always collinear so BOTH strategies are forced
 // through their full worst-case scan instead of an early exit on the first bad

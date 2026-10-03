@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FrogJump;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FrogJumpSolution's, the same methods
-// FrogJumpTests proves correct. _stones is built as consecutive integers
+// FrogJumpSolutionTests proves correct. _stones is built as consecutive integers
 // (every jump delta from every reachable stone lands on another real stone)
 // with an unreachable final stone appended far away - the same "rig the
 // input so both strategies are forced through their full worst case" trick

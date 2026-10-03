@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CarFleet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CarFleetSolution's, the same methods CarFleetTests
+// Harness only: both arms are CarFleetSolution's, the same methods CarFleetSolutionTests
 // proves correct. [GlobalSetup] builds the cars-sorted-by-position arrival-time list
 // once - the O(n log n) sort is input setup, not what the two strategies differ in -
 // and hands it to each strategy's prepared-input overload (ARCHITECTURE.md §17.4), so

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumXORWithAnElementFromArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumXORWithAnElementFromArraySolution's, the same
-// methods MaximumXORWithAnElementFromArrayTests proves correct. Values are spread
+// methods MaximumXORWithAnElementFromArraySolutionTests proves correct. Values are spread
 // over a range far wider than the query count so limits genuinely partition nums,
 // and there are as many queries as elements - which is where the O(n*q) per-query
 // scan and the O((n + q) log(n + q)) offline sweep actually diverge.

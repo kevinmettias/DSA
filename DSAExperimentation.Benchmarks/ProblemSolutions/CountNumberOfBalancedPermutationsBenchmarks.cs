@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNumberOfBalancedPermutationsSolution's, the
-// same methods CountNumberOfBalancedPermutationsTests proves correct
+// same methods CountNumberOfBalancedPermutationsSolutionTests proves correct
 // (CountAnagramsBenchmarks precedent). Digits are drawn from a small alphabet so
 // repeats are common, exercising the DP's inverse-factorial division path
 // instead of degenerating to every digit distinct. Length stays small - brute

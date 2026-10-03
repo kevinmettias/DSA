@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestUnsortedContinuousSubarray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestUnsortedContinuousSubarraySolution's, the
-// same methods ShortestUnsortedContinuousSubarrayTests proves correct. _values is
+// same methods ShortestUnsortedContinuousSubarraySolutionTests proves correct. _values is
 // random, so a genuinely already-sorted array is astronomically unlikely and both
 // strategies do real work.
 public class ShortestUnsortedContinuousSubarrayBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfWorkSessionsToFinishTheTasks;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfWorkSessionsToFinishTheTasksSolution's,
-// the same methods MinimumNumberOfWorkSessionsToFinishTheTasksTests proves correct.
+// the same methods MinimumNumberOfWorkSessionsToFinishTheTasksSolutionTests proves correct.
 // Task durations are all 1 with sessionTime 2, so both single tasks and pairs are
 // feasible sessions - real combinatorial choice, not a forced single grouping -
 // which is what makes the unmemoized call tree blow up: TaskCount stays small (<= 9)

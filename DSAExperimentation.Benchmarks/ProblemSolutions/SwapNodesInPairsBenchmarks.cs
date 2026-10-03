@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SwapNodesInPairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SwapNodesInPairsSolution's, the same methods
-// SwapNodesInPairsTests proves correct. SwapPairsByPointerRewiring relinks the
+// SwapNodesInPairsSolutionTests proves correct. SwapPairsByPointerRewiring relinks the
 // input nodes' own Next pointers in place, so - like MergeKSortedListsBenchmarks'
 // heap merge - the list cannot be hoisted into [GlobalSetup] and reused across
 // iterations: a swap from one iteration would leave the next iteration a

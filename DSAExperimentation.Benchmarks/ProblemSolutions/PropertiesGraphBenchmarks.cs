@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PropertiesGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PropertiesGraphSolution's, the same methods
-// PropertiesGraphTests proves correct. Both are O(n^2 * m) - LC's own n, m <= 100
+// PropertiesGraphSolutionTests proves correct. Both are O(n^2 * m) - LC's own n, m <= 100
 // constraints make that the intended order - so RowCount stays at LC's own
 // ceiling rather than growing past it.
 public class PropertiesGraphBenchmarks

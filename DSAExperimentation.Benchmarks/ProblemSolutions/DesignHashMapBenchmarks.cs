@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignHashMap;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignHashMapSolution's, the same classes
-// DesignHashMapTests proves correct. Both are populated with the same Length
+// DesignHashMapSolutionTests proves correct. Both are populated with the same Length
 // distinct keys, then probed with Length Get calls split evenly between present
 // and absent keys, so the linear scan's O(n) cost per lookup is fully exercised
 // on every probe rather than short-circuited by an early hit. Every populated

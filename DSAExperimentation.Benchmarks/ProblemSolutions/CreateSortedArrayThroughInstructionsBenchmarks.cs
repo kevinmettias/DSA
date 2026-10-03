@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CreateSortedArrayThroughInstructions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CreateSortedArrayThroughInstructionsSolution's, the
-// same methods CreateSortedArrayThroughInstructionsTests proves correct - the
+// same methods CreateSortedArrayThroughInstructionsSolutionTests proves correct - the
 // textbook O(n^2) rescan of everything inserted so far against the O(n log maxValue)
 // sweep through this repo's own FenwickTree<int, SumOperation<int>>. The workload is
 // LeetCode's own input shape, so [GlobalSetup] only has to choose a length, a value

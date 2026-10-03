@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckIfPointIsReachable;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfPointIsReachableSolution's, the same methods
-// CheckIfPointIsReachableTests proves correct. The contrast is "materialize and
+// CheckIfPointIsReachableSolutionTests proves correct. The contrast is "materialize and
 // search the whole state space vs. one closed-form check", the same shape
 // TwoSumBenchmarks runs for its brute-force-vs-hash-map pair. Targets are
 // consecutive integers (gcd 1, always reachable) so the search is always forced to

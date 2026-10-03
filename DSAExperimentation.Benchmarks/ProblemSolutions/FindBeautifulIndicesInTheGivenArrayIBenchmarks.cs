@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindBeautifulIndicesInTheGivenArrayISolution's, the
-// same methods FindBeautifulIndicesInTheGivenArrayITests proves correct. The anchor
+// same methods FindBeautifulIndicesInTheGivenArrayISolutionTests proves correct. The anchor
 // and nearby patterns each repeat the searched text's own character but mismatch only
 // in their very last position - the classic worst case for a naive substring scan,
 // where every start position is compared almost all the way through the pattern

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FlattenNestedListIterator;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FlattenNestedListIteratorSolution's, the same
-// strategies FlattenNestedListIteratorTests proves correct. [GlobalSetup] builds
+// strategies FlattenNestedListIteratorSolutionTests proves correct. [GlobalSetup] builds
 // the nested-list workload itself - already exactly the List<NestedInteger> shape
 // both strategies' constructors take, so there is nothing further to hoist into a
 // second overload.

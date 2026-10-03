@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumGeneticDifferenceQuery;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumGeneticDifferenceQuerySolution's, the same
-// methods MaximumGeneticDifferenceQueryTests proves correct.
+// methods MaximumGeneticDifferenceQuerySolutionTests proves correct.
 //
 // The workload is a straight chain (CheckIfDfsStringsArePalindromesBenchmarks' own
 // precedent for "worst depth shape", built the same way via ParentArrayTree.Build

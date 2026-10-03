@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumAreaRectangleWithPointConstraintsISolution's,
-// the same methods MaximumAreaRectangleWithPointConstraintsITests proves correct.
+// the same methods MaximumAreaRectangleWithPointConstraintsISolutionTests proves correct.
 // The corner-lookup arm is handed its prepared Set<(int,int)> from [GlobalSetup]
 // so building it is never part of the measured search - the same reason
 // OpenTheLockBenchmarks hands ReduceGraphBfs a pre-built LockGraph. Points are a

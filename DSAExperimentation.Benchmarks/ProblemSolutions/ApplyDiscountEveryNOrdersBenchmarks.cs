@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ApplyDiscountEveryNOrders;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ApplyDiscountEveryNOrdersSolution's, the same strategies
-// ApplyDiscountEveryNOrdersTests proves correct. Setup builds ProductCount catalogue
+// ApplyDiscountEveryNOrdersSolutionTests proves correct. Setup builds ProductCount catalogue
 // entries, hands each strategy its own cashier - charging catalogue construction to
 // [GlobalSetup] the way TimeBasedKeyValueStoreBenchmarks charges its history - and
 // builds one bill that requests every product id in reverse catalogue order, so the

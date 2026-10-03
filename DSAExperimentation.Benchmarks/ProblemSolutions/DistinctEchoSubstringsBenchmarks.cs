@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DistinctEchoSubstrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistinctEchoSubstringsSolution's, the same methods
-// DistinctEchoSubstringsTests proves correct. _text is random lowercase letters, so
+// DistinctEchoSubstringsSolutionTests proves correct. _text is random lowercase letters, so
 // most candidate pairs fail fast - exactly the shape where RollingHash's O(1) screen
 // avoids the baseline's per-pair substring allocation instead of merely relocating
 // the same cost.

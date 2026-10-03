@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfSubarrayMinimumsSolution's, the same methods
-// SumOfSubarrayMinimumsTests proves correct. _arr is a random permutation so the
+// SumOfSubarrayMinimumsSolutionTests proves correct. _arr is a random permutation so the
 // brute-force arm's inner loop always runs its full remaining length - with every
 // value distinct there is no run of equal minimums to let it settle early.
 public class SumOfSubarrayMinimumsBenchmarks

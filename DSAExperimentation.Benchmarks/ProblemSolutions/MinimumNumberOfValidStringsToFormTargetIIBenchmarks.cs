@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfValidStringsToFormTargetIISolution's,
-// the same methods MinimumNumberOfValidStringsToFormTargetIITests proves correct.
+// the same methods MinimumNumberOfValidStringsToFormTargetIISolutionTests proves correct.
 // TargetLength stays a fraction of this problem's own 5*10^4 bound so BruteForce's
 // O(target.Length * sum(words[i].Length)) arm still completes - ZFunctionAcrossWords
 // is the strategy the real bound actually needs. A small 4-letter alphabet keeps

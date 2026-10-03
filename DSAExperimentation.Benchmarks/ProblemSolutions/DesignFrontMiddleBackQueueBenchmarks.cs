@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignFrontMiddleBackQueue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignFrontMiddleBackQueueSolution's, the same
-// classes DesignFrontMiddleBackQueueTests proves correct. The cycle pushes at all
+// classes DesignFrontMiddleBackQueueSolutionTests proves correct. The cycle pushes at all
 // three positions in turn, so the baseline's List<int> pays an O(n) shift on two
 // of every three calls while the two-deque split pays O(1) at each - the same
 // DesignLinkedListBenchmarks precedent (array-shift baseline vs. O(1)

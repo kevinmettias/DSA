@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MergeTripletsToFormTargetTriplet;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeTripletsToFormTargetTripletSolution's, the same
-// methods MergeTripletsToFormTargetTripletTests proves correct - an exhaustive
+// methods MergeTripletsToFormTargetTripletSolutionTests proves correct - an exhaustive
 // O(2^n) subset search against the O(n) Set<int>-tracked linear scan. Target is
 // deliberately unreachable so both strategies pay their full worst-case scan
 // instead of an early exit making brute force look artificially competitive. The

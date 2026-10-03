@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ShortestMatchingSubstring;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestMatchingSubstringSolution's, the same methods
-// ShortestMatchingSubstringTests proves correct. The brute-force arm still gets the
+// ShortestMatchingSubstringSolutionTests proves correct. The brute-force arm still gets the
 // split MatchPattern (parsing p is trivial but still input construction, not part
 // of the search); the KMP arm gets the fully-built PatternOccurrences so the three
 // occurrence scans are charged to [GlobalSetup], leaving only the greedy

@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // elements (O(n^2), no sort) vs. this repo's own MergeSort over
 // ArrayIndexedSequence (O(n log n)) followed by summing every even-indexed
 // element - both compute the same maximized sum of pair-minimums, proved by
-// ArrayPartitionTests.
+// ArrayPartitionSolutionTests.
 public class ArrayPartitionBenchmarks
 {
     // LC problem number, reused as the deterministic random seed.

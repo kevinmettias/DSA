@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LexicographicallyMaximumMEXArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LexicographicallyMaximumMEXArraySolution's, the
-// same methods LexicographicallyMaximumMEXArrayTests proves correct. The brute
+// same methods LexicographicallyMaximumMEXArraySolutionTests proves correct. The brute
 // force arm rescans a whole window's MEX from scratch on every element it
 // grows into, so Length stays small enough for it to finish in reasonable time;
 // the frequency/pointer arm's whole point is that it never rescans.

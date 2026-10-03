@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LengthOfLongestVShapedDiagonalSegment;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LengthOfLongestVShapedDiagonalSegmentSolution's, the
-// same methods LengthOfLongestVShapedDiagonalSegmentTests proves correct. Neither
+// same methods LengthOfLongestVShapedDiagonalSegmentSolutionTests proves correct. Neither
 // strategy has a separable construction step to hoist - the grid itself is the
 // whole input - so [GlobalSetup] only builds the workload grid, same as
 // DigitGridWorkloads' consumers.

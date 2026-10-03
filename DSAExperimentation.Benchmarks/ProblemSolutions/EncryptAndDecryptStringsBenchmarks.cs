@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.EncryptAndDecryptStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are EncryptAndDecryptStringsSolution's, the same
-// strategies EncryptAndDecryptStringsTests proves correct - re-encrypting the
+// strategies EncryptAndDecryptStringsSolutionTests proves correct - re-encrypting the
 // whole dictionary on every decrypt call against precomputing each word's
 // encryption once into this repo's own HashMap<string, int> frequency table.
 //

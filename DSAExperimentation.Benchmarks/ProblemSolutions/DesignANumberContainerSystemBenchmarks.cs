@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignANumberContainerSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignANumberContainerSystemSolution's, the same
-// classes DesignANumberContainerSystemTests proves correct. [GlobalSetup] builds
+// classes DesignANumberContainerSystemSolutionTests proves correct. [GlobalSetup] builds
 // the call script - each index first gets its own distinct number (a bijection over
 // [0, Count)), then ~20% of indices are reassigned to a different random number,
 // just enough churn to exercise the heap strategy's lazy discarding of now-stale

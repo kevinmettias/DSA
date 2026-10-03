@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TimeNeededToBuyTicketsSolution's, the same methods
-// TimeNeededToBuyTicketsTests proves correct - this repo's Queue<(int, int)>
+// TimeNeededToBuyTicketsSolutionTests proves correct - this repo's Queue<(int, int)>
 // replaying the line, O(total tickets sold before targetPerson finishes), against
 // the O(n) closed-form sum. _tickets uses a large, uniform ticket count per person so
 // the simulation is forced through its full O(n * ticketsPerPerson) worst case

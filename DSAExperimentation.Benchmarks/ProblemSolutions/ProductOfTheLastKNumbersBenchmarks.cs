@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ProductOfTheLastKNumbers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ProductOfTheLastKNumbersSolution's, the same
-// strategies ProductOfTheLastKNumbersTests proves correct. Setup adds Length
+// strategies ProductOfTheLastKNumbersSolutionTests proves correct. Setup adds Length
 // non-zero numbers to each store (no resets), charging that construction to
 // [GlobalSetup], and each arm answers GetProduct(Length) - the full window - forcing
 // the raw-replay strategy through its full O(Length) worst case instead of an early

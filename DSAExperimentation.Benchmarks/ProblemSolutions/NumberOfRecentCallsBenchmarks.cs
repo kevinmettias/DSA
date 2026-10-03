@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfRecentCalls;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfRecentCallsSolution's, the same methods
-// NumberOfRecentCallsTests proves correct. The workload is a stream of strictly
+// NumberOfRecentCallsSolutionTests proves correct. The workload is a stream of strictly
 // non-decreasing timestamps with small random gaps, so the 3000ms window always
 // holds a large slice of recent history - the case where rescanning the whole
 // history costs O(calls) per ping (O(calls^2) over the run) while the queue window

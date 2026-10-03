@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheScoreDifferenceInAGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheScoreDifferenceInAGameSolution's, the same
-// methods FindTheScoreDifferenceInAGameTests proves correct. Neither arm gets a
+// methods FindTheScoreDifferenceInAGameSolutionTests proves correct. Neither arm gets a
 // prepared-input overload: the "expensive" input each would otherwise share (the
 // marked array, the heap) is exactly what the simulation consumes turn by turn, so
 // there is nothing left to charge to [GlobalSetup] beyond the raw array itself.

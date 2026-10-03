@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StampingTheSequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StampingTheSequenceSolution's, the same methods
-// StampingTheSequenceTests proves correct. The target is the stamp repeated, so the
+// StampingTheSequenceSolutionTests proves correct. The target is the stamp repeated, so the
 // reverse simulation discovers one stamp per repeat and the only thing separating
 // the arms is how each discovered index is put back into forward order:
 // List<int>.Insert(0, i) is O(k) per insertion and O(m^2) over m discovered stamps,

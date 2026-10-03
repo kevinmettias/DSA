@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.AllElementsInTwoBinarySearchTrees;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AllElementsInTwoBinarySearchTreesSolution's, the same
-// methods AllElementsInTwoBinarySearchTreesTests proves correct. CollectAllThenSort
+// methods AllElementsInTwoBinarySearchTreesSolutionTests proves correct. CollectAllThenSort
 // dumps every node from both trees into one list and sorts it - O((n+m) log(n+m)) -
 // while InOrderTraversalMerge collects each tree's already-ascending sequence and
 // two-pointer merges them in O(n+m). Both trees are built here with this repo's own

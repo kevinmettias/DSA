@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IncreasingOrderSearchTreeSolution's, the same methods
-// IncreasingOrderSearchTreeTests proves correct. A hand-rolled recursive in-order walk
+// IncreasingOrderSearchTreeSolutionTests proves correct. A hand-rolled recursive in-order walk
 // (no repo primitive) threading a running tail node through recursive parameters and
 // return values, vs. this repo's own InOrderTraversal/IInOrderHooks doing the identical
 // Left=null/Right=tail relink through AsyncLocal-threaded state - the same

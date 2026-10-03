@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckIfItIsAGoodArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfItIsAGoodArraySolution's, the same methods
-// CheckIfItIsAGoodArrayTests proves correct. Bezout's identity reduces LC 1250 to
+// CheckIfItIsAGoodArraySolutionTests proves correct. Bezout's identity reduces LC 1250 to
 // "is the array's gcd 1", so the performance question left is how each pairwise
 // gcd step is computed - repeated subtraction (O(max(a,b)/min(a,b)) per pair) vs.
 // the modulo-based Euclidean algorithm (O(log min(a,b)) per pair). _values are all

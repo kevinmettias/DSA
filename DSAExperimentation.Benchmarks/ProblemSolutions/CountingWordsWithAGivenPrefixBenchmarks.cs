@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountingWordsWithAGivenPrefix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountingWordsWithAGivenPrefixSolution's, the same methods
-// CountingWordsWithAGivenPrefixTests proves correct. Words are randomly generated
+// CountingWordsWithAGivenPrefixSolutionTests proves correct. Words are randomly generated
 // single-repeated-character strings, so a single-letter prefix gives a realistic,
 // non-trivial ~1/26 match rate and neither arm can stop early - the answer is a count.
 public class CountingWordsWithAGivenPrefixBenchmarks

@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MatrixCellsInDistanceOrder;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MatrixCellsInDistanceOrderSolution's, the same methods
-// MatrixCellsInDistanceOrderTests proves correct - the textbook closed-form Manhattan
+// MatrixCellsInDistanceOrderSolutionTests proves correct - the textbook closed-form Manhattan
 // distance plus BCL Array.Sort against this repo's own Grid BFS distance map plus
 // MergeSort. The grid is built in [GlobalSetup] and handed to the BFS arm's hoisted
 // overload, so grid construction is charged to setup rather than to the search being

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CheckingExistenceOfEdgeLengthLimitedPathsSolution's, the same methods
-// CheckingExistenceOfEdgeLengthLimitedPathsTests proves correct. The workload is a
+// CheckingExistenceOfEdgeLengthLimitedPathsSolutionTests proves correct. The workload is a
 // seeded random multigraph with three edges and two queries per node, so the
 // baseline pays one full graph walk per query - O(q * (n + e)) - against the
 // offline sweep's single pass over both sorted lists, O((e + q) log(e + q) +

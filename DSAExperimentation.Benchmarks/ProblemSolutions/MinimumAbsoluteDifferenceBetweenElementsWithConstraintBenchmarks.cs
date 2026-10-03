@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolution's, the same methods
-// MinimumAbsoluteDifferenceBetweenElementsWithConstraintTests proves correct - the
+// MinimumAbsoluteDifferenceBetweenElementsWithConstraintSolutionTests proves correct - the
 // O(n^2) scan of every admissible pair against the O(n log n) BinarySearchTree<int>
 // sliding window queried by FindClosest.TryFind. Values are drawn from a range wide
 // enough that no early pair collapses the answer to zero, so both arms do their full

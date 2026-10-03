@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RectangleOverlap;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RectangleOverlapSolution's, the same methods
-// RectangleOverlapTests proves correct. Rectangle 2 is offset by half of rectangle
+// RectangleOverlapSolutionTests proves correct. Rectangle 2 is offset by half of rectangle
 // 1's side along both axes, so the two always overlap and the shared region scales
 // with Side - the unit-grid arm still has to paint the whole bounding box before it
 // can answer, while the closed-form arm stays O(1).

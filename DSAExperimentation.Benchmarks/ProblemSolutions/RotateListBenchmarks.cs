@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RotateList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RotateListSolution's, the same methods
-// RotateListTests proves correct. [GlobalSetup] hoists the workload values, but the
+// RotateListSolutionTests proves correct. [GlobalSetup] hoists the workload values, but the
 // list itself is rebuilt fresh inside each benchmark method rather than cached,
 // because the pointer-rewire strategy mutates the list it is handed - a cached
 // list would only be valid for the first measured iteration.

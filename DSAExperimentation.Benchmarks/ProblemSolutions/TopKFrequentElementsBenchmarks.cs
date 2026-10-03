@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TopKFrequentElements;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TopKFrequentElementsSolution's, the same methods
-// TopKFrequentElementsTests proves correct.
+// TopKFrequentElementsSolutionTests proves correct.
 //
 // LeetCode 347 guarantees the answer is unique, and an earlier version of this
 // workload broke that: drawing every value at random from [0, 2000) tied 23 values

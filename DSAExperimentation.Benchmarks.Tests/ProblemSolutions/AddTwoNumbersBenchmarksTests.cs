@@ -4,7 +4,7 @@ using DSAExperimentation.DataStructures.SinglyLinkedList;
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for AddTwoNumbersBenchmarks (ARCHITECTURE 17.9): its two arms are AddTwoNumbersSolution's,
-// the same methods AddTwoNumbersTests proves correct - a BigInteger conversion and back against a single
+// the same methods AddTwoNumbersSolutionTests proves correct - a BigInteger conversion and back against a single
 // digit-wise walk with a running carry - so a harness whose arms disagree is timing two different problems.
 // Both arms are declared as returning object (the node type is internal, CS0050), so the tests read the digit
 // sequence off the returned list and compare that, which is the answer LC 2 actually asks for. Setup draws

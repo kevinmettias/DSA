@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.HouseRobberIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HouseRobberIIISolution's, the same methods
-// HouseRobberIIITests proves correct - a hand-rolled post-order recursion vs. this
+// HouseRobberIIISolutionTests proves correct - a hand-rolled post-order recursion vs. this
 // repo's generic TreeFold engine closed over RobFoldAlgebra, over a random full
 // binary tree of the given depth.
 public class HouseRobberIIIBenchmarks

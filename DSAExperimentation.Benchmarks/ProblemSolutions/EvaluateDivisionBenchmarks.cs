@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.EvaluateDivision;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are EvaluateDivisionSolution's, the same methods
-// EvaluateDivisionTests proves correct. The variables form one long chain (v0/v1 =
+// EvaluateDivisionSolutionTests proves correct. The variables form one long chain (v0/v1 =
 // 2.0, v1/v2 = 2.0, ...) so every query below walks the full chain instead of an
 // early exit.
 public class EvaluateDivisionBenchmarks

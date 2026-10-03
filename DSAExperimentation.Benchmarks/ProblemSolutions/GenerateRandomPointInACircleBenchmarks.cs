@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GenerateRandomPointInACircle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GenerateRandomPointInACircleSolution's, the same
-// classes GenerateRandomPointInACircleTests proves correct. Rejection sampling
+// classes GenerateRandomPointInACircleSolutionTests proves correct. Rejection sampling
 // over the bounding square (discarding roughly 1 - pi/4 (~21%) of draws) vs. the
 // closed-form single-draw polar transform that always lands inside on the first
 // try. Each [Benchmark] arm builds its own fresh instance (mirroring how a real

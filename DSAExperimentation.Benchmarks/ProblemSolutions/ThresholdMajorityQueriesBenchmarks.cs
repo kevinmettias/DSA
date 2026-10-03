@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ThresholdMajorityQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ThresholdMajorityQueriesSolution's, the same methods
-// ThresholdMajorityQueriesTests proves correct. The block-mode arm is handed a
+// ThresholdMajorityQueriesSolutionTests proves correct. The block-mode arm is handed a
 // prebuilt ThresholdMajorityBlockIndex via its hoisted overload, so index
 // construction is charged to [GlobalSetup] rather than to the batch of queries
 // being measured; the brute-force arm has no comparable prebuild step, so it takes

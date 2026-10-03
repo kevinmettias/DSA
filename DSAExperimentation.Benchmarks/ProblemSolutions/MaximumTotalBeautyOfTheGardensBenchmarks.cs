@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumTotalBeautyOfTheGardens;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumTotalBeautyOfTheGardensSolution's, the same
-// methods MaximumTotalBeautyOfTheGardensTests proves correct. They enumerate the
+// methods MaximumTotalBeautyOfTheGardensSolutionTests proves correct. They enumerate the
 // same n+1 "complete vs. incomplete" splits over the sorted array but differ in how
 // they answer "how many of the incomplete prefix are below height h" and "what is
 // the tallest affordable h" - a linear scan of the prefix and a linear walk down

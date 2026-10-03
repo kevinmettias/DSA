@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindServersThatHandledMostNumberOfRequests;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindServersThatHandledMostNumberOfRequestsSolution's,
-// the same methods FindServersThatHandledMostNumberOfRequestsTests proves correct -
+// the same methods FindServersThatHandledMostNumberOfRequestsSolutionTests proves correct -
 // the textbook O(n*k) ring walk against the FenwickTree availability BIT +
 // BinarySearch.LowerBound ceiling query paired with a Heap of busy servers. _load is
 // generated wide enough (up to 3x ServerCount) that requests routinely outlive many

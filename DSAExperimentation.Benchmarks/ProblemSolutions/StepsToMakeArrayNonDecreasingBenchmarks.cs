@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StepsToMakeArrayNonDecreasing;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StepsToMakeArrayNonDecreasingSolution's, the same
-// methods StepsToMakeArrayNonDecreasingTests proves correct. Values are a random
+// methods StepsToMakeArrayNonDecreasingSolutionTests proves correct. Values are a random
 // sequence with repeats so removal rounds actually chain instead of finishing
 // after one pass, which is what makes the round-simulation baseline pay for its
 // extra passes.

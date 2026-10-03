@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNode;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PopulatingNextRightPointersInEachNodeSolution's, the
-// same methods PopulatingNextRightPointersInEachNodeTests proves correct. Fixture
+// same methods PopulatingNextRightPointersInEachNodeSolutionTests proves correct. Fixture
 // sizes are 2^k-1 so BinaryTrees.Balanced is a genuinely perfect tree, matching
 // this problem's guarantee.
 //

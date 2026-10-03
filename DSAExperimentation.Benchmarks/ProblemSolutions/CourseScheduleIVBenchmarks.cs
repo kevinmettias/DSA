@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CourseScheduleIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CourseScheduleIVSolution's, the same methods
-// CourseScheduleIVTests proves correct. Each is handed the prepared CourseGraph
+// CourseScheduleIVSolutionTests proves correct. Each is handed the prepared CourseGraph
 // its hoisted overload takes, so building the prerequisite network is charged to
 // [GlobalSetup] rather than to the reachability work being measured - leaving the
 // comparison where it belongs: a fresh BFS per query against one Floyd-Warshall

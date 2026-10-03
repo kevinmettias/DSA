@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.KthSmallestPathXORSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KthSmallestPathXORSumSolution's, the same methods
-// KthSmallestPathXORSumTests proves correct.
+// KthSmallestPathXORSumSolutionTests proves correct.
 //
 // The workload is a straight chain (CheckIfDfsStringsArePalindromesBenchmarks'
 // own precedent for "worst subtree-size shape") queried many times over a

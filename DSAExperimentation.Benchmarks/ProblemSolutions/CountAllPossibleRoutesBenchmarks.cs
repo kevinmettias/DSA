@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountAllPossibleRoutes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountAllPossibleRoutesSolution's, the same strategies
-// CountAllPossibleRoutesTests proves correct. Fuel stays small enough that the naive
+// CountAllPossibleRoutesSolutionTests proves correct. Fuel stays small enough that the naive
 // side's branching (up to Locations.Length - 1 per step) still finishes in reasonable
 // time while remaining clearly exponential next to the memoized
 // O(Locations.Length^2 * Fuel) side.

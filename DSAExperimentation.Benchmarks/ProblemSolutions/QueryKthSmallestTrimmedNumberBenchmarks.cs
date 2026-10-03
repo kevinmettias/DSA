@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.QueryKthSmallestTrimmedNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are QueryKthSmallestTrimmedNumberSolution's, proved correct by
-// QueryKthSmallestTrimmedNumberTests. The naive per-query "scan for the current smallest
+// QueryKthSmallestTrimmedNumberSolutionTests. The naive per-query "scan for the current smallest
 // trimmed suffix, k times" baseline (O(n*k)) against sorting an index array once per query
 // with this repo's own MergeSort (O(n log n)) and reading off position k directly. Both
 // replay the identical randomly generated query batch.

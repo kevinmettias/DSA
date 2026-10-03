@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GameOfLife;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GameOfLifeSolution's, the same methods
-// GameOfLifeTests proves correct. Each iteration clones the pristine board
+// GameOfLifeSolutionTests proves correct. Each iteration clones the pristine board
 // before advancing, since the solution mutates in place and [GlobalSetup]
 // runs once per benchmark, not once per invocation.
 public class GameOfLifeBenchmarks

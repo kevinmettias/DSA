@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfIslands;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfIslandsSolution's, the same methods
-// NumberOfIslandsTests proves correct. Roughly half land, half water keeps the
+// NumberOfIslandsSolutionTests proves correct. Roughly half land, half water keeps the
 // flood fill busy across many separate islands rather than one solid block; the
 // solution's own claimed-set tracking (not grid mutation) is what lets the same
 // grid be reused, unchanged, across every invocation. The two arms differ only in

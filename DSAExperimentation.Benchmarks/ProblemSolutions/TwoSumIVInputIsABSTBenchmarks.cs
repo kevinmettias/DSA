@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.TwoSumIVInputIsABST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TwoSumIVInputIsABSTSolution's, the same methods
-// TwoSumIVInputIsABSTTests proves correct. Target is deliberately unreachable
+// TwoSumIVInputIsABSTSolutionTests proves correct. Target is deliberately unreachable
 // (every node value non-negative, target negative) - the same TwoSumBenchmarks
 // convention - so both strategies are forced through their full worst-case walk
 // instead of an early exit on the first invocation making the nested-loop

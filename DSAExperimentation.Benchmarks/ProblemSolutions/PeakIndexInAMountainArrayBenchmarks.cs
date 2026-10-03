@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PeakIndexInAMountainArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PeakIndexInAMountainArraySolution's, the same
-// methods PeakIndexInAMountainArrayTests proves correct. The mountain is built
+// methods PeakIndexInAMountainArraySolutionTests proves correct. The mountain is built
 // once in [GlobalSetup] with its peak at the midpoint, the worst case for the
 // linear scan and a neutral one for the binary search.
 public class PeakIndexInAMountainArrayBenchmarks

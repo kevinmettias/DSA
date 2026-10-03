@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.InvertBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is InvertBinaryTreeSolution's, the same method
-// InvertBinaryTreeTests proves correct. The original benchmark's two [Benchmark]
+// InvertBinaryTreeSolutionTests proves correct. The original benchmark's two [Benchmark]
 // arms were unimplemented stubs (each just returned the literal 1, ignoring the
 // tree entirely), so there was nothing to preserve from them beyond the fact that
 // this benchmark exists.

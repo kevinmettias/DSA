@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DesignAnATMMachine;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAnATMMachineSolution's, the same classes
-// DesignAnATMMachineTests proves correct - a raw five-slot array greedy dispatch
+// DesignAnATMMachineSolutionTests proves correct - a raw five-slot array greedy dispatch
 // against this repo's own HashMap<int, long> keyed by denomination
 // (DesignParkingSystemBenchmarks precedent). Both are O(1) per call regardless of
 // denomination-key space size, but unlike that three-key case the HashMap side is

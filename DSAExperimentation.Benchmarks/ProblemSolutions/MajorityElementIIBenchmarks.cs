@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MajorityElementII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MajorityElementIISolution's, the same methods
-// MajorityElementIITests proves correct. The original benchmark's two
+// MajorityElementIISolutionTests proves correct. The original benchmark's two
 // [Benchmark] arms were unwired stubs (each just returned the literal 1), so
 // there was nothing to preserve from them beyond the fact that this benchmark
 // exists. Two disjoint majority values each fill just over a third of the array,

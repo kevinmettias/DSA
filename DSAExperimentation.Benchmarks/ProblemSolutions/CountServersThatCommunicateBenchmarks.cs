@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountServersThatCommunicate;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountServersThatCommunicateSolution's, the same
-// methods CountServersThatCommunicateTests proves correct - the
+// methods CountServersThatCommunicateSolutionTests proves correct - the
 // O(rows*cols*(rows+cols)) per-server row/column rescan against the O(rows*cols)
 // two-pass HashMap<int,int> tally.
 //

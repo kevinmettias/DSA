@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MergeBSTsToCreateSingleBST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeBSTsToCreateSingleBSTSolution's, the same methods
-// MergeBSTsToCreateSingleBSTTests proves correct. Every tree in the chain is a tiny
+// MergeBSTsToCreateSingleBSTSolutionTests proves correct. Every tree in the chain is a tiny
 // two-node stub whose leaf value equals the next tree's root value, so the merge
 // always succeeds and the only thing TreeCount changes is how "find the tree whose
 // root matches this leaf" is answered - a linear rescan of the tree list

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CheckIfTheRectangleCornerIsReachable;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfTheRectangleCornerIsReachableSolution's, the same
-// methods CheckIfTheRectangleCornerIsReachableTests proves correct.
+// methods CheckIfTheRectangleCornerIsReachableSolutionTests proves correct.
 public class CheckIfTheRectangleCornerIsReachableBenchmarks
 {
     private const int Seed = 3235;

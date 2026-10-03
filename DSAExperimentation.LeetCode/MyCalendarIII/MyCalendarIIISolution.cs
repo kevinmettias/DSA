@@ -25,7 +25,7 @@ internal static class MyCalendarIIISolution
     // points), then this repo's own MergeSort.Sort over an
     // ArrayIndexedSequence<int> to walk those delta keys in ascending order on
     // every Book call - the same "no ordered-map primitive, so sort the keys
-    // instead of maintaining one" substitution RangeModuleTests already makes
+    // instead of maintaining one" substitution RangeModuleSolutionTests already makes
     // for a real TreeMap/NavigableMap. The running prefix sum's maximum after
     // folding this booking's own +1/-1 in is exactly the "k" LeetCode wants
     // back from Book.

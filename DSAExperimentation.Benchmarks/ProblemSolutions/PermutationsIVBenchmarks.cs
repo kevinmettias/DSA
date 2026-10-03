@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PermutationsIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PermutationsIVSolution's, the same methods
-// PermutationsIVTests proves correct. TargetRank is fixed well inside the valid
+// PermutationsIVSolutionTests proves correct. TargetRank is fixed well inside the valid
 // range for every measured PermutationLength so both strategies run the full
 // unranking walk rather than an early empty-result return.
 public class PermutationsIVBenchmarks

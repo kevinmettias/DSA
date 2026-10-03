@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.IncrementalMemoryLeak;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IncrementalMemoryLeakSolution's, the same methods
-// IncrementalMemoryLeakTests proves correct. The two sticks start equal, so the
+// IncrementalMemoryLeakSolutionTests proves correct. The two sticks start equal, so the
 // heap arm pays its tie-break on every single round - the worst case for routing
 // this allocation through a priority structure rather than an if/else.
 public class IncrementalMemoryLeakBenchmarks

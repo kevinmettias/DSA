@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CountWaysToBuildRoomsInAnAntColony;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountWaysToBuildRoomsInAnAntColonySolution's, the
-// same methods CountWaysToBuildRoomsInAnAntColonyTests proves agree.
+// same methods CountWaysToBuildRoomsInAnAntColonySolutionTests proves agree.
 //
 // The workload is a straight chain, where the per-node algebra is at its worst:
 // every node's subtree size is close to n, so recomputing Factorial(size) from

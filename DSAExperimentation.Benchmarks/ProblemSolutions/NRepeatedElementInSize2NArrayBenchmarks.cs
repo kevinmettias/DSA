@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NRepeatedElementInSize2NArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NRepeatedElementInSize2NArraySolution's, the same methods
-// NRepeatedElementInSize2NArrayTests proves correct. The O(n^2) pairwise scan is the
+// NRepeatedElementInSize2NArraySolutionTests proves correct. The O(n^2) pairwise scan is the
 // baseline the O(n) Set<int> pass has to beat.
 public class NRepeatedElementInSize2NArrayBenchmarks
 {

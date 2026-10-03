@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReorderList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is ReorderListSolution's, the same method
-// ReorderListTests proves correct. Pre-migration this class was an untested
+// ReorderListSolutionTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`)
 // rather than a second strategy to reconcile. [GlobalSetup] hoists the
 // workload values, but the list itself is rebuilt fresh inside the benchmark

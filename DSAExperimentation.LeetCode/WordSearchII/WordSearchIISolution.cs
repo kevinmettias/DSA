@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.WordSearchII;
 
 // LeetCode 212. Word Search II: find every dictionary word that traces a path of
 // horizontally/vertically adjacent board cells, never reusing a cell within one
-// word. WordSearchTests (LC 79) already proves Backtrack.Search's choose/explore/
+// word. WordSearchSolutionTests (LC 79) already proves Backtrack.Search's choose/explore/
 // unchoose walk finds one word on a board; finding every word from a whole
 // dictionary at once composes exactly one more existing primitive -
 // LowercaseTrie<TValue>, walked node-by-node alongside the board so a branch with

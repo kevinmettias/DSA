@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DeleteTheMiddleNodeOfALinkedListSolution's, the
-// same methods DeleteTheMiddleNodeOfALinkedListTests proves correct.
+// same methods DeleteTheMiddleNodeOfALinkedListSolutionTests proves correct.
 // CountThenRebuild counts the list and then copies every node but the middle -
 // two traversals and n-1 allocations - while SlowFastPointers finds the middle's
 // predecessor in one traversal and splices it out in place with no new nodes.

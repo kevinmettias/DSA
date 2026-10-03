@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CherryPickup;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CherryPickupSolution's, the same methods
-// CherryPickupTests proves correct. The grid is all-cherries with no obstacles so
+// CherryPickupSolutionTests proves correct. The grid is all-cherries with no obstacles so
 // nothing short-circuits the naive baseline's full branching early; Size is kept
 // modest for exactly that reason.
 public class CherryPickupBenchmarks

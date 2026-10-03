@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.DeleteNodesFromLinkedListPresentInArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DeleteNodesFromLinkedListPresentInArraySolution's,
-// the same methods DeleteNodesFromLinkedListPresentInArrayTests proves correct.
+// the same methods DeleteNodesFromLinkedListPresentInArraySolutionTests proves correct.
 // Set construction is hoisted to [GlobalSetup] via SetFilter's prepared-input
 // overload; the list itself is rebuilt inside each [Benchmark] call rather than
 // shared, because both strategies splice .Next pointers in place - reusing one

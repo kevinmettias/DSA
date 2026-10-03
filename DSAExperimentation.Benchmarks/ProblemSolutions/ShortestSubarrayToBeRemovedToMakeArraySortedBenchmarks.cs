@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestSubarrayToBeRemovedToMakeArraySorted;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestSubarrayToBeRemovedToMakeArraySortedSolution's,
-// the same methods ShortestSubarrayToBeRemovedToMakeArraySortedTests proves correct.
+// the same methods ShortestSubarrayToBeRemovedToMakeArraySortedSolutionTests proves correct.
 // The workload is a deterministic random array - almost never sorted anywhere, so
 // the cubic arm pays its full price and the stitching arm's prefix and suffix are
 // both short; [GlobalSetup] owns its construction.

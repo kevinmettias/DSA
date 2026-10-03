@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MakeArrayElementsEqualToZero;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MakeArrayElementsEqualToZeroSolution's, the
-// same methods MakeArrayElementsEqualToZeroTests proves correct. nums[0] is
+// same methods MakeArrayElementsEqualToZeroSolutionTests proves correct. nums[0] is
 // pinned to 0 to satisfy LC 3354's "at least one zero" precondition; the rest
 // mixes zeros and small positive values so both strategies do real work.
 public class MakeArrayElementsEqualToZeroBenchmarks

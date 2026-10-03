@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTriangularSumOfAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTriangularSumOfAnArraySolution's, the same methods
-// FindTriangularSumOfAnArrayTests proves correct. No closed-form shortcut is
+// FindTriangularSumOfAnArraySolutionTests proves correct. No closed-form shortcut is
 // composable from this repo's primitives, so both run the identical O(n^2) pairwise
 // reduction - a raw in-place int[] buffer against this repo's own DynamicArray<int>
 // rebuilt fresh each round - isolating the primitive's own overhead rather than

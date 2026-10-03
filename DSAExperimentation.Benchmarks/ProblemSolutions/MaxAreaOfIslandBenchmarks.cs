@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaxAreaOfIsland;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxAreaOfIslandSolution's, the same methods
-// MaxAreaOfIslandTests proves correct - a hand-specialized recursive flood fill
+// MaxAreaOfIslandSolutionTests proves correct - a hand-specialized recursive flood fill
 // (the textbook approach) vs. this repo's own DepthFirstSearch.Traverse walking
 // each island's reachable land cells. Each strategy clones the shared grid
 // fixture internally before mutating it, so repeated benchmark invocations each

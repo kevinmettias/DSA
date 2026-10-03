@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SearchA2DMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SearchA2DMatrixSolution's, the same methods
-// SearchA2DMatrixTests proves correct. The target is fixed to the workload's
+// SearchA2DMatrixSolutionTests proves correct. The target is fixed to the workload's
 // largest value, so both arms search for a value guaranteed present.
 public class SearchA2DMatrixBenchmarks
 {

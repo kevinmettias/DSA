@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CycleLengthQueriesInATree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CycleLengthQueriesInATreeSolution's, the same methods
-// CycleLengthQueriesInATreeTests proves correct - a per-query ancestor Dictionary
+// CycleLengthQueriesInATreeSolutionTests proves correct - a per-query ancestor Dictionary
 // against the HeapArrayIndex.Parent two-pointer walk. Both are O(log id) per query
 // (tree depth is bounded by n regardless of how many queries run), so the gap this
 // benchmark demonstrates is allocation, not asymptotic complexity: MemoryDiagnoser

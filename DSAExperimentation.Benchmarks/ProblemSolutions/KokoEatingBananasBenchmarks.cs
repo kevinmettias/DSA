@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.KokoEatingBananas;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KokoEatingBananasSolution's, the same methods
-// KokoEatingBananasTests proves correct - a hand-rolled lo/hi bisection against
+// KokoEatingBananasSolutionTests proves correct - a hand-rolled lo/hi bisection against
 // BinarySearch.LowerBound over an on-demand feasibility sequence. Both binary-search
 // the same monotone predicate in O(piles.Length * log(max(piles))), so what is
 // measured is the cost of routing it through the reusable

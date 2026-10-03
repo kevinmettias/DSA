@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CountValidSequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountValidSequencesSolution's, the same methods
-// CountValidSequencesTests proves correct. PrecomputedFactorials is handed its
+// CountValidSequencesSolutionTests proves correct. PrecomputedFactorials is handed its
 // prepared FactorialTable - built once per TargetSum in [GlobalSetup] - so factorial
 // construction is charged to setup rather than to the query being measured,
 // while DirectBinomial recomputes its own numerator/denominator from scratch

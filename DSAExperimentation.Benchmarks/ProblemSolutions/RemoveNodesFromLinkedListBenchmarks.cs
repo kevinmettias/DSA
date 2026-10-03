@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveNodesFromLinkedListSolution's, the same methods
-// RemoveNodesFromLinkedListTests proves correct. Values are a random permutation so
+// RemoveNodesFromLinkedListSolutionTests proves correct. Values are a random permutation so
 // no node's removal decision short-circuits the brute-force rescan early.
 //
 // Only the value permutation is hoisted to [GlobalSetup]; the list itself is built

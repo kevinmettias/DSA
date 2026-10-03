@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FruitsIntoBasketsII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the one arm is FruitsIntoBasketsIISolution's, the same
-// method FruitsIntoBasketsIITests proves correct. LC caps n at 100, so
+// method FruitsIntoBasketsIISolutionTests proves correct. LC caps n at 100, so
 // Length stays inside that bound - this measures the O(n^2) rescan at its
 // own intended scale rather than one this problem was never meant to run at
 // (see FruitsIntoBasketsIIIBenchmarks for the n <= 1e5 sibling).

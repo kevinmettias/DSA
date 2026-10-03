@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestUploadedPrefix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestUploadedPrefixSolution's, the same classes
-// LongestUploadedPrefixTests proves correct - the bool[] rescanned from video 1 on
+// LongestUploadedPrefixSolutionTests proves correct - the bool[] rescanned from video 1 on
 // every query (O(n) per call, O(n^2) over the stream) against this repo's own
 // Set<int> behind a frontier that only ever advances (O(1) amortized per upload,
 // O(n) total). Both replay the identical shuffled arrival order, querying after

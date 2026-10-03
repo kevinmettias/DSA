@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SplitTheArrayToMakeCoprimeProducts;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SplitTheArrayToMakeCoprimeProductsSolution's, the
-// same methods SplitTheArrayToMakeCoprimeProductsTests proves correct. The
+// same methods SplitTheArrayToMakeCoprimeProductsSolutionTests proves correct. The
 // direct-definition arm carries a running BigInteger left product and the
 // complementary right product and takes a gcd at every candidate split (values
 // overflow long within a handful of elements); the composed arm never multiplies

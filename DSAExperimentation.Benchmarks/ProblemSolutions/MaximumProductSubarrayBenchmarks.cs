@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumProductSubarray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumProductSubarraySolution's, the same methods
-// MaximumProductSubarrayTests proves correct - the O(n^2) all-subarrays brute
+// MaximumProductSubarraySolutionTests proves correct - the O(n^2) all-subarrays brute
 // force vs. the O(n) single pass tracking both a running min and a running max
 // product.
 //

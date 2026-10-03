@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.Finding3DigitEvenNumbers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are Finding3DigitEvenNumbersSolution's, the same methods
-// Finding3DigitEvenNumbersTests proves correct. The digit array is LeetCode's own
+// Finding3DigitEvenNumbersSolutionTests proves correct. The digit array is LeetCode's own
 // input shape, so [GlobalSetup] only has to choose its size and seed.
 //
 // Digits are drawn from the full 0-9 alphabet specifically so most of the ~450

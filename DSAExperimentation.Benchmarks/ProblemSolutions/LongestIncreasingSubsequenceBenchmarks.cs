@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestIncreasingSubsequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestIncreasingSubsequenceSolution's, the same
-// methods LongestIncreasingSubsequenceTests proves correct.
+// methods LongestIncreasingSubsequenceSolutionTests proves correct.
 public class LongestIncreasingSubsequenceBenchmarks
 {
     private int[] _values = [];

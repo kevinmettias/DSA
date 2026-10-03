@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StrangePrinterII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StrangePrinterIISolution's, the same methods
-// StrangePrinterIITests proves correct. Each arm is handed the prepared
+// StrangePrinterIISolutionTests proves correct. Each arm is handed the prepared
 // List<ColorNode> its hoisted overload takes, so graph construction is charged to
 // [GlobalSetup] rather than to the cycle check being measured. Colors form a
 // guaranteed-acyclic chain (every "must print before" edge points from a lower

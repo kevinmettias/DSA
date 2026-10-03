@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RandomPickIndex;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RandomPickIndexSolution's, the same classes
-// RandomPickIndexTests proves correct. A Design problem's whole point is a
+// RandomPickIndexSolutionTests proves correct. A Design problem's whole point is a
 // sequence of calls against one instance, so [GlobalSetup] only prepares the raw
 // workload array - not charging that generation to the measured method - and
 // each [Benchmark] arm builds its own fresh instance from it (mirroring how a

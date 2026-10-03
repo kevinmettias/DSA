@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MyCalendarI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MyCalendarISolution's, the same strategies
-// MyCalendarITests proves correct. Every synthetic booking request is spread
+// MyCalendarISolutionTests proves correct. Every synthetic booking request is spread
 // across a wide, non-overlapping domain (Stride > EventWidth) so almost every
 // Book call succeeds and the stored set grows to the full Length, isolating
 // the cost of the overlap CHECK itself. Drain feeds the whole generated event

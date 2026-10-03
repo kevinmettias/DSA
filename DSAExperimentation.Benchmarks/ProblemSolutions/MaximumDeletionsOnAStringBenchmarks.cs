@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumDeletionsOnAString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumDeletionsOnAStringSolution's, the same methods
-// MaximumDeletionsOnAStringTests proves correct. _text is random lowercase letters,
+// MaximumDeletionsOnAStringSolutionTests proves correct. _text is random lowercase letters,
 // so most candidate half-lengths fail fast - exactly the shape where RollingHash's
 // O(1) screen avoids the baseline's per-candidate substring allocation instead of
 // merely relocating the same cost.

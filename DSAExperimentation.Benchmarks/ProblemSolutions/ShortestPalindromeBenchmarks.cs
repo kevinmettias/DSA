@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestPalindrome;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestPalindromeSolution's, the same methods
-// ShortestPalindromeTests proves correct. Random lowercase letters give s no long
+// ShortestPalindromeSolutionTests proves correct. Random lowercase letters give s no long
 // palindromic prefix, so both strategies are forced through nearly their full
 // worst-case scan instead of an early exit making the naive version look
 // artificially competitive.

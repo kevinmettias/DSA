@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShuffleAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShuffleAnArraySolution's, the same methods
-// ShuffleAnArrayTests proves correct. The naive "remove a random remaining
+// ShuffleAnArraySolutionTests proves correct. The naive "remove a random remaining
 // element" baseline (a List<int>.RemoveAt shifts every trailing element on almost
 // every draw - O(n^2) worst case) vs. in-place Fisher-Yates over this repo's own
 // DynamicArray<int> - O(n), no auxiliary "remaining pool" collection at all.

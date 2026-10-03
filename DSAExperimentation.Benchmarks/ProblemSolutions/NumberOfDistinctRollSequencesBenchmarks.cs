@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfDistinctRollSequencesSolution's, the same
-// methods NumberOfDistinctRollSequencesTests proves correct - the unmemoized
+// methods NumberOfDistinctRollSequencesSolutionTests proves correct - the unmemoized
 // recursion over (day, secondLastRoll, lastRoll), which re-explores every state on
 // each path that reaches it, against the same recurrence routed through this repo's
 // own Memoizer. The sequence length stays small enough that the exponential arm

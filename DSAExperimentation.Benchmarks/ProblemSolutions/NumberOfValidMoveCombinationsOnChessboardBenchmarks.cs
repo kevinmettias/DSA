@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfValidMoveCombinationsOnChessboardSolution's,
-// the same methods NumberOfValidMoveCombinationsOnChessboardTests proves correct.
+// the same methods NumberOfValidMoveCombinationsOnChessboardSolutionTests proves correct.
 // [GlobalSetup] slices the fixed four-corner board down to the measured piece
 // count, which is already LeetCode's own (pieces, positions) input shape, so no
 // separate hoisted overload is needed.

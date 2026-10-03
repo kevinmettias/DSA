@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GasStation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GasStationSolution's, the same methods
-// GasStationTests proves correct. _gas/_cost are built so a solution always
+// GasStationSolutionTests proves correct. _gas/_cost are built so a solution always
 // exists but sits at the very end of the array, forcing the brute-force
 // baseline through nearly all of its O(n^2) simulated laps instead of
 // succeeding on an early candidate start.

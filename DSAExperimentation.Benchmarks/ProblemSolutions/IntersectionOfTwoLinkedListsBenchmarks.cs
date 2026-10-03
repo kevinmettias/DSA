@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.IntersectionOfTwoLinkedLists;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the one arm is IntersectionOfTwoLinkedListsSolution's own
-// two-pointer walk, the same method IntersectionOfTwoLinkedListsTests proves
+// two-pointer walk, the same method IntersectionOfTwoLinkedListsSolutionTests proves
 // correct. Chain construction is charged to [GlobalSetup], not to the walk
 // being measured.
 public class IntersectionOfTwoLinkedListsBenchmarks

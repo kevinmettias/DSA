@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSumOfMNonOverlappingSubarraysIISolution's,
-// the same methods MaximumSumOfMNonOverlappingSubarraysIITests proves correct.
+// the same methods MaximumSumOfMNonOverlappingSubarraysIISolutionTests proves correct.
 // The DynamicProgramming baseline is O(n*m*(r-l+1)) - fine at these modest
 // sizes, but nowhere near LC's own n <= 1e5, m <= n ceiling, which is exactly
 // why LagrangianRelaxation's O(n*log(PenaltyBound)) arm exists.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheMostCompetitiveSubsequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheMostCompetitiveSubsequenceSolution's, the
-// same methods FindTheMostCompetitiveSubsequenceTests proves correct. The workload
+// same methods FindTheMostCompetitiveSubsequenceSolutionTests proves correct. The workload
 // is a seeded random array and a target length of a third of it, so the baseline
 // pays (n - k) separate O(n) scans against the composed arm's single sweep -
 // RemoveKDigitsBenchmarks' precedent, one removal at a time vs. all of them within

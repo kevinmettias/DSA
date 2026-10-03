@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortEncodingOfWords;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are ShortEncodingOfWordsSolution's, the same methods
-// ShortEncodingOfWordsTests proves correct - the textbook O(n^2 * L) pairwise
+// ShortEncodingOfWordsSolutionTests proves correct - the textbook O(n^2 * L) pairwise
 // EndsWith scan vs. this repo's own Set<string> (evict every proper suffix of each
 // word as it is scanned) and its bounded-alphabet LowercaseTrie<TValue> (insert
 // every REVERSED word; a word only needs its own encoding when its reversed node is

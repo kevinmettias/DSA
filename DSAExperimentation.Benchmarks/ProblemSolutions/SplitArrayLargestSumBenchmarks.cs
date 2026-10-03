@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SplitArrayLargestSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SplitArrayLargestSumSolution's, the same methods
-// SplitArrayLargestSumTests proves correct.
+// SplitArrayLargestSumSolutionTests proves correct.
 public class SplitArrayLargestSumBenchmarks
 {
     private const int RandomSeed = 410; // LC problem number

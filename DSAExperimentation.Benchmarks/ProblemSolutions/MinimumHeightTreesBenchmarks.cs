@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumHeightTrees;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumHeightTreesSolution's, the same methods
-// MinimumHeightTreesTests proves correct. Each arm is handed the prepared adjacency
+// MinimumHeightTreesSolutionTests proves correct. Each arm is handed the prepared adjacency
 // list its hoisted overload takes, so tree construction is charged to [GlobalSetup]
 // rather than to the search being measured.
 public class MinimumHeightTreesBenchmarks

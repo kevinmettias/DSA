@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ReverseBits;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReverseBitsSolution's, the same methods
-// ReverseBitsTests proves correct. Pre-migration this class was an untested
+// ReverseBitsSolutionTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (Baseline() => 1, PrimitiveComposed() => 1) rather
 // than a second strategy to reconcile. The operand sets every bit but one, so
 // every shift/mask step runs and each of the four lookup bytes is dense.

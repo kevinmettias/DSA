@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BinaryTreeMaximumPathSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is BinaryTreeMaximumPathSumSolution's, the same
-// method BinaryTreeMaximumPathSumTests proves correct. Pre-migration this class
+// method BinaryTreeMaximumPathSumSolutionTests proves correct. Pre-migration this class
 // was an untested compile-smoke placeholder (`Baseline() => 1`,
 // `PrimitiveComposed() => 1`) rather than a second strategy to reconcile.
 public class BinaryTreeMaximumPathSumBenchmarks

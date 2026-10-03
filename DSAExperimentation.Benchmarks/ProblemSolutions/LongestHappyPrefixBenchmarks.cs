@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestHappyPrefix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestHappyPrefixSolution's, the same methods
-// LongestHappyPrefixTests proves correct - the textbook O(n^2) shrink-and-compare
+// LongestHappyPrefixSolutionTests proves correct - the textbook O(n^2) shrink-and-compare
 // check vs. this repo's own KMP prefix/failure function, which gets the answer
 // directly from its last entry in a single O(n) pass.
 //

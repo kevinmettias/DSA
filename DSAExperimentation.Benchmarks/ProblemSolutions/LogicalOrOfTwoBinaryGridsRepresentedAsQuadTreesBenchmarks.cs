@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are
 // LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolution's, the same methods
-// LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesTests proves correct. [Benchmark]
+// LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesSolutionTests proves correct. [Benchmark]
 // methods return object? rather than the internal QuadTreeNode - the same
 // accommodation ConstructQuadTreeBenchmarks and friends make (a public [Benchmark]
 // method cannot expose an internal return type even to a friend assembly, CS0050).

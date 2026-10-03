@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SameTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are SameTreeSolution's, the same methods SameTreeTests
+// Harness only: both arms are SameTreeSolution's, the same methods SameTreeSolutionTests
 // proves correct. The pre-migration version carried two [Benchmark] methods that
 // both called the exact same private recursive comparison - one strategy measured
 // twice, not two - so the pair here is the recursive compare against the genuinely

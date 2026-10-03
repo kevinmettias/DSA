@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.UniqueBinarySearchTreesII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are UniqueBinarySearchTreesIISolution's, the same
-// methods UniqueBinarySearchTreesIITests proves correct. Mirrors
+// methods UniqueBinarySearchTreesIISolutionTests proves correct. Mirrors
 // UniqueBinarySearchTreesBenchmarks' tabulation-vs-Memoizer pairing for LC
 // 96, the counting-only sibling of this problem.
 public class UniqueBinarySearchTreesIIBenchmarks

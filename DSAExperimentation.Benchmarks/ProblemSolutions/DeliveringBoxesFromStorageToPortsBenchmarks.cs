@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DeliveringBoxesFromStorageToPortsSolution's, the
-// same methods DeliveringBoxesFromStorageToPortsTests proves correct - rescanning
+// same methods DeliveringBoxesFromStorageToPortsSolutionTests proves correct - rescanning
 // the valid window at every position (O(n * maxBoxes)) against this repo's own
 // Deque<int> carrying the window's minimum (O(n), each index pushed and popped at
 // most once). The seeded boxes and their prefix scans are built into a

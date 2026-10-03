@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignSkiplist;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignSkiplistSolution's, the same classes
-// DesignSkiplistTests proves correct. A linear-scan List<int> multiset
+// DesignSkiplistSolutionTests proves correct. A linear-scan List<int> multiset
 // (Contains/IndexOf + RemoveAt, O(n) per call) against this repo's own
 // FenwickTree<int,SumOperation<int>> used as a point-update/point-query frequency
 // array over num's bounded domain, O(log 2*10^4) per call. Both replay the same

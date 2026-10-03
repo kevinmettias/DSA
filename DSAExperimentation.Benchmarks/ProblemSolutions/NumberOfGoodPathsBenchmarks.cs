@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfGoodPaths;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfGoodPathsSolution's, the same methods
-// NumberOfGoodPathsTests proves correct - the textbook per-pair path walk (O(n^2)
+// NumberOfGoodPathsSolutionTests proves correct - the textbook per-pair path walk (O(n^2)
 // pairs, each confirmed by an O(n) tree walk) against this repo's own DisjointSet
 // sweep (edges in increasing order of their higher-valued endpoint, O(n * alpha(n))
 // total). [GlobalSetup] builds the tree so neither arm is charged for it.

@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.RussianDollEnvelopes;
 // Both strategies share that same two-step shape and differ only in what each step is built
 // from - MaxEnvelopesBySortThenPatience composes this repo's own MergeSort.Sort over an
 // ArrayIndexedSequence for the O(n log n) sort and BinarySearch.LowerBound-driven patience
-// sorting for the O(n log n) LIS step (the exact approach LongestIncreasingSubsequenceTests.cs
+// sorting for the O(n log n) LIS step (the exact approach LongestIncreasingSubsequenceSolutionTests.cs
 // already exercises, reused here over a DynamicArraySequence<int> "tails" buffer);
 // MaxEnvelopesByBruteForceDp is the textbook BCL Array.Sort + O(n^2) DP baseline it has to
 // justify itself against.

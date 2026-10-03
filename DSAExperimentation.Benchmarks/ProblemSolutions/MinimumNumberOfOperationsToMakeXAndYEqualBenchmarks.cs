@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeXAndYEqual;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfOperationsToMakeXAndYEqualSolution's,
-// the same methods MinimumNumberOfOperationsToMakeXAndYEqualTests proves correct
+// the same methods MinimumNumberOfOperationsToMakeXAndYEqualSolutionTests proves correct
 // (TwoSumBenchmarks precedent). StartValue is deliberately far from a multiple of 5
 // or 11 (and from Y) so the mutation queue has to explore a wide swath of the bounded
 // range before it stumbles onto a divide, while the memoized recurrence only ever

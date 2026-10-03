@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SlidingWindowMedian;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SlidingWindowMedianSolution's, the same methods
-// SlidingWindowMedianTests proves correct - the O(n*k log k) baseline (copy each
+// SlidingWindowMedianSolutionTests proves correct - the O(n*k log k) baseline (copy each
 // k-sized window and Array.Sort it from scratch) vs. the O(n log k) two-heap
 // approach with lazy deletion. WindowSize is kept well below Length so both
 // strategies do real repeated work across many windows, not one giant one.

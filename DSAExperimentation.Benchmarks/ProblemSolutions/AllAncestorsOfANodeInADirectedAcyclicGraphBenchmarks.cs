@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AllAncestorsOfANodeInADirectedAcyclicGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AllAncestorsOfANodeInADirectedAcyclicGraphSolution's,
-// the same methods AllAncestorsOfANodeInADirectedAcyclicGraphTests proves correct,
+// the same methods AllAncestorsOfANodeInADirectedAcyclicGraphSolutionTests proves correct,
 // each handed the prepared node list its hoisted overload takes so graph
 // construction is charged to [GlobalSetup] rather than to the walk being measured.
 //

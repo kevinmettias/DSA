@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfPointsFromGridQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfPointsFromGridQueriesSolution's, the
-// same methods MaximumNumberOfPointsFromGridQueriesTests proves correct. The
+// same methods MaximumNumberOfPointsFromGridQueriesSolutionTests proves correct. The
 // problem's own per-query re-simulation (a fresh 4-directional flood fill from
 // (0,0), bounded by that query's threshold, for every query independently -
 // O(QueriesCount * Rows*Cols)) against this repo's single shared flood fill, which

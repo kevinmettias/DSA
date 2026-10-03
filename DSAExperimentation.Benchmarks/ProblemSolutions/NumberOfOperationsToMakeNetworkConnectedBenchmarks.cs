@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfOperationsToMakeNetworkConnected;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfOperationsToMakeNetworkConnectedSolution's,
-// the same methods NumberOfOperationsToMakeNetworkConnectedTests proves correct -
+// the same methods NumberOfOperationsToMakeNetworkConnectedSolutionTests proves correct -
 // a DFS flood fill over a freshly built adjacency list (baseline, the textbook
 // approach and NumberOfProvincesBenchmarks' own precedent for this DFS-vs-Union-Find
 // contrast) against this repo's own DisjointSet. A spanning tree is generated first

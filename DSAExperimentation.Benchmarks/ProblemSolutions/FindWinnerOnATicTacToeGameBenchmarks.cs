@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindWinnerOnATicTacToeGameSolution's, the same
-// methods FindWinnerOnATicTacToeGameTests proves correct, called through the
+// methods FindWinnerOnATicTacToeGameSolutionTests proves correct, called through the
 // board-size overload so BenchmarkDotNet has something to scale via [Params] -
 // LC 1275 itself fixes n = 3. The workload shuffles every cell of an n x n board
 // into a move order in [GlobalSetup], so only the replay is measured; a completed

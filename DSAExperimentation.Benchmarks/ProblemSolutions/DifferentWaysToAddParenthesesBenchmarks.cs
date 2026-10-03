@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DifferentWaysToAddParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DifferentWaysToAddParenthesesSolution's, the same
-// methods DifferentWaysToAddParenthesesTests proves correct. The expression
+// methods DifferentWaysToAddParenthesesSolutionTests proves correct. The expression
 // repeats the same operand ("1+1+...+1"), so the same substrings ("1", "1+1",
 // ...) recur across many different split points - recomputed from scratch every
 // time by the plain recursion, resolved once and reused by Memoizer.

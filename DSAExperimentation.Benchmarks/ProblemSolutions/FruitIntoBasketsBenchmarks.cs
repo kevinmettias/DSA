@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FruitIntoBaskets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FruitIntoBasketsSolution's, the same methods
-// FruitIntoBasketsTests proves correct. _fruits alternates between only 2 tree
+// FruitIntoBasketsSolutionTests proves correct. _fruits alternates between only 2 tree
 // types so the window (and the per-start rescan's inner scan) never needs to shrink
 // for a third type - forcing BOTH strategies through their full-length scan instead
 // of the rescan breaking out after only 3 elements every time, the same "force the

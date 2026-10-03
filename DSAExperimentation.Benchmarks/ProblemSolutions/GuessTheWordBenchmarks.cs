@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GuessTheWord;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GuessTheWordSolution's, the same methods
-// GuessTheWordTests proves correct - filtering the candidate pool IN PLACE with a BCL
+// GuessTheWordSolutionTests proves correct - filtering the candidate pool IN PLACE with a BCL
 // List<string> vs. this repo's own DynamicArray<string> rebuilding a fresh pool each
 // round. In-place removal near the front of a List shifts every trailing element, so
 // a round that eliminates many candidates costs O(poolSize^2) instead of O(poolSize).

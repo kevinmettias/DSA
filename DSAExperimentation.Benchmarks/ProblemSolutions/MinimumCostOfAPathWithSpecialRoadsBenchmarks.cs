@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumCostOfAPathWithSpecialRoads;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostOfAPathWithSpecialRoadsSolution's, the same
-// methods MinimumCostOfAPathWithSpecialRoadsTests proves correct. [GlobalSetup] draws
+// methods MinimumCostOfAPathWithSpecialRoadsSolutionTests proves correct. [GlobalSetup] draws
 // the random start, target and special-road list - already LeetCode's own argument
 // shape, so no hoisted overload is needed - and each arm then builds its own view of
 // the point graph, which is part of what that strategy costs. The graph is dense

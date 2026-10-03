@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RotateString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RotateStringSolution's, the same methods
-// RotateStringTests proves correct. _source/_goal are both runs of 'a' with one
+// RotateStringSolutionTests proves correct. _source/_goal are both runs of 'a' with one
 // differing trailing character, so nearly every scan position inside
 // source + source is a long near-miss - the worst case for the restart-on-mismatch
 // scan and exactly what KMP's failure function is built to skip.

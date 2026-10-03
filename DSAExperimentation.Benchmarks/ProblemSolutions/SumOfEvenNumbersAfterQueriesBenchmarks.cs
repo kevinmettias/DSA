@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfEvenNumbersAfterQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfEvenNumbersAfterQueriesSolution's, the same
-// strategies SumOfEvenNumbersAfterQueriesTests proves correct. Setup builds Length
+// strategies SumOfEvenNumbersAfterQueriesSolutionTests proves correct. Setup builds Length
 // random values and Length random queries from a fixed seed, so the rescanning arm
 // pays O(n) per query against the running-invariant arm's O(1).
 public class SumOfEvenNumbersAfterQueriesBenchmarks

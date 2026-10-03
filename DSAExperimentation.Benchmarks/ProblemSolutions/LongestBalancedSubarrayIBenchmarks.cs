@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestBalancedSubarrayI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestBalancedSubarrayISolution's, the same
-// methods LongestBalancedSubarrayITests proves correct. _nums alternates
+// methods LongestBalancedSubarrayISolutionTests proves correct. _nums alternates
 // even/odd values so every prefix keeps both distinct-value sets growing
 // together rather than one saturating out of a tiny alphabet early.
 public class LongestBalancedSubarrayIBenchmarks

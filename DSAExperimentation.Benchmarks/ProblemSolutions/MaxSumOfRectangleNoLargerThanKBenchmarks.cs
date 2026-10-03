@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxSumOfRectangleNoLargerThanKSolution's, the same
-// methods MaxSumOfRectangleNoLargerThanKTests proves correct. Columns stay fixed at
+// methods MaxSumOfRectangleNoLargerThanKSolutionTests proves correct. Columns stay fixed at
 // a small constant (Cols) so both methods pay the same O(cols^2) outer-loop factor;
 // Rows is the scaled [Params] axis, isolating the O(rows^2) vs. O(rows*log(rows))
 // inner-window asymptotic split the same way MaximumSubarrayBenchmarks isolates

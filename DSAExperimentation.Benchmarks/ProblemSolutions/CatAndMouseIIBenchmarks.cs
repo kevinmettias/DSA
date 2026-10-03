@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CatAndMouseII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CatAndMouseIISolution's, the same methods
-// CatAndMouseIITests proves correct - the textbook unmemoized minimax recursion,
+// CatAndMouseIISolutionTests proves correct - the textbook unmemoized minimax recursion,
 // re-exploring every repeated board position from scratch, vs. the identical
 // recurrence routed through this repo's own Memoizer. The workload is a single-row
 // corridor (Food at one end, Cat in the middle, Mouse at the far end) so both

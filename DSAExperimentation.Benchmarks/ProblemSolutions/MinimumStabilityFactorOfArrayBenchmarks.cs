@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumStabilityFactorOfArraySolution's, the same
-// methods MinimumStabilityFactorOfArrayTests proves correct. The composed arm is
+// methods MinimumStabilityFactorOfArraySolutionTests proves correct. The composed arm is
 // handed a prebuilt SegmentTree<int,GcdOperation>, so the O(n log n) tree build is
 // charged to [GlobalSetup] rather than the binary search being measured.
 public class MinimumStabilityFactorOfArrayBenchmarks

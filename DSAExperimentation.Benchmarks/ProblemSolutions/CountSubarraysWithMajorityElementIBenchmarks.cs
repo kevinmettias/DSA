@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithMajorityElementISolution's, the
-// same methods CountSubarraysWithMajorityElementITests proves correct.
+// same methods CountSubarraysWithMajorityElementISolutionTests proves correct.
 //
 // A small 5-value alphabet keeps target frequent enough that a meaningful share
 // of subarrays qualify as majority, instead of degenerating to "almost none do".

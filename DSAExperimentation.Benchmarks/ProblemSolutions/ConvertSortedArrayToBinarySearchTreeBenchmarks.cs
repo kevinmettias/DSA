@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is
 // ConvertSortedArrayToBinarySearchTreeSolution's, the same method
-// ConvertSortedArrayToBinarySearchTreeTests proves correct. The original
+// ConvertSortedArrayToBinarySearchTreeSolutionTests proves correct. The original
 // benchmark's two [Benchmark] arms called the identical private helper - one
 // real strategy, not two - so there is only one arm here too.
 //

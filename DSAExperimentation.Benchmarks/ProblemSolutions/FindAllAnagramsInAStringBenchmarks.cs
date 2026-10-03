@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindAllAnagramsInAString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindAllAnagramsInAStringSolution's, the same methods
-// FindAllAnagramsInAStringTests proves correct. Rebuilding and comparing a fresh
+// FindAllAnagramsInAStringSolutionTests proves correct. Rebuilding and comparing a fresh
 // frequency map for every window start (O(n*m)) vs. a single sliding pass that
 // maintains one window frequency map incrementally, using a running "matched
 // distinct characters" counter instead of a full per-window comparison (O(n+m)).

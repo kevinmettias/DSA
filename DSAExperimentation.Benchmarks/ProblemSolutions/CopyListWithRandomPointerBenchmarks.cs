@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CopyListWithRandomPointer;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the one arm is CopyListWithRandomPointerSolution's, the same
-// method CopyListWithRandomPointerTests proves correct. Every node's Random is
+// method CopyListWithRandomPointerSolutionTests proves correct. Every node's Random is
 // seeded to a uniformly random node in the list (itself included) or left null,
 // so the HashMap memo has to handle references pointing both forward and
 // backward through the list, not only ever recursing ahead of itself.

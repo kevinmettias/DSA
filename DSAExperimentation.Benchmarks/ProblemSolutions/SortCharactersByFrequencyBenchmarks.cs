@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SortCharactersByFrequency;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortCharactersByFrequencySolution's, the same
-// methods SortCharactersByFrequencyTests proves correct.
+// methods SortCharactersByFrequencySolutionTests proves correct.
 public class SortCharactersByFrequencyBenchmarks
 {
     private const int RandomSeed = 7;

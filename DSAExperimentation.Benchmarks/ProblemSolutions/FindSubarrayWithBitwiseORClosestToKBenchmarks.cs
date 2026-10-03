@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindSubarrayWithBitwiseORClosestToK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindSubarrayWithBitwiseORClosestToKSolution's, the
-// same methods FindSubarrayWithBitwiseORClosestToKTests proves correct - the
+// same methods FindSubarrayWithBitwiseORClosestToKSolutionTests proves correct - the
 // quadratic every-subarray scan vs. the O(n log(max value)) distinct-OR sweep.
 public class FindSubarrayWithBitwiseORClosestToKBenchmarks
 {

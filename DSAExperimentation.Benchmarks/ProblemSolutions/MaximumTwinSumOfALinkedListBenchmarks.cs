@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumTwinSumOfALinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumTwinSumOfALinkedListSolution's, the same
-// methods MaximumTwinSumOfALinkedListTests proves correct. [GlobalSetup] builds
+// methods MaximumTwinSumOfALinkedListSolutionTests proves correct. [GlobalSetup] builds
 // the chain (workload sizing), so each measured call is only the walk and the
 // pairing - LeetCode's own input shape is already the prepared repo object here,
 // and neither strategy mutates it, so neither needs a hoisted overload.

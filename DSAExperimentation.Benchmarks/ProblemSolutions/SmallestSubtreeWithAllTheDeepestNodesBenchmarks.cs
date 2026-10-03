@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.SmallestSubtreeWithAllTheDeepestNodes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestSubtreeWithAllTheDeepestNodesSolution's, the
-// same methods SmallestSubtreeWithAllTheDeepestNodesTests proves correct - a
+// same methods SmallestSubtreeWithAllTheDeepestNodesSolutionTests proves correct - a
 // hand-rolled (depth, node) recursion vs. this repo's own TreeFold engine closed
 // over DeepestSubtreeAlgebra. The tree is built complete (heap-shaped) so recursion
 // depth stays O(log n) at both sizes.

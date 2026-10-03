@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GreatestCommonDivisorOfStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GreatestCommonDivisorOfStringsSolution's, the same methods
-// GreatestCommonDivisorOfStringsTests proves correct. The comparison is the textbook
+// GreatestCommonDivisorOfStringsSolutionTests proves correct. The comparison is the textbook
 // str1+str2 == str2+str1 identity (which materializes both concatenations, then runs a
 // Euclidean gcd over the two lengths) against a single pass of this repo's own
 // PrefixFunctionSearch.ComputeFailureFunction over str1+str2, whose failure-function tail

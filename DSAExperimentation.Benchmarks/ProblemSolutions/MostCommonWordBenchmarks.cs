@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MostCommonWord;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MostCommonWordSolution's, the same methods
-// MostCommonWordTests proves correct - the textbook Dictionary<string,int> +
+// MostCommonWordSolutionTests proves correct - the textbook Dictionary<string,int> +
 // HashSet<string> scan vs. this repo's own HashMap<string,int> plus Set<string>.
 // Each arm is handed the prepared token list its hoisted overload takes, so
 // tokenization is charged to [GlobalSetup] rather than to the counting scan being

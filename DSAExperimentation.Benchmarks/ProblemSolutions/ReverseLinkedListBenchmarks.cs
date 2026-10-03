@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReverseLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is ReverseLinkedListSolution's, the same method
-// ReverseLinkedListTests proves correct. [GlobalSetup] hoists the workload
+// ReverseLinkedListSolutionTests proves correct. [GlobalSetup] hoists the workload
 // values, but the list itself is rebuilt fresh inside the benchmark method
 // rather than cached, because the strategy mutates the list it is handed - a
 // cached list would only be valid for the first measured iteration (mirrors

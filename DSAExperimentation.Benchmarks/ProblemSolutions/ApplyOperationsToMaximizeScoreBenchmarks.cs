@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ApplyOperationsToMaximizeScoreSolution's, the same
-// methods ApplyOperationsToMaximizeScoreTests proves correct. They share the prime
+// methods ApplyOperationsToMaximizeScoreSolutionTests proves correct. They share the prime
 // score precompute and the greedy modular-power spend, so what separates them is how
 // each index finds its two boundaries: an outward scan that is O(n) per index whenever
 // scores run long ties - common here, since a prime score only ranges over a handful

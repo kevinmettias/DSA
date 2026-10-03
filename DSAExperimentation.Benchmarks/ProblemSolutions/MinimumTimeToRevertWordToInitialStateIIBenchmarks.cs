@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumTimeToRevertWordToInitialStateIISolution's, the same methods
-// MinimumTimeToRevertWordToInitialStateIITests proves correct. WordLength is
+// MinimumTimeToRevertWordToInitialStateIISolutionTests proves correct. WordLength is
 // scaled up from 3029's own benchmark (10/50) to actually exercise the gap
 // the O(n) ZFunction strategy exists to close, while staying well short of
 // this problem's own 10^6 bound so BruteForce's O(n^2/k) arm still finishes

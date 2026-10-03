@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumWindowSubstring;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumWindowSubstringSolution's, the same methods
-// MinimumWindowSubstringTests proves correct. Target is deliberately built from
+// MinimumWindowSubstringSolutionTests proves correct. Target is deliberately built from
 // characters absent from _text (same "force the unreachable worst case" trick
 // TwoSumBenchmarks/LongestSubstringWithoutRepeatingCharactersBenchmarks already
 // use) so neither strategy ever satisfies "missing == 0" and early-exits -

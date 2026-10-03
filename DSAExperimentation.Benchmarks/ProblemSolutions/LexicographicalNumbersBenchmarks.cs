@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LexicographicalNumbers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LexicographicalNumbersSolution's, the same methods
-// LexicographicalNumbersTests proves correct.
+// LexicographicalNumbersSolutionTests proves correct.
 public class LexicographicalNumbersBenchmarks
 {
     [Params(1_000, 500_000)]

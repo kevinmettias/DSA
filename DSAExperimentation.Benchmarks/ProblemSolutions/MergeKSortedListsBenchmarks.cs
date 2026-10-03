@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MergeKSortedLists;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeKSortedListsSolution's, the same methods
-// MergeKSortedListsTests proves correct. MergeListsByHeap splices the input
+// MergeKSortedListsSolutionTests proves correct. MergeListsByHeap splices the input
 // nodes' own Next pointers into the merged chain rather than allocating new
 // ones, so - unlike AddTwoNumbersBenchmarks' non-destructive reads - the list
 // array cannot be hoisted into [GlobalSetup] and reused across iterations: a

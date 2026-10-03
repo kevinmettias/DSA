@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SortList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is SortListSolution's, the same method
-// SortListTests proves correct. Pre-migration this class was an untested
+// SortListSolutionTests proves correct. Pre-migration this class was an untested
 // compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() => 1`)
 // rather than a second strategy to reconcile. The strategy only reads the list
 // it is handed (it rebuilds a fresh one from the sorted array rather than

@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.Candy;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CandySolution's, the same methods CandyTests proves
+// Harness only: both arms are CandySolution's, the same methods CandySolutionTests proves
 // correct. _ratings is strictly decreasing, the worst case for repeated
 // relaxation: each pass can only propagate one extra unit of "must exceed my
 // right neighbor" one position further left, forcing O(n) passes of O(n) each.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveSubFoldersFromTheFilesystemSolution's, the same
-// methods RemoveSubFoldersFromTheFilesystemTests proves correct - the O(n^2) pairwise
+// methods RemoveSubFoldersFromTheFilesystemSolutionTests proves correct - the O(n^2) pairwise
 // "does any other folder prefix me" check against the O(n log n) MergeSort-then-scan.
 // [GlobalSetup] builds the random folder tree; each arm takes .Count so the two
 // return the same comparable measurement while still producing LeetCode's real answer

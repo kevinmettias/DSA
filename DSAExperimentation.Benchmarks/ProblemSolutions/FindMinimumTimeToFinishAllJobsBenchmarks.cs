@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindMinimumTimeToFinishAllJobsSolution's, the same
-// methods FindMinimumTimeToFinishAllJobsTests proves correct. Exhaustively trying
+// methods FindMinimumTimeToFinishAllJobsSolutionTests proves correct. Exhaustively trying
 // every one of the WorkerCount^JobCount assignments and tracking the best max load
 // vs. binary-searching the answer itself, each candidate time limit checked by a
 // pruned k-bucket feasibility search. Job generation is charged to [GlobalSetup];

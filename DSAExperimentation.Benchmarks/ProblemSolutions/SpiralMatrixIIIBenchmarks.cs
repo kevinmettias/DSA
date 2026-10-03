@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SpiralMatrixIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SpiralMatrixIIISolution's, the same methods
-// SpiralMatrixIIITests proves correct - the "defensive visited tracking" walk
+// SpiralMatrixIIISolutionTests proves correct - the "defensive visited tracking" walk
 // that guards every step against re-adding a cell against the direct
 // growing-stride walk that trusts the strictly increasing strides never to
 // revisit one and skips tracking entirely. Both visit exactly rows*cols

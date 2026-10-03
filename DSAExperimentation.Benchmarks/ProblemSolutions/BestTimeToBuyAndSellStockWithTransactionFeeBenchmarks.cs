@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithTransactionFee;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockWithTransactionFeeSolution's,
-// the same methods BestTimeToBuyAndSellStockWithTransactionFeeTests proves correct.
+// the same methods BestTimeToBuyAndSellStockWithTransactionFeeSolutionTests proves correct.
 // Length is kept modest (<=28) specifically because the un-memoized baseline's
 // blowup is real, the same reasoning
 // BestTimeToBuyAndSellStockWithCooldownBenchmarks.cs (LC 309) already documents for

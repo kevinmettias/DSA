@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.LinkedListRandomNode;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LinkedListRandomNodeSolution's, the same methods
-// LinkedListRandomNodeTests proves correct. [GlobalSetup] builds the chain
+// LinkedListRandomNodeSolutionTests proves correct. [GlobalSetup] builds the chain
 // (workload sizing); each [Benchmark] method drives its own construct-once-then
 // -call-many loop - a real Solution instance's own lifetime - so DynamicArrayCache's
 // one-time O(n) DynamicArray conversion is charged to the measured method, same as

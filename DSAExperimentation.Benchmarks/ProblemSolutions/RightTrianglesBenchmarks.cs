@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RightTriangles;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RightTrianglesSolution's, the same methods
-// RightTrianglesTests proves correct. Neither strategy needs input construction
+// RightTrianglesSolutionTests proves correct. Neither strategy needs input construction
 // beyond the grid itself, so there is no hoisted overload here - matching
 // TypeOfTriangleBenchmarks' own precedent for a problem whose input is already in
 // its measured shape.

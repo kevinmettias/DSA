@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LongestPalindromicPathInGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestPalindromicPathInGraphSolution's, the same
-// methods LongestPalindromicPathInGraphTests proves correct. Both are handed a
+// methods LongestPalindromicPathInGraphSolutionTests proves correct. Both are handed a
 // pre-built LabeledGraph so adjacency-mask construction is charged to
 // [GlobalSetup] rather than to the search being measured. NodeCount is kept well
 // under the problem's own n <= 14 ceiling - the brute-force baseline's simple-path

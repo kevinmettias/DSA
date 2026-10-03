@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestCommonPrefix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestCommonPrefixSolution's, the same methods
-// LongestCommonPrefixTests proves correct. Linear shrink-and-compare vs.
+// LongestCommonPrefixSolutionTests proves correct. Linear shrink-and-compare vs.
 // BinarySearch over the monotone predicate "prefix length n is shared by
 // every string".
 public class LongestCommonPrefixBenchmarks

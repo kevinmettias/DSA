@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithCooldown;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockWithCooldownSolution's, the
-// same methods BestTimeToBuyAndSellStockWithCooldownTests proves correct. Length is
+// same methods BestTimeToBuyAndSellStockWithCooldownSolutionTests proves correct. Length is
 // kept modest (<=28) specifically because the un-memoized baseline's blowup is real,
 // the same reasoning FibonacciNumberBenchmarks already documents.
 public class BestTimeToBuyAndSellStockWithCooldownBenchmarks

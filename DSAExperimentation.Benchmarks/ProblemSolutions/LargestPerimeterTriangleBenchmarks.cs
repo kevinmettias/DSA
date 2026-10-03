@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LargestPerimeterTriangle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LargestPerimeterTriangleSolution's, the same methods
-// LargestPerimeterTriangleTests proves correct. Neither strategy needs anything
+// LargestPerimeterTriangleSolutionTests proves correct. Neither strategy needs anything
 // hoisted beyond the raw int[] LeetCode itself hands in, so [GlobalSetup] only
 // sizes+seeds the workload - the cubic baseline is what caps the sizes at 80/300.
 public class LargestPerimeterTriangleBenchmarks

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DesignRideSharingSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignRideSharingSystemSolution's, the same classes
-// DesignRideSharingSystemTests proves correct. LC 3829's own RideSharingSystem()
+// DesignRideSharingSystemSolutionTests proves correct. LC 3829's own RideSharingSystem()
 // constructor takes no initial state, so - as with DesignAuctionSystemBenchmarks -
 // there is no separate "prepared input" to hoist a seed through; [GlobalSetup]
 // instead builds one fixed, valid call script. A tenth of the seeded riders are

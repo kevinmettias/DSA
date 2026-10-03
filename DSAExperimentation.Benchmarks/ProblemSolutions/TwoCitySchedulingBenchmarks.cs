@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TwoCityScheduling;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TwoCitySchedulingSolution's, the same methods
-// TwoCitySchedulingTests proves correct. Each is handed the already-projected people
+// TwoCitySchedulingSolutionTests proves correct. Each is handed the already-projected people
 // its hoisted overload takes, so building the workload is charged to [GlobalSetup]
 // rather than to the greedy being measured.
 public class TwoCitySchedulingBenchmarks

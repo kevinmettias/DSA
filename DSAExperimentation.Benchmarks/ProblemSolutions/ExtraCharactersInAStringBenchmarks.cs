@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ExtraCharactersInAString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ExtraCharactersInAStringSolution's, the same methods
-// ExtraCharactersInAStringTests proves correct. [GlobalSetup] builds a repeating run of
+// ExtraCharactersInAStringSolutionTests proves correct. [GlobalSetup] builds a repeating run of
 // characters that never form a dictionary word, so neither arm gets an early exact-match
 // shortcut - both are forced through their full per-start scan strategy, which is
 // exactly the difference being measured: a full-length substring sweep against a trie

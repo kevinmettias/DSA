@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolution's, the same methods
-// CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceTests proves correct. Each is
+// CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceSolutionTests proves correct. Each is
 // handed the already-split words its hoisted overload takes, so splitting the
 // sentence is charged to [GlobalSetup] rather than to the scan being measured. The
 // search word never matches, so both strategies walk every word.

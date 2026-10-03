@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.LFUCache;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LFUCacheSolution's, the same factories
-// LFUCacheTests proves correct. [GlobalSetup] builds one fixed call script -
+// LFUCacheSolutionTests proves correct. [GlobalSetup] builds one fixed call script -
 // Capacity initial puts filling the cache exactly, then Capacity rounds of
 // get/put over a wider key range so some calls hit (recently touched keys)
 // and some miss (evicted or never-inserted keys) - the same "script

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaxPointsOnALine;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxPointsOnALineSolution's, the same methods
-// MaxPointsOnALineTests proves correct. _points is drawn uniformly at random
+// MaxPointsOnALineSolutionTests proves correct. _points is drawn uniformly at random
 // over a wide coordinate range, so the answer stays small (2-3) and neither
 // strategy gets to short-circuit on an early large find.
 public class MaxPointsOnALineBenchmarks

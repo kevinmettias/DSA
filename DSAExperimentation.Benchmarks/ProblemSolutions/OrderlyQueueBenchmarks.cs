@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.OrderlyQueue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OrderlyQueueSolution's, the same methods
-// OrderlyQueueTests proves correct, measured on the movablePrefixLength == 1 half - comparing all n
+// OrderlyQueueSolutionTests proves correct, measured on the movablePrefixLength == 1 half - comparing all n
 // candidate rotations directly (O(n) rotations x O(n) comparison each) against
 // building a SuffixArray over text + text once and reading off the first suffix start
 // below text.Length (O(n log^2 n) per SuffixArray.cs's own doc comment). LeetCode's own

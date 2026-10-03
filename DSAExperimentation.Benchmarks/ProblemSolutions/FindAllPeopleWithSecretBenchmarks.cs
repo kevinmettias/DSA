@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindAllPeopleWithSecret;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindAllPeopleWithSecretSolution's, the same methods
-// FindAllPeopleWithSecretTests proves correct. Each arm is handed the prepared
+// FindAllPeopleWithSecretSolutionTests proves correct. Each arm is handed the prepared
 // MeetingSchedule its hoisted overload takes, so bucketing the meetings by
 // timestamp is charged to [GlobalSetup] rather than to the propagation being
 // measured.

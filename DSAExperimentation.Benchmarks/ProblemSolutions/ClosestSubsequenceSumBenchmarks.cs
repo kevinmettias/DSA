@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ClosestSubsequenceSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClosestSubsequenceSumSolution's, the same methods
-// ClosestSubsequenceSumTests proves correct. The workload is a random array over a
+// ClosestSubsequenceSumSolutionTests proves correct. The workload is a random array over a
 // small magnitude bound and a goal far outside its reachable sum range, so neither
 // arm ever lands on an exact match and both scan to completion - which is what makes
 // the 2^n baseline and the 2*2^(n/2) meet-in-the-middle arm comparable.

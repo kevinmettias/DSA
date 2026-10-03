@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TheNumberOfGoodSubsetsSolution's, the same methods
-// TheNumberOfGoodSubsetsTests proves correct - the unmemoized (candidateIndex,
+// TheNumberOfGoodSubsetsSolutionTests proves correct - the unmemoized (candidateIndex,
 // usedPrimeMask) recursion against the identical recursion routed through this repo's
 // own Memoizer. Each arm is handed the prepared GoodSubsetCandidates its hoisted
 // overload takes, so reducing nums to squarefree candidates is charged to [GlobalSetup]

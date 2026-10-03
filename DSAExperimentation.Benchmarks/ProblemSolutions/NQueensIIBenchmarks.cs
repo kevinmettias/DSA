@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NQueensII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NQueensIISolution's, the same methods
-// NQueensIITests proves correct.
+// NQueensIISolutionTests proves correct.
 public class NQueensIIBenchmarks
 {
     // Counting only, with no board ever materialised, so this arm can afford two sizes past

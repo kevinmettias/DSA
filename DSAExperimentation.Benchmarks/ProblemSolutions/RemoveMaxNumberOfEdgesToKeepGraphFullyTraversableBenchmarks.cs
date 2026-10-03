@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolution's, the same strategies
-// RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableTests proves correct. A spanning
+// RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableSolutionTests proves correct. A spanning
 // tree of type-3 edges is generated first so both traversers are always fully
 // connected in the end (the interesting, non-trivial case), then extra random
 // single-owner edges give both strategies real redundant-edge-rejecting work to do.

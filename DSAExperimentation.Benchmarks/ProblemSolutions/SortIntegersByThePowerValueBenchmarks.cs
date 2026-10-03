@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SortIntegersByThePowerValue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortIntegersByThePowerValueSolution's, the same methods
-// SortIntegersByThePowerValueTests proves correct - the textbook O(n^2) insertion sort
+// SortIntegersByThePowerValueSolutionTests proves correct - the textbook O(n^2) insertion sort
 // of the (Power, Value) pairs against this repo's own MergeSort over
 // ArrayIndexedSequence. Both arms recompute the same Collatz powers first, so the
 // comparison isolates the sorting strategy rather than the power computation. k is the

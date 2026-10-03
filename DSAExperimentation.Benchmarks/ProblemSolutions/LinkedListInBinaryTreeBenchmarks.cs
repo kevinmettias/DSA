@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.LinkedListInBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LinkedListInBinaryTreeSolution's, the same methods
-// LinkedListInBinaryTreeTests proves correct. Each is handed the prepared pattern
+// LinkedListInBinaryTreeSolutionTests proves correct. Each is handed the prepared pattern
 // its hoisted overload takes - a flattened int[] for the array-slice walk, the
 // SinglyLinkedListNode chain for the node walk - so building the needle is charged
 // to [GlobalSetup] rather than to the search being measured. The tree is a skewed

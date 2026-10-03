@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CountVisitedNodesInADirectedGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountVisitedNodesInADirectedGraphSolution's, the same
-// methods CountVisitedNodesInADirectedGraphTests proves correct. The workload is
+// methods CountVisitedNodesInADirectedGraphSolutionTests proves correct. The workload is
 // the single-cycle-spanning-every-node shape LongestCycleInAGraphBenchmarks already
 // builds via FunctionalGraphs.BuildSingleCycleEdges - every start node's naive
 // forward walk has to traverse the whole cycle before it repeats a node, so nothing

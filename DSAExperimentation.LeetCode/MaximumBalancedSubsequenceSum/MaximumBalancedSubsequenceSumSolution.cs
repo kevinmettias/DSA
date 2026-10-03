@@ -61,7 +61,7 @@ internal static class MaximumBalancedSubsequenceSumSolution
 
     // Composed: coordinate-compress b[i] = nums[i] - i via this repo's own
     // BinarySearch.LowerBound over the sorted distinct b-values (same idiom
-    // CountOfSmallerNumbersAfterSelfTests uses for a Fenwick-tree sweep), then
+    // CountOfSmallerNumbersAfterSelfSolutionTests uses for a Fenwick-tree sweep), then
     // sweep left to right through a SegmentTree<long, MaxOperation<long>> holding,
     // per rank, the best subsequence sum achieved by any earlier index whose
     // b-value compresses to that rank. Query(0, rank) reads the best sum among

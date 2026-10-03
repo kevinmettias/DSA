@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.OnlineElection;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OnlineElectionSolution's, the same methods
-// OnlineElectionTests proves correct. _queries sits just after each vote's own
+// OnlineElectionSolutionTests proves correct. _queries sits just after each vote's own
 // timestamp, so the rescanning arm's tally for query i always covers the full
 // [0, i] prefix rather than short-circuiting early - O(n) per query against the
 // precomputed arm's O(log n).

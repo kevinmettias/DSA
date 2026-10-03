@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindConsecutiveIntegersFromADataStreamSolution's, the
-// same classes FindConsecutiveIntegersFromADataStreamTests proves correct - appending
+// same classes FindConsecutiveIntegersFromADataStreamSolutionTests proves correct - appending
 // every arrival to an unbounded BCL history and rescanning its last K entries on every
 // call (O(n * K)) against this repo's own Deque<int> holding a fixed-size window with
 // an incrementally maintained match count (O(n)). [GlobalSetup] generates the streamed

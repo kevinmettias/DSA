@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TallestBillboard;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TallestBillboardSolution's, the same methods
-// TallestBillboardTests proves correct. The rod set is generated once in [GlobalSetup],
+// TallestBillboardSolutionTests proves correct. The rod set is generated once in [GlobalSetup],
 // so what is measured is the recursion itself - 3^N un-memoized calls against Memoizer's
 // one visit per (index, diff) state. RodCount is kept modest specifically because the
 // un-memoized baseline's 3^N blowup is real, the same reasoning TargetSumBenchmarks

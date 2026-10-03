@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumFrequencyStack;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumFrequencyStackSolution's factories, the same ones
-// MaximumFrequencyStackTests proves correct. A naive List<int>-backed stack that finds
+// MaximumFrequencyStackSolutionTests proves correct. A naive List<int>-backed stack that finds
 // the value to pop by rescanning the whole list every time (recount every value's
 // frequency, then walk back from the top for the most-recent max-frequency entry - O(n)
 // per pop, O(n^2) over a full push/pop sequence) vs. this repo's own

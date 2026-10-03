@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.QueueReconstructionByHeight;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are QueueReconstructionByHeightSolution's, the same
-// methods QueueReconstructionByHeightTests proves correct. Each arm takes the
+// methods QueueReconstructionByHeightSolutionTests proves correct. Each arm takes the
 // (Height, K) pairs [GlobalSetup] already prepared, so decoding LeetCode's
 // int[][] shape is not charged to the measured method - the hoisted overload
 // QueueReconstructionByHeightSolution exposes for exactly that. Both arms

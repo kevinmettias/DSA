@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.DeleteNodeInABST;
 // BinarySearchTree<int> is the target API for that shape - Insert builds the input
 // tree, and both strategies below take one and hand back the tree with the key
 // removed, so a caller checks the result the same way for either: Has/
-// InOrderTraversal, the composition KthSmallestElementInABSTTests already uses.
+// InOrderTraversal, the composition KthSmallestElementInABSTSolutionTests already uses.
 internal static class DeleteNodeInABSTSolution
 {
 

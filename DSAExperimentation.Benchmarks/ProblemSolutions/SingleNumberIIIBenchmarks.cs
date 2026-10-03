@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SingleNumberIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SingleNumberIIISolution's, the same methods
-// SingleNumberIIITests proves correct.
+// SingleNumberIIISolutionTests proves correct.
 public class SingleNumberIIIBenchmarks
 {
     // LC problem number, reused as the deterministic value seed.

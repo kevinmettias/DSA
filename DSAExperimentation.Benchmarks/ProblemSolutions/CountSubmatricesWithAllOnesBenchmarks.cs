@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSubmatricesWithAllOnes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubmatricesWithAllOnesSolution's, the same methods
-// CountSubmatricesWithAllOnesTests proves correct - the O(rows * cols^2) running-minimum
+// CountSubmatricesWithAllOnesSolutionTests proves correct - the O(rows * cols^2) running-minimum
 // scan against the O(rows * cols) monotonic-stack reduction to LC 907. The random binary
 // matrix is built once in [GlobalSetup] so matrix construction is not charged to either
 // measured arm.

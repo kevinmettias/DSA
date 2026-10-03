@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CollectCoinsInATree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CollectCoinsInATreeSolution's, the same methods
-// CollectCoinsInATreeTests proves correct. Each arm is handed the prepared adjacency
+// CollectCoinsInATreeSolutionTests proves correct. Each arm is handed the prepared adjacency
 // list its hoisted overload takes, so tree construction is charged to [GlobalSetup]
 // rather than to the trim being measured; the per-run degree and removal scratch is
 // allocated inside the strategy, equally for both arms.

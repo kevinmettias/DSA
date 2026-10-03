@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveLinkedListElements;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveLinkedListElementsSolution's, the same
-// methods RemoveLinkedListElementsTests proves correct. [GlobalSetup] hoists the
+// methods RemoveLinkedListElementsSolutionTests proves correct. [GlobalSetup] hoists the
 // workload values, but the list itself is rebuilt fresh inside each benchmark
 // method rather than cached, because the dummy-head-splice strategy splices nodes
 // out of the list it is handed - a cached list would only be valid for the first

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FlowerPlantingWithNoAdjacentSolution's, the same
-// methods FlowerPlantingWithNoAdjacentTests proves correct. The baseline rescans
+// methods FlowerPlantingWithNoAdjacentSolutionTests proves correct. The baseline rescans
 // the full raw paths array for every garden (O(gardens * paths)) against this
 // repo's own ListChildren/IGraphTopology adjacency plus a Set<int> per garden;
 // building that adjacency is charged to [GlobalSetup] by handing the composed arm

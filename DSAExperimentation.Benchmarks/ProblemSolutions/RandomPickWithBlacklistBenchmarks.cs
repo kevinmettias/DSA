@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RandomPickWithBlacklist;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RandomPickWithBlacklistSolution's, the same factories
-// RandomPickWithBlacklistTests proves correct. Random Pick with Blacklist (LC 710):
+// RandomPickWithBlacklistSolutionTests proves correct. Random Pick with Blacklist (LC 710):
 // naive rejection sampling (redraw from [0, RangeSize) until landing outside the
 // blacklist - the natural first solution attempt) vs. this repo's Set<int> +
 // HashMap<int,int> remap, which turns every Pick() into a single O(1)-expected draw

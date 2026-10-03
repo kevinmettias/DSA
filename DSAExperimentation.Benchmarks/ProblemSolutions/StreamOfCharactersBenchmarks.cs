@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StreamOfCharacters;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StreamOfCharactersSolution's, the same classes
-// StreamOfCharactersTests proves correct - re-testing every suffix of the whole
+// StreamOfCharactersSolutionTests proves correct - re-testing every suffix of the whole
 // stream so far against a HashSet<string> on every query (O(stream length * max word
 // length) per query, since each candidate substring itself costs O(length) to
 // materialize and hash) against this repo's own LowercaseTrie<TValue> built from

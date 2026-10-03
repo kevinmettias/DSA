@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StringMatchingInAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StringMatchingInAnArraySolution's, the same methods
-// StringMatchingInAnArrayTests proves correct. Every word is a run of 'a's with a
+// StringMatchingInAnArraySolutionTests proves correct. Every word is a run of 'a's with a
 // trailing 'b' (a classic KMP-adversarial shape - most candidate start positions
 // match every character but the last), lengths strictly increasing so shorter words
 // are genuine substrings of longer ones.

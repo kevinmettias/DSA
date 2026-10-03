@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumCostPathWithEdgeReversals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostPathWithEdgeReversalsSolution's, the same
-// methods MinimumCostPathWithEdgeReversalsTests proves correct. BruteForceDijkstra
+// methods MinimumCostPathWithEdgeReversalsSolutionTests proves correct. BruteForceDijkstra
 // still takes LeetCode's own (n, edges) shape and builds its own BCL adjacency lists
 // inside the measured call, deliberately without this repo's graph engine;
 // ShortestPathDijkstra is handed the prepared ReversalGraph its hoisted overload

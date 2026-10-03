@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WalkingRobotSimulationII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WalkingRobotSimulationIISolution's, the same classes
-// WalkingRobotSimulationIITests proves correct - the textbook per-unit-step walk
+// WalkingRobotSimulationIISolutionTests proves correct - the textbook per-unit-step walk
 // (what this repo's own WalkingRobotSimulation, LC 874, does) against the
 // O(1)-per-Move perimeter arithmetic LC 2069 raises its limits to force. Both track
 // the identical loop and land on the same cell; only the per-Move cost differs,

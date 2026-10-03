@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignHashSet;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignHashSetSolution's, the same classes
-// DesignHashSetTests proves correct. A Design problem's whole point is a
+// DesignHashSetSolutionTests proves correct. A Design problem's whole point is a
 // sequence of mutating calls against one instance, so there is no separate
 // "prepare input" step to hoist into [GlobalSetup] beyond the add/probe order
 // arrays themselves - [GlobalSetup] builds those (so shuffling isn't charged to

@@ -49,7 +49,7 @@ internal static class MaxChunksToMakeSortedIISolution
     }
 
     // A monotonic non-decreasing Stack<int> of each closed chunk's max value
-    // (DailyTemperaturesTests' Stack<int> precedent, applied here to chunk-merging
+    // (DailyTemperaturesSolutionTests' Stack<int> precedent, applied here to chunk-merging
     // instead of a wait-day sweep). A value smaller than the top merges every chunk
     // whose max exceeds it into one, since all of them must now sort together with
     // it; the final stack size is the chunk count.

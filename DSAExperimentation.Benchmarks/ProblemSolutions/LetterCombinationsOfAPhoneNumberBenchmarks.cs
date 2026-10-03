@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Letter Combinations of a Phone Number (LC 17): harness only. Both arms are
 // LetterCombinationsOfAPhoneNumberSolution's, the same methods
-// LetterCombinationsOfAPhoneNumberTests proves correct - direct nested expansion
+// LetterCombinationsOfAPhoneNumberSolutionTests proves correct - direct nested expansion
 // vs. this repo's generic Backtrack.Search enumeration engine.
 //
 // Both arms now return the built combination list rather than a bare count - the

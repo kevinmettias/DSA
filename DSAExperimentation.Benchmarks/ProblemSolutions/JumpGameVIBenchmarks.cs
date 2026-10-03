@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.JumpGameVI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are JumpGameVISolution's, the same methods JumpGameVITests
+// Harness only: both arms are JumpGameVISolution's, the same methods JumpGameVISolutionTests
 // proves correct. Values are random over a wide signed range so the window's running
 // maximum keeps changing instead of settling on one dominant early value that would
 // make the rescan arm look artificially cheap - the same workload shape

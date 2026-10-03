@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountAlmostEqualPairsII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountAlmostEqualPairsIISolution's, the same methods
-// CountAlmostEqualPairsIITests proves correct. Zero-padding every number to
+// CountAlmostEqualPairsIISolutionTests proves correct. Zero-padding every number to
 // PaddedWidth is charged to [GlobalSetup] via the solution's own Pad, not to either
 // measured pairwise scan.
 public class CountAlmostEqualPairsIIBenchmarks

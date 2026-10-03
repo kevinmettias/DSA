@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountLatticePointsInsideACircle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountLatticePointsInsideACircleSolution's, the same
-// methods CountLatticePointsInsideACircleTests proves agree.
+// methods CountLatticePointsInsideACircleSolutionTests proves agree.
 //
 // Circles are scattered across a bound far wider than their radius, so the combined
 // bounding box the full-grid scan must walk is much larger than the sum of the

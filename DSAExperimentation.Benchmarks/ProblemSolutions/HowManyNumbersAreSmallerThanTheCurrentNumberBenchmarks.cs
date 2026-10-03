@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // HowManyNumbersAreSmallerThanTheCurrentNumberSolution's, the same methods
-// HowManyNumbersAreSmallerThanTheCurrentNumberTests proves correct - the textbook
+// HowManyNumbersAreSmallerThanTheCurrentNumberSolutionTests proves correct - the textbook
 // O(n^2) pairwise count against sort once (this repo's own MergeSort) then
 // binary-search each element's insertion point (BinarySearch.LowerBound),
 // O(n log n). LeetCode's input shape is already the measured method's parameter,

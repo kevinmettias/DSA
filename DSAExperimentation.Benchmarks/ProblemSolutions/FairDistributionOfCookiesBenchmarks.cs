@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FairDistributionOfCookies;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FairDistributionOfCookiesSolution's, the same methods
-// FairDistributionOfCookiesTests proves correct - the hand-rolled recursion against
+// FairDistributionOfCookiesSolutionTests proves correct - the hand-rolled recursion against
 // this repo's generic Backtrack.Search closed over identical steps, the same
 // hand-rolled-vs-generic-primitive shape PartitionToKEqualSumSubsetsBenchmarks uses.
 //

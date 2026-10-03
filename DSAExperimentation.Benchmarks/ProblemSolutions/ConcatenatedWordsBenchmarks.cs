@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.ConcatenatedWords;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConcatenatedWordsSolution's, the same methods
-// ConcatenatedWordsTests proves correct. _words tiles a single short dictionary
+// ConcatenatedWordsSolutionTests proves correct. _words tiles a single short dictionary
 // word into one long candidate plus the dictionary word itself, so both
 // strategies reach the identical classification, isolating the segmentation-scan
 // cost. Each arm is handed the prepared lookup structure its hoisted overload

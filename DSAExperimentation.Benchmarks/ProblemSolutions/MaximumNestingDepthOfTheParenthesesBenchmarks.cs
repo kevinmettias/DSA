@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumNestingDepthOfTheParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNestingDepthOfTheParenthesesSolution's, the
-// same methods MaximumNestingDepthOfTheParenthesesTests proves correct - a plain
+// same methods MaximumNestingDepthOfTheParenthesesSolutionTests proves correct - a plain
 // running-depth counter (baseline) against this repo's own Stack<char> holding each
 // unmatched opener, the same pair RemoveOutermostParenthesesBenchmarks compares for
 // a sibling parentheses-depth problem. Neither needs anything hoisted beyond the

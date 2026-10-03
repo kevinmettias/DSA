@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ReverseInteger;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReverseIntegerSolution's, the same methods
-// ReverseIntegerTests proves correct.
+// ReverseIntegerSolutionTests proves correct.
 public class ReverseIntegerBenchmarks
 {
     [Params(123456789, 1534236469)]

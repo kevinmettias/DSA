@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PalindromePartitioningII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromePartitioningIISolution's, the same methods
-// PalindromePartitioningIITests proves correct. The original benchmark's two
+// PalindromePartitioningIISolutionTests proves correct. The original benchmark's two
 // [Benchmark] arms (Baseline, PrimitiveComposed) were both compile-smoke
 // placeholders (`=> 1`) - one real strategy, not two - so this measures the
 // memoized recurrence against the bottom-up cut table instead, both over

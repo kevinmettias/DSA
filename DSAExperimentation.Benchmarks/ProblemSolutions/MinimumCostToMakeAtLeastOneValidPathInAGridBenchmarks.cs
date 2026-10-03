@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumCostToMakeAtLeastOneValidPathInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToMakeAtLeastOneValidPathInAGridSolution's,
-// the same methods MinimumCostToMakeAtLeastOneValidPathInAGridTests proves correct.
+// the same methods MinimumCostToMakeAtLeastOneValidPathInAGridSolutionTests proves correct.
 // The baseline is the textbook O(V^2) Dijkstra (linear-scan the unsettled distance
 // table for the current minimum every round, no priority queue); the other arm uses
 // this repo's own Heap<Element,TOrder> ordered by ByPriorityOrder<TNode,TWeight> for

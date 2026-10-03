@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumSumQueries;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSumQueriesSolution's, the same methods
-// MaximumSumQueriesTests proves correct. BruteForceScan answers each query
+// MaximumSumQueriesSolutionTests proves correct. BruteForceScan answers each query
 // independently by rescanning every index - O(n*q) - while SweepWithSegmentTree
 // MergeSorts indices and queries by descending nums1/x, admits indices into a
 // SegmentTree<long, MaxOperation<long>> keyed by nums2's coordinate-compressed rank as

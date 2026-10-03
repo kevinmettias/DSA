@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountKReducibleNumbersLessThanNSolution's, the
-// same methods CountKReducibleNumbersLessThanNTests proves correct
+// same methods CountKReducibleNumbersLessThanNSolutionTests proves correct
 // (CountAnagramsBenchmarks precedent). The binary string always starts with '1'
 // (no leading zeros, matching LC's own constraint) and the rest is random, so n
 // is a genuinely mixed bit pattern rather than a power of two. Length stays

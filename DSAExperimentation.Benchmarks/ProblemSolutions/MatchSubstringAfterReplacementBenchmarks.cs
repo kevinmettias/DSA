@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MatchSubstringAfterReplacement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MatchSubstringAfterReplacementSolution's, the same
-// methods MatchSubstringAfterReplacementTests proves correct - linearly scanning
+// methods MatchSubstringAfterReplacementSolutionTests proves correct - linearly scanning
 // the raw mappings list for an allowed (old, new) pair (baseline) vs. an O(1)
 // two-step lookup through this repo's own HashMap<char, Set<char>> (primitive).
 // _sub's characters deliberately have no entry in _mappings, so every single start

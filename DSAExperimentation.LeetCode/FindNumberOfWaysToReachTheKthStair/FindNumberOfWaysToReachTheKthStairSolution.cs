@@ -24,7 +24,7 @@ internal static class FindNumberOfWaysToReachTheKthStairSolution
     // (Stair, Jump, CanStepDown) triple is reached by many distinct
     // interleavings of up/down moves once the targetStair+1 prune stops firing, so
     // caching collapses those into one evaluation each, the same DP
-    // composition IntegerReplacementTests uses.
+    // composition IntegerReplacementSolutionTests uses.
     public static int WaysByMemoizedRecurrence(int targetStair) =>
         Memoizer.Memoize<StairState, int>(new StairState(1, 0, true), new StairWalkTo(targetStair));
 

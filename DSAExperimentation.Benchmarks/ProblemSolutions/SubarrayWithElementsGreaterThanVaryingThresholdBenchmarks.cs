@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // SubarrayWithElementsGreaterThanVaryingThresholdSolution's, the same methods
-// SubarrayWithElementsGreaterThanVaryingThresholdTests proves correct. Threshold is
+// SubarrayWithElementsGreaterThanVaryingThresholdSolutionTests proves correct. Threshold is
 // set deliberately unreachable (larger than Length * MaxValue, the biggest
 // length * value product either strategy could ever see) so both are forced through
 // their full worst case instead of an early return on the first qualifying window

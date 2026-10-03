@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.GroupsOfStrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GroupsOfStringsSolution's, the same methods
-// GroupsOfStringsTests proves correct - the O(n^2) pairwise popcount baseline
+// GroupsOfStringsSolutionTests proves correct - the O(n^2) pairwise popcount baseline
 // against this repo's HashMap turning each word's O(26^2) delete/replace candidates
 // into O(1) lookups. Both are handed the prepared letter-set masks their hoisted
 // overload takes, so the mask pass is charged to [GlobalSetup] rather than to the

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSequencesToK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSequencesToKSolution's, the same methods
-// CountSequencesToKTests proves correct. Length stays small enough for the
+// CountSequencesToKSolutionTests proves correct. Length stays small enough for the
 // brute-force arm's 3^Length search to finish; k is fixed at 1, always
 // reachable (every "leave unchanged" sequence lands on it), so both arms do
 // real search work rather than short-circuiting on an unreachable target.

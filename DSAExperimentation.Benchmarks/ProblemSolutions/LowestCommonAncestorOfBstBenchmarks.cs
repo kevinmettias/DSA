@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LowestCommonAncestorOfBst;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LowestCommonAncestorOfBstSolution's, the same methods
-// LowestCommonAncestorOfBstTests proves correct. The tree is built and the two queried nodes are
+// LowestCommonAncestorOfBstSolutionTests proves correct. The tree is built and the two queried nodes are
 // found once in Setup, so the timed region is a single query against an already-ordered tree -
 // which is the whole contest: the ancestry walk re-derives parentage from the node shape, while
 // the BST walk reads the ordering it was handed.

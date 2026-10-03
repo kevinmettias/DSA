@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheCountOfGoodIntegers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheCountOfGoodIntegersSolution's, the same methods
-// FindTheCountOfGoodIntegersTests proves correct.
+// FindTheCountOfGoodIntegersSolutionTests proves correct.
 public class FindTheCountOfGoodIntegersBenchmarks
 {
     private const int K = 6;

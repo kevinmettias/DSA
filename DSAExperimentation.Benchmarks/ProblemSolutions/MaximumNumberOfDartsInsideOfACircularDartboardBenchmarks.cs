@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfDartsInsideOfACircularDartboard
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfDartsInsideOfACircularDartboardSolution's,
-// the same methods MaximumNumberOfDartsInsideOfACircularDartboardTests proves correct.
+// the same methods MaximumNumberOfDartsInsideOfACircularDartboardSolutionTests proves correct.
 // They run identical O(n^3) candidate-center geometry and differ only in the buffer the
 // candidates are grown in - a plain BCL List<(double, double)> against this repo's own
 // DynamicArray<(double, double)>. The dart cloud is generated once in [GlobalSetup].

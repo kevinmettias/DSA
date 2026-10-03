@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.DivisorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are DivisorGameSolution's, the same methods DivisorGameTests
+// Harness only: both arms are DivisorGameSolution's, the same methods DivisorGameSolutionTests
 // proves correct. The O(n^2) memoized game-theory recursion scanning every divisor of
 // the position vs. the closed-form O(1) "an even position wins" formula it reduces to.
 public class DivisorGameBenchmarks

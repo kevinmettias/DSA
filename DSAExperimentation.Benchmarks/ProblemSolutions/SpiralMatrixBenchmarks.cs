@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SpiralMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SpiralMatrixSolution's, the same methods
-// SpiralMatrixTests proves correct - a visited-grid simulation
+// SpiralMatrixSolutionTests proves correct - a visited-grid simulation
 // (O(rows*cols) extra memory for the visited flags) vs. the
 // four-boundary-pointer shrink (O(1) extra memory, no visited tracking at
 // all).

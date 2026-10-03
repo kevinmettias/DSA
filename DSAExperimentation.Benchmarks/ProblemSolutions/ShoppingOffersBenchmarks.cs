@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShoppingOffers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShoppingOffersSolution's, the same methods
-// ShoppingOffersTests proves correct. Three pairwise offers over the same three
+// ShoppingOffersSolutionTests proves correct. Three pairwise offers over the same three
 // items give multiple offer-application orders that land on the same
 // remaining-needs vector - exactly the redundant recomputation BruteForce pays for
 // and MemoizedDfs avoids.

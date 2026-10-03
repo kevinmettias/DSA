@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.HIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are HIndexSolution's, the same methods HIndexTests
+// Harness only: both arms are HIndexSolution's, the same methods HIndexSolutionTests
 // proves correct.
 public class HIndexBenchmarks
 {

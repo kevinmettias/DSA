@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (no division or modulo per cell). Both visit exactly rows*cols cells - the gap
 // is per-cell arithmetic overhead, not algorithm class, the same framing this
 // repo's SpiralMatrixII benchmark already uses for a matrix-fill comparison. Both
-// strategies are proved equivalent by ReshapeTheMatrixTests.
+// strategies are proved equivalent by ReshapeTheMatrixSolutionTests.
 public class ReshapeTheMatrixBenchmarks
 {
     private const int RandomSeed = 566; // LC problem number

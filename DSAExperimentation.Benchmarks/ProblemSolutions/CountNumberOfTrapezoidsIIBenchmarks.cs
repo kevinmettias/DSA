@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountNumberOfTrapezoidsII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNumberOfTrapezoidsIISolution's, the same
-// methods CountNumberOfTrapezoidsIITests proves correct
+// methods CountNumberOfTrapezoidsIISolutionTests proves correct
 // (CountNumberOfTrapezoidsIBenchmarks precedent). PointCount stays small for
 // the brute-force arm - C(n, 4) already reaches into the millions past a few
 // dozen points - while the parallel-segment-counting arm scales to the real

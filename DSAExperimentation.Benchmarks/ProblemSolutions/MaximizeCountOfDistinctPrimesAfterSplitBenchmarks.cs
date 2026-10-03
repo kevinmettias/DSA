@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeCountOfDistinctPrimesAfterSplitSolution's,
-// the same methods MaximizeCountOfDistinctPrimesAfterSplitTests proves correct.
+// the same methods MaximizeCountOfDistinctPrimesAfterSplitSolutionTests proves correct.
 // Each [Benchmark] call re-applies the same query list to whatever state
 // _nums was left in by the previous call - every index a query ever touches
 // gets overwritten to that query's own value regardless of starting point, so

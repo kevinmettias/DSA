@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AllOneDataStructure;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AllOneDataStructureSolution's, the same factories
-// AllOneDataStructureTests proves correct. [GlobalSetup] builds one fixed operation
+// AllOneDataStructureSolutionTests proves correct. [GlobalSetup] builds one fixed operation
 // script - Length initial Inc calls seeding distinct keys, then Length rounds of a
 // random-key Inc plus a GetMaxKey/GetMinKey pair - so script construction is charged to
 // setup and only the replay is measured. A first version of this benchmark's composed

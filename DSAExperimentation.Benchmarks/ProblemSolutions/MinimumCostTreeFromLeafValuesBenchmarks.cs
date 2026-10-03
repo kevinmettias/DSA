@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumCostTreeFromLeafValues;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostTreeFromLeafValuesSolution's, the same
-// methods MinimumCostTreeFromLeafValuesTests proves correct - the un-memoized
+// methods MinimumCostTreeFromLeafValuesSolutionTests proves correct - the un-memoized
 // interval recursion vs. the O(n) monotonic-decreasing sweep. Length is kept modest
 // for the same reason MinimumScoreTriangulationOfPolygonBenchmarks' VertexCount is:
 // the baseline's blowup is real.

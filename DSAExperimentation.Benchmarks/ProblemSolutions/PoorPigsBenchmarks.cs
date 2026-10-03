@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.PoorPigs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are PoorPigsSolution's, the same methods PoorPigsTests
+// Harness only: both arms are PoorPigsSolution's, the same methods PoorPigsSolutionTests
 // proves correct. Basis is fixed at 2 (minutesToDie == minutesToTest) so Buckets
 // alone drives how many pigs are needed.
 public class PoorPigsBenchmarks

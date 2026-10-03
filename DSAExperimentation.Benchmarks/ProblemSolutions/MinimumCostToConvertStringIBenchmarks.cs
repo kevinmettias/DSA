@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToConvertStringISolution's, the
-// same methods MinimumCostToConvertStringITests proves correct. Each arm is
+// same methods MinimumCostToConvertStringISolutionTests proves correct. Each arm is
 // handed the prepared input its hoisted overload takes - a raw distance
 // matrix for the brute-force arm, a built LetterNetwork for the
 // AllPairsShortestPaths arm - so building the 26-letter conversion graph is

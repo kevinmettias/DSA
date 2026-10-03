@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only. Both arms are InsertIntoABinarySearchTreeSolution's, the same
-// methods InsertIntoABinarySearchTreeTests proves correct. Each arm builds its
+// methods InsertIntoABinarySearchTreeSolutionTests proves correct. Each arm builds its
 // own tree from the same shuffled insertion order every call (the original
 // convention, preserved here), so the comparison stays "full construction plus
 // one insert" for both strategies rather than only the incremental insert cost.

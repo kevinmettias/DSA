@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfClosedIslands;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfClosedIslandsSolution's, the same methods
-// NumberOfClosedIslandsTests proves correct - a hand-specialized recursive flood
+// NumberOfClosedIslandsSolutionTests proves correct - a hand-specialized recursive flood
 // fill threading a "touched border" flag out by ref (the textbook approach) vs.
 // this repo's own DepthFirstSearch.Traverse walking each water component and
 // checking whether any cell it came back with lands on the grid's edge. Each

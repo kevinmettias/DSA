@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.StoneGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameSolution's, the same methods StoneGameTests
+// Harness only: both arms are StoneGameSolution's, the same methods StoneGameSolutionTests
 // proves correct. CanAliceWinByUnmemoizedRecursion is plain minimax over (left, right)
 // bounds - exponential, since the same sub-range recurs through many different pick
 // orders - against this repo's own Memoizer<TState,TResult> caching that exact pair,

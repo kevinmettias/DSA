@@ -89,7 +89,10 @@ the Go prototype that became [Nomos](https://github.com/kevinmettias/nomos).
 Requires the .NET 10 SDK.
 
 ```sh
-# the core library's tests (the full suite is in three test projects)
+# every test project at once
+dotnet test DSA.slnx
+
+# the core library's tests alone
 dotnet test DSAExperimentation.Tests/DSAExperimentation.Tests.csproj
 
 # record a benchmark run: every strategy for one problem
@@ -132,7 +135,7 @@ reading an old file rather than something checked.
 |---|---|
 | `DSAExperimentation` | The library: `DataStructures/`, `Algorithms/` and `Domain/` |
 | `DSAExperimentation.LeetCode` | One folder per problem, plus `Conventions/`: LeetCode's array notation for trees and lists, and its answer-equality rules |
-| `DSAExperimentation.Tests` | Library, architecture and per-problem tests |
-| `DSAExperimentation.LeetCode.Tests` | Tests of the seams between problems and the library |
+| `DSAExperimentation.Tests` | Library and architecture tests; no reference to the solution tier |
+| `DSAExperimentation.LeetCode.Tests` | Per-problem `<Problem>SolutionTests`, the seams between problems and the library, and the LeetCode catalog |
 | `DSAExperimentation.Benchmarks` | BenchmarkDotNet suites, one per problem, plus strategy-swap comparisons |
 | `DSAExperimentation.Benchmarks.Tests` | Checks that benchmark arms agree and that their workloads are reproducible |

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockUsingStrategy;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockUsingStrategySolution's, the
-// same methods BestTimeToBuyAndSellStockUsingStrategyTests proves correct. Prices and
+// same methods BestTimeToBuyAndSellStockUsingStrategySolutionTests proves correct. Prices and
 // strategy are built once in [GlobalSetup]; both arms take LeetCode's own array shape
 // directly, so there is nothing further to hoist.
 public class BestTimeToBuyAndSellStockUsingStrategyBenchmarks

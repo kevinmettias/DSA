@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReachableNodesInSubdividedGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReachableNodesInSubdividedGraphSolution's, the same
-// methods ReachableNodesInSubdividedGraphTests proves correct. MaterializedBfs still
+// methods ReachableNodesInSubdividedGraphSolutionTests proves correct. MaterializedBfs still
 // takes LeetCode's own (edges, maxMoves, n) shape and expands every subdivision node
 // into BCL adjacency lists inside the measured call, deliberately without this repo's
 // graph engine; Dijkstra is handed the prepared SubdividedGraph its hoisted overload

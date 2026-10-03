@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.WordLadder;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordLadderSolution's, the same methods
-// WordLadderTests proves correct. The word set is a connected mutation chain, so
+// WordLadderSolutionTests proves correct. The word set is a connected mutation chain, so
 // endWord is always genuinely reachable and both strategies run a full BFS instead
 // of failing fast. Each arm gets the prepared input its hoisted overload takes, so
 // dictionary/graph construction is charged to [GlobalSetup].

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PredictTheWinner;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PredictTheWinnerSolution's, the same methods
-// PredictTheWinnerTests proves correct. The array length is kept modest
+// PredictTheWinnerSolutionTests proves correct. The array length is kept modest
 // specifically because the un-memoized baseline's blowup is real, the same
 // reasoning FibonacciNumberBenchmarks documents.
 public class PredictTheWinnerBenchmarks

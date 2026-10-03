@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SimilarStringGroups;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SimilarStringGroupsSolution's, the same methods
-// SimilarStringGroupsTests proves correct - the naive "list of index sets, linearly
+// SimilarStringGroupsSolutionTests proves correct - the naive "list of index sets, linearly
 // scanned for each merge" grouping vs. this repo's DisjointSet. Both run the
 // identical O(n^2) pairwise similarity scan, so the group-membership lookup is the
 // only axis being compared, and it is a real one: naive pays a linear scan through

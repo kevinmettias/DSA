@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountGoodTripletsInAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountGoodTripletsInAnArraySolution's, the same
-// methods CountGoodTripletsInAnArrayTests proves correct - the textbook O(n^2)
+// methods CountGoodTripletsInAnArraySolutionTests proves correct - the textbook O(n^2)
 // pairwise scan against two FenwickTree<int, SumOperation<int>> sweeps at
 // O(n log n), the same contrast CountOfSmallerNumbersAfterSelfBenchmarks and
 // ReversePairsBenchmarks already draw for LC 315/493. [GlobalSetup] shuffles the

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfWaysToReorderArrayToGetSameBST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfWaysToReorderArrayToGetSameBSTSolution's, the
-// same methods NumberOfWaysToReorderArrayToGetSameBSTTests proves correct. The
+// same methods NumberOfWaysToReorderArrayToGetSameBSTSolutionTests proves correct. The
 // workload is a deterministic random permutation of 1..Length, so the BST both arms
 // describe is a balanced-on-average one; [GlobalSetup] owns the shuffle, leaving
 // each measured call to do only its own counting work.

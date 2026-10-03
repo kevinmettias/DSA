@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SecondMinimumTimeToReachDestination;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SecondMinimumTimeToReachDestinationSolution's, the same
-// methods SecondMinimumTimeToReachDestinationTests proves correct - the same
+// methods SecondMinimumTimeToReachDestinationSolutionTests proves correct - the same
 // dual-distance BFS over two different frontiers. On this problem's near-single-cycle
 // graph (m == n, per LC 2045's own generation constraint) the walk only ever touches
 // O(n) roads in total, so the List arm's O(n) shift per dequeue is precisely what

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DecodeWays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DecodeWaysSolution's, the same methods
-// DecodeWaysTests proves correct.
+// DecodeWaysSolutionTests proves correct.
 public class DecodeWaysBenchmarks
 {
     private string _value = "";

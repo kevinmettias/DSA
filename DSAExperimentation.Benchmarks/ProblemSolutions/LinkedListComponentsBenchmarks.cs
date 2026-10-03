@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LinkedListComponents;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LinkedListComponentsSolution's, the same methods
-// LinkedListComponentsTests proves correct - an O(n*k) baseline that linearly scans
+// LinkedListComponentsSolutionTests proves correct - an O(n*k) baseline that linearly scans
 // the nums array for every list node against this repo's own Set<int> (HashMap-
 // backed, the same ContainsDuplicateBenchmarks precedent) giving O(1) membership
 // per node, O(n+k) overall including seeding the set. Every other value is included

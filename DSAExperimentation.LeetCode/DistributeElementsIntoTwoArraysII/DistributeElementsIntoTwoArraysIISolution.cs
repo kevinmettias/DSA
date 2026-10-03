@@ -56,7 +56,7 @@ internal static class DistributeElementsIntoTwoArraysIISolution
     }
 
     // Composed: coordinate-compress nums via BinarySearch.LowerBound over the
-    // sorted distinct values (the same idiom CountOfSmallerNumbersAfterSelfTests
+    // sorted distinct values (the same idiom CountOfSmallerNumbersAfterSelfSolutionTests
     // uses for a Fenwick-tree sweep), then keep one FenwickTree<int,
     // SumOperation<int>> per array recording which ranks it has taken so far.
     // greaterCount(x) is the array's own element count minus

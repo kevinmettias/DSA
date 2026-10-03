@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.HouseRobberV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HouseRobberVSolution's, the same methods
-// HouseRobberVTests proves correct. HouseCount is kept well under LC's own 1e5
+// HouseRobberVSolutionTests proves correct. HouseCount is kept well under LC's own 1e5
 // bound: MaxAmountByMemoization recurses one call deep per house, and this repo's
 // own Memoizer doc comment already flags unbounded recursion depth as an
 // inherent trade-off of that primitive - WordBreakBenchmarks' own memoized arm

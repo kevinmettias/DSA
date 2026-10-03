@@ -66,7 +66,7 @@ internal static class OnlineMajorityElementInSubarraySolution
     // of candidate positions inside [left, right] and, for each one, counts how many of
     // that value's stored positions fall in range via BinarySearch.LowerBound/UpperBound
     // over a DynamicArraySequence<int> view onto the same DynamicArray - the same "wrap
-    // an existing structure in an IRandomAccessSequence witness" idiom RangeModuleTests
+    // an existing structure in an IRandomAccessSequence witness" idiom RangeModuleSolutionTests
     // (LC 715) already uses. Because the query guarantee makes any answer a true
     // majority of the subarray, a bounded number of samples finds it with overwhelming
     // probability, matching the problem's own official randomized approach. The seed is

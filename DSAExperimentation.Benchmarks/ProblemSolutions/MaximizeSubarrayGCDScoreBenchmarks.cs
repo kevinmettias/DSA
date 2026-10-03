@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeSubarrayGCDScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeSubarrayGCDScoreSolution's, the same
-// methods MaximizeSubarrayGCDScoreTests proves correct. Brute force tries
+// methods MaximizeSubarrayGCDScoreSolutionTests proves correct. Brute force tries
 // every doubling subset of every subarray - genuinely exponential in subarray
 // length - so Length stays small enough for that arm to finish in reasonable
 // time (FindTheNumberOfSubsequencesWithEqualGcdBenchmarks' own precedent for

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ThreeSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ThreeSumSolution's, the same methods
-// ThreeSumTests proves correct. Cubic duplicate-filtered brute force vs.
+// ThreeSumSolutionTests proves correct. Cubic duplicate-filtered brute force vs.
 // MergeSort plus the sorted two-pointer sweep.
 public class ThreeSumBenchmarks
 {

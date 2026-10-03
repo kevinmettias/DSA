@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestCommonSubpath;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestCommonSubpathSolution's, the same methods
-// LongestCommonSubpathTests proves correct. [GlobalSetup] builds the paths, which
+// LongestCommonSubpathSolutionTests proves correct. [GlobalSetup] builds the paths, which
 // are LeetCode's own input shape, so each arm is handed them directly - the
 // coordinate compression the hashed arm needs is part of that arm's cost and stays
 // inside the measured method, exactly as it was measured before.

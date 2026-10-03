@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountIntegersInIntervals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountIntegersInIntervalsSolution's, the same factories
-// CountIntegersInIntervalsTests proves correct. [GlobalSetup] generates the fixed add()
+// CountIntegersInIntervalsSolutionTests proves correct. [GlobalSetup] generates the fixed add()
 // script - OperationCount random ranges - so script construction is charged to setup and
 // only the replay is measured, the same "run the stateful object end to end" shape
 // DataStreamAsDisjointIntervalsBenchmarks uses.

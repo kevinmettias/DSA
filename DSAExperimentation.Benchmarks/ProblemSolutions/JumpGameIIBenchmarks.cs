@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // testing Dijkstra on a dense graph.
 //
 // Harness only: both arms are JumpGameIISolution's, the same methods
-// JumpGameIITests proves correct. The hop graph is built once in [GlobalSetup] so
+// JumpGameIISolutionTests proves correct. The hop graph is built once in [GlobalSetup] so
 // its construction isn't charged to the search being measured.
 public class JumpGameIIBenchmarks
 {

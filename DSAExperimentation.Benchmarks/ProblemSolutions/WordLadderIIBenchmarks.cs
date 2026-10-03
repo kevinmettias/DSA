@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are WordLadderIISolution's. Unlike the pre-refactor
 // version, which counted sequences rather than building them so the two arms could
 // skip materializing a potentially exponential result, both arms now return
-// LeetCode's actual answer - the same methods WordLadderIITests proves correct.
+// LeetCode's actual answer - the same methods WordLadderIISolutionTests proves correct.
 // On a chain-shaped workload the shortest-path DAG is narrow, so building the
 // sequences costs little and the comparison is still about search cost.
 public class WordLadderIIBenchmarks

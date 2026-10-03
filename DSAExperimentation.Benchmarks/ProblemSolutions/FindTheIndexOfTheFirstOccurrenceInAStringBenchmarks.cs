@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheIndexOfTheFirstOccurrenceInAString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheIndexOfTheFirstOccurrenceInAStringSolution's,
-// the same methods FindTheIndexOfTheFirstOccurrenceInAStringTests proves correct.
+// the same methods FindTheIndexOfTheFirstOccurrenceInAStringSolutionTests proves correct.
 public class FindTheIndexOfTheFirstOccurrenceInAStringBenchmarks
 {
     private const string Needle = "needle";

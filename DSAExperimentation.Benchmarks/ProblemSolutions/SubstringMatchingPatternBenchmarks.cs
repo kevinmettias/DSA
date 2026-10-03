@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SubstringMatchingPattern;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubstringMatchingPatternSolution's, the same methods
-// SubstringMatchingPatternTests proves correct. subject is a run of 'a's and both halves
+// SubstringMatchingPatternSolutionTests proves correct. subject is a run of 'a's and both halves
 // of pattern are a long run of 'a's followed by a 'b' - a character subject never contains - so
 // every candidate window matches almost the whole prefix/suffix before failing on
 // the last character, forcing both strategies through their full worst case instead

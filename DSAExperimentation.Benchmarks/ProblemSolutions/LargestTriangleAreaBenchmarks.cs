@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LargestTriangleArea;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LargestTriangleAreaSolution's, the same methods
-// LargestTriangleAreaTests proves correct. Points are drawn uniformly from a
+// LargestTriangleAreaSolutionTests proves correct. Points are drawn uniformly from a
 // bounded square, so almost all of them land strictly inside the hull and the
 // reducing arm discards them before the cubic step ever sees them.
 public class LargestTriangleAreaBenchmarks

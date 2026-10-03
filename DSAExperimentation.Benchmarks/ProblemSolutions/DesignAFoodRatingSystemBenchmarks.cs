@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignAFoodRatingSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAFoodRatingSystemSolution's, the same classes
-// DesignAFoodRatingSystemTests proves correct. [GlobalSetup] builds the workload -
+// DesignAFoodRatingSystemSolutionTests proves correct. [GlobalSetup] builds the workload -
 // the constructor's foods/cuisines/ratings, one superseding rating per food, and
 // the query cuisines - so generating it is charged to setup rather than to the
 // replay each arm measures.

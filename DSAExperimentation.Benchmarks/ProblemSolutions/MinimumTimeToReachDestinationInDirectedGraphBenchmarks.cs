@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumTimeToReachDestinationInDirectedGraphSolution's, the same methods
-// MinimumTimeToReachDestinationInDirectedGraphTests proves correct. Each arm is
+// MinimumTimeToReachDestinationInDirectedGraphSolutionTests proves correct. Each arm is
 // handed a prebuilt TimeWindowAdjacency, so adjacency-list construction is
 // charged to [GlobalSetup] rather than the search being measured.
 public class MinimumTimeToReachDestinationInDirectedGraphBenchmarks

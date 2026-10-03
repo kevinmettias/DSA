@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfMovesToSeatEveryone;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfMovesToSeatEveryoneSolution's, the
-// same methods MinimumNumberOfMovesToSeatEveryoneTests proves correct - an O(n^2)
+// same methods MinimumNumberOfMovesToSeatEveryoneSolutionTests proves correct - an O(n^2)
 // selection sort of both arrays against this repo's own O(n log n) MergeSort over
 // ArrayIndexedSequence, each followed by the same index-wise distance sum.
 public class MinimumNumberOfMovesToSeatEveryoneBenchmarks

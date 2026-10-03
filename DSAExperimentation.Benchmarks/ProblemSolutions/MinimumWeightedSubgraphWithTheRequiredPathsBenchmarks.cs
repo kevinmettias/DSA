@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumWeightedSubgraphWithTheRequiredPaths;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumWeightedSubgraphWithTheRequiredPathsSolution's,
-// the same methods MinimumWeightedSubgraphWithTheRequiredPathsTests proves correct.
+// the same methods MinimumWeightedSubgraphWithTheRequiredPathsSolutionTests proves correct.
 // PerNodePointToPointSearch still takes LeetCode's own (n, edges) shape and builds
 // its own BCL adjacency lists inside the measured call, querying every candidate
 // meeting vertex with three fresh point-to-point searches; ReverseGraphDijkstra is

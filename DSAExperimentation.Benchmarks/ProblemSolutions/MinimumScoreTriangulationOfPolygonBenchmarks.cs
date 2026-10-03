@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumScoreTriangulationOfPolygon;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumScoreTriangulationOfPolygonSolution's, the same
-// methods MinimumScoreTriangulationOfPolygonTests proves correct - plain un-memoized
+// methods MinimumScoreTriangulationOfPolygonSolutionTests proves correct - plain un-memoized
 // interval recursion over (left, right) vertex-index pairs, exponential because the
 // same sub-polygon recurs across many different choices of apex outside it, vs. this
 // repo's own Memoizer<TState,TResult> caching that exact pair. VertexCount is kept

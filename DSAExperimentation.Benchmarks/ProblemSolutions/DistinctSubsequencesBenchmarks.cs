@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DistinctSubsequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistinctSubsequencesSolution's, the same methods
-// DistinctSubsequencesTests proves correct.
+// DistinctSubsequencesSolutionTests proves correct.
 public class DistinctSubsequencesBenchmarks
 {
     private const string Source = "rabbbit";

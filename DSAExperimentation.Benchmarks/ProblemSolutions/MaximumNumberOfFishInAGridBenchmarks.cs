@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfFishInAGridSolution's, the same
-// methods MaximumNumberOfFishInAGridTests proves correct - a hand-specialized
+// methods MaximumNumberOfFishInAGridSolutionTests proves correct - a hand-specialized
 // recursive flood fill (the textbook approach) vs. this repo's own
 // DepthFirstSearch.Traverse walking each water component's reachable cells, the
 // same contrast MaxAreaOfIslandBenchmarks draws for LC 695. Each strategy clones

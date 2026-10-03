@@ -5,7 +5,7 @@ namespace DSAExperimentation.LeetCode.LastRemainingIntegerAfterAlternatingDeleti
 // number counting from the left, then from the right, until one remains.
 // startingCount reaches 10^15, so only the closed-form strategy is viable at
 // LeetCode's own scale - no repo primitive applies to the arithmetic itself, the
-// same "lighter repo-primitive fit" case EliminationGameTests' own doc comment
+// same "lighter repo-primitive fit" case EliminationGameSolutionTests' own doc comment
 // already accepts for LC 390's closed-form solution (and Pow(x, n)/Rectangle Area
 // before it).
 internal static class LastRemainingIntegerAfterAlternatingDeletionOperationsSolution

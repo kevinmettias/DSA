@@ -17,7 +17,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // times" is a small slice of the total.
 //
 // Harness only: both arms are TweetCountsPerFrequencySolution's, the same classes
-// TweetCountsPerFrequencyTests proves correct. Each arm sums the returned buckets
+// TweetCountsPerFrequencySolutionTests proves correct. Each arm sums the returned buckets
 // rather than discarding them, so the query can't be eliminated as dead code.
 public class TweetCountsPerFrequencyBenchmarks
 {

@@ -17,7 +17,7 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementII;
 // compressing prefix and sweeping it left to right through a FenwickTree<int,
 // SumOperation<int>> counts, for each j, how many earlier prefix[i] are strictly
 // smaller - the same one-sided coordinate-compression-plus-Fenwick-sweep
-// CountOfSmallerNumbersAfterSelfTests already uses for LC 315, in O(n log n).
+// CountOfSmallerNumbersAfterSelfSolutionTests already uses for LC 315, in O(n log n).
 internal static class CountSubarraysWithMajorityElementIISolution
 {
     // The textbook O(n^2) scan, unchanged in shape from

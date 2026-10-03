@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountWaysToChooseCoprimeIntegersFromRows;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountWaysToChooseCoprimeIntegersFromRowsSolution's,
-// the same methods CountWaysToChooseCoprimeIntegersFromRowsTests proves correct.
+// the same methods CountWaysToChooseCoprimeIntegersFromRowsSolutionTests proves correct.
 //
 // Size stays a square matrix well below LC's own 150x150 bound - the brute-force
 // DFS enumerates size^size leaf combinations and would not finish otherwise; the

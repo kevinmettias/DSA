@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RelativeSortArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RelativeSortArraySolution's, the same methods
-// RelativeSortArrayTests proves correct. _arr1 is half values drawn from _arr2
+// RelativeSortArraySolutionTests proves correct. _arr1 is half values drawn from _arr2
 // (exercises the ranked branch) and half values guaranteed outside _arr2's range
 // (exercises the unranked, sort-by-value-ascending branch and forces every
 // LinearScanComparerSort miss through a full m-length scan). With ReferenceLength

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SelectCellsInGridWithMaximumScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SelectCellsInGridWithMaximumScoreSolution's, the
-// same methods SelectCellsInGridWithMaximumScoreTests proves correct. The bitmask
+// same methods SelectCellsInGridWithMaximumScoreSolutionTests proves correct. The bitmask
 // arm is handed the prepared rows-by-value grouping its hoisted overload takes, so
 // that grouping is charged to [GlobalSetup] rather than the memoized DP being
 // measured.

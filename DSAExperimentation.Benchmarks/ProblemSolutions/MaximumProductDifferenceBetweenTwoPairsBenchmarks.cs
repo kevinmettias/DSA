@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumProductDifferenceBetweenTwoPairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumProductDifferenceBetweenTwoPairsSolution's,
-// the same methods MaximumProductDifferenceBetweenTwoPairsTests proves correct.
+// the same methods MaximumProductDifferenceBetweenTwoPairsSolutionTests proves correct.
 // [GlobalSetup] draws the random positive array so generation is charged to setup
 // rather than to the O(n^2) pair scan and the O(n log n) sort being compared.
 public class MaximumProductDifferenceBetweenTwoPairsBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfIncreasingPathsInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfIncreasingPathsInAGridSolution's, the same
-// methods NumberOfIncreasingPathsInAGridTests proves correct, run over the same
+// methods NumberOfIncreasingPathsInAGridSolutionTests proves correct, run over the same
 // row-major strictly-increasing Size x Size matrix
 // LongestIncreasingPathInAMatrixBenchmarks uses (every cell's only increasing
 // neighbors are right/down, the classic Unique-Paths-shaped DAG with heavy path

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PowerGridMaintenance;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PowerGridMaintenanceSolution's, the same methods
-// PowerGridMaintenanceTests proves correct.
+// PowerGridMaintenanceSolutionTests proves correct.
 public class PowerGridMaintenanceBenchmarks
 {
     private const int Seed = 3607;

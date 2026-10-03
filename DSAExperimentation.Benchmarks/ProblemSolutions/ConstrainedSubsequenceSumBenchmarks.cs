@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ConstrainedSubsequenceSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConstrainedSubsequenceSumSolution's, the same methods
-// ConstrainedSubsequenceSumTests proves correct. Values are random over a wide signed
+// ConstrainedSubsequenceSumSolutionTests proves correct. Values are random over a wide signed
 // range so the window's running maximum keeps changing instead of settling on one
 // dominant early value that would make the rescan arm look artificially cheap.
 public class ConstrainedSubsequenceSumBenchmarks

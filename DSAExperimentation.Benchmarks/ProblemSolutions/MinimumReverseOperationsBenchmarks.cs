@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumReverseOperations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumReverseOperationsSolution's, the same methods
-// MinimumReverseOperationsTests proves correct. BruteForceScan tests every one of the
+// MinimumReverseOperationsSolutionTests proves correct. BruteForceScan tests every one of the
 // NodeCount candidate destinations for each position popped off the BFS frontier
 // (O(NodeCount) per pop), while ReduceGraph composes this repo's own Reduce.Graph over
 // ReversalTopology, whose ReversalChildren computes only the O(WindowSize) positions

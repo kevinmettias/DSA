@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PrisonCellsAfterNDays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PrisonCellsAfterNDaysSolution's, the same methods
-// PrisonCellsAfterNDaysTests proves correct. The naive day-by-day simulation
+// PrisonCellsAfterNDaysSolutionTests proves correct. The naive day-by-day simulation
 // (baseline) walks all N days directly and so scales linearly, even though the
 // 8-cell state space has only 256 possible encodings and must cycle almost
 // immediately; the composed arm maps each encoded state to the day it was first

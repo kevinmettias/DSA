@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.OddEvenJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are OddEvenJumpSolution's, the same methods OddEvenJumpTests
+// Harness only: both arms are OddEvenJumpSolution's, the same methods OddEvenJumpSolutionTests
 // proves correct. The array is generated once in [GlobalSetup] and is already
 // LeetCode's own input shape, so each arm is handed it directly - the quadratic
 // per-index forward scan for each jump target against MergeSort plus a monotonic

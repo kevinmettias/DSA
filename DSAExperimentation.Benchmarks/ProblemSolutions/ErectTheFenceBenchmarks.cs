@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ErectTheFence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ErectTheFenceSolution's, the same methods
-// ErectTheFenceTests proves correct. Points are uniform-random in a bounded grid,
+// ErectTheFenceSolutionTests proves correct. Points are uniform-random in a bounded grid,
 // so the hull stays a small fraction of Length (h << n), which is exactly what
 // makes the O(n log n + h*n) primitive-based strategy beat the O(n^3) baseline so
 // decisively.

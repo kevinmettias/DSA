@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignAuthenticationManager;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAuthenticationManagerSolution's, the same
-// classes DesignAuthenticationManagerTests proves correct - the naive
+// classes DesignAuthenticationManagerSolutionTests proves correct - the naive
 // List<(string, int)> linear-scan manager (the "no hashing at all" baseline a
 // first-pass implementation reaches for, DesignHashMapBenchmarks precedent)
 // against this repo's HashMap<TKey,TValue>. Both are populated with the same

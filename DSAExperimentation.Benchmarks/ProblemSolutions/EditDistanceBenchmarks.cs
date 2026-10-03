@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.EditDistance;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are EditDistanceSolution's, the same methods
-// EditDistanceTests proves correct. The two strings are already LeetCode's own
+// EditDistanceSolutionTests proves correct. The two strings are already LeetCode's own
 // input shape, so [GlobalSetup] only sizes the workload - there is no separate
 // prepared-input overload to hoist into.
 public class EditDistanceBenchmarks

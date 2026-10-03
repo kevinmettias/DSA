@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.OperationsOnTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OperationsOnTreeSolution's, the same factories
-// OperationsOnTreeTests proves correct. What is measured is upgrade's "find every
+// OperationsOnTreeSolutionTests proves correct. What is measured is upgrade's "find every
 // locked descendant" step, repeated across many queries against the same near-leaf
 // node in a large tree - the extreme case that most separates a whole-tree scan
 // (O(NodeCount * depth) per query) from a subtree-only walk (O(subtree size), so

@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.FindASafeWalkThroughAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindASafeWalkThroughAGridSolution's, the same
-// methods FindASafeWalkThroughAGridTests proves correct. The composed arm is
+// methods FindASafeWalkThroughAGridSolutionTests proves correct. The composed arm is
 // handed the prepared cell-cost graph its hoisted overload takes, so graph
 // construction is charged to [GlobalSetup] rather than the Dijkstra search being
 // measured.

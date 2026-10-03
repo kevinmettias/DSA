@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumAbsoluteDifferenceInBSTSolution's, the same
-// methods MinimumAbsoluteDifferenceInBSTTests proves correct.
+// methods MinimumAbsoluteDifferenceInBSTSolutionTests proves correct.
 public class MinimumAbsoluteDifferenceInBSTBenchmarks
 {
 

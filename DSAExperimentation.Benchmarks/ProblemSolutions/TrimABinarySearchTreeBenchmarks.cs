@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.TrimABinarySearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TrimABinarySearchTreeSolution's, the same methods
-// TrimABinarySearchTreeTests proves correct. Low/high span the tree's whole
+// TrimABinarySearchTreeSolutionTests proves correct. Low/high span the tree's whole
 // value range, so every node survives under both approaches - isolating the
 // rebuild-vs-reattach cost itself rather than how much of the tree gets dropped.
 public class TrimABinarySearchTreeBenchmarks

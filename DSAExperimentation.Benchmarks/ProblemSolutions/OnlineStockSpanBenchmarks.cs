@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.OnlineStockSpan;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OnlineStockSpanSolution's, the same methods
-// OnlineStockSpanTests proves correct. Prices are strictly increasing here,
+// OnlineStockSpanSolutionTests proves correct. Prices are strictly increasing here,
 // deliberately - the mirror image of DailyTemperaturesBenchmarks' own random
 // permutation, whose goal was avoiding a next-greater distance of 1 on every
 // element. Every day's span here spans every prior day: the backward rescan's true

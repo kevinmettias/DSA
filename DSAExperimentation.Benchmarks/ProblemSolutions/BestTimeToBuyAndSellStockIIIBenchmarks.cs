@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockIIISolution's, the same
-// methods BestTimeToBuyAndSellStockIIITests proves correct. Brute force is a
+// methods BestTimeToBuyAndSellStockIIISolutionTests proves correct. Brute force is a
 // genuine, unmemoized two-way choice tree per day, so Length stays small enough
 // for that arm to finish in reasonable time (BestTimeToBuyAndSellStockVBenchmarks'
 // own precedent for "size the baseline can survive") - the memoized arm's whole

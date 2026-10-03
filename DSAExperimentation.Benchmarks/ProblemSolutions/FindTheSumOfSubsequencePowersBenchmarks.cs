@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheSumOfSubsequencePowers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheSumOfSubsequencePowersSolution's, the same
-// methods FindTheSumOfSubsequencePowersTests proves correct. k is fixed well below
+// methods FindTheSumOfSubsequencePowersSolutionTests proves correct. k is fixed well below
 // Length so both the 2^n brute force and the O(n^4 k) threshold-counting DP stay
 // inside a reasonable wall-clock budget at these sizes.
 public class FindTheSumOfSubsequencePowersBenchmarks

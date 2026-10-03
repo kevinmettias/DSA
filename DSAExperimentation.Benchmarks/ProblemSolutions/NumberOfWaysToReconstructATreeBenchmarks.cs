@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfWaysToReconstructATree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfWaysToReconstructATreeSolution's, the same
-// methods NumberOfWaysToReconstructATreeTests proves correct. The workload is
+// methods NumberOfWaysToReconstructATreeSolutionTests proves correct. The workload is
 // ReconstructTreeWorkloads' star of chains, sized here, so every non-root node
 // clears the initial degree check and both arms walk the full
 // candidate-parent/subset-check logic rather than short-circuiting.

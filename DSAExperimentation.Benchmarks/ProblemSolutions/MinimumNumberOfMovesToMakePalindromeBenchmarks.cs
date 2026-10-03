@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfMovesToMakePalindrome;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfMovesToMakePalindromeSolution's, the
-// same methods MinimumNumberOfMovesToMakePalindromeTests proves correct. The
+// same methods MinimumNumberOfMovesToMakePalindromeSolutionTests proves correct. The
 // measured input is LeetCode's own shape - a string - so neither strategy needs a
 // hoisted overload; what [GlobalSetup] owns here is the workload's size and seed.
 public class MinimumNumberOfMovesToMakePalindromeBenchmarks

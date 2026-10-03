@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountWaysToMakeArrayWithProduct;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountWaysToMakeArrayWithProductSolution's, the same
-// methods CountWaysToMakeArrayWithProductTests proves correct. Trial division
+// methods CountWaysToMakeArrayWithProductSolutionTests proves correct. Trial division
 // re-pays O(sqrt(k)) on every single query; the shared smallest-prime-factor sieve
 // pays O(maxK log log maxK) once and amortizes it across QueryCount queries, so the
 // sieve build stays inside the measured method - it is the cost being amortized,

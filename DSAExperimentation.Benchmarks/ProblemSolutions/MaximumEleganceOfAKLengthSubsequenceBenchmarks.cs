@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumEleganceOfAKLengthSubsequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumEleganceOfAKLengthSubsequenceSolution's, the
-// same methods MaximumEleganceOfAKLengthSubsequenceTests proves correct against
+// same methods MaximumEleganceOfAKLengthSubsequenceSolutionTests proves correct against
 // LeetCode's own examples. Categories are drawn from a pool much smaller than the
 // item count so the scan past subsequenceLength actually walks the duplicates stack
 // down instead of running out of duplicates after the very first swap.

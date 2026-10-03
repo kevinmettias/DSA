@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindGreatestCommonDivisorOfArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindGreatestCommonDivisorOfArraySolution's, the same
-// methods FindGreatestCommonDivisorOfArrayTests proves correct. The min/max scan is
+// methods FindGreatestCommonDivisorOfArraySolutionTests proves correct. The min/max scan is
 // the same O(n) work either way, so what the workload has to expose is the single
 // Gcd(min, max) call - _nums[0] is forced to 1 (subtraction's worst case:
 // gcd(1, max) forces exactly max-1 single-unit decrements) and MaxValueExclusive is

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RandomPickWithWeight;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RandomPickWithWeightSolution's, the same classes
-// RandomPickWithWeightTests proves correct. A Design problem's whole point is a
+// RandomPickWithWeightSolutionTests proves correct. A Design problem's whole point is a
 // sequence of calls against one instance, so [GlobalSetup] only prepares the raw
 // weight workload - not charging that generation to the measured method - and
 // each [Benchmark] arm builds its own fresh instance from it (mirroring how a

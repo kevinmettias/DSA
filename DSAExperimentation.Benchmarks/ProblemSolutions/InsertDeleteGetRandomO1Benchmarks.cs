@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are InsertDeleteGetRandomO1Solution's, the same classes
-// InsertDeleteGetRandomO1Tests proves correct. A Design problem's whole point is a
+// InsertDeleteGetRandomO1SolutionTests proves correct. A Design problem's whole point is a
 // sequence of mutating calls against one instance, so there is no separate "prepare
 // input" step to hoist into [GlobalSetup] beyond the insert/removal order arrays
 // themselves - [GlobalSetup] builds those (so shuffling isn't charged to the measured

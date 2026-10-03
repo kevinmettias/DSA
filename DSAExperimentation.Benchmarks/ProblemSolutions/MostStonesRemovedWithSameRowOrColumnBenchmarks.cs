@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MostStonesRemovedWithSameRowOrColumn;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MostStonesRemovedWithSameRowOrColumnSolution's, the same
-// methods MostStonesRemovedWithSameRowOrColumnTests proves correct. The stone field is
+// methods MostStonesRemovedWithSameRowOrColumnSolutionTests proves correct. The stone field is
 // generated once in [GlobalSetup] so only edge discovery and unioning are measured -
 // PairwiseScan's O(n^2) pair sweep against RowColumnKeyedUnion's O(n) axis unions.
 public class MostStonesRemovedWithSameRowOrColumnBenchmarks

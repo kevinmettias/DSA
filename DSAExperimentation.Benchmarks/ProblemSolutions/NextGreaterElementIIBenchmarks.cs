@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NextGreaterElementII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NextGreaterElementIISolution's, the same methods
-// NextGreaterElementIITests proves correct - the O(n^2) scan-ahead baseline vs.
+// NextGreaterElementIISolutionTests proves correct - the O(n^2) scan-ahead baseline vs.
 // the O(n) monotonic-stack sweep over this repo's own Stack<int>.
 public class NextGreaterElementIIBenchmarks
 {

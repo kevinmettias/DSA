@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindTheMinimumCostArrayPermutation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheMinimumCostArrayPermutationSolution's, the
-// same methods FindTheMinimumCostArrayPermutationTests proves correct. Neither
+// same methods FindTheMinimumCostArrayPermutationSolutionTests proves correct. Neither
 // strategy needs input construction beyond the permutation itself, so [GlobalSetup]
 // only builds a random permutation of the given size - workload sizing that fixes
 // no domain content, the same inline-randomized shape AddTwoNumbersBenchmarks uses

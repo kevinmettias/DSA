@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.DesignSQL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are DesignSQLSolution's, the same classes DesignSQLTests
+// Harness only: both arms are DesignSQLSolution's, the same classes DesignSQLSolutionTests
 // proves correct. [GlobalSetup] builds the rows and the ids to delete, so workload
 // construction is charged to setup rather than to the replay each arm measures;
 // there is no prepared input to hoist into a strategy overload, because a Design

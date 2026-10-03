@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReverseNodesInEvenLengthGroups;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReverseNodesInEvenLengthGroupsSolution's, the same
-// methods ReverseNodesInEvenLengthGroupsTests proves correct - a plain int[]
+// methods ReverseNodesInEvenLengthGroupsSolutionTests proves correct - a plain int[]
 // baseline that computes the same increasing-then-truncated group boundaries and
 // reverses each even-length run with Array.Reverse, against this repo's own
 // SinglyLinkedListNode<T> pointer splicing with no array materialization at all.

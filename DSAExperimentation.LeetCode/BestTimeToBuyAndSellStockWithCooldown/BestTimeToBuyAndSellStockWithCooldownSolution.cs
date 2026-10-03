@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithCooldown;
 //
 // MaxProfitByMemoizedRecursion composes this repo's own Memoizer<TState,TResult> as
 // the cache, keyed by that pair, the same "recurrence takes a memoized recursive
-// callback" shape EditDistanceBenchmarks/DecodeWaysTests already use for a 2-tuple
+// callback" shape EditDistanceBenchmarks/DecodeWaysSolutionTests already use for a 2-tuple
 // state.
 //
 // MaxProfitByUnmemoizedRecursion is the same recurrence with no cache at all - the

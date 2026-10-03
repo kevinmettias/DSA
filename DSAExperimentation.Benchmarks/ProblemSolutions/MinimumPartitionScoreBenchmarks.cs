@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumPartitionScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumPartitionScoreSolution's, the same
-// methods MinimumPartitionScoreTests proves correct. GroupCount is fixed at a
+// methods MinimumPartitionScoreSolutionTests proves correct. GroupCount is fixed at a
 // quarter of Length so the recursion always has real partitioning choices at
 // every depth, not a nearly-forced split. Length stays modest: both arms are
 // O(Length^2 * k) recursions over every candidate group boundary, and this

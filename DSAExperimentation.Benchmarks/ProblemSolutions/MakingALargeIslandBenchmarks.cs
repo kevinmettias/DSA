@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MakingALargeIsland;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MakingALargeIslandSolution's, the same methods
-// MakingALargeIslandTests proves correct - repeatedly flipping each water cell and
+// MakingALargeIslandSolutionTests proves correct - repeatedly flipping each water cell and
 // running a fresh recursive flood fill (the textbook brute force) vs. this repo's
 // own DepthFirstSearch.Traverse labeling every island exactly once into a
 // HashMap<int,int> of id -> area, then summing each water cell's already-known

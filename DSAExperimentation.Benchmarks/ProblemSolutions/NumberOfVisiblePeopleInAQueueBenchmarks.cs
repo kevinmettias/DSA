@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfVisiblePeopleInAQueue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfVisiblePeopleInAQueueSolution's, the same
-// methods NumberOfVisiblePeopleInAQueueTests proves correct. Heights are a random
+// methods NumberOfVisiblePeopleInAQueueSolutionTests proves correct. Heights are a random
 // permutation so no person's answer short-circuits the brute-force scan early
 // (DailyTemperaturesBenchmarks' own precedent for this workload shape).
 public class NumberOfVisiblePeopleInAQueueBenchmarks

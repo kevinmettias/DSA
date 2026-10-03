@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ModifyGraphEdgeWeights;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ModifyGraphEdgeWeightsSolution's, the same methods
-// ModifyGraphEdgeWeightsTests proves correct. The workload is a straight chain
+// ModifyGraphEdgeWeightsSolutionTests proves correct. The workload is a straight chain
 // whose every hop is fixed except the last, so exactly one -1 edge has to absorb
 // the whole stretch - the linear scan pays one Dijkstra pass per unit of
 // StretchAmount, the half-distance formula two passes regardless.

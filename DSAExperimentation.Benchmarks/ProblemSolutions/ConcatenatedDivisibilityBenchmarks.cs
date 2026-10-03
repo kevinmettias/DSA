@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ConcatenatedDivisibility;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConcatenatedDivisibilitySolution's, the same
-// methods ConcatenatedDivisibilityTests proves correct. No hoisted overload is
+// methods ConcatenatedDivisibilitySolutionTests proves correct. No hoisted overload is
 // needed - nums/divisor are already the cheap, plain-array shape [GlobalSetup] would
 // produce either way, the same reasoning MedianOfTwoSortedArraysBenchmarks
 // applies to its own nums1/nums2.

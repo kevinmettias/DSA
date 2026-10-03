@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RepeatedStringMatch;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RepeatedStringMatchSolution's, the same methods
-// RepeatedStringMatchTests proves correct. The repeated unit and the target pattern
+// RepeatedStringMatchSolutionTests proves correct. The repeated unit and the target pattern
 // are built so they never match at any repeat count, forcing both strategies through
 // every candidate length instead of an early-exit on the first.
 public class RepeatedStringMatchBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ThreeSumWithMultiplicitySolution's, the same methods
-// ThreeSumWithMultiplicityTests proves correct - cubic triple-loop counting
+// ThreeSumWithMultiplicitySolutionTests proves correct - cubic triple-loop counting
 // (baseline, the textbook approach) vs. MergeSort plus the sorted two-pointer sweep
 // that counts each equal-valued span's combinations directly instead of visiting
 // one pair at a time.

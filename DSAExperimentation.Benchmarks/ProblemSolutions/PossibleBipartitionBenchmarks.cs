@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PossibleBipartition;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PossibleBipartitionSolution's, the same methods
-// PossibleBipartitionTests proves correct - a hand-rolled iterative DFS
+// PossibleBipartitionSolutionTests proves correct - a hand-rolled iterative DFS
 // 2-coloring over a plain neighbour array (an sbyte[] group array keyed by
 // person id, an explicit Stack<int>) against this repo's
 // BipartiteCheck.IsBipartite, a multi-root BFS 2-coloring composed from

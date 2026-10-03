@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.EncodeAndDecodeTinyURL;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are EncodeAndDecodeTinyURLSolution's, the same classes
-// EncodeAndDecodeTinyURLTests proves correct. [GlobalSetup] populates each strategy
+// EncodeAndDecodeTinyURLSolutionTests proves correct. [GlobalSetup] populates each strategy
 // via its own Encode, so build cost is charged to setup rather than to the Decode
 // each [Benchmark] arm measures. _targetShortUrl is deliberately the
 // LAST-inserted pair so both strategies are forced through their full worst-case

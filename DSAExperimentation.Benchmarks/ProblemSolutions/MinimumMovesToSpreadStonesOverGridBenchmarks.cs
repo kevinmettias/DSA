@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumMovesToSpreadStonesOverGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumMovesToSpreadStonesOverGridSolution's, the
-// same methods MinimumMovesToSpreadStonesOverGridTests proves correct. The grid is
+// same methods MinimumMovesToSpreadStonesOverGridSolutionTests proves correct. The grid is
 // fixed-size 3x3 by the problem itself, so there is no "Length" axis to grow -
 // ExcessConcentration instead varies how lopsided the distribution is (all 6
 // spare stones piled on one cell vs. spread across three), which is what drives

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MeetingRoomsIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MeetingRoomsIIISolution's, the same methods
-// MeetingRoomsIIITests proves correct - the textbook O(meetings * rooms) freeAt[]
+// MeetingRoomsIIISolutionTests proves correct - the textbook O(meetings * rooms) freeAt[]
 // scan against this repo's own free-room + busy-room heap pair. The meeting list is
 // generated wide enough relative to RoomCount (MeetingsPerRoom arrivals, durations up
 // to 3x RoomCount) that rooms routinely contend and delay, forcing real pool churn

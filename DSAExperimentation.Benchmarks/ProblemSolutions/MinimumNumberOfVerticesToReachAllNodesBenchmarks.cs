@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfVerticesToReachAllNodesSolution's, the
-// same methods MinimumNumberOfVerticesToReachAllNodesTests proves correct - the
+// same methods MinimumNumberOfVerticesToReachAllNodesSolutionTests proves correct - the
 // textbook O(V*E) nested scan (for every node, rescan every edge looking for a
 // match) against one O(V+E) marking pass into this repo's own Set<int>. Edge
 // generation is charged to [GlobalSetup]; edges always run from a lower to a higher

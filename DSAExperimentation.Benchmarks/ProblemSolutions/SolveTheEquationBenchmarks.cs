@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SolveTheEquation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SolveTheEquationSolution's, the same methods
-// SolveTheEquationTests proves correct.
+// SolveTheEquationSolutionTests proves correct.
 public class SolveTheEquationBenchmarks
 {
     // Arbitrary seed for reproducible benchmark input.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAddAndSearchWordsDataStructureSolution's, the
-// same classes DesignAddAndSearchWordsDataStructureTests proves correct.
+// same classes DesignAddAndSearchWordsDataStructureSolutionTests proves correct.
 // [GlobalSetup] builds one fixed word list and search-pattern list - half exact
 // lookups, half single-position wildcards - so word/pattern generation is
 // charged to setup rather than to the add-then-search replay each [Benchmark]

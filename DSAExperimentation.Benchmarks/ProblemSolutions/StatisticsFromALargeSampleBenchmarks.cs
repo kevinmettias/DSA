@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StatisticsFromALargeSampleSolution's, the same
-// methods StatisticsFromALargeSampleTests proves correct. AverageCountPerValue
+// methods StatisticsFromALargeSampleSolutionTests proves correct. AverageCountPerValue
 // scales the total sample size while the bucket range stays fixed at [0, 255] -
 // the shape LeetCode itself fixes - so SampleExpansion's O(total) allocation grows
 // while CumulativeBinarySearch's stays O(256) regardless.

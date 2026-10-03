@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidAnagram;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidAnagramSolution's, the same methods
-// ValidAnagramTests proves correct. target is a rotation of source (same multiset,
+// ValidAnagramSolutionTests proves correct. target is a rotation of source (same multiset,
 // different order) so both strategies are forced through their full comparison
 // instead of an early mismatch cutting brute force short.
 public class ValidAnagramBenchmarks

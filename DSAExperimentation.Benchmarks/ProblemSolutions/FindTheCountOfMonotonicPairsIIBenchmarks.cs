@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheCountOfMonotonicPairsIISolution's, the same
-// methods FindTheCountOfMonotonicPairsIITests proves correct. nums[i] is pushed
+// methods FindTheCountOfMonotonicPairsIISolutionTests proves correct. nums[i] is pushed
 // to Part II's own constraint ceiling (<= 1000, twenty times Part I's) - exactly
 // the regime where the brute-force row's extra maxValue factor stops being free
 // and the prefix-sum arm's advantage should show. Length stays well under both

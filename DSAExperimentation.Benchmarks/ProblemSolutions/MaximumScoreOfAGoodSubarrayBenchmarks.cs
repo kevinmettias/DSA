@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumScoreOfAGoodSubarray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumScoreOfAGoodSubarraySolution's, the same
-// methods MaximumScoreOfAGoodSubarrayTests proves correct - the O(n^2) baseline
+// methods MaximumScoreOfAGoodSubarraySolutionTests proves correct - the O(n^2) baseline
 // that re-scans every window anchored at the required index against the two
 // monotonic-increasing Stack<int> sweeps that compute each index's nearest-smaller
 // boundaries in one O(n) pass per direction. LeetCode's own input here is already

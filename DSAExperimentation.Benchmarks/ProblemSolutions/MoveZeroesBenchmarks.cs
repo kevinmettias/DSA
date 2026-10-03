@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MoveZeroes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MoveZeroesSolution's, the same methods
-// MoveZeroesTests proves correct. _values is deliberately front-loaded with
+// MoveZeroesSolutionTests proves correct. _values is deliberately front-loaded with
 // zeroes so the linear-scan strategy's "how far to the next nonzero" grows
 // every iteration instead of finding one immediately, forcing its real
 // worst-case cost.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeTheMinimumPoweredCitySolution's, the same
-// methods MaximizeTheMinimumPoweredCityTests proves correct - a descending linear scan
+// methods MaximizeTheMinimumPoweredCitySolutionTests proves correct - a descending linear scan
 // over every candidate target against this repo's own BinarySearch.LowerBound over an
 // on-demand IRandomAccessSequence<bool> feasibility sequence, the same
 // search-on-the-answer shape MaximumNumberOfTasksYouCanAssignBenchmarks and

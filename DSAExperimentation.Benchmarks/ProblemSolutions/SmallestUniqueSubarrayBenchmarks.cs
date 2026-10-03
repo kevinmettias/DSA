@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestUniqueSubarray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestUniqueSubarraySolution's, the same methods
-// SmallestUniqueSubarrayTests proves correct. A small value bound (relative to
+// SmallestUniqueSubarraySolutionTests proves correct. A small value bound (relative to
 // Length) keeps most windows non-unique at short lengths, so both arms do real
 // work across several candidate lengths rather than resolving at length 1.
 public class SmallestUniqueSubarrayBenchmarks

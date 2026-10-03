@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BeautifulTowersI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BeautifulTowersISolution's, the same methods
-// BeautifulTowersITests proves correct - the O(n^2) per-peak clamped walk baseline
+// BeautifulTowersISolutionTests proves correct - the O(n^2) per-peak clamped walk baseline
 // vs. the O(n) monotonic-stack sweep over this repo's own Stack<int>. [Params]
 // stays at LC 2865's own n <= 1000 constraint.
 public class BeautifulTowersIBenchmarks

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.InsertGreatestCommonDivisorsInLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are InsertGreatestCommonDivisorsInLinkedListSolution's,
-// the same methods InsertGreatestCommonDivisorsInLinkedListTests proves correct -
+// the same methods InsertGreatestCommonDivisorsInLinkedListSolutionTests proves correct -
 // a whole fresh sequence rebuilt through a List<int> buffer
 // (OddEvenLinkedListBenchmarks' "extra buffer" contrast) against one gcd node
 // spliced between each original pair. Each arm clones the [GlobalSetup] list

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LeastOperatorsToExpressNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LeastOperatorsToExpressNumberSolution's, the same
-// methods LeastOperatorsToExpressNumberTests proves correct. Base 2 makes the
+// methods LeastOperatorsToExpressNumberSolutionTests proves correct. Base 2 makes the
 // base-digit recursion as deep and as branch-heavy as it gets, so the
 // un-memoized arm re-explores the same (remaining, level) pairs from many root
 // paths while the memoized arm collapses them. TargetBitLength is kept modest

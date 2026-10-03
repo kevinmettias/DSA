@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.MinStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are MinStackSolution's, the same factories MinStackTests proves correct.
+// Harness only: both arms are MinStackSolution's, the same factories MinStackSolutionTests proves correct.
 // [GlobalSetup] draws one fixed value sequence, so the script construction is charged to setup and
 // only the replay is measured. Each replay pushes every value with a GetMin behind it, then reads
 // Top and pops every value back off - the whole four-operation surface, so the scan arm's O(n)

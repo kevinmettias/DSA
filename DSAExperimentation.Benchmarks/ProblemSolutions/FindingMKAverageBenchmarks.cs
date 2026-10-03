@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindingMKAverage;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindingMKAverageSolution's, the same factories
-// FindingMKAverageTests proves correct. [GlobalSetup] builds one fixed element
+// FindingMKAverageSolutionTests proves correct. [GlobalSetup] builds one fixed element
 // stream, so stream construction is charged to setup and only the replay - an
 // addElement plus a calculateMKAverage per element, identical for both arms - is
 // measured.

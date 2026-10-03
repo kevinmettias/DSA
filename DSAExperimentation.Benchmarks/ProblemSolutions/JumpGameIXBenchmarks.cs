@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.JumpGameIX;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are JumpGameIXSolution's, the same methods
-// JumpGameIXTests proves correct. nums is built once in [GlobalSetup]; both arms
+// JumpGameIXSolutionTests proves correct. nums is built once in [GlobalSetup]; both arms
 // take LeetCode's own array shape directly, so there is nothing further to hoist.
 // Length stays small - the baseline's per-index BFS re-scans every other index at
 // every step, O(n^3) worst case.

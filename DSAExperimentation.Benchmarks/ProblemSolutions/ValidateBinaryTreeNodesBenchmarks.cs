@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidateBinaryTreeNodes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidateBinaryTreeNodesSolution's, the same methods
-// ValidateBinaryTreeNodesTests proves correct - the textbook scan that tries every
+// ValidateBinaryTreeNodesSolutionTests proves correct - the textbook scan that tries every
 // node as a candidate root and re-traverses from scratch (O(n) per candidate, O(n^2)
 // overall) against this repo's DisjointSet-based single O(n * alpha(n)) pass, the
 // same "naive re-validate from scratch vs. one DisjointSet pass" shape

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BestTimeToBuyAndSellStockIVSolution's, the same
-// methods BestTimeToBuyAndSellStockIVTests proves correct. Pre-migration this
+// methods BestTimeToBuyAndSellStockIVSolutionTests proves correct. Pre-migration this
 // class was an untested compile-smoke placeholder (Baseline() => 1,
 // PrimitiveComposed() => 1) rather than a second strategy to reconcile. Brute
 // force is a genuine, unmemoized two-way choice tree per day, so Length stays

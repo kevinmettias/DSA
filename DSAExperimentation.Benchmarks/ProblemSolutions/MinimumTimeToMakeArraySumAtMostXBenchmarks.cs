@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeToMakeArraySumAtMostXSolution's, the
-// same methods MinimumTimeToMakeArraySumAtMostXTests proves correct. Both run the
+// same methods MinimumTimeToMakeArraySumAtMostXSolutionTests proves correct. Both run the
 // same O(n^2) knapsack recurrence over the pairs sorted ascending by nums2, so
 // what the comparison isolates is the DP's own footprint - a dense
 // long[n+1, n+1] table behind Array.Sort against a single long[n+1] rolling row

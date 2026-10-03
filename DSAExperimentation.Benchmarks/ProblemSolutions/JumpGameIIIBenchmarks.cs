@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.JumpGameIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are JumpGameIIISolution's, the same methods
-// JumpGameIIITests proves correct. _arr deliberately never contains a 0 (values
+// JumpGameIIISolutionTests proves correct. _arr deliberately never contains a 0 (values
 // drawn from [1, Length)), the same "force the real worst case" intent
 // TwoSumBenchmarks' _target uses: neither strategy can short-circuit on an early
 // hit, so both are forced through the full reachable component from _start.

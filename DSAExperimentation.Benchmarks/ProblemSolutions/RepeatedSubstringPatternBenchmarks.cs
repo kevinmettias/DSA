@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RepeatedSubstringPattern;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RepeatedSubstringPatternSolution's, the same methods
-// RepeatedSubstringPatternTests proves correct. Text is random lowercase letters, so
+// RepeatedSubstringPatternSolutionTests proves correct. Text is random lowercase letters, so
 // a genuine repeating period is astronomically unlikely and both strategies run to
 // completion.
 public class RepeatedSubstringPatternBenchmarks

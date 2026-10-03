@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinCostToConnectAllPoints;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinCostToConnectAllPointsSolution's, the same
-// methods MinCostToConnectAllPointsTests proves correct. [GlobalSetup] draws the
+// methods MinCostToConnectAllPointsSolutionTests proves correct. [GlobalSetup] draws the
 // random point cloud - the workload sizing and seed are the measurement decision
 // that stays here - and each arm is handed LeetCode's own int[][] shape, because
 // materializing the complete Manhattan-distance graph is exactly the cost the

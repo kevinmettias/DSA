@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountNumberOfTeams;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNumberOfTeamsSolution's, the same methods
-// CountNumberOfTeamsTests proves correct - the textbook cubic triple-loop scan
+// CountNumberOfTeamsSolutionTests proves correct - the textbook cubic triple-loop scan
 // against the O(n log n) pair of coordinate-compressed FenwickTree sweeps. The
 // rating array is the problem's own input shape, so building it is all
 // [GlobalSetup] has to do.

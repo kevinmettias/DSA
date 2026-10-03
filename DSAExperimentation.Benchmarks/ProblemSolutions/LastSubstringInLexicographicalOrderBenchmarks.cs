@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LastSubstringInLexicographicalOrder;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LastSubstringInLexicographicalOrderSolution's, the same
-// methods LastSubstringInLexicographicalOrderTests proves correct - pairwise O(n^2)
+// methods LastSubstringInLexicographicalOrderSolutionTests proves correct - pairwise O(n^2)
 // suffix comparison against this repo's own SuffixArray, which sorts every suffix in
 // O(n log^2 n) and then reads the answer off as its final entry. A small 4-letter
 // alphabet makes many suffixes share long common prefixes, forcing both approaches

@@ -177,7 +177,7 @@ internal static class FindTheSafestPathInAGridSolution
 
     // Composed: a single-pass modified Dijkstra (no binary search) over this
     // repo's Heap<Element,TOrder> - the same frontier ShortestPath.Dijkstra and
-    // MaximumNumberOfPointsFromGridQueriesTests already use, just maximizing
+    // MaximumNumberOfPointsFromGridQueriesSolutionTests already use, just maximizing
     // instead of minimizing (achieved by negating the priority, since
     // ByPriorityOrder<TNode,TWeight> is a fixed min-heap comparison) - "pop the
     // node with the best bottleneck reached so far" is exactly Dijkstra's
@@ -185,7 +185,7 @@ internal static class FindTheSafestPathInAGridSolution
     // GridTopology/GridChildren/GridNode/Grid supply 4-directional neighbor
     // iteration over an all-passable grid (the safeness threshold isn't a grid
     // obstacle here, so nothing needs an obstacle-aware Grid - the same move
-    // MaximumNumberOfPointsFromGridQueriesTests makes). Safeness itself still
+    // MaximumNumberOfPointsFromGridQueriesSolutionTests makes). Safeness itself still
     // needs its own multi-source BFS, run over this repo's own Queue<T>.
     public static int MaximumSafenessFactorByHeap(int[][] grid)
     {

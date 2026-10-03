@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.CanIWin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CanIWinSolution's, the same methods CanIWinTests
+// Harness only: both arms are CanIWinSolution's, the same methods CanIWinSolutionTests
 // proves correct. desiredTotal is set to the exact sum of every choosable number,
 // so a win can only be confirmed on the very last pick - forcing BOTH strategies
 // through their full worst-case search tree instead of an early exit on the first

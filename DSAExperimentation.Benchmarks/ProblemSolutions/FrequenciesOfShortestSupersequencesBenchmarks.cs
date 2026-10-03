@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FrequenciesOfShortestSupersequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FrequenciesOfShortestSupersequencesSolution's, the
-// same methods FrequenciesOfShortestSupersequencesTests proves correct. Each arm
+// same methods FrequenciesOfShortestSupersequencesSolutionTests proves correct. Each arm
 // takes the already-built LetterGraph, so parsing LC's word list into letters/edges
 // is charged to [GlobalSetup] rather than the subset search being measured.
 // WordCount stays under 16*16 = 256, LC's own ceiling for 16 unique letters with

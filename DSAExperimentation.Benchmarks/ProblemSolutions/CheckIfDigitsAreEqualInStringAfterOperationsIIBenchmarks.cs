@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CheckIfDigitsAreEqualInStringAfterOperationsIISolution's, the same methods
-// CheckIfDigitsAreEqualInStringAfterOperationsIITests proves correct.
+// CheckIfDigitsAreEqualInStringAfterOperationsIISolutionTests proves correct.
 public class CheckIfDigitsAreEqualInStringAfterOperationsIIBenchmarks
 {
     private const int RandomSeed = 3463;

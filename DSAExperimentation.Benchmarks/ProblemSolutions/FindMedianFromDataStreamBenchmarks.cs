@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindMedianFromDataStream;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindMedianFromDataStreamSolution's, the same
-// factories FindMedianFromDataStreamTests proves correct, replaying the same
+// factories FindMedianFromDataStreamSolutionTests proves correct, replaying the same
 // interleaved AddNum/FindMedian stream - a sort-on-every-query baseline
 // (O(n log n) per query) vs. the two-heap approach (O(log n) per insert, O(1)
 // per query).

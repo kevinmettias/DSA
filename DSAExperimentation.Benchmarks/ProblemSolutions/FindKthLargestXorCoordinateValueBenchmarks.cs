@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindKthLargestXorCoordinateValueSolution's, the same
-// methods FindKthLargestXorCoordinateValueTests proves correct. They share the same
+// methods FindKthLargestXorCoordinateValueSolutionTests proves correct. They share the same
 // 2D prefix-XOR pass and differ only in the selection that follows it - a full
 // O(nm log nm) sort against an O(nm log k) size-k min-heap - so the matrix itself is
 // built once in [GlobalSetup] rather than charged to either arm.

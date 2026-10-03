@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestPalindromicRearrangementI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestPalindromicRearrangementISolution's, the
-// same methods SmallestPalindromicRearrangementITests proves correct. Builds a
+// same methods SmallestPalindromicRearrangementISolutionTests proves correct. Builds a
 // random half and mirrors it so the generated input is always a genuine
 // palindrome, matching LeetCode's own guarantee about text.
 public class SmallestPalindromicRearrangementIBenchmarks

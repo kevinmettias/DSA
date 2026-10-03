@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MergeSimilarItems;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeSimilarItemsSolution's, the same methods
-// MergeSimilarItemsTests proves correct. The naive arm re-scans its output list
+// MergeSimilarItemsSolutionTests proves correct. The naive arm re-scans its output list
 // for a matching value on every insert (O(n) per item, O(n^2) overall) before
 // sorting; the composed arm accumulates into this repo's HashMap<int, int> and
 // sorts the distinct values with this repo's MergeSort. Values are deliberately

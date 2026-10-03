@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimizeHammingDistanceAfterSwapOperations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeHammingDistanceAfterSwapOperationsSolution's,
-// the same methods MinimizeHammingDistanceAfterSwapOperationsTests proves correct.
+// the same methods MinimizeHammingDistanceAfterSwapOperationsSolutionTests proves correct.
 // Adjacency-list BFS to find each index's swap-component (the same baseline
 // SmallestStringWithSwapsBenchmarks uses) vs. this repo's own DisjointSet(n) -
 // O(1) Union per allowed swap and O(a(n)) Find per index instead of a queue-driven

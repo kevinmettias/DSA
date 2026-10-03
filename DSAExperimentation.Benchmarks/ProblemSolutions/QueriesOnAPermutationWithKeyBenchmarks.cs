@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.QueriesOnAPermutationWithKey;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are QueriesOnAPermutationWithKeySolution's, the same
-// methods QueriesOnAPermutationWithKeyTests proves correct - the move-to-front
+// methods QueriesOnAPermutationWithKeySolutionTests proves correct - the move-to-front
 // simulation over a BCL List<int> vs. over this repo's own DynamicArray<int>,
 // both O(Queries * M). The query stream is a fixed-seed random draw over
 // [1..PermutationSize], built in [GlobalSetup] so only the simulation is measured.

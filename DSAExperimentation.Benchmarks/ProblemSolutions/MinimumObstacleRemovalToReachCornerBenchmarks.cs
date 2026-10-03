@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MinimumObstacleRemovalToReachCorner;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumObstacleRemovalToReachCornerSolution's, the
-// same methods MinimumObstacleRemovalToReachCornerTests proves correct. The
+// same methods MinimumObstacleRemovalToReachCornerSolutionTests proves correct. The
 // composed arm is handed the prepared obstacle-cost graph its hoisted overload
 // takes, so wiring the grid is charged to [GlobalSetup] rather than to the
 // Dijkstra search being measured.

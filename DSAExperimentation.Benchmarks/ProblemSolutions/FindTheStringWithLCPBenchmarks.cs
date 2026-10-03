@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheStringWithLCP;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheStringWithLCPSolution's, the same methods
-// FindTheStringWithLCPTests proves correct (TwoSumBenchmarks precedent). [GlobalSetup]
+// FindTheStringWithLCPSolutionTests proves correct (TwoSumBenchmarks precedent). [GlobalSetup]
 // builds a random lowercase string over a small alphabet (so plenty of positions share
 // a letter, giving DisjointSet's Union real merging to do) and derives its actual LCP
 // matrix from it, guaranteeing a satisfiable input that drives both arms through their

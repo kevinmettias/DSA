@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AlternatingGroupsIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AlternatingGroupsIIISolution's, the same methods
-// AlternatingGroupsIIITests proves correct. Workload is mostly size queries
+// AlternatingGroupsIIISolutionTests proves correct. Workload is mostly size queries
 // (four in five) with a scattering of repaints between them - size queries are
 // where AlternatingRunLedger's O(log n) prefix lookups have to justify
 // themselves against the baseline's O(n) circle scan; window size is drawn from

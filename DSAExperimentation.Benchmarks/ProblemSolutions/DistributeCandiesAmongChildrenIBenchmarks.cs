@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistributeCandiesAmongChildrenISolution's, the same
-// methods DistributeCandiesAmongChildrenITests proves correct. limit == candyCount
+// methods DistributeCandiesAmongChildrenISolutionTests proves correct. limit == candyCount
 // is LC 2928's own worst case within its <=50 bound: the double loop's inner bound
 // is min(candyCount - first, limit), so setting limit as high as the candy count
 // keeps every iteration in range instead of an early truncation making brute force

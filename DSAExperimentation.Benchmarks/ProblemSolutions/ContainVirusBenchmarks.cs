@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ContainVirus;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ContainVirusSolution's, the same methods
-// ContainVirusTests proves correct. Each strategy clones the workload grid itself,
+// ContainVirusSolutionTests proves correct. Each strategy clones the workload grid itself,
 // so [GlobalSetup] only has to build it once per [Params] value rather than per
 // iteration.
 public class ContainVirusBenchmarks

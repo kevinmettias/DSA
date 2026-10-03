@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BricksFallingWhenHit;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BricksFallingWhenHitSolution's, the same methods
-// BricksFallingWhenHitTests proves correct - the textbook "replay forward,
+// BricksFallingWhenHitSolutionTests proves correct - the textbook "replay forward,
 // recompute roof-connectivity by BFS after every single hit" walk, O(hits * rows
 // * cols), against the reverse-time DisjointSet trick. Wall and hit-list
 // construction is charged to [GlobalSetup].

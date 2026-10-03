@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountIncreasingQuadruplets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountIncreasingQuadrupletsSolution's, the same
-// methods CountIncreasingQuadrupletsTests proves correct. Params stay small on
+// methods CountIncreasingQuadrupletsSolutionTests proves correct. Params stay small on
 // purpose - the O(n^4) baseline would otherwise dominate the run, so both arms
 // are measured on the same modest permutation sizes rather than letting the
 // baseline set an unreasonably tiny Length just for itself.

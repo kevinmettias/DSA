@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RangeModule;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Range Module (LC 715): harness only, both arms are RangeModuleSolution's, the same
-// factories RangeModuleTests proves correct. queryRange is the operation worth
+// factories RangeModuleSolutionTests proves correct. queryRange is the operation worth
 // benchmarking - addRange cost is dominated by the same O(n) array shift either
 // representation pays (a flat List or IntervalSet's own DynamicArray-backed storage),
 // so both instances are pre-populated with the same Length disjoint ranges once, in

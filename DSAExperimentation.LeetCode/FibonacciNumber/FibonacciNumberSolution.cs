@@ -7,7 +7,7 @@ namespace DSAExperimentation.LeetCode.FibonacciNumber;
 // FibByNaiveRecursion is the textbook exponential double recursion the composed
 // solution has to justify itself against; FibByMemoizedTopDown expresses the same
 // recurrence directly through this repo's Memoizer as O(n) top-down DP - the same
-// ClimbingStairsTests precedent, minus the "+1 shift" Climbing Stairs applies on top
+// ClimbingStairsSolutionTests precedent, minus the "+1 shift" Climbing Stairs applies on top
 // of the same shape. FibByIterativeRollingPair is the O(n)-time, O(1)-space loop a
 // memo table does not need to exist to beat.
 internal static class FibonacciNumberSolution

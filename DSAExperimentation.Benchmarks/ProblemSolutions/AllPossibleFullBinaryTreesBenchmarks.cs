@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AllPossibleFullBinaryTrees;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AllPossibleFullBinaryTreesSolution's, the same methods
-// AllPossibleFullBinaryTreesTests proves correct. Mirrors
+// AllPossibleFullBinaryTreesSolutionTests proves correct. Mirrors
 // UniqueBinarySearchTreesIIBenchmarks' naive-vs-Memoizer pairing for LC 95, keyed
 // here by a single node count instead of a (start,end) range.
 public class AllPossibleFullBinaryTreesBenchmarks

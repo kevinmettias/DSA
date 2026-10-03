@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSubarrayXORWithBoundedRangeSolution's, the
-// same methods MaximumSubarrayXORWithBoundedRangeTests proves correct. High is set
+// same methods MaximumSubarrayXORWithBoundedRangeSolutionTests proves correct. High is set
 // well below the generated value ceiling so a meaningful fraction of positions
 // break a run, rather than the whole array degenerating into a single valid run.
 public class MaximumSubarrayXORWithBoundedRangeBenchmarks

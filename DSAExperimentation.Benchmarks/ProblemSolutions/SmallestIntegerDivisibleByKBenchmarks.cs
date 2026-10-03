@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestIntegerDivisibleByKSolution's, the same methods
-// SmallestIntegerDivisibleByKTests proves correct - the textbook modular walk (a
+// SmallestIntegerDivisibleByKSolutionTests proves correct - the textbook modular walk (a
 // single int updated in place for up to Divisor steps) against Reduce.Graph +
 // DistanceMapReduceAlgebra over the remainder graph, where each node's single
 // outgoing edge stands in for "append one more '1' digit". The graph is built once in

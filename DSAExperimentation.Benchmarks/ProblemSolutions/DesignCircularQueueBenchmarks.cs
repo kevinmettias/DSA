@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignCircularQueue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignCircularQueueSolution's, the same classes
-// DesignCircularQueueTests proves correct. [GlobalSetup] builds one fixed,
+// DesignCircularQueueSolutionTests proves correct. [GlobalSetup] builds one fixed,
 // deterministic call script - enough EnQueues to fill the queue exactly, then
 // repeated DeQueue/EnQueue/Rear rounds once it is at capacity, so every operation
 // after the fill is forced through the wraparound path at both ends - the same

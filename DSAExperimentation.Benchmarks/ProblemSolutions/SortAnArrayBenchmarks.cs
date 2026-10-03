@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SortAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortAnArraySolution's, the same methods
-// SortAnArrayTests proves correct - the textbook O(n^2) insertion sort vs. this
+// SortAnArraySolutionTests proves correct - the textbook O(n^2) insertion sort vs. this
 // repo's own MergeSort over ArrayIndexedSequence. Each arm sorts a fresh copy of
 // the same randomized input internally, so neither benefits from the other's
 // partially-sorted leftovers.

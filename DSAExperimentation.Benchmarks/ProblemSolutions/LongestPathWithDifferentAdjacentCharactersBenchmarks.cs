@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestPathWithDifferentAdjacentCharactersSolution's,
-// the same methods LongestPathWithDifferentAdjacentCharactersTests proves agree -
+// the same methods LongestPathWithDifferentAdjacentCharactersSolutionTests proves agree -
 // the O(n^2) recomputing walk against this repo's single-pass TreeFold.
 //
 // A skewed chain with alternating labels, not a bushy random tree: every edge is

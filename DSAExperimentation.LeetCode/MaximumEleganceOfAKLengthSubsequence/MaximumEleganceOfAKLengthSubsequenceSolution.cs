@@ -102,7 +102,7 @@ internal static class MaximumEleganceOfAKLengthSubsequenceSolution
 
     // Composed: the same greedy-swap algorithm, sorted via this repo's MergeSort
     // over ArrayIndexedSequence<Element> (the same composition
-    // TheNumberOfWeakCharactersInTheGameTests uses), seen categories tracked
+    // TheNumberOfWeakCharactersInTheGameSolutionTests uses), seen categories tracked
     // with this repo's Set<int>, replaceable duplicate profits tracked with this
     // repo's own Stack<int>.
     public static long MaximumEleganceByRepoPrimitives(int[][] items, int subsequenceLength)

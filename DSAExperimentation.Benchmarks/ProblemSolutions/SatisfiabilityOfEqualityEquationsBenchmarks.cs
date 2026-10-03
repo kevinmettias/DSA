@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SatisfiabilityOfEqualityEquations;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SatisfiabilityOfEqualityEquationsSolution's, the same
-// methods SatisfiabilityOfEqualityEquationsTests proves correct. The baseline pays a
+// methods SatisfiabilityOfEqualityEquationsSolutionTests proves correct. The baseline pays a
 // freshly allocated HashSet<char>+Queue<char> BFS per "!=" equation over an adjacency
 // list rebuilt from the "==" equations; the composed arm is this repo's own
 // DisjointSet(26) - O(1) Union per equality and O(a(26)) IsConnected per inequality,

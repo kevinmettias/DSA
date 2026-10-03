@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSubarraysWithFixedBounds;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithFixedBoundsSolution's, the same
-// methods CountSubarraysWithFixedBoundsTests proves correct. The baseline rescans
+// methods CountSubarraysWithFixedBoundsSolutionTests proves correct. The baseline rescans
 // each subarray from scratch to recompute its own min/max, the composed arm builds
 // this repo's Min/Max SegmentTree pair once and answers each subarray in O(log n) -
 // so the SegmentTree build stays inside the measured arm deliberately, since paying

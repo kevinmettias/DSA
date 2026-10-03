@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindMaximumNonDecreasingArrayLength;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindMaximumNonDecreasingArrayLengthSolution's, the
-// same methods FindMaximumNonDecreasingArrayLengthTests proves correct. Random
+// same methods FindMaximumNonDecreasingArrayLengthSolutionTests proves correct. Random
 // values (rather than an already sorted or reverse-sorted array) keep the
 // candidate stack the monotonic-stack strategy maintains from collapsing to a
 // trivial size, so its binary search is actually exercised against the brute

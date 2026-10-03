@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ChalkboardXorGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are ChalkboardXorGameSolution's, the same methods
-// ChalkboardXorGameTests proves correct. The two Length values deliberately straddle
+// ChalkboardXorGameSolutionTests proves correct. The two Length values deliberately straddle
 // the crossover: at 9 the unmemoized tree is still small enough to roughly match the
 // Memoizer's own per-call overhead, but at 13 it is already ~32x slower in a local
 // dry run - the same factorial blowup CanIWinBenchmarks documents for its own

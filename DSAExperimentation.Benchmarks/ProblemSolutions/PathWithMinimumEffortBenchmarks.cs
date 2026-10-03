@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PathWithMinimumEffort;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathWithMinimumEffortSolution's, the same methods
-// PathWithMinimumEffortTests proves correct. Heights are random in [0, 10^6),
+// PathWithMinimumEffortSolutionTests proves correct. Heights are random in [0, 10^6),
 // matching LeetCode's own constraint range, so equal-height ties are effectively
 // absent and the binary search arm pays for a full re-scan per candidate.
 public class PathWithMinimumEffortBenchmarks

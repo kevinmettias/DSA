@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumTimeToTransportAllIndividuals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeToTransportAllIndividualsSolution's,
-// the same methods MinimumTimeToTransportAllIndividualsTests proves correct.
+// the same methods MinimumTimeToTransportAllIndividualsSolutionTests proves correct.
 // Each arm is handed the prepared input its hoisted overload takes - plain
 // time/mul arrays for the on-the-fly priority-queue walk, a built
 // TransportGraph for the Dijkstra walk - so graph construction is charged to

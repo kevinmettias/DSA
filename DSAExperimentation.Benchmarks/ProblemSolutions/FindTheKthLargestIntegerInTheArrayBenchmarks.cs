@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheKthLargestIntegerInTheArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheKthLargestIntegerInTheArraySolution's, the same
-// methods FindTheKthLargestIntegerInTheArrayTests proves correct. The workload is
+// methods FindTheKthLargestIntegerInTheArraySolutionTests proves correct. The workload is
 // random digit strings of mixed length, so the numeric order the solution imposes
 // (length first, then ordinal) actually differs from string's own lexicographic one,
 // and K stays small so the size-k heap's log factor is on K rather than on Length.

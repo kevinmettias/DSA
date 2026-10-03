@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CourseScheduleII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CourseScheduleIISolution's, the same methods
-// CourseScheduleIITests proves correct. Each arm is handed the prepared
+// CourseScheduleIISolutionTests proves correct. Each arm is handed the prepared
 // List<CourseNode> its hoisted overload takes, so graph construction is
 // charged to [GlobalSetup] rather than to the search being measured. Courses
 // form a guaranteed-acyclic DAG (every prerequisite edge points from a lower

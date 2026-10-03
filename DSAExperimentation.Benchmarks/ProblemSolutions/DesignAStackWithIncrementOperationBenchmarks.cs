@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignAStackWithIncrementOperation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAStackWithIncrementOperationSolution's, the
-// same factories DesignAStackWithIncrementOperationTests proves correct. A BCL
+// same factories DesignAStackWithIncrementOperationSolutionTests proves correct. A BCL
 // List<int> whose indexer reaches the bottom min(bottomElementCount, size) slots
 // directly (O(bottomElementCount) per Increment) vs. this repo's own Stack<int>,
 // whose public surface is deliberately LIFO-only (Push/TryPop/TryPeek, no indexer -

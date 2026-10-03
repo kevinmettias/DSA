@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DetonateTheMaximumBombs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DetonateTheMaximumBombsSolution's, the same methods
-// DetonateTheMaximumBombsTests proves correct - the hand-rolled bool[] recursion
+// DetonateTheMaximumBombsSolutionTests proves correct - the hand-rolled bool[] recursion
 // against the same successor closure run through this repo's own
 // DepthFirstSearch.Traverse. Both are handed LeetCode's own input shape, generated
 // once in [GlobalSetup]. The radius range is deliberately wide enough relative to

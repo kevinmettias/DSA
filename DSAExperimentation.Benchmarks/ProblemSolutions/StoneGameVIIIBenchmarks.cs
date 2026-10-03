@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.StoneGameVIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StoneGameVIIISolution's, the same methods
-// StoneGameVIIITests proves correct - plain un-memoized minimax over the boundary
+// StoneGameVIIISolutionTests proves correct - plain un-memoized minimax over the boundary
 // chain, exponential because every boundary re-walks the whole tail behind it,
 // against this repo's own Memoizer<TState,TResult> caching each boundary's result.
 // The prefix table is built once in [GlobalSetup] by the solution's own

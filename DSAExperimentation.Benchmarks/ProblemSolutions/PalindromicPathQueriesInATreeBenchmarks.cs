@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromicPathQueriesInATreeSolution's, the same
-// methods PalindromicPathQueriesInATreeTests proves correct. LcaBitmask is handed
+// methods PalindromicPathQueriesInATreeSolutionTests proves correct. LcaBitmask is handed
 // the pre-built RootedTreeNode[] its hoisted overload takes, so building the tree
 // (never mutated by either query strategy, so safe to share across iterations) is
 // charged to [GlobalSetup] rather than to the queries being measured.

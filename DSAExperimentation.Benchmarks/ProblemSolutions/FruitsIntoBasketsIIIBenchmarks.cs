@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FruitsIntoBasketsIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FruitsIntoBasketsIIISolution's, the same
-// methods FruitsIntoBasketsIIITests proves correct. Random fruits/baskets
+// methods FruitsIntoBasketsIIISolutionTests proves correct. Random fruits/baskets
 // across the problem's full 1e9 capacity range avoid the O(n^2) rescan
 // getting an unrealistic early-exit shape, so the segment tree's O(log^2 n)
 // search is measured against a genuinely scanning baseline.

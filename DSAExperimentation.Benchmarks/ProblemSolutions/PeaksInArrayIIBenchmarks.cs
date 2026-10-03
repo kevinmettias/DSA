@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PeaksInArrayII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PeaksInArrayIISolution's, the same methods
-// PeaksInArrayIITests proves correct. Queries alternate type-1 full-array
+// PeaksInArrayIISolutionTests proves correct. Queries alternate type-1 full-array
 // range counts with type-2 point updates, so the O((r-l)^3) rescan the
 // brute-force arm pays per range query has real (cubic) work to do at every
 // step, against the segment-tree arm's O(log n) query and O(log n) update.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestNumberInInfiniteSet;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestNumberInInfiniteSetSolution's, the same factories
-// SmallestNumberInInfiniteSetTests proves correct. [GlobalSetup] builds one fixed
+// SmallestNumberInInfiniteSetSolutionTests proves correct. [GlobalSetup] builds one fixed
 // operation script - a PopSmallest per round, with an AddBack of an already-produced
 // number interleaved roughly half the time so the added-back collection stays
 // non-trivially populated instead of draining to empty every time - so script

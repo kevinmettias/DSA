@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.QueriesOnNumberOfPointsInsideACircle;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are QueriesOnNumberOfPointsInsideACircleSolution's, the
-// same methods QueriesOnNumberOfPointsInsideACircleTests proves correct.
+// same methods QueriesOnNumberOfPointsInsideACircleSolutionTests proves correct.
 // [GlobalSetup] builds the random points and queries - LeetCode's own input shape,
 // which is what both arms take - so only the counting is measured; the sort the
 // pruning arm needs is part of that arm's own cost, which is the comparison.

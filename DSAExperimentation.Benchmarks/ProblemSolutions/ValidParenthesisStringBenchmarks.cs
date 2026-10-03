@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidParenthesisString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidParenthesisStringSolution's, the same methods
-// ValidParenthesisStringTests proves correct. _text is "(" + all '*' + ")", the
+// ValidParenthesisStringSolutionTests proves correct. _text is "(" + all '*' + ")", the
 // shape that maximizes the DP's reachable-set growth every step while the stack
 // sweep never even inspects its star stack's contents.
 public class ValidParenthesisStringBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountNumberOfRectanglesContainingEachPoint;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountNumberOfRectanglesContainingEachPointSolution's,
-// the same methods CountNumberOfRectanglesContainingEachPointTests proves correct.
+// the same methods CountNumberOfRectanglesContainingEachPointSolutionTests proves correct.
 // [GlobalSetup] builds the rectangle and point arrays - LeetCode's own input shape,
 // so nothing further is prepared for the measured methods.
 //

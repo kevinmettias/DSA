@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeGridHappiness;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeGridHappinessSolution's, the same methods
-// MaximizeGridHappinessTests proves correct - un-memoized profile recursion over
+// MaximizeGridHappinessSolutionTests proves correct - un-memoized profile recursion over
 // (Pos, Mask, Introverts, Extroverts) against the identical recursion routed through
 // this repo's own Memoizer (MaximumStudentsTakingExamBenchmarks' precedent for this
 // exact shape). Each arm is handed the GridLayout its hoisted overload takes, so the

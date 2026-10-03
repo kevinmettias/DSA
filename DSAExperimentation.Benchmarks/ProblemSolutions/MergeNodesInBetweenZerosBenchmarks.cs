@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MergeNodesInBetweenZeros;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeNodesInBetweenZerosSolution's, the same methods
-// MergeNodesInBetweenZerosTests proves correct - the two-pass value buffer against
+// MergeNodesInBetweenZerosSolutionTests proves correct - the two-pass value buffer against
 // the single pass that appends each group sum as it walks. Both are O(n) time;
 // MemoryDiagnoser is what separates them. [GlobalSetup] builds the delimited list
 // (workload sizing), and neither strategy mutates the list it is handed, so one

@@ -36,7 +36,7 @@ internal static class ShortestUnsortedContinuousSubarraySolution
     }
 
     // This repo's own O(n log n) MergeSort over ArrayIndexedSequence - the same
-    // composition MaximumGapTests uses.
+    // composition MaximumGapSolutionTests uses.
     public static int FindUnsortedSubarrayByMergeSortScan(int[] nums)
     {
         var sorted = nums.ToArray();

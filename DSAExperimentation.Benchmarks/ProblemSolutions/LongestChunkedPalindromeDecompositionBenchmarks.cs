@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestChunkedPalindromeDecomposition;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestChunkedPalindromeDecompositionSolution's, the
-// same strategies LongestChunkedPalindromeDecompositionTests proves correct. Setup
+// same strategies LongestChunkedPalindromeDecompositionSolutionTests proves correct. Setup
 // builds a text whose characters are all distinct (Unicode code points starting at
 // 1000, so no accidental match ever fires), the same "force the real worst case"
 // intent TwoSumBenchmarks' own setup comment names - both strategies are forced to

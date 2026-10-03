@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TheNumberOfBeautifulSubsets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TheNumberOfBeautifulSubsetsSolution's, the same
-// methods TheNumberOfBeautifulSubsetsTests proves correct. Generate-then-filter
+// methods TheNumberOfBeautifulSubsetsSolutionTests proves correct. Generate-then-filter
 // walks all 2^n bitmasks and checks every C(size,2) pair afterwards; the pruned
 // search folds the same rule into Candidates so an illegal inclusion is never made
 // and the branch dies immediately. The measured input is built in [GlobalSetup],

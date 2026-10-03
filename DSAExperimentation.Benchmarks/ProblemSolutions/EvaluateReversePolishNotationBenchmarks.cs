@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is EvaluateReversePolishNotationSolution's, the
-// same method EvaluateReversePolishNotationTests proves correct. Pre-migration
+// same method EvaluateReversePolishNotationSolutionTests proves correct. Pre-migration
 // this class was an untested compile-smoke placeholder (`Baseline() => 1`,
 // `PrimitiveComposed() => 1`) rather than a second strategy to reconcile.
 public class EvaluateReversePolishNotationBenchmarks

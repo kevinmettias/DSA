@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SubarraysDistinctElementSumOfSquaresII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubarraysDistinctElementSumOfSquaresIISolution's, the
-// same methods SubarraysDistinctElementSumOfSquaresIITests proves correct. Values
+// same methods SubarraysDistinctElementSumOfSquaresIISolutionTests proves correct. Values
 // are drawn from a small bound so distinct-count churn (and therefore the Fenwick
 // tree's range-update work) stays high across the whole array, the case that best
 // separates the O(n^2) brute force from the O(n log n) range-Fenwick sweep.

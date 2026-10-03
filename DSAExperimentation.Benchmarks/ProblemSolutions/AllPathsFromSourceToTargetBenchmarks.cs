@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AllPathsFromSourceToTarget;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AllPathsFromSourceToTargetSolution's, the same
-// methods AllPathsFromSourceToTargetTests proves correct. The graph is "layered
+// methods AllPathsFromSourceToTargetSolutionTests proves correct. The graph is "layered
 // complete" (every node i connects to every later node), so path count grows
 // exponentially with node count, giving both strategies real work at both [Params]
 // sizes. Building that adjacency list is charged to [GlobalSetup], not to the

@@ -8,7 +8,7 @@ namespace DSAExperimentation.LeetCode.FindAllAnagramsInAString;
 // ByBruteForceRebuild is the textbook O(n*m) baseline - a fresh frequency count built
 // and compared for every window start, written without this repo's own collections.
 // BySlidingWindow keeps one window HashMap<char,int> alive across the whole scan
-// (the same frequency-map shape ValidAnagramTests uses) plus a running "matched
+// (the same frequency-map shape ValidAnagramSolutionTests uses) plus a running "matched
 // distinct characters" counter, so each character enters and leaves the window
 // exactly once - O(|s| + |p|) instead of rebuilding a fresh frequency map for every
 // window start.

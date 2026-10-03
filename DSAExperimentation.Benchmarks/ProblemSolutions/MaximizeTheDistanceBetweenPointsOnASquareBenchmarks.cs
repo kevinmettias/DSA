@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximizeTheDistanceBetweenPointsOnASquare;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeTheDistanceBetweenPointsOnASquareSolution's,
-// the same methods MaximizeTheDistanceBetweenPointsOnASquareTests proves correct.
+// the same methods MaximizeTheDistanceBetweenPointsOnASquareSolutionTests proves correct.
 // Point-to-offset mapping and sorting is charged to [GlobalSetup] via the
 // solution's own ToSortedPerimeterPositions, so only the binary search itself is
 // measured.

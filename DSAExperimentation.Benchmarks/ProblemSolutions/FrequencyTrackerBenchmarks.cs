@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FrequencyTracker;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FrequencyTrackerSolution's, the same factories
-// FrequencyTrackerTests proves correct. [GlobalSetup] builds one fixed call script -
+// FrequencyTrackerSolutionTests proves correct. [GlobalSetup] builds one fixed call script -
 // Length adds drawn from a small value range so numbers genuinely repeat, a quarter
 // of them deleted again, then a batch of hasFrequency queries - so script
 // construction is charged to setup and only the replay is measured. SortedScanList is

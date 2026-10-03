@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FinalPricesWithASpecialDiscountInAShopSolution's,
-// the same methods FinalPricesWithASpecialDiscountInAShopTests proves correct -
+// the same methods FinalPricesWithASpecialDiscountInAShopSolutionTests proves correct -
 // the O(n^2) forward scan against the O(n) monotonic-stack pass over this repo's
 // own Stack<int>, the same brute-force-vs-primitive shape TwoSumBenchmarks makes.
 // Prices are random with no forced worst case, matching the distribution

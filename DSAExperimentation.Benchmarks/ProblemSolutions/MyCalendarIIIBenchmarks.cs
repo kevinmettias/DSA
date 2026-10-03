@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MyCalendarIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MyCalendarIIISolution's, the same strategies
-// MyCalendarIIITests proves correct. Random bookings feed the textbook brute
+// MyCalendarIIISolutionTests proves correct. Random bookings feed the textbook brute
 // force (rescan every start point ever seen against every booking recorded so
 // far) against this repo's own HashMap<int,int> delta sweep + MergeSort.Sort
 // re-sort. Bookings never get removed, so the running max returned by the

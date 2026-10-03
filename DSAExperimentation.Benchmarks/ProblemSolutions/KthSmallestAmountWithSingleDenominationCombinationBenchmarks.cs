@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // KthSmallestAmountWithSingleDenominationCombinationSolution's, the same
-// methods KthSmallestAmountWithSingleDenominationCombinationTests proves
+// methods KthSmallestAmountWithSingleDenominationCombinationSolutionTests proves
 // correct. Coins stay fixed (this problem caps coins.Length at 15 regardless
 // of rank); Rank is the axis that grows, so the heap merge's
 // O(rank log coins.Length) cost is what the inclusion-exclusion search - whose

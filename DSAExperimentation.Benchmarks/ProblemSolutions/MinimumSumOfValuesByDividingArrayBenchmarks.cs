@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumSumOfValuesByDividingArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumSumOfValuesByDividingArraySolution's,
-// the same methods MinimumSumOfValuesByDividingArrayTests proves correct.
+// the same methods MinimumSumOfValuesByDividingArraySolutionTests proves correct.
 // [GlobalSetup] cuts nums at random points and reads each resulting group's
 // AND back off as andValues, so every workload has at least one guaranteed
 // feasible partition - the search explores real candidate splits instead of

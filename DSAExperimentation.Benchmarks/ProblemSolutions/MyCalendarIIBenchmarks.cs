@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MyCalendarII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MyCalendarIISolution's, the same strategies
-// MyCalendarIITests proves correct. A sliding-window event stream (event i =
+// MyCalendarIISolutionTests proves correct. A sliding-window event stream (event i =
 // [i*Stride, i*Stride+EventWidth), Stride < EventWidth) where every event
 // double-books with its immediate predecessor only, never a triple. Drain
 // feeds the whole generated event sequence through Book() one call at a

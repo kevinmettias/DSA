@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindSumOfArrayProductOfMagicalSequencesSolution's,
-// the same methods FindSumOfArrayProductOfMagicalSequencesTests proves correct.
+// the same methods FindSumOfArrayProductOfMagicalSequencesSolutionTests proves correct.
 //
 // nums.Length is fixed at 8 and only SlotCount (the sequence length) grows: the
 // backtracking arm is O(nums.Length^m), so even a modest jump in the slot count

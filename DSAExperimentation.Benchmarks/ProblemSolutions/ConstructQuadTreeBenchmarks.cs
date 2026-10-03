@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ConstructQuadTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConstructQuadTreeSolution's, the same methods
-// ConstructQuadTreeTests proves correct - each builds the actual QuadTreeNode
+// ConstructQuadTreeSolutionTests proves correct - each builds the actual QuadTreeNode
 // tree, not just a leaf count. The [Benchmark] methods return object? rather than
 // QuadTreeNode itself - a public [Benchmark] method cannot expose an internal
 // return type even to a friend assembly (CS0050) - the same accommodation this

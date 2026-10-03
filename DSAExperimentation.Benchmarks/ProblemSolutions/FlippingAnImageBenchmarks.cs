@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FlippingAnImage;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FlippingAnImageSolution's, the same methods
-// FlippingAnImageTests proves correct - an in-place two-pointer reverse+invert
+// FlippingAnImageSolutionTests proves correct - an in-place two-pointer reverse+invert
 // (the textbook approach) vs. this repo's own LIFO Stack<int> reversing each row
 // while inverting each value as it comes back off the stack. Each iteration clones
 // the pristine image before flipping, since the solution rewrites in place and

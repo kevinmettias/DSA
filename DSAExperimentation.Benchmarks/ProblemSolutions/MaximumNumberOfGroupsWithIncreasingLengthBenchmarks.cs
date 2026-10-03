@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfGroupsWithIncreasingLength;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfGroupsWithIncreasingLengthSolution's,
-// the same methods MaximumNumberOfGroupsWithIncreasingLengthTests proves correct.
+// the same methods MaximumNumberOfGroupsWithIncreasingLengthSolutionTests proves correct.
 // The greedy sweep the two share is linear, so what is being measured is the sort in
 // front of it - the textbook O(n^2) insertion sort (HeightCheckerBenchmarks'
 // precedent) against this repo's own MergeSort over ArrayIndexedSequence at

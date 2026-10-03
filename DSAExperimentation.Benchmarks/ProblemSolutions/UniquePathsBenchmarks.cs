@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.UniquePaths;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are UniquePathsSolution's, the same methods
-// UniquePathsTests proves correct, run on a square Size x Size grid.
+// UniquePathsSolutionTests proves correct, run on a square Size x Size grid.
 public class UniquePathsBenchmarks
 {
     [Params(10, 18)] public int Size { get; set; }

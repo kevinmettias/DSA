@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RussianDollEnvelopes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RussianDollEnvelopesSolution's, the same methods
-// RussianDollEnvelopesTests proves correct. Each arm takes the (Width, Height) pairs
+// RussianDollEnvelopesSolutionTests proves correct. Each arm takes the (Width, Height) pairs
 // [GlobalSetup] already prepared, so decoding LeetCode's int[][] shape is not charged to the
 // measured method - the hoisted overload RussianDollEnvelopesSolution exposes for exactly that.
 public class RussianDollEnvelopesBenchmarks

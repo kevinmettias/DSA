@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestIncreasingSubsequenceII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestIncreasingSubsequenceIISolution's, the same
-// methods LongestIncreasingSubsequenceIITests proves correct - the textbook O(n^2) DP
+// methods LongestIncreasingSubsequenceIISolutionTests proves correct - the textbook O(n^2) DP
 // against this repo's own SegmentTree<int, MaxOperation<int>> keyed directly by value,
 // which replaces the inner rescan with one O(log maxValue) range-max query per
 // element. [GlobalSetup] owns the workload construction.

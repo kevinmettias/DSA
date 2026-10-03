@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveBoxes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveBoxesSolution's, the same methods
-// RemoveBoxesTests proves correct. BoxCount stays well under LeetCode's own limit
+// RemoveBoxesSolutionTests proves correct. BoxCount stays well under LeetCode's own limit
 // (<=24, vs. LC's 100) specifically because the un-memoized baseline's blowup is
 // real - see RemoveBoxesWorkloads for why.
 public class RemoveBoxesBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SmallestPalindromicRearrangementII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SmallestPalindromicRearrangementIISolution's, the same
-// methods SmallestPalindromicRearrangementIITests proves correct. Rank stays modest
+// methods SmallestPalindromicRearrangementIISolutionTests proves correct. Rank stays modest
 // regardless of Length: the backtracking baseline's cost tracks how many complete
 // arrangements it must walk before the Rank-th one, not the alphabet's full
 // arrangement count, so this is the size that keeps it a fair, terminating

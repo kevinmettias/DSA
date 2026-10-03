@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AssignCookies;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AssignCookiesSolution's, the same methods
-// AssignCookiesTests proves correct. Both arrays are drawn from the same range so
+// AssignCookiesSolutionTests proves correct. Both arrays are drawn from the same range so
 // most children have several candidate cookies, forcing brute force through a long
 // rescan per child instead of matching on the first cookie it looks at.
 public class AssignCookiesBenchmarks

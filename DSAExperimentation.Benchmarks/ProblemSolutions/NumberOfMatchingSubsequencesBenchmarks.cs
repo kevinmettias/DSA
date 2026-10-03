@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfMatchingSubsequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfMatchingSubsequencesSolution's, the same
-// methods NumberOfMatchingSubsequencesTests proves correct - the natural
+// methods NumberOfMatchingSubsequencesSolutionTests proves correct - the natural
 // two-pointer subsequence scan through searchedText, once per word, against this
 // repo's HashMap<TKey,TValue> + Queue<T> bucket pass, which advances every word in a
 // single left-to-right pass over searchedText. The workload is built so no word ever

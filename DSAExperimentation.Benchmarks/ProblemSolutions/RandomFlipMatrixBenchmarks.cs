@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RandomFlipMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RandomFlipMatrixSolution's, the same classes
-// RandomFlipMatrixTests proves correct. Each arm builds its own 1 x Cells matrix (a
+// RandomFlipMatrixSolutionTests proves correct. Each arm builds its own 1 x Cells matrix (a
 // Design problem's whole point is a sequence of calls against one instance, so there
 // is no separate "prepare input" step to hoist into [GlobalSetup]) and drains it with
 // the same seeded Random, returning a checksum of every picked column so a mismatched

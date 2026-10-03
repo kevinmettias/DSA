@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WordBreak;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordBreakSolution's, the same methods
-// WordBreakTests proves correct. _source tiles a single short dictionary word, so the
+// WordBreakSolutionTests proves correct. _source tiles a single short dictionary word, so the
 // scan has to walk the whole string confirming segmentability rather than
 // bailing out early on a dead prefix.
 public class WordBreakBenchmarks

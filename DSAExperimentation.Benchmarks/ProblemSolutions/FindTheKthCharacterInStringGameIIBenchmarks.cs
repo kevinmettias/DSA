@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheKthCharacterInStringGameIISolution's,
-// the same methods FindTheKthCharacterInStringGameIITests proves correct.
+// the same methods FindTheKthCharacterInStringGameIISolutionTests proves correct.
 // operations alternates 0/1 so every round still doubles word's length,
 // letting k sit exactly on the final character (2^OperationCount) while
 // staying small enough for the brute-force arm to remain tractable - #3307's

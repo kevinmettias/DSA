@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are VowelsOfAllSubstringsSolution's, the same methods
-// VowelsOfAllSubstringsTests proves correct. [GlobalSetup] builds the random word
+// VowelsOfAllSubstringsSolutionTests proves correct. [GlobalSetup] builds the random word
 // (workload sizing); LeetCode's own input shape is the bare string, so neither
 // strategy needs a hoisted overload.
 public class VowelsOfAllSubstringsBenchmarks

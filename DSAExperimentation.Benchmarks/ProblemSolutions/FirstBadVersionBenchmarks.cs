@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FirstBadVersion;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FirstBadVersionSolution's, the same methods
-// FirstBadVersionTests proves correct. FirstBad sits at 70% of VersionCount so the
+// FirstBadVersionSolutionTests proves correct. FirstBad sits at 70% of VersionCount so the
 // linear scan pays close to its full O(n) worst case every call.
 public class FirstBadVersionBenchmarks
 {

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every (prefix, suffix) substring pair into this repo's own HashMap<string,int>,
 // after which every query is a single lookup. Both arms are
 // PrefixAndSuffixSearchSolution's own strategies, the same methods
-// PrefixAndSuffixSearchTests proves correct; the precomputed arm is handed the
+// PrefixAndSuffixSearchSolutionTests proves correct; the precomputed arm is handed the
 // index its hoisted overload takes, built once in [GlobalSetup], so the one-time
 // precompute LeetCode's own constructor/query split represents isn't charged to
 // every measured query. Words are random fixed-length strings so a query's own word

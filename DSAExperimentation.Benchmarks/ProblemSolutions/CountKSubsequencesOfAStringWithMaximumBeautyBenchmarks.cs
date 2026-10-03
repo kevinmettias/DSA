@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // CountKSubsequencesOfAStringWithMaximumBeautySolution's, the same methods
-// CountKSubsequencesOfAStringWithMaximumBeautyTests proves correct. Only 5 of the
+// CountKSubsequencesOfAStringWithMaximumBeautySolutionTests proves correct. Only 5 of the
 // 26 letters are used so there are real ties at the group boundary (the case
 // CountByGroupedFrequencyProduct's C(groupSize, remaining) branch exists for) and
 // so CountByBruteForceCombinations has a non-trivial C(5, k) search space to walk

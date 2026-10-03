@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RangeSumQuery2DImmutableSolution's, the same factories
-// RangeSumQuery2DImmutableTests proves correct - a brute-force cell scan baseline (sums every
+// RangeSumQuery2DImmutableSolutionTests proves correct - a brute-force cell scan baseline (sums every
 // cell in the region directly, O(rows*cols) per SumRegion call) vs. one
 // FenwickTree<int,SumOperation<int>> built per row (O(rows*cols*log(cols)) once), so SumRegion
 // afterward walks only the covered rows and does an O(log cols) FenwickTree.Query per row instead

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.HouseRobber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HouseRobberSolution's, the same methods
-// HouseRobberTests proves correct. The previous class was a compile-smoke
+// HouseRobberSolutionTests proves correct. The previous class was a compile-smoke
 // placeholder (`=> 1` on both arms) that measured nothing; this measures the
 // memoized recurrence against the rolling-totals pass, both over LeetCode's
 // own example street.

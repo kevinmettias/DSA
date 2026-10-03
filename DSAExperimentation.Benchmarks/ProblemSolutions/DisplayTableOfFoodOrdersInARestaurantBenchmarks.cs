@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DisplayTableOfFoodOrdersInARestaurant;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DisplayTableOfFoodOrdersInARestaurantSolution's, the
-// same methods DisplayTableOfFoodOrdersInARestaurantTests proves correct. Tables and
+// same methods DisplayTableOfFoodOrdersInARestaurantSolutionTests proves correct. Tables and
 // foods are drawn from small fixed pools so every table sees most foods, keeping the
 // rescan arm genuinely O(orders) per cell instead of trivially short-circuiting on an
 // empty cell.

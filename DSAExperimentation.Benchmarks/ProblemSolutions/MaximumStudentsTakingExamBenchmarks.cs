@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumStudentsTakingExam;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumStudentsTakingExamSolution's, the same methods
-// MaximumStudentsTakingExamTests proves correct, each handed the SeatMasks its
+// MaximumStudentsTakingExamSolutionTests proves correct, each handed the SeatMasks its
 // hoisted overload takes so mask construction is charged to [GlobalSetup] rather
 // than to the recursion being measured.
 //

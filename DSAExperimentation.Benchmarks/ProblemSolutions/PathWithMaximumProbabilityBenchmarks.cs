@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PathWithMaximumProbability;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathWithMaximumProbabilitySolution's, the same methods
-// PathWithMaximumProbabilityTests proves correct. The textbook exhaustive walk over
+// PathWithMaximumProbabilitySolutionTests proves correct. The textbook exhaustive walk over
 // every source-to-target path (exponential in NodeCount - every incident edge branches
 // the path count) against this repo's own ShortestPath.Dijkstra run over the same
 // edges reweighted to -log(probability), the non-negative transform the solution

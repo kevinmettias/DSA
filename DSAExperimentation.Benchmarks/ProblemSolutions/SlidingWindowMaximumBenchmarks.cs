@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SlidingWindowMaximum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SlidingWindowMaximumSolution's, the same methods
-// SlidingWindowMaximumTests proves correct. Values are random over a wide range
+// SlidingWindowMaximumSolutionTests proves correct. Values are random over a wide range
 // so ties/early-exit shortcuts in BruteForceRescan can't make it look
 // artificially competitive. Both arms now build the actual per-window maximum
 // array (LeetCode's real answer shape) rather than the summed reduction the

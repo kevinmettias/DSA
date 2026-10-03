@@ -14,7 +14,7 @@ namespace DSAExperimentation.LeetCode.RangeModule;
 // design problems.
 //
 // CreateByIntervalSetBinarySearch composes straight onto IntervalSet<int>.Add -
-// unlike DataStreamAsDisjointIntervalsTests (LC 352), no +1 encoding trick is needed
+// unlike DataStreamAsDisjointIntervalsSolutionTests (LC 352), no +1 encoding trick is needed
 // here, because IntervalSet's closed-interval overlap rule (a <= d && c <= b) already
 // treats two half-open ranges stored as raw (Start, End) pairs as touching/merging
 // exactly when they share a boundary value, which is precisely the "no gap between

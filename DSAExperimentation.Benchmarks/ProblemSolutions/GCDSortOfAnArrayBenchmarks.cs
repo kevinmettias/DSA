@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GCDSortOfAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GCDSortOfAnArraySolution's, the same methods
-// GCDSortOfAnArrayTests proves correct. Values are drawn once in [GlobalSetup] as products
+// GCDSortOfAnArraySolutionTests proves correct. Values are drawn once in [GlobalSetup] as products
 // of a small shared prime pool so real shared-factor chains - and therefore real merge
 // work - actually occur, the same generator intent LargestComponentSizeByCommonFactorBenchmarks
 // uses. What is measured is the O(distinctValues^2) pairwise gcd sweep plus Array.Sort

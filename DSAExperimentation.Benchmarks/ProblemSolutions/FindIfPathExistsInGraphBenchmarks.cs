@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindIfPathExistsInGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindIfPathExistsInGraphSolution's, the same methods
-// FindIfPathExistsInGraphTests proves correct. Source and destination sit in two
+// FindIfPathExistsInGraphSolutionTests proves correct. Source and destination sit in two
 // disjoint spanning trees on every run - the worst case for the search arm, which
 // must exhaust the whole source component before concluding no path exists - so
 // both strategies do real, comparable work.

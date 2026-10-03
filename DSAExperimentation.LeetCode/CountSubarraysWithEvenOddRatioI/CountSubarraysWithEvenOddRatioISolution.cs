@@ -13,7 +13,7 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioI;
 // score every odd element +a and every even element -b, and count index
 // pairs (L, R) whose prefix sums satisfy prefix[L] <= prefix[R]. That is
 // exactly the coordinate-compression-plus-Fenwick-sweep shape
-// CountOfRangeSumTests already uses for LC 327. LC 4013 (same rule, n up to
+// CountOfRangeSumSolutionTests already uses for LC 327. LC 4013 (same rule, n up to
 // 1e5) is where that sweep lives, since its bound is the one whose count needs
 // a 64-bit accumulator; this class reads its own total off that implementation.
 internal static class CountSubarraysWithEvenOddRatioISolution

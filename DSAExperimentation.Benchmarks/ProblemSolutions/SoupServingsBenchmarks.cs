@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SoupServings;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SoupServingsSolution's, the same methods
-// SoupServingsTests proves correct. The two Milliliters values deliberately
+// SoupServingsSolutionTests proves correct. The two Milliliters values deliberately
 // straddle the cliff: at 600 the un-memoized tree is still small (~2x slower
 // than memoized in a local dry run), but at 850 it blows up to ~700x slower -
 // the real exponential blowup PredictTheWinnerBenchmarks/CanIWinBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DetectSquares;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DetectSquaresSolution's, the same factories
-// DetectSquaresTests proves correct. [GlobalSetup] builds a dense lattice of points -
+// DetectSquaresSolutionTests proves correct. [GlobalSetup] builds a dense lattice of points -
 // the case where "which points share the query's x-coordinate" actually matters - and
 // each arm adds every point once, then queries every point once, so the comparison is
 // between rescanning the whole point list per candidate corner and looking the corner

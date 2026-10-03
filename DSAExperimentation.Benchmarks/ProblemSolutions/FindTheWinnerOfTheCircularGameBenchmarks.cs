@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheWinnerOfTheCircularGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheWinnerOfTheCircularGameSolution's, the same
-// methods FindTheWinnerOfTheCircularGameTests proves correct. A List<int>-backed
+// methods FindTheWinnerOfTheCircularGameSolutionTests proves correct. A List<int>-backed
 // simulation whose RemoveAt re-shifts the remaining elements on every elimination
 // (O(n) per round, O(n^2) total, independent of k) vs. this repo's own Queue<int>
 // rotating k-1 friends from front to back per round (O(n*k) total) - faster whenever

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BinaryTreeLevelOrderTraversal;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BinaryTreeLevelOrderTraversalSolution's, the
-// same methods BinaryTreeLevelOrderTraversalTests proves correct.
+// same methods BinaryTreeLevelOrderTraversalSolutionTests proves correct.
 public class BinaryTreeLevelOrderTraversalBenchmarks
 {
     private const int RootValue = 3;

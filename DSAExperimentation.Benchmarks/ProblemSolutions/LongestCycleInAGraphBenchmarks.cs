@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LongestCycleInAGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestCycleInAGraphSolution's, the same methods
-// LongestCycleInAGraphTests proves correct. The naive per-start walk (no
+// LongestCycleInAGraphSolutionTests proves correct. The naive per-start walk (no
 // memoization across starts, so a shared cycle gets re-walked from every node that
 // reaches it) is measured against this repo's own
 // StronglyConnectedComponents.Tarjan, which finds every cycle in one O(V+E) pass.

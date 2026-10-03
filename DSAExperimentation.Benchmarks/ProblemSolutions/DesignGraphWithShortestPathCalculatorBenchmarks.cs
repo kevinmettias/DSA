@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignGraphWithShortestPathCalculatorSolution's,
-// the same classes DesignGraphWithShortestPathCalculatorTests proves correct. LC
+// the same classes DesignGraphWithShortestPathCalculatorSolutionTests proves correct. LC
 // 2642's real cost is repeated shortestPath(node1, node2) queries against a graph
 // that can grow via addEdge between calls, so nothing may be cached and every
 // query runs a fresh single-source search - ArrayDijkstra is the textbook O(V^2)

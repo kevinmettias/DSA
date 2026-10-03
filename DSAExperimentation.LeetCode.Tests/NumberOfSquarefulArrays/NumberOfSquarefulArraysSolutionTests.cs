@@ -1,0 +1,34 @@
+using DSAExperimentation.LeetCode.NumberOfSquarefulArrays;
+
+namespace DSAExperimentation.LeetCode.Tests.NumberOfSquarefulArrays;
+
+// Harness only. Both strategies are NumberOfSquarefulArraysSolution's; this file
+// pins them to LeetCode's published examples plus cases that exercise duplicate
+// dedup (equal values must not be counted twice) and outright rejection (no
+// adjacent pair sums to a square).
+public sealed partial class NumberOfSquarefulArraysSolutionTests
+{
+    public static TheoryData<int[], int> Examples =>
+        new()
+        {
+            { [1, 17, 8], 2 },
+            { [2, 2, 2], 1 },
+            { [1], 1 },
+            { [2, 2], 1 },
+            { [1, 2], 0 },
+            { [1, 1, 1], 0 },
+            { [1, 8, 17, 8], 6 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountSquarefulPermsByFullPermutationFilter_LeetCodeExamples_ReturnsDistinctSquarefulArrangementCount(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, NumberOfSquarefulArraysSolution.CountSquarefulPermsByFullPermutationFilter(nums));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void CountSquarefulPermsByPrunedBacktracking_LeetCodeExamples_ReturnsDistinctSquarefulArrangementCount(
+        int[] nums, int expected) =>
+        Assert.Equal(expected, NumberOfSquarefulArraysSolution.CountSquarefulPermsByPrunedBacktracking(nums));
+}

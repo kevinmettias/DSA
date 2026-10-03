@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumScoreWithCoPrimeElement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumScoreWithCoPrimeElementSolution's, the
-// same methods MaximumScoreWithCoPrimeElementTests proves correct. Brute force
+// same methods MaximumScoreWithCoPrimeElementSolutionTests proves correct. Brute force
 // re-derives every candidate's conflict count with a fresh O(n) gcd scan, so
 // Length/MaxVal stay small enough for that arm to finish in reasonable time;
 // the divisor-sieve arm's whole point is that it answers each candidate from

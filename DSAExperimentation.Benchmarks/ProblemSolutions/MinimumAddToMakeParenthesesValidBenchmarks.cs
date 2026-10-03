@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumAddToMakeParenthesesValid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumAddToMakeParenthesesValidSolution's, the same
-// methods MinimumAddToMakeParenthesesValidTests proves correct - a running-counter
+// methods MinimumAddToMakeParenthesesValidSolutionTests proves correct - a running-counter
 // balance walk that stores nothing vs. this repo's Stack<char> holding each
 // unmatched opener explicitly. The random bracket string is built once in
 // [GlobalSetup], so only the walk itself is measured.

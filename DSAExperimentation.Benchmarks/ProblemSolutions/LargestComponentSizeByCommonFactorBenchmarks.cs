@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LargestComponentSizeByCommonFactor;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LargestComponentSizeByCommonFactorSolution's, the same
-// methods LargestComponentSizeByCommonFactorTests proves correct. Values are drawn once
+// methods LargestComponentSizeByCommonFactorSolutionTests proves correct. Values are drawn once
 // in [GlobalSetup] as products of a small shared prime pool, so real overlaps - and
 // therefore real merge work - actually occur, the same "force genuine matches, not
 // coincidental ones" intent AccountsMergeBenchmarks' own generator uses. What is

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindTheLengthOfTheLongestCommonPrefix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheLengthOfTheLongestCommonPrefixSolution's,
-// the same methods FindTheLengthOfTheLongestCommonPrefixTests proves correct.
+// the same methods FindTheLengthOfTheLongestCommonPrefixSolutionTests proves correct.
 // The digit trie is built once in [GlobalSetup] via the solution's own
 // BuildDigitTrie, so the trie arm is only ever charged for arr2's walk.
 public class FindTheLengthOfTheLongestCommonPrefixBenchmarks

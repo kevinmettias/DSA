@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RotateImage;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RotateImageSolution's, the same methods
-// RotateImageTests proves correct. Each iteration clones the pristine matrix
+// RotateImageSolutionTests proves correct. Each iteration clones the pristine matrix
 // before rotating, since the solution mutates in place and [GlobalSetup] runs
 // once per benchmark, not once per invocation.
 public class RotateImageBenchmarks

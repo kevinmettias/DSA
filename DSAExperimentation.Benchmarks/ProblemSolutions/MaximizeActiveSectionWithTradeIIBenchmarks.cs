@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeActiveSectionWithTradeII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeActiveSectionWithTradeIISolution's, the
-// same methods MaximizeActiveSectionWithTradeIITests proves correct. The
+// same methods MaximizeActiveSectionWithTradeIISolutionTests proves correct. The
 // range-max-index arm is handed the ActiveSectionTradeIndex its hoisted
 // overload takes, built once in [GlobalSetup], so the O(n log n) preprocessing
 // is charged to setup rather than to the per-query answering being measured.

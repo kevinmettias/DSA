@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.KthLargestElement;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KthLargestElementSolution's, the same methods
-// KthLargestElementTests proves correct.
+// KthLargestElementSolutionTests proves correct.
 public class KthLargestElementBenchmarks
 {
     private const int K = 10;

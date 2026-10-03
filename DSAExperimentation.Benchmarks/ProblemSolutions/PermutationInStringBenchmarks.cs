@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PermutationInString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PermutationInStringSolution's, the same methods
-// PermutationInStringTests proves correct. s1 is fixed and deliberately absent
+// PermutationInStringSolutionTests proves correct. s1 is fixed and deliberately absent
 // from s2 so both strategies are forced through their full worst-case scan.
 public class PermutationInStringBenchmarks
 {

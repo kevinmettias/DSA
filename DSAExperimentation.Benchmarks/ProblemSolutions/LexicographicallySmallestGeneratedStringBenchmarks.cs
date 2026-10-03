@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LexicographicallySmallestGeneratedString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LexicographicallySmallestGeneratedStringSolution's,
-// the same methods LexicographicallySmallestGeneratedStringTests proves
+// the same methods LexicographicallySmallestGeneratedStringSolutionTests proves
 // correct. str1 is all 'T' and str2 is one repeated character, so every
 // consecutive pair of 'T' windows overlaps (gap 1 against a pattern length
 // in the hundreds) and is always consistent - the actual case the two

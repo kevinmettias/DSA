@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSubIslands;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubIslandsSolution's, the same methods
-// CountSubIslandsTests proves correct. [GlobalSetup] builds the pair of random
+// CountSubIslandsSolutionTests proves correct. [GlobalSetup] builds the pair of random
 // grids - grid1 land-biased relative to grid2 so a real mix of grid2 islands both
 // qualify and fail to qualify as sub-islands - so grid construction is charged to
 // setup rather than to the flood fill being measured. Each strategy copies grid2

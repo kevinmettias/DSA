@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SearchA2DMatrixII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are SearchA2DMatrixIISolution's, the same methods
-// SearchA2DMatrixIITests proves correct. HasTargetByFullScan is the textbook
+// SearchA2DMatrixIISolutionTests proves correct. HasTargetByFullScan is the textbook
 // O(rows*cols) baseline. HasTargetByPerRowBinarySearch composes this repo's own
 // BinarySearch.Find over an ArraySequence<int> witness per row - O(rows*log(cols)),
 // a genuine repo-primitive fit. HasTargetByStaircaseSearch is the specialized

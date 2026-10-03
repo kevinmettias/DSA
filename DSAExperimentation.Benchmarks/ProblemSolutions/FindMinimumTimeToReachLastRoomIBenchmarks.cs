@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindMinimumTimeToReachLastRoomISolution's, the same
-// methods FindMinimumTimeToReachLastRoomITests proves correct
+// methods FindMinimumTimeToReachLastRoomISolutionTests proves correct
 // (MinimumTimeToVisitACellInAGridBenchmarks precedent). WaitCostGridWorkloads builds
 // the grid - (0,0) always moveTime 0, LeetCode's own guarantee, and every other cell
 // demanding a random wait - so each relaxation goes through ArrivalTime's wait branch

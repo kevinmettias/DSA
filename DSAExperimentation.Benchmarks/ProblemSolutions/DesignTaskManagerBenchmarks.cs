@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignTaskManager;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignTaskManagerSolution's, the same classes
-// DesignTaskManagerTests proves correct. [GlobalSetup] builds one fixed, valid call
+// DesignTaskManagerSolutionTests proves correct. [GlobalSetup] builds one fixed, valid call
 // script - a handful of edits/removals against initial taskIds nothing else has
 // touched yet, then repeated add/add/execTop rounds so the system only grows and
 // every execTop always has a target - so script construction, including tracking

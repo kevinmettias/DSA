@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountOfRangeSum;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountOfRangeSumSolution's, the same methods
-// CountOfRangeSumTests proves correct. [GlobalSetup] only sizes and seeds the raw
+// CountOfRangeSumSolutionTests proves correct. [GlobalSetup] only sizes and seeds the raw
 // nums array - LeetCode's own input shape - so each strategy still does its own
 // prefix-sum, coordinate-compression and sweep work under measurement.
 public class CountOfRangeSumBenchmarks

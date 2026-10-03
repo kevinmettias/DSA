@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ReverseNodesInKGroup;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReverseNodesInKGroupSolution's, the same methods
-// ReverseNodesInKGroupTests proves correct. Both strategies mutate the list they
+// ReverseNodesInKGroupSolutionTests proves correct. Both strategies mutate the list they
 // are handed, so each call rebuilds its own list from _values rather than
 // reusing one shared list a later iteration would find already reversed.
 //

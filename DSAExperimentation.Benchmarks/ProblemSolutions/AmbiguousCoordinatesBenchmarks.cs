@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.AmbiguousCoordinates;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AmbiguousCoordinatesSolution's, the same methods
-// AmbiguousCoordinatesTests proves correct. [GlobalSetup] builds the input already
+// AmbiguousCoordinatesSolutionTests proves correct. [GlobalSetup] builds the input already
 // wrapped in LeetCode's parentheses, so only the enumeration is measured. Both arms
 // now return the coordinate list rather than a count - see the solution class's
 // note on that deliberate change.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WaterAndJugProblem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are WaterAndJugProblemSolution's, the same
-// methods WaterAndJugProblemTests proves correct. Target is chosen
+// methods WaterAndJugProblemSolutionTests proves correct. Target is chosen
 // unreachable (jugX+jugY-1, never a multiple of gcd(jugX,jugY) for jugY>1)
 // so CanMeasureWaterByStackSearch and CanMeasureWaterByDepthFirstSearch both
 // explore the identical O(jugX*jugY) implicit graph of fill states without ever

@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.IPO;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are IPOSolution's, the same methods IPOTests proves
+// Harness only: both arms are IPOSolution's, the same methods IPOSolutionTests proves
 // correct - the O(k*n) linear-rescan baseline vs. the O((n+k) log n) two-heap
 // greedy using this repo's own Heap<T,TOrder>.
 public class IPOBenchmarks

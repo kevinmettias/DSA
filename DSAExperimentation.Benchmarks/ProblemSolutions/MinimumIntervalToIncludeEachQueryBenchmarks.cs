@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumIntervalToIncludeEachQuery;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumIntervalToIncludeEachQuerySolution's, the same
-// methods MinimumIntervalToIncludeEachQueryTests proves correct, and both take
+// methods MinimumIntervalToIncludeEachQuerySolutionTests proves correct, and both take
 // LeetCode's own intervals and queries arrays, so the workload is generated once in
 // [GlobalSetup] rather than inside either measured call.
 //

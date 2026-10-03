@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolution's, the same methods
-// FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeTests proves correct. Both
+// FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeSolutionTests proves correct. Both
 // run the identical per-edge Kruskal loop and differ only in how "are these two
 // endpoints already connected?" is answered - a fresh BFS over the edges accepted so
 // far, O(V+E) per question, against this repo's own DisjointSet, O(a(n)) amortized.

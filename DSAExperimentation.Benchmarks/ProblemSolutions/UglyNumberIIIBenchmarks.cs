@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.UglyNumberIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are UglyNumberIIISolution's, the same methods
-// UglyNumberIIITests proves correct. Counting candidates one at a time
+// UglyNumberIIISolutionTests proves correct. Counting candidates one at a time
 // (O(answer)) is measured against BinarySearch.LowerBound over the monotone
 // "count(x) >= rank" virtual sequence (O(log(answer))) - the same shape
 // NthMagicalNumberBenchmarks already exercises, extended from a two-term to a

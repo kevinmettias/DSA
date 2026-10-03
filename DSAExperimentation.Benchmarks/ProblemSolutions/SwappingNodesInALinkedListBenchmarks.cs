@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SwappingNodesInALinkedListSolution's, the same
-// methods SwappingNodesInALinkedListTests proves correct. Materializing the list
+// methods SwappingNodesInALinkedListSolutionTests proves correct. Materializing the list
 // into a BCL buffer to get random access to index n - kthPosition, vs. a fast/slow
 // pair of SinglyLinkedListNode<int> references that finds the same node in one O(n),
 // O(1)-extra-space pass - the same "array baseline vs. linked-list primitive"

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CrackingTheSafe;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CrackingTheSafeSolution's, the same methods
-// CrackingTheSafeTests proves correct. K is fixed at 2 (binary passwords, the
+// CrackingTheSafeSolutionTests proves correct. K is fixed at 2 (binary passwords, the
 // problem's own running example) and PasswordLength is [Params]-scaled - the search
 // space doubles per extra digit, so it stays small (2, 3) the same way
 // SudokuSolverBenchmarks/NQueensBenchmarks keep their fixed-size inputs small enough

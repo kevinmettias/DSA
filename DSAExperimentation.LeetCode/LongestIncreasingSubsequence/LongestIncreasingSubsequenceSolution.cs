@@ -11,7 +11,7 @@ namespace DSAExperimentation.LeetCode.LongestIncreasingSubsequence;
 // rescanning every earlier index. Patience sorting gets the same length in
 // O(n log n) - each number either extends the current "tails" run or overwrites the
 // first tail it is not smaller than, found via this repo's own BinarySearch.LowerBound
-// (the same engine SearchInsertPositionTests already exercises) over a
+// (the same engine SearchInsertPositionSolutionTests already exercises) over a
 // DynamicArraySequence view of a DynamicArray<int>, so Length tracks the run as it
 // grows.
 internal static class LongestIncreasingSubsequenceSolution

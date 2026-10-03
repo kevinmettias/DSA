@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignAnOrderedStream;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignAnOrderedStreamSolution's, the same classes
-// DesignAnOrderedStreamTests proves correct - the textbook List<string?> + cursor
+// DesignAnOrderedStreamSolutionTests proves correct - the textbook List<string?> + cursor
 // baseline against this repo's own DynamicArray<string?> doing the same
 // pre-filled-slots-plus-cursor bookkeeping, the same "array Representation
 // primitive vs. the BCL equivalent" comparison DesignBrowserHistoryBenchmarks

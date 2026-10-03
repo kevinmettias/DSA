@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimizeDeviationInArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeDeviationInArraySolution's, the same methods
-// MinimizeDeviationInArrayTests proves correct. Values spread over a wide range
+// MinimizeDeviationInArraySolutionTests proves correct. Values spread over a wide range
 // keep the halving sequence long, so the cost is dominated by how the current
 // largest value is found - the one thing the two arms differ in.
 public class MinimizeDeviationInArrayBenchmarks

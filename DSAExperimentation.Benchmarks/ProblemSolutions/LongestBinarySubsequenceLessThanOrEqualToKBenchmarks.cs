@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LongestBinarySubsequenceLessThanOrEqualToK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestBinarySubsequenceLessThanOrEqualToKSolution's,
-// the same methods LongestBinarySubsequenceLessThanOrEqualToKTests proves agree -
+// the same methods LongestBinarySubsequenceLessThanOrEqualToKSolutionTests proves agree -
 // exhaustive subset enumeration against the O(n) right-to-left greedy scan.
 //
 // Length is kept small (<= 20) so the 2^n baseline finishes in reasonable time, and

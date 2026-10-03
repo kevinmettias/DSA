@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StoneGameVI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StoneGameVISolution's, the same methods
-// StoneGameVITests proves correct. Both run the identical O(n log n) greedy and
+// StoneGameVISolutionTests proves correct. Both run the identical O(n log n) greedy and
 // differ only in the sort primitive - the BCL's Array.Sort against this repo's own
 // MergeSort over an ArrayIndexedSequence - so the seeded value arrays are built
 // once in [GlobalSetup] and only the sort-and-tally is measured.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.KDivisibleElementsSubarrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KDivisibleElementsSubarraysSolution's, the same
-// methods KDivisibleElementsSubarraysTests proves agree. They enumerate the same
+// methods KDivisibleElementsSubarraysSolutionTests proves agree. They enumerate the same
 // k-truncated candidate set, so the measurement isolates the dedupe container - a
 // BCL HashSet<string> against this repo's HashMap-backed Set<string>.
 //

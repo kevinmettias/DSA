@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfSubarrayRanges;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfSubarrayRangesSolution's, the same methods
-// SumOfSubarrayRangesTests proves correct. The workload is a uniformly random
+// SumOfSubarrayRangesSolutionTests proves correct. The workload is a uniformly random
 // signed array, so the brute-force arm's inner loop never settles early on a run
 // of equal extremes and each [Params] length measures the full O(n^2) walk against
 // the O(n) contribution sweep.

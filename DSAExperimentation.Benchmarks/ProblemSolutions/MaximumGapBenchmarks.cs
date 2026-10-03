@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MaximumGap;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumGapSolution's, the same methods
-// MaximumGapTests proves correct - O(n^2) selection sort vs. this repo's own
+// MaximumGapSolutionTests proves correct - O(n^2) selection sort vs. this repo's own
 // O(n log n) MergeSort, each followed by the same linear adjacent-gap scan.
 public class MaximumGapBenchmarks
 {

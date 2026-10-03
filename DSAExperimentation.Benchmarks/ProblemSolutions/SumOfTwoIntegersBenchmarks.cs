@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SumOfTwoIntegers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SumOfTwoIntegersSolution's, the same methods
-// SumOfTwoIntegersTests proves correct - the forbidden-by-the-problem
+// SumOfTwoIntegersSolutionTests proves correct - the forbidden-by-the-problem
 // BuiltInAdd (plain +) vs. the compliant BitwiseCarryLoop that reaches the
 // same result via XOR/AND-shift carry propagation only, the same
 // "trivial-but-disallowed operator baseline vs. the actually-compliant

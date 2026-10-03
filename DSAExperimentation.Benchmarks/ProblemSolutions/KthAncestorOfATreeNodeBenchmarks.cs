@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.KthAncestorOfATreeNode;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KthAncestorOfATreeNodeSolution's, the same methods
-// KthAncestorOfATreeNodeTests proves correct - the textbook "walk the raw parent[]
+// KthAncestorOfATreeNodeSolutionTests proves correct - the textbook "walk the raw parent[]
 // array k times" per query against this repo's ITopDownHooks-driven precompute,
 // which fills in every node's ancestor chain in one pass so each query afterward
 // is an O(1) index.

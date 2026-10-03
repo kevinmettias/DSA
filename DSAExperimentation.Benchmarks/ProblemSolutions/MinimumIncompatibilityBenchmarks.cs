@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumIncompatibility;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumIncompatibilitySolution's, the same methods
-// MinimumIncompatibilityTests proves correct. A shuffled permutation of 1..Length
+// MinimumIncompatibilitySolutionTests proves correct. A shuffled permutation of 1..Length
 // split into pairs is always groupable, so neither arm gets to cut the search
 // short on an infeasible value - the whole state space is walked, which is exactly
 // where re-deriving a remaining-mask per path diverges from caching it once.

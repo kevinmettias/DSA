@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaxChunksToMakeSortedII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxChunksToMakeSortedIISolution's, the same methods
-// MaxChunksToMakeSortedIITests proves correct. Values are a random permutation so
+// MaxChunksToMakeSortedIISolutionTests proves correct. Values are a random permutation so
 // no candidate boundary is confirmed or ruled out on the very next element.
 public class MaxChunksToMakeSortedIIBenchmarks
 {

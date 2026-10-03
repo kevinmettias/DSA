@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.TheKthFactorOfN;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TheKthFactorOfNSolution's, the same methods
-// TheKthFactorOfNTests proves correct - the textbook full-range trial division from
+// TheKthFactorOfNSolutionTests proves correct - the textbook full-range trial division from
 // 1..n against BinarySearch.LowerBound anchoring at floor(sqrt(n)), the same technique
 // FourDivisorsBenchmarks and ClosestDivisorsBenchmarks use. K is fixed above the
 // largest possible divisor count for any n in range (840 has the most divisors below

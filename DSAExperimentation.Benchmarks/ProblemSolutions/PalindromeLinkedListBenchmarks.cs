@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PalindromeLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromeLinkedListSolution's, the same methods
-// PalindromeLinkedListTests proves correct. [GlobalSetup] builds a palindrome-shaped
+// PalindromeLinkedListSolutionTests proves correct. [GlobalSetup] builds a palindrome-shaped
 // list once and reuses it across iterations. The stack arm only reads Value/Next, and
 // the fast/slow arm rewires the second half and then reverses it back before
 // returning, so the cached list is left unchanged and stays valid across iterations

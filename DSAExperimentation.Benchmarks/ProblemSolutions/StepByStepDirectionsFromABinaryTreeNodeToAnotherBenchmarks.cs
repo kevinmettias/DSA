@@ -6,7 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // StepByStepDirectionsFromABinaryTreeNodeToAnotherSolution's, the same methods
-// StepByStepDirectionsFromABinaryTreeNodeToAnotherTests proves correct. Both
+// StepByStepDirectionsFromABinaryTreeNodeToAnotherSolutionTests proves correct. Both
 // route between the leftmost and rightmost leaf of a balanced tree - an ancestor
 // at the root, the worst case for either approach - and both are handed the
 // prepared nodes their hoisted overload takes, so tree construction and endpoint

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfGroupsGettingFreshDonuts;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfGroupsGettingFreshDonutsSolution's, the
-// same strategies MaximumNumberOfGroupsGettingFreshDonutsTests proves correct. The
+// same strategies MaximumNumberOfGroupsGettingFreshDonutsSolutionTests proves correct. The
 // group count stays small because the baseline scores all n! orderings, which is
 // exactly the growth the memoized (residue, remaining remainder counts) search is
 // there to collapse.

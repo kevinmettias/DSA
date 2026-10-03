@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CamelcaseMatchingSolution's, the same methods
-// CamelcaseMatchingTests proves correct - the regex engine's backtracking state
+// CamelcaseMatchingSolutionTests proves correct - the regex engine's backtracking state
 // machine (baseline) against a direct two-pointer scan per query. [GlobalSetup] sizes
 // and seeds the queries and compiles the matcher once, so the regex arm is charged
 // for matching only, not for building its own pattern.

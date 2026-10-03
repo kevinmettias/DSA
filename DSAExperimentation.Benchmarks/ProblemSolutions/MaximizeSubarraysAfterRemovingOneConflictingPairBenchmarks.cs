@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximizeSubarraysAfterRemovingOneConflictingPairSolution's, the same methods
-// MaximizeSubarraysAfterRemovingOneConflictingPairTests proves correct. ValueCount
+// MaximizeSubarraysAfterRemovingOneConflictingPairSolutionTests proves correct. ValueCount
 // is kept small (unlike most other benchmarks in this project) because the baseline
 // is O(n^2 * m^2) by design - it is the naive arm the O(n + m) sweep has to justify
 // itself against, not a strategy meant to scale.

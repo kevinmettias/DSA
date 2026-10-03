@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheNumberOfWaysToPlacePeopleISolution's,
-// the same methods FindTheNumberOfWaysToPlacePeopleITests proves correct.
+// the same methods FindTheNumberOfWaysToPlacePeopleISolutionTests proves correct.
 // Length and coordinate range match LC 3025's own bound (n <= 50, 0 <=
 // coordinate <= 50), where the O(n^3) scan is already fast - see
 // FindTheNumberOfWaysToPlacePeopleIIBenchmarks for the same comparison at the

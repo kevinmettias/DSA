@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ClosestRoom;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClosestRoomSolution's, the same methods
-// ClosestRoomTests proves correct - an O(rooms * queries) per-query linear scan
+// ClosestRoomSolutionTests proves correct - an O(rooms * queries) per-query linear scan
 // against this repo's MergeSort (descending sweep over both rooms and queries)
 // plus BinarySearch.LowerBound over an always-sorted DynamicArray<int> of eligible
 // room ids. Both arms are handed the same jagged arrays LeetCode itself passes, so

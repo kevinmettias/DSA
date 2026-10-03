@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindMinimumInRotatedSortedArrayII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindMinimumInRotatedSortedArrayIISolution's, the
-// same methods FindMinimumInRotatedSortedArrayIITests proves correct. The array is
+// same methods FindMinimumInRotatedSortedArrayIISolutionTests proves correct. The array is
 // built by RotatedSortedArrayWorkloads - a rotated sequence with a bounded band of
 // duplicate values stamped across both ends - so the shrink loop's tie-breaking does
 // real, but small, work relative to Length. LC 81's sibling harness shares it.

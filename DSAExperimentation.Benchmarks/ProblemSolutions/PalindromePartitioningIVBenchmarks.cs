@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PalindromePartitioningIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromePartitioningIVSolution's, the same methods
-// PalindromePartitioningIVTests proves correct. _text is
+// PalindromePartitioningIVSolutionTests proves correct. _text is
 // "a"*BlockSize + "b" + "a"*BlockSize + "c": the trailing "c" forces the third
 // partition to be exactly "c" (it's the only "c" in the string), which leaves
 // "a"*BlockSize + "b" + "a"*BlockSize needing a 2-way palindrome split that provably

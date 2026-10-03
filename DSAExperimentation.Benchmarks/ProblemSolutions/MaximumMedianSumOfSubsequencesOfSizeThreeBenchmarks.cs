@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumMedianSumOfSubsequencesOfSizeThree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumMedianSumOfSubsequencesOfSizeThreeSolution's,
-// the same methods MaximumMedianSumOfSubsequencesOfSizeThreeTests proves
+// the same methods MaximumMedianSumOfSubsequencesOfSizeThreeSolutionTests proves
 // correct (NumberOfIntegersWithPopcountDepthEqualToKIBenchmarks precedent - no
 // [GlobalSetup] beyond the one random array both arms share, since nums is
 // the LeetCode input itself). ElementCount stays small for the brute-force

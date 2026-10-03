@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumCostToConvertStringII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToConvertStringIISolution's, the
-// same methods MinimumCostToConvertStringIITests proves correct. Each arm is
+// same methods MinimumCostToConvertStringIISolutionTests proves correct. Each arm is
 // handed the prepared input its hoisted overload takes - a string index plus
 // raw distance matrix for the brute-force arm, a built SubstringNetwork for
 // the AllPairsShortestPaths arm - so building the substring conversion graph

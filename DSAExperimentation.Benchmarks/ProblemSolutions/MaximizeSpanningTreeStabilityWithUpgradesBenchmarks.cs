@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximizeSpanningTreeStabilityWithUpgradesSolution's, the same methods
-// MaximizeSpanningTreeStabilityWithUpgradesTests proves correct. Each arm is
+// MaximizeSpanningTreeStabilityWithUpgradesSolutionTests proves correct. Each arm is
 // handed a prebuilt StabilityGraph, so parsing edges into must/optional buckets is
 // charged to [GlobalSetup] rather than the binary search being measured.
 public class MaximizeSpanningTreeStabilityWithUpgradesBenchmarks

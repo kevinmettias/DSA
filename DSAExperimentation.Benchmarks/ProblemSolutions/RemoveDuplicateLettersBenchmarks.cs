@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RemoveDuplicateLetters;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveDuplicateLettersSolution's, the same
-// methods RemoveDuplicateLettersTests proves correct.
+// methods RemoveDuplicateLettersSolutionTests proves correct.
 public class RemoveDuplicateLettersBenchmarks
 {
     private const int RandomSeed = 316; // LC problem number

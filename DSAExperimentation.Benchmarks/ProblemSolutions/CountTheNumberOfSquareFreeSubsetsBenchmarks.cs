@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountTheNumberOfSquareFreeSubsetsSolution's, the same
-// methods CountTheNumberOfSquareFreeSubsetsTests proves correct (TwoSumBenchmarks
+// methods CountTheNumberOfSquareFreeSubsetsSolutionTests proves correct (TwoSumBenchmarks
 // precedent). Brute force is 2^n subsets, so Length stays small enough for that arm to
 // finish in reasonable time - the bitmask-DP arm's whole point is that it doesn't care
 // how large n gets, only how many of [1, 30]'s 18 square-free values appear.

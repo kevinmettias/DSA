@@ -6,7 +6,7 @@ using DSAExperimentation.LeetCode.DeleteNodeInABST;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DeleteNodeInABSTSolution's, the same methods
-// DeleteNodeInABSTTests proves correct. Each arm deletes from the tree, so a fresh
+// DeleteNodeInABSTSolutionTests proves correct. Each arm deletes from the tree, so a fresh
 // tree is built from the same shuffled insertion order on every call rather than
 // hoisting one shared instance into [GlobalSetup] - shuffled so height stays close
 // to O(log n) instead of the degenerate O(n) ascending-insertion case, the same

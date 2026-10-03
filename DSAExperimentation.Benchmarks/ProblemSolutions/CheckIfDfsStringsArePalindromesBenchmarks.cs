@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CheckIfDfsStringsArePalindromes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfDfsStringsArePalindromesSolution's, the same
-// methods CheckIfDfsStringsArePalindromesTests proves correct.
+// methods CheckIfDfsStringsArePalindromesSolutionTests proves correct.
 //
 // The workload is a straight chain (CountWaysToBuildRoomsInAnAntColonyBenchmarks'
 // own precedent for "worst subtree-size shape", built the same way via

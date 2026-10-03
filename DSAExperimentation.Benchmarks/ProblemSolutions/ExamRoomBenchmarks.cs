@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.ExamRoom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are ExamRoomSolution's, the same strategies ExamRoomTests
+// Harness only: both arms are ExamRoomSolution's, the same strategies ExamRoomSolutionTests
 // proves correct. Both share the identical Seat() gap scan, so what is being compared
 // is Leave(seatNumber): the baseline's O(n) List<T>.Remove scan versus this repo's
 // O(log n) BinarySearch.LowerBound locate. Drain seats Length students, then has every

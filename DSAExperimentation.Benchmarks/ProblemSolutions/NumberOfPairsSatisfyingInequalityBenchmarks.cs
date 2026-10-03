@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfPairsSatisfyingInequality;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfPairsSatisfyingInequalitySolution's, the same
-// methods NumberOfPairsSatisfyingInequalityTests proves correct - the textbook
+// methods NumberOfPairsSatisfyingInequalitySolutionTests proves correct - the textbook
 // O(n^2) pairwise scan against the O(n log n) FenwickTree sweep over the
 // coordinate-compressed differences.
 public class NumberOfPairsSatisfyingInequalityBenchmarks

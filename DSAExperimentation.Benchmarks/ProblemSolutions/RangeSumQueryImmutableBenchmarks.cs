@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RangeSumQueryImmutableSolution's, the same
-// methods RangeSumQueryImmutableTests proves correct, run over a fixed batch of
+// methods RangeSumQueryImmutableSolutionTests proves correct, run over a fixed batch of
 // queries - NumArray is constructed once per arm and sumRange is called
 // QueryCount times against it, the pattern LeetCode's own class exposes, so the
 // comparison is "build + QueryCount O(log n) queries" against "no build +

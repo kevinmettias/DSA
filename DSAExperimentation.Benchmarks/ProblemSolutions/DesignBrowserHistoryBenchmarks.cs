@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignBrowserHistory;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignBrowserHistorySolution's, the same classes
-// DesignBrowserHistoryTests proves correct - the textbook List<string> + cursor
+// DesignBrowserHistorySolutionTests proves correct - the textbook List<string> + cursor
 // baseline against this repo's own DynamicArray<string> doing the same
 // truncate-then-append, the "array Representation primitive vs. the BCL
 // equivalent" comparison DesignCircularQueueBenchmarks already makes for

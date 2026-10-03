@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.WordSearchII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordSearchIISolution's, the same methods
-// WordSearchIITests proves correct. Words are random (mostly absent from the
+// WordSearchIISolutionTests proves correct. Words are random (mostly absent from the
 // board) so neither strategy short-circuits, forcing both through their real
 // worst-case cost.
 public class WordSearchIIBenchmarks

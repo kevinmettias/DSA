@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TopKFrequentWords;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TopKFrequentWordsSolution's, the same methods
-// TopKFrequentWordsTests proves correct - a full sort with a tie-break comparer
+// TopKFrequentWordsSolutionTests proves correct - a full sort with a tie-break comparer
 // (O(d log d) over d distinct words) vs. counting into this repo's own
 // HashMap<string,int> and keeping only the k "best" words in a size-k min-heap
 // (O(d log k)).

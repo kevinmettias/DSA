@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.AvailableCapturesForRook;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AvailableCapturesForRookSolution's, the same methods
-// AvailableCapturesForRookTests proves correct. Each is handed the prepared
+// AvailableCapturesForRookSolutionTests proves correct. Each is handed the prepared
 // RookSquare its hoisted overload takes, so locating the rook - an O(rows*cols)
 // scan that would swamp the ray walk it is meant to expose - is charged to
 // [GlobalSetup] rather than to the measured search.

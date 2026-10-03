@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // ShortestDistanceToTargetStringInACircularArraySolution's, the same methods
-// ShortestDistanceToTargetStringInACircularArrayTests proves correct. A direct
+// ShortestDistanceToTargetStringInACircularArraySolutionTests proves correct. A direct
 // min(diff, n - diff) linear scan over the raw words array is measured against
 // this repo's own BFS - Reduce.Graph + DistanceMapReduceAlgebra over a
 // CircularArrayGraph, where each node's two edges stand in for "one step left" /

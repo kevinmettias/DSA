@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StringTransformation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StringTransformationSolution's, the same methods
-// StringTransformationTests proves correct. They share the closed-form modular
+// StringTransformationSolutionTests proves correct. They share the closed-form modular
 // combine step (O(log k) regardless of k, so k stays a large fixed constant here
 // rather than a varying axis) - the isolated variable is how the single
 // rotation-match count it needs gets computed: an O(n^2) brute-force window

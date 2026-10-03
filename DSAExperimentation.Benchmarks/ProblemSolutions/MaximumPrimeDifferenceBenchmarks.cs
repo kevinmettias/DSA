@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumPrimeDifference;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumPrimeDifferenceSolution's, the same
-// methods MaximumPrimeDifferenceTests proves correct. Values are drawn from
+// methods MaximumPrimeDifferenceSolutionTests proves correct. Values are drawn from
 // the LeetCode-guaranteed [1, 100] range, which is dense enough with primes
 // (25 of the 100 values) that the brute-force pairwise scan does real work
 // rather than short-circuiting on a mostly-composite array.

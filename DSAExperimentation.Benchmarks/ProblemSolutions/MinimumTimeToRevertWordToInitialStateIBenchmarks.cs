@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumTimeToRevertWordToInitialStateISolution's, the same methods
-// MinimumTimeToRevertWordToInitialStateITests proves correct. WordLength
+// MinimumTimeToRevertWordToInitialStateISolutionTests proves correct. WordLength
 // matches LC 3029's own bound (word.Length <= 50); k is fixed at 1, the
 // worst case for the O(n^2/k) baseline since it forces the full n candidate
 // shifts rather than letting a larger k skip most of them. The word is drawn

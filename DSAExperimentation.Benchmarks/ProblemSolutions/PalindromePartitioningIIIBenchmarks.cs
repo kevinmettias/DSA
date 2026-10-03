@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PalindromePartitioningIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromePartitioningIIISolution's, the same methods
-// PalindromePartitioningIIITests proves correct. The workload is a random string
+// PalindromePartitioningIIISolutionTests proves correct. The workload is a random string
 // over a small alphabet (so palindrome repairs are neither free nor uniformly
 // expensive) split into half as many pieces as it has characters, which is where the
 // two arms' shared decision tree is widest.

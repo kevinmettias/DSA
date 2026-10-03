@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are
 // FindPositiveIntegerSolutionForAGivenEquationSolution's, the same methods
-// FindPositiveIntegerSolutionForAGivenEquationTests proves correct - the O(n^2)
+// FindPositiveIntegerSolutionForAGivenEquationSolutionTests proves correct - the O(n^2)
 // check-every-pair brute force, the O(n) two-pointer walk, and the O(n log n) per-row
 // BinarySearch.Find over this repo's own IRandomAccessSequence
 // (ShortestPathAlgorithmBenchmarks precedent for measuring every real tier instead of

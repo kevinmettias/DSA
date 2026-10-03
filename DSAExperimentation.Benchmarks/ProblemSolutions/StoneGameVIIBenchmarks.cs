@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.StoneGameVII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are StoneGameVIISolution's, the same methods
-// StoneGameVIITests proves correct. UnmemoizedRecursion is plain minimax recursion
+// StoneGameVIISolutionTests proves correct. UnmemoizedRecursion is plain minimax recursion
 // over (left, right) bounds - exponential, since the same sub-range recurs through
 // many different removal orders - against this repo's own Memoizer<TState,TResult>
 // caching that exact pair, the identical shape StoneGameVBenchmarks already uses for

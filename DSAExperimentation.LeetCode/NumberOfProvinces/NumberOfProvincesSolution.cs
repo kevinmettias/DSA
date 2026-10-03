@@ -37,7 +37,7 @@ internal static class NumberOfProvincesSolution
 
     // Union every isConnected[i][j] pair into this repo's own DisjointSet, then
     // count distinct roots with this repo's own Set<int> - the same DisjointSet
-    // RedundantConnectionTests already uses to detect a cycle-closing edge, just
+    // RedundantConnectionSolutionTests already uses to detect a cycle-closing edge, just
     // counting components at the end instead of stopping at the first edge that
     // finds two nodes already joined.
     public static int CountProvincesByDisjointSetUnionFind(int[][] isConnected)

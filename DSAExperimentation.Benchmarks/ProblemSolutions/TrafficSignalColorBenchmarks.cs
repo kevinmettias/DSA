@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TrafficSignalColor;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is TrafficSignalColorSolution's, the same method
-// TrafficSignalColorTests proves correct. [Params] sweeps one representative
+// TrafficSignalColorSolutionTests proves correct. [Params] sweeps one representative
 // timer value from each of LC's own ranges (green, orange, red and invalid),
 // mirroring SqrtXBenchmarks' precedent for a fixed-value sweep over an O(1)
 // operation.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountValidPathsInATree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountValidPathsInATreeSolution's, the same methods
-// CountValidPathsInATreeTests proves correct. The per-pair path walk runs one BFS
+// CountValidPathsInATreeSolutionTests proves correct. The per-pair path walk runs one BFS
 // per unordered node pair - O(n) per pair over O(n^2) pairs - against this repo's
 // own DisjointSet, which splits the tree into non-prime blobs in O(n a(n)) and then
 // sweeps each prime node's arms once. A genuine complexity split, not a

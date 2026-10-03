@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubsequencesWithAUniqueMiddleModeISolution's, the
-// same methods SubsequencesWithAUniqueMiddleModeITests proves correct. A small
+// same methods SubsequencesWithAUniqueMiddleModeISolutionTests proves correct. A small
 // value range forces plenty of repeats, exercising the modular-combinatorics
 // arm's distinct-pair bookkeeping instead of degenerating to the all-values-
 // unique case. Length stays small (the brute-force arm is O(n^5)); the

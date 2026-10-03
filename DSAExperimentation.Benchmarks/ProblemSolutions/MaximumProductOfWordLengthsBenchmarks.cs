@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumProductOfWordLengths;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumProductOfWordLengthsSolution's, the same
-// methods MaximumProductOfWordLengthsTests proves correct. Words are split into
+// methods MaximumProductOfWordLengthsSolutionTests proves correct. Words are split into
 // two disjoint-alphabet halves ('a'-'m' vs. 'n'-'z') so every cross-half pair is
 // guaranteed to share no letter, forcing CharacterScan's inner double loop
 // through its full unmatched worst case instead of exiting early on the first

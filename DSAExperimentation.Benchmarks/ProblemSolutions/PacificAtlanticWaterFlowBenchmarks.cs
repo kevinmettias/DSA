@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PacificAtlanticWaterFlow;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PacificAtlanticWaterFlowSolution's, the same methods
-// PacificAtlanticWaterFlowTests proves correct - a per-cell DFS re-scan (for every
+// PacificAtlanticWaterFlowSolutionTests proves correct - a per-cell DFS re-scan (for every
 // cell, independently DFS downhill toward each ocean's border with a
 // freshly-allocated rows*cols visited grid) vs. a multi-source reverse-flow flood
 // fill from every border cell.

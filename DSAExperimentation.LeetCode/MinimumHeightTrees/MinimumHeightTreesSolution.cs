@@ -88,7 +88,7 @@ internal static class MinimumHeightTreesSolution
     // ReleaseChildren pair) - just tracking plain undirected degree instead of
     // in-degree, and stopping once at most 2 nodes remain instead of running to
     // exhaustion. This repo's own Queue<int> is the frontier, the same
-    // RemoveInvalidParenthesesTests.cs uses for its own level-by-level BFS peel. The
+    // RemoveInvalidParenthesesSolutionTests.cs uses for its own level-by-level BFS peel. The
     // last layer standing are the roots whose eccentricity - and therefore tree
     // height - is minimal, since they are the tree's own centroid(s).
     public static List<int> FindRootsByLeafPeeling(int nodeCount, int[][] edges)

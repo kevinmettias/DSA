@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MostFrequentIds;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MostFrequentIdsSolution's, the same methods
-// MostFrequentIdsTests proves correct. A modest id space (relative to Length)
+// MostFrequentIdsSolutionTests proves correct. A modest id space (relative to Length)
 // keeps counts churning and the collection non-trivially sized throughout, so
 // the brute-force rescan actually has work to do at every step.
 public class MostFrequentIdsBenchmarks

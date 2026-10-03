@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfStudentsUnableToEatLunch;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfStudentsUnableToEatLunchSolution's, the same
-// methods NumberOfStudentsUnableToEatLunchTests proves correct. The workload is a
+// methods NumberOfStudentsUnableToEatLunchSolutionTests proves correct. The workload is a
 // seeded random line of binary preferences against an equally random pile, so many
 // students cycle to the back before the line stalls - exactly the traffic that
 // charges the List<int> baseline its O(n) RemoveAt(0) per round against the

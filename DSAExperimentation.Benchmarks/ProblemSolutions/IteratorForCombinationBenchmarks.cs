@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.IteratorForCombination;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IteratorForCombinationSolution's, the same methods
-// IteratorForCombinationTests proves correct. Each arm builds a fresh iterator - which
+// IteratorForCombinationSolutionTests proves correct. Each arm builds a fresh iterator - which
 // is where every strategy does its work, since both precompute the whole combination
 // list up front - and drains it so the result cannot be elided, the same shape
 // BinarySearchTreeIteratorBenchmarks uses (an iterator is internal, so a public

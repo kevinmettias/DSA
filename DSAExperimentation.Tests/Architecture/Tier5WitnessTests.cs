@@ -22,7 +22,7 @@ namespace DSAExperimentation.Tests.Architecture;
 public sealed partial class Tier5WitnessTests
 {
     private const string BenchmarksProject = "DSAExperimentation.Benchmarks";
-    private const string TestsProject = "DSAExperimentation.Tests";
+    private const string SolutionTestsProject = "DSAExperimentation.LeetCode.Tests";
     private const string BenchmarkSuffix = "Benchmarks.cs";
     private const string FixturesFolder = "Fixtures";
 
@@ -163,12 +163,13 @@ public sealed partial class Tier5WitnessTests
     }
 
     // Every harness file that belongs to one identifiable subject: each file under a
-    // problem's test folder, and each benchmark class - named for a problem, or for a
+    // folder of the solution-tier test project (a problem's tests, or the catalog's), and
+    // each benchmark class - named for a problem, or for a
     // library-level choice such as ShortestPathAlgorithm. Tests may declare hooks as
     // assertion devices; benchmarks may not.
     private static IEnumerable<HarnessFile> HarnessFiles(string root)
     {
-        var coverage = Path.Combine(root, TestsProject, "LeetCodeCoverage");
+        var coverage = Path.Combine(root, SolutionTestsProject);
         var solutions = Path.Combine(root, BenchmarksProject, "ProblemSolutions");
 
         foreach (var file in RepositoryFiles.SourceFilesIn(coverage))

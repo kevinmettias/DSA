@@ -12,7 +12,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hop graph's edge count explodes past O(n)).
 //
 // Harness only: both arms are JumpGameIVSolution's, the same methods
-// JumpGameIVTests proves correct. The hop graph is built once in [GlobalSetup] so
+// JumpGameIVSolutionTests proves correct. The hop graph is built once in [GlobalSetup] so
 // its construction isn't charged to the search being measured.
 public class JumpGameIVBenchmarks
 {

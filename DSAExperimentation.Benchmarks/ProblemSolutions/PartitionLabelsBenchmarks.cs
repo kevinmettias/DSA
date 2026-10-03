@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PartitionLabels;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PartitionLabelsSolution's, the same methods
-// PartitionLabelsTests proves correct. Letters are random across the whole
+// PartitionLabelsSolutionTests proves correct. Letters are random across the whole
 // alphabet so partitions stay small and the brute-force rescan is forced to
 // search most of the string, over and over, instead of an early exit.
 public class PartitionLabelsBenchmarks

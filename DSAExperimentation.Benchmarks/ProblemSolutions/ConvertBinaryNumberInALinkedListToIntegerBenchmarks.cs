@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ConvertBinaryNumberInALinkedListToInteger;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ConvertBinaryNumberInALinkedListToIntegerSolution's,
-// the same methods ConvertBinaryNumberInALinkedListToIntegerTests proves correct.
+// the same methods ConvertBinaryNumberInALinkedListToIntegerSolutionTests proves correct.
 // CollectThenFold is the naive two-pass approach (collect every bit into a buffer,
 // then fold positional weights right-to-left); SinglePassShift folds
 // value = (value << 1) | bit in one walk. Both are O(n), but the baseline

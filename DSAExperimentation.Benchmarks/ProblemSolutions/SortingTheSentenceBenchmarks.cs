@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SortingTheSentence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortingTheSentenceSolution's, the same methods
-// SortingTheSentenceTests proves correct. The workload is generalized beyond the
+// SortingTheSentenceSolutionTests proves correct. The workload is generalized beyond the
 // problem's real 1-9-word/single-digit constraint (the same "scale past the strict
 // LeetCode bound to exercise real complexity" convention AddTwoNumbersBenchmarks
 // and RelativeSortArrayBenchmarks already use) so a numeric position suffix of any

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ImplementMagicDictionary;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ImplementMagicDictionarySolution's, the same
-// factories ImplementMagicDictionaryTests proves correct. [GlobalSetup] builds
+// factories ImplementMagicDictionarySolutionTests proves correct. [GlobalSetup] builds
 // the dictionary and, for each dictionary word, a search word that is exactly
 // one character away from it (guaranteed to be a real match) - build+scan cost
 // has to be paid every call either way, so Replay processes a full batch of

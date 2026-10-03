@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximumPointsAfterCollectingCoinsFromAllNodesSolution's, the same methods
-// MaximumPointsAfterCollectingCoinsFromAllNodesTests proves correct. A skewed chain,
+// MaximumPointsAfterCollectingCoinsFromAllNodesSolutionTests proves correct. A skewed chain,
 // not a bushy random tree - the same worst-case shape
 // LongestPathWithDifferentAdjacentCharactersBenchmarks' Setup comment gives for a
 // tree-fold benchmark, since both arms here already share the same O(n * MaxHalvings)

@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MergeTwoSortedLists;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeTwoSortedListsSolution's, the same methods
-// MergeTwoSortedListsTests proves correct. Both arms relink the nodes they are handed, so the
+// MergeTwoSortedListsSolutionTests proves correct. Both arms relink the nodes they are handed, so the
 // lists are rebuilt from the value arrays inside each measurement rather than being merged a
 // second time on nodes an earlier iteration already spliced.
 public class MergeTwoSortedListsBenchmarks

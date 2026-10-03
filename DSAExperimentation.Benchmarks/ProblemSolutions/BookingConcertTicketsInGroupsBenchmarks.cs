@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BookingConcertTicketsInGroups;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BookingConcertTicketsInGroupsSolution's, the same
-// classes BookingConcertTicketsInGroupsTests proves correct. [GlobalSetup] draws
+// classes BookingConcertTicketsInGroupsSolutionTests proves correct. [GlobalSetup] draws
 // one fixed stream of gather/scatter calls, so script construction is charged to
 // setup rather than to the replay each arm measures. The instance itself is built
 // inside each [Benchmark] arm and not hoisted - a Design problem's state is mutated

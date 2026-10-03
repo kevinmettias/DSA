@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DistinctPrimeFactorsOfProductOfArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistinctPrimeFactorsOfProductOfArraySolution's, the
-// same methods DistinctPrimeFactorsOfProductOfArrayTests proves correct. Forming
+// same methods DistinctPrimeFactorsOfProductOfArraySolutionTests proves correct. Forming
 // the actual BigInteger product first (limb count grows with every multiply, the
 // same O(n^2) blowup shape AddTwoNumbersBenchmarks' BigInteger baseline hits) and
 // then trial-dividing that huge number, vs. trial-dividing each (small, <= 1000)

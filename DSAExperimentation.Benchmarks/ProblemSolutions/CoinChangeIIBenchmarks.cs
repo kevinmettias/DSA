@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CoinChangeII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CoinChangeIISolution's, the same methods
-// CoinChangeIITests proves correct - plain bottom-up tabulation vs. this repo's
+// CoinChangeIISolutionTests proves correct - plain bottom-up tabulation vs. this repo's
 // Memoizer-based top-down recursion over a 2-D (coin index, remaining amount) state,
 // both O(coins.Length * amount).
 public class CoinChangeIIBenchmarks

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.AddTwoNumbers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AddTwoNumbersSolution's, the same methods
-// AddTwoNumbersTests proves correct. Converting each digit list to a BigInteger
+// AddTwoNumbersSolutionTests proves correct. Converting each digit list to a BigInteger
 // and back is the naive approach many first reach for - each `* 10` grows the
 // running total's limb count by one, so accumulating an n-digit number this way
 // costs O(n^2) overall. DigitwiseListWalk instead walks both lists exactly once
@@ -31,7 +31,7 @@ public class AddTwoNumbersBenchmarks
 
     // Digit values only need to be in [0, 10) to exercise both strategies' carry
     // handling under load - LC 2's "no leading zero" constraint is a correctness
-    // concern already covered by AddTwoNumbersTests, not a perf-harness one.
+    // concern already covered by AddTwoNumbersSolutionTests, not a perf-harness one.
     private static SinglyLinkedListNode<int> BuildRandomDigitList(Random random, int length)
     {
         var head = new SinglyLinkedListNode<int>(random.Next(0, DecimalBase));

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumCostPathWithAlternatingDirectionsIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostPathWithAlternatingDirectionsIIISolution's,
-// the same methods MinimumCostPathWithAlternatingDirectionsIIITests proves agree.
+// the same methods MinimumCostPathWithAlternatingDirectionsIIISolutionTests proves agree.
 // The workload is a square grid seeded once in [GlobalSetup], so what's measured is
 // the state-space search itself (up to 2 * Side * Side nodes) - a hand-rolled BCL
 // PriorityQueue+Dictionary against ShortestPath.Dijkstra composed with

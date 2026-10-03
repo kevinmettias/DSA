@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.CarFleetII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are CarFleetIISolution's, the same methods CarFleetIITests
+// Harness only: both arms are CarFleetIISolution's, the same methods CarFleetIISolutionTests
 // proves correct, and both take LeetCode's own cars array, so the fleet is built once
 // in [GlobalSetup] rather than inside either measured call.
 //

@@ -39,7 +39,7 @@ internal static class SubarraysDistinctElementSumOfSquaresIISolution
     // every start l in [0, r]. Extending r by one value only raises D[l] for
     // l in (previousOccurrence, r] - the value is already present for any earlier
     // start - a range +1 this repo's own RangeFenwickTree<long, ScaledSumOperation<long>>
-    // applies in O(log n) (same composition MaximizeTheMinimumPoweredCityTests
+    // applies in O(log n) (same composition MaximizeTheMinimumPoweredCitySolutionTests
     // uses). Squaring is not additive, but its *change* is:
     // (d+1)^2 - d^2 = 2d + 1, so summing 2 * RangeSum(before the update) + rangeLength
     // keeps a running sum of squares exactly - no D[l] value ever needs reading back

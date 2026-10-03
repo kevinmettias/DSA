@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignLinkedListSolution's, the same factories
-// DesignLinkedListTests proves correct. Design Linked List (LC 707): an array-backed
+// DesignLinkedListSolutionTests proves correct. Design Linked List (LC 707): an array-backed
 // list's front insert (List<int>.Insert(0, _), the naive baseline an array-backed
 // "just use a List" implementation reaches for - O(n) per call, since every existing
 // element has to shift right) vs. this repo's SinglyLinkedListNode<TValue> chain's

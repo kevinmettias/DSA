@@ -15,7 +15,7 @@ namespace DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
 // FindNumberOfLisBySegmentTree coordinate-compresses nums into a rank per
 // distinct value (this repo's own BinarySearch.LowerBound over an
 // ArraySequence<int> of sorted distinct values - the same LowerBound engine
-// LongestIncreasingSubsequenceTests already exercises), then sweeps left to
+// LongestIncreasingSubsequenceSolutionTests already exercises), then sweeps left to
 // right maintaining a SegmentTree<(Length,Count),LisAggregate> keyed by rank.
 // Query(0, rank-1) gives the best (longest length ending strictly before this
 // value, and how many subsequences reach that length) among every smaller value

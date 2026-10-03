@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FlattenAMultilevelDoublyLinkedListSolution's, the same
-// methods FlattenAMultilevelDoublyLinkedListTests proves correct. Each [Benchmark] rebuilds
+// methods FlattenAMultilevelDoublyLinkedListSolutionTests proves correct. Each [Benchmark] rebuilds
 // a fresh copy since flattening is destructive (Child pointers are cleared in place),
 // matching RotateImageBenchmarks' per-invocation Clone convention - so list construction
 // stays outside [GlobalSetup] deliberately, same as the pre-migration benchmark.

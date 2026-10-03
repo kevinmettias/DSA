@@ -74,7 +74,7 @@ internal static class ValidParenthesisStringSolution
         }
     }
 
-    // This repo's own two Stack<int> (ValidParenthesesTests/NextGreaterElementITests
+    // This repo's own two Stack<int> (ValidParenthesesSolutionTests/NextGreaterElementISolutionTests
     // precedent for Stack<char>/Stack<int>) track the indices of unmatched '(' and
     // unmatched '*' in one O(n) left-to-right pass. Each ')' first consumes an open
     // paren, falling back to a wildcard; any opens still unmatched afterward are

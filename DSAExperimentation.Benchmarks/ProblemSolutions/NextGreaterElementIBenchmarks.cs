@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NextGreaterElementI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NextGreaterElementISolution's, the same methods
-// NextGreaterElementITests proves correct. nums2 is a random permutation of
+// NextGreaterElementISolutionTests proves correct. nums2 is a random permutation of
 // distinct values so no query short-circuits on an early match, forcing
 // PerQueryRescan through its full worst-case inner scan.
 public class NextGreaterElementIBenchmarks

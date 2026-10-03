@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfWaysOfCuttingAPizzaSolution's, the same
-// methods NumberOfWaysOfCuttingAPizzaTests proves correct. Both are handed the
+// methods NumberOfWaysOfCuttingAPizzaSolutionTests proves correct. Both are handed the
 // prepared AppleGrid their hoisted overload takes, so building the suffix-sum table
 // is charged to [GlobalSetup] rather than to the cut counting being measured. The
 // pizza is all apples, so nothing short-circuits the naive baseline's full

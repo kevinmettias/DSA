@@ -1150,7 +1150,7 @@ Bottom to top, each tier depending only on those below it:
 | 2. Operations | `DSAExperimentation/Algorithms/**` | §2's third axis |
 | 3. Domain | `DSAExperimentation/Domain/**` | Models that fix *content* — a specific modulus, a specific vertex set, one problem family's semantics (§17.6). A deliberately thin tier |
 | 4. LeetCode solutions | `DSAExperimentation.LeetCode/**` (own project) | One folder per problem; every strategy for it |
-| 5. Harnesses | `DSAExperimentation.Tests/**`, `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
+| 5. Harnesses | `DSAExperimentation.Tests/**` (tiers 1–3), `DSAExperimentation.LeetCode.Tests/**` (tier 4), `DSAExperimentation.Benchmarks/**` | Assertions and measurement, nothing else |
 
 Namespaces continue to mirror the physical path exactly (§13.1): insert `Domain.` or `LeetCode.`
 immediately after `DSAExperimentation.`, then follow the rest of the path.
@@ -1261,8 +1261,15 @@ Enforcement now comes from two places, chosen deliberately over a project-per-ti
 
 - **`LeetCode` is its own project** (`DSAExperimentation.LeetCode`, referencing
   `DSAExperimentation`). Nothing below it can depend on a solution, because it cannot see one.
-  This seam is worth a project because it is strictly one-way, costs three `InternalsVisibleTo`
-  lines, and keeps ~800 eventual problem classes out of the framework assembly.
+  This seam is worth a project because it is strictly one-way, costs a few `InternalsVisibleTo`
+  lines, and keeps 1,105 problem classes out of the framework assembly.
+- **The test projects split the same way.** `DSAExperimentation.Tests` tests tiers 1–3 and does
+  not reference `DSAExperimentation.LeetCode`; every solution-facing test — the per-problem
+  `<Problem>SolutionTests` at `DSAExperimentation.LeetCode.Tests/<Problem>/`, the seam tests beside
+  them, the LeetCode catalog — lives in `DSAExperimentation.LeetCode.Tests`. A core test that
+  reached for a solution would not compile. The split used to be historical: 1,159
+  solution-facing files sat in the core test project, and none of its 188 core files referenced
+  them.
 - **`Tests/Architecture/LayeringTests.cs` polices the rest.** DataStructures, Algorithms and
   Domain stay in one assembly and one project.
 
@@ -1283,7 +1290,9 @@ fails if an allow-listed edge disappears so the entry cannot go stale.
 
 Two things, and only two:
 
-- **Assertions.** A test file states LeetCode's published examples once as a
+- **Assertions.** A test file — `DSAExperimentation.LeetCode.Tests/<Problem>/<Problem>SolutionTests.cs`,
+  named for the solution class it tests, at the path that mirrors it — states LeetCode's published
+  examples once as a
   `public static TheoryData<...> Examples`, then carries one
   `[Theory] [MemberData(nameof(Examples))]` method *per strategy*, so a failure names the strategy
   that broke rather than reporting a disagreement between two anonymous arms.
@@ -1302,7 +1311,7 @@ subfolder entirely.
 
 `WordLadderIIBenchmarks` previously had both arms *count* shortest sequences rather than build
 them, to avoid materializing a potentially exponential result set. Since both arms are now the same
-methods `WordLadderIITests` proves correct, they return LeetCode's actual answer and the harness
+methods `WordLadderIISolutionTests` proves correct, they return LeetCode's actual answer and the harness
 takes `.Count`. On the chain-shaped workload the shortest-path DAG is narrow, so the comparison is
 still about search cost — but this is a deliberate change in what is measured, not an oversight.
 

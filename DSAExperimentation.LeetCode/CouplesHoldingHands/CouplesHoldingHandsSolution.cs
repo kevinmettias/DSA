@@ -9,8 +9,8 @@ namespace DSAExperimentation.LeetCode.CouplesHoldingHands;
 // The textbook baseline walks the row two seats at a time and, whenever a seat's
 // occupant isn't already beside their partner, looks the partner up by position and
 // swaps them into place. This repo's own strategy instead unions each seat pair's
-// two occupants by couple id into a DisjointSet - the same NumberOfProvincesTests/
-// RedundantConnectionTests primitive, applied here to a permutation's cycle
+// two occupants by couple id into a DisjointSet - the same NumberOfProvincesSolutionTests/
+// RedundantConnectionSolutionTests primitive, applied here to a permutation's cycle
 // structure instead of an adjacency matrix. A permutation decomposed into cycles
 // needs exactly (cycleLength - 1) swaps per cycle to fix, and summing that over
 // every component simplifies to coupleCount minus the distinct-root count, counted

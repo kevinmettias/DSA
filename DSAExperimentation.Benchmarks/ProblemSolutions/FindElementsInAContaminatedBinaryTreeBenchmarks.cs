@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.FindElementsInAContaminatedBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindElementsInAContaminatedBinaryTreeSolution's, the
-// same factories FindElementsInAContaminatedBinaryTreeTests proves correct. Each
+// same factories FindElementsInAContaminatedBinaryTreeSolutionTests proves correct. Each
 // arm recovers the tree once and then answers the same fixed batch of Find queries,
 // so the measurement is the recovery walk plus the per-query lookup cost the
 // recovered container implies - a List scanned linearly vs. this repo's own

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignATextEditor;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignATextEditorSolution's, the same classes
-// DesignATextEditorTests proves correct - a textbook List<char> + cursor
+// DesignATextEditorSolutionTests proves correct - a textbook List<char> + cursor
 // implementation (InsertRange/RemoveRange to edit at the cursor, shifting every
 // character past it) against the classic two-stack cursor design built on this
 // repo's own Stack<T>. Every iteration inserts a chunk right where the cursor

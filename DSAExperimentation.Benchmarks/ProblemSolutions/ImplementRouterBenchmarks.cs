@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ImplementRouter;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ImplementRouterSolution's, the same classes
-// ImplementRouterTests proves correct. [GlobalSetup] builds one fixed, valid
+// ImplementRouterSolutionTests proves correct. [GlobalSetup] builds one fixed, valid
 // call script - packets added in strictly increasing timestamp order (LC's own
 // "calls arrive in non-decreasing timestamp order" guarantee), interleaved
 // with forwardPacket/getCount calls - so script construction is charged to

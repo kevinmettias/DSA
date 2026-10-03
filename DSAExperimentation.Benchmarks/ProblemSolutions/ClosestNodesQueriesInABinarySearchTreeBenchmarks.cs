@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.ClosestNodesQueriesInABinarySearchTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClosestNodesQueriesInABinarySearchTreeSolution's, the
-// same methods ClosestNodesQueriesInABinarySearchTreeTests proves correct.
+// same methods ClosestNodesQueriesInABinarySearchTreeSolutionTests proves correct.
 // LinearScanPerQuery rescans every node for every query and ignores the BST
 // invariant entirely - O(n * queries) - while InOrderBinarySearch spends one
 // in-order walk on an ascending buffer and then bisects it per query, O(n + queries

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FinalElementAfterSubarrayDeletions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: all three arms are FinalElementAfterSubarrayDeletionsSolution's,
-// the same methods FinalElementAfterSubarrayDeletionsTests proves correct.
+// the same methods FinalElementAfterSubarrayDeletionsSolutionTests proves correct.
 // Length stays tiny: the two game-tree arms recurse over every surviving
 // subset of the array, so this is the axis whose state count they pay for -
 // EndpointComparison ignores it entirely, which is the point of measuring it

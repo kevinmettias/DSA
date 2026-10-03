@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MakeArrayEmpty;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MakeArrayEmptySolution's, the same methods
-// MakeArrayEmptyTests proves correct - the O(n) present-count scan against the
+// MakeArrayEmptySolutionTests proves correct - the O(n) present-count scan against the
 // FenwickTree<int, SumOperation<int>> range query at O(log n) per step, the same
 // contrast CountGoodTripletsInAnArrayBenchmarks draws for LC 2179. [GlobalSetup]
 // shuffles the distinct values, so only the sweep is measured.

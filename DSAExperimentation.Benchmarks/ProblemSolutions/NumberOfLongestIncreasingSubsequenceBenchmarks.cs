@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfLongestIncreasingSubsequenceSolution's,
-// the same methods NumberOfLongestIncreasingSubsequenceTests proves correct.
+// the same methods NumberOfLongestIncreasingSubsequenceSolutionTests proves correct.
 // The textbook O(n^2) DP vs. this repo's own SegmentTree<Element,
 // ICombineOperation<Element>> keyed by a BinarySearch.LowerBound-compressed
 // rank - O(n log n).

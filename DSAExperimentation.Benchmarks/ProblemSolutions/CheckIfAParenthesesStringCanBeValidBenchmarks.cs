@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CheckIfAParenthesesStringCanBeValid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CheckIfAParenthesesStringCanBeValidSolution's, the
-// same methods CheckIfAParenthesesStringCanBeValidTests proves correct. The workload
+// same methods CheckIfAParenthesesStringCanBeValidSolutionTests proves correct. The workload
 // is a leading locked '(' plus an all-free middle plus a trailing locked ')', which
 // maximizes the DP's reachable-set growth at every position while the stack sweep
 // never even inspects its free-index stack's contents.

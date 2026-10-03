@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumDeletionsToMakeArrayDivisible;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumDeletionsToMakeArrayDivisibleSolution's, proved
-// equivalent by MinimumDeletionsToMakeArrayDivisibleTests. They share the same O(m) Euclidean
+// equivalent by MinimumDeletionsToMakeArrayDivisibleSolutionTests. They share the same O(m) Euclidean
 // gcd fold and diverge on how they find the fewest deletions.
 //
 // The workload is chosen to make the asymptotic gap visible: numsDivide is every entry set to

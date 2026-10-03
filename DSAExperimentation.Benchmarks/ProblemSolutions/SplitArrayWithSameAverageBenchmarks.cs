@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.SplitArrayWithSameAverage;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SplitArrayWithSameAverageSolution's, the same
-// methods SplitArrayWithSameAverageTests proves correct - the textbook O(2^n)
+// methods SplitArrayWithSameAverageSolutionTests proves correct - the textbook O(2^n)
 // all-subsets brute force against the O(n * (n/2) * sum) subset-sum-with-a-
 // required-count DP over this repo's own Memoizer. The two Length values
 // deliberately straddle the crossover: at 16, brute force still edges out the

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CircleAndRectangleOverlapping;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CircleAndRectangleOverlappingSolution's, the same methods
-// CircleAndRectangleOverlappingTests proves correct - the brute-force O(width*height)
+// CircleAndRectangleOverlappingSolutionTests proves correct - the brute-force O(width*height)
 // lattice-point scan against the O(1) closed-form clamp-and-distance check. The circle
 // is centred exactly on the rectangle's far corner with radius 0, so it only overlaps at
 // that single last-scanned lattice point, forcing the brute-force scan through its full

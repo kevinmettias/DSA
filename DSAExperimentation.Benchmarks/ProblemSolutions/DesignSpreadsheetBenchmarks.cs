@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignSpreadsheet;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignSpreadsheetSolution's, the same classes
-// DesignSpreadsheetTests proves correct. [GlobalSetup] builds one fixed, valid call
+// DesignSpreadsheetSolutionTests proves correct. [GlobalSetup] builds one fixed, valid call
 // script - SetCell across a spread of cell references, interspersed GetValue calls
 // against both formula shapes ("=cell+cell" and "=cell+literal") and a handful of
 // ResetCell calls - so script construction, including which cell references get

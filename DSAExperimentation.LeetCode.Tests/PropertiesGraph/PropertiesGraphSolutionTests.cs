@@ -1,0 +1,37 @@
+using DSAExperimentation.LeetCode.PropertiesGraph;
+
+namespace DSAExperimentation.LeetCode.Tests.PropertiesGraph;
+
+// Harness only. Both strategies are PropertiesGraphSolution's - this file just
+// pins them to LeetCode's published examples, including the below-threshold pair
+// that must NOT connect despite sharing a value.
+public sealed partial class PropertiesGraphSolutionTests
+{
+    public static TheoryData<int[][], int, int> Examples =>
+        new()
+        {
+            { [[1, 2], [1, 1], [3, 4], [4, 5], [5, 6], [7, 7]], 1, 3 },
+            { [[1, 2, 3], [2, 3, 4], [4, 3, 5]], 2, 1 },
+            { [[1, 1], [1, 1]], 2, 2 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfComponentsByBruteForce_LeetCodeExamples_ReturnsComponentCount(
+        int[][] properties, int minimumIntersectionCount, int expected)
+    {
+        var actual = PropertiesGraphSolution.NumberOfComponentsByBruteForce(properties, minimumIntersectionCount);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void NumberOfComponentsByDisjointSet_LeetCodeExamples_ReturnsComponentCount(
+        int[][] properties, int minimumIntersectionCount, int expected)
+    {
+        var actual = PropertiesGraphSolution.NumberOfComponentsByDisjointSet(properties, minimumIntersectionCount);
+
+        Assert.Equal(expected, actual);
+    }
+}

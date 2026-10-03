@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ProcessRestrictedFriendRequests;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ProcessRestrictedFriendRequestsSolution's, the same
-// methods ProcessRestrictedFriendRequestsTests proves correct - a from-scratch DFS
+// methods ProcessRestrictedFriendRequestsSolutionTests proves correct - a from-scratch DFS
 // reachability baseline (FindIfPathExistsInGraphBenchmarks's own DFS-vs-Union-Find
 // precedent) against this repo's own DisjointSet, whose Find is near O(1) amortized
 // instead of a fresh O(n + e) walk per request. Both arms are handed LeetCode's own

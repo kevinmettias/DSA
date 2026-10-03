@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LongestConsecutiveSequence;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestConsecutiveSequenceSolution's, the same
-// methods LongestConsecutiveSequenceTests proves correct. The set arm hashes each
+// methods LongestConsecutiveSequenceSolutionTests proves correct. The set arm hashes each
 // value once as it walks the runs; the sorted arm instead pays an O(n log n) sort
 // of a full copy before its single linear scan over the ordered values.
 public class LongestConsecutiveSequenceBenchmarks

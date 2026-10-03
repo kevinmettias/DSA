@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorted;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfOperationsToMakeStringSortedSolution's,
-// the same methods MinimumNumberOfOperationsToMakeStringSortedTests proves correct.
+// the same methods MinimumNumberOfOperationsToMakeStringSortedSolutionTests proves correct.
 // They accumulate the identical modular permutation-rank sum and differ only in how
 // the "how many remaining letters are smaller" query is answered - a linear O(26)
 // scan of the frequency array against this repo's FenwickTree<int,

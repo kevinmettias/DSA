@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RepeatedDNASequences;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RepeatedDNASequencesSolution's, the same methods
-// RepeatedDNASequencesTests proves correct. Sequence length is swept via
+// RepeatedDNASequencesSolutionTests proves correct. Sequence length is swept via
 // [Params]; DnaSequenceWorkloads owns generating a random A/C/G/T string of that
 // length so construction is charged to [GlobalSetup] rather than to the scan
 // being measured. The fixed-window arm allocates a 10-character substring per

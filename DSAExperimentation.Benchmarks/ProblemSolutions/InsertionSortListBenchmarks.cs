@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.InsertionSortList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is InsertionSortListSolution's, the same method
-// InsertionSortListTests proves correct. Pre-migration this class was an
+// InsertionSortListSolutionTests proves correct. Pre-migration this class was an
 // untested compile-smoke placeholder (`Baseline() => 1`, `PrimitiveComposed() =>
 // 1`) rather than a second strategy to reconcile. [GlobalSetup] hoists the
 // shuffled workload values, but the list itself is rebuilt fresh inside the

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SearchSuggestionsSystem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SearchSuggestionsSystemSolution's, the same methods
-// SearchSuggestionsSystemTests proves correct. Catalog size (ProductCount) is held
+// SearchSuggestionsSystemSolutionTests proves correct. Catalog size (ProductCount) is held
 // fixed and only searchWord length (WordLength, [Params]) varies, because that is
 // the axis this gap is actually on: with a short searchWord the per-keystroke
 // catalog rescan is already just O(products), no worse than the one-time

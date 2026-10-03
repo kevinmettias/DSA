@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindAllPossibleRecipesFromGivenSupplies;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindAllPossibleRecipesFromGivenSuppliesSolution's, the
-// same methods FindAllPossibleRecipesFromGivenSuppliesTests proves correct. The
+// same methods FindAllPossibleRecipesFromGivenSuppliesSolutionTests proves correct. The
 // workload is a straight-line dependency chain (recipe i needs recipe i-1), which is
 // where the naive sweep's rescanning costs the most: it has to walk every
 // still-unmade recipe again after each pass, while Kahn's algorithm touches each

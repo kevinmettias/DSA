@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimizeTheMaximumEdgeWeightOfGraph;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeTheMaximumEdgeWeightOfGraphSolution's, the
-// same methods MinimizeTheMaximumEdgeWeightOfGraphTests proves correct. Each arm
+// same methods MinimizeTheMaximumEdgeWeightOfGraphSolutionTests proves correct. Each arm
 // is handed the prepared EdgeWeightGraph its hoisted overload takes, so building
 // the reversed adjacency is charged to [GlobalSetup] rather than either
 // feasibility search.

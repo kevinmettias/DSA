@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ReversePairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReversePairsSolution's, the same methods
-// ReversePairsTests proves correct.
+// ReversePairsSolutionTests proves correct.
 public class ReversePairsBenchmarks
 {
     private const int RandomSeed = 493; // LC problem number

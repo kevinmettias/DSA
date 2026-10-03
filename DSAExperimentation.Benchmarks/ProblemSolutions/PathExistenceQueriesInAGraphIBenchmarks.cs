@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathExistenceQueriesInAGraphISolution's, the same
-// methods PathExistenceQueriesInAGraphITests proves correct. The composed arm is
+// methods PathExistenceQueriesInAGraphISolutionTests proves correct. The composed arm is
 // handed a prebuilt DisjointSet - one union pass over the reduced adjacency - so
 // that one-time cost is charged to [GlobalSetup], not to the queries being
 // measured.

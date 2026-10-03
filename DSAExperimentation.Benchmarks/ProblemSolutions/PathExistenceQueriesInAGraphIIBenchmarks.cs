@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathExistenceQueriesInAGraphIISolution's, the same
-// methods PathExistenceQueriesInAGraphIITests proves correct. Sorting nums by
+// methods PathExistenceQueriesInAGraphIISolutionTests proves correct. Sorting nums by
 // value is preprocessing either strategy needs, so [GlobalSetup] builds it once
 // via SortedByValueGraph and hands each arm the prepared shape its own hoisted
 // overload takes - plain sorted arrays for the BFS baseline, the graph witness

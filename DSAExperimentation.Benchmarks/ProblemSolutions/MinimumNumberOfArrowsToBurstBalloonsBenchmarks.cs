@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfArrowsToBurstBalloonsSolution's, the
-// same methods MinimumNumberOfArrowsToBurstBalloonsTests proves correct. Each arm is
+// same methods MinimumNumberOfArrowsToBurstBalloonsSolutionTests proves correct. Each arm is
 // handed the prepared (Start, End) pairs its hoisted overload takes, so unpacking
 // LeetCode's int[][] shape isn't charged to the measured method. _points is
 // generated as mostly non-overlapping, shuffled balloons (needing close to n

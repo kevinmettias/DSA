@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PeekingIterator;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PeekingIteratorSolution's, the same factories
-// PeekingIteratorTests proves correct. Both drive the same peek-peek-next
+// PeekingIteratorSolutionTests proves correct. Both drive the same peek-peek-next
 // pattern to full exhaustion, summing every returned value so the JIT can't
 // eliminate the drain as dead code.
 public class PeekingIteratorBenchmarks

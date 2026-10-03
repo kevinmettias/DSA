@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSubtreesWithMaxDistanceBetweenCities;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubtreesWithMaxDistanceBetweenCitiesSolution's,
-// the same methods CountSubtreesWithMaxDistanceBetweenCitiesTests proves correct.
+// the same methods CountSubtreesWithMaxDistanceBetweenCitiesSolutionTests proves correct.
 // Each arm is handed the prepared adjacency list its hoisted overload takes, so
 // tree construction is charged to [GlobalSetup] rather than to the mask sweep being
 // measured.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SudokuSolver;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SudokuSolverSolution's, the same methods
-// SudokuSolverTests proves correct. Both walk the identical search tree over
+// SudokuSolverSolutionTests proves correct. Both walk the identical search tree over
 // the same fixed puzzle (there is no natural "size" axis to scale the way
 // TwoSum's input length does - the board is always 9x9, the same reason
 // NQueensBenchmarks fixes Size rather than [Params]-ing it), so this isolates

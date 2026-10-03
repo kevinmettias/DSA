@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.StoneGameIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are StoneGameIVSolution's, the same methods StoneGameIVTests
+// Harness only: both arms are StoneGameIVSolution's, the same methods StoneGameIVSolutionTests
 // proves correct. Plain un-memoized minimax recursion over the remaining stone count -
 // exponential, since the same remaining count recurs through many different perfect-
 // square-removal sequences reaching it - vs. the identical recurrence over this repo's

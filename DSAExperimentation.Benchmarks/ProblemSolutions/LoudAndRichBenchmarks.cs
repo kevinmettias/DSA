@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.LoudAndRich;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LoudAndRichSolution's, the same methods
-// LoudAndRichTests proves correct. Each arm is handed the prepared
+// LoudAndRichSolutionTests proves correct. Each arm is handed the prepared
 // List<PersonNode> its hoisted overload takes, so graph construction is charged
 // to [GlobalSetup] rather than to the pass being measured. Richer edges point
 // from a lower id to a higher one (capped fan-out) so the relation is a

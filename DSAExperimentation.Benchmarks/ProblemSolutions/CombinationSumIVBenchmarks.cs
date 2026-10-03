@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CombinationSumIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CombinationSumIVSolution's, the same methods
-// CombinationSumIVTests proves correct. The running counts overflow a 32-bit int well
+// CombinationSumIVSolutionTests proves correct. The running counts overflow a 32-bit int well
 // before Target's upper [Params] bound (the real LeetCode judge only guarantees an
 // int-sized answer for its own, much smaller constraints) - harmless here since both
 // benchmarked methods overflow identically and this class measures wall-clock time,

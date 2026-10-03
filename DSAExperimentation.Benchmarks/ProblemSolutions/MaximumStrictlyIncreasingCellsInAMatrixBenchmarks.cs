@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumStrictlyIncreasingCellsInAMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumStrictlyIncreasingCellsInAMatrixSolution's, the
-// same methods MaximumStrictlyIncreasingCellsInAMatrixTests proves correct.
+// same methods MaximumStrictlyIncreasingCellsInAMatrixSolutionTests proves correct.
 // MemoizedRowColumnScan is the textbook DAG-DP baseline - each of the rows*cols cells
 // rescans a whole row plus a whole column, O(rows*cols*(rows+cols)) - while
 // SortedBatchDp MergeSorts every cell by value once and folds each equal-value batch

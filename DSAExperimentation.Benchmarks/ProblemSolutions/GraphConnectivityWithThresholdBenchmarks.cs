@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.GraphConnectivityWithThreshold;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are GraphConnectivityWithThresholdSolution's, the same
-// methods GraphConnectivityWithThresholdTests proves correct - the divisor-sieve Union
+// methods GraphConnectivityWithThresholdSolutionTests proves correct - the divisor-sieve Union
 // sweep run over a naive, unranked, uncompressed union-find (baseline) vs. this repo's
 // own DisjointSet, whose path compression + union-by-rank keep Find/Union at
 // O(alpha(n)) amortized (NumberOfOperationsToMakeNetworkConnectedBenchmarks' own

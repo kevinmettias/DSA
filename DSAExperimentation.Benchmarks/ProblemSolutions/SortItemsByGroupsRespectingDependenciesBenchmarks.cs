@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SortItemsByGroupsRespectingDependencies;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortItemsByGroupsRespectingDependenciesSolution's, the
-// same methods SortItemsByGroupsRespectingDependenciesTests proves correct. A naive
+// same methods SortItemsByGroupsRespectingDependenciesSolutionTests proves correct. A naive
 // rescan topological sort (CourseScheduleIIBenchmarks's own O(V^2 + V*E) strategy, run
 // once over the item graph and once over the derived group graph) vs. this repo's own
 // Kahn's-algorithm TopologicalSort.TrySort run the same two times.

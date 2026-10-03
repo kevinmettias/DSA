@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumNumberOfDaysToEatNOrangesSolution's, the same
-// methods MinimumNumberOfDaysToEatNOrangesTests proves correct. The two subproblems
+// methods MinimumNumberOfDaysToEatNOrangesSolutionTests proves correct. The two subproblems
 // (n/2, n/3) reconverge heavily across levels (e.g. n/2/3 and n/3/2 frequently land
 // on the same value once floors are applied), so the unmemoized arm revisits the
 // same states many times over while the memoized arm only ever computes each

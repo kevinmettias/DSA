@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountAllValidPickupAndDeliveryOptions;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountAllValidPickupAndDeliveryOptionsSolution's, the
-// same strategies CountAllValidPickupAndDeliveryOptionsTests proves correct.
+// same strategies CountAllValidPickupAndDeliveryOptionsSolutionTests proves correct.
 public class CountAllValidPickupAndDeliveryOptionsBenchmarks
 {
     [Params(100, 10_000)]

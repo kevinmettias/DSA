@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MinimumCostToReachDestinationInTime;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumCostToReachDestinationInTimeSolution's, the
-// same methods MinimumCostToReachDestinationInTimeTests proves correct - the
+// same methods MinimumCostToReachDestinationInTimeSolutionTests proves correct - the
 // textbook unmemoized walk over every route the minute budget can pay for
 // (exponential in the city count) against this repo's ShortestPath.Dijkstra run
 // over the (city, elapsedTime) expansion of the same map, whose node count is only

@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolution's, the same methods
-// PartitionArrayIntoTwoArraysToMinimizeSumDifferenceTests proves correct - a
+// PartitionArrayIntoTwoArraysToMinimizeSumDifferenceSolutionTests proves correct - a
 // direct O(2^(2n)) scan of every size-n bitmask over the whole array against
 // meet-in-the-middle over each half's subset sums grouped by subset size.
 public class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceBenchmarks

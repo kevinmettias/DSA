@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindBeautifulIndicesInTheGivenArrayIISolution's, the
-// same methods FindBeautifulIndicesInTheGivenArrayIITests proves correct. Same
+// same methods FindBeautifulIndicesInTheGivenArrayIISolutionTests proves correct. Same
 // worst-case construction as Beautiful Indices I's benchmark (see there): the prefix
 // and nearby patterns mismatch only at their very last character, forcing every naive
 // scan attempt through almost the whole pattern before failing, with pattern length

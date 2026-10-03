@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BeautifulTowersII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BeautifulTowersIISolution's, the same methods
-// BeautifulTowersIITests proves correct. Identical algorithm to Beautiful Towers I
+// BeautifulTowersIISolutionTests proves correct. Identical algorithm to Beautiful Towers I
 // (see BeautifulTowersIBenchmarks) at [Params] scaled up toward II's much larger
 // official n <= 1e5 bound - large enough that the baseline's O(n^2) cost visibly
 // dominates while staying inside a reasonable benchmark run.

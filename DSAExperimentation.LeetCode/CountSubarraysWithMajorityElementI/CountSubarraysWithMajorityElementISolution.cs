@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementI;
 // positive iff prefix[j] > prefix[i] - so the whole problem reduces to counting
 // index pairs i < j whose prefix sums are strictly increasing, the same
 // coordinate-compression-plus-Fenwick-sweep shape
-// CountOfRangeSumTests/CountOfSmallerNumbersAfterSelfTests already use for LC
+// CountOfRangeSumSolutionTests/CountOfSmallerNumbersAfterSelfSolutionTests already use for LC
 // 327/315, just one-sided instead of two-sided.
 internal static class CountSubarraysWithMajorityElementISolution
 {

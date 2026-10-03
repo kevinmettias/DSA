@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountTheNumberOfCompleteComponents;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountTheNumberOfCompleteComponentsSolution's, the
-// same methods CountTheNumberOfCompleteComponentsTests proves correct. The
+// same methods CountTheNumberOfCompleteComponentsSolutionTests proves correct. The
 // workload is NodeCount / CliqueSize disjoint cliques, every one of them already
 // complete, so no early mismatch cuts the pairwise scan short - the O(k^2)
 // membership tests inside each fixed-size clique, not the O(V+E) edge sweep both

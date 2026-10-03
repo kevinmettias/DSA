@@ -50,7 +50,7 @@ internal static class DesignHashSetSolution
     }
 
     // This repo's own Set<int> (itself HashMap<Element,bool>-backed, the
-    // same primitive ContainsDuplicateTests already composes) wired up
+    // same primitive ContainsDuplicateSolutionTests already composes) wired up
     // directly - LC 705 wants exactly the operations Set<Element> already
     // exposes, no adapter logic beyond the method names.
     internal sealed class MyHashSetBySetBacked : IMyHashSet

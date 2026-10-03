@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BinarySearchAlgorithm;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BinarySearchAlgorithmSolution's, the same methods
-// BinarySearchAlgorithmTests proves correct.
+// BinarySearchAlgorithmSolutionTests proves correct.
 public class BinarySearchAlgorithmBenchmarks
 {
     private int[] _values = [];

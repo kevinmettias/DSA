@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PartitionArrayForMaximumXorAndAnd;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PartitionArrayForMaximumXorAndAndSolution's, the same
-// methods PartitionArrayForMaximumXorAndAndTests proves correct. Neither strategy
+// methods PartitionArrayForMaximumXorAndAndSolutionTests proves correct. Neither strategy
 // has a separable construction step - nums itself is the whole input - so there is
 // nothing to hoist into [GlobalSetup] beyond building the array. ElementCount stays
 // small: the brute-force arm is 3^n, and 3^14 already exercises the exponential

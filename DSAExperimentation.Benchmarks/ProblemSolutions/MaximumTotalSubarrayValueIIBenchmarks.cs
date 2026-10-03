@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MaximumTotalSubarrayValueII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumTotalSubarrayValueIISolution's, the same
-// methods MaximumTotalSubarrayValueIITests proves correct. The composed arm is
+// methods MaximumTotalSubarrayValueIISolutionTests proves correct. The composed arm is
 // handed its two prebuilt SegmentTrees so tree construction is charged to
 // [GlobalSetup] rather than to the search being measured, mirroring
 // OpenTheLockBenchmarks' LockGraph hoist.

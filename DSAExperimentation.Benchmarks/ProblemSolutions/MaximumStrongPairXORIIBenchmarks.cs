@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.MaximumStrongPairXORII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumStrongPairXORIISolution's, the same
-// methods MaximumStrongPairXORIITests proves correct. Length and value range
+// methods MaximumStrongPairXORIISolutionTests proves correct. Length and value range
 // match LC 2935's own bound (nums.Length <= 5*10^4, nums[i] < 2^20), where the
 // O(n^2) pairwise scan stops being competitive. BitTrieBuckets is handed the
 // pre-sorted ArrayIndexedSequence<int> its hoisted overload takes, so sorting

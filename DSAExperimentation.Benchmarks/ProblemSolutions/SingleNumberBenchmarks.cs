@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SingleNumber;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SingleNumberSolution's, the same methods
-// SingleNumberTests proves correct. Values are paired up and shuffled so every
+// SingleNumberSolutionTests proves correct. Values are paired up and shuffled so every
 // element but one cancels; the singleton's position is randomized by the shuffle
 // rather than fixed at an end. The XOR fold cancels in place while the set arm
 // adds and removes every pair through a HashSet.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheShortestSuperstring;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheShortestSuperstringSolution's, the same methods
-// FindTheShortestSuperstringTests proves correct - the textbook permutation brute
+// FindTheShortestSuperstringSolutionTests proves correct - the textbook permutation brute
 // force (O(n! * n)) against the bitmask-TSP DP built on this repo's own Memoizer
 // (O(2^n * n^2)). The overlap matrix is the prepared input both hoisted overloads
 // take, so it is built once in [GlobalSetup] and neither arm is charged for the

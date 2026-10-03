@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximizeNumberOfNiceDivisorsSolution's, the same
-// methods MaximizeNumberOfNiceDivisorsTests proves correct - the un-memoized
+// methods MaximizeNumberOfNiceDivisorsSolutionTests proves correct - the un-memoized
 // recursion that re-explores every peel-2/peel-3 order (the same "no cache" shape
 // FibonacciNumberBenchmarks' own baseline uses) against this repo's own Memoizer
 // keyed on the int `remaining` state. PrimeFactors stays small enough that the

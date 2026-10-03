@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.EliminationGame;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are EliminationGameSolution's, the same methods
-// EliminationGameTests proves correct.
+// EliminationGameSolutionTests proves correct.
 public class EliminationGameBenchmarks
 {
     [Params(10_000, 1_000_000)]

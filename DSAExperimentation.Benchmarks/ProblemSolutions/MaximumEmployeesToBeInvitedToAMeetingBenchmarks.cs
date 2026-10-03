@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumEmployeesToBeInvitedToAMeeting;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumEmployeesToBeInvitedToAMeetingSolution's, the
-// same methods MaximumEmployeesToBeInvitedToAMeetingTests proves correct. The
+// same methods MaximumEmployeesToBeInvitedToAMeetingSolutionTests proves correct. The
 // manual peel is handed LeetCode's own int[] favorite, and the composed arm the
 // prepared EmployeeGraph its hoisted overload takes, so building the node graph is
 // charged to [GlobalSetup] rather than to the search being measured.

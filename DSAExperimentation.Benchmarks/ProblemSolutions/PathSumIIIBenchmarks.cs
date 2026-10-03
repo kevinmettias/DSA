@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.PathSumIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathSumIIISolution's, the same methods
-// PathSumIIITests proves correct. _root is BinaryTrees.Balanced, whose node
+// PathSumIIISolutionTests proves correct. _root is BinaryTrees.Balanced, whose node
 // values are all non-negative, so Target is deliberately unreachable - both
 // strategies are forced through their full traversal instead of an early match.
 public class PathSumIIIBenchmarks

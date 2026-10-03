@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.SnapshotArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SnapshotArraySolution's, the same strategies
-// SnapshotArrayTests proves correct. Setup seeds each array's single index with
+// SnapshotArraySolutionTests proves correct. Setup seeds each array's single index with
 // Length snapshots, one Set per Snap - the worst case for history size - and
 // charges that construction to [GlobalSetup]; _querySnapId sits just past the final
 // snapshot so both strategies are forced through their full worst-case floor

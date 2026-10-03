@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // NumberOfWaysToReachAPositionAfterExactlyKStepsSolution's, the same strategies
-// NumberOfWaysToReachAPositionAfterExactlyKStepsTests proves correct. The endpoints
+// NumberOfWaysToReachAPositionAfterExactlyKStepsSolutionTests proves correct. The endpoints
 // are two apart, preserving the pre-migration workload's distance, and StepCount
 // stays modest specifically because the un-memoized baseline's 2^StepCount blowup is
 // real - the same reasoning TargetSumBenchmarks and FibonacciNumberBenchmarks

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.UniqueThreeDigitEvenNumbers;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are UniqueThreeDigitEvenNumbersSolution's, the same
-// methods UniqueThreeDigitEvenNumbersTests proves correct. LC caps digits.length at
+// methods UniqueThreeDigitEvenNumbersSolutionTests proves correct. LC caps digits.length at
 // 10, so [Params] stays within that range rather than the larger sizes this
 // project's other benchmarks use.
 public class UniqueThreeDigitEvenNumbersBenchmarks

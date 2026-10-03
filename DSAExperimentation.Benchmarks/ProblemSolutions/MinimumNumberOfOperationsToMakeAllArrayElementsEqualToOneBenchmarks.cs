@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneSolution's, the same
-// methods MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneTests proves
+// methods MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneSolutionTests proves
 // correct. LC 2654 scans every (start, end) window for the shortest one whose own
 // running gcd hits 1 - the same gcd-fold shape CheckIfItIsAGoodArrayBenchmarks and
 // FindGreatestCommonDivisorOfArrayBenchmarks already measure, just repeated once

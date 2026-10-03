@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximumAreaRectangleWithPointConstraintsIISolution's, the same methods
-// MaximumAreaRectangleWithPointConstraintsIITests proves correct. The sweep arm
+// MaximumAreaRectangleWithPointConstraintsIISolutionTests proves correct. The sweep arm
 // is handed its prepared, x-then-y sorted Point[] from [GlobalSetup] so sorting
 // is never part of the measured sweep - the same reason
 // MaximumAreaRectangleWithPointConstraintsIBenchmarks hands its corner-lookup

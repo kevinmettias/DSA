@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ValidPalindromeII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Valid Palindrome II (LC 680): harness only - both arms are
-// ValidPalindromeIISolution's, the same methods ValidPalindromeIITests proves
+// ValidPalindromeIISolution's, the same methods ValidPalindromeIISolutionTests proves
 // correct. _text places two differing characters symmetrically off-center so the
 // initial scan runs a genuine O(n) distance before finding the mismatch,
 // instead of collapsing to O(1) at either end.

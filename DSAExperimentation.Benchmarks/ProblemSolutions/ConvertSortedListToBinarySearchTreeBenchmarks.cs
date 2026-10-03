@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: the single arm is
 // ConvertSortedListToBinarySearchTreeSolution's, the same method
-// ConvertSortedListToBinarySearchTreeTests proves correct. The original
+// ConvertSortedListToBinarySearchTreeSolutionTests proves correct. The original
 // benchmark's two [Benchmark] arms were an unimplemented compile-smoke
 // placeholder (both returned the literal 1) rather than a second real
 // strategy, so there is only one arm here too, mirroring

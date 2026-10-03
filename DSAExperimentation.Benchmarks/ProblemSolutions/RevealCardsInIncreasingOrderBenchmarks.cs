@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RevealCardsInIncreasingOrder;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RevealCardsInIncreasingOrderSolution's, the same methods
-// RevealCardsInIncreasingOrderTests proves correct. The deck is generated once in
+// RevealCardsInIncreasingOrderSolutionTests proves correct. The deck is generated once in
 // [GlobalSetup]; each arm still does its own sort, because the sort is part of the
 // strategy and both pay the same O(n log n) for it - the difference measured here is
 // List<int>.RemoveAt(0)'s O(n) front removal against Queue<int>'s O(1) amortized one.

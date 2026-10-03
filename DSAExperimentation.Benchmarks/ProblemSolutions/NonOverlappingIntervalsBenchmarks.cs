@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NonOverlappingIntervals;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NonOverlappingIntervalsSolution's, the same
-// methods NonOverlappingIntervalsTests proves correct. _intervals is generated
+// methods NonOverlappingIntervalsSolutionTests proves correct. _intervals is generated
 // as mostly non-overlapping, shuffled intervals (few removals needed), which
 // hits brute force's true worst case - its outer "find the next kept interval"
 // loop runs close to n times, each paying a full O(n) rescan - instead of the

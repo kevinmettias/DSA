@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheNumberOfWaysToPlacePeopleIISolution's,
-// the same methods FindTheNumberOfWaysToPlacePeopleIITests proves correct.
+// the same methods FindTheNumberOfWaysToPlacePeopleIISolutionTests proves correct.
 // Coordinate range matches LC 3027's own bound (-10^9 <= coordinate <= 10^9);
 // Length tops out at 500 rather than LC 3027's full n <= 1000, because
 // BruteForce is cubic (unlike MaximumStrongPairXORII's quadratic baseline,

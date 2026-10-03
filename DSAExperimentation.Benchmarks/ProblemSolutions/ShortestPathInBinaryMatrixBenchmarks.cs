@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestPathInBinaryMatrix;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestPathInBinaryMatrixSolution's, the same
-// methods ShortestPathInBinaryMatrixTests proves correct - the 8-directional BFS
+// methods ShortestPathInBinaryMatrixSolutionTests proves correct - the 8-directional BFS
 // over the BCL's Queue<T> against the identical sweep over this repo's own
 // Queue<TElement>. Grid cells are blocked with low enough probability that a clear
 // corner-to-corner path almost always exists, so both strategies do comparable real

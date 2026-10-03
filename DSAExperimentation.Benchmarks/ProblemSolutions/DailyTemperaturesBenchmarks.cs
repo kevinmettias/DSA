@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DailyTemperatures;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DailyTemperaturesSolution's, the same methods
-// DailyTemperaturesTests proves correct. Temperatures are a random permutation so
+// DailyTemperaturesSolutionTests proves correct. Temperatures are a random permutation so
 // no day's answer short-circuits the brute-force scan early.
 public class DailyTemperaturesBenchmarks
 {

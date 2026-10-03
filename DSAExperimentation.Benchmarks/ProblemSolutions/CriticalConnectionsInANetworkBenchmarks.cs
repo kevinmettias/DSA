@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CriticalConnectionsInANetworkSolution's, the same
-// methods CriticalConnectionsInANetworkTests proves correct - the textbook "remove
+// methods CriticalConnectionsInANetworkSolutionTests proves correct - the textbook "remove
 // each connection, re-run a full BFS to check connectivity" scan, O(E*(V+E)),
 // against this repo's low-link bridge-finding DFS
 // (Algorithms.Connectivity.BridgesAndArticulationPoints.Find), O(V+E) total.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheKthCharacterInStringGameISolution's, the
-// same methods FindTheKthCharacterInStringGameITests proves correct. The
+// same methods FindTheKthCharacterInStringGameISolutionTests proves correct. The
 // KthPosition cap is #3304's own published bound (500), where the simulation
 // arm is already cheap - BitCount is measured to show the O(log k) closed
 // form's payoff, not to rescue an arm that would otherwise be infeasible.

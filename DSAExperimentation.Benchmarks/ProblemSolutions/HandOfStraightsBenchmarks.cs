@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.HandOfStraights;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HandOfStraightsSolution's, the same methods
-// HandOfStraightsTests proves correct - counting with the BCL's Dictionary and
+// HandOfStraightsSolutionTests proves correct - counting with the BCL's Dictionary and
 // sorting with Array.Sort vs. counting with this repo's own HashMap<int,int> and
 // sorting with this repo's own MergeSort, the same "same greedy algorithm, BCL
 // structures vs. repo structures" contrast TopKFrequentElementsBenchmarks already

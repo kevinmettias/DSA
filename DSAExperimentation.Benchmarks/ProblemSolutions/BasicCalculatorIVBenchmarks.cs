@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.BasicCalculatorIV;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BasicCalculatorIVSolution's, the same methods
-// BasicCalculatorIVTests proves correct, run over a sum of Length distinct
+// BasicCalculatorIVSolutionTests proves correct, run over a sum of Length distinct
 // variables (no evalvars, so every term survives to the final, sorted output).
 // DictionaryPolynomial accumulates/sorts with a plain BCL Dictionary<string,long> +
 // List.Sort, HashMapMergeSort accumulates with this repo's own

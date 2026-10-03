@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.JumpGameV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are JumpGameVSolution's, the same methods JumpGameVTests
+// Harness only: both arms are JumpGameVSolution's, the same methods JumpGameVSolutionTests
 // proves correct. [GlobalSetup] builds nothing but LeetCode's own int[] input, so
 // there is no hoisted overload to take - building the reachability DAG is part of
 // what the TopologicalSortLongestPath arm has to pay for, which is exactly the

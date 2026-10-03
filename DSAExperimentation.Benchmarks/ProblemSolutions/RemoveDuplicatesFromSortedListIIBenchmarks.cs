@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedListII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveDuplicatesFromSortedListIISolution's, the same
-// methods RemoveDuplicatesFromSortedListIITests proves correct. [GlobalSetup]
+// methods RemoveDuplicatesFromSortedListIISolutionTests proves correct. [GlobalSetup]
 // hoists the workload values, but the list itself is rebuilt fresh inside each
 // benchmark method rather than cached, because the two-pointer-scan strategy
 // splices nodes out of the list it is handed - a cached list would only be valid

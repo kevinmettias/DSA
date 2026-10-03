@@ -1,0 +1,33 @@
+using DSAExperimentation.LeetCode.FibonacciNumber;
+
+namespace DSAExperimentation.LeetCode.Tests.FibonacciNumber;
+
+// Harness only. Every strategy is FibonacciNumberSolution's - this file just pins
+// them to LeetCode's published examples, including the naive baseline, which was
+// never asserted before this migration.
+public sealed partial class FibonacciNumberSolutionTests
+{
+    public static TheoryData<int, int> Examples =>
+        new()
+        {
+            { 0, 0 },
+            { 1, 1 },
+            { 5, 5 },
+            { 20, 6765 },
+        };
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FibByNaiveRecursion_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByNaiveRecursion(sequenceIndex));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FibByMemoizedTopDown_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByMemoizedTopDown(sequenceIndex));
+
+    [Theory]
+    [MemberData(nameof(Examples))]
+    public void FibByIterativeRollingPair_LeetCodeExamples_ReturnsFibonacciNumber(int sequenceIndex, int expected) =>
+        Assert.Equal(expected, FibonacciNumberSolution.FibByIterativeRollingPair(sequenceIndex));
+}

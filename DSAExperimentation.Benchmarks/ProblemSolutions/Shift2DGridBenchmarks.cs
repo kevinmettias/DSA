@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.Shift2DGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are Shift2DGridSolution's, the same methods
-// Shift2DGridTests proves correct. Direct row/col index arithmetic (compute each
+// Shift2DGridSolutionTests proves correct. Direct row/col index arithmetic (compute each
 // source cell's shifted destination and write straight into a fresh array) vs. this
 // repo's own Deque<int> - flatten into it, right-rotate it shiftCount mod (rows*cols)
 // times via TryPopBack + PushFront, then drain it back out into the grid shape.

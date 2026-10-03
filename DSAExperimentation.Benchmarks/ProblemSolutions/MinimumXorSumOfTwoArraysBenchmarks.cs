@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumXorSumOfTwoArrays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumXorSumOfTwoArraysSolution's, the same methods
-// MinimumXorSumOfTwoArraysTests proves correct - the textbook unmemoized bitmask
+// MinimumXorSumOfTwoArraysSolutionTests proves correct - the textbook unmemoized bitmask
 // recursion over (index, claimedMask), which re-explores that state once per
 // assignment ordering that reaches it, against the same recurrence routed through
 // this repo's own Memoizer. Both arrays are LeetCode's own input shape, so

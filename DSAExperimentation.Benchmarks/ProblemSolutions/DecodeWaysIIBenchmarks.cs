@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DecodeWaysII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DecodeWaysIISolution's, the same methods
-// DecodeWaysIITests proves correct.
+// DecodeWaysIISolutionTests proves correct.
 public class DecodeWaysIIBenchmarks
 {
     private const string WildcardPair = "2*";

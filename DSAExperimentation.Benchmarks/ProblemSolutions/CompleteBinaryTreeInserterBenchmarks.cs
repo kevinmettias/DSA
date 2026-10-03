@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CompleteBinaryTreeInserter;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CompleteBinaryTreeInserterSolution's, the same
-// factories CompleteBinaryTreeInserterTests proves correct - a rescan-per-insert
+// factories CompleteBinaryTreeInserterSolutionTests proves correct - a rescan-per-insert
 // baseline (O(current size) per call) vs. this repo's own pre-seeded incomplete-node
 // queue (amortized O(1) per call). Each [Benchmark] rebuilds a fresh perfect tree
 // (BinaryTrees.Balanced, 2^k-1 nodes) and replays the same InsertCount insertions,

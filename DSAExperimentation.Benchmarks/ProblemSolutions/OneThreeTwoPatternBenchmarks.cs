@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.OneThreeTwoPattern;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are OneThreeTwoPatternSolution's, the same methods
-// OneThreeTwoPatternTests proves correct. _nums is strictly increasing, which
+// OneThreeTwoPatternSolutionTests proves correct. _nums is strictly increasing, which
 // contains no 132 pattern at all, forcing both strategies through their full
 // worst-case scan instead of an early exit on the first triple.
 public class OneThreeTwoPatternBenchmarks

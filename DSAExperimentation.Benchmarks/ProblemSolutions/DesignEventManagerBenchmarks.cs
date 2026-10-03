@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignEventManager;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignEventManagerSolution's, the same classes
-// DesignEventManagerTests proves correct. [GlobalSetup] builds one fixed, random
+// DesignEventManagerSolutionTests proves correct. [GlobalSetup] builds one fixed, random
 // call script - every event re-prioritized once, in random order, then every
 // event drained via PollHighest - so script construction is charged to setup
 // rather than to the replay each [Benchmark] arm measures. There is no Add/Rmv

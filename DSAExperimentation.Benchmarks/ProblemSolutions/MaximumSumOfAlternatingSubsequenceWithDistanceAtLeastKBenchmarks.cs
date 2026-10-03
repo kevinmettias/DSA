@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolution's, the same
-// methods MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKTests proves
+// methods MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKSolutionTests proves
 // correct. Mirrors MaximumBalancedSubsequenceSumBenchmarks' shape - the textbook
 // O(n^2) pairwise scan against an O(n log n) sweep through a repo index
 // structure, this time two SegmentTree<long,MaxOperation<long>> trees instead

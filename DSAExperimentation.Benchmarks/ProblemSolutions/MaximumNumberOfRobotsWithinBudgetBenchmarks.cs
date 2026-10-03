@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumNumberOfRobotsWithinBudget;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumNumberOfRobotsWithinBudgetSolution's, the same
-// strategies MaximumNumberOfRobotsWithinBudgetTests proves correct. Budget is sized
+// strategies MaximumNumberOfRobotsWithinBudgetSolutionTests proves correct. Budget is sized
 // to keep the average window a small, roughly constant fraction of Length across
 // both Params (mirroring SlidingWindowMaximumBenchmarks' own fixed WindowSize), so
 // the baseline's per-left-edge rescan cost stays real instead of collapsing to O(1)

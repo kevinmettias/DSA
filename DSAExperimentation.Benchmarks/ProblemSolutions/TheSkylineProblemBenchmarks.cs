@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.TheSkylineProblem;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TheSkylineProblemSolution's, the same methods
-// TheSkylineProblemTests proves correct. Buildings are randomly overlapping so
+// TheSkylineProblemSolutionTests proves correct. Buildings are randomly overlapping so
 // both strategies pay their full worst-case cost rather than degenerating to
 // disjoint ranges.
 public class TheSkylineProblemBenchmarks

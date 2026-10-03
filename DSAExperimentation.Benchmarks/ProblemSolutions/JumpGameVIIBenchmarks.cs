@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.JumpGameVII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are JumpGameVIISolution's, the same methods
-// JumpGameVIITests proves correct. The generated string is all '0' except a blocked
+// JumpGameVIISolutionTests proves correct. The generated string is all '0' except a blocked
 // final character, so neither strategy can short-circuit on an early success - both
 // must exhaust every reachable index before returning false, which is exactly what
 // makes the unmemoized baseline's Fibonacci-shaped call-count blowup real

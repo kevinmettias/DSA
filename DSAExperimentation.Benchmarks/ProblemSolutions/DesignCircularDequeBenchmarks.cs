@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignCircularDeque;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignCircularDequeSolution's, the same classes
-// DesignCircularDequeTests proves correct. Each [Benchmark] churns an insert-last/
+// DesignCircularDequeSolutionTests proves correct. Each [Benchmark] churns an insert-last/
 // insert-front/delete-front/delete-last cycle that settles into a steady state at
 // (near) capacity, forcing every operation through the wraparound path on both
 // ends - the same shape DesignCircularQueueBenchmarks already uses for its own

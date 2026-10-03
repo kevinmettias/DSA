@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.KthLargestElementInAStream;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are KthLargestElementInAStreamSolution's, the same
-// factories KthLargestElementInAStreamTests proves correct, replaying the same
+// factories KthLargestElementInAStreamSolutionTests proves correct, replaying the same
 // interleaved Add stream against a freshly created, unseeded stream instance - a
 // sort-on-every-add baseline (O(n log n) per call) vs. this repo's own size-k
 // min-heap (O(log k) per call) - the FindMedianFromDataStream two-heap

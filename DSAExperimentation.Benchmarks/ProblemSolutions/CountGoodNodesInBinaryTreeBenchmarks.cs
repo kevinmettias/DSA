@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.CountGoodNodesInBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountGoodNodesInBinaryTreeSolution's, the same methods
-// CountGoodNodesInBinaryTreeTests proves correct - a plain recursive DFS threading
+// CountGoodNodesInBinaryTreeSolutionTests proves correct - a plain recursive DFS threading
 // the running maximum through call-stack parameters against this repo's own
 // TopDownTraversal threading it through ITopDownHooks.Descend. The measured tree is
 // built once in [GlobalSetup] so only the counting walk is charged to either arm.

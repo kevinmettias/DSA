@@ -3,7 +3,7 @@ namespace DSAExperimentation.LeetCode.ValidPalindromeII;
 // LeetCode 680. Valid Palindrome II: can at most one character be deleted so the
 // rest of the string reads the same forwards and backwards?
 //
-// The two-pointer scan - ValidPalindromeTests' (LC 125) own strategy, extended
+// The two-pointer scan - ValidPalindromeSolutionTests' (LC 125) own strategy, extended
 // to retry once with either pointer skipped past the first mismatch - is the
 // intended O(n) answer. The baseline is the textbook "try deleting each
 // character in turn, then re-check the whole result" approach (O(n^2): n

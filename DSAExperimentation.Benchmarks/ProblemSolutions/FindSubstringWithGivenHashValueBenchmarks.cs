@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindSubstringWithGivenHashValueSolution's, the same
-// methods FindSubstringWithGivenHashValueTests proves correct - the O(n*k)
+// methods FindSubstringWithGivenHashValueSolutionTests proves correct - the O(n*k)
 // window-rehash baseline against this repo's RollingHash queried in O(1) per
 // window. The composed arm is handed the prefix table its hoisted overload takes,
 // so the O(n) construction is charged to [GlobalSetup] rather than to the sweep

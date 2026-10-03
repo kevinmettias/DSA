@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PathSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are PathSumSolution's, the same methods PathSumTests
+// Harness only: both arms are PathSumSolution's, the same methods PathSumSolutionTests
 // proves correct.
 public class PathSumBenchmarks
 {

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.IntegerToEnglishWords;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are IntegerToEnglishWordsSolution's, the same methods
-// IntegerToEnglishWordsTests proves correct. Params span a single-group number
+// IntegerToEnglishWordsSolutionTests proves correct. Params span a single-group number
 // (no prepend ever happens) up to Int32.MaxValue (all four groups), so the
 // stack strategy's saved reallocations actually have groups to save on.
 public class IntegerToEnglishWordsBenchmarks

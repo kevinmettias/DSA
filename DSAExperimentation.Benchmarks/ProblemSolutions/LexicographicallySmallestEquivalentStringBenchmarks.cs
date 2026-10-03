@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.LexicographicallySmallestEquivalentString;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LexicographicallySmallestEquivalentStringSolution's, the
-// same methods LexicographicallySmallestEquivalentStringTests proves correct. The
+// same methods LexicographicallySmallestEquivalentStringSolutionTests proves correct. The
 // comparison is adjacency-list BFS over the 26 letters (a component list allocated per
 // group) against this repo's own DisjointSet(26) - O(1) Union per pair, O(a(26)) Find
 // per baseStr character, no per-component allocation. The three strings are LeetCode's

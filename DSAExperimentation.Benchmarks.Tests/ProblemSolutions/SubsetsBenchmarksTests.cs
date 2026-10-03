@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Harness coverage for SubsetsBenchmarks (ARCHITECTURE 17.9): its two arms are competing strategies
 // for the same question, so a harness whose arms disagree is timing two different problems. Subset
 // order is not part of the problem's contract, so the answers are compared as unordered sets of
-// subsets - the same rendering SubsetsTests uses. Setup's workload is seeded, so the same element
+// subsets - the same rendering SubsetsSolutionTests uses. Setup's workload is seeded, so the same element
 // count must rebuild the same values.
 public sealed partial class SubsetsBenchmarksTests
 {

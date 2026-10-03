@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumOneBitOperationsToMakeIntegersZero;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumOneBitOperationsToMakeIntegersZeroSolution's,
-// the same methods MinimumOneBitOperationsToMakeIntegersZeroTests proves correct -
+// the same methods MinimumOneBitOperationsToMakeIntegersZeroSolutionTests proves correct -
 // breadth-first search over the implicit Gray-code path graph against the O(log n)
 // inverse-Gray-code closed form. The search does work proportional to the answer
 // itself (within a small constant factor of the target); the closed form only ever

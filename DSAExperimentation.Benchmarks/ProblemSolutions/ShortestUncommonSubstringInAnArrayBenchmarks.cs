@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ShortestUncommonSubstringInAnArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestUncommonSubstringInAnArraySolution's, the
-// same methods ShortestUncommonSubstringInAnArrayTests proves correct. Words
+// same methods ShortestUncommonSubstringInAnArraySolutionTests proves correct. Words
 // are drawn from a small 4-letter alphabet so words share a lot of substrings
 // with each other - the case that forces both strategies through most of their
 // candidate lists instead of resolving at length 1.

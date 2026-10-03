@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheCountOfMonotonicPairsISolution's, the same
-// methods FindTheCountOfMonotonicPairsITests proves correct. nums[i] stays
+// methods FindTheCountOfMonotonicPairsISolutionTests proves correct. nums[i] stays
 // within Part I's own constraint (<= 50), the range where the O(n * maxValue^2)
 // baseline is still meant to be viable.
 public class FindTheCountOfMonotonicPairsIBenchmarks

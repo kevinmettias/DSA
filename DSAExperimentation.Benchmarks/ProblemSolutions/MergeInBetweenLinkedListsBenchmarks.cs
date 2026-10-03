@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.MergeInBetweenLinkedLists;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MergeInBetweenLinkedListsSolution's, the same methods
-// MergeInBetweenLinkedListsTests proves correct. [GlobalSetup] hoists the workload
+// MergeInBetweenLinkedListsSolutionTests proves correct. [GlobalSetup] hoists the workload
 // values and the splice window, but the lists themselves are rebuilt fresh inside
 // each benchmark method rather than cached, because the splice strategy rewires the
 // nodes it is handed - a cached chain would only be valid for the first measured

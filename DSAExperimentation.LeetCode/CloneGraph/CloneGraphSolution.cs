@@ -12,7 +12,7 @@ namespace DSAExperimentation.LeetCode.CloneGraph;
 // benchmark's two [Benchmark] arms (Baseline, PrimitiveComposed) were both
 // unimplemented placeholders (`return 1;`) that never called either walk, so
 // the naive-BCL-baseline arm below is new - the composed HashMap walk is the
-// one that used to live as CloneGraphTests' own private helper.
+// one that used to live as CloneGraphSolutionTests' own private helper.
 internal static class CloneGraphSolution
 {
     // The textbook DFS: a BCL Dictionary as the original-to-clone memo.

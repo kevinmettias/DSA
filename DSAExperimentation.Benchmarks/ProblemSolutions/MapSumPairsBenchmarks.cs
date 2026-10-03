@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MapSumPairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MapSumPairsSolution's, the same classes
-// MapSumPairsTests proves correct. [GlobalSetup] builds one fixed key/value/prefix
+// MapSumPairsSolutionTests proves correct. [GlobalSetup] builds one fixed key/value/prefix
 // workload so key generation is charged to setup rather than to the
 // insert-then-sum replay each [Benchmark] arm measures. Each query prefix is a
 // real leading substring of one of the inserted keys, guaranteeing at least one

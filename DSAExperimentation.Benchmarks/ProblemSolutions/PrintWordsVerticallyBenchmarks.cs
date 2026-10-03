@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.PrintWordsVertically;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PrintWordsVerticallySolution's, the same methods
-// PrintWordsVerticallyTests proves correct - a List<char> column materialized as a
+// PrintWordsVerticallySolutionTests proves correct - a List<char> column materialized as a
 // padded string and TrimEnd'ed (baseline) against this repo's own
 // DynamicArray<char> trimmed in place by popping its tail. Unlike the pre-refactor
 // version, which only accumulated each row's length so no output list had to be

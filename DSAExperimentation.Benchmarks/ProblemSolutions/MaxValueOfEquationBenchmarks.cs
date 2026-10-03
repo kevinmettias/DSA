@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaxValueOfEquation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaxValueOfEquationSolution's, the same methods
-// MaxValueOfEquationTests proves correct. k is set wide enough that almost every
+// MaxValueOfEquationSolutionTests proves correct. k is set wide enough that almost every
 // pair stays in-window, forcing BOTH strategies through close to their full
 // O(n^2)/O(n) shapes instead of an early window-shrink making the all-pairs scan
 // look artificially competitive. Point construction is charged to [GlobalSetup].

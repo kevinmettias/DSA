@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // RemoveZeroSumConsecutiveNodesFromLinkedListSolution's, the same methods
-// RemoveZeroSumConsecutiveNodesFromLinkedListTests proves correct. [GlobalSetup]
+// RemoveZeroSumConsecutiveNodesFromLinkedListSolutionTests proves correct. [GlobalSetup]
 // hoists the workload values, but the list itself is rebuilt fresh inside each
 // benchmark method rather than cached, because both strategies splice nodes out of
 // the list they are handed - a cached list would only be valid for the first

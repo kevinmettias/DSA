@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumMovesToCaptureTheQueenSolution's, the same
-// methods MinimumMovesToCaptureTheQueenTests proves correct (TwoSumBenchmarks
+// methods MinimumMovesToCaptureTheQueenSolutionTests proves correct (TwoSumBenchmarks
 // precedent). Every single query is O(1) on the fixed 8x8 board, so there is no
 // LeetCode-shaped input to grow - instead [Params] sizes a BATCH of independent
 // random queries per iteration (a workload-sizing decision, same role

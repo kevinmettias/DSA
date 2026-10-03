@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MinimumOperationsToMakeBinaryArrayElementsEqualToOneISolution's, the same
-// methods MinimumOperationsToMakeBinaryArrayElementsEqualToOneITests proves
+// methods MinimumOperationsToMakeBinaryArrayElementsEqualToOneISolutionTests proves
 // correct. The workload's last 3 elements are pinned to 1 so a trailing zero
 // never forces either arm into an early -1 exit.
 public class MinimumOperationsToMakeBinaryArrayElementsEqualToOneIBenchmarks

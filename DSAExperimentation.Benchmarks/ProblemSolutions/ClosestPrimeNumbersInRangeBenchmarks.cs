@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ClosestPrimeNumbersInRange;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ClosestPrimeNumbersInRangeSolution's, the same
-// methods ClosestPrimeNumbersInRangeTests proves correct. Trial-dividing every
+// methods ClosestPrimeNumbersInRangeSolutionTests proves correct. Trial-dividing every
 // candidate in [2, right] up to sqrt(candidate) - O(right * sqrt(right)) - against
 // the same Sieve of Eratosthenes CountPrimesBenchmarks runs over this repo's own
 // DynamicArray<bool> composite tracker - O(right log log right). The sieve is built

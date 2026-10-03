@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumScoreOfAPathBetweenTwoCities;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumScoreOfAPathBetweenTwoCitiesSolution's, the same
-// methods MinimumScoreOfAPathBetweenTwoCitiesTests proves correct. The road list is
+// methods MinimumScoreOfAPathBetweenTwoCitiesSolutionTests proves correct. The road list is
 // already LeetCode's own input shape, so [GlobalSetup] hands it over directly and
 // neither arm needs a prepared-input overload; each still pays for its own adjacency
 // list or disjoint set, which is part of the strategy being measured.

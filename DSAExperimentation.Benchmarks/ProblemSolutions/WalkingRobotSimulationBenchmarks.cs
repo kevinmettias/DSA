@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.WalkingRobotSimulation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WalkingRobotSimulationSolution's, the same methods
-// WalkingRobotSimulationTests proves correct. The command stream and the obstacle
+// WalkingRobotSimulationSolutionTests proves correct. The command stream and the obstacle
 // field are generated once in [GlobalSetup], and the hashed arm is handed a prepared
 // Set<(int, int)> through its hoisted overload so building the set is not charged to
 // the walk being measured.

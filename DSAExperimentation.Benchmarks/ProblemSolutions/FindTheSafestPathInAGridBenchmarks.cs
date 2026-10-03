@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.FindTheSafestPathInAGrid;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheSafestPathInAGridSolution's, the same
-// methods FindTheSafestPathInAGridTests proves correct. MaximumSafenessFactorByBclBfs
+// methods FindTheSafestPathInAGridSolutionTests proves correct. MaximumSafenessFactorByBclBfs
 // pays for repeated BFS re-walks, one per binary-search step over the safeness
 // threshold; MaximumSafenessFactorByHeap answers the same question in one pass.
 public class FindTheSafestPathInAGridBenchmarks

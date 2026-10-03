@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Expression Add Operators (LC 282): a hand-rolled recursive backtrack vs. this
 // repo's own DepthFirstSearch.Traverse walking the identical implicit graph of
-// partial expressions (see ExpressionAddOperatorsTests). Unlike the pre-refactor
+// partial expressions (see ExpressionAddOperatorsSolutionTests). Unlike the pre-refactor
 // version, which counted matches rather than building them, both arms now return
 // LeetCode's actual answer - the same methods the tests prove correct. Target is
 // unreachable so neither strategy ever short-circuits, and both explore the same

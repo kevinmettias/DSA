@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PalindromePairs;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PalindromePairsSolution's, the same methods
-// PalindromePairsTests proves correct - the O(n^2*k) brute force that concatenates
+// PalindromePairsSolutionTests proves correct - the O(n^2*k) brute force that concatenates
 // and checks every ordered word pair directly vs. the O(n*k^2) approach using this
 // repo's own HashMap<TKey,TValue> as a reversed-complement lookup for every
 // prefix/suffix split.

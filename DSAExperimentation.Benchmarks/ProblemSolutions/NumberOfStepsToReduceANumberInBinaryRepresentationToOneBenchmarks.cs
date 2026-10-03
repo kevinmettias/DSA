@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolution's, the same methods
-// NumberOfStepsToReduceANumberInBinaryRepresentationToOneTests proves correct - the
+// NumberOfStepsToReduceANumberInBinaryRepresentationToOneSolutionTests proves correct - the
 // brute-force simulation that performs every "+1" step as a full LSB-first binary
 // addition, rebuilding the whole remaining string, against the O(n) single-pass
 // carry-propagation scan. An alternating "10" bit pattern maximizes how many separate

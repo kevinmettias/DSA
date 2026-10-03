@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RedundantConnectionII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RedundantConnectionIISolution's, the same methods
-// RedundantConnectionIITests proves correct - the textbook brute force retries
+// RedundantConnectionIISolutionTests proves correct - the textbook brute force retries
 // validity from scratch for every candidate edge removal (an in-degree pass plus
 // an uncompressed find-root cycle pass per candidate, O(n) each, O(n^2) overall)
 // against this repo's own DisjointSet-based approach, which finds the

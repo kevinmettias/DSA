@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NetworkRecoveryPathwaysSolution's, the same
-// methods NetworkRecoveryPathwaysTests proves correct. Each arm is handed the
+// methods NetworkRecoveryPathwaysSolutionTests proves correct. Each arm is handed the
 // same prepared RecoveryNetwork, built once in [GlobalSetup] from the random
 // DAG NetworkRecoveryWorkloads generates, so graph construction is charged to
 // setup and only the per-threshold shortest-path engine differs between arms

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.PrimeNumberOfSetBitsInBinaryRepresentation;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PrimeNumberOfSetBitsInBinaryRepresentationSolution's,
-// the same methods PrimeNumberOfSetBitsInBinaryRepresentationTests proves correct.
+// the same methods PrimeNumberOfSetBitsInBinaryRepresentationSolutionTests proves correct.
 // right <= 10^6 bounds every popcount to at most 20, so the precomputed-set
 // strategy's lookup table never grows past 8 entries regardless of range width.
 public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks

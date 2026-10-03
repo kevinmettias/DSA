@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.SuperPow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are SuperPowSolution's, the same methods SuperPowTests
+// Harness only: both arms are SuperPowSolution's, the same methods SuperPowSolutionTests
 // proves correct. Exponent is kept to a size the naive strategy can still finish
 // (LeetCode's real inputs go up to a 2000-digit exponent - far beyond any naive loop,
 // which is exactly why the digit-wise algorithm exists at all).

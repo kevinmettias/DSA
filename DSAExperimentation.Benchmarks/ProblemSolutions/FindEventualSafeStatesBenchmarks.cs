@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.FindEventualSafeStates;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindEventualSafeStatesSolution's, the same methods
-// FindEventualSafeStatesTests proves correct - the textbook per-node three-color DFS
+// FindEventualSafeStatesSolutionTests proves correct - the textbook per-node three-color DFS
 // against modeling the same question as Kahn's algorithm over the reversed graph.
 // The Kahn arm is handed the prepared List<SafeStateNode> its hoisted overload
 // takes, so edge reversal is charged to [GlobalSetup] rather than to the peel being

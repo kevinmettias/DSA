@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimizeManhattanDistances;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimizeManhattanDistancesSolution's, the same
-// methods MinimizeManhattanDistancesTests proves correct. The transform arm is
+// methods MinimizeManhattanDistancesSolutionTests proves correct. The transform arm is
 // handed the already-sorted u/v arrays, so the O(n log n) sort is charged to
 // [GlobalSetup] and only the O(n) per-removal sweep is measured.
 public class MinimizeManhattanDistancesBenchmarks

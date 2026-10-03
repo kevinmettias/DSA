@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysI;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSumOfMNonOverlappingSubarraysISolution's,
-// the same methods MaximumSumOfMNonOverlappingSubarraysITests proves correct.
+// the same methods MaximumSumOfMNonOverlappingSubarraysISolutionTests proves correct.
 // maxSubarrays and the [minLength, maxLength] window scale with Length so the
 // O(n*m*(r-l+1)) baseline's length-window factor stays visible against the O(n*m)
 // sliding-window arm.

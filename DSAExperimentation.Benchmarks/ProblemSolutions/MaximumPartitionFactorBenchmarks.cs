@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumPartitionFactor;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumPartitionFactorSolution's, the same
-// methods MaximumPartitionFactorTests proves correct. _points is a PointCount x
+// methods MaximumPartitionFactorSolutionTests proves correct. _points is a PointCount x
 // PointCount integer grid flattened to n points, deterministic and dense enough
 // that most pairwise Manhattan distances repeat - the "too close" graph at a
 // mid-range threshold has plenty of edges, not the trivial all-isolated case a

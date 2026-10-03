@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CountSubarraysWithCostLessThanOrEqualToK;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithCostLessThanOrEqualToKSolution's,
-// the same methods CountSubarraysWithCostLessThanOrEqualToKTests proves correct.
+// the same methods CountSubarraysWithCostLessThanOrEqualToKSolutionTests proves correct.
 public class CountSubarraysWithCostLessThanOrEqualToKBenchmarks
 {
     private const int Seed = 3835;

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BurstBalloons;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BurstBalloonsSolution's, the same methods
-// BurstBalloonsTests proves correct. Each arm is handed the prepared
+// BurstBalloonsSolutionTests proves correct. Each arm is handed the prepared
 // PaddedBalloons its hoisted overload takes, so the boundary-padding pass is
 // charged to [GlobalSetup] rather than to the recursion being measured.
 // BalloonCount is kept modest (<=14) specifically because the un-memoized

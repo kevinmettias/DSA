@@ -5,7 +5,7 @@ using DSAExperimentation.LeetCode.SubtreeOfAnotherTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SubtreeOfAnotherTreeSolution's, the same methods
-// SubtreeOfAnotherTreeTests proves correct. Both trees are left-skewed chains
+// SubtreeOfAnotherTreeSolutionTests proves correct. Both trees are left-skewed chains
 // sharing the same filler value so the naive approach can't short-circuit on an
 // early mismatch - it has to walk deep into every candidate start before
 // failing - and subRoot's deepest node carries a value that never appears in

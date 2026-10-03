@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CapacityToShipPackagesWithinDDaysSolution's, the same
-// methods CapacityToShipPackagesWithinDDaysTests proves correct - a hand-rolled lo/hi
+// methods CapacityToShipPackagesWithinDDaysSolutionTests proves correct - a hand-rolled lo/hi
 // bisection against BinarySearch.LowerBound over an on-demand
 // IRandomAccessSequence<bool>. Both binary-search the same monotone feasibility
 // predicate in O(weights.Length * log(sum - max)), so what is measured is the cost of

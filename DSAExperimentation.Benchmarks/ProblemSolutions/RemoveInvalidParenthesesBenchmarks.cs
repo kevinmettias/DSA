@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveInvalidParentheses;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveInvalidParenthesesSolution's, the same
-// methods RemoveInvalidParenthesesTests proves correct. [Length] stays small
+// methods RemoveInvalidParenthesesSolutionTests proves correct. [Length] stays small
 // since the brute-force arm is genuinely O(2^n * n); the generated input always
 // carries exactly 2 unmatched leading '(' characters, so both strategies do
 // real removal work.

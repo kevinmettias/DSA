@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfRestrictedPathsFromFirstToLastNodeSolution's,
-// the same methods NumberOfRestrictedPathsFromFirstToLastNodeTests proves correct.
+// the same methods NumberOfRestrictedPathsFromFirstToLastNodeSolutionTests proves correct.
 // Each is handed the prepared RestrictedPathGraph its hoisted overload takes, so the
 // shared Dijkstra distance labelling is charged to [GlobalSetup] and the measured
 // difference stays purely how the restricted paths are counted afterwards.

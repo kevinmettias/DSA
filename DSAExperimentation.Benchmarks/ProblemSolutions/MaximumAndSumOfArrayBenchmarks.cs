@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MaximumAndSumOfArray;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumAndSumOfArraySolution's, the same methods
-// MaximumAndSumOfArrayTests proves correct - the textbook unmemoized recursion over
+// MaximumAndSumOfArraySolutionTests proves correct - the textbook unmemoized recursion over
 // (which slot is being filled, which elements are already placed) against the same
 // recursion routed through this repo's own Memoizer, keyed on that same tuple.
 //

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.BalancedBinaryTree;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BalancedBinaryTreeSolution's, the same methods
-// BalancedBinaryTreeTests proves correct. The original benchmark's two [Benchmark]
+// BalancedBinaryTreeSolutionTests proves correct. The original benchmark's two [Benchmark]
 // arms (HeightCheck, BinaryTreeNodeCheck) called the exact same private helper - one
 // real strategy, not two - so the pair here is that bottom-up single-pass recursion
 // against the genuinely different top-down check, which re-measures each subtree's

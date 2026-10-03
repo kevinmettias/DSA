@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RLEIterator;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RLEIteratorSolution's, the same factories
-// RLEIteratorTests proves correct. The canonical approach eagerly decompresses the
+// RLEIteratorSolutionTests proves correct. The canonical approach eagerly decompresses the
 // whole run-length encoding into a flat int[] and walks it with an index cursor -
 // O(total element count) time and memory up front, which on LeetCode's own
 // constraints (individual run counts up to 1e9) can be far larger than the

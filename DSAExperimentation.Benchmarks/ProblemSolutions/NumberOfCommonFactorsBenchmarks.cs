@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.NumberOfCommonFactors;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfCommonFactorsSolution's, the same methods
-// NumberOfCommonFactorsTests proves correct. _first/_second are random within
+// NumberOfCommonFactorsSolutionTests proves correct. _first/_second are random within
 // [Magnitude/2, Magnitude], so their gcd stays small relative to Magnitude on
 // average - exactly the shape where the sqrt(gcd) reduction pays off over the
 // min(a, b) baseline.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RegularExpressionMatching;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RegularExpressionMatchingSolution's, the same
-// methods RegularExpressionMatchingTests proves correct. A repeated "a*" pattern
+// methods RegularExpressionMatchingSolutionTests proves correct. A repeated "a*" pattern
 // against a text with a mismatched trailing character forces both strategies to
 // explore the whole branching search space rather than short-circuiting early.
 public class RegularExpressionMatchingBenchmarks

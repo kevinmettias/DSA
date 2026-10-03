@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumAbsoluteSumDifferenceSolution's, the same
-// strategies MinimumAbsoluteSumDifferenceTests proves correct. The sort is charged
+// strategies MinimumAbsoluteSumDifferenceSolutionTests proves correct. The sort is charged
 // to the measured method on purpose - paying for it once is the whole reason the
 // sorted arm beats the O(n^2) rescan.
 public class MinimumAbsoluteSumDifferenceBenchmarks

@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ShortestPathVisitingAllNodesSolution's, the same
-// methods ShortestPathVisitingAllNodesTests proves correct. The textbook arm
+// methods ShortestPathVisitingAllNodesSolutionTests proves correct. The textbook arm
 // walks the raw adjacency with a BCL Queue and one shared frontier seeded from
 // every node at once; the composed arm is handed a prepared VisitStateGraph by
 // its hoisted overload, so materializing the (node, mask) state space is charged

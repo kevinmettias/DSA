@@ -10,7 +10,7 @@ namespace DSAExperimentation.LeetCode.AssignCookies;
 // child, linearly rescan every remaining cookie for the smallest one that still
 // satisfies it. FindContentChildrenBySortThenTwoPointer sorts both greed factors and
 // cookie sizes ascending with this repo's own MergeSort.Sort<Element,TSequence> over
-// an ArrayIndexedSequence (the same shape HIndexTests already exercises for a single
+// an ArrayIndexedSequence (the same shape HIndexSolutionTests already exercises for a single
 // array, applied here twice), then makes a single O(n+m) greedy two-pointer pass -
 // giving a child the smallest cookie that still satisfies them is never worse than
 // giving a larger one, so sorting once is enough.

@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.ContainsDuplicateIII;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ContainsDuplicateIIISolution's, the same methods
-// ContainsDuplicateIIITests proves correct. Values are spaced far enough apart
+// ContainsDuplicateIIISolutionTests proves correct. Values are spaced far enough apart
 // that no pair ever actually satisfies valueDiff, forcing both strategies through
 // their full worst-case window scan on every index instead of an early exit
 // making brute force look artificially competitive.

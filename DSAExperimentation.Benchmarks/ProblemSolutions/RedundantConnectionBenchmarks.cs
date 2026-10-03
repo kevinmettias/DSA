@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.RedundantConnection;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RedundantConnectionSolution's, the same methods
-// RedundantConnectionTests proves correct. The workload is a random tree over the node set plus
+// RedundantConnectionSolutionTests proves correct. The workload is a random tree over the node set plus
 // exactly one extra edge, which is LC 684's own precondition; the edges are then shuffled so
 // neither arm can rely on the answer being last. Both must name the same edge - the first one
 // whose endpoints are already connected.

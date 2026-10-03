@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DigitOperationsToMakeTwoIntegersEqual;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DigitOperationsToMakeTwoIntegersEqualSolution's,
-// the same methods DigitOperationsToMakeTwoIntegersEqualTests proves correct.
+// the same methods DigitOperationsToMakeTwoIntegersEqualSolutionTests proves correct.
 // Endpoints are pinned to the widest composite pair at each digit count so
 // every rep explores as much of the digit-mutation graph as LC 3377's own
 // range allows; the digit graph is built once per DigitCount in

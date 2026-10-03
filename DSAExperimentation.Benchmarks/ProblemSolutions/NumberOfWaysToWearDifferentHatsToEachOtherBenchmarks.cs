@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.NumberOfWaysToWearDifferentHatsToEachOther;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfWaysToWearDifferentHatsToEachOtherSolution's,
-// the same methods NumberOfWaysToWearDifferentHatsToEachOtherTests proves correct.
+// the same methods NumberOfWaysToWearDifferentHatsToEachOtherSolutionTests proves correct.
 // Each is handed the prepared HatPreferences its hoisted overload takes, so
 // inverting hats-per-person into people-per-hat is charged to [GlobalSetup] rather
 // than to the recursion being measured.

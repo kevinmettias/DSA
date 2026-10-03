@@ -3,7 +3,7 @@ using DSAExperimentation.LeetCode.DesignTwitter;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DesignTwitterSolution's, the same classes
-// DesignTwitterTests proves correct. LC 355's own Twitter() constructor takes no
+// DesignTwitterSolutionTests proves correct. LC 355's own Twitter() constructor takes no
 // initial state, so - as with DesignAuctionSystem - there is no separate "prepared
 // input" to hoist through; [GlobalSetup] instead builds one fixed call script: user
 // 0 follows every one of FollowedUsers followees, then TweetsPerSource tweets per

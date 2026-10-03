@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.New21Game;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: both arms are New21GameSolution's, the same methods New21GameTests
+// Harness only: both arms are New21GameSolution's, the same methods New21GameSolutionTests
 // proves correct. MaxPts is fixed at 6 and StopAt is the varying [Params] axis (the
 // limit equals StopAt here, so only the reachability of the recursion tree matters,
 // not the final probability value) so both the recursion depth (bounded by StopAt)

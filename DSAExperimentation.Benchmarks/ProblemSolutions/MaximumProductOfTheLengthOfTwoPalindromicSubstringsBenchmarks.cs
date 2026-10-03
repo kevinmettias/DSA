@@ -4,7 +4,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are
 // MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolution's, the same methods
-// MaximumProductOfTheLengthOfTwoPalindromicSubstringsTests proves correct - the
+// MaximumProductOfTheLengthOfTwoPalindromicSubstringsSolutionTests proves correct - the
 // O(n^3) baseline that re-derives the longest odd palindrome on each side of every
 // split from scratch against the single O(n) Manacher.ComputeOddRadii pass plus a
 // forward and backward sweep over its per-center radii. _text is all one repeated

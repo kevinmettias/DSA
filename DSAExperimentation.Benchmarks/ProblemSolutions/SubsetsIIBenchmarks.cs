@@ -2,7 +2,7 @@ using DSAExperimentation.LeetCode.SubsetsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-// Harness only: the arm is SubsetsIISolution's, the same method SubsetsIITests
+// Harness only: the arm is SubsetsIISolution's, the same method SubsetsIISolutionTests
 // proves correct. The [Benchmark(Baseline = true)] "IterativeDedup" arm this
 // migrated out of never implemented an independent algorithm - its body built an
 // unused HashSet<string>, looped over a discarded HashSet<int> doing nothing, and

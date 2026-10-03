@@ -4,7 +4,7 @@ using DSAExperimentation.LeetCode.RemoveNthNodeFromEndOfList;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are RemoveNthNodeFromEndOfListSolution's, the same
-// methods RemoveNthNodeFromEndOfListTests proves correct. [GlobalSetup] hoists the
+// methods RemoveNthNodeFromEndOfListSolutionTests proves correct. [GlobalSetup] hoists the
 // workload values, but the list itself is rebuilt fresh inside each benchmark
 // method rather than cached, because both strategies mutate/replace it - a cached
 // list would only be valid for the first measured iteration.
