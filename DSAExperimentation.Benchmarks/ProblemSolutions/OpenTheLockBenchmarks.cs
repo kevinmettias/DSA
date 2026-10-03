@@ -18,7 +18,7 @@ public class OpenTheLockBenchmarks
     private Set<string> _deadends = new();
 
     private LockGraph _graph = null!;
-    [Params(0, 500)]
+    [Params(50, 500)]
     public int DeadendCount { get; set; }
 
     [GlobalSetup]

@@ -8,7 +8,7 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 // by TYPE, so the nested unit needs a class named after it, and the only surface that runs
 // WordSource.Next is the workload's BuildWords, which asks it for one entry per slot. These tests
 // therefore drive BuildWords and assert what WordSource owns: the generator's own comment says each
-// source carries its kind's size rule, and a word's rule is a *random* length in [3, 8], drawn from
+// source carries its kind's size rule, and a word's rule is a *random* length in [4, 8], drawn from
 // the Random the two sources share - not the fixed width its sibling uses.
 //
 // That is the part the builder-level tests leave open. They check a length band, which a Next that
@@ -18,8 +18,8 @@ public sealed partial class WordSourceTests
 {
     private const int WordCount = 200;
     private const int WordSeed = 1178; // LC problem number, reused as the workload seed
-    private const int MinWordLength = 3;
-    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [3, 8]
+    private const int MinWordLength = 4; // LC 1178: words[i].length >= 4
+    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [4, 8]
     private const int LowestDistinctLengthCount = 2;
 
     [Fact]

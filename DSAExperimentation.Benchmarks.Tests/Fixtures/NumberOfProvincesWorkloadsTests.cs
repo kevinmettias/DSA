@@ -9,7 +9,7 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 public sealed partial class NumberOfProvincesWorkloadsTests
 {
     private const int CityCount = 50;
-    private const int LargestCityCount = 300;
+    private const int LargestCityCount = 200;
     private const int Seed = 1;
     private const int Connected = 1;
     private const int Disconnected = 0;

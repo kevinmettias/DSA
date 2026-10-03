@@ -14,7 +14,7 @@ public class NumberOfProvincesBenchmarks
 
     private int[][] _isConnected = [];
 
-    [Params(50, 300)]
+    [Params(50, 200)]
     public int CityCount { get; set; }
 
     [GlobalSetup]

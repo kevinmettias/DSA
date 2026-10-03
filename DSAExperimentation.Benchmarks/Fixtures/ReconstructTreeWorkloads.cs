@@ -10,9 +10,14 @@ internal static class ReconstructTreeWorkloads
     // Parent pointer of the root, and of any node no chain reached.
     private const int Rootless = -1;
 
+    // LC 1719 labels nodes from 1 (1 <= xi < yi <= 500), so a node's 0-based position is
+    // shifted up by this much as its pairs are emitted.
+    private const int FirstLabel = 1;
+
     // Pairs are built from parent links, so every node is paired with every one of
     // its own ancestors (root down to itself) - which is LC 1719's own "pairs is
-    // the FULL ancestor/descendant relation" precondition.
+    // the FULL ancestor/descendant relation" precondition. The root is labelled 1 and
+    // the chains follow it, so nodeCount nodes stay inside labels 1..nodeCount.
     public static int[][] BuildStarOfChainsPairs(int nodeCount, int chainCount)
     {
         var parent = BuildRootedChainParents(nodeCount, chainCount);
@@ -65,7 +70,7 @@ internal static class ReconstructTreeWorkloads
         {
             for (var ancestor = parent[node]; ancestor != Rootless; ancestor = parent[ancestor])
             {
-                fullPairs.Add([ancestor, node]);
+                fullPairs.Add([ancestor + FirstLabel, node + FirstLabel]);
             }
         }
 

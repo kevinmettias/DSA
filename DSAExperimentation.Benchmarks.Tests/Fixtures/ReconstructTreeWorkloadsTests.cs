@@ -7,20 +7,22 @@ namespace DSAExperimentation.Benchmarks.Tests.Fixtures;
 // Harness coverage for ReconstructTreeWorkloads (ARCHITECTURE 17.7). The reading depends on LC 1719's
 // `pairs` being the FULL ancestor/descendant relation of a forest - a root with several disjoint chains
 // hanging off it - so every non-root node clears the initial degree check and both strategies are forced
-// through the whole candidate-parent/subset-check walk rather than short-circuiting early.
+// through the whole candidate-parent/subset-check walk rather than short-circuiting early. Nodes are
+// labelled from 1, as LC 1719's are: the root is 1 and the chains follow it.
 public sealed partial class ReconstructTreeWorkloadsTests
 {
     private const int NodeCount = 50;
     private const int ChainCount = 5;
-    private const int Root = 0;
-    private const int FirstChainNode = 1;
+    private const int Root = 1;
+    private const int FirstChainNode = Root + 1;
+    private const int NonRootNodeCount = NodeCount - 1;
     private const int PairFieldCount = 2;
 
     // Five chains of (NodeCount - 1) / ChainCount = 9 nodes each: a node pairs with the root and with
     // every node above it on its own chain, so one chain contributes 1 + 2 + ... + 9 = 45 pairs.
-    private const int ChainLength = (NodeCount - FirstChainNode) / ChainCount;
-    private const int ExpectedPairCount =
-        ChainCount * (ChainLength * (ChainLength + FirstChainNode) / AlgorithmConstants.HalvingFactor);
+    private const int ChainLength = NonRootNodeCount / ChainCount;
+    private const int PairsPerChain = ChainLength * (ChainLength + 1) / AlgorithmConstants.HalvingFactor;
+    private const int ExpectedPairCount = ChainCount * PairsPerChain;
 
     [Fact]
     public void BuildStarOfChainsPairs_EveryPair_IsATwoNodeRowKeepingTheAncestorBeforeTheDescendant()
@@ -28,8 +30,8 @@ public sealed partial class ReconstructTreeWorkloadsTests
         var pairs = ReconstructTreeWorkloads.BuildStarOfChainsPairs(NodeCount, ChainCount);
 
         Assert.All(pairs, pair => Assert.Equal(PairFieldCount, pair.Length));
-        Assert.All(pairs, pair => Assert.InRange(pair[0], Root, NodeCount - 1));
-        Assert.All(pairs, pair => Assert.InRange(pair[1], FirstChainNode, NodeCount - 1));
+        Assert.All(pairs, pair => Assert.InRange(pair[0], Root, NodeCount));
+        Assert.All(pairs, pair => Assert.InRange(pair[1], FirstChainNode, NodeCount));
         Assert.All(pairs, pair => Assert.True(pair[0] < pair[1]));
     }
 

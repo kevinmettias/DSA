@@ -17,6 +17,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 public class OnlineMajorityElementInSubarrayBenchmarks
 {
     private const int RunLength = 25;
+    private const int FirstValue = 1;
     private const int QueryCount = 200;
     private const int RandomSeed = 1; private (int Left, int Right, int Threshold)[] _queries = [];
 
@@ -36,13 +37,14 @@ public class OnlineMajorityElementInSubarrayBenchmarks
         _positionIndex = new OnlineMajorityElementInSubarraySolution.MajorityCheckerByPositionIndex(values);
     }
 
+    // Run r holds the value r + 1: LC 1157's values start at 1.
     private static int[] BuildRunLengthEncodedArray(int length)
     {
         var values = new int[length];
 
         for (var i = 0; i < length; i++)
         {
-            values[i] = i / RunLength;
+            values[i] = (i / RunLength) + FirstValue;
         }
 
         return values;

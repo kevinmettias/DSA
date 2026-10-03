@@ -20,7 +20,7 @@ public class NumberOfStudentsUnableToEatLunchBenchmarks
     private int[] _students = [];
 
     private int[] _sandwiches = [];
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

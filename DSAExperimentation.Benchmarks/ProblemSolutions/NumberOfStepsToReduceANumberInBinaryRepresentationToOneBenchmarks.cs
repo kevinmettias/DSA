@@ -18,7 +18,7 @@ public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
 
     private string _binary = "";
 
-    [Params(100, 1_000)]
+    [Params(100, 500)]
     public int Length { get; set; }
 
     [GlobalSetup]

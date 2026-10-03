@@ -11,8 +11,8 @@ public sealed partial class NumberOfValidWordsForEachPuzzleWorkloadsTests
     private const int WordCount = 200;
     private const int PuzzleCount = 50;
     private const int WordSeed = 1178; // LC problem number, reused as the workload seed
-    private const int MinWordLength = 3;
-    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [3, 8]
+    private const int MinWordLength = 4; // LC 1178: words[i].length >= 4
+    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [4, 8]
     private const int PuzzleLength = 7; // LC 1178: every puzzle has exactly 7 distinct letters
 
     [Fact]

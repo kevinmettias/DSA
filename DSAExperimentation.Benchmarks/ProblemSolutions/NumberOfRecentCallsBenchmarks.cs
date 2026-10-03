@@ -4,13 +4,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfRecentCallsSolution's, the same methods
 // NumberOfRecentCallsSolutionTests proves correct. The workload is a stream of strictly
-// non-decreasing timestamps with small random gaps, so the 3000ms window always
+// increasing timestamps with small random gaps, so the 3000ms window always
 // holds a large slice of recent history - the case where rescanning the whole
 // history costs O(calls) per ping (O(calls^2) over the run) while the queue window
-// enqueues and dequeues each timestamp exactly once (O(calls) amortized).
+// enqueues and dequeues each timestamp exactly once (O(calls) amortized). Every gap is
+// at least one millisecond, because LC 933 pings with t >= 1 and strictly increasing.
 public class NumberOfRecentCallsBenchmarks
 {
     private const int RandomSeed = 933; // LC problem number
+    private const int MinGap = 1;
     private const int MaxGapExclusive = 50;
 
     private int[] _timestamps = [];
@@ -27,7 +29,7 @@ public class NumberOfRecentCallsBenchmarks
 
         for (var i = 0; i < CallCount; i++)
         {
-            t += random.Next(0, MaxGapExclusive);
+            t += random.Next(MinGap, MaxGapExclusive);
             _timestamps[i] = t;
         }
     }

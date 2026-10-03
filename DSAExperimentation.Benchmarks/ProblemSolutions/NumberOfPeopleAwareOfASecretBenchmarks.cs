@@ -16,7 +16,7 @@ public class NumberOfPeopleAwareOfASecretBenchmarks
     private int _delay;
 
     private int _forget;
-    [Params(2_000, 6_000)]
+    [Params(100, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

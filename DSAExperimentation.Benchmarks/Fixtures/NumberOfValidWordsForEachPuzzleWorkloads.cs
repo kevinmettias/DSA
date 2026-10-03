@@ -9,8 +9,8 @@ namespace DSAExperimentation.Benchmarks.Fixtures;
 // submask enumeration does its full 2^7 work per puzzle.
 internal static class NumberOfValidWordsForEachPuzzleWorkloads
 {
-    private const int MinWordLength = 3;
-    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [3, 8]
+    private const int MinWordLength = 4; // LC 1178: words[i].length >= 4
+    private const int WordLengthUpperBound = 9; // exclusive; word length ranges [4, 8]
     private const int PuzzleLength = 7; // LC 1178: every puzzle has exactly 7 distinct letters
     private const int AlphabetSize = 26;
 
@@ -45,7 +45,7 @@ internal static class NumberOfValidWordsForEachPuzzleWorkloads
     // What one generated workload entry is: the decision Build takes once per slot,
     // named rather than left as a bare `Func<string>` whose reader can see an arity
     // and nothing about which workload the value belongs to. Each implementation
-    // carries its own kind's size rule - a word's random length in [3, 8], a puzzle's
+    // carries its own kind's size rule - a word's random length in [4, 8], a puzzle's
     // fixed 7 letters - and the Random the two kinds share.
     private interface IWorkloadEntrySource
     {
