@@ -9,12 +9,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rotating k-1 friends from front to back per round (O(n*k) total) - faster whenever
 // k is small relative to n, the common case this problem's constraints allow. Both
 // arms build their own circle from the two integers LeetCode hands the problem, so
-// there is nothing to hoist into a [GlobalSetup].
+// there is nothing to hoist into a [GlobalSetup]. LC 1823 caps the circle at 500
+// friends, so the larger FriendCount is that cap.
 public class FindTheWinnerOfTheCircularGameBenchmarks
 {
     private const int K = 3;
 
-    [Params(200, 2_000)]
+    [Params(200, 500)]
     public int FriendCount { get; set; }
 
     [Benchmark(Baseline = true)]

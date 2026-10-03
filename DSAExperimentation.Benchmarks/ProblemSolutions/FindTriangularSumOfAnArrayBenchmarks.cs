@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // composable from this repo's primitives, so both run the identical O(n^2) pairwise
 // reduction - a raw in-place int[] buffer against this repo's own DynamicArray<int>
 // rebuilt fresh each round - isolating the primitive's own overhead rather than
-// comparing two different algorithms.
+// comparing two different algorithms. LC 2221 caps the array at 1000 digits, so the
+// larger Length is that cap.
 public class FindTriangularSumOfAnArrayBenchmarks
 {
     private const int RandomSeed = 2221; // LC problem number
@@ -16,7 +17,7 @@ public class FindTriangularSumOfAnArrayBenchmarks
 
     // LC 2221's inputs are single decimal digits
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int Length { get; set; }
 
     [GlobalSetup]

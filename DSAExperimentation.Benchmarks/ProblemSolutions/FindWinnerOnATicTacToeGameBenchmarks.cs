@@ -4,11 +4,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindWinnerOnATicTacToeGameSolution's, the same
 // methods FindWinnerOnATicTacToeGameSolutionTests proves correct, called through the
-// board-size overload so BenchmarkDotNet has something to scale via [Params] -
-// LC 1275 itself fixes n = 3. The workload shuffles every cell of an n x n board
-// into a move order in [GlobalSetup], so only the replay is measured; a completed
-// line is vanishingly unlikely under a random alternating fill, so both arms walk
-// every move and report a draw.
+// board-size overload. LC 1275 fixes the board at 3 x 3 and so at nine moves, which
+// leaves one size to run. The workload shuffles every cell of the board into a move
+// order in [GlobalSetup], so only the replay is measured; at this seed the shuffle
+// completes no line - LC 1275 allows no move after a win - so both arms walk all
+// nine moves and report a draw.
 public class FindWinnerOnATicTacToeGameBenchmarks
 {
     // LC problem number, reused as the deterministic move-order seed.
@@ -16,7 +16,7 @@ public class FindWinnerOnATicTacToeGameBenchmarks
 
     private int[][] _moves = [];
 
-    [Params(10, 60)]
+    [Params(3)]
     public int Size { get; set; }
 
     [GlobalSetup]

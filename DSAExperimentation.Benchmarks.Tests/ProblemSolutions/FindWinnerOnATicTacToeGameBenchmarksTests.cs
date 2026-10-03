@@ -8,13 +8,14 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // rebuild the same move order.
 //
 // The agreement here is weak by construction and the assertions say only what the fixture supports:
-// Setup shuffles every cell of the board into the move order, so the board is always full by the
-// last move and neither arm ever gets a completed line to report. What the two calls agree on is
+// Setup shuffles every cell of LC 1275's 3 x 3 board into the move order, and at its seed the nine
+// moves - worked through independently of either arm - fill the board as XXO / OOX / XXO, which
+// completes no line, so neither arm has a completed line to report. What the two calls agree on is
 // therefore the full-board verdict, not a mid-game winner - an arm that stopped scanning early
 // would still be caught, but an arm that mis-detects a *row* verdict would not be.
 public sealed partial class FindWinnerOnATicTacToeGameBenchmarksTests
 {
-    private const int SmallestSize = 10;
+    private const int SmallestSize = 3;
     private const string ExpectedFullBoardVerdict = "Draw";
 
     [Fact]

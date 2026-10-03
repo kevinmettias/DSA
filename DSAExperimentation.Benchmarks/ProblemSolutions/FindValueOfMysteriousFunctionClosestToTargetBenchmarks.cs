@@ -5,13 +5,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindValueOfMysteriousFunctionClosestToTargetSolution's - the
 // textbook O(n^2) all-subarrays-ANDed-in-place brute force against the O(n log(max(arr)))
-// distinct-AND-values scan. Random 20-bit values keep the distinct-value sets at their full
-// width, and the target sits mid-range where no single value can reach it, forcing a full scan.
+// distinct-AND-values scan. Random values across LC 1521's whole 1..10^6 range - 20 bits wide -
+// keep the distinct-value sets at their full width, and the target sits mid-range where no single
+// value can reach it, forcing a full scan.
 public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
 {
     private const int Target = 1 << 15; // mid-range target unreachable by any single value, forces a full scan
     private const int RandomSeed = 1521; // LC problem number
-    private const int ValueBitWidth = 20;
+    // One past LC 1521's largest value, 10^6.
+    private const int ValueUpperBoundExclusive = 1_000_001;
 
     private int[] _values = [];
 
@@ -22,7 +24,7 @@ public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(Length, 0, 1 << ValueBitWidth, random);
+        _values = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
     }
 
     [Benchmark(Baseline = true)]
