@@ -1,16 +1,13 @@
-using DSAExperimentation.Algorithms.Searching;
-using DSAExperimentation.DataStructures.Sequence;
-
 namespace DSAExperimentation.LeetCode.SubarrayProductLessThanK;
 
 // LeetCode 713. Subarray Product Less Than K: count contiguous subarrays whose
-// product of elements is strictly less than the product limit. nums are all positive
-// (1 <= nums[i]), so a running SUM of logs is monotonically non-decreasing - the
-// exact "derived monotonic sequence" shape BinarySearch.LowerBound assumes, the
-// same idiom this repo's LC 209 (Minimum Size Subarray Sum) composition already
-// establishes for its own prefix-sum array (there summing values directly; here
-// summing logs, since the raw running PRODUCT overflows almost immediately at
-// realistic lengths - up to 1000 per element).
+// product of elements is strictly less than the product limit. Every element is at
+// least 1, so extending a subarray never lowers its product and shrinking it never
+// raises it - which is what lets one window slide across the whole array.
+//
+// The window keeps its product exactly. A sum of logarithms would avoid large
+// products, but it is not exact: a subarray whose product equals the limit can sum
+// to a hair under log(limit) and be counted, as [5, 6] with limit 30 was.
 internal static class SubarrayProductLessThanKSolution
 {
     // The textbook O(n^2): for every start index, extend the running product
@@ -56,43 +53,46 @@ internal static class SubarrayProductLessThanKSolution
         return count;
     }
 
-    // For each start index i, LowerBound finds the first end index m whose
-    // cumulative log-sum reaches logPrefix[i] + log(productLimit); every end index in
-    // [i+1, m) is a valid subarray (product < productLimit), so m - i - 1 is the count of
-    // valid subarrays starting at i. O(n log n).
-    public static int CountSubarraysWithProductLessThanKByLogPrefixLowerBound(int[] nums, int productLimit)
+    // The O(n) window: every subarray ending at `right` that starts inside the window
+    // qualifies, so summing the window's length at each right edge counts them all.
+    public static int CountSubarraysWithProductLessThanKBySlidingWindow(int[] nums, int productLimit)
     {
         if (productLimit <= 1)
         {
             return 0;
         }
 
-        var logPrefix = BuildLogPrefix(nums);
-        var sequence = new ArraySequence<double>(logPrefix);
+        var window = new ProductWindow(nums, productLimit);
         var count = 0;
-        var logBound = Math.Log(productLimit);
 
-        for (var i = 0; i < nums.Length; i++)
+        for (var right = 0; right < nums.Length; right++)
         {
-            var target = logPrefix[i] + logBound;
-            var end = BinarySearch.LowerBound<double, ArraySequence<double>>(sequence, target);
-            count += Math.Max(0, end - i - 1);
+            count += window.Advance(right);
         }
 
         return count;
     }
 
-    // Cumulative sums of the elements' logs; monotonically non-decreasing because
-    // every element is at least 1, which is what LowerBound's own precondition
-    // needs of it.
-    private static double[] BuildLogPrefix(int[] nums)
+    // The window's exact product and its left edge. Before a drop the product is at most
+    // (productLimit - 1) * 1000, which LC 713's limit of 10^6 keeps far inside a long.
+    private sealed class ProductWindow(int[] nums, int productLimit)
     {
-        var logPrefix = new double[nums.Length + 1];
-        for (var i = 0; i < nums.Length; i++)
-        {
-            logPrefix[i + 1] = logPrefix[i] + Math.Log(nums[i]);
-        }
+        private long _product = 1;
+        private int _left;
 
-        return logPrefix;
+        // Admits index right, drops elements from the left until the product is under the
+        // limit again, and reports the window's length.
+        public int Advance(int right)
+        {
+            _product *= nums[right];
+
+            while (_product >= productLimit)
+            {
+                _product /= nums[_left];
+                _left++;
+            }
+
+            return right - _left + 1;
+        }
     }
 }

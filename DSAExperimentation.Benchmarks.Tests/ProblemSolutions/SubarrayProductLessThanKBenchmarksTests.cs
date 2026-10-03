@@ -1,16 +1,11 @@
 using DSAExperimentation.Benchmarks.ProblemSolutions;
-using DSAExperimentation.LeetCode.Conventions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
-// Harness coverage for SubarrayProductLessThanKBenchmarks (ARCHITECTURE 17.9): both arms answer
-// the same question - how many LC 713 subarrays have a product under K - one by the plain
-// double loop, one by a log-prefix lower bound, so a harness whose arms disagree is timing two
-// different problems. Setup repeats a single value, so the same length must rebuild the same
-// workload.
-//
-// The fixture's values are all 1 and K is 2, so every subarray qualifies: the count lands on a
-// value the fixture's own structure fixes, not merely on whatever both arms happen to say.
+// Harness coverage for SubarrayProductLessThanKBenchmarks (ARCHITECTURE 17.9). Arm agreement is
+// BenchmarkArmsTests' job; this pins the count the workload is built to have. The fixture's values
+// are all 1 and K is 2, so every subarray qualifies: the count lands on a value the fixture's own
+// structure fixes, not on whatever the arms happen to say.
 public sealed partial class SubarrayProductLessThanKBenchmarksTests
 {
     private const int SmallestLength = 200;
@@ -20,20 +15,12 @@ public sealed partial class SubarrayProductLessThanKBenchmarksTests
     private const int ExpectedSubarrayCount = SmallestLength * (SmallestLength + 1) / 2;
 
     [Fact]
-    public void Setup_SameLength_RebuildsTheSameWorkload() =>
-        Assert.Equal(
-            AnswerGraphText.Of(BuildHarness().BruteForce()),
-            AnswerGraphText.Of(BuildHarness().BruteForce()));
+    public void BruteForce_AllOnesUnderTwo_CountsEverySubarray() =>
+        Assert.Equal(ExpectedSubarrayCount, BuildHarness().BruteForce());
 
     [Fact]
-    public void BruteForce_AgreesWithLogPrefixLowerBound()
-    {
-        var harness = BuildHarness();
-        var bruteForce = harness.BruteForce();
-
-        Assert.Equal(bruteForce, harness.LogPrefixLowerBound());
-        Assert.Equal(ExpectedSubarrayCount, bruteForce);
-    }
+    public void SlidingWindow_AllOnesUnderTwo_CountsEverySubarray() =>
+        Assert.Equal(ExpectedSubarrayCount, BuildHarness().SlidingWindow());
 
     private static SubarrayProductLessThanKBenchmarks BuildHarness()
     {

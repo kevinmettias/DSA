@@ -23,6 +23,6 @@ public class SubarrayProductLessThanKBenchmarks
         SubarrayProductLessThanKSolution.CountSubarraysWithProductLessThanKByBruteForce(_nums, K);
 
     [Benchmark]
-    public int LogPrefixLowerBound() =>
-        SubarrayProductLessThanKSolution.CountSubarraysWithProductLessThanKByLogPrefixLowerBound(_nums, K);
+    public int SlidingWindow() =>
+        SubarrayProductLessThanKSolution.CountSubarraysWithProductLessThanKBySlidingWindow(_nums, K);
 }
