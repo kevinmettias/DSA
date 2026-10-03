@@ -723,6 +723,98 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Graph — ShortestPaths | `Graph/ShortestPaths/ByPriorityOrder.cs` |
 | Cache | `Cache/{ICache,CacheConstants}.cs`, `Cache/LruCache/LruCache.cs`, `Cache/LfuCache/LfuCache.cs` (§13.7) |
 
+**`Algorithms/`** is organized by utility instead — the second reorg's whole point, and after
+§13.5's third reorg it holds *only* things generic over a capability interface with real
+substitutability. `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but still stay under
+`Algorithms/`, since `IRandomAccessSequence`/`IIndexedSequence` each have two real implementations —
+the distinguishing question is interface substitutability, not the topology axis specifically:
+
+| Utility | Files | Topology/strategy tier |
+| --- | --- | --- |
+| `Ancestry/` | `LowestCommonAncestor.cs` | flat — only one tier exists today |
+| `Connectivity/` | `ConnectedComponents.cs` | flat — only one tier exists today |
+| `Paths/` | `AllRootToLeafPaths.cs` | flat — only one tier exists today |
+| `Metrics/` | `{DiameterAlgebra,HeightAlgebra,HeightDiameterState,SizeAlgebra,TreeMetrics}.cs` | flat — Tree is the only tier that exists today |
+| `Folding/` | `{CheckedFold,IFoldAlgebra,IFoldEvaluationStrategy,IterativeFoldEvaluation,RecursiveFoldEvaluation,ZipFoldAlgebra}.cs` (general tier) + `Dags/DagFold.cs` (DAG tier) + `Dags/Trees/TreeFold.cs` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
+| `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
+| `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
+| `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
+| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second (§16) |
+| `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
+| `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
+| `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
+| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceedsSequence}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
+
+`DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
+utility folder matching the interface they implement, not a shared grab-bag — e.g. the
+`Recording*Hooks` fixtures split across `Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/`
+by which hook interface each implements. One Graph test-fixture group from the first reorg still
+needs a placement call rather than a mechanical rule (a second, test-only trie fixture group,
+superseded by the production `LowercaseTrie`, has been deleted): `TestNode`/`TestTopology`/`TestTrees` anchor at
+`Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
+referenced cross-tree by `Algorithms/`-side test classes — harmless for test-only code. A handful
+of cross-cutting tests that exercise more than one utility together (`ZipTests.cs` — Fold+Reduce
+in one file; `SharedDescendantFoldTests.cs` — comparing fold tiers) sit unfoldered at
+`Tests/Algorithms/` root or their utility's own root, rather than being forced into one utility's
+subfolder. `GraphTests.cs` used to be a third; each of its tests drove exactly one graph-safe entry
+point, so §18 dissolved it into those entry points' own test classes, and its cyclic sample now
+lives beside `TestTrees` as `TestGraphs`.
+
+### 13.4 `suppressions.json`
+
+Deliberately deleted before this reorg began and left deleted throughout it — no suppression
+ledger was maintained or restored per migration step. Every judgment call `suppressions.json` used
+to waive (the `check-class-size` "two clusters" pattern, several test-file literal findings, a
+`check-test-coverage` attribution gap) resurfaces as a raw Nomos gate finding rather than a
+suppressed one until that ledger is rebuilt — expected, not a regression from this reorg.
+
+### 13.5 Third reorg — Operations rejoins Representation when there's no capability interface
+
+The second reorg's utility-first rule still left nine Operations types under `Algorithms/`, each
+named after the single data structure it belongs to: `Buffers`, `Heap`, `HashMap`, `DynamicArray`,
+`DisjointSet`, `Deque`, and — one level removed, each hardcoding one of the previous six rather than
+a dedicated Storage class — `Stack`, `Queue`, `Set`. §2's literal definition of Operations
+("the algorithm/API surface built on top of a Representation constrained by a Topology") covers
+them, but that's not the discriminator that actually matters: `ShortestPath`/`MergeSort`/
+`BinarySearch`/`Reduce`/`Fold` are generic over an *interface* with genuine multiple implementations
+(`IEdgeTopology`, `IRandomAccessSequence`, `IIndexedSequence`,
+`ITreeTopology`/`IDagTopology`/`IGraphTopology`) — decoupled from any one representation, and free
+to run over a different one tomorrow. These nine are hardwired 1:1 to exactly one concrete type,
+with no interface and no second implementation possible — `Heap.cs` only ever composes `HeapArray`,
+`Stack.cs` only ever composes `DynamicArray`. They aren't algorithms decoupled from a data
+structure; they *are* the data structure, with the bounds-checking layer split out (§5 step 7).
+
+So they moved back into `DataStructures/`, alongside their existing Storage (or, for
+`Stack`/`Queue`/`Set`, into a new sibling folder next to the type each one composes) —
+`DataStructures/Heap/Heap.cs` beside `HeapArray.cs`, `DataStructures/Stack/Stack.cs` beside the
+`DynamicArray.cs` it hardcodes. `DisjointSet` also dropped its `Collections/` wrapper in the same
+step, for the same consistency reason the second reorg dropped it from the `Algorithms/` side.
+`Algorithms/` now holds exactly the set of things generic over a capability interface with real
+substitutability — nothing more, nothing less. `Searching`/`Sorting` are the one case that looks
+similar but isn't: they have no *topology* axis either, but `IRandomAccessSequence`/
+`IIndexedSequence` each have two real implementations, so `BinarySearch`/`MergeSort` stay in
+`Algorithms/`, decoupled from either one.
+
+### 13.6 Fourth reorg — `Searching`/`Sorting` rename to `Sequence`, and a misclassification fix
+
+`DataStructures/Searching/` and `DataStructures/Sorting/` were named after the algorithms that
+consume them, not what they are — the same mistake the second reorg fixed on the `Algorithms/`
+side, made in the opposite direction: a `DataStructures/` folder is supposed to be named for
+identity (§5 step 6), and `IRandomAccessSequence`/`ArraySequence`/`DynamicArraySequence` and
+`IIndexedSequence`/`ArrayIndexedSequence`/`DynamicArrayIndexedSequence` are identically "sequence
+access contracts," just at two different read/write capability levels — not "a searching thing" or
+"a sorting thing." Both sets now co-locate under one identity folder, `DataStructures/Sequence/`,
+the same way `MinHeapOrder`/`MaxHeapOrder` already sit as sibling witnesses under `Heap/` — still
+two separate, non-reused domains per §5's domain-reuse rule (`Sorting` never reuses `Searching`'s contract, per §11.1),
+just grouped by theme rather than split across two algorithm-named folders.
+
+Checking this surfaced an unrelated, pre-existing misclassification: `SearchRange.cs` and
+`SortBounds.cs` had been sitting in these same folders, but neither is a Representation of the
+sequence being searched/sorted — both are the algorithm's own internal cursor/range-grouping state
+(their own doc comments say so directly), the same bucket §12.2 already puts `TrackedVisitGuard` in.
+They moved to `Algorithms/Searching/` and `Algorithms/Sorting/`, alongside `BinarySearch.cs`/
+`MergeSort.cs`, correcting a classification gap that predates every reorg in this section.
+
 ### 13.7 Fifth reorg — BinaryTree rejoins Graph, ICache extracted
 
 `BinaryTree` used to sit as a sibling of `Graph/` even though `BinaryTreeTopology.cs` implements
@@ -843,98 +935,6 @@ distinguishing feature (bounded alphabet, edge compression, a balance invariant,
 and isolate, the same "inject the one new axis" idiom `IPathHeuristic`/`IHeapOrder`/`TOperation`
 already use elsewhere in this repo. Either false → the structure stays domain-local, correctly, for
 a stated reason — not a default.
-
-**`Algorithms/`** is organized by utility instead — the second reorg's whole point, and after
-§13.5's third reorg it holds *only* things generic over a capability interface with real
-substitutability. `Searching` and `Sorting` have no topology axis (§4.1/§10.2) but still stay under
-`Algorithms/`, since `IRandomAccessSequence`/`IIndexedSequence` each have two real implementations —
-the distinguishing question is interface substitutability, not the topology axis specifically:
-
-| Utility | Files | Topology/strategy tier |
-| --- | --- | --- |
-| `Ancestry/` | `LowestCommonAncestor.cs` | flat — only one tier exists today |
-| `Connectivity/` | `ConnectedComponents.cs` | flat — only one tier exists today |
-| `Paths/` | `AllRootToLeafPaths.cs` | flat — only one tier exists today |
-| `Metrics/` | `{DiameterAlgebra,HeightAlgebra,HeightDiameterState,SizeAlgebra,TreeMetrics}.cs` | flat — Tree is the only tier that exists today |
-| `Folding/` | `{CheckedFold,IFoldAlgebra,IFoldEvaluationStrategy,IterativeFoldEvaluation,RecursiveFoldEvaluation,ZipFoldAlgebra}.cs` (general tier) + `Dags/DagFold.cs` (DAG tier) + `Dags/Trees/TreeFold.cs` (tree tier) | three nested tiers, mirroring §3.2's refinement chain |
-| `Reducing/` | `{BreadthFirstReduceOrder,DepthFirstReduceOrder,DistanceMapReduceAlgebra,IReduceAlgebra,IReduceOrderStrategy,Reduce,ZipReduceAlgebra}.cs` | flat — order strategy (BFS/DFS) is a separate axis from topology tier |
-| `Traversal/` | `BreadthFirst/**`, `DepthFirst/{DepthFirstSearch,DepthFirstTraversal,IDepthFirstHooks}.cs`, `TopDown/**` | `DepthFirstSearch` is the weakest tier (no topology witness at all, a bare `Func`), nested beside `DepthFirstTraversal` |
-| `Walking/` | `{BreadthFirstWalk,DepthFirstWalk,TopDownWalk,IVisitGuard,TrackedVisitGuard,UnguardedVisit,Unit}.cs` | flat — the guard tier (tree vs. graph) is a constructor parameter, not a file split |
-| `ShortestPaths/` | `{IPathHeuristic,ShortestPath,ZeroHeuristic,BellmanFord,AllPairsShortestPaths}.cs` (general edge-weighted tier) + `Grids/GridShortestPath.cs` (Grid tier) | two tiers, `Grids/` nested as the second (§16) |
-| `Searching/` | `BinarySearch.cs`, `SearchRange.cs` | flat — no topology axis at all, generic over `Sequence.IRandomAccessSequence<T>` instead (§13.6) |
-| `Sorting/` | `MergeSort.cs`, `SortBounds.cs` | flat — no topology axis at all, generic over `Sequence.IIndexedSequence<T>` instead (§13.6) |
-| `TopologicalSort/` | `TopologicalSort.cs` | flat — only one tier exists today (§15) |
-| `NumberTheory/` | `{GreatestCommonDivisor,LeastCommonMultiple,Primality,PrimeFactorization,PrimeSieve,ModularPower,IntegerSquareRoot,SquareExceedsSequence}.cs` | flat — no topology axis; the integer algorithms are generic over `IBinaryInteger<T>` (int and long each JIT-specialized), except `ModularPower`, which is `long`-only because squaring a residue must stay inside the type. `Domain/Modular` keeps only LeetCode's modulus and delegates its exponentiation here (§17.6) |
-
-`DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
-utility folder matching the interface they implement, not a shared grab-bag — e.g. the
-`Recording*Hooks` fixtures split across `Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/`
-by which hook interface each implements. One Graph test-fixture group from the first reorg still
-needs a placement call rather than a mechanical rule (a second, test-only trie fixture group,
-superseded by the production `LowercaseTrie`, has been deleted): `TestNode`/`TestTopology`/`TestTrees` anchor at
-`Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
-referenced cross-tree by `Algorithms/`-side test classes — harmless for test-only code. A handful
-of cross-cutting tests that exercise more than one utility together (`ZipTests.cs` — Fold+Reduce
-in one file; `SharedDescendantFoldTests.cs` — comparing fold tiers) sit unfoldered at
-`Tests/Algorithms/` root or their utility's own root, rather than being forced into one utility's
-subfolder. `GraphTests.cs` used to be a third; each of its tests drove exactly one graph-safe entry
-point, so §18 dissolved it into those entry points' own test classes, and its cyclic sample now
-lives beside `TestTrees` as `TestGraphs`.
-
-### 13.4 `suppressions.json`
-
-Deliberately deleted before this reorg began and left deleted throughout it — no suppression
-ledger was maintained or restored per migration step. Every judgment call `suppressions.json` used
-to waive (the `check-class-size` "two clusters" pattern, several test-file literal findings, a
-`check-test-coverage` attribution gap) resurfaces as a raw Nomos gate finding rather than a
-suppressed one until that ledger is rebuilt — expected, not a regression from this reorg.
-
-### 13.5 Third reorg — Operations rejoins Representation when there's no capability interface
-
-The second reorg's utility-first rule still left nine Operations types under `Algorithms/`, each
-named after the single data structure it belongs to: `Buffers`, `Heap`, `HashMap`, `DynamicArray`,
-`DisjointSet`, `Deque`, and — one level removed, each hardcoding one of the previous six rather than
-a dedicated Storage class — `Stack`, `Queue`, `Set`. §2's literal definition of Operations
-("the algorithm/API surface built on top of a Representation constrained by a Topology") covers
-them, but that's not the discriminator that actually matters: `ShortestPath`/`MergeSort`/
-`BinarySearch`/`Reduce`/`Fold` are generic over an *interface* with genuine multiple implementations
-(`IEdgeTopology`, `IRandomAccessSequence`, `IIndexedSequence`,
-`ITreeTopology`/`IDagTopology`/`IGraphTopology`) — decoupled from any one representation, and free
-to run over a different one tomorrow. These nine are hardwired 1:1 to exactly one concrete type,
-with no interface and no second implementation possible — `Heap.cs` only ever composes `HeapArray`,
-`Stack.cs` only ever composes `DynamicArray`. They aren't algorithms decoupled from a data
-structure; they *are* the data structure, with the bounds-checking layer split out (§5 step 7).
-
-So they moved back into `DataStructures/`, alongside their existing Storage (or, for
-`Stack`/`Queue`/`Set`, into a new sibling folder next to the type each one composes) —
-`DataStructures/Heap/Heap.cs` beside `HeapArray.cs`, `DataStructures/Stack/Stack.cs` beside the
-`DynamicArray.cs` it hardcodes. `DisjointSet` also dropped its `Collections/` wrapper in the same
-step, for the same consistency reason the second reorg dropped it from the `Algorithms/` side.
-`Algorithms/` now holds exactly the set of things generic over a capability interface with real
-substitutability — nothing more, nothing less. `Searching`/`Sorting` are the one case that looks
-similar but isn't: they have no *topology* axis either, but `IRandomAccessSequence`/
-`IIndexedSequence` each have two real implementations, so `BinarySearch`/`MergeSort` stay in
-`Algorithms/`, decoupled from either one.
-
-### 13.6 Fourth reorg — `Searching`/`Sorting` rename to `Sequence`, and a misclassification fix
-
-`DataStructures/Searching/` and `DataStructures/Sorting/` were named after the algorithms that
-consume them, not what they are — the same mistake the second reorg fixed on the `Algorithms/`
-side, made in the opposite direction: a `DataStructures/` folder is supposed to be named for
-identity (§5 step 6), and `IRandomAccessSequence`/`ArraySequence`/`DynamicArraySequence` and
-`IIndexedSequence`/`ArrayIndexedSequence`/`DynamicArrayIndexedSequence` are identically "sequence
-access contracts," just at two different read/write capability levels — not "a searching thing" or
-"a sorting thing." Both sets now co-locate under one identity folder, `DataStructures/Sequence/`,
-the same way `MinHeapOrder`/`MaxHeapOrder` already sit as sibling witnesses under `Heap/` — still
-two separate, non-reused domains per §5's domain-reuse rule (`Sorting` never reuses `Searching`'s contract, per §11.1),
-just grouped by theme rather than split across two algorithm-named folders.
-
-Checking this surfaced an unrelated, pre-existing misclassification: `SearchRange.cs` and
-`SortBounds.cs` had been sitting in these same folders, but neither is a Representation of the
-sequence being searched/sorted — both are the algorithm's own internal cursor/range-grouping state
-(their own doc comments say so directly), the same bucket §12.2 already puts `TrackedVisitGuard` in.
-They moved to `Algorithms/Searching/` and `Algorithms/Sorting/`, alongside `BinarySearch.cs`/
-`MergeSort.cs`, correcting a classification gap that predates every reorg in this section.
 
 ## 14. Worked example: the three Storage/Operations decompositions
 
