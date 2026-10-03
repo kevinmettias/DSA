@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // anchored to something independent of both arms.
 public sealed partial class WordBreakIIBenchmarksTests
 {
-    private const int SmallestLength = 600;
+    private const int SmallestLength = 6;
     private const int ExpectedSentenceCount = 1;
 
     // Restated from the benchmark: the one dictionary word the source tiles.

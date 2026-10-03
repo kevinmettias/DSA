@@ -7,10 +7,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // precondition), so different insertion positions inside the same "WW"/"RR" run
 // genuinely collapse to the identical resulting state - exactly the redundancy
 // BruteForceDfs keeps re-exploring and QueueBfsDedup's Set<string> skips after the
-// first time. BoardRepeats is kept odd at both sizes (this pattern happens to admit
-// a same-move-count shortcut solution whenever the repeat count is even) so both
-// sizes need the same 3-ball solution and the naive baseline's growth reflects board
-// size, not a smaller answer getting lucky.
+// first time. BoardRepeats stops at 4, whose 16 balls are LC 488's longest board. That
+// count is even, and an even count admits a 2-ball shortcut where 3 repeats need 3
+// balls, so the larger board is also the shorter answer: no larger odd count fits the
+// bound.
 public class ZumaGameBenchmarks
 {
     private const string Hand = "WWWWW";
@@ -18,7 +18,7 @@ public class ZumaGameBenchmarks
 
     private string _board = "";
 
-    [Params(3, 9)]
+    [Params(3, 4)]
     public int BoardRepeats { get; set; }
 
     [GlobalSetup]

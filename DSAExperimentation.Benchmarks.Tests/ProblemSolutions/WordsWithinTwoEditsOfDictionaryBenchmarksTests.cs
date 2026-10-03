@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // the decisive value is that the answer holds every query.
 public sealed partial class WordsWithinTwoEditsOfDictionaryBenchmarksTests
 {
-    private const int SmallestDictionarySize = 2_000;
+    private const int SmallestDictionarySize = 10;
     private const int ExpectedMatchCount = SmallestDictionarySize;
 
     [Fact]

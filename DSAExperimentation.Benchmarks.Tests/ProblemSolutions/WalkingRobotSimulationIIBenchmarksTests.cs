@@ -10,9 +10,11 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // Both arms answer with LC 2069's own quantity, the cell the robot stands on after the whole move
 // script, and both build their robot inside the call, so one harness instance is safe to hand to
 // either arm in either order. On the smaller parameter the answer is decisive: the script is twenty
-// moves of 1000 cells and the robot starts at (0, 0) facing east on a 100000 x 100000 grid, so
-// 20000 cells east never reaches the far corner and never turns, leaving the robot at (20000, 0).
-// That literal is asserted alongside the agreement so agreement cannot hold on a shared wrong cell.
+// moves of 1000 cells and the robot starts at (0, 0) facing east on a 100 x 100 grid, whose boundary
+// loop is 396 cells. 20000 cells is 50 whole loops and 200 more: 99 east to (99, 0), 99 north to
+// (99, 99), and 2 west, leaving the robot at (97, 99). That cell is derived below from the loop
+// arithmetic alone and asserted alongside the agreement, so agreement cannot hold on a shared wrong
+// cell.
 public sealed partial class WalkingRobotSimulationIIBenchmarksTests
 {
     // The smaller of Setup's [Params(1_000, 50_000)] per-move step counts.
@@ -21,8 +23,15 @@ public sealed partial class WalkingRobotSimulationIIBenchmarksTests
     // Setup's own move count: the script it materializes is this many copies of StepsPerMove.
     private const int MoveCount = 20;
 
-    private const int ExpectedColumn = SmallestStepsPerMove * MoveCount;
-    private const int ExpectedRow = 0;
+    // Setup's own grid side: the robot walks the boundary of a GridSide x GridSide square.
+    private const int GridSide = 100;
+    private const int SideLength = GridSide - 1;
+    private const int LoopLength = 4 * SideLength;
+    private const int StepsIntoLastLoop = SmallestStepsPerMove * MoveCount % LoopLength;
+
+    // Past the east and north sides, the rest of the last loop runs west along the top row.
+    private const int ExpectedColumn = SideLength - (StepsIntoLastLoop - (2 * SideLength));
+    private const int ExpectedRow = SideLength;
 
     private static readonly (int X, int Y) ExpectedPosition = (ExpectedColumn, ExpectedRow);
 

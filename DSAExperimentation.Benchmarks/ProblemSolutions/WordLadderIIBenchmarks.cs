@@ -10,10 +10,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // skip materializing a potentially exponential result, both arms now return
 // LeetCode's actual answer - the same methods WordLadderIISolutionTests proves correct.
 // On a chain-shaped workload the shortest-path DAG is narrow, so building the
-// sequences costs little and the comparison is still about search cost.
+// sequences costs little and the comparison is still about search cost. Words are
+// LC 126's longest, 5 letters.
 public class WordLadderIIBenchmarks
 {
-    private const int WordLength = 6;
+    private const int WordLength = 5;
     private const int RandomSeed = 126; private Set<string> _wordSet = new();
 
     private HammingGraph _graph = null!;

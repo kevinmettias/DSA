@@ -9,11 +9,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the identical loop and land on the same cell; only the per-Move cost differs,
 // O(num steps) against O(1), which is why the gap widens with StepsPerMove rather
 // than with the number of moves. [GlobalSetup] materializes the move script so
-// building it is not charged to either arm.
+// building it is not charged to either arm. The grid is LC 2069's largest, 100 x 100,
+// so the robot laps its 396-cell boundary many times over.
 public class WalkingRobotSimulationIIBenchmarks
 {
-    private const int Width = 100_000;
-    private const int Height = 100_000;
+    private const int Width = 100;
+    private const int Height = 100;
     private const int MoveCount = 20;
 
     private int[] _moves = [];

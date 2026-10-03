@@ -11,7 +11,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // bail-out on a dead prefix.
 public sealed partial class WordBreakBenchmarksTests
 {
-    private const int SmallestLength = 600;
+    private const int SmallestLength = 30;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload() =>

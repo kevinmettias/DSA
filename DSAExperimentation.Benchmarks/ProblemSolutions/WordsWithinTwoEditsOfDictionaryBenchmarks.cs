@@ -19,7 +19,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's actual answer, the matching queries themselves, so the measurement
 // includes materializing that list. Every query matches by construction, so the
 // list is the full query batch in both arms and the comparison is still about
-// matching cost.
+// matching cost. DictionarySize stops at LC 2452's 100 words a list.
 public class WordsWithinTwoEditsOfDictionaryBenchmarks
 {
     private const int WordLength = 8;
@@ -33,7 +33,7 @@ public class WordsWithinTwoEditsOfDictionaryBenchmarks
     private string[] _dictionary = [];
 
     private string[] _queries = [];
-    [Params(2_000, 6_000)]
+    [Params(10, 100)]
     public int DictionarySize { get; set; }
 
     [GlobalSetup]

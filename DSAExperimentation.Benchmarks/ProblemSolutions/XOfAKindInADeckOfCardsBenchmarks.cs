@@ -6,7 +6,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are XOfAKindInADeckOfCardsSolution's, the same methods
 // XOfAKindInADeckOfCardsSolutionTests proves correct - the BCL's Dictionary tally vs. this
 // repo's own HashMap<int, int>, the "same algorithm, BCL structures vs. repo
-// structures" contrast HandOfStraightsBenchmarks already draws.
+// structures" contrast HandOfStraightsBenchmarks already draws. DeckSize stops at
+// LC 914's 10^4 cards.
 public class XOfAKindInADeckOfCardsBenchmarks
 {
     private const int GroupSize = 4;
@@ -14,7 +15,7 @@ public class XOfAKindInADeckOfCardsBenchmarks
 
     // LC problem number
 
-    [Params(400, 20_000)]
+    [Params(400, 10_000)]
     public int DeckSize { get; set; }
 
     [GlobalSetup]

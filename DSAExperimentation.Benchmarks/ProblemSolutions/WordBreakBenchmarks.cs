@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are WordBreakSolution's, the same methods
 // WordBreakSolutionTests proves correct. _source tiles a single short dictionary word, so the
 // scan has to walk the whole string confirming segmentability rather than
-// bailing out early on a dead prefix.
+// bailing out early on a dead prefix. Length stops at LC 139's 300 letters.
 public class WordBreakBenchmarks
 {
     private const string RepeatedWord = "cat";
@@ -14,7 +14,7 @@ public class WordBreakBenchmarks
 
     private string _source = "";
 
-    [Params(600, 3000)]
+    [Params(30, 300)]
     public int Length { get; set; }
 
     [GlobalSetup]

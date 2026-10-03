@@ -5,7 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are WordBreakIISolution's, the same methods
 // WordBreakIISolutionTests proves correct. _source tiles a single short dictionary word so
 // both strategies reach the identical unique sentence, isolating the
-// segmentation-scan cost itself rather than sentence-construction cost.
+// segmentation-scan cost itself rather than sentence-construction cost. Length stops
+// at 18 letters, the most whole copies of the word LC 140's 20-letter string holds.
 public class WordBreakIIBenchmarks
 {
     private const string RepeatedWord = "cat";
@@ -14,7 +15,7 @@ public class WordBreakIIBenchmarks
 
     private string _source = "";
 
-    [Params(600, 3000)]
+    [Params(6, 18)]
     public int Length { get; set; }
 
     [GlobalSetup]
