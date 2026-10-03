@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PeaksInArrayII;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arm exists only as a correctness baseline, not a contest-scale contender -
 // at Length in the low hundreds it is already the dominant cost by a wide
 // margin.
-[MemoryDiagnoser]
 public class PeaksInArrayIIBenchmarks
 {
     // LC problem number, used as the deterministic seed for value generation.

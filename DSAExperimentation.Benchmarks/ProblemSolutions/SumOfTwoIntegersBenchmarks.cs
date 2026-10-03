@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfTwoIntegers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // "trivial-but-disallowed operator baseline vs. the actually-compliant
 // algorithm" pairing DivideTwoIntegersBenchmarks uses for BuiltInDivide vs.
 // BinarySearchProduct.
-[MemoryDiagnoser]
 public class SumOfTwoIntegersBenchmarks
 {
     private const int SecondAddend = 123_456_789;

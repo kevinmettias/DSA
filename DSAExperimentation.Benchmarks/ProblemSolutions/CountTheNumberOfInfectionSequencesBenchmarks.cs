@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountTheNumberOfInfectionSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // QueueLength has to stay small enough for that 2^(n-3)-leaf enumeration to
 // finish. The closed-form strategy is O(n) regardless and would scale far past
 // what is measured here.
-[MemoryDiagnoser]
 public class CountTheNumberOfInfectionSequencesBenchmarks
 {
     private int[] _sick = [];

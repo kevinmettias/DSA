@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumDeletionsToMakeAlternatingSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Every query is type-2 (a full range query, never a flip), forcing
 // DirectScan through its O(r - l) rescan on every single one - the arm the
 // Fenwick range-sum strategy has to beat.
-[MemoryDiagnoser]
 public class MinimumDeletionsToMakeAlternatingSubstringBenchmarks
 {
     private const int RandomSeed = 3777; // LC problem number

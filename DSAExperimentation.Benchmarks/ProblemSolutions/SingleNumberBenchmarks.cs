@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SingleNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // element but one cancels; the singleton's position is randomized by the shuffle
 // rather than fixed at an end. The XOR fold cancels in place while the set arm
 // adds and removes every pair through a HashSet.
-[MemoryDiagnoser]
 public class SingleNumberBenchmarks
 {
     private const int ElementsPerPair = 2;

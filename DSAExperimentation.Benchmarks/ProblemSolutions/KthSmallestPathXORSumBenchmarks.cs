@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.KthSmallestPathXORSum;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handful of repeated nodes: the per-query-walk arm redoes its full O(n) XOR
 // pass every single time, while the Euler-tour-cache arm pays that cost once
 // per DISTINCT node queried, so repeats are what makes the two arms diverge.
-[MemoryDiagnoser]
 public class KthSmallestPathXORSumBenchmarks
 {
     private const int Seed = 3590;

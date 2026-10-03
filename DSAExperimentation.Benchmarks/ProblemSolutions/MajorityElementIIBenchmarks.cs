@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MajorityElementII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // with the remainder random noise disjoint from both, all shuffled together - so
 // the HashMap count has to walk most of the array before either winner crosses
 // the n/3 threshold, and the voting arm has to walk it twice.
-[MemoryDiagnoser]
 public class MajorityElementIIBenchmarks
 {
     private const int Seed = 229;

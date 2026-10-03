@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LexicographicallySmallestGeneratedString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // compared on (DirectFill re-verifies and rewrites all of str2 at every 'T',
 // O(n*m); ZFunctionConsistency checks the overlap in O(1) via this repo's
 // own ZFunction.Compute and writes only the unwritten suffix, O(n + m)).
-[MemoryDiagnoser]
 public class LexicographicallySmallestGeneratedStringBenchmarks
 {
     private const int PatternLength = 400;

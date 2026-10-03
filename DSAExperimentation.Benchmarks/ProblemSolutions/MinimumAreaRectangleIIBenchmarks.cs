@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumAreaRectangleII;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // quadruple-scan baseline is O(n^4), the same reasoning
 // MinimumAreaRectangleBenchmarks' own cubic baseline documents. Point construction
 // is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class MinimumAreaRectangleIIBenchmarks
 {
     private const int RandomSeed = 963; // LC 963

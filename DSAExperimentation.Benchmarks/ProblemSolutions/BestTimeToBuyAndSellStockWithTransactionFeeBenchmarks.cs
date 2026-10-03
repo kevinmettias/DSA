@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockWithTransactionFee;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // blowup is real, the same reasoning
 // BestTimeToBuyAndSellStockWithCooldownBenchmarks.cs (LC 309) already documents for
 // this identical state shape.
-[MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockWithTransactionFeeBenchmarks
 {
     private const int Fee = 2;

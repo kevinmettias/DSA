@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountIslandsWithTotalValueDivisibleByK;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods CountIslandsWithTotalValueDivisibleByKTests proves correct.
 // Neither strategy has meaningful construction to hoist beyond the grid itself,
 // so [GlobalSetup] only builds the workload, not a prepared domain object.
-[MemoryDiagnoser]
 public class CountIslandsWithTotalValueDivisibleByKBenchmarks
 {
     private const int GridSeed = 3619;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeForKConnectedComponents;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeForKConnectedComponentsSolution's, the same
 // methods MinimumTimeForKConnectedComponentsTests proves correct.
-[MemoryDiagnoser]
 public class MinimumTimeForKConnectedComponentsBenchmarks
 {
     private const int Seed = 3608;

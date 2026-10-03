@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsI;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // dense grid so a large fraction of candidate diagonals actually have both
 // opposite corners present, rather than the corner-lookup arm's Set.Has calls
 // missing on every candidate.
-[MemoryDiagnoser]
 public class MaximumAreaRectangleWithPointConstraintsIBenchmarks
 {
     private int[][] _points = [];

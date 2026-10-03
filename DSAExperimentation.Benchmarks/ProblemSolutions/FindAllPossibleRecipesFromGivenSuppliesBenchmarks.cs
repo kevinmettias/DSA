@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindAllPossibleRecipesFromGivenSupplies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // dependency edge once. Both arms now build LeetCode's actual answer - the list of
 // makeable recipes - and the harness takes .Count, where the previous arms only
 // counted.
-[MemoryDiagnoser]
 public class FindAllPossibleRecipesFromGivenSuppliesBenchmarks
 {
     private const string InitialSupply = "s";

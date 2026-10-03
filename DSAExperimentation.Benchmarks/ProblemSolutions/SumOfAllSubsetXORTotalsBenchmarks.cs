@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfAllSubsetXORTotals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SumOfAllSubsetXORTotalsTests proves correct. [GlobalSetup] draws the values so
 // generating them is not charged to the measured enumeration; the array itself is
 // LeetCode's own input shape, so neither arm needs a hoisted overload.
-[MemoryDiagnoser]
 public class SumOfAllSubsetXORTotalsBenchmarks
 {
     private const int RandomSeed = 1863; // LC problem number

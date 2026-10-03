@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheScoreDifferenceInAGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prepared-input overload: the "expensive" input each would otherwise share (the
 // marked array, the heap) is exactly what the simulation consumes turn by turn, so
 // there is nothing left to charge to [GlobalSetup] beyond the raw array itself.
-[MemoryDiagnoser]
 public class FindTheScoreDifferenceInAGameBenchmarks
 {
     private const int RandomSeed = 3847;

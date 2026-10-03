@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestCommonSubpath;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The alphabet is deliberately tiny relative to the path length, so long shared runs
 // really do occur and the binary search has to climb rather than bail at length 1 -
 // which is where the O(length) vs O(1) per-window key cost separates the two arms.
-[MemoryDiagnoser]
 public class LongestCommonSubpathBenchmarks
 {
     private const int PathCount = 3;

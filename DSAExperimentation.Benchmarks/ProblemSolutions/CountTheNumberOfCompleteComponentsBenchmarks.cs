@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountTheNumberOfCompleteComponents;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arms share, are what the gap comes from. Building the edge array is charged to
 // [GlobalSetup]; it is already LeetCode's own input shape, so both arms take it
 // directly and neither strategy needs a hoisted overload.
-[MemoryDiagnoser]
 public class CountTheNumberOfCompleteComponentsBenchmarks
 {
     private const int CliqueSize = 25;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ContinuousSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LC 1438. [GlobalSetup] draws values from a range narrow enough relative to the
 // problem's fixed limit of 2 that windows run long, so the baseline's quadratic cost
 // actually shows instead of every start immediately violating the limit.
-[MemoryDiagnoser]
 public class ContinuousSubarraysBenchmarks
 {
     private const int Seed = 1;

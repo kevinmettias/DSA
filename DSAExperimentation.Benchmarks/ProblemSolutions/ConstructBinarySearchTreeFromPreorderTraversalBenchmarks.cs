@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ConstructBinarySearchTreeFromPreorderTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // upper-bound recursion that reads preorder once, O(n). LeetCode's answer is the
 // built tree; each arm returns the root's value purely so the built tree cannot be
 // optimized away, which costs both arms the same O(1).
-[MemoryDiagnoser]
 public class ConstructBinarySearchTreeFromPreorderTraversalBenchmarks
 {
     private int[] _ascendingPreorder = [];

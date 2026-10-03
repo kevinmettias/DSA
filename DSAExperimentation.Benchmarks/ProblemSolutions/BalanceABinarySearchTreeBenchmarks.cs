@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BalanceABinarySearchTree;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // not charged to the measured balance. Each arm returns LeetCode's real answer -
 // the rebuilt root - and the harness walks it for a height, so the rebuild cannot
 // be eliminated as dead code.
-[MemoryDiagnoser]
 public class BalanceABinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ThreeSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ThreeSumSolution's, the same methods
 // ThreeSumTests proves correct. Cubic duplicate-filtered brute force vs.
 // MergeSort plus the sorted two-pointer sweep.
-[MemoryDiagnoser]
 public class ThreeSumBenchmarks
 {
     // LC problem number, used as the deterministic seed for value generation.

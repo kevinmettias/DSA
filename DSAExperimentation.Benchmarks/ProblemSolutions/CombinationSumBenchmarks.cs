@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CombinationSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CombinationSumSolution's, now returning the same
 // combinations the test proves correct instead of merely counting them.
-[MemoryDiagnoser]
 public class CombinationSumBenchmarks
 {
     private static readonly int[] CandidateValues = [2, 3, 5, 7];

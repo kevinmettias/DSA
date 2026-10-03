@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OnlineStockSpan;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // most one element after every push (each new high pops the entire stack in one
 // pass), so the amortized side pays its cheapest possible cost - the widest
 // possible gap between the two, not an arbitrary input choice.
-[MemoryDiagnoser]
 public class OnlineStockSpanBenchmarks
 {
     private int[] _prices = [];

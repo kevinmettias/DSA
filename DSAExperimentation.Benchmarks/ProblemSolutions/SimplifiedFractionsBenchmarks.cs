@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SimplifiedFractions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // only counted coprime pairs to avoid materializing the result. They now return
 // LeetCode's actual answer, so the formatted-string allocation is charged to both
 // arms equally and the comparison is still about gcd cost.
-[MemoryDiagnoser]
 public class SimplifiedFractionsBenchmarks
 {
     [Params(200, 2_000)]

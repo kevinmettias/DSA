@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FrequenciesOfShortestSupersequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is charged to [GlobalSetup] rather than the subset search being measured.
 // WordCount stays under 16*16 = 256, LC's own ceiling for 16 unique letters with
 // all-unique 2-character words.
-[MemoryDiagnoser]
 public class FrequenciesOfShortestSupersequencesBenchmarks
 {
     // LC problem number, reused as the deterministic word seed.

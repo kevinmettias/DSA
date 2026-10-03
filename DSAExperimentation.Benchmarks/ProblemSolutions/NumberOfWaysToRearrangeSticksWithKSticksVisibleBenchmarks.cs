@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfWaysToRearrangeSticksWithKSticksVisible;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // StickCount is kept modest for the same reason StoneGameVIIBenchmarks keeps
 // PileCount modest for its own exponential baseline - the brute force's factorial
 // blowup is real.
-[MemoryDiagnoser]
 public class NumberOfWaysToRearrangeSticksWithKSticksVisibleBenchmarks
 {
     private const int VisibleCount = 3;

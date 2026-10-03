@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumIncrementsForTargetMultiplesInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the memoized arm recurses one stack frame per nums element, and this repo's
 // Memoizer is explicitly real-recursion-only (see its own doc comment), so this
 // stays within a safe recursion depth rather than chasing LC's own input ceiling.
-[MemoryDiagnoser]
 public class MinimumIncrementsForTargetMultiplesInAnArrayBenchmarks
 {
     // LC problem number, reused as the deterministic nums seed.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RotateString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // differing trailing character, so nearly every scan position inside
 // source + source is a long near-miss - the worst case for the restart-on-mismatch
 // scan and exactly what KMP's failure function is built to skip.
-[MemoryDiagnoser]
 public class RotateStringBenchmarks
 {
     private string _source = "";

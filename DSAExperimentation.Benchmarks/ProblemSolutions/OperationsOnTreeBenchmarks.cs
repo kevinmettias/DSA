@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OperationsOnTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so tree construction and the lock state are charged to setup rather than to the
 // query being measured. The target is the last-created node, which in a heap-shaped
 // tree is a leaf with no children of its own.
-[MemoryDiagnoser]
 public class OperationsOnTreeBenchmarks
 {
     private const int BranchingFactor = 4;

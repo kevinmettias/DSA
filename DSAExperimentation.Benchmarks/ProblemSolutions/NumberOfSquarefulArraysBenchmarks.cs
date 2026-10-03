@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfSquarefulArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and filter at the leaves, against Backtrack.Search with the perfect-square
 // adjacency folded into candidate enumeration so an invalid prefix is abandoned
 // immediately.
-[MemoryDiagnoser]
 public class NumberOfSquarefulArraysBenchmarks
 {
     private const int ValueUpperBound = 50;

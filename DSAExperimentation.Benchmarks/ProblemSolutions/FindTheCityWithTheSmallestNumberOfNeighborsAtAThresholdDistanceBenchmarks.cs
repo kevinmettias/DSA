@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistance;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // where it belongs: this repo's single-source Dijkstra run once per city against
 // one Floyd-Warshall call, the mirror image of ShortestPathAlgorithmBenchmarks'
 // own point about picking the wrong tool for an all-pairs question.
-[MemoryDiagnoser]
 public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenchmarks
 {
     private const int DistanceThreshold = 50;

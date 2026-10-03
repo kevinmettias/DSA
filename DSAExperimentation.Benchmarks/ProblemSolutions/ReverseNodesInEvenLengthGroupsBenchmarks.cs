@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.ReverseNodesInEvenLengthGroups;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class ReverseNodesInEvenLengthGroupsBenchmarks
 {
     private int[] _values = [];

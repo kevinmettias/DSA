@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumFrequencyStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // HashMap of frequency -> Stack<int> holding the values pushed at that frequency, so
 // Pop is O(1) amortized. [GlobalSetup] builds the whole push/pop script so script
 // construction is charged to setup and only the replay is measured.
-[MemoryDiagnoser]
 public class MaximumFrequencyStackBenchmarks
 {
     private const int RandomSeed = 7;

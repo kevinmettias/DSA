@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SimilarStringGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ever being compared against strangers, the same "force genuine overlaps" intent
 // AccountsMergeBenchmarks' shared email pool already uses. The generated pool is
 // LeetCode's own string[] shape, so there is nothing to hoist beyond building it.
-[MemoryDiagnoser]
 public class SimilarStringGroupsBenchmarks
 {
     private const int RandomSeed = 839; // LC 839

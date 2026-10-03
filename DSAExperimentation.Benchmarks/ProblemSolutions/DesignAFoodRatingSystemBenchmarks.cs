@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignAFoodRatingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // `Count` foods for the best-rated match in the queried cuisine on every call;
 // LazyDeletionHeap only ever pops the entries a rating change superseded, amortized
 // O(log n) per call.
-[MemoryDiagnoser]
 public class DesignAFoodRatingSystemBenchmarks
 {
     private const int RandomSeed = 2353;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CouplesHoldingHands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are CouplesHoldingHandsSolution's, the same methods
 // CouplesHoldingHandsTests proves correct. The row is a random permutation of
 // every seat so most couples start scattered instead of already paired.
-[MemoryDiagnoser]
 public class CouplesHoldingHandsBenchmarks
 {
     private const int RandomSeed = 765; // LC problem number

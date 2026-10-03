@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // for that arm to finish in reasonable time (BestTimeToBuyAndSellStockVBenchmarks'
 // own precedent for "size the baseline can survive") - the greedy arm's whole
 // point is that it never needs the exponential search at all.
-[MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockIIBenchmarks
 {
     private const int Seed = 122; // LC problem number

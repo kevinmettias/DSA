@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheLargestAreaOfSquareInsideTwoRectangles;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Rectangle construction is charged to [GlobalSetup]; the sort the pruned
 // arm performs is part of the strategy being measured, not preparation for
 // it.
-[MemoryDiagnoser]
 public class FindTheLargestAreaOfSquareInsideTwoRectanglesBenchmarks
 {
     private const int Seed = 3047;

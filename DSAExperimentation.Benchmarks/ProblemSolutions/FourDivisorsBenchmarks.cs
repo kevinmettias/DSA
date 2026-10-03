@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FourDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // floor(sqrt(num)), then a short downward walk that bails out the moment a fifth
 // divisor appears. The random numbers are built once in [GlobalSetup], so generation
 // is not charged to either arm.
-[MemoryDiagnoser]
 public class FourDivisorsBenchmarks
 {
     // LC problem number, reused as the deterministic workload seed.

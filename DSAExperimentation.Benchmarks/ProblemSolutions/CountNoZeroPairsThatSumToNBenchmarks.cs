@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountNoZeroPairsThatSumToN;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // enough for BruteForceSplit's O(n) scan to finish quickly - MemoizedDigitDp's
 // whole point is that its own cost barely moves as TargetSum grows toward LC
 // 3704's real 10^15 bound.
-[MemoryDiagnoser]
 public class CountNoZeroPairsThatSumToNBenchmarks
 {
     [Params(100_000, 1_000_000)]

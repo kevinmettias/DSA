@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ClosestNodesQueriesInABinarySearchTree;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinarySearchTree<int>.Insert over a shuffled distinct-value permutation, the same
 // random-insertion-order precedent AllElementsInTwoBinarySearchTreesBenchmarks uses,
 // so height stays close to O(log n) rather than degenerating on ascending input.
-[MemoryDiagnoser]
 public class ClosestNodesQueriesInABinarySearchTreeBenchmarks
 {
     private const int RandomSeed = 2476; // LeetCode problem number

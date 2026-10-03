@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MakeLexicographicallySmallestArrayBySwappingElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // correct. A small limit relative to the value range keeps most sorted-adjacent
 // gaps above it, so both strategies see a realistic mix of small and large
 // swappable groups rather than one group spanning the whole array.
-[MemoryDiagnoser]
 public class MakeLexicographicallySmallestArrayBySwappingElementsBenchmarks
 {
     private const int MaxValueExclusive = 1_000;

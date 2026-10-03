@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignCircularDeque;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (near) capacity, forcing every operation through the wraparound path on both
 // ends - the same shape DesignCircularQueueBenchmarks already uses for its own
 // instance-API problem, extended to both ends since this problem allows both.
-[MemoryDiagnoser]
 public class DesignCircularDequeBenchmarks
 {
     private const int OperationCount = 50_000;

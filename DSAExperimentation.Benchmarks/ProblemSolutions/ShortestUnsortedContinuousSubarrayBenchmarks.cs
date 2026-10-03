@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestUnsortedContinuousSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods ShortestUnsortedContinuousSubarrayTests proves correct. _values is
 // random, so a genuinely already-sorted array is astronomically unlikely and both
 // strategies do real work.
-[MemoryDiagnoser]
 public class ShortestUnsortedContinuousSubarrayBenchmarks
 {
     private const int RandomSeed = 581; // LC problem number

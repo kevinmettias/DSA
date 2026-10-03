@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindInMountainArray;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // descending slope) can never resolve early via the ascending half - the linear
 // scan is forced through nearly the whole array on every invocation, instead of an
 // early exit making it look artificially competitive.
-[MemoryDiagnoser]
 public class FindInMountainArrayBenchmarks
 {
     private const int AscendingStep = 2;

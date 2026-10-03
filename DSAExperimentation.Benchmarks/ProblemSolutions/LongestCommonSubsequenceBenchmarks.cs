@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestCommonSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // identical, all-one-character strings so every cell of the table is genuinely
 // reachable and does real work, the same "force the real worst case" intent
 // TwoSumBenchmarks' own setup comment names.
-[MemoryDiagnoser]
 public class LongestCommonSubsequenceBenchmarks
 {
     private string _first = "";

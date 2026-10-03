@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheMostCompetitiveSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RemoveKDigitsBenchmarks' precedent, one removal at a time vs. all of them within
 // one pass. Generating the array is [GlobalSetup]'s job, so only the search is
 // measured.
-[MemoryDiagnoser]
 public class FindTheMostCompetitiveSubsequenceBenchmarks
 {
     private const int SubsequenceLengthDivisor = 3;

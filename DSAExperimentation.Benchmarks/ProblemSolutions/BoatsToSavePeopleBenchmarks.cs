@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BoatsToSavePeople;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BoatsToSavePeopleTests proves correct. Weights are drawn from the whole range
 // below the limit, so most people have a partner who fits and brute force pays a
 // full rescan per boat instead of sending everyone alone.
-[MemoryDiagnoser]
 public class BoatsToSavePeopleBenchmarks
 {
     private const int Limit = 300;

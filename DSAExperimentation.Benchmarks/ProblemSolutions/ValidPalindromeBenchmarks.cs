@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidPalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rather than a second strategy to reconcile. The operand is punctuation and
 // casing noise around a true palindrome, so neither arm can resolve on the
 // first pair.
-[MemoryDiagnoser]
 public class ValidPalindromeBenchmarks
 {
     // LeetCode 125's own first example: punctuation and casing noise around a

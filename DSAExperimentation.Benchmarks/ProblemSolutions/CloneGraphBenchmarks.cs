@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CloneGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // internal to DSAExperimentation.LeetCode, so a public [Benchmark] method
 // cannot expose it directly (WordLadderII's arms reduce to .Count for the
 // same reason).
-[MemoryDiagnoser]
 public class CloneGraphBenchmarks
 {
     private Node _graph = null!;

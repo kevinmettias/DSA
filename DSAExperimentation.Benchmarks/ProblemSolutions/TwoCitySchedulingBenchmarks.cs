@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TwoCityScheduling;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TwoCitySchedulingTests proves correct. Each is handed the already-projected people
 // its hoisted overload takes, so building the workload is charged to [GlobalSetup]
 // rather than to the greedy being measured.
-[MemoryDiagnoser]
 public class TwoCitySchedulingBenchmarks
 {
     private const int RandomSeed = 1029; // LC problem number

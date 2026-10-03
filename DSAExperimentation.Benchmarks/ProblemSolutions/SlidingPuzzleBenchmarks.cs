@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Domain.SlidingPuzzle;
 using DSAExperimentation.LeetCode.SlidingPuzzle;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // StartState varies how many slides separate the board from "123450" (LC's
 // own 1-move and 5-move examples), the same search-depth axis
 // OpenTheLockBenchmarks' DeadendCount varies for the lock's Cayley graph.
-[MemoryDiagnoser]
 public class SlidingPuzzleBenchmarks
 {
     private PuzzleGraph _graph = null!;

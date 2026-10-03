@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GraphConnectivityWithThreshold;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (CityCount / 20) keeps the sieve dense - most cities end up chained through many
 // small divisors, which is exactly the pattern that makes an uncompressed parent chain
 // degrade toward O(n) per Find.
-[MemoryDiagnoser]
 public class GraphConnectivityWithThresholdBenchmarks
 {
     private const int ThresholdDivisor = 20;

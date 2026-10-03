@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ElevatorRequestsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // than an actual search. LC 4020 caps floorCount and requests.Length at 100; this
 // scales past that ceiling only to confirm neither arm regresses, since both
 // are the same O(m) walk.
-[MemoryDiagnoser]
 public class ElevatorRequestsIBenchmarks
 {
     private const int Seed = 4020;

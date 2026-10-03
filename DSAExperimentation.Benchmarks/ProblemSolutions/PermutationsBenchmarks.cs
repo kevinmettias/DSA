@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Permutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PermutationsSolution's, now returning the same
 // permutations the test proves correct instead of merely counting them.
-[MemoryDiagnoser]
 public class PermutationsBenchmarks
 {
     private int[] _values = [];

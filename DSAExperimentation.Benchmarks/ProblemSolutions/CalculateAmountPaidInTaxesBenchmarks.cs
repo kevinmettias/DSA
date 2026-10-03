@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.CalculateAmountPaidInTaxes;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The [upper, percent] pairing is charged to [GlobalSetup] via the sequence arm's
 // hoisted overload, so neither arm pays for building its own input. Income sits one
 // unit below the top bracket so every arm walks the whole table before breaking.
-[MemoryDiagnoser]
 public class CalculateAmountPaidInTaxesBenchmarks
 {
     private const int UpperStep = 10;

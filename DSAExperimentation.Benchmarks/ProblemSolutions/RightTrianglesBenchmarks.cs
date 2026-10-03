@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RightTriangles;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // beyond the grid itself, so there is no hoisted overload here - matching
 // TypeOfTriangleBenchmarks' own precedent for a problem whose input is already in
 // its measured shape.
-[MemoryDiagnoser]
 public class RightTrianglesBenchmarks
 {
     private const int Seed = 3128;

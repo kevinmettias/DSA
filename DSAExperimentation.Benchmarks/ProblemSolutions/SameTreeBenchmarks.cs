@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.SameTree;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // different iterative compare, which carries the node pairs on an explicit stack.
 // The two trees are equal, so neither arm can short-circuit on a first mismatch and
 // both walk every corresponding pair.
-[MemoryDiagnoser]
 public class SameTreeBenchmarks
 {
     private const int LeftChildValue = 2;

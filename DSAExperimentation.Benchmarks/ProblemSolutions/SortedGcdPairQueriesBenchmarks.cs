@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SortedGcdPairQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SortedGcdPairQueriesTests proves correct. The sieve arm is handed a prebuilt
 // GcdPairCountIndex, so its O(maxValue log maxValue) build cost is charged to
 // [GlobalSetup] rather than to the queries being measured.
-[MemoryDiagnoser]
 public class SortedGcdPairQueriesBenchmarks
 {
     private const int MaxValue = 500;

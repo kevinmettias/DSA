@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfOperationsWithTheSameScoreII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Uniform random values over a narrow range keep front/back-pair sum collisions
 // frequent, so both interval searches actually branch through all three moves
 // instead of the target score being unreachable past the first operation.
-[MemoryDiagnoser]
 public class MaximumNumberOfOperationsWithTheSameScoreIIBenchmarks
 {
     private const int MaxValueExclusive = 1_000;

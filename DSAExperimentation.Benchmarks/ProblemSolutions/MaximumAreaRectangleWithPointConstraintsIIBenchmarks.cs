@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumAreaRectangleWithPointConstraintsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arm a pre-built Set. Points are a dense grid, same shape Part I's benchmark
 // uses, so both arms have real rectangles to find rather than scanning a mostly
 // empty space.
-[MemoryDiagnoser]
 public class MaximumAreaRectangleWithPointConstraintsIIBenchmarks
 {
     private int[] _xCoord = [];

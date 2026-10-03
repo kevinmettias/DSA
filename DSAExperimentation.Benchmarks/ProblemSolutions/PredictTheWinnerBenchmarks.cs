@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PredictTheWinner;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PredictTheWinnerTests proves correct. The array length is kept modest
 // specifically because the un-memoized baseline's blowup is real, the same
 // reasoning FibonacciNumberBenchmarks documents.
-[MemoryDiagnoser]
 public class PredictTheWinnerBenchmarks
 {
     private const int MaxScoreValueExclusive = 100;

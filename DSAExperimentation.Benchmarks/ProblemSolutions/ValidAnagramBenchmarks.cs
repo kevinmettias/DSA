@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidAnagram;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ValidAnagramTests proves correct. target is a rotation of source (same multiset,
 // different order) so both strategies are forced through their full comparison
 // instead of an early mismatch cutting brute force short.
-[MemoryDiagnoser]
 public class ValidAnagramBenchmarks
 {
     private const int AlphabetSize = 26;

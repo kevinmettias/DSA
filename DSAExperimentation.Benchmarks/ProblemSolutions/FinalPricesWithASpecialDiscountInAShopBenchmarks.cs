@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FinalPricesWithASpecialDiscountInAShop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Prices are random with no forced worst case, matching the distribution
 // LeetCode's own constraints describe; the price array is LeetCode's own argument
 // shape, so [GlobalSetup] hands it to both arms directly.
-[MemoryDiagnoser]
 public class FinalPricesWithASpecialDiscountInAShopBenchmarks
 {
     private const int MaxPrice = 1_000;

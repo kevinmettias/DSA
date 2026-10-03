@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.LeetCode.CarFleet;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // once - the O(n log n) sort is input setup, not what the two strategies differ in -
 // and hands it to each strategy's prepared-input overload (ARCHITECTURE.md §17.4), so
 // only the running-maximum work is measured.
-[MemoryDiagnoser]
 public class CarFleetBenchmarks
 {
     private const int Target = 1_000_000;

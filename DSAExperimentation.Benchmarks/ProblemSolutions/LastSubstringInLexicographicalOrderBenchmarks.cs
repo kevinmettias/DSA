@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LastSubstringInLexicographicalOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // through real character-by-character comparison work instead of resolving on the
 // first character. [GlobalSetup] generates the text, so text generation is charged to
 // setup rather than to the measured methods.
-[MemoryDiagnoser]
 public class LastSubstringInLexicographicalOrderBenchmarks
 {
     private const int AlphabetSize = 4;

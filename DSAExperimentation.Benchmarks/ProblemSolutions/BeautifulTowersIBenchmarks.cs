@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BeautifulTowersI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BeautifulTowersITests proves correct - the O(n^2) per-peak clamped walk baseline
 // vs. the O(n) monotonic-stack sweep over this repo's own Stack<int>. [Params]
 // stays at LC 2865's own n <= 1000 constraint.
-[MemoryDiagnoser]
 public class BeautifulTowersIBenchmarks
 {
     private const int MaxHeight = 1_000_000_000;

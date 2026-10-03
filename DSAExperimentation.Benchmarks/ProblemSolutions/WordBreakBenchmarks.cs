@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WordBreak;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // WordBreakTests proves correct. _source tiles a single short dictionary word, so the
 // scan has to walk the whole string confirming segmentability rather than
 // bailing out early on a dead prefix.
-[MemoryDiagnoser]
 public class WordBreakBenchmarks
 {
     private const string RepeatedWord = "cat";

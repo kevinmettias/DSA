@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OnlineMajorityElementInSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // answer is that run's value with an occurrence count equal to the whole range - a
 // majority satisfying LeetCode's own 2*threshold > range guarantee for every query,
 // which also means the indexed arm's first sample always lands on the answer.
-[MemoryDiagnoser]
 public class OnlineMajorityElementInSubarrayBenchmarks
 {
     private const int RunLength = 25;

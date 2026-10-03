@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OnlineElection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // timestamp, so the rescanning arm's tally for query i always covers the full
 // [0, i] prefix rather than short-circuiting early - O(n) per query against the
 // precomputed arm's O(log n).
-[MemoryDiagnoser]
 public class OnlineElectionBenchmarks
 {
     // LC problem number, used as the RNG seed.

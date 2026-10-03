@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindMaximumNonDecreasingArrayLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // candidate stack the monotonic-stack strategy maintains from collapsing to a
 // trivial size, so its binary search is actually exercised against the brute
 // force's O(i) scan.
-[MemoryDiagnoser]
 public class FindMaximumNonDecreasingArrayLengthBenchmarks
 {
     private const int MaxValueExclusive = 1_000;

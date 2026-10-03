@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindPositiveIntegerSolutionForAGivenEquation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each arm takes the explicit-bound overload so the measured search space is the
 // [Params] value, and .Count so the three return the same comparable measurement
 // while still building LeetCode's real answer (the pre-migration arms only counted).
-[MemoryDiagnoser]
 public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
 {
     // Doubling factor for the largest reachable sum (Bound + Bound).

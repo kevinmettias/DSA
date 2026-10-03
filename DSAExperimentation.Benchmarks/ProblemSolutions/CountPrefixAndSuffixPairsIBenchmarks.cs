@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.RollingHash;
 using DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsI;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods CountPrefixAndSuffixPairsITests proves correct. Each word's RollingHash
 // is built once in [GlobalSetup], so the rolling-hash arm is only ever charged
 // for the O(1) prefix/suffix comparisons themselves.
-[MemoryDiagnoser]
 public class CountPrefixAndSuffixPairsIBenchmarks
 {
     private const int Seed = 3042;

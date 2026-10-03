@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfCommonFactors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [Magnitude/2, Magnitude], so their gcd stays small relative to Magnitude on
 // average - exactly the shape where the sqrt(gcd) reduction pays off over the
 // min(a, b) baseline.
-[MemoryDiagnoser]
 public class NumberOfCommonFactorsBenchmarks
 {
     private const int RandomSeed = 2427; // LC problem number

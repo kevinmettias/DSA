@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumProductOfTheLengthOfTwoPalindromicSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // unchoose walk over the identical 2^n subsequence space. The string is drawn once in
 // [GlobalSetup] from a four-letter alphabet so palindromic subsequences are common enough
 // that the shared disjoint-pair scan does real work.
-[MemoryDiagnoser]
 public class MaximumProductOfTheLengthOfTwoPalindromicSubsequencesBenchmarks
 {
     private const int AlphabetSize = 4; // characters are drawn from 'a'-'d'

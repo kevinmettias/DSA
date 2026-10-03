@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountTheRepetitions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // constraint; HashMapCycleDetection's cost stays flat as N1 grows because a
 // repeated "position within s2" state is guaranteed within |S2| + 1 copies of s1 by
 // pigeonhole.
-[MemoryDiagnoser]
 public class CountTheRepetitionsBenchmarks
 {
     private const string S1BuildingBlock = "ab";

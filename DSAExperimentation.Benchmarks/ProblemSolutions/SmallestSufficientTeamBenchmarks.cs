@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestSufficientTeam;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the worst case for an unmemoized walk (true O(PeoplePerSkill^SkillCount) recursive
 // calls across only SkillCount+1 actually-distinct states) and the best case for
 // memoization (each of those states computed exactly once).
-[MemoryDiagnoser]
 public class SmallestSufficientTeamBenchmarks
 {
     private const int PeoplePerSkill = 3;

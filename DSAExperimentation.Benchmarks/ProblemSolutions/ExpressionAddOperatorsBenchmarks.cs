@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ExpressionAddOperators;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(4^n) state space - so this is a constant-factor/allocation comparison, not an
 // asymptotic-class split, the same framing IntegerToEnglishWordsBenchmarks uses for
 // a bounded domain.
-[MemoryDiagnoser]
 public class ExpressionAddOperatorsBenchmarks
 {
     private const int UnreachableTarget = int.MinValue;

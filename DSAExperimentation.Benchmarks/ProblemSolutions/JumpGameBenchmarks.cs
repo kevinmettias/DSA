@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // reaches deep into the rest of the array, forcing the DP baseline through
 // its full O(n^2) inner scan instead of short-circuiting on an early
 // reachable index.
-[MemoryDiagnoser]
 public class JumpGameBenchmarks
 {
     private const int RandomSeed = 55; // LC problem number

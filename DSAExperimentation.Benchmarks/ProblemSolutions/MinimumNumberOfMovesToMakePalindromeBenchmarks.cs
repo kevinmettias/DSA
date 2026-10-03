@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfMovesToMakePalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods MinimumNumberOfMovesToMakePalindromeTests proves correct. The
 // measured input is LeetCode's own shape - a string - so neither strategy needs a
 // hoisted overload; what [GlobalSetup] owns here is the workload's size and seed.
-[MemoryDiagnoser]
 public class MinimumNumberOfMovesToMakePalindromeBenchmarks
 {
     private const int RandomSeed = 2193;

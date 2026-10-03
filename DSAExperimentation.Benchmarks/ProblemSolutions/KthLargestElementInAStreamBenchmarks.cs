@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.KthLargestElementInAStream;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // min-heap (O(log k) per call) - the FindMedianFromDataStream two-heap
 // benchmark's "process the same interleaved stream, compare per-call cost" shape,
 // specialized to LC703's single running order statistic.
-[MemoryDiagnoser]
 public class KthLargestElementInAStreamBenchmarks
 {
     private const int K = 10;

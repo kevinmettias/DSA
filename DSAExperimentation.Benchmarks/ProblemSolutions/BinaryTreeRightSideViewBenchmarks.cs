@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BinaryTreeRightSideView;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // depth instead of degenerating to a single-node-per-level walk, while the
 // right-first DFS follows one root-to-leaf path down and backfills the levels it
 // skips.
-[MemoryDiagnoser]
 public class BinaryTreeRightSideViewBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

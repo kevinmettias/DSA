@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FruitIntoBaskets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of the rescan breaking out after only 3 elements every time, the same "force the
 // real worst case" convention TwoSumBenchmarks/SubarrayProductLessThanKBenchmarks
 // establish.
-[MemoryDiagnoser]
 public class FruitIntoBasketsBenchmarks
 {
     private const int TreeTypes = 2;

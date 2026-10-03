@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.AhoCorasick;
 using DSAExperimentation.LeetCode.ConstructStringWithMinimumCost;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // over - so building the automaton is charged to [GlobalSetup] rather than to
 // the construction being measured; the brute-force arm reads straight off the
 // LeetCode-shaped words/costs since it never builds anything upfront.
-[MemoryDiagnoser]
 public class ConstructStringWithMinimumCostBenchmarks
 {
     private const int Seed = 3213;

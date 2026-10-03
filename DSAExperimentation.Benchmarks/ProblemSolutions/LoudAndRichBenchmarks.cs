@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LoudAndRich;
 
@@ -20,7 +19,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same defect AccountsMergeBenchmarks' duplicate-email-with-different-owner
 // generator had. A permutation gives every person a distinct value, so the
 // least quiet person is unique and both arms answer the same question.
-[MemoryDiagnoser]
 public class LoudAndRichBenchmarks
 {
     private const int RandomSeed = 5;

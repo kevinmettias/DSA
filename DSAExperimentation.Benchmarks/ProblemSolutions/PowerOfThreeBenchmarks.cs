@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.PowerOfThree;
 
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are PowerOfThreeSolution's. The binary search arm takes
 // the hoisted ArraySequence<int> overload so wrapping the (already-precomputed)
 // powers-of-three table is not charged to the measured search.
-[MemoryDiagnoser]
 public class PowerOfThreeBenchmarks
 {
     private ArraySequence<int> _powersOfThree;

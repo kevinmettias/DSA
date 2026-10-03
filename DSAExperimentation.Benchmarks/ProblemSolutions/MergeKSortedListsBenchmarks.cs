@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.MergeKSortedLists;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
 // a public [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class MergeKSortedListsBenchmarks
 {
     private const int ValuesPerList = 64;

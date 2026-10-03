@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RemoveBoxes;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RemoveBoxesTests proves correct. BoxCount stays well under LeetCode's own limit
 // (<=24, vs. LC's 100) specifically because the un-memoized baseline's blowup is
 // real - see RemoveBoxesWorkloads for why.
-[MemoryDiagnoser]
 public class RemoveBoxesBenchmarks
 {
     private const int RandomSeed = 1;

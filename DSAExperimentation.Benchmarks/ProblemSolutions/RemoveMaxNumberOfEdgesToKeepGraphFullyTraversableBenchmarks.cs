@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RemoveMaxNumberOfEdgesToKeepGraphFullyTraversable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // tree of type-3 edges is generated first so both traversers are always fully
 // connected in the end (the interesting, non-trivial case), then extra random
 // single-owner edges give both strategies real redundant-edge-rejecting work to do.
-[MemoryDiagnoser]
 public class RemoveMaxNumberOfEdgesToKeepGraphFullyTraversableBenchmarks
 {
     private const int RandomSeed = 1579; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfVisitedCellsInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The ReduceGraph arm is handed a prepared JumpGrid so the wrapper is charged to
 // [GlobalSetup] rather than to the search (#17.4); the scan arm takes LeetCode's own
 // jagged array because that is already its input.
-[MemoryDiagnoser]
 public class MinimumNumberOfVisitedCellsInAGridBenchmarks
 {
     // Small relative to Side, so ReduceGraph's O(v)-per-pop children are a real

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FillASpecialGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FillASpecialGridTests proves correct. Both visit exactly size^2 cells - the gap
 // is recursion/allocation overhead against a closed-form per-cell computation,
 // not algorithm class.
-[MemoryDiagnoser]
 public class FillASpecialGridBenchmarks
 {
     [Params(5, 9)]

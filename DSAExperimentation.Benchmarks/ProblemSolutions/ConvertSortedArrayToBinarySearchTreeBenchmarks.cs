@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ConvertSortedArrayToBinarySearchTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not BinaryTreeNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class ConvertSortedArrayToBinarySearchTreeBenchmarks
 {
     private int[] _values = [];

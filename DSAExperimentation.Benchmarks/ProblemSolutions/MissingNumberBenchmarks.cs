@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MissingNumber;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MissingNumberSolution's, the same methods
 // MissingNumberTests proves correct.
-[MemoryDiagnoser]
 public class MissingNumberBenchmarks
 {
     // LC problem number, reused as the deterministic value seed.

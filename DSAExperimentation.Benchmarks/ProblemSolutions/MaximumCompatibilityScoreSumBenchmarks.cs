@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumCompatibilityScoreSum;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // through this repo's own Memoizer. Each arm is handed the prepared
 // CompatibilityScoreMatrix its hoisted overload takes, so building the score table is
 // charged to [GlobalSetup] rather than to the search being measured.
-[MemoryDiagnoser]
 public class MaximumCompatibilityScoreSumBenchmarks
 {
     private const int QuestionCount = 8;

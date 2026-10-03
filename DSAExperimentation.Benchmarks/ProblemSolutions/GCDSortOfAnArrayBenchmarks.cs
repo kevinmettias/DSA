@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GCDSortOfAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // work - actually occur, the same generator intent LargestComponentSizeByCommonFactorBenchmarks
 // uses. What is measured is the O(distinctValues^2) pairwise gcd sweep plus Array.Sort
 // against the O(n*sqrt(maxValue)) per-factor union plus this repo's own MergeSort.
-[MemoryDiagnoser]
 public class GCDSortOfAnArrayBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountTheNumberOfIdealArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(MaxValue log log MaxValue) once and amortizes it across all MaxValue factorizations,
 // so the sieve build stays inside the measured method - it is the cost being amortized,
 // not setup. The array length is fixed so the only thing varying is the factoring work.
-[MemoryDiagnoser]
 public class CountTheNumberOfIdealArraysBenchmarks
 {
     // Fixed array length; only the value range varies across the measured runs.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AllOneDataStructure;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // eager List snapshot of every entry - that mistake made the "primitive" approach lose
 // by 5-10x, which is why BucketedLinkedListAllOne keeps a second, independent
 // DoublyLinkedListNode chain per bucket instead.
-[MemoryDiagnoser]
 public class AllOneDataStructureBenchmarks
 {
     private const int RandomSeed = 432; // LC problem number

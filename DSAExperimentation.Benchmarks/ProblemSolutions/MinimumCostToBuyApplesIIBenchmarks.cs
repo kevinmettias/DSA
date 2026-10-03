@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostToBuyApplesII;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // network ApplesWorkloads generates, so graph construction is charged to setup
 // and only the per-source shortest-path engine differs between arms
 // (NetworkRecoveryPathwaysBenchmarks precedent).
-[MemoryDiagnoser]
 public class MinimumCostToBuyApplesIIBenchmarks
 {
     private const int Seed = 3928; // LC problem number

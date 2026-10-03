@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindSumOfArrayProductOfMagicalSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already makes the branching-factor-8 tree considerably larger while staying fast
 // enough to benchmark, in contrast with the carry-digit DP arm, whose memoized state
 // space grows only linearly in the slot count.
-[MemoryDiagnoser]
 public class FindSumOfArrayProductOfMagicalSequencesBenchmarks
 {
     private const int IndexCount = 8;

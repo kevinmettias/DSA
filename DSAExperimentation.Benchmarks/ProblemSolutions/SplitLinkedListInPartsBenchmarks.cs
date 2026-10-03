@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.SplitLinkedListInParts;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is internal, and a public [Benchmark] method on this public class cannot
 // return it (CS0050) - the same constraint OddEvenLinkedListBenchmarks
 // resolves the same way, by counting instead of returning the chain.
-[MemoryDiagnoser]
 public class SplitLinkedListInPartsBenchmarks
 {
     private const int Parts = 7;

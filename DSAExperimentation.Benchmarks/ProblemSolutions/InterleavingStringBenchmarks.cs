@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.InterleavingString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // compile-smoke placeholder (`=> 1` on both arms) that measured nothing; this
 // measures the memoized recursion against the roll-forward row, both over
 // LeetCode's own example.
-[MemoryDiagnoser]
 public class InterleavingStringBenchmarks
 {
     private const string First = "aabcc";

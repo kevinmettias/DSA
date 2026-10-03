@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeXAndYEqual;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // or 11 (and from Y) so the mutation queue has to explore a wide swath of the bounded
 // range before it stumbles onto a divide, while the memoized recurrence only ever
 // follows the O(log StartValue) chain of "round to a multiple, then divide" states.
-[MemoryDiagnoser]
 public class MinimumNumberOfOperationsToMakeXAndYEqualBenchmarks
 {
     private const int Y = 1;

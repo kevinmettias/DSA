@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ReachableNodesInSubdividedGraph;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // graph engine; Dijkstra is handed the prepared SubdividedGraph its hoisted overload
 // takes, so building the weighted original graph is charged to [GlobalSetup] rather
 // than to the search being measured.
-[MemoryDiagnoser]
 public class ReachableNodesInSubdividedGraphBenchmarks
 {
     // LC problem number, used as the deterministic seed for graph generation.

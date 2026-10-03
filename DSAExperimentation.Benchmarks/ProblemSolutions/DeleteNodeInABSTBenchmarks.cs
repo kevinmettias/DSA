@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hoisting one shared instance into [GlobalSetup] - shuffled so height stays close
 // to O(log n) instead of the degenerate O(n) ascending-insertion case, the same
 // convention KthSmallestElementInABSTBenchmarks already uses.
-[MemoryDiagnoser]
 public class DeleteNodeInABSTBenchmarks
 {
 

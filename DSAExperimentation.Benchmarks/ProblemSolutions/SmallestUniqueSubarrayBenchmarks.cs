@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestUniqueSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SmallestUniqueSubarrayTests proves correct. A small value bound (relative to
 // Length) keeps most windows non-unique at short lengths, so both arms do real
 // work across several candidate lengths rather than resolving at length 1.
-[MemoryDiagnoser]
 public class SmallestUniqueSubarrayBenchmarks
 {
     private const int RandomSeed = 3934; // LeetCode problem number

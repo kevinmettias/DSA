@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToVisitDisappearingNodes;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods MinimumTimeToVisitDisappearingNodesTests proves correct. Each arm
 // is handed a prebuilt TimedAdjacency, so adjacency-list construction is charged
 // to [GlobalSetup] rather than to the search being measured.
-[MemoryDiagnoser]
 public class MinimumTimeToVisitDisappearingNodesBenchmarks
 {
     private const int Seed = 3112;

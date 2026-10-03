@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.AddTwoNumbersII;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // need to be in [0, 10) to exercise both strategies' carry handling under load -
 // LC 445's "no leading zero" constraint is a correctness concern already covered by
 // AddTwoNumbersIITests, not a perf-harness one.
-[MemoryDiagnoser]
 public class AddTwoNumbersIIBenchmarks
 {
     private const int RandomSeed = 445; // LC problem number

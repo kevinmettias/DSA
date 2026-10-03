@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MergeSimilarItems;
 
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the asserted methods, so materializing the merged list is part of what is
 // measured. The result is a list of distinct values, linear in Length, so this
 // does not change which arm the comparison is about.
-[MemoryDiagnoser]
 public class MergeSimilarItemsBenchmarks
 {
     private int[][] _items1 = [];

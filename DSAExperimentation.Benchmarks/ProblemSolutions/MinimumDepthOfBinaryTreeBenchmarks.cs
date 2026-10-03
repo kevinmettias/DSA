@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MinimumDepthOfBinaryTree;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // called the exact same private recursive walk - one strategy measured twice, not
 // two; the recursion is now measured against a level-order walk instead. The tree
 // is unchanged.
-[MemoryDiagnoser]
 public class MinimumDepthOfBinaryTreeBenchmarks
 {
     private const int LeftChildValue = 2;

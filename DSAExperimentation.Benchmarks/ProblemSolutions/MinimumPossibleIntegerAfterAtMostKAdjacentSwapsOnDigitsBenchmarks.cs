@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategies are always forced to consider the entire remaining digit list at every slot,
 // rather than an early exit on a tiny budget making brute force look artificially
 // competitive.
-[MemoryDiagnoser]
 public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
 {
     private const int UnlimitedBudget = int.MaxValue / 2;

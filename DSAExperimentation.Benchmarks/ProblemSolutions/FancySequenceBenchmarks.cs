@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Domain.Modular;
 using DSAExperimentation.LeetCode.FancySequence;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // charged to setup and only the replay is measured. Every index is read back
 // afterwards, so both strategies pay their full workload instead of an early exit
 // making the rescan look artificially competitive.
-[MemoryDiagnoser]
 public class FancySequenceBenchmarks
 {
     private const int RandomSeed = 1622; // LC problem number

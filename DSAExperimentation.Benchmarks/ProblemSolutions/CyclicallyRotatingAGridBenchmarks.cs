@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CyclicallyRotatingAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both arms already paid before the migration, so what the comparison shows is the
 // O(k)-per-ring stepwise walk against the same walk with k reduced modulo each
 // ring's length first.
-[MemoryDiagnoser]
 public class CyclicallyRotatingAGridBenchmarks
 {
     // Far more turns than any ring is long, and prime, so no ring's rotation

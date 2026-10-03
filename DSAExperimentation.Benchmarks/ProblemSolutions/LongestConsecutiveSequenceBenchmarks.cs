@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LongestConsecutiveSequence;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LongestConsecutiveSequenceTests proves correct. The set arm hashes each
 // value once as it walks the runs; the sorted arm instead pays an O(n log n) sort
 // of a full copy before its single linear scan over the ordered values.
-[MemoryDiagnoser]
 public class LongestConsecutiveSequenceBenchmarks
 {
     private int[] _nums = [];

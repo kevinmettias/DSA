@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TrafficSignalColor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // timer value from each of LC's own ranges (green, orange, red and invalid),
 // mirroring SqrtXBenchmarks' precedent for a fixed-value sweep over an O(1)
 // operation.
-[MemoryDiagnoser]
 public class TrafficSignalColorBenchmarks
 {
     [Params(0, 30, 60, 1000)]

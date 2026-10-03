@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StreamOfCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // measures. Words are chosen with no shared suffixes so neither approach gets an
 // early exit from an early match, forcing both through their full per-query cost on
 // nearly every character.
-[MemoryDiagnoser]
 public class StreamOfCharactersBenchmarks
 {
     private const int RandomSeed = 1032;

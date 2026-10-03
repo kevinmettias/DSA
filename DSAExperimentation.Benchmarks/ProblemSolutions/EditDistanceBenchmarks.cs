@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.EditDistance;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // EditDistanceTests proves correct. The two strings are already LeetCode's own
 // input shape, so [GlobalSetup] only sizes the workload - there is no separate
 // prepared-input overload to hoist into.
-[MemoryDiagnoser]
 public class EditDistanceBenchmarks
 {
     private const string DifferingSuffix = "b";

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 // NodeCount is kept well under a default 1MB thread stack's limit deliberately -
 // this demonstrates the cost gap, not a StackOverflowException (uncatchable, would
 // crash the whole benchmark run).
-[MemoryDiagnoser]
 public class SkewedTreeFoldBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

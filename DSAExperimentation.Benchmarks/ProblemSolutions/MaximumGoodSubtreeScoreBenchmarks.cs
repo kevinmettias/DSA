@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximumGoodSubtreeScoreTests proves correct. BruteForce is exponential in subtree
 // size (2^n dominated by the root), so node counts stay small enough for it to
 // finish - large enough to still show BitmaskTreeFold's per-node reuse paying off.
-[MemoryDiagnoser]
 public class MaximumGoodSubtreeScoreBenchmarks
 {
     private const int TreeSeed = 3575;

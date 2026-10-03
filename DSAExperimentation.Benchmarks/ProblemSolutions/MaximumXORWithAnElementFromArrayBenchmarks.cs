@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumXORWithAnElementFromArray;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // over a range far wider than the query count so limits genuinely partition nums,
 // and there are as many queries as elements - which is where the O(n*q) per-query
 // scan and the O((n + q) log(n + q)) offline sweep actually diverge.
-[MemoryDiagnoser]
 public class MaximumXORWithAnElementFromArrayBenchmarks
 {
     private const int RandomSeed = 1707;

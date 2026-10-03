@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumAbsoluteSumDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategies MinimumAbsoluteSumDifferenceTests proves correct. The sort is charged
 // to the measured method on purpose - paying for it once is the whole reason the
 // sorted arm beats the O(n^2) rescan.
-[MemoryDiagnoser]
 public class MinimumAbsoluteSumDifferenceBenchmarks
 {
     private const int MaxValueExclusive = 100_000;

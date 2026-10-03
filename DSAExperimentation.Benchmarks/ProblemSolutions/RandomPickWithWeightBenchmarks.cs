@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RandomPickWithWeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RandomPickIndexBenchmarks charges its HashMap construction) before replaying
 // the same PickCalls script from the same seeded draw sequence, returning the
 // running total so the JIT can't eliminate the replay as dead code.
-[MemoryDiagnoser]
 public class RandomPickWithWeightBenchmarks
 {
     private const int PickCalls = 500;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TimeBasedKeyValueStore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // construction to [GlobalSetup]; _queryTimestamp sits just past the final entry so
 // both strategies are forced through their full worst-case floor lookup, the same
 // "force the real worst case" convention OnlineElectionBenchmarks uses.
-[MemoryDiagnoser]
 public class TimeBasedKeyValueStoreBenchmarks
 {
     private const int TimestampStep = 2;

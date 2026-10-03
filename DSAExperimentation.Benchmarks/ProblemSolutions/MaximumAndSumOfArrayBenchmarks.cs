@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumAndSumOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // small: the unmemoized side's branching is quadratic in the *remaining* element count
 // at every one of SlotCount levels, so it grows far faster than
 // MaximumStudentsTakingExamBenchmarks' per-row linear-in-columns branching.
-[MemoryDiagnoser]
 public class MaximumAndSumOfArrayBenchmarks
 {
     private const int MaxValueExclusive = 1 << 20;

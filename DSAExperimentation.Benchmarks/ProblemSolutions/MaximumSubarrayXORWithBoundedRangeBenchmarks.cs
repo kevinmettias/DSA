@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSubarrayXORWithBoundedRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods MaximumSubarrayXORWithBoundedRangeTests proves correct. High is set
 // well below the generated value ceiling so a meaningful fraction of positions
 // break a run, rather than the whole array degenerating into a single valid run.
-[MemoryDiagnoser]
 public class MaximumSubarrayXORWithBoundedRangeBenchmarks
 {
     private const int RandomSeed = 3845;

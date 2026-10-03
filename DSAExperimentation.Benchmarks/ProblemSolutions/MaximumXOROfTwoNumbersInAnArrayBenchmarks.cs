@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumXOROfTwoNumbersInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumXOROfTwoNumbersInAnArraySolution's, the same
 // methods MaximumXOROfTwoNumbersInAnArrayTests proves correct - the textbook O(n^2)
 // pairwise scan vs. this repo's own BitTrie greedy walk, O(n).
-[MemoryDiagnoser]
 public class MaximumXOROfTwoNumbersInAnArrayBenchmarks
 {
     private int[] _values = [];

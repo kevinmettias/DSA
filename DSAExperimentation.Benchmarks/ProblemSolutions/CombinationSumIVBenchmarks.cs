@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CombinationSumIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // int-sized answer for its own, much smaller constraints) - harmless here since both
 // benchmarked methods overflow identically and this class measures wall-clock time,
 // not the returned value.
-[MemoryDiagnoser]
 public class CombinationSumIVBenchmarks
 {
     private static readonly int[] Nums = [1, 2, 3, 5, 10];

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n^2) pairwise scan against an O(n log n) sweep through a repo index
 // structure, this time two SegmentTree<long,MaxOperation<long>> trees instead
 // of one.
-[MemoryDiagnoser]
 public class MaximumSumOfAlternatingSubsequenceWithDistanceAtLeastKBenchmarks
 {
     private const int RandomSeed = 3915; // LeetCode problem number

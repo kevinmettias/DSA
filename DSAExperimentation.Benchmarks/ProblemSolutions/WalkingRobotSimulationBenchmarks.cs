@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.LeetCode.WalkingRobotSimulation;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // field are generated once in [GlobalSetup], and the hashed arm is handed a prepared
 // Set<(int, int)> through its hoisted overload so building the set is not charged to
 // the walk being measured.
-[MemoryDiagnoser]
 public class WalkingRobotSimulationBenchmarks
 {
     private const int CommandCount = 1_000;

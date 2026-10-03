@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostToConvertStringII;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the AllPairsShortestPaths arm - so building the substring conversion graph
 // is charged to [GlobalSetup] rather than to the per-position DP walk being
 // measured.
-[MemoryDiagnoser]
 public class MinimumCostToConvertStringIIBenchmarks
 {
     private const int RulesSeed = 2977;

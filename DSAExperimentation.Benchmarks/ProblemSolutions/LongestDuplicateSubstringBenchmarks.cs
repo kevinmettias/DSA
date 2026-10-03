@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestDuplicateSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are LongestDuplicateSubstringSolution's. A small alphabet
 // makes duplicates plentiful and long, so the all-pairs baseline pays for real
 // character scans rather than failing on the first character every time.
-[MemoryDiagnoser]
 public class LongestDuplicateSubstringBenchmarks
 {
     private const int AlphabetSize = 4;

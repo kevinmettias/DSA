@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.FlattenBinaryTreeToLinkedList;
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // friends make, since a public [Benchmark] method cannot name an internal return
 // type (CS0050). It returned void before, which dropped the only thing the two arms
 // could be compared on.
-[MemoryDiagnoser]
 public class FlattenBinaryTreeToLinkedListBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

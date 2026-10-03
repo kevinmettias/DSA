@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LetterCombinationsOfAPhoneNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // than the answer LetterCombinationsByBacktracking actually produces; promoted
 // here to match, the same deliberate change ARCHITECTURE.md §17.8 records for
 // WordLadderII.
-[MemoryDiagnoser]
 public class LetterCombinationsOfAPhoneNumberBenchmarks
 {
     private string _digits = "";

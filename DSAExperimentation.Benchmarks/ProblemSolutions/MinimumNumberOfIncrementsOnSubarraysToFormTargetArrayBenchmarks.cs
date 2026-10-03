@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfIncrementsOnSubarraysToFormTargetArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // simulation of the increment operations (O(n * max(target))) against the O(n) single pass that
 // sums positive rises between consecutive elements. Random heights up to 50 give the simulation
 // enough layers to separate the two.
-[MemoryDiagnoser]
 public class MinimumNumberOfIncrementsOnSubarraysToFormTargetArrayBenchmarks
 {
     private const int RandomSeed = 1526; // LC 1526

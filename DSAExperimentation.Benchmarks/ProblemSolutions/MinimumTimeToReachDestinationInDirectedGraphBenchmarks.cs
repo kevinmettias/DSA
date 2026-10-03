@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToReachDestinationInDirectedGraph;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MinimumTimeToReachDestinationInDirectedGraphTests proves correct. Each arm is
 // handed a prebuilt TimeWindowAdjacency, so adjacency-list construction is
 // charged to [GlobalSetup] rather than the search being measured.
-[MemoryDiagnoser]
 public class MinimumTimeToReachDestinationInDirectedGraphBenchmarks
 {
     private const int Seed = 3604;

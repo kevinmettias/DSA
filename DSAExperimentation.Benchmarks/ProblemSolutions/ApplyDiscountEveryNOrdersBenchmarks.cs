@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ApplyDiscountEveryNOrders;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // builds one bill that requests every product id in reverse catalogue order, so the
 // linear scan is forced through its full worst-case pass per lookup instead of an
 // early exit making it look artificially competitive.
-[MemoryDiagnoser]
 public class ApplyDiscountEveryNOrdersBenchmarks
 {
     private const int PricePerUnit = 10;

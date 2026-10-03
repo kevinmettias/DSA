@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.DiameterOfBinaryTree;
 
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Diameter of Binary Tree (LC 543): a naive recursive height-per-node approach,
 // O(n^2) overall, vs. this repo's own TreeMetrics.Diameter fold, O(n). See
 // DiameterOfBinaryTreeSolution for what each strategy does.
-[MemoryDiagnoser]
 public class DiameterOfBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

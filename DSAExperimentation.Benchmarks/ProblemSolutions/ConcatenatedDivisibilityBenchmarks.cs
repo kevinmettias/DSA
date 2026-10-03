@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ConcatenatedDivisibility;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arms still finish in reasonable time; this is exactly the range where the
 // bitmask-DP arm's polynomial cost should start pulling away from the baseline's
 // factorial one.
-[MemoryDiagnoser]
 public class ConcatenatedDivisibilityBenchmarks
 {
     // LC problem number, reused as the deterministic input seed.

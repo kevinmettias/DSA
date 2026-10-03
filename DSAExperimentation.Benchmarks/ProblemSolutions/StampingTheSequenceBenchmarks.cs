@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StampingTheSequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (higher per-call constant cost through DynamicArray), but at Repeats=20,000
 // (m~20,000) the list's quadratic shifting dominates and the stack arm wins by ~3x -
 // the quadratic term overtaking the constant-factor gap, not benchmark noise.
-[MemoryDiagnoser]
 public class StampingTheSequenceBenchmarks
 {
     private const string Stamp = "abcd";

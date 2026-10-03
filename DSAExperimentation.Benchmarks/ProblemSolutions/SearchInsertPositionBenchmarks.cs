@@ -3,7 +3,6 @@ using DSAExperimentation.LeetCode.SearchInsertPosition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-[MemoryDiagnoser]
 public class SearchInsertPositionBenchmarks
 {
     // Values are spaced by this step (even numbers only); the search target is derived

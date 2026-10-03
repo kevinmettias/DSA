@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ShortestPathVisitingAllNodes;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // per start instead of sharing one frontier - so this is also an honest look at
 // that cost, the same spirit ShortestPathAlgorithmBenchmarks' FloydWarshall
 // entry already documents.
-[MemoryDiagnoser]
 public class ShortestPathVisitingAllNodesBenchmarks
 {
     private const int RandomSeed = 847;

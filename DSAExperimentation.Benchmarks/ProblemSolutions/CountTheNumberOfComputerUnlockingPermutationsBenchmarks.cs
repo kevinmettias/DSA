@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountTheNumberOfComputerUnlockingPermutations;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // always solvable (complexity[0] is the global minimum), so Backtracking explores its
 // full, uncollapsed (n-1)! search tree - the case FactorialFormula's O(n) closed form
 // exists to replace.
-[MemoryDiagnoser]
 public class CountTheNumberOfComputerUnlockingPermutationsBenchmarks
 {
     private const int ComplexitySeed = 3577;

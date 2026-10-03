@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestNumberInInfiniteSet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // List<int>'s O(n) minimum scan plus O(n) Contains per operation against
 // Heap<Element, MinHeapOrder<Element>> + Set<Element>'s O(log n) pop and O(1) duplicate
 // rejection.
-[MemoryDiagnoser]
 public class SmallestNumberInInfiniteSetBenchmarks
 {
     private const int OpsCapacityMultiplier = 2;

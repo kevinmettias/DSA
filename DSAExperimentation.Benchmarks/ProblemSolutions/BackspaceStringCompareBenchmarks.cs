@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BackspaceStringCompare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already draws for LC 752. _firstText and _secondText are built from the same seed, so both arms
 // are forced through their full replay of both strings instead of short-circuiting
 // on an early character mismatch.
-[MemoryDiagnoser]
 public class BackspaceStringCompareBenchmarks
 {
     private const int RandomSeed = 844; // LC problem number

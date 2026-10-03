@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimizeManhattanDistances;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimizeManhattanDistancesTests proves correct. The transform arm is
 // handed the already-sorted u/v arrays, so the O(n log n) sort is charged to
 // [GlobalSetup] and only the O(n) per-removal sweep is measured.
-[MemoryDiagnoser]
 public class MinimizeManhattanDistancesBenchmarks
 {
     private const int Seed = 3102;

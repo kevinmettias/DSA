@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfPossibleSetsOfClosingBranches;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // that varies - denser graphs shrink shortest paths, changing how many of the
 // 1024 subsets pass the maxDistance check without changing the O(2^n * n^3) shape
 // either arm does to find out.
-[MemoryDiagnoser]
 public class NumberOfPossibleSetsOfClosingBranchesBenchmarks
 {
     private const int RandomSeed = 2959; // LC problem number

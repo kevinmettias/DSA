@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RemoveKDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RemoveKDigitsTests proves correct - the LargestRectangleInHistogramBenchmarks
 // precedent (O(n*k)-ish baseline vs. O(n) primitive-based sweep) applied to
 // string-digit removal instead of histogram area.
-[MemoryDiagnoser]
 public class RemoveKDigitsBenchmarks
 {
     private const int DigitCount = 10;

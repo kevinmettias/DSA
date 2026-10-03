@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindWinnerOnATicTacToeGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // into a move order in [GlobalSetup], so only the replay is measured; a completed
 // line is vanishingly unlikely under a random alternating fill, so both arms walk
 // every move and report a draw.
-[MemoryDiagnoser]
 public class FindWinnerOnATicTacToeGameBenchmarks
 {
     // LC problem number, reused as the deterministic move-order seed.

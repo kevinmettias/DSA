@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumWeightedSubgraphWithTheRequiredPaths;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed the prepared RequiredPathsGraph its hoisted overload takes, so building
 // both orientations is charged to [GlobalSetup] rather than to the three searches
 // being measured.
-[MemoryDiagnoser]
 public class MinimumWeightedSubgraphWithTheRequiredPathsBenchmarks
 {
     private const int RandomSeed = 2203;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SuperEggDrop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // chosen at each (eggs, floors) state - an exhaustive scan of every candidate,
 // O(eggs * floors^2), against a bisection on the monotonic worst-case curve,
 // O(eggs * floors * log(floors)).
-[MemoryDiagnoser]
 public class SuperEggDropBenchmarks
 {
     private const int Eggs = 2;

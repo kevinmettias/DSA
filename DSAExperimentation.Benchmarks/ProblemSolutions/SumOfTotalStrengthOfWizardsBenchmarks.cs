@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfTotalStrengthOfWizards;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // permutation so the brute-force arm's inner loop always runs its full remaining
 // length - with every value distinct there is no run of equal minimums to let it
 // settle early.
-[MemoryDiagnoser]
 public class SumOfTotalStrengthOfWizardsBenchmarks
 {
     // LC problem number, used as the RNG seed.

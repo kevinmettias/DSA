@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ModifyGraphEdgeWeights;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // as it searches, so the graph itself has to be rebuilt per invocation and cannot
 // be prepared once - which is also why neither strategy carries a prepared-input
 // overload (ARCHITECTURE.md 17.4).
-[MemoryDiagnoser]
 public class ModifyGraphEdgeWeightsBenchmarks
 {
     private const int FixedEdgeWeight = 2;

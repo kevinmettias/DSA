@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.QueryKthSmallestTrimmedNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // trimmed suffix, k times" baseline (O(n*k)) against sorting an index array once per query
 // with this repo's own MergeSort (O(n log n)) and reading off position k directly. Both
 // replay the identical randomly generated query batch.
-[MemoryDiagnoser]
 public class QueryKthSmallestTrimmedNumberBenchmarks
 {
     private const int DigitLength = 5;

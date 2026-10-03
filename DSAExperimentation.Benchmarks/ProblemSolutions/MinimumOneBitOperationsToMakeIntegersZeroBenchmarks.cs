@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumOneBitOperationsToMakeIntegersZero;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // itself (within a small constant factor of the target); the closed form only ever
 // touches the target's own ~log2(n) bits. The input is the single integer LeetCode
 // hands in, so there is nothing for a [GlobalSetup] to prepare.
-[MemoryDiagnoser]
 public class MinimumOneBitOperationsToMakeIntegersZeroBenchmarks
 {
     [Params(2_000, 50_000)]

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SatisfiabilityOfEqualityEquations;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // list rebuilt from the "==" equations; the composed arm is this repo's own
 // DisjointSet(26) - O(1) Union per equality and O(a(26)) IsConnected per inequality,
 // with no per-query allocation.
-[MemoryDiagnoser]
 public class SatisfiabilityOfEqualityEquationsBenchmarks
 {
     private const int RandomSeed = 1;

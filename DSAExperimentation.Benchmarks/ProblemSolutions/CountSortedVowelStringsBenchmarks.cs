@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSortedVowelStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's own worked example (33) specifically so MemoryDiagnoser shows a real
 // allocation gap - the baseline allocates one string per answer, the memoized
 // recurrence allocates one cache entry per state - and not just a wall-clock one.
-[MemoryDiagnoser]
 public class CountSortedVowelStringsBenchmarks
 {
     [Params(20, 35)]

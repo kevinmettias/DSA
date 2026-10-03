@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DailyTemperatures;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are DailyTemperaturesSolution's, the same methods
 // DailyTemperaturesTests proves correct. Temperatures are a random permutation so
 // no day's answer short-circuits the brute-force scan early.
-[MemoryDiagnoser]
 public class DailyTemperaturesBenchmarks
 {
     private const int RandomSeed = 739; private int[] _temperatures = [];

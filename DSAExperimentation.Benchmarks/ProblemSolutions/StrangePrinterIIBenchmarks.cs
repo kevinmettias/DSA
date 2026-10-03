@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StrangePrinterII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // guaranteed-acyclic chain (every "must print before" edge points from a lower
 // color id to a higher one, capped fan-out) so both strategies run their full real
 // workload instead of an early cycle bailout.
-[MemoryDiagnoser]
 public class StrangePrinterIIBenchmarks
 {
     private const int MaxFanOut = 3;

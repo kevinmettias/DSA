@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReachingPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ReachingPointsTests proves correct. TargetY is fixed small so growing TargetX makes
 // the subtractive reduction's step count grow with it, while the modulo reduction's
 // stays flat.
-[MemoryDiagnoser]
 public class ReachingPointsBenchmarks
 {
     private const int SourceX = 1;

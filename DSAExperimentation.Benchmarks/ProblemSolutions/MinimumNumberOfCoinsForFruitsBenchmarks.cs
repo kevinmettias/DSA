@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfCoinsForFruits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the window collapsing to a fixed small shape, so the segment-tree strategy's
 // O(log n) queries are actually exercised against the brute force's O(window)
 // rescans.
-[MemoryDiagnoser]
 public class MinimumNumberOfCoinsForFruitsBenchmarks
 {
     private const int MaxPriceExclusive = 1_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestHappyPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // all-'a' string would give it (its very first, longest candidate would match
 // immediately). It also makes the answer the empty prefix, so neither arm is
 // charged for a substring allocation the other avoids.
-[MemoryDiagnoser]
 public class LongestHappyPrefixBenchmarks
 {
     private const string MismatchSuffix = "b"; private string _value = "";

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.TheKthFactorOfN;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead of an early return on the first factor making brute force look artificially
 // competitive - the same "unreachable target" idea TwoSumBenchmarks uses. The random
 // numbers are built once in [GlobalSetup], so generation is not charged to either arm.
-[MemoryDiagnoser]
 public class TheKthFactorOfNBenchmarks
 {
     private const int UnreachableK = 40;

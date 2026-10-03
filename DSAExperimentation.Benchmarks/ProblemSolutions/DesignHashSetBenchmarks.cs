@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignHashSet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the measured method) and each [Benchmark] arm constructs its own instance and
 // replays the same add-then-probe script - O(n) per call vs. O(1) average per
 // call.
-[MemoryDiagnoser]
 public class DesignHashSetBenchmarks
 {
     private const int RandomSeed = 705; private int[] _addOrder = [];

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RandomPointInNonOverlappingRectangles;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // draw from a fresh, identically-seeded Random per invocation so neither benefits
 // from a luckier draw order; the summed coordinates avoid materializing an int[]
 // per pick while still exercising the real point both arms return.
-[MemoryDiagnoser]
 public class RandomPointInNonOverlappingRectanglesBenchmarks
 {
     private const int PickCalls = 500;

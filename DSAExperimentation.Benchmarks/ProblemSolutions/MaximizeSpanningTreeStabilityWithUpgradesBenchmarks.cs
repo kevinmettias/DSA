@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximizeSpanningTreeStabilityWithUpgrades;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximizeSpanningTreeStabilityWithUpgradesTests proves correct. Each arm is
 // handed a prebuilt StabilityGraph, so parsing edges into must/optional buckets is
 // charged to [GlobalSetup] rather than the binary search being measured.
-[MemoryDiagnoser]
 public class MaximizeSpanningTreeStabilityWithUpgradesBenchmarks
 {
     private const int Seed = 3600;

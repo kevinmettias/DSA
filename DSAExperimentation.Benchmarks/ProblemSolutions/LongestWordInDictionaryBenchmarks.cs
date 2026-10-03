@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestWordInDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // half-real-root generator uses - which guarantees most words are genuinely
 // buildable, forcing both strategies through their full prefix-chain walk instead
 // of an early mismatch.
-[MemoryDiagnoser]
 public class LongestWordInDictionaryBenchmarks
 {
     // LC problem number, used as the deterministic setup seed.

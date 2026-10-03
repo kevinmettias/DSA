@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheNumberOfSubsequencesWithEqualGcd;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // baseline can survive") - the memoized arm's whole point is that it doesn't care
 // how large n gets, only how many distinct (index, gcd1, gcd2) states actually
 // occur.
-[MemoryDiagnoser]
 public class FindTheNumberOfSubsequencesWithEqualGcdBenchmarks
 {
     private const int MinValueInclusive = 1;

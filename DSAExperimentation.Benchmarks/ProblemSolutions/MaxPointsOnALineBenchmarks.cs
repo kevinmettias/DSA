@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaxPointsOnALine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaxPointsOnALineTests proves correct. _points is drawn uniformly at random
 // over a wide coordinate range, so the answer stays small (2-3) and neither
 // strategy gets to short-circuit on an early large find.
-[MemoryDiagnoser]
 public class MaxPointsOnALineBenchmarks
 {
     private const int RandomSeed = 149; // LC problem number

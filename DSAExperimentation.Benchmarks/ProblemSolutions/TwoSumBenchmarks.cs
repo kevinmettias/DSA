@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TwoSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // proves correct. Target is deliberately unreachable (all values positive, target
 // negative) so BOTH strategies are forced through their full worst-case scan
 // instead of an early exit making brute force look artificially competitive.
-[MemoryDiagnoser]
 public class TwoSumBenchmarks
 {
     private const int Target = -1;

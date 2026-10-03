@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MergeTripletsToFormTargetTriplet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead of an early exit making brute force look artificially competitive. The
 // triplet array is LeetCode's own input shape, so neither arm needs a hoisted
 // overload.
-[MemoryDiagnoser]
 public class MergeTripletsToFormTargetTripletBenchmarks
 {
     private const int RandomSeed = 1899; // LC problem number

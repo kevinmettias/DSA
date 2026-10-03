@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods FindTheCountOfMonotonicPairsITests proves correct. nums[i] stays
 // within Part I's own constraint (<= 50), the range where the O(n * maxValue^2)
 // baseline is still meant to be viable.
-[MemoryDiagnoser]
 public class FindTheCountOfMonotonicPairsIBenchmarks
 {
     private const int MaxValue = 50;

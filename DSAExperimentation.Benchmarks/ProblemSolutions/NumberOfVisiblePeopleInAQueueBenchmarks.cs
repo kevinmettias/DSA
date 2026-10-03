@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfVisiblePeopleInAQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods NumberOfVisiblePeopleInAQueueTests proves correct. Heights are a random
 // permutation so no person's answer short-circuits the brute-force scan early
 // (DailyTemperaturesBenchmarks' own precedent for this workload shape).
-[MemoryDiagnoser]
 public class NumberOfVisiblePeopleInAQueueBenchmarks
 {
     private const int RandomSeed = 1944; private int[] _heights = [];

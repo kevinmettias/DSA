@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.MergeNodesInBetweenZeros;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MemoryDiagnoser is what separates them. [GlobalSetup] builds the delimited list
 // (workload sizing), and neither strategy mutates the list it is handed, so one
 // prepared chain serves every invocation and neither arm needs a hoisted overload.
-[MemoryDiagnoser]
 public class MergeNodesInBetweenZerosBenchmarks
 {
     private const int GroupSizeExclusiveUpperBound = 5;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountConnectedComponentsInLCMGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // deterministic set of distinct values in [1, Threshold] so both arms actually
 // have work to connect, rather than the pairwise scan degenerating to n isolated
 // components.
-[MemoryDiagnoser]
 public class CountConnectedComponentsInLCMGraphBenchmarks
 {
     private const int Threshold = 2_000;

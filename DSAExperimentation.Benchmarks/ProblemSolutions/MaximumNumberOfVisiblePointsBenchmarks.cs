@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfVisiblePoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // angle-doubled array. _points is generated so none land exactly on Location (that
 // case short-circuits to O(1) and would understate both strategies' real windowed-
 // comparison cost); [GlobalSetup] owns that construction.
-[MemoryDiagnoser]
 public class MaximumNumberOfVisiblePointsBenchmarks
 {
     private const int Angle = 30;

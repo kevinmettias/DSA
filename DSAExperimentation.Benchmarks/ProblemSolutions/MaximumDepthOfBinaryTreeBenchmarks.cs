@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MaximumDepthOfBinaryTree;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumDepthOfBinaryTreeSolution's, the same
 // methods MaximumDepthOfBinaryTreeTests proves correct.
-[MemoryDiagnoser]
 public class MaximumDepthOfBinaryTreeBenchmarks
 {
     private const int RootValue = 3;

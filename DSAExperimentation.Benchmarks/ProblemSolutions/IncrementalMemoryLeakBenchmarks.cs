@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IncrementalMemoryLeak;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // IncrementalMemoryLeakTests proves correct. The two sticks start equal, so the
 // heap arm pays its tie-break on every single round - the worst case for routing
 // this allocation through a priority structure rather than an if/else.
-[MemoryDiagnoser]
 public class IncrementalMemoryLeakBenchmarks
 {
     [Params(1_000_000, 100_000_000)]

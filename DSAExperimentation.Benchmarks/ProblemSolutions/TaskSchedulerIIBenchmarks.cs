@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TaskSchedulerII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // all the way to the start - the same "force the real worst case" trick
 // TwoSumBenchmarks' unreachable target uses - while the HashMap arm still pays one
 // lookup and one write per task.
-[MemoryDiagnoser]
 public class TaskSchedulerIIBenchmarks
 {
     private const int Space = 1;

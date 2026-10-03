@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfDistinctRollSequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own Memoizer. The sequence length stays small enough that the exponential arm
 // still finishes (CanIWinBenchmarks' precedent for bounding a brute-force baseline's
 // input size).
-[MemoryDiagnoser]
 public class NumberOfDistinctRollSequencesBenchmarks
 {
     [Params(6, 10)]

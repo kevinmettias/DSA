@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidArrangementOfPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Hierholzer walk against the same walk over this repo's own
 // HashMap<int, Stack<int>>. Both are handed LeetCode's own input shape, generated
 // once in [GlobalSetup] so pair construction is not charged to the measured method.
-[MemoryDiagnoser]
 public class ValidArrangementOfPairsBenchmarks
 {
     private const int NodeCount = 64;

@@ -12,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // value order, so its input does not need to actually satisfy the BST property
 // to time correctly. [Benchmark] drains a fresh iterator end to end so every
 // next()/hasNext() pair across the tree is charged, not just the first.
-[MemoryDiagnoser]
 public class BinarySearchTreeIteratorBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

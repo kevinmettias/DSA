@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ExtraCharactersInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // shortcut - both are forced through their full per-start scan strategy, which is
 // exactly the difference being measured: a full-length substring sweep against a trie
 // walk that stops at the first dead prefix.
-[MemoryDiagnoser]
 public class ExtraCharactersInAStringBenchmarks
 {
     private static readonly string[] Dictionary = ["ab", "cd", "ef", "gh", "ij"];

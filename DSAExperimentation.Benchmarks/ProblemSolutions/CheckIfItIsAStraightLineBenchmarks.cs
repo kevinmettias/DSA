@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckIfItIsAStraightLine;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // first two points. _coordinates is always collinear so BOTH strategies are forced
 // through their full worst-case scan instead of an early exit on the first bad
 // triple/point making brute force look artificially competitive.
-[MemoryDiagnoser]
 public class CheckIfItIsAStraightLineBenchmarks
 {
     private int[][] _coordinates = [];

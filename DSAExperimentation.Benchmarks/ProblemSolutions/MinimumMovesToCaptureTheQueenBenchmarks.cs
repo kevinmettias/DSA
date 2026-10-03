@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumMovesToCaptureTheQueen;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // random queries per iteration (a workload-sizing decision, same role
 // LockWorkloads.BuildDeadends(count, seed) plays for OpenTheLockBenchmarks), which
 // is what actually gives BenchmarkDotNet something to scale.
-[MemoryDiagnoser]
 public class MinimumMovesToCaptureTheQueenBenchmarks
 {
     private const int Seed = 3001;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FlowerPlantingWithNoAdjacent;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // repo's own ListChildren/IGraphTopology adjacency plus a Set<int> per garden;
 // building that adjacency is charged to [GlobalSetup] by handing the composed arm
 // the prepared GardenNetwork its hoisted overload takes.
-[MemoryDiagnoser]
 public class FlowerPlantingWithNoAdjacentBenchmarks
 {
     private int[][] _paths = [];

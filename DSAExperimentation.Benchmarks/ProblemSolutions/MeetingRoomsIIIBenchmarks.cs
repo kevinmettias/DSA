@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MeetingRoomsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // to 3x RoomCount) that rooms routinely contend and delay, forcing real pool churn
 // instead of every meeting finding an immediately free room; [GlobalSetup] owns that
 // construction.
-[MemoryDiagnoser]
 public class MeetingRoomsIIIBenchmarks
 {
     private const int MeetingsPerRoom = 50;

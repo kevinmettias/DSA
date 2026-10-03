@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SurfaceAreaOf3DShapes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // padded arm's own border allocation stays inside the measured method because paying
 // for it once is precisely the trade it makes against the baseline's per-cell
 // bounds checks.
-[MemoryDiagnoser]
 public class SurfaceAreaOf3DShapesBenchmarks
 {
     // Exclusive upper bound passed to Random.Next(0, _): cell heights land in [0, 49].

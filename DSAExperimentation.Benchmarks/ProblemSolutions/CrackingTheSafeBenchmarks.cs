@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CrackingTheSafe;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // for a reasonable iteration budget while still isolating the constant-factor cost of
 // Backtrack.TrySearch's generic delegate dispatch from an equivalent purpose-built
 // recursion.
-[MemoryDiagnoser]
 public class CrackingTheSafeBenchmarks
 {
     private const int K = 2;

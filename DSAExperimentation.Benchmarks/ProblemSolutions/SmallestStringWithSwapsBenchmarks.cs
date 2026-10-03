@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestStringWithSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategies take, so [GlobalSetup] only decides how large the workload is and hands
 // the finished input straight over; there is no construction left for a hoisted
 // overload to lift out of the measured methods.
-[MemoryDiagnoser]
 public class SmallestStringWithSwapsBenchmarks
 {
     // LC problem number, used as the RNG seed.

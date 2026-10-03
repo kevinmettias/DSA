@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfScoresOfBuiltStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the brute force's actual worst case. A high-entropy string lets it bail out of
 // nearly every comparison after one character and the two arms look far closer
 // than they are.
-[MemoryDiagnoser]
 public class SumOfScoresOfBuiltStringsBenchmarks
 {
     private const int RandomSeed = 2223; // LC problem number

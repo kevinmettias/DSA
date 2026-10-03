@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.XORAfterRangeMultiplicationQueriesII;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods XORAfterRangeMultiplicationQueriesIITests proves correct. nums and
 // queries are built once in [GlobalSetup]; both arms take LeetCode's own array
 // shape directly, so there is nothing further to hoist.
-[MemoryDiagnoser]
 public class XORAfterRangeMultiplicationQueriesIIBenchmarks
 {
     private const int Seed = 3655;

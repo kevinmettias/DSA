@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountNumberOfTeams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against the O(n log n) pair of coordinate-compressed FenwickTree sweeps. The
 // rating array is the problem's own input shape, so building it is all
 // [GlobalSetup] has to do.
-[MemoryDiagnoser]
 public class CountNumberOfTeamsBenchmarks
 {
     private const int RandomSeed = 1395; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RectangleOverlap;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // 1's side along both axes, so the two always overlap and the shared region scales
 // with Side - the unit-grid arm still has to paint the whole bounding box before it
 // can answer, while the closed-form arm stays O(1).
-[MemoryDiagnoser]
 public class RectangleOverlapBenchmarks
 {
     private const int OffsetDivisor = 2;

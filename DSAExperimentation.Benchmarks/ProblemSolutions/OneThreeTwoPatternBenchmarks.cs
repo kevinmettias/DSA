@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OneThreeTwoPattern;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // OneThreeTwoPatternTests proves correct. _nums is strictly increasing, which
 // contains no 132 pattern at all, forcing both strategies through their full
 // worst-case scan instead of an early exit on the first triple.
-[MemoryDiagnoser]
 public class OneThreeTwoPatternBenchmarks
 {
     private int[] _nums = [];

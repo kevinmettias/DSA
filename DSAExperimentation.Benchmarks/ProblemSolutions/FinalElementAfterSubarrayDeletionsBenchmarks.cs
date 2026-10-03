@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FinalElementAfterSubarrayDeletions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // subset of the array, so this is the axis whose state count they pay for -
 // EndpointComparison ignores it entirely, which is the point of measuring it
 // alongside them.
-[MemoryDiagnoser]
 public class FinalElementAfterSubarrayDeletionsBenchmarks
 {
     private const int Seed = 3828; // LC problem number

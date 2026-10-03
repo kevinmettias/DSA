@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckIfItIsAGoodArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // multiples of 3, guaranteeing the running gcd never reaches 1 early, so both arms
 // are forced through every element instead of one short-circuiting on the first
 // pair.
-[MemoryDiagnoser]
 public class CheckIfItIsAGoodArrayBenchmarks
 {
     private const int RandomSeed = 6;

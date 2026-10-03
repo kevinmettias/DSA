@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidPalindromeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // correct. _text places two differing characters symmetrically off-center so the
 // initial scan runs a genuine O(n) distance before finding the mismatch,
 // instead of collapsing to O(1) at either end.
-[MemoryDiagnoser]
 public class ValidPalindromeIIBenchmarks
 {
     private const int OffsetDivisor = 3;

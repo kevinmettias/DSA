@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DeliveringBoxesFromStorageToPorts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Deque<int> carrying the window's minimum (O(n), each index pushed and popped at
 // most once). The seeded boxes and their prefix scans are built into a
 // BoxDeliverySchedule in [GlobalSetup], so only the dp sweep is measured.
-[MemoryDiagnoser]
 public class DeliveringBoxesFromStorageToPortsBenchmarks
 {
     private const int MaxBoxes = 50;

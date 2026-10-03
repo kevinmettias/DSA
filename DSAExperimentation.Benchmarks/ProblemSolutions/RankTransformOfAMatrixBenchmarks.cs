@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RankTransformOfAMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are RankTransformOfAMatrixSolution's, the same methods
 // RankTransformOfAMatrixTests proves correct. Values are random in
 // [-10^5, 10^5), matching LeetCode's own constraint range.
-[MemoryDiagnoser]
 public class RankTransformOfAMatrixBenchmarks
 {
     private const int RandomSeed = 1632; // LC 1632: Rank Transform of a Matrix

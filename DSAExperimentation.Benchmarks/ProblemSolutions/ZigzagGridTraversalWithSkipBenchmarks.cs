@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ZigzagGridTraversalWithSkip;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods ZigzagGridTraversalWithSkipTests proves correct. The grid needs no
 // preprocessing beyond building it, so [GlobalSetup] only charges workload
 // construction, not any part of either traversal.
-[MemoryDiagnoser]
 public class ZigzagGridTraversalWithSkipBenchmarks
 {
     private const int Seed = 3417;

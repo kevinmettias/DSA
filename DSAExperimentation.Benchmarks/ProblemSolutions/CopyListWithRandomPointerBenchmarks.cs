@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.CopyListWithRandomPointer;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not RandomLinkedListNode<int>? - the node type is internal, so
 // a public [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class CopyListWithRandomPointerBenchmarks
 {
     private const int Seed = 138;

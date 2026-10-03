@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Finding3DigitEvenNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // possible distinct 3-digit even numbers actually get found, giving the baseline's
 // growing List.Contains scan real duplicate-checking work to pay for on every
 // candidate instead of exiting a mostly-empty list immediately.
-[MemoryDiagnoser]
 public class Finding3DigitEvenNumbersBenchmarks
 {
     private const int RandomSeed = 2094; // LC problem number

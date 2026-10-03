@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SplitArrayLargestSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SplitArrayLargestSumSolution's, the same methods
 // SplitArrayLargestSumTests proves correct.
-[MemoryDiagnoser]
 public class SplitArrayLargestSumBenchmarks
 {
     private const int RandomSeed = 410; // LC problem number

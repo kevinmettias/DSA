@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.PathSum;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PathSumSolution's, the same methods PathSumTests
 // proves correct.
-[MemoryDiagnoser]
 public class PathSumBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

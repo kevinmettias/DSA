@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountNumberOfTrapezoidsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // problem's n up to 500 comfortably at O(n^2). Points are drawn from a small
 // coordinate range so repeated slopes - and therefore parallel sides - reliably
 // occur.
-[MemoryDiagnoser]
 public class CountNumberOfTrapezoidsIIBenchmarks
 {
     private const int Seed = 3625; // LC problem number

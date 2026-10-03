@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BinaryTreeMaximumPathSum;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // method BinaryTreeMaximumPathSumTests proves correct. Pre-migration this class
 // was an untested compile-smoke placeholder (`Baseline() => 1`,
 // `PrimitiveComposed() => 1`) rather than a second strategy to reconcile.
-[MemoryDiagnoser]
 public class BinaryTreeMaximumPathSumBenchmarks
 {
     // LeetCode 124's own second example tree: the best path (15 -> 20 -> 7)

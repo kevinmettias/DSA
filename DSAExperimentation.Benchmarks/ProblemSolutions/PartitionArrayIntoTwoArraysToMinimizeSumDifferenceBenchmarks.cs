@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PartitionArrayIntoTwoArraysToMinimizeSumDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PartitionArrayIntoTwoArraysToMinimizeSumDifferenceTests proves correct - a
 // direct O(2^(2n)) scan of every size-n bitmask over the whole array against
 // meet-in-the-middle over each half's subset sums grouped by subset size.
-[MemoryDiagnoser]
 public class PartitionArrayIntoTwoArraysToMinimizeSumDifferenceBenchmarks
 {
     // LC problem number, reused as the deterministic random seed.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.LeetCode.MinimumCostToPartitionABinaryString;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // its LockGraph arm. Length is a power of two so the split-in-half recursion
 // bottoms out at single characters instead of stopping early on an odd
 // length, giving both arms their deepest possible recursion tree.
-[MemoryDiagnoser]
 public class MinimumCostToPartitionABinaryStringBenchmarks
 {
     private const int Seed = 3864;

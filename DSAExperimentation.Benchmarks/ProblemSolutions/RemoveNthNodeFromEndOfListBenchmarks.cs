@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.RemoveNthNodeFromEndOfList;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int> - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class RemoveNthNodeFromEndOfListBenchmarks
 {
     // Both benchmarks remove the node at roughly the middle position so they do

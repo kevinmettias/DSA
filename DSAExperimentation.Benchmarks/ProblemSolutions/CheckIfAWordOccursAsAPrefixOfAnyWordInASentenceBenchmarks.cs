@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.LeetCode.CheckIfAWordOccursAsAPrefixOfAnyWordInASentence;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed the already-split words its hoisted overload takes, so splitting the
 // sentence is charged to [GlobalSetup] rather than to the scan being measured. The
 // search word never matches, so both strategies walk every word.
-[MemoryDiagnoser]
 public class CheckIfAWordOccursAsAPrefixOfAnyWordInASentenceBenchmarks
 {
     // LC problem number, reused as the deterministic sentence seed.

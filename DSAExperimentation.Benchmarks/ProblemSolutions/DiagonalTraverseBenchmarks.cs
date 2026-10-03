@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DiagonalTraverse;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DiagonalTraverseSolution's, the same methods
 // DiagonalTraverseTests proves correct.
-[MemoryDiagnoser]
 public class DiagonalTraverseBenchmarks
 {
     private int[][] _matrix = [];

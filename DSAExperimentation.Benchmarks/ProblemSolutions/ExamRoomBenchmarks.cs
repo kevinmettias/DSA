@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ExamRoom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one of them leave in the order they arrived, so both arms run the same call script.
 // The room itself is stateful and must be rebuilt per invocation, so [GlobalSetup] only
 // fixes the workload SIZE (ARCHITECTURE.md §17.7).
-[MemoryDiagnoser]
 public class ExamRoomBenchmarks
 {
     // Extra room capacity appended beyond Length so the end-of-room gap is never the

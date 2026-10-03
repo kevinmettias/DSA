@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheNthValueAfterKSeconds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // simulation vs. the closed-form modular binomial coefficient. n and k grow
 // together via the same [Params] axis so the O(n*k) arm's quadratic-ish blowup
 // against the closed form's near-linear one shows up in the ratio.
-[MemoryDiagnoser]
 public class FindTheNthValueAfterKSecondsBenchmarks
 {
     [Params(50, 300)]

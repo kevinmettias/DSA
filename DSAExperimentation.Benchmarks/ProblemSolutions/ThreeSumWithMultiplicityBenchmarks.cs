@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ThreeSumWithMultiplicity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (baseline, the textbook approach) vs. MergeSort plus the sorted two-pointer sweep
 // that counts each equal-valued span's combinations directly instead of visiting
 // one pair at a time.
-[MemoryDiagnoser]
 public class ThreeSumWithMultiplicityBenchmarks
 {
     private const int Target = 150;

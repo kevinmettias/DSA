@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindConsecutiveIntegersFromADataStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // values, so stream generation is charged to setup rather than to the replay each arm
 // measures. `Value` is rare in the stream, so the window almost never gives either arm
 // a chance to short-circuit early.
-[MemoryDiagnoser]
 public class FindConsecutiveIntegersFromADataStreamBenchmarks
 {
     private const int RandomSeed = 2526; // LC problem number

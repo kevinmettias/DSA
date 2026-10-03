@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BaseballGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods BaseballGameTests proves correct. _ops never emits "C" so
 // both strategies grow monotonically, keeping the comparison about push/peek/pop
 // cost rather than the shared "C" underflow path.
-[MemoryDiagnoser]
 public class BaseballGameBenchmarks
 {
     private const string DoubleOp = "D";

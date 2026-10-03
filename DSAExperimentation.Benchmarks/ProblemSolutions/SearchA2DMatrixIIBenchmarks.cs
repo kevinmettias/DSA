@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SearchA2DMatrixII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cluster. Target is fixed below every matrix value so all three are forced
 // through their full worst-case walk instead of an early exit making one look
 // artificially competitive.
-[MemoryDiagnoser]
 public class SearchA2DMatrixIIBenchmarks
 {
     private const int Target = -1;

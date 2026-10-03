@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumSumOfValuesByDividingArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // bailing out on "impossible" immediately. Length stays modest: the
 // Dictionary-memo baseline is still a recursion over every candidate group
 // boundary, and this is the axis whose state count that recursion pays for.
-[MemoryDiagnoser]
 public class MinimumSumOfValuesByDividingArrayBenchmarks
 {
     private const int Seed = 3117; // LC problem number

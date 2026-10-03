@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidSquare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the comparison measurable. Half the batch is real squares (random center/
 // half-side, axis-aligned), half is four independently-random points, so neither
 // strategy gets to shortcut on an all-true or all-false batch.
-[MemoryDiagnoser]
 public class ValidSquareBenchmarks
 {
     private const int RandomSeed = 593; // LC problem number

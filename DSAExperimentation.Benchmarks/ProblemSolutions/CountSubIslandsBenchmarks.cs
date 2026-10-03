@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubIslands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // setup rather than to the flood fill being measured. Each strategy copies grid2
 // internally (its own visited set), which is the same per-call clone both arms
 // already paid before the migration.
-[MemoryDiagnoser]
 public class CountSubIslandsBenchmarks
 {
     private const int RandomSeed = 1905; // LC 1905 problem number

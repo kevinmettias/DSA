@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaxAreaOfIsland;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each island's reachable land cells. Each strategy clones the shared grid
 // fixture internally before mutating it, so repeated benchmark invocations each
 // start from the true input.
-[MemoryDiagnoser]
 public class MaxAreaOfIslandBenchmarks
 {
     private const int RandomSeed = 3;

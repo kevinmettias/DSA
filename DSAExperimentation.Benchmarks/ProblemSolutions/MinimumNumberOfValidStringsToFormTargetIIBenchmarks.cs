@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(target.Length * sum(words[i].Length)) arm still completes - ZFunctionAcrossWords
 // is the strategy the real bound actually needs. A small 4-letter alphabet keeps
 // words and target overlapping heavily so both arms do real comparison work.
-[MemoryDiagnoser]
 public class MinimumNumberOfValidStringsToFormTargetIIBenchmarks
 {
     private const int RandomSeed = 3292; // LeetCode problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // shape as WordLadderBenchmarks, narrowed to the 4-letter DNA alphabet - which is
 // the whole measurable difference between LC 433 and LC 127, now that they share
 // DataStructures.Graph.Hamming.
-[MemoryDiagnoser]
 public class MinimumGeneticMutationBenchmarks
 {
     private const int GeneLength = 8;

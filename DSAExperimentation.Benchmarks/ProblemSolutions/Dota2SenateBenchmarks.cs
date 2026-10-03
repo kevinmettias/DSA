@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Dota2Senate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // early rounds of the circular-rescan baseline each skip past nearly the whole
 // opposing block before finding their target - the O(n^2) worst case that strategy
 // is deliberately shaped to hit.
-[MemoryDiagnoser]
 public class Dota2SenateBenchmarks
 {
     // Splits SenatorCount in half so the input is exactly one full block of each party.

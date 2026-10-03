@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RedundantConnection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // exactly one extra edge, which is LC 684's own precondition; the edges are then shuffled so
 // neither arm can rely on the answer being last. Both must name the same edge - the first one
 // whose endpoints are already connected.
-[MemoryDiagnoser]
 public class RedundantConnectionBenchmarks
 {
     private const int RandomSeed = 684; // LC problem number

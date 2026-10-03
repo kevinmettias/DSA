@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimizeTheMaximumEdgeWeightOfGraph;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is handed the prepared EdgeWeightGraph its hoisted overload takes, so building
 // the reversed adjacency is charged to [GlobalSetup] rather than either
 // feasibility search.
-[MemoryDiagnoser]
 public class MinimizeTheMaximumEdgeWeightOfGraphBenchmarks
 {
     private const int Seed = 3419;

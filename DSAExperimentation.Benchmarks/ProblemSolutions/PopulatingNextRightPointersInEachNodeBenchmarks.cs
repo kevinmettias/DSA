@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNode;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BenchmarkDotNet requirement) cannot return a type built over an internal one
 // (CS0050), the same constraint §17.8 already resolved for WordLadderII by taking
 // .Count of the real answer instead of a weaker one.
-[MemoryDiagnoser]
 public class PopulatingNextRightPointersInEachNodeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

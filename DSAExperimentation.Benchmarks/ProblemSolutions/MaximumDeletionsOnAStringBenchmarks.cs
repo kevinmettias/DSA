@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumDeletionsOnAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so most candidate half-lengths fail fast - exactly the shape where RollingHash's
 // O(1) screen avoids the baseline's per-candidate substring allocation instead of
 // merely relocating the same cost.
-[MemoryDiagnoser]
 public class MaximumDeletionsOnAStringBenchmarks
 {
     private const int RandomSeed = 2430; // LC problem number

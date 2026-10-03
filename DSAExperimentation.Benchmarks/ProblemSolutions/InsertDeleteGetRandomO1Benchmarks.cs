@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // method) and each [Benchmark] arm constructs its own instance and replays the same
 // insert-then-remove script, returning the surviving Count so the JIT can't eliminate
 // the replay as dead code.
-[MemoryDiagnoser]
 public class InsertDeleteGetRandomO1Benchmarks
 {
     private int[] _insertOrder = [];

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TransformedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TransformedArrayTests proves correct. Shifts are drawn from the full [-Length,
 // Length] range so the step-walk baseline is forced through long walks rather
 // than the small shifts LeetCode's own examples use.
-[MemoryDiagnoser]
 public class TransformedArrayBenchmarks
 {
     private const int Seed = 3379;

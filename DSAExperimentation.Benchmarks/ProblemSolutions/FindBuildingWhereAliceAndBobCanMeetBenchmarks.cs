@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindBuildingWhereAliceAndBobCanMeet;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // offline heap sweep's own "preparation" (bucketing each query at its hi index)
 // IS the algorithm, not a separable setup cost, so nothing here is hoisted past
 // [GlobalSetup] the way OpenTheLockBenchmarks hoists LockGraph.Build.
-[MemoryDiagnoser]
 public class FindBuildingWhereAliceAndBobCanMeetBenchmarks
 {
     private const int RandomSeed = 2940;

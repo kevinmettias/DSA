@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindServersThatHandledMostNumberOfRequests;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // generated wide enough (up to 3x ServerCount) that requests routinely outlive many
 // future arrivals, forcing real contention and wraparound instead of every request
 // finding `start` free immediately; [GlobalSetup] owns that construction.
-[MemoryDiagnoser]
 public class FindServersThatHandledMostNumberOfRequestsBenchmarks
 {
     private const int RequestsPerServer = 20;

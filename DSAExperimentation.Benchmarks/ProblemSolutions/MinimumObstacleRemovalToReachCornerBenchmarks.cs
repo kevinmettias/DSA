@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.LeetCode.MinimumObstacleRemovalToReachCorner;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // composed arm is handed the prepared obstacle-cost graph its hoisted overload
 // takes, so wiring the grid is charged to [GlobalSetup] rather than to the
 // Dijkstra search being measured.
-[MemoryDiagnoser]
 public class MinimumObstacleRemovalToReachCornerBenchmarks
 {
     private const int RandomSeed = 2290; private int[][] _grid = [];

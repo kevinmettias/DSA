@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.TwoSumIVInputIsABST;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // convention - so both strategies are forced through their full worst-case walk
 // instead of an early exit on the first invocation making the nested-loop
 // baseline look artificially competitive.
-[MemoryDiagnoser]
 public class TwoSumIVInputIsABSTBenchmarks
 {
     private const int Target = -1;

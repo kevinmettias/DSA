@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignEventManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pair to interleave (unlike DesignTaskManagerBenchmarks): this problem's events
 // are fixed at construction, so the script only ever updates or polls, never
 // grows the pool.
-[MemoryDiagnoser]
 public class DesignEventManagerBenchmarks
 {
     private const int Seed = 3885;

@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfEffectiveSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfEffectiveSubsequencesSolution's, the
 // same methods NumberOfEffectiveSubsequencesTests proves correct.
-[MemoryDiagnoser]
 public class NumberOfEffectiveSubsequencesBenchmarks
 {
     private const int Seed = 3757;

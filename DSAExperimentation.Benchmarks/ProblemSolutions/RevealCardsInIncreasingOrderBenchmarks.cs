@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RevealCardsInIncreasingOrder;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup]; each arm still does its own sort, because the sort is part of the
 // strategy and both pay the same O(n log n) for it - the difference measured here is
 // List<int>.RemoveAt(0)'s O(n) front removal against Queue<int>'s O(1) amortized one.
-[MemoryDiagnoser]
 public class RevealCardsInIncreasingOrderBenchmarks
 {
     private const int RandomSeed = 950; // LC problem number

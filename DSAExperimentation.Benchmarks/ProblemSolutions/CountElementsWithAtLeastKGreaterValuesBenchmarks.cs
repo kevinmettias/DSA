@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.CountElementsWithAtLeastKGreaterValues;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overload, so only the per-element bisection loop is measured - the same
 // "hoist construction, keep the search measured" split OpenTheLockBenchmarks
 // uses for LockGraph.Build.
-[MemoryDiagnoser]
 public class CountElementsWithAtLeastKGreaterValuesBenchmarks
 {
     private const int Seed = 3759;

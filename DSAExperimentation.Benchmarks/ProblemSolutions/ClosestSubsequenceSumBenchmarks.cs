@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ClosestSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // small magnitude bound and a goal far outside its reachable sum range, so neither
 // arm ever lands on an exact match and both scan to completion - which is what makes
 // the 2^n baseline and the 2*2^(n/2) meet-in-the-middle arm comparable.
-[MemoryDiagnoser]
 public class ClosestSubsequenceSumBenchmarks
 {
     private const int Goal = 1_000_000;

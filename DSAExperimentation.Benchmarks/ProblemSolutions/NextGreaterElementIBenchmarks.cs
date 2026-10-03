@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NextGreaterElementI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NextGreaterElementITests proves correct. nums2 is a random permutation of
 // distinct values so no query short-circuits on an early match, forcing
 // PerQueryRescan through its full worst-case inner scan.
-[MemoryDiagnoser]
 public class NextGreaterElementIBenchmarks
 {
     private const int RandomSeed = 496; private int[] _nums1 = [];

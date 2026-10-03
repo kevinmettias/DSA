@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.LinkedListComponents;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // per node, O(n+k) overall including seeding the set. Every other value is included
 // in nums, in descending order, so the baseline's linear scan never gets to
 // short-circuit early on a hit near the front of the array.
-[MemoryDiagnoser]
 public class LinkedListComponentsBenchmarks
 {
     private const int EvenModulus = 2;

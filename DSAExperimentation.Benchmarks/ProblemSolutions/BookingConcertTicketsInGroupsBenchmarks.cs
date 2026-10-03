@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BookingConcertTicketsInGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // by the very calls being measured, so a shared instance would let one run's
 // bookings leak into the next (the RangeSumQueryMutableBenchmarks
 // fresh-rebuild-per-run precedent).
-[MemoryDiagnoser]
 public class BookingConcertTicketsInGroupsBenchmarks
 {
     private const int SeatsPerRow = 50;

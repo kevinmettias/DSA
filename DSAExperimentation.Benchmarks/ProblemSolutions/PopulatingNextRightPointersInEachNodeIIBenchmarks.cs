@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.PopulatingNextRightPointersInEachNodeII;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinaryTrees.Skewed (a right-only chain, one node per level) is the extreme
 // non-perfect shape - proof that neither strategy needs perfect-tree-specific code
 // to stay correct here.
-[MemoryDiagnoser]
 public class PopulatingNextRightPointersInEachNodeIIBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

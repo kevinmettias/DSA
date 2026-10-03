@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumSwapsToMakeSequencesIncreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // {2i, 2i+1} in random order, so both keep and swap stay valid transitions at every
 // step regardless of prior choices - both strategies run their full real workload
 // instead of one branch getting pruned away immediately.
-[MemoryDiagnoser]
 public class MinimumSwapsToMakeSequencesIncreasingBenchmarks
 {
     // LC problem number, reused as the fixed benchmark-data seed.

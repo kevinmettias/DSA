@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountingWordsWithAGivenPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountingWordsWithAGivenPrefixTests proves correct. Words are randomly generated
 // single-repeated-character strings, so a single-letter prefix gives a realistic,
 // non-trivial ~1/26 match rate and neither arm can stop early - the answer is a count.
-[MemoryDiagnoser]
 public class CountingWordsWithAGivenPrefixBenchmarks
 {
     private const string Prefix = "a";

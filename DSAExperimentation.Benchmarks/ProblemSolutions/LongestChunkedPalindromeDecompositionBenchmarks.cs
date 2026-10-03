@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestChunkedPalindromeDecomposition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // intent TwoSumBenchmarks' own setup comment names - both strategies are forced to
 // grow their pending window all the way to the middle, which is exactly where the
 // string-concatenation arm's repeated O(len) build+compare costs the most.
-[MemoryDiagnoser]
 public class LongestChunkedPalindromeDecompositionBenchmarks
 {
     private const int CodePointBase = 1000;

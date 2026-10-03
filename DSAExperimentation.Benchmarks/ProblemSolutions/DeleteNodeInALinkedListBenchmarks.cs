@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.DeleteNodeInALinkedList;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rebuild-per-call precedent). The arm returns the rebuilt list's head as object?,
 // since the node type is internal (CS0050), so what the deletion left is its answer
 // rather than something the arm builds and drops.
-[MemoryDiagnoser]
 public class DeleteNodeInALinkedListBenchmarks
 {
     private int[] _values = [];

@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AddDigits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AddDigitsSolution's, the same methods AddDigitsTests
 // proves correct.
-[MemoryDiagnoser]
 public class AddDigitsBenchmarks
 {
     [Params(999_999, int.MaxValue)]

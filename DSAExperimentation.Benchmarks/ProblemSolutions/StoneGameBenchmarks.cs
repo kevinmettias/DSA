@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (LC 877 is LC 486's recurrence with a different win condition). PileCount is kept
 // modest for the same reason PredictTheWinnerBenchmarks documents: the un-memoized
 // baseline's blowup is real.
-[MemoryDiagnoser]
 public class StoneGameBenchmarks
 {
     private const int RandomSeed = 877; // LC problem number

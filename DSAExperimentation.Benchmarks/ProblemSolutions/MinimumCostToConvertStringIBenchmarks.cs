@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostToConvertStringI;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // AllPairsShortestPaths arm - so building the 26-letter conversion graph is
 // charged to [GlobalSetup] rather than to the per-position lookup being
 // measured.
-[MemoryDiagnoser]
 public class MinimumCostToConvertStringIBenchmarks
 {
     private const int RulesSeed = 2976;

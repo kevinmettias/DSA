@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MergeIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n^2) overall. Same input, same output; BatchSortAndMerge should win here
 // specifically because "insert one at a time, stay merged after every step" is a
 // strictly harder guarantee to maintain than "merge once, at the end."
-[MemoryDiagnoser]
 public class MergeIntervalsBenchmarks
 {
     private const int RandomSeed = 3;

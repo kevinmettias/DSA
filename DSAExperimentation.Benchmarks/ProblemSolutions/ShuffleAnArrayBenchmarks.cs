@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShuffleAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // element" baseline (a List<int>.RemoveAt shifts every trailing element on almost
 // every draw - O(n^2) worst case) vs. in-place Fisher-Yates over this repo's own
 // DynamicArray<int> - O(n), no auxiliary "remaining pool" collection at all.
-[MemoryDiagnoser]
 public class ShuffleAnArrayBenchmarks
 {
     private int[] _original = [];

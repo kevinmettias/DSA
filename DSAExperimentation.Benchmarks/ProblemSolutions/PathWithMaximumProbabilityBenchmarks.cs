@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PathWithMaximumProbability;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Both arms are handed the prepared ProbabilityGraph their hoisted overloads take, so
 // building the graph is charged to [GlobalSetup] rather than to the search.
-[MemoryDiagnoser]
 public class PathWithMaximumProbabilityBenchmarks
 {
     private const int RandomSeed = 1514; // LC problem number

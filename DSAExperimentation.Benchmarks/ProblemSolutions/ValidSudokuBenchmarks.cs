@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidSudoku;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ValidSudokuSolution's, the same methods
 // ValidSudokuTests proves correct.
-[MemoryDiagnoser]
 public class ValidSudokuBenchmarks
 {
     private char[][] _board = [];

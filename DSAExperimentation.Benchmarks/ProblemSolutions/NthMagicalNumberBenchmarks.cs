@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NthMagicalNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // zero, and counting candidates one at a time (O(answer)) is measured against
 // BinarySearch.LowerBound over the monotone "count(x) >= rank" sequence
 // (O(log(answer))).
-[MemoryDiagnoser]
 public class NthMagicalNumberBenchmarks
 {
     private const int FirstFactor = 6;

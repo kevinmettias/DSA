@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CourseScheduleII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // form a guaranteed-acyclic DAG (every prerequisite edge points from a lower
 // id to a higher one, capped fan-out) so both strategies run their full real
 // workload instead of an early cycle bailout.
-[MemoryDiagnoser]
 public class CourseScheduleIIBenchmarks
 {
     private const int MaxFanOut = 3;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ContainsDuplicate;
 
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ContainsDuplicateSolution's, exercised on an array
 // with no duplicate at all so neither strategy gets to stop early - the worst case
 // for a "does any value repeat" query.
-[MemoryDiagnoser]
 public class ContainsDuplicateBenchmarks
 {
     private const int Seed = 217;

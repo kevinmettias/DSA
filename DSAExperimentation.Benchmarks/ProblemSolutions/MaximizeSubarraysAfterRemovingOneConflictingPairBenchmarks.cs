@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeSubarraysAfterRemovingOneConflictingPair;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is kept small (unlike most other benchmarks in this project) because the baseline
 // is O(n^2 * m^2) by design - it is the naive arm the O(n + m) sweep has to justify
 // itself against, not a strategy meant to scale.
-[MemoryDiagnoser]
 public class MaximizeSubarraysAfterRemovingOneConflictingPairBenchmarks
 {
     private const int Seed = 3480;

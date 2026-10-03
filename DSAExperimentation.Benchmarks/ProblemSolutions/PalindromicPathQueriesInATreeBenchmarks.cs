@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.PalindromicPathQueriesInATree;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the pre-built RootedTreeNode[] its hoisted overload takes, so building the tree
 // (never mutated by either query strategy, so safe to share across iterations) is
 // charged to [GlobalSetup] rather than to the queries being measured.
-[MemoryDiagnoser]
 public class PalindromicPathQueriesInATreeBenchmarks
 {
     private const int RandomSeed = 3841;

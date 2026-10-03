@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.LeetCode.MinimumReverseOperations;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The ReduceGraph arm is handed a prepared ReversalBoard so board construction is
 // charged to [GlobalSetup] rather than to the search (#17.4); the scan arm takes
 // LeetCode's own (n, p, banned, k) because that is already its input.
-[MemoryDiagnoser]
 public class MinimumReverseOperationsBenchmarks
 {
     // Small relative to NodeCount, so ReduceGraph's O(K)-per-pop children are a real

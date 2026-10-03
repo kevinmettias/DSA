@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.MaximizeTheDistanceBetweenPointsOnASquare;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Point-to-offset mapping and sorting is charged to [GlobalSetup] via the
 // solution's own ToSortedPerimeterPositions, so only the binary search itself is
 // measured.
-[MemoryDiagnoser]
 public class MaximizeTheDistanceBetweenPointsOnASquareBenchmarks
 {
     private const int Side = 1_000_000;

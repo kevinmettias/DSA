@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameVII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // caching that exact pair, the identical shape StoneGameVBenchmarks already uses for
 // LC 1563. PileCount is kept modest for the same reason StoneGameBenchmarks
 // documents: the un-memoized baseline's blowup is real.
-[MemoryDiagnoser]
 public class StoneGameVIIBenchmarks
 {
     // LC problem number, used as the deterministic seed for stone-value generation.

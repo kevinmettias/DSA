@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SpecialPermutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is complete (so Length has to stay small enough for this arm to finish) vs.
 // threading (Remaining, Last) through this repo's own Memoizer, visiting each
 // reachable state at most once regardless of how many orderings are legal.
-[MemoryDiagnoser]
 public class SpecialPermutationsBenchmarks
 {
     private const int MaxValueExclusive = 60;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindKthLargestXorCoordinateValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // 2D prefix-XOR pass and differ only in the selection that follows it - a full
 // O(nm log nm) sort against an O(nm log k) size-k min-heap - so the matrix itself is
 // built once in [GlobalSetup] rather than charged to either arm.
-[MemoryDiagnoser]
 public class FindKthLargestXorCoordinateValueBenchmarks
 {
     private const int K = 10;

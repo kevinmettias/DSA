@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfSubarrayMinimums;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SumOfSubarrayMinimumsTests proves correct. _arr is a random permutation so the
 // brute-force arm's inner loop always runs its full remaining length - with every
 // value distinct there is no run of equal minimums to let it settle early.
-[MemoryDiagnoser]
 public class SumOfSubarrayMinimumsBenchmarks
 {
     // LC problem number, used as the RNG seed.

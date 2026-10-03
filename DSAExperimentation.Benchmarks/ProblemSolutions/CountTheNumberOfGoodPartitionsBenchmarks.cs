@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountTheNumberOfGoodPartitions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // degenerating to "every mask is good". ArrayLength stays small (brute force
 // enumerates 2^(n-1) masks and would not finish otherwise); the merge strategy is
 // O(n) regardless of how many distinct values repeat.
-[MemoryDiagnoser]
 public class CountTheNumberOfGoodPartitionsBenchmarks
 {
     private const int RandomSeed = 2963; // LC problem number

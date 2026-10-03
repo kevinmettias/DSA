@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RangeSumQuery2DImmutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of rescanning every cell. [GlobalSetup] builds the random matrix and query batch; each
 // [Benchmark] arm's own factory call (construction included) plus the full query replay is what
 // gets measured, the same shape LRUCacheBenchmarks uses for its own design problem.
-[MemoryDiagnoser]
 public class RangeSumQuery2DImmutableBenchmarks
 {
     private const int QueryCount = 200;

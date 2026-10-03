@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Length reaches LC's own 1000 upper bound - the O(n^2) brute force is still fast
 // enough to finish there, which is exactly what distinguishes LC 3737 from its
 // LC 3739 sequel.
-[MemoryDiagnoser]
 public class CountSubarraysWithMajorityElementIBenchmarks
 {
     private const int RandomSeed = 3737; // LC problem number

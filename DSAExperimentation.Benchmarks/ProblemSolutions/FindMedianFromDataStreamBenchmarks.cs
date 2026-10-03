@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindMedianFromDataStream;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // interleaved AddNum/FindMedian stream - a sort-on-every-query baseline
 // (O(n log n) per query) vs. the two-heap approach (O(log n) per insert, O(1)
 // per query).
-[MemoryDiagnoser]
 public class FindMedianFromDataStreamBenchmarks
 {
     // LC problem number, reused as the fixed benchmark-data seed.

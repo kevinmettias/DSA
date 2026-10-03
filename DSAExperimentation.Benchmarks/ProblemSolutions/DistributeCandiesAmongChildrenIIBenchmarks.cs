@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // 3*Limit neither loop is truncated early by the candy count, so Limit alone
 // controls the brute-force workload, matching LC 2929's real up-to-1e6 domain far
 // better than scaling the candy count would.
-[MemoryDiagnoser]
 public class DistributeCandiesAmongChildrenIIBenchmarks
 {
     private int CandyCount => 4 * Limit;

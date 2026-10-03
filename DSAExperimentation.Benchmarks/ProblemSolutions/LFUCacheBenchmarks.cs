@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Cache;
 using DSAExperimentation.LeetCode.LFUCache;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and some miss (evicted or never-inserted keys) - the same "script
 // construction charged to setup, replay is what gets measured" shape
 // LRUCacheBenchmarks already uses for its own peer cache problem.
-[MemoryDiagnoser]
 public class LFUCacheBenchmarks
 {
     private const int Seed = 460;

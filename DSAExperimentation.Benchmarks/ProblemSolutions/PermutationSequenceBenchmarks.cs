@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PermutationSequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // lexicographically last permutation - so BacktrackEnumeration is always forced
 // through its full worst case instead of an early exit on a small rank making it look
 // artificially competitive.
-[MemoryDiagnoser]
 public class PermutationSequenceBenchmarks
 {
     private int _rank;

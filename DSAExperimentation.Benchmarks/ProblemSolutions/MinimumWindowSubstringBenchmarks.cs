@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumWindowSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BruteForce is forced through every O(n^2) start/end pair instead of breaking out
 // after a handful of characters, and SlidingWindowHashMap is forced through its
 // full single O(n) pass with the left pointer never advancing.
-[MemoryDiagnoser]
 public class MinimumWindowSubstringBenchmarks
 {
     private const string Target = "XYZ";

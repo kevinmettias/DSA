@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LexicographicallySmallestEquivalentString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // group) against this repo's own DisjointSet(26) - O(1) Union per pair, O(a(26)) Find
 // per baseStr character, no per-component allocation. The three strings are LeetCode's
 // own input shape, so [GlobalSetup] only sizes and seeds them.
-[MemoryDiagnoser]
 public class LexicographicallySmallestEquivalentStringBenchmarks
 {
     private const int RandomSeed = 1061; // LC problem number

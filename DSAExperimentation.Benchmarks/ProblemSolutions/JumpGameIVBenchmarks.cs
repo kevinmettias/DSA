@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGameIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are JumpGameIVSolution's, the same methods
 // JumpGameIVTests proves correct. The hop graph is built once in [GlobalSetup] so
 // its construction isn't charged to the search being measured.
-[MemoryDiagnoser]
 public class JumpGameIVBenchmarks
 {
     private const int RandomSeed = 1345; // LeetCode problem number

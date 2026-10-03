@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GroupAnagrams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rather than the groups themselves, so the result isn't discarded as dead
 // code without materializing a potentially large object graph on every
 // iteration.
-[MemoryDiagnoser]
 public class GroupAnagramsBenchmarks
 {
     private const int SourceWordCount = 2;

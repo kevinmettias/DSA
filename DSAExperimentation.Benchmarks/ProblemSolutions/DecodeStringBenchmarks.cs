@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DecodeString;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DecodeStringSolution's, the same methods
 // DecodeStringTests proves correct.
-[MemoryDiagnoser]
 public class DecodeStringBenchmarks
 {
     private string _encoded = "";

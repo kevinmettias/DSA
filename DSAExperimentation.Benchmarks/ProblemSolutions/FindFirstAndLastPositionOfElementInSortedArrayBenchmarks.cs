@@ -3,7 +3,6 @@ using DSAExperimentation.LeetCode.FindFirstAndLastPositionOfElementInSortedArray
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
-[MemoryDiagnoser]
 public class FindFirstAndLastPositionOfElementInSortedArrayBenchmarks
 {
     private const int ValueDuplicationFactor = 4;

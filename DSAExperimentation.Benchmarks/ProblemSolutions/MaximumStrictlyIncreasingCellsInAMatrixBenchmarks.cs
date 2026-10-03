@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumStrictlyIncreasingCellsInAMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Both arms take LeetCode's own jagged matrix, which is already the prepared input, so
 // there is nothing for [GlobalSetup] to hoist beyond generating it (#17.4).
-[MemoryDiagnoser]
 public class MaximumStrictlyIncreasingCellsInAMatrixBenchmarks
 {
     private const int RandomSeed = 2713; // LC problem number

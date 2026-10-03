@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PropertiesGraph;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PropertiesGraphTests proves correct. Both are O(n^2 * m) - LC's own n, m <= 100
 // constraints make that the intended order - so RowCount stays at LC's own
 // ceiling rather than growing past it.
-[MemoryDiagnoser]
 public class PropertiesGraphBenchmarks
 {
     private const int Seed = 3493; // LC problem number

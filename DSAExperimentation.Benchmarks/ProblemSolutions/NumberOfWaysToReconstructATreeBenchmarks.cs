@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfWaysToReconstructATree;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ReconstructTreeWorkloads' star of chains, sized here, so every non-root node
 // clears the initial degree check and both arms walk the full
 // candidate-parent/subset-check logic rather than short-circuiting.
-[MemoryDiagnoser]
 public class NumberOfWaysToReconstructATreeBenchmarks
 {
     private const int ChainCount = 5;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SelectCellsInGridWithMaximumScore;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arm is handed the prepared rows-by-value grouping its hoisted overload takes, so
 // that grouping is charged to [GlobalSetup] rather than the memoized DP being
 // measured.
-[MemoryDiagnoser]
 public class SelectCellsInGridWithMaximumScoreBenchmarks
 {
     private const int Seed = 3276;

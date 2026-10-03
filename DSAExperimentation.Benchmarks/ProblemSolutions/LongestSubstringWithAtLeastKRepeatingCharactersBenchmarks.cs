@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LongestSubstringWithAtLeastKRepeatingCharacters;
 
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // LongestSubstringWithAtLeastKRepeatingCharactersSolution's, the same methods
 // LongestSubstringWithAtLeastKRepeatingCharactersTests proves correct.
-[MemoryDiagnoser]
 public class LongestSubstringWithAtLeastKRepeatingCharactersBenchmarks
 {
     // LC problem number, reused as the deterministic seed.

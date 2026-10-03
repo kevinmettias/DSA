@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's actual answer - the same methods WordLadderIITests proves correct.
 // On a chain-shaped workload the shortest-path DAG is narrow, so building the
 // sequences costs little and the comparison is still about search cost.
-[MemoryDiagnoser]
 public class WordLadderIIBenchmarks
 {
     private const int WordLength = 6;

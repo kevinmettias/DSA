@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumIceCreamBars;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a quarter of the bars' total cost so both strategies are forced to scan well past
 // the cheapest few bars instead of exiting after one or two purchases. The cost
 // array is LeetCode's own input shape, so neither arm needs a hoisted overload.
-[MemoryDiagnoser]
 public class MaximumIceCreamBarsBenchmarks
 {
     private const int MaxCostExclusive = 100;

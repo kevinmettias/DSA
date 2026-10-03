@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumPointsAfterCollectingCoinsFromAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // complexity and what this actually separates is per-node overhead: a
 // Dictionary<(int,int),long> memo lookup per call vs. CoinPointsAlgebra.Combine's
 // flat array indexing.
-[MemoryDiagnoser]
 public class MaximumPointsAfterCollectingCoinsFromAllNodesBenchmarks
 {
     private const int RandomSeed = 2920; // LeetCode problem number

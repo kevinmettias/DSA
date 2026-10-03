@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TrappingRainWater;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TrappingRainWaterTests proves correct - the textbook O(n^2) per-bar
 // left/right rescan vs. the O(n) single sweep using this repo's own
 // Stack<int> as a monotonic stack of candidate wall indices.
-[MemoryDiagnoser]
 public class TrappingRainWaterBenchmarks
 {
     private const int MaxHeight = 1_000;

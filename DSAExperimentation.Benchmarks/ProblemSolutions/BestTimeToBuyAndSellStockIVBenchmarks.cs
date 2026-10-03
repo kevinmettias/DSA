@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (BestTimeToBuyAndSellStockIIIBenchmarks' own precedent for the same DP
 // family) - the memoized arm's whole point is that it only pays for the
 // distinct (day, holding, transactions) states that actually occur.
-[MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockIVBenchmarks
 {
     private const int Seed = 188; // LC problem number

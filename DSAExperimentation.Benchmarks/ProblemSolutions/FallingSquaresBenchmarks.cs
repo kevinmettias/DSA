@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FallingSquares;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // coordinate-compression + LazySegmentTree approach. Footprints are randomly
 // overlapping so both strategies pay their full worst-case cost rather than
 // degenerating to disjoint, non-interacting squares.
-[MemoryDiagnoser]
 public class FallingSquaresBenchmarks
 {
     private const int PositionRangeMultiplier = 2;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DifferentWaysToAddParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // repeats the same operand ("1+1+...+1"), so the same substrings ("1", "1+1",
 // ...) recur across many different split points - recomputed from scratch every
 // time by the plain recursion, resolved once and reused by Memoizer.
-[MemoryDiagnoser]
 public class DifferentWaysToAddParenthesesBenchmarks
 {
     private const string Operand = "1";

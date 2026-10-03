@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumDeletionsToMakeArrayDivisible;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // which pays a fresh full-array count per element, O(n^2). The MergeSort arm sorts once in
 // O(n log n) and, since 1 is among those divisors and virtually always present at this n,
 // resolves its scan in O(1).
-[MemoryDiagnoser]
 public class MinimumDeletionsToMakeArrayDivisibleBenchmarks
 {
     private const int RandomSeed = 2344;

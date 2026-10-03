@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // only dominates once Calls is large enough that the shifting cost outweighs the
 // constant allocation overhead (confirmed with a standalone Stopwatch check up to
 // Calls=50,000, see this problem's manifest notes).
-[MemoryDiagnoser]
 public class DesignLinkedListBenchmarks
 {
     [Params(5_000, 50_000)]

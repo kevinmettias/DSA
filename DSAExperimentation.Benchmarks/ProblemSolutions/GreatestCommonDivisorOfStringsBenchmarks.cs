@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GreatestCommonDivisorOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is repeated a different, coprime number of times into each input so the two lengths are
 // coprime multiples of a common divisor, forcing both strategies through their real work
 // instead of a same-length shortcut.
-[MemoryDiagnoser]
 public class GreatestCommonDivisorOfStringsBenchmarks
 {
     private const int LowercaseAlphabetSize = 26;

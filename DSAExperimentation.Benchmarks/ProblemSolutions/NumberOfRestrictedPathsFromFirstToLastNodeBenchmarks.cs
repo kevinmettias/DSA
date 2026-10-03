@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfRestrictedPathsFromFirstToLastNode;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each is handed the prepared RestrictedPathGraph its hoisted overload takes, so the
 // shared Dijkstra distance labelling is charged to [GlobalSetup] and the measured
 // difference stays purely how the restricted paths are counted afterwards.
-[MemoryDiagnoser]
 public class NumberOfRestrictedPathsFromFirstToLastNodeBenchmarks
 {
     private RestrictedPathGraph _graph = null!;

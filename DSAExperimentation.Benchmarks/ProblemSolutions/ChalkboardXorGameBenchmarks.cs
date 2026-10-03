@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ChalkboardXorGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // unmemoized bitmask baseline, here made visible sooner because every mask, not just
 // a used-numbers subset, is a distinct memo key. The closed form is O(n) and shows
 // what the whole search reduces to.
-[MemoryDiagnoser]
 public class ChalkboardXorGameBenchmarks
 {
     private const int RandomSeed = 810; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfIslands;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // grid be reused, unchanged, across every invocation. The two arms differ only in
 // the order their flood fill drains a component's frontier - depth-first versus
 // breadth-first - so the pair isolates that order.
-[MemoryDiagnoser]
 public class NumberOfIslandsBenchmarks
 {
     private const int Seed = 200; private char[][] _grid = [];

@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DistributeElementsIntoTwoArraysII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistributeElementsIntoTwoArraysIISolution's, the
 // same methods DistributeElementsIntoTwoArraysIITests proves correct.
-[MemoryDiagnoser]
 public class DistributeElementsIntoTwoArraysIIBenchmarks
 {
     private const int MaxValueExclusive = 1_000_000_000;

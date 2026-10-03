@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestIncreasingPathInAMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cell - central-Delannoy-number growth, kept modest for exactly that reason.
 // MemoizedRecurrence caches sub-paths revisited within one start's search, collapsing
 // that call from exponential to polynomial.
-[MemoryDiagnoser]
 public class LongestIncreasingPathInAMatrixBenchmarks
 {
     private int[,] _matrix = new int[0, 0];

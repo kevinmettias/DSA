@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ContainsDuplicateII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // distinct integers, so no duplicate ever exists and both strategies are forced
 // through their full worst-case scan instead of an early exit making brute force
 // look artificially competitive.
-[MemoryDiagnoser]
 public class ContainsDuplicateIIBenchmarks
 {
     private const int WindowK = 10;

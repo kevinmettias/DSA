@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumSizeSubarraySum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // real worst-case cost. Only the raw array/target - LeetCode's own input shape -
 // is prepared in [GlobalSetup]; each strategy's own prefix-sum/sequence
 // construction stays inside the measured method, unchanged from the original.
-[MemoryDiagnoser]
 public class MinimumSizeSubarraySumBenchmarks
 {
     private const int RandomSeed = 7;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SlidingWindowMedian;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // k-sized window and Array.Sort it from scratch) vs. the O(n log k) two-heap
 // approach with lazy deletion. WindowSize is kept well below Length so both
 // strategies do real repeated work across many windows, not one giant one.
-[MemoryDiagnoser]
 public class SlidingWindowMedianBenchmarks
 {
     private const int WindowSize = 500;

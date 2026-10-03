@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumEleganceOfAKLengthSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's own examples. Categories are drawn from a pool much smaller than the
 // item count so the scan past subsequenceLength actually walks the duplicates stack
 // down instead of running out of duplicates after the very first swap.
-[MemoryDiagnoser]
 public class MaximumEleganceOfAKLengthSubsequenceBenchmarks
 {
     private const int MaxProfitExclusive = 100_000;

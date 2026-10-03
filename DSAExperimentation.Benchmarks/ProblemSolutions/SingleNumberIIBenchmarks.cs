@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SingleNumberII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // written once in the test and never actually exercised by the benchmark. The
 // mod-three sweep scans the array once per bit; the two-bit-counter arm scans it
 // once in total.
-[MemoryDiagnoser]
 public class SingleNumberIIBenchmarks
 {
     private const int RandomSeed = 137;

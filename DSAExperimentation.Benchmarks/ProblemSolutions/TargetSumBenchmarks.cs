@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TargetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are TargetSumSolution's, the same methods TargetSumTests
 // proves correct. ElementCount is kept modest specifically because the unmemoized
 // baseline's 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents.
-[MemoryDiagnoser]
 public class TargetSumBenchmarks
 {
     private const int RandomSeed = 494; // LC problem number

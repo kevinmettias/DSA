@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReversePairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReversePairsSolution's, the same methods
 // ReversePairsTests proves correct.
-[MemoryDiagnoser]
 public class ReversePairsBenchmarks
 {
     private const int RandomSeed = 493; // LC problem number

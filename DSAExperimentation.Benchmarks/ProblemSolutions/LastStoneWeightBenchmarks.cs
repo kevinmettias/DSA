@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LastStoneWeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are LastStoneWeightSolution's. Random weights over a wide
 // range keep differences non-zero most of the time, so stones are re-inserted
 // rather than annihilating and the smash sequence stays long.
-[MemoryDiagnoser]
 public class LastStoneWeightBenchmarks
 {
     private const int RandomSeed = 1046; // LC problem number

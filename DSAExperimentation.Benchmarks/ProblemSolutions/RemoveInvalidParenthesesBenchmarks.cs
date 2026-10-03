@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.RemoveInvalidParentheses;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // since the brute-force arm is genuinely O(2^n * n); the generated input always
 // carries exactly 2 unmatched leading '(' characters, so both strategies do
 // real removal work.
-[MemoryDiagnoser]
 public class RemoveInvalidParenthesesBenchmarks
 {
     // Splits Length in half to build the generated input's opener/closer counts.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximalRectangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximalRectangleTests proves correct - the O(rows^2 * cols) row-pair-window
 // baseline vs. the O(rows * cols) reduction to LC 84, one histogram-max-
 // rectangle sweep per row using this repo's own Stack<int>.
-[MemoryDiagnoser]
 public class MaximalRectangleBenchmarks
 {
     private const int CellValueUpperBound = 2;

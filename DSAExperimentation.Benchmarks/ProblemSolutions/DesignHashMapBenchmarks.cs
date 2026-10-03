@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignHashMap;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // on every probe rather than short-circuited by an early hit. Every populated
 // value equals its own key (always >= 0), so "Get(key) != -1" is an unambiguous
 // hit test for both strategies.
-[MemoryDiagnoser]
 public class DesignHashMapBenchmarks
 {
     private const int AlternatingModulus = 2;

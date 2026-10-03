@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TheNumberOfBeautifulSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // search folds the same rule into Candidates so an illegal inclusion is never made
 // and the branch dies immediately. The measured input is built in [GlobalSetup],
 // which is already LeetCode's own argument shape, so no hoisted overload is needed.
-[MemoryDiagnoser]
 public class TheNumberOfBeautifulSubsetsBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

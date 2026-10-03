@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubarraysDistinctElementSumOfSquaresII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are drawn from a small bound so distinct-count churn (and therefore the Fenwick
 // tree's range-update work) stays high across the whole array, the case that best
 // separates the O(n^2) brute force from the O(n log n) range-Fenwick sweep.
-[MemoryDiagnoser]
 public class SubarraysDistinctElementSumOfSquaresIIBenchmarks
 {
     private const int RandomSeed = 2916; // LeetCode problem number

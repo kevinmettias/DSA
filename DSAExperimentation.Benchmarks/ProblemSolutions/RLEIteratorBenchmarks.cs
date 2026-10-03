@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RLEIterator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Queue<(int,int)> - O(number of runs) memory and O(total next-calls + number of
 // runs) time. Construction stays inside each measured method deliberately: building
 // the iterator IS the difference between the two strategies.
-[MemoryDiagnoser]
 public class RLEIteratorBenchmarks
 {
     private const int RunCount = 100;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SnapshotArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // snapshot so both strategies are forced through their full worst-case floor
 // lookup, the same "force the real worst case" convention
 // TimeBasedKeyValueStoreBenchmarks uses.
-[MemoryDiagnoser]
 public class SnapshotArrayBenchmarks
 {
     private const int ValueScaleFactor = 2;

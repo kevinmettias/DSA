@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.Domain.Locks;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hoisted overload takes - a deadend Set for the mutation walk, a built LockGraph
 // for the Reduce.Graph walk - so graph construction is charged to [GlobalSetup]
 // rather than to the search being measured.
-[MemoryDiagnoser]
 public class OpenTheLockBenchmarks
 {
     // LC problem number, reused as the deterministic deadend seed.

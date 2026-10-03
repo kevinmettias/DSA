@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumMedianSumOfSubsequencesOfSizeThree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // partition search - its search tree grows combinatorially, into the hundreds
 // of thousands of partial groupings by a dozen elements - while the
 // sorted-greedy arm scales to the real problem's n up to 5*10^5 trivially.
-[MemoryDiagnoser]
 public class MaximumMedianSumOfSubsequencesOfSizeThreeBenchmarks
 {
     private const int Seed = 3627; // LC problem number

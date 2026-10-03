@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfPointsFromGridQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // [GlobalSetup] builds the grid and the query list, which is exactly the argument
 // shape both strategies take, so no §17.4 hoisted overload applies here.
-[MemoryDiagnoser]
 public class MaximumNumberOfPointsFromGridQueriesBenchmarks
 {
     private const int RandomSeed = 2503;

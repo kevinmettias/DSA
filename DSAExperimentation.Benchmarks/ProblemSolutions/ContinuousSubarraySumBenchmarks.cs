@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ContinuousSubarraySum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prefix sums (nor the seeded {0: -1} entry, since every prefix sum stays positive)
 // ever collide. Both methods are therefore forced through their full worst-case scan
 // on every [Params] size instead of an early match letting either return early.
-[MemoryDiagnoser]
 public class ContinuousSubarraySumBenchmarks
 {
     private const int K = 1_000_003;

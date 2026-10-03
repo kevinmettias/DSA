@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumEdgeTogglesOnATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // measured; the brute-force arm's own adjacency list stays inside the measured
 // call, matching its own textbook character (§17.5) exactly as
 // ShortestPathInAWeightedTreeBenchmarks' brute-force arm does.
-[MemoryDiagnoser]
 public class MinimumEdgeTogglesOnATreeBenchmarks
 {
     private const int RandomSeed = 3812; private int _nodeCount;

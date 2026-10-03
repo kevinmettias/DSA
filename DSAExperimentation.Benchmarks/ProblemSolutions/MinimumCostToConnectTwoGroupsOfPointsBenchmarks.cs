@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumCostToConnectTwoGroupsOfPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ConnectionCosts its hoisted overload takes, so generating the matrix and reducing
 // it to per-column minimums is charged to [GlobalSetup] rather than to the recursion
 // being measured.
-[MemoryDiagnoser]
 public class MinimumCostToConnectTwoGroupsOfPointsBenchmarks
 {
     private const int RandomSeed = 1595; // LC problem number

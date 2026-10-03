@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.MergeTwoSortedLists;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MergeTwoSortedListsTests proves correct. Both arms relink the nodes they are handed, so the
 // lists are rebuilt from the value arrays inside each measurement rather than being merged a
 // second time on nodes an earlier iteration already spliced.
-[MemoryDiagnoser]
 public class MergeTwoSortedListsBenchmarks
 {
     private const int RandomSeed = 21; // LC problem number

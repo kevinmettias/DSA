@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RobotCollisions;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is entirely about collision resolution - one adjacent pair per full rescan
 // from the front, vs. a single left-to-right sweep over this repo's own
 // Stack<int> that pushes and pops each index at most once.
-[MemoryDiagnoser]
 public class RobotCollisionsBenchmarks
 {
     private const int MaxHealthExclusive = 1_000;

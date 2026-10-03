@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumXorSumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // assignment ordering that reaches it, against the same recurrence routed through
 // this repo's own Memoizer. Both arrays are LeetCode's own input shape, so
 // [GlobalSetup] only picks the sizes and the seed.
-[MemoryDiagnoser]
 public class MinimumXorSumOfTwoArraysBenchmarks
 {
     // 1879 is the LC problem number.

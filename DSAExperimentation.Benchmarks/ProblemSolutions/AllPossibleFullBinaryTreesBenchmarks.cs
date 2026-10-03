@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AllPossibleFullBinaryTrees;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // AllPossibleFullBinaryTreesTests proves correct. Mirrors
 // UniqueBinarySearchTreesIIBenchmarks' naive-vs-Memoizer pairing for LC 95, keyed
 // here by a single node count instead of a (start,end) range.
-[MemoryDiagnoser]
 public class AllPossibleFullBinaryTreesBenchmarks
 {
     [Params(13, 19)]

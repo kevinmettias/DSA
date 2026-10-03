@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.FindModeInBinarySearchTree;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindModeInBinarySearchTreeSolution's, the same
 // methods FindModeInBinarySearchTreeTests proves correct.
-[MemoryDiagnoser]
 public class FindModeInBinarySearchTreeBenchmarks
 {
     // Average node count per distinct value, so the tree has realistic duplicate runs.

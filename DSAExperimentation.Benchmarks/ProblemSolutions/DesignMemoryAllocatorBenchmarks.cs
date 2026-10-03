@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignMemoryAllocator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // on the Free half; the speedup is real but bounded, not an asymptotic win (see
 // MatrixCellsInDistanceOrderBenchmarks for the same "correct composition, not always
 // a complexity-class jump" shape).
-[MemoryDiagnoser]
 public class DesignMemoryAllocatorBenchmarks
 {
     // Every allocation in this workload is one unit wide.

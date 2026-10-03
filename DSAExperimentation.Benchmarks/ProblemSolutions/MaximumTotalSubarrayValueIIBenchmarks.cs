@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.LeetCode.MaximumTotalSubarrayValueII;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed its two prebuilt SegmentTrees so tree construction is charged to
 // [GlobalSetup] rather than to the search being measured, mirroring
 // OpenTheLockBenchmarks' LockGraph hoist.
-[MemoryDiagnoser]
 public class MaximumTotalSubarrayValueIIBenchmarks
 {
     private const int Seed = 3691;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfClosedIslands;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // checking whether any cell it came back with lands on the grid's edge. Each
 // strategy clones the shared grid fixture internally before filling it, so
 // repeated invocations each start from the true input.
-[MemoryDiagnoser]
 public class NumberOfClosedIslandsBenchmarks
 {
     private const int RandomSeed = 7;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.SpiralMatrixIV;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // them. [GlobalSetup] builds a list exactly as long as the grid (workload sizing),
 // and neither strategy mutates the list it is handed, so one prepared chain serves
 // every invocation and neither arm needs a hoisted overload.
-[MemoryDiagnoser]
 public class SpiralMatrixIVBenchmarks
 {
     private const int RandomSeed = 2326; // LC problem number

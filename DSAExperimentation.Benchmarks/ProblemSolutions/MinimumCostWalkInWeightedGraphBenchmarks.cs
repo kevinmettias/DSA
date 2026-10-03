@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostWalkInWeightedGraph;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed a prebuilt WalkCostComponents - one Union-Find pass over every edge - so
 // that one-time cost is charged to [GlobalSetup], not to the queries being
 // measured.
-[MemoryDiagnoser]
 public class MinimumCostWalkInWeightedGraphBenchmarks
 {
     private const int Seed = 3108;

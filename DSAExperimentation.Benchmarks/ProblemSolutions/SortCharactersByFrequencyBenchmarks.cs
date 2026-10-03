@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SortCharactersByFrequency;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are SortCharactersByFrequencySolution's, the same
 // methods SortCharactersByFrequencyTests proves correct.
-[MemoryDiagnoser]
 public class SortCharactersByFrequencyBenchmarks
 {
     private const int RandomSeed = 7;

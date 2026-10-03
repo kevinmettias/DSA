@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.PossibleBipartition;
 
@@ -20,7 +19,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Preparing either input shape from the pair list is input construction, so both
 // are charged to [GlobalSetup] and handed to the strategies' prepared-input
 // overloads.
-[MemoryDiagnoser]
 public class PossibleBipartitionBenchmarks
 {
     private const int CrossPairsPerPerson = 2;

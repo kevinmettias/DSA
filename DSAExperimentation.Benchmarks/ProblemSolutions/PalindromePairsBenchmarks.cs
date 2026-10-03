@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PalindromePairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and checks every ordered word pair directly vs. the O(n*k^2) approach using this
 // repo's own HashMap<TKey,TValue> as a reversed-complement lookup for every
 // prefix/suffix split.
-[MemoryDiagnoser]
 public class PalindromePairsBenchmarks
 {
     private const int WordLengthBound = 9;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestIncreasingSubsequenceII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against this repo's own SegmentTree<int, MaxOperation<int>> keyed directly by value,
 // which replaces the inner rescan with one O(log maxValue) range-max query per
 // element. [GlobalSetup] owns the workload construction.
-[MemoryDiagnoser]
 public class LongestIncreasingSubsequenceIIBenchmarks
 {
     private const int RandomSeed = 2407; // LC problem number

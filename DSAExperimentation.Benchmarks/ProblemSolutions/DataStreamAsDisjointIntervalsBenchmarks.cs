@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DataStreamAsDisjointIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // stream through addNum() one call at a time - the LeetCode-shaped sequence itself, not a
 // batch construction - then reads getIntervals() once so the whole stream is charged, the
 // same "run the stateful object end to end" shape BinarySearchTreeIteratorBenchmarks uses.
-[MemoryDiagnoser]
 public class DataStreamAsDisjointIntervalsBenchmarks
 {
     private const int RandomSeed = 7;

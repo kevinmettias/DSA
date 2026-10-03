@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinCostToConnectAllPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // that stays here - and each arm is handed LeetCode's own int[][] shape, because
 // materializing the complete Manhattan-distance graph is exactly the cost the
 // Kruskal arm is on trial for and must not be charged to setup.
-[MemoryDiagnoser]
 public class MinCostToConnectAllPointsBenchmarks
 {
     private const int RandomSeed = 1584; // LeetCode problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MaximumNestingDepthOfTwoValidParenthesesStrings;
 
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // MaximumNestingDepthOfTwoValidParenthesesStringsSolution's - the O(n^2) rescan
 // baseline against the single-pass Stack<char> walk.
-[MemoryDiagnoser]
 public class MaximumNestingDepthOfTwoValidParenthesesStringsBenchmarks
 {
     // LC problem number, reused as the deterministic random seed.

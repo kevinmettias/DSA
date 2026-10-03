@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DistinctPrimeFactorsOfProductOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // element on its own and deduping through this repo's own Set<int> - the product's
 // prime factors are exactly the union of each element's, so the product itself
 // never needs to be built.
-[MemoryDiagnoser]
 public class DistinctPrimeFactorsOfProductOfArrayBenchmarks
 {
     private const int MaxValueInclusive = 1_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckIfPointIsReachable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TwoSumBenchmarks runs for its brute-force-vs-hash-map pair. Targets are
 // consecutive integers (gcd 1, always reachable) so the search is always forced to
 // explore rather than short-circuiting on an early false.
-[MemoryDiagnoser]
 public class CheckIfPointIsReachableBenchmarks
 {
     private int _targetX;

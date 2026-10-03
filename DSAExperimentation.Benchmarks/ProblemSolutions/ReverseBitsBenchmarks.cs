@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReverseBits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // compile-smoke placeholder (Baseline() => 1, PrimitiveComposed() => 1) rather
 // than a second strategy to reconcile. The operand sets every bit but one, so
 // every shift/mask step runs and each of the four lookup bytes is dense.
-[MemoryDiagnoser]
 public class ReverseBitsBenchmarks
 {
     // LeetCode's own second example: every bit but one set, exercising every

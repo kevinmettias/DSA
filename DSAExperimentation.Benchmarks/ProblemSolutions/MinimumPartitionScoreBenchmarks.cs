@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumPartitionScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every depth, not a nearly-forced split. Length stays modest: both arms are
 // O(Length^2 * k) recursions over every candidate group boundary, and this
 // is the axis whose state count they pay for.
-[MemoryDiagnoser]
 public class MinimumPartitionScoreBenchmarks
 {
     private const int Seed = 3826; // LC problem number

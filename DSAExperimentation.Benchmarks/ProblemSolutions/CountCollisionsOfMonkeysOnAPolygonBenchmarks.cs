@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountCollisionsOfMonkeysOnAPolygon;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // raised - naive repeated multiplication (O(n)) vs. exponentiation by squaring
 // (O(log n)). The monkey count is a scalar, so there is no input to prepare in a
 // [GlobalSetup]: the two [Params] lengths are the whole workload.
-[MemoryDiagnoser]
 public class CountCollisionsOfMonkeysOnAPolygonBenchmarks
 {
     [Params(1_000, 1_000_000)]

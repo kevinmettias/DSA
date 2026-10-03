@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignMovieRentalSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] from the same entry table, exactly as a real deployment would have
 // built them before the first query, so construction is charged to setup rather
 // than to the search being measured.
-[MemoryDiagnoser]
 public class DesignMovieRentalSystemBenchmarks
 {
     private const int OtherMoviesCount = 19;

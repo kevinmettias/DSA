@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheCountOfMonotonicPairsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and the prefix-sum arm's advantage should show. Length stays well under both
 // parts' shared n <= 2000 cap so the O(n * maxValue^2) baseline still finishes
 // in reasonable benchmark time.
-[MemoryDiagnoser]
 public class FindTheCountOfMonotonicPairsIIBenchmarks
 {
     private const int MaxValue = 1_000;

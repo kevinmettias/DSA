@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.KthSmallestElementInABST;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // an asymptotic win. The tree itself is built via this repo's own
 // BinarySearchTree<int>, inserted in shuffled order so height stays close to
 // O(log n) instead of the degenerate O(n) ascending-insertion case.
-[MemoryDiagnoser]
 public class KthSmallestElementInABSTBenchmarks
 {
     private const int MedianDivisor = 2;

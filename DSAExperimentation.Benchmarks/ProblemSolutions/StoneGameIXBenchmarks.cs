@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameIX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] builds LeetCode's own input shape (the stones array), so there is no
 // hoisted overload to add: the remainder bucketing each arm does is O(n) and dwarfed by
 // the cubic state space the game-tree arm explores.
-[MemoryDiagnoser]
 public class StoneGameIXBenchmarks
 {
     private const int WorkloadSeed = 1;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HouseRobberV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // inherent trade-off of that primitive - WordBreakBenchmarks' own memoized arm
 // already exercises a 3_000-deep chain safely, so this stays at or under that
 // proven-safe depth rather than chasing LC's full bound.
-[MemoryDiagnoser]
 public class HouseRobberVBenchmarks
 {
     private const int Seed = 3840;

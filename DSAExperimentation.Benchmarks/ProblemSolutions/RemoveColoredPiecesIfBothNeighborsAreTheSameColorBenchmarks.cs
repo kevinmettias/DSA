@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RemoveColoredPiecesIfBothNeighborsAreTheSameColor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RemoveColoredPiecesIfBothNeighborsAreTheSameColorTests proves correct - playing
 // the game out move by move against recognizing that a run of length L always yields
 // exactly max(L - 2, 0) moves and counting both budgets in one grouping pass.
-[MemoryDiagnoser]
 public class RemoveColoredPiecesIfBothNeighborsAreTheSameColorBenchmarks
 {
     private const int ColorGroupCount = 2; private string _colors = "";

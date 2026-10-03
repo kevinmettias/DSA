@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.LongestCommonPrefixOfKStringsAfterRemoval;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the two Reduce.Tree passes plus the per-word answer walk - trie construction is
 // charged to setup exactly like OpenTheLockBenchmarks charges LockGraph.Build
 // there. Word count stays modest: the brute-force arm is O(n * maxLength^2).
-[MemoryDiagnoser]
 public class LongestCommonPrefixOfKStringsAfterRemovalBenchmarks
 {
     private const int Seed = 3485; // LC problem number

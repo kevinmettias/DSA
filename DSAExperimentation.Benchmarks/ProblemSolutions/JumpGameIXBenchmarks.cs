@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.JumpGameIX;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // take LeetCode's own array shape directly, so there is nothing further to hoist.
 // Length stays small - the baseline's per-index BFS re-scans every other index at
 // every step, O(n^3) worst case.
-[MemoryDiagnoser]
 public class JumpGameIXBenchmarks
 {
     private const int Seed = 3660;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CherryPickup;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CherryPickupTests proves correct. The grid is all-cherries with no obstacles so
 // nothing short-circuits the naive baseline's full branching early; Size is kept
 // modest for exactly that reason.
-[MemoryDiagnoser]
 public class CherryPickupBenchmarks
 {
     private int[,] _grid = new int[0, 0];

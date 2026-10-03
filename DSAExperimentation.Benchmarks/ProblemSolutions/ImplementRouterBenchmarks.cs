@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ImplementRouter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // "calls arrive in non-decreasing timestamp order" guarantee), interleaved
 // with forwardPacket/getCount calls - so script construction is charged to
 // setup rather than to the replay each [Benchmark] arm measures.
-[MemoryDiagnoser]
 public class ImplementRouterBenchmarks
 {
     private const int Seed = 3508;

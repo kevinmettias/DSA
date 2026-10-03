@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumProductDifferenceBetweenTwoPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods MaximumProductDifferenceBetweenTwoPairsTests proves correct.
 // [GlobalSetup] draws the random positive array so generation is charged to setup
 // rather than to the O(n^2) pair scan and the O(n log n) sort being compared.
-[MemoryDiagnoser]
 public class MaximumProductDifferenceBetweenTwoPairsBenchmarks
 {
     private const int RandomSeed = 1913; // LC 1913 problem number

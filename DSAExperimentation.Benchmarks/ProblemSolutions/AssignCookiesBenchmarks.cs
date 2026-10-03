@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AssignCookies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // AssignCookiesTests proves correct. Both arrays are drawn from the same range so
 // most children have several candidate cookies, forcing brute force through a long
 // rescan per child instead of matching on the first cookie it looks at.
-[MemoryDiagnoser]
 public class AssignCookiesBenchmarks
 {
     private const int RandomSeed = 455; // LC problem number

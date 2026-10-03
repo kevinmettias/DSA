@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSumQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Both arms take LeetCode's own arrays, which are already the prepared input, so there
 // is nothing for [GlobalSetup] to hoist beyond generating them (#17.4).
-[MemoryDiagnoser]
 public class MaximumSumQueriesBenchmarks
 {
     private const int RandomSeed = 2736; // LC problem number

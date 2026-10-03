@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountAlmostEqualPairsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountAlmostEqualPairsIITests proves correct. Zero-padding every number to
 // PaddedWidth is charged to [GlobalSetup] via the solution's own Pad, not to either
 // measured pairwise scan.
-[MemoryDiagnoser]
 public class CountAlmostEqualPairsIIBenchmarks
 {
     private const int MinValueInclusive = 1;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckKnightTourConfiguration;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // intent TwoSumBenchmarks' unreachable target already uses. n itself is capped by
 // the problem's own constraint (n <= 7), so both sizes stay inside LeetCode's real
 // input domain.
-[MemoryDiagnoser]
 public class CheckKnightTourConfigurationBenchmarks
 {
     private const int SmallBoard = 5;

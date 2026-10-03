@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BeautifulArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BeautifulArrayTests proves correct. The input is a single length, so there is
 // nothing to hoist into [GlobalSetup] - the sizes stay small because the baseline
 // is an exponential backtracking search.
-[MemoryDiagnoser]
 public class BeautifulArrayBenchmarks
 {
     [Params(6, 8)]

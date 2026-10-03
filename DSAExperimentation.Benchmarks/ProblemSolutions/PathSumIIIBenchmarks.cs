@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.PathSumIII;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PathSumIIITests proves correct. _root is BinaryTrees.Balanced, whose node
 // values are all non-negative, so Target is deliberately unreachable - both
 // strategies are forced through their full traversal instead of an early match.
-[MemoryDiagnoser]
 public class PathSumIIIBenchmarks
 {
     private const int Target = -1;

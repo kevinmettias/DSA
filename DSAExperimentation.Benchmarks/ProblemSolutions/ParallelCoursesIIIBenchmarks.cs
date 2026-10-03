@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ParallelCoursesIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // guaranteed-acyclic DAG (every edge points from a lower id to a higher one, capped
 // fan-out) so both strategies do their full real workload instead of an early cycle
 // bailout.
-[MemoryDiagnoser]
 public class ParallelCoursesIIIBenchmarks
 {
     private const int MaxDuration = 100;

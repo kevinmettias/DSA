@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountNumberOfTrapezoidsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // dozen points - while the grouped-by-y arm scales to the real problem's n up
 // to 10^5 trivially. Points are drawn from a small y range so repeated
 // y-values - and therefore horizontal sides - actually occur.
-[MemoryDiagnoser]
 public class CountNumberOfTrapezoidsIBenchmarks
 {
     private const int Seed = 3623; // LC problem number

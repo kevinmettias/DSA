@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.LeetCode.DistributeRepeatingIntegers;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // bucket holds their shared sum, so a valid distribution always exists - each
 // bucket can be exactly refilled by re-assembling the copy it came from - but the
 // shuffled ordering still forces a real search rather than an immediate match.
-[MemoryDiagnoser]
 public class DistributeRepeatingIntegersBenchmarks
 {
     private const int OrdersPerValue = 6;

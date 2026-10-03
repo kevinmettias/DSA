@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.MaximumStrongPairXORII;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n^2) pairwise scan stops being competitive. BitTrieBuckets is handed the
 // pre-sorted ArrayIndexedSequence<int> its hoisted overload takes, so sorting
 // is charged to [GlobalSetup] rather than to the bucket sweep being measured.
-[MemoryDiagnoser]
 public class MaximumStrongPairXORIIBenchmarks
 {
     private const int RandomSeed = 2935;

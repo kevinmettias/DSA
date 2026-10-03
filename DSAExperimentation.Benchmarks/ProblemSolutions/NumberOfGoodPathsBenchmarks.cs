@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfGoodPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pairs, each confirmed by an O(n) tree walk) against this repo's own DisjointSet
 // sweep (edges in increasing order of their higher-valued endpoint, O(n * alpha(n))
 // total). [GlobalSetup] builds the tree so neither arm is charged for it.
-[MemoryDiagnoser]
 public class NumberOfGoodPathsBenchmarks
 {
     private const int RandomSeed = 2421; private int[] _vals = [];

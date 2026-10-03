@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ClosestPrimeNumbersInRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // inside the measured method on purpose: paying for it once and then scanning is
 // exactly what the comparison is about, so there is nothing to hoist into
 // [GlobalSetup].
-[MemoryDiagnoser]
 public class ClosestPrimeNumbersInRangeBenchmarks
 {
     private const int Left = 2;

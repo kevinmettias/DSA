@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfRecentCalls;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // holds a large slice of recent history - the case where rescanning the whole
 // history costs O(calls) per ping (O(calls^2) over the run) while the queue window
 // enqueues and dequeues each timestamp exactly once (O(calls) amortized).
-[MemoryDiagnoser]
 public class NumberOfRecentCallsBenchmarks
 {
     private const int RandomSeed = 933; // LC problem number

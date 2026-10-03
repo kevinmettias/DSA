@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.SpiralMatrixIII;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // The whole input is four ints, so there is nothing to hoist into [GlobalSetup]
 // beyond choosing them from the measured size.
-[MemoryDiagnoser]
 public class SpiralMatrixIIIBenchmarks
 {
 

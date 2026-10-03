@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.DesignRideSharingSystem;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cancelled before the match rounds ever run, so both arms have to walk past at
 // least one stale/cancelled entry rather than always matching the immediate
 // front.
-[MemoryDiagnoser]
 public class DesignRideSharingSystemBenchmarks
 {
     private const int Seed = 3829;

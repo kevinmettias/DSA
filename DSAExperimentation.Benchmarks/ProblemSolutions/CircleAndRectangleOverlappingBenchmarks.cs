@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CircleAndRectangleOverlapping;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is centred exactly on the rectangle's far corner with radius 0, so it only overlaps at
 // that single last-scanned lattice point, forcing the brute-force scan through its full
 // worst case instead of exiting early.
-[MemoryDiagnoser]
 public class CircleAndRectangleOverlappingBenchmarks
 {
     private int _radius;

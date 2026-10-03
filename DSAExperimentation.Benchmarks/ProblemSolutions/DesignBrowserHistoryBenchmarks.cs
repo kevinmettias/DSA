@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignBrowserHistory;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // to setup rather than to the replay; the replay itself is the pre-migration
 // Visit/Back/Visit cycle unchanged, so every iteration exercises both the
 // truncation path (discarding forward history) and plain append growth.
-[MemoryDiagnoser]
 public class DesignBrowserHistoryBenchmarks
 {
     private const string HomePageUrl = "home.com";

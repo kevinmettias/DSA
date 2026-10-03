@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeGridHappiness;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // being measured. Columns is fixed and Rows is kept modest (matching
 // CherryPickupBenchmarks' "kept modest" reasoning) since the un-memoized side is
 // exponential in cell count.
-[MemoryDiagnoser]
 public class MaximizeGridHappinessBenchmarks
 {
     private const int Columns = 3;

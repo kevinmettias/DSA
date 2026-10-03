@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfWaysToReorderArrayToGetSameBST;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // workload is a deterministic random permutation of 1..Length, so the BST both arms
 // describe is a balanced-on-average one; [GlobalSetup] owns the shuffle, leaving
 // each measured call to do only its own counting work.
-[MemoryDiagnoser]
 public class NumberOfWaysToReorderArrayToGetSameBSTBenchmarks
 {
     // LC problem number, reused as the deterministic permutation seed.

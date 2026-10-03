@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignAddAndSearchWordsDataStructure;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // lookups, half single-position wildcards - so word/pattern generation is
 // charged to setup rather than to the add-then-search replay each [Benchmark]
 // arm measures.
-[MemoryDiagnoser]
 public class DesignAddAndSearchWordsDataStructureBenchmarks
 {
     private const int Seed = 211;

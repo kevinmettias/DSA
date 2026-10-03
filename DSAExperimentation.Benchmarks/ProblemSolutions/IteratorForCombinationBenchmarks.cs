@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IteratorForCombination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [Benchmark] cannot return one; draining to an int both consumes it and keeps the
 // arm a single call). The alphabet is the first CharacterCount letters and the
 // combination length is half of that, the widest point of the combination space.
-[MemoryDiagnoser]
 public class IteratorForCombinationBenchmarks
 {
     private const int CombinationLengthDivisor = 2;

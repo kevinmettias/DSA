@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.LeetCode.MatrixCellsInDistanceOrder;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overload, so grid construction is charged to setup rather than to the search being
 // measured. Both are O(rows*cols*log(rows*cols)); this demonstrates the repo's own
 // grid-traversal and sorting primitives compose correctly, not an asymptotic win.
-[MemoryDiagnoser]
 public class MatrixCellsInDistanceOrderBenchmarks
 {
 

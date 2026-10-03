@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MirrorReflection;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are), forcing the simulation through its full O(roomSide) worst case instead of an
 // early exit at a small common factor. The inputs are two ints, so there is nothing
 // to hoist into a [GlobalSetup].
-[MemoryDiagnoser]
 public class MirrorReflectionBenchmarks
 {
     private int LaserHeight => RoomSide - 1;

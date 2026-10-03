@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MostFrequentPrime;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup]; the sieve arm still builds its own sieve inside the
 // measured call, since that precompute is sized from the grid itself and is
 // the composition being measured, not input construction.
-[MemoryDiagnoser]
 public class MostFrequentPrimeBenchmarks
 {
     private const int GridSeed = 3044;

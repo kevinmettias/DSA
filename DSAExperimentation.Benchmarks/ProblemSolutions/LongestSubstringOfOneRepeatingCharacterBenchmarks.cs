@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestSubstringOfOneRepeatingCharacter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every query spans the tree's full range). [GlobalSetup] generates the string and
 // the query stream in LeetCode's own shape, so nothing but the reduction itself is
 // charged to the measured methods.
-[MemoryDiagnoser]
 public class LongestSubstringOfOneRepeatingCharacterBenchmarks
 {
     private const int RandomSeed = 2213; // LC problem number

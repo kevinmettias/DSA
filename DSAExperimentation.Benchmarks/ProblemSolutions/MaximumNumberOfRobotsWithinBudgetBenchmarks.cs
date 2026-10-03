@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfRobotsWithinBudget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both Params (mirroring SlidingWindowMaximumBenchmarks' own fixed WindowSize), so
 // the baseline's per-left-edge rescan cost stays real instead of collapsing to O(1)
 // via an always-tiny window.
-[MemoryDiagnoser]
 public class MaximumNumberOfRobotsWithinBudgetBenchmarks
 {
     private const int ChargeTimeBoundExclusive = 50;

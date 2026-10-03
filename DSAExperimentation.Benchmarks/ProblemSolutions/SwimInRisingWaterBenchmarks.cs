@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SwimInRisingWater;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SwimInRisingWaterTests proves correct. Grid values are a random permutation
 // of 0..n*n-1, matching the problem's own constraint that every elevation from
 // 0 to n^2-1 appears exactly once.
-[MemoryDiagnoser]
 public class SwimInRisingWaterBenchmarks
 {
     private const int RandomSeed = 778; private int[][] _grid = [];

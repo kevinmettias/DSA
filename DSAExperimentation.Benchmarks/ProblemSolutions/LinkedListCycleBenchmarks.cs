@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.LinkedListCycle;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // whose tail rejoins the head, forcing both strategies to walk the full cycle
 // before they can answer; neither strategy mutates the list, so it is built once
 // and shared across iterations.
-[MemoryDiagnoser]
 public class LinkedListCycleBenchmarks
 {
     private SinglyLinkedListNode<int>? _head;

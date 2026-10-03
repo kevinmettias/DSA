@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.LeetCode.ReachableNodesWithRestrictions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // structure is charged to [GlobalSetup] rather than to the count being measured -
 // leaving the flood fill's adjacency copy against the union-find's edge pass as the
 // only difference the numbers report.
-[MemoryDiagnoser]
 public class ReachableNodesWithRestrictionsBenchmarks
 {
     // LC problem number, reused as the deterministic tree seed.

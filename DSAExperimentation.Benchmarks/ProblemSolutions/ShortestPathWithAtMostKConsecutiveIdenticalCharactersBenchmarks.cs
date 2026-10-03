@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ShortestPathWithAtMostKConsecutiveIdenticalCharacters;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prepared ConsecutiveRunGraph its hoisted overload takes, so wiring the whole
 // (node, runLength) state space is charged to [GlobalSetup] rather than to the
 // search being measured (OpenTheLockBenchmarks precedent).
-[MemoryDiagnoser]
 public class ShortestPathWithAtMostKConsecutiveIdenticalCharactersBenchmarks
 {
     // LC problem number, reused as the deterministic workload seed.

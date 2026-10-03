@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindMinimumInRotatedSortedArrayII;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // built by RotatedSortedArrayWorkloads - a rotated sequence with a bounded band of
 // duplicate values stamped across both ends - so the shrink loop's tie-breaking does
 // real, but small, work relative to Length. LC 81's sibling harness shares it.
-[MemoryDiagnoser]
 public class FindMinimumInRotatedSortedArrayIIBenchmarks
 {
     private int[] _values = [];

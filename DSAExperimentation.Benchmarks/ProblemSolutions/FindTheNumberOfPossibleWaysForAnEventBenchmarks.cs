@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheNumberOfPossibleWaysForAnEvent;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are FindTheNumberOfPossibleWaysForAnEventSolution's.
 // Stages and score range stay fixed while performer count grows, so the brute
 // force's x^n enumeration is what the memoized DP has to beat.
-[MemoryDiagnoser]
 public class FindTheNumberOfPossibleWaysForAnEventBenchmarks
 {
     private const int Stages = 3;

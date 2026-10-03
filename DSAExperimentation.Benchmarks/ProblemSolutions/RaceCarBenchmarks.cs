@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RaceCar;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // alone for the naive arm, the materialized graph for the composed one - so
 // construction is charged to [GlobalSetup] rather than to the search being
 // measured.
-[MemoryDiagnoser]
 public class RaceCarBenchmarks
 {
     private RaceCarStateSpace _space;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindTheMinimumCostArrayPermutation;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // for its own random digit list. Kept small: the brute-force arm is O(n!), so the
 // permutation size is bounded well under LC's own n <= 14 to keep every
 // configuration's baseline run finishing in reasonable benchmark time.
-[MemoryDiagnoser]
 public class FindTheMinimumCostArrayPermutationBenchmarks
 {
     private const int Seed = 3149;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaxValueOfEquation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pair stays in-window, forcing BOTH strategies through close to their full
 // O(n^2)/O(n) shapes instead of an early window-shrink making the all-pairs scan
 // look artificially competitive. Point construction is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class MaxValueOfEquationBenchmarks
 {
     private const int K = 1_000_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NetworkDelayTime;
 
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Deliberately at library level rather than under one LeetCode problem: LC 743 and LC 787 both
 // force this same algorithm choice, so the suite is named for the choice, not for either problem.
-[MemoryDiagnoser]
 public class ShortestPathAlgorithmBenchmarks
 {
     private const int ExtraEdgesPerNode = 3;

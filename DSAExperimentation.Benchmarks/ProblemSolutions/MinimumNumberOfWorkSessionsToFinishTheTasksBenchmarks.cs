@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfWorkSessionsToFinishTheTasks;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are handed a pre-built FeasibleSessionMasks via their hoisted overload, so the
 // sum-over-subsets table is charged to [GlobalSetup] rather than to the recurrence
 // being measured.
-[MemoryDiagnoser]
 public class MinimumNumberOfWorkSessionsToFinishTheTasksBenchmarks
 {
     private const int SessionTime = 2;

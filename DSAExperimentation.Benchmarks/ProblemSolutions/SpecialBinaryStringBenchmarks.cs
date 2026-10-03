@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SpecialBinaryString;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SpecialBinaryStringTests proves correct. PairCount controls how many special
 // substrings (1/0 pairs) the generated input packs in, scaling both recursion depth
 // and per-level sort width.
-[MemoryDiagnoser]
 public class SpecialBinaryStringBenchmarks
 {
     private const int RandomSeed = 761;

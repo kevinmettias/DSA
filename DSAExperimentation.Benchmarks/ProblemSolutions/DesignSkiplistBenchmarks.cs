@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignSkiplist;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FenwickTree<int,SumOperation<int>> used as a point-update/point-query frequency
 // array over num's bounded domain, O(log 2*10^4) per call. Both replay the same
 // fixed batch of add-then-search-then-erase calls a real Skiplist caller would make.
-[MemoryDiagnoser]
 public class DesignSkiplistBenchmarks
 {
     private const int MaxValue = 20_000;

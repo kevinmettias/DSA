@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNestingDepthOfTheParentheses;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a sibling parentheses-depth problem. Neither needs anything hoisted beyond the
 // string LeetCode itself hands in, so [GlobalSetup] only sizes and seeds the
 // balanced expression, reusing the generator LC 856 and LC 1021 already measure with.
-[MemoryDiagnoser]
 public class MaximumNestingDepthOfTheParenthesesBenchmarks
 {
     private const int MaxDepthCap = 20;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NextGreaterElementIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The O(n^2) brute-force scan walks forward from every index until it has seen two
 // greater values; the O(n) sweep pushes each index onto one of two monotonic
 // Stack<int>s and lets later values resolve them.
-[MemoryDiagnoser]
 public class NextGreaterElementIVBenchmarks
 {
     private const int RandomSeed = 2454; // LeetCode problem number

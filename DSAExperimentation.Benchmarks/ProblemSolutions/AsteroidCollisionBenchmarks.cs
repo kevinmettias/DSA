@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AsteroidCollision;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n) scan per collision, so O(n^2) overall once cascades happen) vs. this
 // repo's own Stack<int> doing the textbook single left-to-right pass,
 // resolving every collision, including cascades, in one O(n) sweep.
-[MemoryDiagnoser]
 public class AsteroidCollisionBenchmarks
 {
     // LC problem number, used as the deterministic seed for asteroid generation.

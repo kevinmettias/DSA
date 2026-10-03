@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestKLengthSubsequenceWithOccurrencesOfALetter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every one of the subsequenceLength output characters - and the single O(n)
 // monotonic-stack sweep, where each character is pushed once and popped at most once
 // across the whole string.
-[MemoryDiagnoser]
 public class SmallestKLengthSubsequenceWithOccurrencesOfALetterBenchmarks
 {
     private const char Letter = 'a';

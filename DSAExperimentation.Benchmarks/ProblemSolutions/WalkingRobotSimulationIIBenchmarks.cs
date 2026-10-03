@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WalkingRobotSimulationII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(num steps) against O(1), which is why the gap widens with StepsPerMove rather
 // than with the number of moves. [GlobalSetup] materializes the move script so
 // building it is not charged to either arm.
-[MemoryDiagnoser]
 public class WalkingRobotSimulationIIBenchmarks
 {
     private const int Width = 100_000;

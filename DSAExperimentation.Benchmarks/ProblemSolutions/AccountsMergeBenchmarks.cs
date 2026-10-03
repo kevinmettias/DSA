@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AccountsMerge;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same email could carry different names - input outside the problem's contract, on
 // which the two arms legitimately disagree about whose name survives, which made the
 // benchmark time a question the tests never settled.
-[MemoryDiagnoser]
 public class AccountsMergeBenchmarks
 {
     private const int RandomSeed = 721; // LC problem number

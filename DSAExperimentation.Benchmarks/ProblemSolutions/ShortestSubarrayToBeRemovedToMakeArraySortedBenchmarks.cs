@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestSubarrayToBeRemovedToMakeArraySorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The workload is a deterministic random array - almost never sorted anywhere, so
 // the cubic arm pays its full price and the stitching arm's prefix and suffix are
 // both short; [GlobalSetup] owns its construction.
-[MemoryDiagnoser]
 public class ShortestSubarrayToBeRemovedToMakeArraySortedBenchmarks
 {
     // LC problem number, reused as the deterministic element seed.

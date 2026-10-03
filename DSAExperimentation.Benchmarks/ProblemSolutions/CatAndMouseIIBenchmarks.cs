@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CatAndMouseII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CorridorLength still grows the unmemoized search tree. Grid construction is
 // charged to [GlobalSetup]; the measured methods take LeetCode's own input shape,
 // so no hoisted overload is needed.
-[MemoryDiagnoser]
 public class CatAndMouseIIBenchmarks
 {
     private const int CatJump = 1;

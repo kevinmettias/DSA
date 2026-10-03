@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumOperationsToMakeArrayEqualToTarget;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumOperationsToMakeArrayEqualToTargetSolution's, the
 // same methods MinimumOperationsToMakeArrayEqualToTargetTests proves correct.
-[MemoryDiagnoser]
 public class MinimumOperationsToMakeArrayEqualToTargetBenchmarks
 {
     private const int Seed = 3229;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinCostClimbingStairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: all three arms are MinCostClimbingStairsSolution's, the same
 // methods MinCostClimbingStairsTests proves correct. NaiveRecursive is kept to a
 // modest StepCount since its cost blowup (O(2^n)) is real.
-[MemoryDiagnoser]
 public class MinCostClimbingStairsBenchmarks
 {
     private const int RandomSeed = 746; // LC problem number

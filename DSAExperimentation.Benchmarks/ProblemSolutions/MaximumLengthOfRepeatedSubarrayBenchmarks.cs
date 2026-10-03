@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumLengthOfRepeatedSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // real worst case" intent TwoSumBenchmarks' own setup comment names. A low-repeat
 // random array would instead let brute force's early mismatch exit dominate and hide
 // the asymptotic gap behind Memoizer's own per-state dictionary/delegate overhead.
-[MemoryDiagnoser]
 public class MaximumLengthOfRepeatedSubarrayBenchmarks
 {
     private int[] _first = [];

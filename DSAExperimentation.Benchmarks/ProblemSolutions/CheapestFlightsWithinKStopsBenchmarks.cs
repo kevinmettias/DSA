@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CheapestFlightsWithinKStops;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FlightStateGraph for Dijkstra - so construction is charged to [GlobalSetup]
 // rather than to the search being measured. K scales with CityCount so the naive
 // side's blowup is actually exercised at the larger size.
-[MemoryDiagnoser]
 public class CheapestFlightsWithinKStopsBenchmarks
 {
     // Arbitrary fixed seed for reproducible benchmark input.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PartitionToKEqualSumSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BucketCount interleaved copies of 1..NumbersPerSubset, so a perfect split always
 // exists (each subset re-assembles the copy it came from) but the shuffled
 // ordering still forces a real search rather than an immediate match.
-[MemoryDiagnoser]
 public class PartitionToKEqualSumSubsetsBenchmarks
 {
     private const int NumbersPerSubset = 6;

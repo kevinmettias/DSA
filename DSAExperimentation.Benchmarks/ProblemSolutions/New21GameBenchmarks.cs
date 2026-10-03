@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.New21Game;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // There is no [GlobalSetup] left to charge: the only preparation the old harness did
 // was copying the stop point into a separate field, and it is passed straight
 // through to both arms.
-[MemoryDiagnoser]
 public class New21GameBenchmarks
 {
     private const int MaxPts = 6;

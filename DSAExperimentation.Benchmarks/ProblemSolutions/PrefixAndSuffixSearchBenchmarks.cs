@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.LeetCode.PrefixAndSuffixSearch;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every measured query. Words are random fixed-length strings so a query's own word
 // is very unlikely to share its prefix+suffix combo with another random word,
 // keeping both strategies' answers aligned without affecting either one's cost.
-[MemoryDiagnoser]
 public class PrefixAndSuffixSearchBenchmarks
 {
     private const int RandomSeed = 745; // LC 745

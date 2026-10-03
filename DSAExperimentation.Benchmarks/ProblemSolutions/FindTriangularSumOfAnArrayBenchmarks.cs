@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTriangularSumOfAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // reduction - a raw in-place int[] buffer against this repo's own DynamicArray<int>
 // rebuilt fresh each round - isolating the primitive's own overhead rather than
 // comparing two different algorithms.
-[MemoryDiagnoser]
 public class FindTriangularSumOfAnArrayBenchmarks
 {
     private const int RandomSeed = 2221; // LC problem number

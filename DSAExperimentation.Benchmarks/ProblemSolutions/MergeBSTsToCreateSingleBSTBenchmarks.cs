@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MergeBSTsToCreateSingleBST;
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // first - identically for both arms, exactly as the pre-migration harness did.
 // Each arm returns LeetCode's real answer, the merged root; the harness reduces it
 // to a bool so the measured method's result is consumed without walking the tree.
-[MemoryDiagnoser]
 public class MergeBSTsToCreateSingleBSTBenchmarks
 {
     private List<BinaryTreeNode<int>> _template = new();

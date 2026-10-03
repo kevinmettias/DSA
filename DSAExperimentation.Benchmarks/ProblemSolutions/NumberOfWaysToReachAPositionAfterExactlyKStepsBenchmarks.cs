@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfWaysToReachAPositionAfterExactlyKSteps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // stays modest specifically because the un-memoized baseline's 2^StepCount blowup is
 // real - the same reasoning TargetSumBenchmarks and FibonacciNumberBenchmarks
 // document.
-[MemoryDiagnoser]
 public class NumberOfWaysToReachAPositionAfterExactlyKStepsBenchmarks
 {
     private const int StartPos = 0;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountUnreachablePairsOfNodesInAnUndirectedGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // graph is built as several disjoint chains rather than one connected component, so
 // both strategies have multiple real components to discover and size, and edge
 // construction is charged to [GlobalSetup] rather than to the measured arms.
-[MemoryDiagnoser]
 public class CountUnreachablePairsOfNodesInAnUndirectedGraphBenchmarks
 {
     private const int NodesPerComponent = 25;

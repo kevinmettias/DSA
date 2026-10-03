@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MostFrequentIds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MostFrequentIdsTests proves correct. A modest id space (relative to Length)
 // keeps counts churning and the collection non-trivially sized throughout, so
 // the brute-force rescan actually has work to do at every step.
-[MemoryDiagnoser]
 public class MostFrequentIdsBenchmarks
 {
     private const int MaxIdExclusive = 1_000;

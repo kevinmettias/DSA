@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountBowlSubarrays;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountBowlSubarraysTests proves correct. Neither strategy needs anything
 // prepared beyond the array itself, so [GlobalSetup] only charges workload
 // construction.
-[MemoryDiagnoser]
 public class CountBowlSubarraysBenchmarks
 {
     private const int Seed = 3676;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SudokuSolver;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // puzzle itself - both strategies mutate their board argument in place, so
 // every iteration needs its own pristine copy, which [GlobalSetup] cannot
 // hand out once.
-[MemoryDiagnoser]
 public class SudokuSolverBenchmarks
 {
     private char[][] _puzzle = [];

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubarrayProductLessThanK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // convention TwoSumBenchmarks (unreachable target) and
 // LongestSubstringWithoutRepeatingCharactersBenchmarks (all-distinct characters)
 // already establish.
-[MemoryDiagnoser]
 public class SubarrayProductLessThanKBenchmarks
 {
     private const int K = 2;

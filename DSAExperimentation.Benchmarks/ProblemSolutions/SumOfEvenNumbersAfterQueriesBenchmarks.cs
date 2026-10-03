@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfEvenNumbersAfterQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategies SumOfEvenNumbersAfterQueriesTests proves correct. Setup builds Length
 // random values and Length random queries from a fixed seed, so the rescanning arm
 // pays O(n) per query against the running-invariant arm's O(1).
-[MemoryDiagnoser]
 public class SumOfEvenNumbersAfterQueriesBenchmarks
 {
     private const int RandomSeed = 985; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CanIWin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // through their full worst-case search tree instead of an early exit on the first
 // invocation making the brute force look artificially fast (the same "force the
 // real worst case" convention TwoSumBenchmarks already uses).
-[MemoryDiagnoser]
 public class CanIWinBenchmarks
 {
     private const int GaussSumDivisor = 2;

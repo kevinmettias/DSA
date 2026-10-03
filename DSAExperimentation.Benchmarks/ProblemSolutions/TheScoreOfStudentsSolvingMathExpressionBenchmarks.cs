@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TheScoreOfStudentsSolvingMathExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // identical in both arms and negligible against the interval search, so no prepared-input
 // overload is warranted and none could be added without either an ambiguous BCL parameter
 // or a type invented for the purpose.
-[MemoryDiagnoser]
 public class TheScoreOfStudentsSolvingMathExpressionBenchmarks
 {
     private const int WorkloadSeed = 1;

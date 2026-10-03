@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PacificAtlanticWaterFlow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cell, independently DFS downhill toward each ocean's border with a
 // freshly-allocated rows*cols visited grid) vs. a multi-source reverse-flow flood
 // fill from every border cell.
-[MemoryDiagnoser]
 public class PacificAtlanticWaterFlowBenchmarks
 {
     private const int MaxHeight = 1_000;

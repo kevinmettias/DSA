@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountNumberOfBalancedPermutations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead of degenerating to every digit distinct. Length stays small - brute
 // force would not finish otherwise, even though the real problem allows up to 80
 // digits - the same tradeoff CountAnagramsBenchmarks makes for word length.
-[MemoryDiagnoser]
 public class CountNumberOfBalancedPermutationsBenchmarks
 {
     private const int Seed = 3343; // LC problem number

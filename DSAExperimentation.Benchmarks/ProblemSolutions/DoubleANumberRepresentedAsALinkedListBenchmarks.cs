@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.DoubleANumberRepresentedAsALinkedList;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (CS0050). Before this migration both arms instead walked their result to a digit
 // count and returned that; returning the answer itself is what makes them the
 // methods the tests assert.
-[MemoryDiagnoser]
 public class DoubleANumberRepresentedAsALinkedListBenchmarks
 {
     private const int RandomSeed = 2816; // LC problem number

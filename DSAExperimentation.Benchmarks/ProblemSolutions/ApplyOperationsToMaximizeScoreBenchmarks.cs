@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ApplyOperationsToMaximizeScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of small integers - against one monotonic pass per side over this repo's own
 // Stack<int>, O(n) overall. int[] plus an int budget is already LeetCode's own input
 // shape, so [GlobalSetup] hands it straight in and no hoisted overload is needed.
-[MemoryDiagnoser]
 public class ApplyOperationsToMaximizeScoreBenchmarks
 {
     private const int RandomSeed = 2818; // LeetCode problem number

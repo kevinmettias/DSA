@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindAllGoodStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // substring-checking it with the BCL against the KMP-automaton digit DP that walks
 // the state space directly. s1/s2 span the full alphabet at every position so the
 // enumeration baseline pays its full 26^Length cost.
-[MemoryDiagnoser]
 public class FindAllGoodStringsBenchmarks
 {
     private const string EvilSubstring = "ab";

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DetectSquares;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each arm adds every point once, then queries every point once, so the comparison is
 // between rescanning the whole point list per candidate corner and looking the corner
 // up in the grouped-by-x map.
-[MemoryDiagnoser]
 public class DetectSquaresBenchmarks
 {
     private (int X, int Y)[] _points = [];

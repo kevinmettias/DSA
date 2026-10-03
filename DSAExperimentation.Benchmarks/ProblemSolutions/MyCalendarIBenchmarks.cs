@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MyCalendarI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the cost of the overlap CHECK itself. Drain feeds the whole generated event
 // sequence through Book() one call at a time - the LeetCode-shaped sequence
 // itself, not a batch construction - counting how many were accepted.
-[MemoryDiagnoser]
 public class MyCalendarIBenchmarks
 {
     private const int EventWidth = 10;

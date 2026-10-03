@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.EvaluateReversePolishNotation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same method EvaluateReversePolishNotationTests proves correct. Pre-migration
 // this class was an untested compile-smoke placeholder (`Baseline() => 1`,
 // `PrimitiveComposed() => 1`) rather than a second strategy to reconcile.
-[MemoryDiagnoser]
 public class EvaluateReversePolishNotationBenchmarks
 {
     // LeetCode 150's own third example: a fully nested expression that

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GuessTheWord;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // from constant overhead. The generated pool is LeetCode's own string[] shape, so the
 // only thing hoisted into [GlobalSetup] is generating it; a fresh SecretWordMaster is
 // constructed per invocation because the guess counter is per-run state.
-[MemoryDiagnoser]
 public class GuessTheWordBenchmarks
 {
     private const int RandomSeed = 843; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AllPathsFromSourceToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms previously only counted paths; they now build LeetCode's actual answer
 // and the harness takes .Count, so the measurement includes materializing 2^(n-2)
 // paths in both arms alike (ARCHITECTURE.md 17.8's precedent).
-[MemoryDiagnoser]
 public class AllPathsFromSourceToTargetBenchmarks
 {
     private int[][] _graph = [];

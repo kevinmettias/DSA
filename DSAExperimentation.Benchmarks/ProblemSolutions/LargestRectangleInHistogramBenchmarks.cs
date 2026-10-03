@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LargestRectangleInHistogram;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LargestRectangleInHistogramTests proves correct - the O(n^2)
 // per-bar left/right expansion baseline vs. the O(n) monotonic-stack sweep
 // using this repo's own Stack<int>.
-[MemoryDiagnoser]
 public class LargestRectangleInHistogramBenchmarks
 {
     private const int MaxHeight = 1_000;

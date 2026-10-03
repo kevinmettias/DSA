@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountIntegersInIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // script - OperationCount random ranges - so script construction is charged to setup and
 // only the replay is measured, the same "run the stateful object end to end" shape
 // DataStreamAsDisjointIntervalsBenchmarks uses.
-[MemoryDiagnoser]
 public class CountIntegersInIntervalsBenchmarks
 {
     private const int RandomSeed = 2276;

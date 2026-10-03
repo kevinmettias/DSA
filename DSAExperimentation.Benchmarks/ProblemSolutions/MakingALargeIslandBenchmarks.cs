@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MakingALargeIsland;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // neighboring areas (deduped through this repo's own Set<int>) in a single pass.
 // Each strategy clones the shared grid fixture internally before labeling it, so
 // repeated invocations each start from the true input.
-[MemoryDiagnoser]
 public class MakingALargeIslandBenchmarks
 {
     private const int RandomSeed = 7; // LC problem number

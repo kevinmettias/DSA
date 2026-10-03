@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountWaysToMakeArrayWithProduct;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pays O(maxK log log maxK) once and amortizes it across QueryCount queries, so the
 // sieve build stays inside the measured method - it is the cost being amortized,
 // not setup.
-[MemoryDiagnoser]
 public class CountWaysToMakeArrayWithProductBenchmarks
 {
     // Inclusive upper bound for the generated product k in each query.

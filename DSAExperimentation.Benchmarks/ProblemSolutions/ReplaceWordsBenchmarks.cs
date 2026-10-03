@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReplaceWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // other half are fully random (forcing a full, unmatched dictionary scan in the
 // baseline) - the same "don't let either strategy short-circuit trivially" intent
 // TwoSumBenchmarks' unreachable target uses.
-[MemoryDiagnoser]
 public class ReplaceWordsBenchmarks
 {
     private const int RootLength = 4;

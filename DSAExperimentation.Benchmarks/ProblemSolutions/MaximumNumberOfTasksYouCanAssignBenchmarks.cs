@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfTasksYouCanAssign;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // before stopping. [GlobalSetup] sorts both arrays into the prepared
 // SortedTaskAssignment its hoisted overload takes, so sorting is not charged to
 // either measured arm.
-[MemoryDiagnoser]
 public class MaximumNumberOfTasksYouCanAssignBenchmarks
 {
     private const int RandomSeed = 2071; // LC problem number

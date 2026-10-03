@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.KthSmallestInLexicographicalOrder;
 
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (~2x) by UpperBound=2_000_000. Large [Params] values, closer to this problem's
 // LeetCode input range (n up to 10^9), are what it takes to actually see that
 // crossover.
-[MemoryDiagnoser]
 public class KthSmallestInLexicographicalOrderBenchmarks
 {
 

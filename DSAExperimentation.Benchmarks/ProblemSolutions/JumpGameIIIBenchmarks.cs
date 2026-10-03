@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGameIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // drawn from [1, Length)), the same "force the real worst case" intent
 // TwoSumBenchmarks' _target uses: neither strategy can short-circuit on an early
 // hit, so both are forced through the full reachable component from _start.
-[MemoryDiagnoser]
 public class JumpGameIIIBenchmarks
 {
     // LC problem number, reused as the deterministic seed.

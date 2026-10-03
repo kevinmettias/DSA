@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumCostOfAPathWithSpecialRoads;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (every pair of the ~2*SpecialRoadCount+2 points is directly connected), so the
 // array-scan baseline is expected to win: the well-known dense-graph case where a
 // heap's O(log V) bookkeeping costs more than it saves.
-[MemoryDiagnoser]
 public class MinimumCostOfAPathWithSpecialRoadsBenchmarks
 {
     private const int Seed = 2662; // LC problem number

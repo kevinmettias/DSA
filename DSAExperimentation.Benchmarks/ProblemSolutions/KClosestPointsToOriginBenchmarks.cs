@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.KClosestPointsToOrigin;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup]; it is already LeetCode's own input shape, so each arm is handed it
 // directly and only the selection is measured - a full O(n log n) sort of every point
 // against an O(n log k) size-k max-heap that never orders more than k of them.
-[MemoryDiagnoser]
 public class KClosestPointsToOriginBenchmarks
 {
     private const int K = 10;

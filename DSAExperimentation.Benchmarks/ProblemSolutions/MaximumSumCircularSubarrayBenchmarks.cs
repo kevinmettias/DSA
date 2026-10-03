@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSumCircularSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumSumCircularSubarraySolution's, the same
 // methods MaximumSumCircularSubarrayTests proves correct - the O(n^2) brute force
 // over every circular subarray vs. the O(n) two-Kadane-pass complement trick.
-[MemoryDiagnoser]
 public class MaximumSumCircularSubarrayBenchmarks
 {
     private const int RandomSeed = 918; // LC problem number

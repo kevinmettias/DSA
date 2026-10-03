@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumProductSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // an earlier AccountsMerge generator had). Closing a zero-free run before its
 // running product can pass the cap keeps every subarray product inside the
 // contract, so both arms compute an exact answer and agreement means agreement.
-[MemoryDiagnoser]
 public class MaximumProductSubarrayBenchmarks
 {
     private const int RandomSeed = 152; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountNonDecreasingSubarraysAfterKOperations;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods CountNonDecreasingSubarraysAfterKOperationsTests proves correct.
 // Neither strategy needs anything prepared beyond the array itself, so
 // [GlobalSetup] only charges workload construction.
-[MemoryDiagnoser]
 public class CountNonDecreasingSubarraysAfterKOperationsBenchmarks
 {
     private const int Seed = 3420;

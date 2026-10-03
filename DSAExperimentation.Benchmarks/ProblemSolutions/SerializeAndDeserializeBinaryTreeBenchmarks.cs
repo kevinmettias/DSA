@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.SerializeAndDeserializeBinaryTree;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // exists to give a [Benchmark] method (which must be public) a public return value
 // for an internal BinaryTreeNode<int>, the same technique
 // ConstructBinaryTreeFromPreorderAndInorderTraversalBenchmarks uses.
-[MemoryDiagnoser]
 public class SerializeAndDeserializeBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

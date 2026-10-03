@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TheSkylineProblem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TheSkylineProblemTests proves correct. Buildings are randomly overlapping so
 // both strategies pay their full worst-case cost rather than degenerating to
 // disjoint ranges.
-[MemoryDiagnoser]
 public class TheSkylineProblemBenchmarks
 {
     private const int LeftCoordinateSpreadMultiplier = 2;

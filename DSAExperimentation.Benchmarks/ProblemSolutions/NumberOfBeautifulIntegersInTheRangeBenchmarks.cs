@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfBeautifulIntegersInTheRange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own digit count (~constant here, both Params share the same digit length), while
 // CountByBruteForce walks every integer in [Low, High] - RangeSize is what
 // actually drives the gap wider as it grows.
-[MemoryDiagnoser]
 public class NumberOfBeautifulIntegersInTheRangeBenchmarks
 {
     private const int Low = 1;

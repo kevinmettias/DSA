@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Hamming;
 using DSAExperimentation.DataStructures.Set;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // endWord is always genuinely reachable and both strategies run a full BFS instead
 // of failing fast. Each arm gets the prepared input its hoisted overload takes, so
 // dictionary/graph construction is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class WordLadderBenchmarks
 {
     private const int WordLength = 6;

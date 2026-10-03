@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheKthLargestIntegerInTheArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // random digit strings of mixed length, so the numeric order the solution imposes
 // (length first, then ordinal) actually differs from string's own lexicographic one,
 // and K stays small so the size-k heap's log factor is on K rather than on Length.
-[MemoryDiagnoser]
 public class FindTheKthLargestIntegerInTheArrayBenchmarks
 {
     private const int K = 10;

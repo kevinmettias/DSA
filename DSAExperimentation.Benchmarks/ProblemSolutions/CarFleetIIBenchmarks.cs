@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CarFleetII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ahead of it), so no car ever catches up - the classic "never breaks early"
 // adversarial input that forces the baseline's forward scan all the way to the end
 // for every car, while the sweep still pays one push and at most one pop each.
-[MemoryDiagnoser]
 public class CarFleetIIBenchmarks
 {
     // Gap between adjacent cars' starting positions in the generated fleet.

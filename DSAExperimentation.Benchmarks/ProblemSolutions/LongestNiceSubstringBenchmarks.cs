@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestNiceSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // opposite-case partner and recursing on the two halves - O(n^2) worst case, since no
 // nice substring can ever cross that character. A tiny 4-letter mixed-case alphabet
 // keeps both variants paying real work instead of exiting on an early mismatch.
-[MemoryDiagnoser]
 public class LongestNiceSubstringBenchmarks
 {
     private const string Alphabet = "aAbB";

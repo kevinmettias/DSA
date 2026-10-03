@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSequencesToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // brute-force arm's 3^Length search to finish; k is fixed at 1, always
 // reachable (every "leave unchanged" sequence lands on it), so both arms do
 // real search work rather than short-circuiting on an unreachable target.
-[MemoryDiagnoser]
 public class CountSequencesToKBenchmarks
 {
     private const int Seed = 3850;

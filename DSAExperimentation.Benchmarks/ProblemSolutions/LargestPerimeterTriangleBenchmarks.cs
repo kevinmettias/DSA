@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LargestPerimeterTriangle;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LargestPerimeterTriangleTests proves correct. Neither strategy needs anything
 // hoisted beyond the raw int[] LeetCode itself hands in, so [GlobalSetup] only
 // sizes+seeds the workload - the cubic baseline is what caps the sizes at 80/300.
-[MemoryDiagnoser]
 public class LargestPerimeterTriangleBenchmarks
 {
     private const int RandomSeed = 976; private int[] _values = [];

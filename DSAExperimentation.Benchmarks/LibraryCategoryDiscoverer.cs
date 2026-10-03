@@ -1,6 +1,5 @@
 using System.Collections.Concurrent;
 using System.Reflection;
-using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 namespace DSAExperimentation.Benchmarks;

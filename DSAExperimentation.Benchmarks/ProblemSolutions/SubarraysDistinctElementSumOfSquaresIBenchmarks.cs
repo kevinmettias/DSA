@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubarraysDistinctElementSumOfSquaresI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // baseline re-derives each subarray's distinct count with a linear scan (O(n^3));
 // the composed arm grows one Set<int> per start index (O(n^2)). Params stay at or
 // under 100, this problem's own constraint on nums.Length.
-[MemoryDiagnoser]
 public class SubarraysDistinctElementSumOfSquaresIBenchmarks
 {
     private const int RandomSeed = 1;

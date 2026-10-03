@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.KthSmallestAmountWithSingleDenominationCombination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of rank); Rank is the axis that grows, so the heap merge's
 // O(rank log coins.Length) cost is what the inclusion-exclusion search - whose
 // own cost is independent of rank - has to be measured against.
-[MemoryDiagnoser]
 public class KthSmallestAmountWithSingleDenominationCombinationBenchmarks
 {
     private const int Seed = 3116; // LC problem number

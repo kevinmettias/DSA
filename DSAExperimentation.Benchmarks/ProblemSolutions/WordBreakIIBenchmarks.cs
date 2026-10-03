@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WordBreakII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // WordBreakIITests proves correct. _source tiles a single short dictionary word so
 // both strategies reach the identical unique sentence, isolating the
 // segmentation-scan cost itself rather than sentence-construction cost.
-[MemoryDiagnoser]
 public class WordBreakIIBenchmarks
 {
     private const string RepeatedWord = "cat";

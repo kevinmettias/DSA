@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RepeatedStringMatch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RepeatedStringMatchTests proves correct. The repeated unit and the target pattern
 // are built so they never match at any repeat count, forcing both strategies through
 // every candidate length instead of an early-exit on the first.
-[MemoryDiagnoser]
 public class RepeatedStringMatchBenchmarks
 {
     private const int APatternFillerLength = 9;

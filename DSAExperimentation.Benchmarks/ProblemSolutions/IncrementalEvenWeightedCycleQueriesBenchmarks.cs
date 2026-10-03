@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IncrementalEvenWeightedCycleQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] builds one fixed, random edge stream over EdgeCount nodes so
 // stream construction is charged to setup rather than to the pass each
 // [Benchmark] arm measures.
-[MemoryDiagnoser]
 public class IncrementalEvenWeightedCycleQueriesBenchmarks
 {
     private const int Seed = 3887;

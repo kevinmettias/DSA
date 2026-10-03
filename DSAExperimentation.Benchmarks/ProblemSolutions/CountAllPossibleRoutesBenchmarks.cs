@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountAllPossibleRoutes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // side's branching (up to Locations.Length - 1 per step) still finishes in reasonable
 // time while remaining clearly exponential next to the memoized
 // O(Locations.Length^2 * Fuel) side.
-[MemoryDiagnoser]
 public class CountAllPossibleRoutesBenchmarks
 {
     private const int Start = 0;

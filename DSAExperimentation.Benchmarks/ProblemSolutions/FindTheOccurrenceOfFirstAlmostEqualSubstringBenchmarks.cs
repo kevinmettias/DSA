@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheOccurrenceOfFirstAlmostEqualSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // last character" forcing FindBeautifulIndicesInTheGivenArrayII's benchmark
 // uses) and the whole search still ends in -1, the case that gives the
 // Z-function arm's O(n + m) no head start from an early return either.
-[MemoryDiagnoser]
 public class FindTheOccurrenceOfFirstAlmostEqualSubstringBenchmarks
 {
     private string _text = "";

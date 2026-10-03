@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumInsertionsToBalanceAParenthesesString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // A uniformly random bracket string keeps openers and closers interleaved, so the
 // scalar counter and the explicit Stack<char> of openers both stay busy for the whole
 // scan rather than degenerating into one long run of either bracket.
-[MemoryDiagnoser]
 public class MinimumInsertionsToBalanceAParenthesesStringBenchmarks
 {
     private const int RandomSeed = 1541; // LC problem number

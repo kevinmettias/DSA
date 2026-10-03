@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DeleteDuplicateFoldersInSystem;
 
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms now return the surviving paths rather than a survivor count, because they
 // are the methods the tests assert (ARCHITECTURE §17.8's precedent); the harness takes
 // .Count so the result is still consumed.
-[MemoryDiagnoser]
 public class DeleteDuplicateFoldersInSystemBenchmarks
 {
     private string[][] _paths = [];

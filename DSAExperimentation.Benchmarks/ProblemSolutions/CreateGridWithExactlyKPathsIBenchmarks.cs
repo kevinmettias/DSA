@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CreateGridWithExactlyKPathsI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // widest rectangle search (up to a 2x4/4x2 candidate, or the 3x3 double-chain
 // fallback), so it is the Params value that makes the two path-count strategies'
 // per-candidate cost actually show up.
-[MemoryDiagnoser]
 public class CreateGridWithExactlyKPathsIBenchmarks
 {
     private const int K = 4;

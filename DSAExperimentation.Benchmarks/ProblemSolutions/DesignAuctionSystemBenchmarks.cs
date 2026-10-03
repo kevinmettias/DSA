@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignAuctionSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // charged to setup rather than to the replay each [Benchmark] arm measures. Every
 // bid lands on one of a small fixed pool of itemIds, so both arms actually have to
 // pick a winner among several live bidders rather than a single one.
-[MemoryDiagnoser]
 public class DesignAuctionSystemBenchmarks
 {
     private const int Seed = 3815;

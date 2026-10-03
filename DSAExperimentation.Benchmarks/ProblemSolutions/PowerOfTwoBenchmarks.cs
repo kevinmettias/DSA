@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PowerOfTwo;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PowerOfTwoTests proves correct. No workload to hoist into [GlobalSetup] - the
 // input is a single int, and Value is fixed to the same non-power-of-two operand
 // for both arms so neither gets to stop after one iteration/comparison.
-[MemoryDiagnoser]
 public class PowerOfTwoBenchmarks
 {
     private const int Value = 999_999_937; // a large prime, far from any power of two

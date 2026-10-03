@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToVisitACellInAGrid;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // since row 0 and column 0 both count up from 0 and the problem guarantees that cell
 // is reachable. Every relaxation therefore goes through ArrivalTime's wait-and-parity
 // logic instead of taking the constant-weight-1 shortcut.
-[MemoryDiagnoser]
 public class MinimumTimeToVisitACellInAGridBenchmarks
 {
     private const int MaxWaitExclusive = 50;

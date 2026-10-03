@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaxSumOfRectangleNoLargerThanK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own signature takes (int[][]) is exactly what [GlobalSetup] builds, so there is
 // no separate hoisted overload to add here - construction is already charged to
 // setup, not to either measured method.
-[MemoryDiagnoser]
 public class MaxSumOfRectangleNoLargerThanKBenchmarks
 {
     private const int K = 50;

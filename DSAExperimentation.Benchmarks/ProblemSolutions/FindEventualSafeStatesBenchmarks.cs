@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindEventualSafeStates;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // measured. Nodes split into a forward DAG half (always safe, funneling into a
 // terminal node) and a ring-cycle half (never safe), so both strategies do real work
 // discovering both outcomes instead of one trivial all-safe or all-unsafe graph.
-[MemoryDiagnoser]
 public class FindEventualSafeStatesBenchmarks
 {
     private const int MaxForwardFanOut = 3;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SurroundedRegions;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] built, which a single capture pass would leave stable. The two
 // arms mark the border-reachable regions depth-first versus breadth-first and then
 // share one flip pass, so the pair isolates that marking order.
-[MemoryDiagnoser]
 public class SurroundedRegionsBenchmarks
 {
     private char[][] _board = [];

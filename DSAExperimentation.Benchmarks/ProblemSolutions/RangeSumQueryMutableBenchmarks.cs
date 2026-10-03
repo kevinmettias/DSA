@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RangeSumQueryMutable;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SegmentTree<int,SumOperation<int>> (Update and Query both O(log n)). Both process the same
 // interleaved stream of update/sumRange calls against a fresh instance built by their own factory
 // each iteration, so mutation from one run never leaks into the next.
-[MemoryDiagnoser]
 public class RangeSumQueryMutableBenchmarks
 {
     private const int OperationCount = 500;

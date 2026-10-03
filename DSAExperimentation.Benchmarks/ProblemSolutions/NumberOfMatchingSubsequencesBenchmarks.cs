@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfMatchingSubsequences;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MatchingSubsequenceWorkloads). Both arms take LeetCode's own
 // (searchedText, words) shape, so [GlobalSetup] only has to generate the input, not
 // prepare a structure.
-[MemoryDiagnoser]
 public class NumberOfMatchingSubsequencesBenchmarks
 {
     // Arbitrary fixed seed for reproducible benchmark input.

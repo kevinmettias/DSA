@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestPathInBinaryMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // corner-to-corner path almost always exists, so both strategies do comparable real
 // BFS work instead of failing fast. Grid construction is charged to [GlobalSetup],
 // and the prepared grid is already LeetCode's own input shape.
-[MemoryDiagnoser]
 public class ShortestPathInBinaryMatrixBenchmarks
 {
     // 1-in-10 chance a cell is blocked.

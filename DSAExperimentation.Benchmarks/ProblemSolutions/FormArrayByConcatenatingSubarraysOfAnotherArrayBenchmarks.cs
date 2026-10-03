@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FormArrayByConcatenatingSubarraysOfAnotherArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // very end, and the single group is the same shape at half the length - the classic
 // KMP-worst-case adversarial input, since the naive scan re-walks almost the whole
 // group at nearly every start position before failing on its last element.
-[MemoryDiagnoser]
 public class FormArrayByConcatenatingSubarraysOfAnotherArrayBenchmarks
 {
     private const int GroupLengthDivisor = 2; private int[] _nums = [];

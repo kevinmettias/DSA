@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindingMKAverage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // stream, so stream construction is charged to setup and only the replay - an
 // addElement plus a calculateMKAverage per element, identical for both arms - is
 // measured.
-[MemoryDiagnoser]
 public class FindingMKAverageBenchmarks
 {
     private const int WindowSize = 99;

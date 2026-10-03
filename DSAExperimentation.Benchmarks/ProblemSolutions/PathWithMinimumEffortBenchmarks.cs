@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PathWithMinimumEffort;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PathWithMinimumEffortTests proves correct. Heights are random in [0, 10^6),
 // matching LeetCode's own constraint range, so equal-height ties are effectively
 // absent and the binary search arm pays for a full re-scan per candidate.
-[MemoryDiagnoser]
 public class PathWithMinimumEffortBenchmarks
 {
     private const int RandomSeed = 1631; // LC 1631: Path With Minimum Effort

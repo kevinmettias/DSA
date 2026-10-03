@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountKReducibleNumbersLessThanN;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // it would not finish at the real problem's 800-bit scale, even though the
 // combinatorial arm scales to it trivially (CountAnagramsBenchmarks' word-length
 // tradeoff, here on bit length instead).
-[MemoryDiagnoser]
 public class CountKReducibleNumbersLessThanNBenchmarks
 {
     private const int Seed = 3352; // LC problem number

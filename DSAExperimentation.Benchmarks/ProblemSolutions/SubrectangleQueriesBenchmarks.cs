@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubrectangleQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // construction cost is itself half of what this comparison is about (a jagged
 // int[][] versus a DynamicArray<T> of DynamicArray<T>) and because a store reused
 // across invocations would carry the previous invocation's mutations forward.
-[MemoryDiagnoser]
 public class SubrectangleQueriesBenchmarks
 {
     private const int QueryCount = 200;

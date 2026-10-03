@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.BasicCalculator;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sequential, only single-level-nested "+(a+b)"/"-(a+b)" groups, so
 // RecursiveDescent's recursion depth stays constant (~2) as Length grows
 // instead of risking a StackOverflowException.
-[MemoryDiagnoser]
 public class BasicCalculatorBenchmarks
 {
     private string _expression = "";

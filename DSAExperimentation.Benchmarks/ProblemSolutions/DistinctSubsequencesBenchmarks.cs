@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DistinctSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DistinctSubsequencesSolution's, the same methods
 // DistinctSubsequencesTests proves correct.
-[MemoryDiagnoser]
 public class DistinctSubsequencesBenchmarks
 {
     private const string Source = "rabbbit";

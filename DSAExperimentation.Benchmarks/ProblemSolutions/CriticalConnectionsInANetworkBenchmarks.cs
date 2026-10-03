@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CriticalConnectionsInANetwork;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] and handed to the strategy's prepared-input overload; the baseline
 // takes the same connection list in LeetCode's own int[][] shape, which needs no
 // preparation.
-[MemoryDiagnoser]
 public class CriticalConnectionsInANetworkBenchmarks
 {
     private const int TriangleSize = 3;

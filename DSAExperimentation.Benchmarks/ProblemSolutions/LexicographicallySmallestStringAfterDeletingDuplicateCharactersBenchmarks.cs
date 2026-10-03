@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LexicographicallySmallestStringAfterDeletingDuplicateCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every letter has many duplicate occurrences to consider deleting - a workload
 // over the full 26-letter alphabet would let most letters appear once and give
 // the repeated-scan baseline nothing to bubble through.
-[MemoryDiagnoser]
 public class LexicographicallySmallestStringAfterDeletingDuplicateCharactersBenchmarks
 {
     private const int RandomSeed = 3816; // LeetCode problem number

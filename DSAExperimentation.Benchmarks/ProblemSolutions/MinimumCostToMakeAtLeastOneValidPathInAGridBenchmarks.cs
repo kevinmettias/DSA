@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumCostToMakeAtLeastOneValidPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // this repo's own Heap<Element,TOrder> ordered by ByPriorityOrder<TNode,TWeight> for
 // an O(E log V) frontier. Grid cells hold a random arrow direction (1..4), built in
 // [GlobalSetup] so construction is not charged to either measured method.
-[MemoryDiagnoser]
 public class MinimumCostToMakeAtLeastOneValidPathInAGridBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

@@ -13,6 +13,13 @@
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
   </ItemGroup>
 
+  <!-- Every benchmark class declares [Params], [GlobalSetup] and [Benchmark], so the namespace
+       they come from is imported once here rather than at the top of 1,100 files. The memory
+       diagnoser every class used to carry is BenchmarkConfig's to add, for the same reason. -->
+  <ItemGroup>
+    <Using Include="BenchmarkDotNet.Attributes" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\DSAExperimentation\DSAExperimentation.csproj" />
     <ProjectReference Include="..\DSAExperimentation.LeetCode\DSAExperimentation.LeetCode.csproj" />

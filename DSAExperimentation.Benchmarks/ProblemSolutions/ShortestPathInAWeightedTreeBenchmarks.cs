@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestPathInAWeightedTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // simplification, since a bushy tree keeps most Euler-tour subtree ranges short
 // while the brute-force BFS arm still pays for every node on every [2, x] query
 // regardless of shape.
-[MemoryDiagnoser]
 public class ShortestPathInAWeightedTreeBenchmarks
 {
     private const int RandomSeed = 3515; // LeetCode problem number

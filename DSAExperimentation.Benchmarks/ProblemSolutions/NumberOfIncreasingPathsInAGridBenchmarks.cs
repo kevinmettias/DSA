@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfIncreasingPathsInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // number of increasing paths, which is why Size stays modest. MemoizedRecurrence
 // dogfoods this repo's own Memoizer per start cell, collapsing shared sub-paths within
 // one start's search from exponential to polynomial.
-[MemoryDiagnoser]
 public class NumberOfIncreasingPathsInAGridBenchmarks
 {
     private int[,] _matrix = new int[0, 0];

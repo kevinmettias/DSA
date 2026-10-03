@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TopKFrequentElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // order. What separates sorting every distinct value from keeping a heap of K is the
 // number of distinct values, and that stays at the old scale: about 1,000 at the
 // smaller Length, all 2,000 at the larger.
-[MemoryDiagnoser]
 public class TopKFrequentElementsBenchmarks
 {
     private const int K = 10;

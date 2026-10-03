@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.RecoverBinarySearchTree;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are handed - LeetCode's actual recoverTree operation - so [IterationSetup] rebuilds
 // a fresh corrupted BST before every iteration rather than reusing the one
 // [GlobalSetup] built, which a single successful recovery would leave sorted.
-[MemoryDiagnoser]
 public class RecoverBinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

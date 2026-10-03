@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfEnclaves;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DepthFirstSearch.Traverse walking each border-connected land component. Each
 // strategy clones the shared grid fixture internally before sinking anything, so
 // repeated invocations each start from the true input.
-[MemoryDiagnoser]
 public class NumberOfEnclavesBenchmarks
 {
     private const int RandomSeed = 1020; // LeetCode problem number

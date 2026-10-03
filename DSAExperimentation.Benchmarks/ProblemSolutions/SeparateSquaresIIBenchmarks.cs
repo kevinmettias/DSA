@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SeparateSquaresII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // drawn from a small range relative to SquareCount so squares actually overlap -
 // disjoint squares would make every band's active set size 1 and hide the
 // coverage-length step's own cost entirely.
-[MemoryDiagnoser]
 public class SeparateSquaresIIBenchmarks
 {
     // LC problem number, reused as the deterministic square seed.

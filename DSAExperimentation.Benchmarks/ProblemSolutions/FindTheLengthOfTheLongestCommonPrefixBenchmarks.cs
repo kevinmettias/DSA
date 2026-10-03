@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.FindTheLengthOfTheLongestCommonPrefix;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods FindTheLengthOfTheLongestCommonPrefixTests proves correct.
 // The digit trie is built once in [GlobalSetup] via the solution's own
 // BuildDigitTrie, so the trie arm is only ever charged for arr2's walk.
-[MemoryDiagnoser]
 public class FindTheLengthOfTheLongestCommonPrefixBenchmarks
 {
     private const int MaxValueExclusive = 100_000_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumCostTreeFromLeafValues;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // interval recursion vs. the O(n) monotonic-decreasing sweep. Length is kept modest
 // for the same reason MinimumScoreTriangulationOfPolygonBenchmarks' VertexCount is:
 // the baseline's blowup is real.
-[MemoryDiagnoser]
 public class MinimumCostTreeFromLeafValuesBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

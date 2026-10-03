@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.KthSymbolInGrammar;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // KthSymbolInGrammarTests proves correct. RowNumber is kept small enough for the
 // row-expansion baseline's O(2^n) allocation to stay tractable; _symbolIndex is fixed
 // at the last symbol of the row, the deepest possible recursion for the halving walk.
-[MemoryDiagnoser]
 public class KthSymbolInGrammarBenchmarks
 {
     private int _symbolIndex;

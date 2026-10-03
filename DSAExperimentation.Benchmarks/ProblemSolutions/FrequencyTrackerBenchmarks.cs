@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FrequencyTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the "no hashing at all" baseline (a raw List<int>, IndexOf deletes, and a sort per
 // query) against PairedHashMaps' two HashMap<TKey,TValue> instances, the same
 // contrast DesignHashMapBenchmarks already establishes for LC 706.
-[MemoryDiagnoser]
 public class FrequencyTrackerBenchmarks
 {
     private const int Seed = 2671; // LC problem number

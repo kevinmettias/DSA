@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubtreesWithMaxDistanceBetweenCities;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each arm is handed the prepared adjacency list its hoisted overload takes, so
 // tree construction is charged to [GlobalSetup] rather than to the mask sweep being
 // measured.
-[MemoryDiagnoser]
 public class CountSubtreesWithMaxDistanceBetweenCitiesBenchmarks
 {
     // LC problem number, reused as the deterministic tree seed.

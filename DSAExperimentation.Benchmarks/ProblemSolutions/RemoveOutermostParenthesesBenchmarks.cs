@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RemoveOutermostParentheses;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (baseline) against this repo's own Stack<char> holding each unmatched opener.
 // Neither needs anything hoisted beyond the string LeetCode itself hands in, so
 // [GlobalSetup] only sizes and seeds the balanced expression.
-[MemoryDiagnoser]
 public class RemoveOutermostParenthesesBenchmarks
 {
     private const int MaxDepth = 10;

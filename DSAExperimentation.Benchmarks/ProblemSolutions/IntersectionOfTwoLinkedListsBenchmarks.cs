@@ -9,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // two-pointer walk, the same method IntersectionOfTwoLinkedListsTests proves
 // correct. Chain construction is charged to [GlobalSetup], not to the walk
 // being measured.
-[MemoryDiagnoser]
 public class IntersectionOfTwoLinkedListsBenchmarks
 {
     private SinglyLinkedListNode<int> _headA = null!;

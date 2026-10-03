@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructQuadTree;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // output-sensitive cost (tracking the combined input node count, not the grid area)
 // show a growing margin over the two materializing arms as Size grows while the two
 // trees stay coarse.
-[MemoryDiagnoser]
 public class LogicalOrOfTwoBinaryGridsRepresentedAsQuadTreesBenchmarks
 {
     private QuadTreeNode _tree1 = null!;

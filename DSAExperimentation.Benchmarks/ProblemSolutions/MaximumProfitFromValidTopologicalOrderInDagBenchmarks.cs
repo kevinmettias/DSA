@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumProfitFromValidTopologicalOrderInDag;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LC's own n <= 22: the baseline's backtracking degrades toward O(n!) as edges thin
 // out, the same reason FindTheMinimumCostArrayPermutationBenchmarks caps its own
 // brute-force arm at N=8.
-[MemoryDiagnoser]
 public class MaximumProfitFromValidTopologicalOrderInDagBenchmarks
 {
     private const int Seed = 3530;

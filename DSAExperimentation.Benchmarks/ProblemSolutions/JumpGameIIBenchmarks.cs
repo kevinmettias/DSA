@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGameII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are JumpGameIISolution's, the same methods
 // JumpGameIITests proves correct. The hop graph is built once in [GlobalSetup] so
 // its construction isn't charged to the search being measured.
-[MemoryDiagnoser]
 public class JumpGameIIBenchmarks
 {
     private const int MaxJumpDistanceExclusive = 11;

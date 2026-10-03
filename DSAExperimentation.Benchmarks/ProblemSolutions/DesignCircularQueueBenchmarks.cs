@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignCircularQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // after the fill is forced through the wraparound path at both ends - the same
 // "script construction charged to setup, replay is what gets measured" shape
 // DesignTaskManagerBenchmarks already uses for its own instance-API problem.
-[MemoryDiagnoser]
 public class DesignCircularQueueBenchmarks
 {
     private const int OperationCount = 50_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // StoneGameIIIBenchmarks already use. StoneCount is kept modest for the same reason
 // those benchmarks document: the un-memoized baseline's blowup is real (branching
 // factor sqrt(StoneCount), wider than DivisorGame's or StoneGameIII's own branching).
-[MemoryDiagnoser]
 public class StoneGameIVBenchmarks
 {
     [Params(16, 20)]

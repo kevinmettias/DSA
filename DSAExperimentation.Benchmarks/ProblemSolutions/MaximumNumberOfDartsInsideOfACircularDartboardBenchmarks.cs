@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfDartsInsideOfACircularDartboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // They run identical O(n^3) candidate-center geometry and differ only in the buffer the
 // candidates are grown in - a plain BCL List<(double, double)> against this repo's own
 // DynamicArray<(double, double)>. The dart cloud is generated once in [GlobalSetup].
-[MemoryDiagnoser]
 public class MaximumNumberOfDartsInsideOfACircularDartboardBenchmarks
 {
     private const int Radius = 50;

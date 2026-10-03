@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RandomPickIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // dead code. Every instance is built with the same PickSeed, so a rebuilt
 // harness replays the same picks; the two arms still answer differently, because
 // each consumes the generator its own way.
-[MemoryDiagnoser]
 public class RandomPickIndexBenchmarks
 {
     private const int Target = 7;

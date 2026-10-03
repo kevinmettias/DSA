@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheWinnerOfTheCircularGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // k is small relative to n, the common case this problem's constraints allow. Both
 // arms build their own circle from the two integers LeetCode hands the problem, so
 // there is nothing to hoist into a [GlobalSetup].
-[MemoryDiagnoser]
 public class FindTheWinnerOfTheCircularGameBenchmarks
 {
     private const int K = 3;

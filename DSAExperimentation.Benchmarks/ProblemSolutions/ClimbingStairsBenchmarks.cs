@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ClimbingStairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // different means - one through Memoizer's dictionary plus a call stack as deep
 // as the step count, one through two running totals - so the ratio shows what the
 // memoized shape actually costs over the flattened one.
-[MemoryDiagnoser]
 public class ClimbingStairsBenchmarks
 {
     [Params(10, 25, 40)]

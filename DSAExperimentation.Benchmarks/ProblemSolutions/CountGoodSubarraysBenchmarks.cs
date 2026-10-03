@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountGoodSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountGoodSubarraysTests proves correct. Values are drawn from a wide range so
 // the running-OR run list actually grows across several bit widths instead of
 // collapsing to a single run immediately.
-[MemoryDiagnoser]
 public class CountGoodSubarraysBenchmarks
 {
     private const int Seed = 3878; // LC problem number

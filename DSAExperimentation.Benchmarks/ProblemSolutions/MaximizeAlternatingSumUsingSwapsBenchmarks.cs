@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeAlternatingSumUsingSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // roughly ElementCount/2 random swap pairs over ElementCount indices, so the
 // workload has a handful of nontrivial connected components rather than
 // ElementCount singletons.
-[MemoryDiagnoser]
 public class MaximizeAlternatingSumUsingSwapsBenchmarks
 {
     private const int RandomSeed = 3695; // LC problem number

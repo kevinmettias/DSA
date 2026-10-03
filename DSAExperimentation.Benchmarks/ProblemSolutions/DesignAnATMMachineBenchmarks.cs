@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode;
 using DSAExperimentation.LeetCode.DesignAnATMMachine;
 
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // setup rather than to the replay, and counts are seeded far above anything Calls
 // could withdraw, so every withdrawal succeeds and both arms do identical work per
 // call.
-[MemoryDiagnoser]
 public class DesignAnATMMachineBenchmarks
 {
     private const long InitialCountPerDenomination = 1_000_000_000L;

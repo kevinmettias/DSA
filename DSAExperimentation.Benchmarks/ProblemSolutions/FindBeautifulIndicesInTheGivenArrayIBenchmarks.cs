@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // before failing, instead of an early first-character mismatch making brute force
 // look artificially competitive. Pattern length scales with the searched text's
 // length so the O(n*m) vs O(n) gap widens with it.
-[MemoryDiagnoser]
 public class FindBeautifulIndicesInTheGivenArrayIBenchmarks
 {
     private const int SearchWindow = 100;

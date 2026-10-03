@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumLinesToRepresentALineChart;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ArrayIndexedSequence plus the exact cross-product test. [GlobalSetup] generates the
 // point set in LeetCode's own jagged int[][] shape, so both arms are handed the prepared
 // input directly and only the sort-and-count is measured.
-[MemoryDiagnoser]
 public class MinimumLinesToRepresentALineChartBenchmarks
 {
     private const int RandomSeed = 2280;

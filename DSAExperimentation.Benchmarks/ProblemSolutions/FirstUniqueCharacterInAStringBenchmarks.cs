@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FirstUniqueCharacterInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both strategies through their full worst-case scan - the same "force the real
 // worst case" convention TwoSumBenchmarks/LongestSubstringWithoutRepeatingCharactersBenchmarks
 // already use.
-[MemoryDiagnoser]
 public class FirstUniqueCharacterInAStringBenchmarks
 {
     private const int AlphabetSize = 26;

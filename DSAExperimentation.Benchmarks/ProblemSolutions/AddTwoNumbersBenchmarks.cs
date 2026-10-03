@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.AddTwoNumbers;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // costs O(n^2) overall. DigitwiseListWalk instead walks both lists exactly once
 // with a running carry - O(n) with a single pass building the output list as it
 // goes.
-[MemoryDiagnoser]
 public class AddTwoNumbersBenchmarks
 {
     private const int RandomSeed = 11;

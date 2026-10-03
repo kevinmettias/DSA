@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.VowelsGameInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // explores actual game states, so unlike a typical O(n^2) baseline its cost
 // does not grow smoothly with n, and a mixed vowel/consonant string can already
 // reach many thousands of recursive states by length 30-40.
-[MemoryDiagnoser]
 public class VowelsGameInAStringBenchmarks
 {
     private const int RandomSeed = 3227;

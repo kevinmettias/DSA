@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BuildAMatrixWithConditions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // guaranteed-acyclic DAG (every edge points from a lower value to a higher one,
 // capped fan-out) so both strategies run their full real workload, two orderings
 // and a full k x k placement, instead of an early cycle bailout.
-[MemoryDiagnoser]
 public class BuildAMatrixWithConditionsBenchmarks
 {
     private const int MaxFanOut = 3;

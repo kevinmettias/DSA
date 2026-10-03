@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PermutationInString;
 
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are PermutationInStringSolution's, the same methods
 // PermutationInStringTests proves correct. s1 is fixed and deliberately absent
 // from s2 so both strategies are forced through their full worst-case scan.
-[MemoryDiagnoser]
 public class PermutationInStringBenchmarks
 {
     private const string Pattern = "aeiou";

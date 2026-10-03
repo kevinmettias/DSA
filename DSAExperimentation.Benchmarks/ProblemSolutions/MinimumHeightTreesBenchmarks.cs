@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumHeightTrees;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MinimumHeightTreesTests proves correct. Each arm is handed the prepared adjacency
 // list its hoisted overload takes, so tree construction is charged to [GlobalSetup]
 // rather than to the search being measured.
-[MemoryDiagnoser]
 public class MinimumHeightTreesBenchmarks
 {
     private List<int>[] _adjacency = [];

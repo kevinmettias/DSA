@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NimGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NimGameTests proves correct - the textbook O(n) memoized game-theory
 // recursion vs. the closed-form O(1) n % 4 != 0 formula the recursion itself
 // reduces to.
-[MemoryDiagnoser]
 public class NimGameBenchmarks
 {
     [Params(20, 1_000)]

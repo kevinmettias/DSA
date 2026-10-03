@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.InvertBinaryTree;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinaryTreeNode<int> - the accommodation ReverseLinkedList, SortList and friends
 // make, since a public [Benchmark] method cannot name an internal return type
 // (CS0050). It returned void before, which dropped the arm's only answer.
-[MemoryDiagnoser]
 public class InvertBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

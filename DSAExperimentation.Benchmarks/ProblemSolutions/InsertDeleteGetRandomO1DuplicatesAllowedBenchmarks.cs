@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.InsertDeleteGetRandomO1DuplicatesAllowed;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a narrow value range so most values collide with earlier ones, forcing real
 // duplicate chains for Remove to walk past in the ListScan arm instead of an
 // artificially duplicate-free input.
-[MemoryDiagnoser]
 public class InsertDeleteGetRandomO1DuplicatesAllowedBenchmarks
 {
     // A small, fixed value range - not scaled with Count - so the average duplicate

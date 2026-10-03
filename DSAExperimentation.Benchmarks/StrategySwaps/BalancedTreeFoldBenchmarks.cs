@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Folding;
 using DSAExperimentation.Algorithms.Folding.Dags.Trees;
 using DSAExperimentation.Algorithms.Metrics;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 // comparably. See SkewedTreeFoldBenchmarks for the case IterativeFoldEvaluation's
 // own doc comment names as its reason to exist. Same result either way: SizeAlgebra
 // is pure, per IFoldAlgebra's purity caveat.
-[MemoryDiagnoser]
 public class BalancedTreeFoldBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

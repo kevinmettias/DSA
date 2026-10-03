@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RandomFlipMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is no separate "prepare input" step to hoist into [GlobalSetup]) and drains it with
 // the same seeded Random, returning a checksum of every picked column so a mismatched
 // checksum would mean the two strategies disagree, not just run at different speeds.
-[MemoryDiagnoser]
 public class RandomFlipMatrixBenchmarks
 {
     [Params(200, 5_000)]

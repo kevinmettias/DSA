@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestSubarrayWithSumAtLeastK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // subarray sum) so BOTH strategies are forced through their full worst-case scan
 // instead of exiting early on the first short answer found - the same "_target is
 // deliberately unreachable" shape TwoSumBenchmarks uses.
-[MemoryDiagnoser]
 public class ShortestSubarrayWithSumAtLeastKBenchmarks
 {
     private const int K = 1_000_000;

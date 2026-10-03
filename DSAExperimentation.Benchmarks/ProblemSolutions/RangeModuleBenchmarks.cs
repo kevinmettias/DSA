@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RangeModule;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // IntervalSetBinarySearch instead composes this repo's own IntervalSet<int> with
 // BinarySearch.UpperBound over a Starts view to find the one candidate range that
 // could contain the query, O(log n) per query.
-[MemoryDiagnoser]
 public class RangeModuleBenchmarks
 {
     private const int RangeWidth = 2;

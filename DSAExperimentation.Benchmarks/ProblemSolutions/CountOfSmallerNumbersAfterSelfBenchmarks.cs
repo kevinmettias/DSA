@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountOfSmallerNumbersAfterSelf;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountOfSmallerNumbersAfterSelfSolution's, the same
 // methods CountOfSmallerNumbersAfterSelfTests proves correct.
-[MemoryDiagnoser]
 public class CountOfSmallerNumbersAfterSelfBenchmarks
 {
     private const int RandomSeed = 315; private int[] _nums = [];

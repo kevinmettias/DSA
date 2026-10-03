@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestPalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // palindromic prefix, so both strategies are forced through nearly their full
 // worst-case scan instead of an early exit making the naive version look
 // artificially competitive.
-[MemoryDiagnoser]
 public class ShortestPalindromeBenchmarks
 {
     private const int AlphabetSize = 26;

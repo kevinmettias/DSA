@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubmatricesWithAllOnes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // scan against the O(rows * cols) monotonic-stack reduction to LC 907. The random binary
 // matrix is built once in [GlobalSetup] so matrix construction is not charged to either
 // measured arm.
-[MemoryDiagnoser]
 public class CountSubmatricesWithAllOnesBenchmarks
 {
     private const int CellValueUpperBoundExclusive = 2;

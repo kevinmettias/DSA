@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MyCalendarII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // feeds the whole generated event sequence through Book() one call at a
 // time - the LeetCode-shaped sequence itself, not a batch construction -
 // counting how many were accepted.
-[MemoryDiagnoser]
 public class MyCalendarIIBenchmarks
 {
     private const int EventWidth = 10;

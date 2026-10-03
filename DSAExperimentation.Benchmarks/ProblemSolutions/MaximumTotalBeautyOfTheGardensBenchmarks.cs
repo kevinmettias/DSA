@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumTotalBeautyOfTheGardens;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n log n * log target) gap widens with it instead of staying flat at a fixed
 // target. Sorting stays inside each measured method on purpose: which sort each arm
 // uses is part of what is being compared.
-[MemoryDiagnoser]
 public class MaximumTotalBeautyOfTheGardensBenchmarks
 {
     private const int Full = 50;

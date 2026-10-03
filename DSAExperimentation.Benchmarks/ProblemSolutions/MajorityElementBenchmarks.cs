@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MajorityElement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the HashMap count has to walk most of the array before any key crosses the
 // n/2 threshold - while the voting arm has to walk all of it, never once being
 // spared the n/2 shortcut the count gets.
-[MemoryDiagnoser]
 public class MajorityElementBenchmarks
 {
     private const int Seed = 169;

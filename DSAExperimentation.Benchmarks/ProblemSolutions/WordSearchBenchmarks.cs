@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WordSearch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WordSearchSolution's, the same methods
 // WordSearchTests proves correct.
-[MemoryDiagnoser]
 public class WordSearchBenchmarks
 {
     private const string TargetWord = "ABCCED";

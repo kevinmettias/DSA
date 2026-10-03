@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PermutationsIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PermutationsIVTests proves correct. TargetRank is fixed well inside the valid
 // range for every measured PermutationLength so both strategies run the full
 // unranking walk rather than an early empty-result return.
-[MemoryDiagnoser]
 public class PermutationsIVBenchmarks
 {
     private const long TargetRank = 1_000_000_000_000L;

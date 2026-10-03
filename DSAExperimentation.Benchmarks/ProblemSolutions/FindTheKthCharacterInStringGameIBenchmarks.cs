@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // KthPosition cap is #3304's own published bound (500), where the simulation
 // arm is already cheap - BitCount is measured to show the O(log k) closed
 // form's payoff, not to rescue an arm that would otherwise be infeasible.
-[MemoryDiagnoser]
 public class FindTheKthCharacterInStringGameIBenchmarks
 {
     [Params(10, 500)]

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RepeatedSubstringPattern;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RepeatedSubstringPatternTests proves correct. Text is random lowercase letters, so
 // a genuine repeating period is astronomically unlikely and both strategies run to
 // completion.
-[MemoryDiagnoser]
 public class RepeatedSubstringPatternBenchmarks
 {
     private const int AlphabetSize = 26;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HandlingSumQueriesAfterUpdate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the query stream - already LeetCode's own input shape, so no hoisted overload is
 // needed - and query kinds cycle through flip/add/read so both strategies pay a
 // representative mixed workload instead of one query kind dominating.
-[MemoryDiagnoser]
 public class HandlingSumQueriesAfterUpdateBenchmarks
 {
     private const int RandomSeed = 2569; // LeetCode problem number

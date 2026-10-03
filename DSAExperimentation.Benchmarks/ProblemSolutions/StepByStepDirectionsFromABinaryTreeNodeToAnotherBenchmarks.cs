@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.StepByStepDirectionsFromABinaryTreeNodeToAnother;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // at the root, the worst case for either approach - and both are handed the
 // prepared nodes their hoisted overload takes, so tree construction and endpoint
 // selection are charged to [GlobalSetup] rather than to the search.
-[MemoryDiagnoser]
 public class StepByStepDirectionsFromABinaryTreeNodeToAnotherBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

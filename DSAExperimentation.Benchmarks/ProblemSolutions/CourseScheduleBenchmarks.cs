@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CourseSchedule;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // proves correct. The workload is acyclic by construction - every prerequisite names an
 // earlier-numbered course - so both arms make a complete pass instead of bailing out at the
 // first cycle, and the ratio compares two full traversals of the same graph.
-[MemoryDiagnoser]
 public class CourseScheduleBenchmarks
 {
     private const int RandomSeed = 207; // LC problem number

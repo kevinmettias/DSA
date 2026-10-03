@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WaterAndJugProblem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CanMeasureWaterByGcdFormula is the actual closed-form answer (Bezout's
 // identity) and is expected to blow both away, showing the state-space search
 // is the wrong tool once the number-theory shortcut is known.
-[MemoryDiagnoser]
 public class WaterAndJugProblemBenchmarks
 {
     private const int JugYCapacityDivisor = 2;

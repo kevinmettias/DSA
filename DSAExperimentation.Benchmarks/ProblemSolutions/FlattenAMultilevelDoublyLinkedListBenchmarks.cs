@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FlattenAMultilevelDoublyLinkedList;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a fresh copy since flattening is destructive (Child pointers are cleared in place),
 // matching RotateImageBenchmarks' per-invocation Clone convention - so list construction
 // stays outside [GlobalSetup] deliberately, same as the pre-migration benchmark.
-[MemoryDiagnoser]
 public class FlattenAMultilevelDoublyLinkedListBenchmarks
 {
     [Params(200, 5_000)]

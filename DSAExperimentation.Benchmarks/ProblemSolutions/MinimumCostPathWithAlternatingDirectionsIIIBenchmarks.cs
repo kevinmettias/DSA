@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumCostPathWithAlternatingDirectionsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the state-space search itself (up to 2 * Side * Side nodes) - a hand-rolled BCL
 // PriorityQueue+Dictionary against ShortestPath.Dijkstra composed with
 // AlternatingGridTopology's on-the-fly edges.
-[MemoryDiagnoser]
 public class MinimumCostPathWithAlternatingDirectionsIIIBenchmarks
 {
     private const int Seed = 4003;

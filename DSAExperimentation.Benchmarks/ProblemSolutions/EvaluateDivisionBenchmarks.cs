@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.EvaluateDivision;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // EvaluateDivisionTests proves correct. The variables form one long chain (v0/v1 =
 // 2.0, v1/v2 = 2.0, ...) so every query below walks the full chain instead of an
 // early exit.
-[MemoryDiagnoser]
 public class EvaluateDivisionBenchmarks
 {
     private const double EdgeWeight = 2.0;

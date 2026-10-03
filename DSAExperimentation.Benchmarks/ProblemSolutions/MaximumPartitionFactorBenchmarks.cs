@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumPartitionFactor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // that most pairwise Manhattan distances repeat - the "too close" graph at a
 // mid-range threshold has plenty of edges, not the trivial all-isolated case a
 // sparse random cloud would produce.
-[MemoryDiagnoser]
 public class MaximumPartitionFactorBenchmarks
 {
     private const int GridWidth = 32;

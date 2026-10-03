@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ClosestRoom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // room ids. Both arms are handed the same jagged arrays LeetCode itself passes, so
 // no hoisted overload is needed: [GlobalSetup] already builds exactly the input
 // shape the measured methods take, and generating it is charged there.
-[MemoryDiagnoser]
 public class ClosestRoomBenchmarks
 {
     private const int MaxRoomSizeExclusive = 4;

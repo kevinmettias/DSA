@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.QueueReconstructionByHeight;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // QueueReconstructionByHeightSolution exposes for exactly that. Both arms
 // return the reconstructed queue itself (LeetCode's actual answer), not just
 // its count.
-[MemoryDiagnoser]
 public class QueueReconstructionByHeightBenchmarks
 {
     private const int RandomSeed = 406;

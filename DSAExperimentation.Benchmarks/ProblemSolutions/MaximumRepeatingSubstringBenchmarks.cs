@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumRepeatingSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximumRepeatingSubstringTests proves correct. sequence is built from Word
 // repeated end to end so both strategies are forced through every increasing
 // candidate length instead of failing on the very first repeat.
-[MemoryDiagnoser]
 public class MaximumRepeatingSubstringBenchmarks
 {
     private const string Word = "ab";

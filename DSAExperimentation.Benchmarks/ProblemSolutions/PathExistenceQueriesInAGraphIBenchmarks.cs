@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.DisjointSet;
 using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphI;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed a prebuilt DisjointSet - one union pass over the reduced adjacency - so
 // that one-time cost is charged to [GlobalSetup], not to the queries being
 // measured.
-[MemoryDiagnoser]
 public class PathExistenceQueriesInAGraphIBenchmarks
 {
     private const int Seed = 3532;

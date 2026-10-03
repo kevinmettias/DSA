@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.StoneGameVIII;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BuildPrefixSums and handed to each arm's hoisted overload, so only the recursion
 // is measured. PileCount is kept modest for the same reason StoneGameVIIBenchmarks
 // documents: the un-memoized baseline's blowup is real.
-[MemoryDiagnoser]
 public class StoneGameVIIIBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

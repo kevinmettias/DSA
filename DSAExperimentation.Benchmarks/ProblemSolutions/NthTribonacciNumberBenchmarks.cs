@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NthTribonacciNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NthTribonacciNumberTests proves correct - the naive triple recursion vs. this
 // repo's Memoizer-backed O(n) top-down DP. The same shape as
 // FibonacciNumberBenchmarks, with three prior terms summed instead of two.
-[MemoryDiagnoser]
 public class NthTribonacciNumberBenchmarks
 {
     [Params(20, 30)]

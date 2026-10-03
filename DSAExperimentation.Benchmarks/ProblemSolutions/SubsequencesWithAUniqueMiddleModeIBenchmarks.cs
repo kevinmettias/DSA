@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubsequencesWithAUniqueMiddleModeI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arm's distinct-pair bookkeeping instead of degenerating to the all-values-
 // unique case. Length stays small (the brute-force arm is O(n^5)); the
 // combinatorics arm scales to LeetCode's real n = 1000 because it is O(n^2).
-[MemoryDiagnoser]
 public class SubsequencesWithAUniqueMiddleModeIBenchmarks
 {
     private const int RandomSeed = 3395; // LC problem number

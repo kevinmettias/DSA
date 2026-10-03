@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HouseRobber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // placeholder (`=> 1` on both arms) that measured nothing; this measures the
 // memoized recurrence against the rolling-totals pass, both over LeetCode's
 // own example street.
-[MemoryDiagnoser]
 public class HouseRobberBenchmarks
 {
     private static readonly int[] Nums = [2, 7, 9, 3, 1];

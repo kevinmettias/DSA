@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RegularExpressionMatching;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods RegularExpressionMatchingTests proves correct. A repeated "a*" pattern
 // against a text with a mismatched trailing character forces both strategies to
 // explore the whole branching search space rather than short-circuiting early.
-[MemoryDiagnoser]
 public class RegularExpressionMatchingBenchmarks
 {
     private const string RepeatedPatternUnit = "a*";

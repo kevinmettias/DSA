@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SearchInRotatedSortedArrayII;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // work relative to Length: large enough to exercise duplicate handling, small enough
 // that the O(log n) win over LinearScan still shows. The construction's own pivot
 // places the target inside the pre-rotation segment.
-[MemoryDiagnoser]
 public class SearchInRotatedSortedArrayIIBenchmarks
 {
     private const int TargetDivisor = 2; // target sits halfway into the pre-rotation segment

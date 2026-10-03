@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumOperationsToMakeBinaryArrayElementsEqualToOneI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumOperationsToMakeBinaryArrayElementsEqualToOneITests proves
 // correct. The workload's last 3 elements are pinned to 1 so a trailing zero
 // never forces either arm into an early -1 exit.
-[MemoryDiagnoser]
 public class MinimumOperationsToMakeBinaryArrayElementsEqualToOneIBenchmarks
 {
     private const int Seed = 3191;

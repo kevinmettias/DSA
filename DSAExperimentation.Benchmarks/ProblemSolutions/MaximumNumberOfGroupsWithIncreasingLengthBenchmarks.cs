@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfGroupsWithIncreasingLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // front of it - the textbook O(n^2) insertion sort (HeightCheckerBenchmarks'
 // precedent) against this repo's own MergeSort over ArrayIndexedSequence at
 // O(n log n). [GlobalSetup] draws the limits, so only the solve is charged.
-[MemoryDiagnoser]
 public class MaximumNumberOfGroupsWithIncreasingLengthBenchmarks
 {
     private const int RandomSeed = 2790; // LC problem number

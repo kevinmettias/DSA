@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MakeArrayElementsEqualToZero;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods MakeArrayElementsEqualToZeroTests proves correct. nums[0] is
 // pinned to 0 to satisfy LC 3354's "at least one zero" precondition; the rest
 // mixes zeros and small positive values so both strategies do real work.
-[MemoryDiagnoser]
 public class MakeArrayElementsEqualToZeroBenchmarks
 {
     private const int Seed = 3354;

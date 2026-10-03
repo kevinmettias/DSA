@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SequentiallyOrdinalRankTracker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // shape the judge's own interleaved calls take - which is also what makes the
 // re-sort baseline O(n^2 log n) over a full run against the two-heap tracker's
 // O(n log n).
-[MemoryDiagnoser]
 public class SequentiallyOrdinalRankTrackerBenchmarks
 {
     private const int ScoreExclusiveUpperBound = 1_000_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (FindTheNumberOfSubsequencesWithEqualGcdBenchmarks' own precedent for "size
 // the baseline can survive") - the memoized arm's whole point is that it only
 // pays for the distinct (day, used, position) states that actually occur.
-[MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockVBenchmarks
 {
     private const int Seed = 3573; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConvertBSTToGreaterTree;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // convention for a mutate-in-place problem) so repeated BenchmarkDotNet invocations
 // each start from the same untransformed values instead of re-transforming an
 // already-transformed tree.
-[MemoryDiagnoser]
 public class ConvertBSTToGreaterTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

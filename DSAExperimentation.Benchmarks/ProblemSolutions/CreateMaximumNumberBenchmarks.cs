@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CreateMaximumNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CreateMaximumNumberSolution's, the same methods
 // CreateMaximumNumberTests proves correct.
-[MemoryDiagnoser]
 public class CreateMaximumNumberBenchmarks
 {
     private const int RandomSeed = 321; // LeetCode problem number

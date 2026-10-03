@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOne;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // per pair). _values are all multiples of MultipleFactor so no window's running
 // gcd ever reaches 1, forcing both arms through the full O(n^2) scan instead of
 // one short-circuiting on an early window.
-[MemoryDiagnoser]
 public class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneBenchmarks
 {
     private const int RandomSeed = 2654; // LC problem number

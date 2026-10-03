@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The DynamicProgramming baseline is O(n*m*(r-l+1)) - fine at these modest
 // sizes, but nowhere near LC's own n <= 1e5, m <= n ceiling, which is exactly
 // why LagrangianRelaxation's O(n*log(PenaltyBound)) arm exists.
-[MemoryDiagnoser]
 public class MaximumSumOfMNonOverlappingSubarraysIIBenchmarks
 {
     private const int Seed = 3957; // LC problem number

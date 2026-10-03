@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ErectTheFence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so the hull stays a small fraction of Length (h << n), which is exactly what
 // makes the O(n log n + h*n) primitive-based strategy beat the O(n^3) baseline so
 // decisively.
-[MemoryDiagnoser]
 public class ErectTheFenceBenchmarks
 {
     private const int RandomSeed = 587; // LC problem number

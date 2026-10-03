@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IPO;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are IPOSolution's, the same methods IPOTests proves
 // correct - the O(k*n) linear-rescan baseline vs. the O((n+k) log n) two-heap
 // greedy using this repo's own Heap<T,TOrder>.
-[MemoryDiagnoser]
 public class IPOBenchmarks
 {
     private const int K = 20;

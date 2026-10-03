@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PartitionEqualSubsetSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PartitionEqualSubsetSumTests proves correct. Each arm takes the prepared-input
 // overload with `half` already computed, so that summation is charged to
 // [GlobalSetup] rather than to the search being measured.
-[MemoryDiagnoser]
 public class PartitionEqualSubsetSumBenchmarks
 {
     private const int RandomSeed = 416; // LC problem number

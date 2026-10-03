@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.PeakIndexInAMountainArray;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods PeakIndexInAMountainArrayTests proves correct. The mountain is built
 // once in [GlobalSetup] with its peak at the midpoint, the worst case for the
 // linear scan and a neutral one for the binary search.
-[MemoryDiagnoser]
 public class PeakIndexInAMountainArrayBenchmarks
 {
 

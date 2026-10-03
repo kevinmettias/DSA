@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.UglyNumberIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // "count(x) >= rank" virtual sequence (O(log(answer))) - the same shape
 // NthMagicalNumberBenchmarks already exercises, extended from a two-term to a
 // three-term inclusion-exclusion predicate per index.
-[MemoryDiagnoser]
 public class UglyNumberIIIBenchmarks
 {
     private const int FirstFactor = 2;

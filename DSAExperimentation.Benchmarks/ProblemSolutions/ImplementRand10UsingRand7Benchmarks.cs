@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ImplementRand10UsingRand7;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // established randomness-problem convention - see ShuffleAnArrayBenchmarks,
 // RandomPickIndexBenchmarks). NaiveModuloFold is the "fast but wrong" contrast, not
 // a correctness baseline; RejectionSampling is the actual LeetCode-accepted answer.
-[MemoryDiagnoser]
 public class ImplementRand10UsingRand7Benchmarks
 {
     private IRand7 _rand7 = null!;

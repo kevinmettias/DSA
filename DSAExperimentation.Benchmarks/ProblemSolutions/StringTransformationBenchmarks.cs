@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StringTransformation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // rather than a varying axis) - the isolated variable is how the single
 // rotation-match count it needs gets computed: an O(n^2) brute-force window
 // compare vs. this repo's O(n) ZFunction.FindAll.
-[MemoryDiagnoser]
 public class StringTransformationBenchmarks
 {
     private const int Seed = 1;

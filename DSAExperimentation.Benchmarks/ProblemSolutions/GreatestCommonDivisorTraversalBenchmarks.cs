@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GreatestCommonDivisorTraversal;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] as products of a small shared prime pool, so real overlaps - and
 // therefore real union work - actually occur on both arms. What is measured is the
 // O(n^2) pairwise gcd sweep against the O(n*sqrt(maxValue)) per-factor union.
-[MemoryDiagnoser]
 public class GreatestCommonDivisorTraversalBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

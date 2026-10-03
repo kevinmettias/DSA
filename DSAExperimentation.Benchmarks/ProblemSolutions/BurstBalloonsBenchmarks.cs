@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.BurstBalloons;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BalloonCount is kept modest (<=14) specifically because the un-memoized
 // baseline's blowup is real, the same reasoning FibonacciNumberBenchmarks
 // already documents.
-[MemoryDiagnoser]
 public class BurstBalloonsBenchmarks
 {
     private const int RandomSeed = 1;

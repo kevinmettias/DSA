@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.FindElementsInAContaminatedBinaryTree;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // array-index-as-value shape a binary heap has. Half the sampled targets therefore
 // miss, which is the worst case for the linear scan and the case the hashed lookup
 // exists for.
-[MemoryDiagnoser]
 public class FindElementsInAContaminatedBinaryTreeBenchmarks
 {
     private const int TargetSampleCount = 200;

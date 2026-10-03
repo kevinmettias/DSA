@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSubarray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumSubarraySolution's, the same methods
 // MaximumSubarrayTests proves correct.
-[MemoryDiagnoser]
 public class MaximumSubarrayBenchmarks
 {
     private const int RandomSeed = 53; // LC problem number

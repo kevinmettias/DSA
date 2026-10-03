@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.OddEvenLinkedList;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // OddEvenLinkedListTests proves correct. Each iteration clones the pristine list
 // first (SetMatrixZeroesBenchmarks precedent), since [GlobalSetup] runs once per
 // benchmark, not once per invocation, and the in-place strategy mutates its input.
-[MemoryDiagnoser]
 public class OddEvenLinkedListBenchmarks
 {
     private SinglyLinkedListNode<int> _head = null!;

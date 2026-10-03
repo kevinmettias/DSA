@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RottingOranges;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each time - while the composed arm seeds one shared frontier, this repo's own
 // Queue<TElement>, with every already-rotten orange at once: O(rows*cols) total
 // instead of O(rows*cols) work per fresh starting cell.
-[MemoryDiagnoser]
 public class RottingOrangesBenchmarks
 {
     private const int RandomSeed = 1;

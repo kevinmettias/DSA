@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubarraysWithCostLessThanOrEqualToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountSubarraysWithCostLessThanOrEqualToKSolution's,
 // the same methods CountSubarraysWithCostLessThanOrEqualToKTests proves correct.
-[MemoryDiagnoser]
 public class CountSubarraysWithCostLessThanOrEqualToKBenchmarks
 {
     private const int Seed = 3835;

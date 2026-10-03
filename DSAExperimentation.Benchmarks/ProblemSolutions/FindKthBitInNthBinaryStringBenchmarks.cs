@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindKthBitInNthBinaryString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is fixed at the last bit of S(n) (2^n - 1) so both approaches do a full-depth walk: a
 // complete string build for the baseline, the deepest possible recursion chain for the
 // bisection.
-[MemoryDiagnoser]
 public class FindKthBitInNthBinaryStringBenchmarks
 {
     private int _bitPosition;

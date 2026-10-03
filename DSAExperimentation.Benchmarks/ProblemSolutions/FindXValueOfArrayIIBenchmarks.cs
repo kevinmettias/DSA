@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindXValueOfArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // allows (5), the segment tree's least favorable case since every node's Counts
 // matrix is 5x5 - the workload choice that actually stresses the strategy this
 // benchmark exists to justify.
-[MemoryDiagnoser]
 public class FindXValueOfArrayIIBenchmarks
 {
     private const int RandomSeed = 3525; // LeetCode problem number

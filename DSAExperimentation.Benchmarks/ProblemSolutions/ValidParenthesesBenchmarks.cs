@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the case LeetCode's own examples call valid, and the one where the stack scan actually
 // has to hold a frontier - so the ratio isolates the cost of the scan itself rather than
 // of an early exit on a malformed input.
-[MemoryDiagnoser]
 public class ValidParenthesesBenchmarks
 {
     private const int RandomSeed = 20; // LC problem number

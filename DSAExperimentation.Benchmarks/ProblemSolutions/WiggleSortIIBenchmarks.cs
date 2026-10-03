@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.WiggleSortII;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // argument in place (LeetCode's own signature), so each benchmark clones the shared
 // workload before calling in - the clone is charged to the measured method exactly
 // as before, only the sort itself moved to the solution tier.
-[MemoryDiagnoser]
 public class WiggleSortIIBenchmarks
 {
     private const int RandomSeed = 324; // LC problem number

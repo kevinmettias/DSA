@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortestUncommonSubstringInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are drawn from a small 4-letter alphabet so words share a lot of substrings
 // with each other - the case that forces both strategies through most of their
 // candidate lists instead of resolving at length 1.
-[MemoryDiagnoser]
 public class ShortestUncommonSubstringInAnArrayBenchmarks
 {
     private const int WordLength = 20;

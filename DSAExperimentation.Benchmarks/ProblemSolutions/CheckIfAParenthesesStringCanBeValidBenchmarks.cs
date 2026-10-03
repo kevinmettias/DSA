@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckIfAParenthesesStringCanBeValid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is a leading locked '(' plus an all-free middle plus a trailing locked ')', which
 // maximizes the DP's reachable-set growth at every position while the stack sweep
 // never even inspects its free-index stack's contents.
-[MemoryDiagnoser]
 public class CheckIfAParenthesesStringCanBeValidBenchmarks
 {
     private const char OpenParenthesis = '(';

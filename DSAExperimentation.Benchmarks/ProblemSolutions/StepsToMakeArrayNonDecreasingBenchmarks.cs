@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StepsToMakeArrayNonDecreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sequence with repeats so removal rounds actually chain instead of finishing
 // after one pass, which is what makes the round-simulation baseline pay for its
 // extra passes.
-[MemoryDiagnoser]
 public class StepsToMakeArrayNonDecreasingBenchmarks
 {
     private const int RandomSeed = 2289; private int[] _nums = [];

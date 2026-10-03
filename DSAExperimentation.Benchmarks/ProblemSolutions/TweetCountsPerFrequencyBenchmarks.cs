@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TweetCountsPerFrequency;
 
@@ -20,7 +19,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are TweetCountsPerFrequencySolution's, the same classes
 // TweetCountsPerFrequencyTests proves correct. Each arm sums the returned buckets
 // rather than discarding them, so the query can't be eliminated as dead code.
-[MemoryDiagnoser]
 public class TweetCountsPerFrequencyBenchmarks
 {
     private const int NameCount = 200;

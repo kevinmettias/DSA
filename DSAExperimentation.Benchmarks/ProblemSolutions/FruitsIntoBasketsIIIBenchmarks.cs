@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FruitsIntoBasketsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // across the problem's full 1e9 capacity range avoid the O(n^2) rescan
 // getting an unrealistic early-exit shape, so the segment tree's O(log^2 n)
 // search is measured against a genuinely scanning baseline.
-[MemoryDiagnoser]
 public class FruitsIntoBasketsIIIBenchmarks
 {
     private const int Seed = 3479;

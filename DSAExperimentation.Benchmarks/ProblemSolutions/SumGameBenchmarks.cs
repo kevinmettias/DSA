@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prepared SumGameState its hoisted overload takes, so reducing a board to
 // (leftBlanks, rightBlanks, difference) is charged to [GlobalSetup] rather than to
 // the search being measured.
-[MemoryDiagnoser]
 public class SumGameBenchmarks
 {
     private SumGameState _board;

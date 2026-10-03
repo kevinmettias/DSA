@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountKSubsequencesOfAStringWithMaximumBeauty;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountByGroupedFrequencyProduct's C(groupSize, remaining) branch exists for) and
 // so CountByBruteForceCombinations has a non-trivial C(5, k) search space to walk
 // instead of returning almost immediately.
-[MemoryDiagnoser]
 public class CountKSubsequencesOfAStringWithMaximumBeautyBenchmarks
 {
     private const int AlphabetPoolSize = 5;

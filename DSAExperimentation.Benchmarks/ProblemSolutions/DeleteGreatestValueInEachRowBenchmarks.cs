@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DeleteGreatestValueInEachRow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ArrayIndexedSequence sorting each row once plus a single column-wise max pass
 // (O(Rows*Columns*log Columns)). The random grid is built once in [GlobalSetup]
 // and neither strategy writes to it, so every iteration measures the same input.
-[MemoryDiagnoser]
 public class DeleteGreatestValueInEachRowBenchmarks
 {
     // LC problem number, reused as the deterministic grid seed.

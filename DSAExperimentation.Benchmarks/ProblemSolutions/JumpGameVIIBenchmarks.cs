@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGameVII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms take LeetCode's own input shape, so [GlobalSetup] only sizes the
 // workload - it builds the string, and nothing the measured methods would otherwise
 // be charged for.
-[MemoryDiagnoser]
 public class JumpGameVIIBenchmarks
 {
     private const int MinJump = 1;

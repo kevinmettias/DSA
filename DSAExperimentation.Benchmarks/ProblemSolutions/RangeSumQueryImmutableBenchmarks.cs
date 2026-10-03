@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.LeetCode.RangeSumQueryImmutable;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // QueryCount times against it, the pattern LeetCode's own class exposes, so the
 // comparison is "build + QueryCount O(log n) queries" against "no build +
 // QueryCount O(n) rescans".
-[MemoryDiagnoser]
 public class RangeSumQueryImmutableBenchmarks
 {
     private const int QueryCount = 500;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.PathSumII;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // matching paths instead of building them - weaker than the test's own helper,
 // which already built LeetCode's real answer - so both arms here return the
 // paths themselves, same as the tree and target below.
-[MemoryDiagnoser]
 public class PathSumIIBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

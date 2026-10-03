@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DistributeCandiesAmongChildrenI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is min(candyCount - first, limit), so setting limit as high as the candy count
 // keeps every iteration in range instead of an early truncation making brute force
 // look artificially competitive.
-[MemoryDiagnoser]
 public class DistributeCandiesAmongChildrenIBenchmarks
 {
     [Params(10, 50)]

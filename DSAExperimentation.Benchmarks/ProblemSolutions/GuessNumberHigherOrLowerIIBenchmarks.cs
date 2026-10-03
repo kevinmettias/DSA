@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GuessNumberHigherOrLowerII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // GuessNumberHigherOrLowerIITests proves correct. HighestNumber is kept modest
 // specifically because the un-memoized baseline's blowup is real, the same reasoning
 // BurstBalloonsBenchmarks/FibonacciNumberBenchmarks already document.
-[MemoryDiagnoser]
 public class GuessNumberHigherOrLowerIIBenchmarks
 {
     [Params(10, 14)]

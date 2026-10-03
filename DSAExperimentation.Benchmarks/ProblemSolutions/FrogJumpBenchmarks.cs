@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FrogJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TwoSumBenchmarks/JumpGameBenchmarks use, here forcing
 // CanCrossByRecursiveBruteForce through its full exponential search instead
 // of returning early on success.
-[MemoryDiagnoser]
 public class FrogJumpBenchmarks
 {
     // Offset from StoneCount back to the value of the last consecutively-filled

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.IncreasingOrderSearchTree;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // both walks mutate the tree's Left/Right pointers in place and would otherwise
 // corrupt a later iteration - the same per-invocation restore ConvertBSTToGreaterTree-
 // Benchmarks does with its Clone.
-[MemoryDiagnoser]
 public class IncreasingOrderSearchTreeBenchmarks
 {
     private int[] _shuffledValues = [];

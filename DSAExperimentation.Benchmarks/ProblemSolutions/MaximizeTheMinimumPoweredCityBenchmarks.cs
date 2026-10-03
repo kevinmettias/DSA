@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // full descent still finishes quickly. [GlobalSetup] builds the prepared
 // PoweredCityPlan its hoisted overload takes, so generating and totalling the stations
 // is not charged to either measured arm.
-[MemoryDiagnoser]
 public class MaximizeTheMinimumPoweredCityBenchmarks
 {
     private const int RandomSeed = 2528; // LC problem number

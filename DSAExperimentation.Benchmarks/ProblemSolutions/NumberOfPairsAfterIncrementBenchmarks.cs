@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfPairsAfterIncrement;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // parsing is charged to [GlobalSetup] rather than to the search being measured;
 // nums1/nums2 themselves are cheap arrays with nothing to hoist beyond their own
 // construction.
-[MemoryDiagnoser]
 public class NumberOfPairsAfterIncrementBenchmarks
 {
     private const int Seed = 3943; // LC problem number

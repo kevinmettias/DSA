@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ArrayPartition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ArrayIndexedSequence (O(n log n)) followed by summing every even-indexed
 // element - both compute the same maximized sum of pair-minimums, proved by
 // ArrayPartitionTests.
-[MemoryDiagnoser]
 public class ArrayPartitionBenchmarks
 {
     // LC problem number, reused as the deterministic random seed.

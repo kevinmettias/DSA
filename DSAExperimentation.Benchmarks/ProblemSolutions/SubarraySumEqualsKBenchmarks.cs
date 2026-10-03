@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubarraySumEqualsK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // bounded, target is far outside any possible running sum) so both strategies are
 // forced through their full worst-case scan instead of an early exit favoring one
 // of them.
-[MemoryDiagnoser]
 public class SubarraySumEqualsKBenchmarks
 {
     private const int Target = 1_000_000;

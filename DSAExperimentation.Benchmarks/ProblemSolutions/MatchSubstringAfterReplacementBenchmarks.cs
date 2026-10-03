@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MatchSubstringAfterReplacement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // mapping - forcing both strategies through their true per-comparison worst case,
 // the same "unreachable target" convention TwoSumBenchmarks uses, just against the
 // mapping lookup instead of the sum check.
-[MemoryDiagnoser]
 public class MatchSubstringAfterReplacementBenchmarks
 {
     private const int SubLength = 20;

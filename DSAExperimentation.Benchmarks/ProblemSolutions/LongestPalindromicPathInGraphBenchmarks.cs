@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LongestPalindromicPathInGraph;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // under the problem's own n <= 14 ceiling - the brute-force baseline's simple-path
 // enumeration is genuinely exponential, and this is exactly the comparison that's
 // meant to show.
-[MemoryDiagnoser]
 public class LongestPalindromicPathInGraphBenchmarks
 {
     private const int GraphSeed = 3615;

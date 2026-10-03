@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.LinkedListRandomNode;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] and hiding it from the comparison. CallCount is large relative to
 // Length so that one-time conversion is amortized across many O(1) lookups, instead
 // of a small call count hiding ReservoirSampling's per-call O(n) cost.
-[MemoryDiagnoser]
 public class LinkedListRandomNodeBenchmarks
 {
     private const int CallCount = 2_000;

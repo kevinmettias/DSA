@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TopKFrequentWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (O(d log d) over d distinct words) vs. counting into this repo's own
 // HashMap<string,int> and keeping only the k "best" words in a size-k min-heap
 // (O(d log k)).
-[MemoryDiagnoser]
 public class TopKFrequentWordsBenchmarks
 {
     private const int K = 10;

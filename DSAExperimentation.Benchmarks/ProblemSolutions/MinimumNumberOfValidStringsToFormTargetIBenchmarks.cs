@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfValidStringsToFormTargetI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // A small 4-letter alphabet keeps words and target overlapping heavily, so
 // BruteForce's nested comparison actually does the character-by-character work
 // its complexity implies rather than bailing out on the first character.
-[MemoryDiagnoser]
 public class MinimumNumberOfValidStringsToFormTargetIBenchmarks
 {
     private const int RandomSeed = 3291; // LeetCode problem number

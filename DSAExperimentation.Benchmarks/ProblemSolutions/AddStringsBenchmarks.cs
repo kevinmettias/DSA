@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AddStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are AddStringsSolution's, the same methods
 // AddStringsTests proves correct.
-[MemoryDiagnoser]
 public class AddStringsBenchmarks
 {
     // The LeetCode problem number, reused as the deterministic random seed.

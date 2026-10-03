@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfStudentsUnableToEatLunch;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // charges the List<int> baseline its O(n) RemoveAt(0) per round against the
 // Deque-backed Queue<int>'s O(1). Generating both arrays is [GlobalSetup]'s job,
 // so only the simulation is measured.
-[MemoryDiagnoser]
 public class NumberOfStudentsUnableToEatLunchBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

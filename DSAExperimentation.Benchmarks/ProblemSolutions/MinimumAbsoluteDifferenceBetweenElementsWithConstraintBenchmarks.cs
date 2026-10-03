@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceBetweenElementsWithConstraint;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // enough for the tree to matter. int[] plus an int gap is already LeetCode's own
 // input shape, so [GlobalSetup] hands it straight in and no hoisted overload is
 // needed.
-[MemoryDiagnoser]
 public class MinimumAbsoluteDifferenceBetweenElementsWithConstraintBenchmarks
 {
     private const int RandomSeed = 2817; // LeetCode problem number

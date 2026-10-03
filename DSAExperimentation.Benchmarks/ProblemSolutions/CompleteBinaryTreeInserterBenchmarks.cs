@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CompleteBinaryTreeInserter;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so both strategies pay for the full sequence rather than one call - the tree is
 // mutated by the run, so it cannot be hoisted into [GlobalSetup] the way the insert
 // values are.
-[MemoryDiagnoser]
 public class CompleteBinaryTreeInserterBenchmarks
 {
     private const int InsertCount = 200;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostToReachDestinationInTime;
 
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // to walk a one-way chain of its own, and now walks LeetCode's genuinely two-way roads,
 // which branch four ways instead of two. That is the arm's real cost, and 14 already
 // puts it in the millions of calls.
-[MemoryDiagnoser]
 public class MinimumCostToReachDestinationInTimeBenchmarks
 {
     private RoadNetwork _roads = null!;

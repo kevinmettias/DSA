@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfValidWordsForEachPuzzle;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods NumberOfValidWordsForEachPuzzleTests proves correct. The words and
 // puzzles are LeetCode's own input shape, so generating them is charged to
 // [GlobalSetup] and each measured arm is handed them as-is.
-[MemoryDiagnoser]
 public class NumberOfValidWordsForEachPuzzleBenchmarks
 {
     private const int PuzzleCount = 50;

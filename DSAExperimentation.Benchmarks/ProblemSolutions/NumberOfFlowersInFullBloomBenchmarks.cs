@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfFlowersInFullBloom;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // flower intervals and the arrival times - LeetCode's own input shape, so nothing
 // further is prepared for the measured methods; splitting and sorting the endpoint
 // arrays is the composed arm's own cost and stays inside it.
-[MemoryDiagnoser]
 public class NumberOfFlowersInFullBloomBenchmarks
 {
     private const int RandomSeed = 2251; // LC problem number

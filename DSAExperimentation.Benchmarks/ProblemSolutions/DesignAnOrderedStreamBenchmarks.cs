@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignAnOrderedStream;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one-id-at-a-time-in-order case; [GlobalSetup] materializes that order and the
 // values, so shuffling and string formatting are charged to setup rather than to
 // the replay.
-[MemoryDiagnoser]
 public class DesignAnOrderedStreamBenchmarks
 {
     // Fixed so both arms replay the identical arrival order every run.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStockIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own precedent for "size the baseline can survive") - the memoized arm's whole
 // point is that it only pays for the distinct (day, holding, transactions) states
 // that actually occur.
-[MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockIIIBenchmarks
 {
     private const int Seed = 123; // LC problem number

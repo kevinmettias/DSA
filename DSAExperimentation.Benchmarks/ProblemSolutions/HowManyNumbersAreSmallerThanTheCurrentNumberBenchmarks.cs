@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HowManyNumbersAreSmallerThanTheCurrentNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // binary-search each element's insertion point (BinarySearch.LowerBound),
 // O(n log n). LeetCode's input shape is already the measured method's parameter,
 // so there is nothing to hoist beyond generating the values themselves.
-[MemoryDiagnoser]
 public class HowManyNumbersAreSmallerThanTheCurrentNumberBenchmarks
 {
     private const int RandomSeed = 1365; // LC problem number

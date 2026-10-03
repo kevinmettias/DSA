@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.AnglesOfATriangle;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // exactly three sides, so there is nothing to scale; the comparison is purely
 // the constant-factor cost of a third Acos call versus deriving the third angle
 // from the triangle's angle sum.
-[MemoryDiagnoser]
 public class AnglesOfATriangleBenchmarks
 {
     private const int Seed = 3899;

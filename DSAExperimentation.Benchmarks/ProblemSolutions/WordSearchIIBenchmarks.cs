@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WordSearchII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // WordSearchIITests proves correct. Words are random (mostly absent from the
 // board) so neither strategy short-circuits, forcing both through their real
 // worst-case cost.
-[MemoryDiagnoser]
 public class WordSearchIIBenchmarks
 {
     private const int BoardSize = 8;

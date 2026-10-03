@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SumOfBeautifulSubsequences;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods SumOfBeautifulSubsequencesTests proves correct. Neither strategy needs
 // anything prepared beyond the array itself, so [GlobalSetup] only charges
 // workload construction.
-[MemoryDiagnoser]
 public class SumOfBeautifulSubsequencesBenchmarks
 {
     private const int Seed = 3671;

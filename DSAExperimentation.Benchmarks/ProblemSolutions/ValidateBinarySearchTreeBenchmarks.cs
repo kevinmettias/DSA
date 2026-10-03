@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ValidateBinarySearchTree;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // carried RecursiveBounds and BinaryTreeNodeBounds as two [Benchmark] arms
 // that both called the same private IsWithinBounds helper - one strategy under two
 // names, not two - so only the survivor remains.
-[MemoryDiagnoser]
 public class ValidateBinarySearchTreeBenchmarks
 {
     private const int RootValue = 2;

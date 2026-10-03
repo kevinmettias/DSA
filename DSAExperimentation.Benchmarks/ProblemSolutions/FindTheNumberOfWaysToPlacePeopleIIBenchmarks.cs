@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.FindTheNumberOfWaysToPlacePeopleII;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ArrayIndexedSequence<int[]> its hoisted overload takes, sorted by the
 // XThenDescendingYOrder rule the sweep's precondition names, so sorting is
 // charged to [GlobalSetup] rather than to the sweep being measured.
-[MemoryDiagnoser]
 public class FindTheNumberOfWaysToPlacePeopleIIBenchmarks
 {
     private const int RandomSeed = 3027;

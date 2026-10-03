@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignTwitter;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each [Benchmark] arm constructs a fresh strategy and replays that script before
 // reading user 0's feed - so script construction, including the random interleave
 // order, is charged to setup rather than to the replay each arm measures.
-[MemoryDiagnoser]
 public class DesignTwitterBenchmarks
 {
     private const int SelfUserId = 0;

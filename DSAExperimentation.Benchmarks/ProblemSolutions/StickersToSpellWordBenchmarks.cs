@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StickersToSpellWord;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every step lands on the identical resulting state - maximal overlap, Length+1
 // distinct states total - while the naive strategy recomputes all 2^Length
 // equivalent choice paths from scratch.
-[MemoryDiagnoser]
 public class StickersToSpellWordBenchmarks
 {
     private const string RepeatedPair = "ab";

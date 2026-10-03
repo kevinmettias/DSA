@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimizeTheMaximumOfTwoArrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // abstraction. Divisors are fixed and coprime (2, 3) so every UniqueCountScale
 // forces a real lcm=6 inclusion-exclusion check instead of degenerating to a
 // single-divisor case.
-[MemoryDiagnoser]
 public class MinimizeTheMaximumOfTwoArraysBenchmarks
 {
     private const int Divisor1 = 2;

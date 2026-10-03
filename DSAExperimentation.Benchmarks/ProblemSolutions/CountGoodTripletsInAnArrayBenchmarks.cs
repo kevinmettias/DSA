@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountGoodTripletsInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n log n), the same contrast CountOfSmallerNumbersAfterSelfBenchmarks and
 // ReversePairsBenchmarks already draw for LC 315/493. [GlobalSetup] shuffles the
 // two permutations, so only the counting is measured.
-[MemoryDiagnoser]
 public class CountGoodTripletsInAnArrayBenchmarks
 {
     private const int RandomSeed = 2179; private int[] _nums1 = [];

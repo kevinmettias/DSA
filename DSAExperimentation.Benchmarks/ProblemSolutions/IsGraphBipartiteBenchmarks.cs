@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IsGraphBipartite;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Materializing the BipartiteNode graph is input construction, so it is charged
 // to [GlobalSetup] and handed to the strategy's prepared-input overload.
-[MemoryDiagnoser]
 public class IsGraphBipartiteBenchmarks
 {
     // The graph is split into exactly two sides (A and B) to stay bipartite by

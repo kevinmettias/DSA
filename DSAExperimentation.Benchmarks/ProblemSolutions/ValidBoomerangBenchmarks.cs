@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidBoomerang;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // _triples deliberately includes near-collinear (but not exactly collinear) points
 // so the floating-point arm's epsilon comparison does real work instead of
 // trivially separating from the exact-collinear cases.
-[MemoryDiagnoser]
 public class ValidBoomerangBenchmarks
 {
     private const int RandomSeed = 1037; // LC problem number

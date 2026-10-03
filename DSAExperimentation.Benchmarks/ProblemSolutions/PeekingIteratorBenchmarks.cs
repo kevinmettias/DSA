@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PeekingIterator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PeekingIteratorTests proves correct. Both drive the same peek-peek-next
 // pattern to full exhaustion, summing every returned value so the JIT can't
 // eliminate the drain as dead code.
-[MemoryDiagnoser]
 public class PeekingIteratorBenchmarks
 {
     private int[] _values = [];

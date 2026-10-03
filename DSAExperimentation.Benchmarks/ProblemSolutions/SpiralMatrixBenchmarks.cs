@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SpiralMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (O(rows*cols) extra memory for the visited flags) vs. the
 // four-boundary-pointer shrink (O(1) extra memory, no visited tracking at
 // all).
-[MemoryDiagnoser]
 public class SpiralMatrixBenchmarks
 {
     private int[][] _matrix = [];

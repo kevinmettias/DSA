@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignBitset;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // so the flag's effect is actually observed) - the operation flip() exists
 // specifically to make O(1) instead of O(size), so the eager baseline pays
 // O(Size^2) over the loop while the lazy flag pays O(Size).
-[MemoryDiagnoser]
 public class DesignBitsetBenchmarks
 {
     private const int FixEveryNth = 3;

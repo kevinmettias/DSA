@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OrderlyQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's own input size. The movablePrefixLength > 1 case reduces to sorting text outright -
 // already exercised against this repo's MergeSort by HIndex/ThreeSum/etc.'s own
 // benchmarks, so it isn't repeated here.
-[MemoryDiagnoser]
 public class OrderlyQueueBenchmarks
 {
     private const int RandomSeed = 899; // LC problem number

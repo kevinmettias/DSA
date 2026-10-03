@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructBinaryTreeFromPreorderAndPostorderTraversal;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ...Tests proves correct. The comparison is how each node's left-subtree root is
 // located in postorder - a linear rescan of the live range against this repo's own
 // HashMap<TValue,TIndex> built once up front.
-[MemoryDiagnoser]
 public class ConstructBinaryTreeFromPreorderAndPostorderTraversalBenchmarks
 {
     private int[] _preorder = [];

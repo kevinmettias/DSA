@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindBeautifulIndicesInTheGivenArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // scan attempt through almost the whole pattern before failing, with pattern length
 // scaling alongside the haystack so the O(n*m) vs O(n) gap widens with it - the gap
 // #3008's larger published bound exists to make unavoidable.
-[MemoryDiagnoser]
 public class FindBeautifulIndicesInTheGivenArrayIIBenchmarks
 {
     private const int SearchWindow = 100;

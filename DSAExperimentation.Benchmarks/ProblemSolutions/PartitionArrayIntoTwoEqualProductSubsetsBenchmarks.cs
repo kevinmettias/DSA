@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PartitionArrayIntoTwoEqualProductSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // lets CandidateAssignments cut real branches while still forcing a near-complete
 // search, since these distinct random values essentially never land on an exact
 // equal-product split.
-[MemoryDiagnoser]
 public class PartitionArrayIntoTwoEqualProductSubsetsBenchmarks
 {
     private const int Seed = 3566;

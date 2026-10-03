@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RussianDollEnvelopes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RussianDollEnvelopesTests proves correct. Each arm takes the (Width, Height) pairs
 // [GlobalSetup] already prepared, so decoding LeetCode's int[][] shape is not charged to the
 // measured method - the hoisted overload RussianDollEnvelopesSolution exposes for exactly that.
-[MemoryDiagnoser]
 public class RussianDollEnvelopesBenchmarks
 {
     private const int RandomSeed = 11;

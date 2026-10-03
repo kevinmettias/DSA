@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ProjectionAreaOf3DShapes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overload is needed - grid construction is never charged to a measured call. All
 // three are O(rows * cols), so what this isolates is redundant-pass overhead rather
 // than an algorithm-class swap.
-[MemoryDiagnoser]
 public class ProjectionAreaOf3DShapesBenchmarks
 {
     private const int CellHeightBound = 100;

@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheIndexOfTheFirstOccurrenceInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are FindTheIndexOfTheFirstOccurrenceInAStringSolution's,
 // the same methods FindTheIndexOfTheFirstOccurrenceInAStringTests proves correct.
-[MemoryDiagnoser]
 public class FindTheIndexOfTheFirstOccurrenceInAStringBenchmarks
 {
     private const string Needle = "needle";

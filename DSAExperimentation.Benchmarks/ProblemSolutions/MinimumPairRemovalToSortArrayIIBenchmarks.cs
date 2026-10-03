@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // uniformly random value range keeps the array genuinely out of order at every
 // scale, so both arms have real merge work to do rather than finishing in the
 // first few operations.
-[MemoryDiagnoser]
 public class MinimumPairRemovalToSortArrayIIBenchmarks
 {
     private const int RandomSeed = 3510; // LeetCode problem number

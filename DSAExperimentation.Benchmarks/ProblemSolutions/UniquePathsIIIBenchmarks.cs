@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.UniquePathsIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // board/size rather than [Params]-ing it, [GlobalSetup] fixes one small grid and the
 // comparison isolates the constant-factor cost of Backtrack.Search's generic
 // delegate dispatch from an equivalent purpose-built recursion.
-[MemoryDiagnoser]
 public class UniquePathsIIIBenchmarks
 {
     private const int EndCellMarker = 2;

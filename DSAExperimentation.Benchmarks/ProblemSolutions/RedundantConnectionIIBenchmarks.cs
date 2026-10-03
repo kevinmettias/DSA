@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RedundantConnectionII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against this repo's own DisjointSet-based approach, which finds the
 // in-degree-2 node's two candidate edges up front and settles the answer in at
 // most two O(n * alpha(n)) DisjointSet passes total.
-[MemoryDiagnoser]
 public class RedundantConnectionIIBenchmarks
 {
     // The chain's extra cross edge targets node 2, which is what gives it two parents.

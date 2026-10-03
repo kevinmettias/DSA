@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubsequences;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumAndMinimumSumsOfAtMostSizeKSubsequencesSolution's,
 // the same methods MaximumAndMinimumSumsOfAtMostSizeKSubsequencesTests proves
 // correct.
-[MemoryDiagnoser]
 public class MaximumAndMinimumSumsOfAtMostSizeKSubsequencesBenchmarks
 {
     private const int Seed = 3428;

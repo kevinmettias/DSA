@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MakeArrayEmpty;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // FenwickTree<int, SumOperation<int>> range query at O(log n) per step, the same
 // contrast CountGoodTripletsInAnArrayBenchmarks draws for LC 2179. [GlobalSetup]
 // shuffles the distinct values, so only the sweep is measured.
-[MemoryDiagnoser]
 public class MakeArrayEmptyBenchmarks
 {
     private const int Seed = 2659; private int[] _nums = [];

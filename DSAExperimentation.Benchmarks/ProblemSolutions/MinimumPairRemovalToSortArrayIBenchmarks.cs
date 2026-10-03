@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumPairRemovalToSortArrayI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // within LC 3507 "I"'s own n <= 50 bound (unlike its "II" sibling), so this
 // times the two strategies' constant factors rather than a regime "I" never
 // actually runs in.
-[MemoryDiagnoser]
 public class MinimumPairRemovalToSortArrayIBenchmarks
 {
     private const int Seed = 3507;

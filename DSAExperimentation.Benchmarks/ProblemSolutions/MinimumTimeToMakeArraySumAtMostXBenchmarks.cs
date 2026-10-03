@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumTimeToMakeArraySumAtMostX;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // behind this repo's MergeSort over an ArrayIndexedSequence<(int, int)>. x is set
 // below any reachable sum so both arms are forced through every candidate
 // operation count instead of returning on the first one checked.
-[MemoryDiagnoser]
 public class MinimumTimeToMakeArraySumAtMostXBenchmarks
 {
     private const int RandomSeed = 2809; // LC problem number

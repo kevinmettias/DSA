@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SoupServings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // There is no [GlobalSetup] left to charge: the only preparation the old harness
 // did was quantizing Milliliters to servings, one integer division that is part
 // of the LeetCode-shaped call itself and identical for both arms.
-[MemoryDiagnoser]
 public class SoupServingsBenchmarks
 {
     [Params(600, 850)]

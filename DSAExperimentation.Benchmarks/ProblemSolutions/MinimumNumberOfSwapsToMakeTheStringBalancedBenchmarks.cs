@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfSwapsToMakeTheStringBalanced;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every leading ']' through a full backward scan of the remaining closer run before the
 // baseline finds its first available opener, instead of an early exit on the first
 // invocation making it look artificially competitive.
-[MemoryDiagnoser]
 public class MinimumNumberOfSwapsToMakeTheStringBalancedBenchmarks
 {
     private const int TextHalfDivisor = 2; private string _text = "";

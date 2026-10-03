@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MaximumSumBSTInBinaryTree;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strictly increasing right-only chain is itself a valid BST end to end, the same
 // reason DiameterOfBinaryTreeBenchmarks reuses a skewed shape - it keeps the naive
 // baseline's cost real instead of hidden behind O(log n) depth.
-[MemoryDiagnoser]
 public class MaximumSumBSTInBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

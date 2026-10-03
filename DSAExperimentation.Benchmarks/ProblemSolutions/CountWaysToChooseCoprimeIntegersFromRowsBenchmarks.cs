@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountWaysToChooseCoprimeIntegersFromRows;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Size stays a square matrix well below LC's own 150x150 bound - the brute-force
 // DFS enumerates size^size leaf combinations and would not finish otherwise; the
 // GCD-counting DP strategy stays polynomial in size regardless.
-[MemoryDiagnoser]
 public class CountWaysToChooseCoprimeIntegersFromRowsBenchmarks
 {
     private const int RandomSeed = 3725; // LC problem number

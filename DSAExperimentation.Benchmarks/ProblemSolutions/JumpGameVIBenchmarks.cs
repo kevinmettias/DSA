@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGameVI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // maximum keeps changing instead of settling on one dominant early value that would
 // make the rescan arm look artificially cheap - the same workload shape
 // ConstrainedSubsequenceSumBenchmarks uses for LC 1425's own trailing window.
-[MemoryDiagnoser]
 public class JumpGameVIBenchmarks
 {
     private const int K = 50;

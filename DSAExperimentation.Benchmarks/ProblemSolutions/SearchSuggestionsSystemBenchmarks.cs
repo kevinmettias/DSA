@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SearchSuggestionsSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // fast on an early character mismatch - the same "force the real worst case"
 // convention TwoSumBenchmarks uses, here applied to StartsWith instead of a sum
 // target.
-[MemoryDiagnoser]
 public class SearchSuggestionsSystemBenchmarks
 {
     private const int ProductCount = 2_000;

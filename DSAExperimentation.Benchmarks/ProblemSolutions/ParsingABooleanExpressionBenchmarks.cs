@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ParsingABooleanExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are ParsingABooleanExpressionSolution's. Depth controls
 // how deeply the generated expression nests (and therefore its total size), not the
 // value it evaluates to.
-[MemoryDiagnoser]
 public class ParsingABooleanExpressionBenchmarks
 {
     // random.Next(LeafChance) == 0: roughly a 1-in-4 chance to end the generated

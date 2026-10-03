@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestRepeatingCharacterReplacement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a single repeated character so BruteForce's inner loop never breaks early
 // (every window is trivially already-repeating), forcing its full O(n^2) worst
 // case instead of bottoming out after a handful of characters.
-[MemoryDiagnoser]
 public class LongestRepeatingCharacterReplacementBenchmarks
 {
     private const int K = 2;

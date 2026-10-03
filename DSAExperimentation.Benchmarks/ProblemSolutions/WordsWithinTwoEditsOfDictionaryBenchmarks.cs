@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WordsWithinTwoEditsOfDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -21,7 +20,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // includes materializing that list. Every query matches by construction, so the
 // list is the full query batch in both arms and the comparison is still about
 // matching cost.
-[MemoryDiagnoser]
 public class WordsWithinTwoEditsOfDictionaryBenchmarks
 {
     private const int WordLength = 8;

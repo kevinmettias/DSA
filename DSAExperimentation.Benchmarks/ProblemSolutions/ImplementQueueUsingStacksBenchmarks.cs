@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ImplementQueueUsingStacks;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pushed), so script construction is not charged to the measured replay -
 // the same "return the real answer, not a weaker proxy" shape
 // LRUCacheBenchmarks/BinarySearchTreeIteratorBenchmarks already follow.
-[MemoryDiagnoser]
 public class ImplementQueueUsingStacksBenchmarks
 {
     private const int Seed = 232;

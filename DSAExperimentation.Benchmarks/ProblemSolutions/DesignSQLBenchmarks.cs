@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignSQL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // case. The list-scan table linear-scans for a matching row id on every select and
 // every delete; the HashMap table indexes straight to it - the same
 // list-scan-vs-hash-lookup shape DesignANumberContainerSystemBenchmarks exercises.
-[MemoryDiagnoser]
 public class DesignSQLBenchmarks
 {
     private const int ColumnCount = 3;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.EncodeAndDecodeTinyURL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Decode path (the same "force the real worst case" convention TwoSumBenchmarks
 // already uses), not an early hit that would make the linear scan look
 // artificially competitive.
-[MemoryDiagnoser]
 public class EncodeAndDecodeTinyURLBenchmarks
 {
     private EncodeAndDecodeTinyURLSolution.CodecByLinearScan _linearScan = new();

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSegmentSumAfterRemovals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a full shuffled permutation of the index range so neither arm gets a degenerate
 // suffix-first order that would keep every merge on one end; summing the returned
 // answer[] forces a full pass rather than one index's worth of work.
-[MemoryDiagnoser]
 public class MaximumSegmentSumAfterRemovalsBenchmarks
 {
     private const int RandomSeed = 2382; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LexicographicallyMaximumMEXArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // force arm rescans a whole window's MEX from scratch on every element it
 // grows into, so Length stays small enough for it to finish in reasonable time;
 // the frequency/pointer arm's whole point is that it never rescans.
-[MemoryDiagnoser]
 public class LexicographicallyMaximumMEXArrayBenchmarks
 {
     private const int Seed = 3948; private int[] _nums = [];

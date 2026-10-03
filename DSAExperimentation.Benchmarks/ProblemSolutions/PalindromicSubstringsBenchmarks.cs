@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PalindromicSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // alphabet rather than a full character range, so repeated runs are common and
 // ExpandAroundCenter actually pays its quadratic worst case instead of exiting most
 // expansions after one comparison.
-[MemoryDiagnoser]
 public class PalindromicSubstringsBenchmarks
 {
     private const int RandomSeed = 29;

@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountAllValidPickupAndDeliveryOptions;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CountAllValidPickupAndDeliveryOptionsSolution's, the
 // same strategies CountAllValidPickupAndDeliveryOptionsTests proves correct.
-[MemoryDiagnoser]
 public class CountAllValidPickupAndDeliveryOptionsBenchmarks
 {
     [Params(100, 10_000)]

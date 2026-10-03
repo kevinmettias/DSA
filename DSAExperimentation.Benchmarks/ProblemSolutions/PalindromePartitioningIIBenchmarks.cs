@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PalindromePartitioningII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // placeholders (`=> 1`) - one real strategy, not two - so this measures the
 // memoized recurrence against the bottom-up cut table instead, both over
 // LeetCode's own example.
-[MemoryDiagnoser]
 public class PalindromePartitioningIIBenchmarks
 {
     private const string Workload = "aab";

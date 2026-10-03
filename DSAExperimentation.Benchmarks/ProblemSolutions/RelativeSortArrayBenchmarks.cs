@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RelativeSortArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ahead ~2.5x at Length=5,000, as the O(n log n * m) scan cost overtakes HashMap's
 // O(1)-lookup advantage - the same small-n-overhead-then-crossover shape several
 // other composed-vs-naive benchmarks in this repo show.
-[MemoryDiagnoser]
 public class RelativeSortArrayBenchmarks
 {
     private const int ReferenceLength = 2_000;

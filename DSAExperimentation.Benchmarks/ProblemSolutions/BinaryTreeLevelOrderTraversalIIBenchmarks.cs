@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BinaryTreeLevelOrderTraversalII;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are BinaryTreeLevelOrderTraversalIISolution's, the same
 // methods BinaryTreeLevelOrderTraversalIITests proves correct.
-[MemoryDiagnoser]
 public class BinaryTreeLevelOrderTraversalIIBenchmarks
 {
     private const int RootValue = 3;

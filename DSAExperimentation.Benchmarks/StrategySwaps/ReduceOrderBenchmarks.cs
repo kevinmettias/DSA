@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Reducing;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 // so (unlike most IReduceAlgebra choices, per that interface's own doc comment)
 // this specific algebra is order-insensitive: same result either way, so the
 // comparison is purely about traversal mechanics (explicit queue vs recursion).
-[MemoryDiagnoser]
 public class ReduceOrderBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

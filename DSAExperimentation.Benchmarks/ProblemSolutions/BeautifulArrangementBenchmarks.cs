@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BeautifulArrangement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Backtrack.Search with the v % position == 0 / position % v == 0 rule folded
 // directly into Candidates, so an illegal value is never placed and the branch
 // is pruned immediately instead of discovered n steps later.
-[MemoryDiagnoser]
 public class BeautifulArrangementBenchmarks
 {
     [Params(6, 8)]

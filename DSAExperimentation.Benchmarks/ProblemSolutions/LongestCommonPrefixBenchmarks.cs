@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestCommonPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LongestCommonPrefixTests proves correct. Linear shrink-and-compare vs.
 // BinarySearch over the monotone predicate "prefix length n is shared by
 // every string".
-[MemoryDiagnoser]
 public class LongestCommonPrefixBenchmarks
 {
     private static readonly string[] DivergingSuffixes = ["a", "b", "c", "d"];

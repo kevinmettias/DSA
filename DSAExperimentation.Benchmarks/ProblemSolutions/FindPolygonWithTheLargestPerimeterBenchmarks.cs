@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindPolygonWithTheLargestPerimeter;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods FindPolygonWithTheLargestPerimeterTests proves correct.
 // Neither strategy needs anything hoisted beyond the raw int[] LeetCode
 // itself hands in, so [GlobalSetup] only sizes+seeds the workload.
-[MemoryDiagnoser]
 public class FindPolygonWithTheLargestPerimeterBenchmarks
 {
     private const int SideSeed = 2971;

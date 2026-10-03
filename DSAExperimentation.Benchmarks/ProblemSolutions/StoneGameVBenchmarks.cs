@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own Memoizer<TState,TResult> caching each (Left, Right) range exactly once, the
 // identical shape StoneGameIIIBenchmarks already uses for LC 1406, just keyed on a
 // range instead of a single index.
-[MemoryDiagnoser]
 public class StoneGameVBenchmarks
 {
     // LC problem number, used as the deterministic seed for stone-value generation.

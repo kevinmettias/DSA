@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfDaysToDisconnectIsland;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // always returns 2 - forcing both arms through their full O((Rows*Cols)^2) worst case,
 // one connectivity check per candidate removal, rather than an early exit after the
 // first cell tried.
-[MemoryDiagnoser]
 public class MinimumNumberOfDaysToDisconnectIslandBenchmarks
 {
     private const int Land = 1;

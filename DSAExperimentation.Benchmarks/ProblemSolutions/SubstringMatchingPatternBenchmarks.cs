@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubstringMatchingPattern;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the last character, forcing both strategies through their full worst case instead
 // of an early first-character mismatch making brute force look artificially
 // competitive.
-[MemoryDiagnoser]
 public class SubstringMatchingPatternBenchmarks
 {
     private string _subject = "";

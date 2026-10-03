@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SplitTheArrayToMakeCoprimeProducts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against i. Values are drawn from a small shared prime pool (the same "force
 // genuine overlaps" intent LargestComponentSizeByCommonFactorBenchmarks' generator
 // already uses) so both arms do real, non-trivial work.
-[MemoryDiagnoser]
 public class SplitTheArrayToMakeCoprimeProductsBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

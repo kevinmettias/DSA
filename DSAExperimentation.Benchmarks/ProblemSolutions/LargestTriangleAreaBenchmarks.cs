@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LargestTriangleArea;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LargestTriangleAreaTests proves correct. Points are drawn uniformly from a
 // bounded square, so almost all of them land strictly inside the hull and the
 // reducing arm discards them before the cubic step ever sees them.
-[MemoryDiagnoser]
 public class LargestTriangleAreaBenchmarks
 {
     // LC problem number, reused as the deterministic point seed.

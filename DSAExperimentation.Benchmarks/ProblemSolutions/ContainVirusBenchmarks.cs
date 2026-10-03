@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ContainVirus;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ContainVirusTests proves correct. Each strategy clones the workload grid itself,
 // so [GlobalSetup] only has to build it once per [Params] value rather than per
 // iteration.
-[MemoryDiagnoser]
 public class ContainVirusBenchmarks
 {
     private const int RandomSeed = 749; // LeetCode problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckIfThereIsAValidParenthesesStringPath;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // it really does visit every one of the C(2n-2, n-1) paths. Size is kept modest for
 // exactly that reason. Grid construction is the LeetCode input shape itself, so
 // building it in [GlobalSetup] already keeps it off the measured methods.
-[MemoryDiagnoser]
 public class CheckIfThereIsAValidParenthesesStringPathBenchmarks
 {
     private const char Open = '(';

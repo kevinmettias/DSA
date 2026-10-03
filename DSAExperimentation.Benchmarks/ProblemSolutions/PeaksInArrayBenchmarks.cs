@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PeaksInArray;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // windows spanning most of the array with type-2 point updates, so the O(n)
 // rescan the brute-force arm pays per range query has real work to do at every
 // step, against the Fenwick-tree arm's O(log n) query and O(log n) update.
-[MemoryDiagnoser]
 public class PeaksInArrayBenchmarks
 {
     // LC problem number, used as the deterministic seed for value generation.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSumOfSubsequenceWithNonAdjacentElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (O(n^2) overall) while the segment tree pays O(log n) per update. Confirmed
 // locally at Length=1_000 (~1.4x faster) and Length=20_000 (~35x faster), the
 // gap widening with scale as O(n log n) vs. O(n^2) predicts.
-[MemoryDiagnoser]
 public class MaximumSumOfSubsequenceWithNonAdjacentElementsBenchmarks
 {
     private const int MaxAbsoluteValue = 1_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.SwappingNodesInALinkedList;
 
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so a
 // public [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class SwappingNodesInALinkedListBenchmarks
 {
     private const int TargetIndexDivisor = 3; private int[] _values = [];

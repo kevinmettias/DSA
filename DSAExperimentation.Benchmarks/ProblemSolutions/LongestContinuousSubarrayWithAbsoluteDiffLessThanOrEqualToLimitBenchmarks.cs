@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimit;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods the coverage test proves correct. Values are random over a narrow
 // range relative to Limit so windows run long enough for the baseline's O(n^2) cost
 // to actually show, rather than every start immediately violating the limit.
-[MemoryDiagnoser]
 public class LongestContinuousSubarrayWithAbsoluteDiffLessThanOrEqualToLimitBenchmarks
 {
     private const int Limit = 100;

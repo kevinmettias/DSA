@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BlockPlacementQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // per-query rescan - confirmed locally at QueryCount=5_000 (~1.2x faster) and
 // QueryCount=50_000 (~3x faster), the O(n log n) vs. O(n*m) gap widening with
 // scale as expected.
-[MemoryDiagnoser]
 public class BlockPlacementQueriesBenchmarks
 {
     private const int Seed = 3161;

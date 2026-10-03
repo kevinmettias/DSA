@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheSequenceOfStringsAppearedOnTheScreen;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are FindTheSequenceOfStringsAppearedOnTheScreenSolution's.
 // An all-'z' target forces every character to roll the full 25-step 'a'->'z'
 // range, the worst case for both screen buffers.
-[MemoryDiagnoser]
 public class FindTheSequenceOfStringsAppearedOnTheScreenBenchmarks
 {
     private string _target = "";

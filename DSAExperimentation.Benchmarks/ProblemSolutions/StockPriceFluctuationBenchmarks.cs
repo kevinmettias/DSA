@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StockPriceFluctuation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // timestamp - so the comparison is between rescanning every stored price on each
 // Maximum/Minimum query and the two-heap-with-lazy-deletion strategy that discards a
 // superseded entry once, at the query that first surfaces it.
-[MemoryDiagnoser]
 public class StockPriceFluctuationBenchmarks
 {
     private const int RandomSeed = 2034;

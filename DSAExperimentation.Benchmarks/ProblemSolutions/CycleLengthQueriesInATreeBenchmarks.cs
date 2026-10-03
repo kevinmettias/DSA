@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CycleLengthQueriesInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // should show the Dictionary-per-query baseline's Gen0/bytes grow with QueriesCount
 // while the Parent-arithmetic arm allocates only the answer array. The queries
 // themselves are generated once in [GlobalSetup].
-[MemoryDiagnoser]
 public class CycleLengthQueriesInATreeBenchmarks
 {
     private const int RandomSeed = 2509; // LC problem number

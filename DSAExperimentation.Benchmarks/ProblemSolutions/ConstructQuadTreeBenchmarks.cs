@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructQuadTree;
 
@@ -21,7 +20,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(cells*log(cols)) build cost. The grid is split top/bottom (half 0, half 1)
 // so all four top-level quadrants are genuinely uniform and must be fully
 // confirmed either way - not chosen to be adversarial to either approach.
-[MemoryDiagnoser]
 public class ConstructQuadTreeBenchmarks
 {
     private int[][] _grid = [];

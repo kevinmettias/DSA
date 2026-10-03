@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DivideTwoIntegers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are DivideTwoIntegersSolution's, the same methods
 // DivideTwoIntegersTests proves correct.
-[MemoryDiagnoser]
 public class DivideTwoIntegersBenchmarks
 {
     private const int Divisor = 7;

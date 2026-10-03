@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubsetsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // unused HashSet<string>, looped over a discarded HashSet<int> doing nothing, and
 // then returned Backtracking()'s own value directly. It was not a second strategy,
 // just dead code wrapping the one real arm, so it is not preserved here.
-[MemoryDiagnoser]
 public class SubsetsIIBenchmarks
 {
     private const int DuplicateGroupSize = 2;

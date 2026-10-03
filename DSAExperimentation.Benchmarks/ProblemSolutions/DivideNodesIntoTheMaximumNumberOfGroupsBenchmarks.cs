@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DivideNodesIntoTheMaximumNumberOfGroups;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The workload is a random spanning tree: connected and (like every tree) always
 // bipartite, so every node genuinely runs its own full BFS instead of any arm
 // short-circuiting early, and there is exactly one component to sum over.
-[MemoryDiagnoser]
 public class DivideNodesIntoTheMaximumNumberOfGroupsBenchmarks
 {
     // LC problem number, reused as the deterministic edge seed.

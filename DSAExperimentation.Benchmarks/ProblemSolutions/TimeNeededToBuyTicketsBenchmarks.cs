@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.TimeNeededToBuyTickets;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the O(n) closed-form sum. _tickets uses a large, uniform ticket count per person so
 // the simulation is forced through its full O(n * ticketsPerPerson) worst case
 // instead of finishing after a handful of turns.
-[MemoryDiagnoser]
 public class TimeNeededToBuyTicketsBenchmarks
 {
     private const int RandomSeed = 2073; // LC problem number

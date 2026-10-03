@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignANumberContainerSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // hit a match within the first few entries regardless of Count and never actually
 // exercises the O(n) case. LazyDeletionHeap's per-number heap stays O(1)-sized
 // here, so Find resolves in amortized O(1) instead.
-[MemoryDiagnoser]
 public class DesignANumberContainerSystemBenchmarks
 {
     private const int RandomSeed = 2349;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfSetsOfKNonOverlappingLineSegments;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NumberOfSetsOfKNonOverlappingLineSegmentsSolution's, the same methods
 // NumberOfSetsOfKNonOverlappingLineSegmentsTests proves correct. The problem's whole
 // input is two integers, so [GlobalSetup] only picks k from the point count.
-[MemoryDiagnoser]
 public class NumberOfSetsOfKNonOverlappingLineSegmentsBenchmarks
 {
     private const int PointsToKDivisor = 4;

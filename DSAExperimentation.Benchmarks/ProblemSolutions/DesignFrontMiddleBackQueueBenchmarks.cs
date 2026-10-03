@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignFrontMiddleBackQueue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of every three calls while the two-deque split pays O(1) at each - the same
 // DesignLinkedListBenchmarks precedent (array-shift baseline vs. O(1)
 // primitive-based insert), just with a third position.
-[MemoryDiagnoser]
 public class DesignFrontMiddleBackQueueBenchmarks
 {
     private const int OperationCycleLength = 3; // cycles push front/middle/back

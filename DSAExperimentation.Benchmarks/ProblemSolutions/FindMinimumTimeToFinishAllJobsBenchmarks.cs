@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindMinimumTimeToFinishAllJobs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pruned k-bucket feasibility search. Job generation is charged to [GlobalSetup];
 // the measured methods take LeetCode's own input shape, so no hoisted overload is
 // needed.
-[MemoryDiagnoser]
 public class FindMinimumTimeToFinishAllJobsBenchmarks
 {
     private const int WorkerCount = 3;

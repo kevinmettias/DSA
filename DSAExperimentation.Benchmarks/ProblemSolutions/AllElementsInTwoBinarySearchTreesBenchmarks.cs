@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.AllElementsInTwoBinarySearchTrees;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinarySearchTree<int>.Insert over a shuffled permutation, so insertion order stays
 // randomized (no adversarial ascending-order degeneration) the same way
 // FindModeInBinarySearchTreeBenchmarks' fixture is shuffled.
-[MemoryDiagnoser]
 public class AllElementsInTwoBinarySearchTreesBenchmarks
 {
     private const int RandomSeedTree1 = 1305; // LeetCode problem number

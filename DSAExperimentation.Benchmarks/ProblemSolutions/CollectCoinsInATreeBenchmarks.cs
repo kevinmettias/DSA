@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CollectCoinsInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // until a full pass removes nothing (O(n) per round, up to O(n) rounds on a
 // path-shaped tree), while LeafQueue uses this repo's own Queue<int> so every
 // zero-coin leaf is enqueued once and dequeued once, for one O(n) pass total.
-[MemoryDiagnoser]
 public class CollectCoinsInATreeBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

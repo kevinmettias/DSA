@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.RollingHash;
 using DSAExperimentation.LeetCode.FindSubstringWithGivenHashValue;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // forced through every window on every invocation instead of an early exit making
 // the baseline look artificially competitive - the same
 // deliberately-unreachable-target trick TwoSumBenchmarks uses.
-[MemoryDiagnoser]
 public class FindSubstringWithGivenHashValueBenchmarks
 {
     private const int Power = 7;

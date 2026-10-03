@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TallestBillboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one visit per (index, diff) state. RodCount is kept modest specifically because the
 // un-memoized baseline's 3^N blowup is real, the same reasoning TargetSumBenchmarks
 // documents for its own 2^N baseline.
-[MemoryDiagnoser]
 public class TallestBillboardBenchmarks
 {
     private const int RandomSeed = 956; // LC problem number

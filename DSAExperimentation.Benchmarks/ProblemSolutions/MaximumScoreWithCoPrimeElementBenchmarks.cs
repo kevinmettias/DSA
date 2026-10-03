@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumScoreWithCoPrimeElement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Length/MaxVal stay small enough for that arm to finish in reasonable time;
 // the divisor-sieve arm's whole point is that it answers each candidate from
 // two precomputed sieves instead.
-[MemoryDiagnoser]
 public class MaximumScoreWithCoPrimeElementBenchmarks
 {
     private const int Seed = 3953; // LC problem number

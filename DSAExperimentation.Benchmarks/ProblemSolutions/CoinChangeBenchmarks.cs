@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CoinChange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are CoinChangeSolution's, the same methods
 // CoinChangeTests proves correct.
-[MemoryDiagnoser]
 public class CoinChangeBenchmarks
 {
     private static readonly int[] Coins = [1, 5, 10, 25];

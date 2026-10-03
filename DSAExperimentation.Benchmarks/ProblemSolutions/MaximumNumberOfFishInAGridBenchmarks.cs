@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfFishInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same contrast MaxAreaOfIslandBenchmarks draws for LC 695. Each strategy clones
 // the shared grid fixture internally before sinking cells, so repeated benchmark
 // invocations each start from the true input.
-[MemoryDiagnoser]
 public class MaximumNumberOfFishInAGridBenchmarks
 {
     private const int RandomSeed = 2658; // LC problem number

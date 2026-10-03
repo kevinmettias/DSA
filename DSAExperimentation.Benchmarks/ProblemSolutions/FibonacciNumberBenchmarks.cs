@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FibonacciNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SequenceIndex is kept modest (<=30) because the baseline's blowup is real, not
 // because the other two arms need it. The same recurrence is Climbing Stairs'
 // (LC 70), which ClimbingStairsBenchmarks measures on its own terms.
-[MemoryDiagnoser]
 public class FibonacciNumberBenchmarks
 {
     [Params(20, 30)]

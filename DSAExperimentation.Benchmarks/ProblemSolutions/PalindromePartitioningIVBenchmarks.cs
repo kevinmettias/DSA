@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PalindromePartitioningIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cut choices land on the same later (Position, 1) state, so the unmemoized version
 // re-explores it once per incoming path while the memoized version resolves it
 // exactly once.
-[MemoryDiagnoser]
 public class PalindromePartitioningIVBenchmarks
 {
     private const string MiddleSeparator = "b";

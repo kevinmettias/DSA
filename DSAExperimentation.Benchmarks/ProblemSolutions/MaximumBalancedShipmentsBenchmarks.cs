@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumBalancedShipments;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MaximumBalancedShipmentsTests proves correct. Neither strategy has a separable
 // construction step - weight itself is the whole input - so there is nothing to
 // hoist into [GlobalSetup] beyond building the array.
-[MemoryDiagnoser]
 public class MaximumBalancedShipmentsBenchmarks
 {
     // LC problem number, reused as the deterministic weight seed.

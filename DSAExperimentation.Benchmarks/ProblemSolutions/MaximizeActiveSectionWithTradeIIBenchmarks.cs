@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeActiveSectionWithTradeII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Query widths are random anywhere in [0, Length), including near-full-length
 // ones, so the run-scan baseline pays a genuinely varying O(range) cost per
 // query rather than a uniformly small one.
-[MemoryDiagnoser]
 public class MaximizeActiveSectionWithTradeIIBenchmarks
 {
     private const int Seed = 3501;

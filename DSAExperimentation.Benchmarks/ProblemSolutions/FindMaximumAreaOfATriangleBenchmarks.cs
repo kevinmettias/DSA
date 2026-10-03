@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindMaximumAreaOfATriangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // from a grid narrower than the point count (LargestTriangleAreaBenchmarks' own
 // point-generation precedent, tightened here) so rows and columns collide and
 // both arms have real axis-aligned triangles to score, not just -1 every run.
-[MemoryDiagnoser]
 public class FindMaximumAreaOfATriangleBenchmarks
 {
     private const int Seed = 3588;

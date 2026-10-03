@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MaximumGeneticDifferenceQuery;
 
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The DFS arm is handed the prepared tree root its hoisted overload takes, so
 // ParentArrayTree.Build is charged to [GlobalSetup] rather than to the search being
 // measured; the baseline reads the parent array directly and so needs nothing built.
-[MemoryDiagnoser]
 public class MaximumGeneticDifferenceQueryBenchmarks
 {
     private const int RandomSeed = 1;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.ConstructBinaryTreeFromInorderAndPostorderTraversal;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same method ...Tests proves correct. A balanced tree is built once via
 // Fixtures.BinaryTrees and flattened into its own inorder/postorder arrays in
 // [GlobalSetup], so only the reconstruction itself is measured.
-[MemoryDiagnoser]
 public class ConstructBinaryTreeFromInorderAndPostorderTraversalBenchmarks
 {
     private int[] _inorder = [];

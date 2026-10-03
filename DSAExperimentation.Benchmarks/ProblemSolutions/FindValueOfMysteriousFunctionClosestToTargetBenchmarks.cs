@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindValueOfMysteriousFunctionClosestToTarget;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // textbook O(n^2) all-subarrays-ANDed-in-place brute force against the O(n log(max(arr)))
 // distinct-AND-values scan. Random 20-bit values keep the distinct-value sets at their full
 // width, and the target sits mid-range where no single value can reach it, forcing a full scan.
-[MemoryDiagnoser]
 public class FindValueOfMysteriousFunctionClosestToTargetBenchmarks
 {
     private const int Target = 1 << 15; // mid-range target unreachable by any single value, forces a full scan

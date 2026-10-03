@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MedianOfTwoSortedArrays;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MedianOfTwoSortedArraysSolution's, the same methods
 // MedianOfTwoSortedArraysTests proves correct.
-[MemoryDiagnoser]
 public class MedianOfTwoSortedArraysBenchmarks
 {
     private const int RandomSeed = 11;

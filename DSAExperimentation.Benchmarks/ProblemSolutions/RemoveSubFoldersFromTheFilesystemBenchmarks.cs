@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RemoveSubFoldersFromTheFilesystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] builds the random folder tree; each arm takes .Count so the two
 // return the same comparable measurement while still producing LeetCode's real answer
 // (the pre-migration arms only ever counted, and never built, the surviving list).
-[MemoryDiagnoser]
 public class RemoveSubFoldersFromTheFilesystemBenchmarks
 {
     private const int RandomSeed = 1233; // LC problem number

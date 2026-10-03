@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumScoreWordsFormedByLetters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -20,7 +19,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // decides how large the workload is and hands the finished input straight over;
 // there is no construction left for a hoisted overload to lift out of the measured
 // methods.
-[MemoryDiagnoser]
 public class MaximumScoreWordsFormedByLettersBenchmarks
 {
     private const string Alphabet = "abcdefghijklmnop";

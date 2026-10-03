@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.MaximumScoreOfAGoodSubarray;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // boundaries in one O(n) pass per direction. LeetCode's own input here is already
 // the prepared input, so [GlobalSetup] only sizes and seeds the array; there is no
 // separate hoisted overload to hand it to.
-[MemoryDiagnoser]
 public class MaximumScoreOfAGoodSubarrayBenchmarks
 {
     private const int RandomSeed = 3;

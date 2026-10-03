@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.InsertIntoABinarySearchTree;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own tree from the same shuffled insertion order every call (the original
 // convention, preserved here), so the comparison stays "full construction plus
 // one insert" for both strategies rather than only the incremental insert cost.
-[MemoryDiagnoser]
 public class InsertIntoABinarySearchTreeBenchmarks
 {
     private const int ValueStride = 2;

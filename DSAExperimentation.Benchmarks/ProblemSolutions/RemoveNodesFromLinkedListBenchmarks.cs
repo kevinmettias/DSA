@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Conventions;
 using DSAExperimentation.LeetCode.RemoveNodesFromLinkedList;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the first iteration's removals leave every later iteration measuring an
 // already-non-increasing list. Both arms pay the identical construction cost, so the
 // comparison between them is unaffected.
-[MemoryDiagnoser]
 public class RemoveNodesFromLinkedListBenchmarks
 {
     private const int RandomSeed = 2487; private int[] _values = [];

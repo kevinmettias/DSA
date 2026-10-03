@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SeatReservationManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // forced to walk past a growing prefix of already-reserved seats on every call
 // instead of an artificially seat-light workload. [GlobalSetup] materializes the
 // unreserve targets so building that list is not charged to either arm.
-[MemoryDiagnoser]
 public class SeatReservationManagerBenchmarks
 {
     private const int UnreserveStride = 3;

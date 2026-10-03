@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ZumaGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a same-move-count shortcut solution whenever the repeat count is even) so both
 // sizes need the same 3-ball solution and the naive baseline's growth reflects board
 // size, not a smaller answer getting lucky.
-[MemoryDiagnoser]
 public class ZumaGameBenchmarks
 {
     private const string Hand = "WWWWW";

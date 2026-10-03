@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindAllPeopleWithSecret;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // person, one starting from an otherwise-unreached person - so a chain's tail is
 // many hops from its informed head and RepeatedRelaxation has to pay its
 // worst-case multi-pass cost instead of resolving in one pass.
-[MemoryDiagnoser]
 public class FindAllPeopleWithSecretBenchmarks
 {
     private const int FirstPerson = 1;

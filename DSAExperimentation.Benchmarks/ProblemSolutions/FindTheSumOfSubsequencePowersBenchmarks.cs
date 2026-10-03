@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheSumOfSubsequencePowers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods FindTheSumOfSubsequencePowersTests proves correct. k is fixed well below
 // Length so both the 2^n brute force and the O(n^4 k) threshold-counting DP stay
 // inside a reasonable wall-clock budget at these sizes.
-[MemoryDiagnoser]
 public class FindTheSumOfSubsequencePowersBenchmarks
 {
     private const int MaxValueExclusive = 1_000_000;

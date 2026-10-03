@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LastDayWhereYouCanStillCross;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // charged to [GlobalSetup] rather than to the bisection being measured. Flood order
 // is a seeded random permutation of every cell, matching the problem's own guarantee
 // that each cell floods on exactly one distinct day.
-[MemoryDiagnoser]
 public class LastDayWhereYouCanStillCrossBenchmarks
 {
     private const int RandomSeed = 1970; // LC problem number

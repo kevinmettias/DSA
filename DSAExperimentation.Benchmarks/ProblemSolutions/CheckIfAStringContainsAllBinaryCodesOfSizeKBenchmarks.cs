@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CheckIfAStringContainsAllBinaryCodesOfSizeK;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The text is built once in [GlobalSetup] and deliberately contains every code of
 // the requested length, so the per-code substring search runs every one of its 2^k
 // searches rather than exiting early on a missing one.
-[MemoryDiagnoser]
 public class CheckIfAStringContainsAllBinaryCodesOfSizeKBenchmarks
 {
     private string _text = "";

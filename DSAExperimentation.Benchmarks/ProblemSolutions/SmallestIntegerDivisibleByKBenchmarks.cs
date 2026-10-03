@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestIntegerDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] so construction is not charged to the measured method; both Divisor
 // values are coprime to 10 (odd, not a multiple of 5), so both arms walk the full
 // distance to remainder 0 rather than short-circuiting on an immediate "-1".
-[MemoryDiagnoser]
 public class SmallestIntegerDivisibleByKBenchmarks
 {
     private RemainderGraph _graph = null!;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.TrimABinarySearchTree;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TrimABinarySearchTreeTests proves correct. Low/high span the tree's whole
 // value range, so every node survives under both approaches - isolating the
 // rebuild-vs-reattach cost itself rather than how much of the tree gets dropped.
-[MemoryDiagnoser]
 public class TrimABinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

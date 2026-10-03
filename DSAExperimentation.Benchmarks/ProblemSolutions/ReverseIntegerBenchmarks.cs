@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReverseInteger;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are ReverseIntegerSolution's, the same methods
 // ReverseIntegerTests proves correct.
-[MemoryDiagnoser]
 public class ReverseIntegerBenchmarks
 {
     [Params(123456789, 1534236469)]

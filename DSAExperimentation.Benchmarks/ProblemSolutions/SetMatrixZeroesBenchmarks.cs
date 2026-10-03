@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SetMatrixZeroes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SetMatrixZeroesTests proves correct. Each iteration clones the pristine
 // matrix before zeroing, since the solution mutates in place and
 // [GlobalSetup] runs once per benchmark, not once per invocation.
-[MemoryDiagnoser]
 public class SetMatrixZeroesBenchmarks
 {
     private const int ZeroProbabilityDenominator = 100;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.QueriesOnAPermutationWithKey;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // simulation over a BCL List<int> vs. over this repo's own DynamicArray<int>,
 // both O(Queries * M). The query stream is a fixed-seed random draw over
 // [1..PermutationSize], built in [GlobalSetup] so only the simulation is measured.
-[MemoryDiagnoser]
 public class QueriesOnAPermutationWithKeyBenchmarks
 {
     private const int Seed = 1;

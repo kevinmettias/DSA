@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumTimeToRevertWordToInitialStateII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // partially match before diverging - a harder workload for BruteForce's
 // character-by-character comparison than a full-alphabet word, which tends
 // to mismatch at the very first character.
-[MemoryDiagnoser]
 public class MinimumTimeToRevertWordToInitialStateIIBenchmarks
 {
     private const int RandomSeed = 3031;

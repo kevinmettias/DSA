@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.KthAncestorOfATreeNode;
 
@@ -21,7 +20,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and no repo-only technique could beat the O(1)-space naive walk on it. A
 // heap-shaped tree keeps every ancestor array at O(log n), which is also why the
 // query batch below is large.
-[MemoryDiagnoser]
 public class KthAncestorOfATreeNodeBenchmarks
 {
     private const int RandomSeed = 1483; // LC problem number

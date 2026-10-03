@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfCoinsYouCanGet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaximumNumberOfCoinsYouCanGetSolution's - the O(n^2)
 // round-by-round simulation against this repo's own MergeSort plus the picking
 // arithmetic. Pile counts are multiples of three, as the problem guarantees.
-[MemoryDiagnoser]
 public class MaximumNumberOfCoinsYouCanGetBenchmarks
 {
     private const int RandomSeed = 1561; // LC problem number

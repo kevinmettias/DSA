@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignATextEditor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // how large the buffer has grown, the same "positional array insert vs. LIFO
 // Stack<T>" gap DesignBrowserHistoryBenchmarks already demonstrates for
 // DynamicArray<T>.
-[MemoryDiagnoser]
 public class DesignATextEditorBenchmarks
 {
     private const int ChunkLength = 5;

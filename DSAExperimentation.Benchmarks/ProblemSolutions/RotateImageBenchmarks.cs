@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RotateImage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RotateImageTests proves correct. Each iteration clones the pristine matrix
 // before rotating, since the solution mutates in place and [GlobalSetup] runs
 // once per benchmark, not once per invocation.
-[MemoryDiagnoser]
 public class RotateImageBenchmarks
 {
     private const int MaxCellValueExclusive = 1_000;

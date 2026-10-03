@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SortingTheSentence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // length replaces the single trailing digit. Each arm is handed the prepared word
 // array its hoisted overload takes, so the shuffle is charged to [GlobalSetup]
 // rather than to the sort being measured.
-[MemoryDiagnoser]
 public class SortingTheSentenceBenchmarks
 {
     private const int RandomSeed = 1859; private string[] _words = [];

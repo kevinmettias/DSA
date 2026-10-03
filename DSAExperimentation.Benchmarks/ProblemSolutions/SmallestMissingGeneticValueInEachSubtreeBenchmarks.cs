@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.SmallestMissingGeneticValueInEachSubtree;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of the n nodes paying for its own DFS) and the best case for the ancestor-chain walk
 // (O(n) total). Both arms are handed the RootedTreeNode[] their hoisted overloads take,
 // so ParentArrayTree.Build is charged to [GlobalSetup] rather than to the arm.
-[MemoryDiagnoser]
 public class SmallestMissingGeneticValueInEachSubtreeBenchmarks
 {
     private const int BaseGeneValue = 2;

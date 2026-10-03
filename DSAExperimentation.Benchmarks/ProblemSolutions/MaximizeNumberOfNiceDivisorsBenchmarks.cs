@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeNumberOfNiceDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // keyed on the int `remaining` state. PrimeFactors stays small enough that the
 // naive side's ~1.33^n blowup still finishes in reasonable time while remaining
 // clearly exponential next to the memoized side's O(n).
-[MemoryDiagnoser]
 public class MaximizeNumberOfNiceDivisorsBenchmarks
 {
     [Params(40, 50)]

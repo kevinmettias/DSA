@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // raw score difference the previous arms reported. That is one sign test on top of
 // the same recurrence, identical in both arms, so what the comparison isolates is
 // still memoization alone.
-[MemoryDiagnoser]
 public class StoneGameIIIBenchmarks
 {
     // LC problem number, used as the deterministic seed for stone-value generation.

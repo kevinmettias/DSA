@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SubarrayWithElementsGreaterThanVaryingThreshold;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // their full worst case instead of an early return on the first qualifying window
 // making one look artificially fast - the same "force the real worst case" convention
 // TwoSumBenchmarks/GraphConnectivityWithThresholdBenchmarks already use.
-[MemoryDiagnoser]
 public class SubarrayWithElementsGreaterThanVaryingThresholdBenchmarks
 {
     private const int MaxValueExclusive = 1_000;

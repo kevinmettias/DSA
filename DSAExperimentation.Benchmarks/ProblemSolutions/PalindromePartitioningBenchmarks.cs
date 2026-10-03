@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PalindromePartitioning;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one real strategy, not two - so the pair here is the backtracking walk against the
 // precomputed-table walk. The workload is the private constant "aab", LeetCode 131's
 // own example, so both arms enumerate its two partitions.
-[MemoryDiagnoser]
 public class PalindromePartitioningBenchmarks
 {
     private const string Workload = "aab";

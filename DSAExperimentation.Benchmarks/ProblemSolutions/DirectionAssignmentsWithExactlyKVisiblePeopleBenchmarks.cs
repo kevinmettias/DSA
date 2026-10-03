@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DirectionAssignmentsWithExactlyKVisiblePeople;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are
 // DirectionAssignmentsWithExactlyKVisiblePeopleSolution's, the same methods
 // the Tests project proves correct.
-[MemoryDiagnoser]
 public class DirectionAssignmentsWithExactlyKVisiblePeopleBenchmarks
 {
     private const int Seed = 3881; private int _pos;

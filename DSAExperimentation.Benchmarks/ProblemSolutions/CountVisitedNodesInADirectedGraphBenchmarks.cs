@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountVisitedNodesInADirectedGraph;
 
@@ -19,7 +18,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NodeCount stays at or under 2,000 for the same reason LongestCycleInAGraph
 // Benchmarks caps there: Tarjan recurses with real C# call frames, and a single
 // cycle much longer than that overflows the default 1 MB thread stack.
-[MemoryDiagnoser]
 public class CountVisitedNodesInADirectedGraphBenchmarks
 {
     private int[] _edges = [];

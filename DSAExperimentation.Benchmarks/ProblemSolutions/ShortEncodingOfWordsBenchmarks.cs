@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShortEncodingOfWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // redundancy exists for all three strategies to exploit, not just coincidental
 // overlap. The input is LeetCode's own string[] shape, so there is nothing to hoist
 // beyond generating it.
-[MemoryDiagnoser]
 public class ShortEncodingOfWordsBenchmarks
 {
     // LC problem number, used as the RNG seed.

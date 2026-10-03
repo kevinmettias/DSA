@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.LeetCode.EscapeALargeMaze;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // scale would never finish); growing it here while BlockedCount stays fixed is what
 // makes the capped strategy's board-size independence visible against the baseline's
 // O(BoardSize^2) growth.
-[MemoryDiagnoser]
 public class EscapeALargeMazeBenchmarks
 {
     private const int BlockedCount = 40;

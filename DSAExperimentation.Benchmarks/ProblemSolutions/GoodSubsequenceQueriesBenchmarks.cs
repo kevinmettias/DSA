@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // iterations replay queries against an already-updated array - the same reason
 // SurroundedRegionsBenchmarks rebuilds its board per iteration rather than
 // reusing [GlobalSetup]'s.
-[MemoryDiagnoser]
 public class GoodSubsequenceQueriesBenchmarks
 {
     private const int Seed = 3901;

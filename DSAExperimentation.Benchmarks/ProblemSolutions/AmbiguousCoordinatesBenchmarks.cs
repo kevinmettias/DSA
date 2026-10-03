@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AmbiguousCoordinates;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // wrapped in LeetCode's parentheses, so only the enumeration is measured. Both arms
 // now return the coordinate list rather than a count - see the solution class's
 // note on that deliberate change.
-[MemoryDiagnoser]
 public class AmbiguousCoordinatesBenchmarks
 {
     // LC problem number, used as the deterministic seed for digit-string generation.

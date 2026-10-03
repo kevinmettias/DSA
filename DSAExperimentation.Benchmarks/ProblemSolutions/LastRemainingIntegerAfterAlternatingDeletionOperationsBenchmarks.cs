@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LastRemainingIntegerAfterAlternatingDeletionOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // correct. StartingCount stays far below LC's own 10^15 upper bound - the O(n)
 // list simulation would not finish otherwise; the head/step closed form is
 // O(log n) regardless.
-[MemoryDiagnoser]
 public class LastRemainingIntegerAfterAlternatingDeletionOperationsBenchmarks
 {
     [Params(10_000, 1_000_000)]

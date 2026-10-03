@@ -1,5 +1,4 @@
 using System.Text;
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ParseLispExpression;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // its own shrinking substring), so that cost dominates wall-clock time for
 // both. ScopeChain's allocation total still comes in lower at every size
 // because it alone avoids also duplicating every prior binding on top of it.
-[MemoryDiagnoser]
 public class ParseLispExpressionBenchmarks
 {
     private const string LetExpressionPrefix = "(let v";

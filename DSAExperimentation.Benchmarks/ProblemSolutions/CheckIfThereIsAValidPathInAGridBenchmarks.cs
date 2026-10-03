@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckIfThereIsAValidPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // walk the identical street-compatibility rule, so the comparison isolates the
 // traversal machinery (explicit stack + HashSet vs. recursion + array) rather than
 // the per-cell logic. Grid generation is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class CheckIfThereIsAValidPathInAGridBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfSubarrayRanges;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // signed array, so the brute-force arm's inner loop never settles early on a run
 // of equal extremes and each [Params] length measures the full O(n^2) walk against
 // the O(n) contribution sweep.
-[MemoryDiagnoser]
 public class SumOfSubarrayRangesBenchmarks
 {
     private const int ValueMagnitude = 1_000;

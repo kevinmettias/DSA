@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LeastOperatorsToExpressNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // specifically because that blowup is real, the same reasoning
 // BurstBalloonsBenchmarks' BalloonCount cap already documents. Target construction
 // is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class LeastOperatorsToExpressNumberBenchmarks
 {
     private const int X = 2;

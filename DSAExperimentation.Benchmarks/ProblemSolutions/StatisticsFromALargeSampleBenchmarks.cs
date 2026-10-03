@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StatisticsFromALargeSample;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // scales the total sample size while the bucket range stays fixed at [0, 255] -
 // the shape LeetCode itself fixes - so SampleExpansion's O(total) allocation grows
 // while CumulativeBinarySearch's stays O(256) regardless.
-[MemoryDiagnoser]
 public class StatisticsFromALargeSampleBenchmarks
 {
     private const int ValueRange = 256;

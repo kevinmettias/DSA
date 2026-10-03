@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumTimeToReachTargetWithLimitedPower;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PowerStateGraph its hoisted overload takes, so wiring the whole
 // (node, remainingPower) state space is charged to [GlobalSetup] rather than
 // to the search being measured (OpenTheLockBenchmarks precedent).
-[MemoryDiagnoser]
 public class MinimumTimeToReachTargetWithLimitedPowerBenchmarks
 {
     // LC problem number, reused as the deterministic workload seed.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.ConvertBinaryNumberInALinkedListToInteger;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // then fold positional weights right-to-left); SinglePassShift folds
 // value = (value << 1) | bit in one walk. Both are O(n), but the baseline
 // allocates an intermediate buffer and touches the list and the buffer separately.
-[MemoryDiagnoser]
 public class ConvertBinaryNumberInALinkedListToIntegerBenchmarks
 {
     private const int RandomSeed = 1290; // LeetCode problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.GroupsOfStrings;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each word is a random DISTINCT-letter subset of the alphabet (this problem's own
 // precondition), so real add/delete/replace connections - not just strangers -
 // actually occur.
-[MemoryDiagnoser]
 public class GroupsOfStringsBenchmarks
 {
     private const int RandomSeed = 2157; // LC problem number

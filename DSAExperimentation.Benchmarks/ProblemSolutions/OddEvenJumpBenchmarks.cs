@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.OddEvenJump;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // per-index forward scan for each jump target against MergeSort plus a monotonic
 // Stack<int> sweep, O(n^2) against O(n log n), with the same backward reachability
 // pass on both sides.
-[MemoryDiagnoser]
 public class OddEvenJumpBenchmarks
 {
     // LC problem number, used as the deterministic setup seed.

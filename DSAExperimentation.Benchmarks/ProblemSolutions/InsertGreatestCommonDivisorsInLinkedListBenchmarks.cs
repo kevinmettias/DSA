@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.InsertGreatestCommonDivisorsInLinkedList;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // .Next in place: reusing one pre-built list would let the first iteration's
 // insertions make every later iteration measure an already-expanded list
 // (SetMatrixZeroesBenchmarks precedent).
-[MemoryDiagnoser]
 public class InsertGreatestCommonDivisorsInLinkedListBenchmarks
 {
     private SinglyLinkedListNode<int> _head = null!;

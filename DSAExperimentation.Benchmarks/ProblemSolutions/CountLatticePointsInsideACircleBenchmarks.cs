@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountLatticePointsInsideACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // bounding box the full-grid scan must walk is much larger than the sum of the
 // circles' own local boxes - the case where the per-circle scan actually wins
 // instead of just adding Set overhead on top of the same amount of work.
-[MemoryDiagnoser]
 public class CountLatticePointsInsideACircleBenchmarks
 {
     private const int RandomSeed = 2249; // LC problem number

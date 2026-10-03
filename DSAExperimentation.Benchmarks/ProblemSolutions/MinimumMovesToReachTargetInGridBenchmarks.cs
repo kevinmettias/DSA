@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumMovesToReachTargetInGrid;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumMovesToReachTargetInGridTests proves correct. MoveCount stays small
 // enough that the bounded forward BFS baseline is still tractable at all - the whole
 // point being that the composed backward reduction does not share that ceiling.
-[MemoryDiagnoser]
 public class MinimumMovesToReachTargetInGridBenchmarks
 {
     private const int Seed = 3609;

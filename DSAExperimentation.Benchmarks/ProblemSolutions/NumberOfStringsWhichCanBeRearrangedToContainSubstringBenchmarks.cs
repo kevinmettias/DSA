@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfStringsWhichCanBeRearrangedToContainSubstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // factor per step; the inclusion-exclusion closed form is O(log n) via modular
 // exponentiation (Domain.Modular.ModularArithmetic) regardless of the string length,
 // so the gap should widen as StringLength grows toward LC 2930's real 1e5 bound.
-[MemoryDiagnoser]
 public class NumberOfStringsWhichCanBeRearrangedToContainSubstringBenchmarks
 {
     [Params(1_000, 100_000)]

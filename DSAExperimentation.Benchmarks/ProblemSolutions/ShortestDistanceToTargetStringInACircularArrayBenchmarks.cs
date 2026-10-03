@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ShortestDistanceToTargetStringInACircularArray;
 
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The BFS arm is handed a prepared CircularArrayGraph so node construction is
 // charged to [GlobalSetup] rather than to the search (#17.4); the scan arm takes
 // LeetCode's own words[] because that is already its input.
-[MemoryDiagnoser]
 public class ShortestDistanceToTargetStringInACircularArrayBenchmarks
 {
     private string[] _words = [];

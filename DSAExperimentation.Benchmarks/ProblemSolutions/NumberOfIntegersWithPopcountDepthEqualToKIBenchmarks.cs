@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // to it trivially. No [GlobalSetup] is needed: unlike a graph or a random string,
 // UpperBound and K are the LeetCode input themselves, with nothing to charge to
 // setup.
-[MemoryDiagnoser]
 public class NumberOfIntegersWithPopcountDepthEqualToKIBenchmarks
 {
     private const int K = 2;

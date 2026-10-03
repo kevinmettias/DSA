@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestWellPerformingInterval;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // forces the baseline's inner loop through its full O(n^2) worst case since no early
 // exit is possible either way (both strategies must scan every candidate interval to
 // find the longest, unlike TwoSumBenchmarks' find-any-pair shape).
-[MemoryDiagnoser]
 public class LongestWellPerformingIntervalBenchmarks
 {
     private const int CoinFlipUpperBoundExclusive = 2;

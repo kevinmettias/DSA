@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // chain whose first half matches the needle before it deliberately fails, forcing
 // real recursion depth (and, for the array variant, real slicing) instead of
 // failing out on the first comparison.
-[MemoryDiagnoser]
 public class LinkedListInBinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

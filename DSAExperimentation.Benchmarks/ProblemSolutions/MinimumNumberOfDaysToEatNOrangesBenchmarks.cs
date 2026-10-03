@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfDaysToEatNOranges;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // distinct state once - this recurrence's actual reconvergence-driven gap. The orange
 // count is int, not long: the problem's own stated upper bound (2*10^9) stays below
 // int.MaxValue.
-[MemoryDiagnoser]
 public class MinimumNumberOfDaysToEatNOrangesBenchmarks
 {
     [Params(100_000, 2_000_000_000)]

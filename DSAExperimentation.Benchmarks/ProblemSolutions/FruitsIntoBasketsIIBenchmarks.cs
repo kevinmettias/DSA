@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FruitsIntoBasketsII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Length stays inside that bound - this measures the O(n^2) rescan at its
 // own intended scale rather than one this problem was never meant to run at
 // (see FruitsIntoBasketsIIIBenchmarks for the n <= 1e5 sibling).
-[MemoryDiagnoser]
 public class FruitsIntoBasketsIIBenchmarks
 {
     private const int Seed = 3477;

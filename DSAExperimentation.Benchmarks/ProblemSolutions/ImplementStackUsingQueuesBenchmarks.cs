@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ImplementStackUsingQueues;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same "script construction charged to setup, replay is what gets measured"
 // shape LRUCacheBenchmarks/DesignTaskManagerBenchmarks already use for their
 // own instance-API problems.
-[MemoryDiagnoser]
 public class ImplementStackUsingQueuesBenchmarks
 {
     private const int Seed = 225;

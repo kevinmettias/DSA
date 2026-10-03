@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfSubarraysThatMatchAPatternI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // increasing run and pattern is all 1s, so every window matches - the worst
 // case for BruteForce, since no candidate start can bail out on an early
 // mismatch and every one has to be walked to completion.
-[MemoryDiagnoser]
 public class NumberOfSubarraysThatMatchAPatternIBenchmarks
 {
     private int[] _nums = [];

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ProcessRestrictedFriendRequests;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // precedent) against this repo's own DisjointSet, whose Find is near O(1) amortized
 // instead of a fresh O(n + e) walk per request. Both arms are handed LeetCode's own
 // input shape, built once in [GlobalSetup].
-[MemoryDiagnoser]
 public class ProcessRestrictedFriendRequestsBenchmarks
 {
     private const int RandomSeed = 2076;

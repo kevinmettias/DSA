@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FaultyKeyboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // are forced through the worst case: FinalStringByReversal pays for a real
 // reversal on roughly half the string's length (degrading toward O(n^2)), while
 // FinalStringByDeque never reverses anything at all.
-[MemoryDiagnoser]
 public class FaultyKeyboardBenchmarks
 {
     private const int Seed = 1;

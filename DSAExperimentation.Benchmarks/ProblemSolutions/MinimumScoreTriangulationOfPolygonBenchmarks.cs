@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumScoreTriangulationOfPolygon;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // repo's own Memoizer<TState,TResult> caching that exact pair. VertexCount is kept
 // modest (<=14) for the same reason BurstBalloonsBenchmarks' UnmemoizedRecursion is:
 // the un-memoized baseline's blowup is real.
-[MemoryDiagnoser]
 public class MinimumScoreTriangulationOfPolygonBenchmarks
 {
     private const int RandomSeed = 1;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ReconstructItinerary;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ReconstructItineraryTests proves correct, run against a synthetic ticket graph large
 // enough to separate LinearScanSelection's O(k) scan-and-remove from HeapSelection's
 // O(log k) repo Heap push/pop.
-[MemoryDiagnoser]
 public class ReconstructItineraryBenchmarks
 {
     // LC problem number, reused as the deterministic ticket seed.

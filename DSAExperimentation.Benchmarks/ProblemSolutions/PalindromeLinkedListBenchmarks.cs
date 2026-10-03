@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.PalindromeLinkedList;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (mirrors MiddleOfTheLinkedListBenchmarks' non-mutating precedent). The list is a
 // genuine palindrome so every strategy walks the full list rather than
 // short-circuiting on the first mismatch.
-[MemoryDiagnoser]
 public class PalindromeLinkedListBenchmarks
 {
     private const int RandomSeed = 234; // LC problem number

@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HeightChecker;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HeightCheckerSolution's - the textbook O(n^2)
 // insertion sort of a copy against this repo's MergeSort over ArrayIndexedSequence.
-[MemoryDiagnoser]
 public class HeightCheckerBenchmarks
 {
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.

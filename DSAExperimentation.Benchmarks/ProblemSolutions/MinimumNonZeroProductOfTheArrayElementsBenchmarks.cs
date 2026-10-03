@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNonZeroProductOfTheArrayElements;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // 10^4 / 10^6 workload sizes this comparison was always run at. That is as large as
 // the naive arm can finish - LeetCode's own p <= 60 means an exponent up to 2^59,
 // which is exactly why the squaring strategy exists at all.
-[MemoryDiagnoser]
 public class MinimumNonZeroProductOfTheArrayElementsBenchmarks
 {
     [Params(15, 21)]

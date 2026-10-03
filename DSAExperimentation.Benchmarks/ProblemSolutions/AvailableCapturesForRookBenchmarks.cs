@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.AvailableCapturesForRook;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RookSquare its hoisted overload takes, so locating the rook - an O(rows*cols)
 // scan that would swamp the ray walk it is meant to expose - is charged to
 // [GlobalSetup] rather than to the measured search.
-[MemoryDiagnoser]
 public class AvailableCapturesForRookBenchmarks
 {
     private const int PawnSpawnProbabilityDenominator = 4;

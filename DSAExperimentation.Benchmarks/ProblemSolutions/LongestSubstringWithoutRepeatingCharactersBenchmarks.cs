@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestSubstringWithoutRepeatingCharacters;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handful of characters every time (pigeonhole caps any repeat-free run at the
 // alphabet size), making it look artificially competitive instead of exposing
 // its real O(n^2) cost.
-[MemoryDiagnoser]
 public class LongestSubstringWithoutRepeatingCharactersBenchmarks
 {
     private const int DistinctCharacterBase = 256;

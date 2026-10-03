@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ThreeDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // divisor appears. The random numbers are built once in [GlobalSetup], so generation
 // is not charged to either arm; each arm tallies how many of them have exactly three
 // divisors so the whole workload is consumed.
-[MemoryDiagnoser]
 public class ThreeDivisorsBenchmarks
 {
     // LC problem number, reused as the deterministic workload seed.

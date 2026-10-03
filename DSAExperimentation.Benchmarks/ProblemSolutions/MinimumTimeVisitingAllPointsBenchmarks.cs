@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumTimeVisitingAllPoints;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MinimumTimeVisitingAllPointsSolution's - open-coded
 // max(|dx|, |dy|) against Algorithms.ShortestPaths' ChebyshevHeuristic witness, applied purely
 // for its distance computation rather than an actual search.
-[MemoryDiagnoser]
 public class MinimumTimeVisitingAllPointsBenchmarks
 {
     private const int CoordinateMagnitude = 1_000;

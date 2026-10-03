@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FlattenNestedListIterator;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the nested-list workload itself - already exactly the List<NestedInteger> shape
 // both strategies' constructors take, so there is nothing further to hoist into a
 // second overload.
-[MemoryDiagnoser]
 public class FlattenNestedListIteratorBenchmarks
 {
     private const int LeavesPerNestedPair = 2;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumOperationsToConvertAllElementsToZero;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // remaining segment, so each level of recursion only ever peels off one element
 // after an O(remaining) scan, making the whole walk O(n^2). The monotonic-stack
 // strategy processes the same input in one O(n) pass.
-[MemoryDiagnoser]
 public class MinimumOperationsToConvertAllElementsToZeroBenchmarks
 {
     private int[] _values = [];

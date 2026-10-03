@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MultiplyStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [Params] is kept small enough (5, 9 digits) that LongConversion never
 // throws, so the two benchmarks stay a fair head-to-head instead of one of
 // them faulting.
-[MemoryDiagnoser]
 public class MultiplyStringsBenchmarks
 {
     private const int DecimalBase = 10;

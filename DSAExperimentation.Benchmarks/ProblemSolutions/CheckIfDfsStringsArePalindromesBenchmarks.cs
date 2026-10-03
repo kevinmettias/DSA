@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.CheckIfDfsStringsArePalindromes;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // subtree is nearly the whole tree, so the brute-force arm's per-node
 // O(subtree size) rebuild is genuine O(n^2) total, exactly what the composed arm's
 // single O(n) tour plus O(1)-per-node RollingHash query is for.
-[MemoryDiagnoser]
 public class CheckIfDfsStringsArePalindromesBenchmarks
 {
     private const int AlphabetSize = 4;

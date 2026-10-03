@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ImplementMagicDictionary;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already uses for its own instance-API problem. O(words * dictionarySize *
 // wordLength) vs. O(dictionarySize * wordLength) to build the trie once plus
 // O(words * wordLength * alphabetSize) to search it.
-[MemoryDiagnoser]
 public class ImplementMagicDictionaryBenchmarks
 {
     private const int WordLength = 8;

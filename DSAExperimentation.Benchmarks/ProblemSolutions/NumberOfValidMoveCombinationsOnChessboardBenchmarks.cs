@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfValidMoveCombinationsOnChessboard;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] slices the fixed four-corner board down to the measured piece
 // count, which is already LeetCode's own (pieces, positions) input shape, so no
 // separate hoisted overload is needed.
-[MemoryDiagnoser]
 public class NumberOfValidMoveCombinationsOnChessboardBenchmarks
 {
     private static readonly string[] AllPieceTypes = ["rook", "queen", "bishop", "rook"];

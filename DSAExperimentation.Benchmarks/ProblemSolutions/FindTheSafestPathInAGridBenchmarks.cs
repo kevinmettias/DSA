@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheSafestPathInAGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods FindTheSafestPathInAGridTests proves correct. MaximumSafenessFactorByBclBfs
 // pays for repeated BFS re-walks, one per binary-search step over the safeness
 // threshold; MaximumSafenessFactorByHeap answers the same question in one pass.
-[MemoryDiagnoser]
 public class FindTheSafestPathInAGridBenchmarks
 {
     private const int ThiefProbabilityDenominator = 20;

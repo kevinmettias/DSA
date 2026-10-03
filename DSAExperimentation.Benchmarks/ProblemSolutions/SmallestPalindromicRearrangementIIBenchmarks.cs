@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestPalindromicRearrangementII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // comparison rather than a demonstration that unbounded rank is intractable for it.
 // A small 4-letter alphabet keeps the half's own arrangement count comfortably above
 // Rank at both sizes, so both arms always find a real answer.
-[MemoryDiagnoser]
 public class SmallestPalindromicRearrangementIIBenchmarks
 {
     private const int RandomSeed = 3518; // LeetCode problem number

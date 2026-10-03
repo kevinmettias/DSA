@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBalls;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the comparison isolates Backtrack's own call/delegate overhead rather than a
 // difference in what is computed. Only the ball counts are decided here, which is
 // a workload-sizing decision (ARCHITECTURE.md 17.7).
-[MemoryDiagnoser]
 public class ProbabilityOfATwoBoxesHavingTheSameNumberOfDistinctBallsBenchmarks
 {
     // LC problem number, used as the deterministic seed for ball-count generation.

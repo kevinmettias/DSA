@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.InsertInterval;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are InsertIntervalSolution's, the same methods
 // InsertIntervalTests proves correct.
-[MemoryDiagnoser]
 public class InsertIntervalBenchmarks
 {
     private const int IntervalSpacing = 3;

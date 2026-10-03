@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignAuthenticationManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every probe (existing-but-unrenewable ids never short-circuit the scan early).
 // [GlobalSetup] materializes the token ids so string formatting is charged to
 // setup rather than to the replay.
-[MemoryDiagnoser]
 public class DesignAuthenticationManagerBenchmarks
 {
     private const int TimeToLive = 100;

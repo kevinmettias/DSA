@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SortItemsByGroupsRespectingDependencies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Each arm is handed the prepared item and group graphs its hoisted overload takes, so
 // graph construction is charged to [GlobalSetup] rather than to the sort being measured.
-[MemoryDiagnoser]
 public class SortItemsByGroupsRespectingDependenciesBenchmarks
 {
     private const int GroupCount = 5;

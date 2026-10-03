@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Cache;
 using DSAExperimentation.LeetCode.LRUCache;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and some miss (evicted or never-inserted keys) - the same "script
 // construction charged to setup, replay is what gets measured" shape
 // DesignTaskManagerBenchmarks already uses for its own instance-API problem.
-[MemoryDiagnoser]
 public class LRUCacheBenchmarks
 {
     private const int Seed = 146;

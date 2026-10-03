@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CircularArrayLoop;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CircularArrayLoopTests proves correct. Values are random and nonzero, so a
 // genuine cycle is astronomically unlikely to appear and both strategies run
 // every starting index to completion instead of exiting early on the first try.
-[MemoryDiagnoser]
 public class CircularArrayLoopBenchmarks
 {
     private const int SignChoiceCount = 2;

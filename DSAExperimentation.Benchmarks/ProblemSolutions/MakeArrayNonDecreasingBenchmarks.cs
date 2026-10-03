@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MakeArrayNonDecreasing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // 2*10^5 bound: the DP baseline is real recursion (Memoizer, not an explicit stack),
 // so its call depth tracks n directly, and its O(n^2) trial of every split point
 // would dominate the benchmark at LeetCode's own scale.
-[MemoryDiagnoser]
 public class MakeArrayNonDecreasingBenchmarks
 {
     private const int RandomSeed = 3523; // LeetCode problem number

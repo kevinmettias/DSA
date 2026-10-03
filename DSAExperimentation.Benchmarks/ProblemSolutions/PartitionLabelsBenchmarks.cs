@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PartitionLabels;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // PartitionLabelsTests proves correct. Letters are random across the whole
 // alphabet so partitions stay small and the brute-force rescan is forced to
 // search most of the string, over and over, instead of an early exit.
-[MemoryDiagnoser]
 public class PartitionLabelsBenchmarks
 {
     // LC problem number, reused as the deterministic PRNG seed.

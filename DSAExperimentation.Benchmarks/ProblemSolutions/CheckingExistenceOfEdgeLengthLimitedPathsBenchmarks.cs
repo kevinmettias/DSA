@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CheckingExistenceOfEdgeLengthLimitedPaths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // offline sweep's single pass over both sorted lists, O((e + q) log(e + q) +
 // (e + q) * alpha(n)). Generating the edge list and the queries is [GlobalSetup]'s
 // job, so only the answering is measured.
-[MemoryDiagnoser]
 public class CheckingExistenceOfEdgeLengthLimitedPathsBenchmarks
 {
     private const int RandomSeed = 1697; // LC problem number

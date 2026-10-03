@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.QueensThatCanAttackTheKing;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms now return LeetCode's actual answer - the attacking queens' coordinates -
 // and the harness takes .Count, where previously both counted attackers without
 // building the list (§17.8's deliberate-measurement-change note).
-[MemoryDiagnoser]
 public class QueensThatCanAttackTheKingBenchmarks
 {
     private const int BoardSize = 1_000;

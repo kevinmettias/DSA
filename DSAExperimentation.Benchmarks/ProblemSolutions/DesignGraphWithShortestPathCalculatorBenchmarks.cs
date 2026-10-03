@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignGraphWithShortestPathCalculator;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] from the same RandomWeightedGraphs workload
 // ShortestPathAlgorithmBenchmarks and CourseScheduleIVBenchmarks already share, so
 // construction is charged to setup rather than to the queries being measured.
-[MemoryDiagnoser]
 public class DesignGraphWithShortestPathCalculatorBenchmarks
 {
     private const int ExtraEdgesPerNode = 3;

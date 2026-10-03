@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountValidPathsInATree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Both arms take LeetCode's own edges[][] input, so there is nothing to hoist: the
 // only thing [GlobalSetup] prepares is the workload itself.
-[MemoryDiagnoser]
 public class CountValidPathsInATreeBenchmarks
 {
     // LC problem number, reused as the deterministic tree seed.

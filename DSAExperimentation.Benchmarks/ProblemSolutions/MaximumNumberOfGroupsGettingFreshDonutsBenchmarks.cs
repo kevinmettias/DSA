@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumNumberOfGroupsGettingFreshDonuts;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // group count stays small because the baseline scores all n! orderings, which is
 // exactly the growth the memoized (residue, remaining remainder counts) search is
 // there to collapse.
-[MemoryDiagnoser]
 public class MaximumNumberOfGroupsGettingFreshDonutsBenchmarks
 {
     private const int BatchSize = 5;

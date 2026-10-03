@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindEdgesInShortestPaths;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // measured call, deliberately without this repo's graph engine; ShortestPathDijkstra
 // is handed the prepared EdgeGraph its hoisted overload takes, so graph construction
 // is charged to [GlobalSetup] rather than to the search being measured.
-[MemoryDiagnoser]
 public class FindEdgesInShortestPathsBenchmarks
 {
     private const int Seed = 3123;

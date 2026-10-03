@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameVI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // differ only in the sort primitive - the BCL's Array.Sort against this repo's own
 // MergeSort over an ArrayIndexedSequence - so the seeded value arrays are built
 // once in [GlobalSetup] and only the sort-and-tally is measured.
-[MemoryDiagnoser]
 public class StoneGameVIBenchmarks
 {
     private const int RandomSeed = 1686; // LC problem number

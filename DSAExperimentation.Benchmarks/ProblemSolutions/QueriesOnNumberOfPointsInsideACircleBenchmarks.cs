@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.QueriesOnNumberOfPointsInsideACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [-1000,1000]/[1,500] constraints) specifically so the x-range prune actually
 // discards most points instead of barely narrowing the scan - the point this
 // benchmark exists to demonstrate.
-[MemoryDiagnoser]
 public class QueriesOnNumberOfPointsInsideACircleBenchmarks
 {
     private const int RandomSeed = 1828; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReplaceNonCoprimeNumbersInArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // popping the top" and no rescan is ever needed. Both take LeetCode's own int[]
 // shape, which is already what [GlobalSetup] prepares, so nothing but the merge
 // work is charged to the measured call.
-[MemoryDiagnoser]
 public class ReplaceNonCoprimeNumbersInArrayBenchmarks
 {
     private const int RandomSeed = 2197;

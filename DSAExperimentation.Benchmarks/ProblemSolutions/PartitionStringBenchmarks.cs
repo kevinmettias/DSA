@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PartitionString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (seeded, deterministic) so segments repeat often and both arms are forced
 // through their real "keep extending until unique" worst case, rather than
 // every one-character segment being unique on the first try.
-[MemoryDiagnoser]
 public class PartitionStringBenchmarks
 {
     private const int Seed = 3597;

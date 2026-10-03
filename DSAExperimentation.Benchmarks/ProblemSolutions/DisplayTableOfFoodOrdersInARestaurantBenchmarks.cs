@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DisplayTableOfFoodOrdersInARestaurant;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // foods are drawn from small fixed pools so every table sees most foods, keeping the
 // rescan arm genuinely O(orders) per cell instead of trivially short-circuiting on an
 // empty cell.
-[MemoryDiagnoser]
 public class DisplayTableOfFoodOrdersInARestaurantBenchmarks
 {
     private const int RandomSeed = 1418; // LC problem number

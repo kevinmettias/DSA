@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TransposeMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // once in [GlobalSetup] from a fixed seed, so only the flip itself is measured; at
 // Size=800 the source rows no longer fit in cache alongside the destination columns,
 // which is where the tiled arm is meant to pull ahead.
-[MemoryDiagnoser]
 public class TransposeMatrixBenchmarks
 {
     private const int MatrixValueUpperBoundExclusive = 1_000;

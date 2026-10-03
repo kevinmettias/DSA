@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.FindIfPathExistsInGraph;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // disjoint spanning trees on every run - the worst case for the search arm, which
 // must exhaust the whole source component before concluding no path exists - so
 // both strategies do real, comparable work.
-[MemoryDiagnoser]
 public class FindIfPathExistsInGraphBenchmarks
 {
     private const int RandomSeed = 1971; // LC problem number

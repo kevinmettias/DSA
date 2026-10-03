@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeSubarrayGCDScore;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // time (FindTheNumberOfSubsequencesWithEqualGcdBenchmarks' own precedent for
 // "size the baseline can survive"); the bottleneck-scan arm's whole point is
 // that it never enumerates a subset at all.
-[MemoryDiagnoser]
 public class MaximizeSubarrayGCDScoreBenchmarks
 {
     private const int Seed = 3574; // LC problem number

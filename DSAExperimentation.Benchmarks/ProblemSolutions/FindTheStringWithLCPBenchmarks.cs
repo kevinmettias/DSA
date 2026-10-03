@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheStringWithLCP;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a letter, giving DisjointSet's Union real merging to do) and derives its actual LCP
 // matrix from it, guaranteeing a satisfiable input that drives both arms through their
 // full algorithm instead of an early "" bail-out.
-[MemoryDiagnoser]
 public class FindTheStringWithLCPBenchmarks
 {
     private const int AlphabetSize = 4;

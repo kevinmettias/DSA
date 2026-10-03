@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.HouseRobberIII;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // HouseRobberIIITests proves correct - a hand-rolled post-order recursion vs. this
 // repo's generic TreeFold engine closed over RobFoldAlgebra, over a random full
 // binary tree of the given depth.
-[MemoryDiagnoser]
 public class HouseRobberIIIBenchmarks
 {
     private const int Seed = 1;

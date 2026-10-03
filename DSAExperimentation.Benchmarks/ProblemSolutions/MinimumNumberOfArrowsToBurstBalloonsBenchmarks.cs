@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfArrowsToBurstBalloons;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arrow" loop runs close to n times, each paying a full O(n) rescan - instead of the
 // few-arrows case where heavy overlap lets it finish in a handful of passes and look
 // artificially competitive.
-[MemoryDiagnoser]
 public class MinimumNumberOfArrowsToBurstBalloonsBenchmarks
 {
     // LC 452.

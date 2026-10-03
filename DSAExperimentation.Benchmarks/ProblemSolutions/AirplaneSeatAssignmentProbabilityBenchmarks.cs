@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AirplaneSeatAssignmentProbability;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods AirplaneSeatAssignmentProbabilityTests proves correct. The O(n^2) memoized
 // probability recursion summing over every shorter seat count vs. the closed-form O(1)
 // "1 if n == 1 else 0.5" formula the recursion reduces to.
-[MemoryDiagnoser]
 public class AirplaneSeatAssignmentProbabilityBenchmarks
 {
     [Params(100, 1_000)]

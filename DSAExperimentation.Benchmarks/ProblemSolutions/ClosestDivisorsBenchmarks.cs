@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ClosestDivisors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // scan against BinarySearch.LowerBound anchoring at floor(sqrt(candidate)) (the same
 // technique SqrtXBenchmarks uses for LC 69) followed by a short walk down to the
 // first exact divisor.
-[MemoryDiagnoser]
 public class ClosestDivisorsBenchmarks
 {
     [Params(1_000, 100_000)]

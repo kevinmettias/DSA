@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.LeetCode.MostCommonWord;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // tokenization is charged to [GlobalSetup] rather than to the counting scan being
 // measured. Banned words are a small, fixed slice of the vocabulary so both
 // strategies do real filtering work, not just counting.
-[MemoryDiagnoser]
 public class MostCommonWordBenchmarks
 {
     // LC problem number, used as the deterministic benchmark input seed.

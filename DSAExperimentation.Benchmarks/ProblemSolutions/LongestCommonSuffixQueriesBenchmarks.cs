@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.LongestCommonSuffixQueries;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LongestCommonSuffixQueriesTests proves correct. The trie arm is handed an
 // already-built Trie<int>, so container insertion is charged to [GlobalSetup] and
 // only query answering is measured.
-[MemoryDiagnoser]
 public class LongestCommonSuffixQueriesBenchmarks
 {
     private const int Seed = 3093;

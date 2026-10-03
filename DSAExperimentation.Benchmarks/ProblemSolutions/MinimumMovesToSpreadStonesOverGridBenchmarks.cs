@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumMovesToSpreadStonesOverGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // spare stones piled on one cell vs. spread across three), which is what drives
 // how many excess stones (and therefore how many permutation leaves) each case
 // actually walks.
-[MemoryDiagnoser]
 public class MinimumMovesToSpreadStonesOverGridBenchmarks
 {
     private int[][] _grid = [];

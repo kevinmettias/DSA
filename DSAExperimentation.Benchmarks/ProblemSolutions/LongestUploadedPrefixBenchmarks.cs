@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestUploadedPrefix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every upload so the rescan really is charged once per call rather than once at
 // the end. [GlobalSetup] shuffles that order so building it is not charged to
 // either arm.
-[MemoryDiagnoser]
 public class LongestUploadedPrefixBenchmarks
 {
     private const int RandomSeed = 2424; private int[] _uploadOrder = [];

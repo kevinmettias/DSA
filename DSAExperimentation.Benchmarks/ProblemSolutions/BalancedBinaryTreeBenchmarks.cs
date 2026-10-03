@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.BalancedBinaryTree;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against the genuinely different top-down check, which re-measures each subtree's
 // height once per ancestor. The built tree is balanced, so the top-down arm cannot
 // bail out early and pays its full O(n log n) cost.
-[MemoryDiagnoser]
 public class BalancedBinaryTreeBenchmarks
 {
     private const int RootValue = 3;

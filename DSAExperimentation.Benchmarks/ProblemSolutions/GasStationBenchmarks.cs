@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GasStation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // exists but sits at the very end of the array, forcing the brute-force
 // baseline through nearly all of its O(n^2) simulated laps instead of
 // succeeding on an early candidate start.
-[MemoryDiagnoser]
 public class GasStationBenchmarks
 {
     private const int RandomSeed = 134; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.LeetCode.TheEarliestAndLatestRoundsWherePlayersCompete;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // routed through this repo's own Memoizer. The tracked players are LeetCode's own
 // scalar input shape, so neither arm needs a hoisted overload; [GlobalSetup] only
 // picks the second player for the bracket size.
-[MemoryDiagnoser]
 public class TheEarliestAndLatestRoundsWherePlayersCompeteBenchmarks
 {
     private const int FirstPlayer = 2;

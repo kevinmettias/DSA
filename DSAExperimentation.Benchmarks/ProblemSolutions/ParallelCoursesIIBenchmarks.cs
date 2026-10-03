@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ParallelCoursesII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // case" shape CanIWinBenchmarks already uses, here maximizing how many different
 // semester orders can reach the same completed-course mask and therefore how much
 // the unmemoized arm re-explores.
-[MemoryDiagnoser]
 public class ParallelCoursesIIBenchmarks
 {
     private const int MaxPerSemester = 2;

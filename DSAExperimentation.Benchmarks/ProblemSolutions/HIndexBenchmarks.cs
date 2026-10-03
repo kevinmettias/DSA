@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HIndex;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are HIndexSolution's, the same methods HIndexTests
 // proves correct.
-[MemoryDiagnoser]
 public class HIndexBenchmarks
 {
     private const int RandomSeed = 274; // LC problem number

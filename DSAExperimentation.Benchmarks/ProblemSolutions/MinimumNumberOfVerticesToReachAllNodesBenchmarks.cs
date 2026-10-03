@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfVerticesToReachAllNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // generation is charged to [GlobalSetup]; edges always run from a lower to a higher
 // node id (a real DAG, not just acyclic by luck), so node 0 is always a guaranteed
 // source alongside however many other roots the random generation produces.
-[MemoryDiagnoser]
 public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
 {
     private const int RandomSeed = 1557; // LC problem number

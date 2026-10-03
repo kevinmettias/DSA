@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NetworkRecoveryPathways;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DAG NetworkRecoveryWorkloads generates, so graph construction is charged to
 // setup and only the per-threshold shortest-path engine differs between arms
 // (OpenTheLockBenchmarks precedent).
-[MemoryDiagnoser]
 public class NetworkRecoveryPathwaysBenchmarks
 {
     private const int Seed = 3620; // LC problem number

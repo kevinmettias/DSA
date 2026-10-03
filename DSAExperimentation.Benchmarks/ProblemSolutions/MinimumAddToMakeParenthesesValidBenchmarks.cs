@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumAddToMakeParenthesesValid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // balance walk that stores nothing vs. this repo's Stack<char> holding each
 // unmatched opener explicitly. The random bracket string is built once in
 // [GlobalSetup], so only the walk itself is measured.
-[MemoryDiagnoser]
 public class MinimumAddToMakeParenthesesValidBenchmarks
 {
     private const int RandomSeed = 921; // LC problem number

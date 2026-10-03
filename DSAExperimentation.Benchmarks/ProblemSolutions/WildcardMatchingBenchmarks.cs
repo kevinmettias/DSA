@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.WildcardMatching;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are WildcardMatchingSolution's, the same methods
 // WildcardMatchingTests proves correct.
-[MemoryDiagnoser]
 public class WildcardMatchingBenchmarks
 {
     private const string TextSuffix = "b";

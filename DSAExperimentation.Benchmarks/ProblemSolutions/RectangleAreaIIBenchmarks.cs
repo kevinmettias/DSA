@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RectangleAreaII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // with this repo's own IntervalSet<TKey>, O(n^2 log n). Coordinate compression
 // is part of what each arm is being measured on, so only the rectangle workload
 // itself is built in [GlobalSetup].
-[MemoryDiagnoser]
 public class RectangleAreaIIBenchmarks
 {
     private const int RandomSeed = 7;

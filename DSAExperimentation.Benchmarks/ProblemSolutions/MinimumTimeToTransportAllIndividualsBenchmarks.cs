@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumTimeToTransportAllIndividuals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // time/mul arrays for the on-the-fly priority-queue walk, a built
 // TransportGraph for the Dijkstra walk - so graph construction is charged to
 // [GlobalSetup] rather than to the search being measured.
-[MemoryDiagnoser]
 public class MinimumTimeToTransportAllIndividualsBenchmarks
 {
     private const int Seed = 3594;

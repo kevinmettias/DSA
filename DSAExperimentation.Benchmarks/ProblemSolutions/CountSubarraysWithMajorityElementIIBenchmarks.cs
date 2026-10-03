@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubarraysWithMajorityElementII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // enumerates every subarray directly and would not finish otherwise; the Fenwick
 // prefix-sum sweep is O(n log n) regardless. A small 5-value alphabet keeps
 // target frequent enough that a meaningful share of subarrays qualify.
-[MemoryDiagnoser]
 public class CountSubarraysWithMajorityElementIIBenchmarks
 {
     private const int RandomSeed = 3739; // LC problem number

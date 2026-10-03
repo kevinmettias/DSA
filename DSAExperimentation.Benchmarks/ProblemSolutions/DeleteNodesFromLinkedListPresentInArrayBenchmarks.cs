@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.DeleteNodesFromLinkedListPresentInArray;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // shared, because both strategies splice .Next pointers in place - reusing one
 // pre-built list across iterations would let the first iteration's deletions
 // silently make every later iteration measure an already-filtered list.
-[MemoryDiagnoser]
 public class DeleteNodesFromLinkedListPresentInArrayBenchmarks
 {
     private const int RandomSeed = 3217;

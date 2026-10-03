@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.LongestPathWithDifferentAdjacentCharacters;
 
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // walk repeated at every one of n nodes) and the case where the fold's single O(n)
 // pass wins most decisively - the same reasoning DiameterOfBinaryTreeBenchmarks'
 // Setup comment gives for its own left-skewed chain.
-[MemoryDiagnoser]
 public class LongestPathWithDifferentAdjacentCharactersBenchmarks
 {
     // Setup alternates each node's label between exactly two characters ('a'/'b')

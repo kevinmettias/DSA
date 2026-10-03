@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignTaskManager;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every execTop always has a target - so script construction, including tracking
 // which taskIds are still safe to reference, is charged to setup rather than to the
 // replay each [Benchmark] arm measures.
-[MemoryDiagnoser]
 public class DesignTaskManagerBenchmarks
 {
     private const int Seed = 3408;

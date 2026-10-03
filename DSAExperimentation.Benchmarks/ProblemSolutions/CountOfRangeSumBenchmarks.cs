@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountOfRangeSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountOfRangeSumTests proves correct. [GlobalSetup] only sizes and seeds the raw
 // nums array - LeetCode's own input shape - so each strategy still does its own
 // prefix-sum, coordinate-compression and sweep work under measurement.
-[MemoryDiagnoser]
 public class CountOfRangeSumBenchmarks
 {
     private const int Lower = -1_000;

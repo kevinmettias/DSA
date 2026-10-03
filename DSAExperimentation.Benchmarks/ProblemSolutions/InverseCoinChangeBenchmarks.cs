@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.InverseCoinChange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same reconstructible array every run) rather than random ints, since a
 // value neither strategy can ever match would return [] on the very first
 // amount and measure almost nothing.
-[MemoryDiagnoser]
 public class InverseCoinChangeBenchmarks
 {
     private const int Seed = 3592;

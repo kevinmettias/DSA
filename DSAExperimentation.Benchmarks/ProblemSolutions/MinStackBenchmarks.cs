@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinStack;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // only the replay is measured. Each replay pushes every value with a GetMin behind it, then reads
 // Top and pops every value back off - the whole four-operation surface, so the scan arm's O(n)
 // GetMin is charged Length times rather than once.
-[MemoryDiagnoser]
 public class MinStackBenchmarks
 {
     private const int RandomSeed = 155; // LC problem number

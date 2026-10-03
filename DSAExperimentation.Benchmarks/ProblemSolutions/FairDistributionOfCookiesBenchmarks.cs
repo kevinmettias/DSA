@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FairDistributionOfCookies;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // immediately-degenerate all-equal split. The workload is LeetCode's own input shape
 // already, so there is nothing for a hoisted overload to prepare: [GlobalSetup]
 // hands both arms the same int[].
-[MemoryDiagnoser]
 public class FairDistributionOfCookiesBenchmarks
 {
     private const int RandomSeed = 2305; // LC problem number

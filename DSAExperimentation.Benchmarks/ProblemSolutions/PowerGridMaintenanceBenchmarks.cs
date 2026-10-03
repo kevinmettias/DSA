@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PowerGridMaintenance;
 
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are PowerGridMaintenanceSolution's, the same methods
 // PowerGridMaintenanceTests proves correct.
-[MemoryDiagnoser]
 public class PowerGridMaintenanceBenchmarks
 {
     private const int Seed = 3607;

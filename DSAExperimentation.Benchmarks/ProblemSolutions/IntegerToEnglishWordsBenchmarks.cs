@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IntegerToEnglishWords;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // IntegerToEnglishWordsTests proves correct. Params span a single-group number
 // (no prepend ever happens) up to Int32.MaxValue (all four groups), so the
 // stack strategy's saved reallocations actually have groups to save on.
-[MemoryDiagnoser]
 public class IntegerToEnglishWordsBenchmarks
 {
     [Params(123, 2_147_483_647)]

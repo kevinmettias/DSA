@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumIncompatibility;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // split into pairs is always groupable, so neither arm gets to cut the search
 // short on an infeasible value - the whole state space is walked, which is exactly
 // where re-deriving a remaining-mask per path diverges from caching it once.
-[MemoryDiagnoser]
 public class MinimumIncompatibilityBenchmarks
 {
     private const int GroupSize = 2;

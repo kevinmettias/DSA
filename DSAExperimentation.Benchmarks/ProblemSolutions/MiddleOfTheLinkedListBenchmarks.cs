@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.MiddleOfTheLinkedList;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // approach (count the list, then walk length/2 steps from the head);
 // SlowFastTwoPointer lands on the same node in a single pass. Both are O(n), but
 // the baseline touches every node twice.
-[MemoryDiagnoser]
 public class MiddleOfTheLinkedListBenchmarks
 {
     private const int RandomSeed = 876; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidateBinaryTreeNodes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overall) against this repo's DisjointSet-based single O(n * alpha(n)) pass, the
 // same "naive re-validate from scratch vs. one DisjointSet pass" shape
 // RedundantConnectionIIBenchmarks uses for LC 685.
-[MemoryDiagnoser]
 public class ValidateBinaryTreeNodesBenchmarks
 {
     private int[] _leftChild = [];

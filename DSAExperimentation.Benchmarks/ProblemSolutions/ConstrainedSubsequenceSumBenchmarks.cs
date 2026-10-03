@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ConstrainedSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ConstrainedSubsequenceSumTests proves correct. Values are random over a wide signed
 // range so the window's running maximum keeps changing instead of settling on one
 // dominant early value that would make the rescan arm look artificially cheap.
-[MemoryDiagnoser]
 public class ConstrainedSubsequenceSumBenchmarks
 {
     private const int K = 50;

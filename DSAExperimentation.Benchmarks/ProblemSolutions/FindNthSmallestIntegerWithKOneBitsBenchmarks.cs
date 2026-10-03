@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindNthSmallestIntegerWithKOneBits;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // stays small and fixed so Position's growth keeps the answer - and so the
 // PopCountScan baseline's walk - within a benchmarkable range; the Params
 // values scale the count of one-bit positions the scan must pass over.
-[MemoryDiagnoser]
 public class FindNthSmallestIntegerWithKOneBitsBenchmarks
 {
     private const int K = 4;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountIncreasingQuadruplets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // purpose - the O(n^4) baseline would otherwise dominate the run, so both arms
 // are measured on the same modest permutation sizes rather than letting the
 // baseline set an unreasonably tiny Length just for itself.
-[MemoryDiagnoser]
 public class CountIncreasingQuadrupletsBenchmarks
 {
     private const int RandomSeed = 2552; private int[] _nums = [];

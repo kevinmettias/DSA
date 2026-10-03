@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RandomPickWithBlacklist;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // array itself (workload sizing); each benchmark method still pays its own strategy's
 // constructor-equivalent setup cost once, then PickCalls picks - mirroring how a real
 // Solution instance only builds its representation once per program lifetime.
-[MemoryDiagnoser]
 public class RandomPickWithBlacklistBenchmarks
 {
     private const int WhitelistSize = 10;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.LowestCommonAncestorOfBst;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // found once in Setup, so the timed region is a single query against an already-ordered tree -
 // which is the whole contest: the ancestry walk re-derives parentage from the node shape, while
 // the BST walk reads the ordering it was handed.
-[MemoryDiagnoser]
 public class LowestCommonAncestorOfBstBenchmarks
 {
     private const int RandomSeed = 235; // LC problem number

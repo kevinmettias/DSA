@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.BestTimeToBuyAndSellStock;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods BestTimeToBuyAndSellStockTests proves correct. Neither strategy has an
 // early exit, so the random price distribution only affects the answer, not how
 // much work either arm does.
-[MemoryDiagnoser]
 public class BestTimeToBuyAndSellStockBenchmarks
 {
     private const int MaxPriceExclusive = 1_000;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfIntegersWithPopcountDepthEqualToKII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ElementCount stays moderate for the brute-force arm - it rescans up to
 // ElementCount elements per range query - while the Fenwick-bucket arm scales to
 // the real problem's N and query count each up to 1e5 trivially.
-[MemoryDiagnoser]
 public class NumberOfIntegersWithPopcountDepthEqualToKIIBenchmarks
 {
     private const int Seed = 3624; // LC problem number

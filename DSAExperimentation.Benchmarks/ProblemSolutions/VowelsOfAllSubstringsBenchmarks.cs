@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.VowelsOfAllSubstrings;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // VowelsOfAllSubstringsTests proves correct. [GlobalSetup] builds the random word
 // (workload sizing); LeetCode's own input shape is the bare string, so neither
 // strategy needs a hoisted overload.
-[MemoryDiagnoser]
 public class VowelsOfAllSubstringsBenchmarks
 {
     // The deterministic word seed this benchmark has always used.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.XOfAKindInADeckOfCards;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // XOfAKindInADeckOfCardsTests proves correct - the BCL's Dictionary tally vs. this
 // repo's own HashMap<int, int>, the "same algorithm, BCL structures vs. repo
 // structures" contrast HandOfStraightsBenchmarks already draws.
-[MemoryDiagnoser]
 public class XOfAKindInADeckOfCardsBenchmarks
 {
     private const int GroupSize = 4;

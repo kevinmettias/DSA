@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountArrayPairsDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // values below 1_000 checked against k = 100, so the distinct Gcd(value, 100) groups
 // stay bounded by that k's divisor count however long the array grows - which is the
 // whole comparison: O(n^2) elementwise against O(n + d^2) group-wise.
-[MemoryDiagnoser]
 public class CountArrayPairsDivisibleByKBenchmarks
 {
     private const int K = 100;

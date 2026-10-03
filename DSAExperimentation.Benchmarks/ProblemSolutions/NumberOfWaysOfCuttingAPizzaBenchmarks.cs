@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfWaysOfCuttingAPizza;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // pizza is all apples, so nothing short-circuits the naive baseline's full
 // branching early; Size and the piece count are kept modest for exactly that
 // reason.
-[MemoryDiagnoser]
 public class NumberOfWaysOfCuttingAPizzaBenchmarks
 {
     // Four cuts, the workload the pre-migration benchmark measured, stated here as

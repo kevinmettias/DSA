@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindAllAnagramsInAString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // frequency map for every window start (O(n*m)) vs. a single sliding pass that
 // maintains one window frequency map incrementally, using a running "matched
 // distinct characters" counter instead of a full per-window comparison (O(n+m)).
-[MemoryDiagnoser]
 public class FindAllAnagramsInAStringBenchmarks
 {
     private const string Pattern = "aeiou";

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignSpreadsheet;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ResetCell calls - so script construction, including which cell references get
 // used, is charged to setup rather than to the replay each [Benchmark] arm
 // measures.
-[MemoryDiagnoser]
 public class DesignSpreadsheetBenchmarks
 {
     private const int Seed = 3484;

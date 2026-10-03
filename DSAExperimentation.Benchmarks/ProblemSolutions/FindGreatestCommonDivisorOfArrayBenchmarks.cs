@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindGreatestCommonDivisorOfArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // NumberOfDifferentSubsequencesGCDsBenchmarks/CheckIfItIsAGoodArrayBenchmarks make,
 // because at the real bound subtraction's O(max) cost is too small to separate from
 // the shared O(n) scan.
-[MemoryDiagnoser]
 public class FindGreatestCommonDivisorOfArrayBenchmarks
 {
     private const int RandomSeed = 1979;

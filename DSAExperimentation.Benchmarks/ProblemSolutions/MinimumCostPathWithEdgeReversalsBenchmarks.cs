@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostPathWithEdgeReversals;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ShortestPathDijkstra is handed the prepared ReversalGraph its hoisted overload
 // takes, so graph construction is charged to [GlobalSetup] rather than to the search
 // being measured.
-[MemoryDiagnoser]
 public class MinimumCostPathWithEdgeReversalsBenchmarks
 {
     private const int Seed = 3650;

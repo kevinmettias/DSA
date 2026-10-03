@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.SubtreeOfAnotherTree;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // failing - and subRoot's deepest node carries a value that never appears in
 // root, so neither strategy ever finds a real match and both run to
 // completion.
-[MemoryDiagnoser]
 public class SubtreeOfAnotherTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

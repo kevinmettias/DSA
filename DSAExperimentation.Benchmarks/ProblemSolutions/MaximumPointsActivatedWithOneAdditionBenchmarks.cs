@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumPointsActivatedWithOneAddition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a range far smaller than the point count so x- and y-values repeat heavily,
 // forcing real union-find merging into a handful of large components instead of
 // every point landing in its own singleton.
-[MemoryDiagnoser]
 public class MaximumPointsActivatedWithOneAdditionBenchmarks
 {
     private const int Seed = 3873; // LC problem number

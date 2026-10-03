@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.KDivisibleElementsSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // The workload is the LeetCode input shape itself, so building it in [GlobalSetup]
 // already keeps array construction off the measured methods.
-[MemoryDiagnoser]
 public class KDivisibleElementsSubarraysBenchmarks
 {
     private const int RandomSeed = 2261; // LC problem number

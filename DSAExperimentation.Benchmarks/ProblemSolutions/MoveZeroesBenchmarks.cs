@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MoveZeroes;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // zeroes so the linear-scan strategy's "how far to the next nonzero" grows
 // every iteration instead of finding one immediately, forcing its real
 // worst-case cost.
-[MemoryDiagnoser]
 public class MoveZeroesBenchmarks
 {
     private const int FrontHalfDivisor = 2;

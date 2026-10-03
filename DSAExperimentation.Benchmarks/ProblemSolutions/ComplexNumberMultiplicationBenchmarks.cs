@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ComplexNumberMultiplication;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // straightforward string.Split baseline (a heap-allocated array plus two substrings
 // per operand); MultiplyBySpanParse instead slices with ReadOnlySpan<char> and
 // int.Parse over spans, allocating nothing per operand.
-[MemoryDiagnoser]
 public class ComplexNumberMultiplicationBenchmarks
 {
     private const int RandomSeed = 7;

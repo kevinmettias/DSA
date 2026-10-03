@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfPeopleAwareOfASecret;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // fraction of n - which is what makes the sliding-window baseline effectively
 // O(n^2) against the Fenwick arm's O(n log n). The inputs are three integers, so
 // there is nothing to hoist and neither arm needs a prepared-input overload.
-[MemoryDiagnoser]
 public class NumberOfPeopleAwareOfASecretBenchmarks
 {
     private const int DelayDivisor = 20;

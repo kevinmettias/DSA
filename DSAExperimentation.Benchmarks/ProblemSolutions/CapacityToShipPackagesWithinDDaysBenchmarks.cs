@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CapacityToShipPackagesWithinDDays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // predicate in O(weights.Length * log(sum - max)), so what is measured is the cost of
 // routing it through the reusable abstraction. The weights are generated once in
 // [GlobalSetup].
-[MemoryDiagnoser]
 public class CapacityToShipPackagesWithinDDaysBenchmarks
 {
     private const int RandomSeed = 1011; // LC problem number

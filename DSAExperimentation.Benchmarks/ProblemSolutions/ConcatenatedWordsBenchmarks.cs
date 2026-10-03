@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Set;
 using DSAExperimentation.DataStructures.Trie;
 using DSAExperimentation.LeetCode.ConcatenatedWords;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // takes - a Set for the DP scan, a Trie for the pruned walk - so dictionary
 // construction is charged to [GlobalSetup] rather than to the scan being
 // measured.
-[MemoryDiagnoser]
 public class ConcatenatedWordsBenchmarks
 {
     private const string DictionaryWord = "cat";

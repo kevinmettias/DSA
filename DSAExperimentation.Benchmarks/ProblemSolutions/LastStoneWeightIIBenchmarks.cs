@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LastStoneWeightII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are LastStoneWeightIISolution's. Random weights in 1..99
 // keep the half-capacity large enough that the O(stones.Length * half) recurrence is
 // what is being measured, from opposite directions.
-[MemoryDiagnoser]
 public class LastStoneWeightIIBenchmarks
 {
     // LeetCode problem number, reused as the RNG seed for reproducible benchmark input.

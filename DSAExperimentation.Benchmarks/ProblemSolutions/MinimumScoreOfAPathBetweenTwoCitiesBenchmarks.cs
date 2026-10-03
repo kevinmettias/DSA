@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumScoreOfAPathBetweenTwoCities;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // already LeetCode's own input shape, so [GlobalSetup] hands it over directly and
 // neither arm needs a prepared-input overload; each still pays for its own adjacency
 // list or disjoint set, which is part of the strategy being measured.
-[MemoryDiagnoser]
 public class MinimumScoreOfAPathBetweenTwoCitiesBenchmarks
 {
     private const int RandomSeed = 2492; // LC problem number

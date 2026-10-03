@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfKDigitNumbersInARange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // exponential enumeration its worst branching factor; DigitCount is the only
 // [Params] axis, kept small enough for that enumeration to finish - the
 // modular-repunit arm would stay just as fast at LeetCode's real K <= 1e9.
-[MemoryDiagnoser]
 public class SumOfKDigitNumbersInARangeBenchmarks
 {
     private const int Low = 0;

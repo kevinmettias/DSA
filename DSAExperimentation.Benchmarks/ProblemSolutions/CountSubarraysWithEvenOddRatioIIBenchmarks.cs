@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubarraysWithEvenOddRatioII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(n^2) and exists only as a correctness baseline, so a size that already
 // makes the quadratic cost visible is enough; the point of this benchmark is
 // the crossover, not reproducing the contest's own worst case.
-[MemoryDiagnoser]
 public class CountSubarraysWithEvenOddRatioIIBenchmarks
 {
     private const int Ratio = 1;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.SmallestSubtreeWithAllTheDeepestNodes;
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each arm reports the answer node's .Value rather than the node itself: a public
 // [Benchmark] method cannot expose the internal BinaryTreeNode<int>, and the int is
 // still enough to force the full (depth, node) computation through to a result.
-[MemoryDiagnoser]
 public class SmallestSubtreeWithAllTheDeepestNodesBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

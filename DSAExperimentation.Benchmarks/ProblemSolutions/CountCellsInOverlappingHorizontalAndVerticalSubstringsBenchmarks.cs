@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountCellsInOverlappingHorizontalAndVerticalSubstrings;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CountCellsInOverlappingHorizontalAndVerticalSubstringsSolution's, the same
 // methods CountCellsInOverlappingHorizontalAndVerticalSubstringsTests proves
 // correct.
-[MemoryDiagnoser]
 public class CountCellsInOverlappingHorizontalAndVerticalSubstringsBenchmarks
 {
     private const int Seed = 3529;

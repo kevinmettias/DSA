@@ -1,5 +1,4 @@
 using System.Text;
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ReverseSubstringsBetweenEachPairOfParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's own shape - a run of GroupCount sibling (non-nested) groups, so the
 // quadratic baseline's cost comes from re-splicing the string once per pair rather
 // than from nesting depth - and building it is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class ReverseSubstringsBetweenEachPairOfParenthesesBenchmarks
 {
     private const string GroupBody = "abcdef";

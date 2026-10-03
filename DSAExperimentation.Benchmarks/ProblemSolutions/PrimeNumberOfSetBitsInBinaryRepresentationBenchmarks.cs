@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PrimeNumberOfSetBitsInBinaryRepresentation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods PrimeNumberOfSetBitsInBinaryRepresentationTests proves correct.
 // right <= 10^6 bounds every popcount to at most 20, so the precomputed-set
 // strategy's lookup table never grows past 8 entries regardless of range width.
-[MemoryDiagnoser]
 public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
 {
     private int _left;

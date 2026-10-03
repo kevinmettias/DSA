@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.GenerateRandomPointInACircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Every instance is built with the same DrawSeed, so a rebuilt harness replays
 // the same points; the two arms still answer differently, because rejection
 // sampling spends a variable number of draws per point and the polar form two.
-[MemoryDiagnoser]
 public class GenerateRandomPointInACircleBenchmarks
 {
     private const double Radius = 10.0;

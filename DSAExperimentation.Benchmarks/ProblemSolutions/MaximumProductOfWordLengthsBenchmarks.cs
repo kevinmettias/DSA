@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumProductOfWordLengths;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // guaranteed to share no letter, forcing CharacterScan's inner double loop
 // through its full unmatched worst case instead of exiting early on the first
 // shared letter.
-[MemoryDiagnoser]
 public class MaximumProductOfWordLengthsBenchmarks
 {
     // LC problem number, reused as the fixed benchmark-data seed.

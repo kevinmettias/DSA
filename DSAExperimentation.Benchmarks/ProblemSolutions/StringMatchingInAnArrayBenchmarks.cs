@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StringMatchingInAnArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -25,7 +24,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // than only counting them, and the harness takes .Count; the same deliberate change
 // §17.8 records for WordLadderII. The extra work is one List<string> add per
 // contained word, identical in both arms.
-[MemoryDiagnoser]
 public class StringMatchingInAnArrayBenchmarks
 {
     private const int MinLength = 6;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MostStonesRemovedWithSameRowOrColumn;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MostStonesRemovedWithSameRowOrColumnTests proves correct. The stone field is
 // generated once in [GlobalSetup] so only edge discovery and unioning are measured -
 // PairwiseScan's O(n^2) pair sweep against RowColumnKeyedUnion's O(n) axis unions.
-[MemoryDiagnoser]
 public class MostStonesRemovedWithSameRowOrColumnBenchmarks
 {
     private const int RandomSeed = 947; // LC problem number

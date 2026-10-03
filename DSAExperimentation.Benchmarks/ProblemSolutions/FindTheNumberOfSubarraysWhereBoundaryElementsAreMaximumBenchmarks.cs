@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // correct. Nothing needs hoisting into [GlobalSetup] beyond the array itself -
 // unlike a graph problem, neither strategy has a separate prepared-input shape to
 // be handed.
-[MemoryDiagnoser]
 public class FindTheNumberOfSubarraysWhereBoundaryElementsAreMaximumBenchmarks
 {
     private const int Seed = 3113;

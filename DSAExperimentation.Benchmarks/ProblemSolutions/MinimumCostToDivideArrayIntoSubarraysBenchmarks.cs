@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimumCostToDivideArrayIntoSubarrays;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both strategies are O(n^2) states x O(n) transition either way - the DP itself,
 // not the search space, is quadratic - so this is measuring cache overhead
 // (hand-rolled Dictionary vs. this repo's Memoizer), not a complexity gap.
-[MemoryDiagnoser]
 public class MinimumCostToDivideArrayIntoSubarraysBenchmarks
 {
     private const int Seed = 3500; // LC problem number

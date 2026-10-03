@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountNumberOfRectanglesContainingEachPoint;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // it loses to brute force's simple O(n*m) scan; it only wins once RectangleCount
 // grows large enough that O((n+m) log n) undercuts O(n*m) by more than that fixed
 // setup cost covers, which is what RectangleCount=4_000 demonstrates.
-[MemoryDiagnoser]
 public class CountNumberOfRectanglesContainingEachPointBenchmarks
 {
     private const int RandomSeed = 2250; // LC problem number

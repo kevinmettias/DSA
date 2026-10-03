@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumIntervalToIncludeEachQuery;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // kept shorter than that space, so a sizeable fraction of the queries land inside a
 // sizeable fraction of the intervals - the scan arm therefore pays its full O(n*q)
 // rather than short-circuiting on a mostly-uncovered axis.
-[MemoryDiagnoser]
 public class MinimumIntervalToIncludeEachQueryBenchmarks
 {
     // LC problem number, used as the deterministic random seed.

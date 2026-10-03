@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PerfectRectangle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // unit-square tiling - a real perfect cover, not a rejected one - so neither
 // strategy short-circuits early on a detected overlap and both run their full
 // worst-case pass.
-[MemoryDiagnoser]
 public class PerfectRectangleBenchmarks
 {
     private int[][] _rectangles = [];

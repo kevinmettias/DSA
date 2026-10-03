@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSubarraySumAfterAtMostKSwaps;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BruteForce re-sorts each of the O(n^2) windows' inside/outside values from
 // scratch (O(n^3 log n) overall), so Length stays well under LC's own n <=
 // 1500 ceiling for this benchmark to finish in reasonable time.
-[MemoryDiagnoser]
 public class MaximumSubarraySumAfterAtMostKSwapsBenchmarks
 {
     private const int Seed = 3962; private int[] _nums = [];

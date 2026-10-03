@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.LeetCode.MinimumOperationsToEqualizeSubarrays;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BuildIndex and charged to [GlobalSetup] through the MergeSortTree arm's
 // hoisted overload, so only the per-query answering is measured - the same
 // split OpenTheLockBenchmarks uses for LockGraph.Build.
-[MemoryDiagnoser]
 public class MinimumOperationsToEqualizeSubarraysBenchmarks
 {
     private const int Seed = 3762;

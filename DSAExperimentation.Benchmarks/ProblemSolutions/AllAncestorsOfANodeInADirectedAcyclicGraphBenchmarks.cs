@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.AllAncestorsOfANodeInADirectedAcyclicGraph;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Edges point from a lower id to a higher one with a capped fan-out, so the
 // relation is a guaranteed-acyclic DAG whose transitive closure is dense - the
 // same generation shape CourseScheduleIIBenchmarks and LoudAndRichBenchmarks use.
-[MemoryDiagnoser]
 public class AllAncestorsOfANodeInADirectedAcyclicGraphBenchmarks
 {
     private const int MaxFanOut = 3;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfOperationsToMakeNetworkConnected;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // contrast) against this repo's own DisjointSet. A spanning tree is generated first
 // so every run has >= n-1 cables (the interesting, non-trivial case), then extra
 // random edges give Union-Find real merge-avoiding work to do.
-[MemoryDiagnoser]
 public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
 {
     private const int RandomSeed = 1319; private int[][] _connections = [];

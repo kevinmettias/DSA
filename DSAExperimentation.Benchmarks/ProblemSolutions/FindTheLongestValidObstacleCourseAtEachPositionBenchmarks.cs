@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheLongestValidObstacleCourseAtEachPosition;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against patience sorting over this repo's own BinarySearch.UpperBound. The workload is
 // a fixed-seed random height sequence, so runs never fall into an all-increasing shape
 // that would let the DP's inner loop stay cheap.
-[MemoryDiagnoser]
 public class FindTheLongestValidObstacleCourseAtEachPositionBenchmarks
 {
     private const int RandomSeed = 1964; private int[] _obstacles = [];

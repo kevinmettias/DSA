@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PaintingAGridWithThreeDifferentColors;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // tractable; the column-pattern DP alone scales to LeetCode's real n <= 1000 with
 // no change. Neither arm takes prepared input - the whole input is two integers, so
 // there is nothing for a [GlobalSetup] to build.
-[MemoryDiagnoser]
 public class PaintingAGridWithThreeDifferentColorsBenchmarks
 {
     private const int Rows = 3;

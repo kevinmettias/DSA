@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.ShortestMatchingSubstring;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of the search); the KMP arm gets the fully-built PatternOccurrences so the three
 // occurrence scans are charged to [GlobalSetup], leaving only the greedy
 // binary-search combination to measure.
-[MemoryDiagnoser]
 public class ShortestMatchingSubstringBenchmarks
 {
     // LC problem number, reused as the deterministic text seed.

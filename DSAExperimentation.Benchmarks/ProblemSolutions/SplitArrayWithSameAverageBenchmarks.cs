@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SplitArrayWithSameAverage;
 
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DP's per-call Dictionary/closure overhead; at 24, 2^24 subsets makes brute
 // force ~350x slower than the DP in a local dry run, the exponential-vs-
 // polynomial gap this problem's real (n up to 30) constraints exist to force.
-[MemoryDiagnoser]
 public class SplitArrayWithSameAverageBenchmarks
 {
     // LC problem number, used as the RNG seed.

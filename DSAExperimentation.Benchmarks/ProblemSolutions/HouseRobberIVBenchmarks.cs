@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HouseRobberIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // HouseRobberIVTests proves correct - one sweeping every candidate capability in
 // O(range * n), the other bisecting the same monotone predicate in
 // O(n * log range).
-[MemoryDiagnoser]
 public class HouseRobberIVBenchmarks
 {
     private const int RandomSeed = 2560; // LeetCode problem number

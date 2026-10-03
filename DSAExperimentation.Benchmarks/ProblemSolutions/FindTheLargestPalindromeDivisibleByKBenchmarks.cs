@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheLargestPalindromeDivisibleByK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (halfLength = ceil(DigitCount/2) half-digits, 9*10^(halfLength-1) leaves) - the
 // digit-DP arm's whole point is that it does not care how large DigitCount gets,
 // only halfLength*K states.
-[MemoryDiagnoser]
 public class FindTheLargestPalindromeDivisibleByKBenchmarks
 {
     private const int K = 7;

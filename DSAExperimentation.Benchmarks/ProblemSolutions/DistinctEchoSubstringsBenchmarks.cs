@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DistinctEchoSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // most candidate pairs fail fast - exactly the shape where RollingHash's O(1) screen
 // avoids the baseline's per-pair substring allocation instead of merely relocating
 // the same cost.
-[MemoryDiagnoser]
 public class DistinctEchoSubstringsBenchmarks
 {
     // The LeetCode problem number, reused as the deterministic random seed.

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumPrimeDifference;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the LeetCode-guaranteed [1, 100] range, which is dense enough with primes
 // (25 of the 100 values) that the brute-force pairwise scan does real work
 // rather than short-circuiting on a mostly-composite array.
-[MemoryDiagnoser]
 public class MaximumPrimeDifferenceBenchmarks
 {
     private const int Seed = 3115; // LC problem number

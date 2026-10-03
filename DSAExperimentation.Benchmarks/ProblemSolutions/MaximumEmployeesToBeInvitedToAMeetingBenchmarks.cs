@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumEmployeesToBeInvitedToAMeeting;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every remaining node chaining into an earlier node, so both strategies exercise
 // the peel, the multi-cycle walk and the chain-length DP together rather than
 // short-circuiting on an all-cycle or all-chain input.
-[MemoryDiagnoser]
 public class MaximumEmployeesToBeInvitedToAMeetingBenchmarks
 {
     private const int TwoCyclePairCount = 3; // several separate mutual pairs, so bonuses sum across pairs

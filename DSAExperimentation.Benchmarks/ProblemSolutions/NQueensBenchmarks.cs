@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NQueens;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are NQueensSolution's, the same methods NQueensTests
 // proves correct. Both build LeetCode's actual answer shape - the list of boards -
 // rather than only counting solutions as the pre-migration arms did.
-[MemoryDiagnoser]
 public class NQueensBenchmarks
 {
     // The search tree grows super-exponentially in Size, so the spread is multiplicative

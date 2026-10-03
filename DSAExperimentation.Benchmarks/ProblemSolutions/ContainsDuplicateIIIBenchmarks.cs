@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ContainsDuplicateIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // they exist to avoid. The multiples are then shuffled with the fixed seed, the same
 // "deterministic permutation for a benchmark workload" idiom
 // CountIncreasingQuadrupletsBenchmarks' own Setup uses.
-[MemoryDiagnoser]
 public class ContainsDuplicateIIIBenchmarks
 {
     private const int IndexDiff = 50;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfLongestIncreasingSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The textbook O(n^2) DP vs. this repo's own SegmentTree<Element,
 // ICombineOperation<Element>> keyed by a BinarySearch.LowerBound-compressed
 // rank - O(n log n).
-[MemoryDiagnoser]
 public class NumberOfLongestIncreasingSubsequenceBenchmarks
 {
     private const int RandomSeed = 673; private int[] _values = [];

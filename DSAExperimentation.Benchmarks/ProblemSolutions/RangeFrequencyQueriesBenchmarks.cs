@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RangeFrequencyQueries;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RangeFreqQuery's index is built once per arm and queried QueryCount times against
 // it, the pattern LeetCode's own class exposes, so the comparison is "build one
 // index + QueryCount O(log n) lookups" against "no build + QueryCount O(n) rescans".
-[MemoryDiagnoser]
 public class RangeFrequencyQueriesBenchmarks
 {
     private const int QueryCount = 500;

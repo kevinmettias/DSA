@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CamelcaseMatching;
 using System.Text.RegularExpressions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // machine (baseline) against a direct two-pointer scan per query. [GlobalSetup] sizes
 // and seeds the queries and compiles the matcher once, so the regex arm is charged
 // for matching only, not for building its own pattern.
-[MemoryDiagnoser]
 public class CamelcaseMatchingBenchmarks
 {
     private const string Pattern = "FB";

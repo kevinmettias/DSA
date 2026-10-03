@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestIncreasingSubsequence;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestIncreasingSubsequenceSolution's, the same
 // methods LongestIncreasingSubsequenceTests proves correct.
-[MemoryDiagnoser]
 public class LongestIncreasingSubsequenceBenchmarks
 {
     private int[] _values = [];

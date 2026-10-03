@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TwoSumIIInputArrayIsSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // binary-search arm has to run (and fail a search) almost Length times before it
 // succeeds, while the squeeze arm walks in from both ends at once rather than
 // resolving on the first index.
-[MemoryDiagnoser]
 public class TwoSumIIInputArrayIsSortedBenchmarks
 {
     private int[] _nums = [];

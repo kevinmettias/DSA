@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfDifferentSubsequencesGCDs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (O(max log max), harmonic). MaxValueExclusive is held fixed across both [Params]
 // sizes so the array length varies independently of the value domain - brute force
 // scales with both, the Set-based walk only with the value domain.
-[MemoryDiagnoser]
 public class NumberOfDifferentSubsequencesGCDsBenchmarks
 {
     private const int RandomSeed = 1;

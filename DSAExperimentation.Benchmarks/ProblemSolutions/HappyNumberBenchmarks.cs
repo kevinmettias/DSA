@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HappyNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and never invoked any algorithm; these replace them with the problem's actual
 // two textbook approaches, both walking the canonical non-happy cycle so
 // neither strategy gets to exit early.
-[MemoryDiagnoser]
 public class HappyNumberBenchmarks
 {
     // A member of the canonical non-happy cycle (4 -> 16 -> ... -> 4), forcing

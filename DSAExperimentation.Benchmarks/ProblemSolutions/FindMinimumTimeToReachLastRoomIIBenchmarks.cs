@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomII;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // random wait - so each relaxation goes through the max(currentTime, moveTime)-plus-
 // alternating-cost path instead of taking a constant-weight shortcut
 // (MinimumTimeToVisitACellInAGridBenchmarks precedent).
-[MemoryDiagnoser]
 public class FindMinimumTimeToReachLastRoomIIBenchmarks
 {
     private const int MaxWaitExclusive = 200;

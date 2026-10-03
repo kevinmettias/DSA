@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.HashMap;
 using DSAExperimentation.LeetCode.SellingPiecesOfWood;
 
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Each arm is handed the prepared price index its hoisted overload takes, so
 // building the HashMap is charged to [GlobalSetup] rather than to the search.
-[MemoryDiagnoser]
 public class SellingPiecesOfWoodBenchmarks
 {
     private const int RandomSeed = 2312; // LC problem number

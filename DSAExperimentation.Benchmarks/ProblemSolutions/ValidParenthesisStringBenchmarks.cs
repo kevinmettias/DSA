@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ValidParenthesisString;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ValidParenthesisStringTests proves correct. _text is "(" + all '*' + ")", the
 // shape that maximizes the DP's reachable-set growth every step while the stack
 // sweep never even inspects its star stack's contents.
-[MemoryDiagnoser]
 public class ValidParenthesisStringBenchmarks
 {
     private const string OpenParenthesis = "(";

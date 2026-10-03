@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CombinationSumIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // this class previously was. CombinationSize is fixed at 5 (the richest branching
 // factor over the 1..9 domain); TargetSum is varied around the midpoint of that
 // width's achievable sums so neither Params value trivially empties the result.
-[MemoryDiagnoser]
 public class CombinationSumIIIBenchmarks
 {
     private const int CombinationSize = 5;

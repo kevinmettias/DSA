@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfStepsToReduceANumberInBinaryRepresentationToOne;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // full-length additions the baseline has to make (each digit flips the parity again
 // instead of one long carry chain absorbing several steps into a single call), so the
 // O(n) work per addition really does recur roughly n/2 times.
-[MemoryDiagnoser]
 public class NumberOfStepsToReduceANumberInBinaryRepresentationToOneBenchmarks
 {
     private const string AlternatingBitUnit = "10";

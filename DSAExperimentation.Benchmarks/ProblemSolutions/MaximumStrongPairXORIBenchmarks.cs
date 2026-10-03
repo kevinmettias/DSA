@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.Sorting;
 using DSAExperimentation.DataStructures.Sequence;
 using DSAExperimentation.LeetCode.MaximumStrongPairXORI;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // is handed the pre-sorted ArrayIndexedSequence<int> its hoisted overload takes,
 // so sorting is charged to [GlobalSetup] rather than to the sweep being
 // measured.
-[MemoryDiagnoser]
 public class MaximumStrongPairXORIBenchmarks
 {
     private const int RandomSeed = 2932;

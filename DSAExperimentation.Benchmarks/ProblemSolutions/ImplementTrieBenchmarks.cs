@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ImplementTrie;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // trie written here would time a structure the architecture does not have. BinarySearchTreeIterator
 // is the same case. [Benchmark] inserts the whole word set, then replays search and startsWith over
 // a shuffled copy of it, so insert cost is charged to both halves rather than just the first.
-[MemoryDiagnoser]
 public class ImplementTrieBenchmarks
 {
     private const int RandomSeed = 208; // LC problem number

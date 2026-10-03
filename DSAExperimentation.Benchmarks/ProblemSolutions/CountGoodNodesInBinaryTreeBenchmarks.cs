@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.CountGoodNodesInBinaryTree;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the running maximum through call-stack parameters against this repo's own
 // TopDownTraversal threading it through ITopDownHooks.Descend. The measured tree is
 // built once in [GlobalSetup] so only the counting walk is charged to either arm.
-[MemoryDiagnoser]
 public class CountGoodNodesInBinaryTreeBenchmarks
 {
     private const int RandomSeed = 1448; // LC problem number

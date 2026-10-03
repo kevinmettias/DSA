@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.UniqueThreeDigitEvenNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods UniqueThreeDigitEvenNumbersTests proves correct. LC caps digits.length at
 // 10, so [Params] stays within that range rather than the larger sizes this
 // project's other benchmarks use.
-[MemoryDiagnoser]
 public class UniqueThreeDigitEvenNumbersBenchmarks
 {
     private const int Seed = 3483;

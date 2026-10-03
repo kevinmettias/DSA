@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.MaximumTwinSumOfALinkedList;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the chain (workload sizing), so each measured call is only the walk and the
 // pairing - LeetCode's own input shape is already the prepared repo object here,
 // and neither strategy mutates it, so neither needs a hoisted overload.
-[MemoryDiagnoser]
 public class MaximumTwinSumOfALinkedListBenchmarks
 {
     private const int MaxValueExclusive = 100_000;

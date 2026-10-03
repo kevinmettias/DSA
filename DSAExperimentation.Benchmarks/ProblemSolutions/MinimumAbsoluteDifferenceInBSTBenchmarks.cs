@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.MinimumAbsoluteDifferenceInBST;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumAbsoluteDifferenceInBSTSolution's, the same
 // methods MinimumAbsoluteDifferenceInBSTTests proves correct.
-[MemoryDiagnoser]
 public class MinimumAbsoluteDifferenceInBSTBenchmarks
 {
 

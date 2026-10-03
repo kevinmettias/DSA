@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.NextGreaterNodeInLinkedList;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // repo's own Stack<int> of pending indices. Values are a random permutation so no
 // node's answer short-circuits the brute-force scan early; list construction is
 // charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class NextGreaterNodeInLinkedListBenchmarks
 {
     private const int RandomSeed = 1019; private SinglyLinkedListNode<int> _head = null!;

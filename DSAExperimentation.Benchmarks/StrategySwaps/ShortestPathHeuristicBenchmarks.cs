@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Algorithms.ShortestPaths;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.StrategySwaps;
 // two competing implementations. On an open (wall-free) grid the Manhattan
 // heuristic is exact, so AStar should settle far fewer nodes than Dijkstra's full
 // expanding frontier before reaching the far corner.
-[MemoryDiagnoser]
 public class ShortestPathHeuristicBenchmarks
 {
     private WeightedGridNode _source = null!;

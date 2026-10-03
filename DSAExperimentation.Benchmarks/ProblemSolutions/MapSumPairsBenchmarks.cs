@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MapSumPairs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // real leading substring of one of the inserted keys, guaranteeing at least one
 // match instead of letting either strategy bail out early on "no keys share this
 // prefix."
-[MemoryDiagnoser]
 public class MapSumPairsBenchmarks
 {
     private const int KeyLength = 8;

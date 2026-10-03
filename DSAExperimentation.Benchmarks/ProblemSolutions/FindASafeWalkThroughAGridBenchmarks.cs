@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Grids;
 using DSAExperimentation.LeetCode.FindASafeWalkThroughAGrid;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // handed the prepared cell-cost graph its hoisted overload takes, so graph
 // construction is charged to [GlobalSetup] rather than the Dijkstra search being
 // measured.
-[MemoryDiagnoser]
 public class FindASafeWalkThroughAGridBenchmarks
 {
     private const int Seed = 3286;

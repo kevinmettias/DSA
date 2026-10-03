@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountPairsWithXorInARange;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // answers each value's range query in O(32) instead of rescanning every earlier
 // value. The values themselves are drawn once in [GlobalSetup] so neither arm is
 // charged for building its input.
-[MemoryDiagnoser]
 public class CountPairsWithXorInARangeBenchmarks
 {
     private const int Low = 100;

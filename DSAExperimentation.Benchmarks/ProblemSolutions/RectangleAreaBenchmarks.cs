@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RectangleArea;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RectangleAreaTests proves correct. Rectangle 2 is offset by half of rectangle
 // 1's side along both axes, so the two always overlap and the overlap region
 // scales with Side, keeping both strategies honest as Side grows.
-[MemoryDiagnoser]
 public class RectangleAreaBenchmarks
 {
     private const int OffsetDivisor = 2;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DetectCyclesIn2DGrid;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategy. A uniformly random three-letter grid is dense enough in same-character
 // adjacencies that both arms find a cycle early at either size, so the measurement
 // is about how fast each one gets there.
-[MemoryDiagnoser]
 public class DetectCyclesIn2DGridBenchmarks
 {
     // LC problem number, reused as the deterministic seed.

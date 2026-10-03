@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.JumpGameV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a random shuffle (no ties) so every index has a genuinely different rank,
 // keeping the DAG's longest path - and therefore the DFS's recursion depth -
 // realistic instead of degenerate.
-[MemoryDiagnoser]
 public class JumpGameVBenchmarks
 {
     private const int MaxJumpDistance = 5;

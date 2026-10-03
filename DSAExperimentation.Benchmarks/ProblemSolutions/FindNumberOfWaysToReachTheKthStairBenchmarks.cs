@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindNumberOfWaysToReachTheKthStair;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -16,7 +15,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // TargetStair=1_000_000 (~2x faster) and TargetStair=20_000_000 (~50x faster), since
 // the memoized arm's own state count stays ~O(log^2 k) regardless of TargetStair,
 // which is the actual effect being measured.
-[MemoryDiagnoser]
 public class FindNumberOfWaysToReachTheKthStairBenchmarks
 {
     [Params(1_000_000, 20_000_000)]

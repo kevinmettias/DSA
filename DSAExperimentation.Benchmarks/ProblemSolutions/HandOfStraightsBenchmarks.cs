@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.HandOfStraights;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // whole, non-overlapping groupSize runs, so it always straightens and both arms
 // are forced through their full group-forming sweep instead of one returning early
 // on the first missing card.
-[MemoryDiagnoser]
 public class HandOfStraightsBenchmarks
 {
     private const int GroupSize = 5;

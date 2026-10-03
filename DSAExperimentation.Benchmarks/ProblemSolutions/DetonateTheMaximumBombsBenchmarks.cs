@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DetonateTheMaximumBombs;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // once in [GlobalSetup]. The radius range is deliberately wide enough relative to
 // the grid that blasts genuinely chain, so both arms walk real components rather
 // than bouncing off isolated bombs.
-[MemoryDiagnoser]
 public class DetonateTheMaximumBombsBenchmarks
 {
     private const int GridSize = 1_000;

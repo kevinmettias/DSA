@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindMinimumInRotatedSortedArray;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // builds one ascending run of distinct values and rotates it at a fixed non-zero
 // pivot, so both arms search the same rotated array. This backfills the
 // compile-smoke placeholder the manifest recorded for this problem.
-[MemoryDiagnoser]
 public class FindMinimumInRotatedSortedArrayBenchmarks
 {
     private const int RandomSeed = 153; private int[] _nums = [];

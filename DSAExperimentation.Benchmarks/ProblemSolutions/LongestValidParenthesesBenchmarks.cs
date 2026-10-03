@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestValidParentheses;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are LongestValidParenthesesSolution's, the same
 // methods LongestValidParenthesesTests proves correct.
-[MemoryDiagnoser]
 public class LongestValidParenthesesBenchmarks
 {
     private const string RepeatingPattern = "(()())";

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ShoppingOffers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // items give multiple offer-application orders that land on the same
 // remaining-needs vector - exactly the redundant recomputation BruteForce pays for
 // and MemoizedDfs avoids.
-[MemoryDiagnoser]
 public class ShoppingOffersBenchmarks
 {
     private static readonly int[] Price = [2, 3, 4];

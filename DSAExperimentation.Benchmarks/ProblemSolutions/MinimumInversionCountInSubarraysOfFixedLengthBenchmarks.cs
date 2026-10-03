@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumInversionCountInSubarraysOfFixedLength;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // WindowLength stays fixed and small so the O(n * k^2) brute force still
 // finishes at both Length values; the Fenwick sliding window is O(n log n)
 // regardless of k.
-[MemoryDiagnoser]
 public class MinimumInversionCountInSubarraysOfFixedLengthBenchmarks
 {
     private const int RandomSeed = 3768; // LC problem number

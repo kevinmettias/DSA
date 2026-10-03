@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.FindMinimumTimeToReachLastRoomI;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the grid - (0,0) always moveTime 0, LeetCode's own guarantee, and every other cell
 // demanding a random wait - so each relaxation goes through ArrivalTime's wait branch
 // instead of taking the constant-weight-1 shortcut.
-[MemoryDiagnoser]
 public class FindMinimumTimeToReachLastRoomIBenchmarks
 {
     private const int MaxMoveTimeExclusive = 200;

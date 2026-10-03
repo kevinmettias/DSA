@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Candy;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // correct. _ratings is strictly decreasing, the worst case for repeated
 // relaxation: each pass can only propagate one extra unit of "must exceed my
 // right neighbor" one position further left, forcing O(n) passes of O(n) each.
-[MemoryDiagnoser]
 public class CandyBenchmarks
 {
     private int[] _ratings = [];

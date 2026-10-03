@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountSubarraysWithFixedBounds;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // this repo's Min/Max SegmentTree pair once and answers each subarray in O(log n) -
 // so the SegmentTree build stays inside the measured arm deliberately, since paying
 // for it is exactly what that strategy is trading against the rescan.
-[MemoryDiagnoser]
 public class CountSubarraysWithFixedBoundsBenchmarks
 {
     private const int RandomSeed = 2444; // LC problem number

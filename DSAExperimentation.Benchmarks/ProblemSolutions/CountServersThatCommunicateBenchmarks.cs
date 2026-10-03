@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountServersThatCommunicate;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Size=100 (HashMap's per-call hashing/bucket overhead dominates when
 // rows*cols*(rows+cols) is still small) flipping to the tally ~2.7x faster at
 // Size=700 (cubic growth overtakes it).
-[MemoryDiagnoser]
 public class CountServersThatCommunicateBenchmarks
 {
     // A cell becomes a server with 1-in-N odds.

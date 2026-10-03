@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SlidingWindowMaximum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // artificially competitive. Both arms now build the actual per-window maximum
 // array (LeetCode's real answer shape) rather than the summed reduction the
 // pre-migration arms measured.
-[MemoryDiagnoser]
 public class SlidingWindowMaximumBenchmarks
 {
     private const int WindowSize = 50;

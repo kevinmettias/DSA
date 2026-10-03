@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NonOverlappingIntervals;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // reads it through IntervalEndOrder.SortedByEnd, which sorts a copy, so every
 // BenchmarkDotNet iteration starts from the same unsorted, shuffled workload
 // without the harness having to clone it first.
-[MemoryDiagnoser]
 public class NonOverlappingIntervalsBenchmarks
 {
     // LC 435.

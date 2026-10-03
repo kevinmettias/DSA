@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumAndMinimumSumsOfAtMostSizeKSubarrays;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // bound, so SumByBruteForceWindow pays its worst-case O(n*k) = O(n^2) while
 // SumByMonotonicStackContribution stays O(n) - the gap the closed-form
 // contribution counting exists to open.
-[MemoryDiagnoser]
 public class MaximumAndMinimumSumsOfAtMostSizeKSubarraysBenchmarks
 {
     private const int Seed = 3430;

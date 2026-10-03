@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumProductOfTheLengthOfTwoPalindromicSubstrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of exiting after one comparison, forcing both strategies through genuinely large
 // palindromes instead of an early exit making the naive version look artificially
 // competitive.
-[MemoryDiagnoser]
 public class MaximumProductOfTheLengthOfTwoPalindromicSubstringsBenchmarks
 {
     private string _text = "";

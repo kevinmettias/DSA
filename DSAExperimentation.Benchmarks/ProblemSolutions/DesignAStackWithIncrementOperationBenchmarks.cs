@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignAStackWithIncrementOperation;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (IncrementWindow) PushCount times, so the gap measured here is the honest, real
 // price of reaching "the bottom bottomElementCount elements" through a strictly LIFO
 // primitive instead of an indexed one.
-[MemoryDiagnoser]
 public class DesignAStackWithIncrementOperationBenchmarks
 {
     private const int IncrementWindow = 5;

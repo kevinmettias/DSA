@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ManhattanDistancesOfAllArrangementsOfPieces;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arrangements outright, so PieceCount is the only axis that can move without
 // making the baseline arm impractical. SumByPairwiseDistanceFormula would happily
 // take a grid with m*n in the tens of thousands instead.
-[MemoryDiagnoser]
 public class ManhattanDistancesOfAllArrangementsOfPiecesBenchmarks
 {
     private const int Rows = 4;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SortIntegersByThePowerValue;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // ArrayIndexedSequence. Both arms recompute the same Collatz powers first, so the
 // comparison isolates the sorting strategy rather than the power computation. k is the
 // range length, so each arm reports the last pair in sorted order.
-[MemoryDiagnoser]
 public class SortIntegersByThePowerValueBenchmarks
 {
     // The measured range is always [1, RangeLength].

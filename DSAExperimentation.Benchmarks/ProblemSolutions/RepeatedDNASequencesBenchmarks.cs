@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.RepeatedDNASequences;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // length so construction is charged to [GlobalSetup] rather than to the scan
 // being measured. The fixed-window arm allocates a 10-character substring per
 // position; the mask arm rolls a 20-bit integer instead.
-[MemoryDiagnoser]
 public class RepeatedDNASequencesBenchmarks
 {
     private const int Seed = 187;

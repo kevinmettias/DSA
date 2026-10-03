@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheShortestSuperstring;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -27,7 +26,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // highest-overlap tour and both arms have exactly one shortest superstring to return.
 // Word length, alphabet and seed are unchanged, and the arms still compare the same
 // two searches over the same prepared overlap matrix.
-[MemoryDiagnoser]
 public class FindTheShortestSuperstringBenchmarks
 {
     // LC problem number, reused as the deterministic word seed.

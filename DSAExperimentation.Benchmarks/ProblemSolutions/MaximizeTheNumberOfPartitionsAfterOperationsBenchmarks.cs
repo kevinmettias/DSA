@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximizeTheNumberOfPartitionsAfterOperations;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every one of ~25 * Length candidate recolorings; BitmaskMemo instead shares work
 // across candidates via Memoizer's cache, so Length is kept modest enough for the
 // O(Length^2) baseline to still finish in reasonable benchmark time.
-[MemoryDiagnoser]
 public class MaximizeTheNumberOfPartitionsAfterOperationsBenchmarks
 {
     private const int Alphabet = 6; // small alphabet forces frequent forced cuts, exercising both arms' cut logic

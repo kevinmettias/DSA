@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfKConsecutiveBitFlips;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // textbook rewrite of each k-length window (O(n*k)) against the single sweep whose
 // active-flip parity comes from this repo's own Queue<TElement> (O(n), with the
 // queue never holding more than k entries).
-[MemoryDiagnoser]
 public class MinimumNumberOfKConsecutiveBitFlipsBenchmarks
 {
     private const int K = 300;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.BricksFallingWhenHit;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // recompute roof-connectivity by BFS after every single hit" walk, O(hits * rows
 // * cols), against the reverse-time DisjointSet trick. Wall and hit-list
 // construction is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class BricksFallingWhenHitBenchmarks
 {
     // LC problem number, reused as the deterministic wall seed.

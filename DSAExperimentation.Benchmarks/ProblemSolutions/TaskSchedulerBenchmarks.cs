@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TaskScheduler;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Heap<int,MaxHeapOrder<int>> (always offers the most-frequent remaining task) +
 // Queue<(int,int)> (holds a just-run task until its cooldown expires) - O(ticks *
 // log distinctTasks) instead of O(ticks * 26).
-[MemoryDiagnoser]
 public class TaskSchedulerBenchmarks
 {
     private const int Cooldown = 3;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PalindromePartitioningIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // over a small alphabet (so palindrome repairs are neither free nor uniformly
 // expensive) split into half as many pieces as it has characters, which is where the
 // two arms' shared decision tree is widest.
-[MemoryDiagnoser]
 public class PalindromePartitioningIIIBenchmarks
 {
     private const int RandomSeed = 1278; // LC problem number

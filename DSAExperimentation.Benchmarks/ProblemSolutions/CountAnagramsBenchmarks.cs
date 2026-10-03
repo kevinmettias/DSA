@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountAnagrams;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // WordLength stays small (brute force would not finish otherwise); the modular
 // strategy scales to any length because it never depends on word length
 // exponentially.
-[MemoryDiagnoser]
 public class CountAnagramsBenchmarks
 {
     private const int RandomSeed = 2514; // LC problem number

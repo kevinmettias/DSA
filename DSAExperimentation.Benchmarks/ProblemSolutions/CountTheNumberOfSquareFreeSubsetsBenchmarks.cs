@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountTheNumberOfSquareFreeSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // precedent). Brute force is 2^n subsets, so Length stays small enough for that arm to
 // finish in reasonable time - the bitmask-DP arm's whole point is that it doesn't care
 // how large n gets, only how many of [1, 30]'s 18 square-free values appear.
-[MemoryDiagnoser]
 public class CountTheNumberOfSquareFreeSubsetsBenchmarks
 {
     private const int MinValueInclusive = 1;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumBinaryTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the real answer) - an ascending workload mirrors DiameterOfBinaryTreeBenchmarks'
 // degenerate-chain framing, forcing the rescan baseline through its O(n^2)
 // worst case against the O(n) monotonic-stack construction.
-[MemoryDiagnoser]
 public class MaximumBinaryTreeBenchmarks
 {
     private int[] _values = [];

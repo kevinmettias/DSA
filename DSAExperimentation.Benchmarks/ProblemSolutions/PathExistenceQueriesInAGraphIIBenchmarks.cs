@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PathExistenceQueriesInAGraphII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // overload takes - plain sorted arrays for the BFS baseline, the graph witness
 // for the binary-lifting arm - so answering the queries is what gets measured,
 // not the sort.
-[MemoryDiagnoser]
 public class PathExistenceQueriesInAGraphIIBenchmarks
 {
     // LC problem number, reused as the deterministic workload seed.

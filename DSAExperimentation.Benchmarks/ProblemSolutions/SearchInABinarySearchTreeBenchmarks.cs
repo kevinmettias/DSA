@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.SearchInABinarySearchTree;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // input from the same shuffled insertion order so tree height stays close to
 // O(log n) instead of the degenerate O(n) ascending-insertion case, the same
 // convention DeleteNodeInABSTBenchmarks already uses.
-[MemoryDiagnoser]
 public class SearchInABinarySearchTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

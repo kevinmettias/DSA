@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.DeleteTheMiddleNodeOfALinkedList;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // one pre-built list would let the first iteration's splice make every later
 // iteration measure an already-shortened list - the same "fresh copy per
 // invocation" discipline SortAnArrayBenchmarks uses for its in-place sort.
-[MemoryDiagnoser]
 public class DeleteTheMiddleNodeOfALinkedListBenchmarks
 {
     private const int RandomSeed = 2095; // LC problem number

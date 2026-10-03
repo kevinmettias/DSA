@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.PartitionArrayForMaximumXorAndAnd;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // small: the brute-force arm is 3^n, and 3^14 already exercises the exponential
 // blowup the subset-basis arm exists to avoid without making the benchmark itself
 // impractically slow.
-[MemoryDiagnoser]
 public class PartitionArrayForMaximumXorAndAndBenchmarks
 {
     // LC problem number, reused as the deterministic value seed.

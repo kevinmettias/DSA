@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.UniqueBinarySearchTreesII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods UniqueBinarySearchTreesIITests proves correct. Mirrors
 // UniqueBinarySearchTreesBenchmarks' tabulation-vs-Memoizer pairing for LC
 // 96, the counting-only sibling of this problem.
-[MemoryDiagnoser]
 public class UniqueBinarySearchTreesIIBenchmarks
 {
     [Params(8, 12)]

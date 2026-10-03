@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Domain.Modular;
 using DSAExperimentation.LeetCode.CountValidSequences;
 
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // construction is charged to setup rather than to the query being measured,
 // while DirectBinomial recomputes its own numerator/denominator from scratch
 // every call, exactly what it would cost with no [GlobalSetup] at all.
-[MemoryDiagnoser]
 public class CountValidSequencesBenchmarks
 {
     private int _length;

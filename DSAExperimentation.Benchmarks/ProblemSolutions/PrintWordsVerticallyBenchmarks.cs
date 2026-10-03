@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.DynamicArray;
 using DSAExperimentation.LeetCode.PrintWordsVertically;
 
@@ -15,7 +14,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Each arm is handed the prepared word list its hoisted overload takes, so the
 // sentence split is charged to [GlobalSetup] rather than to the measured method.
-[MemoryDiagnoser]
 public class PrintWordsVerticallyBenchmarks
 {
     private const int RandomSeed = 1324; // LC problem number

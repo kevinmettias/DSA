@@ -1,11 +1,9 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ZeroOneMatrix;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // 01 Matrix (LC 542): an independent BFS per 1 cell vs. one shared multi-source
 // BFS. See ZeroOneMatrixSolution for what each strategy does.
-[MemoryDiagnoser]
 public class ZeroOneMatrixBenchmarks
 {
     private const int ZeroCellProbabilityDenominator = 5;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RemoveDuplicatesFromSortedArrayII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // strategies mutate the array they are handed, so each call gets its own copy of
 // _values rather than reusing one shared array a later iteration would find
 // already compacted.
-[MemoryDiagnoser]
 public class RemoveDuplicatesFromSortedArrayIIBenchmarks
 {
     private const int DuplicateRunLength = 3; // every N consecutive elements share the same value in the seeded input

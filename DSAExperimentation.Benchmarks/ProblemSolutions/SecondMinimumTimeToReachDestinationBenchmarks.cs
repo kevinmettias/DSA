@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SecondMinimumTimeToReachDestination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each arm is handed the prepared IntersectionNetwork its hoisted overload takes, so
 // reading LeetCode's [a, b] rows into an adjacency list is charged to [GlobalSetup]
 // rather than to the walk being measured.
-[MemoryDiagnoser]
 public class SecondMinimumTimeToReachDestinationBenchmarks
 {
     private const int Time = 3;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SuperPow;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // proves correct. Exponent is kept to a size the naive strategy can still finish
 // (LeetCode's real inputs go up to a 2000-digit exponent - far beyond any naive loop,
 // which is exactly why the digit-wise algorithm exists at all).
-[MemoryDiagnoser]
 public class SuperPowBenchmarks
 {
     private const int Base = 7;

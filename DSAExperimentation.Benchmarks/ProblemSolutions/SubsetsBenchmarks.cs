@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.Subsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Element counts stay small because both arms materialize all 2^n subsets - the parameter counts
 // exponents, not raw input size, and 2^14 already returns 16384 lists. Values are distinct so
 // every subset is distinct, which keeps the two arms' outputs comparable element for element.
-[MemoryDiagnoser]
 public class SubsetsBenchmarks
 {
     private const int RandomSeed = 78; // LC problem number

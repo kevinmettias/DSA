@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumNumberOfOperationsToMakeStringSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // string is built in [GlobalSetup] because sizing and seeding a workload is a
 // measurement decision; it is already LeetCode's own input shape, so neither arm
 // needs a hoisted overload.
-[MemoryDiagnoser]
 public class MinimumNumberOfOperationsToMakeStringSortedBenchmarks
 {
     private const int RandomSeed = 1830; // LC problem number

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DigitOperationsToMakeTwoIntegersEqual;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // every rep explores as much of the digit-mutation graph as LC 3377's own
 // range allows; the digit graph is built once per DigitCount in
 // [GlobalSetup], not charged to the measured Dijkstra call.
-[MemoryDiagnoser]
 public class DigitOperationsToMakeTwoIntegersEqualBenchmarks
 {
     // The widest endpoint pair LC 3377 admits at each digit count - every two-digit

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ProductOfTheLastKNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup], and each arm answers GetProduct(Length) - the full window - forcing
 // the raw-replay strategy through its full O(Length) worst case instead of an early
 // exit making it look artificially competitive, TwoSumBenchmarks' convention.
-[MemoryDiagnoser]
 public class ProductOfTheLastKNumbersBenchmarks
 {
     private const int MaxFactorValueExclusive = 10;

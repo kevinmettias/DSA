@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SegmentTree;
 using DSAExperimentation.LeetCode.MinimumStabilityFactorOfArray;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumStabilityFactorOfArrayTests proves correct. The composed arm is
 // handed a prebuilt SegmentTree<int,GcdOperation>, so the O(n log n) tree build is
 // charged to [GlobalSetup] rather than the binary search being measured.
-[MemoryDiagnoser]
 public class MinimumStabilityFactorOfArrayBenchmarks
 {
     private const int Seed = 3605;

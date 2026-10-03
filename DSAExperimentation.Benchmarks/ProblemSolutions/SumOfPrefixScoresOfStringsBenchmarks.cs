@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SumOfPrefixScoresOfStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prefixes is O(wordCount^2 * wordLength); building the prefix-counting
 // LowercaseTrie<int> once and reading each word's score off its root-to-leaf path
 // is O(wordCount * wordLength) twice over.
-[MemoryDiagnoser]
 public class SumOfPrefixScoresOfStringsBenchmarks
 {
     private const int WordLength = 8;

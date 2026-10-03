@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheDuplicateNumber;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // CycleDetection.FindCycleStart. _values is 1..Length with Length itself appended
 // again, so the only matching pair is the very last one the brute force reaches,
 // forcing its full O(n^2) scan.
-[MemoryDiagnoser]
 public class FindTheDuplicateNumberBenchmarks
 {
     private int[] _values = [];

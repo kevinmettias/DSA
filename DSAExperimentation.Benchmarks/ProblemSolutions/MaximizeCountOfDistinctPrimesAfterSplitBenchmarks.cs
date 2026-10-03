@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximizeCountOfDistinctPrimesAfterSplit;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // gets overwritten to that query's own value regardless of starting point, so
 // repeated invocations within one job (and the two separate jobs BenchmarkDotNet
 // runs per [GlobalSetup]) still measure the identical, deterministic workload.
-[MemoryDiagnoser]
 public class MaximizeCountOfDistinctPrimesAfterSplitBenchmarks
 {
     private const int Seed = 3569; // LC problem number

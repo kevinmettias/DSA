@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestBalancedSubarrayI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LongestBalancedSubarrayITests proves correct. _nums alternates
 // even/odd values so every prefix keeps both distinct-value sets growing
 // together rather than one saturating out of a tiny alphabet early.
-[MemoryDiagnoser]
 public class LongestBalancedSubarrayIBenchmarks
 {
     private int[] _nums = [];

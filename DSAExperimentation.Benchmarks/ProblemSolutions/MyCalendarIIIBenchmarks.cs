@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MyCalendarIII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // re-sort. Bookings never get removed, so the running max returned by the
 // final call already equals the max over the whole run, letting both arms
 // return one comparable int.
-[MemoryDiagnoser]
 public class MyCalendarIIIBenchmarks
 {
     // LC 732.

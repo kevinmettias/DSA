@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LargestComponentSizeByCommonFactor;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // coincidental ones" intent AccountsMergeBenchmarks' own generator uses. What is
 // measured is the O(n^2) pairwise gcd sweep against the O(n*sqrt(maxValue)) per-factor
 // union.
-[MemoryDiagnoser]
 public class LargestComponentSizeByCommonFactorBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

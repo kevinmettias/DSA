@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfWaysToArriveAtDestination;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prepared WaysGraph its hoisted overload takes, so the shared Dijkstra distance
 // labelling is charged to [GlobalSetup] and the measured difference stays purely
 // how the shortest-time journeys are counted afterwards.
-[MemoryDiagnoser]
 public class NumberOfWaysToArriveAtDestinationBenchmarks
 {
     // The network's "step 2" roads skip one intersection (u to u + 2) with a

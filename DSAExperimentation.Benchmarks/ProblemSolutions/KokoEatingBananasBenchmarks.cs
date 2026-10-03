@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.KokoEatingBananas;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -10,7 +9,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // measured is the cost of routing it through the reusable
 // IRandomAccessSequence<bool> abstraction. The piles are generated once in
 // [GlobalSetup].
-[MemoryDiagnoser]
 public class KokoEatingBananasBenchmarks
 {
     private const int RandomSeed = 875; // LC problem number

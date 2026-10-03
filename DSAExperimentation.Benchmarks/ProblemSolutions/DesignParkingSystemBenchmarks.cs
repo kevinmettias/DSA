@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.DesignParkingSystem;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // problem, always exactly three keys. [GlobalSetup] materializes the request script so
 // random generation is charged to setup rather than to the replay, and capacity is
 // seeded to Calls so every AddCar succeeds, keeping both arms' per-call work identical.
-[MemoryDiagnoser]
 public class DesignParkingSystemBenchmarks
 {
     private const int CarTypeUpperBoundExclusive = 4;

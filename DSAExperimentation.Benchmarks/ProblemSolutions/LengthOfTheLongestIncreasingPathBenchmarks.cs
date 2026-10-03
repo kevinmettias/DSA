@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LengthOfTheLongestIncreasingPath;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods LengthOfTheLongestIncreasingPathTests proves correct. BruteForce is O(n^2),
 // so PointCount stays modest enough for it to still finish - SegmentTreeSweep is the
 // O(n log n) arm this problem's own 10^5 bound actually needs.
-[MemoryDiagnoser]
 public class LengthOfTheLongestIncreasingPathBenchmarks
 {
     private const int RandomSeed = 3288; // LeetCode problem number

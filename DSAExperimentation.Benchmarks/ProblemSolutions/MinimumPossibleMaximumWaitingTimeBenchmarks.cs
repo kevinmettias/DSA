@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumPossibleMaximumWaitingTime;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // dispensers still eligible, keeping the unmemoized search's branching
 // factor close to 2 per car instead of collapsing into forced single
 // choices - the case memoization actually earns its keep on.
-[MemoryDiagnoser]
 public class MinimumPossibleMaximumWaitingTimeBenchmarks
 {
     private const int MaxDemandExclusive = 6;

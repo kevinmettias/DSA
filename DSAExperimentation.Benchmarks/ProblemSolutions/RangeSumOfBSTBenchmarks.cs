@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.RangeSumOfBST;
 
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // RangeSumOfBSTTests proves correct. Low/High are deliberately narrow and near the
 // low end of the value domain, so pruning discards most of a large tree instead of
 // merely skipping a few leaves. Tree construction is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class RangeSumOfBSTBenchmarks
 {
     private const int Low = 0;

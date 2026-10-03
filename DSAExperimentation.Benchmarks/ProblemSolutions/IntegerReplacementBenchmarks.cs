@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.IntegerReplacement;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // memoized arm only ever computes a few dozen distinct values along the way
 // (~90 for the same case) - this recurrence's actual reconvergence-driven
 // asymptotic gap, not an artifact of a convenient input.
-[MemoryDiagnoser]
 public class IntegerReplacementBenchmarks
 {
     [Params(21_845, 1_431_655_765)]

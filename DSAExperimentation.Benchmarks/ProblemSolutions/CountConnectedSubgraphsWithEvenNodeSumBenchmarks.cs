@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountConnectedSubgraphsWithEvenNodeSum;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Neither arm mutates nums/edges, so a single [GlobalSetup] build is enough -
 // unlike GoodSubsequenceQueriesBenchmarks, there is no per-query state to reset
 // between iterations.
-[MemoryDiagnoser]
 public class CountConnectedSubgraphsWithEvenNodeSumBenchmarks
 {
     private const int Seed = 3910;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTree;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms return LeetCode's actual answer - the two index lists - rather than the
 // count of classified edges the previous benchmark measured; the harness takes the
 // lengths. See the solution class for the strategies themselves.
-[MemoryDiagnoser]
 public class FindCriticalAndPseudoCriticalEdgesInMinimumSpanningTreeBenchmarks
 {
     // 1489 is the LeetCode problem number, reused here as a fixed benchmark seed.

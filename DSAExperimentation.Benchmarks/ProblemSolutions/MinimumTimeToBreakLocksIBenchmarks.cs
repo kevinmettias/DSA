@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MinimumTimeToBreakLocksI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MinimumTimeToBreakLocksITests proves correct. LockCount is capped
 // at 8 - LC 3376's own constraint - so the permutation baseline's n! blowup
 // is still measurable rather than practically infinite.
-[MemoryDiagnoser]
 public class MinimumTimeToBreakLocksIBenchmarks
 {
     private const int Seed = 3376;

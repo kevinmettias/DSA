@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.NumberOfSubarraysWithANDValueOfK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods NumberOfSubarraysWithANDValueOfKTests proves correct. Neither
 // arm ever exits early on a match, so K's value doesn't bias the comparison -
 // it's fixed only so the workload is deterministic.
-[MemoryDiagnoser]
 public class NumberOfSubarraysWithANDValueOfKBenchmarks
 {
     private const int Seed = 3209;

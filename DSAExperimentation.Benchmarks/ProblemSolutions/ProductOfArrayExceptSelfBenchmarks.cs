@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.ProductOfArrayExceptSelf;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // method ProductOfArrayExceptSelfTests proves correct. The prior benchmark was
 // a compile-smoke placeholder with no real workload; this backfills it with the
 // prefix/suffix pass over a random array, including negative values and zero.
-[MemoryDiagnoser]
 public class ProductOfArrayExceptSelfBenchmarks
 {
     private const int Seed = 238;

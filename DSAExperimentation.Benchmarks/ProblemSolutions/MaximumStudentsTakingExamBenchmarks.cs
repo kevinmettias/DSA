@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumStudentsTakingExam;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the worst case for an unmemoized walk and the best case for memoization. RowCount
 // stays modest, matching LongestIncreasingPathInAMatrixBenchmarks' "kept modest for
 // exactly that reason", since the unmemoized side is exponential in RowCount.
-[MemoryDiagnoser]
 public class MaximumStudentsTakingExamBenchmarks
 {
     private const int ColumnCount = 6;

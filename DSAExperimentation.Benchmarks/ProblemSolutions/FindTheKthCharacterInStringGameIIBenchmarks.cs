@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FindTheKthCharacterInStringGameII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // own published bound (k up to 10^16) is exactly what BackwardTrace exists to
 // reach without ever materializing word, which is the payoff this comparison
 // is measuring.
-[MemoryDiagnoser]
 public class FindTheKthCharacterInStringGameIIBenchmarks
 {
     private long _targetPosition;

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSumOfMNonOverlappingSubarraysI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // maxSubarrays and the [minLength, maxLength] window scale with Length so the
 // O(n*m*(r-l+1)) baseline's length-window factor stays visible against the O(n*m)
 // sliding-window arm.
-[MemoryDiagnoser]
 public class MaximumSumOfMNonOverlappingSubarraysIBenchmarks
 {
     private const int Seed = 3956; private int[] _nums = [];

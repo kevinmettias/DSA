@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TheNumberOfWeakCharactersInTheGame;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The attack range is deliberately narrow next to the defense range, so many characters
 // share an attack value and the descending-attack/ascending-defense tie-break is
 // exercised rather than only the simple strictly-decreasing case.
-[MemoryDiagnoser]
 public class TheNumberOfWeakCharactersInTheGameBenchmarks
 {
     // LC problem number, reused as the deterministic roster seed.

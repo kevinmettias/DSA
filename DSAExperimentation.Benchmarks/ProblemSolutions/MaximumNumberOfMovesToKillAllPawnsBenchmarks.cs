@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MaximumNumberOfMovesToKillAllPawns;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // composed arm is handed the prepared KnightDistances its hoisted overload takes,
 // so every knight-distance BFS is charged to [GlobalSetup] rather than the
 // minimax being measured.
-[MemoryDiagnoser]
 public class MaximumNumberOfMovesToKillAllPawnsBenchmarks
 {
     private const int Seed = 3283;

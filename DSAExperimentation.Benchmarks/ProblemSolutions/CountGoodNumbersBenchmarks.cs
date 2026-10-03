@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CountGoodNumbers;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // prepare in a [GlobalSetup] - the two [Params] lengths are the whole workload, and
 // they are what separates the baseline's O(n) multiplications from the squaring
 // arm's O(log n).
-[MemoryDiagnoser]
 public class CountGoodNumbersBenchmarks
 {
     [Params(1_000, 1_000_000)]

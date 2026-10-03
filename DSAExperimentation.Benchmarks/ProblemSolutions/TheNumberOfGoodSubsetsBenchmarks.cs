@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.TheNumberOfGoodSubsets;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // The candidate list is ~18 values whatever Length is - the problem's own constraints
 // fix it - so Length varies only how heavily each candidate is weighted, not the
 // recursion's shape.
-[MemoryDiagnoser]
 public class TheNumberOfGoodSubsetsBenchmarks
 {
     // LC problem number, reused as the deterministic value seed.

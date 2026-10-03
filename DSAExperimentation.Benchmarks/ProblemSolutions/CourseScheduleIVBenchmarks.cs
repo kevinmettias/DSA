@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.CourseScheduleIV;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,7 +12,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Prerequisite edges only ever point from a lower to a higher course id, which
 // keeps the generated graph acyclic (a real prerequisite DAG) without needing a
 // separate cycle check.
-[MemoryDiagnoser]
 public class CourseScheduleIVBenchmarks
 {
     private const int QueryCount = 300;

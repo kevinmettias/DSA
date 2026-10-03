@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.LongestBinarySubsequenceLessThanOrEqualToK;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the bits are randomized rather than all-1s or all-0s so it cannot short-circuit on
 // a degenerate case. The workload is the LeetCode input shape itself, so building it
 // in [GlobalSetup] already keeps string construction off the measured methods.
-[MemoryDiagnoser]
 public class LongestBinarySubsequenceLessThanOrEqualToKBenchmarks
 {
     private const int RandomSeed = 2311; // LC problem number

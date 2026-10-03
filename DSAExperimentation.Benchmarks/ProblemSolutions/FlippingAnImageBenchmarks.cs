@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.FlippingAnImage;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // while inverting each value as it comes back off the stack. Each iteration clones
 // the pristine image before flipping, since the solution rewrites in place and
 // [GlobalSetup] runs once per benchmark, not once per invocation.
-[MemoryDiagnoser]
 public class FlippingAnImageBenchmarks
 {
     private const int RandomSeed = 4;

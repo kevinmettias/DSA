@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.CountPrefixAndSuffixPairsII;
 
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // there is nothing further to hoist into [GlobalSetup] for the trie arm
 // (building the trie IS the O(total length) computation being measured, not
 // preparation for it).
-[MemoryDiagnoser]
 public class CountPrefixAndSuffixPairsIIBenchmarks
 {
     private const int Seed = 3045;

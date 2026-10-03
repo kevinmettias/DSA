@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumSubarrayMinProduct;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // _arr is a random permutation of 1..Length, so the baseline's inner loop always runs
 // its full remaining length while the sweep still pays one push and at most one pop
 // per element on each of its two passes.
-[MemoryDiagnoser]
 public class MaximumSubarrayMinProductBenchmarks
 {
     // LC problem number, reused as the deterministic benchmark seed.

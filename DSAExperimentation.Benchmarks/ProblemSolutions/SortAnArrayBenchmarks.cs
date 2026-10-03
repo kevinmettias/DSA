@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.SortAnArray;
 
@@ -9,7 +8,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // repo's own MergeSort over ArrayIndexedSequence. Each arm sorts a fresh copy of
 // the same randomized input internally, so neither benefits from the other's
 // partially-sorted leftovers.
-[MemoryDiagnoser]
 public class SortAnArrayBenchmarks
 {
     // LC problem number, reused as the Random seed for reproducible benchmark input.

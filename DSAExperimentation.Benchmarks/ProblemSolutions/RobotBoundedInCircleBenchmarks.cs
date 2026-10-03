@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.RobotBoundedInCircle;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +7,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against this repo's own HashMap<RobotDirection,(int,int)> step-delta lookup table, the same
 // contrast RobotReturnToOriginBenchmarks draws for its simpler fixed-per-character
 // delta case. Instruction-string construction is charged to [GlobalSetup].
-[MemoryDiagnoser]
 public class RobotBoundedInCircleBenchmarks
 {
     // LC problem number's last digit is not meaningful here; 1 keeps the original

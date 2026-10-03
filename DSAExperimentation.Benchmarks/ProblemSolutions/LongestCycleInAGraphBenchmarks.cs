@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.LongestCycleInAGraph;
 
@@ -23,7 +22,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // 3,000-node cycle already overflows the default 1 MB thread stack in this process, so
 // this stays comfortably below that rather than pushing Tarjan past the depth it can
 // safely handle.
-[MemoryDiagnoser]
 public class LongestCycleInAGraphBenchmarks
 {
     private int[] _edges = [];

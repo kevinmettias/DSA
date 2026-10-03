@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MatchsticksToSquare;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // interleaved copies of 1..SticksPerSide, so a perfect split always exists (each
 // side re-assembles the copy it came from) but the shuffled ordering still forces
 // a real search rather than an immediate match.
-[MemoryDiagnoser]
 public class MatchsticksToSquareBenchmarks
 {
     private const int SquareSideCount = 4;

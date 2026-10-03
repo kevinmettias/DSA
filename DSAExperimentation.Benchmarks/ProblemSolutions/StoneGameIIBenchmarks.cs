@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.StoneGameII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -17,7 +16,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // derived suffix sums, which each strategy computes for itself. That precompute is
 // one O(n) pass, identical in both arms, so what the comparison isolates is still
 // memoization alone.
-[MemoryDiagnoser]
 public class StoneGameIIBenchmarks
 {
     // LC problem number, used as the deterministic seed for pile generation.

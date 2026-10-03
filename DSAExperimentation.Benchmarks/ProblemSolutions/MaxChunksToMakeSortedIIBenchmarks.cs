@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaxChunksToMakeSortedII;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -6,7 +5,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MaxChunksToMakeSortedIISolution's, the same methods
 // MaxChunksToMakeSortedIITests proves correct. Values are a random permutation so
 // no candidate boundary is confirmed or ruled out on the very next element.
-[MemoryDiagnoser]
 public class MaxChunksToMakeSortedIIBenchmarks
 {
     private const int RandomSeed = 768; private int[] _values = [];

@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.SmallestPalindromicRearrangementI;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // same methods SmallestPalindromicRearrangementITests proves correct. Builds a
 // random half and mirrors it so the generated input is always a genuine
 // palindrome, matching LeetCode's own guarantee about text.
-[MemoryDiagnoser]
 public class SmallestPalindromicRearrangementIBenchmarks
 {
     private const int RandomSeed = 3517; private string _text = "";

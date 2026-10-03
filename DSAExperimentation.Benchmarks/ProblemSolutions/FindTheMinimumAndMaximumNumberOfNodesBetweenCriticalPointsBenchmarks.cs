@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.SinglyLinkedList;
 using DSAExperimentation.LeetCode.FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPoints;
@@ -11,7 +10,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // correct. [GlobalSetup] builds the zigzag chain (workload sizing), so each
 // measured call is only the walk - LeetCode's own input shape is already the
 // prepared repo object here, so neither strategy needs a hoisted overload.
-[MemoryDiagnoser]
 public class FindTheMinimumAndMaximumNumberOfNodesBetweenCriticalPointsBenchmarks
 {
     // The deterministic list seed this benchmark has always used.

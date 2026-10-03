@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.MaximumBalancedSubsequenceSum;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // SegmentTree's recursive per-call overhead is real, so BruteForce's tight array
 // scan still wins at 2,000 - which is why 20,000 is included too: large enough for
 // SegmentTreeSweep's better asymptotics to actually pay for that overhead.
-[MemoryDiagnoser]
 public class MaximumBalancedSubsequenceSumBenchmarks
 {
     private const int RandomSeed = 2926; // LeetCode problem number

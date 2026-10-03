@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.EncryptAndDecryptStrings;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -18,7 +17,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // build cost of the precomputed table; DecryptCalls stays fixed so the gap widens
 // purely with dictionary size, the same "force the real worst case" shape
 // TwoSumBenchmarks uses.
-[MemoryDiagnoser]
 public class EncryptAndDecryptStringsBenchmarks
 {
     private const int DecryptCalls = 100;

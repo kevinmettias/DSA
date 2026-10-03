@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.MinimizeMaximumComponentCost;
 
@@ -14,7 +13,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a second random-connected-weighted-graph generator, since it already produces
 // exactly this shape: int[][] edges guaranteed connected via a back-edge per
 // node, plus extra edges for density.
-[MemoryDiagnoser]
 public class MinimizeMaximumComponentCostBenchmarks
 {
     private const int EdgeSeed = 3613;

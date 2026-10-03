@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.LeetCode.PrimePalindrome;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -7,7 +6,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // large palindrome-sparse stretch - the next prime palindrome is 10301, since no
 // four-digit palindrome is ever prime - so the sequential scan pays for ~9,300
 // candidates the generator never visits.
-[MemoryDiagnoser]
 public class PrimePalindromeBenchmarks
 {
     [Params(13, 999)]

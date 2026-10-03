@@ -1,4 +1,3 @@
-using BenchmarkDotNet.Attributes;
 using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 using DSAExperimentation.LeetCode.LowestCommonAncestorOfABinaryTree;
@@ -12,7 +11,6 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Returns object, not BinaryTreeNode<int> - the node type is internal, so a public
 // [Benchmark] method cannot name it as a return type (CS0050).
-[MemoryDiagnoser]
 public class LowestCommonAncestorOfABinaryTreeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
