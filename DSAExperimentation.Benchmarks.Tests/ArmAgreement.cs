@@ -28,10 +28,10 @@ internal static class ArmAgreement
     // Arms here answer differently by design, so the generic check only runs each one to completion.
     public static IReadOnlyDictionary<Type, string> IncomparableAnswers { get; } = new Dictionary<Type, string>
     {
-        [typeof(GenerateRandomPointInACircleBenchmarks)] = RandomDraw,
+        [typeof(GenerateRandomPointInACircleBenchmarks)] = UnseededDraw,
         [typeof(ImplementRand10UsingRand7Benchmarks)] = RandomDraw,
         [typeof(LinkedListRandomNodeBenchmarks)] = RandomDraw,
-        [typeof(RandomPickIndexBenchmarks)] = RandomDraw,
+        [typeof(RandomPickIndexBenchmarks)] = UnseededDraw,
         [typeof(RandomPickWithBlacklistBenchmarks)] = RandomDraw,
         [typeof(ShuffleAnArrayBenchmarks)] = RandomDraw,
         [typeof(InsertIntoABinarySearchTreeBenchmarks)] =
@@ -43,12 +43,24 @@ internal static class ArmAgreement
         [typeof(InvertBinaryTreeBenchmarks)] = DiscardedResult,
     };
 
+    // These solutions construct an unseeded Random of their own, so even one arm answers differently on
+    // every run and is not compared with a rebuilt copy of itself either. RandomPickWithBlacklist shows
+    // the reproducible shape: the solution takes its seed as a parameter.
+    public static IReadOnlySet<Type> UnseededAnswers { get; } = new HashSet<Type>
+    {
+        typeof(GenerateRandomPointInACircleBenchmarks),
+        typeof(RandomPickIndexBenchmarks),
+    };
+
     // Not a case at all: its arms are [ParamsSource] values naming registered problems rather than
     // [Benchmark] methods, and LeetCodeProblemBenchmarksTests covers the properties it owes.
     public static IReadOnlySet<Type> Excluded { get; } = new HashSet<Type> { typeof(LeetCodeProblemBenchmarks) };
 
     private const string RandomDraw =
         "The problem asks for a random draw, and each arm consumes the seeded generator differently.";
+
+    private const string UnseededDraw =
+        "The problem asks for a random draw, and the solution draws from an unseeded Random it constructs itself.";
 
     private const string DiscardedResult =
         "The void arm rewrites a copy it then drops, leaving nothing in the harness to compare.";

@@ -2,17 +2,21 @@ using System.Reflection;
 
 namespace DSAExperimentation.Benchmarks.Tests;
 
-// The two properties every benchmark class owes, checked once for all of them instead of once per
-// class: rebuilding the workload from the same parameters reproduces it, and every arm answers what
-// the baseline answers, since arms that disagree are timing different questions. Every class with a
-// [Benchmark] method is a case by construction, so a new benchmark is covered the moment it exists;
-// ArmAgreement holds the only per-problem knowledge, which is when exact agreement is not the claim.
+// The properties every benchmark class owes, checked once for all of them instead of once per class:
+// rebuilding the workload from the same parameters reproduces it and every arm's answer, and every
+// arm answers what the baseline answers, since arms that disagree are timing different questions.
+// Every class with a [Benchmark] method is a case by construction, so a new benchmark is covered the
+// moment it exists; ArmAgreement holds the only per-problem knowledge, which is when exact agreement
+// is not the claim.
 public sealed partial class BenchmarkArmsTests
 {
     // How much of each side of the first difference a failure message shows.
     private const int ExcerptRadius = 40;
 
     public static TheoryData<string> BenchmarkClasses => CasesWhere(_ => true);
+
+    public static TheoryData<string> ReproducibleBenchmarkClasses =>
+        CasesWhere(type => !ArmAgreement.UnseededAnswers.Contains(type));
 
     public static TheoryData<string> ComparableBenchmarkClasses =>
         CasesWhere(type => !ArmAgreement.IncomparableAnswers.ContainsKey(type));
@@ -29,6 +33,17 @@ public sealed partial class BenchmarkArmsTests
         Assert.Equal(
             AnswerGraphText.Of(benchmark.Prepare(benchmark.Baseline)),
             AnswerGraphText.Of(benchmark.Prepare(benchmark.Baseline)));
+    }
+
+    // A rebuilt workload is not enough on its own: an arm that also reads state the harness does not
+    // hold - a static generator, a cache filled by an earlier call - answers differently anyway.
+    [Theory]
+    [MemberData(nameof(ReproducibleBenchmarkClasses))]
+    public void Arms_RebuiltHarness_AnswerTheSameAgain(string benchmarkName)
+    {
+        var benchmark = BenchmarkClass.Named(benchmarkName);
+
+        Assert.All(benchmark.Arms, arm => Assert.Equal(AnswerOf(benchmark, arm), AnswerOf(benchmark, arm)));
     }
 
     [Theory]
