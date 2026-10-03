@@ -6,14 +6,16 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // strategies for one question - the node count along the longest root-to-leaf path - so a harness
 // whose arms disagree is timing two different problems.
 //
-// This class has no [Params]: Setup builds one fixed five-node tree, the one LeetCode 104's own first
-// example documents (3 over 9 and 20, with 20 over 15 and 7), so the depth is decisive at 3 and needs
-// no tuning to be reproducible. Setup's determinism is asserted against that literal as well as
-// against a second build, since a rebuilt harness that reached a different depth would mean the
-// workload itself was not fixed.
+// Setup turns a gapless level-order array into its tree, which is complete: every level is full but
+// the last. Its depth therefore follows from the node count alone - levels 1 to 6 hold 63 nodes, so
+// the smallest size's 100 nodes put the remaining 37 on level 7 - and is decisive at 7 whatever
+// values were drawn. Setup's determinism is asserted against that literal as well as against a second
+// build, since a rebuilt harness that reached a different depth would mean the workload itself was not
+// fixed.
 public sealed partial class MaximumDepthOfBinaryTreeBenchmarksTests
 {
-    private const int ExpectedDepth = 3;
+    private const int SmallestNodeCount = 100;
+    private const int ExpectedDepth = 7;
 
     [Fact]
     public void Setup_SameTree_RebuildsTheSameDepth()
@@ -32,7 +34,7 @@ public sealed partial class MaximumDepthOfBinaryTreeBenchmarksTests
 
     private static MaximumDepthOfBinaryTreeBenchmarks BuildHarness()
     {
-        var harness = new MaximumDepthOfBinaryTreeBenchmarks();
+        var harness = new MaximumDepthOfBinaryTreeBenchmarks { NodeCount = SmallestNodeCount };
         harness.Setup();
 
         return harness;

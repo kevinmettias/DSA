@@ -7,28 +7,31 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // different name, so one strategy was removed rather than left as two - and there is therefore no
 // agreement to assert, only an oracle.
 //
-// It carries no [Params] either: [GlobalSetup] fixes one three-node tree, root 2 with left 1 and
-// right 3, which is LC 98's own second example and whose published answer is true. That decisive
-// literal is the assertion below.
+// [GlobalSetup] inserts distinct values into this repo's own BinarySearchTree, whose ordering
+// invariant puts every smaller value in a node's left subtree and every larger one in its right, so
+// the tree it hands the arm is a valid search tree by construction and the decisive answer is true.
+// The insertion order is seeded, so a rebuilt harness must answer the same.
 public sealed partial class ValidateBinarySearchTreeBenchmarksTests
 {
-    // LC 98's own second example: 1 < 2 < 3, so the bounds recursion accepts the tree.
+    private const int SmallestNodeCount = 100;
+
+    // Distinct values inserted into a search tree always form a valid one.
     private const bool ExpectedIsValid = true;
 
     [Fact]
-    public void Setup_FixedTree_RebuildsTheSameWorkload()
+    public void Setup_SameNodeCount_RebuildsTheSameWorkload()
     {
         Assert.Equal(BuildHarness().IsValidByBoundsRecursion(), BuildHarness().IsValidByBoundsRecursion());
         Assert.Equal(ExpectedIsValid, BuildHarness().IsValidByBoundsRecursion());
     }
 
     [Fact]
-    public void IsValidByBoundsRecursion_FixedTree_AcceptsTheExampleTree() =>
+    public void IsValidByBoundsRecursion_InsertionBuiltTree_AcceptsTheTree() =>
         Assert.Equal(ExpectedIsValid, BuildHarness().IsValidByBoundsRecursion());
 
     private static ValidateBinarySearchTreeBenchmarks BuildHarness()
     {
-        var harness = new ValidateBinarySearchTreeBenchmarks();
+        var harness = new ValidateBinarySearchTreeBenchmarks { NodeCount = SmallestNodeCount };
         harness.Setup();
 
         return harness;

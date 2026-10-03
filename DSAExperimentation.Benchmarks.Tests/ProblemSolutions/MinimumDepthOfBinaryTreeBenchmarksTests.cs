@@ -4,30 +4,31 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for MinimumDepthOfBinaryTreeBenchmarks (ARCHITECTURE 17.9). Its two arms are
 // competing strategies for the same question - the recursive walk and the level-order walk - so a
-// harness whose arms disagree is measuring two different trees: both must report the same depth. The
-// class carries no [Params] at all; Setup builds the tree and each arm walks it. The decisive literal
-// the harness's own tree pins is that root 1 has a leaf child 2 on the left and a child 3 whose only
-// child 4 is a leaf on the right, so the shortest root-to-leaf path is 1 -> 2, two nodes. The tree is
-// fixed, so a rebuilt harness must answer the same value.
+// harness whose arms disagree is measuring two different trees: both must report the same depth.
+// Setup turns a gapless level-order array into its tree, which is complete, so the decisive depth
+// follows from the node count alone, whatever values were drawn: at the smallest size of 1,000
+// nodes, levels 1 to 9 hold 511, and the other 489 fill level 10 from the left as the children of
+// the first 245 of level 9's 256 nodes. The last 11 nodes of level 9 are therefore leaves, and the
+// shortest root-to-leaf path holds nine nodes. The tree is fixed by its seed, so a rebuilt harness
+// must answer the same value.
 public sealed partial class MinimumDepthOfBinaryTreeBenchmarksTests
 {
-    // The root's left child is a leaf and the right branch is one node deeper, so the shortest
-    // root-to-leaf path - counted in nodes, per this problem's contract - is the two-node left one.
-    private const int ExpectedMinimumDepth = 2;
+    private const int SmallestNodeCount = 1_000;
+    private const int ExpectedMinimumDepth = 9;
 
     [Fact]
-    public void Setup_FixedTree_RebuildsTheSameShortestRootToLeafPath()
+    public void Setup_SameNodeCount_RebuildsTheSameShortestRootToLeafPath()
     {
         Assert.Equal(ExpectedMinimumDepth, BuildHarness().RecursiveMinDepth());
         Assert.Equal(ExpectedMinimumDepth, BuildHarness().RecursiveMinDepth());
     }
 
     [Fact]
-    public void RecursiveMinDepth_TwoLevelTree_ReturnsTheShortestRootToLeafPath() =>
+    public void RecursiveMinDepth_CompleteTree_ReturnsTheShortestRootToLeafPath() =>
         Assert.Equal(ExpectedMinimumDepth, BuildHarness().RecursiveMinDepth());
 
     [Fact]
-    public void BreadthFirstSearch_TwoLevelTree_ReturnsTheShortestRootToLeafPath() =>
+    public void BreadthFirstSearch_CompleteTree_ReturnsTheShortestRootToLeafPath() =>
         Assert.Equal(ExpectedMinimumDepth, BuildHarness().BreadthFirstSearch());
 
     [Fact]
@@ -40,7 +41,7 @@ public sealed partial class MinimumDepthOfBinaryTreeBenchmarksTests
 
     private static MinimumDepthOfBinaryTreeBenchmarks BuildHarness()
     {
-        var harness = new MinimumDepthOfBinaryTreeBenchmarks();
+        var harness = new MinimumDepthOfBinaryTreeBenchmarks { NodeCount = SmallestNodeCount };
         harness.Setup();
 
         return harness;

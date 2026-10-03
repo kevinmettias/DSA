@@ -4,15 +4,17 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for SameTreeBenchmarks (ARCHITECTURE 17.9): the class has two arms - the recursive
 // compare and the iterative stack compare - so the pair must agree as well as each matching the
-// decisive answer for the built trees. It also carries no [Params]; the whole workload is the pair of
-// trees [GlobalSetup] builds, so the only thing to construct is the harness and then call Setup.
+// decisive answer for the built trees. The workload is the pair of trees [GlobalSetup] builds at the
+// smallest NodeCount.
 //
-// [GlobalSetup] builds both trees with the same private helper, so the two are structurally equal
-// with equal values at every node - a pair the answer is decisively true for, which is asserted here
-// rather than read back out of either arm. Neither tree is mutated by the comparison, so one harness
-// is safe to call any number of times.
+// [GlobalSetup] builds both trees separately from the same level-order array, so the two are
+// structurally equal with equal values at every node - a pair the answer is decisively true for,
+// which is asserted here rather than read back out of either arm. Neither tree is mutated by the
+// comparison, so one harness is safe to call any number of times.
 public sealed partial class SameTreeBenchmarksTests
 {
+    private const int SmallestNodeCount = 10;
+
     [Fact]
     public void Setup_SameTrees_RebuildsTheSameWorkload() =>
         Assert.Equal(
@@ -37,7 +39,7 @@ public sealed partial class SameTreeBenchmarksTests
 
     private static SameTreeBenchmarks BuildHarness()
     {
-        var harness = new SameTreeBenchmarks();
+        var harness = new SameTreeBenchmarks { NodeCount = SmallestNodeCount };
         harness.Setup();
 
         return harness;

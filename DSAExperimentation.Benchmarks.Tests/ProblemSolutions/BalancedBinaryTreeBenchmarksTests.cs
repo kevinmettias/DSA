@@ -4,21 +4,23 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for BalancedBinaryTreeBenchmarks (ARCHITECTURE 17.9): the class has two arms - the
 // bottom-up single-pass recursion and the top-down re-measuring check - so the pair must agree as well
-// as each matching the one tree Setup builds, which is LC 110's own first example: 3 with children 9 and
-// 20, and 20 with children 15 and 7. That tree is balanced (every node's subtrees differ in height by at
-// most one), so both verdicts are a decisive TRUE rather than a restatement of an arm. Setup builds it
-// from fixed values with no [Params] at all, so the harness is a bare initializer plus Setup; each arm's
-// only observable is its verdict, so the rebuild is witnessed through those verdicts.
+// as each matching the verdict the tree Setup builds makes decisive. Setup turns a gapless level-order
+// array into its tree, and a gapless level order is a complete tree: every level full except possibly
+// the last, which fills from the left, so no two sibling subtrees differ in height by more than one.
+// Both verdicts are therefore a decisive TRUE derived from that shape rather than a restatement of an
+// arm. Each arm's only observable is its verdict, so the rebuild is witnessed through those verdicts.
 public sealed partial class BalancedBinaryTreeBenchmarksTests
 {
+    private const int SmallestNodeCount = 50;
+
     [Fact]
-    public void Setup_FixedExampleTree_RebuildsTheSameTree() =>
+    public void Setup_SameNodeCount_RebuildsTheSameTree() =>
         Assert.Equal(
             BuildHarness().IsBalancedByHeightRecursion(),
             BuildHarness().IsBalancedByHeightRecursion());
 
     [Fact]
-    public void IsBalancedByHeightRecursion_LeetCodeOneTenExampleOne_ReturnsTrue()
+    public void IsBalancedByHeightRecursion_CompleteTree_ReturnsTrue()
     {
         var harness = BuildHarness();
 
@@ -26,7 +28,7 @@ public sealed partial class BalancedBinaryTreeBenchmarksTests
     }
 
     [Fact]
-    public void TopDownHeightCheck_LeetCodeOneTenExampleOne_ReturnsTrue()
+    public void TopDownHeightCheck_CompleteTree_ReturnsTrue()
     {
         var harness = BuildHarness();
 
@@ -43,7 +45,7 @@ public sealed partial class BalancedBinaryTreeBenchmarksTests
 
     private static BalancedBinaryTreeBenchmarks BuildHarness()
     {
-        var harness = new BalancedBinaryTreeBenchmarks();
+        var harness = new BalancedBinaryTreeBenchmarks { NodeCount = SmallestNodeCount };
         harness.Setup();
 
         return harness;
