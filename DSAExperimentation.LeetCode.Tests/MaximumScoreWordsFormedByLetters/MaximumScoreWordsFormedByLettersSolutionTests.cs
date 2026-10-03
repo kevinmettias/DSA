@@ -12,6 +12,31 @@ public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
     public static TheoryData<string[], char[], int[], int> Examples =>
         new()
         {
+            // LeetCode example 1, with LeetCode's dense 26-entry score vector.
+            {
+                ["dog", "cat", "dad", "good"],
+                ['a', 'a', 'c', 'd', 'd', 'd', 'g', 'o', 'o'],
+                [1, 0, 9, 5, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                23
+            },
+
+            // LeetCode example 2.
+            {
+                ["xxxz", "ax", "bx", "cx"],
+                ['z', 'a', 'b', 'c', 'x', 'x', 'x'],
+                [4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 10],
+                27
+            },
+
+            // LeetCode example 3.
+            {
+                ["leetcode"],
+                ['l', 'e', 't', 'c', 'o', 'd'],
+                [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                0
+            },
+
+            // Example 1's words and letters with 'o' scored 0 rather than LeetCode's 2.
             // Available letters give a:2, c:1, d:3, g:1, o:2 and no 't' at all, so
             // "cat" can never be formed - only "dog" (5+0+3=8), "dad" (5+1+5=11) and
             // "good" (3+0+0+5=8) are ever reachable, and the d-budget (3) rules out
@@ -86,8 +111,9 @@ public sealed partial class MaximumScoreWordsFormedByLettersSolutionTests
         Assert.Equal(expected, actual);
     }
 
-    // LeetCode states score as a dense 26-entry vector; naming only the non-zero
-    // letters keeps the examples above readable.
+    // LeetCode states score as a dense 26-entry vector, and its published examples
+    // above keep that shape; for the added cases, naming only the non-zero letters
+    // keeps them readable.
     private static int[] LetterScores(params (char Letter, int Value)[] scores)
     {
         var score = new int[AlphabetSize];

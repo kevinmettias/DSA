@@ -15,9 +15,27 @@ namespace DSAExperimentation.LeetCode.Tests.BuildAMatrixWithConditions;
 // before this migration it existed only as a benchmark arm nothing checked.
 public sealed partial class BuildAMatrixWithConditionsSolutionTests
 {
+    // LeetCode example 1, and the output LeetCode published for it - one of the several
+    // matrices it accepts, so the Examples row asserts satisfiability rather than this matrix.
+    private static readonly MatrixExample LeetCodeExample1 =
+        new(K: 3, RowConditions: [[1, 2], [3, 2]], ColConditions: [[2, 1], [3, 2]], Satisfiable: true);
+
+    private static readonly int[][] LeetCodeExample1PublishedOutput = [[3, 0, 0], [0, 0, 1], [0, 2, 0]];
+
     public static TheoryData<MatrixExample> Examples =>
         new()
         {
+            // LeetCode example 1, stated above beside its published output.
+            { LeetCodeExample1 },
+
+            // LeetCode example 2: 1 above 2 above 3 above 1 is a cycle, so the output is [].
+            {
+                new MatrixExample(
+                    K: 3, RowConditions: [[1, 2], [2, 3], [3, 1], [2, 3]], ColConditions: [[2, 1]], Satisfiable: false)
+            },
+
+            // Example 1 with its column condition [3, 2] dropped, and example 2 with its
+            // repeated [2, 3] and its column conditions dropped.
             { new MatrixExample(K: 3, RowConditions: [[1, 2], [3, 2]], ColConditions: [[2, 1]], Satisfiable: true) },
             { new MatrixExample(K: 3, RowConditions: [[1, 2], [2, 3], [3, 1]], ColConditions: [], Satisfiable: false) },
             { new MatrixExample(K: 2, RowConditions: [], ColConditions: [], Satisfiable: true) },
@@ -51,6 +69,12 @@ public sealed partial class BuildAMatrixWithConditionsSolutionTests
 
         AssertSatisfies(matrix, example);
     }
+
+    // The validity check is the whole assertion for a satisfiable row, so it must accept
+    // what LeetCode itself published as a correct answer, not only what these strategies build.
+    [Fact]
+    public void AssertSatisfies_LeetCodeExample1PublishedOutput_IsAccepted() =>
+        AssertSatisfies(LeetCodeExample1PublishedOutput, LeetCodeExample1);
 
     private static void AssertSatisfies(int[][] matrix, MatrixExample example)
     {

@@ -11,8 +11,14 @@ public sealed partial class SplitTheArrayToMakeCoprimeProductsSolutionTests
     public static TheoryData<int[], int> Examples =>
         new()
         {
-            // LC examples 1-2.
+            // LeetCode examples 1 and 2.
+            { [4, 7, 8, 15, 3, 5], 2 },
+            { [4, 7, 15, 8, 3, 5], -1 },
+
+            // The statement's own illustration: 2 and 3 * 3 = 9 are coprime at index 0.
             { [2, 3, 3], 0 },
+
+            // Every split leaves a 2 on both sides.
             { [4, 6, 8], -1 },
 
             // The shortest possible input, split at its only candidate index.
