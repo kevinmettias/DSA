@@ -9,6 +9,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinaryTrees.Skewed (a right-only chain, one node per level) is the extreme
 // non-perfect shape - proof that neither strategy needs perfect-tree-specific code
 // to stay correct here.
+//
+// Each arm returns .Count of its next-pointer map, a proxy kept for the reason
+// PopulatingNextRightPointersInEachNodeBenchmarks gives: the strategies answer with a BCL
+// Dictionary and a repo HashMap, two representations no rendering compares without
+// walking the tree in the timed region.
 public class PopulatingNextRightPointersInEachNodeIIBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;

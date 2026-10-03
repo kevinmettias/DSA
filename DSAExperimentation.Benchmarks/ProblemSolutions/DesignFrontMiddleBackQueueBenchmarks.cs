@@ -8,22 +8,32 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // of every three calls while the two-deque split pays O(1) at each - the same
 // DesignLinkedListBenchmarks precedent (array-shift baseline vs. O(1)
 // primitive-based insert), just with a third position.
+//
+// The script then drains the queue from the back, and the popped values are the arm's
+// answer: the pushes return nothing, and the arrangement they build - above all where
+// each PushMiddle landed - is what the two strategies could disagree on. PopBack is
+// O(1) for both, so the drain adds the same linear cost to each arm while the
+// baseline's quadratic shifting still dominates. The output buffer is allocated in
+// [GlobalSetup], outside the timed region.
 public class DesignFrontMiddleBackQueueBenchmarks
 {
     private const int OperationCycleLength = 3; // cycles push front/middle/back
 
+    private int[] _popped = [];
+
     [Params(5_000, 50_000)]
     public int Calls { get; set; }
 
+    [GlobalSetup]
+    public void Setup() => _popped = new int[Calls];
+
     [Benchmark(Baseline = true)]
-    public int ArrayListInsertAtPosition() => RunPushCycle(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByListInsert());
+    public int[] ArrayListInsertAtPosition() => RunPushCycle(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByListInsert());
 
     [Benchmark]
-    public int TwoDequeFrontMiddleBackQueue() => RunPushCycle(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByTwoDeques());
+    public int[] TwoDequeFrontMiddleBackQueue() => RunPushCycle(new DesignFrontMiddleBackQueueSolution.FrontMiddleBackQueueByTwoDeques());
 
-    // Returns the queue's own Count, the same non-dead value both of this
-    // problem's original arms returned, so the pushes cannot be optimized away.
-    private int RunPushCycle(DesignFrontMiddleBackQueueSolution.IFrontMiddleBackQueue queue)
+    private int[] RunPushCycle(DesignFrontMiddleBackQueueSolution.IFrontMiddleBackQueue queue)
     {
         for (var i = 0; i < Calls; i++)
         {
@@ -35,6 +45,11 @@ public class DesignFrontMiddleBackQueueBenchmarks
             }
         }
 
-        return queue.Count;
+        for (var i = 0; i < _popped.Length; i++)
+        {
+            _popped[i] = queue.PopBack();
+        }
+
+        return _popped;
     }
 }

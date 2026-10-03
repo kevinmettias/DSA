@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // harness whose arms disagree is timing two different problems.
 //
 // The two arms are NOT comparable value for value, and no assertion here pretends otherwise. Each
-// solution class draws from its own unseeded Random, advanced a different number of times per call
+// strategy draws from its own Random, seeded by the caller, advanced a different number of times per call
 // (the reservoir arm once per array element, the grouping arm once per call), so equal picks would
 // mean two different sampling procedures made the same draws - a property neither arm has. What both
 // genuinely share is the index set they sample: every Pick(7) must return an index whose value is 7,
@@ -33,8 +33,8 @@ public sealed partial class RandomPickIndexBenchmarksTests
     [Fact]
     public void Setup_SmallestLength_BuildsTheSeededWorkload()
     {
-        // _nums is private and both arms draw from an unseeded Random inside the solution, so no
-        // pair of arm outputs can witness Setup's determinism; the workload is stated against the
+        // _nums is private and the two arms consume their seeded Randoms differently, so no pair of
+        // arm outputs can witness Setup's determinism; the workload is stated against the
         // expression [GlobalSetup] builds it from instead. Target's presence is what makes every
         // Pick in the two tests below answerable, so it is the property those oracles lean on.
         var workload = ExpectedWorkload();

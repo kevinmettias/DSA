@@ -15,24 +15,29 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // only dominates once Calls is large enough that the shifting cost outweighs the
 // constant allocation overhead (confirmed with a standalone Stopwatch check up to
 // Calls=50,000, see this problem's manifest notes).
+//
+// The script ends with two gets, at the head and at the tail, and their outputs are
+// the arm's answer: AddAtHead returns nothing, so a script of inserts alone has no
+// output for the arms to agree on. The head must be the last value inserted and the
+// tail the first; reading the head costs both arms O(1), the tail one pointer walk.
 public class DesignLinkedListBenchmarks
 {
     [Params(5_000, 50_000)]
     public int Calls { get; set; }
 
     [Benchmark(Baseline = true)]
-    public int ArrayListAddAtHead() => Replay(DesignLinkedListSolution.CreateByArrayList());
+    public int[] ArrayListAddAtHead() => Replay(DesignLinkedListSolution.CreateByArrayList());
 
     [Benchmark]
-    public int SinglyLinkedListChainAddAtHead() => Replay(DesignLinkedListSolution.CreateBySinglyLinkedListChain());
+    public int[] SinglyLinkedListChainAddAtHead() => Replay(DesignLinkedListSolution.CreateBySinglyLinkedListChain());
 
-    private int Replay(DesignLinkedListSolution.IMyLinkedList list)
+    private int[] Replay(DesignLinkedListSolution.IMyLinkedList list)
     {
         for (var i = 0; i < Calls; i++)
         {
             list.AddAtHead(i);
         }
 
-        return Calls;
+        return [list.Get(0), list.Get(Calls - 1)];
     }
 }

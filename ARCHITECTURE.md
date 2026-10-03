@@ -1373,9 +1373,20 @@ size's workload in `[GlobalSetup]`.
 
 `WordLadderIIBenchmarks` previously had both arms *count* shortest sequences rather than build
 them, to avoid materializing a potentially exponential result set. Since both arms are now the same
-methods `WordLadderIISolutionTests` proves correct, they return LeetCode's actual answer and the harness
-takes `.Count`. On the chain-shaped workload the shortest-path DAG is narrow, so the comparison is
-still about search cost — but this is a deliberate change in what is measured, not an oversight.
+methods `WordLadderIISolutionTests` proves correct, they build LeetCode's actual answer — and the
+harness now returns it whole rather than its `.Count`, so the generic arm check compares the
+sequences themselves. On the chain-shaped workload the shortest-path DAG is narrow, so the
+comparison is still about search cost — but this is a deliberate change in what is measured, not an
+oversight.
+
+Returning the whole answer is the rule for every arm, not just this one: an arm that returns a
+proxy — `nums[0]` after an in-place rearrangement, the sum of reported name lengths over a design
+replay, `.Length`, a checksum — lets two arms "agree" while answering differently, and puts the
+proxy's own walk inside the timed region. A design problem's arm returns the sequence of outputs its
+operation script observed, written into a buffer sized in `[GlobalSetup]`; a script of operations
+that return nothing ends with the reads LeetCode would use to observe it. The two
+`PopulatingNextRightPointers` benchmarks are the documented exceptions: their strategies answer in
+different map types.
 
 ### 17.9 Gate-compliance notes for the new tiers
 

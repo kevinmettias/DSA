@@ -9,11 +9,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // sizes are 2^k-1 so BinaryTrees.Balanced is a genuinely perfect tree, matching
 // this problem's guarantee.
 //
-// Each arm takes .Count of the real next-pointer map rather than returning the map
-// itself - BinaryTreeNode<int> is internal, and a public [Benchmark] method (a
-// BenchmarkDotNet requirement) cannot return a type built over an internal one
-// (CS0050), the same constraint §17.8 already resolved for WordLadderII by taking
-// .Count of the real answer instead of a weaker one.
+// Each arm returns .Count of its next-pointer map - a proxy, and deliberately one of the
+// few left. The two strategies answer with different map types, the baseline a BCL
+// Dictionary and the level-grouped arm the repo's HashMap, so returning the maps would
+// compare two representations rather than two answers; rendering them alike would
+// mean walking the tree inside the timed region. The fix belongs in the solution - one
+// answer type for both strategies - and each strategy's own tests assert its map
+// against LeetCode's examples meanwhile.
 public class PopulatingNextRightPointersInEachNodeBenchmarks
 {
     private BinaryTreeNode<int> _root = null!;
