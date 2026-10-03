@@ -9,12 +9,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // a fresh random board before every iteration rather than reusing the one
 // [GlobalSetup] built, which a single capture pass would leave stable. The two
 // arms mark the border-reachable regions depth-first versus breadth-first and then
-// share one flip pass, so the pair isolates that marking order.
+// share one flip pass, so the pair isolates that marking order. Size stops at LC 130's
+// 200 x 200.
 public class SurroundedRegionsBenchmarks
 {
     private char[][] _board = [];
 
-    [Params(50, 500)]
+    [Params(50, 200)]
     public int Size { get; set; }
 
     [GlobalSetup]

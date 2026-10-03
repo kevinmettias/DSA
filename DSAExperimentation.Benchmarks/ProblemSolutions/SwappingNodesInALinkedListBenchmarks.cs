@@ -19,10 +19,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the search alone.
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so a
-// public [Benchmark] method cannot name it as a return type (CS0050).
+// public [Benchmark] method cannot name it as a return type (CS0050). The node at
+// 1-based position p holds p mod 101, so the values cycle through LC 1721's [0, 100].
 public class SwappingNodesInALinkedListBenchmarks
 {
-    private const int TargetIndexDivisor = 3; private int[] _values = [];
+    private const int TargetIndexDivisor = 3;
+
+    // One past LC 1721's largest node value, so a position's remainder is a legal value.
+    private const int NodeValueSpan = 101;
+
+    private int[] _values = [];
 
     private int _kthPosition;
 
@@ -34,7 +40,7 @@ public class SwappingNodesInALinkedListBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _values = Enumerable.Range(1, Length).ToArray();
+        _values = Enumerable.Range(1, Length).Select(position => position % NodeValueSpan).ToArray();
         _kthPosition = Length / TargetIndexDivisor;
     }
 

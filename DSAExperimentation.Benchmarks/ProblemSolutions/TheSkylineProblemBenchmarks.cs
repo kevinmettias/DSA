@@ -5,7 +5,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are TheSkylineProblemSolution's, the same methods
 // TheSkylineProblemSolutionTests proves correct. Buildings are randomly overlapping so
 // both strategies pay their full worst-case cost rather than degenerating to
-// disjoint ranges.
+// disjoint ranges, and are handed over sorted by left edge, as LC 218 guarantees.
 public class TheSkylineProblemBenchmarks
 {
     private const int LeftCoordinateSpreadMultiplier = 2;
@@ -22,15 +22,17 @@ public class TheSkylineProblemBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _buildings = new int[BuildingCount][];
+        var buildings = new int[BuildingCount][];
 
         for (var i = 0; i < BuildingCount; i++)
         {
             var left = random.Next(0, BuildingCount * LeftCoordinateSpreadMultiplier);
             var width = random.Next(1, MaxBuildingWidth);
             var height = random.Next(1, MaxBuildingHeight);
-            _buildings[i] = [left, left + width, height];
+            buildings[i] = [left, left + width, height];
         }
+
+        _buildings = [.. buildings.OrderBy(building => building[0])];
     }
 
     [Benchmark(Baseline = true)]

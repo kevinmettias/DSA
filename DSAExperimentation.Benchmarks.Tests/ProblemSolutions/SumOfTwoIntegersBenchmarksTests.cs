@@ -14,8 +14,8 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 public sealed partial class SumOfTwoIntegersBenchmarksTests
 {
     // Mirrors SumOfTwoIntegersBenchmarks' own private SecondAddend.
-    private const int SecondAddend = 123_456_789;
-    private const int SmallestFirstAddend = 1_000;
+    private const int SecondAddend = -1_000;
+    private const int SmallestFirstAddend = 100;
     private const int ExpectedSum = SmallestFirstAddend + SecondAddend;
 
     [Fact]

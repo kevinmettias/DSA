@@ -6,20 +6,18 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // competing strategies for the same question - the additive pair scan against the one-pass hash
 // map - so a harness whose arms disagree is timing two different problems.
 //
-// The target is deliberately unreachable (every generated value is positive, the target is -1),
-// which is what forces both strategies through a worst-case scan. It is also why both arms answer
-// false on every workload this harness can build, so the agreement below witnesses that the two
-// arms return the same verdict for the same values, not that either arm found a pair: with both
-// [Benchmark] return types bool and the matched indices discarded into out parameters, the pair
-// itself is not observable from this harness at all, and pinning the values by content would need
-// the benchmark to expose them - a harness decision, not this file's.
+// TwoSumWorkloads plants the one pair LC 1 promises at the last two positions, which is what forces
+// both strategies through a worst-case scan. It is also why both arms answer true on every workload
+// this harness can build. With both [Benchmark] return types bool and the matched indices discarded
+// into out parameters, the pair itself is not observable from this harness; that it is the only one,
+// and the last, is TwoSumWorkloadsTests' to show.
 public sealed partial class TwoSumBenchmarksTests
 {
     // The smaller of Setup's [Params(200, 5_000)] lengths.
     private const int SmallestLength = 200;
 
-    // Setup's documented outcome: no two positive values sum to the negative target.
-    private const bool ExpectedHasPair = false;
+    // Setup's documented outcome: the planted pair sums to the target.
+    private const bool ExpectedHasPair = true;
 
     [Fact]
     public void Setup_SameLength_RebuildsTheSameWorkload()

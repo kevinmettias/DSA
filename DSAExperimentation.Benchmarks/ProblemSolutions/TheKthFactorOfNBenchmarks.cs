@@ -10,13 +10,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // largest possible divisor count for any n in range (840 has the most divisors below
 // 1000, at 32) so both strategies are forced through their full worst-case scan
 // instead of an early return on the first factor making brute force look artificially
-// competitive - the same "unreachable target" idea TwoSumBenchmarks uses. The random
-// numbers are built once in [GlobalSetup], so generation is not charged to either arm.
+// competitive - the same "force the full scan" idea TwoSumBenchmarks' last-pair target
+// serves. Each n is drawn from [K, 1000], so LC 1492's k <= n <= 1000 holds for every
+// call. The random numbers are built once in [GlobalSetup], so generation is not
+// charged to either arm.
 public class TheKthFactorOfNBenchmarks
 {
     private const int UnreachableK = 40;
     private const int RandomSeed = 1492; // LC problem number
-    private const int ValueUpperBoundExclusive = 1_000;
+    private const int MaxN = 1_000;
 
     private int[] _values = [];
 
@@ -30,7 +32,7 @@ public class TheKthFactorOfNBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _values = SeededDraws.Values(Length, 1, ValueUpperBoundExclusive, random);
+        _values = SeededDraws.Values(Length, UnreachableK, MaxN + 1, random);
         _factors = new int[_values.Length];
     }
 

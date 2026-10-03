@@ -9,11 +9,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // floor(sqrt(num)), then a short downward walk that bails out the moment a fourth
 // divisor appears. The random numbers are built once in [GlobalSetup], so generation
 // is not charged to either arm; each arm returns every number's answer, in input order.
+// Each number is drawn from LC 1952's [1, 10^4].
 public class ThreeDivisorsBenchmarks
 {
     // LC problem number, reused as the deterministic workload seed.
     private const int RandomSeed = 1952;
-    private const int MaxGeneratedNumber = 20_000;
+    private const int MaxN = 10_000;
 
     private int[] _nums = [];
 
@@ -26,7 +27,7 @@ public class ThreeDivisorsBenchmarks
     public void Setup()
     {
         var random = new Random(RandomSeed);
-        _nums = SeededDraws.Values(Length, 1, MaxGeneratedNumber, random);
+        _nums = SeededDraws.Values(Length, 1, MaxN + 1, random);
         _isThree = new bool[_nums.Length];
     }
 

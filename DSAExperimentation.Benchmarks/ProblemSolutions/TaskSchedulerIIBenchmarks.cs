@@ -5,10 +5,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are TaskSchedulerIISolution's, the same methods
 // TaskSchedulerIISolutionTests proves correct.
 //
-// Every task id is distinct, so the backward scan never finds a match and always runs
-// all the way to the start - the same "force the real worst case" trick
-// TwoSumBenchmarks' unreachable target uses - while the HashMap arm still pays one
-// lookup and one write per task.
+// Every task id is distinct - 1..Length, inside LC 2365's positive ids - so the
+// backward scan never finds a match and always runs all the way to the start - the
+// same "force the real worst case" trick TwoSumBenchmarks' last-pair target uses -
+// while the HashMap arm still pays one lookup and one write per task.
 public class TaskSchedulerIIBenchmarks
 {
     private const int Space = 1;
@@ -19,7 +19,7 @@ public class TaskSchedulerIIBenchmarks
     public int Length { get; set; }
 
     [GlobalSetup]
-    public void Setup() => _tasks = Enumerable.Range(0, Length).ToArray();
+    public void Setup() => _tasks = Enumerable.Range(1, Length).ToArray();
 
     [Benchmark(Baseline = true)]
     public long BruteForce() => TaskSchedulerIISolution.CountDaysByBackwardScan(_tasks, Space);

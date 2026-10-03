@@ -1,10 +1,12 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.TwoSumIIInputArrayIsSorted;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TwoSumIIInputArrayIsSortedSolution's, the same
-// methods TwoSumIIInputArrayIsSortedSolutionTests proves correct. nums is 0..Length-1
-// with target chosen so the only valid pair is the last two elements - every
+// methods TwoSumIIInputArrayIsSortedSolutionTests proves correct.
+// TwoSumIIInputArrayIsSortedWorkloads keeps nums and the target inside LC 167's
+// [-1000, 1000] and makes the only valid pair the last two elements - every
 // earlier index's complement is out of the array's value range entirely, so the
 // binary-search arm has to run (and fail a search) almost Length times before it
 // succeeds, while the squeeze arm walks in from both ends at once rather than
@@ -20,14 +22,8 @@ public class TwoSumIIInputArrayIsSortedBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _nums = new int[Length];
-
-        for (var i = 0; i < Length; i++)
-        {
-            _nums[i] = i;
-        }
-
-        _target = (2 * Length) - 3; // uniquely nums[Length - 2] + nums[Length - 1]
+        _nums = TwoSumIIInputArrayIsSortedWorkloads.BuildNums(Length);
+        _target = TwoSumIIInputArrayIsSortedWorkloads.Target;
     }
 
     [Benchmark(Baseline = true)]

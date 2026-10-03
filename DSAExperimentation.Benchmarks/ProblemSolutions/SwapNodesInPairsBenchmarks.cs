@@ -15,12 +15,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // cost.
 //
 // Returns object, not SinglyLinkedListNode<int>? - the node type is internal, so
-// a public [Benchmark] method cannot name it as a return type (CS0050).
+// a public [Benchmark] method cannot name it as a return type (CS0050). Length stops
+// at LC 24's 100 nodes, valued 1..100 inside its [0, 100].
 public class SwapNodesInPairsBenchmarks
 {
     private int[] _values = [];
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]

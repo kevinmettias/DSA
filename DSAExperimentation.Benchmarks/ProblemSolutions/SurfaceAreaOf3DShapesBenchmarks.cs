@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup] from a fixed seed so only the face-summing pass is measured; the
 // padded arm's own border allocation stays inside the measured method because paying
 // for it once is precisely the trade it makes against the baseline's per-cell
-// bounds checks.
+// bounds checks. Size stops at LC 892's 50 x 50, and every height is inside its [0, 50].
 public class SurfaceAreaOf3DShapesBenchmarks
 {
     // Exclusive upper bound passed to Random.Next(0, _): cell heights land in [0, 49].
@@ -17,7 +17,7 @@ public class SurfaceAreaOf3DShapesBenchmarks
 
     private int[][] _grid = [];
 
-    [Params(50, 400)]
+    [Params(5, 50)]
     public int Size { get; set; }
 
     [GlobalSetup]

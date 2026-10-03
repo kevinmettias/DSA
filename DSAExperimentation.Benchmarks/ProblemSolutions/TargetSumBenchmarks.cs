@@ -5,7 +5,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are TargetSumSolution's, the same methods TargetSumSolutionTests
 // proves correct. ElementCount is kept modest specifically because the unmemoized
-// baseline's 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents.
+// baseline's 2^N blowup is real, the same reasoning FibonacciNumberBenchmarks documents,
+// and stops at LC 494's 20 elements.
 public class TargetSumBenchmarks
 {
     private const int RandomSeed = 494; // LC problem number
@@ -15,7 +16,7 @@ public class TargetSumBenchmarks
     private int _target;
     // flips nums[0] from + to - in the target sum
 
-    [Params(18, 22)]
+    [Params(18, 20)]
     public int ElementCount { get; set; }
 
     [GlobalSetup]

@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // (O(ticks * 26)) vs. this repo's own HashMap<char,int> (frequency counting) +
 // Heap<int,MaxHeapOrder<int>> (always offers the most-frequent remaining task) +
 // Queue<(int,int)> (holds a just-run task until its cooldown expires) - O(ticks *
-// log distinctTasks) instead of O(ticks * 26).
+// log distinctTasks) instead of O(ticks * 26). TaskCount stops at LC 621's 10^4 tasks.
 public class TaskSchedulerBenchmarks
 {
     private const int Cooldown = 3;
@@ -18,7 +18,7 @@ public class TaskSchedulerBenchmarks
 
     private char[] _tasks = [];
 
-    [Params(2_000, 40_000)]
+    [Params(2_000, 10_000)]
     public int TaskCount { get; set; }
 
     [GlobalSetup]

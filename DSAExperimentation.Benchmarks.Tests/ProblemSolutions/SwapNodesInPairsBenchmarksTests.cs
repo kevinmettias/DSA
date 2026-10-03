@@ -16,7 +16,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // safe to call twice in either order.
 public sealed partial class SwapNodesInPairsBenchmarksTests
 {
-    private const int SmallestLength = 200;
+    private const int SmallestLength = 10;
     private const int PairStride = 2;
 
     [Fact]
