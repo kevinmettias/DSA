@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.Tests.Algorithms.StringMatching.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.StringMatching;
 
@@ -151,6 +152,46 @@ public sealed partial class ZFunctionTests
             var actual = ZFunction.FindAll(text, pattern);
 
             Assert.Equal(expected, actual);
+        }
+    }
+
+    // MatchedWindow is private to ZFunction. ExpandTo is what keeps both scans linear:
+    // moving the window only when a match reaches further right is what lets each later
+    // position seed from its mirror instead of matching from scratch. The answers come
+    // out right either way, so the comparer's call count - not the answer - is what shows
+    // whether ExpandTo did its job. Each comparison either pushes the window right (at
+    // most once per character) or ends one position's extension (at most once per
+    // position), which is the two-per-character bound asserted below.
+    public sealed partial class MatchedWindowTests
+    {
+        // Repeating "aab" defeats both ways ExpandTo could go wrong: a window that never
+        // moves re-matches every position from scratch, and a window that also moves when
+        // the new match falls short retreats over ground already covered. Either one costs
+        // several times the bound.
+        private static readonly string RepeatedAab = string.Concat(Enumerable.Repeat("aab", 100));
+        private static readonly string NineAabs = string.Concat(Enumerable.Repeat("aab", 9));
+
+        [Fact]
+        public void ExpandTo_KeepsComputeWithinTwoComparisonsPerCharacter()
+        {
+            var comparer = new CountingCharComparer();
+
+            ZFunction.Compute(RepeatedAab, comparer);
+
+            Assert.InRange(comparer.Comparisons, 1, 2 * RepeatedAab.Length);
+        }
+
+        [Fact]
+        public void ExpandTo_KeepsFindAllWithinTwoComparisonsPerCharacterOfTextAndPattern()
+        {
+            // FindAll scans the pattern against itself, then the text against the
+            // pattern, and both scans carry their own window.
+            var comparer = new CountingCharComparer();
+
+            var matches = ZFunction.FindAll(RepeatedAab, NineAabs, comparer);
+
+            Assert.Equal(92, matches.Count);
+            Assert.InRange(comparer.Comparisons, 1, 2 * (RepeatedAab.Length + NineAabs.Length));
         }
     }
 

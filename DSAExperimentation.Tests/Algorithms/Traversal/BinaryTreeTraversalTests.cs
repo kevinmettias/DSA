@@ -9,9 +9,10 @@ using DSAExperimentation.Tests.DataStructures.Graph.Engines.Dags.Trees.Fixtures;
 namespace DSAExperimentation.Tests.Algorithms.Traversal;
 
 // Proves BinaryTreeTopology/BinaryTreeChildren correctly close the SAME generic
-// engines TraversalTests.cs already exercises against TestTopology/ListChildren -
-// same precedent as GridConnectedComponentsTests.cs sitting beside
-// ConnectedComponentsTests.cs for a second concrete topology.
+// engines DepthFirstTraversalTests, BreadthFirstTraversalTests and
+// LevelGroupedBreadthFirstTraversalTests already exercise against
+// TestTopology/ListChildren - same precedent as GridConnectedComponentsTests.cs
+// sitting beside ConnectedComponentsTests.cs for a second concrete topology.
 public sealed partial class BinaryTreeTraversalTests
 {
     private struct PreOrderMarker;

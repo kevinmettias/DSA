@@ -155,4 +155,49 @@ public sealed partial class IntervalSetTests
         Assert.Equal(1, set.Count);
         Assert.Equal((10, 7), set.Get(0));
     }
+
+    // IntervalEndsView is private to IntervalSet: it is the sequence Add and HasOverlap
+    // bisect to find the first interval that could touch a query, so both are driven
+    // through those two operations. Every case below gives a different answer if the
+    // view exposed the wrong value or the wrong length.
+    public sealed partial class IntervalEndsViewTests
+    {
+        [Fact]
+        public void Get_ReadsEachIntervalsEnd_SoAQueryInsideALongIntervalFindsIt()
+        {
+            // Bisecting the starts [1, 20] for 5 would land on [20, 30] and miss [1, 10]
+            // entirely; bisecting the ends [10, 30] lands on [1, 10], which holds 5..6.
+            var set = new IntervalSet<int>();
+            set.Add(1, 10);
+            set.Add(20, 30);
+
+            Assert.True(set.HasOverlap(5, 6));
+
+            set.Add(5, 6);
+
+            Assert.Equal(2, set.Count);
+            Assert.Equal((1, 10), set.Get(0));
+        }
+
+        [Fact]
+        public void Length_CoversEveryInterval_SoAQueryPastTheLastOneFindsNothing()
+        {
+            // A query beyond every end has to bisect to one past the last interval. A
+            // view shorter than the set would stop the search at an earlier interval,
+            // whose start precedes the query's end, and report a false overlap.
+            var set = new IntervalSet<int>();
+            set.Add(1, 2);
+            set.Add(4, 5);
+            set.Add(7, 8);
+            set.Add(10, 11);
+
+            Assert.False(set.HasOverlap(12, 13));
+
+            set.Add(12, 13);
+
+            Assert.Equal(5, set.Count);
+            Assert.Equal((10, 11), set.Get(3));
+            Assert.Equal((12, 13), set.Get(4));
+        }
+    }
 }

@@ -1,4 +1,5 @@
 using DSAExperimentation.Algorithms.StringMatching;
+using DSAExperimentation.Tests.Algorithms.StringMatching.Fixtures;
 
 namespace DSAExperimentation.Tests.Algorithms.StringMatching;
 
@@ -127,5 +128,41 @@ public sealed partial class ManacherTests
         var longest = Manacher.FindLongestPalindromicSubstring("BaB", caseInsensitive);
 
         Assert.Equal((0, 3), longest);
+    }
+
+    // RightmostPalindromeEdge is private to Manacher. ExpandTo is what keeps both radius
+    // scans linear: moving the edge only when a palindrome reaches further right is what
+    // lets each later center seed from its mirror instead of expanding from scratch. The
+    // radii come out right either way, so the comparer's call count - not the answer -
+    // is what shows whether ExpandTo did its job. Each comparison either pushes the edge
+    // right (at most once per character) or ends one center's expansion (at most once per
+    // center), which is the two-per-character bound asserted below.
+    public sealed partial class RightmostPalindromeEdgeTests
+    {
+        // Repeating "aab" defeats both ways ExpandTo could go wrong: an edge that never
+        // moves re-expands every center from scratch, and an edge that also moves when the
+        // new palindrome falls short retreats over ground already covered. Either one
+        // costs more than ten times the bound.
+        private static readonly string RepeatedAab = string.Concat(Enumerable.Repeat("aab", 100));
+
+        [Fact]
+        public void ExpandTo_KeepsTheOddScanWithinTwoComparisonsPerCharacter()
+        {
+            var comparer = new CountingCharComparer();
+
+            Manacher.ComputeOddRadii(RepeatedAab, comparer);
+
+            Assert.InRange(comparer.Comparisons, 1, 2 * RepeatedAab.Length);
+        }
+
+        [Fact]
+        public void ExpandTo_KeepsTheEvenScanWithinTwoComparisonsPerCharacter()
+        {
+            var comparer = new CountingCharComparer();
+
+            Manacher.ComputeEvenRadii(RepeatedAab, comparer);
+
+            Assert.InRange(comparer.Comparisons, 1, 2 * RepeatedAab.Length);
+        }
     }
 }

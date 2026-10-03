@@ -53,4 +53,31 @@ public sealed partial class ConnectedComponentsTests
 
         Assert.Equal(0, count);
     }
+
+    // NoOpReduceAlgebra is private to ConnectedComponents and computes nothing: its Seed
+    // is the state Reduce.Graph starts each fresh root's walk from, and that walk - not
+    // any value threaded through it - is what marks a whole component visited. So Seed
+    // is driven through Count, the only caller.
+    public sealed partial class NoOpReduceAlgebraTests
+    {
+        [Fact]
+        public void Seed_StartsOneWalkPerFreshRoot_ThatMarksItsWholeComponentVisited()
+        {
+            // A -> B -> C -> A, listed root-first: the walk seeded at A reaches B and C,
+            // so they are skipped as roots and the cycle counts once.
+            var a = new TestNode("A");
+            var b = new TestNode("B");
+            var c = new TestNode("C");
+            a.Children.Add(b);
+            b.Children.Add(c);
+            c.Children.Add(a);
+
+            var count = ConnectedComponents.Count<
+                TestNode, TestTopology, ListChildren<TestNode>,
+                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+                DepthFirstReduceOrder<TestNode>>([a, b, c]);
+
+            Assert.Equal(1, count);
+        }
+    }
 }

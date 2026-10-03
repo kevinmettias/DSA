@@ -150,4 +150,80 @@ public sealed partial class HashMapStorageTests
             Assert.True(found, $"k{i} was not reachable from its bucket after growth");
         }
     }
+
+    // The buckets start at four, so hash codes 0, 4 and 8 share bucket 0. Insert puts each
+    // new entry at the head of its chain, so StorageHolding((0, "a"), (4, "b"), (8, "c"))
+    // chains bucket 0 as c -> b -> a.
+    private static HashMapStorage<string, int> ThreeInOneBucket()
+        => StorageHolding((0, "a", 1), (4, "b", 2), (8, "c", 3));
+
+    private static List<string> ChainKeys(HashMapStorage<string, int> storage, int bucketIndex)
+    {
+        var keys = new List<string>();
+
+        for (var e = storage.BucketHead(bucketIndex); e >= 0; e = storage.Entry(e).Next)
+        {
+            keys.Add(storage.Entry(e).Key);
+        }
+
+        return keys;
+    }
+
+    [Fact]
+    public void Unlink_ChainHead_PointsTheBucketAtTheNextEntry()
+    {
+        var storage = ThreeInOneBucket();
+
+        storage.Unlink(0, -1, storage.BucketHead(0));
+
+        Assert.Equal(["b", "a"], ChainKeys(storage, 0));
+    }
+
+    [Fact]
+    public void Unlink_MidChain_SplicesThePreviousEntryPastIt()
+    {
+        var storage = ThreeInOneBucket();
+        var previous = storage.BucketHead(0);
+
+        storage.Unlink(0, previous, storage.Entry(previous).Next);
+
+        Assert.Equal(["c", "a"], ChainKeys(storage, 0));
+    }
+
+    [Fact]
+    public void Unlink_DecrementsTheCount()
+    {
+        var storage = ThreeInOneBucket();
+
+        storage.Unlink(0, -1, storage.BucketHead(0));
+
+        Assert.Equal(2, storage.Count);
+    }
+
+    [Fact]
+    public void Unlink_RemovedEntryIsGoneFromTheSnapshot()
+    {
+        var storage = ThreeInOneBucket();
+        var head = storage.BucketHead(0);
+
+        storage.Unlink(0, -1, head);
+
+        Assert.Equal(["a", "b"], storage.SnapshotEntries().Select(e => e.Key).OrderBy(k => k));
+    }
+
+    [Fact]
+    public void Unlink_FreedSlotIsReusedByTheNextInsert()
+    {
+        // The freed slot goes on the free list, so the next insert takes it rather than
+        // appending a new one - wherever that insert's own bucket happens to be.
+        var storage = ThreeInOneBucket();
+        var head = storage.BucketHead(0);
+        storage.Unlink(0, -1, head);
+
+        storage.Insert(1, "d", 4);
+
+        Assert.Equal(head, storage.BucketHead(storage.BucketIndexFor(1)));
+        Assert.Equal("d", storage.Entry(head).Key);
+        Assert.Equal(3, storage.Count);
+    }
 }

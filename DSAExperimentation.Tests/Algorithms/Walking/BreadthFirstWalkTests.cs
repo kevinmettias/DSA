@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Walking;
 using DSAExperimentation.DataStructures.Graph.Contracts.Ordering;
+using DSAExperimentation.Tests.Algorithms.Traversal.BreadthFirst.Fixtures;
 using DSAExperimentation.Tests.Algorithms.Walking.Fixtures;
 using DSAExperimentation.Tests.DataStructures.Graph.Fixtures;
 
@@ -160,4 +161,49 @@ public sealed partial class BreadthFirstWalkTests
     }
 
     public readonly record struct WalkExample(GraphShape Shape, string[] Names, int[] Depths, string[] Frontier);
+
+    // HooksStep is private to BreadthFirstWalk: it is how the void Walk overload runs a
+    // set of IBreadthFirstHooks through the state-threading engine, so that overload is
+    // the way in. Its Seed is not tested because nothing reads it - the void overload
+    // starts the engine from default(Unit) directly.
+    public sealed partial class HooksStepTests
+    {
+        private struct TreeMarker;
+        private struct DiamondMarker;
+
+        //      A
+        //     / \
+        //    B   C
+        //   / \
+        //  D   E      (WalkGraphs.Tree)
+        [Fact]
+        public void Enter_FiresTheHooksVisitForEachNodeLevelByLevelWithItsDepth()
+        {
+            WalkWithHooks<UnguardedVisit<TestNode>, TreeMarker>(WalkGraphs.Tree(), default);
+
+            Assert.Equal(
+                new[] { ("A", 0), ("B", 1), ("C", 1), ("D", 2), ("E", 2) },
+                RecordingVisitHooks<TreeMarker>.Visited);
+        }
+
+        [Fact]
+        public void Enter_UnderTheTrackedGuard_FiresOnceForASharedChild()
+        {
+            var (root, _) = WalkGraphs.DiamondShare();
+
+            WalkWithHooks<TrackedVisitGuard<TestNode>, DiamondMarker>(root, new TrackedVisitGuard<TestNode>([root]));
+
+            Assert.Equal(
+                new[] { ("A", 0), ("B", 1), ("C", 1), ("D", 2) },
+                RecordingVisitHooks<DiamondMarker>.Visited);
+        }
+
+        private static void WalkWithHooks<TGuard, TMarker>(TestNode root, TGuard guard)
+            where TGuard : IVisitGuard<TestNode>
+            where TMarker : struct
+            => BreadthFirstWalk.Walk<
+                TestNode, TestTopology, ListChildren<TestNode>,
+                NaturalChildOrder<TestNode, ListChildren<TestNode>>, ListChildren<TestNode>,
+                TGuard, RecordingVisitHooks<TMarker>>(root, guard);
+    }
 }
