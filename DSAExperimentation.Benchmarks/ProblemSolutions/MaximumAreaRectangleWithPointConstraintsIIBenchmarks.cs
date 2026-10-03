@@ -11,47 +11,67 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // arm a pre-built Set. Points are a dense grid, same shape Part I's benchmark
 // uses, so both arms have real rectangles to find rather than scanning a mostly
 // empty space.
+//
+// Sizes are per arm. The quadruple scan is O(n^5) in the point count, so it stops at
+// an 8 x 8 grid; the O(n log n) sweep runs on to a 400 x 400 grid, whose 160,000 points
+// stay inside LC 3382's bound of 2 * 10^5. The two are compared at the sizes both run.
 public class MaximumAreaRectangleWithPointConstraintsIIBenchmarks
 {
-    private int[] _xCoord = [];
+    private Dictionary<int, (int[] XCoord, int[] YCoord)> _coordinatesBySide = [];
 
-    private int[] _yCoord = [];
-    private MaximumAreaRectangleWithPointConstraintsIISolution.Point[] _sortedPoints = [];
-    // The quadruple scan is O(n^5), so GridSide has to stay small enough for it
-    // to finish - the sweep arm alone could run at far larger n.
-    [Params(4, 8)]
-    public int GridSide { get; set; }
+    private Dictionary<int, MaximumAreaRectangleWithPointConstraintsIISolution.Point[]> _sortedPointsBySide = [];
 
+    public static IEnumerable<int> QuadrupleScanSizes => [4, 8];
+
+    public static IEnumerable<int> SweepSizes => [.. QuadrupleScanSizes, 64, 400];
+
+    // Every grid side any arm runs is built here, outside the timed region, in both shapes
+    // the arms take; an arm looks its own up.
     [GlobalSetup]
     public void Setup()
     {
-        var n = GridSide * GridSide;
-        _xCoord = new int[n];
-        _yCoord = new int[n];
+        _coordinatesBySide = SweepSizes.ToDictionary(side => side, BuildGridCoordinates);
+        _sortedPointsBySide = _coordinatesBySide.ToDictionary(entry => entry.Key, entry => SortPoints(entry.Value));
+    }
+
+    private static (int[] XCoord, int[] YCoord) BuildGridCoordinates(int gridSide)
+    {
+        var n = gridSide * gridSide;
+        var xCoord = new int[n];
+        var yCoord = new int[n];
         var index = 0;
 
-        for (var x = 0; x < GridSide; x++)
+        for (var x = 0; x < gridSide; x++)
         {
-            for (var y = 0; y < GridSide; y++)
+            for (var y = 0; y < gridSide; y++)
             {
-                _xCoord[index] = x;
-                _yCoord[index] = y;
+                xCoord[index] = x;
+                yCoord[index] = y;
                 index++;
             }
         }
 
-        _sortedPoints = Enumerable.Range(0, n)
-            .Select(i => new MaximumAreaRectangleWithPointConstraintsIISolution.Point(_xCoord[i], _yCoord[i]))
+        return (xCoord, yCoord);
+    }
+
+    private static MaximumAreaRectangleWithPointConstraintsIISolution.Point[] SortPoints((int[] XCoord, int[] YCoord) grid) =>
+        Enumerable.Range(0, grid.XCoord.Length)
+            .Select(i => new MaximumAreaRectangleWithPointConstraintsIISolution.Point(grid.XCoord[i], grid.YCoord[i]))
             .OrderBy(p => p.X)
             .ThenBy(p => p.Y)
             .ToArray();
-    }
 
     [Benchmark(Baseline = true)]
-    public long QuadrupleScan() =>
-        MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaByQuadrupleScan(_xCoord, _yCoord);
+    [ArgumentsSource(nameof(QuadrupleScanSizes))]
+    public long QuadrupleScan(int gridSide)
+    {
+        var (xCoord, yCoord) = _coordinatesBySide[gridSide];
+
+        return MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaByQuadrupleScan(xCoord, yCoord);
+    }
 
     [Benchmark]
-    public long SweepSegmentTree() =>
-        MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaBySweepSegmentTree(_sortedPoints);
+    [ArgumentsSource(nameof(SweepSizes))]
+    public long SweepSegmentTree(int gridSide) =>
+        MaximumAreaRectangleWithPointConstraintsIISolution.MaxAreaBySweepSegmentTree(_sortedPointsBySide[gridSide]);
 }

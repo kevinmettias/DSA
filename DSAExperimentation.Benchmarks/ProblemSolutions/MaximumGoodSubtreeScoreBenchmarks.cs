@@ -5,30 +5,50 @@ using DSAExperimentation.LeetCode.MaximumGoodSubtreeScore;
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MaximumGoodSubtreeScoreSolution's, the same methods
-// MaximumGoodSubtreeScoreSolutionTests proves correct. BruteForce is exponential in subtree
-// size (2^n dominated by the root), so node counts stay small enough for it to
-// finish - large enough to still show BitmaskTreeFold's per-node reuse paying off.
+// MaximumGoodSubtreeScoreSolutionTests proves correct.
+//
+// Sizes are per arm. BruteForce is exponential in subtree size (2^n dominated by the
+// root), so it stops at 20 nodes; BitmaskTreeFold reuses each child's 1,024-mask
+// knapsack instead, so its cost grows with the node count rather than with the
+// subsets, and it runs on to LC 3575's own bound of 500 nodes. The two are compared at
+// the sizes both run.
 public class MaximumGoodSubtreeScoreBenchmarks
 {
     private const int TreeSeed = 3575;
 
-    private int[] _vals = [];
+    private Dictionary<int, (int[] Vals, int[] Par, RootedTreeNode Root)> _treeByNodeCount = [];
 
-    private int[] _par = [];
-    private RootedTreeNode _root = null!;
-    [Params(12, 20)]
-    public int NodeCount { get; set; }
+    public static IEnumerable<int> BruteForceSizes => [12, 20];
 
+    public static IEnumerable<int> BitmaskTreeFoldSizes => [.. BruteForceSizes, 100, 500];
+
+    // Every node count any arm runs is built here, outside the timed region; an arm looks
+    // its own up.
     [GlobalSetup]
-    public void Setup()
+    public void Setup() => _treeByNodeCount = BitmaskTreeFoldSizes.ToDictionary(count => count, BuildTree);
+
+    private static (int[] Vals, int[] Par, RootedTreeNode Root) BuildTree(int nodeCount)
     {
-        (_vals, _par) = GoodSubtreeWorkloads.Build(NodeCount, TreeSeed);
-        _root = ParentArrayTree.Build(_par)[0];
+        var (vals, par) = GoodSubtreeWorkloads.Build(nodeCount, TreeSeed);
+
+        return (vals, par, ParentArrayTree.Build(par)[0]);
     }
 
     [Benchmark(Baseline = true)]
-    public int BruteForce() => MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBruteForce(_vals, _par);
+    [ArgumentsSource(nameof(BruteForceSizes))]
+    public int BruteForce(int nodeCount)
+    {
+        var (vals, par, _) = _treeByNodeCount[nodeCount];
+
+        return MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBruteForce(vals, par);
+    }
 
     [Benchmark]
-    public int BitmaskTreeFold() => MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBitmaskTreeFold(_root, _vals);
+    [ArgumentsSource(nameof(BitmaskTreeFoldSizes))]
+    public int BitmaskTreeFold(int nodeCount)
+    {
+        var (vals, _, root) = _treeByNodeCount[nodeCount];
+
+        return MaximumGoodSubtreeScoreSolution.GoodSubtreeScoreSumByBitmaskTreeFold(root, vals);
+    }
 }

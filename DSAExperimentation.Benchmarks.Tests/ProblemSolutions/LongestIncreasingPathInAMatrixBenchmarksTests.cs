@@ -21,8 +21,8 @@ public sealed partial class LongestIncreasingPathInAMatrixBenchmarksTests
     [Fact]
     public void Setup_SmallestSize_RebuildsTheSameWorkload()
     {
-        Assert.Equal(ExpectedLongestIncreasingPathLength, BuildHarness().MemoizedRecurrence());
-        Assert.Equal(BuildHarness().NaiveRecursion(), BuildHarness().NaiveRecursion());
+        Assert.Equal(ExpectedLongestIncreasingPathLength, BuildHarness().MemoizedRecurrence(SmallestSize));
+        Assert.Equal(BuildHarness().NaiveRecursion(SmallestSize), BuildHarness().NaiveRecursion(SmallestSize));
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public sealed partial class LongestIncreasingPathInAMatrixBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedLongestIncreasingPathLength, harness.NaiveRecursion());
-        Assert.Equal(harness.MemoizedRecurrence(), harness.NaiveRecursion());
+        Assert.Equal(ExpectedLongestIncreasingPathLength, harness.NaiveRecursion(SmallestSize));
+        Assert.Equal(harness.MemoizedRecurrence(SmallestSize), harness.NaiveRecursion(SmallestSize));
     }
 
     [Fact]
@@ -39,13 +39,13 @@ public sealed partial class LongestIncreasingPathInAMatrixBenchmarksTests
     {
         var harness = BuildHarness();
 
-        Assert.Equal(ExpectedLongestIncreasingPathLength, harness.MemoizedRecurrence());
-        Assert.Equal(harness.NaiveRecursion(), harness.MemoizedRecurrence());
+        Assert.Equal(ExpectedLongestIncreasingPathLength, harness.MemoizedRecurrence(SmallestSize));
+        Assert.Equal(harness.NaiveRecursion(SmallestSize), harness.MemoizedRecurrence(SmallestSize));
     }
 
     private static LongestIncreasingPathInAMatrixBenchmarks BuildHarness()
     {
-        var harness = new LongestIncreasingPathInAMatrixBenchmarks { Size = SmallestSize };
+        var harness = new LongestIncreasingPathInAMatrixBenchmarks();
         harness.Setup();
 
         return harness;
