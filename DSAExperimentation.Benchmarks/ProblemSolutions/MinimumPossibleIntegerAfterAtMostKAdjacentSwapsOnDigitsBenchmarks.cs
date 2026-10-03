@@ -6,13 +6,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsSolution's, the same methods the
 // coverage test proves correct - the O(Length^2) physical List<char> simulation against the
 // Fenwick-tree greedy that answers "how many unplaced digits sit before this one" in
-// O(log Length). K is fixed at int.MaxValue/2 (an effectively unlimited swap budget) so both
+// O(log Length). K is fixed at LC 1505's own ceiling of 10^9 - an effectively unlimited
+// swap budget, since no Length here can use more than Length^2 / 2 swaps - so both
 // strategies are always forced to consider the entire remaining digit list at every slot,
 // rather than an early exit on a tiny budget making brute force look artificially
 // competitive.
 public class MinimumPossibleIntegerAfterAtMostKAdjacentSwapsOnDigitsBenchmarks
 {
-    private const int UnlimitedBudget = int.MaxValue / 2;
+    private const int UnlimitedBudget = 1_000_000_000;
 
     private const int RandomSeed = 1505; // LeetCode problem number
 

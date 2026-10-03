@@ -15,7 +15,7 @@ public sealed partial class DisappearingNodesWorkloadsTests
     private const int MinEdgeLength = 1;
     private const int MaxEdgeLength = 100;
     private const int MinDisappearTime = 1;
-    private const int MaxDisappearTime = 1_000_000;
+    private const int MaxDisappearTime = 100_000; // LC 3112's own ceiling
 
     [Fact]
     public void Build_EveryEdge_JoinsTwoDistinctNodesWithALengthInsideTheBand()

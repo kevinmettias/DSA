@@ -8,12 +8,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LaserHeight = RoomSide - 1 keeps every pair coprime (consecutive integers always
 // are), forcing the simulation through its full O(roomSide) worst case instead of an
 // early exit at a small common factor. The inputs are two ints, so there is nothing
-// to hoist into a [GlobalSetup].
+// to hoist into a [GlobalSetup]. RoomSide stops at LC 858's own bound of p <= 1,000.
 public class MirrorReflectionBenchmarks
 {
     private int LaserHeight => RoomSide - 1;
 
-    [Params(50_000, 500_000)]
+    [Params(100, 1_000)]
     public int RoomSide { get; set; }
 
     [Benchmark(Baseline = true)]

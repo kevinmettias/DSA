@@ -4,7 +4,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are MinimumTimeVisitingAllPointsSolution's - open-coded
 // max(|dx|, |dy|) against Algorithms.ShortestPaths' ChebyshevHeuristic witness, applied purely
-// for its distance computation rather than an actual search.
+// for its distance computation rather than an actual search. PointCount stops at LC 1266's
+// own bound of 100 points.
 public class MinimumTimeVisitingAllPointsBenchmarks
 {
     private const int CoordinateMagnitude = 1_000;
@@ -12,7 +13,7 @@ public class MinimumTimeVisitingAllPointsBenchmarks
 
     private int[][] _points = [];
 
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int PointCount { get; set; }
 
     [GlobalSetup]

@@ -6,6 +6,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods MostStonesRemovedWithSameRowOrColumnSolutionTests proves correct. The stone field is
 // generated once in [GlobalSetup] so only edge discovery and unioning are measured -
 // PairwiseScan's O(n^2) pair sweep against RowColumnKeyedUnion's O(n) axis unions.
+// StoneCount stops at LC 947's own bound of 1,000 stones.
 public class MostStonesRemovedWithSameRowOrColumnBenchmarks
 {
     private const int RandomSeed = 947; // LC problem number
@@ -13,7 +14,7 @@ public class MostStonesRemovedWithSameRowOrColumnBenchmarks
 
     private int[][] _stones = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int StoneCount { get; set; }
 
     [GlobalSetup]

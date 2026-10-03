@@ -10,11 +10,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // feasible partition - the search explores real candidate splits instead of
 // bailing out on "impossible" immediately. Length stays modest: the
 // Dictionary-memo baseline is still a recursion over every candidate group
-// boundary, and this is the axis whose state count that recursion pays for.
+// boundary, and this is the axis whose state count that recursion pays for. Values
+// are drawn from LC 3117's own 1 <= nums[i] < 10^5, so every group's AND stays below
+// 10^5 too.
 public class MinimumSumOfValuesByDividingArrayBenchmarks
 {
     private const int Seed = 3117; // LC problem number
-    private const int MaxValueExclusive = 1 << 17;
+    private const int MaxValueExclusive = 100_000;
     private const int GroupCount = 4;
 
     private int[] _nums = [];
@@ -27,7 +29,7 @@ public class MinimumSumOfValuesByDividingArrayBenchmarks
     public void Setup()
     {
         var random = new Random(Seed);
-        _nums = SeededDraws.Values(Length, 0, MaxValueExclusive, random);
+        _nums = SeededDraws.Values(Length, 1, MaxValueExclusive, random);
         _andValues = BuildFeasibleAndValues(_nums, GroupCount, random);
     }
 

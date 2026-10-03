@@ -13,7 +13,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(max/min) per pair) against the modulo-based Euclidean algorithm (O(log min)
 // per pair). _values are all multiples of MultipleFactor so no window's running
 // gcd ever reaches 1, forcing both arms through the full O(n^2) scan instead of
-// one short-circuiting on an early window.
+// one short-circuiting on an early window. Length stops at LC 2654's own bound of 50.
 public class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneBenchmarks
 {
     private const int RandomSeed = 2654; // LC problem number
@@ -22,7 +22,7 @@ public class MinimumNumberOfOperationsToMakeAllArrayElementsEqualToOneBenchmarks
 
     private int[] _values = [];
 
-    [Params(30, 100)]
+    [Params(30, 50)]
     public int Length { get; set; }
 
     [GlobalSetup]

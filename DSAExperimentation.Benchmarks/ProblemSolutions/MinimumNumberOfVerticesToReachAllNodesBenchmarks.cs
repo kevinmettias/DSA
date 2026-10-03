@@ -27,14 +27,29 @@ public class MinimumNumberOfVerticesToReachAllNodesBenchmarks
 
         for (var to = 1; to < NodeCount; to++)
         {
-            var edgeCount = random.Next(1, EdgeCountUpperBoundExclusive);
-            for (var e = 0; e < edgeCount; e++)
-            {
-                edges.Add([random.Next(to), to]);
-            }
+            AddEdgesInto(edges, to, random);
         }
 
         _edges = [.. edges];
+    }
+
+    // One or two edges into `to`, each from an earlier node. LC 1557's (from, to) pairs are
+    // all distinct, so a second draw of a source already chosen adds nothing - and is still
+    // drawn, so every later edge comes out of the seeded stream unchanged.
+    private static void AddEdgesInto(List<int[]> edges, int to, Random random)
+    {
+        var edgeCount = random.Next(1, EdgeCountUpperBoundExclusive);
+        var sources = new HashSet<int>();
+
+        for (var e = 0; e < edgeCount; e++)
+        {
+            var from = random.Next(to);
+
+            if (sources.Add(from))
+            {
+                edges.Add([from, to]);
+            }
+        }
     }
 
     [Benchmark(Baseline = true)]

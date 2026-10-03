@@ -8,7 +8,7 @@ internal static class DisappearingNodesWorkloads
 {
     private const int ExtraEdgesPerNode = 2;
     private const int MaxLengthExclusive = 101; // kept small so distances stay well under the disappear ceiling
-    private const int DisappearCeilingExclusive = 1_000_001; // comfortably above any reachable distance at this scale
+    private const int DisappearCeilingExclusive = 100_001; // LC 3112's own 10^5, still comfortably above any reachable distance at this scale
 
     public static (int[][] Edges, int[] Disappear) Build(int nodeCount, int seed)
     {

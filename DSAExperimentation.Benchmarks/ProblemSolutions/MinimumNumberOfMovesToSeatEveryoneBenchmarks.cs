@@ -6,19 +6,21 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Harness only: both arms are MinimumNumberOfMovesToSeatEveryoneSolution's, the
 // same methods MinimumNumberOfMovesToSeatEveryoneSolutionTests proves correct - an O(n^2)
 // selection sort of both arrays against this repo's own O(n log n) MergeSort over
-// ArrayIndexedSequence, each followed by the same index-wise distance sum.
+// ArrayIndexedSequence, each followed by the same index-wise distance sum. Length
+// stops at LC 2037's own bound of 100 seats.
 public class MinimumNumberOfMovesToSeatEveryoneBenchmarks
 {
     // LC problem number, reused as the deterministic random seed.
     private const int RandomSeed = 2037;
 
-    // Exclusive upper bound on a generated seat or student position.
-    private const int MaxSeatPosition = 1_000_000;
+    // Exclusive upper bound on a generated seat or student position: LC 2037 places
+    // both in [1, 100].
+    private const int MaxSeatPosition = 101;
 
     private int[] _seats = [];
 
     private int[] _students = [];
-    [Params(200, 5_000)]
+    [Params(10, 100)]
     public int Length { get; set; }
 
     [GlobalSetup]
