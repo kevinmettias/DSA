@@ -540,6 +540,48 @@ The comparer stays a plain `IComparer<T>` parameter, same §9.2 reasoning as `Bi
 over. There is no precondition law analogous to `BinarySearch`'s sortedness, either — sortedness
 is `MergeSort`'s postcondition, not an assumed input.
 
+### 11.4 Element algebras: one chain across four structures, and why §11.1 does not split it
+
+`SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` each need an algebra over
+their elements, and each once declared its own: `ICombineOperation` in `SegmentTree/`,
+`IGroupOperation` in `FenwickTree/`, `IScaledGroupOperation` in `RangeFenwickTree/` (the one that
+did refine its neighbour), and an `IRangeUpdateOperation` that redeclared `Identity`/`Combine`
+rather than inherit them — each citing §11.1's domain separation. The cost was concrete: two
+byte-identical `SumOperation`s, a third (`ScaledSumOperation`) with the same body plus `Scale`, and a
+private `BuildCombine` adapter inside `LazySegmentTree` whose only job was to re-present
+`TOperation`'s `Identity`/`Combine` under the other contract's name so both trees could share one
+build recursion.
+
+They now form one chain in `DataStructures/ElementAlgebra/` — `ICombineOperation` (monoid) ←
+`IGroupOperation` (+ `Invert`) ← `IScaledGroupOperation` (+ `Scale`) — with one `SumOperation` at the
+deepest position addition reaches, plus `MinOperation`, `MaxOperation` and `XorOperation`.
+`IRangeUpdateOperation` refines `ICombineOperation` but stays in `LazySegmentTree/`.
+
+**Why §5 step 5 does not fire.** Step 5 forbids reusing another domain's *Representation or
+Topology* contract, because a fold's node list and a heap's array are different enough shapes that a
+shared interface leaks. These contracts are neither: they are laws on the element type — identity,
+associativity, inverse, scaling — the way `INumber<T>` is, which every `SumOperation` already
+depended on. No structure now reuses another structure's contract; all four consume a neutral one,
+the same arrangement as `ByPriorityOrder` implementing `Heap`'s `IHeapOrder` for `ShortestPath`.
+
+**Why this is not §13.6's case.** `Sequence/` also gathered two contracts into one folder and still
+kept `IRandomAccessSequence` and `IIndexedSequence` apart, citing §11.1. The difference is what the
+contracts describe. Those two are capability levels of a *Representation*, each owned by the
+algorithm family that consumes it, and the write-capable one carries a law (§11.2's aliasing) the
+read-only one never states. Here the overlapping members were identical in name, signature and law
+— `BuildCombine` said so in as many words — so keeping them apart bought nothing but the adapter.
+
+**The rule that keeps the chain honest.** A member only one structure needs never joins it; it goes in
+a structure-local refinement. `IRangeUpdateOperation`'s update tags are the example: lazy
+propagation is `LazySegmentTree`'s business, so `SegmentTree` and `FenwickTree` never see them.
+
+**What changed, stated plainly.** One witness per algebra instead of one per structure; `SumOperation`
+serving all three summing structures; `BuildCombine` deleted. The structures' own constraints read
+exactly as before, and a Fenwick tree over `MinOperation` was a compile error before this too — what
+the chain adds is the reason, stated once on `IGroupOperation`, instead of a sentence repeated in four
+unrelated interfaces. Dispatch is unchanged: every operation is still a static-abstract witness on a
+struct type parameter.
+
 ## 12. Worked example: `Traversal/DepthFirstSearch`
 
 > Paths below are as they stood before §13's reorg. See §13 for where each file lives today.
@@ -670,6 +712,7 @@ generic over (§5 step 7, §13.5) — `Buffers`, `Heap`, `HashMap`, `DynamicArra
 | Queue | `Queue/Queue.cs` (composes `Deque`) |
 | Set | `Set/Set.cs` (composes `HashMap<T,bool>`) |
 | Sequence | `Sequence/{IRandomAccessSequence,ArraySequence,DynamicArraySequence,IIndexedSequence,ArrayIndexedSequence,DynamicArrayIndexedSequence}.cs` (§13.6) |
+| ElementAlgebra | `ElementAlgebra/{ICombineOperation,IGroupOperation,IScaledGroupOperation,SumOperation,MinOperation,MaxOperation,XorOperation}.cs` — the element algebras `SegmentTree`, `FenwickTree`, `RangeFenwickTree` and `LazySegmentTree` draw from, as one refinement chain (§11.4) |
 | Graph — Contracts/Ordering | `Graph/Contracts/Ordering/**` |
 | Graph — Topology chain | `Graph/Contracts/Topologies/**`, `Graph/Engines/Dags/IDagTopology.cs`, `Graph/Engines/Dags/Trees/ITreeTopology.cs` |
 | Graph — Trees | `Graph/Engines/Dags/Trees/{BinaryTreeNode,BinaryTreeChildren,BinaryTreeTopology,ChildSide,FindClosest,IInOrderHooks,InOrderTraversal,BinarySearchTree,LowercaseTrieNode,LowercaseTrieTopology,LowercaseTrie,BitTrieNode,BitTrieChildren,BitTrieTopology,BitTrie,RootedTreeNode,RootedTreeTopology,ParentArrayTree}.cs` (§13.7, §13.8, §13.9, §17.6) |

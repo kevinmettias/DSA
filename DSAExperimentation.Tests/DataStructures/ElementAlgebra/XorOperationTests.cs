@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.FenwickTree;
+using DSAExperimentation.DataStructures.ElementAlgebra;
 
-namespace DSAExperimentation.Tests.DataStructures.FenwickTree;
+namespace DSAExperimentation.Tests.DataStructures.ElementAlgebra;
 
 public sealed partial class XorOperationTests
 {

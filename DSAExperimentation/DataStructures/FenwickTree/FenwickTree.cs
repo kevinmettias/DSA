@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures.ElementAlgebra;
+
 namespace DSAExperimentation.DataStructures.FenwickTree;
 
 // Add/PrefixQuery/Query are O(log n) - depends on FenwickArray<Element>.Get/Set being O(1). See

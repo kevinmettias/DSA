@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures.ElementAlgebra;
+
 namespace DSAExperimentation.DataStructures.SegmentTree;
 
 // The one recursion both range trees build with: a leaf takes its element straight from the source

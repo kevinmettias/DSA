@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
+using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
 using RepoQueue = DSAExperimentation.DataStructures.Queue.Queue<int>;
 using RepoStack = DSAExperimentation.DataStructures.Stack.Stack<DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees.RootedTreeNode>;
@@ -125,7 +126,7 @@ internal static class ShortestPathInAWeightedTreeSolution
     // Node v's distance from the root is the sum of every ancestor edge's
     // weight, and updating one edge changes that sum for exactly the subtree
     // below it - a range-add. This repo's own RangeFenwickTree<long,
-    // ScaledSumOperation<long>> (RangeFenwickTree.cs's own doc comment: "a point
+    // SumOperation<long>> (RangeFenwickTree.cs's own doc comment: "a point
     // query is just Query(i, i)") is exactly a range-add/point-query structure,
     // so each edge's weight is posted once as RangeAdd(TimeIn[child],
     // TimeOut[child], weight), an update re-posts the delta over the same range,
@@ -146,7 +147,7 @@ internal static class ShortestPathInAWeightedTreeSolution
         int[] TimeIn,
         int[] TimeOut,
         int[] CurrentWeight,
-        RangeFenwickTree<long, ScaledSumOperation<long>> Fenwick) BuildEulerSweepState(int nodeCount, int[][] edges)
+        RangeFenwickTree<long, SumOperation<long>> Fenwick) BuildEulerSweepState(int nodeCount, int[][] edges)
     {
         var (parent, parentWeight) = BuildParentArrays(nodeCount, edges);
         var nodes = ParentArrayTree.Build(parent);
@@ -283,10 +284,10 @@ internal static class ShortestPathInAWeightedTreeSolution
     // that is what makes an update a delta over the same range and a [2, x] query
     // a single point read. CurrentWeight records what was posted, so an update
     // can post only the difference.
-    private static (int[] CurrentWeight, RangeFenwickTree<long, ScaledSumOperation<long>> Fenwick)
+    private static (int[] CurrentWeight, RangeFenwickTree<long, SumOperation<long>> Fenwick)
         PostInitialEdgeWeights(int nodeCount, int[] parentWeight, int[] timeIn, int[] timeOut)
     {
-        var fenwick = new RangeFenwickTree<long, ScaledSumOperation<long>>(nodeCount);
+        var fenwick = new RangeFenwickTree<long, SumOperation<long>>(nodeCount);
         var currentWeight = new int[nodeCount];
 
         for (var id = 1; id < nodeCount; id++)
@@ -300,7 +301,7 @@ internal static class ShortestPathInAWeightedTreeSolution
 
     private static List<int> AnswerQueriesByEulerSweep(
         (int[] Parent, int[] TimeIn, int[] TimeOut, int[] CurrentWeight,
-            RangeFenwickTree<long, ScaledSumOperation<long>> Fenwick) state, int[][] queries)
+            RangeFenwickTree<long, SumOperation<long>> Fenwick) state, int[][] queries)
     {
         var answers = new List<int>();
 

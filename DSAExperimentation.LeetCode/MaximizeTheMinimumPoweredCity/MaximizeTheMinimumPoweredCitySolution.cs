@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
 using RepoRangeFenwickTree = DSAExperimentation.DataStructures.RangeFenwickTree.RangeFenwickTree<
-    long, DSAExperimentation.DataStructures.RangeFenwickTree.ScaledSumOperation<long>>;
+    long, DSAExperimentation.DataStructures.ElementAlgebra.SumOperation<long>>;
 
 namespace DSAExperimentation.LeetCode.MaximizeTheMinimumPoweredCity;
 
@@ -75,7 +75,7 @@ internal static class MaximizeTheMinimumPoweredCitySolution
         return BinarySearch.LowerBound<bool, InfeasibleTargetSequence>(sequence, true) - 1;
     }
 
-    // The composed sweep: RangeFenwickTree<long, ScaledSumOperation<long>> absorbs both
+    // The composed sweep: RangeFenwickTree<long, SumOperation<long>> absorbs both
     // the initial coverage (one RangeAdd per existing station) and every greedy top-up
     // (another RangeAdd), and each city's running power is read back with Query(i, i) -
     // exactly the point read RangeFenwickTree's own doc comment prescribes.

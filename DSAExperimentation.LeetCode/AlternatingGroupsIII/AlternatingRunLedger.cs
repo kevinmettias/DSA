@@ -1,5 +1,6 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.DynamicArray;
+using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Sequence;
 

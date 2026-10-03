@@ -21,9 +21,9 @@ namespace DSAExperimentation.DataStructures.LazySegmentTree;
 // duplication check confirmed this the hard way: an earlier version of this file kept its own
 // LazySegmentTreeArray/LazySegmentTreeIndex/LazySegmentRange copies, and check-duplicate-constant
 // plus check-interfile-duplication both flagged the result against SegmentTree's identical files.
-// IRangeUpdateOperation<Element,TUpdate> itself still stays independently declared, not inherited
-// from ICombineOperation<Element> - that is a witness/Operations-law contract, exactly what §5
-// step 5 *does* forbid reusing across domains (see IRangeUpdateOperation.cs's own doc comment).
+// IRangeUpdateOperation<Element,TUpdate> refines the element monoid both trees share
+// (ElementAlgebra.ICombineOperation) with the update action only this tree has - the algebra is the
+// element type's, not SegmentTree's, so sharing it reuses no other structure's contract (§11.4).
 //
 // Range-update only, deliberately: no point-Update method. Mixing point-update semantics (which
 // would need to bypass any pending tag) with this lazy range-update scheme on one instance would
@@ -69,21 +69,10 @@ internal sealed class LazySegmentTree<Element, TUpdate, TOperation>
     // _pending needs no seeding pass here: the constructor builds it with TOperation.NoUpdate as the
     // arena's fill, so every node reads as "nothing pending" before Build touches anything - not
     // merely the nodes this recursion visits.
+    // TOperation refines ElementAlgebra.ICombineOperation, so the build recursion SegmentTree uses
+    // takes it directly.
     private void Build(SegmentRange range, IReadOnlyList<Element> initial) =>
-        SegmentTreeBuild.Fill<Element, BuildCombine>(_values, range, initial);
-
-    // SegmentTreeBuild.Fill is contracted on ICombineOperation<Element>; this tree's TOperation is an
-    // IRangeUpdateOperation<Element,TUpdate>, which deliberately does not inherit it (that file's own
-    // doc comment: two structure identities, two witnesses). Forwarding Combine - the one member the
-    // two contracts already state identically - lets both trees keep one shared build recursion
-    // without either contract being declared in terms of the other. Not a second witness for callers
-    // to satisfy: it is private, and nothing outside this class ever names it.
-    private readonly struct BuildCombine : ICombineOperation<Element>
-    {
-        public static Element Identity => TOperation.Identity;
-
-        public static Element Combine(Element left, Element right) => TOperation.Combine(left, right);
-    }
+        SegmentTreeBuild.Fill<Element, TOperation>(_values, range, initial);
 
     private void UpdateRange(SegmentRange range, int left, int right, TUpdate update)
     {

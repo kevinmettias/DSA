@@ -1,3 +1,5 @@
+using DSAExperimentation.DataStructures.ElementAlgebra;
+
 namespace DSAExperimentation.DataStructures.SegmentTree;
 
 // Update/Query are O(log n) - a claim that assumes SegmentTreeArray<Element>.Get/Set are O(1). See

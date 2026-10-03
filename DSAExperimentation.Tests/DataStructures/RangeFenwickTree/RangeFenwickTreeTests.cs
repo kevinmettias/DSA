@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
 
 namespace DSAExperimentation.Tests.DataStructures.RangeFenwickTree;
@@ -8,14 +9,14 @@ public sealed partial class RangeFenwickTreeTests
 
     private readonly record struct RangeAddQueryExpectations(int Before, int Within, int AtLastIndex, int Full);
 
-    private static void AssertQuery(RangeFenwickTree<int, ScaledSumOperation<int>> tree, int low, int high, int expected)
+    private static void AssertQuery(RangeFenwickTree<int, SumOperation<int>> tree, int low, int high, int expected)
     {
         var actual = tree.Query(low, high);
         Assert.Equal(expected, actual);
     }
 
     private static void AssertOverlapRangeAddQueries(
-        RangeFenwickTree<int, ScaledSumOperation<int>> tree,
+        RangeFenwickTree<int, SumOperation<int>> tree,
         RangeAddQueryExpectations expected)
     {
         tree.RangeAdd(Fixtures.OverlapRangeLow, Fixtures.OverlapRangeHigh, Fixtures.OverlapRangeAddValue);
@@ -29,7 +30,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void Constructor_SizeOnly_StartsAtZeroEverywhere()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeFive);
 
         AssertQuery(tree, 0, Fixtures.LastIndex, 0);
     }
@@ -37,7 +38,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void RangeAdd_OnlyAffectsQueriesOverlappingTheUpdatedRange()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeFive);
 
         AssertOverlapRangeAddQueries(
             tree,
@@ -58,9 +59,9 @@ public sealed partial class RangeFenwickTreeTests
         AssertQuery(tree, 0, Fixtures.LastIndex, Fixtures.SumOverWholeTreeAfterBothRanges);
     }
 
-    private static RangeFenwickTree<int, ScaledSumOperation<int>> TreeWithTwoOverlappingRangeAdds()
+    private static RangeFenwickTree<int, SumOperation<int>> TreeWithTwoOverlappingRangeAdds()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeFive);
 
         tree.RangeAdd(Fixtures.OverlapRangeLow, Fixtures.OverlapRangeHigh, Fixtures.OverlapRangeAddValue);
         tree.RangeAdd(Fixtures.SecondRangeLow, Fixtures.LastIndex, Fixtures.SecondRangeAddValue);
@@ -76,9 +77,9 @@ public sealed partial class RangeFenwickTreeTests
         AssertQuery(tree, 0, Fixtures.LastIndex, Fixtures.SumOverWholeTreeAfterFullRangeAdd);
     }
 
-    private static RangeFenwickTree<int, ScaledSumOperation<int>> TreeAfterFullRangeAdd()
+    private static RangeFenwickTree<int, SumOperation<int>> TreeAfterFullRangeAdd()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeFive);
 
         tree.RangeAdd(0, Fixtures.LastIndex, Fixtures.FullRangeAddValue);
 
@@ -88,7 +89,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void Constructor_FromInitialValues_QueryMatchesRangeSum()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(InitialValuesOneThroughFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(InitialValuesOneThroughFive);
 
         AssertQuery(tree, 0, Fixtures.LastIndex, Fixtures.SumOfAllInitialValues);
         AssertQuery(tree, Fixtures.OverlapRangeLow, Fixtures.OverlapRangeHigh, Fixtures.SumOfMiddleThreeInitialValues);
@@ -97,7 +98,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void RangeAdd_AfterConstructorFromInitialValues_ComposesWithInitialValues()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(InitialValuesOneThroughFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(InitialValuesOneThroughFive);
 
         AssertOverlapRangeAddQueries(
             tree,
@@ -111,7 +112,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void PrefixQuery_ReturnsRunningSumUpToIndex()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(InitialValuesOneThroughFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(InitialValuesOneThroughFive);
 
         Assert.Equal(1, tree.PrefixQuery(0));
         Assert.Equal(Fixtures.RunningSumThroughIndexTwo, tree.PrefixQuery(Fixtures.PrefixQueryIndex));
@@ -121,7 +122,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void Query_SingleIndex_ActsAsAPointQuery()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(InitialValuesOneThroughFive);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(InitialValuesOneThroughFive);
 
         tree.RangeAdd(Fixtures.OverlapRangeLow, Fixtures.OverlapRangeHigh, Fixtures.OverlapRangeAddValue);
 
@@ -132,7 +133,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void Count_ReflectsConstructorSize()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeSeven);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeSeven);
 
         Assert.Equal(Fixtures.TreeSizeSeven, tree.Count);
     }
@@ -140,7 +141,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void Query_OutOfRangeRight_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeThree);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeThree);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => tree.Query(0, Fixtures.TreeSizeThree));
     }
@@ -148,7 +149,7 @@ public sealed partial class RangeFenwickTreeTests
     [Fact]
     public void RangeAdd_RightOutOfRange_ThrowsArgumentOutOfRangeException()
     {
-        var tree = new RangeFenwickTree<int, ScaledSumOperation<int>>(Fixtures.TreeSizeThree);
+        var tree = new RangeFenwickTree<int, SumOperation<int>>(Fixtures.TreeSizeThree);
 
         Assert.Throws<ArgumentOutOfRangeException>(() => tree.RangeAdd(0, Fixtures.TreeSizeThree, Fixtures.OutOfRangeAddValue));
     }

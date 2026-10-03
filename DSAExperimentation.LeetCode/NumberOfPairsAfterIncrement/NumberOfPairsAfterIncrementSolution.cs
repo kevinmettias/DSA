@@ -1,3 +1,4 @@
+using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.RangeFenwickTree;
 
 namespace DSAExperimentation.LeetCode.NumberOfPairsAfterIncrement;
@@ -73,7 +74,7 @@ internal static class NumberOfPairsAfterIncrementSolution
     }
 
     // Composed: nums2's running values live in a RangeFenwickTree<long,
-    // ScaledSumOperation<long>> - the classic two-Fenwick-tree range-add/point-
+    // SumOperation<long>> - the classic two-Fenwick-tree range-add/point-
     // query pair (see RangeFenwickTree.cs's own doc comment) - so a type-1 query
     // is one O(log n) RangeAdd instead of an O(range) walk. A type-2 query still
     // has to materialize every current value once to build its frequency map
@@ -87,7 +88,7 @@ internal static class NumberOfPairsAfterIncrementSolution
     public static int[] CountPairsByRangeFenwickTree(int[] nums1, int[] nums2, IReadOnlyList<PairQuery> queries)
     {
         var initial = Array.ConvertAll(nums2, value => (long)value);
-        var tree = new RangeFenwickTree<long, ScaledSumOperation<long>>(initial);
+        var tree = new RangeFenwickTree<long, SumOperation<long>>(initial);
         var results = new List<int>();
 
         foreach (var query in queries)
@@ -107,7 +108,7 @@ internal static class NumberOfPairsAfterIncrementSolution
     }
 
     private static int CountMatchesByFrequencyMap(
-        int[] nums1, RangeFenwickTree<long, ScaledSumOperation<long>> tree, long tot)
+        int[] nums1, RangeFenwickTree<long, SumOperation<long>> tree, long tot)
     {
         var frequency = new Dictionary<long, int>();
 

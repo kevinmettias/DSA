@@ -1,7 +1,7 @@
 using DSAExperimentation.Algorithms.Searching;
 using DSAExperimentation.DataStructures.Sequence;
 
-using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.DataStructures.SegmentTree.MaxOperation<int>>;
+using RepoSegmentTree = DSAExperimentation.DataStructures.SegmentTree.SegmentTree<int, DSAExperimentation.DataStructures.ElementAlgebra.MaxOperation<int>>;
 
 namespace DSAExperimentation.LeetCode.LengthOfTheLongestIncreasingPath;
 

@@ -1,6 +1,6 @@
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.DataStructures.ElementAlgebra;
 
-namespace DSAExperimentation.Tests.DataStructures.SegmentTree;
+namespace DSAExperimentation.Tests.DataStructures.ElementAlgebra;
 
 public sealed partial class MaxOperationTests
 {

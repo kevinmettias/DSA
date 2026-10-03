@@ -1,4 +1,5 @@
 using DSAExperimentation.DataStructures;
+using DSAExperimentation.DataStructures.ElementAlgebra;
 using DSAExperimentation.DataStructures.FenwickTree;
 using DSAExperimentation.DataStructures.Graph.Engines.Dags.Trees;
 

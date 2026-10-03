@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DSAExperimentation.DataStructures.SegmentTree;
+namespace DSAExperimentation.DataStructures.ElementAlgebra;
 
 // Identity is Element.MaxValue, not a caller-supplied sentinel: Combine(MaxValue, x) must always
 // resolve to x for a "no overlap" query branch to be invisible to the result, the same role

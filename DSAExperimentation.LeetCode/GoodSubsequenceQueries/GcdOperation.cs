@@ -1,4 +1,4 @@
-using DSAExperimentation.DataStructures.SegmentTree;
+using DSAExperimentation.DataStructures.ElementAlgebra;
 
 namespace DSAExperimentation.LeetCode.GoodSubsequenceQueries;
 

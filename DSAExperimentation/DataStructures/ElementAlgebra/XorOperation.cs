@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace DSAExperimentation.DataStructures.FenwickTree;
+namespace DSAExperimentation.DataStructures.ElementAlgebra;
 
 // XOR is self-inverse - a XOR b XOR b == a - so Invert is the identity function, not negation.
 internal readonly struct XorOperation<Element> : IGroupOperation<Element>
