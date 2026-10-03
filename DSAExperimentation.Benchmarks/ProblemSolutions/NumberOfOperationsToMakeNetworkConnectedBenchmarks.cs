@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.NumberOfOperationsToMakeNetworkConnected;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -8,7 +9,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // approach and NumberOfProvincesBenchmarks' own precedent for this DFS-vs-Union-Find
 // contrast) against this repo's own DisjointSet. A spanning tree is generated first
 // so every run has >= n-1 cables (the interesting, non-trivial case), then extra
-// random edges give Union-Find real merge-avoiding work to do.
+// random edges give Union-Find real merge-avoiding work to do. LC 1319 never connects
+// two computers twice, so an extra edge joining a pair some cable already joins is
+// dropped.
 public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
 {
     private const int RandomSeed = 1319; private int[][] _connections = [];
@@ -23,10 +26,12 @@ public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
     {
         var random = new Random(RandomSeed);
         var connections = new List<int[]>();
+        var joined = new HashSet<UndirectedEdge>();
 
         for (var i = 1; i < ComputerCount; i++)
         {
-            connections.Add([random.Next(i), i]);
+            var parent = random.Next(i);
+            AddUnlessJoined(connections, joined, parent, i);
         }
 
         for (var e = 0; e < ComputerCount; e++)
@@ -36,11 +41,22 @@ public class NumberOfOperationsToMakeNetworkConnectedBenchmarks
 
             if (a != b)
             {
-                connections.Add([a, b]);
+                AddUnlessJoined(connections, joined, a, b);
             }
         }
 
         _connections = [.. connections];
+    }
+
+    private static void AddUnlessJoined(List<int[]> connections, HashSet<UndirectedEdge> joined, int a, int b)
+    {
+        var low = Math.Min(a, b);
+        var high = Math.Max(a, b);
+
+        if (joined.Add(new UndirectedEdge(low, high)))
+        {
+            connections.Add([a, b]);
+        }
     }
 
     [Benchmark(Baseline = true)]

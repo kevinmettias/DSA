@@ -7,7 +7,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // methods NumberOfFlowersInFullBloomSolutionTests proves correct. [GlobalSetup] builds the
 // flower intervals and the arrival times - LeetCode's own input shape, so nothing
 // further is prepared for the measured methods; splitting and sorting the endpoint
-// arrays is the composed arm's own cost and stays inside it.
+// arrays is the composed arm's own cost and stays inside it. Bloom starts and arrival
+// times are drawn from 1, LC 2251's own floor.
 public class NumberOfFlowersInFullBloomBenchmarks
 {
     private const int RandomSeed = 2251; // LC problem number
@@ -28,12 +29,12 @@ public class NumberOfFlowersInFullBloomBenchmarks
         _flowers = new int[Count][];
         for (var i = 0; i < Count; i++)
         {
-            var start = random.Next(0, MaxTimeExclusive);
+            var start = random.Next(1, MaxTimeExclusive);
             var length = random.Next(1, MaxFlowerLengthExclusive);
             _flowers[i] = [start, start + length];
         }
 
-        _persons = SeededDraws.Values(Count, 0, MaxTimeExclusive, random);
+        _persons = SeededDraws.Values(Count, 1, MaxTimeExclusive, random);
     }
 
     [Benchmark(Baseline = true)]

@@ -9,14 +9,15 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // solution's own claimed-set tracking (not grid mutation) is what lets the same
 // grid be reused, unchanged, across every invocation. The two arms differ only in
 // the order their flood fill drains a component's frontier - depth-first versus
-// breadth-first - so the pair isolates that order.
+// breadth-first - so the pair isolates that order. GridSize stops at LC 200's own
+// bound of 300.
 public class NumberOfIslandsBenchmarks
 {
     private const int Seed = 200; private char[][] _grid = [];
 
     // LC problem number
 
-    [Params(50, 500)]
+    [Params(50, 300)]
     public int GridSize { get; set; }
 
     [GlobalSetup]

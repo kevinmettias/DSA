@@ -4,10 +4,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 
 // Harness only: both arms are NumberOfIncreasingPathsInAGridSolution's, the same
 // methods NumberOfIncreasingPathsInAGridSolutionTests proves correct, run over the same
-// row-major strictly-increasing Size x Size matrix
+// row-major strictly-increasing Size x Size shape
 // LongestIncreasingPathInAMatrixBenchmarks uses (every cell's only increasing
 // neighbors are right/down, the classic Unique-Paths-shaped DAG with heavy path
-// overlap). NaiveRecursion re-walks every shared sub-path from scratch per candidate
+// overlap), numbered from 1 because LC 2328's cells start there. NaiveRecursion re-walks every shared sub-path from scratch per candidate
 // start cell - here the call count itself, not just the returned value, grows with the
 // number of increasing paths. MemoizedRecurrence dogfoods this repo's own Memoizer per
 // start cell, collapsing shared sub-paths within one start's search from exponential
@@ -36,7 +36,7 @@ public class NumberOfIncreasingPathsInAGridBenchmarks
         {
             for (var col = 0; col < size; col++)
             {
-                matrix[row, col] = row * size + col;
+                matrix[row, col] = (row * size) + col + 1;
             }
         }
 
