@@ -783,7 +783,7 @@
     {
       "check": "check-presumption",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MergeInBetweenLinkedListsBenchmarks.cs",
-      "reason": "dummy.Next! promises the rebuild appended at least one node after the sentinel: the builder loops over the workload's own value sequence, which every workload in this project builds non-empty, and the sentinel exists so the first append needs no special case.",
+      "reason": "each LeetCodeWireFormat.ToLinkedList(...)! promises a non-empty list: ToLinkedList returns null only for an empty array, and Setup fills _list1Values with Length values (every [Params] size is positive) and _list2Values with SecondListLength = 5, so neither rebuild can come back null.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -874,7 +874,7 @@
     {
       "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/CountPairsWithXorInARange/CountPairsWithXorInARangeSolution.cs",
-      "reason": "current.Zero! and current.One! promise both children exist at every level above the leaves: every Insert walks all bits from the top down, creating both branches of every node it passes, so a node reached by this loop - which descends one level per iteration from the same top bit - always has both children present.",
+      "reason": "ZeroChild's node.Zero! and OneChild's node.One! promise the child on the inserted value's bit path exists: Insert calls trie.Insert(value) first, which creates every node on that value's path, and its loop then retraces the same bits from the same top bit, so each child it takes is one trie.Insert just created or found. Only Insert calls the two helpers.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1119,7 +1119,7 @@
     {
       "check": "check-presumption",
       "path": "DSAExperimentation.LeetCode/SplitLinkedListInParts/SplitLinkedListInPartsSolution.cs",
-      "reason": "current.Next! promises the part has a node left to walk: currentSize comes from PartSizing, which is computed from the list's own measured length and k, and CarvePart is only entered for a part with that many nodes remaining, so the walk from 1 to currentSize - 1 stays inside the part.",
+      "reason": "LastNodeOfPart's last.Next! promises the part has a node left to walk: the part's size is PartSizing's base size plus one while the remainder lasts, both derived from the list's own measured length and k, and CarvePart is entered only while nodes remain, so the walk from 1 to size - 1 stays inside the part.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -1520,46 +1520,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/ApplyOperationsToMaximizeScoreBenchmarks.cs",
       "anchor": "`MaxValueExclusive = ",
       "reason": "`MaxValueExclusive` is each declaring file's own value rather than one shared fact: the same name is also declared as `1 \u003c\u003c 16`, `1 \u003c\u003c 17`, `1 \u003c\u003c 20`, `10` and 21 more elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
-      "anchor": "`LeftValue = ",
-      "reason": "`LeftValue` holds 9 in all 4 files because each of these harnesses drives the example tree LeetCode publishes for its own problem, and every one of those examples carries 9 at this position: the three balanced and level-order examples are the same tree (3 at the root, 9 left, 20 right, 9 and its sibling below), and the maximum-path-sum example is that same tree with its root replaced by -10. The name takes exactly one value in this corpus, so no file restated another's constant - each harness re-derived the node from the problem statement, which is also why their RootValue (3 against -10) differs. Hoisting one shared `LeftValue` would couple four unrelated benchmarks to a single fixture and stop any of them measuring a tree of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
-      "anchor": "`RightLeftValue = ",
-      "reason": "`RightLeftValue` holds 15 in all 4 files because each of these harnesses drives the example tree LeetCode publishes for its own problem, and every one of those examples carries 15 at this position: the three balanced and level-order examples are the same tree (3 at the root, 9 left, 20 right, 15 and its sibling below), and the maximum-path-sum example is that same tree with its root replaced by -10. The name takes exactly one value in this corpus, so no file restated another's constant - each harness re-derived the node from the problem statement, which is also why their RootValue (3 against -10) differs. Hoisting one shared `RightLeftValue` would couple four unrelated benchmarks to a single fixture and stop any of them measuring a tree of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
-      "anchor": "`RightRightValue = ",
-      "reason": "`RightRightValue` holds 7 in all 4 files because each of these harnesses drives the example tree LeetCode publishes for its own problem, and every one of those examples carries 7 at this position: the three balanced and level-order examples are the same tree (3 at the root, 9 left, 20 right, 7 and its sibling below), and the maximum-path-sum example is that same tree with its root replaced by -10. The name takes exactly one value in this corpus, so no file restated another's constant - each harness re-derived the node from the problem statement, which is also why their RootValue (3 against -10) differs. Hoisting one shared `RightRightValue` would couple four unrelated benchmarks to a single fixture and stop any of them measuring a tree of its own.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
-      "anchor": "`RightValue = ",
-      "reason": "`RightValue` is each declaring file's own value rather than one shared fact: the same name is also declared as `3` elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/BalancedBinaryTreeBenchmarks.cs",
-      "anchor": "`RootValue = ",
-      "reason": "`RootValue` is each declaring file's own value rather than one shared fact: the same name is also declared as `-10`, `2` elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2277,22 +2237,6 @@
     },
     {
       "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumDepthOfBinaryTreeBenchmarks.cs",
-      "anchor": "`LeftChildValue = ",
-      "reason": "`LeftChildValue` is each declaring file's own value rather than one shared fact: the same name is also declared as `9` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumDepthOfBinaryTreeBenchmarks.cs",
-      "anchor": "`RightChildValue = ",
-      "reason": "`RightChildValue` is each declaring file's own value rather than one shared fact: the same name is also declared as `20` elsewhere in the corpus, so this group agrees on a value its 2 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MinimumMovesToCaptureTheQueenBenchmarks.cs",
       "anchor": "`BoardSize = ",
       "reason": "`BoardSize` is each declaring file's own value rather than one shared fact: the same name is also declared as `1_000`, `3`, `50`, `9` elsewhere in the corpus, so this group agrees on a value its 4 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
@@ -2400,14 +2344,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/NumberOfSquarefulArraysBenchmarks.cs",
       "anchor": "`ValueUpperBound = ",
       "reason": "`ValueUpperBound` is each declaring file's own value rather than one shared fact: the same name is also declared as `100_000`, `1_000`, `1_000_000`, `1_000_000_000` and 3 more elsewhere in the corpus, so this group agrees on a value its 3 files are each free to pick for their own problem. No single hoisted constant can serve files that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PalindromePartitioningBenchmarks.cs",
-      "anchor": "`Workload = ",
-      "reason": "`Workload = \"aab\"` is declared in 2 independent units (ProblemSolutions/PalindromePartitioningBenchmarks.cs, ProblemSolutions/PalindromePartitioningIIBenchmarks.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -2552,14 +2488,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/TweetCountsPerFrequencyBenchmarks.cs",
       "anchor": "`SecondsPerHour = ",
       "reason": "`SecondsPerHour = 3_600` is declared in 2 independent units (ProblemSolutions/TweetCountsPerFrequencyBenchmarks.cs, TweetCountsPerFrequency/TweetCountsPerFrequencySolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/UniquePathsIIIBenchmarks.cs",
-      "anchor": "`EndCellMarker = ",
-      "reason": "`EndCellMarker = 2` is declared in 2 independent units (ProblemSolutions/UniquePathsIIIBenchmarks.cs, UniquePathsIII/UniquePathsIIISolution.cs), each answering one problem on its own. None is a shared type and the repository has no home to hoist it to - creating one would give 2 unrelated files a shared dependency to guard a literal that cannot drift. A value self-contained units happen to agree on, with no shared intent, is the parallel vocabulary the rule's own doc routes to this ledger.",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
@@ -3455,86 +3383,6 @@
       "path": "DSAExperimentation.Benchmarks/ProblemSolutions/MaxSumOfRectangleNoLargerThanKBenchmarks.cs",
       "anchor": "`Cols = ",
       "reason": "`Cols` is each fixture's own grid width rather than one shared fact: `ReshapeTheMatrixBenchmarks` builds a matrix of its own and picks the same 8-wide shape for it, and each benchmark is free to pick its grid dimensions independently of the other. No single hoisted constant can serve two fixtures that must be able to differ - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`TargetSum = ",
-      "reason": "`TargetSum` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `22` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`Root = ",
-      "reason": "`Root` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `5` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`Left = ",
-      "reason": "`Left` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `4` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`LeftLeft = ",
-      "reason": "`LeftLeft` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `11` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`LeftLeftLeft = ",
-      "reason": "`LeftLeftLeft` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `7` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`LeftLeftRight = ",
-      "reason": "`LeftLeftRight` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `2` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`Right = ",
-      "reason": "`Right` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `8` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`RightLeft = ",
-      "reason": "`RightLeft` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `13` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`RightRight = ",
-      "reason": "`RightRight` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `4` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
-      "owner": "@kmettias",
-      "expires": "2026-11-22"
-    },
-    {
-      "check": "check-duplicate-constant",
-      "path": "DSAExperimentation.Benchmarks/ProblemSolutions/PathSumExampleTree.cs",
-      "anchor": "`RightRightRight = ",
-      "reason": "`RightRightRight` names the same node of the same example tree in both fixtures, but the two fixtures are LeetCode 112's example tree and LeetCode 113's, and those are not the same tree: 113's adds the `RightRightLeft = 5` leaf that gives it its second accepting path, and 112's leaves that node out entirely. Value `1` is the tree's own published node value, not one module's fact. Hoisting it would couple two problems' fixtures into one and change whichever problem's example it did not come from - the parallel vocabulary the rule's own doc routes here, \"a parallel vocabulary that has been thought about goes in suppressions.json\".",
       "owner": "@kmettias",
       "expires": "2026-11-22"
     },
