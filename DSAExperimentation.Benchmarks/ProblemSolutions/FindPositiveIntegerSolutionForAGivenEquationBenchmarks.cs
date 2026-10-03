@@ -14,45 +14,36 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Each arm takes the explicit-bound overload so the measured search space is the
 // [Params] value, and returns LeetCode's real answer, the solving pairs (the
 // pre-migration arms only counted).
+//
+// The target is LC 1237's largest z, 100, which the 99 pairs (x, 100 - x) solve. None
+// of the walks can stop early at it: the brute force tries every pair, the two-pointer
+// walk lowers y from Bound before it reaches them, and every row is binary-searched.
 public class FindPositiveIntegerSolutionForAGivenEquationBenchmarks
 {
-    // Doubling factor for the largest reachable sum (Bound + Bound).
-    private const int MaxSumFactor = 2;
+    private const int TargetValue = 100;
 
     // Hoisted so the oracle's construction is not charged to any measured method - and
     // all three arms pay the same one call-through-the-interface cost the hidden
     // CustomFunction imposes.
     private static readonly ICustomFunction Sum = new SumFunction();
 
-    private int _targetValue;
-
     [Params(300, 1_000)]
     public int Bound { get; set; }
-
-    [GlobalSetup]
-    public void Setup()
-    {
-        // The largest reachable sum (Bound + Bound) is never a solution here, so
-        // every strategy is forced through its full worst-case walk instead of an
-        // early-exit on the first/last pair making brute force look artificially
-        // competitive.
-        _targetValue = (MaxSumFactor * Bound) - 1;
-    }
 
     [Benchmark(Baseline = true)]
     public List<(int X, int Y)> BruteForceEveryPair() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBruteForce(Sum, _targetValue, Bound);
+            .FindSolutionsByBruteForce(Sum, TargetValue, Bound);
 
     [Benchmark]
     public List<(int X, int Y)> TwoPointer() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByTwoPointer(Sum, _targetValue, Bound);
+            .FindSolutionsByTwoPointer(Sum, TargetValue, Bound);
 
     [Benchmark]
     public List<(int X, int Y)> BinarySearchPerRow() =>
         FindPositiveIntegerSolutionForAGivenEquationSolution
-            .FindSolutionsByBinarySearchPerRow(Sum, _targetValue, Bound);
+            .FindSolutionsByBinarySearchPerRow(Sum, TargetValue, Bound);
 
     // LeetCode example 1's function_id, f(x, y) = x + y, as a named implementation
     // because the three arms now take an ICustomFunction and C# converts no lambda to an

@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // BinarySearch.LowerBound ceiling query paired with a Heap of busy servers. _load is
 // generated wide enough (up to 3x ServerCount) that requests routinely outlive many
 // future arrivals, forcing real contention and wraparound instead of every request
-// finding `start` free immediately; [GlobalSetup] owns that construction.
+// finding `start` free immediately; [GlobalSetup] owns that construction. Arrivals
+// count from 1, LC 1606's earliest.
 public class FindServersThatHandledMostNumberOfRequestsBenchmarks
 {
     private const int RequestsPerServer = 20;
@@ -31,7 +32,7 @@ public class FindServersThatHandledMostNumberOfRequestsBenchmarks
 
         for (var i = 0; i < requestCount; i++)
         {
-            _arrival[i] = i;
+            _arrival[i] = i + 1;
             _load[i] = random.Next(1, (ServerCount * MaxLoadMultiplier) + 1);
         }
     }

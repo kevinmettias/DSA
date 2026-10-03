@@ -11,6 +11,11 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // where it belongs: this repo's single-source Dijkstra run once per city against
 // one Floyd-Warshall call, the mirror image of ShortestPathAlgorithmBenchmarks'
 // own point about picking the wrong tool for an all-pairs question.
+//
+// LC 1334 caps the cities at 100 and lists each road once, lower city first. The
+// shared road workload writes some roads higher city first and can draw the same
+// pair twice, so each road is turned lower-first and only the first draw of a pair
+// is kept; the larger CityCount is that cap.
 public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenchmarks
 {
     private const int DistanceThreshold = 50;
@@ -19,15 +24,23 @@ public class FindTheCityWithTheSmallestNumberOfNeighborsAtAThresholdDistanceBenc
 
     private CityGraph _graph = null!;
 
-    [Params(30, 120)]
+    [Params(30, 100)]
     public int CityCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var roads = CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, seed: RandomSeed);
+        var drawnRoads = CityRoadWorkloads.BuildRoads(CityCount, ExtraRoadsPerCity, seed: RandomSeed);
+        var roads = drawnRoads.Select(LowerCityFirst).DistinctBy(road => (From: road[0], To: road[1])).ToArray();
 
         _graph = CityGraph.Build(CityCount, roads);
+    }
+
+    private static int[] LowerCityFirst(int[] road)
+    {
+        var (from, to, weight) = (road[0], road[1], road[2]);
+
+        return [Math.Min(from, to), Math.Max(from, to), weight];
     }
 
     [Benchmark(Baseline = true)]

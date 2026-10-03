@@ -36,8 +36,9 @@ public class FindTheShortestSuperstringBenchmarks
     private const int WordSeed = 943;
     private const int WordLength = 5;
 
-    // The letters a word is drawn from, and so the width of each trailing window.
-    private const string Alphabet = "ACGT";
+    // The letters a word is drawn from, and so the width of each trailing window - lowercase,
+    // as LC 943 requires.
+    private const string Alphabet = "acgt";
 
     private Dictionary<int, WordOverlaps> _overlapsByWordCount = [];
 
