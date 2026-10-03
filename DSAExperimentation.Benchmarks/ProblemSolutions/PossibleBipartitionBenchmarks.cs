@@ -26,9 +26,12 @@ public class PossibleBipartitionBenchmarks
     private DislikeAdjacency _adjacency = null!;
 
     private DislikeGraph _graph = null!;
-    [Params(200, 5_000)]
+
+    // Stops at LC 886's 2,000 people, whose 2.5 dislikes per person stay inside its 10^4.
+    [Params(200, 2_000)]
     public int PersonCount { get; set; }
 
+    // LC 886's pairs are unique, so a pair drawn twice keeps its first copy.
     [GlobalSetup]
     public void Setup()
     {
@@ -39,7 +42,7 @@ public class PossibleBipartitionBenchmarks
         AddConnectivityPairs(dislikes, random, half);
         AddDensityPairs(dislikes, random, half);
 
-        var pairs = dislikes.ToArray();
+        var pairs = dislikes.DistinctBy(pair => (pair[0], pair[1])).ToArray();
 
         _adjacency = DislikeAdjacency.Build(PersonCount, pairs);
         _graph = DislikeGraph.Build(PersonCount, pairs);
@@ -66,9 +69,20 @@ public class PossibleBipartitionBenchmarks
             {
                 var inA = i < half;
                 var target = inA ? RandomBSidePerson(random, half) : random.Next(half);
-                dislikes.Add([i + 1, target + 1]);
+                var pair = CrossPair(i, target);
+                dislikes.Add(pair);
             }
         }
+    }
+
+    // LC 886 names each pair's lower person first (1 <= ai < bi), and every A-side person
+    // is numbered below every B-side one, so the A-side person leads.
+    private static int[] CrossPair(int person, int other)
+    {
+        var low = Math.Min(person, other);
+        var high = Math.Max(person, other);
+
+        return [low + 1, high + 1];
     }
 
     // A random person on the B side, shifted up past the A side's own people.

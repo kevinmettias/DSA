@@ -6,12 +6,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // the same methods PrimeNumberOfSetBitsInBinaryRepresentationSolutionTests proves correct.
 // right <= 10^6 bounds every popcount to at most 20, so the precomputed-set
 // strategy's lookup table never grows past 8 entries regardless of range width.
+// RangeWidth counts left..right inclusive, so its largest, 10,001, is LC 762's own
+// right - left <= 10^4.
 public class PrimeNumberOfSetBitsInBinaryRepresentationBenchmarks
 {
     private int _left;
 
     private int _right;
-    [Params(1_000, 100_000)]
+    [Params(1_000, 10_001)]
     public int RangeWidth { get; set; }
 
     [GlobalSetup]

@@ -8,16 +8,17 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // LeetCode's own int[][] grid, which [GlobalSetup] already builds, so no hoisted
 // overload is needed - grid construction is never charged to a measured call. All
 // three are O(rows * cols), so what this isolates is redundant-pass overhead rather
-// than an algorithm-class swap.
+// than an algorithm-class swap. Size stops at LC 883's 50 x 50 grid, and every cell
+// height is drawn from its [0, 50].
 public class ProjectionAreaOf3DShapesBenchmarks
 {
-    private const int CellHeightBound = 100;
+    private const int CellHeightBound = 51;
 
     private const int RandomSeed = 1;
 
     private int[][] _grid = [];
 
-    [Params(50, 500)]
+    [Params(10, 50)]
     public int Size { get; set; }
 
     [GlobalSetup]

@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 using DSAExperimentation.LeetCode.Conventions;
 
@@ -5,21 +6,19 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 
 // Harness coverage for ProductOfArrayExceptSelfBenchmarks (ARCHITECTURE 17.9): the class carries a
 // single arm - the prefix/suffix pass LC 238 asks for - so there is no second strategy to reconcile it
-// against and the assertion has to be supplied instead. The workload is a seeded random array whose
-// generator the class comment documents (one draw per element from the same half-open range), so the
-// expected answer is derived here from a rebuilt array by the definition of the problem - every
-// element but index i, multiplied out - rather than restated from the arm. The length cap and the
-// half-open bounds are the benchmark's own operands; the rebuilt array is what a change to them would
-// move, so the arm is pinned against arithmetic rather than against itself.
+// against and the assertion has to be supplied instead. The workload is a seeded array the class
+// comment documents (BoundedProductDraws' signed factors, inside LC 238's [-30, 30]), so the expected
+// answer is derived here from a rebuilt array by the definition of the problem - every element but
+// index i, multiplied out - rather than restated from the arm. The length and the magnitude bound are
+// the benchmark's own operands; the rebuilt array is what a change to them would move, so the arm is
+// pinned against arithmetic rather than against itself.
 public sealed partial class ProductOfArrayExceptSelfBenchmarksTests
 {
     private const int SmallestLength = 200;
 
     private const int RandomSeed = 238;
 
-    private const int MinValue = -1_000;
-
-    private const int MaxValueExclusive = 1_000;
+    private const int MagnitudeBoundExclusive = 31;
 
     [Fact]
     public void Setup_SeededNumbers_RebuildsTheSameWorkload() =>
@@ -41,23 +40,14 @@ public sealed partial class ProductOfArrayExceptSelfBenchmarksTests
         return harness;
     }
 
-    // The benchmark's own generator, rebuilt from its documented shape: seeded Random(238) over the
-    // same half-open range, one draw per element.
-    private static int[] RebuildNumbers()
-    {
-        var random = new Random(RandomSeed);
-
-        return
-        [
-            .. Enumerable.Range(0, SmallestLength)
-                .Select(_ => random.Next(MinValue, MaxValueExclusive)),
-        ];
-    }
+    // The benchmark's own workload, rebuilt from its documented shape: seeded Random(238) handed to
+    // BoundedProductDraws for signed factors under the same magnitude bound.
+    private static int[] RebuildNumbers() =>
+        BoundedProductDraws.SignedFactors(SmallestLength, MagnitudeBoundExclusive, new Random(RandomSeed));
 
     // The definition of the answer written out directly: every element except index i, multiplied
-    // together. No prefix/suffix pass and no division, so the zero values the range admits need no
-    // special case - and because int multiplication wraps modulo 2^32, the order of the factors
-    // cannot make this disagree with a correct prefix/suffix pass.
+    // together. No prefix/suffix pass and no division, and the multiplication is checked, so an answer
+    // that left the 32 bits LC 238 guarantees would throw here rather than wrap into agreement.
     private static int[] IndependentProductsExceptSelf(int[] nums)
     {
         var products = new int[nums.Length];
@@ -78,7 +68,7 @@ public sealed partial class ProductOfArrayExceptSelfBenchmarksTests
         {
             if (index != excludedIndex)
             {
-                product *= nums[index];
+                product = checked(product * nums[index]);
             }
         }
 

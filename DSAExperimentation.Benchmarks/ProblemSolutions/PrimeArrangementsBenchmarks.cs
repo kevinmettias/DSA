@@ -7,7 +7,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // nothing to hoist into a [GlobalSetup] - the [Params] sizes are the workload.
 public class PrimeArrangementsBenchmarks
 {
-    [Params(2_000, 20_000)]
+    [Params(10, 100)]
     public int UpperBound { get; set; }
 
     [Benchmark(Baseline = true)]

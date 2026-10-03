@@ -14,16 +14,19 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Both arms now return LeetCode's actual answer - the attacking queens' coordinates -
 // where previously both counted attackers without building the list (§17.8's
 // deliberate-measurement-change note).
+//
+// The board is LC 1222's own 8 x 8, so QueensCount stops at 63: a queen on every square
+// but the king's, the most LeetCode poses.
 public class QueensThatCanAttackTheKingBenchmarks
 {
-    private const int BoardSize = 1_000;
+    private const int BoardSize = 8;
     private const int BoardCenter = BoardSize / 2;
     private const int RandomSeed = 1222;
 
     private int[][] _queens = [];
 
     private KingBoard _board;
-    [Params(50, 500)]
+    [Params(50, 63)]
     public int QueensCount { get; set; }
 
     [GlobalSetup]

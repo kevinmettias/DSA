@@ -13,6 +13,9 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 //
 // Each arm is handed the prepared word list its hoisted overload takes, so the
 // sentence split is charged to [GlobalSetup] rather than to the measured method.
+//
+// WordCount stops at 27: this seed's first 27 words, joined by single spaces, make a
+// 195-character sentence, the most of them that fits LC 1324's 200-character cap.
 public class PrintWordsVerticallyBenchmarks
 {
     private const int RandomSeed = 1324; // LC problem number
@@ -21,7 +24,7 @@ public class PrintWordsVerticallyBenchmarks
 
     private DynamicArray<string> _words = new();
 
-    [Params(50, 500)]
+    [Params(5, 27)]
     public int WordCount { get; set; }
 
     [GlobalSetup]

@@ -9,6 +9,10 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // [GlobalSetup], and each arm answers GetProduct(Length) - the full window - forcing
 // the raw-replay strategy through its full O(Length) worst case instead of an early
 // exit making it look artificially competitive, TwoSumBenchmarks' convention.
+//
+// LC 1352 guarantees the product of the stream fits in 32 bits at every point, so the
+// numbers come from BoundedProductDraws: ones, with a few planted factors from 2 to 9
+// whose product stays inside an int.
 public class ProductOfTheLastKNumbersBenchmarks
 {
     private const int MaxFactorValueExclusive = 10;
@@ -25,8 +29,7 @@ public class ProductOfTheLastKNumbersBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        var random = new Random(FactorSeed);
-        var values = SeededDraws.Values(Length, 1, MaxFactorValueExclusive, random);
+        var values = BoundedProductDraws.Factors(Length, MaxFactorValueExclusive, new Random(FactorSeed));
 
         _rawStreamReplay = Seed(ProductOfTheLastKNumbersSolution.CreateByRawStreamReplay(), values);
         _prefixProductDivision =
