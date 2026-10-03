@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.LeetCode.DesignSQL;
 
 namespace DSAExperimentation.Benchmarks.ProblemSolutions;
@@ -13,10 +14,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // case. The list-scan table linear-scans for a matching row id on every select and
 // every delete; the HashMap table indexes straight to it - the same
 // list-scan-vs-hash-lookup shape DesignANumberContainerSystemBenchmarks exercises.
+//
+// LC 2408 allows 2000 ins and rmv calls together: RowCount inserts and half as many
+// deletes make 1333 the largest RowCount. Its cells are lowercase letters only, so
+// the cell at row i and column c spells both through LowercaseNames.
 public class DesignSQLBenchmarks
 {
     private const int ColumnCount = 3;
     private const string TableName = "rows";
+
+    private const string RowPrefix = "r";
+
+    private const string ColumnPrefix = "c";
 
     private string[] _names = [];
 
@@ -26,7 +35,7 @@ public class DesignSQLBenchmarks
 
     // Every cell SelectCell reads, in call order; sized in setup so the replay allocates nothing.
     private string[] _cells = [];
-    [Params(500, 4_000)]
+    [Params(500, 1_333)]
     public int RowCount { get; set; }
 
     [GlobalSetup]
@@ -35,11 +44,14 @@ public class DesignSQLBenchmarks
         _names = [TableName];
         _columns = [ColumnCount];
         _rows = Enumerable.Range(0, RowCount)
-            .Select(i => Enumerable.Range(0, ColumnCount).Select(c => $"r{i}c{c}").ToArray())
+            .Select(i => Enumerable.Range(0, ColumnCount).Select(c => CellText(i, c)).ToArray())
             .ToArray();
         _deleteIds = Enumerable.Range(1, RowCount).Where(id => id % 2 == 0).ToArray();
         _cells = new string[_rows.Length];
     }
+
+    private static string CellText(int row, int column) =>
+        RowPrefix + LowercaseNames.Of(row) + ColumnPrefix + LowercaseNames.Of(column);
 
     [Benchmark(Baseline = true)]
     public string[] ListScanTable() => Replay(new DesignSQLSolution.SqlByListScan(_names, _columns));

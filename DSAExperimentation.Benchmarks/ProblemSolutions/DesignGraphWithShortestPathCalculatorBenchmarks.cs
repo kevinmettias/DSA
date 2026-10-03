@@ -13,24 +13,28 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // Collections.Heap frontier, O((V + E) log V) per query. Both graphs are built in
 // [GlobalSetup] from the same RandomWeightedGraphs workload
 // ShortestPathAlgorithmBenchmarks and CourseScheduleIVBenchmarks already share, so
-// construction is charged to setup rather than to the queries being measured.
+// construction is charged to setup rather than to the queries being measured. That
+// workload can draw the same directed edge twice, which LC 2642 rules out, so only
+// the first draw of each pair is kept. LC 2642 caps a graph at 100 nodes and the
+// shortestPath calls at 100, so those are the larger NodeCount and the query count.
 public class DesignGraphWithShortestPathCalculatorBenchmarks
 {
     private const int ExtraEdgesPerNode = 3;
     private const int RandomSeed = 2642; // LC problem number
-    private const int QueryCount = 200;
+    private const int QueryCount = 100;
 
     private DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra _arrayGraph = null!;
 
     private DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra _heapGraph = null!;
     private (int Node1, int Node2)[] _queries = [];
-    [Params(50, 200)]
+    [Params(50, 100)]
     public int NodeCount { get; set; }
 
     [GlobalSetup]
     public void Setup()
     {
-        var edges = RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, RandomSeed);
+        var drawnEdges = RandomWeightedGraphs.BuildEdges(NodeCount, ExtraEdgesPerNode, RandomSeed);
+        var edges = drawnEdges.DistinctBy(edge => (From: edge[0], To: edge[1])).ToArray();
         _arrayGraph = new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByArrayDijkstra(NodeCount, edges);
         _heapGraph = new DesignGraphWithShortestPathCalculatorSolution.ShortestPathGraphByHeapDijkstra(NodeCount, edges);
         _queries = BuildQueries(NodeCount, QueryCount, RandomSeed);

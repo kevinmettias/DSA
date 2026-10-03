@@ -16,7 +16,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // O(Count^2) leftmost-run scanning cost, so the composed HashMap index only pays off
 // on the Free half; the speedup is real but bounded, not an asymptotic win (see
 // MatrixCellsInDistanceOrderBenchmarks for the same "correct composition, not always
-// a complexity-class jump" shape).
+// a complexity-class jump" shape). LC 2502 allows 1000 calls in all, an allocate and
+// a free per mID, so the larger Count is 500.
 public class DesignMemoryAllocatorBenchmarks
 {
     // Every allocation in this workload is one unit wide.
@@ -24,7 +25,7 @@ public class DesignMemoryAllocatorBenchmarks
 
     private int[] _memoryIds = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 500)]
     public int Count { get; set; }
 
     [GlobalSetup]

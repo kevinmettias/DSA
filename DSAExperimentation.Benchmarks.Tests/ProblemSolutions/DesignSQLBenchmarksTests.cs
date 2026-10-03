@@ -1,3 +1,4 @@
+using DSAExperimentation.Benchmarks.Fixtures;
 using DSAExperimentation.Benchmarks.ProblemSolutions;
 
 namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
@@ -8,6 +9,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 public sealed partial class DesignSQLBenchmarksTests
 {
     private const int SmallestRowCount = 500;
+
+    // Mirrors the benchmark's cell spelling: "r", the row index, "c", the column index.
+    private const string RowPrefix = "r";
+
+    // "c" and column 0 spelled by LowercaseNames.Of.
+    private const string FirstColumnText = "ca";
 
     [Fact]
     public void ListScanTable_InsertReadDeleteScript_ReadsBackTheFirstColumnOfEveryRow() =>
@@ -26,9 +33,10 @@ public sealed partial class DesignSQLBenchmarksTests
     }
 
     // The replay inserts a row per index, then reads column 1 of every row id in insertion order, then
-    // deletes the even ones. Row id n was inserted as "r{n - 1}c{column}" with columns counted from 0,
-    // while LC 2408 counts column ids from 1, so only a table handing back the row it was given reads
-    // "r{n - 1}c0" for every n from 1 through RowCount.
+    // deletes the even ones. Row id n was inserted as "r", the index n - 1 and "c", then the column
+    // counted from 0, each index spelled by LowercaseNames.Of; LC 2408 counts column ids from 1, so only a
+    // table handing back the row it was given reads the cell of index n - 1 and column 0 for every n from
+    // 1 through RowCount.
     private static IEnumerable<string> ExpectedCells(int rowCount) =>
-        Enumerable.Range(0, rowCount).Select(index => $"r{index}c0");
+        Enumerable.Range(0, rowCount).Select(index => RowPrefix + LowercaseNames.Of(index) + FirstColumnText);
 }

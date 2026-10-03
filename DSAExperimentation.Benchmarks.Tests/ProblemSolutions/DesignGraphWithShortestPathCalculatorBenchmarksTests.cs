@@ -13,7 +13,7 @@ public sealed partial class DesignGraphWithShortestPathCalculatorBenchmarksTests
 
     // Mirrors the fixture's own query count and weight ceiling: every reported distance is a
     // simple path over edges of at most MaxEdgeWeight, so the summed report is bounded by them.
-    private const int QueryCount = 200;
+    private const int QueryCount = 100;
     private const int MaxEdgeWeight = 49;
 
     // Every query reports either a distance inside this band or the unreachable sentinel.

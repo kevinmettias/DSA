@@ -8,7 +8,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // against both formula shapes ("=cell+cell" and "=cell+literal") and a handful of
 // ResetCell calls - so script construction, including which cell references get
 // used, is charged to setup rather than to the replay each [Benchmark] arm
-// measures.
+// measures. The sheet has CellCount rows, and LC 3484 caps a sheet at 1000 rows, so
+// the larger CellCount is 1000.
 public class DesignSpreadsheetBenchmarks
 {
     private const int Seed = 3484;
@@ -21,7 +22,7 @@ public class DesignSpreadsheetBenchmarks
     // sized in setup so the replay allocates nothing.
     private int[] _values = [];
 
-    [Params(200, 2_000)]
+    [Params(200, 1_000)]
     public int CellCount { get; set; }
 
     [GlobalSetup]

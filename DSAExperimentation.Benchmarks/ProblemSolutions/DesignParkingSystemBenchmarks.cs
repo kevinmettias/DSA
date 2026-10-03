@@ -11,6 +11,8 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // problem, always exactly three keys. [GlobalSetup] materializes the request script so
 // random generation is charged to setup rather than to the replay, and capacity is
 // seeded to Calls so every AddCar succeeds, keeping both arms' per-call work identical.
+// LC 1603 caps both a lot's capacity and the addCar calls at 1000, so the larger
+// Calls is 1000.
 public class DesignParkingSystemBenchmarks
 {
     private const int CarTypeUpperBoundExclusive = 4;
@@ -18,7 +20,7 @@ public class DesignParkingSystemBenchmarks
 
     private int[] _requestedTypes = [];
 
-    [Params(1_000, 50_000)]
+    [Params(100, 1_000)]
     public int Calls { get; set; }
 
     [GlobalSetup]

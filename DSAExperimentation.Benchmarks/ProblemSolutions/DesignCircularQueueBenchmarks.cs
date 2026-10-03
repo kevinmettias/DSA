@@ -8,10 +8,12 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // repeated DeQueue/EnQueue/Rear rounds once it is at capacity, so every operation
 // after the fill is forced through the wraparound path at both ends - the same
 // "script construction charged to setup, replay is what gets measured" shape
-// DesignTaskManagerBenchmarks already uses for its own instance-API problem.
+// DesignTaskManagerBenchmarks already uses for its own instance-API problem. LC 622
+// allows 3000 calls and a step makes at most three, so the script runs 1000 steps
+// and enqueues the values 0..999, inside LC 622's 0..1000.
 public class DesignCircularQueueBenchmarks
 {
-    private const int OperationCount = 50_000;
+    private const int OperationCount = 1_000;
 
     private List<Func<DesignCircularQueueSolution.ICircularQueue, int>> _script = new();
 

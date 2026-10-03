@@ -12,7 +12,7 @@ public sealed partial class DesignCircularQueueBenchmarksTests
     private const int SmallestCapacity = 8;
 
     // Mirrors the benchmark's own script length: the replay's total is a closed form over it.
-    private const int OperationCount = 50_000;
+    private const int OperationCount = 1_000;
 
     // The summed value of the closed form 1 + 2 + ... + (OperationCount - 1) is a triangular number,
     // which is that product over this.

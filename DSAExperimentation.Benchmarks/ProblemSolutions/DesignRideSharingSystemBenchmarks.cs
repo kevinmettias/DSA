@@ -10,14 +10,18 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // instead builds one fixed, valid call script. A tenth of the seeded riders are
 // cancelled before the match rounds ever run, so both arms have to walk past at
 // least one stale/cancelled entry rather than always matching the immediate
-// front.
+// front. Rider and driver ids count from 1, LC 3829's smallest id, and LC 3829
+// allows 1000 calls in all: RiderCount rider adds, driver adds and matches plus a
+// tenth as many cancels make 322 the largest RiderCount.
 public class DesignRideSharingSystemBenchmarks
 {
     private const int Seed = 3829;
 
+    private const int LowestRiderOrDriverId = 1;
+
     private List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>> _script = new();
 
-    [Params(500, 5_000)]
+    [Params(32, 322)]
     public int RiderCount { get; set; }
 
     [GlobalSetup]
@@ -31,8 +35,8 @@ public class DesignRideSharingSystemBenchmarks
     {
         var script = new List<Func<DesignRideSharingSystemSolution.IRideSharingStrategy, int[]?>>();
 
-        AppendIdOperations(script, 0, riderCount, new AddRiderOperation());
-        AppendIdOperations(script, riderCount, riderCount, new AddDriverOperation());
+        AppendIdOperations(script, LowestRiderOrDriverId, riderCount, new AddRiderOperation());
+        AppendIdOperations(script, riderCount + LowestRiderOrDriverId, riderCount, new AddDriverOperation());
 
         AppendCancelledRiders(script, riderCount, random);
         AppendMatchRounds(script, riderCount);
@@ -93,7 +97,7 @@ public class DesignRideSharingSystemBenchmarks
 
         foreach (var _ in Enumerable.Range(0, cancelCount))
         {
-            var riderId = random.Next(0, riderCount);
+            var riderId = random.Next(LowestRiderOrDriverId, riderCount + LowestRiderOrDriverId);
             script.Add(strategy =>
             {
                 strategy.CancelRider(riderId);

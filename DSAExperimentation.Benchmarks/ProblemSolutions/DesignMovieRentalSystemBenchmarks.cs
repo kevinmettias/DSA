@@ -10,12 +10,13 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // and answers with a plain in-order walk, O(m). Both systems are built in
 // [GlobalSetup] from the same entry table, exactly as a real deployment would have
 // built them before the first query, so construction is charged to setup rather
-// than to the search being measured.
+// than to the search being measured. Movies are numbered from 1, LC 1912's smallest
+// movie id: the queried movie is 1 and the padding movies follow it.
 public class DesignMovieRentalSystemBenchmarks
 {
     private const int OtherMoviesCount = 19;
     private const int ShopsPerOtherMovie = 20;
-    private const int TargetMovie = 0;
+    private const int TargetMovie = 1;
     private const int MaxPriceExclusive = 10_000;
 
     // LC problem number, reused as the deterministic seed for reproducible benchmarks.
@@ -50,7 +51,7 @@ public class DesignMovieRentalSystemBenchmarks
             entries.Add([shop, TargetMovie, random.Next(1, MaxPriceExclusive)]);
         }
 
-        for (var movie = 1; movie <= OtherMoviesCount; movie++)
+        for (var movie = TargetMovie + 1; movie <= TargetMovie + OtherMoviesCount; movie++)
         {
             for (var shop = 0; shop < ShopsPerOtherMovie; shop++)
             {

@@ -14,14 +14,16 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // each PushMiddle landed - is what the two strategies could disagree on. PopBack is
 // O(1) for both, so the drain adds the same linear cost to each arm while the
 // baseline's quadratic shifting still dominates. The output buffer is allocated in
-// [GlobalSetup], outside the timed region.
+// [GlobalSetup], outside the timed region. LC 1670 allows 1000 calls and the script
+// makes two per value, a push and a pop, so the larger Calls is 500; the values
+// pushed count from 1, LC 1670's smallest.
 public class DesignFrontMiddleBackQueueBenchmarks
 {
     private const int OperationCycleLength = 3; // cycles push front/middle/back
 
     private int[] _popped = [];
 
-    [Params(5_000, 50_000)]
+    [Params(50, 500)]
     public int Calls { get; set; }
 
     [GlobalSetup]
@@ -37,11 +39,13 @@ public class DesignFrontMiddleBackQueueBenchmarks
     {
         for (var i = 0; i < Calls; i++)
         {
+            var value = i + 1;
+
             switch (i % OperationCycleLength)
             {
-                case 0: queue.PushFront(i); break;
-                case 1: queue.PushMiddle(i); break;
-                default: queue.PushBack(i); break;
+                case 0: queue.PushFront(value); break;
+                case 1: queue.PushMiddle(value); break;
+                default: queue.PushBack(value); break;
             }
         }
 

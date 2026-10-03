@@ -8,13 +8,14 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // "just use a List" implementation reaches for - O(n) per call, since every existing
 // element has to shift right) vs. this repo's SinglyLinkedListNode<TValue> chain's
 // AddAtHead, a single O(1) pointer reassignment regardless of how many nodes already
-// exist. Both run the same Calls-length sequence of head insertions. Params start at
-// 5,000, not TwoSumBenchmarks' usual 200: below a few thousand calls, List<int>.Insert's
-// vectorized memmove is fast enough per call to beat the linked-list chain's per-node
-// heap allocation despite doing asymptotically more work - the real O(n^2) vs O(n) split
-// only dominates once Calls is large enough that the shifting cost outweighs the
-// constant allocation overhead (confirmed with a standalone Stopwatch check up to
-// Calls=50,000, see this problem's manifest notes).
+// exist. Both run the same Calls-length sequence of head insertions.
+//
+// LC 707 caps every index and value at 1000, and the tail read's index is Calls - 1,
+// so Calls stops at 1001. That is below the few thousand calls where the O(n^2) vs
+// O(n) split starts to dominate - until then List<int>.Insert's vectorized memmove
+// beats the chain's per-node heap allocation despite doing asymptotically more work
+// (a standalone Stopwatch check up to 50,000 calls showed the crossover, see this
+// problem's manifest notes) - so the chain cannot show its advantage inside the bound.
 //
 // The script ends with two gets, at the head and at the tail, and their outputs are
 // the arm's answer: AddAtHead returns nothing, so a script of inserts alone has no
@@ -22,7 +23,7 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // tail the first; reading the head costs both arms O(1), the tail one pointer walk.
 public class DesignLinkedListBenchmarks
 {
-    [Params(5_000, 50_000)]
+    [Params(100, 1_001)]
     public int Calls { get; set; }
 
     [Benchmark(Baseline = true)]

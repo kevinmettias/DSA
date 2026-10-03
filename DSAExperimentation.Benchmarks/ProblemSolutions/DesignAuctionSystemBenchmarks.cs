@@ -19,7 +19,7 @@ public class DesignAuctionSystemBenchmarks
     private const int Seed = 3815;
     private const int ItemPoolSize = 50;
 
-    private const int FirstId = 1;
+    private const int LowestUserOrItemId = 1;
     private const int BidAmountUpperBound = 1_000_000_000;
 
     private List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> _script = new();
@@ -64,8 +64,8 @@ public class DesignAuctionSystemBenchmarks
         int index,
         Random random)
     {
-        var userId = index + FirstId;
-        var itemId = (index % ItemPoolSize) + FirstId;
+        var userId = index + LowestUserOrItemId;
+        var itemId = (index % ItemPoolSize) + LowestUserOrItemId;
         var amount = random.Next(1, BidAmountUpperBound);
         seededBids[index] = (userId, itemId);
         script.Add(strategy =>
@@ -118,20 +118,20 @@ public class DesignAuctionSystemBenchmarks
     // always has at least one bidder to find regardless of which item it lands on.
     private static void AppendGrowthRounds(List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script, int bidCount, Random random)
     {
-        var nextUserId = bidCount + FirstId;
+        var nextUserId = bidCount + LowestUserOrItemId;
 
         for (var round = 0; round < bidCount; round++)
         {
             AppendAddBid(script, random, nextUserId++);
             AppendAddBid(script, random, nextUserId++);
-            var itemId = random.Next(FirstId, ItemPoolSize + FirstId);
+            var itemId = random.Next(LowestUserOrItemId, ItemPoolSize + LowestUserOrItemId);
             script.Add(strategy => strategy.GetHighestBidder(itemId));
         }
     }
 
     private static void AppendAddBid(List<Func<DesignAuctionSystemSolution.IAuctionSystemStrategy, int?>> script, Random random, int userId)
     {
-        var itemId = random.Next(FirstId, ItemPoolSize + FirstId);
+        var itemId = random.Next(LowestUserOrItemId, ItemPoolSize + LowestUserOrItemId);
         var amount = random.Next(1, BidAmountUpperBound);
         script.Add(strategy =>
         {

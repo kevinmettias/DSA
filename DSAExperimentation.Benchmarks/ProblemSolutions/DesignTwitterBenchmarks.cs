@@ -6,21 +6,24 @@ namespace DSAExperimentation.Benchmarks.ProblemSolutions;
 // DesignTwitterSolutionTests proves correct. LC 355's own Twitter() constructor takes no
 // initial state, so - as with DesignAuctionSystem - there is no separate "prepared
 // input" to hoist through; [GlobalSetup] instead builds one fixed call script: user
-// 0 follows every one of FollowedUsers followees, then TweetsPerSource tweets per
+// 500 follows every one of FollowedUsers followees, then TweetsPerSource tweets per
 // followee are posted in randomly interleaved order (so the top 10 genuinely draw
 // from many different sources instead of always the most-recently-seeded one), and
 // each [Benchmark] arm constructs a fresh strategy and replays that script before
-// reading user 0's feed - so script construction, including the random interleave
+// reading user 500's feed - so script construction, including the random interleave
 // order, is charged to setup rather than to the replay each arm measures.
+//
+// LC 355 numbers users 1..500 and forbids following yourself, so the reader is the
+// largest id and the followees 1..FollowedUsers stop one short of it, at 499.
 public class DesignTwitterBenchmarks
 {
-    private const int SelfUserId = 0;
+    private const int SelfUserId = 500;
     private const int TweetsPerSource = 20;
     private const int RandomSeed = 13;
 
     private List<Action<DesignTwitterSolution.ITwitterStrategy>> _script = new();
 
-    [Params(50, 500)]
+    [Params(50, 499)]
     public int FollowedUsers { get; set; }
 
     [GlobalSetup]

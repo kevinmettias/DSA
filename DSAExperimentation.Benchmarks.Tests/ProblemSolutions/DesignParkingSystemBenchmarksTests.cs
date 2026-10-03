@@ -10,7 +10,7 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // identical per-call work the pairing is measuring.
 public sealed partial class DesignParkingSystemBenchmarksTests
 {
-    private const int SmallestCalls = 1_000;
+    private const int SmallestCalls = 100;
 
     [Fact]
     public void Setup_SameCallCount_RebuildsTheSameRequestScript()

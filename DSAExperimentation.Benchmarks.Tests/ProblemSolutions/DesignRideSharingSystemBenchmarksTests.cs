@@ -10,15 +10,12 @@ namespace DSAExperimentation.Benchmarks.Tests.ProblemSolutions;
 // rider and driver id before it matches any of them.
 public sealed partial class DesignRideSharingSystemBenchmarksTests
 {
-    private const int SmallestRiderCount = 500;
+    private const int SmallestRiderCount = 32;
 
     // The script cancels a tenth of the riders before the match rounds run, so at least this many
     // riders are still pending when matching starts - and a match consumes one driver and one
     // rider exactly once each.
     private const int CancelledRiderCount = SmallestRiderCount / 10;
-
-    // A maximum needs both matched id sets - the drivers and the riders - each holding distinct ids.
-    private const long MatchedIdSetCount = 2L;
 
     [Fact]
     public void Setup_SameRiderCount_RebuildsTheSameCallScript()
@@ -64,18 +61,14 @@ public sealed partial class DesignRideSharingSystemBenchmarksTests
         return harness;
     }
 
-    // The id sum of two sets of n distinct ids drawn from 0..SmallestRiderCount-1 is smallest when
-    // both sets are the n smallest ids - 0 + 1 + ... + (n - 1), twice over - and largest when both
-    // are the n largest.
-    private static long MinimumMatchedIdSum()
-    {
-        var matchedPairs = SmallestRiderCount - CancelledRiderCount;
+    // At least SmallestRiderCount - CancelledRiderCount pairs match, and their ids sum to the least when
+    // they are the smallest of their ranges.
+    private static long MinimumMatchedIdSum() => IdSumOfTheFirstPairs(SmallestRiderCount - CancelledRiderCount);
 
-        return (long)matchedPairs * (matchedPairs - 1);
-    }
+    // A loose ceiling: every rider matches, so both whole id ranges are summed.
+    private static long MaximumMatchedIdSum() => IdSumOfTheFirstPairs(SmallestRiderCount);
 
-    // A loose ceiling: at most every rider matches, and the two matched id sets then hold
-    // distinct ids no larger than SmallestRiderCount - 1 each.
-    private static long MaximumMatchedIdSum() =>
-        MatchedIdSetCount * SmallestRiderCount * (SmallestRiderCount - 1);
+    // Riders are numbered from 1 and drivers from SmallestRiderCount + 1, so the first n of each sum to
+    // 1 + ... + n and (R + 1) + ... + (R + n): together n * R + n * (n + 1).
+    private static long IdSumOfTheFirstPairs(long pairs) => (pairs * SmallestRiderCount) + (pairs * (pairs + 1));
 }
