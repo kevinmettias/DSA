@@ -49,9 +49,9 @@ internal static class CountSubarraysWithMajorityElementISolution
     // Binary Indexed Tree), counting - before inserting prefix[j] - how many earlier
     // prefix values were strictly smaller. Summing that count across every j is exactly
     // the number of majority subarrays. LC 3739's bound is where that sweep has to carry a
-    // 64-bit accumulator, so its arm is the one implementation of it; at n <= 100 (this
-    // problem's bound) the total fits an int, and the narrowing cast is the only
-    // difference between the two problems' sweeps.
+    // 64-bit accumulator, so its arm is the one implementation of it; at n <= 1000 (this
+    // problem's bound) the total is at most 1000 * 1001 / 2 = 500,500 subarrays and fits an
+    // int, and the narrowing cast is the only difference between the two problems' sweeps.
     public static int CountByFenwickPrefixSum(int[] nums, int target) =>
         (int)CountSubarraysWithMajorityElementIISolution.CountByFenwickPrefixSum(nums, target);
 }
