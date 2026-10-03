@@ -1,14 +1,24 @@
+using System.Text.RegularExpressions;
+
 namespace DSAExperimentation.Tests.Architecture;
 
 // The architecture tests read the repository as TEXT rather than as types,
 // because the rules they enforce span projects that cannot see each other: the
 // benchmark project is not on the test project's reference list, so a reflection
 // test would be blind in exactly the place the duplication these rules exist to
-// catch actually happens. Both tests therefore need the same two primitives -
-// where the repository root is, and which files under it are source - and this
-// is where they live rather than in whichever test asked for them first.
+// catch actually happens. Every test therefore needs the same primitives - where
+// the repository root is, which files under it are source, and what of a file is
+// code rather than comment or string - and this is where they live rather than in
+// whichever test asked for them first.
 internal static class RepositoryFiles
 {
+    // A comment or a string literal, either of which can spell out code that is not
+    // code. A string is kept as an empty pair of quotes so the code around it still
+    // reads as code.
+    private static readonly Regex CommentOrString = new(
+        @"(?<string>@""(?:[^""]|"""")*""|""(?:[^""\\\n]|\\.)*""|'(?:[^'\\\n]|\\.)*')|//[^\n]*|/\*.*?\*/",
+        RegexOptions.Singleline);
+
     public static string Root()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
@@ -29,6 +39,9 @@ internal static class RepositoryFiles
             ?? throw new InvalidOperationException(
                 "No ancestor of the test output directory holds ARCHITECTURE.md, so the repository root is unknown.");
     }
+
+    public static string CodeOf(string source)
+        => CommentOrString.Replace(source, match => match.Groups["string"].Success ? "\"\"" : string.Empty);
 
     public static IEnumerable<SourceFile> SourceFilesIn(string directory)
     {

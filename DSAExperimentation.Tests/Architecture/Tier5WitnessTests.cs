@@ -70,13 +70,6 @@ public sealed partial class Tier5WitnessTests
 
     private static readonly string[] MeasurementWitnesses = [.. StructuralWitnesses, .. TraversalHooks];
 
-    // A comment or a string literal, either of which can spell out a declaration
-    // that is not one. A string is kept as an empty pair of quotes so the code
-    // around it still reads as code.
-    private static readonly Regex CommentOrString = new(
-        @"(?<string>@""(?:[^""]|"""")*""|""(?:[^""\\\n]|\\.)*""|'(?:[^'\\\n]|\\.)*')|//[^\n]*|/\*.*?\*/",
-        RegexOptions.Singleline);
-
     // `where T : class` followed by a second `where` clause is a constraint, not a type
     // named "where".
     private static readonly Regex TypeDeclaration = new(@"\b(?:class|struct|record|interface)\s+(?!where\b)[A-Za-z_]\w*");
@@ -202,7 +195,7 @@ public sealed partial class Tier5WitnessTests
     // semicolon, wherever the line breaks fall.
     private static List<string> WitnessesInSource(string source, string[] contracts)
     {
-        var code = CommentOrString.Replace(source, match => match.Groups["string"].Success ? "\"\"" : string.Empty);
+        var code = RepositoryFiles.CodeOf(source);
 
         return TypeDeclaration.Matches(code)
             .Select(declaration => BaseListAfter(code, declaration.Index + declaration.Length))

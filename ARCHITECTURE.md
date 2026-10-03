@@ -637,6 +637,47 @@ reachable set from `start`. An infinite one — with no cycle for the visited se
 shape as `BinarySearch`'s sortedness (§9.1) or `ShortestPath`'s non-negative-edge-weight assumption
 (§7).
 
+### 12.4 A third answer: instance members on a struct type parameter
+
+§9.2 and §12.1 choose between a static-abstract witness (a closed set of choices, fixed by type) and
+a runtime object (an open space, passed as a value). Hooks and fold algebras need a third answer.
+Their *kind* is closed and chosen at the call site by type — a `RankHooks` is one type, a
+`CoinPointsAlgebra` another — but an instance of the kind needs values only the call knows: the
+rank to count down from, the coins each node holds, the list a walk collects into. A
+static-abstract member has no channel to such a value, which is why five fold algebras once read
+theirs from a static `Prepare`, the in-order and level-grouped hooks kept theirs in `AsyncLocal`
+slots, and every test fixture that recorded a walk needed a marker type per test to keep its static
+log apart.
+
+The rule is one question: **does every runtime value the contract needs arrive through its member
+signatures?** If it does, the contract stays a static-abstract witness — `IReduceAlgebra`,
+`ITopDownHooks`, `IPathHeuristic`, `IChildOrder`, `IHeapOrder`, the element algebras of §11.4. If it
+does not, its members are instance members on a `struct` type parameter — `IFoldAlgebra`,
+`IDepthFirstHooks`, `IBreadthFirstHooks`, `ILevelGroupedHooks`, `IInOrderHooks`, and `IVisitGuard`
+before them. The engine takes the struct as a value; each kind is still its own instantiation, and
+its members are constrained calls, so nothing boxes and nothing dispatches through an interface.
+Three consequences follow:
+
+- **Every member is required.** A default interface member reached through a struct type parameter
+  boxes the struct, so an empty body is how a hook ignores an event.
+- **A walk returns the hook value it finished with.** A hook that holds a reference — a list — can
+  be read through it afterwards; one that holds counters by value is read from the returned value.
+  Those hooks are mutable structs on purpose, and each is waived against `check-mutable-struct`
+  with the reason it must be one.
+- **An algebra or hook is never reached through `in` or a readonly field.** The defensive copy
+  drops what it accumulates, which is why `ZipFoldAlgebra` is a plain struct, not a readonly one.
+
+`AmbientStateTests` (§18.5) holds the line: no `AsyncLocal`, `ThreadLocal` or `[ThreadStatic]` slot
+in the library or the solutions.
+
+**What "zero cost" means here, measured.** Every node type in this library is a reference type, so
+the engines run as shared generic code, and a call into a struct type argument that is itself
+generic over the node type (`SizeAlgebra<TNode>`, a fold's memo policy) goes through a runtime
+lookup the JIT does not inline. A type argument that is exact — `RoomWaysAlgebra`,
+`BinaryTreeTopology<int>`, every in-order hook at `TValue = int` — gets a direct call. The unified
+fold recursion paid four such lookups per node until the tree tier got a recursion of its own back,
+40% on `FoldTierBenchmarks.TreeTier`; measure a new axis before calling it free.
+
 ## 13. Physical layout: the reorg
 
 Every worked example above (§3–§12) was written against a domain-first tree — `Graph/**`,
@@ -747,8 +788,8 @@ the distinguishing question is interface substitutability, not the topology axis
 
 `DSAExperimentation.Tests/` mirrors both trees one level deeper. Fixture files distribute to the
 utility folder matching the interface they implement, not a shared grab-bag — e.g. the
-`Recording*Hooks` fixtures split across `Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/`
-by which hook interface each implements. One Graph test-fixture group from the first reorg still
+`Recording*Hooks` and `Counting*Hooks` fixtures split across
+`Tests/Algorithms/Traversal/{BreadthFirst,DepthFirst}/Fixtures/` by which hook interface each implements. One Graph test-fixture group from the first reorg still
 needs a placement call rather than a mechanical rule (a second, test-only trie fixture group,
 superseded by the production `LowercaseTrie`, has been deleted): `TestNode`/`TestTopology`/`TestTrees` anchor at
 `Tests/DataStructures/Graph/Fixtures/` (`TestTopology` is itself a Topology fixture) and are
@@ -1593,6 +1634,11 @@ would be blind in precisely the place duplication happens.
   `check-test-coverage` waiver over `DSAExperimentation.LeetCode/**` rests on; before it existed the
   waiver's "complete by construction" was a claim, and `KthSmallestElementInABSTSolution` had no
   caller at all.
+- **§12.4's "per-call state belongs to the call"** — `AmbientStateTests`, written with the rule
+  rather than after it. No file in `DSAExperimentation` or `DSAExperimentation.LeetCode` may declare
+  an `AsyncLocal`, `ThreadLocal` or `[ThreadStatic]` slot; a hook or algebra that needs a runtime
+  value carries it as a field. Comments and strings are blanked through the same
+  `RepositoryFiles.CodeOf` the witness rule reads base lists with.
 
 Every harness file is in scope of the witness rule; the whole catalogue has reached tier 4, so
 there is no unmigrated problem for a harness to be waiting on.
